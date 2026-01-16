@@ -15,13 +15,14 @@
   }]
 }}####
 v: {
+  "display" : "Number present and verified",
   "code" : "01",
   "system" : "https://fhir.hl7.org.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'https://fhir.hl7.org.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1' could not be found, so the code cannot be validated",
-  "class" : "CODESYSTEM_UNSUPPORTED",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "https://fhir.hl7.org.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{

@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "Medical record number",
   "code" : "MR",
   "system" : "http://hl7.org/fhir/v2/0203",
   "severity" : "error",

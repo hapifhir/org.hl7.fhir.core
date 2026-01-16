@@ -20,6 +20,7 @@ v: {
   "system" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html",
   "version" : "2022",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html/vs|2022: Validate \"[undefined|undefined#1258-3 (\"Long Term Care Facility General Nursing Unit\")]\"\n0ms https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html/vs|2022: Check \"https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html|undefined#1258-3\"\n0ms https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html/vs|2022: CodeSystem found: https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html|2022 for https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html|2022\n0ms https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html/vs|2022: check code in (undefined) at Coding\n0ms https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html/vs|2022: Code \"1258-3\" found in https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html|2022",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

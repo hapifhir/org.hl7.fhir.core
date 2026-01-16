@@ -17,6 +17,7 @@ v: {
   "code" : "fi",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n7ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Analysing http://hl7.org/fhir/ValueSet/languages|3.0.2 for validation purposes\n7ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Prepare include[0]: \"(undefined)\"\n8ms http://hl7.org/fhir/ValueSet/languages|3.0.2: CodeSystem found: \"urn:ietf:bcp:47|null\"\n9ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Validate \"[undefined|undefined#fi (\"undefined\")]\" and infer system\n10ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Check \"undefined|undefined#fi\"\n10ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Inferred CodeSystem = \"urn:ietf:bcp:47\"\n11ms http://hl7.org/fhir/ValueSet/languages|3.0.2: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47|undefined\n11ms http://hl7.org/fhir/ValueSet/languages|3.0.2: check code in (undefined) at \n12ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Code \"fi\" found in urn:ietf:bcp:47|null",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -37,11 +38,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "day",
+  "display" : "(day)",
   "code" : "d",
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Analysing http://hl7.org/fhir/ValueSet/units-of-time|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: CodeSystem found: \"http://unitsofmeasure.org|2.2\"\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Validate \"[undefined|undefined#d (\"undefined\")]\" and infer system\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Check \"undefined|undefined#d\"\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Inferred CodeSystem = \"http://unitsofmeasure.org\"\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|undefined\n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: check code in (undefined) at \n1ms http://hl7.org/fhir/ValueSet/units-of-time|3.0.2: Code \"d\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -73,6 +75,7 @@ v: {
   "code" : "image/jpg",
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:d6d2c1bf-1c11-426e-90c6-d4082cd367c2: Analysing urn:uuid:d6d2c1bf-1c11-426e-90c6-d4082cd367c2 for validation purposes\n1ms urn:uuid:d6d2c1bf-1c11-426e-90c6-d4082cd367c2: Prepare include[0]: \"(undefined)\"\n1ms urn:uuid:d6d2c1bf-1c11-426e-90c6-d4082cd367c2: CodeSystem found: \"urn:ietf:bcp:13|null\"\n1ms urn:uuid:d6d2c1bf-1c11-426e-90c6-d4082cd367c2: Validate \"[undefined|undefined#image/jpg (\"undefined\")]\" and infer system\n1ms urn:uuid:d6d2c1bf-1c11-426e-90c6-d4082cd367c2: Check \"undefined|undefined#image/jpg\"\n1ms urn:uuid:d6d2c1bf-1c11-426e-90c6-d4082cd367c2: Inferred CodeSystem = \"urn:ietf:bcp:13\"\n1ms urn:uuid:d6d2c1bf-1c11-426e-90c6-d4082cd367c2: CodeSystem found: urn:ietf:bcp:13|null for urn:ietf:bcp:13|undefined\n1ms urn:uuid:d6d2c1bf-1c11-426e-90c6-d4082cd367c2: check code in (undefined) at \n1ms urn:uuid:d6d2c1bf-1c11-426e-90c6-d4082cd367c2: Code \"image/jpg\" found in urn:ietf:bcp:13|null",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -97,6 +100,7 @@ v: {
   "code" : "image/jpg",
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Analysing http://hl7.org/fhir/ValueSet/mimetypes|5.0.0 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: CodeSystem found: \"urn:ietf:bcp:13|null\"\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Validate \"[undefined|undefined#image/jpg (\"undefined\")]\" and infer system\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Check \"undefined|undefined#image/jpg\"\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Inferred CodeSystem = \"urn:ietf:bcp:13\"\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: CodeSystem found: urn:ietf:bcp:13|null for urn:ietf:bcp:13|undefined\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: check code in (undefined) at \n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Code \"image/jpg\" found in urn:ietf:bcp:13|null",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -123,9 +127,10 @@ v: {
 v: {
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/observation-category|3.0.2'; The provided code 'http://snomed.info/sct#118246004 ('Laboratory test finding (finding)')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-category|3.0.2'",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/observation-category|3.0.2'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/observation-category|3.0.2: Analysing http://hl7.org/fhir/ValueSet/observation-category|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/observation-category|3.0.2: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/observation-category|3.0.2: CodeSystem found: \"http://hl7.org/fhir/observation-category|3.0.2\"\n1ms http://hl7.org/fhir/ValueSet/observation-category|3.0.2: Validate \"[undefined|undefined#118246004 (\"Laboratory test finding (finding)\")]\"\n1ms http://hl7.org/fhir/ValueSet/observation-category|3.0.2: Check \"http://snomed.info/sct|undefined#118246004\"",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -192,9 +197,10 @@ v: {
 v: {
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/observation-category|3.0.2'; The provided code 'http://snomed.info/sct#275711006 ('Chemistry')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-category|3.0.2'; Wrong Display Name 'Chemistry' for http://snomed.info/sct#275711006. Valid display is 'Serum chemistry test' (en) (for the language(s) 'en-US')",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/observation-category|3.0.2'; Wrong Display Name 'Chemistry' for http://snomed.info/sct#275711006. Valid display is one of 2 choices: 'Serum chemistry test' (en) or 'Serum chemistry test (procedure)' (en) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/observation-category|3.0.2: Analysing http://hl7.org/fhir/ValueSet/observation-category|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/observation-category|3.0.2: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/observation-category|3.0.2: CodeSystem found: \"http://hl7.org/fhir/observation-category|3.0.2\"\n1ms http://hl7.org/fhir/ValueSet/observation-category|3.0.2: Validate \"[undefined|undefined#275711006 (\"Chemistry\")]\"\n1ms http://hl7.org/fhir/ValueSet/observation-category|3.0.2: Check \"http://snomed.info/sct|undefined#275711006\"",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -234,7 +240,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'Chemistry' for http://snomed.info/sct#275711006. Valid display is 'Serum chemistry test' (en) (for the language(s) 'en-US')"
+      "text" : "Wrong Display Name 'Chemistry' for http://snomed.info/sct#275711006. Valid display is one of 2 choices: 'Serum chemistry test' (en) or 'Serum chemistry test (procedure)' (en) (for the language(s) 'en-US')"
     },
     "location" : ["CodeableConcept.coding[0].display"],
     "expression" : ["CodeableConcept.coding[0].display"]
@@ -282,9 +288,10 @@ v: {
 v: {
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2'; The provided code 'http://snomed.info/sct#281302008 ('Above reference range')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2'",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2: Analysing http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2: CodeSystem found: \"http://hl7.org/fhir/v2/0078|2.8.2\"\n1ms http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2: Validate \"[undefined|undefined#281302008 (\"Above reference range\")]\"\n1ms http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2: Check \"http://snomed.info/sct|undefined#281302008\"",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -351,9 +358,10 @@ v: {
 v: {
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109'; The provided code 'http://snomed.info/sct#419891008 ('Record artifact (record artifact)')' was not found in the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109'",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n12ms http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109: Analysing http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109 for validation purposes\n12ms http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109: Prepare include[0]: \"(undefined)\"\n12ms http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109: CodeSystem found: \"http://loinc.org|2.81\"\n12ms http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109: Validate \"[undefined|undefined#419891008 (\"Record artifact (record artifact)\")]\"\n12ms http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109: Check \"http://snomed.info/sct|undefined#419891008\"",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -425,6 +433,7 @@ v: {
   "code" : "application/pdf",
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms urn:uuid:59b3f2e5-405a-4cad-9e8c-d8e95539b3cb: Analysing urn:uuid:59b3f2e5-405a-4cad-9e8c-d8e95539b3cb for validation purposes\n0ms urn:uuid:59b3f2e5-405a-4cad-9e8c-d8e95539b3cb: Prepare include[0]: \"(undefined)\"\n0ms urn:uuid:59b3f2e5-405a-4cad-9e8c-d8e95539b3cb: CodeSystem found: \"urn:ietf:bcp:13|null\"\n0ms urn:uuid:59b3f2e5-405a-4cad-9e8c-d8e95539b3cb: Validate \"[undefined|undefined#application/pdf (\"undefined\")]\" and infer system\n1ms urn:uuid:59b3f2e5-405a-4cad-9e8c-d8e95539b3cb: Check \"undefined|undefined#application/pdf\"\n1ms urn:uuid:59b3f2e5-405a-4cad-9e8c-d8e95539b3cb: Inferred CodeSystem = \"urn:ietf:bcp:13\"\n1ms urn:uuid:59b3f2e5-405a-4cad-9e8c-d8e95539b3cb: CodeSystem found: urn:ietf:bcp:13|null for urn:ietf:bcp:13|undefined\n1ms urn:uuid:59b3f2e5-405a-4cad-9e8c-d8e95539b3cb: check code in (undefined) at \n1ms urn:uuid:59b3f2e5-405a-4cad-9e8c-d8e95539b3cb: Code \"application/pdf\" found in urn:ietf:bcp:13|null",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -449,6 +458,7 @@ v: {
   "code" : "application/pdf",
   "system" : "urn:ietf:bcp:13",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Analysing http://hl7.org/fhir/ValueSet/mimetypes|5.0.0 for validation purposes\n0ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Prepare include[0]: \"(undefined)\"\n0ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: CodeSystem found: \"urn:ietf:bcp:13|null\"\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Validate \"[undefined|undefined#application/pdf (\"undefined\")]\" and infer system\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Check \"undefined|undefined#application/pdf\"\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Inferred CodeSystem = \"urn:ietf:bcp:13\"\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: CodeSystem found: urn:ietf:bcp:13|null for urn:ietf:bcp:13|undefined\n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: check code in (undefined) at \n1ms http://hl7.org/fhir/ValueSet/mimetypes|5.0.0: Code \"application/pdf\" found in urn:ietf:bcp:13|null",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -469,10 +479,11 @@ v: {
   }]
 }}####
 v: {
-  "display" : "German (Switzerland)",
+  "display" : "German (Region=Switzerland)",
   "code" : "de-CH",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Analysing http://hl7.org/fhir/ValueSet/languages|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: CodeSystem found: \"urn:ietf:bcp:47|null\"\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Validate \"[undefined|undefined#de-CH (\"undefined\")]\" and infer system\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Check \"undefined|undefined#de-CH\"\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Inferred CodeSystem = \"urn:ietf:bcp:47\"\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47|undefined\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: check code in (undefined) at \n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Code \"de-CH\" found in urn:ietf:bcp:47|null",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -497,35 +508,15 @@ v: {
 v: {
   "code" : "urn:ihe:iti:xds:2017:mimeTypeSufficient",
   "system" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
+  "version" : "1.4.0",
   "severity" : "error",
-  "error" : "A definition for CodeSystem 'http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode' could not be found, so the code cannot be validated; The provided code 'http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode#urn:ihe:iti:xds:2017:mimeTypeSufficient ('MimeType sufficient')' was not found in the value set 'http://hl7.org/fhir/ValueSet/formatcodes|20150326'",
+  "error" : "The provided code 'http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode#urn:ihe:iti:xds:2017:mimeTypeSufficient ('MimeType sufficient')' was not found in the value set 'http://hl7.org/fhir/ValueSet/formatcodes|20150326'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
+  "diagnostics" : "Local Error: The local terminology server cannot handle this request. Server Error: The provided code 'http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode#urn:ihe:iti:xds:2017:mimeTypeSufficient ('MimeType sufficient')' was not found in the value set 'http://hl7.org/fhir/ValueSet/formatcodes|20150326'",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "UNKNOWN_CODESYSTEM"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r3"
-    }],
-    "severity" : "error",
-    "code" : "not-found",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "not-found"
-      }],
-      "text" : "A definition for CodeSystem 'http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode' could not be found, so the code cannot be validated"
-    },
-    "location" : ["Coding.system"],
-    "expression" : ["Coding.system"]
-  },
-  {
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
       "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
@@ -570,9 +561,10 @@ v: {
 v: {
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109'; The provided code 'http://snomed.info/sct#71388002 ('Procedure (procedure)')' was not found in the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109'",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n9ms http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109: Analysing http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109 for validation purposes\n9ms http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109: Prepare include[0]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109: CodeSystem found: \"http://loinc.org|2.81\"\n9ms http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109: Validate \"[undefined|undefined#71388002 (\"Procedure (procedure)\")]\"\n9ms http://hl7.org/fhir/ValueSet/c80-doc-typecodes|20091109: Check \"http://snomed.info/sct|undefined#71388002\"",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -638,9 +630,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2'; The provided code 'http://snomed.info/sct#823681000000100 ('Outpatient letter')' was not found in the value set 'http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2'; Unknown code '823681000000100' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2'; Unknown code '823681000000100' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Analysing http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2 for validation purposes\n0ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Prepare include[0]: \"(undefined)\"\n0ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: CodeSystem found: \"http://loinc.org|2.81\"\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Validate \"[undefined|undefined#823681000000100 (\"Outpatient letter\")]\"\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Check \"http://snomed.info/sct|undefined#823681000000100\"",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -680,7 +673,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '823681000000100' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '823681000000100' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -728,9 +721,10 @@ v: {
 v: {
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2'; The provided code 'http://snomed.info/sct#17621005 ('Normal')' was not found in the value set 'http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2'",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2: Analysing http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2: CodeSystem found: \"http://hl7.org/fhir/v2/0078|2.8.2\"\n3ms http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2: Validate \"[undefined|undefined#17621005 (\"Normal\")]\"\n3ms http://hl7.org/fhir/ValueSet/observation-interpretation|3.0.2: Check \"http://snomed.info/sct|undefined#17621005\"",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -800,6 +794,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: Analysing http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: Prepare include[1]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: CodeSystem found: \"http://unstats.un.org/unsd/methods/m49/m49.htm|null\"\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: Prepare include[2]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/usps-state|3.0.2: Analysing http://hl7.org/fhir/ValueSet/usps-state|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/usps-state|3.0.2: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/usps-state|3.0.2: CodeSystem found: \"https://www.usps.com/|null\"\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: CodeSystem version undefined not found: \"undefined|undefined\"\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: Validate \"[undefined|undefined#US (\"United States of America\")]\"\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: Check \"urn:iso:std:iso:3166|undefined#US\"\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|undefined\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://hl7.org/fhir/ValueSet/jurisdiction|3.0.2: Code \"US\" found in urn:iso:std:iso:3166|2018",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -824,6 +819,7 @@ v: {
   "code" : "en",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Analysing http://hl7.org/fhir/ValueSet/languages|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: CodeSystem found: \"urn:ietf:bcp:47|null\"\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Validate \"[undefined|undefined#en (\"undefined\")]\" and infer system\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Check \"undefined|undefined#en\"\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Inferred CodeSystem = \"urn:ietf:bcp:47\"\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47|undefined\n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: check code in (undefined) at \n1ms http://hl7.org/fhir/ValueSet/languages|3.0.2: Code \"en\" found in urn:ietf:bcp:47|null",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -864,14 +860,15 @@ v: {
 }}####
 v: {
   "display" : "Body weight",
-  "code" : "27113001",
-  "system" : "http://snomed.info/sct",
-  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "code" : "3141-9",
+  "system" : "http://loinc.org",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated",
-  "class" : "CODESYSTEM_UNSUPPORTED",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "http://acme.org/devices/clinical-codes",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#29463-7 (\"Body Weight\"), undefined|undefined#3141-9 (\"Body weight Measured\"), undefined|undefined#27113001 (\"Body weight\"), undefined|undefined#body-weight (\"Body Weight\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#29463-7\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"29463-7\" found in http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#3141-9\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[1]\n1ms http://loinc.org/vs|2.81: Code \"3141-9\" found in http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: Check \"http://snomed.info/sct|undefined#27113001\"\n1ms http://loinc.org/vs|2.81: Check \"http://acme.org/devices/clinical-codes|undefined#body-weight\"",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{

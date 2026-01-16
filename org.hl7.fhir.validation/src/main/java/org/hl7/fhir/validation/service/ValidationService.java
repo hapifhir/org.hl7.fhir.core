@@ -38,17 +38,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.liquid.BaseTableWrapper;
 import org.hl7.fhir.r5.liquid.GlobalObject.GlobalObjectRandomFunction;
 import org.hl7.fhir.r5.liquid.LiquidEngine;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.ConceptMap;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureMap;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator;
 import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
 import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
@@ -315,7 +305,7 @@ public class ValidationService {
         : validateSourceParameters.instanceValidatorParameters();
 
     WatchParameters watchParameters = validateSourceParameters.watchParameters() == null
-        ? new WatchParameters()
+        ? new WatchParameters(ValidatorWatchMode.NONE, 1000, 100)
       : validateSourceParameters.watchParameters();
 
     if (!instanceValidatorParameters.getProfiles().isEmpty()) {
@@ -331,7 +321,7 @@ public class ValidationService {
 
     do {
       long start = System.currentTimeMillis();
-      Resource resource = validationEngine.validate(validateSourceParameters.sources(), instanceValidatorParameters.getProfiles(), refs, records, igLoader, watchParameters.getWatchMode() == ValidatorWatchMode.ALL, watchParameters.getWatchSettleTime(), first);
+      Resource resource = validationEngine.validate(validateSourceParameters.sources(), instanceValidatorParameters.getProfiles(), refs, records, igLoader, watchParameters.watchMode() == ValidatorWatchMode.ALL, watchParameters.watchSettleTime(), first);
       first = false;
       boolean statusNeeded = false;
       if (resource != null) {
@@ -406,13 +396,13 @@ public class ValidationService {
           validationEngine.getContext().getTxClientManager().getInternalLog().clear();
         }
       }
-      if (watchParameters.getWatchMode() != ValidatorWatchMode.NONE) {
+      if (watchParameters.watchMode() != ValidatorWatchMode.NONE) {
         if (statusNeeded) {
-          log.info("Watching for changes (" + Integer.toString(watchParameters.getWatchScanDelay()) + "ms cycle)");
+          log.info("Watching for changes (" + Integer.toString(watchParameters.watchScanDelay()) + "ms cycle)");
         }
-        Thread.sleep(watchParameters.getWatchScanDelay());
+        Thread.sleep(watchParameters.watchScanDelay());
       }
-    } while (watchParameters.getWatchMode() != ValidatorWatchMode.NONE);
+    } while (watchParameters.watchMode() != ValidatorWatchMode.NONE);
     
     if (ec > 0) {
       SystemExitManager.setError(1);
@@ -599,7 +589,7 @@ public class ValidationService {
 
     public void compile(ValidationEngine validationEngine, String map, String mapLog, List<String> sources, String output) throws Exception {
     if (sources.size() > 0)
-      throw new Exception("Cannot specify sources when compling transform (found " + sources + ")");
+      throw new Exception("Cannot specify sources when compiling transform (found " + sources + ")");
     if (map == null)
       throw new Exception("Must provide a map when compiling a transform");
     if (output == null)
@@ -785,6 +775,7 @@ public class ValidationService {
       } else {
         fetcher.setReferencePolicy(ReferenceValidationPolicy.IGNORE);        
       }
+      fetcher.getCheckReferencesTo().addAll(validationEngineParameters.getCheckReferencesTo());
       fetcher.setResolutionContext(validationEngineParameters.getResolutionContext());
     } else {
       DisabledValidationPolicyAdvisor fetcher = new DisabledValidationPolicyAdvisor();
@@ -798,7 +789,8 @@ public class ValidationService {
         validationEngine.getPolicyAdvisor().setPolicyAdvisor(new TextDrivenPolicyAdvisor(validationEngine.getPolicyAdvisor().getPolicyAdvisor(), ManagedFileAccess.file(validationEngineParameters.getAdvisorFile())));
       }
     } else {
-      validationEngine.getPolicyAdvisor().setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(validationEngine.getPolicyAdvisor() == null ? refpol : validationEngine.getPolicyAdvisor().getReferencePolicy()));
+      validationEngine.getPolicyAdvisor().setPolicyAdvisor(new BasePolicyAdvisorForFullValidation(validationEngine.getPolicyAdvisor() == null ? refpol : validationEngine.getPolicyAdvisor().getReferencePolicy(),
+        validationEngine.getCheckReferencesTo()));
     }
     TerminologyCache.setNoCaching(validationEngineParameters.isNoInternalCaching());
 
@@ -1128,7 +1120,10 @@ public class ValidationService {
       log.info("Preparing to execute");
               
       FHIRPathEngine fpe = new FHIRPathEngine(validationEngine.getContext());
-      TestDataHostServices hs = new TestDataHostServices(validationEngine.getContext(), new DateTimeType(new Date()), new StringType(VersionUtilities.getSpecUrl(validationEngine.getContext().getVersion())));
+      TestDataHostServices hs = new TestDataHostServices(validationEngine.getContext(),
+        new DateTimeType(new Date()),
+        new DateType(new Date()),
+        new StringType(VersionUtilities.getSpecUrl(validationEngine.getContext().getVersion())));
       hs.registerFunction(new GlobalObjectRandomFunction());
       hs.registerFunction(new BaseTableWrapper.TableColumnFunction());
       hs.registerFunction(new BaseTableWrapper.TableDateColumnFunction());

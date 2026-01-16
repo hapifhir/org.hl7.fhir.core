@@ -16,8 +16,8 @@
   "https://sqlonfhir-dstu2.azurewebsites.net/fhir/ValueSet/administrative-gender" : null,
   "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
   "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
-    "server" : "https://tx.ontoserver.csiro.au/fhir",
-    "filename" : "vs-615e461e-448a-46a4-90aa-30f2787f592e.json"
+    "server" : "https://tx.hl7.org.au/fhir",
+    "filename" : "vs-b3e14e93-9e23-447e-a310-0aab153fcbfc.json"
   },
   "http://hl7.org/fhir/CodeSystem/c1" : null,
   "https://sqlonfhir-ci2.azurewebsites.net/fhir/ValueSet/hcxdir-locality" : null,

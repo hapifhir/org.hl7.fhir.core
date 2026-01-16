@@ -2,9 +2,7 @@ package org.hl7.fhir.validation.service.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
-import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
-import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
@@ -355,6 +353,11 @@ public class ValidationEngineParameters {
   private
   boolean checkReferences = false;
 
+  @JsonProperty("checkReferencesTo")
+  @SerializedName("checkReferencesTo")
+  private
+  Set<String> checkReferencesTo = new HashSet<>();
+
   @SerializedName("checkReferences")
   @JsonProperty("checkReferences")
   public boolean isCheckReferences() {
@@ -367,6 +370,13 @@ public class ValidationEngineParameters {
     this.checkReferences = checkReferences;
     return this;
   }
+
+  @SerializedName("checkReferences")
+  @JsonProperty("checkReferences")
+  public Set<String> getCheckReferencesTo() {
+    return checkReferencesTo;
+  }
+
 
   @JsonProperty("noInternalCaching")
   @SerializedName("noInternalCaching")
@@ -552,7 +562,7 @@ public class ValidationEngineParameters {
       && doNative == that.doNative
       && recursive == that.recursive
       && snomedCT.equals(that.snomedCT)
-      && sv.equals(that.sv)
+      && Objects.equals(sv, that.sv)
       && isInferFhirVersion() == that.isInferFhirVersion()
       && noEcosystem == that.noEcosystem
       && clearTxCache == that.clearTxCache

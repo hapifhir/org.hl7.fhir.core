@@ -20,6 +20,7 @@ v: {
   "error" : "A definition for CodeSystem 'https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS' could not be found, so the code cannot be validated; The provided code 'https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS#TURVAKIELTO' was not found in the value set 'http://hl7.org/fhir/ValueSet/security-labels|4.0.1'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "Local Error: The local terminology server cannot handle this request. Server Error: A definition for CodeSystem 'https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS' could not be found, so the code cannot be validated; The provided code 'https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS#TURVAKIELTO' was not found in the value set 'http://hl7.org/fhir/ValueSet/security-labels|4.0.1'",
   "unknown-systems" : "https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS",
   "issues" : {
   "resourceType" : "OperationOutcome",

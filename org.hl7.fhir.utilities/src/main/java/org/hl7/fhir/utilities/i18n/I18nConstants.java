@@ -532,6 +532,7 @@ public class I18nConstants {
   public static final String NO_VALID_DISPLAY_FOUND = "NO_VALID_DISPLAY_FOUND";
   public static final String NO_VALID_DISPLAY_FOUND_LANG_NONE = "NO_VALID_DISPLAY_FOUND_LANG_NONE";
   public static final String NO_VALID_DISPLAY_FOUND_LANG_SOME = "NO_VALID_DISPLAY_FOUND_LANG_SOME";
+  public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK";
   public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR";
   public static final String NO_VALUE_SET_IN_URL = "no_value_set";
   public static final String NULL_MIN = "null_min";
@@ -1079,6 +1080,7 @@ public class I18nConstants {
   public static final String UNKNOWN_CODE_IN = "Unknown_Code_in";
   public static final String UNKNOWN_CODE_IN_FRAGMENT = "UNKNOWN_CODE_IN_FRAGMENT";
   public static final String UNKNOWN_CODE_IN_VERSION = "Unknown_Code_in_Version";
+  public static final String UNKNOWN_CODE_IN_VERSION_SCT = "Unknown_Code_in_Version_SCT";
   public static final String UNKNOWN_DATA_FORMAT_ = "Unknown_Data_format_";
   public static final String UNKNOWN_DATE_FORMAT_ = "Unknown_Date_format_";
   public static final String UNKNOWN_PROPERTY = "UNKNOWN_PROPERTY";
@@ -1466,4 +1468,5 @@ public class I18nConstants {
   public static final String CONFORMANCE_STATEMENT_WORD = "CONFORMANCE_STATEMENT_WORD";
   public static final String VALUESET_CODE_CONCEPT_HINT = "VALUESET_CODE_CONCEPT_HINT";
   public static final String VALUESET_CODE_CONCEPT_HINT_VER = "VALUESET_CODE_CONCEPT_HINT_VER";
+  public static final String TERMINOLOGY_TX_SYSTEM_UNSUPPORTED = "TERMINOLOGY_TX_SYSTEM_UNSUPPORTED";
 }

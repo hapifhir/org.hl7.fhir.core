@@ -17,11 +17,12 @@
   }]
 }}####
 v: {
-  "display" : "Product containing theophylline (medicinal product)",
+  "display" : "Theophylline",
   "code" : "66493003",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#66493003 (\"undefined\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#66493003\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"66493003\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -47,11 +48,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Oral administration of treatment",
+  "display" : "Oral administration of treatment (procedure)",
   "code" : "394899003",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#394899003 (\"oral administration of treatment\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#394899003\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"394899003\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -77,11 +79,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Clinical procedure report",
+  "display" : "Clinical procedure report (qualifier value)",
   "code" : "371525003",
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#371525003 (\"Clinical procedure report (record artifact)\")]\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#371525003\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"371525003\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -109,9 +112,10 @@ v: {
 v: {
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "severity" : "error",
-  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/security-labels|3.0.2'; The provided code 'http://snomed.info/sct#17621005 ('Normal (qualifier value)')' was not found in the value set 'http://hl7.org/fhir/ValueSet/security-labels|3.0.2'",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/security-labels|3.0.2'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n9ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Analysing http://hl7.org/fhir/ValueSet/security-labels|3.0.2 for validation purposes\n9ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Prepare include[0]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-ConfidentialityClassification|2014-03-26: Analysing http://hl7.org/fhir/ValueSet/v3-ConfidentialityClassification|2014-03-26 for validation purposes\n9ms http://hl7.org/fhir/ValueSet/v3-ConfidentialityClassification|2014-03-26: Prepare include[0]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-ConfidentialityClassification|2014-03-26: CodeSystem found: \"http://hl7.org/fhir/v3/Confidentiality|2016-11-11\"\n9ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: CodeSystem version undefined not found: \"undefined|undefined\"\n9ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Prepare include[1]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-InformationSensitivityPolicy|2014-03-26: Analysing http://hl7.org/fhir/ValueSet/v3-InformationSensitivityPolicy|2014-03-26 for validation purposes\n9ms http://hl7.org/fhir/ValueSet/v3-InformationSensitivityPolicy|2014-03-26: Prepare include[0]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-InformationSensitivityPolicy|2014-03-26: CodeSystem found: \"http://hl7.org/fhir/v3/ActCode|2016-11-11\"\n9ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: CodeSystem version undefined not found: \"undefined|undefined\"\n9ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Prepare include[2]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-Compartment|2014-03-26: Analysing http://hl7.org/fhir/ValueSet/v3-Compartment|2014-03-26 for validation purposes\n9ms http://hl7.org/fhir/ValueSet/v3-Compartment|2014-03-26: Prepare include[0]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-Compartment|2014-03-26: CodeSystem found: \"http://hl7.org/fhir/v3/ActCode|2016-11-11\"\n9ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: CodeSystem version undefined not found: \"undefined|undefined\"\n9ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Prepare include[3]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityIntegrityObservationValue|2014-03-26: Analysing http://hl7.org/fhir/ValueSet/v3-SecurityIntegrityObservationValue|2014-03-26 for validation purposes\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityIntegrityObservationValue|2014-03-26: Prepare include[0]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityIntegrityObservationValue|2014-03-26: CodeSystem found: \"http://hl7.org/fhir/v3/ObservationValue|2016-11-11\"\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityIntegrityObservationValue|2014-03-26: Prepare exclude[0]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityIntegrityObservationValue|2014-03-26: CodeSystem found: \"http://hl7.org/fhir/v3/ObservationValue|2016-11-11\"\n9ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: CodeSystem version undefined not found: \"undefined|undefined\"\n9ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Prepare include[4]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Analysing http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26 for validation purposes\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Prepare include[0]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityPolicy|2014-03-26: Analysing http://hl7.org/fhir/ValueSet/v3-SecurityPolicy|2014-03-26 for validation purposes\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityPolicy|2014-03-26: Prepare include[0]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityPolicy|2014-03-26: CodeSystem found: \"http://hl7.org/fhir/v3/ActCode|2016-11-11\"\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: CodeSystem version undefined not found: \"undefined|undefined\"\n9ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Prepare include[1]: \"(undefined)\"\n9ms http://hl7.org/fhir/ValueSet/v3-ObligationPolicy|2014-03-26: Analysing http://hl7.org/fhir/ValueSet/v3-ObligationPolicy|2014-03-26 for validation purposes\n9ms http://hl7.org/fhir/ValueSet/v3-ObligationPolicy|2014-03-26: Prepare include[0]: \"(undefined)\"\n10ms http://hl7.org/fhir/ValueSet/v3-ObligationPolicy|2014-03-26: CodeSystem found: \"http://hl7.org/fhir/v3/ActCode|2016-11-11\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: CodeSystem version undefined not found: \"undefined|undefined\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Prepare include[2]: \"(undefined)\"\n10ms http://hl7.org/fhir/ValueSet/v3-RefrainPolicy|2014-03-26: Analysing http://hl7.org/fhir/ValueSet/v3-RefrainPolicy|2014-03-26 for validation purposes\n10ms http://hl7.org/fhir/ValueSet/v3-RefrainPolicy|2014-03-26: Prepare include[0]: \"(undefined)\"\n10ms http://hl7.org/fhir/ValueSet/v3-RefrainPolicy|2014-03-26: CodeSystem found: \"http://hl7.org/fhir/v3/ActCode|2016-11-11\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: CodeSystem version undefined not found: \"undefined|undefined\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Prepare include[3]: \"(undefined)\"\n10ms http://hl7.org/fhir/ValueSet/v3-PurposeOfUse|2014-03-26: Analysing http://hl7.org/fhir/ValueSet/v3-PurposeOfUse|2014-03-26 for validation purposes\n10ms http://hl7.org/fhir/ValueSet/v3-PurposeOfUse|2014-03-26: Prepare include[0]: \"(undefined)\"\n10ms http://hl7.org/fhir/ValueSet/v3-PurposeOfUse|2014-03-26: CodeSystem found: \"http://hl7.org/fhir/v3/ActReason|2016-11-11\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: CodeSystem version undefined not found: \"undefined|undefined\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Prepare include[4]: \"(undefined)\"\n10ms http://hl7.org/fhir/ValueSet/v3-GeneralPurposeOfUse|2014-03-26: Analysing http://hl7.org/fhir/ValueSet/v3-GeneralPurposeOfUse|2014-03-26 for validation purposes\n10ms http://hl7.org/fhir/ValueSet/v3-GeneralPurposeOfUse|2014-03-26: Prepare include[0]: \"(undefined)\"\n10ms http://hl7.org/fhir/ValueSet/v3-GeneralPurposeOfUse|2014-03-26: CodeSystem found: \"http://hl7.org/fhir/v3/ActReason|2016-11-11\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: CodeSystem version undefined not found: \"undefined|undefined\"\n10ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: CodeSystem version undefined not found: \"undefined|undefined\"\n10ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Prepare include[5]: \"(undefined)\"\n10ms http://hl7.org/fhir/ValueSet/v3-ActUSPrivacyLaw|2016-11-11: Analysing http://hl7.org/fhir/ValueSet/v3-ActUSPrivacyLaw|2016-11-11 for validation purposes\n10ms http://hl7.org/fhir/ValueSet/v3-ActUSPrivacyLaw|2016-11-11: Prepare include[0]: \"(undefined)\"\n10ms http://hl7.org/fhir/ValueSet/v3-ActUSPrivacyLaw|2016-11-11: CodeSystem found: \"http://hl7.org/fhir/v3/ActUSPrivacyLaw|2016-11-11\"\n10ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: CodeSystem version undefined not found: \"undefined|undefined\"\n10ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Validate \"[undefined|undefined#17621005 (\"Normal (qualifier value)\")]\"\n10ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Check \"http://snomed.info/sct|undefined#17621005\"\n10ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Check included value set http://hl7.org/fhir/ValueSet/v3-ConfidentialityClassification|2014-03-26\n10ms http://hl7.org/fhir/ValueSet/v3-ConfidentialityClassification|2014-03-26: Check \"http://snomed.info/sct|undefined#17621005\"\n10ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Check included value set http://hl7.org/fhir/ValueSet/v3-InformationSensitivityPolicy|2014-03-26\n10ms http://hl7.org/fhir/ValueSet/v3-InformationSensitivityPolicy|2014-03-26: Check \"http://snomed.info/sct|undefined#17621005\"\n10ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Check included value set http://hl7.org/fhir/ValueSet/v3-Compartment|2014-03-26\n10ms http://hl7.org/fhir/ValueSet/v3-Compartment|2014-03-26: Check \"http://snomed.info/sct|undefined#17621005\"\n10ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Check included value set http://hl7.org/fhir/ValueSet/v3-SecurityIntegrityObservationValue|2014-03-26\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityIntegrityObservationValue|2014-03-26: Check \"http://snomed.info/sct|undefined#17621005\"\n10ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Check included value set http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Check \"http://snomed.info/sct|undefined#17621005\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Check included value set http://hl7.org/fhir/ValueSet/v3-SecurityPolicy|2014-03-26\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityPolicy|2014-03-26: Check \"http://snomed.info/sct|undefined#17621005\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Check included value set http://hl7.org/fhir/ValueSet/v3-ObligationPolicy|2014-03-26\n10ms http://hl7.org/fhir/ValueSet/v3-ObligationPolicy|2014-03-26: Check \"http://snomed.info/sct|undefined#17621005\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Check included value set http://hl7.org/fhir/ValueSet/v3-RefrainPolicy|2014-03-26\n10ms http://hl7.org/fhir/ValueSet/v3-RefrainPolicy|2014-03-26: Check \"http://snomed.info/sct|undefined#17621005\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Check included value set http://hl7.org/fhir/ValueSet/v3-PurposeOfUse|2014-03-26\n10ms http://hl7.org/fhir/ValueSet/v3-PurposeOfUse|2014-03-26: Check \"http://snomed.info/sct|undefined#17621005\"\n10ms http://hl7.org/fhir/ValueSet/v3-SecurityControlObservationValue|2014-03-26: Check included value set http://hl7.org/fhir/ValueSet/v3-GeneralPurposeOfUse|2014-03-26\n10ms http://hl7.org/fhir/ValueSet/v3-GeneralPurposeOfUse|2014-03-26: Check \"http://snomed.info/sct|undefined#17621005\"\n10ms http://hl7.org/fhir/ValueSet/security-labels|3.0.2: Check included value set http://hl7.org/fhir/ValueSet/v3-ActUSPrivacyLaw|2016-11-11\n10ms http://hl7.org/fhir/ValueSet/v3-ActUSPrivacyLaw|2016-11-11: Check \"http://snomed.info/sct|undefined#17621005\"",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -182,6 +186,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#722172003 (\"Military health institution (environment)\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#722172003\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"722172003\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -212,6 +217,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#394609007 (\"General surgery (qualifier value)\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#394609007\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"394609007\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -238,9 +244,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '886921000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '886921000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#886921000000105 (\"Allergies and adverse reactions\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#886921000000105\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"886921000000105\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -260,7 +267,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '886921000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '886921000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -288,9 +295,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '1077881000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '1077881000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#1077881000000105 (\"Attendance details\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#1077881000000105\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"1077881000000105\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -310,7 +318,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '1077881000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '1077881000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -338,9 +346,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '887181000000106' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '887181000000106' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#887181000000106 (\"Clinical summary\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#887181000000106\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"887181000000106\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -360,7 +369,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '887181000000106' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '887181000000106' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -388,9 +397,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '887161000000102' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '887161000000102' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#887161000000102 (\"Diagnoses\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#887161000000102\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"887161000000102\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -410,7 +420,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '887161000000102' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '887161000000102' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -438,9 +448,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '1052891000000108' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '1052891000000108' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#1052891000000108 (\"Referrer details\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#1052891000000108\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"1052891000000108\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -460,7 +471,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '1052891000000108' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '1052891000000108' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -488,9 +499,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '715851000000102' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '715851000000102' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#715851000000102 (\"Examination findings\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#715851000000102\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"715851000000102\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -510,7 +522,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '715851000000102' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '715851000000102' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -538,9 +550,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '717121000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '717121000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#717121000000105 (\"History\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#717121000000105\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"717121000000105\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -560,7 +573,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '717121000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '717121000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -588,9 +601,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '933361000000108' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '933361000000108' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#933361000000108 (\"Medications and medical devices\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#933361000000108\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"933361000000108\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -610,7 +624,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '933361000000108' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '933361000000108' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -638,9 +652,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '887171000000109' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '887171000000109' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#887171000000109 (\"Procedures\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#887171000000109\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"887171000000109\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -660,7 +675,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '887171000000109' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '887171000000109' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -688,9 +703,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '887201000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '887201000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#887201000000105 (\"Plan and requested actions\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#887201000000105\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"887201000000105\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -710,7 +726,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '887201000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '887201000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -738,9 +754,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '1052951000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '1052951000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#1052951000000105 (\"Information and advice given\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#1052951000000105\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"1052951000000105\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -760,7 +777,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '1052951000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '1052951000000105' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -788,9 +805,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '886731000000109' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '886731000000109' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#886731000000109 (\"Patient demographics\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#886731000000109\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"886731000000109\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -810,7 +828,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '886731000000109' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '886731000000109' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -838,9 +856,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '887231000000104' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '887231000000104' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#887231000000104 (\"Person completing record\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#887231000000104\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"887231000000104\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -860,7 +879,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '887231000000104' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '887231000000104' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -888,9 +907,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '9290701000001101' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '9290701000001101' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#9290701000001101 (\"Optrex\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#9290701000001101\"\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"9290701000001101\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -910,7 +930,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '9290701000001101' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '9290701000001101' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]
@@ -942,6 +962,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#443938003 (\"Procedure carried out on subject\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#443938003\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"443938003\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -972,6 +993,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#27171005 (\"undefined\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#27171005\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"27171005\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -999,6 +1021,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#55011004 (\"undefined\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#55011004\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at Coding\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"55011004\" found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1034,6 +1057,7 @@ v: {
   "system" : "http://snomed.info/sct",
   "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://example.com/ValueSet/testVS: Analysing http://example.com/ValueSet/testVS for validation purposes\n0ms http://example.com/ValueSet/testVS: Validate \"[undefined|undefined#55011004 (\"undefined\")]\"\n0ms http://example.com/ValueSet/testVS: Check \"http://snomed.info/sct|undefined#55011004\"",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -1059,9 +1083,10 @@ v: {
 }}####
 v: {
   "severity" : "error",
-  "error" : "Unknown code '11181000146103' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'",
+  "error" : "Unknown code '11181000146103' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[undefined|undefined#11181000146103 (\"undefined\")]\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct|undefined#11181000146103\"\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"11181000146103\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -1081,7 +1106,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Unknown code '11181000146103' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201'"
+      "text" : "Unknown code '11181000146103' in the CodeSystem 'http://snomed.info/sct' version 'http://snomed.info/sct/900000000000207008/version/20250201' (International Edition)"
     },
     "location" : ["CodeableConcept.coding[0].code"],
     "expression" : ["CodeableConcept.coding[0].code"]

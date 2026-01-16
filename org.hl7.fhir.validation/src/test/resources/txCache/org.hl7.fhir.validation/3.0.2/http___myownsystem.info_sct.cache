@@ -15,13 +15,14 @@
   }]
 }}####
 v: {
+  "display" : "Laboratory test finding (finding)",
   "code" : "104",
   "system" : "http://myownsystem.info/sct",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://myownsystem.info/sct' could not be found, so the code cannot be validated",
-  "class" : "CODESYSTEM_UNSUPPORTED",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "http://myownsystem.info/sct",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{

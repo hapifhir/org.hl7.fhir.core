@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "Octaplex 500 Pulver und Lösungsmittel zur Herstellung einer i.v. Infusionslösung",
   "code" : "07115663",
   "system" : "http://fhir.de/CodeSystem/ifa/pzn",
   "severity" : "error",

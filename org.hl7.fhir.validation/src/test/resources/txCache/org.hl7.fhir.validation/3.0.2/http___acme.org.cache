@@ -15,13 +15,14 @@
   }]
 }}####
 v: {
+  "display" : "Example of Use",
   "code" : "example",
   "system" : "http://acme.org",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://acme.org' could not be found, so the code cannot be validated",
-  "class" : "CODESYSTEM_UNSUPPORTED",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "http://acme.org",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{

@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "Blutgerinnungsfaktor II",
   "code" : "05482",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",
@@ -65,6 +66,7 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Blutgerinnungsfaktor VII",
   "code" : "06225",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",
@@ -115,6 +117,7 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Protein S (human)",
   "code" : "1234",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",
@@ -165,6 +168,7 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Plasmaprotein C vom Menschen",
   "code" : "10669",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",
@@ -215,6 +219,7 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Blutgerinnungsfaktor IX vom Menschen",
   "code" : "03800",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",
@@ -265,6 +270,7 @@ v: {
   }]
 }}####
 v: {
+  "display" : "Blutgerinnungsfaktor X",
   "code" : "06226",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",

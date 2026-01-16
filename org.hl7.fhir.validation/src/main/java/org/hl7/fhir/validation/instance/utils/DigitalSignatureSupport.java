@@ -31,6 +31,18 @@ import org.xml.sax.SAXException;
 
 public class DigitalSignatureSupport {
 
+  public final static String JWT_HEADER_SIGT = "sigT";
+  public final static String JWT_HEADER_IAT = "iat";
+  public static final String JWT_HEADER_ALG = "alg";
+  public static final String JWT_HEADER_TYP = "typ";
+  public static final String JWT_HEADER_X5C = "x5c";
+  public static final String JWT_HEADER_SIGD = "sigD";
+  public static final String JWT_HEADER_SRCMS = "srCms";
+  public static final String JWT_HEADER_VER = "version"; // custom for Eeva Turka (see Zulip)
+  public static final String JWT_HEADER_COMM_ID = "commId";
+  public static final String JWT_HEADER_ID = "id";
+  public static final String JWT_HEADER_DESC = "desc";
+
   public static class SignedInfo {
     private String source;
     private byte[] signable;

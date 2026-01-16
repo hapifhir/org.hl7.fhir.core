@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "I dont know what this value means",
   "code" : "adfasfdf",
   "system" : "http://fhir.ch/whateversysstem",
   "severity" : "error",

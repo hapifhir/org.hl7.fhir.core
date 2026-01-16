@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "yellow cap",
   "code" : "yellow",
   "system" : "urn:iso:std:iso:6710:2017",
   "severity" : "error",

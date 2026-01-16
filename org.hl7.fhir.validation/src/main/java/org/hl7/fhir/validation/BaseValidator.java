@@ -82,6 +82,7 @@ import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -212,7 +213,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       this.xverManager = XVerExtensionManagerFactory.createExtensionManager(context);
     }
     this.settings = settings;
-    policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID);
+    policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID, null);
     urlRegex = Constants.URI_REGEX_XVER.replace("$$", CommaSeparatedStringBuilder.join("|", context.getResourceNames()));
   }
   
@@ -664,7 +665,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return validationMessage;
   }
 
-  private boolean hasMessage(List<ValidationMessage> errors, ValidationMessage newMsg) {
+  protected boolean hasMessage(List<ValidationMessage> errors, ValidationMessage newMsg) {
     for (ValidationMessage m : errors) {
       if (m.preciseMatch(newMsg)) {
         return true;
@@ -716,7 +717,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     IssueSeverity severity = IssueSeverity.fromCode(issue.getSeverity().toCode());
     ValidationMessage validationMessage = new ValidationMessage(Source.TerminologyEngine, code, line, col, path, issue.getDetails().getText(), severity).setTxLink(txLink).setDiagnostics(diagnostics);
     if (issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER) != null) {
-      validationMessage.setServer(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER).replace("http://local.fhir.org", "https://tx-dev.fhir.org"));
+      validationMessage.setServer(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER).replace(FhirSettings.getTxFhirLocal(), "https://tx-dev.fhir.org"));
     }
     if (issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID) != null) {
       validationMessage.setMessageId(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID));

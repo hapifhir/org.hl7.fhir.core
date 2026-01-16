@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "Brand",
   "code" : "BRAND",
   "system" : "https://api-v8-r4.hspconsortium.org/DrugFormulary0/open/CodeSystem/usdrugformulary-DrugTierCS",
   "severity" : "error",

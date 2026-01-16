@@ -87,7 +87,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_\\$]+(\\.[A-Za-z0-9\\-\\_\\$]+)*$";
   public static final String PACKAGE_VERSION_REGEX_OPT = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+(\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*)?$";
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
-  private static final String CACHE_VERSION = "3"; // second version - see wiki page
+  private static final String CACHE_VERSION = "4"; // second version - see wiki page
 
   @Getter
   private final CIBuildClient ciBuildClient;
@@ -324,7 +324,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (version.startsWith("file:")) {
       throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal in this context");
     }
-    if (!(Utilities.existsInList(version, "current", "dev") || VersionUtilities.isSemVer(version))) {
+    if (!(Utilities.existsInList(version, "current", "dev") || VersionUtilities.isSemVer(version, true))) {
       throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal - must be a valid SemVer, or 'current' or 'dev'");
     }
   }
@@ -565,7 +565,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
         if (version != null && !Utilities.existsInList(version, "current", "dev") && (VersionUtilities.isSemVerWithWildcards(version) || Utilities.charCount(version, '.') < 2) && currentPackageFolder.contains("#")) {
           String[] parts = currentPackageFolder.split("#");
-          if (parts[0].equals(id) && VersionUtilities.isSemVer(parts[1]) && VersionUtilities.versionMatches((foundVersion != null ? foundVersion : version), parts[1])) {
+          if (parts[0].equals(id) && VersionUtilities.isSemVer(parts[1], true) && VersionUtilities.versionMatches((foundVersion != null ? foundVersion : version), parts[1])) {
             foundVersion = parts[1];
             foundPackageFolder = currentPackageFolder;
           }
@@ -615,9 +615,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
 
         final NpmPackage tempPackage = loadPackageInfo(tempDir);
-        if (tempPackage != null && !tempPackage.isIndexed()) {
-          tempPackage.checkIndexed(packageRoot);
-        }
+        tempPackage.buildIndexes(packageRoot);
 
         if (!ManagedFileAccess.file(packageRoot).exists() || Utilities.existsInList(version, "current", "dev")) {
           FileUtilities.createDirectory(packageRoot);

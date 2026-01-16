@@ -700,9 +700,12 @@ public interface IWorkerContext {
   public Boolean subsumes(ValidationOptions options, Coding parent, Coding child);
 
   class SystemSupportInformation {
-    // whether the ssytem(/version) is supported
+    // whether the system(/version) is supported
     @Getter
     private boolean supported;
+
+    // the reason it's not supported (if known)
+    private String reason;
 
     // the server that supports the system(/version)
     // may be null for some systems where we never consult any server
@@ -714,14 +717,19 @@ public interface IWorkerContext {
     private String testVersion;
 
     public boolean isServerSide() { return server != null; }
-    public SystemSupportInformation(boolean supported, String server, String testVersion) {
+    public SystemSupportInformation(boolean supported, String server, String testVersion, String reason) {
       this.supported = supported;
       this.server = server;
       this.testVersion = testVersion;
+      this.reason = reason;
     }
 
     public SystemSupportInformation(boolean supported) {
       this.supported = supported;
+    }
+
+    public String reason() {
+      return reason;
     }
   }
   /**
