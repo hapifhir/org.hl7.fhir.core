@@ -96,7 +96,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
         return -1; // this order is deliberate
       } else if (v2 == null) {
         return 1;
-      } else if (VersionUtilities.isSemVer(v1) && VersionUtilities.isSemVer(v2)) {
+      } else if (VersionUtilities.isSemVer(v1, true) && VersionUtilities.isSemVer(v2, true)) {
         return VersionUtilities.compareVersions(v1, v2);
       } else if (Utilities.isInteger(v1) && Utilities.isInteger(v2)) {
         return Integer.compare(Integer.parseInt(v1), Integer.parseInt(v2));

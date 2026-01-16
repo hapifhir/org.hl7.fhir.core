@@ -194,6 +194,8 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     String txLog = null;
     if (content.has("txLog")) {
       txLog = content.get("txLog").getAsString();
+    } else {
+      txLog = "/Users/grahamegrieve/temp/tx.log";
     }
     version = "5.0";
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
@@ -207,7 +209,9 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       currentVersion = version;
     }
     vCurr = CLONE ? new ValidationEngine(currentEngine) : currentEngine;
-    vCurr.getContext().getTxClientManager().getMasterClient().setLogger(logger);
+    if (!vCurr.getContext().isNoTerminologyServer()) {
+      vCurr.getContext().getTxClientManager().getMasterClient().setLogger(logger);
+    }
     igLoader = new IgLoader(vCurr.getPcm(), vCurr.getContext(), vCurr.getVersion(), true);
     igLoader.setDirectProvider(this);
 

@@ -532,6 +532,7 @@ public class I18nConstants {
   public static final String NO_VALID_DISPLAY_FOUND = "NO_VALID_DISPLAY_FOUND";
   public static final String NO_VALID_DISPLAY_FOUND_LANG_NONE = "NO_VALID_DISPLAY_FOUND_LANG_NONE";
   public static final String NO_VALID_DISPLAY_FOUND_LANG_SOME = "NO_VALID_DISPLAY_FOUND_LANG_SOME";
+  public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK";
   public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR";
   public static final String NO_VALUE_SET_IN_URL = "no_value_set";
   public static final String NULL_MIN = "null_min";

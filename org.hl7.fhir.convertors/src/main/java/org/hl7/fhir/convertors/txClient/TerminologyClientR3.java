@@ -48,6 +48,7 @@ import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
+import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -159,6 +160,16 @@ public class TerminologyClientR3 implements ITerminologyClient {
   @Override
   public ITerminologyClient setRetryCount(int retryCount) throws FHIRException {
     client.setRetryCount(retryCount);
+    return this;
+  }
+
+  @Override
+  public ITerminologyClient setFormat(ResourceFormat fmt) throws FHIRException {
+    if (fmt == ResourceFormat.RESOURCE_XML) {
+      this.client.setPreferredResourceFormat(org.hl7.fhir.dstu3.support.utils.client.ResourceFormat.RESOURCE_XML);
+    } else {
+      this.client.setPreferredResourceFormat(org.hl7.fhir.dstu3.support.utils.client.ResourceFormat.RESOURCE_JSON);
+    }
     return this;
   }
 
