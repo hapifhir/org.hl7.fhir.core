@@ -167,11 +167,15 @@ public class XhtmlToMarkdownConverter {
       case "pre":
         b.append("```\r\n");
         XhtmlNode code = c.getElement("code");
+        String literalText;
         if (code != null) {
-          b.append(code.toLiteralText());
+          literalText = code.toLiteralText();
         } else {
-          b.append(c.toLiteralText());
+          literalText = c.toLiteralText();
         }
+        // Normalize line endings: convert LF to CRLF
+        literalText = literalText.replace("\r\n", "\n").replace("\n", "\r\n");
+        b.append(literalText);
         b.append("\r\n```\r\n");
         break;
       case "para":
