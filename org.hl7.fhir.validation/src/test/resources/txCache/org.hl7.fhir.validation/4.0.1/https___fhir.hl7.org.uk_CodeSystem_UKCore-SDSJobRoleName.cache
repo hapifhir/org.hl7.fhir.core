@@ -15,13 +15,13 @@
   }]
 }}####
 v: {
+  "display" : "Clinical Practitioner Access Role",
   "code" : "R8000",
   "system" : "https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName#R8000 (\"Clinical Practitioner Access Role\")]\"\r\n0 0     : 0ms  : Check \"https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName#R8000\"\r\n0 0     : 0ms  : Didn't find CodeSystem \"https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName\"\r\n",
   "unknown-systems" : "https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName",
   "issues" : {
   "resourceType" : "OperationOutcome",

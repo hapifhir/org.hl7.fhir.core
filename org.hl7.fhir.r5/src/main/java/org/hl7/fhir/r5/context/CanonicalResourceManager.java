@@ -465,7 +465,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       return -1; // this order is deliberate
     } else if (v2 == null) {
       return 1;
-    } else if (VersionUtilities.isSemVer(v1) && VersionUtilities.isSemVer(v2)) {
+    } else if (VersionUtilities.isSemVer(v1, true) && VersionUtilities.isSemVer(v2, true)) {
       return VersionUtilities.compareVersions(v1, v2);
     } else if (Utilities.isInteger(v1) && Utilities.isInteger(v2)) {
       return Integer.compare(Integer.parseInt(v1), Integer.parseInt(v2));
@@ -481,7 +481,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       return 1;
     } else if (v2 == null) {
       return -1;
-    } else if (VersionUtilities.isSemVer(v1) && VersionUtilities.isSemVer(v2)) {
+    } else if (VersionUtilities.isSemVer(v1, true) && VersionUtilities.isSemVer(v2, true)) {
       return VersionUtilities.compareVersions(v1, v2);
     } else if (Utilities.isInteger(v1) && Utilities.isInteger(v2)) {
       return Integer.compare(Integer.parseInt(v1), Integer.parseInt(v2));
@@ -678,7 +678,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     } else {
       if (map.containsKey(system+"|"+version))
         return map.get(system+"|"+version).getResource();
-      if (VersionUtilities.isSemVer(version) && !Utilities.containsInList(version, "+", "-")) {
+      if (VersionUtilities.isSemVer(version, true) && !Utilities.containsInList(version, "+", "-")) {
         String mm = VersionUtilities.getMajMin(version);
         if (mm != null && map.containsKey(system + "|" + mm))
           return map.get(system + "|" + mm).getResource();
@@ -758,7 +758,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         if (list != null) {
           List<CachedCanonicalResource<T>> matches = new ArrayList<>();
           for (CachedCanonicalResource<T> t : list) {
-            if (VersionUtilities.isSemVerWithWildcards(version) && VersionUtilities.isSemVer(t.getVersion()) && VersionUtilities.versionMatches(version, t.getVersion())) {
+            if (VersionUtilities.isSemVerWithWildcards(version) && VersionUtilities.isSemVer(t.getVersion(), true) && VersionUtilities.versionMatches(version, t.getVersion())) {
               matches.add(t);
             }
           }
