@@ -15,13 +15,13 @@
   }]
 }}####
 v: {
+  "display" : "Resurssin rekisterinpitäjä",
   "code" : "1",
   "system" : "http://gen.kanta.fi/figen-cs-provenancerolecategory",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://gen.kanta.fi/figen-cs-provenancerolecategory' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=fi\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://gen.kanta.fi/figen-cs-provenancerolecategory#1 (\"Resurssin rekisterinpitäjä\")]\"\r\n0 0     : 0ms  : Check \"http://gen.kanta.fi/figen-cs-provenancerolecategory#1\"\r\n0 0     : 0ms  : Didn't find CodeSystem \"http://gen.kanta.fi/figen-cs-provenancerolecategory\"\r\n",
   "unknown-systems" : "http://gen.kanta.fi/figen-cs-provenancerolecategory",
   "issues" : {
   "resourceType" : "OperationOutcome",
