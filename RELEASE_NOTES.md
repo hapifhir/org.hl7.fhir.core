@@ -9,5 +9,4 @@
 * Added a removeLanguageTranslation method to ExtensionUtilities
 * Added constants, messages, and rendering phrases (with translations) to support enhanced rendering of requirements statements
   make json parsing more robust
-* Version support for 6.0.0 Ballot 4
 * Fixes for concurrent access of package cache in Windows environments
