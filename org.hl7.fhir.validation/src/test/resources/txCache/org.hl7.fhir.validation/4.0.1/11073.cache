@@ -19,7 +19,7 @@ v: {
   "system" : "urn:iso:std:iso:11073:10101",
   "version" : "2024-12-05",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[urn:iso:std:iso:11073:10101#68193 (\"\")]\"\r\n16 0    : 0ms  : Check \"urn:iso:std:iso:11073:10101#68193\"\r\n16 0    : 0ms  : Using CodeSystem \"urn:iso:std:iso:11073:10101|2024-12-05 (from fhir.tx.support.r4#0.32.0)\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Validate \"[undefined|undefined#68193 (\"undefined\")]\"\n0ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Check \"urn:iso:std:iso:11073:10101|undefined#68193\"\n0ms urn:iso:std:iso:11073:10101/vs|2024-12-05: CodeSystem found: urn:iso:std:iso:11073:10101|2024-12-05 for urn:iso:std:iso:11073:10101|2024-12-05\n0ms urn:iso:std:iso:11073:10101/vs|2024-12-05: check code in (undefined) at Coding\n1ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Code \"68193\" found in urn:iso:std:iso:11073:10101|2024-12-05",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -66,7 +66,7 @@ v: {
   "system" : "urn:iso:std:iso:11073:10101",
   "version" : "2024-12-05",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[urn:iso:std:iso:11073:10101#150588 (\"\")]\"\r\n0 0     : 0ms  : Check \"urn:iso:std:iso:11073:10101#150588\"\r\n15 15   : 15ms : Using CodeSystem \"urn:iso:std:iso:11073:10101|2024-12-05 (from fhir.tx.support.r4#0.32.0)\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Validate \"[undefined|undefined#150588 (\"undefined\")]\"\n0ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Check \"urn:iso:std:iso:11073:10101|undefined#150588\"\n0ms urn:iso:std:iso:11073:10101/vs|2024-12-05: CodeSystem found: urn:iso:std:iso:11073:10101|2024-12-05 for urn:iso:std:iso:11073:10101|2024-12-05\n0ms urn:iso:std:iso:11073:10101/vs|2024-12-05: check code in (undefined) at Coding\n1ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Code \"150588\" found in urn:iso:std:iso:11073:10101|2024-12-05",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
