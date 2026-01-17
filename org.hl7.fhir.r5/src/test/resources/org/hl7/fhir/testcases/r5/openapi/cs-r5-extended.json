@@ -1,0 +1,46 @@
+{
+  "resourceType": "CapabilityStatement",
+  "id": "r5-openapi-extended-test",
+  "url": "http://example.org/fhir/CapabilityStatement/r5-openapi-extended-test",
+  "version": "1.0.0",
+  "name": "R5OpenApiExtendedTest",
+  "status": "active",
+  "date": "2024-01-01",
+  "publisher": "Example Publisher",
+  "kind": "instance",
+  "fhirVersion": "5.0.0",
+  "format": [
+    "application/fhir+json",
+    "application/fhir+xml"
+  ],
+  "rest": [
+    {
+      "mode": "server",
+      "resource": [
+        {
+          "type": "Patient",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type"
+            }
+          ],
+          "operation": [
+            {
+              "name": "example-patient-op",
+              "definition": "http://example.org/fhir/OperationDefinition/patient-example"
+            }
+          ]
+        }
+      ],
+      "operation": [
+        {
+          "name": "system-example",
+          "definition": "http://example.org/fhir/OperationDefinition/system-example"
+        }
+      ]
+    }
+  ]
+}
