@@ -81,8 +81,8 @@ public enum ConsentExceptType {
         }
         public String getDisplay() {
           switch (this) {
-            case DENY: return "Opt Out";
-            case PERMIT: return "Opt In";
+            case DENY: return "Deny";
+            case PERMIT: return "Permit";
             case NULL: return null;
             default: return "?";
           }
