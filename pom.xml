@@ -49,6 +49,7 @@
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
         <logback-classic.version>1.5.20</logback-classic.version>
         <logback.version>1.5.20</logback.version>
+        <log4jVersion>2.25.3</log4jVersion>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -364,6 +365,11 @@
                 <version>3.22.0</version>
             </dependency>
         </dependencies>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4jVersion}</version>
+        </dependency>
     </dependencyManagement>
 
     <build>
