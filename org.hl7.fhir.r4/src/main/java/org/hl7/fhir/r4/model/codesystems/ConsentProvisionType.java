@@ -91,9 +91,9 @@ public enum ConsentProvisionType {
   public String getDisplay() {
     switch (this) {
     case DENY:
-      return "Opt Out";
+      return "Deny";
     case PERMIT:
-      return "Opt In";
+      return "Permit";
     case NULL:
       return null;
     default:
