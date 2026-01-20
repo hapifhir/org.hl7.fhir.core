@@ -364,12 +364,12 @@
                 <artifactId>assertj-core</artifactId>
                 <version>3.22.0</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4jVersion}</version>
+            </dependency>
         </dependencies>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4jVersion}</version>
-        </dependency>
     </dependencyManagement>
 
     <build>
