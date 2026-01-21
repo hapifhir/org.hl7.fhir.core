@@ -46,6 +46,7 @@ public class InstanceValidatorParameters {
     this.checkIPSCodes = defaultInstanceValidatorParameters.checkIPSCodes;
     this.bundleValidationRules = new ArrayList<>(defaultInstanceValidatorParameters.bundleValidationRules);
     this.jurisdiction = defaultInstanceValidatorParameters.jurisdiction;
+    this.timeout = defaultInstanceValidatorParameters.timeout;
   }
 
   @JsonProperty("assumeValidRestReferences")
@@ -542,6 +543,19 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @SerializedName("timeout")
+  @JsonProperty("timeout")
+  private long timeout = 0;
+
+  public Long getTimeout() {
+    return timeout;
+  }
+
+  public InstanceValidatorParameters setTimeout(long timeout) {
+    this.timeout = timeout;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -575,12 +589,13 @@ public class InstanceValidatorParameters {
       && Objects.equals(expansionParameters, that.expansionParameters)
       && Objects.equals(profiles, that.profiles)
       && Objects.equals(bundleValidationRules, that.bundleValidationRules)
-      && Objects.equals(jurisdiction, that.jurisdiction);
+      && Objects.equals(jurisdiction, that.jurisdiction)
+      && timeout == that.timeout;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, timeout);
   }
 
   @Override
@@ -615,6 +630,7 @@ public class InstanceValidatorParameters {
       ", checkIPSCodes=" + checkIPSCodes +
       ", bundleValidationRules=" + bundleValidationRules +
       ", jurisdiction='" + jurisdiction + '\'' +
+      ", timeout=" + timeout +
       '}';
   }
 }

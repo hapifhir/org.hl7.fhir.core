@@ -111,6 +111,8 @@ public class InstanceValidatorOptionsConvertor {
 
     }
 
+    instanceValidatorParameters.setTimeout(options.validationTimeout);
+
     return instanceValidatorParameters;
   }
 

@@ -229,7 +229,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private List<String> certSources = new ArrayList<>();
   @Getter @Setter private List<String> matchetypes = new ArrayList<>();
 
-  @Getter @Setter private long timeout = 0; // Default validation time out equal to 0 seconds (disabled)
+  // Default validation time out equal to 0 seconds (disabled)
   @Getter @Setter private boolean showTimes;
   @Getter @Setter private FHIRPathEngine fhirPathEngine;
   @Getter @Setter private IgLoader igLoader;
@@ -941,7 +941,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);
     }
 
-    validator.setTimeout(timeout); // Set validation time out in milliseconds
     validator.setLogProgress(logValidationProgress);
     if (policyAdvisor != null) {
       validator.setPolicyAdvisor(policyAdvisor);

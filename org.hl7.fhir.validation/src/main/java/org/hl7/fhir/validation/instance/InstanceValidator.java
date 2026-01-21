@@ -568,7 +568,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean suppressLoincSnomedMessages;
 
   // time tracking
-  @Getter @Setter private long timeout = 0L; // Default validation time out equal to 0 seconds (disabled)
+  @Setter
+  @Getter private long timeout = 0L; // Default validation time out equal to 0 seconds (disabled)
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
@@ -659,6 +660,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setUnknownCodeSystemsCauseErrors(parameters.isUnknownCodeSystemsCauseErrors());
     setNoExperimentalContent(parameters.isNoExperimentalContent());
     setCheckIPSCodes(parameters.isCheckIPSCodes());
+    setTimeout(parameters.getTimeout());
   }
 
   @Override
@@ -9021,4 +9023,5 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     settings.setJurisdiction(jurisdiction);
     return this;
   }
+
 }
