@@ -15,13 +15,13 @@
   }]
 }}####
 v: {
+  "display" : "yellow cap",
   "code" : "yellow",
   "system" : "urn:iso:std:iso:6710:2017",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'urn:iso:std:iso:6710:2017' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[urn:iso:std:iso:6710:2017#yellow (\"yellow cap\")]\"\r\n0 0     : 0ms  : Check \"urn:iso:std:iso:6710:2017#yellow\"\r\n0 0     : 0ms  : Didn't find CodeSystem \"urn:iso:std:iso:6710:2017\"\r\n",
   "unknown-systems" : "urn:iso:std:iso:6710:2017",
   "issues" : {
   "resourceType" : "OperationOutcome",

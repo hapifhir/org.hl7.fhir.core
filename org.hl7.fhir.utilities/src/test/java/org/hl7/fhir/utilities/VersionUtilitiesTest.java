@@ -11,10 +11,14 @@ public class VersionUtilitiesTest {
 
   @Test
   public void isValidSemVer() {
-    test_isSemVer("0.1.1", true);
-    test_isSemVer("0.1.1-ballot1", true);
-    test_isSemVer("0.0.0-alpha.0.131", true);
-    test_isSemVer("0.1.a", false);
+    test_isSemVer("0.1.1", true, false);
+    test_isSemVer("0.1.1-ballot1", true, false);
+    test_isSemVer("0.0.0-alpha.0.131", true, false);
+    test_isSemVer("0.1.a", false, false);
+    test_isSemVer("0.1", false, false);
+    test_isSemVer("0.1", true, true);
+    test_isSemVer("0.1-ballot", false, false);
+    test_isSemVer("0.1-ballot", true, true);
   }
 
   @Test
@@ -208,63 +212,69 @@ public class VersionUtilitiesTest {
 
   @Test
   public void testIsSemVer_ValidSemver() {
-    test_isSemVer("1.0.0", true);
-    test_isSemVer("2.1.3", true);
-    test_isSemVer("10.20.30", true);
-    test_isSemVer("0.0.1", true);
+    test_isSemVer("1.0.0", true, false);
+    test_isSemVer("2.1.3", true, false);
+    test_isSemVer("10.20.30", true, false);
+    test_isSemVer("0.0.1", true, false);
   }
 
   @Test
   public void testIsSemVer_ValidSemverWithPrerelease() {
-    test_isSemVer("1.0.0-alpha", true);
-    test_isSemVer("2.1.0-beta.1", true);
-    test_isSemVer("3.2.5-rc.2", true);
-    test_isSemVer("1.0.0-alpha.beta", true);
-    test_isSemVer("1.0.0-alpha.1", true);
+    test_isSemVer("1.0.0-alpha", true, false);
+    test_isSemVer("2.1.0-beta.1", true, false);
+    test_isSemVer("3.2.5-rc.2", true, false);
+    test_isSemVer("1.0.0-alpha.beta", true, false);
+    test_isSemVer("1.0.0-alpha.1", true, false);
   }
 
   @Test
   public void testIsSemVer_ValidTwoPartVersions() {
-    test_isSemVer("1.0", true);
-    test_isSemVer("2.5", true);
-    test_isSemVer("10.15", true);
+    test_isSemVer("1.0", true, true);
+    test_isSemVer("2.5", true, true);
+    test_isSemVer("10.15", true, true);
+    test_isSemVer("1.0", false, false);
+    test_isSemVer("2.5", false, false);
+    test_isSemVer("10.15", false, false);
   }
 
   @Test
   public void testIsSemVer_ValidSinglePartVersions() {
-    test_isSemVer("1", false);
-    test_isSemVer("5", false);
-    test_isSemVer("10", false);
+    test_isSemVer("1", false, true);
+    test_isSemVer("5", false, true);
+    test_isSemVer("10", false, true);
+    test_isSemVer("1", false, false);
+    test_isSemVer("5", false, false);
+    test_isSemVer("10", false, false);
   }
 
   @Test
   public void testIsSemVer_FhirSpecialVersions() {
-    test_isSemVer("r2", false);
-    test_isSemVer("r3", false);
-    test_isSemVer("r4", false);
-    test_isSemVer("r4B", false);
-    test_isSemVer("r5", false);
-    test_isSemVer("r6", false);
+    test_isSemVer("r2", false, false);
+    test_isSemVer("r3", false, false);
+    test_isSemVer("r4", false, false);
+    test_isSemVer("r4B", false, false);
+    test_isSemVer("r5", false, false);
+    test_isSemVer("r6", false, false);
 
-    test_isSemVer("R2", false);
-    test_isSemVer("R3", false);
-    test_isSemVer("R4", false);
-    test_isSemVer("R4B", false);
-    test_isSemVer("R5", false);
-    test_isSemVer("R6", false);
+    test_isSemVer("R2", false, false);
+    test_isSemVer("R3", false, false);
+    test_isSemVer("R4", false, false);
+    test_isSemVer("R4B", false, false);
+    test_isSemVer("R5", false, false);
+    test_isSemVer("R6", false, false);
   }
 
   @Test
   public void testIsSemVer_InvalidVersions() {
-    test_isSemVer("", false);
-    test_isSemVer(null, false);
-    test_isSemVer("1.0.0.0", false);
-    test_isSemVer("1.0.", false);
-    test_isSemVer("1..0", false);
-    test_isSemVer("a.b.c", false);
-    test_isSemVer("1.0.0-", false);
-    test_isSemVer("r7", false); // Invalid FHIR version
-    test_isSemVer("r", false); // Invalid FHIR version
+    test_isSemVer("", false, false);
+    test_isSemVer(null, false, false);
+    test_isSemVer("1.0.0.0", false, false);
+    test_isSemVer("1.0.", false, false);
+    test_isSemVer("1..0", false, false);
+    test_isSemVer("a.b.c", false, false);
+    test_isSemVer("1.0.0-", false, false);
+    test_isSemVer("r7", false, false); // Invalid FHIR version
+    test_isSemVer("r", false, false); // Invalid FHIR version
   }
 
   // =============================================
@@ -855,76 +865,84 @@ public class VersionUtilitiesTest {
   @Test
   public void testisSemVer() {
     // According to semver: X.Y.Z-prerelease+build but we accept major.minor
-    test_isSemVer("1.0", true);
-    test_isSemVer("0.0", true);
-    test_isSemVer("0.1", true);
-    test_isSemVer("1", false);
-    test_isSemVer("0", false);
-    test_isSemVer("2.80", true);
-    test_isSemVer("1.0-label", true);
-    test_isSemVer("0.0-label", true);
-    test_isSemVer("0.1-label", true);
-    test_isSemVer("1-label", false);
-    test_isSemVer("0-label", false);
-    test_isSemVer("2.80-label", true);
+    test_isSemVer("1.0", false, false);
+    test_isSemVer("0.0", false, false);
+    test_isSemVer("0.1", false, false);
+    test_isSemVer("1.0", true, true);
+    test_isSemVer("0.0", true, true);
+    test_isSemVer("0.1", true, true);
+    test_isSemVer("1", false, false);
+    test_isSemVer("0", false, false);
+    test_isSemVer("2.80", false, false);
+    test_isSemVer("1.0-label", false, false);
+    test_isSemVer("0.0-label", false, false);
+    test_isSemVer("0.1-label", false, false);
+    test_isSemVer("2.80", true, true);
+    test_isSemVer("1.0-label", true, true);
+    test_isSemVer("0.0-label", true, true);
+    test_isSemVer("0.1-label", true, true);
+    test_isSemVer("1-label", false, false);
+    test_isSemVer("0-label", false, false);
+    test_isSemVer("2.80-label", true, true);
+    test_isSemVer("2.80-label", false, false);
   }
 
   @Test
   public void testComplexLabels_ValidSemverLabels() {
     // According to semver: X.Y.Z-prerelease+build
-    test_isSemVer("1.0.0-alpha+build", true);
-    test_isSemVer("1.0.0-alpha-beta+build-123", true);
-    test_isSemVer("1.0.0-alpha.1+build.2", true);
-    test_isSemVer("1.0.0-0.1.2+build.3.4", true);
-    test_isSemVer("1.0.0+build-only", true);
-    test_isSemVer("1.0.0-prerelease-only", true);
+    test_isSemVer("1.0.0-alpha+build", true, false);
+    test_isSemVer("1.0.0-alpha-beta+build-123", true, false);
+    test_isSemVer("1.0.0-alpha.1+build.2", true, false);
+    test_isSemVer("1.0.0-0.1.2+build.3.4", true, false);
+    test_isSemVer("1.0.0+build-only", true, false);
+    test_isSemVer("1.0.0-prerelease-only", true, false);
 
     // Complex prerelease identifiers
-    test_isSemVer("1.0.0-alpha.beta.gamma", true);
-    test_isSemVer("1.0.0-1.2.3", true);
-    test_isSemVer("1.0.0-x.7.z.92", true);
+    test_isSemVer("1.0.0-alpha.beta.gamma", true, false);
+    test_isSemVer("1.0.0-1.2.3", true, false);
+    test_isSemVer("1.0.0-x.7.z.92", true, false);
   }
 
   @Test
   public void testComplexLabels_InvalidSemverLabels() {
     // Invalid according to semver spec
-    test_isSemVer("1.2-label", true); // Missing patch - is allowed
-    test_isSemVer("1.0.0-", false); // Empty prerelease
-    test_isSemVer("1.0.0+", false); // Empty build
-    test_isSemVer("1.0.0-+build", false); // Empty prerelease with build
-    test_isSemVer("1.0.0-alpha+", false); // Empty build after prerelease
-    test_isSemVer("1.0.0+build-alpha", true); // build can contain '-'
-    test_isSemVer("1.0.0--alpha", true); // Double dash
-    test_isSemVer("1.0.0-+alpha", false); // Double dash
-    test_isSemVer("1.0.0+-build", true); // Double plus - totally valid (weird, though)
-    test_isSemVer("1.0.0++build", false); // Double plus - totally valid (weird, though)
+    test_isSemVer("1.2-label", true, true); // Missing patch - is allowed
+    test_isSemVer("1.0.0-", false, true); // Empty prerelease
+    test_isSemVer("1.0.0+", false, true); // Empty build
+    test_isSemVer("1.0.0-+build", false, true); // Empty prerelease with build
+    test_isSemVer("1.0.0-alpha+", false, true); // Empty build after prerelease
+    test_isSemVer("1.0.0+build-alpha", true, true); // build can contain '-'
+    test_isSemVer("1.0.0--alpha", true, true); // Double dash
+    test_isSemVer("1.0.0-+alpha", false, true); // Double dash
+    test_isSemVer("1.0.0+-build", true, true); // Double plus - totally valid (weird, though)
+    test_isSemVer("1.0.0++build", false, true); // Double plus - totally valid (weird, though)
   }
 
   @Test
   public void testLeadingZeros() {
     // Leading zeros should be invalid in semver
-    test_isSemVer("01.0.0", false);
-    test_isSemVer("1.01.0", false);
-    test_isSemVer("1.0.01", false);
-    test_isSemVer("001.002.003", false);
+    test_isSemVer("01.0.0", false, true);
+    test_isSemVer("1.01.0", false, true);
+    test_isSemVer("1.0.01", false, true);
+    test_isSemVer("001.002.003", false, true);
 
     // But zero by itself should be fine
-    test_isSemVer("0.0.0", true);
-    test_isSemVer("1.0.0", true);
+    test_isSemVer("0.0.0", true, true);
+    test_isSemVer("1.0.0", true, true);
 
     // Leading zeros in prerelease/build identifiers not ok?
-    test_isSemVer("1.0.0-01", false);
-    test_isSemVer("1.0.0+01", true);
-    test_isSemVer("1.0.0-1", true);
-    test_isSemVer("1.0.0+1", true);
+    test_isSemVer("1.0.0-01", false, true);
+    test_isSemVer("1.0.0+01", true, true);
+    test_isSemVer("1.0.0-1", true, true);
+    test_isSemVer("1.0.0+1", true, true);
   }
 
   // =============================================
   // HELPER METHODS
   // =============================================
 
-  private void test_isSemVer(String version, boolean expected) {
-    assertEquals(expected, VersionUtilities.isSemVer(version),
+  private void test_isSemVer(String version, boolean expected, boolean patchOptional) {
+    assertEquals(expected, VersionUtilities.isSemVer(version, patchOptional),
       String.format("isSemVer('%s') should be %s", version, expected));
   }
 
