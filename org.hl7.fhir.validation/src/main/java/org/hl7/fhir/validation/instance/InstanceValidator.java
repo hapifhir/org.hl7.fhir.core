@@ -1003,16 +1003,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public void validate(Object appContext, List<ValidationMessage> errors, String path, Element element, List<StructureDefinition> profiles) throws FHIRException {
     // this is the main entry point; all the other public entry points end up here coming here...
     // so the first thing to do is to clear the internal state
-    fetchCache.clear();
-    fetchCache.put(element.fhirType() + "/" + element.getIdBase(), element);
-    resourceTracker.clear();
-    trackedMessages.clear();
-    messagesToRemove.clear();
-    executionId = UUID.randomUUID().toString();
-    baseOnly = profiles.isEmpty();
-    setParents(element);
-    // Start validation time out tracker; set timeout to global setting (default 0 disabled if not set)
-    timeTracker.initializeValidationTimeout(timeout);
+    clearInternalState(element, profiles);
 
     try {
       long t = System.nanoTime();
@@ -1095,6 +1086,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           te.getMessage() + " Validation could potentially return additional conformance information.", IssueSeverity.WARNING);
       errors.add(validationMessage);
     }
+  }
+
+  protected void clearInternalState(Element element, List<StructureDefinition> profiles) {
+    fetchCache.clear();
+    fetchCache.put(element.fhirType() + "/" + element.getIdBase(), element);
+    resourceTracker.clear();
+    trackedMessages.clear();
+    messagesToRemove.clear();
+    executionId = UUID.randomUUID().toString();
+    baseOnly = profiles.isEmpty();
+    setParents(element);
+    // Start validation time out tracker; set timeout to global setting (default 0 disabled if not set)
+    timeTracker.initializeValidationTimeout(timeout);
   }
 
   protected void debugElement(Element element, Logger log) throws IOException {

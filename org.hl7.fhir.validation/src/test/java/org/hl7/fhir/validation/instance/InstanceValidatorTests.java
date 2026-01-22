@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.instance;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -10,6 +11,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,11 +23,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
+import static java.lang.Thread.sleep;
 import static org.apache.commons.lang3.StringUtils.trim;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -114,5 +116,28 @@ class InstanceValidatorTests {
     assertEquals(theExpected, actual);
   }
 
+  @Test
+  void testTimeoutParameter() {
+    when(context.getVersion()).thenReturn("5.0.1");
+    InstanceValidator instanceValidator = new InstanceValidator(context, null, null, null, new ValidatorSettings()){
+      protected void clearInternalState(Element element, List<StructureDefinition> profiles) {
+        super.clearInternalState(element, profiles);
+        try {
+          sleep(1000);
+        } catch (InterruptedException e) {
+          Assertions.fail();
+        }
+      }
 
+    };
+    instanceValidator.setTimeout(500);
+    List<ValidationMessage> messages = new ArrayList<>();
+    messages.add(new ValidationMessage().setMessage("Original message"));
+    Element element = mock(Element.class);
+    when(element.hasParentForValidator()).thenReturn(true);
+    instanceValidator.validate(context, messages, null, element, Collections.emptyList());
+    assertThat(messages.size()).isEqualTo(2);
+    assertThat(messages.get(0).getMessage()).isEqualTo("Original message");
+    assertThat(messages.get(1).getMessage()).contains("Validation processing maximum allowed time 500ms exceeded.");
+  }
 }
