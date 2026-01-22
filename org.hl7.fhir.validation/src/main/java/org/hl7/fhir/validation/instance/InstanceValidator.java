@@ -1006,7 +1006,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     clearInternalState(element, profiles);
 
     try {
-      long t = System.nanoTime();
+      long overallStartTime = System.nanoTime();
       NodeStack stack = new NodeStack(context, null, element, validationLanguage);
       if (profiles == null || profiles.isEmpty()) {
         validateResource(new ValidationContext(appContext, element), errors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
@@ -1036,42 +1036,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       codingObserver.finish(errors, stack);
       errors.removeAll(messagesToRemove);
-      timeTracker.overall(t);
-      if (aiService != null && !textsToCheck.isEmpty()) {
-        t = System.nanoTime();
-        List<CodeAndTextValidationRequest> list = new ArrayList<>();
-        for (CodeAndTextValidationRequest tt : textsToCheck) {
-          ValidationResult vr = context.validateCode(settings.setDisplayWarningMode(false).setLanguages(tt.getLang()), tt.getSystem(), null, tt.getCode(), tt.getText());
-          if (!vr.isOk()) {
-            list.add(tt);          
-          }
-        }
-        if (!list.isEmpty()) {
-          CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
-          List<CodeAndTextValidationResult> results = null;
-          try {
-            results = ctv.validateCodings(list);
-          } catch (Exception e) {
-            if (e.getCause() != null && e.getCause() instanceof HTTPResultException) {
-              warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
-                  I18nConstants.VALIDATION_AI_FAILED_LOG, e.getMessage(), ((HTTPResultException)e.getCause()).logPath);   
-            } else {
-              warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
-                  I18nConstants.VALIDATION_AI_FAILED, e.getMessage()); 
-            }
-          }
-          if (results != null) {
-            for (CodeAndTextValidationResult vr : results) {
-              if (!vr.isValid()) {
-                warning(errors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
-                    I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());                
-              }
-            }
-          }
-        }
-        timeTracker.ai(t);
-      }
-      
+      timeTracker.overall(overallStartTime);
+      validateCodeAndTextWithAI(errors, stack);
+
       if (settings.isDebug()) {
         try {
           debugElement(element, log);
@@ -1087,6 +1054,47 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           formattedMessage, IssueSeverity.WARNING);
       errors.add(validationMessage);
     }
+  }
+
+  private void validateCodeAndTextWithAI(List<ValidationMessage> errors, NodeStack stack) {
+    if (aiService == null) {
+      return;
+    }
+    if (textsToCheck.isEmpty()) {
+      return;
+    }
+      long aiStartTime = System.nanoTime();
+      List<CodeAndTextValidationRequest> list = new ArrayList<>();
+      for (CodeAndTextValidationRequest tt : textsToCheck) {
+        ValidationResult vr = context.validateCode(settings.setDisplayWarningMode(false).setLanguages(tt.getLang()), tt.getSystem(), null, tt.getCode(), tt.getText());
+        if (!vr.isOk()) {
+          list.add(tt);
+        }
+      }
+      if (!list.isEmpty()) {
+        CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
+        List<CodeAndTextValidationResult> results = null;
+        try {
+          results = ctv.validateCodings(list);
+        } catch (Exception e) {
+          if (e.getCause() != null && e.getCause() instanceof HTTPResultException) {
+            warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+                I18nConstants.VALIDATION_AI_FAILED_LOG, e.getMessage(), ((HTTPResultException)e.getCause()).logPath);
+          } else {
+            warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+                I18nConstants.VALIDATION_AI_FAILED, e.getMessage());
+          }
+        }
+        if (results != null) {
+          for (CodeAndTextValidationResult vr : results) {
+            if (!vr.isValid()) {
+              warning(errors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
+                  I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());
+            }
+          }
+        }
+      }
+      timeTracker.ai(aiStartTime);
   }
 
   protected void clearInternalState(Element element, List<StructureDefinition> profiles) {
