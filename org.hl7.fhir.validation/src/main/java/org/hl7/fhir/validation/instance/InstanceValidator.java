@@ -1083,7 +1083,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     catch (TimeoutException te) {
       // Validation time out exceeded
       ValidationMessage validationMessage = new ValidationMessage(Source.InstanceValidator, IssueType.PROCESSING, element.line(), element.col(), element.getName(),
-          te.getMessage() + " Validation could potentially return additional conformance information.", IssueSeverity.WARNING);
+          te.getMessage() + " Returned validation messages may be incomplete or inaccurate.", IssueSeverity.WARNING);
       errors.add(validationMessage);
     }
   }

@@ -138,6 +138,7 @@ class InstanceValidatorTests {
     instanceValidator.validate(context, messages, null, element, Collections.emptyList());
     assertThat(messages.size()).isEqualTo(2);
     assertThat(messages.get(0).getMessage()).isEqualTo("Original message");
-    assertThat(messages.get(1).getMessage()).contains("Validation processing maximum allowed time 500ms exceeded.");
+    assertThat(messages.get(1).getMessage()).contains("Validation process exceeded maximum allowed time of 500ms");
+    assertThat(messages.get(1).getMessage()).contains("Returned validation messages may be incomplete or inaccurate.");
   }
 }
