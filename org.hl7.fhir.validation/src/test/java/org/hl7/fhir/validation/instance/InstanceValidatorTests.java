@@ -120,7 +120,9 @@ class InstanceValidatorTests {
   @Test
   void testTimeoutParameter() {
     when(context.getVersion()).thenReturn("5.0.1");
-    when(context.formatMessage(I18nConstants.VALIDATION_TIMEOUT_EXCEEDED, 500L)).thenReturn("dummyMessage");
+    final String originalMessage = "Original Message";
+    final String dummyTimeoutMessage = "Dummy Timeout Message";
+    when(context.formatMessage(I18nConstants.VALIDATION_TIMEOUT_EXCEEDED, 500L)).thenReturn(dummyTimeoutMessage);
     InstanceValidator instanceValidator = new InstanceValidator(context, null, null, null, new ValidatorSettings()){
       protected void clearInternalState(Element element, List<StructureDefinition> profiles) {
         super.clearInternalState(element, profiles);
@@ -134,12 +136,13 @@ class InstanceValidatorTests {
     };
     instanceValidator.setTimeout(500);
     List<ValidationMessage> messages = new ArrayList<>();
-    messages.add(new ValidationMessage().setMessage("Original message"));
+
+    messages.add(new ValidationMessage().setMessage(originalMessage));
     Element element = mock(Element.class);
     when(element.hasParentForValidator()).thenReturn(true);
     instanceValidator.validate(context, messages, null, element, Collections.emptyList());
     assertThat(messages.size()).isEqualTo(2);
-    assertThat(messages.get(0).getMessage()).isEqualTo("Original message");
-    assertThat(messages.get(1).getMessage()).contains("dummyMessage");
+    assertThat(messages.get(0).getMessage()).isEqualTo(originalMessage);
+    assertThat(messages.get(1).getMessage()).contains(dummyTimeoutMessage);
   }
 }
