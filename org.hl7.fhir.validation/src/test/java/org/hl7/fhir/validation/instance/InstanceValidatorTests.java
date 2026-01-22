@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.instance;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -119,6 +120,7 @@ class InstanceValidatorTests {
   @Test
   void testTimeoutParameter() {
     when(context.getVersion()).thenReturn("5.0.1");
+    when(context.formatMessage(I18nConstants.VALIDATION_TIMEOUT_EXCEEDED, 500L)).thenReturn("dummyMessage");
     InstanceValidator instanceValidator = new InstanceValidator(context, null, null, null, new ValidatorSettings()){
       protected void clearInternalState(Element element, List<StructureDefinition> profiles) {
         super.clearInternalState(element, profiles);
@@ -138,7 +140,6 @@ class InstanceValidatorTests {
     instanceValidator.validate(context, messages, null, element, Collections.emptyList());
     assertThat(messages.size()).isEqualTo(2);
     assertThat(messages.get(0).getMessage()).isEqualTo("Original message");
-    assertThat(messages.get(1).getMessage()).contains("Validation process exceeded maximum allowed time of 500ms");
-    assertThat(messages.get(1).getMessage()).contains("Returned validation messages may be incomplete or inaccurate.");
+    assertThat(messages.get(1).getMessage()).contains("dummyMessage");
   }
 }

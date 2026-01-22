@@ -29,6 +29,8 @@ package org.hl7.fhir.exceptions;
   
  */
 
+import lombok.Getter;
+
 /**
  * Validation time tracker exception to throw when validation time out has been exceeded
  */
@@ -36,20 +38,27 @@ public class TimeoutException extends RuntimeException {
 
   private static final long serialVersionUID = -6160559859813332977L;
 
-  public TimeoutException() {
+  @Getter
+  private final long timeout;
+
+  public TimeoutException(long timeout) {
     super();
+    this.timeout = timeout;
   }
 
-  public TimeoutException(String message, Throwable cause) {
+  public TimeoutException(String message, Throwable cause, long timeout) {
     super(message, cause);
+    this.timeout = timeout;
   }
 
-  public TimeoutException(String message) {
+  public TimeoutException(String message, long timeout) {
     super(message);
+    this.timeout = timeout;
   }
 
-  public TimeoutException(Throwable cause) {
+  public TimeoutException(Throwable cause, long timeout) {
     super(cause);
+    this.timeout = timeout;
   }
 
 }

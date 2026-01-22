@@ -98,7 +98,7 @@ public class ValidationTimeTracker {
     if (timeout > 0) {
       overallVal = System.currentTimeMillis() - startVal;
       if (overallVal > timeout) {
-        throw new TimeoutException("Validation process exceeded maximum allowed time of " + timeout + "ms.");
+        throw new TimeoutException("Validation process exceeded maximum allowed time of " + timeout + "ms.", timeout);
       }
     }
   }
