@@ -162,6 +162,7 @@ import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.ai.CodeAndTextValidationRequest;
 import org.hl7.fhir.validation.ai.CodeAndTextValidationResult;
 import org.hl7.fhir.validation.ai.CodeAndTextValidator;
+import org.hl7.fhir.validation.instance.utils.*;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
@@ -182,19 +183,6 @@ import org.hl7.fhir.validation.instance.type.StructureMapValidator.VariableSet;
 import org.hl7.fhir.validation.instance.type.ValueSetValidator;
 import org.hl7.fhir.validation.instance.type.ViewDefinitionValidator;
 import org.hl7.fhir.validation.instance.type.XhtmlValidator;
-import org.hl7.fhir.validation.instance.utils.Base64Util;
-import org.hl7.fhir.validation.instance.utils.CanonicalResourceLookupResult;
-import org.hl7.fhir.validation.instance.utils.CanonicalTypeSorter;
-import org.hl7.fhir.validation.instance.utils.ChildIterator;
-import org.hl7.fhir.validation.instance.utils.ElementInfo;
-import org.hl7.fhir.validation.instance.utils.EnableWhenEvaluator;
-import org.hl7.fhir.validation.instance.utils.FHIRPathExpressionFixer;
-import org.hl7.fhir.validation.instance.utils.IndexedElement;
-import org.hl7.fhir.validation.instance.utils.NodeStack;
-import org.hl7.fhir.validation.instance.utils.ResolvedReference;
-import org.hl7.fhir.validation.instance.utils.ResourceValidationTracker;
-import org.hl7.fhir.validation.instance.utils.StructureDefinitionSorterByUrl;
-import org.hl7.fhir.validation.instance.utils.ValidationContext;
 import org.slf4j.Logger;
 import org.w3c.dom.Document;
 
@@ -796,7 +784,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   @Override
+  /**
+   This is the programmatic entry point for validation from an InputStream
+   */
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, InputStream stream, FhirFormat format, List<StructureDefinition> profiles) throws FHIRException {
+
     ParserBase parser = Manager.makeParser(context, format);
     List<StructureDefinition> logicals = new ArrayList<>();
     for (StructureDefinition sd : profiles) {
@@ -996,9 +988,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   @Override
+  /**
+   * This is the main entry point for the validation of an element. All public entry points end up coming here.
+   */
   public void validate(Object appContext, List<ValidationMessage> errors, String path, Element element, List<StructureDefinition> profiles) throws FHIRException {
-    // this is the main entry point; all the other public entry points end up here coming here...
-    // so the first thing to do is to clear the internal state
+    int maxMessagesSize = 2;
+    //FIXME
+    // The first thing to do is to clear the internal state
     fetchCache.clear();
     fetchCache.put(element.fhirType() + "/" + element.getIdBase(), element);
     resourceTracker.clear();
@@ -1008,78 +1004,90 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     baseOnly = profiles.isEmpty();
     setParents(element);
 
-    long t = System.nanoTime();
-    NodeStack stack = new NodeStack(context, null, element, validationLanguage);
-    if (profiles == null || profiles.isEmpty()) {
-      validateResource(new ValidationContext(appContext, element), errors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
-    } else {
-      int i = 0;
-      while (i < profiles.size()) {
-        StructureDefinition sd = profiles.get(i);
-        if (sd.hasExtension(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
-          for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
-            StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue(), null, sd);
-            if (dep == null) {
-              warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
-            } else if (!profiles.contains(dep)) {
-              profiles.add(dep);
+    try {
+      // If this is already a bounded list, or we're not limiting message size, don't bother wrapping it.
+      List<ValidationMessage> sizeLimitedErrors = maxMessagesSize == 0 || errors instanceof BoundedSizeList
+        ? errors
+        : new BoundedSizeList<>(errors, maxMessagesSize);
+
+      long t = System.nanoTime();
+      NodeStack stack = new NodeStack(context, null, element, validationLanguage);
+      if (profiles == null || profiles.isEmpty()) {
+        validateResource(new ValidationContext(appContext, element), sizeLimitedErrors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
+      } else {
+        int i = 0;
+        while (i < profiles.size()) {
+          StructureDefinition sd = profiles.get(i);
+          if (sd.hasExtension(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
+            for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
+              StructureDefinition dep = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue(), null, sd);
+              if (dep == null) {
+                warning(sizeLimitedErrors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());
+              } else if (!profiles.contains(dep)) {
+                profiles.add(dep);
+              }
+            }
+          }
+          i++;
+        }
+        for (StructureDefinition defn : profiles) {
+          stack.getIds().clear();
+          validateResource(new ValidationContext(appContext, element), sizeLimitedErrors, element, element, defn, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.ConfigProfile), false, false);
+        }
+      }
+      if (hintAboutNonMustSupport && !profiles.isEmpty()) {
+        checkElementUsage(sizeLimitedErrors, element, stack);
+      }
+      codingObserver.finish(sizeLimitedErrors, stack);
+      sizeLimitedErrors.removeAll(messagesToRemove);
+      timeTracker.overall(t);
+      if (aiService != null && !textsToCheck.isEmpty()) {
+        t = System.nanoTime();
+        List<CodeAndTextValidationRequest> list = new ArrayList<>();
+        for (CodeAndTextValidationRequest tt : textsToCheck) {
+          ValidationResult vr = context.validateCode(settings.setDisplayWarningMode(false).setLanguages(tt.getLang()), tt.getSystem(), null, tt.getCode(), tt.getText());
+          if (!vr.isOk()) {
+            list.add(tt);
+          }
+        }
+        if (!list.isEmpty()) {
+          CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
+          List<CodeAndTextValidationResult> results = null;
+          try {
+            results = ctv.validateCodings(list);
+          } catch (Exception e) {
+            if (e.getCause() != null && e.getCause() instanceof HTTPResultException) {
+              warning(sizeLimitedErrors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+                I18nConstants.VALIDATION_AI_FAILED_LOG, e.getMessage(), ((HTTPResultException) e.getCause()).logPath);
+            } else {
+              warning(sizeLimitedErrors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+                I18nConstants.VALIDATION_AI_FAILED, e.getMessage());
+            }
+          }
+          if (results != null) {
+            for (CodeAndTextValidationResult vr : results) {
+              if (!vr.isValid()) {
+                warning(sizeLimitedErrors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
+                  I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());
+              }
             }
           }
         }
-        i++;
+        timeTracker.ai(t);
       }
-      for (StructureDefinition defn : profiles) {
-        stack.getIds().clear();
-        validateResource(new ValidationContext(appContext, element), errors, element, element, defn, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.ConfigProfile), false, false);
-      }
-    }
-    if (hintAboutNonMustSupport && !profiles.isEmpty()) {
-      checkElementUsage(errors, element, stack);
-    }
-    codingObserver.finish(errors, stack);
-    errors.removeAll(messagesToRemove);
-    timeTracker.overall(t);
-    if (aiService != null && !textsToCheck.isEmpty()) {
-      t = System.nanoTime();
-      List<CodeAndTextValidationRequest> list = new ArrayList<>();
-      for (CodeAndTextValidationRequest tt : textsToCheck) {
-        ValidationResult vr = context.validateCode(settings.setDisplayWarningMode(false).setLanguages(tt.getLang()), tt.getSystem(), null, tt.getCode(), tt.getText());
-        if (!vr.isOk()) {
-          list.add(tt);          
-        }
-      }
-      if (!list.isEmpty()) {
-        CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
-        List<CodeAndTextValidationResult> results = null;
+
+      if (settings.isDebug()) {
         try {
-          results = ctv.validateCodings(list);
-        } catch (Exception e) {
-          if (e.getCause() != null && e.getCause() instanceof HTTPResultException) {
-            warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
-                I18nConstants.VALIDATION_AI_FAILED_LOG, e.getMessage(), ((HTTPResultException)e.getCause()).logPath);   
-          } else {
-            warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
-                I18nConstants.VALIDATION_AI_FAILED, e.getMessage()); 
-          }
-        }
-        if (results != null) {
-          for (CodeAndTextValidationResult vr : results) {
-            if (!vr.isValid()) {
-              warning(errors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
-                  I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());                
-            }
-          }
+          debugElement(element, log);
+        } catch (IOException e) {
+          log.error(e.getMessage(), e);
         }
       }
-      timeTracker.ai(t);
-    }
-    
-    if (settings.isDebug()) {
-      try {
-        debugElement(element, log);
-      } catch (IOException e) {
-       log.error(e.getMessage(), e);
-      }
+    } catch (BoundedSizeList.BoundsExceededException boundsExceededException) {
+      // Validation size limit exceeded.
+      ValidationMessage validationMessage = new ValidationMessage(Source.InstanceValidator, IssueType.PROCESSING, element.line(), element.col(), element.getName(),
+        "Validation process exceeded max message limit. Returned validation messages may be incomplete or inaccurate.", IssueSeverity.WARNING);
+      errors.set(errors.size() - 1, validationMessage);
     }
   }
 
