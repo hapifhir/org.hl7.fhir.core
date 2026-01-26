@@ -62,9 +62,9 @@ public class BoundedSizeList<T> implements List<T> {
   }
 
   @Override
-  public boolean add(T validationMessage) {
+  public boolean add(T entry) {
     checkIfCanAddWithinBounds();
-    return list.add(validationMessage);
+    return list.add(entry);
   }
 
   @Override
@@ -80,12 +80,13 @@ public class BoundedSizeList<T> implements List<T> {
   @Override
   public boolean addAll(Collection<? extends T> c) {
     if (list.size() + c.size() > maxSize) {
+      final int originalSize = list.size();
       final int truncatedAddSize = maxSize -  list.size();
       Iterator<? extends T> iterator = c.iterator();
       for (int i = 0; i < truncatedAddSize; i++) {
         list.add(iterator.next());
       }
-      throw new BoundsExceededException("Attempt to add " + c.size() + " entries to a list of size " + list.size() + " when max size is " + maxSize);
+      throw new BoundsExceededException("Attempt to add " + c.size() + " entries to a list of size " + originalSize + " when max size is " + maxSize);
     }
     return list.addAll(c);
   }
@@ -93,12 +94,13 @@ public class BoundedSizeList<T> implements List<T> {
   @Override
   public boolean addAll(int index, Collection<? extends T> c) {
     if (list.size() + c.size() > maxSize) {
+      final int originalSize = list.size();
       final int truncatedAddSize = maxSize -  list.size();
       Iterator<? extends T> iterator = c.iterator();
       for (int i = 0; i < truncatedAddSize; i++) {
         list.add(index + i, iterator.next());
       }
-      throw new BoundsExceededException("Attempt to add " + c.size() + " entries to a list of size " + list.size() + " when max size is " + maxSize);
+      throw new BoundsExceededException("Attempt to add " + c.size() + " entries to a list of size " + originalSize + " when max size is " + maxSize);
     }
     return list.addAll(index, c);
   }
