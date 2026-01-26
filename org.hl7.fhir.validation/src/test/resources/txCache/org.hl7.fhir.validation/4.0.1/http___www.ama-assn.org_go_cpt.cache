@@ -2,7 +2,7 @@
 {"code" : {
   "coding" : [{
     "system" : "http://www.ama-assn.org/go/cpt",
-    "code" : "99234"
+    "code" : "99202"
   }],
   "text" : "Inpatient hospital care"
 }, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
@@ -17,12 +17,12 @@
   }]
 }}####
 v: {
-  "display" : "Hospital inpatient or observation care, for the evaluation and management of a patient including admission and discharge on the same date, which requires a medically appropriate history and/or examination and straightforward or low level of medical decision making. When using total time on the date of the encounter for code selection, 45 minutes must be met or exceeded.",
-  "code" : "99234",
+  "display" : "Office or other outpatient visit for the evaluation and management of a new patient, which requires a medically appropriate history and/or examination and straightforward medical decision making. When using time for code selection, 15-29 minutes of total time is spent on the date of the encounter.",
+  "code" : "99202",
   "system" : "http://www.ama-assn.org/go/cpt",
   "version" : "2023",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.ama-assn.org/go/cpt#99234 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://www.ama-assn.org/go/cpt#99234\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.ama-assn.org/go/cpt|2023\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n1ms http://www.ama-assn.org/go/cpt/vs|2023: Validate \"[undefined|undefined#99202 (\"undefined\")]\"\n1ms http://www.ama-assn.org/go/cpt/vs|2023: Check \"http://www.ama-assn.org/go/cpt|undefined#99202\"\n1ms http://www.ama-assn.org/go/cpt/vs|2023: CodeSystem found: http://www.ama-assn.org/go/cpt|2023 for http://www.ama-assn.org/go/cpt|2023\n1ms http://www.ama-assn.org/go/cpt/vs|2023: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://www.ama-assn.org/go/cpt/vs|2023: Code \"99202\" found in http://www.ama-assn.org/go/cpt|2023",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

@@ -17,7 +17,8 @@ public class JavaSystemProxyParamSetter {
   public static final String JAVA_DISABLED_PROXY_SCHEMES = "jdk.http.auth.proxying.disabledSchemes";
   public static final String JAVA_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
-  protected static void setJavaSystemProxyParams(String proxy, String httpsProxy, String proxyAuth) {
+  @Deprecated(since = "2025-12-19")
+  public static void setJavaSystemProxyParams(String proxy, String httpsProxy, String proxyAuth) {
     if (proxy != null) {
       setProxyHostSystemProperties(proxy, HTTP_PROXY_HOST, HTTP_PROXY_PORT);
     }
@@ -57,12 +58,29 @@ public class JavaSystemProxyParamSetter {
     }
   }
 
-  protected static void setProxyHostSystemProperties(String proxy, String httpProxyHostProperty, String httpProxyPortProperty) {
+  public static void setProxyHostSystemProperties(String proxy, String httpProxyHostProperty, String httpProxyPortProperty) {
     if (proxy != null) {
       String[] p2 = proxy.split(":");
-
       System.setProperty(httpProxyHostProperty, p2[0]);
       System.setProperty(httpProxyPortProperty, p2[1]);
     }
+  }
+
+  public static void verifyProxySystemProperties() throws IllegalArgumentException {
+    String httpProxyHost = System.getProperty(HTTP_PROXY_HOST);
+    String httpsProxyHost = System.getProperty(HTTPS_PROXY_HOST);
+
+    String proxyUser = System.getProperty(HTTP_PROXY_USER);
+    String proxyPass = System.getProperty(HTTP_PROXY_PASS);
+
+    if (proxyUser != null || proxyPass != null) {
+      if (proxyUser == null || proxyPass == null) {
+        throw new IllegalArgumentException("Proxy User and Password must both be set");
+      }
+      if (httpsProxyHost == null && httpProxyHost == null) {
+        throw new IllegalArgumentException("Proxy User and Password have been set with no http or https proxy specified.");
+      }
+    }
+
   }
 }

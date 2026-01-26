@@ -17,10 +17,9 @@ v: {
   "code" : "Location",
   "system" : "Location",
   "severity" : "error",
-  "error" : "A definition for CodeSystem 'Location' could not be found, so the code cannot be validated; Coding.system must be an absolute reference, not a local reference",
+  "error" : "A definition for CodeSystem 'Location' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[Location#Location (\"\")]\"\r\n16 0    : 0ms  : Check \"Location#Location\"\r\n16 0    : 0ms  : Didn't find CodeSystem \"Location\"\r\n",
   "unknown-systems" : "Location",
   "issues" : {
   "resourceType" : "OperationOutcome",

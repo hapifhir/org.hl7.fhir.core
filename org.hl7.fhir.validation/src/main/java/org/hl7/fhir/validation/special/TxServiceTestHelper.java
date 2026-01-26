@@ -114,7 +114,7 @@ public class TxServiceTestHelper {
     }
     if (operationOutcome != null) {
       TxTesterSorters.sortOperationOutcome(operationOutcome);
-      TxTesterScrubbers.scrubOO(operationOutcome, false);
+      TxTesterScrubbers.scrubOperationOutcome(operationOutcome, false);
 
       String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(operationOutcome);
 
@@ -188,7 +188,7 @@ public class TxServiceTestHelper {
       }
 
       TxTesterSorters.sortParameters(parameters);
-      TxTesterScrubbers.scrubParams(parameters, false);
+      TxTesterScrubbers.scrubParameters(parameters, false);
 
       String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(parameters);
 

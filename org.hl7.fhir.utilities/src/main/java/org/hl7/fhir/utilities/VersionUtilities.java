@@ -390,7 +390,7 @@ public class VersionUtilities {
     if (version == null) {
       return null;
     }
-    if (!isSemVer(version)) {
+    if (!isSemVer(version, true)) {
       return null;
     }
     return getMajMinPriv(version);
@@ -413,7 +413,7 @@ public class VersionUtilities {
     if (version == null) {
       return null;
     }
-    if (!isSemVer(version)) {
+    if (!isSemVer(version, true)) {
       return null;
     }
     String[] p = version.split("\\.");
@@ -439,11 +439,11 @@ public class VersionUtilities {
   /**
    * returns true if this is a valid semver.
    *
-   * Note that we accept major.minor without a patch (but maybe with labels).
+   * Note that we might accept major.minor without a patch (but maybe with labels).
    *
    * This routine does not accept the codes such as RX
    */
-  public static boolean isSemVer(@Nullable String version) {
+  public static boolean isSemVer(@Nullable String version, boolean patchOptional) {
     if (Utilities.noString(version)) {
       return false;
     }
@@ -453,7 +453,7 @@ public class VersionUtilities {
       return false;
     }
     return Utilities.isInteger(pr.getMajor()) && Utilities.isInteger(pr.getMinor())
-      && (pr.getPatch() == null || Utilities.isInteger(pr.getPatch()));
+      && ((patchOptional && pr.getPatch() == null) || Utilities.isInteger(pr.getPatch()));
   }
 
   /**
@@ -1195,7 +1195,7 @@ public class VersionUtilities {
   private static String checkVersionNotNullAndValid(String s) {
     if (s == null) {
       throw new FHIRException("Invalid version: null");
-    } else if (!isSemVer(s)) {
+    } else if (!isSemVer(s, true)) {
       throw new FHIRException("Invalid version: '" + s + '"');
     } else {
       return s;
@@ -1205,7 +1205,7 @@ public class VersionUtilities {
   public static String checkVersionNotNullAndValid(String s, String label) {
     if (s == null) {
       throw new FHIRException("Invalid " + label + " version: null");
-    } else if (!isSemVer(s)) {
+    } else if (!isSemVer(s, true)) {
       throw new FHIRException("Invalid " + label + " version: '" + s + "'");
     } else {
       return s;
@@ -1236,7 +1236,7 @@ public class VersionUtilities {
   private static String checkVersionValid(String s) {
     if (s == null) {
       return null;
-    } else if (!isSemVer(s)) {
+    } else if (!isSemVer(s, true)) {
       throw new FHIRException("Invalid version: '" + s + '"');
     } else {
       return s;
@@ -1256,7 +1256,7 @@ public class VersionUtilities {
   private static String checkVersionValid(String s, String label) {
     if (s == null) {
       return null;
-    } else if (!isSemVer(s)) {
+    } else if (!isSemVer(s, true)) {
       throw new FHIRException("Invalid " + label + " version: '" + s + '"');
     } else {
       return s;

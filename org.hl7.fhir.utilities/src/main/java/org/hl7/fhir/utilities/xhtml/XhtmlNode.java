@@ -36,6 +36,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1052,6 +1053,13 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
 
   public boolean isClass(String name) {
     return hasAttribute("class", name);
+  }
+
+  public boolean hasClass(String name) {
+    if (!hasAttribute("class"))
+      return false;
+    String classValue = getAttribute("class");
+    return Arrays.asList(classValue.split(" ")).contains(name);
   }
 
   public XhtmlNode clss(String name) {

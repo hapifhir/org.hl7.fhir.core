@@ -8003,26 +8003,31 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean matchSlice(ValidationContext valContext, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, StructureDefinition profile, NodeStack stack,
-    ElementDefinition slicer, List<ElementDefinition> slicerSlices, boolean unsupportedSlicing, List<String> problematicPaths, int sliceOffset, int i, StructureDefinition sd, ElementDefinition ed,
-    boolean childUnsupportedSlicing, ElementInfo ei, BooleanHolder bh) {
+    ElementDefinition slicer, List<ElementDefinition> slicerSlices, boolean unsupportedSlicing, List<String> problematicPaths, int sliceOffset, int i, StructureDefinition sd, ElementDefinition elementDefinition,
+    boolean childUnsupportedSlicing, ElementInfo elementInfo, BooleanHolder bh) {
     boolean match = false;
-    if (slicer == null || slicer == ed) {
-      match = nameMatches(ei.getName(), tail(ed.getPath()));
+    if (slicer == null || slicer == elementDefinition) {
+      String elementDefinitionName;
+      if (elementDefinition.hasExtension(ExtensionDefinitions.EXT_JSON_NAME))
+        elementDefinitionName = elementDefinition.getExtensionString(ExtensionDefinitions.EXT_JSON_NAME);
+      else
+        elementDefinitionName = tail(elementDefinition.getPath());
+      match = nameMatches(elementInfo.getName(), elementDefinitionName);
     } else {
-      if (nameMatches(ei.getName(), tail(ed.getPath())))
+      if (nameMatches(elementInfo.getName(), tail(elementDefinition.getPath())))
         try {
-          match = sliceMatches(valContext, ei.getElement(), ei.getPath(), slicer, slicerSlices, ed, profile, errors, sliceInfo, stack, profile);
+          match = sliceMatches(valContext, elementInfo.getElement(), elementInfo.getPath(), slicer, slicerSlices, elementDefinition, profile, errors, sliceInfo, stack, profile);
           if (match) {
-            ei.setSlice(slicer);
+            elementInfo.setSlice(slicer);
 
             // Since a defined slice was found, this is not an additional (undefined) slice.
-            ei.setAdditionalSlice(false);
-          } else if (ei.getSlice() == null) {
+            elementInfo.setAdditionalSlice(false);
+          } else if (elementInfo.getSlice() == null) {
             // if the specified slice is undefined, keep track of the fact this is an additional (undefined) slice, but only if a slice wasn't found previously
-            ei.setAdditionalSlice(true);
+            elementInfo.setAdditionalSlice(true);
           }
         } catch (FHIRException e) {
-          rule(errors, NO_RULE_DATE, IssueType.PROCESSING, ei.line(), ei.col(), ei.getPath(), false,  I18nConstants.SLICING_CANNOT_BE_EVALUATED, e.getMessage());
+          rule(errors, NO_RULE_DATE, IssueType.PROCESSING, elementInfo.line(), elementInfo.col(), elementInfo.getPath(), false,  I18nConstants.SLICING_CANNOT_BE_EVALUATED, e.getMessage());
           bh.fail();
           unsupportedSlicing = true;
           childUnsupportedSlicing = true;
@@ -8030,11 +8035,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (match) {
       boolean update = true;
-      boolean isOk = ei.getDefinition() == null || ei.getDefinition() == slicer || (ei.getDefinition().getPath().endsWith("[x]") && ed.getPath().startsWith(ei.getDefinition().getPath().replace("[x]", "")));
+      boolean isOk = elementInfo.getDefinition() == null || elementInfo.getDefinition() == slicer || (elementInfo.getDefinition().getPath().endsWith("[x]") && elementDefinition.getPath().startsWith(elementInfo.getDefinition().getPath().replace("[x]", "")));
       if (!isOk) {
         // is this a subslice? then we put it in as a replacement
-        String existingName = ei.getDefinition() == null || !ei.getDefinition().hasSliceName() ? null : ei.getDefinition().getSliceName();
-        String matchingName = ed.hasSliceName() ? ed.getSliceName() : null; 
+        String existingName = elementInfo.getDefinition() == null || !elementInfo.getDefinition().hasSliceName() ? null : elementInfo.getDefinition().getSliceName();
+        String matchingName = elementDefinition.hasSliceName() ? elementDefinition.getSliceName() : null;
         if (existingName != null && matchingName != null) {
           if (matchingName.startsWith(existingName+"/")) {
             isOk = true;
@@ -8044,21 +8049,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         }
       }
-      if (rule(errors, NO_RULE_DATE, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), isOk, I18nConstants.VALIDATION_VAL_PROFILE_MATCHMULTIPLE, profile.getVersionedUrl(), (ei.getDefinition() == null || !ei.getDefinition().hasSliceName() ? "" : ei.getDefinition().getSliceName()), (ed.hasSliceName() ? ed.getSliceName() : ""))) {
+      if (rule(errors, NO_RULE_DATE, IssueType.INVALID, elementInfo.line(), elementInfo.col(), elementInfo.getPath(), isOk, I18nConstants.VALIDATION_VAL_PROFILE_MATCHMULTIPLE, profile.getVersionedUrl(), (elementInfo.getDefinition() == null || !elementInfo.getDefinition().hasSliceName() ? "" : elementInfo.getDefinition().getSliceName()), (elementDefinition.hasSliceName() ? elementDefinition.getSliceName() : ""))) {
         if (update) {
-          ei.setDefinition(sd, ed);
-          if (ei.getSlice() == null) {
-            ei.setIndex(i);
+          elementInfo.setDefinition(sd, elementDefinition);
+          if (elementInfo.getSlice() == null) {
+            elementInfo.setIndex(i);
           } else {
-            ei.setIndex(sliceOffset);
-            ei.setSliceindex(i - (sliceOffset + 1));
+            elementInfo.setIndex(sliceOffset);
+            elementInfo.setSliceindex(i - (sliceOffset + 1));
           }
         }
       } else {
         bh.fail();
       }
     } else if (childUnsupportedSlicing) {
-      problematicPaths.add(ed.getPath());
+      problematicPaths.add(elementDefinition.getPath());
     }
     return unsupportedSlicing;
   }

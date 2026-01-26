@@ -22,7 +22,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1000990 (\"oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray\")]\"\r\n0 0     : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1000990\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[undefined|undefined#1000990 (\"oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm|undefined#1000990\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (undefined) at CodeableConcept.coding[0]\n153ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"1000990\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -53,7 +53,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1010603 (\"Suboxone 2 MG / 0.5 MG Sublingual Film\")]\"\r\n0 0     : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1010603\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[undefined|undefined#1010603 (\"Suboxone 2 MG / 0.5 MG Sublingual Film\")]\"\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm|undefined#1010603\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (undefined) at CodeableConcept.coding[0]\n108ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"1010603\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -84,7 +84,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1298088 (\"Flurazepam Hydrochloride 15 MG Oral Capsule\")]\"\r\n0 0     : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1298088\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[undefined|undefined#1298088 (\"Flurazepam Hydrochloride 15 MG Oral Capsule\")]\"\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm|undefined#1298088\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (undefined) at CodeableConcept.coding[0]\n106ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"1298088\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -115,7 +115,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1010600 (\"buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film\")]\"\r\n0 0     : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1010600\"\r\n0 0     : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[undefined|undefined#1010600 (\"buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film\")]\"\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm|undefined#1010600\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (undefined) at CodeableConcept.coding[0]\n51ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"1010600\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -146,7 +146,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\r\n16 0    : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\r\n16 0    : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[undefined|undefined#428759 (\"metformin 250 MG Oral Tablet\")]\"\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm|undefined#428759\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (undefined) at CodeableConcept.coding[0]\n220ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -177,7 +177,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\r\n16 0    : 0ms  : Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\r\n16 0    : 0ms  : Using CodeSystem \"http://www.nlm.nih.gov/research/umls/rxnorm|??\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[undefined|undefined#428759 (\"metformin 250 MG Oral Tablet\")]\"\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm|undefined#428759\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

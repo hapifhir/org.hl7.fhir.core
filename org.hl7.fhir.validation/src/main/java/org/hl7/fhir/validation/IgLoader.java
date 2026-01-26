@@ -357,7 +357,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
           int j = find(s, i+1, '"');
           if (j > 0) {
             String v = s.substring(i+1, j);
-            if (VersionUtilities.isSemVer(v)) {
+            if (VersionUtilities.isSemVer(v, true)) {
               versions.see(VersionUtilities.getMajMin(v), "fhirVersion in " + ref);
               return;
             }
@@ -371,7 +371,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
           int j = find(s, i+1, '\'');
           if (j > 0) {
             String v = s.substring(i, j);
-            if (VersionUtilities.isSemVer(v)) {
+            if (VersionUtilities.isSemVer(v, true)) {
               versions.see(VersionUtilities.getMajMin(v), "fhirVersion in " + ref);
               return;
             }

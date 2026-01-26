@@ -20,7 +20,6 @@ v: {
   "error" : "A definition for CodeSystem 'https://mednet.swiss/fhir/productNumber' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[https://mednet.swiss/fhir/productNumber#3367001 (\"\")]\"\r\n16 0    : 0ms  : Check \"https://mednet.swiss/fhir/productNumber#3367001\"\r\n16 0    : 0ms  : Didn't find CodeSystem \"https://mednet.swiss/fhir/productNumber\"\r\n",
   "unknown-systems" : "https://mednet.swiss/fhir/productNumber",
   "issues" : {
   "resourceType" : "OperationOutcome",

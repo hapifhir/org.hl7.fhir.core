@@ -20,7 +20,6 @@ v: {
   "error" : "A definition for CodeSystem 'urn:oid:1.3.6.1.4.1.19376.1.2.3' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[urn:oid:1.3.6.1.4.1.19376.1.2.3#urn:hl7-org:sdwg:ccda-structuredBody:1.1 (\"\")]\"\r\n16 0    : 0ms  : Check \"urn:oid:1.3.6.1.4.1.19376.1.2.3#urn:hl7-org:sdwg:ccda-structuredBody:1.1\"\r\n16 0    : 0ms  : Didn't find CodeSystem \"urn:oid:1.3.6.1.4.1.19376.1.2.3\"\r\n",
   "unknown-systems" : "urn:oid:1.3.6.1.4.1.19376.1.2.3",
   "issues" : {
   "resourceType" : "OperationOutcome",

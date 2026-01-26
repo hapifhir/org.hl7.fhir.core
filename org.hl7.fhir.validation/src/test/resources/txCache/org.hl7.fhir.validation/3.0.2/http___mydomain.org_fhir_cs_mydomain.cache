@@ -15,14 +15,14 @@
   }]
 }}####
 v: {
+  "display" : "Very High",
   "code" : "very-high",
   "system" : "http://mydomain.org/fhir/cs/mydomain",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://mydomain.org/fhir/cs/mydomain' could not be found, so the code cannot be validated",
-  "class" : "CODESYSTEM_UNSUPPORTED",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://mydomain.org/fhir/cs/mydomain#very-high (\"Very High\")]\"\r\n0 0     : 0ms  : Check \"http://mydomain.org/fhir/cs/mydomain#very-high\"\r\n0 0     : 0ms  : Didn't find CodeSystem \"http://mydomain.org/fhir/cs/mydomain\"\r\n",
-  "unknown-systems" : "http://mydomain.org/fhir/cs/mydomain",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{

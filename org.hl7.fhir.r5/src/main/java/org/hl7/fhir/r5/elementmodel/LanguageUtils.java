@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -63,6 +65,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 public class LanguageUtils {
   
   public static final List<String> TRANSLATION_SUPPLEMENT_RESOURCE_TYPES = Arrays.asList("CodeSystem", "StructureDefinition", "Questionnaire");
+  private static final String INTERVERSION_PATTERN = "^http\\:\\/\\/hl7.org\\/fhir\\/\\d\\.\\d\\/StructureDefinition\\/extension\\-(.+)$";
 
   public static class TranslationUnitCollection {
     List<TranslationUnit> list= new ArrayList<>();
@@ -692,10 +695,24 @@ public class LanguageUtils {
 
   private void generateTranslations(Element e, String lang, TranslationUnitCollection list, String path) {
     String npath = pathForElement(path, e);
-    if ((e.getProperty().isTranslatable() || isTranslatable(e.getProperty().getDefinition().getBase().getPath())) 
-        && !isExemptFromTranslations(e.getProperty().getDefinition().getBase().getPath())) {
-      String id = e.getProperty().getDefinition().getBase().getPath(); // .getProperty().getDefinition().getPath();
-      String context = e.getProperty().getDefinition().getDefinition();
+    String elementPath = e.getProperty().getDefinition().getBase().getPath();
+    if (e.getName().equals("extension")) {
+      String url = e.getChildValue("url");
+      Matcher m = Pattern.compile(INTERVERSION_PATTERN).matcher(url);
+      if (m.matches()) {
+        elementPath = m.group(1);
+      }
+    }
+    if ((e.getProperty().isTranslatable() || isTranslatable(elementPath)) 
+        && !isExemptFromTranslations(elementPath)) {
+      String id = elementPath; // .getProperty().getDefinition().getPath();
+      String context = null;
+      if (e.getName().equals("extension")) {
+        context = id;
+        e = e.getNamedChild("value");
+      } else {
+        context = elementPath;        
+      }
       String src = e.primitiveValue();
       String tgt = getTranslation(e, lang);
       if (!hasInList(list.list, id, src)) {

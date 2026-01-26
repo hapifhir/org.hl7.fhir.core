@@ -1,11 +1,7 @@
 package org.hl7.fhir.utilities.npm;
 
-import org.apache.commons.lang3.SystemUtils;
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-
 import java.io.File;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -124,10 +120,13 @@ public class LockfileTestProcessUtility {
         Path tempFilePath = tempDeleteDir.resolve(lockFile.getName());
         tempDeleteDir.toFile().deleteOnExit();
         tempFilePath.toFile().deleteOnExit();
-        final File toDelete = tempFilePath.toFile();
+        final File toDelete;
         if (!isSystemWindows()) {
           System.out.println("Atomic move  "+lockFile.getAbsolutePath()+" to " + tempFilePath.toAbsolutePath());
+          toDelete = tempFilePath.toFile();
           Files.move(lockFile.toPath(), tempFilePath, StandardCopyOption.ATOMIC_MOVE );
+        } else {
+          toDelete = lockFile;
         }
 
         fileLock.release();

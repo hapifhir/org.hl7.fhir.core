@@ -19,7 +19,7 @@ v: {
   "system" : "http://varnomen.hgvs.org",
   "version" : "2.0",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://varnomen.hgvs.org#NC_000019.8:g.1171707G>A (\"\")]\"\r\n0 0     : 0ms  : Check \"http://varnomen.hgvs.org#NC_000019.8:g.1171707G>A\"\r\n0 0     : 0ms  : Using CodeSystem \"http://varnomen.hgvs.org|2.0\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n1ms http://varnomen.hgvs.org/vs|2.0: Validate \"[undefined|undefined#NC_000019.8:g.1171707G>A (\"undefined\")]\"\n1ms http://varnomen.hgvs.org/vs|2.0: Check \"http://varnomen.hgvs.org|undefined#NC_000019.8:g.1171707G>A\"\n1ms http://varnomen.hgvs.org/vs|2.0: CodeSystem found: http://varnomen.hgvs.org|2.0 for http://varnomen.hgvs.org|2.0\n1ms http://varnomen.hgvs.org/vs|2.0: check code in (undefined) at Coding\n251ms http://varnomen.hgvs.org/vs|2.0: Code \"NC_000019.8:g.1171707G>A\" found in http://varnomen.hgvs.org|2.0",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -47,7 +47,7 @@ v: {
   "system" : "http://varnomen.hgvs.org",
   "version" : "2.0",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0 for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"(http://varnomen.hgvs.org)\"\r\n15 0    : 0ms  : CodeSystem found: \"http://varnomen.hgvs.org|2.0\"\r\n15 0    : 0ms  : Validate \"[http://varnomen.hgvs.org#NC_000019.8:g.1171707G>A (\"\")]\"\r\n15 0    : 0ms  : Check \"http://varnomen.hgvs.org#NC_000019.8:g.1171707G>A\"\r\n15 0    : 0ms  : CodeSystem found: http://varnomen.hgvs.org|2.0 for http://varnomen.hgvs.org\r\n15 0    : 0ms  : check code in (http://varnomen.hgvs.org) at Coding\r\n125 110 : 110ms : Code \"NC_000019.8:g.1171707G>A\" found in http://varnomen.hgvs.org|2.0\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: Analysing http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: Prepare include[0]: \"(undefined)\"\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: CodeSystem found: \"http://varnomen.hgvs.org|2.0\"\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: Validate \"[undefined|undefined#NC_000019.8:g.1171707G>A (\"undefined\")]\"\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: Check \"http://varnomen.hgvs.org|undefined#NC_000019.8:g.1171707G>A\"\n1ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: CodeSystem found: http://varnomen.hgvs.org|2.0 for http://varnomen.hgvs.org|undefined\n1ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: check code in (undefined) at Coding\n87ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: Code \"NC_000019.8:g.1171707G>A\" found in http://varnomen.hgvs.org|2.0",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -76,7 +76,7 @@ v: {
   "error" : "Unknown code 'NC_000019.8:g.1171707G>AXXX' in the CodeSystem 'http://varnomen.hgvs.org' version '2.0'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"()\"\r\n15 0    : 0ms  : Validate \"[http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX (\"\")]\"\r\n15 0    : 0ms  : Check \"http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX\"\r\n15 0    : 0ms  : Using CodeSystem \"http://varnomen.hgvs.org|2.0\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://varnomen.hgvs.org/vs|2.0: Validate \"[undefined|undefined#NC_000019.8:g.1171707G>AXXX (\"undefined\")]\"\n0ms http://varnomen.hgvs.org/vs|2.0: Check \"http://varnomen.hgvs.org|undefined#NC_000019.8:g.1171707G>AXXX\"\n0ms http://varnomen.hgvs.org/vs|2.0: CodeSystem found: http://varnomen.hgvs.org|2.0 for http://varnomen.hgvs.org|2.0\n0ms http://varnomen.hgvs.org/vs|2.0: check code in (undefined) at Coding\n28ms http://varnomen.hgvs.org/vs|2.0: Code \"NC_000019.8:g.1171707G>AXXX\" not found in http://varnomen.hgvs.org|2.0: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -97,6 +97,23 @@ v: {
         "code" : "invalid-code"
       }],
       "text" : "Unknown code 'NC_000019.8:g.1171707G>AXXX' in the CodeSystem 'http://varnomen.hgvs.org' version '2.0'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Error while processing 'NC_000019.8:g.1171707G>AXXX': This change should be expressed as a delins."
     },
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
@@ -126,7 +143,7 @@ v: {
   "error" : "The provided code 'http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX' was not found in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0'; Unknown code 'NC_000019.8:g.1171707G>AXXX' in the CodeSystem 'http://varnomen.hgvs.org' version '2.0'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0 for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US\r\n15 0    : 0ms  : Prepare include: \"(http://varnomen.hgvs.org)\"\r\n15 0    : 0ms  : CodeSystem found: \"http://varnomen.hgvs.org|2.0\"\r\n15 0    : 0ms  : Validate \"[http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX (\"\")]\"\r\n15 0    : 0ms  : Check \"http://varnomen.hgvs.org#NC_000019.8:g.1171707G>AXXX\"\r\n15 0    : 0ms  : CodeSystem found: http://varnomen.hgvs.org|2.0 for http://varnomen.hgvs.org\r\n15 0    : 0ms  : check code in (http://varnomen.hgvs.org) at Coding\r\n125 110 : 110ms : Code \"NC_000019.8:g.1171707G>AXXX\" not found in http://varnomen.hgvs.org|2.0\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: Analysing http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0 for validation purposes\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: Prepare include[0]: \"(undefined)\"\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: CodeSystem found: \"http://varnomen.hgvs.org|2.0\"\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: Validate \"[undefined|undefined#NC_000019.8:g.1171707G>AXXX (\"undefined\")]\"\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: Check \"http://varnomen.hgvs.org|undefined#NC_000019.8:g.1171707G>AXXX\"\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: CodeSystem found: http://varnomen.hgvs.org|2.0 for http://varnomen.hgvs.org|undefined\n0ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: check code in (undefined) at Coding\n29ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-hgvs-vs--0|1.0.0: Code \"NC_000019.8:g.1171707G>AXXX\" not found in http://varnomen.hgvs.org|2.0: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -147,6 +164,23 @@ v: {
         "code" : "invalid-code"
       }],
       "text" : "Unknown code 'NC_000019.8:g.1171707G>AXXX' in the CodeSystem 'http://varnomen.hgvs.org' version '2.0'"
+    },
+    "location" : ["Coding.code"],
+    "expression" : ["Coding.code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Error while processing 'NC_000019.8:g.1171707G>AXXX': This change should be expressed as a delins."
     },
     "location" : ["Coding.code"],
     "expression" : ["Coding.code"]

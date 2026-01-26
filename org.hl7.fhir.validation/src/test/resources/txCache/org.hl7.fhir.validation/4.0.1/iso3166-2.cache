@@ -14,13 +14,16 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:9bb6682a-8f9b-44e4-beb5-1c1d25338f12",
-    "timestamp" : "2025-12-15T04:08:32.108Z",
-    "total" : 5099,
+    "identifier" : "urn:uuid:fdc5d75f-cca9-44fa-967b-b0054c618357",
+    "timestamp" : "2026-01-14T18:46:36.365Z",
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
       "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
     },
     {
       "name" : "offset",

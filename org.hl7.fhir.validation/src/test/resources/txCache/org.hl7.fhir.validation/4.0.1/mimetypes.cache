@@ -9,7 +9,37 @@
   }
 }}####
 e: {
-  "from-server" : true,
-  "error" : "Error from https://tx-dev.fhir.org/r4: The code System \"urn:ietf:bcp:13\" has a grammar, and cannot be enumerated directly"
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:9dc65643-528b-47b3-8572-e592bfbe2c70",
+    "timestamp" : "2026-01-14T18:48:06.673Z",
+    "total" : 0,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "urn:ietf:bcp:13"
+    }]
+  }
+},
+  "error" : ""
 }
 -------------------------------------------------------------------------------------

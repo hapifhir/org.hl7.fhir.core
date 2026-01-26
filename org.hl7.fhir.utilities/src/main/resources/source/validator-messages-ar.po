@@ -1445,7 +1445,7 @@ msgstr ""
 
 # CONFORMANCE_STATEMENT_WORD
 #: CONFORMANCE_STATEMENT_WORD
-msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause"
+msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause: ''{1}''"
 msgstr ""
 
 # CONTAINED_ORPHAN_DOM3

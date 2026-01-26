@@ -321,7 +321,7 @@ public class ValueSetProcessBase {
     }
     switch (va) {
       case Unknown: return candidate.startsWith(criteria);
-      case SemVer: return VersionUtilities.isSemVer(candidate) ? VersionUtilities.versionMatches(criteria, candidate) : false;
+      case SemVer: return VersionUtilities.isSemVer(candidate, true) ? VersionUtilities.versionMatches(criteria, candidate) : false;
       case Integer: return candidate.equals(criteria);
       case Alpha: return candidate.startsWith(criteria);
       case Date:return candidate.startsWith(criteria);
@@ -365,4 +365,29 @@ public class ValueSetProcessBase {
 
   protected AlternateCodesProcessingRules altCodeParams = new AlternateCodesProcessingRules(false);
   protected AlternateCodesProcessingRules allAltCodes = new AlternateCodesProcessingRules(true);
+
+  protected String presentVersionList(Collection<String> versions) {
+    List<String> list = Utilities.sorted(versions);
+    switch (list.size()) {
+      case 0:
+        return "";
+      case 1:
+        return list.get(0);
+      case 2:
+        return list.get(0) + " or " + list.get(1);
+      default:
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < list.size() - 1; i++) {
+          if (i > 0) {
+            b.append(", ");
+          }
+          b.append(list.get(i));
+        }
+        b.append(" or ");
+        b.append(list.get(list.size() - 1));
+        return b.toString();
+    }
+  }
+
+
 }

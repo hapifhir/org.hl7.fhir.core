@@ -50,13 +50,12 @@ public class LocalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-  private static final String SERVER = FhirSettings.getTxFhirLocal();
+//  private static final String SERVER = FhirSettings.getTxFhirLocal();
+  private static final String SERVER = "http://localhost:3001/r4";
 
   private static boolean localTxRunning() throws IOException {
     return ManagedFileAccess.file("/Users/grahamegrieve/work/server/server").exists();
   }
-
- 
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {

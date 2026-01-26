@@ -68,6 +68,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.*;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IIdType;
@@ -88,11 +89,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 
 /**
  * General parser for JSON content. You instantiate an JsonParser of these, but you 
@@ -166,6 +162,9 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   protected JsonObject getJObject(JsonObject parent, String name) throws IOException {
     JsonElement j = parent.get(name);
     if (j == null) { 
+      return null;
+    }
+    if (j instanceof JsonNull) {
       return null;
     }
     if (!(j instanceof JsonObject)) {

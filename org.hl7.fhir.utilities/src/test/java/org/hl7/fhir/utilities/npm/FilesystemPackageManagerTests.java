@@ -1,32 +1,26 @@
 package org.hl7.fhir.utilities.npm;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.text.MessageFormat;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.*;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -43,6 +37,7 @@ public class FilesystemPackageManagerTests {
 
   private static final String DUMMY_URL_4 = "https://dummy4.org";
   public static final String CURRENT_PACKAGE_CACHE_VERSION = "4";
+  public static final String MULTITHREAD_TEST_NAME_PATTERN = "Test iteration {0}: {1} threads {2} packageCacheManagers";
   private final List<PackageServer> dummyPrivateServers = List.of(
      new PackageServer(DUMMY_URL_1),
      new PackageServer(DUMMY_URL_2)
@@ -218,9 +213,9 @@ public class FilesystemPackageManagerTests {
   public static Stream<Arguments> packageCacheMultiThreadTestParams() {
     List<Arguments> params = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      params.add(Arguments.of(100, 1));
-      params.add(Arguments.of(10,10));
-      params.add(Arguments.of(100, 10));
+      params.add(Arguments.of(i,100, 1));
+      params.add(Arguments.of(i,10,10));
+      params.add(Arguments.of(i,100, 10));
     }
     return params.stream();
   }
@@ -360,72 +355,108 @@ public class FilesystemPackageManagerTests {
     Assertions.assertTrue(npmPackage.isIndexed());
   }
 
+  private class MultiThreadTestRunnable implements Runnable {
+
+    private final FilesystemPackageCacheManager pcm;
+    private final String originatingTest;
+    private final int index;
+    private final int operation;
+
+    private boolean successful = false;
+
+    private MultiThreadTestRunnable(FilesystemPackageCacheManager pcm, String originatingTest, int index, int operation) {
+      this.pcm = pcm;
+      this.originatingTest = originatingTest;
+      this.index = index;
+      this.operation = operation;
+    }
+
+    @Override
+    public void run() {
+      try {
+      if (operation == 0) {
+        pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
+      } else if (operation == 1) {
+        pcm.clear();
+      } else if (operation == 2) {
+        pcm.loadPackageFromCacheOnly("example.fhir.uv.myig", "1.2.3");
+      } else {
+        pcm.removePackage("example.fhir.uv.myig", "1.2.3");
+      }
+      successful = true;
+      System.out.println(getRunnableName() + " successful.");
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.err.println(getRunnableName() + " failed.");
+    }
+    }
+
+    private @NonNull String getRunnableName() {
+      return "Test " + originatingTest + " Thread #" + index + " " + getOperationName();
+    }
+
+    public String getOperationName() {
+      if (operation == 0) {
+        return "addPackageToCache";
+      } else if (operation == 1) {
+        return "clear";
+      } else if (operation == 2) {
+        return "loadPackageFromCacheOnly";
+      } else {
+        return "removePackage";
+      }
+    }
+  }
+
   @MethodSource("packageCacheMultiThreadTestParams")
-  @ParameterizedTest
+  @ParameterizedTest(name = MULTITHREAD_TEST_NAME_PATTERN)
   @Timeout(120)
-  void packageCacheMultiThreadTest(final int threadTotal, final int packageCacheManagerTotal) throws IOException {
-    String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
+  void packageCacheMultiThreadTest(final int testIteration, final int threadTotal, final int packageCacheManagerTotal) throws IOException {
+    final String testName = MessageFormat.format(MULTITHREAD_TEST_NAME_PATTERN, testIteration, threadTotal, packageCacheManagerTotal);
+    System.out.println("Test name: " + testName);
+    final String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
     System.out.println("Using temp pcm path: " + pcmPath);
     FilesystemPackageCacheManager[] packageCacheManagers = new FilesystemPackageCacheManager[packageCacheManagerTotal];
     Random rand = new Random();
 
-    final AtomicInteger totalSuccessful = new AtomicInteger();
-    final ConcurrentHashMap<Long, Integer> successfulThreads = new ConcurrentHashMap<>();
-    List<Thread> threads = new ArrayList<>();
-    for (int i = 0; i < threadTotal; i++) {
-      final int index = i;
-      Thread t = new Thread(() -> {
-        try {
-          System.out.println("Thread #" + index + ": " + Thread.currentThread().getId() + " started");
-          final int randomPCM = rand.nextInt(packageCacheManagerTotal);
-          final int randomOperation = rand.nextInt(4);
-          final String operationName;
-          if (packageCacheManagers[randomPCM] == null) {
-            packageCacheManagers[randomPCM] = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
-          }
-          FilesystemPackageCacheManager pcm = packageCacheManagers[randomPCM];
-          if (randomOperation == 0) {
-            operationName = "addPackageToCache";
-            pcm.addPackageToCache("example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
-          } else if (randomOperation == 1) {
-            operationName = "clear";
-            pcm.clear();
-          } else if (randomOperation == 2) {
-            operationName = "loadPackageFromCacheOnly";
-            pcm.loadPackageFromCacheOnly("example.fhir.uv.myig", "1.2.3");
-          } else {
-            operationName = "removePackage";
-            pcm.removePackage("example.fhir.uv.myig", "1.2.3");
-          }
-          totalSuccessful.incrementAndGet();
-          successfulThreads.put(Thread.currentThread().getId(), index);
-          System.out.println("Thread #" + index + ": " + Thread.currentThread().getId() + " completed. Ran: " + operationName);
-        } catch (Exception e) {
-          e.printStackTrace();
-          System.err.println("Thread #" + index + ": " + Thread.currentThread().getId() + " failed");
-        }
-      });
-      t.start();
-      threads.add(t);
-    }
-    threads.forEach(t -> {
-      try {
-        t.join();
-      } catch (InterruptedException e) {
+    Map<Thread, MultiThreadTestRunnable> threads = new HashMap<>();
 
+    for (int i = 0; i < threadTotal; i++) {
+      final int randomPCM = rand.nextInt(packageCacheManagerTotal);
+      if (packageCacheManagers[randomPCM] == null) {
+        packageCacheManagers[randomPCM] = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
+      }
+      final FilesystemPackageCacheManager pcm = packageCacheManagers[randomPCM];
+
+      final int randomOperation = rand.nextInt(4);
+      MultiThreadTestRunnable runnable = new MultiThreadTestRunnable(pcm, testName, i, randomOperation);
+
+      Thread t = new Thread(runnable);
+      threads.put(t, runnable);
+      t.start();
+    }
+    final int threadTimeout = 30000;
+    threads.forEach((thread, aliveRunnable) -> {
+      try {
+        thread.join(threadTimeout);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      if (thread.isAlive()) {
+        System.err.println("Thread with Runnable " + aliveRunnable.getRunnableName() + " alive after " + threadTimeout + " milliseconds. Printing stack");
+        for (StackTraceElement element : thread.getStackTrace()) {
+          System.err.println(element);
+        }
+        System.err.println("State of other threads:");
+        for (MultiThreadTestRunnable runnable : threads.values()) {
+          System.err.println("  " + runnable.getRunnableName() + ": " + runnable.successful);
+        }
+        fail();
       }
     });
 
-    printUnsuccessfulThreads(successfulThreads, threads);
-    assertEquals(threadTotal, totalSuccessful.get(), "Not all threads were successful.");
-
-  }
-
-  private void printUnsuccessfulThreads(final ConcurrentHashMap<Long, Integer> successfulThreads, List<Thread> threads) {
-    for (Thread t : threads) {
-      if (!successfulThreads.containsKey(t.getId())) {
-        System.out.println("Thread #" + t.getId() + " failed");
-      }
+    for (MultiThreadTestRunnable runnable : threads.values()) {
+      assertThat(runnable.successful).isTrue();
     }
   }
 }

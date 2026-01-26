@@ -706,6 +706,21 @@ public class ExtensionUtilities {
     element.getExtension().add(extension);
   }
 
+  public static void removeLanguageTranslation(Element element, String lang) {
+    if (Utilities.noString(lang))
+      return;
+
+    for (Extension extension : element.getExtension()) {
+      if (ExtensionDefinitions.EXT_TRANSLATION.equals(extension.getUrl())) {
+        String l = extension.getExtensionString("lang");
+        if (lang.equals(l)) {
+          element.getExtension().remove(extension);
+          return;
+        }
+      }
+    }    
+  }
+
   public static boolean hasAllowedUnits(ElementDefinition eld) {
     for (Extension e : eld.getExtension())
       if (e.getUrl().equals(ExtensionDefinitions.EXT_ALLOWABLE_UNITS))
@@ -1468,5 +1483,4 @@ public class ExtensionUtilities {
   public static boolean isModifier(String url) {
     return Utilities.existsInList(url, "http://hl7.org/fhir/StructureDefinition/artifact-status", "http://hl7.org/fhir/StructureDefinition/capabilitystatement-prohibited", "http://hl7.org/fhir/StructureDefinition/request-doNotPerform");
   }
-
 }

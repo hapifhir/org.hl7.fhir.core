@@ -2,9 +2,7 @@ package org.hl7.fhir.convertors.txClient;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -23,6 +21,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
+import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -239,6 +238,16 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
+  public ITerminologyClient setFormat(ResourceFormat fmt) throws FHIRException {
+    if (fmt == ResourceFormat.RESOURCE_XML) {
+      this.client.setPreferredResourceFormat(org.hl7.fhir.r4.utils.client.ResourceFormat.RESOURCE_XML);
+    } else {
+      this.client.setPreferredResourceFormat(org.hl7.fhir.r4.utils.client.ResourceFormat.RESOURCE_JSON);
+    }
+    return this;
+  }
+
+  @Override
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException {
     return (CapabilityStatement) convertResource("getCapabilitiesStatementQuick.response", client.getCapabilitiesStatementQuick());
   }
@@ -255,7 +264,16 @@ public class TerminologyClientR4 implements ITerminologyClient {
 
   @Override
   public Parameters lookupCode(Parameters params) throws FHIRException {
-    return (Parameters) convertResource("lookupCode.response", client.lookupCode((org.hl7.fhir.r4.model.Parameters) convertResource("lookupCode.request", params)));
+    try {
+      return (Parameters) convertResource("lookupCode.response", client.lookupCode((org.hl7.fhir.r4.model.Parameters) convertResource("lookupCode.request", params)));
+    } catch (EFhirClientException e) {
+      List<org.hl7.fhir.r4.model.OperationOutcome> r4 = e.getServerErrors();
+      List<org.hl7.fhir.r5.model.OperationOutcome> r5 = new ArrayList<OperationOutcome>();
+      for (org.hl7.fhir.r4.model.OperationOutcome op : r4) {
+        r5.add((OperationOutcome) convertResource("lookupCode.error", op));
+      }
+      throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), r5.isEmpty() ? null : r5.get(0));
+    }
   }
 
   @Override

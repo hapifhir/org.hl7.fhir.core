@@ -107,11 +107,11 @@ public class FilesystemPackageCacheManagerLocks {
       return lock;
     }
 
-    public <T> T doWriteWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> f) throws IOException {
+    public <T> T doWriteWithLock(FilesystemPackageCacheManager.CacheLockFunction<T> function) throws IOException {
       lock.writeLock().lock();
       T result = null;
       try {
-        result = f.get();
+        result = function.get();
       } finally {
         lock.writeLock().unlock();
       }
@@ -146,6 +146,7 @@ public class FilesystemPackageCacheManagerLocks {
 
     private void checkForLockFileWaitForDeleteIfExists(File lockFile, @Nonnull LockParameters lockParameters) throws IOException {
       if (!lockFile.exists()) {
+        log.debug("checked for lockFile: does not exist");
         return;
       }
 
@@ -177,25 +178,33 @@ public class FilesystemPackageCacheManagerLocks {
      interrupted, an IOException is thrown.
      */
     private void waitForLockFileDeletion(File lockFile, @Nonnull LockParameters lockParameters) throws IOException, InterruptedException {
-
+      log.debug("waiting for lockFile deletion: " + lockFile.getName());
       try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
         Path dir = lockFile.getParentFile().toPath();
         dir.register(watchService, StandardWatchEventKinds.ENTRY_DELETE);
 
         WatchKey key = watchService.poll(lockParameters.lockTimeoutTime, lockParameters.lockTimeoutTimeUnit);
         if (key == null) {
+          log.debug("watch key is null for lockFile: " + lockFile.getName());
           // It is possible that the lock file is deleted before the watch service is registered, so if we timeout at
           // this point, we should check if the lock file still exists.
           if (lockFile.exists()) {
             throw new TimeoutException("Timeout waiting for lock file deletion: " + lockFile.getName());
           }
         } else {
+          log.debug("watch key is watching for lockFile deletion: " + lockFile.getName());
+
           for (WatchEvent<?> event : key.pollEvents()) {
             WatchEvent.Kind<?> kind = event.kind();
             if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
+              log.debug("watch saw lockFile deletion: " + lockFile.getName());
+
               Path deletedFilePath = (Path) event.context();
               if (deletedFilePath.toString().equals(lockFile.getName())) {
+                key.cancel();
                 return;
+              } else {
+                log.error("watch saw lockFile deletion for " +deletedFilePath + " which does not match " + lockFile.getName());
               }
             }
             key.reset();
@@ -204,6 +213,7 @@ public class FilesystemPackageCacheManagerLocks {
       } catch (TimeoutException e) {
         throw new IOException("Package cache timed out waiting for lock.", e);
       }
+      log.error("waiting for lockFile deletion ended in uncertain state: " + lockFile.getName());
     }
 
 
@@ -265,14 +275,14 @@ public class FilesystemPackageCacheManagerLocks {
        /*TODO Eventually, this logic should exist in a Lockfile class so that it isn't duplicated between the main code and
           the test code.
         */
-      try (FileChannel channel = getFileChannel(openOptions))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  {
+      try (FileChannel channel = getFileChannel(openOptions)) {
 
         final FileLock fileLock = getFileLock(channel, resolvedLockParameters);
 
         if (!lockFile.isFile() && !lockFile.exists()) {
           final ByteBuffer buff = ByteBuffer.wrap(String.valueOf(ProcessHandle.current().pid()).getBytes(StandardCharsets.UTF_8));
           final int bytesWritten = channel.write(buff);
-          log.trace(bytesWritten + " bytes written to lock file: " + lockFile.getName());
+          log.debug(bytesWritten + " bytes written to lock file: " + lockFile.getName());
         }
         T result = null;
         try {
@@ -280,24 +290,28 @@ public class FilesystemPackageCacheManagerLocks {
         } finally {
           final File toDelete;
 
-          // Windows based file systems do not allow renames for 'open' files so we cannot do this.
-          if (!SystemUtils.IS_OS_WINDOWS) {
+          // Windows based file systems do not allow renames for 'open' files, but others do, and it is atomic. So do a
+          // rename if we can before releasing our lock.
+         if (!SystemUtils.IS_OS_WINDOWS) {
+            log.debug("Attempting lockFile removal by move: " + lockFile.toPath());
             toDelete = ManagedFileAccess.file(File.createTempFile(lockFile.getName(), LOCK_DELETION_EXTENSION, lockFile.getParentFile()).getAbsolutePath());
             Files.move(lockFile.toPath(), toDelete.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+            log.debug("Removed lockFile by moving from: " + lockFile.toPath() + " to " + toDelete.toPath());
           } else {
-            toDelete = null;
+            toDelete = lockFile;
           }
 
           fileLock.release();
 
-          // Non-Windows file systems will have atomically renamed the file at this point, so we should clean it up.
-          if (toDelete != null) {
-            try {
-              Files.delete(toDelete.toPath());
-            } catch (IOException e) {
-              log.warn("Error while deleting lock file: {} File will be set to delete on exit", toDelete.getAbsolutePath(), e);
-              toDelete.deleteOnExit();
-            }
+          // Non-Windows file systems will have atomically renamed the file at this point, so we should delete the file it was named to.
+          // Windows file systems will have to delete the original file itself.
+          try {
+            log.debug("Attempting lockFile deletion " + toDelete.toPath());
+            Files.delete(toDelete.toPath());
+            log.debug("Removed lockFile by deleting " + toDelete.toPath());
+          } catch (IOException e) {
+            log.warn("Error while deleting lock file: {} File will be set to delete on exit", toDelete.getAbsolutePath(), e);
+            toDelete.deleteOnExit();
           }
 
           lock.writeLock().unlock();
@@ -327,19 +341,21 @@ public class FilesystemPackageCacheManagerLocks {
       FileLock fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
 
       if (fileLock == null) {
+        log.debug("Unable to get fileLock on first attempt and waiting for deletion: " + lockFile.toPath());
         waitForLockFileDeletion(lockFile, resolvedLockParameters);
         fileLock = channel.tryLock(0, Long.MAX_VALUE, false);
       }
       if (fileLock == null) {
         throw new IOException("Failed to acquire lock on file: " + lockFile.getName());
       }
+      log.debug("fileLock acquired: " + lockFile.toPath());
       return fileLock;
     }
   }
 
   private static void logSystemSpecificFileNotFoundException(FileNotFoundException e) {
     if (SystemUtils.IS_OS_WINDOWS && e.getMessage().contains("The process cannot access the file because it is being used by another process")) {
-      log.trace("Windows reported a FileNotFoundException whose actual cause is that the file is locked by another process: {}", String.valueOf(e));
+      log.debug("Windows reported a FileNotFoundException whose actual cause is that the file is locked by another process: {}", String.valueOf(e));
     } else {
       log.warn("Unexpected FileNotFoundException while evaluating is a lock file: ", e);
     }

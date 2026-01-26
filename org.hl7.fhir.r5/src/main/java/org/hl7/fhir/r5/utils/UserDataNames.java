@@ -157,4 +157,5 @@ public class UserDataNames {
 
   public static final String RESOURCE_INTERNAL_USE_ONLY = "RESOURCE_INTERNAL_USE_ONLY";
   public static final String VERSION_PINNED_ON_LOAD = "VERSION_PINNED_ON_LOAD";
+  public static final String IGNORE_ISSUE_MESSAGE = "IGNORE_ISSUE_MESSAGE";
 }

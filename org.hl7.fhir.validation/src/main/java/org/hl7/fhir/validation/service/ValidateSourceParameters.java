@@ -2,8 +2,6 @@ package org.hl7.fhir.validation.service;
 
 import lombok.Builder;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
-import org.hl7.fhir.validation.service.model.OutputParameters;
-import org.hl7.fhir.validation.service.model.WatchParameters;
 
 import javax.annotation.Nonnull;
 import java.util.List;

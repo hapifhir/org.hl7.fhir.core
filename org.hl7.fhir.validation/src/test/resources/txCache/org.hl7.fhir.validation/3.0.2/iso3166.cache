@@ -19,7 +19,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r3",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[urn:iso:std:iso:3166#NL (\"\")]\"\r\n0 0     : 0ms  : Check \"urn:iso:std:iso:3166#NL\"\r\n0 0     : 0ms  : Using CodeSystem \"urn:iso:std:iso:3166|2018\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n1ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#NL (\"undefined\")]\"\n1ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#NL\"\n1ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n1ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n1ms urn:iso:std:iso:3166/vs|2018: Code \"NL\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -48,7 +48,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r3",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[urn:iso:std:iso:3166#NL (\"Netherlands\")]\"\r\n0 0     : 0ms  : Check \"urn:iso:std:iso:3166#NL\"\r\n0 0     : 0ms  : Using CodeSystem \"urn:iso:std:iso:3166|2018\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#NL (\"Netherlands\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#NL\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"NL\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -77,7 +77,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r3",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[urn:iso:std:iso:3166#NL (\"Netherlands\")]\"\r\n0 0     : 0ms  : Check \"urn:iso:std:iso:3166#NL\"\r\n0 0     : 0ms  : Using CodeSystem \"urn:iso:std:iso:3166|2018\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n1ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#NL (\"Netherlands\")]\"\n1ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#NL\"\n1ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n1ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n1ms urn:iso:std:iso:3166/vs|2018: Code \"NL\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -105,7 +105,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r3",
-  "diagnostics" : "0 0 : start\r\n15 15   : 0ms  : Analysing http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00 for validation purposes\r\n15 0    : 0ms  : Parameters: disp-lang=en-US, default-to-latest\r\n15 0    : 0ms  : Prepare include: \"(urn:iso:std:iso:3166)\"\r\n15 0    : 0ms  : CodeSystem found: \"urn:iso:std:iso:3166|2018\"\r\n15 0    : 0ms  : Validate \"[urn:iso:std:iso:3166#NL (\"\")]\"\r\n15 0    : 0ms  : Check \"urn:iso:std:iso:3166#NL\"\r\n15 0    : 0ms  : CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166\r\n15 0    : 0ms  : check code in (urn:iso:std:iso:3166) at Coding\r\n15 0    : 0ms  : Code \"NL\" found in urn:iso:std:iso:3166|2018\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: Analysing http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00 for validation purposes\n0ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: Prepare include[0]: \"(undefined)\"\n1ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n1ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: Validate \"[undefined|undefined#NL (\"undefined\")]\"\n1ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: Check \"urn:iso:std:iso:3166|undefined#NL\"\n1ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|undefined\n1ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: check code in (undefined) at Coding\n1ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: Code \"NL\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -133,7 +133,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r3",
-  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00 for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"(urn:iso:std:iso:3166)\"\r\n16 0    : 0ms  : CodeSystem found: \"urn:iso:std:iso:3166|2018\"\r\n16 0    : 0ms  : Validate \"[urn:iso:std:iso:3166#NL (\"\")]\"\r\n16 0    : 0ms  : Check \"urn:iso:std:iso:3166#NL\"\r\n16 0    : 0ms  : CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166\r\n16 0    : 0ms  : check code in (urn:iso:std:iso:3166) at Coding\r\n16 0    : 0ms  : Code \"NL\" found in urn:iso:std:iso:3166|2018\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: Analysing http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00 for validation purposes\n0ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: Prepare include[0]: \"(undefined)\"\n0ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n0ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: Validate \"[undefined|undefined#NL (\"undefined\")]\"\n0ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: Check \"urn:iso:std:iso:3166|undefined#NL\"\n0ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|undefined\n0ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: check code in (undefined) at Coding\n0ms http://decor.nictiz.nl/fhir/ValueSet/2.16.840.1.113883.2.4.3.11.60.40.2.20.5.2--20171231000000--0|2017-12-31T00:00:00: Code \"NL\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

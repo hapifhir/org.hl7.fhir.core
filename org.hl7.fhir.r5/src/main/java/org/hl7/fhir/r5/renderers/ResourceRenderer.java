@@ -317,6 +317,10 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   
+  public <T extends Resource> void renderCanonical(RenderingStatus status, ResourceWrapper res, XhtmlNode x, Class<T> class_, CanonicalType canonical) throws UnsupportedEncodingException, IOException {
+    renderCanonical(status, res, x, class_, canonical, null);
+  }
+  
   /**
    * @param <T>
    * @param status
@@ -324,10 +328,11 @@ public abstract class ResourceRenderer extends DataRenderer {
    * @param x
    * @param class_ - makes resolution faster, but can just be Resource.class
    * @param canonical
+   * @param lang
    * @throws UnsupportedEncodingException
    * @throws IOException
    */
-  public <T extends Resource> void renderCanonical(RenderingStatus status, ResourceWrapper res, XhtmlNode x, Class<T> class_, CanonicalType canonical) throws UnsupportedEncodingException, IOException {
+  public <T extends Resource> void renderCanonical(RenderingStatus status, ResourceWrapper res, XhtmlNode x, Class<T> class_, CanonicalType canonical, String lang) throws UnsupportedEncodingException, IOException {
     if (canonical == null || !canonical.hasPrimitiveValue()) {
       return;
     }
@@ -337,7 +342,10 @@ public abstract class ResourceRenderer extends DataRenderer {
       NamingSystem ns = context.getContextUtilities().fetchNamingSystem(url);
       if (ns != null) {
         x.code().tx(url);
-        x.tx(" ("+ns.present()+")");
+        if (lang!=null)
+          x.tx(" ("+ns.present(lang)+")");
+        else
+          x.tx(" ("+ns.present()+")");
       } else {
         x.code().tx(url);
       }
@@ -347,16 +355,28 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (url.contains("|")) {
           x.code().tx(cr.getUrl());
           x.tx(context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion()));
-          x.tx(" ("+cr.present()+")");
+          if (lang!=null)
+            x.tx(" ("+cr.present(lang)+")");
+          else
+            x.tx(" ("+cr.present()+")");
         } else {
           x.code().tx(url);
-          x.tx(" ("+cr.present()+")");
+          if (lang!=null)
+            x.tx(" ("+cr.present(lang)+")");
+          else
+            x.tx(" ("+cr.present()+")");
         }
       } else {
         if (url.contains("|")) {
-          x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
+          if (lang!=null)
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang)+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
+          else
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
         } else {
-          x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present());
+          if (lang!=null)
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang));
+          else
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present());
         }
       }
     }     

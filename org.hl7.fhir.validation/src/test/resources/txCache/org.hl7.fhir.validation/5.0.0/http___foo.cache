@@ -20,7 +20,6 @@ v: {
   "error" : "A definition for CodeSystem 'http://foo' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://foo#123 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://foo#123\"\r\n0 0     : 0ms  : Didn't find CodeSystem \"http://foo\"\r\n",
   "unknown-systems" : "http://foo",
   "issues" : {
   "resourceType" : "OperationOutcome",
