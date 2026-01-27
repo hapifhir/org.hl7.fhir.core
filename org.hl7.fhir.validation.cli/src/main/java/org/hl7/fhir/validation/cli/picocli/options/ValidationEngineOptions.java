@@ -161,7 +161,7 @@ public class ValidationEngineOptions {
     If no version is provided, the latest version in the package cache will be used, or if no such cached package is available, the PackageCacheManager will load the latest from the the online package repo.
     If you want the implementation guide to be loaded for a specific version of FHIR, you can prefix the IG with the appropriate version in square brackets ([[fhirVer]][id]-[igVer]).
     """,
-    arity = "0..*")
+    arity = "1")
   @With
   public List<String> igs = new ArrayList<>();
 
