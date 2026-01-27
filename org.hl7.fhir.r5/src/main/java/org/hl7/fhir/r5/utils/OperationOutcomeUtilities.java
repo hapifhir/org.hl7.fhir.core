@@ -242,4 +242,17 @@ public class OperationOutcomeUtilities {
     return oo;
   }
 
+  public static OperationOutcome createSuccess(String text) {
+    OperationOutcome oo = new OperationOutcome();
+    oo.getText().setStatus(NarrativeStatus.GENERATED);
+    oo.getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
+    oo.getText().getDiv().tx(text == null ? "All OK" : text);
+    if (text != null) {
+      OperationOutcomeIssueComponent issue = oo.addIssue();
+      issue.setSeverity(IssueSeverity.INFORMATION);
+      issue.setCode(IssueType.INFORMATIONAL);
+      issue.getDetails().setText(text);
+    }
+    return oo;
+  }
 }
