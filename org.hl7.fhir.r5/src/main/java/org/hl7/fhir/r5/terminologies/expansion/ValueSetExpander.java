@@ -808,6 +808,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (dwc.isNoTotal()) {
         throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));
       } else {
+        //Switch to VALUESET_TOO_COSTLY_COUNT for more verbose output. Commented parameters should remain in case this is needed.
         throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY/*_COUNT*/, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)/*, MessageFormat.format("{0,number,#}", dwc.getCount())*/));
       }
     } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
@@ -955,6 +956,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (dwc.isNoTotal()) {
         throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)));
       } else {
+        //Switch to VALUESET_TOO_COSTLY_COUNT for more verbose output. Commented parameters should remain in case this is needed.
         throw failAsTooCostly(context.formatMessage(I18nConstants.VALUESET_TOO_COSTLY/*_COUNT*/, focus.getVersionedUrl(), ">" + MessageFormat.format("{0,number,#}", maxExpansionSize)/*, MessageFormat.format("{0,number,#}", dwc.getCount())*/));
       }
     } else if (dwc.isCanBeHierarchy() && ((dwc.getCountParam() == 0) || dwc.getCountParam() > dwc.getCodes().size())) {
