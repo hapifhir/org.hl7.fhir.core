@@ -436,7 +436,7 @@ public class ProfilePathProcessor {
           .withBaseLimit(newBaseLimit)
           .withDiffLimit(newDiffLimit)
           .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, i))
-          .withSlicing(new PathSlicingParams(true, slicerElement, null))
+          .withSlicing(new PathSlicingParams(true, slicerElement, null).withDiffs(diffMatches))
           .processPaths(ncursors, mapHelper, slicerElement);
     }
     // ok, done with that - next in the base list
@@ -621,7 +621,7 @@ public class ProfilePathProcessor {
          .withBaseLimit(newBaseLimit)
          .withDiffLimit(newDiffLimit)
          .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, i))
-         .withSlicing(new PathSlicingParams(true, elementDefinition, null))
+         .withSlicing(new PathSlicingParams(true, elementDefinition, null).withDiffs(diffMatches))
          .processPaths(ncursors2, mapHelper, slicerElement);
       if (typeList.size() > start + 1) {
         typeSliceElement.setMin(0);
@@ -793,8 +793,13 @@ public class ProfilePathProcessor {
 
       checkToSeeIfSlicingExists(diffMatches.get(0), template);
       outcome.setSliceName(diffMatches.get(0).getSliceName());
-      if (!diffMatches.get(0).hasMin() && (diffMatches.size() > 1 || getSlicing().getElementDefinition()== null || getSlicing().getElementDefinition().getSlicing().getRules() != ElementDefinition.SlicingRules.CLOSED) && !currentBase.hasSliceName()) {
-        if (!currentBasePath.endsWith("xtension.value[x]")) { // hack work around for problems with snapshots in official releases
+      if (!diffMatches.get(0).hasMin()) {
+        if ((slicing.elementDefinition== null || slicing.elementDefinition.getSlicing().getRules() != ElementDefinition.SlicingRules.CLOSED) && !currentBase.hasSliceName()) {
+          if (!currentBasePath.endsWith("xtension.value[x]")) { // hack work around for problems with snapshots in official releases
+            outcome.setMin(0);
+          }
+        } else if (slicing.elementDefinition != null && slicing.elementDefinition.getSlicing().getRules() == ElementDefinition.SlicingRules.CLOSED && slicing.slices.size() > 1) {
+          // we have multiple slices, they share the min cardinality between them
           outcome.setMin(0);
         }
       }
