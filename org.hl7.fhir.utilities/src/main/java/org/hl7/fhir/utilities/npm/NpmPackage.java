@@ -630,7 +630,7 @@ public class NpmPackage {
       TarArchiveEntry entry;
 
       NpmPackageReadLogger readLogger = new NpmPackageReadLogger(progress);
-      while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
+      while ((entry = tarIn.getNextEntry()) != null) {
         String entryName = entry.getName();
         if (entryName.contains("..")) {
           throw new RuntimeException("Entry with an illegal name: " + entryName);
@@ -698,7 +698,6 @@ public class NpmPackage {
 
   public boolean isIndexed() throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
-      JsonObject index = folder.index();
       if (folder.index() == null) {
         return false;
       }
@@ -826,7 +825,7 @@ public class NpmPackage {
     return listResources(Utilities.stringSet(types));
   }
   
-  public List<String> listResourcesinFolder(String folder, String... types) throws IOException {
+  public List<String>listResourcesInFolder(String folder, String... types) throws IOException {
     return listResourcesInFolder(folder, Utilities.stringSet(types));
   }
   
@@ -837,7 +836,7 @@ public class NpmPackage {
   public List<String> listResourcesInFolder(String folderName, Set<String> types) throws IOException {
     List<String> res = new ArrayList<String>();
     NpmPackageFolder folder = folders.get(folderName);
-    if (types.size() == 0) {
+    if (types.isEmpty()) {
       for (String s : folder.types.keySet()) {
         if (folder.types.containsKey(s)) {
           res.addAll(folder.types.get(s));
@@ -881,7 +880,7 @@ public class NpmPackage {
     return res;
   }
 
-  public List<PackagedResourceFile> listAllResources() throws IOException {
+  public List<PackagedResourceFile> listAllResources() {
     List<PackagedResourceFile> res = new ArrayList<PackagedResourceFile>();
     for (NpmPackageFolder folder : folders.values()) {
       if (!folder.getFolderName().startsWith("tests") && !folder.getFolderName().startsWith("data")) {
@@ -1442,13 +1441,6 @@ public class NpmPackage {
           FileUtilities.bytesToFile(folder.fetchFile(s), fn);
       }      
     }
-  }
-
-  private List<String> sorted(Set<String> keys) {
-    List<String> res = new ArrayList<String>();
-    res.addAll(keys);
-    Collections.sort(res);
-    return res ;
   }
 
   public void clearFolder(String folderName) {

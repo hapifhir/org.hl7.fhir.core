@@ -1,0 +1,20 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:ietf:bcp:47",
+  "code" : "fr-CA"
+}, "valueSet" :null, "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters"
+}}####
+v: {
+  "display" : "French (Region=Canada)",
+  "code" : "fr-CA",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms urn:ietf:bcp:47/vs: Validate \"[undefined|undefined#fr-CA (\"undefined\")]\"\n0ms urn:ietf:bcp:47/vs: Check \"urn:ietf:bcp:47|undefined#fr-CA\"\n0ms urn:ietf:bcp:47/vs: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47|undefined\n0ms urn:ietf:bcp:47/vs: check code in (undefined) at Coding\n0ms urn:ietf:bcp:47/vs: Code \"fr-CA\" found in urn:ietf:bcp:47|null",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
