@@ -49,6 +49,7 @@
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
         <logback-classic.version>1.5.20</logback-classic.version>
         <logback.version>1.5.25</logback.version>
+        <log4jVersion>2.25.3</log4jVersion>
     </properties>
 
     <name>HL7 Core Artifacts</name>
