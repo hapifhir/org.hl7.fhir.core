@@ -5,7 +5,7 @@ import org.junit.jupiter.api.*;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.FhirValidatorHttpService;
+import org.hl7.fhir.validation.http.FhirValidatorHttpService;
 
 import java.io.IOException;
 import java.net.URI;
