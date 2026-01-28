@@ -30,18 +30,12 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
@@ -109,6 +103,23 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   public boolean validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
+
+    if (src.hasChild("baseDefinition")) {
+      String url = src.getNamedChildValue("url");
+      String base = src.getNamedChildValue("baseDefinition");
+      String last = url;
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, base);
+      while (sd != null) {
+        if (url.equals(sd.getUrl())) {
+          ok = false;
+          rule(errors, "2026-01-26", IssueType.UNKNOWN, stack, false, I18nConstants.SD_CIRCULAR_DEFINITION, url, last);
+          break;
+        }
+        last = base;
+        base = sd.getBaseDefinition();
+        sd = context.fetchResource(StructureDefinition.class, base);
+      }
+    }
     StructureDefinition sd = null;
     StructureDefinition base = null;
     String typeName = null;

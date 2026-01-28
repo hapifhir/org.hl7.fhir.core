@@ -100,7 +100,7 @@ public class InstanceValidatorOptions {
 
   @CommandLine.Option(names = {"-allow-example-urls"},
     description = "Allow references to example.org URLs in resources to be treated as valid",
-    arity = "0")
+    arity = "0..1")
   @With
   public boolean allowExampleUrls = false;
 

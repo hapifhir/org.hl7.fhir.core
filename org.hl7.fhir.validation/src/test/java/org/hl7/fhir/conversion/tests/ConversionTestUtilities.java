@@ -54,7 +54,6 @@ import org.hl7.fhir.convertors.loaders.loaderR5.R2ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R3ToR5Loader;
 import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -76,7 +75,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
-public class UtilitiesXTests {
+public class ConversionTestUtilities {
   private static final boolean SHOW_DIFF = true;
   
 	static public Map<String, SimpleWorkerContext> fcontexts;
@@ -90,7 +89,7 @@ public class UtilitiesXTests {
 	    try {
 	      pcm = new FilesystemPackageCacheManager.Builder().build();
 	      SimpleWorkerContext fcontext = TestingUtilities.getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
-	      fcontext.setUcumService(new UcumEssenceService(UtilitiesXTests.loadTestResourceStream("ucum", "ucum-essence.xml")));
+	      fcontext.setUcumService(new UcumEssenceService(ConversionTestUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionParameters(new Parameters());
 	      fcontexts.put(version, fcontext);
 	    } catch (Exception e) {
@@ -484,7 +483,7 @@ public class UtilitiesXTests {
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
       try {
-        InputStream inputStream = UtilitiesXTests.class.getResourceAsStream(classpath);
+        InputStream inputStream = ConversionTestUtilities.class.getResourceAsStream(classpath);
         return inputStream != null;
       } catch (Throwable t) {
         return false;
@@ -506,7 +505,7 @@ public class UtilitiesXTests {
       // resolve from the package 
       String contents;
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
-      try (InputStream inputStream = UtilitiesXTests.class.getResourceAsStream(classpath)) {
+      try (InputStream inputStream = ConversionTestUtilities.class.getResourceAsStream(classpath)) {
         if (inputStream == null) {
           throw new IOException("Can't find file on classpath: " + classpath);
         }
@@ -527,7 +526,7 @@ public class UtilitiesXTests {
       return ManagedFileAccess.inStream(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
-      InputStream s = UtilitiesXTests.class.getResourceAsStream(classpath);
+      InputStream s = ConversionTestUtilities.class.getResourceAsStream(classpath);
       if (s == null) {
         throw new Error("unable to find resource "+classpath);
       }
@@ -541,7 +540,7 @@ public class UtilitiesXTests {
       return FileUtilities.fileToBytes(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
-      InputStream s = UtilitiesXTests.class.getResourceAsStream(classpath);
+      InputStream s = ConversionTestUtilities.class.getResourceAsStream(classpath);
       if (s == null) {
         throw new Error("unable to find resource "+classpath);
       }
