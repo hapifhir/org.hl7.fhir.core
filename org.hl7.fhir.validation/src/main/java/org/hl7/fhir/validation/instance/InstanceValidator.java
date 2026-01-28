@@ -554,6 +554,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   // used during the build process to keep the overall volume of messages down
   private boolean suppressLoincSnomedMessages;
 
+  public void setMaxValidationMessages(int maxValidationMessages) {
+    if (maxValidationMessages < 0) {
+      throw new IllegalArgumentException();
+    }
+    this.maxValidationMessages = maxValidationMessages;
+  }
+
+  @Getter
+  private int maxValidationMessages = 0;
+
   // time tracking
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
@@ -645,6 +655,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setUnknownCodeSystemsCauseErrors(parameters.isUnknownCodeSystemsCauseErrors());
     setNoExperimentalContent(parameters.isNoExperimentalContent());
     setCheckIPSCodes(parameters.isCheckIPSCodes());
+    setMaxValidationMessages(parameters.getMaxValidationMessages());
   }
 
   @Override
@@ -784,9 +795,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   @Override
-  /**
-   This is the programmatic entry point for validation from an InputStream
-   */
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, InputStream stream, FhirFormat format, List<StructureDefinition> profiles) throws FHIRException {
 
     ParserBase parser = Manager.makeParser(context, format);
@@ -988,12 +996,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   @Override
-  /**
-   * This is the main entry point for the validation of an element. All public entry points end up coming here.
-   */
   public void validate(Object appContext, List<ValidationMessage> errors, String path, Element element, List<StructureDefinition> profiles) throws FHIRException {
-    int maxMessagesSize = 2;
-    //FIXME
+
     // The first thing to do is to clear the internal state
     fetchCache.clear();
     fetchCache.put(element.fhirType() + "/" + element.getIdBase(), element);
@@ -1006,9 +1010,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     try {
       // If this is already a bounded list, or we're not limiting message size, don't bother wrapping it.
-      List<ValidationMessage> sizeLimitedErrors = maxMessagesSize == 0 || errors instanceof BoundedSizeList
+      List<ValidationMessage> sizeLimitedErrors = maxValidationMessages == 0 || errors instanceof BoundedSizeList
         ? errors
-        : new BoundedSizeList<>(errors, maxMessagesSize);
+        : new BoundedSizeList<>(errors, maxValidationMessages);
 
       long t = System.nanoTime();
       NodeStack stack = new NodeStack(context, null, element, validationLanguage);

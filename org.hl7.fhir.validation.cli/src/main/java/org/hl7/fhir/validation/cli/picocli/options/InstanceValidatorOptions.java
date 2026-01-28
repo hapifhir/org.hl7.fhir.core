@@ -223,4 +223,12 @@ public class InstanceValidatorOptions {
     arity = "2")
   @With
   public List<String> bundleValidationRules = null;
+
+  @CommandLine.Option(names = {"-max-validation-messages"},
+    description = """
+      The maximum amount of validation messages allowed before validation will be stopped. Any issues encountered at this point will be returned, but may not be completely accurate.
+      """,
+    arity = "1")
+  @With
+  public Integer maxValidationMessages = 0;
 }

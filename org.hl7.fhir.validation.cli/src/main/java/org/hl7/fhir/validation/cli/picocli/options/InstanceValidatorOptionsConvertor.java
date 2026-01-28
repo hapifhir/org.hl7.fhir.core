@@ -108,8 +108,9 @@ public class InstanceValidatorOptionsConvertor {
         final String profile = options.bundleValidationRules.get(i+1);
         instanceValidatorParameters.addBundleValidationRule(new BundleValidationRule().setRule(rule).setProfile(profile));
       }
-
     }
+
+    instanceValidatorParameters.setMaxValidationMessages(options.maxValidationMessages);
 
     return instanceValidatorParameters;
   }
