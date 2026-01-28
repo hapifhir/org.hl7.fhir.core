@@ -216,6 +216,23 @@ public class NpmPackage {
     return ver.matches("^[0-9]+\\.[0-9]+\\.[0-9]+$");
   }
 
+  public static boolean isValidNameWithVersion(String name, boolean optionalVersion) {
+    if (name == null || name.isEmpty()) {
+      return false;
+    }
+    if (name.contains("#")) {
+      String n = name.substring(0, name.indexOf("#"));
+      String v = name.substring(name.indexOf("#") + 1);
+      if (v == null || v.isEmpty()) {
+        return isValidName(n) && optionalVersion;
+      } else {
+        return isValidName(n) && (isValidVersion(v) || Utilities.existsInList(v, "current", "dev"));
+      }
+    } else {
+      return isValidName(name) && optionalVersion;
+    }
+  }
+
   public class NpmPackageFolder {
     private final String folderName;
     private Map<String, List<String>> types;

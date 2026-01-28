@@ -390,7 +390,7 @@ public class VersionUtilities {
     if (version == null) {
       return null;
     }
-    if (!isSemVer(version, true)) {
+    if (!isSemVerWithWildcards(version)) {
       return null;
     }
     return getMajMinPriv(version);
