@@ -210,14 +210,14 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         // run the test
         String err = tester.executeTest(tester.loader, suite, test, modes);
         if (err != null) {
-          outcome = OperationOutcomeUtilities.outcomeFromTextError(err);
+          outcome = OperationOutcomeUtilities.createError(err);
         } else {
           outcome = OperationOutcomeUtilities.createSuccess("Test passed");
         }
       }
       sendOperationOutcome(exchange, 200, outcome, getAcceptHeader(exchange));
     } catch (Exception e) {
-      OperationOutcome outcome = createErrorOperationOutcome("Testing failed: " + e.getMessage());
+      OperationOutcome outcome = OperationOutcomeUtilities.createError("Testing failed: " + e.getMessage());
       sendOperationOutcome(exchange, 500, outcome, getAcceptHeader(exchange));
     }
   }

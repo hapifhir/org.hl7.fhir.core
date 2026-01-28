@@ -100,24 +100,6 @@ public class BaseHTTPHandler {
     return CheckDisplayOption.valueOf(param);
   }
 
-  protected  OperationOutcome createSuccessOperationOutcome(String message) {
-    OperationOutcome outcome = new OperationOutcome();
-    OperationOutcome.OperationOutcomeIssueComponent issue = outcome.addIssue();
-    issue.setSeverity(OperationOutcome.IssueSeverity.INFORMATION);
-    issue.setCode(OperationOutcome.IssueType.INFORMATIONAL);
-    issue.setDiagnostics(message);
-    return outcome;
-  }
-
-  protected  OperationOutcome createErrorOperationOutcome(String message) {
-    OperationOutcome outcome = new OperationOutcome();
-    OperationOutcome.OperationOutcomeIssueComponent issue = outcome.addIssue();
-    issue.setSeverity(OperationOutcome.IssueSeverity.ERROR);
-    issue.setCode(OperationOutcome.IssueType.EXCEPTION);
-    issue.setDiagnostics(message);
-    return outcome;
-  }
-
   protected void sendOperationOutcome(HttpExchange exchange, int statusCode, OperationOutcome outcome, String format) throws IOException {
     try {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();

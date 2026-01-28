@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
@@ -54,7 +55,7 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
       bpWarnings = parseBestPracticeWarningLevel(params.get("bpWarnings"));
       displayOption = parseCheckDisplayOption(params.get("displayOption"));
     } catch (Exception e) {
-      OperationOutcome outcome = createErrorOperationOutcome("Operation failed: " + e.getMessage());
+      OperationOutcome outcome = OperationOutcomeUtilities.createError("Operation failed: " + e.getMessage());
       sendOperationOutcome(exchange, 400, outcome, getAcceptHeader(exchange));
       return;
     }
@@ -66,7 +67,7 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
       sendOperationOutcome(exchange, 200, outcome, getAcceptHeader(exchange));
 
     } catch (Throwable e) {
-      OperationOutcome outcome = createErrorOperationOutcome("Validation failed: " + e.getMessage());
+      OperationOutcome outcome = OperationOutcomeUtilities.createError("Validation failed: " + e.getMessage());
       sendOperationOutcome(exchange, 500, outcome, getAcceptHeader(exchange));
     }
   }

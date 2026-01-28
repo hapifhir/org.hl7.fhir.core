@@ -61,7 +61,7 @@ class StopHTTPHandler extends BaseHTTPHandler implements HttpHandler {
         System.exit(0); // Exit the JVM
       }).start();
     } catch (Exception e) {
-      OperationOutcome outcome = createErrorOperationOutcome("Testing failed: " + e.getMessage());
+      OperationOutcome outcome = OperationOutcomeUtilities.createError("Testing failed: " + e.getMessage());
       sendOperationOutcome(exchange, 500, outcome, getAcceptHeader(exchange));
     }
   }
