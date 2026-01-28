@@ -217,6 +217,9 @@ public class NpmPackage {
   }
 
   public static boolean isValidNameWithVersion(String name, boolean optionalVersion) {
+    if (name == null || name.isEmpty()) {
+      return false;
+    }
     if (name.contains("#")) {
       String n = name.substring(0, name.indexOf("#"));
       String v = name.substring(name.indexOf("#") + 1);
@@ -226,7 +229,7 @@ public class NpmPackage {
         return isValidName(n) && (isValidVersion(v) || Utilities.existsInList(v, "current", "dev"));
       }
     } else {
-      return isValidName(name);
+      return isValidName(name) && optionalVersion;
     }
   }
 
