@@ -2,8 +2,10 @@ package org.hl7.fhir.validation.service.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
+import org.hl7.fhir.validation.instance.ValidationTimeout;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
@@ -545,13 +547,12 @@ public class InstanceValidatorParameters {
 
   @SerializedName("timeout")
   @JsonProperty("timeout")
-  private long timeout = 0;
+  @Getter
+  private ValidationTimeout timeout = null;
 
-  public Long getTimeout() {
-    return timeout;
-  }
-
-  public InstanceValidatorParameters setTimeout(long timeout) {
+  @SerializedName("timeout")
+  @JsonProperty("timeout")
+  public InstanceValidatorParameters setTimeout(ValidationTimeout timeout) {
     this.timeout = timeout;
     return this;
   }

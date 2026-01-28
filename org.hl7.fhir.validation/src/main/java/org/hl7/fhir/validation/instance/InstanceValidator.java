@@ -569,7 +569,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   // time tracking
   @Setter
-  @Getter private long timeout = 0L; // Default validation time out equal to 0 seconds (disabled)
+  @Getter private ValidationTimeout timeout = null; // Default validation time out equal to 0 seconds (disabled)
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
@@ -1049,7 +1049,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     catch (TimeoutException te) {
       // Validation time out exceeded
-      final String formattedMessage = context.formatMessage(I18nConstants.VALIDATION_TIMEOUT_EXCEEDED, te.getTimeout());
+      final String formattedMessage = context.formatMessage(I18nConstants.VALIDATION_TIMEOUT_EXCEEDED, te.getTimeout(), timeout.getSource());
       ValidationMessage validationMessage = new ValidationMessage(Source.InstanceValidator, IssueType.PROCESSING, element.line(), element.col(), element.getName(),
           formattedMessage, IssueSeverity.WARNING);
       errors.add(validationMessage);
@@ -1106,8 +1106,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     executionId = UUID.randomUUID().toString();
     baseOnly = profiles.isEmpty();
     setParents(element);
-    // Start validation time out tracker; set timeout to global setting (default 0 disabled if not set)
-    timeTracker.initializeValidationTimeout(timeout);
+    // Start validation time out tracker; set timeout to global setting (default 0 if null)
+    timeTracker.initializeValidationTimeout(timeout == null ? 0 : timeout.getTimeoutMillis());
   }
 
   protected void debugElement(Element element, Logger log) throws IOException {

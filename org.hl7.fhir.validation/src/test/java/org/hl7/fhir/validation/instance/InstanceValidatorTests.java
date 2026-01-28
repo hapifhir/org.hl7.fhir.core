@@ -40,14 +40,14 @@ class InstanceValidatorTests {
   private IWorkerContext context;
 
   @Test
-  public void testCheckCodeOnServerNoStackLocale() throws InstanceValidator.CheckCodeOnServerException {
+  void testCheckCodeOnServerNoStackLocale() throws InstanceValidator.CheckCodeOnServerException {
     when(context.getLocale()).thenReturn(Locale.KOREA);
     NodeStack stack =mock(NodeStack.class);
     testCheckCodeOnServer(stack, "ko-KR");
   }
 
   @Test
-  public void testCheckCodeOnServerStackLocale() throws InstanceValidator.CheckCodeOnServerException {
+  void testCheckCodeOnServerStackLocale() throws InstanceValidator.CheckCodeOnServerException {
     NodeStack stack =mock(NodeStack.class);
     when(stack.getWorkingLang()).thenReturn("fr-CA");
     testCheckCodeOnServer(stack, "fr-CA");
@@ -120,9 +120,10 @@ class InstanceValidatorTests {
   @Test
   void testTimeoutParameter() {
     when(context.getVersion()).thenReturn("5.0.1");
+    final String dummyTimeoutSource = "Dummy Timeout Source";
     final String originalMessage = "Original Message";
     final String dummyTimeoutMessage = "Dummy Timeout Message";
-    when(context.formatMessage(I18nConstants.VALIDATION_TIMEOUT_EXCEEDED, 500L)).thenReturn(dummyTimeoutMessage);
+    when(context.formatMessage(I18nConstants.VALIDATION_TIMEOUT_EXCEEDED, 500L, dummyTimeoutSource)).thenReturn(dummyTimeoutMessage);
     InstanceValidator instanceValidator = new InstanceValidator(context, null, null, null, new ValidatorSettings()){
       protected void clearInternalState(Element element, List<StructureDefinition> profiles) {
         super.clearInternalState(element, profiles);
@@ -134,7 +135,8 @@ class InstanceValidatorTests {
       }
 
     };
-    instanceValidator.setTimeout(500);
+
+    instanceValidator.setTimeout(new ValidationTimeout(500, dummyTimeoutSource));
     List<ValidationMessage> messages = new ArrayList<>();
 
     messages.add(new ValidationMessage().setMessage(originalMessage));
