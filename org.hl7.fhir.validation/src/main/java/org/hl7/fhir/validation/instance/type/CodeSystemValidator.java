@@ -339,6 +339,7 @@ public class CodeSystemValidator extends BaseValidator {
             ukp = KnownProperty.EffectiveDate;
             break;
           case "http://hl7.org/fhir/concept-properties#deprecationDate" :
+          case "http://hl7.org/fhir/concept-properties#deprecated" : //FUT1-17898 Allow deprecated which exists in R4 but are deprecated in R5
             ukp = KnownProperty.DeprecationDate;
             break;
           case "http://hl7.org/fhir/concept-properties#retirementDate" :
@@ -391,6 +392,7 @@ public class CodeSystemValidator extends BaseValidator {
         ckp = KnownProperty.EffectiveDate;
         break;
       case "deprecationDate" :
+      case "deprecated" :         //FUT1-17898 Allow deprecated which exists in R4 but are derprecated in R5
         ckp = KnownProperty.DeprecationDate;
         break;
       case "retirementDate" :
