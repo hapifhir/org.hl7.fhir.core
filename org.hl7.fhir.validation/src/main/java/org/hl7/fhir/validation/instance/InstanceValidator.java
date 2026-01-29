@@ -1052,6 +1052,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       final String formattedMessage = context.formatMessage(I18nConstants.VALIDATION_TIMEOUT_EXCEEDED, te.getTimeout(), timeout.getSource());
       ValidationMessage validationMessage = new ValidationMessage(Source.InstanceValidator, IssueType.PROCESSING, element.line(), element.col(), element.getName(),
           formattedMessage, IssueSeverity.WARNING);
+
       errors.add(validationMessage);
     }
   }
@@ -6346,6 +6347,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (pctOwned) {
       pct.done();
     }
+
+    timeTracker.checkValidationTimeoutExceeded();
  
     if (defn.hasExtension(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
       for (Extension ext : defn.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
@@ -6364,7 +6367,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (pctOwned) {
             pct.done();
           }
-          
+
+          timeTracker.checkValidationTimeoutExceeded();
         }
       }
     }
@@ -6429,7 +6433,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     if (pctOwned) {
                       pct.done();
                     }
-                    
+
+                    timeTracker.checkValidationTimeoutExceeded();
                   }
                 }
               }
@@ -6456,6 +6461,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (pctOwned) {
               pct.done();
             }
+
+            timeTracker.checkValidationTimeoutExceeded();
           }
         }
       }
@@ -6498,9 +6505,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void resolveBundleReferences(Element element, List<Element> bundles) throws TimeoutException {
-
-    timeTracker.checkValidationTimeoutExceeded();
-
     if (!element.hasUserData(UserDataNames.validator_bundle_resolved)) {
       element.setUserData(UserDataNames.validator_bundle_resolved, true);
       List<Element> list = new ArrayList<Element>();
@@ -6518,9 +6522,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void resolveBundleReferencesInResource(List<Element> bundles, Element r, String fu) throws TimeoutException {
-
-    timeTracker.checkValidationTimeoutExceeded();
-
     if (BUNDLE.equals(r.fhirType())) {
       resolveBundleReferences(r, bundles);
     } else {
@@ -6597,7 +6598,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       List<ValidationMessage> localErrors = new ArrayList<ValidationMessage>();
       resTracker.startValidating(defn);
       trackUsage(defn, valContext, element);
-      ok = validateElement(valContext, localErrors, defn, defn.getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true, null, pct, mode) && ok;
+      try {
+        ok = validateElement(valContext, localErrors, defn, defn.getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true, null, pct, mode) && ok;
+      }
+      catch (TimeoutException te) {
+        // Intercept exception to allow processing of any localErrors
+        addMessagesReplaceExistingIfMoreSevere(errors, localErrors);
+        throw te;
+      }
       resTracker.storeOutcomes(defn, localErrors);
       addMessagesReplaceExistingIfMoreSevere(errors, localErrors);
     } else {
@@ -8278,10 +8286,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
 
-  public boolean checkInvariant(ValidationContext valContext, List<ValidationMessage> errors, String path, StructureDefinition profile, Element resource, Element element, ElementDefinitionConstraintComponent inv) throws FHIRException, TimeoutException {
-
-    timeTracker.checkValidationTimeoutExceeded();
-
+  public boolean checkInvariant(ValidationContext valContext, List<ValidationMessage> errors, String path, StructureDefinition profile, Element resource, Element element, ElementDefinitionConstraintComponent inv) throws FHIRException {
     if (IsExemptInvariant(path, element, inv)) {
       return true;
     }
