@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
@@ -119,8 +120,8 @@ public class CompliesWithChecker {
       List<DefinitionNavigator> processed = new ArrayList<DefinitionNavigator>();
       for (DefinitionNavigator anSlice : anChild.slices()) {
         String spath = cpath +":"+anSlice.current().getSliceName();
-        List<DataType> discriminatorValues = new ArrayList<>();
-        List<DefinitionNavigator> cnSlices = findMatchingSlices(cnChild.slices(), discriminators, anSlice, discriminatorValues);
+        List<DiscriminatorData> discriminatorValues = new ArrayList<>();
+        List<DefinitionNavigator> cnSlices = findMatchingSlices(messages, cpath, spath, cnChild.slices(), discriminators, anSlice, discriminatorValues);
         if (cnSlices.isEmpty() && anSlice.current().getSlicing().getRules() != SlicingRules.CLOSED) {
           // if it's closed, then we just don't have any. But if it's not closed, we need the slice
           messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath,
@@ -157,27 +158,27 @@ public class CompliesWithChecker {
     return b.toString();
   }
 
-  private String valuesToString(List<DataType> diffValues) {
+  private String valuesToString(List<DiscriminatorData> diffValues) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|"); 
-    for (DataType dt : diffValues) {
+    for (DiscriminatorData dt : diffValues) {
       if (dt != null) {
-        b.append(dt.toString());
+        b.append(dt.describe());
       }
     }
     return b.toString();
   }
 
-  private List<DefinitionNavigator> findMatchingSlices(List<DefinitionNavigator> slices, List<ElementDefinitionSlicingDiscriminatorComponent> discriminators, DefinitionNavigator anSlice, List<DataType> discriminatorValues) {
+  private List<DefinitionNavigator> findMatchingSlices(List<ValidationMessage> messages, String cpath, String spath, List<DefinitionNavigator> slices, List<ElementDefinitionSlicingDiscriminatorComponent> discriminators, DefinitionNavigator anSlice, List<DiscriminatorData> discriminatorValues) {
     List<DefinitionNavigator> list = new ArrayList<DefinitionNavigator>();
     for (ElementDefinitionSlicingDiscriminatorComponent ad : discriminators) {
       // first, determine the values for each of the discriminators in the authority slice
-      discriminatorValues.add(getDisciminatorValue(anSlice, ad));
+      discriminatorValues.add(getDisciminatorValue(messages, cpath, spath, anSlice, ad));
     }
     for (DefinitionNavigator slice : slices) {
-      List<DataType> values = new ArrayList<>();      
+      List<DiscriminatorData> values = new ArrayList<>();
       for (ElementDefinitionSlicingDiscriminatorComponent ad : discriminators) {
         // first, determine the values for each of the discriminators in the authority slice
-        values.add(getDisciminatorValue(slice, ad));
+        values.add(getDisciminatorValue(messages, cpath, spath, slice, ad));
       }
       boolean ok = true;
       for (int i = 0; i < discriminators.size(); i++) {
@@ -193,7 +194,7 @@ public class CompliesWithChecker {
     return list;
   }
 
-  private boolean isMatch(ElementDefinitionSlicingDiscriminatorComponent discriminator, DataType dt1, DataType dt2) {
+  private boolean isMatch(ElementDefinitionSlicingDiscriminatorComponent discriminator, DiscriminatorData dt1, DiscriminatorData dt2) {
     if (dt1 == null) {
       return dt2 == null;
     } else if (dt2 == null) {
@@ -202,11 +203,10 @@ public class CompliesWithChecker {
       switch (discriminator.getType()) {
       case EXISTS: return false;
       case NULL: return false;
-      case PATTERN: return dt1.equalsDeep(dt2); // todo
       case POSITION: return false;
       case PROFILE: 
-        StructureDefinition sd1 = context.fetchResource(StructureDefinition.class, dt1.primitiveValue());
-        StructureDefinition sd2 = context.fetchResource(StructureDefinition.class, dt2.primitiveValue());
+        StructureDefinition sd1 = context.fetchResource(StructureDefinition.class, dt1.value.primitiveValue());
+        StructureDefinition sd2 = context.fetchResource(StructureDefinition.class, dt2.value.primitiveValue());
         if (sd1 == null || sd2 == null) {
           return false;
         }
@@ -242,8 +242,23 @@ public class CompliesWithChecker {
           sde = context.fetchResource(StructureDefinition.class, sde.getBaseDefinition());
         }
         return false;
-      case TYPE: return dt1.primitiveValue().equals(dt2.primitiveValue());
-      case VALUE: return dt1.equalsDeep(dt2);
+      case TYPE: return dt1.value.primitiveValue().equals(dt2.value.primitiveValue());
+      case PATTERN:
+        if (dt1.value != null && dt2.value != null) {
+          return dt1.value.equalsDeep(dt2.value); // todo: revise this?
+        } else if (dt1.vs != null && dt2.vs != null) {
+          return ValueSetUtilities.expansionsOverlap(dt1.vs, dt2.vs);
+        } else {
+          return false;
+        }
+      case VALUE:
+        if (dt1.value != null && dt2.value != null) {
+          return dt1.value.equalsDeep(dt2.value);
+        } else if (dt1.vs != null && dt2.vs != null) {
+          return ValueSetUtilities.expansionsOverlap(dt1.vs, dt2.vs);
+        } else {
+          return false;
+        }
       default:
         return false;
       
@@ -251,15 +266,15 @@ public class CompliesWithChecker {
     }
   }
 
-  private DataType getDisciminatorValue(DefinitionNavigator anSlice, ElementDefinitionSlicingDiscriminatorComponent ad) {
+  private DiscriminatorData getDisciminatorValue(List<ValidationMessage> messages, String cpath, String spath, DefinitionNavigator anSlice, ElementDefinitionSlicingDiscriminatorComponent ad) {
     switch (ad.getType()) {
-    case EXISTS: return getExistsDiscriminatorValue(anSlice, ad.getPath());
+    case EXISTS: return new DiscriminatorData(getExistsDiscriminatorValue(anSlice, ad.getPath()));
     case NULL:throw new FHIRException("Discriminator type 'Null' Not supported yet");
     case POSITION:throw new FHIRException("Discriminator type 'Position' Not supported yet");
-    case PROFILE: return getProfileDiscriminatorValue(anSlice, ad.getPath());
-    case TYPE: return getTypeDiscriminatorValue(anSlice, ad.getPath());
+    case PROFILE: return new DiscriminatorData(getProfileDiscriminatorValue(anSlice, ad.getPath()));
+    case TYPE: return new DiscriminatorData(getTypeDiscriminatorValue(anSlice, ad.getPath()));
     case PATTERN:
-    case VALUE: return getValueDiscriminatorValue(anSlice, ad.getPath());
+    case VALUE: return getValueDiscriminatorValue(messages, cpath, spath, anSlice, ad.getPath());
     default:
       throw new FHIRException("Not supported yet");    
     }
@@ -298,14 +313,29 @@ public class CompliesWithChecker {
     return dt;
   }
   
-  private DataType getValueDiscriminatorValue(DefinitionNavigator anSlice, String path) {
+  private DiscriminatorData getValueDiscriminatorValue(List<ValidationMessage> messages, String cpath, String spath, DefinitionNavigator anSlice, String path) {
     DefinitionNavigator pathDN = getByPath(anSlice, path);
     if (pathDN == null) {
       return null;
     }
     ElementDefinition ed = pathDN.current();
     DataType dt = ed.hasFixed() ? ed.getFixed() : ed.getPattern();
-    return dt;
+    if (dt != null) {
+      return new DiscriminatorData(dt);
+    }
+    if (dt == null && ed.hasBinding() && ed.getBinding().getStrength() == BindingStrength.REQUIRED) {
+      ValueSetExpansionOutcome exp = context.expandVS(new ExpansionOptions().withHierarchical(false), ed.getBinding().getValueSet());
+      if (exp.isOk()) {
+        return new DiscriminatorData(exp.getValueset());
+      } else {
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, spath,
+          context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_NO_EXPAND, ed.getBinding().getValueSet(), exp.getError()), IssueSeverity.WARNING));
+        return null;
+      }
+    }
+    messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath,
+       context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_NO_VALUE, spath), IssueSeverity.ERROR));
+    return null;
   }
 
   private DefinitionNavigator getByPath(DefinitionNavigator focus, String path) {
@@ -614,5 +644,26 @@ public class CompliesWithChecker {
       }      
     }
     return true;
+  }
+
+  private class DiscriminatorData {
+    private ValueSet vs;
+    private DataType value;
+
+    public DiscriminatorData(DataType value) {
+      this.value = value;
+    }
+
+    public DiscriminatorData(ValueSet vs) {
+      this.vs = vs;
+    }
+
+    public String describe() {
+      if (value != null) {
+        return value.toString();
+      } else {
+        return vs.present();
+      }
+    }
   }
 }
