@@ -5,10 +5,13 @@ import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.validation.cli.picocli.OptionUtilities;
+import org.hl7.fhir.validation.instance.ValidationTimeout;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
+import picocli.CommandLine;
 
 public class InstanceValidatorOptionsConvertor {
   public InstanceValidatorParameters convert(InstanceValidatorOptions options) {
@@ -111,6 +114,9 @@ public class InstanceValidatorOptionsConvertor {
 
     }
 
+    if (options.validationTimeout != 0) {
+      instanceValidatorParameters.setTimeout(new ValidationTimeout(options.validationTimeout, "CLI option " + OptionUtilities.getFirstNameForField(InstanceValidatorOptions.class, "validationTimeout")));
+    }
     return instanceValidatorParameters;
   }
 
