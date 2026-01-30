@@ -1277,10 +1277,10 @@ public class FHIRPathEngine {
 
   private ExpressionNode organisePrecedence(FHIRLexer lexer, ExpressionNode node) {
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Times, Operation.DivideBy, Operation.Div, Operation.Mod)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate)); 
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Is, Operation.As));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Union)); 
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.LessThan, Operation.Greater, Operation.LessOrEqual, Operation.GreaterOrEqual));
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Is, Operation.As));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Equals, Operation.Equivalent, Operation.NotEquals, Operation.NotEquivalent));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.In, Operation.Contains, Operation.MemberOf));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.And));
