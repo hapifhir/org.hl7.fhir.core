@@ -554,15 +554,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   // used during the build process to keep the overall volume of messages down
   private boolean suppressLoincSnomedMessages;
 
-  public void setMaxValidationMessages(int maxValidationMessages) {
-    if (maxValidationMessages < 0) {
-      throw new IllegalArgumentException();
-    }
-    this.maxValidationMessages = maxValidationMessages;
-  }
-
-  @Getter
-  private int maxValidationMessages = 0;
+  @Getter @Setter
+  private ValidatorMaxMessages maxMessages = null;
 
   // time tracking
   private boolean noBindingMsgSuppressed;
@@ -655,7 +648,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setUnknownCodeSystemsCauseErrors(parameters.isUnknownCodeSystemsCauseErrors());
     setNoExperimentalContent(parameters.isNoExperimentalContent());
     setCheckIPSCodes(parameters.isCheckIPSCodes());
-    setMaxValidationMessages(parameters.getMaxValidationMessages());
+    setMaxMessages(parameters.getMaxValidationMessages());
   }
 
   @Override
@@ -1010,9 +1003,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     try {
       // If this is already a bounded list, or we're not limiting message size, don't bother wrapping it.
-      List<ValidationMessage> sizeLimitedErrors = maxValidationMessages == 0 || errors instanceof BoundedSizeList
+      List<ValidationMessage> sizeLimitedErrors = maxMessages == null || errors instanceof BoundedSizeList
         ? errors
-        : new BoundedSizeList<>(errors, maxValidationMessages);
+        : new BoundedSizeList<>(errors, maxMessages.getMaxMessages());
 
       long t = System.nanoTime();
       NodeStack stack = new NodeStack(context, null, element, validationLanguage);
@@ -1089,8 +1082,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     } catch (BoundedSizeList.BoundsExceededException boundsExceededException) {
       // Validation size limit exceeded.
+      final String formattedMessage = context.formatMessage(I18nConstants.VALIDATION_MAX_MESSAGES_EXCEEDED, boundsExceededException.getMaxSize(), maxMessages.getSource());
       ValidationMessage validationMessage = new ValidationMessage(Source.InstanceValidator, IssueType.PROCESSING, element.line(), element.col(), element.getName(),
-        "Validation process exceeded max message limit. Returned validation messages may be incomplete or inaccurate.", IssueSeverity.WARNING);
+        formattedMessage, IssueSeverity.WARNING);
       errors.set(errors.size() - 1, validationMessage);
     }
   }

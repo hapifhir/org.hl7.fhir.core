@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
+import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
@@ -546,17 +547,17 @@ public class InstanceValidatorParameters {
   @JsonProperty("maxValidationMessages")
   @SerializedName("maxValidationMessages")
   private
-  Integer maxValidationMessages = 0;
+  ValidatorMaxMessages maxValidationMessages = null;
 
   @SerializedName("maxValidationMessages")
   @JsonProperty("maxValidationMessages")
-  public Integer getMaxValidationMessages() {
+  public ValidatorMaxMessages getMaxValidationMessages() {
     return maxValidationMessages;
   }
 
   @SerializedName("maxValidationMessages")
   @JsonProperty("maxValidationMessages")
-  public InstanceValidatorParameters setMaxValidationMessages(Integer maxValidationMessages) {
+  public InstanceValidatorParameters setMaxValidationMessages(ValidatorMaxMessages maxValidationMessages) {
     this.maxValidationMessages = maxValidationMessages;
     return this;
   }

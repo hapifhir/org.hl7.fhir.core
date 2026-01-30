@@ -1,12 +1,17 @@
 package org.hl7.fhir.validation.instance.utils;
 
+import lombok.Getter;
+
 import java.util.*;
 
 public class BoundedSizeList<T> implements List<T> {
 
   public static class BoundsExceededException extends RuntimeException {
-    public BoundsExceededException(String message) {
+    @Getter
+    final int maxSize;
+    public BoundsExceededException(String message, int maxSize) {
       super(message);
+      this.maxSize = maxSize;
     }
   }
 
@@ -19,7 +24,7 @@ public class BoundedSizeList<T> implements List<T> {
     if (list.size() > maxSize) {
       this.list = new ArrayList<>();
       this.list.addAll(list.subList(0, maxSize));
-      throw new BoundsExceededException("Attempt to instantiate a list of size " + list.size() + " when max size is " + maxSize);
+      throw new BoundsExceededException("Attempt to instantiate a list of size " + list.size() + " when max size is " + maxSize, maxSize);
     }
     this.list = list;
 
@@ -27,7 +32,7 @@ public class BoundedSizeList<T> implements List<T> {
 
   private void checkIfCanAddWithinBounds() throws BoundsExceededException {
     if (list.size() + 1 > maxSize) {
-      throw new BoundsExceededException("Attempt to add an entry to list of size " + list.size() + " when max size is " + maxSize);
+      throw new BoundsExceededException("Attempt to add an entry to list of size " + list.size() + " when max size is " + maxSize, maxSize);
     }
   }
 
@@ -86,7 +91,7 @@ public class BoundedSizeList<T> implements List<T> {
       for (int i = 0; i < truncatedAddSize; i++) {
         list.add(iterator.next());
       }
-      throw new BoundsExceededException("Attempt to add " + c.size() + " entries to a list of size " + originalSize + " when max size is " + maxSize);
+      throw new BoundsExceededException("Attempt to add " + c.size() + " entries to a list of size " + originalSize + " when max size is " + maxSize, maxSize);
     }
     return list.addAll(c);
   }
@@ -100,7 +105,7 @@ public class BoundedSizeList<T> implements List<T> {
       for (int i = 0; i < truncatedAddSize; i++) {
         list.add(index + i, iterator.next());
       }
-      throw new BoundsExceededException("Attempt to add " + c.size() + " entries to a list of size " + originalSize + " when max size is " + maxSize);
+      throw new BoundsExceededException("Attempt to add " + c.size() + " entries to a list of size " + originalSize + " when max size is " + maxSize, maxSize);
     }
     return list.addAll(index, c);
   }

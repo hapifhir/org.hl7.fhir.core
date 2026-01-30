@@ -5,6 +5,8 @@ import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.validation.cli.picocli.OptionUtilities;
+import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
@@ -110,8 +112,9 @@ public class InstanceValidatorOptionsConvertor {
       }
     }
 
-    instanceValidatorParameters.setMaxValidationMessages(options.maxValidationMessages);
-
+    if (options.maxValidationMessages != 0) {
+      instanceValidatorParameters.setMaxValidationMessages(new ValidatorMaxMessages(options.maxValidationMessages, "CLI option " + OptionUtilities.getFirstNameForField(InstanceValidatorOptions.class, "maxValidationMessages")));
+    }
     return instanceValidatorParameters;
   }
 
