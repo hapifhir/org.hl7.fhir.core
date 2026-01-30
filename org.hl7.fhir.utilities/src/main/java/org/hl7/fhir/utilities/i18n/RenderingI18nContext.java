@@ -1151,7 +1151,19 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CS_VERSION_NOTHING_TEXT = "CS_VERSION_NOTHING_TEXT";
   public static final String STRUC_DEF_IMPLEMENTS = "STRUC_DEF_IMPLEMENTS";
   public static final String PROV_REFERENCE = "PROV_REFERENCE";
+  public static final String CONSENT_DATE = "CONSENT_DATE";
+  public static final String CONSENT_PERIOD = "CONSENT_PERIOD";
+  public static final String CONSENT_CATEGORY = "CONSENT_CATEGORY";
+  public static final String CONSENT_SCOPE = "CONSENT_SCOPE";
   public static final String GENERAL_IDENTIFIER = "GENERAL_IDENTIFIER";
+  public static final String CONSENT_PART_TBL_ROLE = "CONSENT_PART_TBL_ROLE";
+  public static final String CONSENT_PART_TBL_DETAILS = "CONSENT_PART_TBL_DETAILS";
+  public static final String CONSENT_PART_TBL_PATIENT = "CONSENT_PART_TBL_PATIENT";
+  public static final String CONSENT_PART_TBL_PARTY = "CONSENT_PART_TBL_PARTY";
+  public static final String CONSENT_PART_TBL_GRANTOR = "CONSENT_PART_TBL_GRANTOR";
+  public static final String CONSENT_PART_TBL_GRANTEE = "CONSENT_PART_TBL_GRANTEE";
+  public static final String CONSENT_PART_TBL_MANAGER = "CONSENT_PART_TBL_MANAGER";
+  public static final String CONSENT_PART_TBL_CONTROLLER = "CONSENT_PART_TBL_CONTROLLER";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
