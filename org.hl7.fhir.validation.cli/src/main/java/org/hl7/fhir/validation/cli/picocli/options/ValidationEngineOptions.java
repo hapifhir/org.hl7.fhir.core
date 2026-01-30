@@ -170,13 +170,13 @@ public class ValidationEngineOptions {
     A file that contains a public key, or a folder full of public keys to be used for validating digital signatures.
     Supports the formats jwks, PEM, and der
     """,
-    arity = "0..*")
+    arity = "1")
   @With
   public List<String> certSources = new ArrayList<>();
 
   @CommandLine.Option(names = {"-matchetype"},
     description = "File path for match type configuration",
-    arity = "0..*")
+    arity = "1")
   @With
   public List<String> matchetypes = new ArrayList<>();
 
