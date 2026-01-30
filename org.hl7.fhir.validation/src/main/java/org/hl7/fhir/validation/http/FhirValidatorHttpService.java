@@ -41,6 +41,7 @@ public class FhirValidatorHttpService {
     server = HttpServer.create(new InetSocketAddress(port), 0);
 
     server.createContext("/validateResource", new ValidateResourceHTTPHandler(this));
+    server.createContext("/loadIG", new LoadIGHTTPHandler(this));
     server.createContext("/txTest", new TxTestHTTPHandler(this));
     server.createContext("/stop", new StopHTTPHandler(this));
 

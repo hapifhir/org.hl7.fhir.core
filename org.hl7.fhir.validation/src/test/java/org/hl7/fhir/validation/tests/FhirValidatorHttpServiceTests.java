@@ -146,7 +146,7 @@ class FhirValidatorHttpServiceTest {
     assertEquals(500, response.statusCode());
 
     String ss = response.body().toString();
-    assertEquals(ss, "{\"resourceType\":\"OperationOutcome\",\"issue\":[{\"severity\":\"error\",\"code\":\"exception\",\"diagnostics\":\"Validation failed: Unable to resolve profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient\"}]}");
+    assertEquals("{\"resourceType\":\"OperationOutcome\",\"text\":{\"status\":\"generated\",\"div\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\">Validation failed: Unable to resolve profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient</div>\"},\"issue\":[{\"severity\":\"error\",\"code\":\"exception\",\"details\":{\"text\":\"Validation failed: Unable to resolve profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient\"}}]}", ss);
   }
 
   @Test
@@ -212,7 +212,7 @@ class FhirValidatorHttpServiceTest {
     // Assert
     assertEquals(400, response.statusCode());
     String ss = response.body().toString();
-    assertEquals(ss, "{\"resourceType\":\"OperationOutcome\",\"issue\":[{\"severity\":\"error\",\"code\":\"exception\",\"diagnostics\":\"Operation failed: No enum constant org.hl7.fhir.r5.utils.validation.constants.IdStatus.INVALID\"}]}");
+    assertEquals("{\"resourceType\":\"OperationOutcome\",\"text\":{\"status\":\"generated\",\"div\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\">Operation failed: No enum constant org.hl7.fhir.r5.utils.validation.constants.IdStatus.INVALID</div>\"},\"issue\":[{\"severity\":\"error\",\"code\":\"exception\",\"details\":{\"text\":\"Operation failed: No enum constant org.hl7.fhir.r5.utils.validation.constants.IdStatus.INVALID\"}}]}", ss);
   }
 
 
