@@ -114,8 +114,9 @@ public class InstanceValidatorOptionsConvertor {
 
     }
 
-    instanceValidatorParameters.setTimeout(new ValidationTimeout(options.validationTimeout, "CLI option " + OptionUtilities.getFirstNameForField(InstanceValidatorOptions.class, "validationTimeout")));
-
+    if (options.validationTimeout != 0) {
+      instanceValidatorParameters.setTimeout(new ValidationTimeout(options.validationTimeout, "CLI option " + OptionUtilities.getFirstNameForField(InstanceValidatorOptions.class, "validationTimeout")));
+    }
     return instanceValidatorParameters;
   }
 
