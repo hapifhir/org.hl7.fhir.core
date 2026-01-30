@@ -925,6 +925,9 @@ public class VersionUtilities {
     }
     SemverParser.ParseResult parsedCriteria = SemverParser.parseSemver(criteria, true, false);
     if (!parsedCriteria.isSuccess()) {
+      if (Utilities.existsInList(criteria, "current", "dev")) {
+        return false;
+      }
       throw new FHIRException("Invalid criteria: " + criteria+": ("+parsedCriteria.getError()+")");
     }
     SemverParser.ParseResult parsedCandidate = SemverParser.parseSemver(candidate, false, false);

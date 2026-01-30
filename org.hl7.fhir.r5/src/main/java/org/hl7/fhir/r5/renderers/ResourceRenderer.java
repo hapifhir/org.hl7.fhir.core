@@ -1209,6 +1209,15 @@ public abstract class ResourceRenderer extends DataRenderer {
       renderDataType(status, tr.td(), cr.extensionValue("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
+    if (cr.has("identifier")) {
+      tr = tbl.tr();
+      markBoilerplate(tr.td()).tx(context.formatPhrasePlural(cr.children("identifier").size(), RenderingContext.GENERAL_IDENTIFIER)+":");
+      XhtmlNode td = xlinkNarrative(tr.td(), cr.child("identifier"));
+      for (ResourceWrapper r : cr.children("identifier")) {
+        td.sep(", ");
+        renderDataType(status, td, r);
+      }
+    }
     String name = context.getTranslated(cr.child("name"));
     String title = context.getTranslated(cr.child("title"));
     
