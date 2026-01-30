@@ -117,7 +117,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     addMarkdown(x, processRelativeUrls(text, path)); 
   } 
 
-  protected void addMarkdown(XhtmlNode x, String text) throws FHIRFormatError, IOException, DefinitionException { 
+  public void addMarkdown(XhtmlNode x, String text) throws FHIRFormatError, IOException, DefinitionException { 
     if (text != null) { 
       // 1. custom FHIR extensions 
       while (text.contains("[[[")) { 
