@@ -550,7 +550,19 @@ public class ValueSetUtilities extends TerminologyUtilities {
   }
 
   private static boolean matches(ValueSetExpansionContainsComponent c1, ValueSetExpansionContainsComponent c2) {
-    return c1.getSystem().equals(c2.getSystem()) && c1.getCode().equals(c2.getCode());
+    return stringsMatch(c1.getSystem(), c2.getSystem(), false) && stringsMatch(c1.getVersion(), c2.getVersion(), true) && stringsMatch(c1.getCode(), c2.getCode(), false);
+  }
+
+  private static boolean stringsMatch(String s1, String s2, boolean defForNull) {
+    if (s1 == null || s2 == null) {
+      if (s1 == s2) {
+        return defForNull;
+      } else {
+        return false;
+      }
+    } else {
+      return s1.equals(s2);
+    }
   }
 
 }
