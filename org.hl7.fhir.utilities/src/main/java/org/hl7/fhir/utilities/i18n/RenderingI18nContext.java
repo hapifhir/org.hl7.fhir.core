@@ -1151,6 +1151,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CS_VERSION_NOTHING_TEXT = "CS_VERSION_NOTHING_TEXT";
   public static final String STRUC_DEF_IMPLEMENTS = "STRUC_DEF_IMPLEMENTS";
   public static final String PROV_REFERENCE = "PROV_REFERENCE";
+  public static final String GENERAL_IDENTIFIER = "GENERAL_IDENTIFIER";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
