@@ -6505,6 +6505,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void resolveBundleReferences(Element element, List<Element> bundles) throws TimeoutException {
+    timeTracker.checkValidationTimeoutExceeded();
     if (!element.hasUserData(UserDataNames.validator_bundle_resolved)) {
       element.setUserData(UserDataNames.validator_bundle_resolved, true);
       List<Element> list = new ArrayList<Element>();
@@ -6522,6 +6523,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private void resolveBundleReferencesInResource(List<Element> bundles, Element r, String fu) throws TimeoutException {
+    timeTracker.checkValidationTimeoutExceeded();
     if (BUNDLE.equals(r.fhirType())) {
       resolveBundleReferences(r, bundles);
     } else {
@@ -6604,7 +6606,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       catch (TimeoutException te) {
         // Intercept exception to allow processing of any localErrors
         addMessagesReplaceExistingIfMoreSevere(errors, localErrors);
-        throw te;
+        throw new TimeoutException(te, this.timeout.getTimeoutMillis());
       }
       resTracker.storeOutcomes(defn, localErrors);
       addMessagesReplaceExistingIfMoreSevere(errors, localErrors);
