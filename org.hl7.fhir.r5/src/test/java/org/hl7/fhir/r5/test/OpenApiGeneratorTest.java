@@ -37,6 +37,15 @@ public class OpenApiGeneratorTest {
     });
   }
 
+  @Test
+  void testExtendedOperations() {
+    assertDoesNotThrow(() -> {
+      InputStream sfn = TestingUtilities.loadTestResourceStream("r5", "openapi", "cs-r5-extended.json");
+      String dfn = TestingUtilities.tempFile("openapi", "swagger-extended.json");
+      run(sfn, dfn);
+    });
+  }
+
   public void run(InputStream sfn, String dfn) throws IOException, FHIRFormatError, FileNotFoundException {
     CapabilityStatement cs = (CapabilityStatement) new JsonParser().parse(sfn);
     Writer oa = new Writer(ManagedFileAccess.outStream(dfn));

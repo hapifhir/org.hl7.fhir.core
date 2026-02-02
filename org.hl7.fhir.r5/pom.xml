@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>org.hl7.fhir.core</artifactId>
-		<version>6.7.11-SNAPSHOT</version>
+		<version>6.7.12-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -205,7 +205,7 @@
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml-mit</artifactId>
-            <version>1.2023.9</version>
+            <version>1.2026.1</version>
             <scope>compile</scope>
         </dependency>
         

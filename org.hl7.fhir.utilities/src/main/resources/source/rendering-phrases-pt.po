@@ -47,6 +47,7 @@ msgstr "Todas as repetições"
 
 # ADD_BIND_ANY
 #: ADD_BIND_ANY
+msgctxt "ADD_BIND_ANY"
 msgid "Any"
 msgstr "Qualquer"
 
@@ -994,6 +995,234 @@ msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
 msgstr ""
 
+# CONF_MAY
+#: CONF_MAY
+msgctxt "CONF_MAY"
+msgid "MAY"
+msgstr ""
+
+# CONF_MAY_PLURAL
+#: CONF_MAY_PLURAL
+msgctxt "CONF_MAY_PLURAL"
+msgid "MAY"
+msgstr ""
+
+# CONF_SHALL
+#: CONF_SHALL
+msgctxt "CONF_SHALL"
+msgid "SHALL"
+msgstr ""
+
+# CONF_SHALLNOT
+#: CONF_SHALLNOT
+msgctxt "CONF_SHALLNOT"
+msgid "SHALL NOT"
+msgstr ""
+
+# CONF_SHALLNOT_PLURAL
+#: CONF_SHALLNOT_PLURAL
+msgctxt "CONF_SHALLNOT_PLURAL"
+msgid "SHALL NOT"
+msgstr ""
+
+# CONF_SHALL_PLURAL
+#: CONF_SHALL_PLURAL
+msgctxt "CONF_SHALL_PLURAL"
+msgid "SHALL"
+msgstr ""
+
+# CONF_SHOULD
+#: CONF_SHOULD
+msgctxt "CONF_SHOULD"
+msgid "SHOULD"
+msgstr ""
+
+# CONF_SHOULDNOT
+#: CONF_SHOULDNOT
+msgctxt "CONF_SHOULDNOT"
+msgid "SHOULD NOT"
+msgstr ""
+
+# CONF_SHOULDNOT_PLURAL
+#: CONF_SHOULDNOT_PLURAL
+msgctxt "CONF_SHOULDNOT_PLURAL"
+msgid "SHOULD NOT"
+msgstr ""
+
+# CONF_SHOULD_PLURAL
+#: CONF_SHOULD_PLURAL
+msgctxt "CONF_SHOULD_PLURAL"
+msgid "SHOULD"
+msgstr ""
+
+# CONSENT_CATEGORY
+#: CONSENT_CATEGORY
+msgid "Category"
+msgid_plural "Categories"
+msgstr[0] ""
+msgstr[1] ""
+
+# CONSENT_DATE
+#: CONSENT_DATE
+msgid "Agreement Date"
+msgstr ""
+
+# CONSENT_PART_TBL_CONTROLLER
+#: CONSENT_PART_TBL_CONTROLLER
+msgid "Controller"
+msgstr ""
+
+# CONSENT_PART_TBL_DETAILS
+#: CONSENT_PART_TBL_DETAILS
+msgctxt "CONSENT_PART_TBL_DETAILS"
+msgid "Details"
+msgstr ""
+
+# CONSENT_PART_TBL_GRANTEE
+#: CONSENT_PART_TBL_GRANTEE
+msgid "Grantee"
+msgstr ""
+
+# CONSENT_PART_TBL_GRANTOR
+#: CONSENT_PART_TBL_GRANTOR
+msgid "Grantor"
+msgstr ""
+
+# CONSENT_PART_TBL_MANAGER
+#: CONSENT_PART_TBL_MANAGER
+msgid "Manager"
+msgstr ""
+
+# CONSENT_PART_TBL_PARTY
+#: CONSENT_PART_TBL_PARTY
+msgid "Party"
+msgstr ""
+
+# CONSENT_PART_TBL_PATIENT
+#: CONSENT_PART_TBL_PATIENT
+msgid "Patient"
+msgstr ""
+
+# CONSENT_PART_TBL_ROLE
+#: CONSENT_PART_TBL_ROLE
+msgctxt "CONSENT_PART_TBL_ROLE"
+msgid "Role"
+msgstr ""
+
+# CONSENT_PERIOD
+#: CONSENT_PERIOD
+msgid "Applicable Period"
+msgstr ""
+
+# CONSENT_SCOPE
+#: CONSENT_SCOPE
+msgctxt "CONSENT_SCOPE"
+msgid "Scope"
+msgid_plural "Scopes"
+msgstr[0] ""
+msgstr[1] ""
+
+# CSREQ_DESC
+#: CSREQ_DESC
+msgid "Conformance statements found throughout the narrative of the IG consolidated into this computable resource for traceability purposes"
+msgstr ""
+
+# CSREQ_TITLE
+#: CSREQ_TITLE
+msgid "Narrative Conformance Statements"
+msgstr ""
+
+# CSTABLE_CLEAR_FILTERS
+#: CSTABLE_CLEAR_FILTERS
+msgid "Clear Filters"
+msgstr ""
+
+# CSTABLE_COND_ANY
+#: CSTABLE_COND_ANY
+msgctxt "CSTABLE_COND_ANY"
+msgid "Any"
+msgstr ""
+
+# CSTABLE_COND_NO
+#: CSTABLE_COND_NO
+msgid "No"
+msgstr ""
+
+# CSTABLE_COND_YES
+#: CSTABLE_COND_YES
+msgid "Yes"
+msgstr ""
+
+# CSTABLE_HEAD_ACTOR
+#: CSTABLE_HEAD_ACTOR
+msgid "Actor{1}"
+msgid_plural "Actors{1}"
+msgstr[0] ""
+msgstr[1] ""
+
+# CSTABLE_HEAD_CAT
+#: CSTABLE_HEAD_CAT
+msgid "Category{1}"
+msgid_plural "Categories{1}"
+msgstr[0] ""
+msgstr[1] ""
+
+# CSTABLE_HEAD_COND
+#: CSTABLE_HEAD_COND
+msgid "Conditional?"
+msgstr ""
+
+# CSTABLE_HEAD_EXPECT
+#: CSTABLE_HEAD_EXPECT
+msgid "Expectation"
+msgstr ""
+
+# CSTABLE_HEAD_ID
+#: CSTABLE_HEAD_ID
+msgctxt "CSTABLE_HEAD_ID"
+msgid "Id"
+msgstr ""
+
+# CSTABLE_HEAD_RULE
+#: CSTABLE_HEAD_RULE
+msgid "Rule"
+msgstr ""
+
+# CSTABLE_TITLE_ACTOR
+#: CSTABLE_TITLE_ACTOR
+msgid "Filter to only statements that apply to the specified actor(s)"
+msgstr ""
+
+# CSTABLE_TITLE_CAT
+#: CSTABLE_TITLE_CAT
+msgid "Filter to only statements that apply to the specified category(ies)"
+msgstr ""
+
+# CSTABLE_TITLE_CLEAR
+#: CSTABLE_TITLE_CLEAR
+msgid "Clear the Filter"
+msgstr ""
+
+# CSTABLE_TITLE_COND
+#: CSTABLE_TITLE_COND
+msgid "Filter to only statements that are conditional, not conditional, or no constraint"
+msgstr ""
+
+# CSTABLE_TITLE_EXPECT
+#: CSTABLE_TITLE_EXPECT
+msgid "Filter to only statements with one of the selected expectation type(s)"
+msgstr ""
+
+# CSTABLE_TITLE_ID
+#: CSTABLE_TITLE_ID
+msgid "Filter to only statements with ids that contain the specified text"
+msgstr ""
+
+# CSTABLE_TITLE_RULE
+#: CSTABLE_TITLE_RULE
+msgid "Filter to only statements that contain the specified text"
+msgstr ""
+
 # CS_VERSION_NOTHING_TEXT
 #: CS_VERSION_NOTHING_TEXT
 msgid "Not Stated (use latest from terminology server)"
@@ -1495,6 +1724,7 @@ msgstr "para"
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
 #, fuzzy
+msgctxt "DIAG_REP_REND_IDENTIFIER"
 msgid "Identifier"
 msgstr "Identificador"
 
@@ -1858,6 +2088,7 @@ msgstr "Descrição e condicionalismos"
 # GENERAL_DETAILS
 #: GENERAL_DETAILS
 #, fuzzy
+msgctxt "GENERAL_DETAILS"
 msgid "Details"
 msgstr "Detalhes"
 
@@ -1897,6 +2128,14 @@ msgstr "Valor fixo: {0}"
 #, fuzzy
 msgid "Flags"
 msgstr "Bandeiras"
+
+# GENERAL_IDENTIFIER
+#: GENERAL_IDENTIFIER
+msgctxt "GENERAL_IDENTIFIER"
+msgid "Identifier"
+msgid_plural "Identifiers"
+msgstr[0] ""
+msgstr[1] ""
 
 # GENERAL_LOCATION
 #: GENERAL_LOCATION
@@ -2471,6 +2710,7 @@ msgstr "Perfil de Parâmetros de saída:"
 # OP_DEF_SCO
 #: OP_DEF_SCO
 #, fuzzy
+msgctxt "OP_DEF_SCO"
 msgid "Scope"
 msgstr "Âmbito de aplicação"
 
@@ -2859,9 +3099,15 @@ msgstr "Proveniência de:"
 msgid "Recorded"
 msgstr "Gravado"
 
+# PROV_REFERENCE
+#: PROV_REFERENCE
+msgid "This {0} is referenced from the following provenance resources:"
+msgstr ""
+
 # PROV_ROLE
 #: PROV_ROLE
 #, fuzzy
+msgctxt "PROV_ROLE"
 msgid "Role"
 msgstr "Papel"
 
@@ -4874,6 +5120,7 @@ msgstr "Grau"
 # STRUC_DEF_ID
 #: STRUC_DEF_ID
 #, fuzzy
+msgctxt "STRUC_DEF_ID"
 msgid "Id"
 msgstr "Id"
 

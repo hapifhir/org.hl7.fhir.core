@@ -18,10 +18,9 @@ v: {
   "system" : "http://hl7.org/fhir/ValueSet/icd-10",
   "severity" : "error",
   "error" : "The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/icd-10')",
-  "class" : "CODESYSTEM_UNSUPPORTED",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n16 16   : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n16 0    : 0ms  : Parameters: disp-lang=en-US\r\n16 0    : 0ms  : Prepare include: \"()\"\r\n16 0    : 0ms  : Validate \"[http://hl7.org/fhir/ValueSet/icd-10#N801 (\"\")]\"\r\n16 0    : 0ms  : Check \"http://hl7.org/fhir/ValueSet/icd-10#N801\"\r\n16 0    : 0ms  : Didn't find CodeSystem \"http://hl7.org/fhir/ValueSet/icd-10\"\r\n",
-  "unknown-systems" : "http://hl7.org/fhir/ValueSet/icd-10",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{

@@ -1195,9 +1195,29 @@ msgstr "concept mapに大量のcodeが含まれるため、バリデーション
 msgid "The presence of the concept ''{1}'' in the system ''{0}'' in the value set {3} is marked with a status of {2} and its use should be reviewed"
 msgstr ""
 
+# CONFORMANCE_STATEMENT_DUP
+#: CONFORMANCE_STATEMENT_DUP
+msgid "There are multiple conformance statements for the language {0} with the same id: {1}"
+msgstr ""
+
+# CONFORMANCE_STATEMENT_DUPHOME
+#: CONFORMANCE_STATEMENT_DUPHOME
+msgid "There are multiple conformance statement table stubs for language {0}.  Locations include {1} and {2}."
+msgstr ""
+
+# CONFORMANCE_STATEMENT_NOCONFWORD
+#: CONFORMANCE_STATEMENT_NOCONFWORD
+msgid "Unable to find a conformance word for the language {0} in the text \"{1}\", so conformance statement not extracted."
+msgstr ""
+
+# CONFORMANCE_STATEMENT_NOSUMMARY
+#: CONFORMANCE_STATEMENT_NOSUMMARY
+msgid "No summary provided for conformance statement {0} for language {1}."
+msgstr ""
+
 # CONFORMANCE_STATEMENT_WORD
 #: CONFORMANCE_STATEMENT_WORD
-msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause"
+msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause: ''{1}''"
 msgstr ""
 
 # CONTAINED_ORPHAN_DOM3
@@ -2892,7 +2912,7 @@ msgstr ""
 
 # NO_VALID_DISPLAY_AT_ALL
 #: NO_VALID_DISPLAY_AT_ALL
-msgid "Cannot validate display Name ''{0}'' for {1}#{2}: No displays are known"
+msgid "Cannot validate display ''{0}'' for {1}#{2} in language {3}: No displays are known"
 msgstr ""
 
 # NO_VALID_DISPLAY_FOUND
@@ -2923,7 +2943,7 @@ msgstr ""
 
 # NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
 #: NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
-msgid "There are no valid display names found for the code {1}#{2} for language(s) ''{3}''. The display is ''{4}'' the default language display"
+msgid "There are no valid display names found for the code {1}#{2} for language(s) ''{3}''. The display is ''{4}'' which is the default language display"
 msgstr ""
 
 # Named_items_are_out_of_order_in_the_slice
@@ -3047,6 +3067,11 @@ msgstr "このオブジェクトはJsonでキー付き配列として定義さ�
 #: OBJECT_CANNOT_BE_KEYED_ARRAY_PROP_TYPE
 msgid "This object is defined as a keyed Array in Json but the key property named in the definitions is not a primitive type (children = {0}, type = {1})"
 msgstr "このオブジェクトはJsonでキー付き配列として定義されていますが、定義内で名前付けされたキープロパティはプリミティブ型ではありません（子供 = {0}、タイプ = {1}）"
+
+# OPDEF_CIRCULAR_DEFINITION
+#: OPDEF_CIRCULAR_DEFINITION
+msgid "The definition of the Operation is circular - it depends on itself (url = ''{0}'', from ''{1}'')"
+msgstr ""
 
 # OPDEF_PROFILE_NOT_FOUND
 #: OPDEF_PROFILE_NOT_FOUND
@@ -3185,9 +3210,19 @@ msgstr ""
 msgid "Mismatch in slicing at {0}: extra slice ''{1}'' not found in the claimed profile"
 msgstr ""
 
+# PROFILE_COMPLIES_WITH_SLICING_NO_EXPAND
+#: PROFILE_COMPLIES_WITH_SLICING_NO_EXPAND
+msgid "The ValueSet ''{0}'' cannot be expanded so the claim cannot be checked (''{1}'')"
+msgstr ""
+
 # PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
 #: PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
 msgid "Mismatch in slicing at {0}: no slice found for the discriminator {1} with the values {2}"
+msgstr ""
+
+# PROFILE_COMPLIES_WITH_SLICING_NO_VALUE
+#: PROFILE_COMPLIES_WITH_SLICING_NO_VALUE
+msgid "No fixed or pattern value or required binding was found, so the claim cannot be checked"
 msgstr ""
 
 # PROFILE_COMPLIES_WITH_SLICING_ORDER
@@ -4018,6 +4053,11 @@ msgstr ""
 # SD_BASE_EXPERIMENTAL
 #: SD_BASE_EXPERIMENTAL
 msgid "The definition builds on ''{0}'' which is experimental, but this definition is not labeled as experimental"
+msgstr ""
+
+# SD_CIRCULAR_DEFINITION
+#: SD_CIRCULAR_DEFINITION
+msgid "The definition of the Structure is circular - it depends on itself (url = ''{0}'', from ''{1}'')"
 msgstr ""
 
 # SD_CONSTRAINED_KIND_NO_MATCH
@@ -4881,6 +4921,11 @@ msgstr "!!URIが''{0}''のCodeSystemの定義にはcodeが提供されていな�
 #: TERMINOLOGY_TX_SYSTEM_NO_CODE
 msgid "A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "!!systemが提供されていないコードは定義された意味がありません。systemを提供する必要があります"
+
+# TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
+#: TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
+msgid "The code cannot be checked because codeSystem ''{0}'' version ''{1}'' is not supported ({2})"
+msgstr ""
 
 # TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
 #: TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
@@ -5911,7 +5956,7 @@ msgstr "!!system''{1}''で未知のコード''{0}'' - CodeSystemは断片とし�
 
 # UNKNOWN_PROPERTY
 #: UNKNOWN_PROPERTY
-msgid "Unknown property name {0} in path {1}2"
+msgid "Unknown property name {0} in path {1}"
 msgstr ""
 
 # UNRECOGNISED_PROPERTY_TYPE
@@ -6143,6 +6188,11 @@ msgstr "system''{1}''で未知のコード''{0}''"
 #: Unknown_Code_in_Version
 msgid "Unknown code ''{0}'' in the CodeSystem ''{1}'' version ''{2}''"
 msgstr "system''{1}''で未知のコード''{0}''"
+
+# Unknown_Code_in_Version_SCT
+#: Unknown_Code_in_Version_SCT
+msgid "Unknown code ''{0}'' in the CodeSystem ''{1}'' version ''{2}'' ({3})"
+msgstr ""
 
 # Unknown_Data_format_
 #: Unknown_Data_format_

@@ -32,6 +32,7 @@ package org.hl7.fhir.r5.terminologies.client;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -62,6 +63,7 @@ public interface ITerminologyClient {
   ITerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
   int getRetryCount() throws FHIRException;
   ITerminologyClient setRetryCount(int retryCount) throws FHIRException;
+  ITerminologyClient setFormat(ResourceFormat fmt) throws FHIRException;
   CapabilityStatement getCapabilitiesStatement() throws FHIRException;
   CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
   Parameters lookupCode(Map<String, String> params) throws FHIRException;

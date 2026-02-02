@@ -20,7 +20,6 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCode
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 
-import org.hl7.fhir.utilities.ENoDump;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
 

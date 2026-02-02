@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities.i18n;
 
-
 public class RenderingI18nContext extends I18nBase {
 
   public static final String ACTOR_DEF_ACT = "ACTOR_DEF_ACT";
@@ -147,6 +146,25 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CAPABILITY_VREAD_INT = "CAPABILITY_VREAD_INT";
   public static final String CAPABILTY_ALLOW_CAP = "CAPABILTY_ALLOW_CAP";
   public static final String CAPABILTY_SHALL_SUPP = "CAPABILTY_SHALL_SUPP";
+  public static final String CSREQ_TITLE = "CSREQ_TITLE";
+  public static final String CSREQ_DESC = "CSREQ_DESC";
+  public static final String CSTABLE_HEAD_ID = "CSTABLE_HEAD_ID";
+  public static final String CSTABLE_HEAD_EXPECT = "CSTABLE_HEAD_EXPECT";
+  public static final String CSTABLE_HEAD_COND = "CSTABLE_HEAD_COND";
+  public static final String CSTABLE_HEAD_ACTOR = "CSTABLE_HEAD_ACTOR";
+  public static final String CSTABLE_HEAD_CAT = "CSTABLE_HEAD_CAT";
+  public static final String CSTABLE_HEAD_RULE = "CSTABLE_HEAD_RULE";
+  public static final String CSTABLE_TITLE_ID = "CSTABLE_TITLE_ID";
+  public static final String CSTABLE_TITLE_EXPECT = "CSTABLE_TITLE_EXPECT";
+  public static final String CSTABLE_TITLE_COND = "CSTABLE_TITLE_COND";
+  public static final String CSTABLE_TITLE_ACTOR = "CSTABLE_TITLE_ACTOR";
+  public static final String CSTABLE_TITLE_CAT = "CSTABLE_TITLE_CAT";
+  public static final String CSTABLE_TITLE_RULE = "CSTABLE_TITLE_RULE";
+  public static final String CSTABLE_TITLE_CLEAR = "CSTABLE_TITLE_CLEAR";
+  public static final String CSTABLE_COND_YES = "CSTABLE_COND_YES";
+  public static final String CSTABLE_COND_NO = "CSTABLE_COND_NO";
+  public static final String CSTABLE_COND_ANY = "CSTABLE_COND_ANY";
+  public static final String CSTABLE_CLEAR_FILTERS = "CSTABLE_CLEAR_FILTERS";  
   public static final String CODESYSTEM_CONCEPTS = "CODESYSTEM_CONCEPTS";
   public static final String CODESYSTEM_CONTENT_COMPLETE = "CODESYSTEM_CONTENT_COMPLETE";
   public static final String CODESYSTEM_CONTENT_EXAMPLE = "CODESYSTEM_CONTENT_EXAMPLE";
@@ -200,6 +218,16 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONC_MAP_TRGT_CARD = "CONC_MAP_TRGT_CARD";
   public static final String CONC_MAP_TRGT_TYPE = "CONC_MAP_TRGT_TYPE";
   public static final String CONC_MAP_TRGT_DET = "CONC_MAP_TRGT_DET";
+  public static final String CONF_SHALL = "CONF_SHALL";
+  public static final String CONF_SHALLNOT = "CONF_SHALLNOT";
+  public static final String CONF_SHOULD = "CONF_SHOULD";
+  public static final String CONF_SHOULDNOT = "CONF_SHOULDNOT";
+  public static final String CONF_MAY = "CONF_MAY";
+  public static final String CONF_SHALL_PLURAL = "CONF_SHALL_PLURAL";
+  public static final String CONF_SHALLNOT_PLURAL = "CONF_SHALLNOT_PLURAL";
+  public static final String CONF_SHOULD_PLURAL = "CONF_SHOULD_PLURAL";
+  public static final String CONF_SHOULDNOT_PLURAL = "CONF_SHOULDNOT_PLURAL";
+  public static final String CONF_MAY_PLURAL = "CONF_MAY_PLURAL";
   public static final String DATA_REND_AFTRBKFST = "DATA_REND_AFTRBKFST";
   public static final String DATA_REND_AFTRDINR = "DATA_REND_AFTRDINR";
   public static final String DATA_REND_AFTRLUNCH = "DATA_REND_AFTRLUNCH";
@@ -1123,6 +1151,19 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CS_VERSION_NOTHING_TEXT = "CS_VERSION_NOTHING_TEXT";
   public static final String STRUC_DEF_IMPLEMENTS = "STRUC_DEF_IMPLEMENTS";
   public static final String PROV_REFERENCE = "PROV_REFERENCE";
+  public static final String CONSENT_DATE = "CONSENT_DATE";
+  public static final String CONSENT_PERIOD = "CONSENT_PERIOD";
+  public static final String CONSENT_CATEGORY = "CONSENT_CATEGORY";
+  public static final String CONSENT_SCOPE = "CONSENT_SCOPE";
+  public static final String GENERAL_IDENTIFIER = "GENERAL_IDENTIFIER";
+  public static final String CONSENT_PART_TBL_ROLE = "CONSENT_PART_TBL_ROLE";
+  public static final String CONSENT_PART_TBL_DETAILS = "CONSENT_PART_TBL_DETAILS";
+  public static final String CONSENT_PART_TBL_PATIENT = "CONSENT_PART_TBL_PATIENT";
+  public static final String CONSENT_PART_TBL_PARTY = "CONSENT_PART_TBL_PARTY";
+  public static final String CONSENT_PART_TBL_GRANTOR = "CONSENT_PART_TBL_GRANTOR";
+  public static final String CONSENT_PART_TBL_GRANTEE = "CONSENT_PART_TBL_GRANTEE";
+  public static final String CONSENT_PART_TBL_MANAGER = "CONSENT_PART_TBL_MANAGER";
+  public static final String CONSENT_PART_TBL_CONTROLLER = "CONSENT_PART_TBL_CONTROLLER";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";

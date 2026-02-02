@@ -20,7 +20,7 @@ v: {
   "error" : "Unknown code 'E10.3211+TT1.2' in the CodeSystem 'http://hl7.org/fhir/sid/icd-10-cm' version '2024'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0 0 : start\r\n0 0     : 0ms  : Analysing http://hl7.org/fhir/ValueSet/@all for validation purposes\r\n0 0     : 0ms  : Parameters: disp-lang=en-US\r\n0 0     : 0ms  : Prepare include: \"()\"\r\n0 0     : 0ms  : Validate \"[http://hl7.org/fhir/sid/icd-10-cm#E10.3211+TT1.2 (\"\")]\"\r\n0 0     : 0ms  : Check \"http://hl7.org/fhir/sid/icd-10-cm#E10.3211+TT1.2\"\r\n0 0     : 0ms  : Using CodeSystem \"http://hl7.org/fhir/sid/icd-10-cm|2024 (from fhir.tx.support.r4#0.32.0)\" (content = complete)\r\n",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/sid/icd-10-cm/vs|2024: Validate \"[undefined|undefined#E10.3211+TT1.2 (\"undefined\")]\"\n1ms http://hl7.org/fhir/sid/icd-10-cm/vs|2024: Check \"http://hl7.org/fhir/sid/icd-10-cm|undefined#E10.3211+TT1.2\"\n1ms http://hl7.org/fhir/sid/icd-10-cm/vs|2024: CodeSystem found: http://hl7.org/fhir/sid/icd-10-cm|2024 for http://hl7.org/fhir/sid/icd-10-cm|2024\n1ms http://hl7.org/fhir/sid/icd-10-cm/vs|2024: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://hl7.org/fhir/sid/icd-10-cm/vs|2024: Code \"E10.3211+TT1.2\" not found in http://hl7.org/fhir/sid/icd-10-cm|2024: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
