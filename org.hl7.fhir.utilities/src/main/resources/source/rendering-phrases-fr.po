@@ -56,7 +56,7 @@ msgstr "n''importe quelle répétition"
 #: ADD_BIND_CURR_BIND
 msgctxt "ADD_BIND_CURR_BIND"
 msgid "Current"
-msgstr "Courant•e"
+msgstr "Courant(e)"
 
 # ADD_BIND_DESIG_SYS
 #: ADD_BIND_DESIG_SYS
@@ -1078,7 +1078,7 @@ msgstr ""
 # CS_VERSION_NOTHING_TEXT
 #: CS_VERSION_NOTHING_TEXT
 msgid "Not Stated (use latest from terminology server)"
-msgstr "Non Précisé(e) (utilise la dernière version provenant du serveur de terminologie)"
+msgstr "non précisé(e) (utilise la dernière version provenant du serveur de terminologie)"
 
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
@@ -5916,4 +5916,3 @@ msgstr "La version est indiquée comme étant {0}, ce qui signifie qu'elle est f
 #: _NA
 msgid "n/a"
 msgstr "n/a"
-
