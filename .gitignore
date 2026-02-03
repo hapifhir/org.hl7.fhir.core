@@ -319,3 +319,5 @@ org.hl7.fhir.model/effective-pom.xml
 org.hl7.fhir.support/effective-pom.xml
 
 .vscode/settings.json
+
+org.hl7.fhir.validation/src/test/java/org/hl7/fhir/terminology/tests/LocalTerminologyServiceTests.java
