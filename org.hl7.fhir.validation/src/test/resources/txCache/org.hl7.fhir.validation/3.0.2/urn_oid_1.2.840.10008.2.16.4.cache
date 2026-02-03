@@ -15,13 +15,14 @@
   }]
 }}####
 v: {
+  "display" : "Ultrasound",
   "code" : "US",
   "system" : "urn:oid:1.2.840.10008.2.16.4",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'urn:oid:1.2.840.10008.2.16.4' could not be found, so the code cannot be validated",
-  "class" : "CODESYSTEM_UNSUPPORTED",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "urn:oid:1.2.840.10008.2.16.4",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{

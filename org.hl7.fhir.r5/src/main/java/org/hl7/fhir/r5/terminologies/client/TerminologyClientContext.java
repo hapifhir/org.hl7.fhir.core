@@ -20,7 +20,6 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCode
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 
-import org.hl7.fhir.utilities.ENoDump;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
 
@@ -280,6 +279,16 @@ public class TerminologyClientContext {
         if (tccs.hasVersion()) {
           for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
             if (system.equals(CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()))) {
+              return true;
+            }
+          }
+          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
+            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()).startsWith(system) && v.getIsDefault()) {
+              return true;
+            }
+          }
+          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersion()) {
+            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getCode()).startsWith(system)) {
               return true;
             }
           }

@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "IHD",
   "code" : "IHD",
   "system" : "http://fkcfhir.org/fhir/CodeSystem/FMCModality",
   "severity" : "error",

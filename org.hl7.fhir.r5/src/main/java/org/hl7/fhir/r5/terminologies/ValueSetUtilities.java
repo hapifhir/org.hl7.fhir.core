@@ -96,7 +96,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
         return -1; // this order is deliberate
       } else if (v2 == null) {
         return 1;
-      } else if (VersionUtilities.isSemVer(v1) && VersionUtilities.isSemVer(v2)) {
+      } else if (VersionUtilities.isSemVer(v1, true) && VersionUtilities.isSemVer(v2, true)) {
         return VersionUtilities.compareVersions(v1, v2);
       } else if (Utilities.isInteger(v1) && Utilities.isInteger(v2)) {
         return Integer.compare(Integer.parseInt(v1), Integer.parseInt(v2));
@@ -143,28 +143,21 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static ValueSet makeShareable(ValueSet vs) {
+  public static ValueSet makeShareable(ValueSet vs, boolean extension) {
     if (!vs.hasExperimental()) {
       vs.setExperimental(false);
     }
-    if (!vs.hasMeta())
-      vs.setMeta(new Meta());
-    for (UriType t : vs.getMeta().getProfile()) 
-      if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablevalueset"))
-        return vs;
-    vs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablevalueset"));
+    if (extension) {
+      if (!vs.hasMeta())
+        vs.setMeta(new Meta());
+      for (UriType t : vs.getMeta().getProfile())
+        if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablevalueset"))
+          return vs;
+      vs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablevalueset"));
+    }
     return vs;
   }
 
-  public static boolean makeVSShareable(ValueSet vs) {
-    if (!vs.hasMeta())
-      vs.setMeta(new Meta());
-    for (UriType t : vs.getMeta().getProfile()) 
-      if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablevalueset"))
-        return false;
-    vs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablevalueset"));
-    return true;
-  }
 
   public static void checkShareable(ValueSet vs) {
     if (!vs.hasMeta())
@@ -545,5 +538,31 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return null;
   }
 
+  public static boolean expansionsOverlap(ValueSet vs1, ValueSet vs2) {
+    for (ValueSetExpansionContainsComponent c1 : vs1.getExpansion().getContains()) {
+      for (ValueSetExpansionContainsComponent c2 : vs2.getExpansion().getContains()) {
+        if (matches(c1, c2)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private static boolean matches(ValueSetExpansionContainsComponent c1, ValueSetExpansionContainsComponent c2) {
+    return stringsMatch(c1.getSystem(), c2.getSystem(), false) && stringsMatch(c1.getVersion(), c2.getVersion(), true) && stringsMatch(c1.getCode(), c2.getCode(), false);
+  }
+
+  private static boolean stringsMatch(String s1, String s2, boolean defForNull) {
+    if (s1 == null || s2 == null) {
+      if (s1 == s2) {
+        return defForNull;
+      } else {
+        return false;
+      }
+    } else {
+      return s1.equals(s2);
+    }
+  }
 
 }

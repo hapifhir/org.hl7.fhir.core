@@ -19,6 +19,7 @@ v: {
   "system" : "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert",
   "version" : "1.5.0",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert/vs|1.5.0: Validate \"[undefined|undefined#3600 (\"undefined\")]\"\n1ms http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert/vs|1.5.0: Check \"http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert|undefined#3600\"\n1ms http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert/vs|1.5.0: CodeSystem found: http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert|1.5.0 for http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert|1.5.0\n1ms http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert/vs|1.5.0: check code in (undefined) at Coding\n1ms http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert/vs|1.5.0: Code \"3600\" found in http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel-erweitert|1.5.0",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

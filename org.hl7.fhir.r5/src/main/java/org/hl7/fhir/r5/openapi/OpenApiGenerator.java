@@ -38,6 +38,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
+import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.ResourceVersionPolicy;
@@ -50,6 +51,7 @@ import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.CapabilityStatement.RestfulCapabilityMode;
 import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
+import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.openapi.ParameterWriter.ParameterLocation;
@@ -122,6 +124,9 @@ public class OpenApiGenerator {
     generateMetadata();
     for (CapabilityStatementRestResourceComponent r : csr.getResource())
       generateResource(r, cs);
+    for (CapabilityStatementRestResourceComponent r : csr.getResource())
+      generateResourceOperations(r, cs);
+    generateSystemOperations(csr, cs);
     if (hasOp(csr, SystemRestfulInteraction.HISTORYSYSTEM))
       generateHistorySystem(csr);
     if (hasOp(csr, SystemRestfulInteraction.SEARCHSYSTEM))
@@ -149,6 +154,63 @@ public class OpenApiGenerator {
       generateVRead(r);
     if (hasOp(r, TypeRestfulInteraction.HISTORYTYPE)) 
       generateHistoryType(r);
+  }
+
+  private void generateResourceOperations(CapabilityStatementRestResourceComponent r, Resource cs) {
+    for (CapabilityStatementRestResourceOperationComponent op : r.getOperation()) {
+      OperationDefinition od = fetchOperationDefinition(op, cs);
+      String code = operationCode(op, od);
+      if (od == null || od.getType()) {
+        PathItemWriter path = makePathResTypeOperation(r, code);
+        generateOperation(path, operationMethod(od), "op-"+code+"-"+r.getType(), "$"+code+" on type "+r.getType(), operationDescription(op, od), false);
+      }
+      if (od != null && od.getInstance()) {
+        PathItemWriter path = makePathResInstanceOperation(r, code);
+        generateOperation(path, operationMethod(od), "op-"+code+"-"+r.getType()+"-instance", "$"+code+" on "+r.getType()+" instance", operationDescription(op, od), true);
+      }
+    }
+  }
+
+  private void generateSystemOperations(CapabilityStatementRestComponent csr, Resource cs) {
+    for (CapabilityStatementRestResourceOperationComponent op : csr.getOperation()) {
+      OperationDefinition od = fetchOperationDefinition(op, cs);
+      if (od == null || od.getSystem()) {
+        String code = operationCode(op, od);
+        PathItemWriter path = makePathSystemOperation(code);
+        generateOperation(path, operationMethod(od), "op-"+code+"-system", "$"+code+" (system)", operationDescription(op, od), false);
+      }
+    }
+  }
+
+  private OperationDefinition fetchOperationDefinition(CapabilityStatementRestResourceOperationComponent op, Resource cs) {
+    if (op.hasDefinition()) {
+      return context.fetchResource(OperationDefinition.class, op.getDefinition(), null, cs);
+    }
+    return null;
+  }
+
+  private String operationCode(CapabilityStatementRestResourceOperationComponent op, OperationDefinition od) {
+    if (od != null && od.hasCode()) {
+      return od.getCode();
+    }
+    return op.getName();
+  }
+
+  private String operationDescription(CapabilityStatementRestResourceOperationComponent op, OperationDefinition od) {
+    if (od != null && od.hasDescription()) {
+      return od.getDescription();
+    }
+    if (op.hasDocumentation()) {
+      return op.getDocumentation();
+    }
+    return null;
+  }
+
+  private String operationMethod(OperationDefinition od) {
+    if (od != null && !od.getAffectsState()) {
+      return "get";
+    }
+    return "post";
   }
 
   private void generateMetadata() {
@@ -560,6 +622,20 @@ public class OpenApiGenerator {
     return p;
   }
 
+  public PathItemWriter makePathResTypeOperation(CapabilityStatementRestResourceComponent r, String code) {
+    PathItemWriter p = dest.path("/"+r.getType()+"/$"+code);
+    p.summary("Operation $"+code+" on type "+r.getType());
+    p.description("Operation $"+code+" on type "+r.getType());
+    return p;
+  }
+
+  public PathItemWriter makePathResInstanceOperation(CapabilityStatementRestResourceComponent r, String code) {
+    PathItemWriter p = dest.path("/"+r.getType()+"/{rid}/$"+code);
+    p.summary("Operation $"+code+" on instance of "+r.getType());
+    p.description("Operation $"+code+" on an instance of "+r.getType());
+    return p;
+  }
+
   public PathItemWriter makePathResHistListType(CapabilityStatementRestResourceComponent r) {
     PathItemWriter p = dest.path("/"+r.getType()+"/_history");
     p.summary("Read past versions of resources of type "+r.getType());
@@ -586,6 +662,43 @@ public class OpenApiGenerator {
     p.summary("Read a past version of resource instance of all types");
     p.description("Access a previous versions of all types");
     return p;
+  }
+
+  public PathItemWriter makePathSystemOperation(String code) {
+    PathItemWriter p = dest.path("/$"+code);
+    p.summary("System level operation $"+code);
+    p.description("Operation $"+code+" invoked at the system level");
+    return p;
+  }
+
+  private void generateOperation(PathItemWriter path, String method, String opId, String summary, String description, boolean includeIdParam) {
+    OperationWriter op = path.operation(method);
+    if (!Utilities.noString(summary)) {
+      op.summary(summary);
+    }
+    if (!Utilities.noString(description)) {
+      op.description(description);
+    }
+    op.operationId(opId);
+    if (includeIdParam) {
+      op.paramRef("#/components/parameters/rid");
+    }
+    if (!"get".equals(method)) {
+      RequestBodyWriter req = op.request();
+      req.description("Operation parameters").required(false);
+      if (isJson())
+        req.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/Parameters");
+      if (isXml())
+        req.content("application/fhir+xml").schemaRef(specRef()+"/Parameters.xsd");
+    }
+
+    opOutcome(op.responses().defaultResponse());
+    ResponseObjectWriter resp = op.responses().httpResponse("200");
+    resp.description("Operation response");
+    if (isJson())
+      resp.content("application/fhir+json").schemaRef(specRef()+"/fhir.schema.json#/definitions/Parameters");
+    if (isXml())
+      resp.content("application/fhir+xml").schemaRef(specRef()+"/Parameters.xsd");
   }
 
   private boolean hasOp(CapabilityStatementRestComponent r, SystemRestfulInteraction opCode) {

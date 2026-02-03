@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "Dog",
   "code" : "canislf",
   "system" : "http://hl7.org/fhir/animal-species",
   "severity" : "error",

@@ -17,7 +17,7 @@ v: {
   "code" : "Location",
   "system" : "Location",
   "severity" : "error",
-  "error" : "A definition for CodeSystem 'Location' could not be found, so the code cannot be validated; Coding.system must be an absolute reference, not a local reference",
+  "error" : "A definition for CodeSystem 'Location' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "Location",

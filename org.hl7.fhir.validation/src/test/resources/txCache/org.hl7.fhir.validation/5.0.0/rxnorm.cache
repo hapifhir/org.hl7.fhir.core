@@ -22,6 +22,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[undefined|undefined#1049640 (\"Acetaminophen 325 MG / Oxycodone Hydrochloride 5 MG Oral Tablet [Percocet]\")]\"\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm|undefined#1049640\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (undefined) at CodeableConcept.coding[0]\n138ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"1049640\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -52,6 +53,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[undefined|undefined#428759 (\"metformin 250 MG Oral Tablet\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm|undefined#428759\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (undefined) at CodeableConcept.coding[0]\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -82,6 +84,7 @@ v: {
   "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
   "version" : "??",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Validate \"[undefined|undefined#428759 (\"metformin 250 MG Oral Tablet\")]\"\n0ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Check \"http://www.nlm.nih.gov/research/umls/rxnorm|undefined#428759\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|?? for http://www.nlm.nih.gov/research/umls/rxnorm|??\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|??: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|??",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "Treatment Medications",
   "code" : "Treatment Medications",
   "system" : "http://fkcfhir.org/fhir/CodeSystem/FMCOrderType",
   "severity" : "error",

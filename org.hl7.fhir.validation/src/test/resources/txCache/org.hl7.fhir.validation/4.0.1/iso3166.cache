@@ -20,6 +20,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#NO (\"Norway\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#NO\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"NO\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -47,6 +48,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Analysing http://hl7.org/fhir/ValueSet/country--0|5.0.0 for validation purposes\n0ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Prepare include[0]: \"(undefined)\"\n0ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n0ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Validate \"[undefined|undefined#NO (\"undefined\")]\"\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Check \"urn:iso:std:iso:3166|undefined#NO\"\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|undefined\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: check code in (undefined) at Coding\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Code \"NO\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -75,6 +77,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#AU (\"Australia\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#AU\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"AU\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -103,9 +106,10 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Australia' for urn:iso:std:iso:3166#BD. Valid display is 'Bangladesh' (for the language(s) 'en-US')",
+  "error" : "Wrong Display Name 'Australia' for urn:iso:std:iso:3166#BD. Valid display is 'Bangladesh' (en) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#BD (\"Australia\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#BD\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"BD\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -125,7 +129,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'Australia' for urn:iso:std:iso:3166#BD. Valid display is 'Bangladesh' (for the language(s) 'en-US')"
+      "text" : "Wrong Display Name 'Australia' for urn:iso:std:iso:3166#BD. Valid display is 'Bangladesh' (en) (for the language(s) 'en-US')"
     },
     "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
@@ -154,6 +158,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#NO (\"undefined\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#NO\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"NO\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -181,6 +186,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#FIN (\"undefined\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#FIN\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"FIN\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -208,6 +214,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#AU (\"undefined\")]\"\n1ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#AU\"\n1ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n1ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n1ms urn:iso:std:iso:3166/vs|2018: Code \"AU\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -235,6 +242,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#BD (\"undefined\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#BD\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"BD\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -257,13 +265,17 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:a58bded3-9116-40c3-8eb1-4a2bbf16a82e",
-    "timestamp" : "2025-10-09T06:44:35.874Z",
+    "identifier" : "urn:uuid:b893bd50-d7ce-481d-9d8e-0ce4ca68acde",
+    "timestamp" : "2026-01-14T18:46:42.128Z",
     "total" : 747,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
       "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
     },
     {
       "name" : "offset",
@@ -350,7 +362,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "AX",
-      "display" : "Eland Islands"
+      "display" : "Åland Islands"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -405,7 +417,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "BL",
-      "display" : "Saint Barthilemy"
+      "display" : "Saint Barthélemy"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -495,7 +507,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "CI",
-      "display" : "Ctte d'Ivoire"
+      "display" : "Côte d'Ivoire"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -540,7 +552,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "CW",
-      "display" : "Curagao"
+      "display" : "Curaçao"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -1215,7 +1227,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "RE",
-      "display" : "Riunion"
+      "display" : "Réunion"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -1475,7 +1487,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "VI",
-      "display" : "Virgin Islands,"
+      "display" : "Virgin Islands, U.S."
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -1545,7 +1557,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "ALA",
-      "display" : "Eland Islands"
+      "display" : "Åland Islands"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -1660,7 +1672,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "BLM",
-      "display" : "Saint Barthilemy"
+      "display" : "Saint Barthélemy"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -1745,7 +1757,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "CIV",
-      "display" : "Ctte d'Ivoire"
+      "display" : "Côte d'Ivoire"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -1795,7 +1807,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "CUW",
-      "display" : "Curagao"
+      "display" : "Curaçao"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -2460,7 +2472,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "REU",
-      "display" : "Riunion"
+      "display" : "Réunion"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -3135,7 +3147,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "248",
-      "display" : "Eland Islands"
+      "display" : "Åland Islands"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -3315,7 +3327,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "384",
-      "display" : "Ctte d'Ivoire"
+      "display" : "Côte d'Ivoire"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -3525,7 +3537,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "531",
-      "display" : "Curagao"
+      "display" : "Curaçao"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -3680,7 +3692,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "638",
-      "display" : "Riunion"
+      "display" : "Réunion"
     },
     {
       "system" : "urn:iso:std:iso:3166",
@@ -3700,7 +3712,7 @@ e: {
     {
       "system" : "urn:iso:std:iso:3166",
       "code" : "652",
-      "display" : "Saint Barthilemy"
+      "display" : "Saint Barthélemy"
     },
     {
       "system" : "urn:iso:std:iso:3166",

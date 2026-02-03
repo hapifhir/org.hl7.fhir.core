@@ -229,6 +229,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Getter @Setter private List<String> certSources = new ArrayList<>();
   @Getter @Setter private List<String> matchetypes = new ArrayList<>();
 
+  // Default validation time out equal to 0 seconds (disabled)
   @Getter @Setter private boolean showTimes;
   @Getter @Setter private FHIRPathEngine fhirPathEngine;
   @Getter @Setter private IgLoader igLoader;
@@ -1117,7 +1118,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public ValidationEngine setSnomedExtension(String sct) {
-    getContext().getExpansionParameters().addParameter("system-version", new CanonicalType("http://snomed.info/sct|http://snomed.info/sct/" + sct));
+    Parameters p = getContext().getExpansionParameters();
+    p.getParameter().removeIf(pp -> "system-version".equals(pp.getName()) && pp.hasValueCanonicalType() && pp.getValueCanonicalType().primitiveValue().startsWith("http://snomed.info/sct|"));
+    if (sct != null) {
+      p.addParameter("system-version", new CanonicalType("http://snomed.info/sct|http://snomed.info/sct/" + sct));
+    }
+    getContext().setExpansionParameters(p);
     return this;
   }
 
@@ -1296,12 +1302,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   @Override
-  public Set<String> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
-    Set<String> res = new HashSet<>();
+  public Set<ResourceVersionInformation> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
+    Set<ResourceVersionInformation> res = new HashSet<>();
     for (Resource r : context.fetchResourceVersions(Resource.class, url)) {
       if (r instanceof CanonicalResource) {
         CanonicalResource cr = (CanonicalResource) r;
-        res.add(cr.hasVersion() ? cr.getVersion() : "{{unversioned}}");
+        res.add(new ResourceVersionInformation(cr.hasVersion() ? cr.getVersion() : "{{unversioned}}", cr.getSourcePackage()));
       }
     }
     if (fetcher != null) {
@@ -1314,7 +1320,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public List<StructureDefinition> getImpliedProfilesForResource(IResourceValidator validator, Object appContext,
       String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
       IMessagingServices msgServices, List<ValidationMessage> messages) {
-    return new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID).getImpliedProfilesForResource(validator, appContext, stackPath,
+    return new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID, null).getImpliedProfilesForResource(validator, appContext, stackPath,
           definition, structure, resource, valid, msgServices, messages);
   }
 
@@ -1326,6 +1332,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   @Override
   public ReferenceValidationPolicy getReferencePolicy() {
     return ReferenceValidationPolicy.IGNORE;
+  }
+
+  @Override
+  public Set<String> getCheckReferencesTo() {
+    return policyAdvisor.getCheckReferencesTo();
   }
 
   public void loadExpansionParameters(String expansionParameters) {

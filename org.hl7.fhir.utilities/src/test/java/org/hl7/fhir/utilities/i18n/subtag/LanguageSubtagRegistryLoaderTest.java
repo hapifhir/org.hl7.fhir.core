@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class LanguageSubtagRegistryLoaderTest {
 
@@ -206,11 +207,11 @@ public class LanguageSubtagRegistryLoaderTest {
   }
 
   @Test
-  public void testNoExtLangsLoading() throws IOException {
-    LanguageSubtagRegistry registry = new LanguageSubtagRegistry();
-    LanguageSubtagRegistryLoader loader = new LanguageSubtagRegistryLoader(new LanguageSubtagRegistry()).withLoadExtLangs(false);
-
-
+  public void testNoExtLangsLoading() {
+    assertDoesNotThrow(() -> {
+      LanguageSubtagRegistry registry = new LanguageSubtagRegistry();
+      LanguageSubtagRegistryLoader loader = new LanguageSubtagRegistryLoader(new LanguageSubtagRegistry()).withLoadExtLangs(false);
+    });
   }
 
   private static Stream<Arguments> provideParamsForPartialLoad() {

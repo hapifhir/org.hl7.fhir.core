@@ -30,7 +30,6 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
-import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -79,7 +78,6 @@ private static TxTestData testData;
     version = "5.0.0";
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
     if (setup.getSuite().asBoolean("disabled") || setup.getTest().asBoolean("disabled")) {
@@ -126,7 +124,7 @@ private static TxTestData testData;
       assertNull(diff, diff);
     } else if (Utilities.existsInList(setup.getTest().asString("operation"), "lookup", "translate", "metadata", "term-caps")) {
       Assertions.assertTrue(true); // we don't test these for the internal server
-    } else if (!Utilities.existsInList(setup.getTest().asString("operation"), "batch-validate")) { // the internal terminologgy server doesn't implement this method
+    } else if (!Utilities.existsInList(setup.getTest().asString("operation"), "batch-validate")) { // the internal terminology server doesn't implement this method
       Assertions.fail("Unknown Operation "+ setup.getTest().asString("operation"));
     }
   }
@@ -171,14 +169,14 @@ private static TxTestData testData;
           removeParameter(vse.getValueset(), "excludeNested");
         }
         TxTesterSorters.sortValueSet(vse.getValueset());
-        TxTesterScrubbers.scrubVS(vse.getValueset(), false);
+        TxTesterScrubbers.scrubValueSet(vse.getValueset(), false);
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
         String diff = new CompareUtilities(modes(), ext).checkJsonSrcIsSame(id, resp, vsj);
         if (diff != null) {
           FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
           FileUtilities.stringToFile(vsj, fp);        
         }
-        Assertions.assertTrue(diff == null, diff);
+        Assertions.assertNull(diff);
       }
     } else {
       OperationOutcome oo = new OperationOutcome();
@@ -227,7 +225,7 @@ private static TxTestData testData;
         oo.addIssue(e);
       }
       TxTesterSorters.sortOperationOutcome(oo);
-      TxTesterScrubbers.scrubOO(oo, false);
+      TxTesterScrubbers.scrubOperationOutcome(oo, false);
 
       String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
       String diff = new CompareUtilities(modes(), ext).checkJsonSrcIsSame(id, resp, ooj);
@@ -235,7 +233,7 @@ private static TxTestData testData;
         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(ooj, fp);        
       }
-      Assertions.assertTrue(diff == null, diff);
+      Assertions.assertNull(diff);
     }
   }
 

@@ -1,15 +1,14 @@
 package org.hl7.fhir.validation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import lombok.Getter;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.validation.instance.utils.DigitalSignatureSupport;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
 public class ValidatorSettings extends ValidationOptions {
@@ -29,6 +28,9 @@ public class ValidatorSettings extends ValidationOptions {
   private String minVersion;
   private String maxVersion;
   private boolean useNewXVersionPackages;
+
+  @Getter private Set<String> jwtHeaderList = buildJadesHeaders();
+
 
   public Source getSource() {
     return source;
@@ -131,4 +133,18 @@ public class ValidatorSettings extends ValidationOptions {
   public void setUseNewXVersionPackages(boolean useNewXVersionPackages) {
     this.useNewXVersionPackages = useNewXVersionPackages;
   }
+
+  private static Set<String> buildJadesHeaders() {
+    Set<String> stringSet = new HashSet<>();
+    // see https://github.com/hapifhir/org.hl7.fhir.core/issues/2209
+    stringSet.add(DigitalSignatureSupport.JWT_HEADER_SRCMS);
+    stringSet.add(DigitalSignatureSupport.JWT_HEADER_IAT);
+    stringSet.add(DigitalSignatureSupport.JWT_HEADER_ALG);
+    stringSet.add(DigitalSignatureSupport.JWT_HEADER_TYP);
+    stringSet.add(DigitalSignatureSupport.JWT_HEADER_X5C);
+    stringSet.add(DigitalSignatureSupport.JWT_HEADER_SIGD);
+    stringSet.add(DigitalSignatureSupport.JWT_HEADER_VER); // custom for Eeva Turkka
+    return stringSet;
+  }
+
 }

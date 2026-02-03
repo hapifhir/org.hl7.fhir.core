@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "Alecensa",
   "code" : "alecensa",
   "system" : "http://terminology.gene.com/fhir/usix/uapi/CodeSystem/uapi-product-name",
   "severity" : "error",

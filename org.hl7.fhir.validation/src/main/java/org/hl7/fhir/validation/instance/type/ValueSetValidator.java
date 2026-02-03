@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationRule;
+import org.hl7.fhir.r5.utils.validation.IValidatorResourceFetcher;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -367,9 +368,9 @@ public class ValueSetValidator extends BaseValidator {
         CodeSystem cs = context.fetchCodeSystem(system);
 
         if (cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(system) && fetcher != null) {
-          Set<String> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), system);
-          warning(errors, NO_RULE_DATE, IssueType.INVALID,  stack, possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 
-              system, cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(possibleVersions)));
+          Set<IValidatorResourceFetcher.ResourceVersionInformation> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), system);
+          warning(errors, NO_RULE_DATE, IssueType.INVALID,  stack, possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS,
+              system, cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(IValidatorResourceFetcher.ResourceVersionInformation.toStrings(possibleVersions))));
         }
       }
     }
@@ -570,7 +571,8 @@ public class ValueSetValidator extends BaseValidator {
       if (iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-code")) {
         // already handled.
       } else if (iss.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display")) {
-        hint(errors, "2025-10-30", IssueType.INFORMATIONAL, stack, false, version == null ? I18nConstants.VALUESET_CODE_CONCEPT_HINT :  I18nConstants.VALUESET_CODE_CONCEPT_HINT_VER, display, system, version);
+        hint(errors, "2025-10-30", IssueType.INFORMATIONAL, stack, false,
+          version == null ? I18nConstants.VALUESET_CODE_CONCEPT_HINT :  I18nConstants.VALUESET_CODE_CONCEPT_HINT_VER, display, system, version, iss.getDetails().getText());
       } else {
         var validationMessage = buildValidationMessage(vv.getTxLink(), vv.getDiagnostics(), concept.line(), concept.col(), stack.getLiteralPath(), iss);
         errors.add(validationMessage);

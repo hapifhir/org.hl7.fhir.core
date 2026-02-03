@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "Ultrasound",
   "code" : "US",
   "system" : "urn:oid:1.2.840.10008.2.16.4",
   "severity" : "error",

@@ -14,23 +14,11 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.ContactDetail;
-import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
-import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceReferenceKind;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
@@ -102,6 +90,9 @@ public abstract class ResourceRenderer extends DataRenderer {
    */
   public XhtmlNode buildNarrative(ResourceWrapper dr) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    if (context.getRules() == RenderingContext.GenerationRules.IG_PUBLISHER) {
+      x.attribute("data-fhir", "generated");
+    }
     buildNarrative(new RenderingStatus(), x, dr);
     checkForDuplicateIds(x);
     return x;
@@ -150,6 +141,9 @@ public abstract class ResourceRenderer extends DataRenderer {
    */
   public void renderResource(ResourceWrapper r) throws IOException, FHIRException, EOperationOutcome {  
     XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    if (context.getRules() == RenderingContext.GenerationRules.IG_PUBLISHER) {
+      x.attribute("data-fhir", "generated");
+    }
     RenderingStatus status = new RenderingStatus();
     buildNarrative(status, x, r);
     String an = r.fhirType()+"_"+r.getId();
@@ -323,6 +317,10 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   
+  public <T extends Resource> void renderCanonical(RenderingStatus status, ResourceWrapper res, XhtmlNode x, Class<T> class_, CanonicalType canonical) throws UnsupportedEncodingException, IOException {
+    renderCanonical(status, res, x, class_, canonical, null);
+  }
+  
   /**
    * @param <T>
    * @param status
@@ -330,33 +328,55 @@ public abstract class ResourceRenderer extends DataRenderer {
    * @param x
    * @param class_ - makes resolution faster, but can just be Resource.class
    * @param canonical
+   * @param lang
    * @throws UnsupportedEncodingException
    * @throws IOException
    */
-  public <T extends Resource> void renderCanonical(RenderingStatus status, ResourceWrapper res, XhtmlNode x, Class<T> class_, CanonicalType canonical) throws UnsupportedEncodingException, IOException {
+  public <T extends Resource> void renderCanonical(RenderingStatus status, ResourceWrapper res, XhtmlNode x, Class<T> class_, CanonicalType canonical, String lang) throws UnsupportedEncodingException, IOException {
     if (canonical == null || !canonical.hasPrimitiveValue()) {
       return;
     }
     String url = canonical.asStringValue();
     Resource target = context.getWorker().fetchResource(Resource.class, url, null, res.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
-      x.code().tx(url);       
+      NamingSystem ns = context.getContextUtilities().fetchNamingSystem(url);
+      if (ns != null) {
+        x.code().tx(url);
+        if (lang!=null)
+          x.tx(" ("+ns.present(lang)+")");
+        else
+          x.tx(" ("+ns.present()+")");
+      } else {
+        x.code().tx(url);
+      }
     } else {
       CanonicalResource cr = (CanonicalResource) target;
       if (!target.hasWebPath()) {
         if (url.contains("|")) {
           x.code().tx(cr.getUrl());
           x.tx(context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion()));
-          x.tx(" ("+cr.present()+")");
+          if (lang!=null)
+            x.tx(" ("+cr.present(lang)+")");
+          else
+            x.tx(" ("+cr.present()+")");
         } else {
           x.code().tx(url);
-          x.tx(" ("+cr.present()+")");
+          if (lang!=null)
+            x.tx(" ("+cr.present(lang)+")");
+          else
+            x.tx(" ("+cr.present()+")");
         }
       } else {
         if (url.contains("|")) {
-          x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
+          if (lang!=null)
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang)+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
+          else
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
         } else {
-          x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present());
+          if (lang!=null)
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang));
+          else
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present());
         }
       }
     }     
@@ -1189,6 +1209,15 @@ public abstract class ResourceRenderer extends DataRenderer {
       renderDataType(status, tr.td(), cr.extensionValue("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
+    if (cr.has("identifier")) {
+      tr = tbl.tr();
+      markBoilerplate(tr.td()).tx(context.formatPhrasePlural(cr.children("identifier").size(), RenderingContext.GENERAL_IDENTIFIER)+":");
+      XhtmlNode td = xlinkNarrative(tr.td(), cr.child("identifier"));
+      for (ResourceWrapper r : cr.children("identifier")) {
+        td.sep(", ");
+        renderDataType(status, td, r);
+      }
+    }
     String name = context.getTranslated(cr.child("name"));
     String title = context.getTranslated(cr.child("title"));
     

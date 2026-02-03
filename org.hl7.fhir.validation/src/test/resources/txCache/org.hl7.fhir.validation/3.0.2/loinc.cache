@@ -22,8 +22,9 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "severity" : "warning",
-  "error" : "There are no valid display names found for the code http://loinc.org#19935-6 for language(s) 'fi'. The display is 'Maximum expiratory gas flow Respiratory system airway by Peak flow meter' the default language display",
+  "error" : "There are no valid display names found for the code http://loinc.org#19935-6 for language(s) 'fi'. The display is 'Maximum expiratory gas flow Respiratory system airway by Peak flow meter' which is the default language display",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#19935-6 (\"Maximum expiratory gas flow Respiratory system airway by Peak flow meter\")]\"\n2ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#19935-6\"\n2ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n2ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n2ms http://loinc.org/vs|2.81: Code \"19935-6\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -43,7 +44,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "There are no valid display names found for the code http://loinc.org#19935-6 for language(s) 'fi'. The display is 'Maximum expiratory gas flow Respiratory system airway by Peak flow meter' the default language display"
+      "text" : "There are no valid display names found for the code http://loinc.org#19935-6 for language(s) 'fi'. The display is 'Maximum expiratory gas flow Respiratory system airway by Peak flow meter' which is the default language display"
     },
     "location" : ["CodeableConcept.coding[0].display"],
     "expression" : ["CodeableConcept.coding[0].display"]
@@ -70,11 +71,12 @@ v: {
   }]
 }}####
 v: {
-  "display" : "ei käännetty",
+  "display" : "Maximum expiratory gas flow Respiratory system airway by Peak flow meter",
   "code" : "19935-6",
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: Analysing http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03 for validation purposes\n1ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: Prepare include[0]: \"(undefined)\"\n1ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: CodeSystem found: \"http://loinc.org|2.81\"\n1ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: Validate \"[undefined|undefined#19935-6 (\"Maximum expiratory gas flow Respiratory system airway by Peak flow meter\")]\"\n1ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: Check \"http://loinc.org|undefined#19935-6\"\n1ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|undefined\n1ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://phr.kanta.fi/ValueSet/fiphr-vs-vitalsigns|0.03: Code \"19935-6\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -105,6 +107,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Analysing http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: CodeSystem found: \"http://loinc.org|2.81\"\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Validate \"[undefined|undefined#28655-9 (\"undefined\")]\"\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Check \"http://loinc.org|undefined#28655-9\"\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|undefined\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: check code in (undefined) at CodeableConcept.coding[0]\n7887ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Filter undefined: Code \"28655-9\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -135,6 +138,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#29299-5 (\"Reason for visit Narrative\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#29299-5\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"29299-5\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -165,6 +169,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#10183-2 (\"Hospital discharge medications Narrative\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#10183-2\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"10183-2\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -195,6 +200,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#48765-2 (\"Allergies and adverse reactions Document\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#48765-2\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"48765-2\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -225,6 +231,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#46241-6 (\"undefined\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#46241-6\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"46241-6\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -255,6 +262,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Analysing http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2 for validation purposes\n0ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Prepare include[0]: \"(undefined)\"\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: CodeSystem found: \"http://loinc.org|2.81\"\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Validate \"[undefined|undefined#18842-5 (\"Discharge Summary\")]\"\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Check \"http://loinc.org|undefined#18842-5\"\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|undefined\n1ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: check code in (undefined) at CodeableConcept.coding[0]\n91ms http://hl7.org/fhir/ValueSet/doc-typecodes|3.0.2: Filter undefined: Code \"18842-5\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -288,6 +296,7 @@ v: {
   "error" : "Wrong Display Name 'Allergies' for http://loinc.org#48765-2. Valid display is one of 3 choices: 'Allergies and adverse reactions Document' (en-US), 'Allergies and adverse reactions Document' (en-US) or 'Allergies &or adverse reactions Doc' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#48765-2 (\"Allergies\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#48765-2\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"48765-2\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -339,6 +348,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#8648-8 (\"Hospital course note\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#8648-8\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"8648-8\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -369,6 +379,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#78375-3 (\"Discharge diagnosis Narrative\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#78375-3\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"78375-3\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -399,6 +410,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#75311-1 (\"Discharge medications note\")]\"\n0ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#75311-1\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"75311-1\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -429,6 +441,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#42347-5 (\"Admission diagnosis (narrative)\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#42347-5\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"42347-5\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -459,6 +472,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#42346-7 (\"Medications on admission (narrative)\")]\"\n0ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#42346-7\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"42346-7\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -489,6 +503,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#42344-2 (\"Discharge diet (narrative)\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#42344-2\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"42344-2\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -519,6 +534,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#10164-2 (\"History of Present illness Narrative\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#10164-2\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"10164-2\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -549,9 +565,10 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "severity" : "error",
-  "error" : "Wrong Display Name 'Plan of care' for http://loinc.org#18776-5. Valid display is one of 4 choices: 'Plan of care note' (en-US), 'Plan of care note' (en-US), 'Plan of care note' (en-US) or 'Y' (en-US) (for the language(s) 'en-US')",
+  "error" : "Wrong Display Name 'Plan of care' for http://loinc.org#18776-5. Valid display is one of 3 choices: 'Plan of care note' (en-US), 'Plan of care note' (en-US) or 'Plan of care note' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#18776-5 (\"Plan of care\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#18776-5\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"18776-5\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -571,7 +588,7 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-display"
       }],
-      "text" : "Wrong Display Name 'Plan of care' for http://loinc.org#18776-5. Valid display is one of 4 choices: 'Plan of care note' (en-US), 'Plan of care note' (en-US), 'Plan of care note' (en-US) or 'Y' (en-US) (for the language(s) 'en-US')"
+      "text" : "Wrong Display Name 'Plan of care' for http://loinc.org#18776-5. Valid display is one of 3 choices: 'Plan of care note' (en-US), 'Plan of care note' (en-US) or 'Plan of care note' (en-US) (for the language(s) 'en-US')"
     },
     "location" : ["CodeableConcept.coding[0].display"],
     "expression" : ["CodeableConcept.coding[0].display"]
@@ -603,6 +620,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#47420-5 (\"Functional status assessment note\")]\"\n0ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#47420-5\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"47420-5\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -633,6 +651,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#47519-4 (\"History of Procedures Document\")]\"\n0ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#47519-4\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"47519-4\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -666,6 +685,7 @@ v: {
   "error" : "Wrong Display Name 'Review of systems Narrative Reporte' for http://loinc.org#10187-3. Valid display is one of 3 choices: 'Review of systems Narrative - Reported' (en-US), 'Review of systems Narrative - Reported' (en-US) or 'Review of systems' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#10187-3 (\"Review of systems Narrative Reporte\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#10187-3\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"10187-3\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -720,6 +740,7 @@ v: {
   "error" : "Wrong Display Name 'Administrative information' for http://loinc.org#87504-7. Valid display is one of 2 choices: 'LCDS v4.00 - Administrative information - discharge during assessment period [CMS Assessment]' (en-US) or 'LCDS v4.00 - Administrative information - discharge during assessment period [CMS Assessment]' (en-US) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#87504-7 (\"Administrative information\")]\"\n0ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#87504-7\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"87504-7\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -771,6 +792,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n0ms http://loinc.org/vs|2.81: Validate \"[undefined|undefined#2069-3 (\"Chloride [Moles/volume] in Blood\")]\"\n1ms http://loinc.org/vs|2.81: Check \"http://loinc.org|undefined#2069-3\"\n1ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n1ms http://loinc.org/vs|2.81: check code in (undefined) at CodeableConcept.coding[0]\n1ms http://loinc.org/vs|2.81: Code \"2069-3\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

@@ -32,6 +32,7 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient.ITerminologyConversionLogger;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
+import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -405,6 +406,7 @@ public class TxTester {
     } else {
       throw new FHIRException("unsupported FHIR Version for terminology tests: "+fhirVersion);
     }
+    client.setFormat(ResourceFormat.RESOURCE_JSON);
     return client;  
   }
 
@@ -520,11 +522,11 @@ public class TxTester {
         } else if (test.asString("operation").equals("expand")) {
           msg = expand(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);      
+          msg = validate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("cs-validate-code")) {
-          msg = validateCS(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);      
+          msg = validateCS(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("lookup")) {
-          msg = lookup(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);      
+          msg = lookup(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("translate")) {
           msg = translate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("batch")) {
@@ -640,14 +642,14 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.lookupCode(p);
-      TxTesterScrubbers.scrubParams(po, tight);
+      TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
-      TxTesterScrubbers.scrubOO(oo, tight);
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
@@ -673,14 +675,14 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.translate(p);
-      TxTesterScrubbers.scrubParams(po, tight);
+      TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
-      TxTesterScrubbers.scrubOO(oo, tight);
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
@@ -700,21 +702,30 @@ public class TxTester {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
+    for (var pp : p.getParameter()) {
+      if (pp.getName().equals("url") && !pp.hasValueUriType()) {
+        throw new Error("Wrong param type");
+      }
+    }
     terminologyClient.setAcceptLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     int code = 0;
     String vsj;
     try {
       ValueSet vs = terminologyClient.expandValueset(null, p);
-      TxTesterScrubbers.scrubVS(vs, tight);
+      TxTesterScrubbers.scrubValueSet(vs, tight);
       TxTesterSorters.sortValueSet(vs);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
-      OperationOutcome oo = e.getServerError(); 
-      TxTesterScrubbers.scrubOO(oo, tight);
-      vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      OperationOutcome oo = e.getServerError();
+      if (oo != null) {
+        TxTesterScrubbers.scrubOperationOutcome(oo, tight);
+        vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      } else {
+        throw e;
+      }
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, vsj, false);
     if (diff != null) {
@@ -750,14 +761,14 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.batchValidateVS(p);
-      TxTesterScrubbers.scrubParams(po, tight);
+      TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerError();
-      TxTesterScrubbers.scrubOO(oo, tight);
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
@@ -784,16 +795,20 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.validateVS(p);
-      TxTesterScrubbers.scrubParams(po, tight);
+      TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
-      OperationOutcome oo = e.getServerError(); 
-      TxTesterScrubbers.scrubOO(oo, tight);
-      oo.setText(null);
-      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      OperationOutcome oo = e.getServerError();
+      if (oo != null) {
+        TxTesterScrubbers.scrubOperationOutcome(oo, tight);
+        oo.setText(null);
+        pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      } else {
+        throw e;
+      }
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
     if (diff != null) {
@@ -818,7 +833,7 @@ public class TxTester {
     String pj;
     try {
       Parameters po = terminologyClient.validateCS(p);
-      TxTesterScrubbers.scrubParams(po, tight);
+      TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
@@ -857,12 +872,12 @@ public class TxTester {
       for (BundleEntryComponent be : bo.getEntry()) {
         if (be.getResource() instanceof Parameters) {
           Parameters po = ((Parameters) be.getResource());
-          TxTesterScrubbers.scrubParams(po, tight);
+          TxTesterScrubbers.scrubParameters(po, tight);
           TxTesterSorters.sortParameters(po);
         }
         if (be.getResource() instanceof OperationOutcome) {
           OperationOutcome oo = ((OperationOutcome) be.getResource());
-          TxTesterScrubbers.scrubOO(oo, tight);          
+          TxTesterScrubbers.scrubOperationOutcome(oo, tight);
         }
       }
       bj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(bo);
@@ -870,7 +885,7 @@ public class TxTester {
     } catch (EFhirClientException e) {
       code = e.getCode();
       OperationOutcome oo = e.getServerError(); 
-      TxTesterScrubbers.scrubOO(oo, tight);
+      TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       bj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
     String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, bj, false);

@@ -233,10 +233,13 @@ public class ComparisonRenderer implements IHostApplicationServices {
     vars.put("compose", new StringType(new XhtmlComposer(true).compose(cs.renderCompose(comp, "", ""))));
     vars.put("expansion", new StringType(new XhtmlComposer(true).compose(cs.renderExpansion(comp, "", ""))));
     String cnt = processTemplate(template, "ValueSet", vars);
-    FileUtilities.stringToFile(cnt, file(comp.getId()+".html"));
-    new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
-    new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
-
+    try {
+      FileUtilities.stringToFile(cnt, file(comp.getId() + ".html"));
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-union.json")), comp.getUnion());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(Utilities.path(folder, comp.getId() + "-intersection.json")), comp.getIntersection());
+    } catch (Exception e) {
+      log.error("Error saving ValueSet: "+e.getMessage());
+    }
     String union = new XhtmlComposer(true).compose(cs.renderUnion(comp, "", folder, "http://hl7.org/fhir"));
     String intersection = new XhtmlComposer(true).compose(cs.renderIntersection(comp, "", folder, "http://hl7.org/fhir"));
     vars.put("union", new StringType(union));
@@ -384,4 +387,8 @@ public class ComparisonRenderer implements IHostApplicationServices {
     
   }
 
+
+  public Base findContainingResource(Object appContext, Base item) {
+    return null;
+  }
 }

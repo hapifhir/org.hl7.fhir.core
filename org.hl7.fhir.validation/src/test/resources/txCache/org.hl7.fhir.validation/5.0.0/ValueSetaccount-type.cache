@@ -15,13 +15,14 @@
   }]
 }}####
 v: {
+  "display" : "Pineywoods pig breed",
   "code" : "132037003",
   "system" : "http://hl7.org/fhir/ValueSet/account-type",
   "severity" : "error",
   "error" : "The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/account-type')",
-  "class" : "CODESYSTEM_UNSUPPORTED",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "http://hl7.org/fhir/ValueSet/account-type",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{

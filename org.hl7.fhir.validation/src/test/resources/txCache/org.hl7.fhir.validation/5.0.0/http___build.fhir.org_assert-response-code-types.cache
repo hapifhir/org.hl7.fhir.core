@@ -16,6 +16,7 @@
   }]
 }}####
 v: {
+  "display" : "Population",
   "code" : "population",
   "system" : "http://build.fhir.org/assert-response-code-types",
   "version" : "4.4.0",

@@ -1,5 +1,8 @@
 {
+  "urn:ietf:bcp:47" : null,
   "http://cancer.questionnaire.org/system/code/yesno" : null,
+  "http://loinc.org" : null,
+  "http://unitsofmeasure.org" : null,
   "http://snomed.info/sct" : null,
   "http://acme.org/messagetypes" : null
 }

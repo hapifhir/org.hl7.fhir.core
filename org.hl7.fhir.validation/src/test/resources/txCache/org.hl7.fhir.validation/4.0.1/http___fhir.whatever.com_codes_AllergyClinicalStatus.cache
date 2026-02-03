@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "Active",
   "code" : "active",
   "system" : "http://fhir.whatever.com/codes/AllergyClinicalStatus",
   "severity" : "error",

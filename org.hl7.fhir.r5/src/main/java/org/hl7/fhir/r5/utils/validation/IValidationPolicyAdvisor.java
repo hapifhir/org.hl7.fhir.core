@@ -1,8 +1,11 @@
 package org.hl7.fhir.r5.utils.validation;
 
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import lombok.Getter;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -51,6 +54,12 @@ public interface IValidationPolicyAdvisor {
    * @return
    */
   ReferenceValidationPolicy getReferencePolicy();
+
+  /**
+   * a list of servers for which the ReferenceValidationPolicy will be CHECK_VALID.
+   * if the reference is to a server not in this list, getReferencePolicy() applies
+   */
+  Set<String> getCheckReferencesTo();
 
   /**
    * Return true if the validation message for this message id should not be reported 

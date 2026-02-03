@@ -646,6 +646,22 @@ public class ExtensionUtilities {
     return null;
   }
 
+  public static Extension getLanguageExtension(Element element, String lang) {
+    for (Extension e : element.getExtension()) {
+      if (e.getUrl().equals(ExtensionDefinitions.EXT_TRANSLATION)) {
+        Extension e1 = ExtensionHelper.getExtension(e, "lang");
+
+        if (e1 != null && e1.getValue() != null && e1.getValue() instanceof CodeType && ((CodeType) e1.getValue()).getValue().equals(lang)) {
+          e1 = ExtensionHelper.getExtension(e, "content");
+          if (e1 != null && e1.hasValue()) {
+            return e1;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   public static StringType getLanguageTranslationElement(Element element, String lang) {
     for (Extension e : element.getExtension()) {
       if (e.getUrl().equals(ExtensionDefinitions.EXT_TRANSLATION)) {
@@ -688,6 +704,21 @@ public class ExtensionUtilities {
     extension.addExtension().setUrl("lang").setValue(new CodeType(lang));
     extension.addExtension().setUrl("content").setValue(new StringType(value));
     element.getExtension().add(extension);
+  }
+
+  public static void removeLanguageTranslation(Element element, String lang) {
+    if (Utilities.noString(lang))
+      return;
+
+    for (Extension extension : element.getExtension()) {
+      if (ExtensionDefinitions.EXT_TRANSLATION.equals(extension.getUrl())) {
+        String l = extension.getExtensionString("lang");
+        if (lang.equals(l)) {
+          element.getExtension().remove(extension);
+          return;
+        }
+      }
+    }    
   }
 
   public static boolean hasAllowedUnits(ElementDefinition eld) {
@@ -1452,5 +1483,4 @@ public class ExtensionUtilities {
   public static boolean isModifier(String url) {
     return Utilities.existsInList(url, "http://hl7.org/fhir/StructureDefinition/artifact-status", "http://hl7.org/fhir/StructureDefinition/capabilitystatement-prohibited", "http://hl7.org/fhir/StructureDefinition/request-doNotPerform");
   }
-
 }

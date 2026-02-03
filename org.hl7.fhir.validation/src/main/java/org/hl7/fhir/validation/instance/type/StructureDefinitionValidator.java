@@ -30,18 +30,12 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
@@ -59,6 +53,12 @@ import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
+/**
+ * todo:
+ *
+ * Update the publisher so that if it sees must-support on an repeating element, it will hint the author that this should be clarified in the must-support documentation, and if it sees a mix of must-support values on slicer and slices, this will become warning. Same for obligations that don't make clear whether they apply to the set or the individual elements. Make an IG parameter so authors can advise the validator that they do, in fact, document this for must-support
+ * from FHIR-50391
+ */
 public class StructureDefinitionValidator extends BaseValidator {
 
   public class SourcedInvariant {
@@ -103,6 +103,23 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   public boolean validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
+
+    if (src.hasChild("baseDefinition")) {
+      String url = src.getNamedChildValue("url");
+      String base = src.getNamedChildValue("baseDefinition");
+      String last = url;
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, base);
+      while (sd != null) {
+        if (url.equals(sd.getUrl())) {
+          ok = false;
+          rule(errors, "2026-01-26", IssueType.UNKNOWN, stack, false, I18nConstants.SD_CIRCULAR_DEFINITION, url, last);
+          break;
+        }
+        last = base;
+        base = sd.getBaseDefinition();
+        sd = context.fetchResource(StructureDefinition.class, base);
+      }
+    }
     StructureDefinition sd = null;
     StructureDefinition base = null;
     String typeName = null;
@@ -1678,13 +1695,30 @@ public class StructureDefinitionValidator extends BaseValidator {
         } else if (!VersionUtilities.isR5Plus(context.getVersion())) {
           ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()) || "Resource".equals(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         } else {
-          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), Utilities.existsInList(t.getType(), "Resource", "CanonicalResource") || VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), Utilities.existsInList(t.getType(), "Resource", "CanonicalResource") || isCanonicalResource(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         }  
       }
     } else {
       ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_NO_TARGET_PROFILE, code) && ok;
     }
     return ok;
+  }
+
+  private boolean isCanonicalResource(String type) {
+    if (VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(type)) {
+      return true;
+    }
+    StructureDefinition sd = context.fetchTypeDefinition(type);
+    while (sd != null) {
+      if ("CanonicalResource".equals(sd.getType())) {
+        return true;
+      }
+      if ("http://hl7.org/fhir/StructureDefinition/CanonicalResource".equals(ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS))) {
+        return true;
+      }
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    }
+    return false;
   }
 
   private boolean isReferenceableTarget(StructureDefinition t) {

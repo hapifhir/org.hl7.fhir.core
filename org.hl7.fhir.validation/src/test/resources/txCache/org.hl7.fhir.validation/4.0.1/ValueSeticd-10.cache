@@ -18,9 +18,9 @@ v: {
   "system" : "http://hl7.org/fhir/ValueSet/icd-10",
   "severity" : "error",
   "error" : "The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/icd-10')",
-  "class" : "CODESYSTEM_UNSUPPORTED",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "http://hl7.org/fhir/ValueSet/icd-10",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{

@@ -15,6 +15,7 @@
   }]
 }}####
 v: {
+  "display" : "notModified",
   "code" : "notModified",
   "system" : "http://hl7.org/fhir/R4/codesystem-assert-response-code-types.html",
   "severity" : "error",
