@@ -64,6 +64,7 @@ public interface ITerminologyClient {
   int getRetryCount() throws FHIRException;
   ITerminologyClient setRetryCount(int retryCount) throws FHIRException;
   ITerminologyClient setFormat(ResourceFormat fmt) throws FHIRException;
+  ITerminologyClient setRequestId(String id) throws FHIRException;
   CapabilityStatement getCapabilitiesStatement() throws FHIRException;
   CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
   Parameters lookupCode(Map<String, String> params) throws FHIRException;

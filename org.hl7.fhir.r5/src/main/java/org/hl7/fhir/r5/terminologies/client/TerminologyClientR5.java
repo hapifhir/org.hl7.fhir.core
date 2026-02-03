@@ -206,6 +206,12 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public ITerminologyClient setRequestId(String id) throws FHIRException {
+    client.setRequestId(id);
+    return this;
+  }
+
+  @Override
   public int getRetryCount() throws FHIRException {
     return client.getRetryCount();
   }

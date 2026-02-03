@@ -513,6 +513,7 @@ public class TxTester {
 
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
+        terminologyClient.setRequestId("txTests:"+suite.asString("name")+"/"+test.asString("name"));
         String lang = test.asString("Accept-Language");
         String msg = null;
         if (test.asString("operation").equals("metadata")) {
@@ -551,6 +552,7 @@ public class TxTester {
           terminologyClient.setClientHeaders(new ClientHeaders());
         }
         tr.getActionFirstRep().getOperation().setResult(msg == null ? TestReportActionResult.PASS : TestReportActionResult.FAIL).setMessage(msg);
+        terminologyClient.setRequestId(null);
         return msg == null;
       } catch (Exception e) {
         log.error("  Tested "+ testName +": "+ "  ... Exception: "+e.getMessage());
@@ -562,6 +564,7 @@ public class TxTester {
           terminologyClient.setClientHeaders(new ClientHeaders());
         }
         tr.getActionFirstRep().getOperation().setResult(TestReportActionResult.ERROR).setMessage(e.getMessage());
+        terminologyClient.setRequestId(null);
         return false;
       }
     } else {

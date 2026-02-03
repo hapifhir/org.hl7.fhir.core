@@ -81,6 +81,9 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   @Setter
   private String acceptLanguage;
 
+  @Getter @Setter
+  private String requestId;
+
   @Setter
   private String contentLanguage;
   private int useCount;
@@ -564,6 +567,9 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
     if (hasBody && !Utilities.noString(contentLanguage)) {
       headers.add(new HTTPHeader("Content-Language",contentLanguage));
+    }
+    if (requestId != null) {
+      headers.add(new HTTPHeader("X-Request-Id", requestId));
     }
 
     return headers;

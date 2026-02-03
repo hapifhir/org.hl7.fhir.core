@@ -248,6 +248,12 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
+  public ITerminologyClient setRequestId(String id) throws FHIRException {
+    client.setRequestId(id);
+    return this;
+  }
+
+  @Override
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException {
     return (CapabilityStatement) convertResource("getCapabilitiesStatementQuick.response", client.getCapabilitiesStatementQuick());
   }
