@@ -299,9 +299,9 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     addChildNode(node);
     return node;
   }
-  
+
   public XhtmlNode addText(String content) {
-    if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
+    if (!(nodeType == NodeType.Element || nodeType == NodeType.Document))
       throw new Error("Wrong node type");
     if (content != null) {
       XhtmlNode node = new XhtmlNode(NodeType.Text);
@@ -311,6 +311,14 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     } else {
       return null;
     }
+  }
+
+  public XhtmlNode addTextWithWhitespace(String content) {
+    String s = allText();
+    if (s != null && !Character.isWhitespace(s.charAt(s.length()-1))) {
+      addText(" ");
+    }
+    return addText(content);
   }
 
   public void addTextWithLineBreaks(String content) {
@@ -396,7 +404,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
         }
         if (Utilities.existsInList(n.getName(), "p", "div", "tr", "th", "ul", "ol", "li", "h1", "h2", "h3", "h4", "h5", "h6")) {
           b.append("\r\n");
-        } else if (Utilities.existsInList(n.getName(), "th", "td", "span")) {
+        } else if (Utilities.existsInList(n.getName(), "th", "td")) {
           b.append(" ");
         }
       }
