@@ -8,8 +8,11 @@ import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
+import org.hl7.fhir.utilities.ByteProvider;
+import org.hl7.fhir.validation.ValidationRecord;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +20,8 @@ import java.util.Map;
  * Handler for validating resources
  */
 class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler {
+  public static final String VALIDATE_LOCATION = "http-request";
+
   private final FhirValidatorHttpService fhirValidatorHttpService;
 
   public ValidateResourceHTTPHandler(FhirValidatorHttpService fhirValidatorHttpService) {
@@ -41,7 +46,6 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
     try {
       // Read resource bytes from request body
       resourceBytes = readRequestBody(exchange);
-
       // Get content type and determine format
       String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
       format = determineFormat(contentType);
@@ -60,9 +64,13 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
       return;
     }
     try {
+      ByteProvider byteProvider = ByteProvider.forBytes(resourceBytes);
+      List<ValidationRecord> validationRecords = new ArrayList<>();
       // Validate the resource using ValidationEngine
-      OperationOutcome outcome = fhirValidatorHttpService.getValidationEngine().validate("http-request", resourceBytes, format, profiles,
-        resourceIdRule, anyExtensionsAllowed, bpWarnings, displayOption);
+     // validate("dummy location", byteProvider, format, profiles, validationRecords)
+      //OperationOutcome outcome = fhirValidatorHttpService.getValidationEngine().validate(VALIDATE_LOCATION, resourceBytes, format, profiles,
+      //  resourceIdRule, anyExtensionsAllowed, bpWarnings, displayOption);
+      OperationOutcome outcome = fhirValidatorHttpService.getValidationEngine().validate(VALIDATE_LOCATION, byteProvider, format, profiles, validationRecords);
 
       sendOperationOutcome(exchange, 200, outcome, getAcceptHeader(exchange));
 

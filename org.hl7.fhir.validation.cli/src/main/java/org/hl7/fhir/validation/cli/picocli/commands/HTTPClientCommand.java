@@ -4,6 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptions;
 import picocli.CommandLine;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Path;
+import java.time.Duration;
 import java.util.concurrent.Callable;
 
 /**
@@ -68,18 +76,42 @@ public class HTTPClientCommand implements Callable<Integer> {
   @CommandLine.ArgGroup(validate = false, heading = "Instance Validator Options%n")
   InstanceValidatorOptions instanceValidatorOptions = new InstanceValidatorOptions();
 
+  @CommandLine.Parameters(
+    description = "The input file(s) to validate.")
+  private String[] whatToValidate;
+
   @Override
   public Integer call() {
-    log.warn("This command is not implemented yet");
 
-    // Future implementation would:
-    // 1. Create HTTP client
-    // 2. Connect to http://host:port
-    // 3. Send appropriate command (stop, status, etc.)
-    // 4. Handle response
+    HttpClient httpClient = HttpClient.newBuilder()
+      .connectTimeout(Duration.ofSeconds(10))
+      .build();
 
-    if (stop) {
-      log.info("Would send stop command to {}. Or: {}:{}", host, hostname, port);
+    final String BASE_URL = "http://localhost:" + port;
+
+    for (String source : whatToValidate) {
+
+
+      try {
+        HttpRequest request = HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/validateResource" +
+            "&resourceIdRule=PROHIBITED" +
+            "&anyExtensionsAllowed=false" +
+            "&bpWarnings=Error" +
+            "&displayOption=CheckCaseAndSpace"))
+          .POST(HttpRequest.BodyPublishers.ofFile(Path.of(source)))
+          .header("Content-Type", "application/fhir+json")
+          .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+      } catch (FileNotFoundException e) {
+        throw new RuntimeException(e);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
     }
 
     return 0;

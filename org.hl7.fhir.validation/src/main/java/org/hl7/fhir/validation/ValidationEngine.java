@@ -617,6 +617,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return (OperationOutcome) validate(l, profiles, refs, null, loader, all, 0, true);
   }
 
+  //FIXME from CLI (direct)
   public Resource validate(List<String> sources, List<String> profiles, List<SourceFile> refs, List<ValidationRecord> record, IValidationEngineLoader loader, boolean all, int delay, boolean first) throws FHIRException, IOException, InterruptedException {
     boolean asBundle = ValidatorUtils.parseSources(sources, refs, context);
     Bundle results = new Bundle();
@@ -677,7 +678,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       return results.getEntryFirstRep().getResource();
   }
 
-
+  // FIXME from validator-wrapper (indirect)
   public ValidatedFragments validateAsFragments(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator(cntType);
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
@@ -692,6 +693,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
+  //FIXME from CLI (indirect)
   public OperationOutcome validate(String location, ByteProvider source, FhirFormat cntType, List<String> profiles, List<ValidationRecord> record) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
@@ -738,6 +740,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
+  //FIXME from HTTP service
   public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
