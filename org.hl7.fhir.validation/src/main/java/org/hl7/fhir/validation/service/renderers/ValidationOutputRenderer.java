@@ -4,40 +4,27 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.OperationOutcome;
 
 public abstract class ValidationOutputRenderer {
 
+  @Setter
+  @Getter
   private String runDate;
+  @Setter
+  @Getter
   protected boolean crumbTrails;
+
   protected boolean moreThanOne;
+
   protected PrintStream dst;
+
+  @Setter
+  @Getter
   protected boolean showMessageIds;
-
-  public boolean isCrumbTrails() {
-    return crumbTrails;
-  }
-
-  public void setCrumbTrails(boolean crumbTrails) {
-    this.crumbTrails = crumbTrails;
-  }
-
-  public boolean isShowMessageIds() {
-    return showMessageIds;
-  }
-
-  public void setShowMessageIds(boolean showMessageIds) {
-    this.showMessageIds = showMessageIds;
-  }
-
-  public String getRunDate() {
-    return runDate;
-  }
-
-  public void setRunDate(String runDate) {
-    this.runDate = runDate;
-  }
 
   public void start(boolean moreThanOne) {
     this.moreThanOne = moreThanOne;
