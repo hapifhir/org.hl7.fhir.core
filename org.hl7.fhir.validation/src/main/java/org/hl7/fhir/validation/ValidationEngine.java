@@ -686,6 +686,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       ValidationTime.fromTimeTracker(validator.timeTracker));
   }
 
+  // FIXME remove? deprecate?
   public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator(cntType);
 
@@ -741,6 +742,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   //FIXME from HTTP service
+  //FIXME remove? Deprecate?
   public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
