@@ -316,7 +316,7 @@ public class ValidationService {
     List<ValidationRecord> records = new ArrayList<>();
     List<SourceFile> refs = new ArrayList<>();
 
-    int ec = 0;
+    int errorCount = 0;
     boolean first = true;
 
     do {
@@ -330,52 +330,7 @@ public class ValidationService {
         log.info("Done. " + validationEngine.getContext().clock().report() + ". Memory = " + Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed() + mbean.getNonHeapMemoryUsage().getUsed()));
         log.info("");
 
-        PrintStream dst = null;
-        ValidationOutputRenderer renderer = makeValidationOutputRenderer(validateSourceParameters.output(), instanceValidatorParameters.getOutputStyle());
-        renderer.setCrumbTrails(instanceValidatorParameters.isCrumbTrails());
-        renderer.setShowMessageIds(instanceValidatorParameters.isShowMessageIds());
-        renderer.setRunDate(runDate);
-        if (renderer.isSingleFile()) {
-          if (validateSourceParameters.output() == null) {
-            dst = new PrintStream(new Slf4JOutputStream());
-          } else {
-            dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(validateSourceParameters.output())));
-          }
-          renderer.setOutput(dst);
-        } else {
-          File dir = ManagedFileAccess.file(validateSourceParameters.output());
-          if (!dir.isDirectory()) {
-            throw new Error("The output location " + dir.getAbsolutePath() + " must be an existing directory for the output style " + renderer.getStyleCode());
-          }
-          renderer.setFolder(dir);
-        }
-
-        if (resource instanceof Bundle) {
-          if (renderer.handlesBundleDirectly()) {
-            renderer.render((Bundle) resource);
-          } else {
-            renderer.start(((Bundle) resource).getEntry().size() > 1);
-            for (Bundle.BundleEntryComponent e : ((Bundle) resource).getEntry()) {
-              OperationOutcome op = (OperationOutcome) e.getResource();
-              ec = ec + countErrors(op);
-              renderer.render(op);
-            }
-            renderer.finish();
-          }
-        } else if (resource == null) {
-          ec = ec + 1;
-          log.info("No output from validation - nothing to validate");
-        } else {
-          renderer.start(false);
-          OperationOutcome op = (OperationOutcome) resource;
-          ec = countErrors(op);
-          renderer.render((OperationOutcome) resource);
-          renderer.finish();
-        }
-
-        if (validateSourceParameters.output() != null && dst != null) {
-          dst.close();
-        }
+        errorCount = renderValidationOutput(resource, validateSourceParameters.output(), instanceValidatorParameters.getOutputStyle(), instanceValidatorParameters.isCrumbTrails(), instanceValidatorParameters.isShowMessageIds(), runDate, errorCount);
 
         if (instanceValidatorParameters.getHtmlOutput() != null) {
           String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis() - start);
@@ -404,9 +359,59 @@ public class ValidationService {
       }
     } while (watchParameters.watchMode() != ValidatorWatchMode.NONE);
     
-    if (ec > 0) {
+    if (errorCount > 0) {
       SystemExitManager.setError(1);
     }
+  }
+
+  private int renderValidationOutput(Resource resource, String output, String outputStyle, boolean isCrumbTrails, boolean isShowMessageIds, String runDate, int errorCount) throws IOException {
+    PrintStream outputStream = null;
+    ValidationOutputRenderer renderer = makeValidationOutputRenderer(output, outputStyle);
+    renderer.setCrumbTrails(isCrumbTrails);
+    renderer.setShowMessageIds(isShowMessageIds);
+    renderer.setRunDate(runDate);
+    if (renderer.isSingleFile()) {
+      if (output == null) {
+        outputStream = new PrintStream(new Slf4JOutputStream());
+      } else {
+        outputStream = new PrintStream(ManagedFileAccess.outStream(Utilities.path(output)));
+      }
+      renderer.setOutput(outputStream);
+    } else {
+      File folder = ManagedFileAccess.file(output);
+      if (!folder.isDirectory()) {
+        throw new Error("The output location " + folder.getAbsolutePath() + " must be an existing directory for the output style " + renderer.getStyleCode());
+      }
+      renderer.setFolder(folder);
+    }
+
+    if (resource instanceof Bundle) {
+      if (renderer.handlesBundleDirectly()) {
+        renderer.render((Bundle) resource);
+      } else {
+        renderer.start(((Bundle) resource).getEntry().size() > 1);
+        for (Bundle.BundleEntryComponent e : ((Bundle) resource).getEntry()) {
+          OperationOutcome op = (OperationOutcome) e.getResource();
+          errorCount = errorCount + countErrors(op);
+          renderer.render(op);
+        }
+        renderer.finish();
+      }
+    } else if (resource == null) {
+      errorCount = errorCount + 1;
+      log.info("No output from validation - nothing to validate");
+    } else {
+      renderer.start(false);
+      OperationOutcome op = (OperationOutcome) resource;
+      errorCount = countErrors(op);
+      renderer.render((OperationOutcome) resource);
+      renderer.finish();
+    }
+
+    if (output != null && outputStream != null) {
+      outputStream.close();
+    }
+    return errorCount;
   }
 
   private int countErrors(OperationOutcome oo) {

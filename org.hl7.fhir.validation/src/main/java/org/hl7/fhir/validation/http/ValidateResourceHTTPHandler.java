@@ -66,10 +66,6 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
     try {
       ByteProvider byteProvider = ByteProvider.forBytes(resourceBytes);
       List<ValidationRecord> validationRecords = new ArrayList<>();
-      // Validate the resource using ValidationEngine
-     // validate("dummy location", byteProvider, format, profiles, validationRecords)
-      //OperationOutcome outcome = fhirValidatorHttpService.getValidationEngine().validate(VALIDATE_LOCATION, resourceBytes, format, profiles,
-      //  resourceIdRule, anyExtensionsAllowed, bpWarnings, displayOption);
       OperationOutcome outcome = fhirValidatorHttpService.getValidationEngine().validate(VALIDATE_LOCATION, byteProvider, format, profiles, validationRecords);
 
       sendOperationOutcome(exchange, 200, outcome, getAcceptHeader(exchange));
