@@ -701,6 +701,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       SchemaValidator.validateSchema(location, cntType, messages);
     }
     InstanceValidator validator = getValidator(cntType);
+    //FIXME set instance validator options
     Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(profiles));
     boolean first = true;
     for (String fn : matchetypes) {
