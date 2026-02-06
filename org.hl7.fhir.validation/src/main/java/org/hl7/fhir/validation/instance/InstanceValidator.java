@@ -58,6 +58,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.exceptions.TimeoutException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
@@ -558,6 +559,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private ValidatorMaxMessages maxMessages = null;
 
   // time tracking
+  @Setter
+  @Getter private ValidationTimeout timeout = null; // Default validation time out equal to 0 seconds (disabled)
   private boolean noBindingMsgSuppressed;
   private Map<String, Element> fetchCache = new HashMap<>();
   private HashMap<Element, ResourceValidationTracker> resourceTracker = new HashMap<>();
@@ -649,6 +652,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setNoExperimentalContent(parameters.isNoExperimentalContent());
     setCheckIPSCodes(parameters.isCheckIPSCodes());
     setMaxMessages(parameters.getMaxValidationMessages());
+    setTimeout(parameters.getTimeout());
   }
 
   @Override
@@ -1011,6 +1015,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       NodeStack stack = new NodeStack(context, null, element, validationLanguage);
       if (profiles == null || profiles.isEmpty()) {
         validateResource(new ValidationContext(appContext, element), sizeLimitedErrors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
+    // this is the main entry point; all the other public entry points end up here coming here...
+    // so the first thing to do is to clear the internal state
+    clearInternalState(element, profiles);
+
+    try {
+      long overallStartTime = System.nanoTime();
+      NodeStack stack = new NodeStack(context, null, element, validationLanguage);
+      if (profiles == null || profiles.isEmpty()) {
+        validateResource(new ValidationContext(appContext, element), errors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
       } else {
         int i = 0;
         while (i < profiles.size()) {
@@ -1020,6 +1033,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               StructureDefinition dep = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue(), null, sd);
               if (dep == null) {
                 warning(sizeLimitedErrors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());
+              StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue(), null, sd);
+              if (dep == null) {
+                warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
               } else if (!profiles.contains(dep)) {
                 profiles.add(dep);
               }
@@ -1067,6 +1083,72 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 warning(sizeLimitedErrors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
                   I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());
               }
+        }
+        for (StructureDefinition defn : profiles) {
+          stack.getIds().clear();
+          validateResource(new ValidationContext(appContext, element), errors, element, element, defn, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.ConfigProfile), false, false);
+        }
+      }
+      if (hintAboutNonMustSupport && !profiles.isEmpty()) {
+        checkElementUsage(errors, element, stack);
+      }
+      codingObserver.finish(errors, stack);
+      errors.removeAll(messagesToRemove);
+      timeTracker.overall(overallStartTime);
+      validateCodeAndTextWithAI(errors, stack);
+
+      if (settings.isDebug()) {
+        try {
+          debugElement(element, log);
+        } catch (IOException e) {
+         log.error(e.getMessage(), e);
+        }
+      }
+    }
+    catch (TimeoutException te) {
+      // Validation time out exceeded
+      final String formattedMessage = context.formatMessage(I18nConstants.VALIDATION_TIMEOUT_EXCEEDED, te.getTimeout(), timeout.getSource());
+      ValidationMessage validationMessage = new ValidationMessage(Source.InstanceValidator, IssueType.PROCESSING, element.line(), element.col(), element.getName(),
+          formattedMessage, IssueSeverity.WARNING);
+
+      errors.add(validationMessage);
+    }
+  }
+
+  private void validateCodeAndTextWithAI(List<ValidationMessage> errors, NodeStack stack) {
+    if (aiService == null) {
+      return;
+    }
+    if (textsToCheck.isEmpty()) {
+      return;
+    }
+      long aiStartTime = System.nanoTime();
+      List<CodeAndTextValidationRequest> list = new ArrayList<>();
+      for (CodeAndTextValidationRequest tt : textsToCheck) {
+        ValidationResult vr = context.validateCode(settings.setDisplayWarningMode(false).setLanguages(tt.getLang()), tt.getSystem(), null, tt.getCode(), tt.getText());
+        if (!vr.isOk()) {
+          list.add(tt);
+        }
+      }
+      if (!list.isEmpty()) {
+        CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
+        List<CodeAndTextValidationResult> results = null;
+        try {
+          results = ctv.validateCodings(list);
+        } catch (Exception e) {
+          if (e.getCause() != null && e.getCause() instanceof HTTPResultException) {
+            warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+                I18nConstants.VALIDATION_AI_FAILED_LOG, e.getMessage(), ((HTTPResultException)e.getCause()).logPath);
+          } else {
+            warning(errors, "2025-01-14", IssueType.EXCEPTION, stack, false,
+                I18nConstants.VALIDATION_AI_FAILED, e.getMessage());
+          }
+        }
+        if (results != null) {
+          for (CodeAndTextValidationResult vr : results) {
+            if (!vr.isValid()) {
+              warning(errors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
+                  I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());
             }
           }
         }
@@ -1087,6 +1169,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         formattedMessage, IssueSeverity.WARNING);
       errors.set(errors.size() - 1, validationMessage);
     }
+      timeTracker.ai(aiStartTime);
+  }
+
+  protected void clearInternalState(Element element, List<StructureDefinition> profiles) {
+    fetchCache.clear();
+    fetchCache.put(element.fhirType() + "/" + element.getIdBase(), element);
+    resourceTracker.clear();
+    trackedMessages.clear();
+    messagesToRemove.clear();
+    executionId = UUID.randomUUID().toString();
+    baseOnly = profiles.isEmpty();
+    setParents(element);
+    // Start validation time out tracker; set timeout to global setting (default 0 if null)
+    timeTracker.initializeValidationTimeout(timeout == null ? 0 : timeout.getTimeoutMillis());
   }
 
   protected void debugElement(Element element, Logger log) throws IOException {
@@ -1096,7 +1192,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     element.printToOutput(printStream);
     log.debug(outputStream.toString());
   }
-  private void checkElementUsage(List<ValidationMessage> errors, Element element, NodeStack stack) {
+  private void checkElementUsage(List<ValidationMessage> errors, Element element, NodeStack stack) throws TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     if (element.getPath()==null
       || (element.getName().equals("id")  && !element.getPath().substring(0, element.getPath().length()-3).contains("."))
       || (element.getName().equals("text")  && !element.getPath().substring(0, element.getPath().length()-5).contains(".")))
@@ -6281,7 +6380,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   // checkSpecials = we're only going to run these tests if we are actually validating this content (as opposed to we looked it up)
-  private boolean start(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) throws FHIRException {
+  private boolean start(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) throws FHIRException, TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = !hasErrors(errors);
 
     if (ExtensionUtilities.readBoolExtension(defn, ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE) && defn.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
@@ -6319,6 +6421,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (pctOwned) {
       pct.done();
     }
+
+    timeTracker.checkValidationTimeoutExceeded();
  
     if (defn.hasExtension(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
       for (Extension ext : defn.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
@@ -6337,7 +6441,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (pctOwned) {
             pct.done();
           }
-          
+
+          timeTracker.checkValidationTimeoutExceeded();
         }
       }
     }
@@ -6402,7 +6507,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     if (pctOwned) {
                       pct.done();
                     }
-                    
+
+                    timeTracker.checkValidationTimeoutExceeded();
                   }
                 }
               }
@@ -6429,6 +6535,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (pctOwned) {
               pct.done();
             }
+
+            timeTracker.checkValidationTimeoutExceeded();
           }
         }
       }
@@ -6470,7 +6578,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return sd;
   }
 
-  private void resolveBundleReferences(Element element, List<Element> bundles) {
+  private void resolveBundleReferences(Element element, List<Element> bundles) throws TimeoutException {
+    timeTracker.checkValidationTimeoutExceeded();
     if (!element.hasUserData(UserDataNames.validator_bundle_resolved)) {
       element.setUserData(UserDataNames.validator_bundle_resolved, true);
       List<Element> list = new ArrayList<Element>();
@@ -6487,7 +6596,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private void resolveBundleReferencesInResource(List<Element> bundles, Element r, String fu) {
+  private void resolveBundleReferencesInResource(List<Element> bundles, Element r, String fu) throws TimeoutException {
+    timeTracker.checkValidationTimeoutExceeded();
     if (BUNDLE.equals(r.fhirType())) {
       resolveBundleReferences(r, bundles);
     } else {
@@ -6542,9 +6652,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return -1;
   }
 
-  public boolean startInner(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, boolean checkSpecials, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) {
+  public boolean startInner(ValidationContext valContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack, boolean checkSpecials, ResourcePercentageLogger pct, ValidationMode mode, boolean fromContained) throws TimeoutException {
     // the first piece of business is to see if we've validated this resource against this profile before.
     // if we have (*or if we still are*), then we'll just return our existing errors
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = true;
     ResourceValidationTracker resTracker = getResourceTracker(element);
     List<ValidationMessage> cachedErrors = resTracker.getOutcomes(defn);
@@ -6561,7 +6674,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       List<ValidationMessage> localErrors = new ArrayList<ValidationMessage>();
       resTracker.startValidating(defn);
       trackUsage(defn, valContext, element);
-      ok = validateElement(valContext, localErrors, defn, defn.getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true, null, pct, mode) && ok;
+      try {
+        ok = validateElement(valContext, localErrors, defn, defn.getSnapshot().getElement().get(0), null, null, resource, element, element.getName(), stack, false, true, null, pct, mode) && ok;
+      }
+      catch (TimeoutException te) {
+        // Intercept exception to allow processing of any localErrors
+        addMessagesReplaceExistingIfMoreSevere(errors, localErrors);
+        throw new TimeoutException(te, this.timeout.getTimeoutMillis());
+      }
       resTracker.storeOutcomes(defn, localErrors);
       addMessagesReplaceExistingIfMoreSevere(errors, localErrors);
     } else {
@@ -7086,7 +7206,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
 
   private boolean validateElement(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile, ElementDefinition definition, StructureDefinition cprofile, ElementDefinition context,
-                                  Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException {
+                                  Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, String extensionUrl, ResourcePercentageLogger pct, ValidationMode mode) throws FHIRException, TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = true;
     
     pct.seeElement(element);
@@ -7237,7 +7360,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public boolean checkChildByDefinition(ValidationContext valContext, List<ValidationMessage> errors, StructureDefinition profile,
                                         ElementDefinition definition, Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept,
-                                        boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, ElementDefinition checkDefn, boolean isSlice, ResourcePercentageLogger pct, ValidationMode mode) {
+                                        boolean checkDisplayInContext, ElementInfo ei, String extensionUrl, ElementDefinition checkDefn, boolean isSlice, ResourcePercentageLogger pct, ValidationMode mode) throws TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = true;
     List<String> profiles = new ArrayList<String>();
     String type = null;
@@ -7701,7 +7827,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public boolean checkCardinalities(List<ValidationMessage> errors, StructureDefinition profile, Element element, NodeStack stack,
-      SourcedChildDefinitions childDefinitions, List<ElementInfo> children, List<String> problematicPaths) throws DefinitionException {
+      SourcedChildDefinitions childDefinitions, List<ElementInfo> children, List<String> problematicPaths) throws DefinitionException, TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = true;
     // 3. report any definitions that have a cardinality problem
     for (ElementDefinition ed : childDefinitions.getList()) {
@@ -8165,7 +8294,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
-  private boolean checkInvariants(ValidationContext valContext, List<ValidationMessage> errors, String path, StructureDefinition profile, ElementDefinition ed, String typename, String typeProfile, Element resource, Element element, boolean onlyNonInherited) throws FHIRException, FHIRException {
+  private boolean checkInvariants(ValidationContext valContext, List<ValidationMessage> errors, String path, StructureDefinition profile, ElementDefinition ed, String typename, String typeProfile, Element resource, Element element, boolean onlyNonInherited) throws FHIRException, TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     if (noInvariantChecks) {
       return true;
     }
@@ -8318,7 +8450,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * The actual base entry point for internal use (re-entrant)
    */
   private boolean validateResource(ValidationContext valContext, List<ValidationMessage> errors, Element resource,
-                                   Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean forReference, boolean fromContained) throws FHIRException {
+                                   Element element, StructureDefinition defn, IdStatus idstatus, NodeStack stack, ResourcePercentageLogger pct, ValidationMode mode, boolean forReference, boolean fromContained) throws FHIRException, TimeoutException {
+
+    timeTracker.checkValidationTimeoutExceeded();
+
     boolean ok = true;    
     // check here if we call validation policy here, and then change it to the new interface
     assert stack != null;
@@ -8982,4 +9117,5 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     settings.setJurisdiction(jurisdiction);
     return this;
   }
+
 }

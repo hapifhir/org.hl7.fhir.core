@@ -1,7 +1,9 @@
 package org.hl7.fhir.validation.instance;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -10,6 +12,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,11 +24,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
+import static java.lang.Thread.sleep;
 import static org.apache.commons.lang3.StringUtils.trim;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -37,14 +40,14 @@ class InstanceValidatorTests {
   private IWorkerContext context;
 
   @Test
-  public void testCheckCodeOnServerNoStackLocale() throws InstanceValidator.CheckCodeOnServerException {
+  void testCheckCodeOnServerNoStackLocale() throws InstanceValidator.CheckCodeOnServerException {
     when(context.getLocale()).thenReturn(Locale.KOREA);
     NodeStack stack =mock(NodeStack.class);
     testCheckCodeOnServer(stack, "ko-KR");
   }
 
   @Test
-  public void testCheckCodeOnServerStackLocale() throws InstanceValidator.CheckCodeOnServerException {
+  void testCheckCodeOnServerStackLocale() throws InstanceValidator.CheckCodeOnServerException {
     NodeStack stack =mock(NodeStack.class);
     when(stack.getWorkingLang()).thenReturn("fr-CA");
     testCheckCodeOnServer(stack, "fr-CA");
@@ -114,5 +117,34 @@ class InstanceValidatorTests {
     assertEquals(theExpected, actual);
   }
 
+  @Test
+  void testTimeoutParameter() {
+    when(context.getVersion()).thenReturn("5.0.1");
+    final String dummyTimeoutSource = "Dummy Timeout Source";
+    final String originalMessage = "Original Message";
+    final String dummyTimeoutMessage = "Dummy Timeout Message";
+    when(context.formatMessage(I18nConstants.VALIDATION_TIMEOUT_EXCEEDED, 500L, dummyTimeoutSource)).thenReturn(dummyTimeoutMessage);
+    InstanceValidator instanceValidator = new InstanceValidator(context, null, null, null, new ValidatorSettings()){
+      protected void clearInternalState(Element element, List<StructureDefinition> profiles) {
+        super.clearInternalState(element, profiles);
+        try {
+          sleep(1000);
+        } catch (InterruptedException e) {
+          Assertions.fail();
+        }
+      }
 
+    };
+
+    instanceValidator.setTimeout(new ValidationTimeout(500, dummyTimeoutSource));
+    List<ValidationMessage> messages = new ArrayList<>();
+
+    messages.add(new ValidationMessage().setMessage(originalMessage));
+    Element element = mock(Element.class);
+    when(element.hasParentForValidator()).thenReturn(true);
+    instanceValidator.validate(context, messages, null, element, Collections.emptyList());
+    assertThat(messages.size()).isEqualTo(2);
+    assertThat(messages.get(0).getMessage()).isEqualTo(originalMessage);
+    assertThat(messages.get(1).getMessage()).contains(dummyTimeoutMessage);
+  }
 }
