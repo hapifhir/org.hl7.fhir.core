@@ -582,13 +582,15 @@ public class QuestionnaireValidator extends BaseValidator {
       ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, answers.get(1).line(), answers.get(1).col(), stack.getLiteralPath(), qItem.getRepeats(), I18nConstants.QUESTIONNAIRE_QR_ITEM_ONLYONEA));
     }
 
+    // FUT1-22151 QuestionnaireResponse validation for min/max occurs is wrong for number of answer equal to min or max
+    // https://github.com/hapifhir/org.hl7.fhir.core/issues/2314
     if (qItem.hasExtension(ExtensionDefinitions.EXT_MAXOCCURS)) {
       int mo = ExtensionUtilities.readIntegerExtension(qItem, ExtensionDefinitions.EXT_MAXOCCURS, -1);
-      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() < mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MAX_OCCURS, mo, answers.size()));
+      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() <= mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MAX_OCCURS, mo, answers.size()));
     }
     if (qItem.hasExtension(ExtensionDefinitions.EXT_MINOCCURS)) {
       int mo = ExtensionUtilities.readIntegerExtension(qItem, ExtensionDefinitions.EXT_MINOCCURS, -1);
-      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() > mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MIN_OCCURS, mo, answers.size()));
+      ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() >= mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MIN_OCCURS, mo, answers.size()));
     }
 
     int i = 0;
