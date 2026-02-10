@@ -99,7 +99,7 @@ public class ValidationEngineTests {
         } catch (Exception e) {
           e.printStackTrace();
           System.err.println("Thread " + index + " failed");
-          outcomes[index] = OperationOutcomeUtilities.outcomeFromTextError(e.getMessage());
+          outcomes[index] = OperationOutcomeUtilities.createError(e);
         }
       });
       t.start();

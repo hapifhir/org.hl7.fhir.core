@@ -100,7 +100,7 @@ public class InstanceValidatorOptions {
 
   @CommandLine.Option(names = {"-allow-example-urls"},
     description = "Allow references to example.org URLs in resources to be treated as valid",
-    arity = "0")
+    arity = "0..1")
   @With
   public boolean allowExampleUrls = false;
 
@@ -223,4 +223,10 @@ public class InstanceValidatorOptions {
     arity = "2")
   @With
   public List<String> bundleValidationRules = null;
+
+  @CommandLine.Option(names = {"-validation-timeout"},
+    description = "A value in milliseconds after which validation will be stopped. Any issues encountered at this point will be returned, but may not be completely accurate.",
+    arity = "1")
+  @With
+  public Long validationTimeout = 0L;
 }

@@ -406,7 +406,7 @@ public class TxTester {
     } else {
       throw new FHIRException("unsupported FHIR Version for terminology tests: "+fhirVersion);
     }
-    client.setFormat(ResourceFormat.RESOURCE_XML);
+    client.setFormat(ResourceFormat.RESOURCE_JSON);
     return client;  
   }
 
@@ -701,6 +701,11 @@ public class TxTester {
   private String expand(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
+    }
+    for (var pp : p.getParameter()) {
+      if (pp.getName().equals("url") && !pp.hasValueUriType()) {
+        throw new Error("Wrong param type");
+      }
     }
     terminologyClient.setAcceptLanguage(lang);
     p.getParameter().addAll(profile.getParameter());

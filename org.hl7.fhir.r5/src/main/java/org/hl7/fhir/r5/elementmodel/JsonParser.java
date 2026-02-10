@@ -823,7 +823,7 @@ public class JsonParser extends ParserBase {
     }
     checkComposeComments(e);
     json.beginObject();
-    if (!isSuppressResourceType(e.getProperty())) {
+    if (!isSuppressResourceType(e.getProperty(), e.getType())) {
       prop("resourceType", e.getType(), null);
     }
     if (ExtensionUtilities.readBoolExtension(e.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
@@ -838,13 +838,19 @@ public class JsonParser extends ParserBase {
     osw.flush();
   }
 
-  private boolean isSuppressResourceType(Property property) {
+  private boolean isSuppressResourceType(Property property, String type) {
     StructureDefinition sd = property.getStructure();
     if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE)) {
       return ExtensionUtilities.readBoolExtension(sd, ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE);
-    } else {
-      return false;
     }
+    sd = context.fetchTypeDefinition(type);
+    if (sd != null && (sd.getKind() == StructureDefinition.StructureDefinitionKind.COMPLEXTYPE || sd.getKind() == StructureDefinition.StructureDefinitionKind.PRIMITIVETYPE)) {
+      return true;
+    }
+    if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE)) {
+      return ExtensionUtilities.readBoolExtension(sd, ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE);
+    }
+    return false;
   }
 
   private void checkComposeComments(Element e) {
@@ -862,7 +868,7 @@ public class JsonParser extends ParserBase {
     checkComposeComments(e);
     json.beginObject();
 
-    if (!isSuppressResourceType(e.getProperty())) {
+    if (!isSuppressResourceType(e.getProperty(), e.getType())) {
       prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
     }
     if (ExtensionUtilities.readBoolExtension(e.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
@@ -985,7 +991,7 @@ public class JsonParser extends ParserBase {
           json.elide();
         else if (item.hasChildren()) {
           open(null,null);
-          if (item.getProperty().isResource() && !isSuppressResourceType(item.getProperty())) {
+          if (item.getProperty().isResource() && !isSuppressResourceType(item.getProperty(), item.getType())) {
             prop("resourceType", item.getType(), linkResolver == null ? null : linkResolver.resolveType(item.getType()));
           }
           if (linkResolver != null && item.getProperty().isReference()) {
@@ -1043,7 +1049,7 @@ public class JsonParser extends ParserBase {
     }
     if (element.hasChildren()) {
       open(name, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()));
-      if (element.getProperty().isResource() && !isSuppressResourceType(element.getProperty())) {
+      if (element.getProperty().isResource() && !isSuppressResourceType(element.getProperty(), element.getType())) {
         prop("resourceType", element.getType(), linkResolver == null ? null : linkResolver.resolveType(element.getType()));
       }
       if (linkResolver != null && element.getProperty().isReference()) {

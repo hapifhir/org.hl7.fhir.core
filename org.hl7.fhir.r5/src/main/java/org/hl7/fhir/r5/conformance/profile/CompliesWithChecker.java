@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
@@ -55,19 +56,19 @@ public class CompliesWithChecker {
     DefinitionNavigator cn = new DefinitionNavigator(context, claimee, false, true);
     DefinitionNavigator an = new DefinitionNavigator(context, authority, false, true);
 
-    String path = claimee.getType();
-    if (!path.equals(authority.getType())) {
-      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_WRONG_TYPE, path, authority.getType()), IssueSeverity.ERROR));
+    String claimeePath = claimee.getType();
+    if (!claimeePath.equals(authority.getType())) {
+      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_WRONG_TYPE, claimeePath, authority.getType()), IssueSeverity.ERROR));
     } else {
-      checkCompliesWith(messages, path, cn, an, false);
+      checkCompliesWith(messages, claimeePath, cn, an, false);
     }
     return messages;
   }
 
-  private void checkCompliesWith(List<ValidationMessage> messages, String path, DefinitionNavigator claimee, DefinitionNavigator authority, boolean isSlice) {
+  private void checkCompliesWith(List<ValidationMessage> messages, String claimeePath, DefinitionNavigator claimee, DefinitionNavigator authority, boolean isSlice) {
     ElementDefinition c = claimee.current();
     ElementDefinition a = authority.current();
-    if (checkElementComplies(messages, path, c, a, isSlice)) {
+    if (checkElementComplies(messages, claimeePath, c, a, isSlice)) {
 
       // if the type and children are the same on both sides, we can stop checking 
       if (!typesIdentical(c, a) || claimee.hasInlineChildren() || authority.hasInlineChildren()) {
@@ -75,75 +76,75 @@ public class CompliesWithChecker {
         // doesn't walk into them, and there's more than one type, the 
         // 
         for (int i = 0; i < authority.children().size(); i++) {
-          DefinitionNavigator anChild = authority.children().get(i);
-          checkCompilesWith(messages, path, claimee, anChild);
+          DefinitionNavigator authorityChild = authority.children().get(i);
+          checkCompilesWith(messages, claimeePath, claimee, authorityChild);
         }
       }
     }
   }
 
-  private void checkCompilesWith(List<ValidationMessage> messages, String path, DefinitionNavigator claimee, DefinitionNavigator anChild) {
-    DefinitionNavigator cnChild = claimee.childByName(anChild.current().getName());
-    String cpath = path+"."+anChild.current().getName();
-    if (cnChild == null) {
-      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_MISSING, anChild.globalPath()), IssueSeverity.ERROR));
-    } else if (anChild.sliced() || cnChild.sliced()) {
-      if (!cnChild.hasSlices()) {
-        if (anChild.hasSlices()) {
+  private void checkCompilesWith(List<ValidationMessage> messages, String claimeePath, DefinitionNavigator claimee, DefinitionNavigator authorityChild) {
+    DefinitionNavigator claimeeChild = claimee.childByName(authorityChild.current().getName());
+    String claimeePathInner = claimeePath+"."+authorityChild.current().getName();
+    if (claimeeChild == null) {
+      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePathInner, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_MISSING, authorityChild.globalPath()), IssueSeverity.ERROR));
+    } else if (authorityChild.sliced() || claimeeChild.sliced()) {
+      if (!claimeeChild.hasSlices()) {
+        if (authorityChild.hasSlices()) {
           // do we care? if the authority slicing is closed, or any are mandatory
-          boolean wecare = anChild.current().getSlicing().getRules() == SlicingRules.CLOSED;
-          for (DefinitionNavigator anSlice : anChild.slices()) {
+          boolean wecare = authorityChild.current().getSlicing().getRules() == SlicingRules.CLOSED;
+          for (DefinitionNavigator anSlice : authorityChild.slices()) {
             wecare = wecare || anSlice.current().getMin() > 0;
           }
           if (wecare) {
-            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath, 
-              context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_UNSLICED, cpath), IssueSeverity.ERROR));
+            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePathInner,
+              context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_UNSLICED, claimeePathInner), IssueSeverity.ERROR));
           }
         } 
-        checkCompliesWith(messages, cpath, cnChild, anChild, false);
-     } else if (!anChild.hasSlices()) {
-        for (DefinitionNavigator cc : cnChild.slices()) {
-          checkCompliesWith(messages, cpath+":"+cnChild.current().getSliceName(), cc, anChild, true);
+        checkCompliesWith(messages, claimeePathInner, claimeeChild, authorityChild, false);
+     } else if (!authorityChild.hasSlices()) {
+        for (DefinitionNavigator cc : claimeeChild.slices()) {
+          checkCompliesWith(messages, claimeePathInner+":"+claimeeChild.current().getSliceName(), cc, authorityChild, true);
         }
       } else {
-        checkByDiscriminator(messages, anChild, cpath, cnChild);
+        checkByDiscriminator(messages, authorityChild, claimeePathInner, claimeeChild);
       }
     } else {
-      checkCompliesWith(messages, cpath, cnChild, anChild, false);
+      checkCompliesWith(messages, claimeePathInner, claimeeChild, authorityChild, false);
     }
   }
 
-  private void checkByDiscriminator(List<ValidationMessage> messages, DefinitionNavigator anChild, String cpath, DefinitionNavigator cnChild) {
+  private void checkByDiscriminator(List<ValidationMessage> messages, DefinitionNavigator authorityChild, String claimeePath, DefinitionNavigator claimeeChild) {
     List<ElementDefinitionSlicingDiscriminatorComponent> discriminators = new ArrayList<>();
-    if (slicingCompliesWith(messages, cpath, anChild.current(), cnChild.current(), discriminators)) {
+    if (slicingCompliesWith(messages, claimeePath, authorityChild.current(), claimeeChild.current(), discriminators)) {
       List<DefinitionNavigator> processed = new ArrayList<DefinitionNavigator>();
-      for (DefinitionNavigator anSlice : anChild.slices()) {
-        String spath = cpath +":"+anSlice.current().getSliceName();
-        List<DataType> discriminatorValues = new ArrayList<>();
-        List<DefinitionNavigator> cnSlices = findMatchingSlices(cnChild.slices(), discriminators, anSlice, discriminatorValues);
+      for (DefinitionNavigator anSlice : authorityChild.slices()) {
+        String slicePath = claimeePath +":"+anSlice.current().getSliceName();
+        List<DiscriminatorData> discriminatorValues = new ArrayList<>();
+        List<DefinitionNavigator> cnSlices = findMatchingSlices(messages, claimeePath, slicePath, claimeeChild.slices(), discriminators, anSlice, discriminatorValues);
         if (cnSlices.isEmpty() && anSlice.current().getSlicing().getRules() != SlicingRules.CLOSED) {
           // if it's closed, then we just don't have any. But if it's not closed, we need the slice
-          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath,
-              context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_NO_SLICE, spath, discriminatorsToString(discriminators),
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath,
+              context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_NO_SLICE, slicePath, discriminatorsToString(discriminators),
                   valuesToString(discriminatorValues)), IssueSeverity.ERROR));
         }
         for (DefinitionNavigator cnSlice : cnSlices) {
-          spath = cpath +":"+cnSlice.current().getSliceName();
+          slicePath = claimeePath +":"+cnSlice.current().getSliceName();
           if (!processed.contains(cnSlice)) {
             // it's weird if it does - is that a problem?
             processed.add(cnSlice);
           }
-          checkCompliesWith(messages, spath, cnSlice, anSlice, false);
+          checkCompliesWith(messages, slicePath, cnSlice, anSlice, false);
         }
       }
-      for (DefinitionNavigator cnSlice : cnChild.slices()) {
+      for (DefinitionNavigator cnSlice : claimeeChild.slices()) {
         if (!processed.contains(cnSlice)) {
-          if (anChild.current().getSlicing().getRules() != SlicingRules.OPEN) {
-            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, cpath,
-                context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_EXTRA_SLICE, cpath, cnSlice.current().getSliceName()), IssueSeverity.ERROR));
+          if (authorityChild.current().getSlicing().getRules() != SlicingRules.OPEN) {
+            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath,
+                context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_EXTRA_SLICE, claimeePath, cnSlice.current().getSliceName()), IssueSeverity.ERROR));
           }
-          String spath = cpath +":"+cnSlice.current().getSliceName();
-          checkCompliesWith(messages, spath, cnSlice, anChild, true);
+          String slicePath = claimeePath +":"+cnSlice.current().getSliceName();
+          checkCompliesWith(messages, slicePath, cnSlice, authorityChild, true);
         }
       }
     }
@@ -157,27 +158,27 @@ public class CompliesWithChecker {
     return b.toString();
   }
 
-  private String valuesToString(List<DataType> diffValues) {
+  private String valuesToString(List<DiscriminatorData> diffValues) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|"); 
-    for (DataType dt : diffValues) {
+    for (DiscriminatorData dt : diffValues) {
       if (dt != null) {
-        b.append(dt.toString());
+        b.append(dt.describe());
       }
     }
     return b.toString();
   }
 
-  private List<DefinitionNavigator> findMatchingSlices(List<DefinitionNavigator> slices, List<ElementDefinitionSlicingDiscriminatorComponent> discriminators, DefinitionNavigator anSlice, List<DataType> discriminatorValues) {
+  private List<DefinitionNavigator> findMatchingSlices(List<ValidationMessage> messages, String claimeePath, String slicePath, List<DefinitionNavigator> slices, List<ElementDefinitionSlicingDiscriminatorComponent> discriminators, DefinitionNavigator anSlice, List<DiscriminatorData> discriminatorValues) {
     List<DefinitionNavigator> list = new ArrayList<DefinitionNavigator>();
     for (ElementDefinitionSlicingDiscriminatorComponent ad : discriminators) {
       // first, determine the values for each of the discriminators in the authority slice
-      discriminatorValues.add(getDisciminatorValue(anSlice, ad));
+      discriminatorValues.add(getDisciminatorValue(messages, claimeePath, slicePath, anSlice, ad));
     }
     for (DefinitionNavigator slice : slices) {
-      List<DataType> values = new ArrayList<>();      
+      List<DiscriminatorData> values = new ArrayList<>();
       for (ElementDefinitionSlicingDiscriminatorComponent ad : discriminators) {
         // first, determine the values for each of the discriminators in the authority slice
-        values.add(getDisciminatorValue(slice, ad));
+        values.add(getDisciminatorValue(messages, claimeePath, slicePath, slice, ad));
       }
       boolean ok = true;
       for (int i = 0; i < discriminators.size(); i++) {
@@ -193,7 +194,7 @@ public class CompliesWithChecker {
     return list;
   }
 
-  private boolean isMatch(ElementDefinitionSlicingDiscriminatorComponent discriminator, DataType dt1, DataType dt2) {
+  private boolean isMatch(ElementDefinitionSlicingDiscriminatorComponent discriminator, DiscriminatorData dt1, DiscriminatorData dt2) {
     if (dt1 == null) {
       return dt2 == null;
     } else if (dt2 == null) {
@@ -202,11 +203,10 @@ public class CompliesWithChecker {
       switch (discriminator.getType()) {
       case EXISTS: return false;
       case NULL: return false;
-      case PATTERN: return dt1.equalsDeep(dt2); // todo
       case POSITION: return false;
       case PROFILE: 
-        StructureDefinition sd1 = context.fetchResource(StructureDefinition.class, dt1.primitiveValue());
-        StructureDefinition sd2 = context.fetchResource(StructureDefinition.class, dt2.primitiveValue());
+        StructureDefinition sd1 = context.fetchResource(StructureDefinition.class, dt1.value.primitiveValue());
+        StructureDefinition sd2 = context.fetchResource(StructureDefinition.class, dt2.value.primitiveValue());
         if (sd1 == null || sd2 == null) {
           return false;
         }
@@ -242,8 +242,23 @@ public class CompliesWithChecker {
           sde = context.fetchResource(StructureDefinition.class, sde.getBaseDefinition());
         }
         return false;
-      case TYPE: return dt1.primitiveValue().equals(dt2.primitiveValue());
-      case VALUE: return dt1.equalsDeep(dt2);
+      case TYPE: return dt1.value.primitiveValue().equals(dt2.value.primitiveValue());
+      case PATTERN:
+        if (dt1.value != null && dt2.value != null) {
+          return dt1.value.equalsDeep(dt2.value); // todo: revise this?
+        } else if (dt1.vs != null && dt2.vs != null) {
+          return ValueSetUtilities.expansionsOverlap(dt1.vs, dt2.vs);
+        } else {
+          return false;
+        }
+      case VALUE:
+        if (dt1.value != null && dt2.value != null) {
+          return dt1.value.equalsDeep(dt2.value);
+        } else if (dt1.vs != null && dt2.vs != null) {
+          return ValueSetUtilities.expansionsOverlap(dt1.vs, dt2.vs);
+        } else {
+          return false;
+        }
       default:
         return false;
       
@@ -251,22 +266,22 @@ public class CompliesWithChecker {
     }
   }
 
-  private DataType getDisciminatorValue(DefinitionNavigator anSlice, ElementDefinitionSlicingDiscriminatorComponent ad) {
+  private DiscriminatorData getDisciminatorValue(List<ValidationMessage> messages, String claimeePath, String slicePath, DefinitionNavigator anSlice, ElementDefinitionSlicingDiscriminatorComponent ad) {
     switch (ad.getType()) {
-    case EXISTS: return getExistsDiscriminatorValue(anSlice, ad.getPath());
+    case EXISTS: return new DiscriminatorData(getExistsDiscriminatorValue(anSlice, ad.getPath()));
     case NULL:throw new FHIRException("Discriminator type 'Null' Not supported yet");
     case POSITION:throw new FHIRException("Discriminator type 'Position' Not supported yet");
-    case PROFILE: return getProfileDiscriminatorValue(anSlice, ad.getPath());
-    case TYPE: return getTypeDiscriminatorValue(anSlice, ad.getPath());
+    case PROFILE: return new DiscriminatorData(getProfileDiscriminatorValue(anSlice, ad.getPath()));
+    case TYPE: return new DiscriminatorData(getTypeDiscriminatorValue(anSlice, ad.getPath()));
     case PATTERN:
-    case VALUE: return getValueDiscriminatorValue(anSlice, ad.getPath());
+    case VALUE: return getValueDiscriminatorValue(messages, claimeePath, slicePath, anSlice, ad.getPath());
     default:
       throw new FHIRException("Not supported yet");    
     }
   }
 
-  private DataType getProfileDiscriminatorValue(DefinitionNavigator anSlice, String path) {
-    DefinitionNavigator pathDN = getByPath(anSlice, path);
+  private DataType getProfileDiscriminatorValue(DefinitionNavigator anSlice, String authorityPath) {
+    DefinitionNavigator pathDN = getByPath(anSlice, authorityPath);
     if (pathDN == null) {
       return null;
     }
@@ -278,8 +293,8 @@ public class CompliesWithChecker {
     }
   }
 
-  private DataType getExistsDiscriminatorValue(DefinitionNavigator anSlice, String path) {
-    DefinitionNavigator pathDN = getByPath(anSlice, path);
+  private DataType getExistsDiscriminatorValue(DefinitionNavigator anSlice, String authorityPath) {
+    DefinitionNavigator pathDN = getByPath(anSlice, authorityPath);
     if (pathDN == null) {
       return null;
     }
@@ -288,8 +303,8 @@ public class CompliesWithChecker {
     return dt;
   }
 
-  private DataType getTypeDiscriminatorValue(DefinitionNavigator anSlice, String path) {
-    DefinitionNavigator pathDN = getByPath(anSlice, path);
+  private DataType getTypeDiscriminatorValue(DefinitionNavigator anSlice, String authorityPath) {
+    DefinitionNavigator pathDN = getByPath(anSlice, authorityPath);
     if (pathDN == null) {
       return null;
     }
@@ -298,24 +313,39 @@ public class CompliesWithChecker {
     return dt;
   }
   
-  private DataType getValueDiscriminatorValue(DefinitionNavigator anSlice, String path) {
-    DefinitionNavigator pathDN = getByPath(anSlice, path);
+  private DiscriminatorData getValueDiscriminatorValue(List<ValidationMessage> messages, String claimeePath, String slicePath, DefinitionNavigator anSlice, String authorityPath) {
+    DefinitionNavigator pathDN = getByPath(anSlice, authorityPath);
     if (pathDN == null) {
       return null;
     }
     ElementDefinition ed = pathDN.current();
     DataType dt = ed.hasFixed() ? ed.getFixed() : ed.getPattern();
-    return dt;
+    if (dt != null) {
+      return new DiscriminatorData(dt);
+    }
+    if (dt == null && ed.hasBinding() && ed.getBinding().getStrength() == BindingStrength.REQUIRED) {
+      ValueSetExpansionOutcome exp = context.expandVS(new ExpansionOptions().withHierarchical(false), ed.getBinding().getValueSet());
+      if (exp.isOk()) {
+        return new DiscriminatorData(exp.getValueset());
+      } else {
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, slicePath,
+          context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_NO_EXPAND, ed.getBinding().getValueSet(), exp.getError()), IssueSeverity.WARNING));
+        return null;
+      }
+    }
+    messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath,
+       context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_NO_VALUE, slicePath), IssueSeverity.ERROR));
+    return null;
   }
 
-  private DefinitionNavigator getByPath(DefinitionNavigator focus, String path) {
-    String segment = path.contains(".") ? path.substring(0, path.indexOf(".")) : path;
+  private DefinitionNavigator getByPath(DefinitionNavigator focus, String claimeePath) {
+    String segment = claimeePath.contains(".") ? claimeePath.substring(0, claimeePath.indexOf(".")) : claimeePath;
     if ("$this".equals(segment)) {
       return focus;
     }
     DefinitionNavigator p = focus.childByName(segment);
-    if (p != null && path.contains(".")) {
-      return getByPath(p, path.substring(path.indexOf(".")+1)); 
+    if (p != null && claimeePath.contains(".")) {
+      return getByPath(p, claimeePath.substring(claimeePath.indexOf(".")+1)); 
     } else {
       // we might need to look at the profile pointed to from the type
 
@@ -323,13 +353,13 @@ public class CompliesWithChecker {
     }
   }
 
-  private boolean slicingCompliesWith(List<ValidationMessage> messages, String path, ElementDefinition a, ElementDefinition c, List<ElementDefinitionSlicingDiscriminatorComponent> discriminators) {
+  private boolean slicingCompliesWith(List<ValidationMessage> messages, String claimeePath, ElementDefinition a, ElementDefinition c, List<ElementDefinitionSlicingDiscriminatorComponent> discriminators) {
     // the child must be sliced the same as the authority
     if (!(a.getSlicing().getRules() == SlicingRules.OPEN || c.getSlicing().getRules() == a.getSlicing().getRules())) {
-      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_RULES, path, a.getSlicing().getRules().toCode(), c.getSlicing().getRules().toCode()), IssueSeverity.ERROR));      
+      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_RULES, claimeePath, a.getSlicing().getRules().toCode(), c.getSlicing().getRules().toCode()), IssueSeverity.ERROR));      
       return false;
     } else if (a.getSlicing().getOrdered() && !c.getSlicing().getOrdered()) {
-      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_ORDER, path), IssueSeverity.ERROR));      
+      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_ORDER, claimeePath), IssueSeverity.ERROR));      
       return false;
     } else {
       // every discriminator that the authority has, the child has to have. The order of discriminators doesn't matter
@@ -342,7 +372,7 @@ public class CompliesWithChecker {
           }
         }
         if (cd == null) {
-          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_DISCRIMINATOR, path, ad.getType(), ad.getPath()), IssueSeverity.ERROR));
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_SLICING_DISCRIMINATOR, claimeePath, ad.getType(), ad.getPath()), IssueSeverity.ERROR));
           return false;
         }
       }
@@ -350,74 +380,74 @@ public class CompliesWithChecker {
     }
   }
 
-  private boolean checkElementComplies(List<ValidationMessage> messages, String path, ElementDefinition c, ElementDefinition a, boolean inSlice) {
+  private boolean checkElementComplies(List<ValidationMessage> messages, String claimeePath, ElementDefinition c, ElementDefinition a, boolean inSlice) {
     boolean doInner = true;
     if (!inSlice) {
       if (a.getMin() > c.getMin()) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "min", a.getMin(), c.getMin(), c.getId()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "min", a.getMin(), c.getMin(), c.getId()), IssueSeverity.ERROR));
       }
     }
     if (a.getMaxAsInt() < c.getMaxAsInt()) {
-      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "max", a.getMax(), c.getMax(), c.getId()), IssueSeverity.ERROR));
+      messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "max", a.getMax(), c.getMax(), c.getId()), IssueSeverity.ERROR));
     }
     if (a.hasFixed()) {
       if (!c.hasFixed()) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "fixed", a.getFixed(), null, c.getId()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "fixed", a.getFixed(), null, c.getId()), IssueSeverity.ERROR));
       } else if (!compliesWith(a.getFixed(), c.getFixed())) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "fixed", a.getFixed(), c.getFixed(), c.getId()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "fixed", a.getFixed(), c.getFixed(), c.getId()), IssueSeverity.ERROR));
       }
     } else if (a.hasPattern()) {
       if (!c.hasFixed() && !c.hasPattern()) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), null, c.getId()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), null, c.getId()), IssueSeverity.ERROR));
       } else if (c.hasFixed()) {
         if (!compliesWith(a.getFixed(), c.getFixed())) {
-          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), c.getFixed(), c.getId()), IssueSeverity.ERROR));
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), c.getFixed(), c.getId()), IssueSeverity.ERROR));
         }
       } else { // if (c.hasPattern()) 
         if (!compliesWith(a.getPattern(), c.getPattern())) {
-          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), c.getPattern(), c.getId()), IssueSeverity.ERROR));
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "pattern", a.getFixed(), c.getPattern(), c.getId()), IssueSeverity.ERROR));
         }
       }
     }
     if (!"Resource.id".equals(c.getBase().getPath())) { // tricky... there's definitional problems with Resource.id for legacy reasons, but whatever issues there are aren't due to anything the profile did
       for (TypeRefComponent tr : c.getType()) {
         if (!hasType(tr, a.getType())) {
-          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_BAD_TYPE, tr.getWorkingCode()), IssueSeverity.ERROR));        
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_BAD_TYPE, tr.getWorkingCode()), IssueSeverity.ERROR));        
         }
         doInner = false;
       }
     }
     if (a.hasMinValue()) {
       if (notGreaterThan(a.getMinValue(), c.getMinValue())) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "minValue", a.getMinValue(), c.getMinValue(), c.getId()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "minValue", a.getMinValue(), c.getMinValue(), c.getId()), IssueSeverity.ERROR));
       }
     }
     if (a.hasMaxValue()) {
       if (notLessThan(a.getMaxValue(), c.getMaxValue())) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "maxValue", a.getMaxValue(), c.getMaxValue(), c.getId()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "maxValue", a.getMaxValue(), c.getMaxValue(), c.getId()), IssueSeverity.ERROR));
       }
     }
     if (a.hasMaxLength()) {
       if (a.getMaxLength() < c.getMaxLength()) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "maxLength", a.getMaxValue(), c.getMaxValue(), c.getId()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "maxLength", a.getMaxValue(), c.getMaxValue(), c.getId()), IssueSeverity.ERROR));
       }
     }
     if (a.hasMustHaveValue()) {
       if (a.getMustHaveValue() && !c.getMustHaveValue()) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "mustHaveValue", a.getMustHaveValue(), c.getMustHaveValue(), c.getId()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "mustHaveValue", a.getMustHaveValue(), c.getMustHaveValue(), c.getId()), IssueSeverity.ERROR));
       }
     }
     if (a.hasValueAlternatives()) {
       for (CanonicalType ct : c.getValueAlternatives()) {
         if (!hasCanonical(ct, a.getValueAlternatives())) {
-          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_BAD_ELEMENT, "valueAlternatives", ct.toString()), IssueSeverity.ERROR));
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_BAD_ELEMENT, "valueAlternatives", ct.toString()), IssueSeverity.ERROR));
         }
       }
     }
     for (ElementDefinitionConstraintComponent cc : a.getConstraint()) {
       if (cc.getSeverity() == ConstraintSeverity.ERROR) {
         if (!hasConstraint(cc, c.getConstraint())) {
-          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_MISSING_ELEMENT, "constraint", cc.getExpression()), IssueSeverity.ERROR));
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_MISSING_ELEMENT, "constraint", cc.getExpression()), IssueSeverity.ERROR));
         }        
       }
     }
@@ -425,34 +455,34 @@ public class CompliesWithChecker {
     if (a.hasBinding() && a.getBinding().hasValueSet() && (a.getBinding().getStrength() == BindingStrength.REQUIRED || a.getBinding().getStrength() == BindingStrength.EXTENSIBLE)) {
       if (!c.hasBinding()) {
         if (isBindableType(c)) {
-          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding", a.getBinding().getValueSet(), "null", c.getId()), IssueSeverity.ERROR));
+          messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding", a.getBinding().getValueSet(), "null", c.getId()), IssueSeverity.ERROR));
         }
       } else if (c.getBinding().getStrength() != BindingStrength.REQUIRED && c.getBinding().getStrength() != BindingStrength.EXTENSIBLE) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding.strength", a.getBinding().getStrength(), c.getBinding().getStrength(), c.getId()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding.strength", a.getBinding().getStrength(), c.getBinding().getStrength(), c.getId()), IssueSeverity.ERROR));
       } else if (c.getBinding().getStrength() == BindingStrength.EXTENSIBLE && a.getBinding().getStrength() == BindingStrength.REQUIRED) {
-        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding.strength", a.getBinding().getStrength(), c.getBinding().getStrength(), c.getId()), IssueSeverity.ERROR));
+        messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding.strength", a.getBinding().getStrength(), c.getBinding().getStrength(), c.getId()), IssueSeverity.ERROR));
       } else if (!c.getBinding().getValueSet().equals(a.getBinding().getValueSet())) {
         ValueSet cVS = context.fetchResource(ValueSet.class, c.getBinding().getValueSet());
         ValueSet aVS = context.fetchResource(ValueSet.class, a.getBinding().getValueSet());
         if (aVS == null || cVS == null) {
           if (aVS == null) {
-            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS, a.getBinding().getValueSet()), IssueSeverity.WARNING));
+            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS, a.getBinding().getValueSet()), IssueSeverity.WARNING));
           } else {
-            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS, c.getBinding().getValueSet()), IssueSeverity.WARNING));
+            messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS, c.getBinding().getValueSet()), IssueSeverity.WARNING));
           }
         } else {
           ValueSetExpansionOutcome cExp = context.expandVS(cVS, true, false);
           ValueSetExpansionOutcome aExp = context.expandVS(aVS, true, false);
           if (!cExp.isOk() || !aExp.isOk()) {
             if (!aExp.isOk()) {
-             messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS_EXP, aVS.getVersionedUrl(), aExp.getError()), IssueSeverity.WARNING));
+             messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS_EXP, aVS.getVersionedUrl(), aExp.getError()), IssueSeverity.WARNING));
             } else {
-              messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS_EXP, cVS.getVersionedUrl(), cExp.getError()), IssueSeverity.WARNING));  
+              messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS_EXP, cVS.getVersionedUrl(), cExp.getError()), IssueSeverity.WARNING));  
             }            
           } else {
             Set<String> wrong = ValueSetUtilities.checkExpansionSubset(aExp.getValueset(), cExp.getValueset());
             if (!wrong.isEmpty()) {
-              messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS_NO, cVS.getVersionedUrl(), aVS.getVersionedUrl(), 
+              messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS_NO, cVS.getVersionedUrl(), aVS.getVersionedUrl(), 
                     CommaSeparatedStringBuilder.joinToLimit(", ", 5, "etc", wrong)), c.getBinding().getStrength() == BindingStrength.REQUIRED ? IssueSeverity.ERROR : IssueSeverity.WARNING));
             }
           }
@@ -614,5 +644,26 @@ public class CompliesWithChecker {
       }      
     }
     return true;
+  }
+
+  private class DiscriminatorData {
+    private ValueSet vs;
+    private DataType value;
+
+    public DiscriminatorData(DataType value) {
+      this.value = value;
+    }
+
+    public DiscriminatorData(ValueSet vs) {
+      this.vs = vs;
+    }
+
+    public String describe() {
+      if (value != null) {
+        return value.toString();
+      } else {
+        return vs.present();
+      }
+    }
   }
 }

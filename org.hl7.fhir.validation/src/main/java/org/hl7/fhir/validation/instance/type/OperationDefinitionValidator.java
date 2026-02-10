@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.model.OperationDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -31,6 +32,23 @@ public class OperationDefinitionValidator extends BaseValidator {
   
   public boolean validateOperationDefinition(ValidationContext valContext, List<ValidationMessage> errors, Element od, NodeStack stack) {
     boolean ok = true;
+
+    if (od.hasChild("base")) {
+      String url = od.getNamedChildValue("url");
+      String base = od.getNamedChildValue("base");
+      String last = url;
+      OperationDefinition opDef = context.fetchResource(OperationDefinition.class, base);
+      while (opDef != null) {
+        if (url.equals(opDef.getUrl())) {
+          ok = false;
+          rule(errors, "2026-01-26", IssueType.UNKNOWN, stack, false, I18nConstants.OPDEF_CIRCULAR_DEFINITION, url, last);
+          break;
+        }
+        last = base;
+        base = opDef.getBase();
+        opDef = context.fetchResource(OperationDefinition.class, base);
+      }
+    }
     if (od.hasChild("inputProfile")) {
       ok = validateProfile(errors, stack.push(od.getNamedChild("inputProfile"), -1, null, null), od, od.getNamedChildValue("inputProfile"), "in") && ok;
     }

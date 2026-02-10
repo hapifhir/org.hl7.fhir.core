@@ -12,6 +12,7 @@ import picocli.CommandLine;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -51,7 +52,7 @@ public class CompareCommand extends ValidationEngineCommand implements Callable<
 
   @Override
   public List<String> getSources() {
-    return List.of(sources);
+    return sources == null ? Collections.emptyList() : List.of(sources);
   }
 
   @Override

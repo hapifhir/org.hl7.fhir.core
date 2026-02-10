@@ -538,5 +538,31 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return null;
   }
 
+  public static boolean expansionsOverlap(ValueSet vs1, ValueSet vs2) {
+    for (ValueSetExpansionContainsComponent c1 : vs1.getExpansion().getContains()) {
+      for (ValueSetExpansionContainsComponent c2 : vs2.getExpansion().getContains()) {
+        if (matches(c1, c2)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private static boolean matches(ValueSetExpansionContainsComponent c1, ValueSetExpansionContainsComponent c2) {
+    return stringsMatch(c1.getSystem(), c2.getSystem(), false) && stringsMatch(c1.getVersion(), c2.getVersion(), true) && stringsMatch(c1.getCode(), c2.getCode(), false);
+  }
+
+  private static boolean stringsMatch(String s1, String s2, boolean defForNull) {
+    if (s1 == null || s2 == null) {
+      if (s1 == s2) {
+        return defForNull;
+      } else {
+        return false;
+      }
+    } else {
+      return s1.equals(s2);
+    }
+  }
 
 }

@@ -2,9 +2,10 @@ package org.hl7.fhir.r5.utils;
 
 import java.util.List;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.*;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -37,16 +38,10 @@ import org.hl7.fhir.r5.model.CodeType;
 
 
 
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
-import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -54,6 +49,53 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class OperationOutcomeUtilities {
 
+  /**
+   * create an operation outcome. If there's no text, basic explanatory text will be used.
+   *
+   * @param text the text to used
+   * @param severity the level of the issue.
+   * @param type the type of the issue. not used if text is null and issue is 'information'
+   * @return a constructed OperationOutcome
+   */
+  public static OperationOutcome createOutcome(String text, IssueSeverity severity, IssueType type) {
+    if (severity == null) {
+      throw new FHIRException("Must provide a severity");
+    }
+    OperationOutcome oo = new OperationOutcome();
+    oo.getText().setStatus(NarrativeStatus.GENERATED);
+    oo.getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
+    if (text != null) {
+      oo.getText().getDiv().tx(text);
+      OperationOutcomeIssueComponent issue = oo.addIssue();
+      issue.setSeverity(severity);
+      issue.setCode(type == null ? IssueType.INFORMATIONAL : type);
+      issue.getDetails().setText(text);
+    } else {
+      switch (severity) {
+        case INFORMATION:
+          oo.getText().getDiv().tx("ALL OK");
+          break;
+        default:
+          oo.getText().getDiv().tx("Unspecified "+severity.getDisplay());
+      }
+    }
+    return oo;
+  }
+
+  public static OperationOutcome createSuccess(String text) {
+    return createOutcome(text, IssueSeverity.INFORMATION, IssueType.INFORMATIONAL);
+  }
+
+  public static OperationOutcome createError(String text) {
+    return createOutcome(text, IssueSeverity.ERROR, IssueType.EXCEPTION);
+  }
+
+  public static OperationOutcome createError(Exception e) {
+    return createOutcome(e.getMessage(), IssueSeverity.ERROR, IssueType.EXCEPTION);
+  }
+
+
+  // -- ValidationMessage adaptors ---------------------------------------------------
 
   public static OperationOutcomeIssueComponent convertToIssue(ValidationMessage message, OperationOutcome op) {
     OperationOutcomeIssueComponent issue = new OperationOutcome.OperationOutcomeIssueComponent();
@@ -153,7 +195,6 @@ public class OperationOutcomeUtilities {
     }
     return res;
   }
-  
 
   public static OperationOutcomeIssueComponent convertToIssueSimple(ValidationMessage message, OperationOutcome op) {
     OperationOutcomeIssueComponent issue = new OperationOutcome.OperationOutcomeIssueComponent();
@@ -228,18 +269,6 @@ public class OperationOutcomeUtilities {
       res.addIssue(convertToIssueSimpleWithId(vm, res));
     }
     return res;
-  }
-
-  public static OperationOutcome outcomeFromTextError(String text) {
-    OperationOutcome oo = new OperationOutcome();
-    oo.getText().setStatus(NarrativeStatus.GENERATED);
-    oo.getText().setDiv(new XhtmlNode(NodeType.Element, "div"));
-    oo.getText().getDiv().tx(text);
-    OperationOutcomeIssueComponent issue = oo.addIssue();
-    issue.setSeverity(IssueSeverity.ERROR);
-    issue.setCode(IssueType.EXCEPTION);
-    issue.getDetails().setText(text);
-    return oo;
   }
 
 }

@@ -38,7 +38,6 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
@@ -198,7 +197,7 @@ public class SnapShotGenerationXTests {
 
     @Override
     public boolean isDatatype(String name) {
-      StructureDefinition sd = UtilitiesXTests.context(version).fetchTypeDefinition(name);
+      StructureDefinition sd = ConversionTestUtilities.context(version).fetchTypeDefinition(name);
       return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) && (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE || sd.getKind() == StructureDefinitionKind.COMPLEXTYPE);
     }
 
@@ -211,7 +210,7 @@ public class SnapShotGenerationXTests {
 
     @Override
     public boolean isResource(String typeSimple) {
-      StructureDefinition sd = UtilitiesXTests.context(version).fetchTypeDefinition(typeSimple);
+      StructureDefinition sd = ConversionTestUtilities.context(version).fetchTypeDefinition(typeSimple);
       return (sd != null) && (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) && (sd.getKind() == StructureDefinitionKind.RESOURCE);
     }
 
@@ -243,7 +242,7 @@ public class SnapShotGenerationXTests {
 
     @Override
     public String getLinkForProfile(StructureDefinition profile, String url) {
-      StructureDefinition sd = UtilitiesXTests.context(version).fetchResource(StructureDefinition.class, url);
+      StructureDefinition sd = ConversionTestUtilities.context(version).fetchResource(StructureDefinition.class, url);
       if (sd == null)
         return url + "|" + url;
       else
@@ -281,15 +280,15 @@ public class SnapShotGenerationXTests {
     public Resource fetchFixture(String id) {
       TestFetchMode mode = TestFetchMode.INPUT;
       if (id.equals("patient"))
-        return UtilitiesXTests.context(version).fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient");
+        return ConversionTestUtilities.context(version).fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient");
       if (id.equals("valueset"))
-        return UtilitiesXTests.context(version).fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet");
+        return ConversionTestUtilities.context(version).fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet");
       if (id.equals("organization"))
-        return UtilitiesXTests.context(version).fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Organization");
+        return ConversionTestUtilities.context(version).fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Organization");
       if (id.equals("operationoutcome"))
-        return UtilitiesXTests.context(version).fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/OperationOutcome");
+        return ConversionTestUtilities.context(version).fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/OperationOutcome");
       if (id.equals("parameters"))
-        return UtilitiesXTests.context(version).fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Parameters");
+        return ConversionTestUtilities.context(version).fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Parameters");
 
       if (id.contains("-")) {
         String[] p = id.split("\\-");
@@ -342,7 +341,7 @@ public class SnapShotGenerationXTests {
     @Override
     public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
       if ("fixture".equals(functionName))
-        return new TypeDetails(CollectionStatus.SINGLETON, UtilitiesXTests.context(version).getResourceNamesAsSet());
+        return new TypeDetails(CollectionStatus.SINGLETON, ConversionTestUtilities.context(version).getResourceNamesAsSet());
       return null;
     }
 
@@ -374,7 +373,7 @@ public class SnapShotGenerationXTests {
 
     @Override
     public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException {
-      IResourceValidator val = UtilitiesXTests.context(version).newValidator();
+      IResourceValidator val = ConversionTestUtilities.context(version).newValidator();
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       if (item instanceof Resource) {
         val.validate(appContext, valerrors, (Resource) item, url);
@@ -439,7 +438,7 @@ public class SnapShotGenerationXTests {
     version = test.version;
     this.context = context;
     if (fp == null)
-      fp = new FHIRPathEngine(UtilitiesXTests.context(version));
+      fp = new FHIRPathEngine(ConversionTestUtilities.context(version));
     fp.setHostServices(context);
     messages = new ArrayList<ValidationMessage>();
 
@@ -474,8 +473,8 @@ public class SnapShotGenerationXTests {
   }
 
   private void testConvert(TestDetails test, StructureDefinition sd) throws IOException {
-    SimpleWorkerContext src = UtilitiesXTests.context(version);
-    SimpleWorkerContext tgt = UtilitiesXTests.context(test.targetVersion);
+    SimpleWorkerContext src = ConversionTestUtilities.context(version);
+    SimpleWorkerContext tgt = ConversionTestUtilities.context(test.targetVersion);
     ProfileVersionAdaptor pva = new ProfileVersionAdaptor(src, tgt);
     List<ProfileVersionAdaptor.ConversionMessage> log = new ArrayList<>();
     StructureDefinition output = pva.convert(sd, log);
@@ -510,17 +509,17 @@ public class SnapShotGenerationXTests {
   private StructureDefinition testGen(boolean fail, TestDetails test) throws Exception {
     if (!Utilities.noString(test.register)) {
       List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-      ProfileUtilities pu = new ProfileUtilities(UtilitiesXTests.context(version), messages, null);
+      ProfileUtilities pu = new ProfileUtilities(ConversionTestUtilities.context(version), messages, null);
       pu.setNewSlicingProcessing(true);
       for (StructureDefinition sd : test.included) {
         pu.setIds(sd, false);
         pu.setAllowUnknownProfile(AllowUnknownProfile.ALL_TYPES);
-        StructureDefinition base = UtilitiesXTests.context(version).fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        StructureDefinition base = ConversionTestUtilities.context(version).fetchResource(StructureDefinition.class, sd.getBaseDefinition());
         if (base != null) {
           pu.generateSnapshot(base, sd, sd.getUrl(), "http://test.org/profile", sd.getName());
         }
-        if (!UtilitiesXTests.context(version).hasResource(StructureDefinition.class, sd.getUrl()))
-          UtilitiesXTests.context(version).getManager().cacheResource(sd);
+        if (!ConversionTestUtilities.context(version).hasResource(StructureDefinition.class, sd.getUrl()))
+          ConversionTestUtilities.context(version).getManager().cacheResource(sd);
         int ec = 0;
         for (ValidationMessage vm : messages) {
           if (vm.getLevel() == IssueSeverity.ERROR) {
@@ -538,7 +537,7 @@ public class SnapShotGenerationXTests {
       throw new Exception("URL mismatch on base: " + base.getUrl() + " wanting " + test.getSource().getBaseDefinition());
 
     StructureDefinition output = test.getSource().copy();
-    ProfileUtilities pu = new ProfileUtilities(UtilitiesXTests.context(version), messages, new TestPKP());
+    ProfileUtilities pu = new ProfileUtilities(ConversionTestUtilities.context(version), messages, new TestPKP());
     pu.setNewSlicingProcessing(test.isNewSliceProcessing());
     pu.setThrowException(false);
     pu.setDebug(test.isDebug());
@@ -614,10 +613,10 @@ public class SnapShotGenerationXTests {
   private StructureDefinition getSD(String url) throws DefinitionException, FHIRException, IOException {
     StructureDefinition sd = context.getByUrl(url);
     if (sd == null)
-      sd = UtilitiesXTests.context(version).fetchResource(StructureDefinition.class, url);
+      sd = ConversionTestUtilities.context(version).fetchResource(StructureDefinition.class, url);
     if (!sd.hasSnapshot()) {
       StructureDefinition base = getSD(sd.getBaseDefinition());
-      ProfileUtilities pu = new ProfileUtilities(UtilitiesXTests.context(version), messages, new TestPKP());
+      ProfileUtilities pu = new ProfileUtilities(ConversionTestUtilities.context(version), messages, new TestPKP());
       pu.setNewSlicingProcessing(true);
       List<String> errors = new ArrayList<String>();
       pu.sortDifferential(base, sd, url, errors, false);

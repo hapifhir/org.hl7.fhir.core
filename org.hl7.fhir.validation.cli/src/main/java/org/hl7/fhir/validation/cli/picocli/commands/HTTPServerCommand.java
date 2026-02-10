@@ -1,7 +1,7 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.validation.FhirValidatorHttpService;
+import org.hl7.fhir.validation.http.FhirValidatorHttpService;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptions;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptionsConvertor;

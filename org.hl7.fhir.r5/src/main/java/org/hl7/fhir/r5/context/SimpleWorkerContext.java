@@ -652,7 +652,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       try {
         registerResourceFromPackage(makeIgResource(pi), pii);
       } catch (Exception e) {
-        log.error("Problem constructing IG for "+pi.vid()+": "+e.getMessage());
+        // GDG 26-Jan 2026 this is not useful for anyone; just distracts people.
+        // log.warn("Problem constructing IG for "+pi.vid()+": "+e.getMessage());
       }
     }
 	  for (String s : pi.list("other")) {
