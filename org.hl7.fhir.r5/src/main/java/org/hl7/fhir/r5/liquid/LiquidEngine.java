@@ -68,7 +68,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 @MarkedToMoveToAdjunctPackage
 public class LiquidEngine implements IHostApplicationServices {
 
-  public static class LiquidForLoopObject extends Base {
+  public static class LiquidforloopObject extends Base {
 
     private static final long serialVersionUID = 6951452522873320076L;
     private boolean first;
@@ -78,10 +78,10 @@ public class LiquidEngine implements IHostApplicationServices {
     private int rindex0;
     private boolean last;
     private int length;
-    private LiquidForLoopObject parentLoop;
+    private LiquidforloopObject parentLoop;
     
     
-    public LiquidForLoopObject(int size, int i, int offset, int limit, LiquidForLoopObject parentLoop) {
+    public LiquidforloopObject(int size, int i, int offset, int limit, LiquidforloopObject parentLoop) {
       super();
       this.parentLoop = parentLoop;
       if (offset == -1) {
@@ -108,12 +108,12 @@ public class LiquidEngine implements IHostApplicationServices {
 
     @Override
     public void setIdBase(String value) {
-      throw new Error("forLoop is read only");
+      throw new Error("forloop is read only");
     }
 
     @Override
     public Base copy() {
-      throw new Error("forLoop is read only");
+      throw new Error("forloop is read only");
     }
 
     @Override
@@ -145,13 +145,13 @@ public class LiquidEngine implements IHostApplicationServices {
 
     @Override
     public String toString() {
-      return "forLoop";
+      return "forloop";
     }
 
 
     @Override
     public String fhirType() {
-      return "ForLoop";
+      return "forloop";
     }
     
   }
@@ -509,7 +509,7 @@ public class LiquidEngine implements IHostApplicationServices {
           Collections.reverse(list);
         }
         int i = 0;
-        LiquidForLoopObject parentLoop = (LiquidForLoopObject) lctxt.globalVars.get("forLoop");
+        LiquidforloopObject parentLoop = (LiquidforloopObject) lctxt.globalVars.get("forloop");
         for (Base o : list) {
           if (offset >= 0 && i < offset) {
             i++;
@@ -518,8 +518,8 @@ public class LiquidEngine implements IHostApplicationServices {
           if (limit >= 0 && i == limit) {
             break;
           }          
-          LiquidForLoopObject forloop = new LiquidForLoopObject(list.size(), i, offset, limit, parentLoop);
-          lctxt.globalVars.put("forLoop", forloop);
+          LiquidforloopObject forloop = new LiquidforloopObject(list.size(), i, offset, limit, parentLoop);
+          lctxt.globalVars.put("forloop", forloop);
           if (lctxt.globalVars.containsKey(varName)) {
             throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_VARIABLE_ALREADY_ASSIGNED, varName));
           }
@@ -540,7 +540,7 @@ public class LiquidEngine implements IHostApplicationServices {
           }
           i++;
         }
-        lctxt.globalVars.put("forLoop", parentLoop);
+        lctxt.globalVars.put("forloop", parentLoop);
       }
     }
 
