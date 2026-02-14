@@ -371,8 +371,14 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
-  public Parameters translate(Parameters params) throws FHIRException {  
-    return (Parameters) convertResource("translate.response", client.translate((org.hl7.fhir.r4.model.Parameters) convertResource("translate.request", params)));
+  public Parameters translate(Parameters params) throws FHIRException {
+    org.hl7.fhir.r4.model.Parameters p4 = (org.hl7.fhir.r4.model.Parameters) convertResource("translate.request", params);
+    return (Parameters) convertResource("translate.response", client.translate(p4));
+  }
+
+  @Override
+  public Parameters doRelated(Parameters params) throws FHIRException {
+    return (Parameters) convertResource("related.response", client.doRelated((org.hl7.fhir.r4.model.Parameters) convertResource("related.request", params)));
   }
 
   private org.hl7.fhir.r4.model.Resource convertResource(String name, org.hl7.fhir.r5.model.Resource resource) {

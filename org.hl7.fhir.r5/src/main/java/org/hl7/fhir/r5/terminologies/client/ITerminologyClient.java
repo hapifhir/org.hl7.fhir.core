@@ -70,6 +70,7 @@ public interface ITerminologyClient {
   Parameters lookupCode(Map<String, String> params) throws FHIRException;
   Parameters lookupCode(Parameters params) throws FHIRException;
   Parameters translate(Parameters params) throws FHIRException;
+  Parameters doRelated(Parameters params) throws FHIRException;
   Bundle batch(Bundle batch);
   CanonicalResource read(String type, String id);
   Iterable<HTTPHeader> getClientHeaders();

@@ -448,18 +448,35 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ConceptMap.class, "translate"),
-          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
-          withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true), "ConceptMap/$translate", timeoutNormal);
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+        withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true), "ConceptMap/$translate", timeoutNormal);
     } catch (IOException e) {
       throw new FHIRException(e);
     }
     if (result.isUnsuccessfulRequest()) {
       throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
-          (OperationOutcome) result.getPayload());
+        (OperationOutcome) result.getPayload());
     }
     return (Parameters) result.getPayload();
   }
-  
+
+  public Parameters doRelated(Parameters p) {
+    recordUse();
+    org.hl7.fhir.r4.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "related"),
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+        withVer(getPreferredResourceFormat(), "4.0"), generateHeaders(true), "ValueSet/related", timeoutNormal);
+    } catch (IOException e) {
+      throw new FHIRException(e);
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(),
+        (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+
   public ValueSet expandValueset(ValueSet source, Parameters expParams) {
     recordUse();
     Parameters p = expParams == null ? new Parameters() : expParams.copy();

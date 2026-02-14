@@ -300,6 +300,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters doRelated(Parameters params) throws FHIRException {
+    return client.doRelated(params);
+  }
+
+  @Override
   public void setConversionLogger(ITerminologyConversionLogger logger) {
     // TODO Auto-generated method stub
     

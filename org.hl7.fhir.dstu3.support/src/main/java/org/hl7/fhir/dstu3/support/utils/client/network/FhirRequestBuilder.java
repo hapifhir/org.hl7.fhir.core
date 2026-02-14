@@ -18,6 +18,7 @@ import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.utils.ResourceUtilities;
 import org.hl7.fhir.dstu3.support.utils.client.EFhirClientException;
 import org.hl7.fhir.dstu3.support.utils.client.ResourceFormat;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MimeType;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.http.*;
@@ -174,6 +175,7 @@ public class FhirRequestBuilder {
       try {
         byte[] body = response.getContent();
 
+        FileUtilities.bytesToFile(body, "/Users/grahamegrieve/temp/r3.json");
         resource = (T) getParser(format).parse(body);
         if (resource instanceof OperationOutcome && hasError((OperationOutcome) resource)) {
           error = (OperationOutcome) resource;

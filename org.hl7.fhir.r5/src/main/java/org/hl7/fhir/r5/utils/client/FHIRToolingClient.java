@@ -526,16 +526,35 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     }
     return (Parameters) result.getPayload();
   }
-  
+
   public Parameters translate(Parameters p) {
     recordUse();
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ConceptMap.class, "translate"),
-          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "5.0"),
         generateHeaders(true),
         "ConceptMap/$translate",
+        timeoutNormal);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+
+  public Parameters doRelated(Parameters p) {
+    recordUse();
+    org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "related"),
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+        withVer(getPreferredResourceFormat(), "5.0"),
+        generateHeaders(true),
+        "ValueSet/$related",
         timeoutNormal);
     } catch (IOException e) {
       e.printStackTrace();

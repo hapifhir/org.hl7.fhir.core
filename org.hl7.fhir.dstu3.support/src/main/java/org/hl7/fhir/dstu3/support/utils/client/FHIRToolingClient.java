@@ -480,10 +480,29 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ConceptMap.class, "transform"),
-          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "3.0"),
         generateHeaders(true),
         "ConceptMap/$transform",
+        timeoutNormal);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+
+  public Parameters doRelated(Parameters p) {
+    recordUse();
+    ResourceRequest<Resource> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "related"),
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+        withVer(getPreferredResourceFormat(), "3.0"),
+        generateHeaders(true),
+        "ValueSet/$related",
         timeoutNormal);
     } catch (IOException e) {
       e.printStackTrace();
