@@ -25,7 +25,7 @@
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.4.0</hapi_fhir_version>
-        <validator_test_case_version>1.7.49</validator_test_case_version>
+        <validator_test_case_version>1.7.59-SNAPSHOT</validator_test_case_version>
         <jackson_version>2.17.0</jackson_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
         <junit_platform_launcher_version>1.14.0</junit_platform_launcher_version>
