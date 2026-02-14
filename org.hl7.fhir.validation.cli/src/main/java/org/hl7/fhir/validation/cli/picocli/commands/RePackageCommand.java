@@ -197,6 +197,7 @@ public class RePackageCommand extends ValidationEngineCommand implements Callabl
       InstanceValidatorParameters params = getInstanceValidatorParameters();
       if (params.getExpansionParameters() != null) {
         validationEngine.loadExpansionParameters(params.getExpansionParameters());
+        packageReGenerator.setExpansionParameters(validationEngine.getContext().getExpansionParameters());
       }
 
       // Set ignore/include lists
