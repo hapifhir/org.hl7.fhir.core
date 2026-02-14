@@ -72,6 +72,9 @@ public class TxServiceTestHelper {
       if (p.hasParameter("activeOnly") && "true".equals(p.getParameterString("activeOnly"))) {
         options = options.setActiveOnly(true);
       }
+      if (p.hasParameter("abstract") && "false".equals(p.getParameterString("abstract"))) {
+        options = options.setNoAbstract(true);
+      }
       Parameters newParameters = context.getExpansionParameters();
       for (ParametersParameterComponent pp : p.getParameter()) {
         if (Utilities.existsInList(pp.getName(), "default-valueset-version", "system-version", "force-system-version", "default-system-version")) {
@@ -82,6 +85,9 @@ public class TxServiceTestHelper {
       newParameters.clearParameters("includeAlternateCodes");
       for (Parameters.ParametersParameterComponent pp : p.getParameter()) {
         if ("includeAlternateCodes".equals(pp.getName())) {
+          newParameters.addParameter(pp.copy());
+        }
+        if ("useSupplement".equals(pp.getName())) {
           newParameters.addParameter(pp.copy());
         }
       }
@@ -160,12 +166,7 @@ public class TxServiceTestHelper {
         }
         if (validationResult.getDisplay() != null) {
           parameters.addParameter("display", validationResult.getDisplay());
-        } else if (display != null) {
-          parameters.addParameter("display", new StringType(display));
         }
-        //      if (vm.getCodeableConcept() != null) {
-        //        res.addParameter("codeableConcept", vm.getCodeableConcept());
-        //      } else
         if (codeableConcept != null) {
           parameters.addParameter("codeableConcept", codeableConcept);
         }
