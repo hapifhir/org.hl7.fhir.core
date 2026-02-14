@@ -16,17 +16,14 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ExpansionOptions;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
@@ -182,6 +179,8 @@ private static TxTestData testData;
       OperationOutcome oo = new OperationOutcome();
       if (vse.getIssues() != null) {
         oo.getIssue().addAll(vse.getIssues());
+      } else if (vse.getErrorClass() == null) {
+        Assertions.fail("Expected an error, but none received");
       } else {
         OperationOutcomeIssueComponent e = new OperationOutcomeIssueComponent();
         e.setSeverity(IssueSeverity.ERROR);
@@ -220,6 +219,12 @@ private static TxTestData testData;
         case VALUESET_UNSUPPORTED:
           e.setCode(IssueType.NOTSUPPORTED);
           break;
+        }
+        if (vse.getMsgId() != null) {
+          e.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(vse.getMsgId()));
+        }
+        if (vse.getCode() != null) {
+          e.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", vse.getCode().toCode(), null);
         }
         e.getDetails().setText(vse.getError());
         oo.addIssue(e);

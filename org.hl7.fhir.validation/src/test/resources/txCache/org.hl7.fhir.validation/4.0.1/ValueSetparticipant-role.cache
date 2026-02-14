@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://hl7.org/fhir/ValueSet/participant-role",
   "code" : "394733009"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -41,7 +41,6 @@ v: {
       }],
       "text" : "The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/participant-role')"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

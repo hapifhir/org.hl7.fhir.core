@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://fkcfhir.org/fhir/CodeSystem/FMCMedTiming",
   "code" : "Pre Dialysis"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -41,7 +41,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://fkcfhir.org/fhir/CodeSystem/FMCMedTiming' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

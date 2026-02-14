@@ -1,12 +1,12 @@
 {
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
-  "url" : "http://localhost/r5/TerminologyCapabilities/tx",
-  "version" : "1.0.0",
+  "url" : "https://tx-dev.fhir.org/r5/TerminologyCapabilities/tx",
+  "version" : "0.4.2",
   "name" : "FHIRTerminologyServer",
   "title" : "FHIR Terminology Server",
   "status" : "active",
-  "date" : "2026-01-14T18:48:22.675Z",
+  "date" : "2026-02-14T09:27:18.545Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -2839,6 +2839,9 @@
     "uri" : "http://loinc.org",
     "version" : [{
       "code" : "2.81"
+    },
+    {
+      "code" : "2.77"
     }]
   },
   {
@@ -2889,10 +2892,10 @@
       "code" : "http://snomed.info/sct/83821000000107/version/20230412"
     },
     {
-      "code" : "http://snomed.info/sct/731000124108/version/20250901"
+      "code" : "http://snomed.info/sct/731000124108/version/20230301"
     },
     {
-      "code" : "http://snomed.info/sct/731000124108/version/20230301"
+      "code" : "http://snomed.info/sct/731000124108/version/20250901"
     },
     {
       "code" : "http://snomed.info/xsct/900000000000207008/version/20250814"
@@ -8359,12 +8362,6 @@
     }]
   },
   {
-    "uri" : "https://nahdo.org/sopt",
-    "version" : [{
-      "code" : "9.2"
-    }]
-  },
-  {
     "uri" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/cdcnhsn.html",
     "version" : [{
       "code" : "2023-04"
@@ -8460,6 +8457,9 @@
   {
     "uri" : "urn:oid:2.16.840.1.113883.6.238",
     "version" : [{
+      "code" : "1.3"
+    },
+    {
       "code" : "1.2"
     }]
   }],

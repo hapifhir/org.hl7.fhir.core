@@ -266,9 +266,9 @@ public class NarrativeGenerationTestsX {
     IWorkerContext context = contexts.get(version);
     if (test.getRegister() != null) {
       if (test.getRegister().endsWith(".json")) {
-        context.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("rX", "narrative", test.getRegister())));
       } else {
-        context.getManager().cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getRegister())));
+        context.getManager().cacheResource(new XmlParser().parse(TestingUtilities.loadTestResourceStream("rX", "narrative", test.getRegister())));
       }
     }
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
@@ -298,20 +298,20 @@ public class NarrativeGenerationTestsX {
     
     ParserBase p = null;
     InputStream s = null;
-    if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".json")) {
+    if (TestingUtilities.findTestResource("rX", "narrative", test.getId() + ".json")) {
       p = Manager.makeParser(context, Manager.FhirFormat.JSON);
-      s = TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".json");
-    } else  if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".fml")) {
+      s = TestingUtilities.loadTestResourceStream("rX", "narrative", test.getId() + ".json");
+    } else  if (TestingUtilities.findTestResource("rX", "narrative", test.getId() + ".fml")) {
       p = Manager.makeParser(context, Manager.FhirFormat.FML);
-      s = TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".fml");
+      s = TestingUtilities.loadTestResourceStream("rX", "narrative", test.getId() + ".fml");
     } else {
       p = Manager.makeParser(context, Manager.FhirFormat.XML);
-      s = TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml");
+      s = TestingUtilities.loadTestResourceStream("rX", "narrative", test.getId() + ".xml");
     }
     org.hl7.fhir.r5.elementmodel.Element source = p.parseSingle(s, null);
     
     XhtmlNode x = RendererFactory.factory(source.fhirType(), rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), source));
-    String expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".html"));
+    String expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("rX", "narrative", "output", test.getId() + ".html"));
     String actual = HEADER+new XhtmlComposer(true, test.pretty).compose(x)+FOOTER;
     String expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.html");
     String actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".html");
@@ -321,7 +321,7 @@ public class NarrativeGenerationTestsX {
     Assertions.assertTrue(msg == null, "Output does not match expected: "+msg);
 
     String disp = RendererFactory.factory(source.fhirType(), rc).buildSummary(ResourceWrapper.forResource(rc.getContextUtilities(), source));
-    expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", "output", test.getId() + ".txt"));
+    expected = FileUtilities.streamToString(TestingUtilities.loadTestResourceStream("rX", "narrative", "output", test.getId() + ".txt"));
     actual = disp;
     expectedFileName = CompareUtilities.tempFile("narrative", test.getId() + ".expected.txt");
     actualFileName = CompareUtilities.tempFile("narrative", test.getId() + ".txt");
