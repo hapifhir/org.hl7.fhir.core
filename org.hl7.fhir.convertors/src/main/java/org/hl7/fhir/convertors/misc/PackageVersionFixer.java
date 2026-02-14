@@ -24,7 +24,6 @@ public class PackageVersionFixer {
     for (Element item : XMLUtil.getNamedChildren(XMLUtil.getNamedChild(feed.getDocumentElement(), "channel"), "item")) {
       processItem(file, item);
     }
-    System.out.println("Finished processing "+file.getAbsolutePath());
   }
 
   private void processItem(File file, Element item) throws IOException {
@@ -34,18 +33,15 @@ public class PackageVersionFixer {
     String filename = Utilities.path(file.getAbsolutePath(), link.replace("http://hl7.org/fhir/", ""));
     if (filename.contains(version)) {
       if (!new File(filename).exists()) {
-        System.out.println("Unable to find " + filename);
+
       } else {
         NpmPackage npm = NpmPackage.fromPackage(new FileInputStream(filename));
         String pver = npm.version();
         if (pver == null) {
-          System.out.println("no pver!");
         } else if (!pver.equals(version)) {
           npm.getNpm().set("version", version);
           String nfn = FileUtilities.changeFileExt(filename, ".fixed.tgz");
           npm.save(new FileOutputStream(nfn));
-//          System.out.println("Fixed version "+pver+" to "+version+", saved as "+nfn+" from "+filename);
-          System.out.println("link "+link+" to "+FileUtilities.changeFileExt(link, ".fixed.tgz"));
         }
       }
     }
