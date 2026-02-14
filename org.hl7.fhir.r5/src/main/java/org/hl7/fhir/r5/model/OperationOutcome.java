@@ -1412,14 +1412,6 @@ For resource issues, this will be a simple XPath limited to element names, repet
         }
       }
 
-      public List<StringType> getExpressionOrLocation() {
-        return hasExpression() ? getExpression() : getLocation();
-      }
-
-      public boolean hasExpressionOrLocation() {
-        return hasExpression() || hasLocation();
-      }
-
       public void resetPath(String root, String newRoot) {
         for (StringType st : getLocation()) {
           if (st.hasValue() && st.getValue().startsWith(root+".")) {

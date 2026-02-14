@@ -521,7 +521,7 @@ public interface IWorkerContext {
    * Like fetchCodeSystem, except that the context will find any CodeSysetm supplements and merge them into the
    * definition that's returned
    */
-  public CodeSystem fetchSupplementedCodeSystem(String system, String version, Resource sourceOfReference);
+  public CodeSystem fetchSupplementedCodeSystem(String system, String version, List<String> specifiedSupplements, Resource sourceOfReference);
 
   /**
    * ValueSet Expansion - see $expand
