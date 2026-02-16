@@ -174,8 +174,6 @@ public class FhirRequestBuilder {
     if (response.getContent() != null) {
       try {
         byte[] body = response.getContent();
-
-        FileUtilities.bytesToFile(body, "/Users/grahamegrieve/temp/r3.json");
         resource = (T) getParser(format).parse(body);
         if (resource instanceof OperationOutcome && hasError((OperationOutcome) resource)) {
           error = (OperationOutcome) resource;
