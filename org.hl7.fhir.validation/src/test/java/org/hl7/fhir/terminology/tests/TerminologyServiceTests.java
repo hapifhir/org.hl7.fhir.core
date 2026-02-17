@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
@@ -65,7 +67,7 @@ private static TxTestData testData;
   private final TxTestSetup setup;
   private final String version;
   private final String name;
-
+  private List<String> warnings = new ArrayList<>();
 
   private static ValidationEngine baseEngine;
 
@@ -168,11 +170,13 @@ private static TxTestData testData;
         TxTesterSorters.sortValueSet(vse.getValueset());
         TxTesterScrubbers.scrubValueSet(vse.getValueset(), false);
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
-        String diff = new CompareUtilities(modes(), ext).checkJsonSrcIsSame(id, resp, vsj);
+        CompareUtilities c = new CompareUtilities(modes(), ext);
+        String diff = c.checkJsonSrcIsSame(id, resp, vsj);
         if (diff != null) {
           FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
           FileUtilities.stringToFile(vsj, fp);        
         }
+        warnings.addAll(c.getWarnings());
         Assertions.assertNull(diff);
       }
     } else {

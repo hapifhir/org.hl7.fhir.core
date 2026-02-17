@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -109,6 +110,9 @@ public class TxTester {
   private JsonObject externals;
   private String software;
   private List<String> fails = new ArrayList<>();
+
+  @Getter
+  private List<String> warnings = new ArrayList<>();
   private CapabilityStatement cstmt;
   private TerminologyCapabilities tc;
   private TxTesterConversionLogger conversionLogger;
@@ -593,8 +597,10 @@ public class TxTester {
     TxTesterSorters.sortCapStmt(cs);
     String csj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(cs);
 
-    String diff = new CompareUtilities(modes, ext, vars()).setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -608,9 +614,10 @@ public class TxTester {
     TxTesterScrubbers.scrubTermCaps(cs, tight);
     TxTesterSorters.sortTermCaps(cs);
     String csj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(cs);
-
-    String diff = new CompareUtilities(modes, ext, vars()).setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(csj, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -668,8 +675,10 @@ public class TxTester {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -701,8 +710,10 @@ public class TxTester {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -743,8 +754,10 @@ public class TxTester {
         throw e;
       }
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, vsj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, vsj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -788,8 +801,10 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -826,8 +841,10 @@ public class TxTester {
         throw e;
       }
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -859,8 +876,10 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -897,8 +916,10 @@ public class TxTester {
         throw e;
       }
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -942,8 +963,10 @@ public class TxTester {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       bj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, bj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, bj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));

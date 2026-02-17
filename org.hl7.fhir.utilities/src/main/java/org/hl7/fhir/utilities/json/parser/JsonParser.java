@@ -633,6 +633,7 @@ public class JsonParser {
           if (i.type() == JsonElementType.ARRAY || i.type() == JsonElementType.OBJECT
               || i.hasComments()) { // 20 is a somewhat arbitrary cut off
             complex = true;
+            break;
           }
         }
         if (length > 60) {
@@ -640,19 +641,19 @@ public class JsonParser {
         }
       }
       for (JsonElement i : arr.getItems()) {
-        if (first) first = false; else b.append(pretty && !complex ? ", " : ",");
-        if (pretty && complex) {
-          b.append("\n");
-          b.append(Utilities.padLeft("", ' ', indent+2));
-          if (i.hasComments()) {
-            writeComments(b, i.getComments(), indent+2);
+        if (first) {
+          first = false;
+        } else {
+          b.append(pretty && !complex ? ", " : ",");
+          if (pretty && complex) {
+            b.append("\n");
+            b.append(Utilities.padLeft("", ' ', indent + 2));
+            if (i.hasComments()) {
+              writeComments(b, i.getComments(), indent + 2);
+            }
           }
         }
         write(b, i, pretty && complex, indent+2);
-      }
-      if (pretty && complex) {
-        b.append("\n");
-        b.append(Utilities.padLeft("", ' ', indent));
       }
       b.append("]");
       break;
