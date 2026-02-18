@@ -377,7 +377,7 @@ public abstract class XhtmlFluent {
   }
 
   public boolean sepFirst(boolean first, String sep) {
-    if (true) {
+    if (first) {
       first = false;
     } else {
       tx(sep);

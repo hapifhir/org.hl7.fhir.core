@@ -23,10 +23,7 @@ import org.hl7.fhir.dstu3.support.utils.client.network.ByteUtils;
 import org.hl7.fhir.dstu3.support.utils.client.network.Client;
 import org.hl7.fhir.dstu3.support.utils.client.network.ResourceRequest;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.FHIRBaseToolingClient;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 
 import org.hl7.fhir.utilities.http.HTTPHeader;
 
@@ -79,7 +76,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   @Setter
   private String contentLanguage;
   @Getter @Setter
-  private String requestId;
+  private ITerminologyRequestIdProvider requestIdProvider;
   @Getter
   private int useCount;
 
@@ -626,8 +623,11 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       headers.add(new HTTPHeader("Content-Language",contentLanguage));
     }
 
-    if (requestId != null) {
-      headers.add(new HTTPHeader("X-Request-Id", requestId));
+    if (requestIdProvider != null) {
+      String header = requestIdProvider.getRequestId();
+      if (header != null) {
+        headers.add(new HTTPHeader("X-Request-Id", header));
+      }
     }
     return headers;
   }

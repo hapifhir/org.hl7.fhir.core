@@ -40,6 +40,7 @@ import org.hl7.fhir.utilities.http.HTTPHeader;
 
 import java.util.EnumSet;
 import java.util.Map;
+import org.hl7.fhir.utilities.ITerminologyRequestIdProvider;
 
 public interface ITerminologyClient {
 
@@ -64,7 +65,7 @@ public interface ITerminologyClient {
   int getRetryCount() throws FHIRException;
   ITerminologyClient setRetryCount(int retryCount) throws FHIRException;
   ITerminologyClient setFormat(ResourceFormat fmt) throws FHIRException;
-  ITerminologyClient setRequestId(String id) throws FHIRException;
+  ITerminologyClient setRequestIdProvider(ITerminologyRequestIdProvider provider) throws FHIRException;
   CapabilityStatement getCapabilitiesStatement() throws FHIRException;
   CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
   Parameters lookupCode(Map<String, String> params) throws FHIRException;

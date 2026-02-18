@@ -518,8 +518,12 @@ public interface IWorkerContext {
   public CodeSystem fetchSupplementedCodeSystem(String system);
 
   /**
-   * Like fetchCodeSystem, except that the context will find any CodeSysetm supplements and merge them into the
+   * Like fetchCodeSystem, except that the context will find any appropriate CodeSystem supplements and merge them into the
    * definition that's returned
+   *
+   * appropriate means:
+   *  - found in specified supplements, which should be built from parameters and value set extensions
+   *  - marked as a langpack in the supplement
    */
   public CodeSystem fetchSupplementedCodeSystem(String system, String version, List<String> specifiedSupplements, Resource sourceOfReference);
 

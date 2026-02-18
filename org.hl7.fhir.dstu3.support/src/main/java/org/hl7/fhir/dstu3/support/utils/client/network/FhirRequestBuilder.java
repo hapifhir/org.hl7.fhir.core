@@ -18,7 +18,6 @@ import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.utils.ResourceUtilities;
 import org.hl7.fhir.dstu3.support.utils.client.EFhirClientException;
 import org.hl7.fhir.dstu3.support.utils.client.ResourceFormat;
-import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MimeType;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.http.*;

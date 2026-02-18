@@ -38,10 +38,12 @@ import org.hl7.fhir.r5.model.Resource;
 
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.client.network.ByteUtils;
 import org.hl7.fhir.r5.utils.client.network.Client;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.FHIRBaseToolingClient;
+import org.hl7.fhir.utilities.ITerminologyRequestIdProvider;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
@@ -84,7 +86,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   private static final Logger logger = LoggerFactory.getLogger(FHIRToolingClient.class);
 
-
   public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssK";
   public static final String DATE_FORMAT = "yyyy-MM-dd";
   public static final String hostKey = "http.proxyHost";
@@ -113,7 +114,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   @Setter
   @Getter
-  private String requestId;
+  private ITerminologyRequestIdProvider requestIdProvider;
 
   private int useCount;
 
@@ -655,9 +656,14 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     if (hasBody && !Utilities.noString(contentLanguage)) {
       headers.add(new HTTPHeader("Content-Language", contentLanguage));
     }
-    if (requestId != null) {
-      headers.add(new HTTPHeader("X-Request-Id", requestId));
+
+    if (requestIdProvider != null) {
+      String header = requestIdProvider.getRequestId();
+      if (header != null) {
+        headers.add(new HTTPHeader("X-Request-Id", header));
+      }
     }
+
     return headers;
   }
 

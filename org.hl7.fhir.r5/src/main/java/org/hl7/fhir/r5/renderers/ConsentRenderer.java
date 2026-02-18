@@ -3,7 +3,6 @@ package org.hl7.fhir.r5.renderers;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -156,7 +155,7 @@ public class ConsentRenderer extends ResourceRenderer {
 
     boolean permit = determineBasePermit(consent);
     if (consent.hasMN("provision", "except")) {
-      boolean hasWhen = scanForWhen(consent);
+      boolean hasWhen = checkTreeForWhen(consent);
       boolean hasWho = scanForWho(consent);
       boolean hasWhat = scanForWhat(consent);
       boolean hasRules = scanForRules(consent);
@@ -242,7 +241,7 @@ public class ConsentRenderer extends ResourceRenderer {
     if (hasWhen) {
       HierarchicalTableGenerator.Cell c = gen.new Cell(null, null,  "", null, null);
       r.getCells().add(c);
-      if (checkForWhen(i)) {
+      if (checkNodeForWhen(i)) {
         XhtmlNode ul = c.xhtmlRoot().ul();
         if (i.has("period")) {
           renderDataItem(status, ul.li(), RenderingContext.CONSENT_HT_PERIOD, i.child("period"));
@@ -335,19 +334,19 @@ public class ConsentRenderer extends ResourceRenderer {
     renderDataType(status, x, data);
   };
 
-  private boolean scanForWhen(ResourceWrapper node) {
-    if (checkForWhen(node)) {
+  private boolean checkTreeForWhen(ResourceWrapper node) {
+    if (checkNodeForWhen(node)) {
       return true;
     }
     for (ResourceWrapper item : node.childrenMN("provision", "except")) {
-      if (scanForWhen(item)) {
+      if (checkTreeForWhen(item)) {
         return true;
       }
     }
     return false;
   }
 
-  private static boolean checkForWhen(ResourceWrapper node) {
+  private static boolean checkNodeForWhen(ResourceWrapper node) {
     return node.hasMN("period", "dataPeriod");
   }
 

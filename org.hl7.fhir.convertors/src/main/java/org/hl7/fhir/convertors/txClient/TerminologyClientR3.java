@@ -51,6 +51,7 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.ITerminologyRequestIdProvider;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
@@ -174,8 +175,8 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
-  public ITerminologyClient setRequestId(String id) throws FHIRException {
-    client.setRequestId(id);
+  public ITerminologyClient setRequestIdProvider(ITerminologyRequestIdProvider provider) throws FHIRException {
+    client.setRequestIdProvider(provider);
     return this;
   }
 

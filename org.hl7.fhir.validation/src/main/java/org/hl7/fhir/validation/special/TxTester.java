@@ -46,9 +46,17 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 @Slf4j
-public class TxTester {
+public class TxTester implements ITerminologyRequestIdProvider {
 
   private final String version;
+  private String nextRequestId;
+
+  @Override
+  public String getRequestId() {
+    String result = nextRequestId;
+    nextRequestId = null;
+    return result;
+  }
 
   public class IntHolder {
 
@@ -414,6 +422,7 @@ public class TxTester {
       throw new FHIRException("unsupported FHIR Version for terminology tests: "+fhirVersion);
     }
     client.setFormat(ResourceFormat.RESOURCE_JSON);
+    client.setRequestIdProvider(this);
     return client;  
   }
 
@@ -528,7 +537,7 @@ public class TxTester {
 
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
-        terminologyClient.setRequestId("txTests:"+suite.asString("name")+"/"+test.asString("name"));
+        nextRequestId = "txTests:"+suite.asString("name")+"/"+test.asString("name");
         String lang = test.asString("Accept-Language");
         String msg = null;
         if (test.asString("operation").equals("metadata")) {
@@ -569,7 +578,6 @@ public class TxTester {
           terminologyClient.setClientHeaders(new ClientHeaders());
         }
         tr.getActionFirstRep().getOperation().setResult(msg == null ? TestReportActionResult.PASS : TestReportActionResult.FAIL).setMessage(msg);
-        terminologyClient.setRequestId(null);
         return msg == null;
       } catch (Exception e) {
         log.error("  Tested "+ testName +": "+ "  ... Exception: "+e.getMessage());
@@ -581,7 +589,6 @@ public class TxTester {
           terminologyClient.setClientHeaders(new ClientHeaders());
         }
         tr.getActionFirstRep().getOperation().setResult(TestReportActionResult.ERROR).setMessage(e.getMessage());
-        terminologyClient.setRequestId(null);
         return false;
       }
     } else {
@@ -852,6 +859,22 @@ public class TxTester {
     }
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    if (pj != null) {
+      try {
+        Parameters pp = (Parameters) new org.hl7.fhir.r5.formats.JsonParser().parse(pj);
+        boolean hasVersion = false;
+        boolean hasSystem = false;
+        for (Parameters.ParametersParameterComponent ppp : pp.getParameter()) {
+          hasVersion = hasVersion || "version".equals(ppp.getName());
+          hasSystem = hasSystem || "system".equals(ppp.getName());
+        }
+        if (hasVersion != hasSystem) {
+          throw new FHIRException("Error in response: has a system != has a version");
+        }
+      } catch (Exception e) {
+        // nothing
+      }
     }
     return diff;
   }
