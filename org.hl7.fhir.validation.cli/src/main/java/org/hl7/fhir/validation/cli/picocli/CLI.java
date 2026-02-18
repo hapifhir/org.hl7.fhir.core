@@ -93,6 +93,7 @@ public class CLI {
     argMap.put("-factory", "factory");
     argMap.put("-server", "server");
     argMap.put("-re-package", "re-package");
+    argMap.put("-tx-pack", "re-package");
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 
