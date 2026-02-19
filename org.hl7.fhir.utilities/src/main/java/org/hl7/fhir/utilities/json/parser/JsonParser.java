@@ -53,6 +53,18 @@ import org.hl7.fhir.utilities.json.parser.JsonLexer.TokenType;
  */
 public class JsonParser {
 
+  // these give control over the line break character used when pretty printing. In most cases it doesn't
+  // or shouldn't matter, but in some corner cases - specially for diff programs - it can matter
+  public static final String LINE_BREAK_WINDOWS = "\r\n";
+  public static final String LINE_BREAK_UNIX = "\n";
+  public static final String LINE_BREAK_DEFAULT = LINE_BREAK_UNIX;
+  public static String LINE_BREAK = LINE_BREAK_DEFAULT;
+
+  // The default of 0 is generally considered 'correct' but for some comparisons
+  // we need a value of 2
+  public static int ARRAY_NESTING_OFFSET_DEFAULT = 0;
+  public static int ARRAY_NESTING_OFFSET = ARRAY_NESTING_OFFSET_DEFAULT;
+
   protected JsonParser() {
     super();
   }
@@ -603,7 +615,7 @@ public class JsonParser {
     }
     write(b, element, pretty, 0);
     if (pretty) {
-      b.append("\n");
+      b.append(LINE_BREAK);
     }
     return b.toString();
   }
@@ -612,7 +624,7 @@ public class JsonParser {
     for (JsonComment s : comments) {
       b.append("// ");
       b.append(s.getContent());
-      b.append("\n");
+      b.append(LINE_BREAK);
       b.append(Utilities.padLeft("", ' ', indent));
     }
   }
@@ -646,14 +658,14 @@ public class JsonParser {
         } else {
           b.append(pretty && !complex ? ", " : ",");
           if (pretty && complex) {
-            b.append("\n");
-            b.append(Utilities.padLeft("", ' ', indent + 2));
+            b.append(LINE_BREAK);
+            b.append(Utilities.padLeft("", ' ', indent+ARRAY_NESTING_OFFSET));
             if (i.hasComments()) {
-              writeComments(b, i.getComments(), indent + 2);
+              writeComments(b, i.getComments(), indent+ARRAY_NESTING_OFFSET);
             }
           }
         }
-        write(b, i, pretty && complex, indent+2);
+        write(b, i, pretty && complex, indent+ARRAY_NESTING_OFFSET);
       }
       b.append("]");
       break;
@@ -672,7 +684,7 @@ public class JsonParser {
       for (JsonProperty p : ((JsonObject) e).getProperties()) {
         if (first) first = false; else b.append(",");
         if (pretty) {
-          b.append("\n");
+          b.append(LINE_BREAK);
           b.append(Utilities.padLeft("", ' ', indent+2));
           if (p.getValue().hasComments()) {
             writeComments(b, p.getValue().getComments(), indent+2);
@@ -684,7 +696,7 @@ public class JsonParser {
         write(b, p.getValue(), pretty, indent+2);
       }
       if (pretty) {
-        b.append("\n");
+        b.append(LINE_BREAK);
         b.append(Utilities.padLeft("", ' ', indent));
       }
       b.append("}");
