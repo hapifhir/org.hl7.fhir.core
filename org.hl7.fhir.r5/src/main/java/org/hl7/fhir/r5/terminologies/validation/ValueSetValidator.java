@@ -395,7 +395,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         res.setSystem(foundCoding.getSystem());
         res.setVersion(foundCoding.hasVersion() ? foundCoding.getVersion() : foundCoding.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM) ? ((CodeSystem) foundCoding.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM)).getVersion() : null);
         res.setDisplay(cd.getDisplay());
-      } else if (info.getFoundVersion() != null && code.getCoding().size() <= 1) {
+      } else if (info.getFoundVersion() != null && !"CodeableConcept".equals(path)) {
         res.setVersion(info.getFoundVersion());
       }
       if (info.getErr() != null) {
@@ -660,7 +660,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
         inExpansion = checkExpansion(code);
         inInclude = checkInclude(code);
-        String workingVersion = getCodeSystemVersionFromValueSet(system, code.getCode());
+        String workingVersion = valueset == null ? code.getVersion() : getCodeSystemVersionFromValueSet(system, code.getCode());
         CodeSystem csa = context.fetchCodeSystem(system); // get the latest
         VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
         String wv = determineVersion(path, system, workingVersion, code.getVersion(), issues, va);
@@ -783,7 +783,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       inExpansion = checkExpansion(code);
       inInclude = checkInclude(code);
     }
-    String valueSetImpliedVersion = getCodeSystemVersionFromValueSet(system, code.getCode());
+    String valueSetImpliedVersion = valueset == null ? code.getVersion() : getCodeSystemVersionFromValueSet(system, code.getCode());
     CodeSystem csa = context.fetchCodeSystem(system); // get the latest
     VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
     String wv = determineVersion(path, system, valueSetImpliedVersion, code.getVersion(), issues, va);
