@@ -8,6 +8,7 @@ version of the validator SHOULD continue to work. But how some cases
 are handled - particularly around supplements - has changed.
 
 * Update internal terminology server for new server on tx.fhir.org
+* fix bug reporting wrong version when validating value sets
 
 ## Other code changes
 
