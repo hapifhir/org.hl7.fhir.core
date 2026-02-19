@@ -5,7 +5,7 @@
     "code" : "C18.0",
     "display" : "Malignant neoplasm: Caecum"
   }]
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -22,7 +22,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/icd-10",
   "version" : "2019-covid-expanded",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Validate \"[undefined|undefined#C18.0 (\"Malignant neoplasm: Caecum\")]\"\n0ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Check \"http://hl7.org/fhir/sid/icd-10|undefined#C18.0\"\n0ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: CodeSystem found: http://hl7.org/fhir/sid/icd-10|2019-covid-expanded for http://hl7.org/fhir/sid/icd-10|2019-covid-expanded\n0ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Code \"C18.0\" found in http://hl7.org/fhir/sid/icd-10|2019-covid-expanded",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Validate \"[undefined#C18.0 (\"Malignant neoplasm: Caecum\")]\"\n1ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Check \"http://hl7.org/fhir/sid/icd-10#C18.0\"\n1ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: CodeSystem found: http://hl7.org/fhir/sid/icd-10|2019-covid-expanded for http://hl7.org/fhir/sid/icd-10|2019-covid-expanded\n1ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: check code in () at CodeableConcept.coding[0]\n1ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Code \"C18.0\" found in http://hl7.org/fhir/sid/icd-10|2019-covid-expanded",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -36,7 +36,7 @@ v: {
     "code" : "C12",
     "display" : "Malignant neoplasm of pyriform sinus"
   }]
-}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -56,7 +56,7 @@ v: {
   "error" : "Wrong Display Name 'Malignant neoplasm of pyriform sinus' for http://hl7.org/fhir/sid/icd-10#C12. Valid display is 'Malignant neoplasm of piriform sinus' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Validate \"[undefined|undefined#C12 (\"Malignant neoplasm of pyriform sinus\")]\"\n0ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Check \"http://hl7.org/fhir/sid/icd-10|undefined#C12\"\n0ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: CodeSystem found: http://hl7.org/fhir/sid/icd-10|2019-covid-expanded for http://hl7.org/fhir/sid/icd-10|2019-covid-expanded\n0ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: check code in (undefined) at CodeableConcept.coding[0]\n0ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Code \"C12\" found in http://hl7.org/fhir/sid/icd-10|2019-covid-expanded",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Validate \"[undefined#C12 (\"Malignant neoplasm of pyriform sinus\")]\"\n1ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Check \"http://hl7.org/fhir/sid/icd-10#C12\"\n1ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: CodeSystem found: http://hl7.org/fhir/sid/icd-10|2019-covid-expanded for http://hl7.org/fhir/sid/icd-10|2019-covid-expanded\n1ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: check code in () at CodeableConcept.coding[0]\n1ms http://hl7.org/fhir/sid/icd-10/vs|2019-covid-expanded: Code \"C12\" found in http://hl7.org/fhir/sid/icd-10|2019-covid-expanded",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -78,7 +78,6 @@ v: {
       }],
       "text" : "Wrong Display Name 'Malignant neoplasm of pyriform sinus' for http://hl7.org/fhir/sid/icd-10#C12. Valid display is 'Malignant neoplasm of piriform sinus' (for the language(s) 'en-US')"
     },
-    "location" : ["CodeableConcept.coding[0].display"],
     "expression" : ["CodeableConcept.coding[0].display"]
   }]
 }
