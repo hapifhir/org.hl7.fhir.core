@@ -3,39 +3,54 @@ package org.hl7.fhir.validation.tests.utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import static java.util.Arrays.stream;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
- * This class filters tests in a similar way to surefire, using an include list and en exclude list, both collected from
- * specified env variables.
- *
+ * This class is intended to filter tests in a similar way to surefire, using an include list and en exclude list. Both
+ * of these are collected from java system properties, which are set when the maven `surefire:test` goal is used.
+ * ONLY exact tag matching is supported at present. Pattern matching may be implemented at a later date.
+ * </p><br>
+ * Usage:
+ * </p><br>
+ * The following terminal command sets included and excluded filters from the `includedTestTags` and `excludedTestTags`
+ * system properties.<br>
+ * <code>
+ *   mvn test -Dtest=MyTest -DincludedTestTags="tagA,tagB,tagC" -DexcludedTestTags="tagC"
+ * </code>
+ * <p/><br>
+ * In the java code for MyTest, the following TestFilter would be used to extract those filters<br>
+ * <code>
+ * new TestFilter("includedTestTags", "excludedTestTags")
+ * </code>
+ * <p/>
  */
 @Slf4j
 public class TestFilter {
-  private final Optional<List<String>> includedFilters ;
-  private final Optional<List<String>> excludedFilters;
+  private final List<String> includedFilters ;
+  private final List<String> excludedFilters;
 
   /**
    *
-   * @param includedEnvVariable A system environment variable that contains comma-delimited tags to include
-   * @param excludedEnvVariable A system environment variable that contains comma-delimited tags to exclude
+   * @param includedPropertyKey A system property that contains comma-delimited tags to include
+   * @param excludedPropertyKey A system property that contains comma-delimited tags to exclude
    */
-  public TestFilter(final String includedEnvVariable, final String excludedEnvVariable) {
-    includedFilters = getFromEnvVariable(includedEnvVariable);
-    excludedFilters = getFromEnvVariable(excludedEnvVariable);
+  public TestFilter(final String includedPropertyKey, final String excludedPropertyKey) {
+    this(getFiltersFromSystemProperty(includedPropertyKey), getFiltersFromSystemProperty(excludedPropertyKey));
+  }
+
+  protected TestFilter(final List<String> includedFilters, final List<String> excludedFilters) {
+    this.includedFilters = new ArrayList<>(includedFilters);
+    this.excludedFilters = new ArrayList<>(excludedFilters);
   }
 
   public boolean shouldRunBasedOnTags(List<String> tags) {
-    return (includedFilters.isEmpty() || anyFilterMatchesDescription(includedFilters.get(), tags))
-      && (excludedFilters.isEmpty() || allFiltersMatchDescription(excludedFilters.get(), tags));
+    return (includedFilters == null || includedFilters.isEmpty() || anyFilterMatchesDescription(includedFilters, tags))
+      && (excludedFilters == null || excludedFilters.isEmpty() || allFiltersMatchDescription(excludedFilters, tags));
   }
 
   private static boolean anyFilterMatchesDescription(List<String> includeTags, Collection<String> tags) {
@@ -46,19 +61,15 @@ public class TestFilter {
     return excludeTags.stream().noneMatch(tags::contains);
   }
 
-  private Optional<List<String>> getFromEnvVariable(String key) {
-    String property = System.getProperty(key);
-    for (Map.Entry<String, String> entry : System.getenv().entrySet()) {
-      System.out.println("   " + entry.getKey() + " = " + entry.getValue());
-    }
-    log.info("getting tags from " + key + ": " + property);
+  private static List<String> getFiltersFromSystemProperty(String propertyKey) {
+    String property = System.getProperty(propertyKey);
     if (isBlank(property))
-      return empty();
+      return null;
     return isBlank(property)
-      ? empty()
-      : of(stream(property.split("[,]+"))
+      ? null
+      : stream(property.split("[,]+"))
       .filter(StringUtils::isNotBlank)
       .map(String::trim)
-      .toList());
+      .toList();
   }
 }
