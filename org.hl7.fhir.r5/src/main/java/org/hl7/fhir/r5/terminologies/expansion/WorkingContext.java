@@ -23,7 +23,8 @@ class WorkingContext {
   private boolean canBeHierarchy = true;
   private Integer offsetParam;
   private Integer countParam; // allowed count. Because of internal processing, we allow more 
-  
+  private boolean noContent; // because count = 0 in request
+
   // running count. This might be more than actually seen if we call out to an external server and only get the first 1000 codes
   private int extraCount;
   private List<String> countIncompleteSystems = new ArrayList<>(); // because we saw some of something we depend on, and then we lose control if we see anything else in the same system 
@@ -121,4 +122,11 @@ class WorkingContext {
     return countIncompleteSystems;
   }
 
+  public boolean isNoContent() {
+    return noContent;
+  }
+
+  public void setNoContent(boolean noContent) {
+    this.noContent = noContent;
+  }
 }

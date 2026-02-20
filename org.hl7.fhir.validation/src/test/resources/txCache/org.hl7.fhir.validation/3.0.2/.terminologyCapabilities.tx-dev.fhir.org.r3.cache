@@ -5638,9 +5638,6 @@
     "uri" : "https://fhir-terminology.ohdsi.org"
   },
   {
-    "uri" : "https://nahdo.org/sopt"
-  },
-  {
     "uri" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/cdcnhsn.html"
   },
   {

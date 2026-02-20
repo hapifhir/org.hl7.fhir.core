@@ -3,7 +3,7 @@
   "system" : "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
   "version" : "2020",
   "code" : "A54.4"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -20,7 +20,7 @@ v: {
   "system" : "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
   "version" : "2020",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n237ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Validate \"[undefined|2020#A54.4 (\"undefined\")]\"\n237ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Check \"http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020#A54.4\"\n237ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: CodeSystem found: http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020 for http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020\n237ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: check code in (undefined) at Coding\n237ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Code \"A54.4\" found in http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020",
+  "diagnostics" : "0ms tx-op\n448ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Validate \"[undefined|2020#A54.4 (\"undefined\")]\"\n448ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Check \"http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020#A54.4\"\n448ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: CodeSystem found: http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020 for http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020\n448ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: check code in () at Coding\n448ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Code \"A54.4\" found in http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -51,7 +51,7 @@ v: {
   "system" : "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
   "version" : "2020",
   "code" : "M73.04"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -68,7 +68,7 @@ v: {
   "system" : "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
   "version" : "2020",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n159ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Validate \"[undefined|2020#M73.04 (\"undefined\")]\"\n159ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Check \"http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020#M73.04\"\n159ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: CodeSystem found: http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020 for http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020\n160ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: check code in (undefined) at Coding\n160ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Code \"M73.04\" found in http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020",
+  "diagnostics" : "0ms tx-op\n335ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Validate \"[undefined|2020#M73.04 (\"undefined\")]\"\n335ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Check \"http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020#M73.04\"\n335ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: CodeSystem found: http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020 for http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020\n335ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: check code in () at Coding\n335ms http://fhir.de/ValueSet/dimdi/icd-10-gm|2020: Code \"M73.04\" found in http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -100,7 +100,7 @@ v: {
   "version" : "2020",
   "code" : "A54.4† M73.04*",
   "display" : "Bursitis gonorrhoica"
-}, "url": "http://fhir.de/ValueSet/dimdi/icd-10-gm", "version": "0.9.13", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://fhir.de/ValueSet/dimdi/icd-10-gm", "version": "0.9.13", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -119,7 +119,7 @@ v: {
   "error" : "The provided code 'http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020#A54.4† M73.04* ('Bursitis gonorrhoica')' was not found in the value set 'http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13'; Unknown code 'A54.4† M73.04*' in the CodeSystem 'http://fhir.de/CodeSystem/dimdi/icd-10-gm' version '2020'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n441ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: Analysing http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13 for validation purposes\n441ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: Prepare include[0]: \"(undefined)\"\n441ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: CodeSystem found: \"http://fhir.de/CodeSystem/dimdi/icd-10-gm|2021\"\n441ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: Validate \"[undefined|2020#A54.4† M73.04* (\"Bursitis gonorrhoica\")]\"\n441ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: Check \"http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020#A54.4† M73.04*\"\n443ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: CodeSystem found: http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020 for http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020\n443ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: check code in (undefined) at Coding\n443ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: Code \"A54.4† M73.04*\" not found in http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020: undefined",
+  "diagnostics" : "0ms tx-op\n1027ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: Analysing http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13 for validation purposes\n1027ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: Prepare include[0]: \"()\"\n1027ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: CodeSystem found: \"http://fhir.de/CodeSystem/dimdi/icd-10-gm|2021\"\n1027ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: Validate \"[undefined|2020#A54.4† M73.04* (\"Bursitis gonorrhoica\")]\"\n1027ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: Check \"http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020#A54.4† M73.04*\"\n1028ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: CodeSystem found: http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020 for http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020\n1028ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: check code in () at Coding\n1028ms http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13: Code \"A54.4† M73.04*\" not found in http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -160,27 +160,7 @@ v: {
       }],
       "text" : "Unknown code 'A54.4† M73.04*' in the CodeSystem 'http://fhir.de/CodeSystem/dimdi/icd-10-gm' version '2020'"
     },
-    "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "MSG_EXPERIMENTAL"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "business-rule",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "status-check"
-      }],
-      "text" : "Reference to experimental CodeSystem http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020"
-    }
   },
   {
     "extension" : [{
@@ -200,7 +180,6 @@ v: {
       }],
       "text" : "The provided code 'http://fhir.de/CodeSystem/dimdi/icd-10-gm|2020#A54.4† M73.04* ('Bursitis gonorrhoica')' was not found in the value set 'http://fhir.de/ValueSet/dimdi/icd-10-gm|0.9.13'"
     },
-    "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
   }]
 }

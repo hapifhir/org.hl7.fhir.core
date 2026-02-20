@@ -3,7 +3,7 @@
   "system" : "http://spms.min-saude.pt/valueset-list-empty-reason",
   "code" : "not-found",
   "display" : "Not Found"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -15,14 +15,13 @@
   }]
 }}####
 v: {
-  "display" : "Not Found",
   "code" : "not-found",
   "system" : "http://spms.min-saude.pt/valueset-list-empty-reason",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://spms.min-saude.pt/valueset-list-empty-reason' could not be found, so the code cannot be validated",
-  "class" : "UNKNOWN",
+  "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
+  "unknown-systems" : "http://spms.min-saude.pt/valueset-list-empty-reason",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -43,7 +42,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://spms.min-saude.pt/valueset-list-empty-reason' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }
