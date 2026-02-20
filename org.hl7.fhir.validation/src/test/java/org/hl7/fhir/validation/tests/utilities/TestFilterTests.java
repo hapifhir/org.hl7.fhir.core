@@ -9,7 +9,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestFilterTests {
+// Created by claude-sonnet-4-6
+class TestFilterTests {
 
   private static Stream<Arguments> provideFilterAndTagCombinations() {
     return Stream.of(
