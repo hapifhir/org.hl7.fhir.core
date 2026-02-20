@@ -241,10 +241,8 @@ public class ValidationService {
   private ValidationOutcome getValidationOutcomeForUnknownFileFormat(FileInfo fileInfo) {
     ValidationOutcome outcome = new ValidationOutcome();
 
-    List<ValidationMessage> errorList = new ArrayList<>() {{
-      add(new ValidationMessage().setType(ValidationMessage.IssueType.EXCEPTION).setLevel(ValidationMessage.IssueSeverity.FATAL).setMessage("Unable to infer format from file. Please check that your file is in a valid FHIR format."));
-
-    } };
+    List<ValidationMessage> errorList = new ArrayList<>();
+    errorList.add(new ValidationMessage().setType(ValidationMessage.IssueType.EXCEPTION).setLevel(ValidationMessage.IssueSeverity.FATAL).setMessage("Unable to infer format from file. Please check that your file is in a valid FHIR format."));
     outcome.setMessages(errorList);
     outcome.setFileInfo(fileInfo);
     return outcome;

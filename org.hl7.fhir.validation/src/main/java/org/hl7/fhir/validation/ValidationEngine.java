@@ -681,12 +681,16 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   // FIXME from validator-wrapper (indirect)
   public ValidatedFragments validateAsFragments(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator(cntType);
+    //FIXME set instance validator options
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return new ValidatedFragments(validator.validatedContent,
       ValidationTime.fromTimeTracker(validator.timeTracker));
   }
 
-  // FIXME remove? deprecate?
+  /**
+   * @deprecated
+   */
+  @Deprecated(since="2026-02-20")
   public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator(cntType);
 
@@ -742,8 +746,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
-  //FIXME from HTTP service
-  //FIXME remove? Deprecate?
+  /**
+   * @deprecated
+   */
+  @Deprecated(since="2026-02-20")
   public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
