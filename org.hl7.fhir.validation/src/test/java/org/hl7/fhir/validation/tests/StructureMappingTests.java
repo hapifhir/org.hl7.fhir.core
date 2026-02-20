@@ -1,11 +1,11 @@
 package org.hl7.fhir.validation.tests;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,10 +15,13 @@ import java.util.stream.Stream;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.model.Composition;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
@@ -175,5 +178,162 @@ public class StructureMappingTests {
     context.dropResource(r);
     context.dropResource(structureDefinition);
     assertTrue(thrown.getMessage().contentEquals("This engine does not support multiple source inputs"));
+  }
+  
+  @Test
+  public void testResolveBundle() throws FHIRException, IOException {
+    // TODO: move to https://github.com/FHIR/fhir-test-cases/tree/master/r5/structure-mapping
+    String map = "map \"http://example.org/StructureMap/Bundle2Composition\" = \"Bundle2Composition\"\r\n"
+        + "\r\n"
+        + "uses \"http://hl7.org/fhir/StructureDefinition/Bundle\" alias Bundle as source\r\n"
+        + "uses \"http://hl7.org/fhir/StructureDefinition/DiagnosticReport\" alias DiagnosticReport as source\r\n"
+        + "uses \"http://hl7.org/fhir/StructureDefinition/Observation\" alias Observation as source\r\n"
+        + "\r\n"
+        + "uses \"http://hl7.org/fhir/StructureDefinition/Composition\" alias Composition as target\r\n"
+        + "uses \"http://hl7.org/fhir/StructureDefinition/Section\" alias Section as target\r\n"
+        + "\r\n"
+        + "\r\n"
+        + "group bundle(source bundle : Bundle, target composition: Composition) {\r\n"
+        + "  bundle.entry as entry where $this.resource.ofType(FHIR.DiagnosticReport) -> composition.section as section then {\r\n"
+        + "    entry.resource as report -> section.title = ('lab report ' & %report.id) then {\r\n"
+        + "      report.result as result then {\r\n"
+        + "        result log('Reference: ' & %result.reference) -> evaluate(result, resolve()) as observation, section.section as subsection then labResult(observation, subsection) \"result\";\r\n"
+        + "      };\r\n"
+        + "    };\r\n"
+        + "  };\r\n"
+        + "}\r\n"
+        + "\r\n"
+        + "group labResult(source observation : Observation, target section: Section) {\r\n"
+        + "  observation.id as id -> section.title = ('lab result ' & %id);\r\n"
+        + "  observation.code as code -> section.code = code;\r\n"
+        + "}";
+    
+    String bundle = "{\r\n"
+        + "    \"resourceType\": \"Bundle\",\r\n"
+        + "    \"id\": \"bundle-1\",\r\n"
+        + "    \"type\": \"searchset\",\r\n"
+        + "    \"entry\": [{\r\n"
+        + "        \"fullUrl\": \"http://localhost:8000/Patient/1\",\r\n"
+        + "        \"resource\": {\r\n"
+        + "          \"resourceType\": \"Patient\",\r\n"
+        + "          \"id\": \"1\"\r\n"
+        + "        }\r\n"
+        + "    },\r\n"
+        + "    {\r\n"
+        + "        \"fullUrl\": \"http://localhost:8000/DiagnosticReport/2\",\r\n"
+        + "        \"resource\": {\r\n"
+        + "            \"resourceType\": \"DiagnosticReport\",\r\n"
+        + "            \"id\": \"2\",\r\n"
+        + "            \"status\": \"final\",\r\n"
+        + "            \"code\": {\r\n"
+        + "                \"coding\": [{\r\n"
+        + "                    \"system\": \"http://snomed.info/sct\",\r\n"
+        + "                    \"code\": \"15220000\"\r\n"
+        + "                }]\r\n"
+        + "            },\r\n"
+        + "            \"subject\": {\r\n"
+        + "                \"reference\": \"Patient/1\"\r\n"
+        + "            },\r\n"
+        + "            \"result\": [\r\n"
+        + "                {\r\n"
+        + "                    \"reference\": \"Observation/3\"\r\n"
+        + "                },\r\n"
+        + "                {\r\n"
+        + "                    \"reference\": \"Observation/4\"\r\n"
+        + "                }\r\n"
+        + "            ]\r\n"
+        + "        }\r\n"
+        + "    },\r\n"
+        + "    {\r\n"
+        + "        \"fullUrl\": \"http://localhost:8000/Observation/3\",\r\n"
+        + "        \"resource\": {\r\n"
+        + "            \"resourceType\": \"Observation\",\r\n"
+        + "            \"id\": \"3\",\r\n"
+        + "            \"status\": \"final\",\r\n"
+        + "            \"code\": {\r\n"
+        + "                \"coding\": [\r\n"
+        + "                    {\r\n"
+        + "                        \"system\": \"https://loinc.org\",\r\n"
+        + "                        \"code\": \"11502-2\"\r\n"
+        + "                    }\r\n"
+        + "                ]\r\n"
+        + "            },\r\n"
+        + "            \"subject\": {\r\n"
+        + "                \"reference\": \"Patient/1\"\r\n"
+        + "            }\r\n"
+        + "        }\r\n"
+        + "    },\r\n"
+        + "    {\r\n"
+        + "        \"fullUrl\": \"http://localhost:8000/Observation/4\",\r\n"
+        + "        \"resource\": {\r\n"
+        + "            \"resourceType\": \"Observation\",\r\n"
+        + "            \"id\": \"4\",\r\n"
+        + "            \"status\": \"final\",\r\n"
+        + "            \"code\": {\r\n"
+        + "                \"coding\": [\r\n"
+        + "                    {\r\n"
+        + "                        \"system\": \"https://loinc.org\",\r\n"
+        + "                        \"code\": \"6298-4\"\r\n"
+        + "                    }\r\n"
+        + "                ]\r\n"
+        + "            },\r\n"
+        + "            \"subject\": {\r\n"
+        + "                \"reference\": \"Patient/1\"\r\n"
+        + "            }\r\n"
+        + "        }\r\n"
+        + "    },\r\n"
+        + "    {\r\n"
+        + "        \"fullUrl\": \"http://localhost:8000/DiagnosticReport/5\",\r\n"
+        + "        \"resource\": {\r\n"
+        + "            \"resourceType\": \"DiagnosticReport\",\r\n"
+        + "            \"id\": \"5\",\r\n"
+        + "            \"status\": \"final\",\r\n"
+        + "            \"code\": {\r\n"
+        + "                \"coding\": [{\r\n"
+        + "                    \"system\": \"http://snomed.info/sct\",\r\n"
+        + "                    \"code\": \"15220000\"\r\n"
+        + "                }]\r\n"
+        + "            },\r\n"
+        + "            \"subject\": {\r\n"
+        + "                \"reference\": \"Patient/1\"\r\n"
+        + "            },\r\n"
+        + "            \"result\": [\r\n"
+        + "                {\r\n"
+        + "                    \"reference\": \"urn:uuid:9d1714da-b7e6-455b-bfd2-69ce0ff5fb12\"\r\n"
+        + "                }\r\n"
+        + "            ]\r\n"
+        + "        }\r\n"
+        + "    },\r\n"
+        + "    {\r\n"
+        + "        \"fullUrl\": \"urn:uuid:9d1714da-b7e6-455b-bfd2-69ce0ff5fb12\",\r\n"
+        + "        \"resource\": {\r\n"
+        + "            \"resourceType\": \"Observation\",\r\n"
+        + "            \"status\": \"final\",\r\n"
+        + "            \"code\": {\r\n"
+        + "                \"coding\": [\r\n"
+        + "                    {\r\n"
+        + "                        \"system\": \"https://loinc.org\",\r\n"
+        + "                        \"code\": \"41656-0\"\r\n"
+        + "                    }\r\n"
+        + "                ]\r\n"
+        + "            },\r\n"
+        + "            \"subject\": {\r\n"
+        + "                \"reference\": \"Patient/1\"\r\n"
+        + "            }\r\n"
+        + "        }\r\n"
+        + "    }]\r\n"
+        + "}";
+    
+    StructureMap r = new StructureMapUtilities(context).parse(map, "Bundle2Composition");
+    context.cacheResource(r);       
+    ByteProvider byteSource = ByteProvider.forBytes(bundle.getBytes());
+    org.hl7.fhir.r5.elementmodel.Element element = validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl());
+    
+    ByteArrayOutputStream s = new ByteArrayOutputStream();
+    new org.hl7.fhir.r5.elementmodel.JsonParser(context).compose(element, s, IParser.OutputStyle.PRETTY, null);
+    Composition comp = (Composition) new JsonParser().parse(s.toString());
+    //System.out.println(s.toString());
+    assertEquals(2,  comp.getSection().get(0).getSection().size());
+    assertEquals(1,  comp.getSection().get(1).getSection().size());
   }
 }
