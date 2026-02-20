@@ -617,7 +617,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return (OperationOutcome) validate(l, profiles, refs, null, loader, all, 0, true);
   }
 
-  //FIXME from CLI (direct)
+  //FIXME
+  // from CLI (direct)
+  // from MatchboxService
   public Resource validate(List<String> sources, List<String> profiles, List<SourceFile> refs, List<ValidationRecord> record, IValidationEngineLoader loader, boolean all, int delay, boolean first) throws FHIRException, IOException, InterruptedException {
     boolean asBundle = ValidatorUtils.parseSources(sources, refs, context);
     Bundle results = new Bundle();
