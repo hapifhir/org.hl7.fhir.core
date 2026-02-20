@@ -44,8 +44,8 @@ public class TestFilter {
   }
 
   protected TestFilter(final List<String> includedFilters, final List<String> excludedFilters) {
-    this.includedFilters = new ArrayList<>(includedFilters);
-    this.excludedFilters = new ArrayList<>(excludedFilters);
+    this.includedFilters = includedFilters == null ? null : new ArrayList<>(includedFilters);
+    this.excludedFilters = excludedFilters == null ? null : new ArrayList<>(excludedFilters);
   }
 
   public boolean shouldRunBasedOnTags(List<String> tags) {
