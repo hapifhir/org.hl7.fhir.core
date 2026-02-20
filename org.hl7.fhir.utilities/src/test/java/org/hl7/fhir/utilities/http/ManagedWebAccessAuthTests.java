@@ -168,7 +168,7 @@ public class ManagedWebAccessAuthTests {
       "fhir",
       DUMMY_USERNAME,
       DUMMY_PASSWORD,
-      null, null, null);
+      null, null, null, null);
   }
 
 @Test
@@ -187,7 +187,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       "fhir",
      null,
       null,
-      DUMMY_TOKEN, null, null);
+      DUMMY_TOKEN, null, null, null);
   }
 
   @Test
@@ -206,7 +206,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       "fhir",
       null,
       null,
-     null, DUMMY_API_KEY, null);
+     null, DUMMY_API_KEY, null, null);
   }
 
   @Test

@@ -752,7 +752,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.INTERNAL_ERROR, allErrors, false);
     } catch (TerminologyServiceProtectionException e) {
       if (opContext.isOriginal()) {
-        return new ValueSetExpansionOutcome(e.getMessage(), e.getError(), allErrors, false);
+        return new ValueSetExpansionOutcome(e.getMessage(), e.getError(), allErrors, false, e.getMsgId(), e.getCode());
       } else {
         throw e;
       }
@@ -832,6 +832,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
         }
       }
     }
+    if (dwc.isNoContent()) {
+      focus.getExpansion().getContains().clear();
+    }
 
     if (!reportingOnVersionsInContains) {
       stripVersions(focus.getExpansion().getContains());
@@ -843,12 +846,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (!dwc.isNoTotal()) {
       focus.getExpansion().setTotal(dwc.getStatedTotal());
     }
-    if (!requiredSupplements.isEmpty()) {
+    List<String> missingSupplements = checkForMissingSupplements();
+    if (!missingSupplements.isEmpty()) {
       OperationOutcomeIssueComponent issue = new OperationOutcomeIssueComponent();
       issue.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType("VALUESET_SUPPLEMENT_MISSING"));
       issue.setSeverity(OperationOutcome.IssueSeverity.ERROR);
       issue.setCode(IssueType.BUSINESSRULE);
-      issue.getDetails().setText(context.formatMessagePlural(requiredSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(requiredSupplements)));
+      issue.getDetails().setText(context.formatMessagePlural(missingSupplements.size(), I18nConstants.VALUESET_SUPPLEMENT_MISSING, CommaSeparatedStringBuilder.build(missingSupplements)));
       issue.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "not-found", null);
       List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
       issues.add(issue);
@@ -914,7 +918,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
       dwc.setCountParam(((IntegerType) value).getValue());
       if (dwc.getCountParam() < 0) {
         dwc.setCountParam(0);
+      } else if (dwc.getCountParam() == 0) {
+        dwc.setNoContent(true);
       }
+    }
+    if ("useSupplement".equals(name)) {
+      requiredSupplements.add(value.primitiveValue());
     }
   }
   
@@ -1304,7 +1313,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         dwc.setNoTotal(true);
       }
       String version = determineVersion(inc.getSystem(), inc.getVersion(), exp, expParams);
-      CodeSystem cs = context.fetchSupplementedCodeSystem(inc.getSystem(), version, valueSet);
+      CodeSystem cs = context.fetchSupplementedCodeSystem(inc.getSystem(), version, requiredSupplements, valueSet);
       if (cs != null) {
         checkVersion(inc.getSystem(), cs.getVersion(), exp, expParams);
       }
@@ -1329,7 +1338,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       } else {
         if (cs.hasUserData(UserDataNames.tx_known_supplements)) {
           for (String s : cs.getUserString(UserDataNames.tx_known_supplements).split("\\,")) {
-            requiredSupplements.remove(s);
+            seeSupplement(s);
           }
         }
         if (!requiredSupplements.isEmpty()) {
@@ -1346,6 +1355,14 @@ public class ValueSetExpander extends ValueSetProcessBase {
         }
         doInternalIncludeCodes(inc, exp, expParams, imports, cs, noInactive, valueSet, vspath);
       }
+    }
+  }
+
+  private void seeSupplement(String s) {
+    requiredSupplements.remove(s);
+    if (s.contains("|")) {
+      s = s.substring(0, s.indexOf("|"));
+      requiredSupplements.remove(s);
     }
   }
 
@@ -1589,7 +1606,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       throw new VSCheckerException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM_FILTER_WITH_NO_VALUE, cs.getUrl(), fc.getProperty(), fc.getOp().toCode()), issues, TerminologyServiceErrorClass.INTERNAL_ERROR);
     }
     opContext.deadCheck("processFilter");
-    if ("concept".equals(fc.getProperty()) && fc.getOp() == FilterOperator.ISA) {
+    if (("concept".equals(fc.getProperty()) || "code".equals(fc.getProperty()) ) && fc.getOp() == FilterOperator.ISA) {
       // special: all codes in the target code system under the value
       ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), fc.getValue());
       if (def == null)
@@ -1680,7 +1697,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         }
       }
     } else {
-      throw fail(I18nConstants.VS_EXP_FILTER_UNK, true, focus.getVersionedUrl(), fc.getProperty(), fc.getOp());
+      throw fail(I18nConstants.VS_EXP_FILTER_UNK, focus.getVersionedUrl(), fc.getProperty(), fc.getOp());
     }
   }
 
