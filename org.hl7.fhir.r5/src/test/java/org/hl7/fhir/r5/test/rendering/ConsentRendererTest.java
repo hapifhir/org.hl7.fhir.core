@@ -56,4 +56,29 @@ public class ConsentRendererTest {
 
     assertFalse(html.contains("<title"), "Narrative XHTML must not contain a <title> element (violates txt-1 constraint), but found one in: " + html);
   }
+
+  @Test
+  public void testNarrativeDoesNotContainQuestionnaireRoot() throws Exception {
+    Consent consent = new Consent();
+    consent.setId("test-consent");
+    consent.setStatus(ConsentState.ACTIVE);
+    consent.setSubject(new Reference("Patient/example"));
+    consent.setDecision(ConsentProvisionType.PERMIT);
+
+    // Add a provision so the hierarchical table is rendered
+    Consent.ProvisionComponent provision = consent.getProvisionFirstRep();
+    provision.addPurpose().setSystem("http://example.org").setCode("test");
+
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    rc.setDestDir(Utilities.path("[tmp]", "narrative"));
+    rc.setLocale(new java.util.Locale("en", "AU"));
+    rc.setTimeZoneId(ZoneId.of("Australia/Sydney"));
+    rc.setProfileUtilities(new ProfileUtilities(rc.getContext(), null, new TestProfileKnowledgeProvider(rc.getContext())));
+    rc.setTesting(true);
+
+    XhtmlNode x = RendererFactory.factory(consent, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), consent));
+    String html = new XhtmlComposer(false, true).compose(x);
+
+    assertFalse(html.contains("QuestionnaireRoot"), "Consent narrative should not reference QuestionnaireRoot, but found it in: " + html);
+  }
 }

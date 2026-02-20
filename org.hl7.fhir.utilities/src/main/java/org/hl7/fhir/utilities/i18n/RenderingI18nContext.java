@@ -1191,6 +1191,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONSENT_DENY = "CONSENT_DENY";
   public static final String CONSENT_PERMIT_DESC = "CONSENT_PERMIT_DESC";
   public static final String CONSENT_DENY_DESC = "CONSENT_DENY_DESC";
+  public static final String CONSENT_PROVISION = "CONSENT_PROVISION";
   public static final String CONSENT_HT_PERIOD = "CONSENT_HT_PERIOD";
   public static final String CONSENT_HT_DATA_PERIOD = "CONSENT_HT_DATA_PERIOD";
 public static final String CONSENT_HT_SEC_LABEL = "CONSENT_HT_SEC_LABEL";

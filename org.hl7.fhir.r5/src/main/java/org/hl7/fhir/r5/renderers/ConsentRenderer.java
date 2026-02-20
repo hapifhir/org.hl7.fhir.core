@@ -215,7 +215,7 @@ public class ConsentRenderer extends ResourceRenderer {
   private HierarchicalTableGenerator.Row addConsentRoot(HierarchicalTableGenerator gen, List<HierarchicalTableGenerator.Row> rows, ResourceWrapper consent, boolean permit, boolean hasWhen, boolean hasWho, boolean hasWhat, boolean hasRules) throws IOException {
     HierarchicalTableGenerator.Row r = gen.new Row();
     rows.add(r);
-    r.setIcon(permit ? "icon_extension.png" : "icon-qi-hidden.png", context.formatPhrase(RenderingContext.QUEST_ROOT));
+    r.setIcon(permit ? "icon_extension.png" : "icon-qi-hidden.png", context.formatPhrase(RenderingContext.CONSENT_PROVISION));
     r.getCells().add(gen.new Cell(null, null, context.formatPhrase(permit ? RenderingContext.CONSENT_PERMIT :  RenderingContext.CONSENT_DENY), null, null));
     if (hasWhen) {
       r.getCells().add(gen.new Cell(null, null, "", null, null));
@@ -236,7 +236,7 @@ public class ConsentRenderer extends ResourceRenderer {
     HierarchicalTableGenerator.Row r = gen.new Row();
     subRows.add(r);
     boolean itemPermit = determineItemPermit(consent, i , permit);
-    r.setIcon(itemPermit ? "icon_extension.png" : "icon-qi-hidden.png", context.formatPhrase(RenderingContext.QUEST_ROOT));
+    r.setIcon(itemPermit ? "icon_extension.png" : "icon-qi-hidden.png", context.formatPhrase(RenderingContext.CONSENT_PROVISION));
     r.getCells().add(gen.new Cell(null, null, context.formatPhrase(itemPermit ? RenderingContext.CONSENT_PERMIT :  RenderingContext.CONSENT_DENY), null, null));
     if (hasWhen) {
       HierarchicalTableGenerator.Cell c = gen.new Cell(null, null,  "", null, null);
