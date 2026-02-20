@@ -83,7 +83,7 @@ public class ConsentRenderer extends ResourceRenderer {
       for (ResourceWrapper r : consent.children(name)) {
         XhtmlNode tr = tbl.tr();
         XhtmlNode td = tr.td();
-        td.title(context.formatPhrase(desc));
+        td.attributeNN("title", context.formatPhrase(desc));
         td.tx(context.formatPhrase(role));
         renderReference(status, tr.td(), r);
       }
