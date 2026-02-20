@@ -13,7 +13,9 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 /**
  * This class is intended to filter tests in a similar way to surefire, using an include list and en exclude list. Both
  * of these are collected from java system properties, which are set when the maven `surefire:test` goal is used.
- * ONLY exact tag matching is supported at present. Pattern matching may be implemented at a later date.
+ * Tags follow the <a href="https://docs.junit.org/6.0.3/running-tests/tags.html#syntax-rules">syntax rules</a> for the
+ * JUnit framework, but do not currently use any tag expressions (such as operators !, & and |). Tag expressions may be
+ * implemented at a later date.
  * </p><br>
  * Usage:
  * </p><br>
