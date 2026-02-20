@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.utils.URIBuilder;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Bundle;
@@ -19,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -79,7 +81,7 @@ public class HTTPClientCommand implements Callable<Integer> {
     description = "Server port (default: 80)",
     defaultValue = "80"
   )
-  private String port;
+  private Integer port;
 
   @CommandLine.Parameters(
     index = "0",
@@ -101,17 +103,12 @@ public class HTTPClientCommand implements Callable<Integer> {
       .connectTimeout(Duration.ofSeconds(10))
       .build();
 
-    final String BASE_URL = "http://localhost:" + port;
+    final String BASE_URL = "localhost";
 
     for (String source : whatToValidate) {
-
       try {
         HttpRequest request = HttpRequest.newBuilder()
-          .uri(URI.create(BASE_URL + "/validateResource" +
-            "&resourceIdRule=PROHIBITED" +
-            "&anyExtensionsAllowed=false" +
-            "&bpWarnings=Error" +
-            "&displayOption=CheckCaseAndSpace"))
+          .uri(getUriFromOptions(BASE_URL, port, instanceValidatorOptions))
           .POST(HttpRequest.BodyPublishers.ofFile(Path.of(source)))
           .header("Content-Type", "application/fhir+json")
           .build();
@@ -129,9 +126,144 @@ public class HTTPClientCommand implements Callable<Integer> {
         throw new RuntimeException(e);
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
+      } catch (URISyntaxException e) {
+        throw new RuntimeException(e);
       }
     }
 
     return 0;
+  }
+
+  // Created by claude-sonnet-4-6
+  public URI getUriFromOptions(String host, int port, InstanceValidatorOptions instanceValidatorOptions) throws URISyntaxException {
+    URIBuilder uriBuilder = new URIBuilder()
+      .setScheme("http")
+      .setHost(host)
+      .setPort(port)
+      .setPath("/validateResource");
+
+    // String fields
+    if (instanceValidatorOptions.jurisdiction != null) {
+      uriBuilder.addParameter("jurisdiction", instanceValidatorOptions.jurisdiction);
+    }
+    if (instanceValidatorOptions.expansionParameters != null) {
+      uriBuilder.addParameter("expansionParameters", instanceValidatorOptions.expansionParameters);
+    }
+    if (instanceValidatorOptions.htmlOutput != null) {
+      uriBuilder.addParameter("htmlOutput", instanceValidatorOptions.htmlOutput);
+    }
+    if (instanceValidatorOptions.outputStyle != null) {
+      uriBuilder.addParameter("outputStyle", instanceValidatorOptions.outputStyle);
+    }
+    if (instanceValidatorOptions.r5BundleRelativeReferencePolicy != null) {
+      uriBuilder.addParameter("r5BundleRelativeReferencePolicy", instanceValidatorOptions.r5BundleRelativeReferencePolicy);
+    }
+    if (instanceValidatorOptions.questionnaireMode != null) {
+      uriBuilder.addParameter("questionnaireMode", instanceValidatorOptions.questionnaireMode);
+    }
+    if (instanceValidatorOptions.level != null) {
+      uriBuilder.addParameter("level", instanceValidatorOptions.level);
+    }
+    if (instanceValidatorOptions.bestPracticeLevel != null) {
+      uriBuilder.addParameter("bestPracticeLevel", instanceValidatorOptions.bestPracticeLevel);
+    }
+    if (instanceValidatorOptions.htmlInMarkdownCheck != null) {
+      uriBuilder.addParameter("htmlInMarkdownCheck", instanceValidatorOptions.htmlInMarkdownCheck);
+    }
+
+    // Boolean flags - only add when true (non-default)
+    if (instanceValidatorOptions.assumeValidRestReferences) {
+      uriBuilder.addParameter("assumeValidRestReferences", "true");
+    }
+    if (instanceValidatorOptions.hintAboutNonMustSupport) {
+      uriBuilder.addParameter("hintAboutNonMustSupport", "true");
+    }
+    if (instanceValidatorOptions.wantInvariantsInMessages) {
+      uriBuilder.addParameter("wantInvariantsInMessages", "true");
+    }
+    if (instanceValidatorOptions.noInvariants) {
+      uriBuilder.addParameter("noInvariants", "true");
+    }
+    if (instanceValidatorOptions.unknownCodeSystemsCauseErrors) {
+      uriBuilder.addParameter("unknownCodeSystemsCauseErrors", "true");
+    }
+    if (instanceValidatorOptions.forPublication) {
+      uriBuilder.addParameter("forPublication", "true");
+    }
+    if (instanceValidatorOptions.noUnicodeBiDiControlChars) {
+      uriBuilder.addParameter("noUnicodeBiDiControlChars", "true");
+    }
+    if (instanceValidatorOptions.verbose) {
+      uriBuilder.addParameter("verbose", "true");
+    }
+    if (instanceValidatorOptions.showMessageIds) {
+      uriBuilder.addParameter("showMessageIds", "true");
+    }
+    if (instanceValidatorOptions.allowExampleUrls) {
+      uriBuilder.addParameter("allowExampleUrls", "true");
+    }
+    if (instanceValidatorOptions.showMessagesFromReferences) {
+      uriBuilder.addParameter("showMessagesFromReferences", "true");
+    }
+    if (instanceValidatorOptions.securityChecks) {
+      uriBuilder.addParameter("securityChecks", "true");
+    }
+    if (instanceValidatorOptions.noExperimentalContent) {
+      uriBuilder.addParameter("noExperimentalContent", "true");
+    }
+    if (instanceValidatorOptions.showTerminologyRouting) {
+      uriBuilder.addParameter("showTerminologyRouting", "true");
+    }
+    if (instanceValidatorOptions.doImplicitFHIRPathStringConversion) {
+      uriBuilder.addParameter("doImplicitFHIRPathStringConversion", "true");
+    }
+    if (instanceValidatorOptions.allowDoubleQuotesInFHIRPath) {
+      uriBuilder.addParameter("allowDoubleQuotesInFHIRPath", "true");
+    }
+    if (instanceValidatorOptions.checkIPSCodes) {
+      uriBuilder.addParameter("checkIPSCodes", "true");
+    }
+
+    // Numeric fields
+    if (instanceValidatorOptions.validationTimeout != null && instanceValidatorOptions.validationTimeout > 0) {
+      uriBuilder.addParameter("validationTimeout", String.valueOf(instanceValidatorOptions.validationTimeout));
+    }
+
+    // extensions - list, values may be URIs; addParameter handles percent-encoding
+    if (instanceValidatorOptions.extensions != null) {
+      for (String extension : instanceValidatorOptions.extensions) {
+        uriBuilder.addParameter("extension", extension);
+      }
+    }
+
+    // profiles - list, values may be URIs
+    if (instanceValidatorOptions.profiles != null) {
+      for (String profile : instanceValidatorOptions.profiles) {
+        uriBuilder.addParameter("profile", profile);
+      }
+    }
+
+    // compactProfiles - each entry is a comma-delimited list of profiles
+    if (instanceValidatorOptions.compactProfiles != null) {
+      for (String compactProfile : instanceValidatorOptions.compactProfiles) {
+        for (String profile : compactProfile.split(",")) {
+          String trimmed = profile.trim();
+          if (!trimmed.isEmpty()) {
+            uriBuilder.addParameter("profile", trimmed);
+          }
+        }
+      }
+    }
+
+    // bundleValidationRules - list of alternating (rule, profile) pairs
+    if (instanceValidatorOptions.bundleValidationRules != null) {
+      java.util.List<String> rules = instanceValidatorOptions.bundleValidationRules;
+      for (int i = 0; i + 1 < rules.size(); i += 2) {
+        uriBuilder.addParameter("bundleValidationRule", rules.get(i));
+        uriBuilder.addParameter("bundleValidationProfile", rules.get(i + 1));
+      }
+    }
+
+    return uriBuilder.build();
   }
 }
