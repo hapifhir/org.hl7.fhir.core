@@ -746,14 +746,21 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	  return validatorFactory.makeValidator(this, xverManager, null).setJurisdiction(JurisdictionUtilities.getJurisdictionCodingFromLocale(Locale.getDefault().getCountry()));
 	}
 
+  private volatile List<String> cachedResourceNames;
+
   @Override
   public List<String> getResourceNames() {
-    Set<String> result = new HashSet<String>();
-    for (StructureDefinition sd : listStructures()) {
-      if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.hasUserData(UserDataNames.loader_urls_patched))
-        result.add(sd.getName());
+    List<String> result = cachedResourceNames;
+    if (result == null) {
+      Set<String> names = new HashSet<String>();
+      for (StructureDefinition sd : listStructures()) {
+        if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.hasUserData(UserDataNames.loader_urls_patched))
+          names.add(sd.getName());
+      }
+      result = Utilities.sorted(names);
+      cachedResourceNames = result;
     }
-    return Utilities.sorted(result);
+    return result;
   }
 
  

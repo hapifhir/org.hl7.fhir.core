@@ -39,6 +39,7 @@ public class NpmPackageIndexBuilder {
   private static INpmPackageIndexBuilderDBImplFactory extensionFactory;
 
   public static final Integer CURRENT_INDEX_VERSION = 2;
+  private static final JsonFactory JSON_FACTORY = new JsonFactory(); // reuse across all seeFile calls
   private JsonObject index;
   private JsonArray files;
   private String dbFilename;
@@ -68,7 +69,7 @@ public class NpmPackageIndexBuilder {
        * We can then use a streaming parser to get the values of these fields instead of parsing the whole file and
        * allocating memory for everything in it.
        */
-      try (final var parser = new JsonFactory().createParser(content)) {
+      try (final var parser = JSON_FACTORY.createParser(content)) {
         final var fi = new JsonObject();
         int level = 0;
 
