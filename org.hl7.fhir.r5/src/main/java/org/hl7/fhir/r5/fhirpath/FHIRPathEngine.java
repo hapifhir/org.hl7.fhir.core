@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.WeakHashMap;
 import java.util.regex.Pattern;
 
 import lombok.extern.slf4j.Slf4j;
@@ -172,6 +173,16 @@ public class FHIRPathEngine {
   private StringBuilder traceLog = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
+
+  private static class TypeDataCache {
+    final Map<String, StructureDefinition> allTypes;
+    final Set<String> primitiveTypes;
+    TypeDataCache(Map<String, StructureDefinition> allTypes, Set<String> primitiveTypes) {
+      this.allTypes = allTypes;
+      this.primitiveTypes = primitiveTypes;
+    }
+  }
+  private static final WeakHashMap<IWorkerContext, TypeDataCache> typeDataCache = new WeakHashMap<>();
   private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for empty sets, so when running for R2/R3, this is set ot true  
   private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
   private ProfileUtilities profileUtilities;
@@ -225,12 +236,24 @@ public class FHIRPathEngine {
     super();
     this.worker = worker;
     profileUtilities = utilities; 
-    for (StructureDefinition sd : worker.fetchResourcesByType(StructureDefinition.class)) {
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
-        allTypes.put(sd.getName(), sd);
+    TypeDataCache cached;
+    synchronized (typeDataCache) {
+      cached = typeDataCache.get(worker);
+    }
+    if (cached != null) {
+      allTypes.putAll(cached.allTypes);
+      primitiveTypes.addAll(cached.primitiveTypes);
+    } else {
+      for (StructureDefinition sd : worker.fetchResourcesByType(StructureDefinition.class)) {
+        if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
+          allTypes.put(sd.getName(), sd);
+        }
+        if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) { 
+          primitiveTypes.add(sd.getName());
+        }
       }
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) { 
-        primitiveTypes.add(sd.getName());
+      synchronized (typeDataCache) {
+        typeDataCache.put(worker, new TypeDataCache(new HashMap<>(allTypes), new HashSet<>(primitiveTypes)));
       }
     }
     initFlags();
