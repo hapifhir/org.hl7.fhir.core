@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
@@ -16,17 +18,14 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ExpansionOptions;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
@@ -68,7 +67,7 @@ private static TxTestData testData;
   private final TxTestSetup setup;
   private final String version;
   private final String name;
-
+  private List<String> warnings = new ArrayList<>();
 
   private static ValidationEngine baseEngine;
 
@@ -171,17 +170,21 @@ private static TxTestData testData;
         TxTesterSorters.sortValueSet(vse.getValueset());
         TxTesterScrubbers.scrubValueSet(vse.getValueset(), false);
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
-        String diff = new CompareUtilities(modes(), ext).checkJsonSrcIsSame(id, resp, vsj);
+        CompareUtilities c = new CompareUtilities(modes(), ext);
+        String diff = c.checkJsonSrcIsSame(id, resp, vsj);
         if (diff != null) {
           FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
           FileUtilities.stringToFile(vsj, fp);        
         }
+        warnings.addAll(c.getWarnings());
         Assertions.assertNull(diff);
       }
     } else {
       OperationOutcome oo = new OperationOutcome();
       if (vse.getIssues() != null) {
         oo.getIssue().addAll(vse.getIssues());
+      } else if (vse.getErrorClass() == null) {
+        Assertions.fail("Expected an error, but none received");
       } else {
         OperationOutcomeIssueComponent e = new OperationOutcomeIssueComponent();
         e.setSeverity(IssueSeverity.ERROR);
@@ -220,6 +223,12 @@ private static TxTestData testData;
         case VALUESET_UNSUPPORTED:
           e.setCode(IssueType.NOTSUPPORTED);
           break;
+        }
+        if (vse.getMsgId() != null) {
+          e.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(vse.getMsgId()));
+        }
+        if (vse.getCode() != null) {
+          e.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", vse.getCode().toCode(), null);
         }
         e.getDetails().setText(vse.getError());
         oo.addIssue(e);

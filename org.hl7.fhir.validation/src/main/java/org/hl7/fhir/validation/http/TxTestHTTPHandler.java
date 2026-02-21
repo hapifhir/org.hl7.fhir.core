@@ -113,7 +113,7 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
     private org.hl7.fhir.utilities.json.model.JsonObject testCases;
 
     public ServerTxTester(ServerTxTesterLoader loader, String server, boolean tight, JsonObject testCases, JsonObject externals) {
-      super(loader, server, tight, externals);
+      super(loader, server, tight, externals, null);
       this.testCases = testCases;
       this.loader = loader;
     }

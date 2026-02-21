@@ -13,6 +13,7 @@ public abstract class XhtmlFluent {
   protected abstract XhtmlNode addTag(String string);
   protected abstract XhtmlNode addTag(int index, String string);
   protected abstract XhtmlNode addText(String cnt);
+  protected abstract XhtmlNode addTextWithWhitespace(String cnt);
   protected abstract void addChildren(XhtmlNodeList childNodes);
   protected abstract void addChild(XhtmlNode childNode);
   protected abstract int indexOfNode(XhtmlNode node);
@@ -151,6 +152,9 @@ public abstract class XhtmlFluent {
     return addText(cnt);
   }
 
+  public XhtmlNode txWithWhitespace(String cnt) {
+    return addTextWithWhitespace(cnt);
+  }
   /**
    * used in i18n when we don't know if there'll be text, but if there is, it needs to be separated
    * 
@@ -370,5 +374,14 @@ public abstract class XhtmlFluent {
     } else {
       return new XhtmlNode(NodeType.Element, "span"); // which will never be connected
     }
+  }
+
+  public boolean sepFirst(boolean first, String sep) {
+    if (first) {
+      first = false;
+    } else {
+      tx(sep);
+    }
+    return first;
   }
 }

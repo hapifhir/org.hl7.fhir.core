@@ -114,7 +114,7 @@ public class OntoserverTests implements ITxTesterLoader {
       return;
     }
     if (tester == null) {
-      tester = new TxTester(this, SERVER, false, externals);
+      tester = new TxTester(this, SERVER, false, externals, null);
     }
     String err = tester.executeTest(this, setup.suite, setup.test, modes);
     if (err != null) {

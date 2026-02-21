@@ -3,7 +3,7 @@
   "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
   "code" : "C73330",
   "display" : "Foreign Facility's United States Agent"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -22,7 +22,7 @@ v: {
   "error" : "Wrong Display Name 'Foreign Facility's United States Agent' for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C73330. Valid display is 'UNITED STATES AGENT' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Validate \"[undefined|undefined#C73330 (\"Foreign Facility's United States Agent\")]\"\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Check \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|undefined#C73330\"\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: CodeSystem found: http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|undefined\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: check code in (undefined) at Coding\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Code \"C73330\" found in http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null",
+  "diagnostics" : "0ms tx-op\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Validate \"[undefined#C73330 (\"Foreign Facility's United States Agent\")]\"\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Check \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C73330\"\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: CodeSystem found: http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: check code in () at Coding\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Code \"C73330\" found in http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -44,7 +44,6 @@ v: {
       }],
       "text" : "Wrong Display Name 'Foreign Facility's United States Agent' for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C73330. Valid display is 'UNITED STATES AGENT' (for the language(s) 'en-US')"
     },
-    "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
   }]
 }
@@ -55,7 +54,7 @@ v: {
   "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
   "code" : "C43360",
   "display" : "manufacture"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -71,7 +70,7 @@ v: {
   "code" : "C43360",
   "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Validate \"[undefined|undefined#C43360 (\"manufacture\")]\"\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Check \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|undefined#C43360\"\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: CodeSystem found: http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|undefined\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: check code in (undefined) at Coding\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Code \"C43360\" found in http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null",
+  "diagnostics" : "0ms tx-op\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Validate \"[undefined#C43360 (\"manufacture\")]\"\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Check \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C43360\"\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: CodeSystem found: http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: check code in () at Coding\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Code \"C43360\" found in http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -83,7 +82,7 @@ v: {
   "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
   "code" : "C106643",
   "display" : "Manufactures human prescription drug products"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -99,7 +98,7 @@ v: {
   "code" : "C106643",
   "system" : "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Validate \"[undefined|undefined#C106643 (\"Manufactures human prescription drug products\")]\"\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Check \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|undefined#C106643\"\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: CodeSystem found: http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|undefined\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: check code in (undefined) at Coding\n0ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Code \"C106643\" found in http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null",
+  "diagnostics" : "0ms tx-op\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Validate \"[undefined#C106643 (\"Manufactures human prescription drug products\")]\"\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Check \"http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C106643\"\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: CodeSystem found: http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null for http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: check code in () at Coding\n1ms http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl/vs: Code \"C106643\" found in http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl|null",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

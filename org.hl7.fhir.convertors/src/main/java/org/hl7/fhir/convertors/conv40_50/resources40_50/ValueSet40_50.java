@@ -399,7 +399,13 @@ public class ValueSet40_50 {
       tgt.addParameter(convertValueSetExpansionParameterComponent(t));
     for (org.hl7.fhir.r4.model.Extension t : src.getExtension()) {
       if (VersionConvertorConstants.EXT_VS_EXP_PROP.equals(t.getUrl())) {
-        tgt.addProperty().setCode(t.getExtensionString("code")).setUri(t.getExtensionString("uri"));
+        ValueSetExpansionPropertyComponent tt = tgt.addProperty();
+        if (t.hasExtension("code")) {
+          tt.setCode(t.getExtensionString("code"));
+        }
+        if (t.hasExtension("uri")) {
+          tt.setUri(t.getExtensionString("uri"));
+        }
       }
     }
     for (org.hl7.fhir.r4.model.ValueSet.ValueSetExpansionContainsComponent t : src.getContains())

@@ -100,6 +100,7 @@ public class TxTesterScrubbers {
 
   public static void scrubParameters(Parameters po, boolean tight) {
     po.setMeta(null);
+    po.getParameter().removeIf(p -> p.getName().equals("diagnostics"));
     for (var pp : po.getParameter()) {
       if (pp.getResource() != null) {
         if (pp.getResource() instanceof ValueSet) {

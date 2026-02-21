@@ -50,7 +50,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-  private static final String SERVER = FhirSettings.getTxFhirDevelopment();  
+  private static final String SERVER = FhirSettings.getTxFhirDevelopment()+"/r5";
 
 
   @Parameters(name = "{index}: id {0}")
@@ -64,10 +64,14 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     Map<String, JsonObjectPair> examples = new HashMap<String, JsonObjectPair>();
     manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
     for (org.hl7.fhir.utilities.json.model.JsonObject suite : manifest.getJsonObjects("suites")) {
-      String sn = suite.asString("name");
-      for (org.hl7.fhir.utilities.json.model.JsonObject test : suite.getJsonObjects("tests")) {
-        String tn = test.asString("name");
-        examples.put(sn+"."+tn, new JsonObjectPair(suite, test));
+      if (!suite.has("version") || suite.asString("version").startsWith("5.0")) {
+        String sn = suite.asString("name");
+        for (org.hl7.fhir.utilities.json.model.JsonObject test : suite.getJsonObjects("tests")) {
+          if (!test.has("version") || test.asString("version").startsWith("5.0")) {
+            String tn = test.asString("name");
+            examples.put(sn + "." + tn, new JsonObjectPair(suite, test));
+          }
+        }
       }
     }
 
@@ -116,7 +120,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
       count++;
       if (SERVER != null) {
         if (tester == null) {
-          tester = new TxTester(this, SERVER, true, externals);
+          tester = new TxTester(this, SERVER, true, externals, "5.0.0");
         }
 
         if (setup.suite.asBoolean("disabled") || setup.test.asBoolean("disabled")) {
@@ -146,31 +150,9 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     String contents = txtests.load(filename);
     try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
       if (filename.contains(".json")) {
-        if (Constants.VERSION.equals(version) || "5.0".equals(version))
-          return new JsonParser().parse(inputStream);
-        else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
-          return VersionConvertorFactory_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream));
-        else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
-          return VersionConvertorFactory_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream));
-        else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(version) || "1.0".equals(version))
-          return VersionConvertorFactory_10_50.convertResource(new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream));
-        else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
-          return VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(inputStream));
-        else
-          throw new FHIRException("unknown version " + version);
+        return new JsonParser().parse(inputStream);
       } else {
-        if (Constants.VERSION.equals(version) || "5.0".equals(version))
-          return new XmlParser().parse(inputStream);
-        else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
-          return VersionConvertorFactory_30_50.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(inputStream));
-        else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
-          return VersionConvertorFactory_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(inputStream));
-        else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(version) || "1.0".equals(version))
-          return VersionConvertorFactory_10_50.convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(inputStream));
-        else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
-          return VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(inputStream));
-        else
-          throw new FHIRException("unknown version " + version);
+        return new XmlParser().parse(inputStream);
       }
     }
   }

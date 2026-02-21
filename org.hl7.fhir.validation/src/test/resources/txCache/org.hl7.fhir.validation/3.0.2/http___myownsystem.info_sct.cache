@@ -3,7 +3,7 @@
   "system" : "http://myownsystem.info/sct",
   "code" : "104",
   "display" : "Laboratory test finding (finding)"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -15,14 +15,13 @@
   }]
 }}####
 v: {
-  "display" : "Laboratory test finding (finding)",
   "code" : "104",
   "system" : "http://myownsystem.info/sct",
   "severity" : "error",
   "error" : "A definition for CodeSystem 'http://myownsystem.info/sct' could not be found, so the code cannot be validated",
-  "class" : "UNKNOWN",
+  "class" : "CODESYSTEM_UNSUPPORTED",
   "server" : "https://tx-dev.fhir.org/r3",
-  "unknown-systems" : "",
+  "unknown-systems" : "http://myownsystem.info/sct",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -43,7 +42,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://myownsystem.info/sct' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

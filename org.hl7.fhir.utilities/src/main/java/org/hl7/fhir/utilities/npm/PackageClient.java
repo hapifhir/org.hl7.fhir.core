@@ -229,6 +229,7 @@ public class PackageClient {
     if (list.isEmpty()) {
       throw new IOException("Package not found: "+id);
     } else {
+      Collections.sort(list, new PackageInfo.PackageInfoVersionSorter());
       String v = null;
       for (PackageInfo p : list) {
         String version = p.getVersion();

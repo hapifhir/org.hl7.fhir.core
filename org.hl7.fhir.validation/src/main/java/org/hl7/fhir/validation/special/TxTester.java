@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -45,7 +46,17 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 @Slf4j
-public class TxTester {
+public class TxTester implements ITerminologyRequestIdProvider {
+
+  private final String version;
+  private String nextRequestId;
+
+  @Override
+  public String getRequestId() {
+    String result = nextRequestId;
+    nextRequestId = null;
+    return result;
+  }
 
   public class IntHolder {
 
@@ -107,23 +118,27 @@ public class TxTester {
   private JsonObject externals;
   private String software;
   private List<String> fails = new ArrayList<>();
+
+  @Getter
+  private List<String> warnings = new ArrayList<>();
   private CapabilityStatement cstmt;
   private TerminologyCapabilities tc;
   private TxTesterConversionLogger conversionLogger;
   private TestReport testReport;
 
-  public TxTester(ITxTesterLoader loader, String server, boolean tight, JsonObject externals) {
+  public TxTester(ITxTesterLoader loader, String server, boolean tight, JsonObject externals, String version) {
     super();
     this.server = server;
     this.loaders.add(loader);
     this.tight = tight;
     this.externals = externals;
+    this.version = version;
     conversionLogger = new TxTesterConversionLogger();
     testReport = new TestReport();
   }
 
   public static void main(String[] args) throws Exception {
-    new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null).execute(new HashSet<>(), args[3]);
+    new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null, null).execute(new HashSet<>(), args[3]);
   }
   
   public void addLoader(ITxTesterLoader loader) {
@@ -173,7 +188,7 @@ public class TxTester {
         readTests(tests, loader.version());
         versions.add(new StringPair(loader.code(), loader.version()));
         for (JsonObject suite : tests.getJsonObjects("suites")) {
-          if ((!suite.has("mode") || modes.contains(suite.asString("mode")))) {
+          if ((!suite.has("mode") || modes.contains(suite.asString("mode"))) && passesVersion(suite)) {
             if (suite.asBoolean("disabled")) {
               // ok = true;
             } else {
@@ -407,6 +422,7 @@ public class TxTester {
       throw new FHIRException("unsupported FHIR Version for terminology tests: "+fhirVersion);
     }
     client.setFormat(ResourceFormat.RESOURCE_JSON);
+    client.setRequestIdProvider(this);
     return client;  
   }
 
@@ -456,7 +472,7 @@ public class TxTester {
     boolean ok = true;
     for (JsonObject test : suite.getJsonObjects("tests")) {
       TestReportTestComponent tr = getTestReportTest(suite, test);
-      if ((!test.has("mode") || modes.contains(test.asString("mode")))) {
+      if ((!test.has("mode") || modes.contains(test.asString("mode"))) && passesVersion(test)) {
         if (test.asBoolean("disabled")) {
           ok = true;
         } else {
@@ -469,6 +485,14 @@ public class TxTester {
       }
     }
     return ok;
+  }
+
+  private boolean passesVersion(JsonObject item) {
+    if (item.has("version") && version != null) {
+      return VersionUtilities.versionMatches(version, item.asString("version"));
+    } else {
+      return true;
+    }
   }
 
   private boolean runTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, List<Resource> setup, Set<String> modes, String filter, 
@@ -513,6 +537,7 @@ public class TxTester {
 
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
+        nextRequestId = "txTests:"+suite.asString("name")+"/"+test.asString("name");
         String lang = test.asString("Accept-Language");
         String msg = null;
         if (test.asString("operation").equals("metadata")) {
@@ -533,6 +558,8 @@ public class TxTester {
           msg = batch(test.str("name"), setup, (Bundle) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("batch-validate")) {
           msg = batchValidate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+        } else if (test.asString("operation").equals("related")) {
+          msg = related(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -577,8 +604,10 @@ public class TxTester {
     TxTesterSorters.sortCapStmt(cs);
     String csj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(cs);
 
-    String diff = new CompareUtilities(modes, ext, vars()).setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -592,9 +621,10 @@ public class TxTester {
     TxTesterScrubbers.scrubTermCaps(cs, tight);
     TxTesterSorters.sortTermCaps(cs);
     String csj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(cs);
-
-    String diff = new CompareUtilities(modes, ext, vars()).setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.setPatternMode(true).checkJsonSrcIsSame(id, resp, csj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(csj, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -652,8 +682,10 @@ public class TxTester {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -685,8 +717,10 @@ public class TxTester {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -727,8 +761,10 @@ public class TxTester {
         throw e;
       }
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, vsj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, vsj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -772,8 +808,10 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -810,8 +848,10 @@ public class TxTester {
         throw e;
       }
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -819,6 +859,22 @@ public class TxTester {
     }
     if (tcode != null && !httpCodeOk(tcode, code)) {
       return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    if (pj != null) {
+      try {
+        Parameters pp = (Parameters) new org.hl7.fhir.r5.formats.JsonParser().parse(pj);
+        boolean hasVersion = false;
+        boolean hasSystem = false;
+        for (Parameters.ParametersParameterComponent ppp : pp.getParameter()) {
+          hasVersion = hasVersion || "version".equals(ppp.getName());
+          hasSystem = hasSystem || "system".equals(ppp.getName());
+        }
+        if (hasVersion != hasSystem) {
+          throw new FHIRException("Error in response: has a system != has a version");
+        }
+      } catch (Exception e) {
+        // nothing
+      }
     }
     return diff;
   }
@@ -843,8 +899,50 @@ public class TxTester {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, pj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
+      FileUtilities.stringToFile(resp, expFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
+      FileUtilities.stringToFile(pj, actFn);
+    }
+    if (tcode != null && !httpCodeOk(tcode, code)) {
+      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    }
+    return diff;
+  }
+
+  private String related(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+    for (Resource r : setup) {
+      p.addParameter().setName("tx-resource").setResource(r);
+    }
+    p.getParameter().addAll(profile.getParameter());
+    terminologyClient.setAcceptLanguage(lang);
+    int code = 0;
+    String pj;
+    try {
+      Parameters po = terminologyClient.doRelated(p);
+      TxTesterScrubbers.scrubParameters(po, tight);
+      TxTesterSorters.sortParameters(po);
+      pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
+      code = 200;
+    } catch (EFhirClientException e) {
+      code = e.getCode();
+      OperationOutcome oo = e.getServerError();
+      if (oo != null) {
+        TxTesterScrubbers.scrubOperationOutcome(oo, tight);
+        oo.setText(null);
+        pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+      } else {
+        throw e;
+      }
+    }
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
@@ -888,8 +986,10 @@ public class TxTester {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       bj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    String diff = new CompareUtilities(modes, ext, vars()).checkJsonSrcIsSame(id, resp, bj, false);
-    if (diff != null) {
+    CompareUtilities c = new CompareUtilities(modes, ext, vars());
+    String diff = c.checkJsonSrcIsSame(id, resp, bj, false);
+    warnings.addAll(c.getWarnings());
+    if (diff != null || !c.getWarnings().isEmpty()) {
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
       FileUtilities.stringToFile(resp, expFn);
       FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));

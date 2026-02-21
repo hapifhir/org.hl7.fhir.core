@@ -203,8 +203,9 @@ public class ValidationResult {
     return definition == null ? null : definition.getDefinition();
   }
 
-  public void setDefinition(ConceptDefinitionComponent definition) {
+  public ValidationResult setDefinition(ConceptDefinitionComponent definition) {
     this.definition = definition;
+    return this;
   }
 
   public ConceptDefinitionComponent asConceptDefinition() {

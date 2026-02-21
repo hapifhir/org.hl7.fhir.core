@@ -162,7 +162,21 @@ public class ManagedWebAccess {
     URI uri;
     try {
       uri = new URI(url);
-      // todo: check in serverAuthDetails to see if policy is set for this server
+      
+      // Check if this URL matches a configured server with allowHttp: true
+      // This allows HTTP for trusted internal servers (e.g., Docker service names)
+      if (serverAuthDetails != null) {
+        for (ServerDetailsPOJO server : serverAuthDetails) {
+          if (server.getAllowHttp() != null && server.getAllowHttp() && server.getUrl() != null && !server.getUrl().isEmpty()) {
+            // Match if the URL starts with the configured server URL
+            if (url.startsWith(server.getUrl())) {
+              return true;
+            }
+          }
+        }
+      }
+      
+      // Fall back to hardcoded local addresses
       return Utilities.existsInList(uri.getHost(), "localhost", "local.fhir.org", "127.0.0.1", "[::1]") || (uri.getHost() != null && uri.getHost().endsWith(".localhost"));
     } catch (URISyntaxException e) {
       return false;

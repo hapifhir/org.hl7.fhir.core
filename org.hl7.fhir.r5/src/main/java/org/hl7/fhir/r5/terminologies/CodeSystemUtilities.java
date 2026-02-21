@@ -1153,5 +1153,25 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     setProperty(cs, cc, code, new StringType(comments));
   }
 
+  public static boolean isAbstract(CodeSystem cs, ConceptDefinitionComponent def) {
+    for (ConceptPropertyComponent p : def.getProperty()) {
+      if (p.hasValue() && p.getValue() instanceof BooleanType && ((BooleanType) p.getValue()).booleanValue()) {
+        if (Utilities.existsInList(p.getCode(), "abstract", "not-selectable", "notSelectable")) {
+          return true;
+        }
+        PropertyComponent pc = cs.getProperty(p.getCode());
+        if (pc != null && "http://hl7.org/fhir/concept-properties#notSelectable".equals(pc.getUri())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public static boolean isLangPack(CodeSystem c) {
+    Extension ext = ExtensionUtilities.getExtension(c, "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-type");
+    return ext != null && ext.getValue() instanceof StringType && "lang-pack".equals(((StringType) ext.getValue()).getValue());
+  }
+
 }
 

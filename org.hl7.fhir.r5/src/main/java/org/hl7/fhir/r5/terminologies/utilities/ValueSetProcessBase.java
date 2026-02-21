@@ -103,6 +103,7 @@ public class ValueSetProcessBase {
   private ContextUtilities cu;
   protected TerminologyOperationContext opContext;
   protected List<String> requiredSupplements = new ArrayList<>();
+  protected List<String> usedSupplements = new ArrayList<>();
   protected List<String> allErrors = new ArrayList<>();
 
   protected ValueSetProcessBase(BaseWorkerContext context, TerminologyOperationContext opContext) {
@@ -110,6 +111,7 @@ public class ValueSetProcessBase {
     this.context = context;
     this.opContext = opContext;
   }
+
   public static class AlternateCodesProcessingRules {
     private boolean all;
     private List<String> uses = new ArrayList<>();
@@ -190,7 +192,6 @@ public class ValueSetProcessBase {
     }
     result.setCode(type);
     if (location != null) {
-      result.addLocation(location);
       result.addExpression(location);
     }
     result.getDetails().setText(message);
@@ -300,16 +301,6 @@ public class ValueSetProcessBase {
     return cu;
   }
 
-
-  public String removeSupplement(String s) {
-    requiredSupplements.remove(s);
-    if (s.contains("|")) {
-      s = s.substring(0, s.indexOf("|"));
-      requiredSupplements.remove(s);
-    }
-    return s;
-  }
-
   protected boolean versionsMatch(@Nonnull String system, @Nonnull String candidate, @Nonnull String criteria) {
     if (system == null || candidate == null || criteria == null) {
       return false;
@@ -389,5 +380,22 @@ public class ValueSetProcessBase {
     }
   }
 
+
+  protected void seeUsedSupplement(String s) {
+    usedSupplements.add(s);
+    if (s.contains("|")) {
+      usedSupplements.add(s.substring(0, s.indexOf("|")));
+    }
+  }
+
+  protected List<String> checkForMissingSupplements() {
+    List<String> list = new ArrayList<>();
+    for (String s : requiredSupplements) {
+      if (!usedSupplements.contains(s)) {
+        list.add(s);
+      }
+    }
+    return list;
+  }
 
 }

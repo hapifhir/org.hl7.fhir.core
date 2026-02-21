@@ -9,6 +9,7 @@
   "useServer": "true",
   "useClient": "true",
   "guessSystem": "true",
+  "noAbstract":"false",
   "activeOnly": "false",
   "membershipOnly": "false",
   "displayWarningMode":"false",

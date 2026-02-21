@@ -76,7 +76,15 @@ public class XhtmlNodeList extends XhtmlFluent implements List<XhtmlNode>, java.
       return null;
     }
   }
-  
+
+  public XhtmlNode addTextWithWhitespace(String content) {
+    String s = list.get(list.size() -1).allText();
+    if (s != null && !Character.isWhitespace(s.charAt(s.length()-1))) {
+      addText(" ");
+    }
+    return addText(content);
+  }
+
   @Override
   public int size() {
     return list.size();

@@ -710,8 +710,8 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected ValidationMessage buildValidationMessage(String txLink, String diagnostics, int line, int col, String path, OperationOutcomeIssueComponent issue) {
-    if (issue.hasLocation() && issue.getExpressionOrLocation().get(0).getValue().contains(".")) {
-      path = path + dropHead(issue.getExpressionOrLocation().get(0).getValue());
+    if (issue.hasExpression() && issue.getExpression().get(0).getValue().contains(".")) {
+      path = path + dropHead(issue.getExpression().get(0).getValue());
     }
     IssueType code = IssueType.fromCode(issue.getCode().toCode());
     IssueSeverity severity = IssueSeverity.fromCode(issue.getSeverity().toCode());

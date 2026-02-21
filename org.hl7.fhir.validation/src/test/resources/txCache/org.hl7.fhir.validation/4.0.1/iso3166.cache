@@ -3,7 +3,7 @@
   "system" : "urn:iso:std:iso:3166",
   "code" : "NO",
   "display" : "Norway"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -20,7 +20,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#NO (\"Norway\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#NO\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"NO\" found in urn:iso:std:iso:3166|2018",
+  "diagnostics" : "0ms tx-op\n1ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined#NO (\"Norway\")]\"\n1ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166#NO\"\n1ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n1ms urn:iso:std:iso:3166/vs|2018: check code in () at Coding\n1ms urn:iso:std:iso:3166/vs|2018: Code \"NO\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -31,7 +31,7 @@ v: {
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "NO"
-}, "url": "http://hl7.org/fhir/ValueSet/country--0", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/country--0", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -48,7 +48,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Analysing http://hl7.org/fhir/ValueSet/country--0|5.0.0 for validation purposes\n0ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Prepare include[0]: \"(undefined)\"\n0ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n0ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Validate \"[undefined|undefined#NO (\"undefined\")]\"\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Check \"urn:iso:std:iso:3166|undefined#NO\"\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|undefined\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: check code in (undefined) at Coding\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Code \"NO\" found in urn:iso:std:iso:3166|2018",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Analysing http://hl7.org/fhir/ValueSet/country--0|5.0.0 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Prepare include[0]: \"()\"\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: CodeSystem found: \"urn:iso:std:iso:3166|2018\"\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Validate \"[undefined#NO (\"undefined\")]\"\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Check \"urn:iso:std:iso:3166#NO\"\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: check code in () at Coding\n1ms http://hl7.org/fhir/ValueSet/country--0|5.0.0: Code \"NO\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -60,7 +60,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "code" : "AU",
   "display" : "Australia"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -77,7 +77,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#AU (\"Australia\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#AU\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"AU\" found in urn:iso:std:iso:3166|2018",
+  "diagnostics" : "0ms tx-op\n1ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined#AU (\"Australia\")]\"\n1ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166#AU\"\n1ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n1ms urn:iso:std:iso:3166/vs|2018: check code in () at Coding\n1ms urn:iso:std:iso:3166/vs|2018: Code \"AU\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -89,7 +89,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "code" : "BD",
   "display" : "Australia"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -109,7 +109,7 @@ v: {
   "error" : "Wrong Display Name 'Australia' for urn:iso:std:iso:3166#BD. Valid display is 'Bangladesh' (en) (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#BD (\"Australia\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#BD\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"BD\" found in urn:iso:std:iso:3166|2018",
+  "diagnostics" : "0ms tx-op\n1ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined#BD (\"Australia\")]\"\n1ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166#BD\"\n1ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n1ms urn:iso:std:iso:3166/vs|2018: check code in () at Coding\n1ms urn:iso:std:iso:3166/vs|2018: Code \"BD\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -131,7 +131,6 @@ v: {
       }],
       "text" : "Wrong Display Name 'Australia' for urn:iso:std:iso:3166#BD. Valid display is 'Bangladesh' (en) (for the language(s) 'en-US')"
     },
-    "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
   }]
 }
@@ -141,7 +140,7 @@ v: {
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "NO"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -158,7 +157,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#NO (\"undefined\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#NO\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"NO\" found in urn:iso:std:iso:3166|2018",
+  "diagnostics" : "0ms tx-op\n1ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined#NO (\"undefined\")]\"\n1ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166#NO\"\n1ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n1ms urn:iso:std:iso:3166/vs|2018: check code in () at Coding\n1ms urn:iso:std:iso:3166/vs|2018: Code \"NO\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -169,7 +168,7 @@ v: {
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "FIN"
-}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -186,7 +185,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#FIN (\"undefined\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#FIN\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"FIN\" found in urn:iso:std:iso:3166|2018",
+  "diagnostics" : "0ms tx-op\n1ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined#FIN (\"undefined\")]\"\n1ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166#FIN\"\n1ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n1ms urn:iso:std:iso:3166/vs|2018: check code in () at Coding\n1ms urn:iso:std:iso:3166/vs|2018: Code \"FIN\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -197,7 +196,7 @@ v: {
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "AU"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -214,7 +213,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#AU (\"undefined\")]\"\n1ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#AU\"\n1ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n1ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n1ms urn:iso:std:iso:3166/vs|2018: Code \"AU\" found in urn:iso:std:iso:3166|2018",
+  "diagnostics" : "0ms tx-op\n1ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined#AU (\"undefined\")]\"\n1ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166#AU\"\n1ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n1ms urn:iso:std:iso:3166/vs|2018: check code in () at Coding\n1ms urn:iso:std:iso:3166/vs|2018: Code \"AU\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -225,7 +224,7 @@ v: {
 {"code" : {
   "system" : "urn:iso:std:iso:3166",
   "code" : "BD"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -242,7 +241,7 @@ v: {
   "system" : "urn:iso:std:iso:3166",
   "version" : "2018",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined|undefined#BD (\"undefined\")]\"\n0ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166|undefined#BD\"\n0ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n0ms urn:iso:std:iso:3166/vs|2018: check code in (undefined) at Coding\n0ms urn:iso:std:iso:3166/vs|2018: Code \"BD\" found in urn:iso:std:iso:3166|2018",
+  "diagnostics" : "0ms tx-op\n1ms urn:iso:std:iso:3166/vs|2018: Validate \"[undefined#BD (\"undefined\")]\"\n1ms urn:iso:std:iso:3166/vs|2018: Check \"urn:iso:std:iso:3166#BD\"\n1ms urn:iso:std:iso:3166/vs|2018: CodeSystem found: urn:iso:std:iso:3166|2018 for urn:iso:std:iso:3166|2018\n1ms urn:iso:std:iso:3166/vs|2018: check code in () at Coding\n1ms urn:iso:std:iso:3166/vs|2018: Code \"BD\" found in urn:iso:std:iso:3166|2018",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -265,9 +264,9 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:b893bd50-d7ce-481d-9d8e-0ce4ca68acde",
-    "timestamp" : "2026-01-14T18:46:42.128Z",
-    "total" : 747,
+    "identifier" : "urn:uuid:e4f68f81-6213-48a3-ba7d-eca798bf3391",
+    "timestamp" : "2026-02-14T09:25:27.265Z",
+    "total" : 789,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
@@ -1533,6 +1532,216 @@ e: {
       "system" : "urn:iso:std:iso:3166",
       "code" : "ZW",
       "display" : "Zimbabwe"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "AA",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QM",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QN",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QO",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QP",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QQ",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QR",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QS",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QT",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QU",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QV",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QW",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QX",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QY",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "QZ",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XA",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XB",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XC",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XD",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XE",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XF",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XG",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XH",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XI",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XJ",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XK",
+      "display" : "Kosovo"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XL",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XM",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XN",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XO",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XP",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XQ",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XR",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XS",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XT",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XU",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XV",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XW",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XX",
+      "display" : "Unknown"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XY",
+      "display" : "User-assigned"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "XZ",
+      "display" : "International Waters"
+    },
+    {
+      "system" : "urn:iso:std:iso:3166",
+      "code" : "ZZ",
+      "display" : "Unknown or Invalid Territory"
     },
     {
       "system" : "urn:iso:std:iso:3166",

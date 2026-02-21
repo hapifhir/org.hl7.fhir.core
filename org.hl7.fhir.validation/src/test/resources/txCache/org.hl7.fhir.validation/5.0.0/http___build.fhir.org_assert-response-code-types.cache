@@ -4,7 +4,7 @@
   "version" : "4.4.0",
   "code" : "population",
   "display" : "Population"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -16,7 +16,6 @@
   }]
 }}####
 v: {
-  "display" : "Population",
   "code" : "population",
   "system" : "http://build.fhir.org/assert-response-code-types",
   "version" : "4.4.0",
@@ -45,7 +44,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://build.fhir.org/assert-response-code-types' version '4.4.0' could not be found, so the code cannot be validated. No versions of this code system are known"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

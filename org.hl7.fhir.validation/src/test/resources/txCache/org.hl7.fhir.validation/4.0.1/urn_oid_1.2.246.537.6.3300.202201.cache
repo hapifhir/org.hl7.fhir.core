@@ -3,7 +3,7 @@
   "system" : "urn:oid:1.2.246.537.6.3300.202201",
   "code" : "1.2",
   "display" : "Asiakkaan sosiaalihuollon palvelutarpeen arviointi ja palvelujen järjestäminen ja toteutus"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -15,7 +15,6 @@
   }]
 }}####
 v: {
-  "display" : "Asiakkaan sosiaalihuollon palvelutarpeen arviointi ja palvelujen järjestäminen ja toteutus",
   "code" : "1.2",
   "system" : "urn:oid:1.2.246.537.6.3300.202201",
   "severity" : "error",
@@ -43,7 +42,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'urn:oid:1.2.246.537.6.3300.202201' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

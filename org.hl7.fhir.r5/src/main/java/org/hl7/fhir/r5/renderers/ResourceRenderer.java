@@ -1603,7 +1603,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     } else if (statedVersion != null) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_STATED, statedVersion));
       x.tx("\uD83D\uDCCD");
-      x.tx(actualVersion);
+      x.tx(statedVersion);
     } else if (fromThisPackage) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_THIS_PACKAGE));
       x.tx("\uD83D\uDCE6");
