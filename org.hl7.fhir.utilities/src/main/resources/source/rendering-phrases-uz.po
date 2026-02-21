@@ -1,45 +1,58 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: uz\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Uzbek\n"
+"Language: uz_UZ\n"
+"PO-Revision-Date: 2026-01-30 15:56\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
 msgid "Actor: {0}"
-msgstr ""
+msgstr "Aktor: {0}"
 
 # ACTOR_DEF_CAP
 #: ACTOR_DEF_CAP
 msgid "Capabilities:"
-msgstr ""
+msgstr "Imkoniyatlar:"
 
 # ACTOR_DEF_DER
 #: ACTOR_DEF_DER
 msgid "Derived from:"
-msgstr ""
+msgstr "Quyidagidan hosil qilingan:"
 
 # ACTOR_DEF_TYP
 #: ACTOR_DEF_TYP
 msgid "Type: {0}"
-msgstr ""
+msgstr "Turi: {0}"
 
 # ACTOR_DERIVED_FROM
 #: ACTOR_DERIVED_FROM
 msgctxt "ACTOR_DERIVED_FROM"
 msgid "Derived From"
-msgstr ""
+msgstr "Quyidagidan hosil qilingan"
 
 # ACTOR_DERIVED_FROM_NONE
 #: ACTOR_DERIVED_FROM_NONE
 msgctxt "ACTOR_DERIVED_FROM_NONE"
 msgid "(none)"
-msgstr ""
+msgstr "(yo'q)"
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
 msgid "Additional Bindings"
-msgstr ""
+msgstr "Qo'shimcha bog'lashlar"
 
 # ADD_BIND_ALL_REP
 #: ADD_BIND_ALL_REP
 msgid "All repeats"
-msgstr ""
+msgstr "Barcha takrorlar"
 
 # ADD_BIND_ANY
 #: ADD_BIND_ANY
@@ -50,802 +63,802 @@ msgstr ""
 # ADD_BIND_ANY_REP
 #: ADD_BIND_ANY_REP
 msgid "any repeat"
-msgstr ""
+msgstr "har qanday takror"
 
 # ADD_BIND_CURR_BIND
 #: ADD_BIND_CURR_BIND
 msgctxt "ADD_BIND_CURR_BIND"
 msgid "Current"
-msgstr ""
+msgstr "Joriy"
 
 # ADD_BIND_DESIG_SYS
 #: ADD_BIND_DESIG_SYS
 msgid "This value set is a good set of codes to start with when designing your system"
-msgstr ""
+msgstr "Bu qiymat to'plami tizimingizni loyihalashda boshlash uchun yaxshi kodlar to'plami hisoblanadi"
 
 # ADD_BIND_EXT_PREF
 #: ADD_BIND_EXT_PREF
 msgid "A required binding, for use when the binding strength is ''extensible'' or ''preferred''"
-msgstr ""
+msgstr "Bog‘lash kuchi “kengaytiriladigan” yoki “afzal” bo‘lgan hollarda qo‘llaniladigan majburiy bog‘lash"
 
 # ADD_BIND_EX_BIND
 #: ADD_BIND_EX_BIND
 msgctxt "ADD_BIND_EX_BIND"
 msgid "Extensible"
-msgstr ""
+msgstr "Kengaytiriladigan"
 
 # ADD_BIND_GIVEN_CONT
 #: ADD_BIND_GIVEN_CONT
 msgid "This value set is provided to user look up in a given context"
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plami foydalanuvchi tomonidan ma’lum bir kontekstda izlash uchun taqdim etiladi"
 
 # ADD_BIND_MAX
 #: ADD_BIND_MAX
 msgid "Max Binding"
-msgstr ""
+msgstr "Maksimal bogʻlash"
 
 # ADD_BIND_MIN
 #: ADD_BIND_MIN
 msgid "Min Binding"
-msgstr ""
+msgstr "Minimal bogʻlash"
 
 # ADD_BIND_NEW_REC
 #: ADD_BIND_NEW_REC
 msgid "New records are required to use this value set, but legacy records may use other codes"
-msgstr ""
+msgstr "Yangi yozuvlar ushbu qiymatlar to‘plamidan foydalanishi majburiy, ammo eski yozuvlarda boshqa kodlardan foydalanilgan bo‘lishi mumkin"
 
 # ADD_BIND_PREF_BIND
 #: ADD_BIND_PREF_BIND
 msgctxt "ADD_BIND_PREF_BIND"
 msgid "Preferred"
-msgstr ""
+msgstr "Afzal"
 
 # ADD_BIND_RECOM_VALUE_SET
 #: ADD_BIND_RECOM_VALUE_SET
 msgid "This is the value set that is recommended (documentation should explain why)"
-msgstr ""
+msgstr "Bu tavsiya etilgan qiymatlar to'plami (hujjatlarda nima uchun ekanligi tushuntirilishi kerak)"
 
 # ADD_BIND_REQ_BIND
 #: ADD_BIND_REQ_BIND
 msgctxt "ADD_BIND_REQ_BIND"
 msgid "Required"
-msgstr ""
+msgstr "Majburiy"
 
 # ADD_BIND_UI
 #: ADD_BIND_UI
 msgctxt "ADD_BIND_UI"
 msgid "UI"
-msgstr ""
+msgstr "UI"
 
 # ADD_BIND_UI_BIND
 #: ADD_BIND_UI_BIND
 msgid "UI Binding"
-msgstr ""
+msgstr "UI bog'lash"
 
 # ADD_BIND_UNKNOWN_PUR
 #: ADD_BIND_UNKNOWN_PUR
 msgid "Unknown code for purpose"
-msgstr ""
+msgstr "Ko‘rsatilgan maqsad uchun kod topilmadi"
 
 # ADD_BIND_VALID_EXT
 #: ADD_BIND_VALID_EXT
 msgid "Validators will check this binding (strength = extensible)"
-msgstr ""
+msgstr "Validatorlar ushbu bog‘lashni tekshiradi (kuchi = kengaytiriladigan)"
 
 # ADD_BIND_VALID_REQ
 #: ADD_BIND_VALID_REQ
 msgid "Validators will check this binding (strength = required)"
-msgstr ""
+msgstr "Validatorlar ushbu bog'lashni tekshiradi (kuchi = majburiy)"
 
 # ADD_BIND_VALUE_COMP
 #: ADD_BIND_VALUE_COMP
 msgid "This value set is a component of the base value set"
-msgstr ""
+msgstr "Ushbu qiymat to'plami asosiy qiymat to'plamining tarkibiy qismidir"
 
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Document Content"
-msgstr ""
+msgstr "Hujjat kontenti"
 
 # BUNDLE_DOCUMENT_DETAILS
 #: BUNDLE_DOCUMENT_DETAILS
 msgid "Document Details"
-msgstr ""
+msgstr "Hujjat tafsilotlari"
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
 msgid "ETag = {0}"
-msgstr ""
+msgstr "ETag = {0}"
 
 # BUNDLE_HEADER_DOCUMENT_CONTENTS
 #: BUNDLE_HEADER_DOCUMENT_CONTENTS
 msgid "Additional Resources Included in Document"
-msgstr ""
+msgstr "Hujjatga kiritilgan qo'shimcha resurslar"
 
 # BUNDLE_HEADER_ENTRY
 #: BUNDLE_HEADER_ENTRY
 msgid "Entry {0}"
-msgstr ""
+msgstr "Entry {0}"
 
 # BUNDLE_HEADER_ENTRY_URL
 #: BUNDLE_HEADER_ENTRY_URL
 msgid "Entry {0} - fullUrl = {1}"
-msgstr ""
+msgstr "Entry {0} - fullUrl = {1}"
 
 # BUNDLE_HEADER_ROOT
 #: BUNDLE_HEADER_ROOT
 msgid "Bundle {0} of type {1}"
-msgstr ""
+msgstr "{1} turidagi Bundle {0}"
 
 # BUNDLE_IF_MATCH
 #: BUNDLE_IF_MATCH
 msgid "If-Match = {0}"
-msgstr ""
+msgstr "If-Match = {0}"
 
 # BUNDLE_IF_MOD
 #: BUNDLE_IF_MOD
 msgid "If-Modified-Since = {0}"
-msgstr ""
+msgstr "If-Modified-Since = {0}"
 
 # BUNDLE_IF_NONE
 #: BUNDLE_IF_NONE
 msgid "If-None-Exist = {0}"
-msgstr ""
+msgstr "If-None-Exist = {0}"
 
 # BUNDLE_IF_NON_MATCH
 #: BUNDLE_IF_NON_MATCH
 msgid "If-None-Match = {0}"
-msgstr ""
+msgstr "If-None-Match = {0}"
 
 # BUNDLE_LAST_MOD
 #: BUNDLE_LAST_MOD
 msgid "LastModified = {0}"
-msgstr ""
+msgstr "LastModified = {0}"
 
 # BUNDLE_LOCATION
 #: BUNDLE_LOCATION
 msgid "Location = {0}"
-msgstr ""
+msgstr "Location = {0}"
 
 # BUNDLE_REQUEST
 #: BUNDLE_REQUEST
 msgid "Request:"
-msgstr ""
+msgstr "Soʻrov:"
 
 # BUNDLE_RESOURCE
 #: BUNDLE_RESOURCE
 msgid "Resource {0}:"
-msgstr ""
+msgstr "Resurs {0}:"
 
 # BUNDLE_RESPONSE
 #: BUNDLE_RESPONSE
 msgid "Response:"
-msgstr ""
+msgstr "Javob:"
 
 # BUNDLE_REV_EXCP
 #: BUNDLE_REV_EXCP
 msgid "Exception generating narrative: {0}"
-msgstr ""
+msgstr "Narrativni yaratishda istisno yuz berdi: {0}"
 
 # BUNDLE_SEARCH
 #: BUNDLE_SEARCH
 msgid "Search:"
-msgstr ""
+msgstr "Qidiruv:"
 
 # BUNDLE_SEARCH_MODE
 #: BUNDLE_SEARCH_MODE
 msgid "Mode = {0}"
-msgstr ""
+msgstr "Mode = {0}"
 
 # BUNDLE_SEARCH_SCORE
 #: BUNDLE_SEARCH_SCORE
 msgid "Score = {0}"
-msgstr ""
+msgstr "Ball = {0}"
 
 # BUNDLE_SUMMARY
 #: BUNDLE_SUMMARY
 msgid "{0} Bundle, {1} Entries"
-msgstr ""
+msgstr "{0} Bundle, {1} Kiritmalar"
 
 # BUND_REND_INVALID_DOC
 #: BUND_REND_INVALID_DOC
 msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
-msgstr ""
+msgstr "Noto‘g‘ri hujjat \"{0}\" — birinchi kiritma Composition emas ({0})"
 
 # CANON_REND_COMMITTEE
 #: CANON_REND_COMMITTEE
 msgid "Committee"
-msgstr ""
+msgstr "Qo'mita"
 
 # CANON_REND_JSON
 #: CANON_REND_JSON
 msgid "JSON"
-msgstr ""
+msgstr "JSON"
 
 # CANON_REND_MATURITY
 #: CANON_REND_MATURITY
 msgid "Maturity"
-msgstr ""
+msgstr "Yetuklik darajasi"
 
 # CANON_REND_PUBLISHER
 #: CANON_REND_PUBLISHER
 msgid "Publisher"
-msgstr ""
+msgstr "Nashriyotchi"
 
 # CANON_REND_SOURCE_RES
 #: CANON_REND_SOURCE_RES
 msgid "Source Resource"
-msgstr ""
+msgstr "Manba resursi"
 
 # CANON_REND_TURTLE
 #: CANON_REND_TURTLE
 msgid "Turtle"
-msgstr ""
+msgstr "Turtle"
 
 # CAPABILITY_ADD_SUPP_PROF
 #: CAPABILITY_ADD_SUPP_PROF
 msgid "Additional supported profiles:"
-msgstr ""
+msgstr "Qo'shimcha qo'llab-quvvatlanadigan profillar:"
 
 # CAPABILITY_BASE_SYS
 #: CAPABILITY_BASE_SYS
 msgid "Base System Profile"
-msgstr ""
+msgstr "Asosiy tizim profili"
 
 # CAPABILITY_COMB_SEARCH_PAR
 #: CAPABILITY_COMB_SEARCH_PAR
 msgid "Combined Search Parameters"
-msgstr ""
+msgstr "Birlashtirilgan qidiruv parametrlari"
 
 # CAPABILITY_CORS_NO
 #: CAPABILITY_CORS_NO
 msgid "Enable CORS: no"
-msgstr ""
+msgstr "CORSni yoqish: yo'q"
 
 # CAPABILITY_CORS_YES
 #: CAPABILITY_CORS_YES
 msgid "Enable CORS: yes"
-msgstr ""
+msgstr "CORS-ni yoqish: ha"
 
 # CAPABILITY_CREATE_INT
 #: CAPABILITY_CREATE_INT
 msgid "POST a new resource (create interaction)"
-msgstr ""
+msgstr "POST orqali yangi resurs yaratish (create interaction)"
 
 # CAPABILITY_DELETE_INT
 #: CAPABILITY_DELETE_INT
 msgid "DELETE a resource (delete interaction)"
-msgstr ""
+msgstr "DELETE orqali resursni o‘chirish (delete interaction)"
 
 # CAPABILITY_DOCUMENT_CAPS
 #: CAPABILITY_DOCUMENT_CAPS
 msgid "FHIR Document Capabilities"
-msgstr ""
+msgstr "FHIR hujjat imkoniyatlari"
 
 # CAPABILITY_ENDPOINTS
 #: CAPABILITY_ENDPOINTS
 msgid "Endpoint(s)"
-msgstr ""
+msgstr "Endpoint(lar)"
 
 # CAPABILITY_ERR_DET
 #: CAPABILITY_ERR_DET
 msgid "Error detected"
-msgstr ""
+msgstr "Xatolik aniqlandi"
 
 # CAPABILITY_EXT_OP
 #: CAPABILITY_EXT_OP
 msgid "Extended Operations"
-msgstr ""
+msgstr "Kengaytirilgan operatsiyalar"
 
 # CAPABILITY_FHIR
 #: CAPABILITY_FHIR
 msgid "Core FHIR Resource"
-msgstr ""
+msgstr "Asosiy FHIR resursi"
 
 # CAPABILITY_FHIR_VER
 #: CAPABILITY_FHIR_VER
 msgid "FHIR Version: {0}"
-msgstr ""
+msgstr "FHIR versiyasi: {0}"
 
 # CAPABILITY_HISTORY_INT
 #: CAPABILITY_HISTORY_INT
 msgid "GET changes to a resource (history interaction on instance)"
-msgstr ""
+msgstr "GET orqali resursdagi o‘zgarishlarni olish (history interaction on instance)"
 
 # CAPABILITY_HISTORY_TYPE
 #: CAPABILITY_HISTORY_TYPE
 msgid "GET changes for all resources of the type (history interaction on type)"
-msgstr ""
+msgstr "GET orqali ushbu turdagi barcha resurslar bo‘yicha o‘zgarishlarni olish (history interaction on type)"
 
 # CAPABILITY_IMP_VER
 #: CAPABILITY_IMP_VER
 msgid "Implementation Guide Version: {0}"
-msgstr ""
+msgstr "Amalga oshirish qo'llanmasi versiyasi: {0}"
 
 # CAPABILITY_INT
 #: CAPABILITY_INT
 msgid "interaction."
-msgstr ""
+msgstr "interaction."
 
 # CAPABILITY_INTER_SUPP
 #: CAPABILITY_INTER_SUPP
 msgid "The interactions supported by each resource ("
-msgstr ""
+msgstr "Har bir resurs tomonidan qo‘llab-quvvatlanadigan o‘zaro ta’sirlar ("
 
 # CAPABILITY_INT_DESC
 #: CAPABILITY_INT_DESC
 msgid "interaction described as follows:"
-msgstr ""
+msgstr "quyidagicha tasvirlangan o'zaro ta'sir:"
 
 # CAPABILITY_INT_SUMM
 #: CAPABILITY_INT_SUMM
 msgid "Interaction summary"
-msgstr ""
+msgstr "O‘zaro ta’sirlar bo‘yicha qisqacha ma’lumot"
 
 # CAPABILITY_MAY_SUPP
 #: CAPABILITY_MAY_SUPP
 msgid "MAY Support the Following Implementation Guides"
-msgstr ""
+msgstr "Quyidagi implementatsiya qo‘llanmalarini qo‘llab-quvvatlashi MUMKIN"
 
 # CAPABILITY_MESSAGING_CAP
 #: CAPABILITY_MESSAGING_CAP
 msgid "Messaging Capability"
-msgstr ""
+msgstr "Xabar almashish imkoniyati"
 
 # CAPABILITY_MESSAGING_CAPS
 #: CAPABILITY_MESSAGING_CAPS
 msgid "FHIR Messaging Capabilities"
-msgstr ""
+msgstr "FHIR xabar almashish imkoniyatlari"
 
 # CAPABILITY_MULT_EXT
 #: CAPABILITY_MULT_EXT
 msgid "this mark indicates that there are more than one expectation extensions present"
-msgstr ""
+msgstr "ushbu belgi bir nechta expectation extension mavjudligini ko‘rsatadi"
 
 # CAPABILITY_NOTE_CAP
 #: CAPABILITY_NOTE_CAP
 msgid "Note to Implementers: FHIR Capabilities"
-msgstr ""
+msgstr "Implementatorlar uchun eslatma: FHIR imkoniyatlari"
 
 # CAPABILITY_OP
 #: CAPABILITY_OP
 msgid "Operations"
-msgstr ""
+msgstr "Operatsiyalar"
 
 # CAPABILITY_OPER
 #: CAPABILITY_OPER
 msgid "Operation"
-msgstr ""
+msgstr "Operatsiya"
 
 # CAPABILITY_OTH_RES_ENB
 #: CAPABILITY_OTH_RES_ENB
 msgid "The other resources enabled for"
-msgstr ""
+msgstr "Quyidagi uchun yoqilgan bog'langan resurslar"
 
 # CAPABILITY_PATCH_INT
 #: CAPABILITY_PATCH_INT
 msgid "PATCH a new resource version (patch interaction)"
-msgstr ""
+msgstr "PATCH orqali resursning yangi versiyasini yangilash (patch interaction)"
 
 # CAPABILITY_PROF_CONF
 #: CAPABILITY_PROF_CONF
 msgid "Profile Conformance"
-msgstr ""
+msgstr "Profilga muvofiqlik"
 
 # CAPABILITY_PROF_MAP
 #: CAPABILITY_PROF_MAP
 msgid "Profile Mapping"
-msgstr ""
+msgstr "Profilni xaritalash"
 
 # CAPABILITY_PROF_RES_DOC
 #: CAPABILITY_PROF_RES_DOC
 msgid "Document Resource Profile"
-msgstr ""
+msgstr "Hujjat resursi profili"
 
 # CAPABILITY_PUB_BY
 #: CAPABILITY_PUB_BY
 msgid "Published by: {0}"
-msgstr ""
+msgstr "Nashr etuvchi: {0}"
 
 # CAPABILITY_PUB_ON
 #: CAPABILITY_PUB_ON
 msgid "Published on: {0}"
-msgstr ""
+msgstr "Nashr etilgan: {0}"
 
 # CAPABILITY_READ_INT
 #: CAPABILITY_READ_INT
 msgid "GET a resource (read interaction)"
-msgstr ""
+msgstr "GET orqali resursni olish (read interaction)"
 
 # CAPABILITY_REF_PROF
 #: CAPABILITY_REF_PROF
 msgid "Reference Policy"
-msgstr ""
+msgstr "Reference siyosati"
 
 # CAPABILITY_REQ_RECOM
 #: CAPABILITY_REQ_RECOM
 msgid "Required and recommended search parameters"
-msgstr ""
+msgstr "Talab qilinadigan va tavsiya etiladigan qidiruv parametrlari"
 
 # CAPABILITY_REST_CAPS
 #: CAPABILITY_REST_CAPS
 msgid "FHIR RESTful Capabilities"
-msgstr ""
+msgstr "FHIR RESTful imkoniyatlari"
 
 # CAPABILITY_REST_CONFIG
 #: CAPABILITY_REST_CONFIG
 msgid "REST Configuration: {0}"
-msgstr ""
+msgstr "REST konfiguratsiyasi: {0}"
 
 # CAPABILITY_RES_CONF
 #: CAPABILITY_RES_CONF
 msgid "Resource Conformance: {0}"
-msgstr ""
+msgstr "Resursga muvofiqlik: {0}"
 
 # CAPABILITY_RES_ENB
 #: CAPABILITY_RES_ENB
 msgid "The linked resources enabled for"
-msgstr ""
+msgstr "Quyidagi uchun yoqilgan bog'langan resurslar"
 
 # CAPABILITY_RES_OPER
 #: CAPABILITY_RES_OPER
 msgid "The operations on the resource (if any)"
-msgstr ""
+msgstr "Resurs bo‘yicha operatsiyalar (agar mavjud bo‘lsa)"
 
 # CAPABILITY_RES_PRO
 #: CAPABILITY_RES_PRO
 msgid "Capabilities by Resource/Profile"
-msgstr ""
+msgstr "Resurs/Profil bo‘yicha imkoniyatlar"
 
 # CAPABILITY_RES_TYP
 #: CAPABILITY_RES_TYP
 msgid "Resource Type"
-msgstr ""
+msgstr "Resurs turi"
 
 # CAPABILITY_REV_PROF
 #: CAPABILITY_REV_PROF
 msgid "The relevant profiles (if any)"
-msgstr ""
+msgstr "Tegishli profillar (agar mavjud bo‘lsa)"
 
 # CAPABILITY_SEARCHES
 #: CAPABILITY_SEARCHES
 msgid "Searches"
-msgstr ""
+msgstr "Qidiruvlar"
 
 # CAPABILITY_SEARCH_INT
 #: CAPABILITY_SEARCH_INT
 msgid "GET all set of resources of the type (search interaction)"
-msgstr ""
+msgstr "GET orqali ushbu turdagi barcha resurslarni olish (search interaction)"
 
 # CAPABILITY_SEARCH_PAR
 #: CAPABILITY_SEARCH_PAR
 msgid "The required, recommended, and some optional search parameters (if any)."
-msgstr ""
+msgstr "Majburiy, tavsiya etilgan va ayrim ixtiyoriy qidiruv parametrlari (agar mavjud bo‘lsa)."
 
 # CAPABILITY_SEARCH_PARS
 #: CAPABILITY_SEARCH_PARS
 msgid "Search Parameters"
-msgstr ""
+msgstr "Qidiruv parametrlari"
 
 # CAPABILITY_SHOULD_SUPP
 #: CAPABILITY_SHOULD_SUPP
 msgid "SHOULD Support the Following Implementation Guides"
-msgstr ""
+msgstr "Quyidagi implementatsiya qo‘llanmalari qo‘llab-quvvatlanishi TAVSIYA ETILADI (SHOULD)"
 
 # CAPABILITY_SUMM_RES
 #: CAPABILITY_SUMM_RES
 msgid "The summary table lists the resources that are part of this configuration, and for each resource it lists:"
-msgstr ""
+msgstr "Jamlangan jadval ushbu konfiguratsiyaning bir qismi bo‘lgan resurslarni, shuningdek har bir resurs uchun quyidagilarni ro‘yxatlaydi:"
 
 # CAPABILITY_SUMM_SYS_INT
 #: CAPABILITY_SUMM_SYS_INT
 msgid "Summary of System-wide Interactions"
-msgstr ""
+msgstr "Tizim bo‘ylab o‘zaro ta’sirlar bo‘yicha qisqacha ma’lumot"
 
 # CAPABILITY_SUMM_SYS_OP
 #: CAPABILITY_SUMM_SYS_OP
 msgid "Summary of System-wide Operations"
-msgstr ""
+msgstr "Tizim bo‘ylab operatsiyalar bo‘yicha qisqacha ma’lumot"
 
 # CAPABILITY_SUMM_SYS_SP
 #: CAPABILITY_SUMM_SYS_SP
 msgid "Summary of System-wide Search Parameters"
-msgstr ""
+msgstr "Tizim bo‘ylab qidiruv parametrlari bo‘yicha qisqacha ma’lumot"
 
 # CAPABILITY_SUPP
 #: CAPABILITY_SUPP
 msgid "support"
-msgstr ""
+msgstr "qo‘llab-quvvatlash"
 
 # CAPABILITY_SUPPS
 #: CAPABILITY_SUPPS
 msgid "Supports"
-msgstr ""
+msgstr "Qo'llab-quvvatlaydi"
 
 # CAPABILITY_SUPPS_THE
 #: CAPABILITY_SUPPS_THE
 msgid "Supports the"
-msgstr ""
+msgstr "Quyidagilar qo‘llab-quvvatlanadi:"
 
 # CAPABILITY_SUPP_FORM
 #: CAPABILITY_SUPP_FORM
 msgid "Supported Formats:"
-msgstr ""
+msgstr "Qo‘llab-quvvatlanadigan formatlar:"
 
 # CAPABILITY_SUPP_MSGS
 #: CAPABILITY_SUPP_MSGS
 msgid "Supported Message(s)"
-msgstr ""
+msgstr "Qo‘llab-quvvatlanadigan xabar(lar)"
 
 # CAPABILITY_SUPP_PATCH_FORM
 #: CAPABILITY_SUPP_PATCH_FORM
 msgid "Supported Patch Formats:"
-msgstr ""
+msgstr "Qo‘llab-quvvatlanadigan patch formatlari:"
 
 # CAPABILITY_SUPP_PROFS
 #: CAPABILITY_SUPP_PROFS
 msgid "Supported Profiles"
-msgstr ""
+msgstr "Qo‘llab-quvvatlanadigan profillar"
 
 # CAPABILITY_SUPP_THE
 #: CAPABILITY_SUPP_THE
 msgid "support the"
-msgstr ""
+msgstr "qo‘llab-quvvatlash"
 
 # CAPABILITY_TYPS
 #: CAPABILITY_TYPS
 msgid "Types"
-msgstr ""
+msgstr "Turlar"
 
 # CAPABILITY_TYP_PRES
 #: CAPABILITY_TYP_PRES
 msgid "ype are only present if at least one of the resources has support for them."
-msgstr ""
+msgstr "Turlar faqat resurslardan kamida bittasi ularni qo‘llab-quvvatlagan taqdirdagina ko‘rsatiladi."
 
 # CAPABILITY_UPDATE_INT
 #: CAPABILITY_UPDATE_INT
 msgid "PUT a new resource version (update interaction)"
-msgstr ""
+msgstr "PUT orqali resursning yangi versiyasini yaratish (update interaction)"
 
 # CAPABILITY_VREAD_INT
 #: CAPABILITY_VREAD_INT
 msgid "GET past versions of resources (vread interaction)"
-msgstr ""
+msgstr "GET orqali resurslarning oldingi versiyalarini olish (vread interaction)"
 
 # CAPABILTY_ALLOW_CAP
 #: CAPABILTY_ALLOW_CAP
 msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
-msgstr ""
+msgstr "Har qanday FHIR imkoniyati, agar u aniq ravishda “SHALL NOT” deb belgilanmagan bo‘lsa, tizim tomonidan ruxsat etilishi mumkin. Ayrim bandlar foydalanish holati uchun ularning ehtimoliy ahamiyatini ko‘rsatish maqsadida Implementatsiya qo‘llanmasida MAY sifatida belgilangan."
 
 # CAPABILTY_SHALL_SUPP
 #: CAPABILTY_SHALL_SUPP
 msgid "SHALL Support the Following Implementation Guides"
-msgstr ""
+msgstr "Quyidagi implementatsiya qo‘llanmalari qo‘llab-quvvatlanishi SHART (SHALL)"
 
 # CODESYSTEM_CONCEPTS
 #: CODESYSTEM_CONCEPTS
 msgid "Concepts"
-msgstr ""
+msgstr "Tushunchalar"
 
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr ""
+msgstr "Ushbu <param name=\"cased\"/> kod tizimi <param name=\"cs\"/> quyidagi kod<if test=\"code-count != 1\">lar</if><param name=\"h\"/>ni belgilaydi:"
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr ""
+msgstr "Ushbu <param name=\"cased\"/> kod tizimi <param name=\"cs\"/> ayrim kod<if test=\"code-count != 1\">lar</if><param name=\"h\"/>ni <b>faqat misol sifatida</b> taqdim etadi:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr ""
+msgstr "Ushbu <param name=\"cased\"/> kod tizimi <param name=\"cs\"/> <b>fragmentni</b> taqdim etadi, u quyidagi kod<if test=\"code-count != 1\">lar</if><param name=\"h\"/>ni o‘z ichiga oladi:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr ""
+msgstr "Ushbu <param name=\"cased\"/> kod tizimi <param name=\"cs\"/> kod<param name=\"h\"/>larni belgilaydi, biroq bu yerda hech qanday kod taqdim etilmagan"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr ""
+msgstr "Ushbu kod tizimi qo‘shimchasi <param name=\"cs\"/> quyidagi kod<if test=\"code-count != 1\">lar</if> bo‘yicha {0} ni belgilaydi:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
 msgid "Deprecated"
-msgstr ""
+msgstr "Eskirgan"
 
 # CODESYSTEM_FILTERS
 #: CODESYSTEM_FILTERS
 msgid "Filters"
-msgstr ""
+msgstr "Filtrlar"
 
 # CODESYSTEM_FILTER_OP
 #: CODESYSTEM_FILTER_OP
 msgid "Op"
-msgstr ""
+msgstr "Op"
 
 # CODESYSTEM_PROPS_DESC
 #: CODESYSTEM_PROPS_DESC
 msgid "This code system defines the following properties for its concepts"
-msgstr ""
+msgstr "Ushbu kod tizimi o‘z tushunchalari uchun quyidagi xususiyatlarni belgilaydi"
 
 # CODE_SYS_CODE_NOT_HERE
 #: CODE_SYS_CODE_NOT_HERE
 msgid "This CodeSystem is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Ushbu CodeSystem bu yerda ishlatilmaydi; u boshqa joylarda (masalan, ushbu kontentdan foydalanadigan spetsifikatsiyalar va/yoki implementatsiyalarda) qo‘llanilishi mumkin"
 
 # CODE_SYS_COMPLETE
 #: CODE_SYS_COMPLETE
 msgid "All the concepts defined by the code system are included in the code system resource"
-msgstr ""
+msgstr "Kod tizimi tomonidan belgilangan barcha tushunchalar kod tizimi resursiga kiritilgan"
 
 # CODE_SYS_COPY
 #: CODE_SYS_COPY
 msgid "Copy"
-msgstr ""
+msgstr "Nusxalash"
 
 # CODE_SYS_DISP
 #: CODE_SYS_DISP
 msgid "displays"
-msgstr ""
+msgstr "ko‘rsatiladigan qiymatlar"
 
 # CODE_SYS_DISP_PROP
 #: CODE_SYS_DISP_PROP
 msgid "displays and properties"
-msgstr ""
+msgstr "ko‘rsatiladigan qiymatlar va xususiyatlar"
 
 # CODE_SYS_EXAMPLE
 #: CODE_SYS_EXAMPLE
 msgid "A few representative concepts are included in the code system resource"
-msgstr ""
+msgstr "Kod tizimi resursiga ayrim namunaviy tushunchalar kiritilgan"
 
 # CODE_SYS_FEAT
 #: CODE_SYS_FEAT
 msgid "features"
-msgstr ""
+msgstr "xususiyatlar"
 
 # CODE_SYS_FOR_OID
 #: CODE_SYS_FOR_OID
 msgid "{0} (for OID based terminology systems)"
-msgstr ""
+msgstr "{0} (OID ga asoslangan terminologiya tizimlari uchun)"
 
 # CODE_SYS_FRAGMENT
 #: CODE_SYS_FRAGMENT
 msgid "A subset of the code system concepts are included in the code system resource"
-msgstr ""
+msgstr "Kod tizimi tushunchalarining bir qismi kod tizimi resursiga kiritilgan"
 
 # CODE_SYS_IN_A_HIERARCHY
 #: CODE_SYS_IN_A_HIERARCHY
 msgid "in a {0} hierarchy"
-msgstr ""
+msgstr "{0} iyerarxiyasida"
 
 # CODE_SYS_NOTPRESENT
 #: CODE_SYS_NOTPRESENT
 msgid "None of the concepts defined by the code system are included in the code system resource"
-msgstr ""
+msgstr "Kod tizimi tomonidan belgilangan tushunchalarning hech biri kod tizimi resursiga kiritilmagan"
 
 # CODE_SYS_PROP
 #: CODE_SYS_PROP
 msgid "properties"
-msgstr ""
+msgstr "xususiyatlar"
 
 # CODE_SYS_REPLACED_BY
 #: CODE_SYS_REPLACED_BY
 msgid "(replaced by"
-msgstr ""
+msgstr "(quyidagi bilan almashtirilgan:"
 
 # CODE_SYS_SUPPLEMENT
 #: CODE_SYS_SUPPLEMENT
 msgid "This code system resource is a supplement to"
-msgstr ""
+msgstr "Ushbu kod tizimi resursi quyidagining qo‘shimchasi hisoblanadi"
 
 # CODE_SYS_SUPP_CODE_NOT_HERE
 #: CODE_SYS_SUPP_CODE_NOT_HERE
 msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Ushbu CodeSystem qo‘shimchasi bu yerda ishlatilmaydi; u boshqa joylarda (masalan, ushbu kontentdan foydalanadigan spetsifikatsiyalar va/yoki implementatsiyalarda) qo‘llanilishi mumkin"
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
 msgid "{0} is the value set for all codes in this code system"
-msgstr ""
+msgstr "{0} ushbu kod tizimidagi barcha kodlar uchun qiymatlar to‘plamidir"
 
 # CODE_SYS_UNDEF_HIER
 #: CODE_SYS_UNDEF_HIER
 msgid "in an undefined hierarchy"
-msgstr ""
+msgstr "aniqlanmagan iyerarxiyada"
 
 # CODE_SYS_UNKN_MODE
 #: CODE_SYS_UNKN_MODE
 msgid "Unknown CodeSystemContentMode mode"
-msgstr ""
+msgstr "Noma’lum CodeSystemContentMode rejimi"
 
 # CONC_MAP_CODES
 #: CONC_MAP_CODES
 msgid "Codes"
-msgstr ""
+msgstr "Kodlar"
 
 # CONC_MAP_CODE_SYS_UNSPEC
 #: CONC_MAP_CODE_SYS_UNSPEC
 msgid "unspecified code system"
-msgstr ""
+msgstr "aniqlanmagan kod tizimi"
 
 # CONC_MAP_FRM
 #: CONC_MAP_FRM
 msgid "from"
-msgstr ""
+msgstr "dan"
 
 # CONC_MAP_FROM
 #: CONC_MAP_FROM
 msgid "Mapping from"
-msgstr ""
+msgstr "dan xaritalash"
 
 # CONC_MAP_GRP
 #: CONC_MAP_GRP
 msgid "Group {0}"
-msgstr ""
+msgstr "Guruh {0}"
 
 # CONC_MAP_NOT_SPEC
 #: CONC_MAP_NOT_SPEC
 msgid "(not specified)"
-msgstr ""
+msgstr "(aniqlanmagan)"
 
 # CONC_MAP_REL
 #: CONC_MAP_REL
 msgid "Relationship"
-msgstr ""
+msgstr "Munosabat"
 
 # CONC_MAP_SOURCE
 #: CONC_MAP_SOURCE
 msgid "Source Code"
-msgstr ""
+msgstr "Manba kodi"
 
 # CONC_MAP_SOURCE_CARD
 #: CONC_MAP_SOURCE_CARD
 msgctxt "CONC_MAP_SOURCE_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Kard."
 
 # CONC_MAP_SOURCE_TYPE
 #: CONC_MAP_SOURCE_TYPE
 msgctxt "CONC_MAP_SOURCE_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Turi"
 
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
 msgid "Source Concept Details"
-msgstr ""
+msgstr "Manba tushunchasi tafsilotlari"
 
 # CONC_MAP_TO
 #: CONC_MAP_TO
 msgctxt "CONC_MAP_TO"
 msgid "to"
-msgstr ""
+msgstr "ga"
 
 # CONC_MAP_TRGT
 #: CONC_MAP_TRGT
 msgid "Target Code"
-msgstr ""
+msgstr "Maqsadli kod"
 
 # CONC_MAP_TRGT_CARD
 #: CONC_MAP_TRGT_CARD
 msgctxt "CONC_MAP_TRGT_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Card."
 
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
 msgid "Target Concept Details"
-msgstr ""
+msgstr "Maqsadli tushuncha tafsilotlari"
 
 # CONC_MAP_TRGT_TYPE
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Turi"
 
 # CONF_MAY
 #: CONF_MAY
@@ -1078,418 +1091,418 @@ msgstr ""
 # CS_VERSION_NOTHING_TEXT
 #: CS_VERSION_NOTHING_TEXT
 msgid "Not Stated (use latest from terminology server)"
-msgstr ""
+msgstr "Ko‘rsatilmagan (terminologiya serveridagi eng so‘nggi ma’lumot ishlatiladi)"
 
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
 msgid "Afternoon"
-msgstr ""
+msgstr "Kunning ikkinchi yarmi"
 
 # DATA_REND_AFTERNOON_EARLY
 #: DATA_REND_AFTERNOON_EARLY
 msgid "Early Afternoon"
-msgstr ""
+msgstr "Kunning ikkinchi yarmining boshida"
 
 # DATA_REND_AFTERNOON_LATE
 #: DATA_REND_AFTERNOON_LATE
 msgid "Late Afternoon"
-msgstr ""
+msgstr "Kunning ikkinchi yarmining oxirida"
 
 # DATA_REND_AFTER_SLEEP
 #: DATA_REND_AFTER_SLEEP
 msgid "After Sleep"
-msgstr ""
+msgstr "Uyqudan keyin"
 
 # DATA_REND_AFTRBKFST
 #: DATA_REND_AFTRBKFST
 msgid "after breakfast"
-msgstr ""
+msgstr "nonushtadan keyin"
 
 # DATA_REND_AFTRDINR
 #: DATA_REND_AFTRDINR
 msgid "after dinner"
-msgstr ""
+msgstr "kechki ovqatdan keyin"
 
 # DATA_REND_AFTRLUNCH
 #: DATA_REND_AFTRLUNCH
 msgid "after lunch"
-msgstr ""
+msgstr "tushlikdan keyin"
 
 # DATA_REND_AFTRMEALS
 #: DATA_REND_AFTRMEALS
 msgid "after meals"
-msgstr ""
+msgstr "ovqatdan keyin"
 
 # DATA_REND_AFTRWKNG
 #: DATA_REND_AFTRWKNG
 msgid "after waking"
-msgstr ""
+msgstr "uyg'ongandan keyin"
 
 # DATA_REND_ATBKFST
 #: DATA_REND_ATBKFST
 msgid "at breakfast"
-msgstr ""
+msgstr "nonushta paytida"
 
 # DATA_REND_ATDINR
 #: DATA_REND_ATDINR
 msgid "at dinner"
-msgstr ""
+msgstr "kechki ovqat paytida"
 
 # DATA_REND_ATLUNCH
 #: DATA_REND_ATLUNCH
 msgid "at lunch"
-msgstr ""
+msgstr "tushlik paytida"
 
 # DATA_REND_ATT_DATA
 #: DATA_REND_ATT_DATA
 msgctxt "DATA_REND_ATT_DATA"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0}: {1}"
 
 # DATA_REND_ATT_URL
 #: DATA_REND_ATT_URL
 msgid "{0} @ {1}"
-msgstr ""
+msgstr "{0} @ {1}"
 
 # DATA_REND_BASE64
 #: DATA_REND_BASE64
 msgid "(base64 data - {0} base64 chars)"
-msgstr ""
+msgstr "(base64 ma’lumotlari — {0} ta base64 belgi)"
 
 # DATA_REND_BFBKFST
 #: DATA_REND_BFBKFST
 msgid "before breakfast"
-msgstr ""
+msgstr "nonushtadan oldin"
 
 # DATA_REND_BFDINR
 #: DATA_REND_BFDINR
 msgid "before dinner"
-msgstr ""
+msgstr "kechki ovqatdan oldin"
 
 # DATA_REND_BFLUNCH
 #: DATA_REND_BFLUNCH
 msgid "before lunch"
-msgstr ""
+msgstr "tushlikdan oldin"
 
 # DATA_REND_BFMEALS
 #: DATA_REND_BFMEALS
 msgid "before meals"
-msgstr ""
+msgstr "ovqatdan oldin"
 
 # DATA_REND_BFSLEEP
 #: DATA_REND_BFSLEEP
 msgid "before sleeping"
-msgstr ""
+msgstr "uyqudan oldin"
 
 # DATA_REND_BY
 #: DATA_REND_BY
 msgid "By"
-msgstr ""
+msgstr "Tomonidan"
 
 # DATA_REND_CODES
 #: DATA_REND_CODES
 msgid "Codes:"
-msgstr ""
+msgstr "Kodlar:"
 
 # DATA_REND_COND
 #: DATA_REND_COND
 msgid "Condition"
-msgstr ""
+msgstr "Holat"
 
 # DATA_REND_COUNT
 #: DATA_REND_COUNT
 msgid "Count {0}"
-msgstr ""
+msgstr "Soni {0}"
 
 # DATA_REND_CURRENCY
 #: DATA_REND_CURRENCY
 msgid "{1} {0}"
-msgstr ""
+msgstr "{1} {0}"
 
 # DATA_REND_DATA
 #: DATA_REND_DATA
 msgid "Data: {0}"
-msgstr ""
+msgstr "Maʼlumotlar: {0}"
 
 # DATA_REND_DETAILS
 #: DATA_REND_DETAILS
 msgid "(Details: {0}  code"
-msgstr ""
+msgstr "(Tafsilotlar: {0}  kod"
 
 # DATA_REND_DETAILS_STATED
 #: DATA_REND_DETAILS_STATED
 msgid "(Details: {0} code {1} = ''{2}'')"
-msgstr ""
+msgstr "(Tafsilotlar: {0} kod {1} = ''{2}'')"
 
 # DATA_REND_DETAILS_STATED_ND
 #: DATA_REND_DETAILS_STATED_ND
 msgid "(Details: {0} code {1})"
-msgstr ""
+msgstr "(Tafsilotlar: {0} kod {1})"
 
 # DATA_REND_DICOM
 #: DATA_REND_DICOM
 msgid "DICOM"
-msgstr ""
+msgstr "DICOM"
 
 # DATA_REND_DIM
 #: DATA_REND_DIM
 msgid "Dimensions: {0}"
-msgstr ""
+msgstr "Oʻlchovlar: {0}"
 
 # DATA_REND_DURATION
 #: DATA_REND_DURATION
 msgid "Duration {0}"
-msgstr ""
+msgstr "Davomiylik {0}"
 
 # DATA_REND_ERROR
 #: DATA_REND_ERROR
 msgid "Error: {0}"
-msgstr ""
+msgstr "Xato: {0}"
 
 # DATA_REND_EVENING
 #: DATA_REND_EVENING
 msgid "Evening"
-msgstr ""
+msgstr "Kechqurun"
 
 # DATA_REND_EVENING_EARLY
 #: DATA_REND_EVENING_EARLY
 msgid "Early Evening"
-msgstr ""
+msgstr "Erta kechqurun"
 
 # DATA_REND_EVENING_LATE
 #: DATA_REND_EVENING_LATE
 msgid "Late Evening"
-msgstr ""
+msgstr "Kech payt"
 
 # DATA_REND_EVENTS
 #: DATA_REND_EVENTS
 msgid "Events: {0}"
-msgstr ""
+msgstr "Hodisalar: {0}"
 
 # DATA_REND_EXCEPTION
 #: DATA_REND_EXCEPTION
 msgid "Exception"
-msgstr ""
+msgstr "Istisno"
 
 # DATA_REND_FACT
 #: DATA_REND_FACT
 msgid "Factor: {0}"
-msgstr ""
+msgstr "Omil: {0}"
 
 # DATA_REND_FAX
 #: DATA_REND_FAX
 msgid "Fax: {0}"
-msgstr ""
+msgstr "Faks: {0}"
 
 # DATA_REND_GLN
 #: DATA_REND_GLN
 msgid "Global Location Number"
-msgstr ""
+msgstr "Global joylashuv raqami"
 
 # DATA_REND_ICD
 #: DATA_REND_ICD
 msgid "ICD-9"
-msgstr ""
+msgstr "МКБ-9"
 
 # DATA_REND_IMMEDIATE
 #: DATA_REND_IMMEDIATE
 msgid "Immediate"
-msgstr ""
+msgstr "Darhol"
 
 # DATA_REND_INT
 #: DATA_REND_INT
 msgid "Interval: {0}"
-msgstr ""
+msgstr "Interval: {0}"
 
 # DATA_REND_LIMIT
 #: DATA_REND_LIMIT
 msgid "Limit"
-msgstr ""
+msgstr "Chegara"
 
 # DATA_REND_LOINC
 #: DATA_REND_LOINC
 msgid "LOINC"
-msgstr ""
+msgstr "LOINC"
 
 # DATA_REND_LOWER
 #: DATA_REND_LOWER
 msgid "Lower: {0}"
-msgstr ""
+msgstr "Quyi: {0}"
 
 # DATA_REND_MEALS
 #: DATA_REND_MEALS
 msgid "at meals"
-msgstr ""
+msgstr "ovqat paytida"
 
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
 msgid "Unable to resolve markdown link ''{0}''"
-msgstr ""
+msgstr "Markdown havola aniqlanmadi: \"{0}\""
 
 # DATA_REND_MORNING
 #: DATA_REND_MORNING
 msgid "Morning"
-msgstr ""
+msgstr "Ertalab"
 
 # DATA_REND_MORNING_EARLY
 #: DATA_REND_MORNING_EARLY
 msgid "Early Morning"
-msgstr ""
+msgstr "Erta tongda"
 
 # DATA_REND_MORNING_LATE
 #: DATA_REND_MORNING_LATE
 msgid "Late Morning"
-msgstr ""
+msgstr "Tushga yaqin"
 
 # DATA_REND_NIGHT
 #: DATA_REND_NIGHT
 msgid "Night"
-msgstr ""
+msgstr "Tun"
 
 # DATA_REND_NOON
 #: DATA_REND_NOON
 msgid "Noon"
-msgstr ""
+msgstr "Tush payti"
 
 # DATA_REND_NOT_STAT
 #: DATA_REND_NOT_STAT
 msgid "[not stated]"
-msgstr ""
+msgstr "[ko‘rsatilmagan]"
 
 # DATA_REND_NO_DISP
 #: DATA_REND_NO_DISP
 msgid "No display for {0}"
-msgstr ""
+msgstr "{0} uchun ko‘rsatiladigan qiymat mavjud emas"
 
 # DATA_REND_ONCE
 #: DATA_REND_ONCE
 msgid "Once"
-msgstr ""
+msgstr "Bir marta"
 
 # DATA_REND_ONGOING
 #: DATA_REND_ONGOING
 msgid "(ongoing)"
-msgstr ""
+msgstr "(davom etmoqda)"
 
 # DATA_REND_ORIGIN
 #: DATA_REND_ORIGIN
 msgid "Origin: {0}"
-msgstr ""
+msgstr "Kelib chiqish: {0}"
 
 # DATA_REND_PER
 #: DATA_REND_PER
 msgid "per"
-msgstr ""
+msgstr "har"
 
 # DATA_REND_PERIOD
 #: DATA_REND_PERIOD
 msgid "period:"
-msgstr ""
+msgstr "davr:"
 
 # DATA_REND_PHONE
 #: DATA_REND_PHONE
 msgid "Phone: {0}"
-msgstr ""
+msgstr "Telefon: {0}"
 
 # DATA_REND_RXNORM
 #: DATA_REND_RXNORM
 msgid "RxNorm"
-msgstr ""
+msgstr "RxNorm"
 
 # DATA_REND_SEARCH
 #: DATA_REND_SEARCH
 msgid "Search on: {0}"
-msgstr ""
+msgstr "Qidirish: {0}"
 
 # DATA_REND_SNOMED
 #: DATA_REND_SNOMED
 msgid "SNOMED CT"
-msgstr ""
+msgstr "SNOMED CT"
 
 # DATA_REND_SORT
 #: DATA_REND_SORT
 msgid "Sort"
-msgstr ""
+msgstr "Saralash"
 
 # DATA_REND_SOURCE
 #: DATA_REND_SOURCE
 msgid "source"
-msgstr ""
+msgstr "manba"
 
 # DATA_REND_STARTING
 #: DATA_REND_STARTING
 msgid "Starting {0}"
-msgstr ""
+msgstr "Boshlanish {0}"
 
 # DATA_REND_THESE_CODES
 #: DATA_REND_THESE_CODES
 msgid "One of these codes:"
-msgstr ""
+msgstr "Ushbu kodlardan biri:"
 
 # DATA_REND_TIMING
 #: DATA_REND_TIMING
 msgid "Timing"
-msgstr ""
+msgstr "Vaqt"
 
 # DATA_REND_TO_DO
 #: DATA_REND_TO_DO
 msgid "to do: {0}"
-msgstr ""
+msgstr "bajarish: {0}"
 
 # DATA_REND_UNKNWN
 #: DATA_REND_UNKNWN
 msgid "unknown"
-msgstr ""
+msgstr "nomaʼlum"
 
 # DATA_REND_UNRD_EX
 #: DATA_REND_UNRD_EX
 msgid "WARNING: Unrenderable Modifier Extension!"
-msgstr ""
+msgstr "OGOHLANTIRISH: Ko‘rsatilmaydigan Modifier Extension!"
 
 # DATA_REND_UNTIL
 #: DATA_REND_UNTIL
 msgid "Until {0}"
-msgstr ""
+msgstr "Gacha {0}"
 
 # DATA_REND_UP
 #: DATA_REND_UP
 msgid "Upper: {0}"
-msgstr ""
+msgstr "Yuqori: {0}"
 
 # DATA_REND_USE
 #: DATA_REND_USE
 msgid "use:"
-msgstr ""
+msgstr "foydalanish:"
 
 # DATA_REND_VALUESET
 #: DATA_REND_VALUESET
 msgid "In ValueSet"
-msgstr ""
+msgstr "ValueSet ichida"
 
 # DATA_REND_VERSION
 #: DATA_REND_VERSION
 msgid "(version = {0} {1}"
-msgstr ""
+msgstr "(versiya = {0} {1}"
 
 # DIAG_REP_REND_AGE
 #: DIAG_REP_REND_AGE
 msgid "Age"
-msgstr ""
+msgstr "Yosh"
 
 # DIAG_REP_REND_CODECON
 #: DIAG_REP_REND_CODECON
 msgid "Coded Conclusions:"
-msgstr ""
+msgstr "Kodlangan xulosalar:"
 
 # DIAG_REP_REND_ERR
 #: DIAG_REP_REND_ERR
 msgid "Error:"
-msgstr ""
+msgstr "Xato:"
 
 # DIAG_REP_REND_FOR
 #: DIAG_REP_REND_FOR
 msgid "for"
-msgstr ""
+msgstr "uchun"
 
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
@@ -1500,302 +1513,302 @@ msgstr ""
 # DIAG_REP_REND_NOTRES
 #: DIAG_REP_REND_NOTRES
 msgid "The observation ''{0}'' could not be resolved"
-msgstr ""
+msgstr "\"{0}\" kuzatuv aniqlanmadi"
 
 # DIAG_REP_REND_OBS
 #: DIAG_REP_REND_OBS
 msgid "Observation"
-msgstr ""
+msgstr "Kuzatuv"
 
 # DIAG_REP_REND_PER
 #: DIAG_REP_REND_PER
 msgid "Performer"
-msgstr ""
+msgstr "Ijrochi"
 
 # DIAG_REP_REND_REFRAN
 #: DIAG_REP_REND_REFRAN
 msgid "Reference Range"
-msgstr ""
+msgstr "Me’yoriy oraliq"
 
 # DIAG_REP_REND_REP
 #: DIAG_REP_REND_REP
 msgid "Reported"
-msgstr ""
+msgstr "Hisobot qilingan"
 
 # DIAG_REP_REND_REPDET
 #: DIAG_REP_REND_REPDET
 msgid "Report Details"
-msgstr ""
+msgstr "Hisobot tafsilotlari"
 
 # DIAG_REP_REND_UNABLE
 #: DIAG_REP_REND_UNABLE
 msgid "Unable to get Patient Details"
-msgstr ""
+msgstr "Bemor ma’lumotlarini olish imkoni yo‘q"
 
 # DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_WHEN
 msgid "When For"
-msgstr ""
+msgstr "Vaqt"
 
 # DIAG_REP_SUMMARY
 #: DIAG_REP_SUMMARY
 msgid "Diagnostic Report for ''{0}'' for ''{1}''"
-msgstr ""
+msgstr "\"{1}\" uchun \"{0}\" bo‘yicha diagnostik hisobot"
 
 # DIAG_REP_UNSPECIFIED_CODE
 #: DIAG_REP_UNSPECIFIED_CODE
 msgid "Unspecified Report Type"
-msgstr ""
+msgstr "Hisobot turi aniqlanmagan"
 
 # DIAG_REP_UNSPECIFIED_SUBJECT
 #: DIAG_REP_UNSPECIFIED_SUBJECT
 msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Subyekt aniqlanmagan"
 
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr ""
+msgstr "<param name=\"status\"/> Hujjat <param name=\"date\"/> sanada <param name=\"author\"/> tomonidan <param name=\"subject\"/> uchun <if test=\"has-encounter = true\"> uchrashuvda <param name=\"encounter\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
 msgid "Step {0}  - See scenario {1}"
-msgstr ""
+msgstr "Qadam {0}  - Ssenariyni ko‘rish {1}"
 
 # EX_SCEN_ALT
 #: EX_SCEN_ALT
 msgid "Alternative {0}"
-msgstr ""
+msgstr "Muqobil {0}"
 
 # EX_SCEN_BEL
 #: EX_SCEN_BEL
 msgid "below"
-msgstr ""
+msgstr "quyida"
 
 # EX_SCEN_CONTA
 #: EX_SCEN_CONTA
 msgid "Contains:"
-msgstr ""
+msgstr "O‘z ichiga oladi:"
 
 # EX_SCEN_ERR_REN
 #: EX_SCEN_ERR_REN
 msgid "Error rendering ExampleScenario {0}"
-msgstr ""
+msgstr "ExampleScenario {0} ni render qilishda xato"
 
 # EX_SCEN_FVER
 #: EX_SCEN_FVER
 msgid "FHIR version"
-msgstr ""
+msgstr "FHIR versiyasi"
 
 # EX_SCEN_IN
 #: EX_SCEN_IN
 msgid "Initiator"
-msgstr ""
+msgstr "Boshlovchi"
 
 # EX_SCEN_OTH
 #: EX_SCEN_OTH
 msgid "See other scenario"
-msgstr ""
+msgstr "Boshqa ssenariyni ko‘rish"
 
 # EX_SCEN_POSTCON
 #: EX_SCEN_POSTCON
 msgid "Post-conditions:"
-msgstr ""
+msgstr "Keyingi shartlar:"
 
 # EX_SCEN_PRECON
 #: EX_SCEN_PRECON
 msgid "Pre-conditions:"
-msgstr ""
+msgstr "Dastlabki shartlar:"
 
 # EX_SCEN_PROC
 #: EX_SCEN_PROC
 msgid "Process: {0}"
-msgstr ""
+msgstr "Jarayon: {0}"
 
 # EX_SCEN_REC
 #: EX_SCEN_REC
 msgid "Receiver"
-msgstr ""
+msgstr "Qabul qiluvchi"
 
 # EX_SCEN_RES
 #: EX_SCEN_RES
 msgid "Response"
-msgstr ""
+msgstr "Javob"
 
 # EX_SCEN_SEE
 #: EX_SCEN_SEE
 msgid "See subprocess"
-msgstr ""
+msgstr "Quyi jarayonni ko‘rish"
 
 # EX_SCEN_STEP
 #: EX_SCEN_STEP
 msgid "Step"
-msgstr ""
+msgstr "Qadam"
 
 # EX_SCEN_TIME
 #: EX_SCEN_TIME
 msgid "... time passes ..."
-msgstr ""
+msgstr "... vaqt o'tadi ..."
 
 # EX_SCEN_UN
 #: EX_SCEN_UN
 msgid "Unknown ExampleScenario Renderer Mode {0}"
-msgstr ""
+msgstr "Noma’lum ExampleScenario Renderer rejimi {0}"
 
 # EX_SCEN_UN_ACT
 #: EX_SCEN_UN_ACT
 msgid "Unable to find referenced actor {0}"
-msgstr ""
+msgstr "Havola qilingan ishtirokchi {0} topilmadi"
 
 # FMM_TABLE
 #: FMM_TABLE
 msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr ""
+msgstr "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Yetuklik darajasi</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standart holati\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
 msgid "This element has additional bindings"
-msgstr ""
+msgstr "Ushbu elementda qo‘shimcha bog‘lanishlar mavjud"
 
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
 msgid "Additional Language Displays"
-msgstr ""
+msgstr "Qo‘shimcha til bo‘yicha ko‘rsatiladigan qiymatlar"
 
 # GENERAL_BINDING
 #: GENERAL_BINDING
 msgid "Binding"
-msgstr ""
+msgstr "Bogʻlanish"
 
 # GENERAL_BINDINGS
 #: GENERAL_BINDINGS
 msgid "Bindings"
-msgstr ""
+msgstr "Bogʻlanishlar"
 
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
 msgid "No description provided"
-msgstr ""
+msgstr "Tavsif berilmagan"
 
 # GENERAL_BINDING_NO_VS_1
 #: GENERAL_BINDING_NO_VS_1
 msgid "Binding Description"
-msgstr ""
+msgstr "Bog‘lanish tavsifi"
 
 # GENERAL_BINDING_NO_VS_2
 #: GENERAL_BINDING_NO_VS_2
 msgid "This binding doesn''t define a testable ValueSet"
-msgstr ""
+msgstr "Ushbu bogʻlash sinov boʻladigan ValueSet aniqlamaydi"
 
 # GENERAL_BIND_MIN_ALLOW
 #: GENERAL_BIND_MIN_ALLOW
 msgid "The minimum allowable value set - any conformant system SHALL support all these codes"
-msgstr ""
+msgstr "Minimal ruxsat etilgan ValueSet — har qanday muvofiq tizim ushbu kodlarning barchasini qo‘llab-quvvatlashi SHART"
 
 # GENERAL_CARD
 #: GENERAL_CARD
 msgctxt "GENERAL_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Card."
 
 # GENERAL_CARDINALITY
 #: GENERAL_CARDINALITY
 msgid "Cardinality"
-msgstr ""
+msgstr "Kardinallik"
 
 # GENERAL_CODE
 #: GENERAL_CODE
 msgid "Code"
-msgstr ""
+msgstr "Kod"
 
 # GENERAL_CODESYSTEM
 #: GENERAL_CODESYSTEM
 msgid "Code System"
-msgstr ""
+msgstr "Kod tizimi"
 
 # GENERAL_COMMENT
 #: GENERAL_COMMENT
 msgid "Comment"
-msgstr ""
+msgstr "Izoh"
 
 # GENERAL_COMMENTS
 #: GENERAL_COMMENTS
 msgid "Comments"
-msgstr ""
+msgstr "Izohlar"
 
 # GENERAL_COMPARATORS
 #: GENERAL_COMPARATORS
 msgid "Comparators"
-msgstr ""
+msgstr "Taqqoslash operatorlari"
 
 # GENERAL_COMPONENT
 #: GENERAL_COMPONENT
 msgid "Component"
-msgstr ""
+msgstr "Komponent"
 
 # GENERAL_CONFORMANCE
 #: GENERAL_CONFORMANCE
 msgid "Conformance"
-msgstr ""
+msgstr "Muvofiqlik"
 
 # GENERAL_CONSTRAINTS
 #: GENERAL_CONSTRAINTS
 msgctxt "GENERAL_CONSTRAINTS"
 msgid "Constraints"
-msgstr ""
+msgstr "Cheklovlar"
 
 # GENERAL_CONTACT
 #: GENERAL_CONTACT
 msgid "Contact:"
-msgstr ""
+msgstr "Aloqa:"
 
 # GENERAL_CONTENT
 #: GENERAL_CONTENT
 msgid "Content"
-msgstr ""
+msgstr "Kontent"
 
 # GENERAL_COPYRIGHT
 #: GENERAL_COPYRIGHT
 msgid "Copyright"
-msgstr ""
+msgstr "Mualliflik huquqi"
 
 # GENERAL_CRIT
 #: GENERAL_CRIT
 msgid "Criteria"
-msgstr ""
+msgstr "Mezonlar"
 
 # GENERAL_DATA_DISPLAY_PROPERTY
 #: GENERAL_DATA_DISPLAY_PROPERTY
 msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0}: {1}"
 
 # GENERAL_DEFINING_URL
 #: GENERAL_DEFINING_URL
 msgid "Defining URL"
-msgstr ""
+msgstr "Belgilovchi URL"
 
 # GENERAL_DEFINITION
 #: GENERAL_DEFINITION
 msgctxt "GENERAL_DEFINITION"
 msgid "Definition"
-msgstr ""
+msgstr "Ta'rif"
 
 # GENERAL_DEFINITION_COLON
 #: GENERAL_DEFINITION_COLON
 msgid "Definition:"
-msgstr ""
+msgstr "Ta'rif:"
 
 # GENERAL_DESC
 #: GENERAL_DESC
 msgid "Description"
-msgstr ""
+msgstr "Tavsif"
 
 # GENERAL_DESC_CONST
 #: GENERAL_DESC_CONST
 msgid "Description & Constraints"
-msgstr ""
+msgstr "Tavsif va cheklovlar"
 
 # GENERAL_DETAILS
 #: GENERAL_DETAILS
@@ -1806,33 +1819,33 @@ msgstr ""
 # GENERAL_DOCUMENTATION
 #: GENERAL_DOCUMENTATION
 msgid "Documentation"
-msgstr ""
+msgstr "Hujjatlar"
 
 # GENERAL_EXAMPLE
 #: GENERAL_EXAMPLE
 msgid "Example"
-msgstr ""
+msgstr "Misol"
 
 # GENERAL_EXPER
 #: GENERAL_EXPER
 msgid "Experimental"
-msgstr ""
+msgstr "Eksperimental"
 
 # GENERAL_FILTER
 #: GENERAL_FILTER
 msgid "Filter"
-msgstr ""
+msgstr "Filtr"
 
 # GENERAL_FIXED_VALUE
 #: GENERAL_FIXED_VALUE
 msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
-msgstr ""
+msgstr "Belgilangan qiymat: {0}"
 
 # GENERAL_FLAGS
 #: GENERAL_FLAGS
 msgid "Flags"
-msgstr ""
+msgstr "Belgilar"
 
 # GENERAL_IDENTIFIER
 #: GENERAL_IDENTIFIER
@@ -1845,479 +1858,479 @@ msgstr[1] ""
 # GENERAL_LOCATION
 #: GENERAL_LOCATION
 msgid "Location"
-msgstr ""
+msgstr "Joylashuv"
 
 # GENERAL_LOGICAL_NAME
 #: GENERAL_LOGICAL_NAME
 msgid "The logical name of the element"
-msgstr ""
+msgstr "Elementning mantiqiy nomi"
 
 # GENERAL_MAX_LENGTH
 #: GENERAL_MAX_LENGTH
 msgid "Max Length:"
-msgstr ""
+msgstr "Maksimal uzunlik:"
 
 # GENERAL_MIN_LENGTH
 #: GENERAL_MIN_LENGTH
 msgid "Min Length:"
-msgstr ""
+msgstr "Minimal uzunlik:"
 
 # GENERAL_MODIFIERS
 #: GENERAL_MODIFIERS
 msgid "Modifiers"
-msgstr ""
+msgstr "Modifikatorlar"
 
 # GENERAL_NAME
 #: GENERAL_NAME
 msgid "Name"
-msgstr ""
+msgstr "Nomi"
 
 # GENERAL_NCI_THES
 #: GENERAL_NCI_THES
 msgid "NCI Thesaurus"
-msgstr ""
+msgstr "NCI Thesaurus"
 
 # GENERAL_NOTE
 #: GENERAL_NOTE
 msgid "Note"
-msgstr ""
+msgstr "Izoh"
 
 # GENERAL_OBLIG
 #: GENERAL_OBLIG
 msgctxt "GENERAL_OBLIG"
 msgid "Obligations"
-msgstr ""
+msgstr "Majburiyatlar"
 
 # GENERAL_OBLIGATIONS
 #: GENERAL_OBLIGATIONS
 msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
-msgstr ""
+msgstr "Majburiyatlar"
 
 # GENERAL_OID
 #: GENERAL_OID
 msgid "OID"
-msgstr ""
+msgstr "OID"
 
 # GENERAL_PAR
 #: GENERAL_PAR
 msgid "Parameter"
-msgstr ""
+msgstr "Parametr"
 
 # GENERAL_PARS
 #: GENERAL_PARS
 msgid "Parameters"
-msgstr ""
+msgstr "Parametrlar"
 
 # GENERAL_PATTERN_VALUE
 #: GENERAL_PATTERN_VALUE
 msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
-msgstr ""
+msgstr "Andoza qiymat: {0}"
 
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
 msgctxt "GENERAL_PREFERRED"
 msgid "Preferred"
-msgstr ""
+msgstr "Afzal"
 
 # GENERAL_PROF
 #: GENERAL_PROF
 msgctxt "GENERAL_PROF"
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 # GENERAL_PROPS
 #: GENERAL_PROPS
 msgid "Properties"
-msgstr ""
+msgstr "Xususiyatlar"
 
 # GENERAL_PURPOSE
 #: GENERAL_PURPOSE
 msgid "Purpose"
-msgstr ""
+msgstr "Maqsad"
 
 # GENERAL_REFS
 #: GENERAL_REFS
 msgid "References:"
-msgstr ""
+msgstr "Havolalar:"
 
 # GENERAL_REMOVED_SINCE
 #: GENERAL_REMOVED_SINCE
 msgid "This content has been removed since {0}"
-msgstr ""
+msgstr "Ushbu kontent {0} dan beri olib tashlangan"
 
 # GENERAL_REQUEST
 #: GENERAL_REQUEST
 msgid "Request"
-msgstr ""
+msgstr "Soʻrov"
 
 # GENERAL_REQUIRED
 #: GENERAL_REQUIRED
 msgctxt "GENERAL_REQUIRED"
 msgid "Required"
-msgstr ""
+msgstr "Majburiy"
 
 # GENERAL_REQUIRED_BINDING
 #: GENERAL_REQUIRED_BINDING
 msgid "Required Binding to ValueSet {0}"
-msgstr ""
+msgstr "ValueSet {0} ga majburiy bog‘lanish"
 
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
 msgctxt "GENERAL_RESOURCE"
 msgid "Resource"
-msgstr ""
+msgstr "Resurs"
 
 # GENERAL_SECURITY_LABEL
 #: GENERAL_SECURITY_LABEL
 msgid "Security Label"
-msgstr ""
+msgstr "Xavfsizlik yorlig'i"
 
 # GENERAL_SOURCE
 #: GENERAL_SOURCE
 msgctxt "GENERAL_SOURCE"
 msgid "Source"
-msgstr ""
+msgstr "Manba"
 
 # GENERAL_SRC
 #: GENERAL_SRC
 msgid "Source:"
-msgstr ""
+msgstr "Manba:"
 
 # GENERAL_STARTER
 #: GENERAL_STARTER
 msgid "Starter"
-msgstr ""
+msgstr "Boshlang'ich"
 
 # GENERAL_STATUS
 #: GENERAL_STATUS
 msgctxt "GENERAL_STATUS"
 msgid "Status"
-msgstr ""
+msgstr "Holat"
 
 # GENERAL_SUBJ
 #: GENERAL_SUBJ
 msgid "Subject"
-msgstr ""
+msgstr "Subyekt"
 
 # GENERAL_SUMM
 #: GENERAL_SUMM
 msgid "Summary"
-msgstr ""
+msgstr "Xulosa"
 
 # GENERAL_TITLE
 #: GENERAL_TITLE
 msgid "Title"
-msgstr ""
+msgstr "Sarlavha"
 
 # GENERAL_TODO
 #: GENERAL_TODO
 msgid "Not done yet"
-msgstr ""
+msgstr "Hali bajarilmagan"
 
 # GENERAL_TYPE
 #: GENERAL_TYPE
 msgctxt "GENERAL_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Turi"
 
 # GENERAL_TYPE_PROFILE
 #: GENERAL_TYPE_PROFILE
 msgid "This element has profiles on it's type: {0}"
-msgstr ""
+msgstr "Ushbu element o'z turiga ko'ra profillarga ega: {0}"
 
 # GENERAL_TYPE_TARGET_PROFILE
 #: GENERAL_TYPE_TARGET_PROFILE
 msgid "This element has restrictions/profiles on it's targets: {0}"
-msgstr ""
+msgstr "Ushbu element maqsadlarida cheklovlar/profillarga ega: {0}"
 
 # GENERAL_UCUM
 #: GENERAL_UCUM
 msgid "UCUM"
-msgstr ""
+msgstr "UCUM"
 
 # GENERAL_URI
 #: GENERAL_URI
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 # GENERAL_URL
 #: GENERAL_URL
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 # GENERAL_USAGE
 #: GENERAL_USAGE
 msgid "Usage"
-msgstr ""
+msgstr "Foydalanish"
 
 # GENERAL_VALUE
 #: GENERAL_VALUE
 msgid "Value"
-msgstr ""
+msgstr "Qiymat"
 
 # GENERAL_VALUESET
 #: GENERAL_VALUESET
 msgid "Value Set"
-msgstr ""
+msgstr "Qiymatlar toʻplami"
 
 # GENERAL_VALUE_BOUNDED
 #: GENERAL_VALUE_BOUNDED
 msgid "The value must be between {0} and {1} (or equal)"
-msgstr ""
+msgstr "Qiymat {0} va {1} oralig‘ida (shu jumladan) bo‘lishi kerak"
 
 # GENERAL_VALUE_MAX
 #: GENERAL_VALUE_MAX
 msgid "The value must be less or equal to {0}"
-msgstr ""
+msgstr "Qiymat {0} dan kichik yoki teng bo‘lishi kerak"
 
 # GENERAL_VALUE_MIN
 #: GENERAL_VALUE_MIN
 msgid "The value must be greater or equal to {0}"
-msgstr ""
+msgstr "Qiymat {0} dan katta yoki teng bo‘lishi kerak"
 
 # GENERAL_VER
 #: GENERAL_VER
 msgid "Version"
-msgstr ""
+msgstr "Versiya"
 
 # GENERAL_VER_LOW
 #: GENERAL_VER_LOW
 msgid "version"
-msgstr ""
+msgstr "versiya"
 
 # GENERAL_XML
 #: GENERAL_XML
 msgid "XML"
-msgstr ""
+msgstr "XML"
 
 # IMP_GUIDE_URL
 #: IMP_GUIDE_URL
 msgid "The official URL for this implementation guide is:"
-msgstr ""
+msgstr "Ushbu implementatsiya bo‘yicha qo‘llanmaning rasmiy URL manzili:"
 
 # IP_INTRO
 #: IP_INTRO
 msgid "This {0} includes IP covered under the following statements."
-msgstr ""
+msgstr "Ushbu {0} quyidagi bayonotlar bilan qamrab olingan IP ni o‘z ichiga oladi."
 
 # IP_NONE
 #: IP_NONE
 msgid "No use of external IP"
-msgstr ""
+msgstr "Tashqi IP dan foydalanilmaydi"
 
 # IP_NONE_EXT
 #: IP_NONE_EXT
 msgid "No use of external IP (other than from the FHIR specification)"
-msgstr ""
+msgstr "Tashqi IP dan foydalanilmaydi (FHIR spetsifikatsiyasidan tashqari)"
 
 # KIND_EXTENSION
 #: KIND_EXTENSION
 msgid "extension"
-msgstr ""
+msgstr "kengaytma"
 
 # KIND_LOGICAL
 #: KIND_LOGICAL
 msgid "logical model"
-msgstr ""
+msgstr "mantiqiy model"
 
 # KIND_PROFILE
 #: KIND_PROFILE
 msgid "profile"
-msgstr ""
+msgstr "profil"
 
 # LIB_REND_ART
 #: LIB_REND_ART
 msgid "Related Artifacts"
-msgstr ""
+msgstr "Bog‘liq artefaktlar"
 
 # LIB_REND_AUT
 #: LIB_REND_AUT
 msgid "Author"
-msgstr ""
+msgstr "Muallif"
 
 # LIB_REND_CONT
 #: LIB_REND_CONT
 msgid "Contents"
-msgstr ""
+msgstr "Tarkib"
 
 # LIB_REND_ED
 #: LIB_REND_ED
 msgid "Editor"
-msgstr ""
+msgstr "Muharrir"
 
 # LIB_REND_END
 #: LIB_REND_END
 msgid "Endorser"
-msgstr ""
+msgstr "Ma’qullovchi"
 
 # LIB_REND_NOCONT
 #: LIB_REND_NOCONT
 msgid "No Content"
-msgstr ""
+msgstr "Kontent mavjud emas"
 
 # LIB_REND_PAR
 #: LIB_REND_PAR
 msgid "Participants"
-msgstr ""
+msgstr "Ishtirokchilar"
 
 # LIB_REND_REQ
 #: LIB_REND_REQ
 msgid "Data Requirements"
-msgstr ""
+msgstr "Ma’lumotlarga qo‘yiladigan talablar"
 
 # LIB_REND_REV
 #: LIB_REND_REV
 msgid "Reviewer"
-msgstr ""
+msgstr "Ko‘rib chiquvchi"
 
 # LIB_REND_SHOW
 #: LIB_REND_SHOW
 msgid "Content not shown - ("
-msgstr ""
+msgstr "Kontent ko‘rsatilmagan - ("
 
 # LIB_REND_SIZE
 #: LIB_REND_SIZE
 msgid ", size = {0}"
-msgstr ""
+msgstr ", hajmi = {0}"
 
 # LIST_REND_CODE
 #: LIST_REND_CODE
 msgid "Code: {0}"
-msgstr ""
+msgstr "Kod: {0}"
 
 # LIST_REND_DAT
 #: LIST_REND_DAT
 msgid "Date"
-msgstr ""
+msgstr "Sana"
 
 # LIST_REND_DATE
 #: LIST_REND_DATE
 msgid "Date: {0}"
-msgstr ""
+msgstr "Sana: {0}"
 
 # LIST_REND_DEL
 #: LIST_REND_DEL
 msgid "Deleted"
-msgstr ""
+msgstr "Oʻchirilgan"
 
 # LIST_REND_ENC
 #: LIST_REND_ENC
 msgid "Encounter:"
-msgstr ""
+msgstr "Uchrashuv:"
 
 # LIST_REND_FLAG
 #: LIST_REND_FLAG
 msgid "Flag"
-msgstr ""
+msgstr "Belgi"
 
 # LIST_REND_ITEM
 #: LIST_REND_ITEM
 msgid "Items"
-msgstr ""
+msgstr "Elementlar"
 
 # LIST_REND_MODE
 #: LIST_REND_MODE
 msgid "Mode: {0}"
-msgstr ""
+msgstr "Rejim: {0}"
 
 # LIST_REND_ORD
 #: LIST_REND_ORD
 msgid "Order: {0}"
-msgstr ""
+msgstr "Tartib: {0}"
 
 # LIST_REND_STAT
 #: LIST_REND_STAT
 msgid "Status: {0}"
-msgstr ""
+msgstr "Holati: {0}"
 
 # LIST_REND_SUB
 #: LIST_REND_SUB
 msgid "Subject:"
-msgstr ""
+msgstr "Subyekt:"
 
 # LIST_SUMMARY
 #: LIST_SUMMARY
 msgid "List for ''{0}'' for ''{1}''"
-msgstr ""
+msgstr "\"{1}\" uchun \"{0}\" ro‘yxati"
 
 # LIST_UNSPECIFIED_CODE
 #: LIST_UNSPECIFIED_CODE
 msgid "Unspecified List Type"
-msgstr ""
+msgstr "Ro‘yxat turi aniqlanmagan"
 
 # LIST_UNSPECIFIED_SUBJECT
 #: LIST_UNSPECIFIED_SUBJECT
 msgctxt "LIST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Subyekt aniqlanmagan"
 
 # MAP_DEFAULT_COMMENT
 #: MAP_DEFAULT_COMMENT
 msgid "This element was not defined prior to R5"
-msgstr ""
+msgstr "Ushbu element R5 dan oldin aniqlanmagan"
 
 # MATURITY_MATURITY
 #: MATURITY_MATURITY
 msgid "Maturity Level: {0}"
-msgstr ""
+msgstr "Yetuklik darajasi: {0}"
 
 # MATURITY_PUBLISHER
 #: MATURITY_PUBLISHER
 msgid "Publisher: {0}"
-msgstr ""
+msgstr "Nashriyotchi: {0}"
 
 # MATURITY_STATUS
 #: MATURITY_STATUS
 msgctxt "MATURITY_STATUS"
 msgid "Status"
-msgstr ""
+msgstr "Holat"
 
 # MATURITY_STDS_STATUS
 #: MATURITY_STDS_STATUS
 msgid "Standards Status: {0}"
-msgstr ""
+msgstr "Standartlar holati: {0}"
 
 # NAME_SYS_IDEN
 #: NAME_SYS_IDEN
 msgid "Identifiers"
-msgstr ""
+msgstr "Identifikatorlar"
 
 # NAME_SYS_PER
 #: NAME_SYS_PER
 msgid "Period"
-msgstr ""
+msgstr "Davr"
 
 # OBLIGATION_SOURCE
 #: OBLIGATION_SOURCE
 msgid "This obligation is defined in the profile {0}"
-msgstr ""
+msgstr "Ushbu majburiyat {0} profilida belgilangan"
 
 # OBLIG_ACT
 #: OBLIG_ACT
 msgid "Actor"
-msgstr ""
+msgstr "Ishtirokchi"
 
 # OBLIG_ELE
 #: OBLIG_ELE
 msgid "Elements"
-msgstr ""
+msgstr "Elementlar"
 
 # OP_DEF_INPAR
 #: OP_DEF_INPAR
 msgid "Input parameters Profile:"
-msgstr ""
+msgstr "Kirish parametrlari profili:"
 
 # OP_DEF_OFFIC
 #: OP_DEF_OFFIC
 msgid "The official URL for this operation definition is:"
-msgstr ""
+msgstr "Ushbu operatsiya ta’rifining rasmiy URL manzili:"
 
 # OP_DEF_OUTPAR
 #: OP_DEF_OUTPAR
 msgid "Output parameters Profile:"
-msgstr ""
+msgstr "Chiqish parametrlari profili:"
 
 # OP_DEF_SCO
 #: OP_DEF_SCO
@@ -2328,335 +2341,335 @@ msgstr ""
 # OP_DEF_URL
 #: OP_DEF_URL
 msgid "URL: [base]/{0}"
-msgstr ""
+msgstr "URL: [base]/{0}"
 
 # OP_DEF_USE
 #: OP_DEF_USE
 msgid "Use"
-msgstr ""
+msgstr "Foydalanish"
 
 # OP_OUT_DIAG
 #: OP_OUT_DIAG
 msgid "Diagnostics"
-msgstr ""
+msgstr "Diagnostika"
 
 # OP_OUT_OK
 #: OP_OUT_OK
 msgid "All OK"
-msgstr ""
+msgstr "Xatolar aniqlanmadi"
 
 # OP_OUT_SEV
 #: OP_OUT_SEV
 msgid "Severity"
-msgstr ""
+msgstr "Og‘irlik darajasi"
 
 # OP_OUT_SRC
 #: OP_OUT_SRC
 msgctxt "OP_OUT_SRC"
 msgid "Source"
-msgstr ""
+msgstr "Manba"
 
 # OP_OUT_SUMM
 #: OP_OUT_SUMM
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s), {2} Hint(s))"
-msgstr ""
+msgstr "OperationOutcome ({0} xato(lar), {1} ogohlantirish(lar), {2} maslahat(lar))"
 
 # OP_OUT_SUMM_ALL_OK
 #: OP_OUT_SUMM_ALL_OK
 msgid "OperationOutcome (ALL OK)"
-msgstr ""
+msgstr "OperationOutcome (Xatolar aniqlanmadi)"
 
 # OP_OUT_SUMM_NOHINT
 #: OP_OUT_SUMM_NOHINT
 msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
-msgstr ""
+msgstr "OperationOutcome ({0} xato(lar), {1} ogohlantirish(lar))"
 
 # PARS_SUMMARY_LIST
 #: PARS_SUMMARY_LIST
 msgid "Parameters: {0}"
-msgstr ""
+msgstr "Parametrlar: {0}"
 
 # PARS_SUMMARY_SIZE
 #: PARS_SUMMARY_SIZE
 msgid "Parameters ({0} parameters)"
-msgstr ""
+msgstr "Parametrlar ({0} parametr)"
 
 # PAT_ACTIVE
 #: PAT_ACTIVE
 msgid "Active:"
-msgstr ""
+msgstr "Faol:"
 
 # PAT_ACTIVE_HINT
 #: PAT_ACTIVE_HINT
 msgid "Record is active"
-msgstr ""
+msgstr "Yozuv faol"
 
 # PAT_ALT_NAME
 #: PAT_ALT_NAME
 msgid "Alt. Name:"
-msgstr ""
+msgstr "Muqobil nomi:"
 
 # PAT_ALT_NAME_HINT
 #: PAT_ALT_NAME_HINT
 msgid "Alternate names (see the one above)"
-msgstr ""
+msgstr "Muqobil nomlar (yuqoridagiga qarang)"
 
 # PAT_CONTACT
 #: PAT_CONTACT
 msgid "Contact Detail"
-msgstr ""
+msgstr "Aloqa ma'lumotlari"
 
 # PAT_CONTACT_HINT
 #: PAT_CONTACT_HINT
 msgid "Ways to contact the Patient"
-msgstr ""
+msgstr "Bemor bilan bog‘lanish usullari"
 
 # PAT_CONTAINED
 #: PAT_CONTAINED
 msgid "Contained Resource"
 msgid_plural "Contained Resources"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ichiga kiritilgan resurs"
+msgstr[1] "Ichiga kiritilgan resurslar"
 
 # PAT_DECEASED
 #: PAT_DECEASED
 msgid "Deceased:"
-msgstr ""
+msgstr "Vafot etgan:"
 
 # PAT_DECEASED_HINT
 #: PAT_DECEASED_HINT
 msgid "Known status of Patient"
-msgstr ""
+msgstr "Bemorning ma'lum holati"
 
 # PAT_DOB
 #: PAT_DOB
 msgid "DoB: {0}"
-msgstr ""
+msgstr "Tug‘ilgan sana: {0}"
 
 # PAT_GENDER
 #: PAT_GENDER
 msgid "Gender: {0}"
-msgstr ""
+msgstr "Jinsi: {0}"
 
 # PAT_GP
 #: PAT_GP
 msgid "General Practitioner"
-msgstr ""
+msgstr "Umumiy amaliyot shifokori"
 
 # PAT_LANG
 #: PAT_LANG
 msgid "Language:"
 msgid_plural "Languages:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Til:"
+msgstr[1] "Tillar:"
 
 # PAT_LANG_HINT
 #: PAT_LANG_HINT
 msgid "Language spoken"
 msgid_plural "Languages spoken"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "So‘zlashiladigan til"
+msgstr[1] "So‘zlashiladigan tillar"
 
 # PAT_LANG_PREFERRED
 #: PAT_LANG_PREFERRED
 msgid "(preferred)"
-msgstr ""
+msgstr "(afzal)"
 
 # PAT_LINKS
 #: PAT_LINKS
 msgctxt "PAT_LINKS"
 msgid "Links:"
-msgstr ""
+msgstr "Havolalar:"
 
 # PAT_LINKS_HINT
 #: PAT_LINKS_HINT
 msgid "Patient Links"
-msgstr ""
+msgstr "Bemor havolalari"
 
 # PAT_LINK_REFER
 #: PAT_LINK_REFER
 msgid "Please refer to"
-msgstr ""
+msgstr "Iltimos, murojaat qiling"
 
 # PAT_LINK_REPL
 #: PAT_LINK_REPL
 msgid "This record replaces"
-msgstr ""
+msgstr "Bu yozuv oʻrnini bosadi"
 
 # PAT_LINK_REPLBY
 #: PAT_LINK_REPLBY
 msgid "This record replaced by"
-msgstr ""
+msgstr "Ushbu yozuv quyidagisi bilan almashtirilgan"
 
 # PAT_LINK_SEE
 #: PAT_LINK_SEE
 msgid "Also see"
-msgstr ""
+msgstr "Shuningdek qarang"
 
 # PAT_MARITAL
 #: PAT_MARITAL
 msgid "Marital Status:"
-msgstr ""
+msgstr "Oilaviy holati:"
 
 # PAT_MARITAL_HINT
 #: PAT_MARITAL_HINT
 msgid "Known Marital status of Patient"
-msgstr ""
+msgstr "Bemorning ma'lum oilaviy holati"
 
 # PAT_MO
 #: PAT_MO
 msgid "Managing Organization"
-msgstr ""
+msgstr "Boshqaruvchi tashkilot"
 
 # PAT_MUL_BIRTH
 #: PAT_MUL_BIRTH
 msgid "Multiple Birth:"
-msgstr ""
+msgstr "Ko‘p homilalik tug‘ilish:"
 
 # PAT_MUL_BIRTH_HINT
 #: PAT_MUL_BIRTH_HINT
 msgid "Known multipleBirth status of Patient"
-msgstr ""
+msgstr "Bemorning ko‘p homilalik tug‘ilish holati ma’lum"
 
 # PAT_NOK_CONTACT_HINT
 #: PAT_NOK_CONTACT_HINT
 msgid "Patient contact"
-msgstr ""
+msgstr "Bemor bilan bog'lanish"
 
 # PAT_NOM_CONTACT
 #: PAT_NOM_CONTACT
 msgid "Nominated Contact:"
-msgstr ""
+msgstr "Tayinlangan aloqa shaxsi:"
 
 # PAT_NO_DOB
 #: PAT_NO_DOB
 msgid "DoB Unknown"
-msgstr ""
+msgstr "Tug‘ilgan sana noma’lum"
 
 # PAT_NO_GENDER
 #: PAT_NO_GENDER
 msgid "(no stated gender)"
-msgstr ""
+msgstr "(jinsi ko'rsatilmagan)"
 
 # PAT_NO_NAME
 #: PAT_NO_NAME
 msgid "Anonymous Patient"
-msgstr ""
+msgstr "Anonim bemor"
 
 # PAT_ORG
 #: PAT_ORG
 msgid "Organization:"
-msgstr ""
+msgstr "Tashkilot:"
 
 # PAT_OTHER_ID
 #: PAT_OTHER_ID
 msgid "Other Id:"
 msgid_plural "Other Ids:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Boshqa identifikator:"
+msgstr[1] "Boshqa identifikatorlar:"
 
 # PAT_OTHER_ID_HINT
 #: PAT_OTHER_ID_HINT
 msgid "Other Id (see the one above)"
 msgid_plural "Other Ids (see the one above)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Boshqa identifikator (yuqoridagiga qarang)"
+msgstr[1] "Boshqa identifikatorlar (yuqoridagiga qarang)"
 
 # PAT_PERIOD
 #: PAT_PERIOD
 msgid "Valid Period:"
-msgstr ""
+msgstr "Amal qilish muddati:"
 
 # PAT_PHOTO
 #: PAT_PHOTO
 msgid "Patient Photo"
-msgstr ""
+msgstr "Bemorning fotosurati"
 
 # PAT_RELN
 #: PAT_RELN
 msgid "Relationships:"
-msgstr ""
+msgstr "Munosabatlar:"
 
 # PROF_DRIV_ERR_GEN_NARR
 #: PROF_DRIV_ERR_GEN_NARR
 msgid "Error Generating Narrative for"
-msgstr ""
+msgstr "Tavsif yaratishda xato"
 
 # PROF_DRIV_EXCP
 #: PROF_DRIV_EXCP
 msgid "Exception Generating Narrative: {0}"
-msgstr ""
+msgstr "Tavsif yaratishda istisno: {0}"
 
 # PROF_DRIV_FEXCP
 #: PROF_DRIV_FEXCP
 msgid "Cannot find definition for {0}"
-msgstr ""
+msgstr "{0} uchun ta’rif topilmadi"
 
 # PROF_DRIV_GEN_NARR
 #: PROF_DRIV_GEN_NARR
 msgid "{0} {1}"
-msgstr ""
+msgstr "{0} {1}"
 
 # PROF_DRIV_GEN_NARR_TECH
 #: PROF_DRIV_GEN_NARR_TECH
 msgid "Generated Narrative: {0} {1}"
-msgstr ""
+msgstr "Yaratilgan tavsif: {0} {1}"
 
 # PROF_DRIV_SUMM
 #: PROF_DRIV_SUMM
 msgctxt "PROF_DRIV_SUMM"
 msgid "{0}: {1}"
-msgstr ""
+msgstr "{0}: {1}"
 
 # PROF_DRIV_SUMM_PROP
 #: PROF_DRIV_SUMM_PROP
 msgid "{0} = {1}"
-msgstr ""
+msgstr "{0} = {1}"
 
 # PROV_ACT
 #: PROV_ACT
 msgid "Activity"
-msgstr ""
+msgstr "Faoliyat"
 
 # PROV_AGE
 #: PROV_AGE
 msgid "Agents"
-msgstr ""
+msgstr "Agentlar"
 
 # PROV_BEHALF
 #: PROV_BEHALF
 msgid "On Behalf Of"
-msgstr ""
+msgstr "Nomidan"
 
 # PROV_FOR
 #: PROV_FOR
 msgid "Provenance for {0}"
-msgstr ""
+msgstr "{0} uchun kelib chiqish ma’lumotlari"
 
 # PROV_OCC
 #: PROV_OCC
 msgid "Occurrence"
-msgstr ""
+msgstr "Sodir bo‘lishi"
 
 # PROV_POL
 #: PROV_POL
 msgid "Policy"
-msgstr ""
+msgstr "Siyosat"
 
 # PROV_PROV
 #: PROV_PROV
 msgid "Provenance for"
-msgstr ""
+msgstr "Kelib chiqish ma’lumotlari"
 
 # PROV_PROVE
 #: PROV_PROVE
 msgid "Provenance for:"
-msgstr ""
+msgstr "Kelib chiqish ma’lumotlari:"
 
 # PROV_REC
 #: PROV_REC
 msgid "Recorded"
-msgstr ""
+msgstr "Qayd etilgan"
 
 # PROV_REFERENCE
 #: PROV_REFERENCE
@@ -2672,1755 +2685,1755 @@ msgstr ""
 # PROV_WHO
 #: PROV_WHO
 msgid "who"
-msgstr ""
+msgstr "kim"
 
 # QUEST_ADD_INFO
 #: QUEST_ADD_INFO
 msgid "Additional information about the item"
-msgstr ""
+msgstr "Element haqidagi qo‘shimcha ma’lumotlar"
 
 # QUEST_ALLOWED
 #: QUEST_ALLOWED
 msgid "Allowed Answers"
-msgstr ""
+msgstr "Ruxsat etilgan javoblar"
 
 # QUEST_ANSW
 #: QUEST_ANSW
 msgid "Answer options for {0}"
-msgstr ""
+msgstr "{0} uchun javob variantlari"
 
 # QUEST_ANSWER
 #: QUEST_ANSWER
 msgid "Answer"
-msgstr ""
+msgstr "Javob"
 
 # QUEST_ANSWERS
 #: QUEST_ANSWERS
 msgid "Answers"
-msgstr ""
+msgstr "Javoblar"
 
 # QUEST_APP
 #: QUEST_APP
 msgid "Approval Date"
-msgstr ""
+msgstr "Tasdiqlash sanasi"
 
 # QUEST_ARE_TRUE
 #: QUEST_ARE_TRUE
 msgid "?? are true:"
-msgstr ""
+msgstr "?? are true:"
 
 # QUEST_ATTRIBUTES
 #: QUEST_ATTRIBUTES
 msgid "Other attributes of the item"
-msgstr ""
+msgstr "Elementning boshqa atributlari"
 
 # QUEST_CALC
 #: QUEST_CALC
 msgid "Calculated Value"
-msgstr ""
+msgstr "Hisoblangan qiymat"
 
 # QUEST_CAND
 #: QUEST_CAND
 msgid "Candidates"
-msgstr ""
+msgstr "Nomzodlar"
 
 # QUEST_CAT
 #: QUEST_CAT
 msgid "Category: {0}"
-msgstr ""
+msgstr "Toifa {0}"
 
 # QUEST_CONT
 #: QUEST_CONT
 msgid "Context"
-msgstr ""
+msgstr "Kontekst"
 
 # QUEST_DERIVED
 #: QUEST_DERIVED
 msgctxt "QUEST_DERIVED"
 msgid "Derived From"
-msgstr ""
+msgstr "Kelib chiqish manbasi"
 
 # QUEST_DISPLAY
 #: QUEST_DISPLAY
 msgid "Is optional to display"
-msgstr ""
+msgstr "Ko‘rsatilishi ixtiyoriy"
 
 # QUEST_DISPLAY_CAT
 #: QUEST_DISPLAY_CAT
 msgid "Display Category"
-msgstr ""
+msgstr "Ko‘rsatiladigan qiymat kategoriyasi"
 
 # QUEST_EFF_PERIOD
 #: QUEST_EFF_PERIOD
 msgid "Effective Period"
-msgstr ""
+msgstr "Amal qilish muddati"
 
 # QUEST_EN
 #: QUEST_EN
 msgid "Enable When"
-msgstr ""
+msgstr "Qachon yoqiladi"
 
 # QUEST_ENABLE
 #: QUEST_ENABLE
 msgid "Enable When:"
-msgstr ""
+msgstr "Qachon yoqiladi:"
 
 # QUEST_EXP
 #: QUEST_EXP
 msgid "Expressions:"
-msgstr ""
+msgstr "Ifodalar:"
 
 # QUEST_GROUP
 #: QUEST_GROUP
 msgid "Group"
-msgstr ""
+msgstr "Guruh"
 
 # QUEST_HIDDEN
 #: QUEST_HIDDEN
 msgid "Is a hidden item"
-msgstr ""
+msgstr "Yashirin element"
 
 # QUEST_HIDDEN_ITEM
 #: QUEST_HIDDEN_ITEM
 msgid "Hidden Item"
-msgstr ""
+msgstr "Yashirin element"
 
 # QUEST_ID
 #: QUEST_ID
 msgid "Link Id"
-msgstr ""
+msgstr "Bog‘lanish identifikatori"
 
 # QUEST_INITIAL
 #: QUEST_INITIAL
 msgid "Initial Value:"
-msgstr ""
+msgstr "Boshlang'ich qiymat:"
 
 # QUEST_INITIALLY
 #: QUEST_INITIALLY
 msgid "(initially selected)"
-msgstr ""
+msgstr "(dastlab tanlangan)"
 
 # QUEST_INITIAL_ANSWER
 #: QUEST_INITIAL_ANSWER
 msgid "Initial Answer"
-msgstr ""
+msgstr "Boshlang‘ich javob"
 
 # QUEST_INT
 #: QUEST_INT
 msgid "Initial Values"
-msgstr ""
+msgstr "Boshlang‘ich qiymatlar"
 
 # QUEST_ITEM
 #: QUEST_ITEM
 msgid "Item"
-msgstr ""
+msgstr "Element"
 
 # QUEST_ITEM_CONT
 #: QUEST_ITEM_CONT
 msgid "Item Context"
-msgstr ""
+msgstr "Elementlar konteksti"
 
 # QUEST_LINK
 #: QUEST_LINK
 msgid "The linkID for the item"
-msgstr ""
+msgstr "Element uchun linkID"
 
 # QUEST_LINKED
 #: QUEST_LINKED
 msgid "Is linked to an observation"
-msgstr ""
+msgstr "Kuzatuvga bog‘langan"
 
 # QUEST_LINKID
 #: QUEST_LINKID
 msgid "LinkID"
-msgstr ""
+msgstr "LinkID"
 
 # QUEST_MAND
 #: QUEST_MAND
 msgid "Mandatory"
-msgstr ""
+msgstr "Majburiy"
 
 # QUEST_MAX_LENGTH
 #: QUEST_MAX_LENGTH
 msgid "Max Length"
-msgstr ""
+msgstr "Maksimal uzunlik"
 
 # QUEST_NLM
 #: QUEST_NLM
 msgid "NLM Forms Library"
-msgstr ""
+msgstr "NLM Forms Library"
 
 # QUEST_NONE_SPEC
 #: QUEST_NONE_SPEC
 msgid "None specified"
-msgstr ""
+msgstr "Belgilanmagan"
 
 # QUEST_OBSERVATION
 #: QUEST_OBSERVATION
 msgid "Observation Link Period"
-msgstr ""
+msgstr "Kuzatuv bilan bog‘lanish muddati"
 
 # QUEST_OPT
 #: QUEST_OPT
 msgid "Options Sets"
-msgstr ""
+msgstr "Variantlar to‘plamlari"
 
 # QUEST_OPTIONS
 #: QUEST_OPTIONS
 msgid "Options:"
-msgstr ""
+msgstr "Variantlar:"
 
 # QUEST_ORIENTATION
 #: QUEST_ORIENTATION
 msgid "Orientation: {0}"
-msgstr ""
+msgstr "Yo‘nalish: {0}"
 
 # QUEST_PREFIX
 #: QUEST_PREFIX
 msgid "Prefix"
-msgstr ""
+msgstr "Prefiks"
 
 # QUEST_PUB
 #: QUEST_PUB
 msgid "Publication Date"
-msgstr ""
+msgstr "Nashr sanasi"
 
 # QUEST_QUEST
 #: QUEST_QUEST
 msgid "Questionnaire"
-msgstr ""
+msgstr "So'rovnoma"
 
 # QUEST_QUESTION
 #: QUEST_QUESTION
 msgid "Questionnaire:"
-msgstr ""
+msgstr "So'rovnoma:"
 
 # QUEST_READONLY
 #: QUEST_READONLY
 msgid "Is Read Only"
-msgstr ""
+msgstr "Faqat o‘qish uchun"
 
 # QUEST_READ_ONLY
 #: QUEST_READ_ONLY
 msgid "Read Only"
-msgstr ""
+msgstr "Faqat o‘qish uchun"
 
 # QUEST_REP
 #: QUEST_REP
 msgid "Repeats"
-msgstr ""
+msgstr "Takrorlanish"
 
 # QUEST_RESP_ROOT
 #: QUEST_RESP_ROOT
 msgid "QuestionnaireResponseRoot"
-msgstr ""
+msgstr "QuestionnaireResponseRoot"
 
 # QUEST_REV_DATE
 #: QUEST_REV_DATE
 msgid "Last Review Date"
-msgstr ""
+msgstr "Oxirgi ko‘rib chiqish sanasi"
 
 # QUEST_ROOT
 #: QUEST_ROOT
 msgid "QuestionnaireRoot"
-msgstr ""
+msgstr "QuestionnaireRoot"
 
 # QUEST_STRUCT
 #: QUEST_STRUCT
 msgid "Structure"
-msgstr ""
+msgstr "Tuzilma"
 
 # QUEST_SUBJECT
 #: QUEST_SUBJECT
 msgid "Can change the subject of the questionnaire"
-msgstr ""
+msgstr "So‘rovnoma subyektini o‘zgartirish mumkin"
 
 # QUEST_SUB_TYPE
 #: QUEST_SUB_TYPE
 msgid "Subject Type"
-msgstr ""
+msgstr "Subyekt turi"
 
 # QUEST_SUMMARY
 #: QUEST_SUMMARY
 msgid "Response to Questionnaire ''{0}'' about ''{1}''"
-msgstr ""
+msgstr "\"{1}\" bo‘yicha \"{0}\" so‘rovnomasiga javob"
 
 # QUEST_TEXT
 #: QUEST_TEXT
 msgid "Text"
-msgstr ""
+msgstr "Matn"
 
 # QUEST_TEXTFOR
 #: QUEST_TEXTFOR
 msgid "Text for the item"
-msgstr ""
+msgstr "Element matni"
 
 # QUEST_TIMES
 #: QUEST_TIMES
 msgid "Minimum and Maximum # of times the item can appear in the instance"
-msgstr ""
+msgstr "Element nusxada paydo bo‘lishining minimal va maksimal soni"
 
 # QUEST_TRUE
 #: QUEST_TRUE
 msgid "are true:"
-msgstr ""
+msgstr "are true:"
 
 # QUEST_TRY
 #: QUEST_TRY
 msgid "Try this questionnaire out:"
-msgstr ""
+msgstr "Ushbu so'rovnomani sinab ko'ring:"
 
 # QUEST_TRY_QUEST
 #: QUEST_TRY_QUEST
 msgid "Try this QuestionnaireResponse out:"
-msgstr ""
+msgstr "Ushbu QuestionnaireResponse ni sinab ko‘ring:"
 
 # QUEST_TYPE_ITEM
 #: QUEST_TYPE_ITEM
 msgid "The type of the item"
-msgstr ""
+msgstr "Element turi"
 
 # QUEST_UNKNOWN_MODE
 #: QUEST_UNKNOWN_MODE
 msgid "Unknown QuestionnaireResponse Renderer Mode"
-msgstr ""
+msgstr "Noma’lum QuestionnaireResponse Renderer rejimi"
 
 # QUEST_UNSPECIFIED_QUESTIONNAIRE
 #: QUEST_UNSPECIFIED_QUESTIONNAIRE
 msgid "Unspecified Questionnaire"
-msgstr ""
+msgstr "Aniqlanmagan so'rovnoma"
 
 # QUEST_UNSPECIFIED_SUBJECT
 #: QUEST_UNSPECIFIED_SUBJECT
 msgctxt "QUEST_UNSPECIFIED_SUBJECT"
 msgid "Unspecified Subject"
-msgstr ""
+msgstr "Aniqlanmagan subyekt"
 
 # QUEST_VALUE
 #: QUEST_VALUE
 msgid "Value Set:"
-msgstr ""
+msgstr "Qiymatlar to‘plami:"
 
 # R44B_DERIVES_FROM
 #: R44B_DERIVES_FROM
 msgid "derives from"
-msgstr ""
+msgstr "dan kelib chiqadi"
 
 # R44B_HAS_TARGET
 #: R44B_HAS_TARGET
 msgid "has target"
-msgstr ""
+msgstr "maqsadga ega"
 
 # R44B_HAS_TYPE
 #: R44B_HAS_TYPE
 msgid "has type"
-msgstr ""
+msgstr "turga ega"
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
 msgid "This is an {0} IG that is not compatible with {1}\" because"
-msgstr ""
+msgstr "Bu \"{1}\" bilan mos kelmaydigan {0} IG, chunki"
 
 # R44B_NOT_IN
 #: R44B_NOT_IN
 msgid "The following resources are not in the {0} version"
-msgstr ""
+msgstr "Quyidagi resurslar {0} versiyasida mavjud emas"
 
 # R44B_ONLY_IN
 #: R44B_ONLY_IN
 msgid "The following resources are only in the {0} version"
-msgstr ""
+msgstr "Quyidagi resurslar faqat {0} versiyasida mavjud"
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
 msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
-msgstr ""
+msgstr "<a href=\"{0}\">R4 ({1}.r4)</a> va <a href=\"{2}\">R4B ({3}.r4b)</a> uchun paketlar mavjud."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
 msgid "While checking for {0} compatibility, the following {1} problems were found"
-msgstr ""
+msgstr "{0} bilan moslik tekshirilayotganda quyidagi {1} muammolar aniqlandi"
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
 msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
-msgstr ""
+msgstr "<a href=\"{0}\">{1}</a> {2} dagi kanonik turga ishora qiladi"
 
 # R44B_USE_OK
 #: R44B_USE_OK
 msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1} systems."
-msgstr ""
+msgstr "Bu {0} implementatsiya bo‘yicha qo‘llanma hisoblanadi. Unda ishlatiladigan funksiyalarning hech biri {1} da o‘zgartirilmagan, shu sababli u {1} tizimlari bilan mavjud holatida ishlatilishi mumkin."
 
 # R44B_WRONG_MSG
 #: R44B_WRONG_MSG
 msgid "Something went wrong with the cross-version analysis because"
-msgstr ""
+msgstr "Versiyalararo tahlil jarayonida xatolik yuz berdi, chunki"
 
 # REND_ADDED
 #: REND_ADDED
 msgid "Added:"
-msgstr ""
+msgstr "Qo'shildi:"
 
 # REND_CHANGED
 #: REND_CHANGED
 msgid "Changed:"
-msgstr ""
+msgstr "Oʻzgartirildi:"
 
 # REND_REMOVED
 #: REND_REMOVED
 msgid "Removed:"
-msgstr ""
+msgstr "Olib tashlandi:"
 
 # REND_ROW_CHANGED_SINCE_WAS
 #: REND_ROW_CHANGED_SINCE_WAS
 msgid "This row of content has been changed since {0} (was ''{1}'')"
-msgstr ""
+msgstr "Ushbu kontent qatori {0} dan beri o‘zgartirilgan (avval \"{1}\" edi)"
 
 # REND_ROW_SINCE
 #: REND_ROW_SINCE
 msgid "This row of content has been added since {0}"
-msgstr ""
+msgstr "Ushbu kontent qatori {0} dan beri qo‘shilgan"
 
 # REND_SINCE_ADDED
 #: REND_SINCE_ADDED
 msgid "This content has been added since {0}"
-msgstr ""
+msgstr "Ushbu kontent {0} dan beri qo‘shilgan"
 
 # REND_SINCE_CHANGED
 #: REND_SINCE_CHANGED
 msgid "This content has been changed since {0}"
-msgstr ""
+msgstr "Ushbu kontent {0} dan beri o‘zgartirilgan"
 
 # REND_SINCE_CHANGED_WAS
 #: REND_SINCE_CHANGED_WAS
 msgid "This content has been changed since {0} (was ''{1}'')"
-msgstr ""
+msgstr "Ushbu kontent {0} dan beri o‘zgartirilgan (avval \"{1}\" edi)"
 
 # REND_STANDARDS
 #: REND_STANDARDS
 msgid "Standards Status = {0}"
-msgstr ""
+msgstr "Standartlar holati = {0}"
 
 # REQ_ACTOR
 #: REQ_ACTOR
 msgid "These requirements apply to the actor"
-msgstr ""
+msgstr "Ushbu talablar ishtirokchiga tatbiq etiladi"
 
 # REQ_DERIVE
 #: REQ_DERIVE
 msgid "These requirements derive from"
-msgstr ""
+msgstr "Ushbu talablar quyidagilardan kelib chiqadi"
 
 # REQ_DERIVED
 #: REQ_DERIVED
 msgid "Derived From:"
-msgstr ""
+msgstr "Olingan:"
 
 # REQ_FOLLOWING_ACTOR
 #: REQ_FOLLOWING_ACTOR
 msgid "These requirements apply to the following actors:"
-msgstr ""
+msgstr "Ushbu talablar quyidagi ishtirokchilarga tatbiq etiladi:"
 
 # REQ_FOLLOWING_REQ
 #: REQ_FOLLOWING_REQ
 msgid "These requirements are derived from the following requirements:"
-msgstr ""
+msgstr "Ushbu talablar quyidagi talablardan kelib chiqqan:"
 
 # REQ_LINKS
 #: REQ_LINKS
 msgctxt "REQ_LINKS"
 msgid "Links:"
-msgstr ""
+msgstr "Havolalar:"
 
 # REQ_SATISFIED
 #: REQ_SATISFIED
 msgid "Satisfied By:"
-msgstr ""
+msgstr "Quyidagilar tomonidan qondiriladi:"
 
 # RESOURCE_COPYRIGHT
 #: RESOURCE_COPYRIGHT
 msgid "Copyright Statement:"
-msgstr ""
+msgstr "Mualliflik huquqi bayonoti:"
 
 # RES_REND_ACT
 #: RES_REND_ACT
 msgid "Active"
-msgstr ""
+msgstr "Faol"
 
 # RES_REND_COND_REF
 #: RES_REND_COND_REF
 msgid "Conditional Reference:"
-msgstr ""
+msgstr "Shartli havola:"
 
 # RES_REND_DESC
 #: RES_REND_DESC
 msgid ". Description: (todo)"
-msgstr ""
+msgstr ". Tavsif: (todo)"
 
 # RES_REND_DRAFT
 #: RES_REND_DRAFT
 msgid "draft"
-msgstr ""
+msgstr "qoralama"
 
 # RES_REND_ERROR
 #: RES_REND_ERROR
 msgid "Error rendering: {0}"
-msgstr ""
+msgstr "Renderlashda xatolik: {0}"
 
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
 msgid "Information Source: <param name=\"source\"/>"
-msgstr ""
+msgstr "Ma'lumot manbasi: <param name=\"source\"/>"
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
 msgid "Language: {0}"
-msgstr ""
+msgstr "Til: {0}"
 
 # RES_REND_RET
 #: RES_REND_RET
 msgid "retired"
-msgstr ""
+msgstr "amal qilmaydi"
 
 # RES_REND_SEE_ON_THIS_PAGE
 #: RES_REND_SEE_ON_THIS_PAGE
 msgid "See on this page:"
-msgstr ""
+msgstr "Ushbu sahifada ko'ring:"
 
 # RES_REND_SPEC_RULES
 #: RES_REND_SPEC_RULES
 msgid "Special rules apply: {0}!"
-msgstr ""
+msgstr "Maxsus qoidalar qo‘llaniladi: {0}!"
 
 # RES_REND_TAG
 #: RES_REND_TAG
 msgid "Tag"
-msgstr ""
+msgstr "Teg"
 
 # RES_REND_TEMPLATE_ID
 #: RES_REND_TEMPLATE_ID
 msgid "templateId: {0}"
-msgstr ""
+msgstr "shablon asosida: {0}"
 
 # RES_REND_UNKNOWN
 #: RES_REND_UNKNOWN
 msgid "Unknown"
-msgstr ""
+msgstr "Nomaʼlum"
 
 # RES_REND_UPDATED
 #: RES_REND_UPDATED
 msgid "Last updated: {0}"
-msgstr ""
+msgstr "Oxirgi yangilanish: {0}"
 
 # RES_REND_VER
 #: RES_REND_VER
 msgid "version: {0}"
-msgstr ""
+msgstr "versiya: {0}"
 
 # SDR_ALL_ELEM
 #: SDR_ALL_ELEM
 msgid "**ALL** elements"
-msgstr ""
+msgstr "**BARCHA** elementlar"
 
 # SDR_ALL_EXT
 #: SDR_ALL_EXT
 msgid "**ALL** extensions"
-msgstr ""
+msgstr "**HAMMA** kengaytmalar"
 
 # SDR_ANY_ORDER
 #: SDR_ANY_ORDER
 msgid "// sliced by {0} in any order"
-msgstr ""
+msgstr "// {0} bo‘yicha istalgan tartibda slice qilingan"
 
 # SDR_BP
 #: SDR_BP
 msgid "best practice"
-msgstr ""
+msgstr "eng yaxshi amaliyot"
 
 # SDR_CAPSTMT
 #: SDR_CAPSTMT
 msgid "CapabilityStatements using this {0}"
-msgstr ""
+msgstr "Ushbu {0} dan foydalanadigan CapabilityStatementlar"
 
 # SDR_CH_DET
 #: SDR_CH_DET
 msgid "New Content"
-msgstr ""
+msgstr "Yangi kontent"
 
 # SDR_CH_NO
 #: SDR_CH_NO
 msgid "No changes"
-msgstr ""
+msgstr "O'zgarishlar yo'q"
 
 # SDR_CLICK_COPY
 #: SDR_CLICK_COPY
 msgid "Click to copy URL"
-msgstr ""
+msgstr "URL ni nusxalash uchun bosing"
 
 # SDR_CODE_FROM
 #: SDR_CODE_FROM
 msgid "(a valid code from {0})"
-msgstr ""
+msgstr "({0} dan olingan amal qiluvchi kod)"
 
 # SDR_COMPLY
 #: SDR_COMPLY
 msgid "Comply with this profile {0}"
-msgstr ""
+msgstr "Ushbu {0} profiliga muvofiq"
 
 # SDR_CONCEPT_DOMAIN
 #: SDR_CONCEPT_DOMAIN
 msgid "Concept Domain"
-msgstr ""
+msgstr "Tushuncha domeni"
 
 # SDR_CONT_CH_DET_CS
 #: SDR_CONT_CH_DET_CS
 msgid "The list of codes defined by the code system has changed"
-msgstr ""
+msgstr "Kod tizimi tomonidan belgilangan kodlar ro‘yxati o‘zgargan"
 
 # SDR_CONT_CH_DET_SD
 #: SDR_CONT_CH_DET_SD
 msgid "The data elements list has changed"
-msgstr ""
+msgstr "Ma’lumot elementlari ro‘yxati o‘zgargan"
 
 # SDR_CONT_CH_DET_VS
 #: SDR_CONT_CH_DET_VS
 msgid "The logical definition of the value set has changed"
-msgstr ""
+msgstr "Qiymatlar to‘plamining mantiqiy ta’rifi o‘zgargan"
 
 # SDR_CONT_CH_NO
 #: SDR_CONT_CH_NO
 msgid "Unable to evaluate changes to content"
-msgstr ""
+msgstr "Kontentdagi o‘zgarishlarni baholab bo‘lmadi"
 
 # SDR_DEFN_CH_DET_CS
 #: SDR_DEFN_CH_DET_CS
 msgctxt "SDR_DEFN_CH_DET_CS"
 msgid "One or more text definitions/displays have changed"
-msgstr ""
+msgstr "Bir yoki bir nechta matn ta’riflari / ko‘rsatiladigan qiymatlar o‘zgartirildi"
 
 # SDR_DEFN_CH_DET_SD
 #: SDR_DEFN_CH_DET_SD
 msgid "One or more text definitions, invariants or bindings have changed"
-msgstr ""
+msgstr "Bir yoki bir nechta matnli ta’riflar, invariantlar yoki bog‘lanishlar o‘zgargan"
 
 # SDR_DEFN_CH_DET_VS
 #: SDR_DEFN_CH_DET_VS
 msgctxt "SDR_DEFN_CH_DET_VS"
 msgid "One or more text definitions/displays have changed"
-msgstr ""
+msgstr "Bir yoki bir nechta matn ta’riflari / ko‘rsatiladigan qiymatlar o‘zgartirildi"
 
 # SDR_DEFN_CH_NO
 #: SDR_DEFN_CH_NO
 msgid "Unable to evaluate changes to definitions"
-msgstr ""
+msgstr "Ta’riflardagi o‘zgarishlarni baholab bo‘lmadi"
 
 # SDR_DERIVED
 #: SDR_DERIVED
 msgid "Derived from this {0}"
-msgstr ""
+msgstr "Ushbu {0} dan kelib chiqqan"
 
 # SDR_DRAFT
 #: SDR_DRAFT
 msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
-msgstr ""
+msgstr "Bu qoralama kengaytma ta’rifi; qo‘mita joriy etish bo‘yicha fikr-mulohazalarni yig‘moqda, va kengaytmaning ta’rifi yoki kontenti kelgusi versiyalarda o‘zgarishi mumkin"
 
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
 msgid "Draw in Obligations & Additional Bindings from this {0}"
-msgstr ""
+msgstr "Ushbu {0} dan majburiyatlar va qo‘shimcha bog‘lanishlarni qo‘shish"
 
 # SDR_EXAMPLE
 #: SDR_EXAMPLE
 msgid "Examples for this {0}"
-msgstr ""
+msgstr "Ushbu {0} uchun misollar"
 
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
 msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
-msgstr ""
+msgstr "Bu eksperimental kengaytma ta’rifi; u sinov maqsadlari, ta’lim yoki baholash uchun mo‘ljallangan bo‘lib, haqiqiy foydalanish darajasigacha yetuklashishi kutilmaydi."
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
 msgid "Simple Extension with the type {0}: {1}"
-msgstr ""
+msgstr "{0} turidagi oddiy kengaytma: {1}"
 
 # SDR_EXTENSION_SUMMARY_MODIFIER
 #: SDR_EXTENSION_SUMMARY_MODIFIER
 msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
-msgstr ""
+msgstr "{0} turidagi oddiy <b>Modifier</b> kengaytma: {1}"
 
 # SDR_EXT_ANY
 #: SDR_EXT_ANY
 msgid "This extension does not specify which elements it should be used on"
-msgstr ""
+msgstr "Ushbu kengaytma qaysi elementlarda qo‘llanilishi kerakligini aniqlamaydi"
 
 # SDR_EXT_CHANGED
 #: SDR_EXT_CHANGED
 msgid "The extension is represented a little differently in {0}"
-msgstr ""
+msgstr "Ushbu kengaytma {0} da biroz boshqacha ko‘rinishda taqdim etilgan"
 
 # SDR_EXT_CTXT_PATH
 #: SDR_EXT_CTXT_PATH
 msgid "In addition, the extension can only be used when this FHIRPath expression is true"
-msgstr ""
+msgstr "Bundan tashqari, ushbu kengaytma faqat ushbu FHIRPath ifodasi rost bo‘lganda qo‘llanilishi mumkin"
 
 # SDR_EXT_CTXT_PATHS
 #: SDR_EXT_CTXT_PATHS
 msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
-msgstr ""
+msgstr "Bundan tashqari, ushbu kengaytma faqat ushbu FHIRPath ifodalari rost bo‘lganda qo‘llanilishi mumkin"
 
 # SDR_EXT_DEPR
 #: SDR_EXT_DEPR
 msgid "This extension is deprecated and should no longer be used"
-msgstr ""
+msgstr "Ushbu kengaytma eskirgan va endi qo‘llanilmasligi kerak"
 
 # SDR_EXT_ELEM
 #: SDR_EXT_ELEM
 msgid "This extension may be used on the following element(s)"
-msgstr ""
+msgstr "Ushbu kengaytma quyidagi element(lar) da qo‘llanilishi mumkin"
 
 # SDR_EXT_ELEM_ID
 #: SDR_EXT_ELEM_ID
 msgid "Element ID"
-msgstr ""
+msgstr "Element ID"
 
 # SDR_EXT_EXT
 #: SDR_EXT_EXT
 msgctxt "SDR_EXT_EXT"
 msgid "Extension"
-msgstr ""
+msgstr "Kengaytma"
 
 # SDR_EXT_MOD
 #: SDR_EXT_MOD
 msgid "This extension is a modifier extension."
-msgstr ""
+msgstr "Ushbu kengaytma modifier kengaytma hisoblanadi."
 
 # SDR_EXT_PATH
 #: SDR_EXT_PATH
 msgctxt "SDR_EXT_PATH"
 msgid "Path"
-msgstr ""
+msgstr "Yoʻl"
 
 # SDR_EXT_UNCHANGED
 #: SDR_EXT_UNCHANGED
 msgid "The extension is unchanged in {0}"
-msgstr ""
+msgstr "Ushbu kengaytma {0} da o‘zgarmagan"
 
 # SDR_EXT_VER_PFX
 #: SDR_EXT_VER_PFX
 msgid "This extension is allowed for use with"
-msgstr ""
+msgstr "Ushbu kengaytmadan quyidagilar bilan foydalanishga ruxsat etiladi"
 
 # SDR_EXT_VER_SFX
 #: SDR_EXT_VER_SFX
 msgid "."
-msgstr ""
+msgstr "."
 
 # SDR_FIXED_VALUE
 #: SDR_FIXED_VALUE
 msgctxt "SDR_FIXED_VALUE"
 msgid "Fixed Value: {0}"
-msgstr ""
+msgstr "Belgilangan qiymat: {0}"
 
 # SDR_FROM
 #: SDR_FROM
 msgid "From {0}"
-msgstr ""
+msgstr "{0} dan"
 
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
 msgid "// from Element: <a href=\"{0}\">extension</a>"
-msgstr ""
+msgstr "// Elementdan: <a href=\"{0}\">extension</a>"
 
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
 msgid "here"
-msgstr ""
+msgstr "bu yerda"
 
 # SDR_GUIDANCE_PFX
 #: SDR_GUIDANCE_PFX
 msgid "Guidance on how to interpret the contents of this table can be found"
-msgstr ""
+msgstr "Ushbu jadval mazmunini qanday talqin qilish bo‘yicha ko‘rsatmalarni bu yerdan topish mumkin"
 
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #131 --"
-msgstr ""
+msgid "-- no content: do not translate #1 --"
+msgstr "-- no content: do not translate #1 --"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
 msgid "Impose this profile {0}"
-msgstr ""
+msgstr "Ushbu {0} profilini qo‘llash"
 
 # SDR_INTRP_CH_DET_VS
 #: SDR_INTRP_CH_DET_VS
 msgid "The expansion has changed"
-msgstr ""
+msgstr "Kengaytma ro‘yxati o‘zgargan"
 
 # SDR_INTRP_CH_NO_VS
 #: SDR_INTRP_CH_NO_VS
 msgid "Unable to evaluate changes to the expansion"
-msgstr ""
+msgstr "Kengaytma ro‘yxatidagi o‘zgarishlarni baholab bo‘lmadi"
 
 # SDR_LIMITED_ONE
 #: SDR_LIMITED_ONE
 msgid "This element is an array in the base standard, but the profile only allows one element"
-msgstr ""
+msgstr "Ushbu element asosiy standartda massiv hisoblanadi, biroq profil faqat bitta elementga ruxsat beradi"
 
 # SDR_META_CH_DET
 #: SDR_META_CH_DET
 msgid "The resource metadata has changed ({0})"
-msgstr ""
+msgstr "Resurs metama’lumotlari o‘zgargan ({0})"
 
 # SDR_META_CH_NO
 #: SDR_META_CH_NO
 msgid "Unable to evaluate changes to metadata"
-msgstr ""
+msgstr "Metama’lumotlardagi o‘zgarishlarni baholab bo‘lmadi"
 
 # SDR_MOD
 #: SDR_MOD
 msgid "(this element modifies the meaning of other elements)"
-msgstr ""
+msgstr "(bu element boshqa elementlarning ma’nosini o‘zgartiradi)"
 
 # SDR_MOD_SUPP
 #: SDR_MOD_SUPP
 msgid "(this element modifies the meaning of other elements, and must be supported)"
-msgstr ""
+msgstr "(bu element boshqa elementlarning ma’nosini o‘zgartiradi va qo‘llab-quvvatlanishi shart)"
 
 # SDR_MULTIPLE_PROFILES
 #: SDR_MULTIPLE_PROFILES
 msgid "Multiple profiles are not supported at this time"
-msgstr ""
+msgstr "Hozirda bir nechta profil qo‘llab-quvvatlanmaydi"
 
 # SDR_NOT_DONE_CC
 #: SDR_NOT_DONE_CC
 msgid "Error describing concept - not done yet (no codings, no text)"
-msgstr ""
+msgstr "Tushunchani tavsiflashda xatolik — hali bajarilmagan (kodlash yo‘q, matn yo‘q)"
 
 # SDR_NOT_GEN
 #: SDR_NOT_GEN
 msgid "Generating text summary of fixed value not yet done for type {0}"
-msgstr ""
+msgstr "{0} turi uchun belgilangan qiymatning matnli xulosasini yaratish hali bajarilmagan"
 
 # SDR_NOT_HANDLED_EXT
 #: SDR_NOT_HANDLED_EXT
 msgid "Not handled yet: complex extension ''{0}''"
-msgstr ""
+msgstr "Hali qayta ishlanmagan: murakkab kengaytma \"{0}\""
 
 # SDR_NOT_USED
 #: SDR_NOT_USED
 msgid "This {0} is not used by any profiles in this Implementation Guide"
-msgstr ""
+msgstr "Ushbu {0} ushbu Implementatsiya qo‘llanmasidagi hech bir profil tomonidan ishlatilmagan"
 
 # SDR_OFF_URL
 #: SDR_OFF_URL
 msgid "The official URL for this profile is"
-msgstr ""
+msgstr "Ushbu profil uchun rasmiy URL"
 
 # SDR_ONE_OF
 #: SDR_ONE_OF
 msgid "One of these {0}"
-msgstr ""
+msgstr "Quyidagilardan biri {0}"
 
 # SDR_ONLY_ONE
 #: SDR_ONLY_ONE
 msgid "Only One!"
-msgstr ""
+msgstr "Faqat bittasi!"
 
 # SDR_PATTERN_VALUE
 #: SDR_PATTERN_VALUE
 msgctxt "SDR_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
-msgstr ""
+msgstr "Andoza qiymat: {0}"
 
 # SDR_PRIM_VALUE
 #: SDR_PRIM_VALUE
 msgid "Primitive Value {0}"
-msgstr ""
+msgstr "Boshlang‘ich qiymat {0}"
 
 # SDR_REFER
 #: SDR_REFER
 msgid "Refer to this {0}"
-msgstr ""
+msgstr "Ushbu {0} ga murojaat qiling"
 
 # SDR_REQUIRED
 #: SDR_REQUIRED
 msgid "This element is required"
-msgstr ""
+msgstr "Ushbu element majburiy"
 
 # SDR_SEARCH
 #: SDR_SEARCH
 msgid "Search Parameters using this {0}"
-msgstr ""
+msgstr "Ushbu {0} dan foydalanadigan qidiruv parametrlari"
 
 # SDR_SORTED
 #: SDR_SORTED
 msgid "// sliced by {0} in the specified order {1}"
-msgstr ""
+msgstr "// {0} bo‘yicha belgilangan tartibda {1} slice qilingan"
 
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
 msgid "FHIR Std."
-msgstr ""
+msgstr "FHIR standarti."
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
 msgid "This IG"
-msgstr ""
+msgstr "Ushbu implementatsiya qo'llanmasi"
 
 # SDR_SUPP
 #: SDR_SUPP
 msgid "(this element must be supported)"
-msgstr ""
+msgstr "(bu element qo‘llab-quvvatlanishi shart)"
 
 # SDR_UNK_EXT
 #: SDR_UNK_EXT
 msgid "Not handled yet: unknown extension ''{0}''"
-msgstr ""
+msgstr "Hali qayta ishlanmagan: noma’lum kengaytma \"{0}\""
 
 # SDR_USAGE
 #: SDR_USAGE
 msgid "Usages"
-msgstr ""
+msgstr "Foydalanishlar"
 
 # SDR_USE
 #: SDR_USE
 msgid "Use this {0}"
-msgstr ""
+msgstr "Ushbu {0} dan foydalaning"
 
 # SDR_VER_BEF
 #: SDR_VER_BEF
 msgid "For versions until {0}"
-msgstr ""
+msgstr "{0} gacha bo‘lgan versiyalar uchun"
 
 # SDR_VER_FOR
 #: SDR_VER_FOR
 msgid "For version {0}"
-msgstr ""
+msgstr "{0} versiya uchun"
 
 # SDR_VER_FROM_PFX
 #: SDR_VER_FROM_PFX
 msgctxt "SDR_VER_FROM_PFX"
 msgid "FHIR versions"
-msgstr ""
+msgstr "FHIR versiyalari"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
 msgid "and after"
-msgstr ""
+msgstr "va undan keyin"
 
 # SDR_VER_ON
 #: SDR_VER_ON
 msgid "For versions {0} onwards"
-msgstr ""
+msgstr "{0} dan boshlab bo‘lgan versiyalar uchun"
 
 # SDR_VER_RANGE
 #: SDR_VER_RANGE
 msgid "For versions {0} to {1}"
-msgstr ""
+msgstr "{0} dan {1} gacha bo‘lgan versiyalar uchun"
 
 # SDR_VER_RANGE_MID
 #: SDR_VER_RANGE_MID
 msgctxt "SDR_VER_RANGE_MID"
 msgid "to"
-msgstr ""
+msgstr "dan … gacha"
 
 # SDR_VER_RANGE_PFX
 #: SDR_VER_RANGE_PFX
 msgctxt "SDR_VER_RANGE_PFX"
 msgid "FHIR versions"
-msgstr ""
+msgstr "FHIR versiyalari"
 
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #132 --"
-msgstr ""
+msgid "-- no content: do not translate #2 --"
+msgstr "-- no content: do not translate #2 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
 msgid "FHIR versions up to"
-msgstr ""
+msgstr "FHIR versiyalarigacha"
 
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #133 --"
-msgstr ""
+msgid "-- no content: do not translate #3 --"
+msgstr "-- no content: do not translate #3 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
 msgid "For unknown versions"
-msgstr ""
+msgstr "Nomaʼlum versiyalar uchun"
 
 # SDT_DEF
 #: SDT_DEF
 msgctxt "SDT_DEF"
 msgid "Definition"
-msgstr ""
+msgstr "Ta'rif"
 
 # SDT_DT
 #: SDT_DT
 msgid "DataType"
-msgstr ""
+msgstr "DataType"
 
 # SDT_DT_PROF
 #: SDT_DT_PROF
 msgid "DataType Profile"
-msgstr ""
+msgstr "DataType profili"
 
 # SDT_EXTENSION
 #: SDT_EXTENSION
 msgctxt "SDT_EXTENSION"
 msgid "Extension"
-msgstr ""
+msgstr "Kengaytma"
 
 # SDT_LM
 #: SDT_LM
 msgctxt "SDT_LM"
 msgid "Logical Model"
-msgstr ""
+msgstr "Mantiqiy model"
 
 # SDT_LM_PROF
 #: SDT_LM_PROF
 msgid "Logical Model Profile"
-msgstr ""
+msgstr "Mantiqiy model profili"
 
 # SDT_OBLIGATION_PROFILE
 #: SDT_OBLIGATION_PROFILE
 msgid "Obligation Profile"
-msgstr ""
+msgstr "Majburiyatlar profili"
 
 # SDT_ORIGINAL_SOURCE
 #: SDT_ORIGINAL_SOURCE
 msgid "Original Source"
-msgstr ""
+msgstr "Asl manba"
 
 # SDT_PT
 #: SDT_PT
 msgid "Primitive Type"
-msgstr ""
+msgstr "Boshlang‘ich tur"
 
 # SDT_PT_PROF
 #: SDT_PT_PROF
 msgid "Primitive Type Profile"
-msgstr ""
+msgstr "Boshlang‘ich tur profili"
 
 # SDT_RES
 #: SDT_RES
 msgctxt "SDT_RES"
 msgid "Resource"
-msgstr ""
+msgstr "Resurs"
 
 # SDT_RES_PROF
 #: SDT_RES_PROF
 msgctxt "SDT_RES_PROF"
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
 msgid "L Card."
-msgstr ""
+msgstr "L Card."
 
 # SD_COMP_HEAD_CARD_L_DESC
 #: SD_COMP_HEAD_CARD_L_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance - Left Structure"
-msgstr ""
+msgstr "Element nusxada paydo bo‘lishining minimal va maksimal soni — Chap tuzilma"
 
 # SD_COMP_HEAD_CARD_R
 #: SD_COMP_HEAD_CARD_R
 msgid "R Card."
-msgstr ""
+msgstr "R Card."
 
 # SD_COMP_HEAD_CARD_R_DESC
 #: SD_COMP_HEAD_CARD_R_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance - Right Structure"
-msgstr ""
+msgstr "Element nusxada paydo bo‘lishining minimal va maksimal soni — O‘ng tuzilma"
 
 # SD_COMP_HEAD_COMP_DESC
 #: SD_COMP_HEAD_COMP_DESC
 msgid "Comments about the comparison"
-msgstr ""
+msgstr "Taqqoslash bo‘yicha izohlar"
 
 # SD_COMP_HEAD_DESC_L
 #: SD_COMP_HEAD_DESC_L
 msgid "L Description & Constraints"
-msgstr ""
+msgstr "L Tavsif va cheklovlar"
 
 # SD_COMP_HEAD_DESC_L_DESC
 #: SD_COMP_HEAD_DESC_L_DESC
 msgid "Additional information about the element - Left Structure"
-msgstr ""
+msgstr "Element haqida qo'shimcha ma'lumot - Chap tuzilma"
 
 # SD_COMP_HEAD_DESC_R
 #: SD_COMP_HEAD_DESC_R
 msgid "R Description & Constraints"
-msgstr ""
+msgstr "R Tavsif va cheklovlar"
 
 # SD_COMP_HEAD_DESC_R_DESC
 #: SD_COMP_HEAD_DESC_R_DESC
 msgid "Additional information about the element - Right Structure"
-msgstr ""
+msgstr "Element haqida qo‘shimcha ma’lumot — O‘ng tuzilma"
 
 # SD_COMP_HEAD_FLAGS_L
 #: SD_COMP_HEAD_FLAGS_L
 msgid "L Flags"
-msgstr ""
+msgstr "L Belgilar"
 
 # SD_COMP_HEAD_FLAGS_L_DESC
 #: SD_COMP_HEAD_FLAGS_L_DESC
 msgid "Information about the use of the element - Left Structure"
-msgstr ""
+msgstr "Elementdan foydalanish bo‘yicha ma’lumot — Chap tuzilma"
 
 # SD_COMP_HEAD_FLAGS_R
 #: SD_COMP_HEAD_FLAGS_R
 msgid "R Flags"
-msgstr ""
+msgstr "R belgilar"
 
 # SD_COMP_HEAD_FLAGS_R_DESC
 #: SD_COMP_HEAD_FLAGS_R_DESC
 msgid "Information about the use of the element - Right Structure"
-msgstr ""
+msgstr "Elementdan foydalanish bo‘yicha ma’lumot — O‘ng tuzilma"
 
 # SD_COMP_HEAD_TYPE_L
 #: SD_COMP_HEAD_TYPE_L
 msgid "L Type"
-msgstr ""
+msgstr "L turi"
 
 # SD_COMP_HEAD_TYPE_L_DESC
 #: SD_COMP_HEAD_TYPE_L_DESC
 msgid "Reference to the type of the element - Left Structure"
-msgstr ""
+msgstr "Element turiga havola — Chap tuzilma"
 
 # SD_COMP_HEAD_TYPE_R
 #: SD_COMP_HEAD_TYPE_R
 msgid "R Type"
-msgstr ""
+msgstr "R turi"
 
 # SD_COMP_HEAD_TYPE_R_DESC
 #: SD_COMP_HEAD_TYPE_R_DESC
 msgid "Reference to the type of the element - Right Structure"
-msgstr ""
+msgstr "Element turiga havola — O‘ng tuzilma"
 
 # SD_DOCO
 #: SD_DOCO
 msgid "Documentation for this format"
-msgstr ""
+msgstr "Ushbu format bo‘yicha hujjatlar"
 
 # SD_GRID_HEAD_CARD_DESC
 #: SD_GRID_HEAD_CARD_DESC
 msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
-msgstr ""
+msgstr "Element nusxada paydo bo‘lishining minimal va maksimal soni. Yuqori indekslar paydo bo‘lishga oid qo‘shimcha cheklovlarni ko‘rsatadi"
 
 # SD_GRID_HEAD_DESC
 #: SD_GRID_HEAD_DESC
 msgid "Constraints and Usage"
-msgstr ""
+msgstr "Cheklovlar va foydalanish"
 
 # SD_GRID_HEAD_DESC_DESC
 #: SD_GRID_HEAD_DESC_DESC
 msgid "Fixed values, length limits, vocabulary bindings and other usage notes"
-msgstr ""
+msgstr "Belgilangan qiymatlar, uzunlik cheklovlari, lug‘at bog‘lanishlari va boshqa foydalanish izohlari"
 
 # SD_GRID_HEAD_NAME_DESC
 #: SD_GRID_HEAD_NAME_DESC
 msgid "The name of the element (Slice name in brackets).  Mouse-over provides definition"
-msgstr ""
+msgstr "Element nomi (qavs ichida Slice nomi). Sichqoncha ustiga olib borilganda ta’rif ko‘rsatiladi"
 
 # SD_GRID_HEAD_TYPE_DESC
 #: SD_GRID_HEAD_TYPE_DESC
 msgid "Reference to the type of the element"
-msgstr ""
+msgstr "Element turiga havola"
 
 # SD_HEAD_CARD_DESC
 #: SD_HEAD_CARD_DESC
 msgctxt "SD_HEAD_CARD_DESC"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr ""
+msgstr "Element nusxada paydo bo‘lishining minimal va maksimal soni"
 
 # SD_HEAD_DESC_DESC
 #: SD_HEAD_DESC_DESC
 msgid "Additional information about the element"
-msgstr ""
+msgstr "Element haqida qo‘shimcha ma’lumot"
 
 # SD_HEAD_FLAGS_DESC
 #: SD_HEAD_FLAGS_DESC
 msgid "Information about the use of the element"
-msgstr ""
+msgstr "Elementdan foydalanish bo‘yicha ma’lumot"
 
 # SD_LEGEND
 #: SD_LEGEND
 msgid "Legend for this format"
-msgstr ""
+msgstr "Ushbu format uchun belgi izohi"
 
 # SD_SLICING_INFO
 #: SD_SLICING_INFO
 msgid "{0}, {1} by {2}"
-msgstr ""
+msgstr "{2} tomonidan {0}, {1}"
 
 # SD_SUMMARY_FIXED
 #: SD_SUMMARY_FIXED
 msgid "Fixed: {0} {1}"
-msgstr ""
+msgstr "Belgilangan: {0} {1}"
 
 # SD_SUMMARY_MANDATORY
 #: SD_SUMMARY_MANDATORY
 msgid "Mandatory: {0} {1}"
-msgstr ""
+msgstr "Majburiy: {0} {1}"
 
 # SD_SUMMARY_MISSING_EXTENSION
 #: SD_SUMMARY_MISSING_EXTENSION
 msgid "Unable to summarise extension {0} (no extension found)"
-msgstr ""
+msgstr "Kengaytma {0} bo‘yicha xulosa tuzib bo‘lmadi (kengaytma topilmadi)"
 
 # SD_SUMMARY_MISSING_PROFILE
 #: SD_SUMMARY_MISSING_PROFILE
 msgid "Unable to summarise profile {0} (no profile found)"
-msgstr ""
+msgstr "Profil {0} bo‘yicha xulosa tuzib bo‘lmadi (profil topilmadi)"
 
 # SD_SUMMARY_MUST_SUPPORT
 #: SD_SUMMARY_MUST_SUPPORT
 msgid "Must-Support: {0} {1}"
-msgstr ""
+msgstr "Qo‘llab-quvvatlash majburiy: {0} {1}"
 
 # SD_SUMMARY_NESTED_MANDATORY
 #: SD_SUMMARY_NESTED_MANDATORY
 msgid "({0} nested mandatory {1})"
-msgstr ""
+msgstr "({0} ichma-ich majburiy {1})"
 
 # SD_SUMMARY_PROHIBITED
 #: SD_SUMMARY_PROHIBITED
 msgid "Prohibited: {0} {1}"
-msgstr ""
+msgstr "Taqiqlangan: {0} {1}"
 
 # SD_SUMMARY_PUBLICATION
 #: SD_SUMMARY_PUBLICATION
 msgid "This profile was published on {0} as a {1} by {2}"
-msgstr ""
+msgstr "Ushbu profil {0} sanada {2} tomonidan {1} sifatida e’lon qilingan"
 
 # SD_SUMMARY_SLICE
 #: SD_SUMMARY_SLICE
 msgid "The element {0} is sliced based on the value of {1}"
 msgid_plural "The element {0} is sliced based on the values of {1}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{0} elementi {1} qiymati asosida slice qilingan"
+msgstr[1] "{0} elementi {1} qiymatlariga asoslanib slice qilingan"
 
 # SD_SUMMARY_SLICES
 #: SD_SUMMARY_SLICES
 msgid "This structure defines the following {0}Slices{1}"
-msgstr ""
+msgstr "Ushbu tuzilma quyidagi {0} ta slice{1} ni belgilaydi"
 
 # SD_SUMMARY_SLICE_NONE
 #: SD_SUMMARY_SLICE_NONE
 msgid "There is a slice with no discriminator at {0}"
-msgstr ""
+msgstr "{0} da diskriminatorsiz slice mavjud"
 
 # SD_XIG_LINK
 #: SD_XIG_LINK
 msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
-msgstr ""
+msgstr "<p>Shuningdek, <a href=\"https://packages2.fhir.org/xig/{0}current/StructureDefinition/{1}\">FHIR IG Statistics dagi foydalanishlarni</a> ham tekshirishingiz mumkin</p>"
 
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED
 msgid "Allowed:"
-msgstr ""
+msgstr "Ruxsat etilgan:"
 
 # SEARCH_PAR_CHAIN
 #: SEARCH_PAR_CHAIN
 msgid "Chains"
-msgstr ""
+msgstr "Zanjirlar"
 
 # SEARCH_PAR_EXP
 #: SEARCH_PAR_EXP
 msgid "Expression"
-msgstr ""
+msgstr "Ifoda"
 
 # SEARCH_PAR_MULTIPLES
 #: SEARCH_PAR_MULTIPLES
 msgid "Multiples"
-msgstr ""
+msgstr "Bir nechta qiymatlar"
 
 # SEARCH_PAR_MULTIPLE_AND_APPEAR
 #: SEARCH_PAR_MULTIPLE_AND_APPEAR
 msgid "multipleAnd: The parameter may only appear once"
-msgstr ""
+msgstr "multipleAnd: Parametr faqat bir marta paydo bo‘lishi mumkin"
 
 # SEARCH_PAR_MULTIPLE_AND_REPEAT
 #: SEARCH_PAR_MULTIPLE_AND_REPEAT
 msgid "multipleAnd: The parameter may repeat in order to specify multiple values that must all be true"
-msgstr ""
+msgstr "multipleAnd: Barchasi rost bo‘lishi kerak bo‘lgan bir nechta qiymatlarni ko‘rsatish uchun parametr takrorlanishi mumkin"
 
 # SEARCH_PAR_MULTIPLE_AND_SERVER
 #: SEARCH_PAR_MULTIPLE_AND_SERVER
 msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
-msgstr ""
+msgstr "multipleAnd: Barchasi rost bo‘lishi kerak bo‘lgan bir nechta qiymatlarni ko‘rsatish uchun parametrning takrorlanishiga ruxsat berilishi serverga bog‘liq"
 
 # SEARCH_PAR_MULTIPLE_OR_MULTIPLE
 #: SEARCH_PAR_MULTIPLE_OR_MULTIPLE
 msgid "multipleOr: The parameter may have multiple values (separated by comma) where at least one must be true"
-msgstr ""
+msgstr "multipleOr: Kamida bittasi rost bo‘lishi kerak bo‘lgan bir nechta qiymatlarga (vergul bilan ajratilgan) ega bo‘lishi mumkin"
 
 # SEARCH_PAR_MULTIPLE_OR_ONE
 #: SEARCH_PAR_MULTIPLE_OR_ONE
 msgid "multipleOr: The parameter may only have one value (no comma separators)"
-msgstr ""
+msgstr "multipleOr: Parametr faqat bitta qiymatga ega bo‘lishi mumkin (vergul bilan ajratishsiz)"
 
 # SEARCH_PAR_MULTIPLE_OR_SERVER
 #: SEARCH_PAR_MULTIPLE_OR_SERVER
 msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
-msgstr ""
+msgstr "multipleOr: Kamida bittasi rost bo‘lishi kerak bo‘lgan bir nechta qiymatlarga (vergul bilan ajratilgan) ega bo‘lishiga ruxsat berilishi serverga bog‘liq"
 
 # SEARCH_PAR_NONE
 #: SEARCH_PAR_NONE
 msgctxt "SEARCH_PAR_NONE"
 msgid "(none)"
-msgstr ""
+msgstr "(yo'q)"
 
 # SEARCH_PAR_PROC
 #: SEARCH_PAR_PROC
 msgid "Processing Mode"
-msgstr ""
+msgstr "Qayta ishlash rejimi"
 
 # SEARCH_PAR_REND_TARGET
 #: SEARCH_PAR_REND_TARGET
 msgid "Target Resources"
-msgstr ""
+msgstr "Maqsadli resurslar"
 
 # SEARCH_PAR_RES
 #: SEARCH_PAR_RES
 msgid "All Resources"
-msgstr ""
+msgstr "Barcha resurslar"
 
 # STATUS_MSG_AUTOBUILD
 #: STATUS_MSG_AUTOBUILD
 msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
-msgstr ""
+msgstr "{0}, {1} tomonidan e’lon qilingan. Ushbu qo‘llanma rasmiy nashr emas; u FHIR (HL7&reg; FHIR&reg; Standard) CI Build tomonidan yaratilgan {2} versiyasi uchun uzluksiz yig‘ma hisoblanadi. Ushbu versiya <a href=''{3}''>{3}</a> dagi joriy kontentga asoslangan va muntazam ravishda o‘zgarib turadi. <a href=''{4}/history.html''>Nashr etilgan versiyalar katalogi</a>ni ko‘ring"
 
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
 msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr ""
+msgstr "{0} — FHIR (HL7® FHIR® Standard) Build Tools tomonidan yaratilgan mahalliy ishlab chiqish yig‘masi (v{1}). <a href=\"{2}/history.html\">Nashr etilgan versiyalar katalogi</a>ni ko‘ring"
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
 msgid "Publication Build: This will be filled in by the publication tooling"
-msgstr ""
+msgstr "Nashr yig‘masi: Bu nashr qilish vositalari tomonidan to‘ldiriladi"
 
 # STRUC_DEF_ABSTRACT
 #: STRUC_DEF_ABSTRACT
 msgid "This is an abstract"
-msgstr ""
+msgstr "Bu abstrakt obyekt"
 
 # STRUC_DEF_ACT
 #: STRUC_DEF_ACT
 msgid "Obligations that apply to the actor {0}"
-msgstr ""
+msgstr "{0} ishtirokchisiga tatbiq etiladigan majburiyatlar"
 
 # STRUC_DEF_AFFECT_CONSTRAINTS
 #: STRUC_DEF_AFFECT_CONSTRAINTS
 msgid "This element has or is affected by constraints ("
-msgstr ""
+msgstr "Ushbu element cheklovlarga ega yoki ular ta’sirida ("
 
 # STRUC_DEF_ALLOWED
 #: STRUC_DEF_ALLOWED
 msgid "Allowed Units"
-msgstr ""
+msgstr "Ruxsat etilgan birliklar"
 
 # STRUC_DEF_ALL_ACTORS
 #: STRUC_DEF_ALL_ACTORS
 msgid "All Actors"
-msgstr ""
+msgstr "Barcha ishtirokchilar"
 
 # STRUC_DEF_ALL_SLICES
 #: STRUC_DEF_ALL_SLICES
 msgid ":All Slices"
-msgstr ""
+msgstr ":Barcha slices"
 
 # STRUC_DEF_ALL_TYPES
 #: STRUC_DEF_ALL_TYPES
 msgid "All Types"
-msgstr ""
+msgstr "Barcha turlar"
 
 # STRUC_DEF_ALT_NAME
 #: STRUC_DEF_ALT_NAME
 msgid "Alternate Names"
-msgstr ""
+msgstr "Muqobil nomlar"
 
 # STRUC_DEF_AND
 #: STRUC_DEF_AND
 msgctxt "STRUC_DEF_AND"
 msgid "and"
-msgstr ""
+msgstr "va"
 
 # STRUC_DEF_APPROP_CON
 #: STRUC_DEF_APPROP_CON
 msgid "Concepts must come from this value set if appropriate concept is in this value set"
-msgstr ""
+msgstr "Agar mos tushuncha ushbu qiymatlar to‘plamida mavjud bo‘lsa, tushunchalar ushbu qiymatlar to‘plamidan olinishi kerak"
 
 # STRUC_DEF_AS_SHOWN
 #: STRUC_DEF_AS_SHOWN
 msgid "As shown"
-msgstr ""
+msgstr "Ko'rsatilgandek"
 
 # STRUC_DEF_BECAUSE
 #: STRUC_DEF_BECAUSE
 msgid "because"
-msgstr ""
+msgstr "sababi"
 
 # STRUC_DEF_BINDINGS
 #: STRUC_DEF_BINDINGS
 msgid "Binding:"
-msgstr ""
+msgstr "Bogʻlanish:"
 
 # STRUC_DEF_BINDING_STYLE
 #: STRUC_DEF_BINDING_STYLE
 msgid "binding style"
-msgstr ""
+msgstr "bog‘lanish uslubi"
 
 # STRUC_DEF_BLACK
 #: STRUC_DEF_BLACK
 msgid "black"
-msgstr ""
+msgstr "qora"
 
 # STRUC_DEF_BUSINESS_ID
 #: STRUC_DEF_BUSINESS_ID
 msgid "This is a business identifier, not a resource identifier (see"
-msgstr ""
+msgstr "Bu biznes identifikatori, resurs identifikatori emas (qarang"
 
 # STRUC_DEF_BUSINESS_VERID
 #: STRUC_DEF_BUSINESS_VERID
 msgid "This is a business version Id, not a resource version Id (see"
-msgstr ""
+msgstr "Bu biznes versiya identifikatori, resurs versiya identifikatori emas (qarang"
 
 # STRUC_DEF_CAND
 #: STRUC_DEF_CAND
 msgid "Candidate"
-msgstr ""
+msgstr "Nomzod"
 
 # STRUC_DEF_CAND_SUB
 #: STRUC_DEF_CAND_SUB
 msgid "This value set is a candidate to substitute for the overall conformance value set in some situations; usually these are defined in the documentation"
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plami ayrim holatlarda umumiy muvofiqlik qiymatlar to‘plamini almashtirish uchun nomzod hisoblanadi; odatda bunday holatlar hujjatlarda belgilangan"
 
 # STRUC_DEF_CANNOT_TARGET
 #: STRUC_DEF_CANNOT_TARGET
 msgid "Instances of this logical model cannot be the target of a Reference"
-msgstr ""
+msgstr "Ushbu mantiqiy model instansiyalari Reference uchun maqsad bo‘la olmaydi"
 
 # STRUC_DEF_CANT_FIND
 #: STRUC_DEF_CANT_FIND
 msgid "getElementByName: can''t find {0} in {1} from {2}"
-msgstr ""
+msgstr "getElementByName: {2} dan {1} ichida {0} topilmadi"
 
 # STRUC_DEF_CAN_TARGET
 #: STRUC_DEF_CAN_TARGET
 msgid "Instances of this logical model can be the target of a Reference"
-msgstr ""
+msgstr "Ushbu mantiqiy model instansiyalari Reference uchun maqsad bo‘lishi mumkin"
 
 # STRUC_DEF_CAP
 #: STRUC_DEF_CAP
 msgid "CAP Code"
-msgstr ""
+msgstr "CAP kodi"
 
 # STRUC_DEF_CDA
 #: STRUC_DEF_CDA
 msgid "This property is represented as CDA Text in the XML."
-msgstr ""
+msgstr "Ushbu xususiyat XMLda CDA Text sifatida ifodalanadi."
 
 # STRUC_DEF_CHILD
 #: STRUC_DEF_CHILD
 msgid "Child"
-msgstr ""
+msgstr "Quyi element"
 
 # STRUC_DEF_CHOICE
 #: STRUC_DEF_CHOICE
 msgid "(Choice of one)"
-msgstr ""
+msgstr "(Bittadan tanlash)"
 
 # STRUC_DEF_CHOICE_DATA_TYPE
 #: STRUC_DEF_CHOICE_DATA_TYPE
 msgid "Choice of Data Types"
-msgstr ""
+msgstr "Ma’lumot turlari tanlovi"
 
 # STRUC_DEF_CHOICE_GRP
 #: STRUC_DEF_CHOICE_GRP
 msgid "Choice Group"
-msgstr ""
+msgstr "Tanlov guruhi"
 
 # STRUC_DEF_CHOICE_OF
 #: STRUC_DEF_CHOICE_OF
 msgid "Choice of:"
-msgstr ""
+msgstr "Tanlov:"
 
 # STRUC_DEF_CLOSED
 #: STRUC_DEF_CLOSED
 msgid "Closed"
-msgstr ""
+msgstr "Yopiq"
 
 # STRUC_DEF_COMMENT
 #: STRUC_DEF_COMMENT
 msgid "Comments:"
-msgstr ""
+msgstr "Izohlar:"
 
 # STRUC_DEF_COMPLEX
 #: STRUC_DEF_COMPLEX
 msgid "Complex"
-msgstr ""
+msgstr "Murakkab"
 
 # STRUC_DEF_COMPLEXBRACK
 #: STRUC_DEF_COMPLEXBRACK
 msgid "(Complex)"
-msgstr ""
+msgstr "(Murakkab)"
 
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
 msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plami asosiy qiymatlar to‘plamining komponenti hisoblanadi. Odatda bu qiymatlar to‘plamining ma’lum bir qismi bo‘yicha hujjatlarni yozish uchun alohida ko‘rsatiladi"
 
 # STRUC_DEF_COMP_EX
 #: STRUC_DEF_COMP_EX
 msgid "(Complex Extension)"
-msgstr ""
+msgstr "(Murakkab kengaytma)"
 
 # STRUC_DEF_COMP_PROF
 #: STRUC_DEF_COMP_PROF
 msgid "Complies with Profile"
-msgstr ""
+msgstr "Profilga muvofiq"
 
 # STRUC_DEF_CONC_SET
 #: STRUC_DEF_CONC_SET
 msgid "Concepts must come from this value set"
-msgstr ""
+msgstr "Tushunchalar ushbu qiymatlar to‘plamidan olinishi kerak"
 
 # STRUC_DEF_CONSTRAINING
 #: STRUC_DEF_CONSTRAINING
 msgid "Slice Constraining"
-msgstr ""
+msgstr "Slice cheklovlari"
 
 # STRUC_DEF_CONSTRAINTS
 #: STRUC_DEF_CONSTRAINTS
 msgctxt "STRUC_DEF_CONSTRAINTS"
 msgid "Constraints"
-msgstr ""
+msgstr "Cheklovlar"
 
 # STRUC_DEF_CONTROL
 #: STRUC_DEF_CONTROL
 msgid "Control"
-msgstr ""
+msgstr "Boshqaruv"
 
 # STRUC_DEF_CONT_RULE
 #: STRUC_DEF_CONT_RULE
 msgid "Content/Rules for all slices"
-msgstr ""
+msgstr "Barcha slices uchun kontent / qoidalar"
 
 # STRUC_DEF_CONT_TYPE
 #: STRUC_DEF_CONT_TYPE
 msgid "Content/Rules for all Types"
-msgstr ""
+msgstr "Barcha turlar uchun kontent/qoidalar"
 
 # STRUC_DEF_COPY_CODING
 #: STRUC_DEF_COPY_CODING
 msgid "Click to Copy as Coding"
-msgstr ""
+msgstr "Kodlash sifatida nusxalash uchun bosing"
 
 # STRUC_DEF_COPY_URL
 #: STRUC_DEF_COPY_URL
 msgid "Click to Copy URL"
-msgstr ""
+msgstr "URLni nusxalash uchun bosing"
 
 # STRUC_DEF_CURR
 #: STRUC_DEF_CURR
 msgctxt "STRUC_DEF_CURR"
 msgid "Current"
-msgstr ""
+msgstr "Joriy"
 
 # STRUC_DEF_CURR_RULE
 #: STRUC_DEF_CURR_RULE
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
-msgstr ""
+msgstr "Yangi yozuvlar ushbu qiymatlar to‘plamidan foydalanishi shart, biroq eski yozuvlar boshqa kodlardan foydalanishi mumkin. “Yangi yozuv” tushunchasini aniqlash qiyin, chunki tizimlar ko‘pincha mavjud ma’lumotlar asosida yangi yozuvlar yaratadi. Odatda “joriy” bog‘lanishlar bu borada aniq qoidalarni belgilovchi tashqi vakolatli organ tomonidan majburiy etib belgilanadi"
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
 msgid "Date Format: {0}"
-msgstr ""
+msgstr "Sana formati: {0}"
 
 # STRUC_DEF_DATE_FORM
 #: STRUC_DEF_DATE_FORM
 msgid "Date Format"
-msgstr ""
+msgstr "Sana formati"
 
 # STRUC_DEF_DEFAULT_TYPE
 #: STRUC_DEF_DEFAULT_TYPE
 msgid "Default Type"
-msgstr ""
+msgstr "Standart tur"
 
 # STRUC_DEF_DEFAULT_VALUE
 #: STRUC_DEF_DEFAULT_VALUE
 msgid "Default Value"
-msgstr ""
+msgstr "Andoza qiymat"
 
 # STRUC_DEF_DEF_CODES
 #: STRUC_DEF_DEF_CODES
 msgid "Definitional Codes"
-msgstr ""
+msgstr "Ta’riflovchi kodlar"
 
 # STRUC_DEF_DERIVED_PROFILE
 #: STRUC_DEF_DERIVED_PROFILE
 msgid "In this IG, the following structures are derived from this profile:"
-msgstr ""
+msgstr "Ushbu IG doirasida quyidagi tuzilmalar ushbu profildan hosil qilingan:"
 
 # STRUC_DEF_DESCRIM
 #: STRUC_DEF_DESCRIM
 msgid ", and can be differentiated using the following discriminators:"
-msgstr ""
+msgstr ", va quyidagi diskriminatorlar yordamida farqlanishi mumkin:"
 
 # STRUC_DEF_DESC_PROF
 #: STRUC_DEF_DESC_PROF
 msgid "Description of the profile"
-msgstr ""
+msgstr "Profil tavsifi"
 
 # STRUC_DEF_DISCUSSION
 #: STRUC_DEF_DISCUSSION
 msgid "discussion"
-msgstr ""
+msgstr "muhokama"
 
 # STRUC_DEF_ELE
 #: STRUC_DEF_ELE
 msgid "This primitive element must have a value"
-msgstr ""
+msgstr "Ushbu primitiv element qiymatga ega bo‘lishi shart"
 
 # STRUC_DEF_ELEMENT
 #: STRUC_DEF_ELEMENT
 msgid "element"
-msgstr ""
+msgstr "element"
 
 # STRUC_DEF_ELEMENTS
 #: STRUC_DEF_ELEMENTS
 msgid "Elements defined in Ancestors:"
-msgstr ""
+msgstr "Ajdodlarda aniqlangan elementlar:"
 
 # STRUC_DEF_ELE_AFFECTED
 #: STRUC_DEF_ELE_AFFECTED
 msgid "This element has or is affected by constraints ( {0} {1}"
-msgstr ""
+msgstr "Ushbu element cheklovlarga ega yoki ular ta’sirida ({0} {1}"
 
 # STRUC_DEF_ELE_INCLUDED
 #: STRUC_DEF_ELE_INCLUDED
 msgid "This element is included in summaries"
-msgstr ""
+msgstr "Ushbu element xulosalarga kiritiladi"
 
 # STRUC_DEF_ELE_MUST_SUPP
 #: STRUC_DEF_ELE_MUST_SUPP
 msgid "This element must be supported"
-msgstr ""
+msgstr "Ushbu element qo‘llab-quvvatlanishi shart"
 
 # STRUC_DEF_ELE_READ
 #: STRUC_DEF_ELE_READ
 msgid "When this element is read"
-msgstr ""
+msgstr "Ushbu element oʻqilganda"
 
 # STRUC_DEF_ERROR
 #: STRUC_DEF_ERROR
 msgid "Unknown structure mode"
-msgstr ""
+msgstr "Nomaʼlum tuzilma rejimi"
 
 # STRUC_DEF_ERR_DESC
 #: STRUC_DEF_ERR_DESC
 msgid "Error describing concept- not done yet (no codings, no text)"
-msgstr ""
+msgstr "Tushunchani tavsiflashda xatolik — hali bajarilmagan (kodlar yo‘q, matn yo‘q)"
 
 # STRUC_DEF_EXAM
 #: STRUC_DEF_EXAM
 msgid "example"
-msgstr ""
+msgstr "misol"
 
 # STRUC_DEF_EXT
 #: STRUC_DEF_EXT
 msgctxt "STRUC_DEF_EXT"
 msgid "Extensible"
-msgstr ""
+msgstr "Kengaytiriladigan"
 
 # STRUC_DEF_EXTENSIBLE
 #: STRUC_DEF_EXTENSIBLE
 msgid "extensible"
-msgstr ""
+msgstr "kengaytiriladigan"
 
 # STRUC_DEF_EXTENSIONS
 #: STRUC_DEF_EXTENSIONS
 msgid "Extensions"
-msgstr ""
+msgstr "Kengaytmalar"
 
 # STRUC_DEF_EXT_JSON
 #: STRUC_DEF_EXT_JSON
 msgid "This element can be extended by named JSON elements"
-msgstr ""
+msgstr "Ushbu element nomlangan JSON elementlari orqali kengaytirilishi mumkin"
 
 # STRUC_DEF_EXT_STYLE
 #: STRUC_DEF_EXT_STYLE
 msgid "Extension Style"
-msgstr ""
+msgstr "Kengaytma uslubi"
 
 # STRUC_DEF_EX_CODE
 #: STRUC_DEF_EX_CODE
 msgid "For example codes, see"
-msgstr ""
+msgstr "Kodlar misoli uchun qarang"
 
 # STRUC_DEF_EX_DESC
 #: STRUC_DEF_EX_DESC
 msgid "Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included."
-msgstr ""
+msgstr "Instansiyalardan ko‘rsatilgan qiymatlar to‘plamidan foydalanish kutilmaydi yoki rag‘batlantirilmaydi. Qiymatlar to‘plami faqat kiritilishi ko‘zda tutilgan tushunchalar turlariga misollarni taqdim etadi."
 
 # STRUC_DEF_EX_TYPE
 #: STRUC_DEF_EX_TYPE
 msgid "(Extension Type:"
-msgstr ""
+msgstr "(Kengaytma turi:"
 
 # STRUC_DEF_EX_URL
 #: STRUC_DEF_EX_URL
 msgid "Extension URL = {0}"
-msgstr ""
+msgstr "Kengaytma URL = {0}"
 
 # STRUC_DEF_FHIR
 #: STRUC_DEF_FHIR
 msgid "Base FHIR {0}"
-msgstr ""
+msgstr "Asosiy FHIR {0}"
 
 # STRUC_DEF_FHIR_EXCEP
 #: STRUC_DEF_FHIR_EXCEP
 msgid "Unable to retrieve StructureDefinition with URL {0}"
-msgstr ""
+msgstr "URL {0} bo‘yicha StructureDefinition ni olishning imkoni bo‘lmadi"
 
 # STRUC_DEF_FII
 #: STRUC_DEF_FII
 msgid "Formal Invariant Identifier"
-msgstr ""
+msgstr "Rasmiy invariant identifikatori"
 
 # STRUC_DEF_FIXED
 #: STRUC_DEF_FIXED
 msgid "Fixed Value"
-msgstr ""
+msgstr "Qat’iy belgilangan qiymat"
 
 # STRUC_DEF_FIXED_VALUE
 #: STRUC_DEF_FIXED_VALUE
 msgid "Fixed Value:"
-msgstr ""
+msgstr "Qat’iy belgilangan qiymat:"
 
 # STRUC_DEF_FOR_CODE
 #: STRUC_DEF_FOR_CODE
 msgid "For codes, see"
-msgstr ""
+msgstr "Kodlar uchun qarang"
 
 # STRUC_DEF_FURTHER_INFO
 #: STRUC_DEF_FURTHER_INFO
 msgid "for further information about how to use [x]"
-msgstr ""
+msgstr "[x] dan foydalanish bo‘yicha qo‘shimcha ma’lumot uchun"
 
 # STRUC_DEF_GRADE
 #: STRUC_DEF_GRADE
 msgid "Grade"
-msgstr ""
+msgstr "Daraja"
 
 # STRUC_DEF_ID
 #: STRUC_DEF_ID
@@ -4431,1489 +4444,1489 @@ msgstr ""
 # STRUC_DEF_ID_EXPECT
 #: STRUC_DEF_ID_EXPECT
 msgid "ID Expectation"
-msgstr ""
+msgstr "ID talabi"
 
 # STRUC_DEF_ID_IS
 #: STRUC_DEF_ID_IS
 msgid "Id may or not be present (this is the default for elements but not resources)"
-msgstr ""
+msgstr "Id mavjud bo‘lishi ham, bo‘lmasligi ham mumkin (bu elementlar uchun andoza holat, resurslar uchun emas)"
 
 # STRUC_DEF_ID_MAY
 #: STRUC_DEF_ID_MAY
 msgid "Id is required to be present (this is the default for resources but not elements)"
-msgstr ""
+msgstr "Id mavjud bo‘lishi shart (bu resurslar uchun andoza holat, elementlar uchun emas)"
 
 # STRUC_DEF_ID_NOT_ALLOW
 #: STRUC_DEF_ID_NOT_ALLOW
 msgid "An id is not allowed in this context"
-msgstr ""
+msgstr "Ushbu kontekstda id ga ruxsat etilmaydi"
 
 # STRUC_DEF_IF
 #: STRUC_DEF_IF
 msgid "If"
-msgstr ""
+msgstr "If"
 
 # STRUC_DEF_IMPLEMENTS
 #: STRUC_DEF_IMPLEMENTS
 msgid "Interfaces Implemented"
-msgstr ""
+msgstr "Amalga oshirilgan interfeyslar"
 
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
 msgid "Impose Profile"
-msgstr ""
+msgstr "Profilni qo'llash"
 
 # STRUC_DEF_INFERRED_JSON
 #: STRUC_DEF_INFERRED_JSON
 msgid "The type of this element is inferred from the JSON type in the instance"
-msgstr ""
+msgstr "Ushbu element turi instansiyadagi JSON turi asosida aniqlanadi"
 
 # STRUC_DEF_INVAR
 #: STRUC_DEF_INVAR
 msgid "Invariants"
-msgstr ""
+msgstr "Invariantlar"
 
 # STRUC_DEF_INVARIANT
 #: STRUC_DEF_INVARIANT
 msgid "This element is affected by the following invariants:"
-msgstr ""
+msgstr "Ushbu element quyidagi invariantlar ta’sirida:"
 
 # STRUC_DEF_JSON_ARRAY
 #: STRUC_DEF_JSON_ARRAY
 msgid "JSON: This element may be present as a JSON Array even when there are no items in the instance"
-msgstr ""
+msgstr "JSON: Ushbu element instansiyada elementlar bo‘lmasa ham JSON Array sifatida mavjud bo‘lishi mumkin"
 
 # STRUC_DEF_JSON_CAN_NAME
 #: STRUC_DEF_JSON_CAN_NAME
 msgid "This type can appear in JSON with the property name"
-msgstr ""
+msgstr "Ushbu tur JSONda xususiyat nomi bilan paydo bo‘lishi mumkin"
 
 # STRUC_DEF_JSON_CHILD
 #: STRUC_DEF_JSON_CHILD
 msgid "child"
-msgstr ""
+msgstr "quyi element"
 
 # STRUC_DEF_JSON_EXT
 #: STRUC_DEF_JSON_EXT
 msgid "(in elements using named extensions)"
-msgstr ""
+msgstr "(nomlangan kengaytmalardan foydalanadigan elementlarda)"
 
 # STRUC_DEF_JSON_FORM
 #: STRUC_DEF_JSON_FORM
 msgid "JSON Format"
-msgstr ""
+msgstr "JSON formati"
 
 # STRUC_DEF_JSON_IF
 #: STRUC_DEF_JSON_IF
 msgid "JSON: If"
-msgstr ""
+msgstr "JSON: If"
 
 # STRUC_DEF_JSON_INFERRED
 #: STRUC_DEF_JSON_INFERRED
 msgid "JSON: The type of this element is inferred from the JSON type in the instance"
-msgstr ""
+msgstr "JSON: Ushbu element turi instansiyadagi JSON turi asosida aniqlanadi"
 
 # STRUC_DEF_JSON_IS
 #: STRUC_DEF_JSON_IS
 msgid "This element is present as a JSON Array even when there are no items in the instance"
-msgstr ""
+msgstr "Ushbu element instansiyada elementlar bo‘lmasa ham JSON Array sifatida mavjud bo‘ladi"
 
 # STRUC_DEF_JSON_MAY
 #: STRUC_DEF_JSON_MAY
 msgid "This element may be present as a JSON Array even when there are no items in the instance"
-msgstr ""
+msgstr "Ushbu element instansiyada elementlar bo‘lmasa ham JSON Array sifatida mavjud bo‘lishi mumkin"
 
 # STRUC_DEF_JSON_MAY_PRESENT
 #: STRUC_DEF_JSON_MAY_PRESENT
 msgid "The JSON Array for this property may be present even when there are no items in the instance (e.g. may be present as an empty array)"
-msgstr ""
+msgstr "Ushbu xususiyat uchun JSON Array instansiyada elementlar bo‘lmasa ham mavjud bo‘lishi mumkin (masalan, bo‘sh array sifatida)"
 
 # STRUC_DEF_JSON_NAME
 #: STRUC_DEF_JSON_NAME
 msgid "JSON Property Name"
-msgstr ""
+msgstr "JSON xususiyat nomi"
 
 # STRUC_DEF_JSON_NOT_PRESENT
 #: STRUC_DEF_JSON_NOT_PRESENT
 msgid "The JSON Array for this property is not present when there are no items in the instance (e.g. never as an empty array)"
-msgstr ""
+msgstr "Ushbu xususiyat uchun JSON Array instansiyada elementlar bo‘lmasa mavjud bo‘lmaydi (masalan, hech qachon bo‘sh array sifatida emas)"
 
 # STRUC_DEF_JSON_NULL
 #: STRUC_DEF_JSON_NULL
 msgid "JSON: This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr ""
+msgstr "JSON: Ushbu obyekt JSON tuzilmasida null sifatida ifodalanishi mumkin (kardinallik maqsadlari uchun “mavjud” deb hisoblanadi)"
 
 # STRUC_DEF_JSON_PRESENT
 #: STRUC_DEF_JSON_PRESENT
 msgid "The JSON Array for this property is present even when there are no items in the instance (e.g. as an empty array)"
-msgstr ""
+msgstr "Ushbu xususiyat uchun JSON Array instansiyada elementlar bo‘lmasa ham mavjud bo‘ladi (masalan, bo‘sh array sifatida)"
 
 # STRUC_DEF_JSON_PROPERTY_NAME
 #: STRUC_DEF_JSON_PROPERTY_NAME
 msgid "This property appears in JSON with the property name"
-msgstr ""
+msgstr "Ushbu xususiyat JSONda xususiyat nomi bilan paydo bo‘ladi"
 
 # STRUC_DEF_JSON_SINGLE
 #: STRUC_DEF_JSON_SINGLE
 msgid "This repeating object is represented as a single JSON object with named properties. The name of the property (key) is the value of the"
-msgstr ""
+msgstr "Ushbu takrorlanuvchi obyekt nomlangan xususiyatlarga ega yagona JSON obyekt sifatida ifodalanadi. Xususiyat nomi (kalit) qiymati —"
 
 # STRUC_DEF_JSON_TYPE
 #: STRUC_DEF_JSON_TYPE
 msgid "JSON Property Name for Type"
-msgstr ""
+msgstr "Tur uchun JSON xususiyat nomi"
 
 # STRUC_DEF_LABEL
 #: STRUC_DEF_LABEL
 msgid "Label"
-msgstr ""
+msgstr "Yorliq"
 
 # STRUC_DEF_LEAST_FOLLOW
 #: STRUC_DEF_LEAST_FOLLOW
 msgid "At least the following"
-msgstr ""
+msgstr "Kamida quyidagilar"
 
 # STRUC_DEF_LOGICAL
 #: STRUC_DEF_LOGICAL
 msgctxt "STRUC_DEF_LOGICAL"
 msgid "Logical Model"
-msgstr ""
+msgstr "Mantiqiy model"
 
 # STRUC_DEF_LOGICAL_CONT
 #: STRUC_DEF_LOGICAL_CONT
 msgid "Logical Container"
-msgstr ""
+msgstr "Mantiqiy konteyner"
 
 # STRUC_DEF_LOINC
 #: STRUC_DEF_LOINC
 msgid "LOINC Code"
-msgstr ""
+msgstr "LOINC kodi"
 
 # STRUC_DEF_LOINC_CODE
 #: STRUC_DEF_LOINC_CODE
 msgid "LOINC code"
-msgstr ""
+msgstr "LOINC kodi"
 
 # STRUC_DEF_MAX
 #: STRUC_DEF_MAX
 msgid "Maximum"
-msgstr ""
+msgstr "Maksimum"
 
 # STRUC_DEF_MAX_MIN
 #: STRUC_DEF_MAX_MIN
 msgctxt "STRUC_DEF_MAX_MIN"
 msgid "Minimum and Maximum # of times the element can appear in the instance"
-msgstr ""
+msgstr "Element instansiyada paydo bo‘lishining minimal va maksimal soni"
 
 # STRUC_DEF_MAX_VALUE
 #: STRUC_DEF_MAX_VALUE
 msgid "Max Value"
-msgstr ""
+msgstr "Maksimal qiymat"
 
 # STRUC_DEF_MEAN_MISS
 #: STRUC_DEF_MEAN_MISS
 msgid "Meaning if Missing"
-msgstr ""
+msgstr "Mavjud bo‘lmaganda ma’nosi"
 
 # STRUC_DEF_MIN
 #: STRUC_DEF_MIN
 msgid "Minimum"
-msgstr ""
+msgstr "Minimum"
 
 # STRUC_DEF_MIN_VALUE
 #: STRUC_DEF_MIN_VALUE
 msgid "Min Value"
-msgstr ""
+msgstr "Minimal qiymat"
 
 # STRUC_DEF_MISSING_LINK
 #: STRUC_DEF_MISSING_LINK
 msgid "missing link"
-msgstr ""
+msgstr "yetishmayotgan havola"
 
 # STRUC_DEF_MOD
 #: STRUC_DEF_MOD
 msgid "This element is a modifier element"
-msgstr ""
+msgstr "Ushbu element modifikator element hisoblanadi"
 
 # STRUC_DEF_MODIF
 #: STRUC_DEF_MODIF
 msgid "Modifier"
-msgstr ""
+msgstr "Modifikator"
 
 # STRUC_DEF_MODIFIER
 #: STRUC_DEF_MODIFIER
 msgid "Is Modifier"
-msgstr ""
+msgstr "Modifikator hisoblanadi"
 
 # STRUC_DEF_MODIFIER_EXT
 #: STRUC_DEF_MODIFIER_EXT
 msgid "This is a modifier extension"
-msgstr ""
+msgstr "Modifikator kengaytma"
 
 # STRUC_DEF_MUST_SUPPORT
 #: STRUC_DEF_MUST_SUPPORT
 msgid "Must Support"
-msgstr ""
+msgstr "Majburiy qo‘llab-quvvatlash"
 
 # STRUC_DEF_MUST_SUPPORT_TYPES
 #: STRUC_DEF_MUST_SUPPORT_TYPES
 msgid "Must Support Types"
-msgstr ""
+msgstr "Majburiy qo‘llab-quvvatlanadigan turlar"
 
 # STRUC_DEF_NAMESPACE
 #: STRUC_DEF_NAMESPACE
 msgid "In the XML format, this property has the namespace"
-msgstr ""
+msgstr "XML formatida ushbu xususiyat namespace ga ega"
 
 # STRUC_DEF_NOTE_X
 #: STRUC_DEF_NOTE_X
 msgid "[x] Note"
-msgstr ""
+msgstr "[x] Izoh"
 
 # STRUC_DEF_NOT_MARK
 #: STRUC_DEF_NOT_MARK
 msgid "Instances of this logical model are not marked to be the target of a Reference"
-msgstr ""
+msgstr "Ushbu mantiqiy model instansiyalari Reference uchun maqsad sifatida belgilab qo‘yilmagan"
 
 # STRUC_DEF_NO_DESCRIM
 #: STRUC_DEF_NO_DESCRIM
 msgid ", and defines no disciminators to differentiate the slices"
-msgstr ""
+msgstr "va slicesni farqlash uchun diskriminatorlar belgilanmaydi"
 
 # STRUC_DEF_NO_MAPPINGS
 #: STRUC_DEF_NO_MAPPINGS
 msgid "No Mappings"
-msgstr ""
+msgstr "Moslashtirishlar yo‘q"
 
 # STRUC_DEF_NO_MUST_SUPPORT
 #: STRUC_DEF_NO_MUST_SUPPORT
 msgid "No must-support rules about the choice of types/profiles"
-msgstr ""
+msgstr "Turlar/profillarni tanlash bo‘yicha majburiy qo‘llab-quvvatlash qoidalari yo‘q"
 
 # STRUC_DEF_NO_SUMMARY
 #: STRUC_DEF_NO_SUMMARY
 msgid "No Summary, as this profile has no differential"
-msgstr ""
+msgstr "Xulosa yo‘q, chunki ushbu profilda differential mavjud emas"
 
 # STRUC_DEF_NULL_JSON
 #: STRUC_DEF_NULL_JSON
 msgid "This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
-msgstr ""
+msgstr "Ushbu obyekt JSON tuzilmasida null sifatida ifodalanishi mumkin (kardinallik maqsadlari uchun “mavjud” deb hisoblanadi)"
 
 # STRUC_DEF_OBLIG
 #: STRUC_DEF_OBLIG
 msgid "This element has obligations"
-msgstr ""
+msgstr "Ushbu element majburiyatlarga ega"
 
 # STRUC_DEF_OBLIG_ADD
 #: STRUC_DEF_OBLIG_ADD
 msgid "This is an obligation profile that only contains obligations and additional bindings"
-msgstr ""
+msgstr "Bu faqat majburiyatlar va qo‘shimcha bog‘lanishlarni o‘z ichiga olgan majburiyatlar profili"
 
 # STRUC_DEF_OBLIG_ALL
 #: STRUC_DEF_OBLIG_ALL
 msgid "Obligations that apply to all actors"
-msgstr ""
+msgstr "Barcha ishtirokchilarga tatbiq etiladigan majburiyatlar"
 
 # STRUC_DEF_OBLIG_FROM
 #: STRUC_DEF_OBLIG_FROM
 msgid "This profile picks up obligations and additional bindings from"
-msgstr ""
+msgstr "Ushbu profil majburiyatlar va qo‘shimcha bog‘lanishlarni quyidagidan oladi"
 
 # STRUC_DEF_OBLIG_SUPP
 #: STRUC_DEF_OBLIG_SUPP
 msgid "This element has obligations and must be supported"
-msgstr ""
+msgstr "Ushbu element majburiyatlarga ega va majburiy qo‘llab-quvvatlanishi kerak"
 
 # STRUC_DEF_ONE_OF
 #: STRUC_DEF_ONE_OF
 msgid "One of:"
-msgstr ""
+msgstr "Quyidagilardan biri:"
 
 # STRUC_DEF_OPEN
 #: STRUC_DEF_OPEN
 msgid "Open"
-msgstr ""
+msgstr "Ochiq"
 
 # STRUC_DEF_OPEN_END
 #: STRUC_DEF_OPEN_END
 msgid "Open At End"
-msgstr ""
+msgstr "Oxirida ochiq"
 
 # STRUC_DEF_ORDERED
 #: STRUC_DEF_ORDERED
 msgid "Ordered"
-msgstr ""
+msgstr "Tartibli"
 
 # STRUC_DEF_PATH
 #: STRUC_DEF_PATH
 msgctxt "STRUC_DEF_PATH"
 msgid "Path"
-msgstr ""
+msgstr "Yoʻl"
 
 # STRUC_DEF_PATHS
 #: STRUC_DEF_PATHS
 msgid "Path(s)"
-msgstr ""
+msgstr "Yoʻl(lar)"
 
 # STRUC_DEF_PATT_VALUE
 #: STRUC_DEF_PATT_VALUE
 msgid "Pattern Value"
-msgstr ""
+msgstr "Andoza qiymat"
 
 # STRUC_DEF_PREFERRED
 #: STRUC_DEF_PREFERRED
 msgid "preferred"
-msgstr ""
+msgstr "afzal"
 
 # STRUC_DEF_PREFIXED
 #: STRUC_DEF_PREFIXED
 msgid "is prefixed to the value before validation"
-msgstr ""
+msgstr "tekshiruvdan oldin qiymatning oldiga qo‘shiladi"
 
 # STRUC_DEF_PREF_CONT
 #: STRUC_DEF_PREF_CONT
 msgid "This is the value set that is preferred in a given context (documentation should explain why)"
-msgstr ""
+msgstr "Bu muayyan kontekstda afzal ko‘riladigan qiymatlar to‘plami (hujjatlarda sababi tushuntirilishi kerak)"
 
 # STRUC_DEF_PRIMITIVE
 #: STRUC_DEF_PRIMITIVE
 msgid "Primitive Value"
-msgstr ""
+msgstr "Primitiv qiymat"
 
 # STRUC_DEF_PRIM_ELE
 #: STRUC_DEF_PRIM_ELE
 msgid "This primitive element may be present, or absent, or replaced by an extension"
-msgstr ""
+msgstr "Ushbu primitiv element mavjud bo‘lishi, mavjud bo‘lmasligi yoki kengaytma bilan almashtirilishi mumkin"
 
 # STRUC_DEF_PRIM_TYPE_PRESENT
 #: STRUC_DEF_PRIM_TYPE_PRESENT
 msgid "This primitive type may be present, or absent if replaced by one of the following extensions:"
-msgstr ""
+msgstr "Ushbu primitiv tur mavjud bo‘lishi mumkin yoki quyidagi kengaytmalardan biri bilan almashtirilgan bo‘lsa, mavjud bo‘lmasligi mumkin:"
 
 # STRUC_DEF_PRIM_TYPE_VALUE
 #: STRUC_DEF_PRIM_TYPE_VALUE
 msgid "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)"
-msgstr ""
+msgstr "Ushbu primitiv tur qiymatga ega bo‘lishi shart (qiymat mavjud bo‘lishi kerak va kengaytma bilan almashtirilishi mumkin emas)"
 
 # STRUC_DEF_PROFILED
 #: STRUC_DEF_PROFILED
 msgid "profiled by"
-msgstr ""
+msgstr "profillangan"
 
 # STRUC_DEF_PROFILE_BUILDS
 #: STRUC_DEF_PROFILE_BUILDS
 msgid "This profile builds on"
-msgstr ""
+msgstr "Ushbu profil quyidagiga asoslanadi"
 
 # STRUC_DEF_PROF_COMP
 #: STRUC_DEF_PROF_COMP
 msgid "This profile complies with the profile"
-msgstr ""
+msgstr "Ushbu profil profilga muvofiq"
 
 # STRUC_DEF_PROF_REQ
 #: STRUC_DEF_PROF_REQ
 msgid "This profile also requires that the instance also conform this additional profile:"
-msgstr ""
+msgstr "Ushbu profil instansiya ushbu qo‘shimcha profilga ham muvofiq bo‘lishini talab qiladi:"
 
 # STRUC_DEF_PROF_RES
 #: STRUC_DEF_PROF_RES
 msgid "A profiled resource"
-msgstr ""
+msgstr "Profillangan resurs"
 
 # STRUC_DEF_PROF_SUPP
 #: STRUC_DEF_PROF_SUPP
 msgid "This profile must be supported"
-msgstr ""
+msgstr "Ushbu profil majburiy qo‘llab-quvvatlanishi kerak"
 
 # STRUC_DEF_PROPERTY
 #: STRUC_DEF_PROPERTY
 msgid "Property"
-msgstr ""
+msgstr "Xususiyat"
 
 # STRUC_DEF_REFERS_EXT
 #: STRUC_DEF_REFERS_EXT
 msgid "This structure refers to these extensions"
-msgstr ""
+msgstr "Ushbu tuzilma ushbu kengaytmalarga murojaat qiladi"
 
 # STRUC_DEF_REFER_PROFILE
 #: STRUC_DEF_REFER_PROFILE
 msgid "In this IG, the following structures refer to this profile:"
-msgstr ""
+msgstr "Ushbu IG doirasida quyidagi tuzilmalar ushbu profilga murojaat qiladi:"
 
 # STRUC_DEF_REND_UNABLE_RES
 #: STRUC_DEF_REND_UNABLE_RES
 msgid "Unable to resolve StructureDefinition {0} resolving content reference {1}"
-msgstr ""
+msgstr "StructureDefinition {0} aniqlanmadi, kontent havolasi {1} yechib bo‘lmadi"
 
 # STRUC_DEF_REPEAT
 #: STRUC_DEF_REPEAT
 msgid "This is a repeating choice group that does not appear directly in the instance"
-msgstr ""
+msgstr "Bu instansiyada to‘g‘ridan-to‘g‘ri ko‘rinmaydigan takrorlanuvchi tanlov guruhi"
 
 # STRUC_DEF_REPEAT_ELE
 #: STRUC_DEF_REPEAT_ELE
 msgid "This repeating element order: {0}"
-msgstr ""
+msgstr "Takrorlanuvchi elementlar tartibi: {0}"
 
 # STRUC_DEF_REQUIRED
 #: STRUC_DEF_REQUIRED
 msgid "required"
-msgstr ""
+msgstr "majburiy"
 
 # STRUC_DEF_REQUIRED_PATT
 #: STRUC_DEF_REQUIRED_PATT
 msgid "Required Pattern:"
-msgstr ""
+msgstr "Majburiy andoza:"
 
 # STRUC_DEF_REQUIREMENTS
 #: STRUC_DEF_REQUIREMENTS
 msgid "Requirements"
-msgstr ""
+msgstr "Talablar"
 
 # STRUC_DEF_REQ_BIND
 #: STRUC_DEF_REQ_BIND
 msgid "A required binding for additional codes, for us when the binding strength is ''extensible'' or ''preferred''"
-msgstr ""
+msgstr "Bog‘lash darajasi \"extensible\" yoki \"preferred\" bo‘lganda, qo‘shimcha kodlar uchun majburiy bog‘lash"
 
 # STRUC_DEF_REQ_PATT
 #: STRUC_DEF_REQ_PATT
 msgid "Required Pattern"
-msgstr ""
+msgstr "Majburiy andoza"
 
 # STRUC_DEF_ROOT
 #: STRUC_DEF_ROOT
 msgid "The root class that contains instances of this class"
-msgstr ""
+msgstr "Ushbu sinf instansiyalarini o‘z ichiga oluvchi ildiz sinf"
 
 # STRUC_DEF_SEE
 #: STRUC_DEF_SEE
 msgid "See"
-msgstr ""
+msgstr "Qarang"
 
 # STRUC_DEF_SET_ARE
 #: STRUC_DEF_SET_ARE
 msgid ". The slices are"
-msgstr ""
+msgstr ". Slices quyidagicha:"
 
 # STRUC_DEF_SET_SLICES
 #: STRUC_DEF_SET_SLICES
 msgid "This element introduces a set of slices on"
-msgstr ""
+msgstr "Ushbu element quyidagi slices to‘plamini belgilaydi"
 
 # STRUC_DEF_SHALL_CODE
 #: STRUC_DEF_SHALL_CODE
 msgid "The codes SHALL be taken from"
-msgstr ""
+msgstr "Kodlar quyidagi manbadan olinishi SHART"
 
 # STRUC_DEF_SHORT
 #: STRUC_DEF_SHORT
 msgid "Short"
-msgstr ""
+msgstr "Qisqa tavsif"
 
 # STRUC_DEF_SHOULD_CODE
 #: STRUC_DEF_SHOULD_CODE
 msgid "The codes SHOULD be taken from"
-msgstr ""
+msgstr "Kodlar odatda quyidagi manbadan olinishi tavsiya etiladi"
 
 # STRUC_DEF_SINGLE_JSON_OBJECTS
 #: STRUC_DEF_SINGLE_JSON_OBJECTS
 msgid "JSON: Represented as a single JSON Object with named properties using the value of the {0} child as the key"
-msgstr ""
+msgstr "JSON: {0} elementining qiymati kalit sifatida ishlatilgan holda, nomlangan xossalarga ega yagona JSON obyekt sifatida taqdim etiladi"
 
 # STRUC_DEF_SLIC
 #: STRUC_DEF_SLIC
 msgid "Slices"
-msgstr ""
+msgstr "Slices"
 
 # STRUC_DEF_SLICE
 #: STRUC_DEF_SLICE
 msgid "Slice"
-msgstr ""
+msgstr "Slice"
 
 # STRUC_DEF_SLICES
 #: STRUC_DEF_SLICES
 msgid "Slice:"
-msgstr ""
+msgstr "Slice:"
 
 # STRUC_DEF_SLICE_FOR
 #: STRUC_DEF_SLICE_FOR
 msgid "Slices for {0}"
-msgstr ""
+msgstr "{0} uchun slices"
 
 # STRUC_DEF_SLICE_NAME
 #: STRUC_DEF_SLICE_NAME
 msgid "Slice Name"
-msgstr ""
+msgstr "Slice nomi"
 
 # STRUC_DEF_SLICE_PAR
 #: STRUC_DEF_SLICE_PAR
 msgid "Slice {0}"
-msgstr ""
+msgstr "Slice {0}"
 
 # STRUC_DEF_SNOMED
 #: STRUC_DEF_SNOMED
 msgid "SNOMED-CT"
-msgstr ""
+msgstr "SNOMED-CT"
 
 # STRUC_DEF_SNOMED_CODE
 #: STRUC_DEF_SNOMED_CODE
 msgid "SNOMED-CT Code"
-msgstr ""
+msgstr "SNOMED-CT kodi"
 
 # STRUC_DEF_STAND_STAT
 #: STRUC_DEF_STAND_STAT
 msgid "Standard Status"
-msgstr ""
+msgstr "Standart holati"
 
 # STRUC_DEF_STAND_STATUS
 #: STRUC_DEF_STAND_STATUS
 msgid "Standards Status ="
-msgstr ""
+msgstr "Standartlar holati ="
 
 # STRUC_DEF_STRING_FORM
 #: STRUC_DEF_STRING_FORM
 msgid "String Format"
-msgstr ""
+msgstr "String formati"
 
 # STRUC_DEF_STRUCTURES
 #: STRUC_DEF_STRUCTURES
 msgid "Structures"
-msgstr ""
+msgstr "Tuzilmalar"
 
 # STRUC_DEF_SUIT_SHALL_CODE
 #: STRUC_DEF_SUIT_SHALL_CODE
 msgid "Unless not suitable, these codes SHALL be taken from"
-msgstr ""
+msgstr "Agar mos kelmasa, ushbu kodlar majburiy ravishda quyidagidan olinadi"
 
 # STRUC_DEF_TARG_SUPP
 #: STRUC_DEF_TARG_SUPP
 msgid "This target must be supported"
-msgstr ""
+msgstr "Ushbu maqsadli obyekt qo‘llab-quvvatlanishi shart"
 
 # STRUC_DEF_TEMPLATEID
 #: STRUC_DEF_TEMPLATEID
 msgid "Instance of this type are validated by templateId"
-msgstr ""
+msgstr "Ushbu turdagi instansiyalar templateId orqali tekshiriladi"
 
 # STRUC_DEF_TERM_BIND
 #: STRUC_DEF_TERM_BIND
 msgid "Terminology Bindings (Differential)"
-msgstr ""
+msgstr "Terminologiya bog‘lanishlari (Differensial)"
 
 # STRUC_DEF_TERM_BINDS
 #: STRUC_DEF_TERM_BINDS
 msgid "Terminology Bindings"
-msgstr ""
+msgstr "Terminologiya bog‘lanishlari"
 
 # STRUC_DEF_THEN_TYPE
 #: STRUC_DEF_THEN_TYPE
 msgid "then the type is"
-msgstr ""
+msgstr "u holda turi"
 
 # STRUC_DEF_THIS_REFERS
 #: STRUC_DEF_THIS_REFERS
 msgid "This structure refers to these other structures"
-msgstr ""
+msgstr "Ushbu tuzilma quyidagi boshqa tuzilmalarga murojaat qiladi"
 
 # STRUC_DEF_TYPE_BOUND
 #: STRUC_DEF_TYPE_BOUND
 msgid "This type can be bound to a value set using the {0}"
-msgstr ""
+msgstr "Ushbu tur {0} yordamida qiymatlar to‘plamiga bog‘lanishi mumkin"
 
 # STRUC_DEF_TYPE_PARAMETER
 #: STRUC_DEF_TYPE_PARAMETER
 msgid "Type Parameter"
-msgstr ""
+msgstr "Tur parametri"
 
 # STRUC_DEF_TYPE_SET
 #: STRUC_DEF_TYPE_SET
 msgid "This type can be bound to a value set using the"
-msgstr ""
+msgstr "Ushbu tur quyidagi yordamida qiymatlar to‘plamiga bog‘lanishi mumkin"
 
 # STRUC_DEF_TYPE_SPEC
 #: STRUC_DEF_TYPE_SPEC
 msgid "Type Specifier"
-msgstr ""
+msgstr "Tur aniqlagichi"
 
 # STRUC_DEF_TYPE_SUPP
 #: STRUC_DEF_TYPE_SUPP
 msgid "This type must be supported"
-msgstr ""
+msgstr "Ushbu tur qo‘llab-quvvatlanishi shart"
 
 # STRUC_DEF_UI
 #: STRUC_DEF_UI
 msgctxt "STRUC_DEF_UI"
 msgid "UI"
-msgstr ""
+msgstr "UI"
 
 # STRUC_DEF_UI_CONT
 #: STRUC_DEF_UI_CONT
 msgid "This value set is provided for user look up in a given context. Typically, these valuesets only include a subset of codes relevant for input in a context"
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plami ma’lum bir kontekstda foydalanuvchi qidiruvi uchun taqdim etiladi. Odatda, bunday qiymatlar to‘plamlari kiritish uchun tegishli bo‘lgan kodlarning faqat bir qismini o‘z ichiga oladi"
 
 # STRUC_DEF_UNADORNED
 #: STRUC_DEF_UNADORNED
 msgid "In the XML format, this property is represented as unadorned text."
-msgstr ""
+msgstr "XML formatida ushbu xususiyat bezaksiz matn sifatida taqdim etiladi."
 
 # STRUC_DEF_UNDEF_ACT
 #: STRUC_DEF_UNDEF_ACT
 msgid "Obligations that apply to the undefined actor {0}"
-msgstr ""
+msgstr "Aniqlanmagan ishtirokchiga {0} tatbiq etiladigan majburiyatlar"
 
 # STRUC_DEF_UNKNOWN_APPROACH
 #: STRUC_DEF_UNKNOWN_APPROACH
 msgid "Instances of this type are validated using an unknown approach: {0}"
-msgstr ""
+msgstr "Ushbu turdagi instansiyalar noma’lum yondashuv yordamida tekshiriladi: {0}"
 
 # STRUC_DEF_UNKNOWN_REF
 #: STRUC_DEF_UNKNOWN_REF
 msgid "Unknown reference to {0}"
-msgstr ""
+msgstr "{0}ga noma’lum havola"
 
 # STRUC_DEF_UNORDERED
 #: STRUC_DEF_UNORDERED
 msgid "Unordered"
-msgstr ""
+msgstr "Tartibsiz"
 
 # STRUC_DEF_UNSPECIFIED
 #: STRUC_DEF_UNSPECIFIED
 msgid "Unspecified"
-msgstr ""
+msgstr "Aniqlanmagan"
 
 # STRUC_DEF_URLS
 #: STRUC_DEF_URLS
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 # STRUC_DEF_VALID
 #: STRUC_DEF_VALID
 msgid "Validation"
-msgstr ""
+msgstr "Tekshiruv"
 
 # STRUC_DEF_VALUESET
 #: STRUC_DEF_VALUESET
 msgid "ValueSet"
-msgstr ""
+msgstr "ValueSet"
 
 # STRUC_DEF_VALUESET_CODE
 #: STRUC_DEF_VALUESET_CODE
 msgid "ValueSet / Code"
-msgstr ""
+msgstr "ValueSet / Kod"
 
 # STRUC_DEF_VALUE_ALT
 #: STRUC_DEF_VALUE_ALT
 msgid "Value Alternatives"
-msgstr ""
+msgstr "Qiymat muqobillari"
 
 # STRUC_DEF_VALUE_REQ
 #: STRUC_DEF_VALUE_REQ
 msgid "Value Required"
-msgstr ""
+msgstr "Qiymat kiritilishi shart"
 
 # STRUC_DEF_WHAT
 #: STRUC_DEF_WHAT
 msgid "What goes here"
-msgstr ""
+msgstr "Bu yerga nima kiritiladi"
 
 # STRUC_DEF_XHTML
 #: STRUC_DEF_XHTML
 msgid "This property is represented as XHTML Text in the XML."
-msgstr ""
+msgstr "Ushbu xususiyat XML’da XHTML matn ko‘rinishida ifodalanadi."
 
 # STRUC_DEF_XML_ACTUAL
 #: STRUC_DEF_XML_ACTUAL
 msgid "In the XML format, this property has the actual name"
-msgstr ""
+msgstr "XML formatida ushbu xususiyat haqiqiy nomga ega"
 
 # STRUC_DEF_XML_ATTRIBUTE
 #: STRUC_DEF_XML_ATTRIBUTE
 msgid "In the XML format, this property is represented as an attribute."
-msgstr ""
+msgstr "XML formatida ushbu xususiyat atribut sifatida ifodalanadi."
 
 # STRUC_DEF_XML_ELE
 #: STRUC_DEF_XML_ELE
 msgid "XML Element Name"
-msgstr ""
+msgstr "XML element nomi"
 
 # STRUC_DEF_XML_FORM
 #: STRUC_DEF_XML_FORM
 msgid "XML Format"
-msgstr ""
+msgstr "XML Format"
 
 # STRUC_DEF_XML_NAME
 #: STRUC_DEF_XML_NAME
 msgid "XML Namespace"
-msgstr ""
+msgstr "XML nomlar maydoni"
 
 # STRUC_DEF_XSI
 #: STRUC_DEF_XSI
 msgid "The type of this property is determined using the"
-msgstr ""
+msgstr "Ushbu xususiyat turi quyidagilar asosida aniqlanadi"
 
 # SUB_TOPIC_CREATE
 #: SUB_TOPIC_CREATE
 msgid "* create result = {0}"
-msgstr ""
+msgstr "* create result = {0}"
 
 # SUB_TOPIC_CURR
 #: SUB_TOPIC_CURR
 msgid "* current = {0}"
-msgstr ""
+msgstr "* current = {0}"
 
 # SUB_TOPIC_DELETE
 #: SUB_TOPIC_DELETE
 msgid "* delete result = {0}"
-msgstr ""
+msgstr "* delete result = {0}"
 
 # SUB_TOPIC_EVENT
 #: SUB_TOPIC_EVENT
 msgid "Event"
-msgstr ""
+msgstr "Hodisa"
 
 # SUB_TOPIC_FHIR_PATH
 #: SUB_TOPIC_FHIR_PATH
 msgid "FHIR Path"
-msgstr ""
+msgstr "FHIR Path"
 
 # SUB_TOPIC_FILT_DEF
 #: SUB_TOPIC_FILT_DEF
 msgid "Filter Definition"
-msgstr ""
+msgstr "Filtr ta’rifi"
 
 # SUB_TOPIC_FILT_PAR
 #: SUB_TOPIC_FILT_PAR
 msgid "Filter Parameter"
-msgstr ""
+msgstr "Filtr parametri"
 
 # SUB_TOPIC_INCL
 #: SUB_TOPIC_INCL
 msgid "Includes"
-msgstr ""
+msgstr "Kiritilganlar"
 
 # SUB_TOPIC_INT
 #: SUB_TOPIC_INT
 msgid "Interactions"
-msgstr ""
+msgstr "O'zaro ta'sirlar"
 
 # SUB_TOPIC_PREV
 #: SUB_TOPIC_PREV
 msgid "* previous = {0}"
-msgstr ""
+msgstr "* previous = {0}"
 
 # SUB_TOPIC_REQ
 #: SUB_TOPIC_REQ
 msgid "* require both = {0}"
-msgstr ""
+msgstr "* require both = {0}"
 
 # SUB_TOPIC_RES_TRIG
 #: SUB_TOPIC_RES_TRIG
 msgid "Resource Triggers"
-msgstr ""
+msgstr "Resurs triggerlari"
 
 # SUB_TOPIC_REV_INCL
 #: SUB_TOPIC_REV_INCL
 msgid "Reverse Includes"
-msgstr ""
+msgstr "Teskari kiritilganlar"
 
 # TERMINOLOGY_LVL
 #: TERMINOLOGY_LVL
 msgid "Lvl"
-msgstr ""
+msgstr "Lvl"
 
 # TERM_REND_COPY
 #: TERM_REND_COPY
 msgid "Copy {0} Format to clipboard"
-msgstr ""
+msgstr "{0} formatini buferga nusxalash"
 
 # TEST_PLAN_ASS
 #: TEST_PLAN_ASS
 msgid "Assertion"
-msgstr ""
+msgstr "Tasdiqlash"
 
 # TEST_PLAN_ASSERTION
 #: TEST_PLAN_ASSERTION
 msgid "Assertion {0}"
-msgstr ""
+msgstr "Tasdiqlash {0}"
 
 # TEST_PLAN_CASE
 #: TEST_PLAN_CASE
 msgid "Test Case"
-msgstr ""
+msgstr "Test holati"
 
 # TEST_PLAN_CASE_SEQ
 #: TEST_PLAN_CASE_SEQ
 msgid "Test Case - Sequence {0}"
-msgstr ""
+msgstr "Test holati — ketma-ketlik {0}"
 
 # TEST_PLAN_CATEGORY
 #: TEST_PLAN_CATEGORY
 msgid "Category:"
-msgstr ""
+msgstr "Kategoriya:"
 
 # TEST_PLAN_DATA
 #: TEST_PLAN_DATA
 msgid "Test Data"
-msgstr ""
+msgstr "Test maʼlumotlari"
 
 # TEST_PLAN_DEP
 #: TEST_PLAN_DEP
 msgid "Test Plan Dependency:"
-msgstr ""
+msgstr "Test reja bog‘liqligi:"
 
 # TEST_PLAN_DEPEN
 #: TEST_PLAN_DEPEN
 msgid "Test Plan Dependencies:"
-msgstr ""
+msgstr "Test reja bog‘liqliklari:"
 
 # TEST_PLAN_DESC
 #: TEST_PLAN_DESC
 msgid "Dependency - no description"
-msgstr ""
+msgstr "Bog‘liqlik — tavsif yo‘q"
 
 # TEST_PLAN_LANG
 #: TEST_PLAN_LANG
 msgid "Language"
-msgstr ""
+msgstr "Til"
 
 # TEST_PLAN_RESULT
 #: TEST_PLAN_RESULT
 msgid "Result"
-msgstr ""
+msgstr "Natija"
 
 # TEST_PLAN_RUN
 #: TEST_PLAN_RUN
 msgid "Test Run"
-msgstr ""
+msgstr "Test bajarilishi"
 
 # TEST_PLAN_SCOPE
 #: TEST_PLAN_SCOPE
 msgid "Test Plan Scope:"
-msgstr ""
+msgstr "Test reja doirasi:"
 
 # TEST_PLAN_SCOPES
 #: TEST_PLAN_SCOPES
 msgid "Test Plan Scopes:"
-msgstr ""
+msgstr "Test reja doiralari:"
 
 # TEST_PLAN_SOURCE
 #: TEST_PLAN_SOURCE
 msgid "Source[x]"
-msgstr ""
+msgstr "Manba[x]"
 
 # TEST_PLAN_TEST_DATA
 #: TEST_PLAN_TEST_DATA
 msgid "Test Data {0}"
-msgstr ""
+msgstr "Test maʼlumotlari {0}"
 
 # TEST_PLAN_TEST_RUN
 #: TEST_PLAN_TEST_RUN
 msgid "Test Run {0}"
-msgstr ""
+msgstr "Test bajarilishi {0}"
 
 # TEXT_ICON_CHOICE
 #: TEXT_ICON_CHOICE
 msgid "Choice of Types"
-msgstr ""
+msgstr "Turlarni tanlash"
 
 # TEXT_ICON_DATATYPE
 #: TEXT_ICON_DATATYPE
 msgid "Data Type"
-msgstr ""
+msgstr "Maʼlumot turi"
 
 # TEXT_ICON_ELEMENT
 #: TEXT_ICON_ELEMENT
 msgid "Element"
-msgstr ""
+msgstr "Element"
 
 # TEXT_ICON_EXTENSION_COMPLEX
 #: TEXT_ICON_EXTENSION_COMPLEX
 msgid "Complex Extension"
-msgstr ""
+msgstr "Murakkab kengaytma"
 
 # TEXT_ICON_EXTENSION_SIMPLE
 #: TEXT_ICON_EXTENSION_SIMPLE
 msgid "Simple Extension"
-msgstr ""
+msgstr "Oddiy kengaytma"
 
 # TEXT_ICON_KEY
 #: TEXT_ICON_KEY
 msgid "JSON Key Value"
-msgstr ""
+msgstr "JSON kalit-qiymat"
 
 # TEXT_ICON_OBJECT_BOX
 #: TEXT_ICON_OBJECT_BOX
 msgid "Object"
-msgstr ""
+msgstr "Obyekt"
 
 # TEXT_ICON_PRIMITIVE
 #: TEXT_ICON_PRIMITIVE
 msgid "Primitive Data Type"
-msgstr ""
+msgstr "Primitiv ma’lumot turi"
 
 # TEXT_ICON_REFERENCE
 #: TEXT_ICON_REFERENCE
 msgid "Reference to another Resource"
-msgstr ""
+msgstr "Boshqa resursga havola"
 
 # TEXT_ICON_REUSE
 #: TEXT_ICON_REUSE
 msgid "Reference to another Element"
-msgstr ""
+msgstr "Boshqa elementga havola"
 
 # TEXT_ICON_SLICE
 #: TEXT_ICON_SLICE
 msgid "Slice Definition"
-msgstr ""
+msgstr "Slice ta’rifi"
 
 # TEXT_ICON_SLICE_ITEM
 #: TEXT_ICON_SLICE_ITEM
 msgid "Slice Item"
-msgstr ""
+msgstr "Slice elementi"
 
 # TX_DISPLAY
 #: TX_DISPLAY
 msgid "Display"
-msgstr ""
+msgstr "Ko‘rsatiladigan qiymat"
 
 # TX_DISPLAY_LANG
 #: TX_DISPLAY_LANG
 msgid "Display ({0})"
-msgstr ""
+msgstr "Ko‘rsatiladigan qiymat ({0})"
 
 # VALUE_ES_ES
 #: VALUE_ES_ES
 msgid "Spanish National Edition"
-msgstr ""
+msgstr "Ispaniya milliy nashri"
 
 # VALUE_SET_ADD_DESIG
 #: VALUE_SET_ADD_DESIG
 msgid "Additional Designations and Language Displays"
-msgstr ""
+msgstr "Qo‘shimcha belgilashlar va til bo‘yicha ko‘rsatiladigan qiymatlar"
 
 # VALUE_SET_ALL_CODE
 #: VALUE_SET_ALL_CODE
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"
-msgstr ""
+msgstr "Ushbu kiritish foydalanuvchi interfeysida foydalanish uchun qiymat to‘plamlari yaratilganda qo‘llaniladigan iyerarxiyani belgilaydi:"
 
 # VALUE_SET_ALL_CODES_DEF
 #: VALUE_SET_ALL_CODES_DEF
 msgid "all codes defined in"
-msgstr ""
+msgstr "quyidagida aniqlangan barcha kodlar"
 
 # VALUE_SET_AND
 #: VALUE_SET_AND
 msgctxt "VALUE_SET_AND"
 msgid "and"
-msgstr ""
+msgstr "va"
 
 # VALUE_SET_AR
 #: VALUE_SET_AR
 msgid "Argentinian Edition"
-msgstr ""
+msgstr "Argentina nashri"
 
 # VALUE_SET_AT
 #: VALUE_SET_AT
 msgid "Austrian Edition"
-msgstr ""
+msgstr "Avstriya nashri"
 
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian Edition"
-msgstr ""
+msgstr "Avstraliya nashri"
 
 # VALUE_SET_BE
 #: VALUE_SET_BE
 msgid "Belgian Edition"
-msgstr ""
+msgstr "Belgiya nashri"
 
 # VALUE_SET_CA
 #: VALUE_SET_CA
 msgid "Canadian Edition"
-msgstr ""
+msgstr "Kanada nashri"
 
 # VALUE_SET_CA_EN
 #: VALUE_SET_CA_EN
 msgid "Canadian English Edition"
-msgstr ""
+msgstr "Kanadaning ingliz nashri"
 
 # VALUE_SET_CH
 #: VALUE_SET_CH
 msgid "Swiss Edition"
-msgstr ""
+msgstr "Shveytsariya nashri"
 
 # VALUE_SET_CODES_FROM
 #: VALUE_SET_CODES_FROM
 msgid "codes from"
-msgstr ""
+msgstr "quyidagidan kodlar"
 
 # VALUE_SET_CODE_ITEM
 #: VALUE_SET_CODE_ITEM
 msgid "The code for the item"
-msgstr ""
+msgstr "Element uchun kod"
 
 # VALUE_SET_CODE_SELEC
 #: VALUE_SET_CODE_SELEC
 msgid "This value set cannot be fully expanded, but a selection ({0} codes) of the whole set of codes is shown here."
-msgstr ""
+msgstr "Ushbu qiymat to‘plami to‘liq kengaytirib bo‘lmaydi, biroq kodlar to‘plamining bir qismi ({0} ta kod) bu yerda ko‘rsatilgan."
 
 # VALUE_SET_COMMA
 #: VALUE_SET_COMMA
 msgid ","
-msgstr ""
+msgstr ","
 
 # VALUE_SET_CONT
 #: VALUE_SET_CONT
 msgid "Value Set Contents"
-msgstr ""
+msgstr "Qiymatlar to‘plami tarkibi"
 
 # VALUE_SET_CONTAINS
 #: VALUE_SET_CONTAINS
 msgid "This value set contains {0} concepts"
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plami {0} ta conceptni o‘z ichiga oladi"
 
 # VALUE_SET_CONTAINS_AT_LEAST
 #: VALUE_SET_CONTAINS_AT_LEAST
 msgid "This value set contains at least {0} concepts"
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plami kamida {0} ta conceptni o‘z ichiga oladi"
 
 # VALUE_SET_CONT_STRUC
 #: VALUE_SET_CONT_STRUC
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:"
-msgstr ""
+msgstr "Ushbu include qiymatlar to‘plamlari foydalanuvchi interfeysi uchun yaratilganda qo‘llaniladigan ierarxiyani belgilaydi. Expansion ushbu tuzilmani o‘z ichiga oladi:"
 
 # VALUE_SET_DANISH
 #: VALUE_SET_DANISH
 msgid "Danish"
-msgstr ""
+msgstr "Daniya tili"
 
 # VALUE_SET_DE
 #: VALUE_SET_DE
 msgid "German Edition"
-msgstr ""
+msgstr "Nemis nashri"
 
 # VALUE_SET_DESCENDENTOF
 #: VALUE_SET_DESCENDENTOF
 msgid "descends from"
-msgstr ""
+msgstr "quyidagidan kelib chiqadi"
 
 # VALUE_SET_DESIG
 #: VALUE_SET_DESIG
 msgid "Additional Designations"
-msgstr ""
+msgstr "Qo‘shimcha belgilanishlar"
 
 # VALUE_SET_DISPLAY_ITEM
 #: VALUE_SET_DISPLAY_ITEM
 msgid "The display for the item"
-msgstr ""
+msgstr "Element uchun ko‘rsatiladigan qiymat"
 
 # VALUE_SET_DOESNT_EXIST
 #: VALUE_SET_DOESNT_EXIST
 msgid "doesn''t exist"
-msgstr ""
+msgstr "mavjud emas"
 
 # VALUE_SET_DUTCH
 #: VALUE_SET_DUTCH
 msgid "Dutch"
-msgstr ""
+msgstr "Niderland tili"
 
 # VALUE_SET_EE
 #: VALUE_SET_EE
 msgid "Estonian Edition"
-msgstr ""
+msgstr "Estoncha nashr"
 
 # VALUE_SET_EQUAL
 #: VALUE_SET_EQUAL
 msgid "="
-msgstr ""
+msgstr "="
 
 # VALUE_SET_ERROR
 #: VALUE_SET_ERROR
 msgid "Error Expanding ValueSet: {0}"
-msgstr ""
+msgstr "ValueSet’ni kengaytirishda xatolik: {0}"
 
 # VALUE_SET_EXCL
 #: VALUE_SET_EXCL
 msgid "Exclude"
-msgstr ""
+msgstr "Chiqarib tashlash"
 
 # VALUE_SET_EXCLUDED_FROM
 #: VALUE_SET_EXCLUDED_FROM
 msgid "Excluded from"
-msgstr ""
+msgstr "Quyidagidan chiqarib tashlangan"
 
 # VALUE_SET_EXISTS
 #: VALUE_SET_EXISTS
 msgid "exists"
-msgstr ""
+msgstr "mavjud"
 
 # VALUE_SET_EXP
 #: VALUE_SET_EXP
 msgid "Expansion based on example code system"
-msgstr ""
+msgstr "Expansion namunaviy CodeSystem asosida"
 
 # VALUE_SET_EXPANSION
 #: VALUE_SET_EXPANSION
 msgid "Expansion based on"
-msgstr ""
+msgstr "Expansion quyidagiga asoslangan"
 
 # VALUE_SET_EXPANSIONS
 #: VALUE_SET_EXPANSIONS
 msgid "Expansion based on:"
-msgstr ""
+msgstr "Expansion quyidagiga asoslangan:"
 
 # VALUE_SET_EXPANSIONS_INTERNAL
 #: VALUE_SET_EXPANSIONS_INTERNAL
 msgid "Expansion performed internally based on:"
-msgstr ""
+msgstr "Expansion ichki tarzda quyidagiga asoslanib bajarildi:"
 
 # VALUE_SET_EXPANSIONS_SRVR
 #: VALUE_SET_EXPANSIONS_SRVR
 msgid "Expansion from {0} based on:"
-msgstr ""
+msgstr "{0} dan expansion quyidagiga asoslangan:"
 
 # VALUE_SET_EXPANSION_INTERNAL
 #: VALUE_SET_EXPANSION_INTERNAL
 msgid "Expansion performed internally based on"
-msgstr ""
+msgstr "Expansion ichki tarzda quyidagiga asoslanib bajarildi"
 
 # VALUE_SET_EXPANSION_SRVR
 #: VALUE_SET_EXPANSION_SRVR
 msgid "Expansion from {0} based on"
-msgstr ""
+msgstr "{0} dan expansion quyidagiga asoslangan"
 
 # VALUE_SET_EXP_FRAG
 #: VALUE_SET_EXP_FRAG
 msgid "Expansion based on code system fragment"
-msgstr ""
+msgstr "Expansion code system fragmenti asosida"
 
 # VALUE_SET_FI
 #: VALUE_SET_FI
 msgid "Finnish Edition"
-msgstr ""
+msgstr "Fin nashri"
 
 # VALUE_SET_GENERALIZES
 #: VALUE_SET_GENERALIZES
 msgid "generalizes"
-msgstr ""
+msgstr "umumlashtiradi"
 
 # VALUE_SET_HAS
 #: VALUE_SET_HAS
 msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plamida {0} ta kod mavjud. Nashr hajmini maqbul darajada saqlash uchun kodlar to‘plamining faqat bir qismi ({1} ta kod) ko‘rsatilgan."
 
 # VALUE_SET_HAS_AT_LEAST
 #: VALUE_SET_HAS_AT_LEAST
 msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plamida kamida {0} ta kod mavjud. Nashr hajmini maqbul darajada saqlash uchun kodlar to‘plamining faqat bir qismi ({1} ta kod) ko‘rsatilgan."
 
 # VALUE_SET_IE
 #: VALUE_SET_IE
 msgid "Irish Edition"
-msgstr ""
+msgstr "Irlandiya nashri"
 
 # VALUE_SET_IMPORT
 #: VALUE_SET_IMPORT
 msgid "Import all the codes that are contained in"
 msgid_plural "Import all the codes that are contained in the intersection of"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Quyidagida mavjud bo‘lgan barcha kodlarni import qilish"
+msgstr[1] "Quyidagilarning kesishmasida mavjud bo‘lgan barcha kodlarni import qilish"
 
 # VALUE_SET_IN
 #: VALUE_SET_IN
 msgid "in"
-msgstr ""
+msgstr "ichida"
 
 # VALUE_SET_INACT
 #: VALUE_SET_INACT
 msgid "inactive"
-msgstr ""
+msgstr "faol emas"
 
 # VALUE_SET_INACTIVE
 #: VALUE_SET_INACTIVE
 msgid "Inactive"
-msgstr ""
+msgstr "Faol emas"
 
 # VALUE_SET_INC
 #: VALUE_SET_INC
 msgid "Include"
-msgstr ""
+msgstr "Kiritish"
 
 # VALUE_SET_INCLUDED_INTO
 #: VALUE_SET_INCLUDED_INTO
 msgid "Included into"
-msgstr ""
+msgstr "Quyidagiga kiritilgan"
 
 # VALUE_SET_INT
 #: VALUE_SET_INT
 msgid "International"
-msgstr ""
+msgstr "Xalqaro"
 
 # VALUE_SET_ISA
 #: VALUE_SET_ISA
 msgid "is-a"
-msgstr ""
+msgstr "is-a"
 
 # VALUE_SET_ISNOTA
 #: VALUE_SET_ISNOTA
 msgid "is-not-a"
-msgstr ""
+msgstr "is-not-a"
 
 # VALUE_SET_KR
 #: VALUE_SET_KR
 msgid "Republic of Korea Edition (South Korea)"
-msgstr ""
+msgstr "Koreya Respublikasi nashri (Janubiy Koreya)"
 
 # VALUE_SET_LEVEL
 #: VALUE_SET_LEVEL
 msgid "Level"
-msgstr ""
+msgstr "Daraja"
 
 # VALUE_SET_LOINCV
 #: VALUE_SET_LOINCV
 msgid "Loinc v"
-msgstr ""
+msgstr "Loinc v"
 
 # VALUE_SET_NEEDS_SUPPL
 #: VALUE_SET_NEEDS_SUPPL
 msgid "This ValueSet requires the Code system Supplement"
 msgid_plural "This ValueSet requires the Code system Supplements"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ushbu ValueSet kod tizimi qo‘shimchasini talab qiladi"
+msgstr[1] "Ushbu ValueSet kod tizimi qo‘shimchalarini talab qiladi"
 
 # VALUE_SET_NO
 #: VALUE_SET_NO
 msgid "Norwegian Edition"
-msgstr ""
+msgstr "Norvegiya nashri"
 
 # VALUE_SET_NOTE
 #: VALUE_SET_NOTE
 msgid "Note: {0}"
-msgstr ""
+msgstr "Izoh: {0}"
 
 # VALUE_SET_NOTIN
 #: VALUE_SET_NOTIN
 msgid "not in"
-msgstr ""
+msgstr "tarkibida emas"
 
 # VALUE_SET_NOT_DEF
 #: VALUE_SET_NOT_DEF
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined"
-msgstr ""
+msgstr "Ushbu include qiymatlar to‘plamlari foydalanuvchi interfeysida foydalanish uchun yaratilganda qo‘llaniladigan ierarxiyani belgilaydi, biroq qoidalar yetarlicha aniq belgilanmagan"
 
 # VALUE_SET_NOT_FOUND
 #: VALUE_SET_NOT_FOUND
 msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:"
-msgstr ""
+msgstr "Ushbu include qiymatlar to‘plamlari foydalanuvchi interfeysida foydalanish uchun yaratilganda qo‘llaniladigan ierarxiyani belgilaydi. Kengaytma ushbu tuzilmani o‘z ichiga oladi va tuzilmada topilmagan har qanday kodlarni ham qamrab oladi:"
 
 # VALUE_SET_NO_VER
 #: VALUE_SET_NO_VER
 msgid "(no version)"
-msgstr ""
+msgstr "(versiya ko‘rsatilmagan)"
 
 # VALUE_SET_NO_VERSION
 #: VALUE_SET_NO_VERSION
 msgid "(no version) ("
-msgstr ""
+msgstr "(versiya ko‘rsatilmagan) ("
 
 # VALUE_SET_NULL
 #: VALUE_SET_NULL
 msgid "null"
-msgstr ""
+msgstr "null"
 
 # VALUE_SET_NULLS
 #: VALUE_SET_NULLS
 msgid "?ngen-13?"
-msgstr ""
+msgstr "?ngen-13?"
 
 # VALUE_SET_NUMBER_CONCEPTS
 #: VALUE_SET_NUMBER_CONCEPTS
 msgid "This value set expansion contains {0} concepts."
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plami kengaytmasi {0} ta tushunchani o‘z ichiga oladi."
 
 # VALUE_SET_NZ
 #: VALUE_SET_NZ
 msgid "New Zealand Edition"
-msgstr ""
+msgstr "Yangi Zelandiya nashri"
 
 # VALUE_SET_OTHER_DISPLAY
 #: VALUE_SET_OTHER_DISPLAY
 msgid "Other Display ({0})"
-msgstr ""
+msgstr "Boshqa ko‘rsatiladigan qiymat ({0})"
 
 # VALUE_SET_REGEX
 #: VALUE_SET_REGEX
 msgid "matches (by regex)"
-msgstr ""
+msgstr "(regex orqali) mos keladi"
 
 # VALUE_SET_RULES_EXC
 #: VALUE_SET_RULES_EXC
 msgid "This value set excludes codes based on the following rules:"
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plami quyidagi qoidalarga asoslanib kodlarni istisno qiladi:"
 
 # VALUE_SET_RULES_INC
 #: VALUE_SET_RULES_INC
 msgid "This value set includes codes based on the following rules:"
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plami quyidagi qoidalar asosida kodlarni o‘z ichiga oladi:"
 
 # VALUE_SET_SEL
 #: VALUE_SET_SEL
 msgid "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown"
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plamida 1000 tadan ortiq kod mavjud. Nashr hajmini maqbul darajada saqlash uchun kodlar to‘plamining faqat bir qismi (1000 ta kod) ko‘rsatilgan"
 
 # VALUE_SET_SNOMED
 #: VALUE_SET_SNOMED
 msgid "SNOMED CT {0} edition"
-msgstr ""
+msgstr "SNOMED CT {0} nashri"
 
 # VALUE_SET_SNOMED_ADD
 #: VALUE_SET_SNOMED_ADD
 msgid "SNOMED CT {0} edition {1}"
-msgstr ""
+msgstr "SNOMED CT {0} nashri {1}"
 
 # VALUE_SET_SPAN
 #: VALUE_SET_SPAN
 msgid "Spanish"
-msgstr ""
+msgstr "Ispan tili"
 
 # VALUE_SET_SPEC_NAME
 #: VALUE_SET_SPEC_NAME
 msgid "Fully specified name"
-msgstr ""
+msgstr "To‘liq aniqlangan nom"
 
 # VALUE_SET_SWEDISH
 #: VALUE_SET_SWEDISH
 msgid "Swedish"
-msgstr ""
+msgstr "Shved tili"
 
 # VALUE_SET_SYNONYM
 #: VALUE_SET_SYNONYM
 msgid "Synonym"
-msgstr ""
+msgstr "Sinonim"
 
 # VALUE_SET_SYSTEM
 #: VALUE_SET_SYSTEM
 msgid "System"
-msgstr ""
+msgstr "Tizim"
 
 # VALUE_SET_THESE_CODES_DEF
 #: VALUE_SET_THESE_CODES_DEF
 msgid "these codes as defined in"
-msgstr ""
+msgstr "quyidagida belgilangan ushbu kodlar"
 
 # VALUE_SET_TOO_COSTLY
 #: VALUE_SET_TOO_COSTLY
 msgid "This value set cannot be expanded because the terminology server(s) deemed it too costly to do so"
-msgstr ""
+msgstr "ValueSet kengaytirilmadi: terminologiya server(lar)i bu amalni juda qimmat deb baholadi"
 
 # VALUE_SET_UK
 #: VALUE_SET_UK
 msgid "United Kingdom"
-msgstr ""
+msgstr "Buyuk Britaniya"
 
 # VALUE_SET_UK_CLIN
 #: VALUE_SET_UK_CLIN
 msgid "UK Clinical Edition"
-msgstr ""
+msgstr "Buyuk Britaniya klinik nashri"
 
 # VALUE_SET_US
 #: VALUE_SET_US
 msgid "United States"
-msgstr ""
+msgstr "Amerika Qo‘shma Shtatlari"
 
 # VALUE_SET_USED_ELSEWHERE
 #: VALUE_SET_USED_ELSEWHERE
 msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plami bu yerda ishlatilmaydi; u boshqa joylarda (masalan, ushbu mazmundan foydalanadigan spetsifikatsiyalar va/yoki implementatsiyalarda) ishlatilishi mumkin"
 
 # VALUE_SET_US_ICD10CM
 #: VALUE_SET_US_ICD10CM
 msgid "US Edition (with ICD-10-CM maps)"
-msgstr ""
+msgstr "AQSh nashri (ICD-10-CM xaritalari bilan)"
 
 # VALUE_SET_UY
 #: VALUE_SET_UY
 msgid "Uruguay Edition"
-msgstr ""
+msgstr "Urugvay nashri"
 
 # VALUE_SET_WHERE
 #: VALUE_SET_WHERE
 msgid "where"
-msgstr ""
+msgstr "qayerda"
 
 # VALUE_SET_WHERE_CODES
 #: VALUE_SET_WHERE_CODES
 msgid ", where the codes are contained in"
-msgstr ""
+msgstr ", kodlar joylashtirilgan joy"
 
 # VSR_LOGICAL
 #: VSR_LOGICAL
 msgid "Logical Definition (CLD)"
-msgstr ""
+msgstr "Mantiqiy ta’rif (CLD)"
 
 # VSR_NO_DEF
 #: VSR_NO_DEF
 msgid "No formal definition provided for this value set"
-msgstr ""
+msgstr "Ushbu qiymatlar to‘plami uchun rasmiy ta’rif taqdim etilmagan"
 
 # VSR_TRIGGER
 #: VSR_TRIGGER
 msgid "Used as a trigger criteria in"
-msgstr ""
+msgstr "Trigger mezoni sifatida ishlatiladi"
 
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
 msgid "This code is not selectable (''Abstract'')"
-msgstr ""
+msgstr "Ushbu kod tanlanmaydi (“Abstract”)"
 
 # VS_VERSION_BY_PACKAGE
 #: VS_VERSION_BY_PACKAGE
 msgid "Version is not explicitly stated, which means it is fixed to {0}, the version found through the package references"
-msgstr ""
+msgstr "Versiya aniq ko‘rsatilmagan, bu esa u paket havolalari orqali aniqlangan {0} versiyasiga biriktirilganini anglatadi"
 
 # VS_VERSION_FOUND
 #: VS_VERSION_FOUND
 msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
-msgstr ""
+msgstr "Versiya aniq ko‘rsatilmagan. Ushbu spetsifikatsiya yig‘ilganda eng so‘nggi {0} versiyasidan foydalanilgan"
 
 # VS_VERSION_NONE
 #: VS_VERSION_NONE
 msgid "Version is not explicitly stated, and the target {0} has no stated version either"
-msgstr ""
+msgstr "Versiya aniq ko‘rsatilmagan, va maqsadli {0} uchun ham versiya ko‘rsatilmagan"
 
 # VS_VERSION_NOTHING
 #: VS_VERSION_NOTHING
 msgid "Version is not explicitly stated. No matching {0} found"
-msgstr ""
+msgstr "Versiya aniq ko‘rsatilmagan. Mos keluvchi {0} topilmadi"
 
 # VS_VERSION_NOTHING_TEXT
 #: VS_VERSION_NOTHING_TEXT
 msgid "Not State"
-msgstr ""
+msgstr "Holat emas"
 
 # VS_VERSION_STATED
 #: VS_VERSION_STATED
 msgid "Version is explicitly stated to be {0}"
-msgstr ""
+msgstr "Versiya aniq {0} deb ko‘rsatilgan"
 
 # VS_VERSION_THIS_PACKAGE
 #: VS_VERSION_THIS_PACKAGE
 msgid "Version is not explicitly stated, which means it is fixed to the version provided in this specification"
-msgstr ""
+msgstr "Versiya aniq ko‘rsatilmagan, bu esa u ushbu spetsifikatsiyada ko‘rsatilgan versiyaga biriktirilganini anglatadi"
 
 # VS_VERSION_WILDCARD
 #: VS_VERSION_WILDCARD
 msgid "Version is stated to be {0}. When building this specification, the most recent matching version {1} has been used"
-msgstr ""
+msgstr "Versiya {0} deb ko‘rsatilgan. Ushbu spetsifikatsiya yig‘ilganda mos keluvchi eng so‘nggi {1} versiyasidan foydalanilgan"
 
 # VS_VERSION_WILDCARD_BY_PACKAGE
 #: VS_VERSION_WILDCARD_BY_PACKAGE
 msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
-msgstr ""
+msgstr "Versiya {0} deb ko‘rsatilgan, bu esa u paket havolalari orqali aniqlangan {1} versiyasiga biriktirilganini anglatadi"
 
 # _NA
 #: _NA
 msgid "n/a"
-msgstr ""
+msgstr "mavjud emas"
 
