@@ -297,6 +297,9 @@ public class TerminologyCache {
   private Map<String, SourcedValueSetEntry> vsCache = new HashMap<>();
   private Map<String, SourcedCodeSystemEntry> csCache = new HashMap<>();
   private Map<String, String> serverMap = new HashMap<>();
+  private Set<String> dirtyCaches = new HashSet<>();
+  private long lastFlushTime = 0;
+  private static final long FLUSH_INTERVAL_MS = 5000; // batch saves over 5 second windows
 
   @Getter @Setter private static boolean noCaching;
   @Getter @Setter private static boolean cacheErrors;
@@ -329,6 +332,7 @@ public class TerminologyCache {
       checkVersion();
       load();
     }
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> flushDirtyCaches(), "tx-cache-flush"));
   }
 
   // use lock from the context
@@ -636,7 +640,8 @@ public class TerminologyCache {
         }
       }
       nc.list.add(e);
-      save(nc);  
+      dirtyCaches.add(nc.name);
+      flushDirtyCachesIfNeeded();
     }
   }
 
@@ -675,7 +680,26 @@ public class TerminologyCache {
   // persistence
 
   public void save() {
+    flushDirtyCaches();
+  }
 
+  private void flushDirtyCachesIfNeeded() {
+    long now = System.currentTimeMillis();
+    if (now - lastFlushTime >= FLUSH_INTERVAL_MS) {
+      flushDirtyCaches();
+    }
+  }
+
+  private void flushDirtyCaches() {
+    if (dirtyCaches.isEmpty()) return;
+    lastFlushTime = System.currentTimeMillis();
+    for (String name : dirtyCaches) {
+      NamedCache nc = caches.get(name);
+      if (nc != null) {
+        save(nc);
+      }
+    }
+    dirtyCaches.clear();
   }
 
   private <K extends Resource> void save(K resource, String title) {
