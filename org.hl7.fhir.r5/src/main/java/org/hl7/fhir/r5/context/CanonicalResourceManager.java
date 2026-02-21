@@ -266,8 +266,10 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   private Map<String, List<CachedCanonicalResource<T>>> listForId;
   private Map<String, List<CachedCanonicalResource<T>>> listForUrl;
   private Map<String, CachedCanonicalResource<T>> map;
+  private Map<CachedCanonicalResource<T>, Set<String>> mapInverse; // reverse index: value → keys for O(1) drop
   private Map<String, List<CachedCanonicalResource<T>>> supplements; // general index based on CodeSystem.supplements
   private String version; // for debugging purposes
+  private final MetadataResourceVersionComparator<CachedCanonicalResource<T>> versionComparator = new MetadataResourceVersionComparator<>();
   
   
   public CanonicalResourceManager(boolean enforceUniqueId, boolean minimalMemory) {
@@ -278,6 +280,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     listForId = new HashMap<>();
     listForUrl = new HashMap<>();
     map = new HashMap<>();
+    mapInverse = new IdentityHashMap<>();
     supplements = new HashMap<>(); // general index based on CodeSystem.supplements
   }
 
@@ -295,8 +298,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   public void copy(CanonicalResourceManager<T> source) {
     list.clear();
     map.clear();
+    mapInverse.clear();
     list.addAll(source.list);
     map.putAll(source.map);
+    // rebuild reverse index
+    for (Map.Entry<String, CachedCanonicalResource<T>> e : map.entrySet()) {
+      mapInverse.computeIfAbsent(e.getValue(), k -> new HashSet<>()).add(e.getKey());
+    }
   }
   
   public void register(CanonicalResourceProxy canonicalResourceProxy, PackageInformation packageInfo) {
@@ -374,7 +382,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     List<CachedCanonicalResource<T>> set = listForUrl.get(cr.getUrl());
     set.add(cr);
     if (set.size() > 1) {
-      Collections.sort(set, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
+      Collections.sort(set, versionComparator);
     }
 
     // -- 4. add to the map all the ways ---------------------------------------------------------------
@@ -557,7 +565,15 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       newIsOlder = comp == 1;
     }
     if (!newIsOlder) {
+      if (existing != null) {
+        // remove old reverse index entry for displaced value
+        Set<String> oldKeys = mapInverse.get(existing);
+        if (oldKeys != null) {
+          oldKeys.remove(key);
+        }
+      }
       map.put(key, cr);
+      mapInverse.computeIfAbsent(cr, k -> new HashSet<>()).add(key);
     }
   }
 
@@ -575,11 +591,21 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
 
   public void drop(CachedCanonicalResource<T> cr) {
-    while (map.values().remove(cr)); 
-    while (listForId.values().remove(cr)); 
-    while (listForUrl.values().remove(cr)); 
+    // use reverse index to remove map entries in O(1) instead of scanning all values
+    Set<String> keys = mapInverse.remove(cr);
+    if (keys != null) {
+      for (String key : keys) {
+        map.remove(key, cr);
+      }
+    }
+    if (listForId != null) {
+      List<CachedCanonicalResource<T>> idList = listForId.get(cr.getId());
+      if (idList != null) {
+        idList.remove(cr);
+      }
+    }
     String surl = cr.supplements();
-    if (surl != null) {
+    if (surl != null && supplements.get(surl) != null) {
       supplements.get(surl).remove(cr);
     }
     list.remove(cr);
@@ -591,12 +617,15 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         CachedCanonicalResource<T> crl = set.get(set.size()-1);
         if (last) {
           map.put(crl.getUrl(), crl);
+          mapInverse.computeIfAbsent(crl, k -> new HashSet<>()).add(crl.getUrl());
         }
         String mm = VersionUtilities.getMajMin(cr.getVersion());
         if (mm != null) {
           for (int i = set.size()-1; i >= 0; i--) {
             if (mm.equals(VersionUtilities.getMajMin(set.get(i).getVersion()))) {
-              map.put(cr.getUrl()+"|"+mm, set.get(i));
+              String mapKey = cr.getUrl()+"|"+mm;
+              map.put(mapKey, set.get(i));
+              mapInverse.computeIfAbsent(set.get(i), k -> new HashSet<>()).add(mapKey);
               break;
             }
           }
@@ -635,19 +664,24 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (rl.size() > 0) {
       // sort by version as much as we are able
       // the current is the latest
-      map.put(url, rl.get(rl.size()-1));
+      CachedCanonicalResource<T> latest = rl.get(rl.size()-1);
+      map.put(url, latest);
+      mapInverse.computeIfAbsent(latest, k -> new HashSet<>()).add(url);
       // now, also, the latest for major/minor
       if (version != null) {
-        CachedCanonicalResource<T> latest = null;
+        CachedCanonicalResource<T> latestForVer = null;
         for (CachedCanonicalResource<T> t : rl) {
           if (VersionUtilities.versionMatches(t.getVersion(), version)) {
-            latest = t;
+            latestForVer = t;
           }
         }
-        if (latest != null) { // might be null if it's not using semver
-          String lv = VersionUtilities.getMajMin(latest.getVersion());
-          if (lv != null && !lv.equals(version))
-            map.put(url+"|"+lv, rl.get(rl.size()-1));
+        if (latestForVer != null) { // might be null if it's not using semver
+          String lv = VersionUtilities.getMajMin(latestForVer.getVersion());
+          if (lv != null && !lv.equals(version)) {
+            String mapKey = url+"|"+lv;
+            map.put(mapKey, rl.get(rl.size()-1));
+            mapInverse.computeIfAbsent(rl.get(rl.size()-1), k -> new HashSet<>()).add(mapKey);
+          }
         }
       }
     }
@@ -694,7 +728,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
           return null;
         } else {
           if (matches.size() > 1) {
-            Collections.sort(matches, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
+            Collections.sort(matches, versionComparator);
           }
           return matches.get(matches.size() - 1).getResource();
         }
@@ -764,7 +798,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
           }
           if (!matches.isEmpty()) {
             if (matches.size() > 1) {
-              Collections.sort(matches, new MetadataResourceVersionComparator<CachedCanonicalResource<T>>());
+              Collections.sort(matches, versionComparator);
             }
             return matches.get(matches.size() - 1).getResource();
           }
@@ -874,9 +908,10 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public List<T> getList() {
+    Set<T> seen = Collections.newSetFromMap(new IdentityHashMap<>());
     List<T> res = new ArrayList<>();
     for (CachedCanonicalResource<T> t : list) {
-      if (!res.contains(t.getResource())) {
+      if (seen.add(t.getResource())) {
         res.add(t.getResource());
       }
     }
