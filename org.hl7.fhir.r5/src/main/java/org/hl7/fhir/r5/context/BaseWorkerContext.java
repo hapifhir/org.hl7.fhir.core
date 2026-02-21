@@ -156,6 +156,7 @@ import com.google.gson.JsonObject;
 @MarkedToMoveToAdjunctPackage
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext, IWorkerContextManager, IOIDServices {
   private static boolean allowedToIterateTerminologyResources;
+  private int definitionsVersion = 0;
 
 
   public interface IByteProvider {
@@ -449,6 +450,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     PackageHackerR5.fixLoadedResource(r, packageInfo);
 
     synchronized (lock) {
+      definitionsVersion++;
       if (packageInfo != null) {
         packages.put(packageInfo.getVID(), packageInfo);
       }
@@ -541,7 +543,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void cacheResourceFromPackage(Resource r, PackageInformation packageInfo) throws FHIRException {
 
-    synchronized (lock) {   
+    synchronized (lock) {
+      definitionsVersion++;
       if (packageInfo != null) {
         packages.put(packageInfo.getVID(), packageInfo);
       }
@@ -1493,6 +1496,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         vsc.setUnknownSystems(unknownSystems);
         vsc.setThrowToServer(options.isUseServer() && terminologyClientManager.hasClient());
+        vsc.setExternalSource((CanonicalResource) options.getExternalSource());
         if (!ValueSetUtilities.isServerSide(code.getSystem())) {
           res = vsc.validateCode(path, code.copy());
           if (txCache != null && cachingAllowed) {
@@ -1673,7 +1677,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
-    return new ValueSetValidator(this, new TerminologyOperationContext(this, options, "validation"), options, vs, getExpansionParameters(), terminologyClientManager, registry);
+    ValueSetValidator vsv = new ValueSetValidator(this, new TerminologyOperationContext(this, options, "validation"), options, vs, getExpansionParameters(), terminologyClientManager, registry);
+    vsv.setExternalSource((CanonicalResource) options.getExternalSource());
+    return vsv;
   }
 
   protected Parameters constructParameters(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tcd, ValueSet vs, boolean hierarchical) {
@@ -3036,7 +3042,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void dropResource(String fhirType, String id) {
     synchronized (lock) {
-
+      definitionsVersion++;
       Map<String, ResourceProxy> map = allResourcesById.get(fhirType);
       if (map == null) {
         map = new HashMap<String, ResourceProxy>();
@@ -3079,22 +3085,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
   }
-
-  private <T extends CanonicalResource> void dropMetadataResource(Map<String, T> map, String id) {
-    T res = map.get(id);
-    if (res != null) {
-      map.remove(id);
-      if (map.containsKey(res.getUrl())) {
-        map.remove(res.getUrl());
-      }
-      if (res.getVersion() != null) {
-        if (map.containsKey(res.getUrl()+"|"+res.getVersion())) {
-          map.remove(res.getUrl()+"|"+res.getVersion());
-        }
-      }
-    }
-  }
-
   
   public String listSupportedSystems() {
     synchronized (lock) {
@@ -3908,4 +3898,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public IWorkerContextManager getManager() {
     return this;
   }
+
+  public int getDefinitionsVersion() {
+    return definitionsVersion;
+  }
+
 }
