@@ -73,6 +73,15 @@ public interface IWorkerContext {
   public String getVersion();
 
   /**
+   * The context must increment this anytime any definitions change
+   *
+   * Consumers can track this and reload any cached analysis if the value changes
+   *
+   * @return
+   */
+  public int getDefinitionsVersion();
+
+  /**
    * @return The URL that points to the specification for the version loaded
    */
   public String getSpecUrl();
@@ -801,5 +810,6 @@ public interface IWorkerContext {
   public boolean isForPublication();
   @Deprecated
   public void setForPublication(boolean value);
+
 
 }
