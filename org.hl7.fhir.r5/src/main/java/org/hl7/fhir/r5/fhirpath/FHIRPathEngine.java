@@ -117,6 +117,12 @@ import ca.uhn.fhir.util.ElementUtil;
 @Slf4j
 public class FHIRPathEngine {
 
+  public static class FHIRPathAnalysis {
+    private Set<String> primitiveTypes = new HashSet<String>();
+    private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
+    private ContextUtilities cu;
+  }
+
   public class ExtensionDefinition {
 
     private boolean root;
@@ -170,17 +176,16 @@ public class FHIRPathEngine {
   private IHostApplicationServices hostServices;
   private IDebugTracer tracer;
   private StringBuilder traceLog = new StringBuilder();
-  private Set<String> primitiveTypes = new HashSet<String>();
-  private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
-  private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for empty sets, so when running for R2/R3, this is set ot true  
+  private boolean legacyMode; // some R2 and R3 constraints assume that != is valid for empty sets, so when running for R2/R3, this is set ot true
   private ValidationOptions terminologyServiceOptions = new ValidationOptions(FhirPublication.R5);
-  private ProfileUtilities profileUtilities;
   private String location; // for error messages
   private boolean allowPolymorphicNames;
   private boolean doImplicitStringConversion;
   private boolean liquidMode; // in liquid mode, || terminates the expression and hands the parser back to the host
   private boolean doNotEnforceAsSingletonRule;
   private boolean doNotEnforceAsCaseSensitive;
+  private FHIRPathAnalysis analysis;
+  private ProfileUtilities profileUtilities;
 
   /*
    * The FHIRPath engine consults with the HostApplicationServices when an element fails to
@@ -224,17 +229,22 @@ public class FHIRPathEngine {
   public FHIRPathEngine(IWorkerContext worker, ProfileUtilities utilities) {
     super();
     this.worker = worker;
-    profileUtilities = utilities; 
-    for (StructureDefinition sd : worker.fetchResourcesByType(StructureDefinition.class)) {
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
-        allTypes.put(sd.getName(), sd);
+    profileUtilities = utilities;
+    analysis = (FHIRPathAnalysis) worker.retrieveAnalysis(this.getClass());
+    if (analysis == null) {
+      analysis = new FHIRPathAnalysis();
+      for (StructureDefinition sd : worker.fetchResourcesByType(StructureDefinition.class)) {
+        if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
+          analysis.allTypes.put(sd.getName(), sd);
+        }
+        if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
+          analysis.primitiveTypes.add(sd.getName());
+        }
       }
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) { 
-        primitiveTypes.add(sd.getName());
-      }
+      analysis.cu = new ContextUtilities(worker);
+      worker.storeAnalysis(this.getClass(), analysis);
     }
     initFlags();
-    cu = new ContextUtilities(worker);
   }
 
   private void initFlags() {
@@ -485,7 +495,7 @@ public class FHIRPathEngine {
       if (Utilities.isAbsoluteUrl(resourceType)) {
         ctxt = resourceType; //.substring(0, resourceType.lastIndexOf("/")+1)+ctxt;
       }
-      StructureDefinition sd = cu.findType(ctxt);
+      StructureDefinition sd = analysis.cu.findType(ctxt);
       if (sd == null) {
         throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT, context);
       }
@@ -549,7 +559,7 @@ public class FHIRPathEngine {
         } else {
           ctxt = t.substring(0, t.indexOf('.'));
         }
-        StructureDefinition sd = cu.findType(ctxt);
+        StructureDefinition sd = analysis.cu.findType(ctxt);
         if (sd == null) {
           throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONTEXT, t);
         }
@@ -4056,11 +4066,11 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private void checkContextPrimitive(TypeDetails focus, String name, boolean canQty, ExpressionNode expr) throws PathEngineException {
     if (!focus.hasNoTypes()) {
       if (canQty) {
-        if (!focus.hasType(primitiveTypes) && !focus.hasType("Quantity")) {
-          throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), "Quantity, "+primitiveTypes.toString());
+        if (!focus.hasType(analysis.primitiveTypes) && !focus.hasType("Quantity")) {
+          throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), "Quantity, "+analysis.primitiveTypes.toString());
         }
-      } else if (!focus.hasType(primitiveTypes)) {
-        throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), primitiveTypes.toString());
+      } else if (!focus.hasType(analysis.primitiveTypes)) {
+        throw makeException(expr, I18nConstants.FHIRPATH_PRIMITIVE_ONLY, name, focus.describe(), analysis.primitiveTypes.toString());
       }
     }
   }
@@ -4092,7 +4102,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private TypeDetails anything(CollectionStatus status) {
-    return new TypeDetails(status, allTypes.keySet());
+    return new TypeDetails(status, analysis.allTypes.keySet());
   }
 
   //	private boolean isPrimitiveType(String s) {
@@ -4655,7 +4665,6 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-  private ContextUtilities cu;
   public static String bytesToHex(byte[] bytes) {
     char[] hexChars = new char[bytes.length * 2];
     for (int j = 0; j < bytes.length; j++) {
@@ -6617,11 +6626,11 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
             if (dt == null) {
               throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(t.getCode(), null), "getChildTypesByName#3");
             }
-            addTypeAndDescendents(sdl, dt, cu.allStructures());
+            addTypeAndDescendents(sdl, dt, analysis.cu.allStructures());
             // also add any descendant types
           }
       } else {
-        addTypeAndDescendents(sdl, sd, cu.allStructures());
+        addTypeAndDescendents(sdl, sd, analysis.cu.allStructures());
         if (type.contains("#")) {
           tail = type.substring(type.indexOf("#")+1);
           if (tail.contains(".")) {
@@ -6657,7 +6666,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
                 for (TypeRefComponent t : ed.getType()) {
                   if (t.hasCode() && t.getCodeElement().hasValue()) {
                     String tn = null;
-                    if (Utilities.existsInList(t.getCode(), "Element", "BackboneElement", "Base") || cu.isAbstractType(t.getCode())) {
+                    if (Utilities.existsInList(t.getCode(), "Element", "BackboneElement", "Base") || analysis.cu.isAbstractType(t.getCode())) {
                       tn = sdi.getType()+"#"+ed.getPath();
                     } else {
                       tn = t.getCode();
@@ -6832,7 +6841,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       }
       if (allowTypedName && ed.getPath().endsWith("[x]") && path.startsWith(ed.getPath().substring(0, ed.getPath().length()-3)) && path.length() > ed.getPath().length()-3) {
         String s = Utilities.uncapitalize(path.substring(ed.getPath().length()-3));
-        if (primitiveTypes.contains(s)) {
+        if (analysis.primitiveTypes.contains(s)) {
           return ml(new ElementDefinitionMatch(ed, s));
         } else {
           return ml(new ElementDefinitionMatch(ed, path.substring(ed.getPath().length()-3)));

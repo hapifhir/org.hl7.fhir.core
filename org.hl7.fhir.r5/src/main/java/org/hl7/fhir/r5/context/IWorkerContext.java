@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.context;
 
+import com.sun.jdi.ClassType;
 import lombok.Getter;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -88,6 +89,24 @@ public interface IWorkerContext {
    * @return a number that changes each time the content that the context represents changes
    */
   public int getDefinitionsVersion();
+
+  /**
+   * as an alternative to tracking, the context can store analysis for consumers of the context,
+   * and return them if the loaded set hasn't changed
+   *
+   * @param className - the class name asking for analysis to be stored
+   * @return the object previously stored, if there's been no change
+   */
+  public void storeAnalysis(Class className, Object analysis);
+
+  /**
+   * as an alternative to tracking, the context can store analysis for consumers of the context,
+   * and return them if the loaded set hasn't changed
+   *
+   * @param className - the class name asking for analysis to be stored
+   * @return the object previously stored, if there's been no change
+   */
+  public Object retrieveAnalysis(Class className);
 
   /**
    * @return The URL that points to the specification for the version loaded

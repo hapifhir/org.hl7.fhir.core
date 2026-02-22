@@ -157,6 +157,7 @@ import com.google.gson.JsonObject;
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext, IWorkerContextManager, IOIDServices {
   private static boolean allowedToIterateTerminologyResources;
   private int definitionsVersion = 0;
+  private Map<String, Object> analyses = new HashMap();
 
 
   public interface IByteProvider {
@@ -450,7 +451,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     PackageHackerR5.fixLoadedResource(r, packageInfo);
 
     synchronized (lock) {
-      definitionsVersion++;
+      definitionsChanged();
       if (packageInfo != null) {
         packages.put(packageInfo.getVID(), packageInfo);
       }
@@ -544,7 +545,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public void cacheResourceFromPackage(Resource r, PackageInformation packageInfo) throws FHIRException {
 
     synchronized (lock) {
-      definitionsVersion++;
+      definitionsChanged();
       if (packageInfo != null) {
         packages.put(packageInfo.getVID(), packageInfo);
       }
@@ -3042,7 +3043,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void dropResource(String fhirType, String id) {
     synchronized (lock) {
-      definitionsVersion++;
+      definitionsChanged();
       Map<String, ResourceProxy> map = allResourcesById.get(fhirType);
       if (map == null) {
         map = new HashMap<String, ResourceProxy>();
@@ -3901,6 +3902,24 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public int getDefinitionsVersion() {
     return definitionsVersion;
+  }
+
+  private void definitionsChanged() {
+    definitionsVersion++;
+    synchronized (lock) {
+      analyses.clear();
+    }
+  }
+  public void storeAnalysis(Class className, Object analysis) {
+    synchronized (lock) {
+      analyses.put(className.getName(), analysis);
+    }
+  }
+
+  public Object retrieveAnalysis(Class className) {
+    synchronized (lock) {
+      return analyses.get(className.getName());
+    }
   }
 
 }
