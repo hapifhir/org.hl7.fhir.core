@@ -356,4 +356,40 @@ public class FHIRPathTests {
     List<Base> results = fp.evaluate(input, "Patient.birthDate.toString()");
     assertEquals(0, results.size());
   }
+
+  @Test
+  public void testResolve_LogicalReferenceWithHostServices() throws IOException {
+    Patient resolved = new Patient();
+    resolved.setId("pat-123");
+    resolved.addName().setFamily("Smith");
+
+    fp.setHostServices(new FHIRPathTestEvaluationServices(context) {
+      @Override
+      public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+        return resolved;
+      }
+    });
+
+    Observation input = new Observation();
+    Reference ref = new Reference();
+    ref.setIdentifier(new Identifier().setSystem("http://example.org").setValue("12345"));
+    input.setSubject(ref);
+
+    List<Base> results = fp.evaluate(input, "Observation.subject.resolve()");
+    assertEquals(1, results.size());
+    assertEquals("pat-123", results.get(0).getIdBase());
+  }
+
+  @Test
+  public void testResolve_LogicalReferenceWithoutHostServices() {
+    fp.setHostServices(null);
+
+    Observation input = new Observation();
+    Reference ref = new Reference();
+    ref.setIdentifier(new Identifier().setSystem("http://example.org").setValue("12345"));
+    input.setSubject(ref);
+
+    List<Base> results = fp.evaluate(input, "Observation.subject.resolve()");
+    assertEquals(0, results.size());
+  }
 }
