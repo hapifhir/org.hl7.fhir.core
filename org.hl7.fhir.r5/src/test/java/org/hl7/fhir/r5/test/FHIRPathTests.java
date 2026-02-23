@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.fhirpath.BaseHostServices;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
@@ -43,7 +44,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 
 public class FHIRPathTests {
 
@@ -358,38 +358,136 @@ public class FHIRPathTests {
   }
 
   @Test
-  public void testResolve_LogicalReferenceWithHostServices() throws IOException {
+  public void testResolve_LogicalReferenceOnly_WithHostServices() throws IOException {
     Patient resolved = new Patient();
-    resolved.setId("pat-123");
     resolved.addName().setFamily("Smith");
+    resolved.addIdentifier().setSystem("http://example.org").setValue("12345");
 
-    fp.setHostServices(new FHIRPathTestEvaluationServices(context) {
-      @Override
-      public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
-        return resolved;
-      }
-    });
+    fp.setHostServices(new FHIRPathTestResolvingEvaluationServices(context, resolved));
 
     Observation input = new Observation();
     Reference ref = new Reference();
     ref.setIdentifier(new Identifier().setSystem("http://example.org").setValue("12345"));
     input.setSubject(ref);
 
-    List<Base> results = fp.evaluate(input, "Observation.subject.resolve()");
+    List<Base> results = fp.evaluate(input, "Observation.subject.resolve().name");
     assertEquals(1, results.size());
-    assertEquals("pat-123", results.get(0).getIdBase());
+    assertEquals("Smith", ((HumanName) results.get(0)).getFamily());
   }
 
   @Test
-  public void testResolve_LogicalReferenceWithoutHostServices() {
-    fp.setHostServices(null);
+  public void testResolve_LogicalReferenceAndLiteralReference_WithHostServices() throws IOException {
+    Patient resolved = new Patient();
+    resolved.addName().setFamily("Smith");
+    resolved.setId("pat-123");
+    resolved.addIdentifier().setSystem("http://example.org").setValue("12345");
+
+    fp.setHostServices(new FHIRPathTestResolvingEvaluationServices(context, resolved));
 
     Observation input = new Observation();
     Reference ref = new Reference();
     ref.setIdentifier(new Identifier().setSystem("http://example.org").setValue("12345"));
     input.setSubject(ref);
 
-    List<Base> results = fp.evaluate(input, "Observation.subject.resolve()");
-    assertEquals(0, results.size());
+    List<Base> results = fp.evaluate(input, "Observation.subject.resolve().name");
+    assertEquals(1, results.size());
+    assertEquals("Smith", ((HumanName) results.get(0)).getFamily());
+  }
+
+  @Test
+  public void testResolve_ElementModel_WithHostServices() throws Exception {
+    Patient resolved = new Patient();
+    resolved.addName().setFamily("Smith");
+    resolved.addIdentifier().setSystem("http://example.org").setValue("12345");
+
+    fp.setHostServices(new FHIRPathTestResolvingEvaluationServices(context, resolved));
+
+    Observation obs = new Observation();
+    Reference ref = new Reference();
+    ref.setIdentifier(new Identifier().setSystem("http://example.org").setValue("12345"));
+    obs.setSubject(ref);
+
+    // Serialize to JSON and re-parse as element model so refContext is an Element, not a model Reference
+    byte[] json = new JsonParser().composeBytes(obs);
+    List<ValidatedFragment> fragments = Manager.parse(fp.getWorker(), new java.io.ByteArrayInputStream(json), FhirFormat.JSON);
+    org.hl7.fhir.r5.elementmodel.Element element = fragments.get(0).getElement();
+
+    List<Base> results = fp.evaluate(element, fp.parse("Observation.subject.resolve().name.family"));
+    assertEquals(1, results.size());
+    assertEquals("Smith", results.get(0).primitiveValue());
+  }
+
+  @Test
+  public void testFHIRPathConstraintWithResolve_Satisfied() throws Exception {
+    // Patient with birthDate — the resolve target
+    Patient patient = new Patient();
+
+    patient.addName().setFamily("Smith");
+    patient.setBirthDateElement(new DateType("1990-01-01"));
+    patient.addIdentifier().setSystem("http://example.org").setValue("12345");
+
+    fp.setHostServices(new FHIRPathTestResolvingEvaluationServices(context, patient));
+
+    Observation obs = new Observation();
+    obs.setSubject(new Reference("pat-123")
+        .setIdentifier(new Identifier().setSystem("http://example.org").setValue("12345")));
+
+    // Parse as element model so resolve() goes through the Element path
+    byte[] json = new JsonParser().composeBytes(obs);
+    List<ValidatedFragment> fragments = Manager.parse(fp.getWorker(), new java.io.ByteArrayInputStream(json), FhirFormat.JSON);
+    org.hl7.fhir.r5.elementmodel.Element element = fragments.get(0).getElement();
+
+    // Constraint: "referenced Patient must have a birthDate"
+    ExpressionNode constraint = fp.parse("subject.resolve().ofType(Patient).birthDate.exists()");
+    List<Base> result = fp.evaluate(element, constraint);
+    Assertions.assertTrue(fp.convertToBoolean(result),
+        "Constraint should pass: resolved Patient has a birthDate");
+  }
+
+  @Test
+  public void testFHIRPathConstraintWithResolve_NotSatisfied() throws Exception {
+    // Patient WITHOUT birthDate — constraint should fail
+    Patient patient = new Patient();
+    patient.setId("pat-456");
+    patient.addName().setFamily("Jones");
+    patient.addIdentifier().setSystem("http://example.org").setValue("67890");
+
+    fp.setHostServices(new FHIRPathTestResolvingEvaluationServices(context, patient));
+
+    Observation obs = new Observation();
+    obs.setSubject(new Reference("pat-456")
+        .setIdentifier(new Identifier().setSystem("http://example.org").setValue("67890")));
+
+    byte[] json = new JsonParser().composeBytes(obs);
+    List<ValidatedFragment> fragments = Manager.parse(fp.getWorker(), new java.io.ByteArrayInputStream(json), FhirFormat.JSON);
+    org.hl7.fhir.r5.elementmodel.Element element = fragments.get(0).getElement();
+
+    // Same constraint — should fail because Patient has no birthDate
+    ExpressionNode constraint = fp.parse("subject.resolve().ofType(Patient).birthDate.exists()");
+    List<Base> result = fp.evaluate(element, constraint);
+    Assertions.assertFalse(fp.convertToBoolean(result),
+        "Constraint should fail: resolved Patient has no birthDate");
+  }
+
+  class FHIRPathTestResolvingEvaluationServices extends FHIRPathTestEvaluationServices {
+
+    private final Patient testingSubject;
+
+    public FHIRPathTestResolvingEvaluationServices(IWorkerContext context, Patient testingSubject) throws IOException {
+      super(context);
+      this.testingSubject = testingSubject;
+    }
+
+    @Override
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+      final Reference ref;
+      if(refContext instanceof org.hl7.fhir.r5.model.Reference)
+        ref = (org.hl7.fhir.r5.model.Reference) refContext;
+      else
+        ref = ObjectConverter.readAsReference((org.hl7.fhir.r5.elementmodel.Element) refContext);
+      if(testingSubject.getId() != null && testingSubject.getId().equals(ref.getReference()) || testingSubject.getIdentifierFirstRep() != null && testingSubject.getIdentifierFirstRep().equalsDeep(ref.getIdentifier()))
+        return testingSubject;
+      else return null;
+    }
   }
 }
