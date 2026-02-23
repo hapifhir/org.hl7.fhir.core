@@ -618,15 +618,16 @@ public class TerminologyCache {
       return;
     }
 
-    if ( !cacheErrors &&
+    boolean skipPersist = !cacheErrors &&
         ( e.v!= null
         && e.v.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED
-        && !cacheToken.hasVersion)) {
-      return;
-    }
+        && !cacheToken.hasVersion);
 
     boolean n = nc.map.containsKey(cacheToken.key);
     nc.map.put(cacheToken.key, e);
+    if (skipPersist) {
+      return;
+    }
     if (persistent) {
       if (n) {
         for (int i = nc.list.size()- 1; i>= 0; i--) {
