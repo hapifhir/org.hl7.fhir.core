@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.Map.Entry;
 
+import com.google.gson.JsonArray;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.factory.*;
@@ -36,7 +37,6 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
@@ -62,6 +62,7 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.json.model.JsonString;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -82,6 +83,7 @@ import org.hl7.fhir.validation.instance.MatchetypeValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
 import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
+import org.hl7.fhir.validation.tests.utilities.TestFilter;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -100,15 +102,6 @@ import org.junit.BeforeClass;
 
 @RunWith(Parameterized.class)
 public class ValidationTests implements IHostApplicationServices, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
-
-  public class TestSorter implements Comparator<Object> {
-
-    @Override
-    public int compare(Object o1, Object o2) {
-      return 0;
-    }
-
-  }
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
   private static final boolean CLONE = true;
@@ -137,9 +130,18 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     names.addAll(examples.keySet());
     Collections.sort(names);
 
+    TestFilter testFilter = new TestFilter("includedValidationTags", "excludedValidationTags");
+
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
+    System.out.println(System.getenv());
+
     for (String id : names) {
-      objects.add(new Object[]{id, examples.get(id)});
+      JsonObject example = examples.get(id);
+      JsonArray jsonTags = example.getAsJsonArray("tags");
+      List<String> tags = jsonTags == null ? List.of() : jsonTags.asList().stream().map(JsonElement::getAsString).toList();
+      if (testFilter.shouldRunBasedOnTags(tags)) {
+        objects.add(new Object[]{id, examples.get(id)});
+      }
     }
     return objects;
   }
