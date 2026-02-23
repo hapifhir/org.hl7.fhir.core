@@ -793,7 +793,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   @Override
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, InputStream stream, FhirFormat format, List<StructureDefinition> profiles) throws FHIRException {
-
     ParserBase parser = Manager.makeParser(context, format);
     List<StructureDefinition> logicals = new ArrayList<>();
     for (StructureDefinition sd : profiles) {
@@ -994,16 +993,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   @Override
   public void validate(Object appContext, List<ValidationMessage> errors, String path, Element element, List<StructureDefinition> profiles) throws FHIRException {
-
-    // The first thing to do is to clear the internal state
-    fetchCache.clear();
-    fetchCache.put(element.fhirType() + "/" + element.getIdBase(), element);
-    resourceTracker.clear();
-    trackedMessages.clear();
-    messagesToRemove.clear();
-    executionId = UUID.randomUUID().toString();
-    baseOnly = profiles.isEmpty();
-    setParents(element);
+    // this is the main entry point; all the other public entry points end up here coming here...
+    // so the first thing to do is to clear the internal state
+    clearInternalState(element, profiles);
 
     try {
       // If this is already a bounded list, or we're not limiting message size, don't bother wrapping it.
@@ -1011,31 +1003,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ? errors
         : new BoundedSizeList<>(errors, maxMessages.getMaxMessages());
 
-      long t = System.nanoTime();
-      NodeStack stack = new NodeStack(context, null, element, validationLanguage);
-      if (profiles == null || profiles.isEmpty()) {
-        validateResource(new ValidationContext(appContext, element), sizeLimitedErrors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
-    // this is the main entry point; all the other public entry points end up here coming here...
-    // so the first thing to do is to clear the internal state
-    clearInternalState(element, profiles);
-
-    try {
       long overallStartTime = System.nanoTime();
       NodeStack stack = new NodeStack(context, null, element, validationLanguage);
       if (profiles == null || profiles.isEmpty()) {
-        validateResource(new ValidationContext(appContext, element), errors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
+        validateResource(new ValidationContext(appContext, element), sizeLimitedErrors, element, element, null, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.BaseDefinition), false, false);
       } else {
         int i = 0;
         while (i < profiles.size()) {
           StructureDefinition sd = profiles.get(i);
           if (sd.hasExtension(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
             for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
-              StructureDefinition dep = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue(), null, sd);
-              if (dep == null) {
-                warning(sizeLimitedErrors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());
               StructureDefinition dep = context.fetchResource( StructureDefinition.class, ext.getValue().primitiveValue(), null, sd);
               if (dep == null) {
-                warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());                
+                warning(sizeLimitedErrors, NO_RULE_DATE, IssueType.BUSINESSRULE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_DEPENDS_NOT_RESOLVED, ext.getValue().primitiveValue(), sd.getVersionedUrl());
               } else if (!profiles.contains(dep)) {
                 profiles.add(dep);
               }
@@ -1053,49 +1033,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       codingObserver.finish(sizeLimitedErrors, stack);
       sizeLimitedErrors.removeAll(messagesToRemove);
-      timeTracker.overall(t);
-      if (aiService != null && !textsToCheck.isEmpty()) {
-        t = System.nanoTime();
-        List<CodeAndTextValidationRequest> list = new ArrayList<>();
-        for (CodeAndTextValidationRequest tt : textsToCheck) {
-          ValidationResult vr = context.validateCode(settings.setDisplayWarningMode(false).setLanguages(tt.getLang()), tt.getSystem(), null, tt.getCode(), tt.getText());
-          if (!vr.isOk()) {
-            list.add(tt);
-          }
-        }
-        if (!list.isEmpty()) {
-          CodeAndTextValidator ctv = new CodeAndTextValidator(cacheFolder, aiService);
-          List<CodeAndTextValidationResult> results = null;
-          try {
-            results = ctv.validateCodings(list);
-          } catch (Exception e) {
-            if (e.getCause() != null && e.getCause() instanceof HTTPResultException) {
-              warning(sizeLimitedErrors, "2025-01-14", IssueType.EXCEPTION, stack, false,
-                I18nConstants.VALIDATION_AI_FAILED_LOG, e.getMessage(), ((HTTPResultException) e.getCause()).logPath);
-            } else {
-              warning(sizeLimitedErrors, "2025-01-14", IssueType.EXCEPTION, stack, false,
-                I18nConstants.VALIDATION_AI_FAILED, e.getMessage());
-            }
-          }
-          if (results != null) {
-            for (CodeAndTextValidationResult vr : results) {
-              if (!vr.isValid()) {
-                warning(sizeLimitedErrors, "2025-01-14", IssueType.BUSINESSRULE, vr.getRequest().getLocation().line(), vr.getRequest().getLocation().col(), vr.getRequest().getLocation().getLiteralPath(), false,
-                  I18nConstants.VALIDATION_AI_TEXT_CODE, vr.getRequest().getCode(), vr.getRequest().getText(), vr.getConfidence(), vr.getExplanation());
-              }
-        }
-        for (StructureDefinition defn : profiles) {
-          stack.getIds().clear();
-          validateResource(new ValidationContext(appContext, element), errors, element, element, defn, resourceIdRule, stack.resetIds(), null, new ValidationMode(ValidationReason.Validation, ProfileSource.ConfigProfile), false, false);
-        }
-      }
-      if (hintAboutNonMustSupport && !profiles.isEmpty()) {
-        checkElementUsage(errors, element, stack);
-      }
-      codingObserver.finish(errors, stack);
-      errors.removeAll(messagesToRemove);
       timeTracker.overall(overallStartTime);
-      validateCodeAndTextWithAI(errors, stack);
+      validateCodeAndTextWithAI(sizeLimitedErrors, stack);
 
       if (settings.isDebug()) {
         try {
@@ -1104,6 +1043,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
          log.error(e.getMessage(), e);
         }
       }
+    }
+    catch (BoundedSizeList.BoundsExceededException boundsExceededException) {
+      // Validation size limit exceeded.
+      final String formattedMessage = context.formatMessage(I18nConstants.VALIDATION_MAX_MESSAGES_EXCEEDED, boundsExceededException.getMaxSize(), maxMessages.getSource());
+      ValidationMessage validationMessage = new ValidationMessage(Source.InstanceValidator, IssueType.PROCESSING, element.line(), element.col(), element.getName(),
+        formattedMessage, IssueSeverity.WARNING);
+      errors.set(errors.size() - 1, validationMessage);
     }
     catch (TimeoutException te) {
       // Validation time out exceeded
@@ -1152,23 +1098,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
         }
-        timeTracker.ai(t);
       }
-
-      if (settings.isDebug()) {
-        try {
-          debugElement(element, log);
-        } catch (IOException e) {
-          log.error(e.getMessage(), e);
-        }
-      }
-    } catch (BoundedSizeList.BoundsExceededException boundsExceededException) {
-      // Validation size limit exceeded.
-      final String formattedMessage = context.formatMessage(I18nConstants.VALIDATION_MAX_MESSAGES_EXCEEDED, boundsExceededException.getMaxSize(), maxMessages.getSource());
-      ValidationMessage validationMessage = new ValidationMessage(Source.InstanceValidator, IssueType.PROCESSING, element.line(), element.col(), element.getName(),
-        formattedMessage, IssueSeverity.WARNING);
-      errors.set(errors.size() - 1, validationMessage);
-    }
       timeTracker.ai(aiStartTime);
   }
 
