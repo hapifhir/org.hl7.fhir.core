@@ -120,14 +120,9 @@ public class HTTPClientCommand implements Callable<Integer> {
         if (renderSummary.totalErrors() > 0) {
           System.exit(1);
         }
-      } catch (FileNotFoundException e) {
-        throw new RuntimeException(e);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      } catch (URISyntaxException e) {
-        throw new RuntimeException(e);
+      } catch (IOException | URISyntaxException | InterruptedException e) {
+        log.error(e.getMessage(), e);
+        return 1;
       }
     }
 
