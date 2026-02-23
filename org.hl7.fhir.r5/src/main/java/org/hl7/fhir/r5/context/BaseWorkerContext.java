@@ -2331,19 +2331,44 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
 
+  private List<String> cachedResourceNames = null;
+  private Set<String> cachedResourceNameSet = null;
+
   public List<String> getResourceNames(FhirPublication fhirVersion) {
-    return getResourceNames();    
+    return getResourceNames();
   }
-  
+
+  public List<String> getResourceNames() {
+    synchronized (lock) {
+      if (cachedResourceNames == null) {
+        cachedResourceNames = generateResourceNames();
+      }
+      return cachedResourceNames;
+    }
+  }
+
+  public List<String> generateResourceNames() {
+    Set<String> result = new HashSet<String>();
+    for (StructureDefinition sd : listStructures()) {
+      if (sd.getKind() == StructureDefinition.StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.hasUserData(UserDataNames.loader_urls_patched))
+        result.add(sd.getName());
+    }
+    return Utilities.sorted(result);
+  }
+
   public Set<String> getResourceNamesAsSet(FhirPublication fhirVersion) {
     return getResourceNamesAsSet();
   }
   
   @Override
   public Set<String> getResourceNamesAsSet() {
-    Set<String> res = new HashSet<String>();
-    res.addAll(getResourceNames());
-    return res;
+    synchronized (lock) {
+      if (cachedResourceNames == null) {
+        cachedResourceNameSet =  new HashSet<String>();
+        cachedResourceNameSet.addAll(getResourceNames());
+      }
+      return cachedResourceNameSet;
+    }
   }
 
   @Override
@@ -3908,6 +3933,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     definitionsVersion++;
     synchronized (lock) {
       analyses.clear();
+      cachedResourceNames = null;
+      cachedResourceNameSet = null;
     }
   }
   public void storeAnalysis(Class className, Object analysis) {
