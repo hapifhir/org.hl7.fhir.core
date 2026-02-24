@@ -661,6 +661,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setNoExperimentalContent(parameters.isNoExperimentalContent());
     setCheckIPSCodes(parameters.isCheckIPSCodes());
     setTimeout(parameters.getTimeout());
+
+    setCheckDisplay(parameters.getCheckDisplay());
+    setResourceIdRule(parameters.getResourceIdRule());
   }
 
   @Override

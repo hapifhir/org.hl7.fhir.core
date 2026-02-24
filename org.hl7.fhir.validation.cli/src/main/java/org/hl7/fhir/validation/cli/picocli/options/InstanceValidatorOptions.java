@@ -3,10 +3,6 @@ package org.hl7.fhir.validation.cli.picocli.options;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.With;
-import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
-import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
-import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
-import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import picocli.CommandLine;
 
 import java.util.ArrayList;
@@ -232,15 +228,28 @@ public class InstanceValidatorOptions {
 
   @CommandLine.Option(names = {"-check-display"},
     description = """
-      TODO
-    """)
+      How to validate the display text on coded elements (Coding, CodeableConcept).
+                 * Ignore (default): display text is not checked
+                 * Check: display must exactly match the code system's canonical text
+                 * CheckCase: match ignoring case differences
+                 * CheckSpace: match ignoring whitespace differences
+                 * CheckCaseAndSpace: match ignoring both case and whitespace differences
+    """,
+    arity = "1")
   @With
   public String checkDisplay = null;
 
   @CommandLine.Option(names = {"-resource-id-rule"},
     description = """
-      TODO
-    """)
+      Whether the top-level resource being validated must have a Resource.id element (optional,
+              required, prohibited).
+                 * optional (default): id may be present or absent
+                 * required: id must be present; an error is raised if missing
+                 * prohibited: id must not be present; an error is raised if found
+              Note: this rule applies to the outermost resource only. The validator independently enforces id
+              rules for contained resources (always required) and bundle entries/parameters (always optional).
+    """,
+    arity = "1")
   @With
   public String resourceIdRule = null;
 }
