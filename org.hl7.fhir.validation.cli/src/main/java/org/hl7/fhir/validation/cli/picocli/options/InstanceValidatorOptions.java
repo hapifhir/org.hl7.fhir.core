@@ -229,4 +229,18 @@ public class InstanceValidatorOptions {
     arity = "1")
   @With
   public Long validationTimeout = 0L;
+
+  @CommandLine.Option(names = {"-check-display"},
+    description = """
+      TODO
+    """)
+  @With
+  public String checkDisplay = null;
+
+  @CommandLine.Option(names = {"-resource-id-rule"},
+    description = """
+      TODO
+    """)
+  @With
+  public String resourceIdRule = null;
 }

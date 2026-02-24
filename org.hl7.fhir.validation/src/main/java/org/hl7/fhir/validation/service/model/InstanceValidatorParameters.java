@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
@@ -49,6 +51,8 @@ public class InstanceValidatorParameters {
     this.bundleValidationRules = new ArrayList<>(defaultInstanceValidatorParameters.bundleValidationRules);
     this.jurisdiction = defaultInstanceValidatorParameters.jurisdiction;
     this.timeout = defaultInstanceValidatorParameters.timeout;
+    this.checkDisplay = defaultInstanceValidatorParameters.checkDisplay;
+    this.resourceIdRule = defaultInstanceValidatorParameters.resourceIdRule;
   }
 
   @JsonProperty("assumeValidRestReferences")
@@ -557,6 +561,40 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @JsonProperty("checkDisplay")
+  @SerializedName("checkDisplay")
+  private CheckDisplayOption checkDisplay = null;
+
+  @SerializedName("checkDisplay")
+  @JsonProperty("checkDisplay")
+  public CheckDisplayOption getCheckDisplay() {
+    return checkDisplay;
+  }
+
+  @SerializedName("checkDisplay")
+  @JsonProperty("checkDisplay")
+  public InstanceValidatorParameters setCheckDisplay(CheckDisplayOption checkDisplay) {
+    this.checkDisplay = checkDisplay;
+    return this;
+  }
+
+  @JsonProperty("resourceIdRule")
+  @SerializedName("resourceIdRule")
+  private IdStatus resourceIdRule = null;
+
+  @SerializedName("resourceIdRule")
+  @JsonProperty("resourceIdRule")
+  public IdStatus getResourceIdRule() {
+    return resourceIdRule;
+  }
+
+  @SerializedName("resourceIdRule")
+  @JsonProperty("resourceIdRule")
+  public InstanceValidatorParameters setResourceIdRule(IdStatus resourceIdRule) {
+    this.resourceIdRule = resourceIdRule;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -591,12 +629,14 @@ public class InstanceValidatorParameters {
       && Objects.equals(profiles, that.profiles)
       && Objects.equals(bundleValidationRules, that.bundleValidationRules)
       && Objects.equals(jurisdiction, that.jurisdiction)
-      && timeout == that.timeout;
+      && timeout == that.timeout
+      && Objects.equals(checkDisplay, that.checkDisplay)
+      && Objects.equals(resourceIdRule, that.resourceIdRule);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, timeout);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, timeout, checkDisplay, resourceIdRule);
   }
 
   @Override
@@ -632,6 +672,8 @@ public class InstanceValidatorParameters {
       ", bundleValidationRules=" + bundleValidationRules +
       ", jurisdiction='" + jurisdiction + '\'' +
       ", timeout=" + timeout +
+      ", checkDisplay=" + checkDisplay +
+      ", resourceIdRule=" + resourceIdRule +
       '}';
   }
 }
