@@ -226,6 +226,7 @@ public class InstanceValidatorOptions {
   @With
   public Long validationTimeout = 0L;
 
+  // Created by claude-sonnet-4-6
   @CommandLine.Option(names = {"-check-display"},
     description = """
       How to validate the display text on coded elements (Coding, CodeableConcept).
@@ -239,6 +240,7 @@ public class InstanceValidatorOptions {
   @With
   public String checkDisplay = null;
 
+  // Created by claude-sonnet-4-6
   @CommandLine.Option(names = {"-resource-id-rule"},
     description = """
       Whether the top-level resource being validated must have a Resource.id element (optional,
