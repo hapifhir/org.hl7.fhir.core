@@ -2363,7 +2363,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public Set<String> getResourceNamesAsSet() {
     synchronized (lock) {
-      if (cachedResourceNames == null) {
+      if (cachedResourceNameSet == null) {
         cachedResourceNameSet =  new HashSet<String>();
         cachedResourceNameSet.addAll(getResourceNames());
       }
