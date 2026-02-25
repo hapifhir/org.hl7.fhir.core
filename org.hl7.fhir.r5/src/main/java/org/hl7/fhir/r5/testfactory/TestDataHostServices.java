@@ -62,7 +62,7 @@ public class TestDataHostServices extends BaseHostServices {
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifer, Base refContext) {
     return null;
   }
 

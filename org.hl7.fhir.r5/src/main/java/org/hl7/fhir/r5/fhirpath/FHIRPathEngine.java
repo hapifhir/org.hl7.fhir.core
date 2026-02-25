@@ -5646,29 +5646,28 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return result;
   }
 
-
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    Base refContext = null;
     for (Base item : focus) {
-      String s = convertToString(item);
+      Base refContext = item;
+      String url = null;
+      Identifier id = null;
+
       if (item.fhirType().equals("Reference")) {
         refContext = item;
         Property p = item.getChildByName("reference");
         if (p != null && p.hasValues()) {
-          s = convertToString(p.getValues().get(0));
-        } else {
-          s = null; // a reference without any valid actual reference (just identifier or display, but we can't resolve it)
+          url = convertToString(p.getValues().get(0));
         }
-      }
-      if (item.fhirType().equals("canonical")) {
-        s = item.primitiveValue();
+      } else if (item.isPrimitive()) {
+        url = item.primitiveValue();
         refContext = item;
       }
-      if (s != null) {
+
+      if (url != null || id != null) {
         Base res = null;
-        if (s.startsWith("#")) {
-          String t = s.substring(1);
+        if (url != null && url.startsWith("#")) {
+          String t = url.substring(1);
           Base containingResource = hostServices.findContainingResource(context.appInfo, item); // this turns out to be complicated
           if (containingResource == null) {
             containingResource = context.getRootResource();
@@ -5684,7 +5683,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           }
         } else if (hostServices != null) {
           try {
-            res = hostServices.resolveReference(this, context.appInfo, s, refContext);
+            res = hostServices.resolveReference(this, context.appInfo, url, id, refContext);
           } catch (Exception e) {
             res = null;
           }
