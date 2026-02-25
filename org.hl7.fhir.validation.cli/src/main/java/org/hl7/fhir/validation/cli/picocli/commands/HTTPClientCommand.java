@@ -2,23 +2,14 @@ package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.utils.URIBuilder;
-import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptions;
 import org.hl7.fhir.validation.service.ValidationOutputRenderSummary;
 import org.hl7.fhir.validation.service.ValidationOutputRenderUtilities;
 import org.hl7.fhir.validation.service.renderers.*;
-import org.hl7.fhir.validation.service.utils.Slf4JOutputStream;
 import picocli.CommandLine;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;

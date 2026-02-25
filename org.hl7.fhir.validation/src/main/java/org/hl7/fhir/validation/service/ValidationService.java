@@ -193,7 +193,7 @@ public class ValidationService {
           response.addOutcome(outcome);
       } else {
         ValidatedFragments validatedFragments = validationEngine.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
-          instanceValidatorParameters.getProfiles(), messages);
+          instanceValidatorParameters, messages);
 
         List<ValidationOutcome> validationOutcomes = getValidationOutcomesFromValidatedFragments(fileToValidate, validatedFragments);
         for (ValidationOutcome validationOutcome : validationOutcomes) {
@@ -309,7 +309,7 @@ public class ValidationService {
 
     do {
       long start = System.currentTimeMillis();
-      Resource resource = validationEngine.validate(validateSourceParameters.sources(), instanceValidatorParameters.getProfiles(), refs, records, igLoader, watchParameters.watchMode() == ValidatorWatchMode.ALL, watchParameters.watchSettleTime(), first);
+      Resource resource = validationEngine.validate(validateSourceParameters.sources(), instanceValidatorParameters, refs, records, igLoader, watchParameters.watchMode() == ValidatorWatchMode.ALL, watchParameters.watchSettleTime(), first);
       first = false;
       boolean statusNeeded = false;
       if (resource != null) {
