@@ -14,8 +14,8 @@ public class ValidatorMaxMessages {
    * @param source The means by which the timeout was set (from a CLI option, programmatically, etc.)
    */
   public ValidatorMaxMessages(final int maxMessages, final String source) {
-    if (maxMessages < 0) {
-      throw new IllegalArgumentException();
+    if (maxMessages < 1) {
+      throw new IllegalArgumentException("maxMessages must be >= 1");
     }
     this.maxMessages = maxMessages;
     this.source = source;
