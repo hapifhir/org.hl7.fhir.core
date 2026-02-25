@@ -1,12 +1,15 @@
 package org.hl7.fhir.utilities.validation;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.With;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 
 public class ValidationOptions {
-  
+
   public enum R5BundleRelativeReferencePolicy {
     DEFAULT,
     NEVER,
@@ -47,6 +50,8 @@ public class ValidationOptions {
   private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
   private boolean isDefaultLang = false;
   private boolean noAbstract = false;
+
+  @Getter @Setter private Object externalSource;
   
   public ValidationOptions() { this(FhirPublication.R5); }
 
@@ -394,5 +399,10 @@ public class ValidationOptions {
     return fhirVersion;
   }
 
-  
+  public ValidationOptions withExternalSource(Object res) {
+    this.externalSource = res;
+    return this;
+  }
+
+
 }

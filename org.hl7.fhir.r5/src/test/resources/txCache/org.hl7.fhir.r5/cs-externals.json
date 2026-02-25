@@ -3,6 +3,10 @@
   "urn:ietf:bcp:47" : null,
   "http://cancer.questionnaire.org/system/code/yesno" : null,
   "http://loinc.org" : null,
+  "http://terminology.hl7.org/CodeSystem/v2-0532" : {
+    "server" : "http://tx-dev.fhir.org/r5",
+    "filename" : "cs-a2f688cd-f566-4a5e-8dcd-3b34baed2d9a.json"
+  },
   "http://unitsofmeasure.org" : null,
   "http://snomed.info/sct" : null,
   "http://acme.org/messagetypes" : null
