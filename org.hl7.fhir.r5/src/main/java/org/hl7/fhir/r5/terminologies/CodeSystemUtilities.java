@@ -1169,7 +1169,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   public static boolean isLangPack(CodeSystem c) {
-    Extension ext = ExtensionUtilities.getExtension(c, "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-type");
+    Extension ext = ExtensionUtilities.getExtension(c,  ExtensionDefinitions.EXT_SUPPL_TYPE);
     return ext != null && ext.getValue() instanceof StringType && "lang-pack".equals(((StringType) ext.getValue()).getValue());
   }
 

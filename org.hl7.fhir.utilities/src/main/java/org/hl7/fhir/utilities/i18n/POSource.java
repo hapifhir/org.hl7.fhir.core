@@ -131,7 +131,7 @@ public class POSource {
         } else { // if (!Utilities.noString(s)) {
           poObject.getMsgstr().add(s);
         }
-      } else {
+      } else if (!line.startsWith("##")) {
         log.warn("unknown line: "+line);
       }
       i++;
