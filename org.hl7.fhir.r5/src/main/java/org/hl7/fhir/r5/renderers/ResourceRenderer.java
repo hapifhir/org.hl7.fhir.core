@@ -1209,6 +1209,15 @@ public abstract class ResourceRenderer extends DataRenderer {
       renderDataType(status, tr.td(), cr.extensionValue("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
+    if (cr.has("identifier")) {
+      tr = tbl.tr();
+      markBoilerplate(tr.td()).tx(context.formatPhrasePlural(cr.children("identifier").size(), RenderingContext.GENERAL_IDENTIFIER)+":");
+      XhtmlNode td = xlinkNarrative(tr.td(), cr.child("identifier"));
+      for (ResourceWrapper r : cr.children("identifier")) {
+        td.sep(", ");
+        renderDataType(status, td, r);
+      }
+    }
     String name = context.getTranslated(cr.child("name"));
     String title = context.getTranslated(cr.child("title"));
     
@@ -1594,7 +1603,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     } else if (statedVersion != null) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_STATED, statedVersion));
       x.tx("\uD83D\uDCCD");
-      x.tx(actualVersion);
+      x.tx(statedVersion);
     } else if (fromThisPackage) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_THIS_PACKAGE));
       x.tx("\uD83D\uDCE6");

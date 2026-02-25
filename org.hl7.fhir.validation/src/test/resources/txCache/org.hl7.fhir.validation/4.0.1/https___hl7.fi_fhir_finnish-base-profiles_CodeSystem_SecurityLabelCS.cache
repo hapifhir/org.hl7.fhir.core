@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS",
   "code" : "TURVAKIELTO"
-}, "url": "http://hl7.org/fhir/ValueSet/security-labels", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "url": "http://hl7.org/fhir/ValueSet/security-labels", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -61,7 +61,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   },
   {
@@ -82,7 +81,6 @@ v: {
       }],
       "text" : "The provided code 'https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS#TURVAKIELTO' was not found in the value set 'http://hl7.org/fhir/ValueSet/security-labels|4.0.1'"
     },
-    "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
   }]
 }

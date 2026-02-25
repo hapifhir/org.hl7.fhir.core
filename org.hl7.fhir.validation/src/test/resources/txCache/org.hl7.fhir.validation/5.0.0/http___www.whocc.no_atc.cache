@@ -3,7 +3,7 @@
   "system" : "http://www.whocc.no/atc",
   "code" : "N02AA",
   "display" : "Barbiturates and derivatives"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -23,7 +23,7 @@ v: {
   "error" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA. Valid display is 'Natural opium alkaloids' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n0ms http://www.whocc.no/atc/vs|2025: Validate \"[undefined|undefined#N02AA (\"Barbiturates and derivatives\")]\"\n0ms http://www.whocc.no/atc/vs|2025: Check \"http://www.whocc.no/atc|undefined#N02AA\"\n0ms http://www.whocc.no/atc/vs|2025: CodeSystem found: http://www.whocc.no/atc|2025 for http://www.whocc.no/atc|2025\n0ms http://www.whocc.no/atc/vs|2025: check code in (undefined) at Coding\n0ms http://www.whocc.no/atc/vs|2025: Code \"N02AA\" found in http://www.whocc.no/atc|2025",
+  "diagnostics" : "0ms tx-op\n0ms http://www.whocc.no/atc/vs|2025: Validate \"[undefined#N02AA (\"Barbiturates and derivatives\")]\"\n0ms http://www.whocc.no/atc/vs|2025: Check \"http://www.whocc.no/atc#N02AA\"\n0ms http://www.whocc.no/atc/vs|2025: CodeSystem found: http://www.whocc.no/atc|2025 for http://www.whocc.no/atc|2025\n0ms http://www.whocc.no/atc/vs|2025: check code in () at Coding\n0ms http://www.whocc.no/atc/vs|2025: Code \"N02AA\" found in http://www.whocc.no/atc|2025",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -45,7 +45,6 @@ v: {
       }],
       "text" : "Wrong Display Name 'Barbiturates and derivatives' for http://www.whocc.no/atc#N02AA. Valid display is 'Natural opium alkaloids' (for the language(s) 'en-US')"
     },
-    "location" : ["Coding.display"],
     "expression" : ["Coding.display"]
   }]
 }

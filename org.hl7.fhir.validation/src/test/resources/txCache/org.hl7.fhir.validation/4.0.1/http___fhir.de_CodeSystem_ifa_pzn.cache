@@ -3,7 +3,7 @@
   "system" : "http://fhir.de/CodeSystem/ifa/pzn",
   "code" : "07115663",
   "display" : "Octaplex 500 Pulver und Lösungsmittel zur Herstellung einer i.v. Infusionslösung"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -15,7 +15,6 @@
   }]
 }}####
 v: {
-  "display" : "Octaplex 500 Pulver und Lösungsmittel zur Herstellung einer i.v. Infusionslösung",
   "code" : "07115663",
   "system" : "http://fhir.de/CodeSystem/ifa/pzn",
   "severity" : "error",
@@ -43,7 +42,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ifa/pzn' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

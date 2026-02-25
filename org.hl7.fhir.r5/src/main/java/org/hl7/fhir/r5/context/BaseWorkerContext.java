@@ -842,12 +842,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public CodeSystem fetchSupplementedCodeSystem(String system, String version, Resource sourceOfReference) {
+  public CodeSystem fetchSupplementedCodeSystem(String system, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
     CodeSystem cs = fetchCodeSystem(system, version, sourceOfReference);
     if (cs != null) {
       List<CodeSystem> supplements = codeSystems.getSupplements(cs);
-      if (supplements.size() > 0) {
-        cs = CodeSystemUtilities.mergeSupplements(cs, supplements);
+      List<CodeSystem> activeSupplements = new ArrayList<>();
+      for (CodeSystem c : supplements) {
+        if (CodeSystemUtilities.isLangPack(c)) {
+          activeSupplements.add(c);
+        }
+        if (specifiedSupplements != null && (specifiedSupplements.contains(c.getUrl()) || specifiedSupplements.contains(c.getVersionedUrl()))) {
+          activeSupplements.add(c);
+        }
+      }
+
+      if (activeSupplements.size() > 0) {
+        cs = CodeSystemUtilities.mergeSupplements(cs, activeSupplements);
       }
     }
     return cs;
@@ -1505,6 +1515,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         iss.getDetails().setText(e.getMessage());
         iss.setDiagnostics(e.getDiagnostics());
         issues.add(iss);
+        iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", e.getCode().toCode(), null);
+        iss.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(e.getMsgId()));
+
         return new ValidationResult(IssueSeverity.FATAL, e.getMessage(), e.getError(), issues);
       } catch (Exception e) {
 //        e.printStackTrace();!
@@ -1771,6 +1784,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         OperationOutcomeIssueComponent iss = new OperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR, e.getType());
         iss.getDetails().setText(e.getMessage());
         iss.setDiagnostics(e.getDiagnostics());
+        iss.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", e.getCode().toCode(), null);
+        iss.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(e.getMsgId()));
         issues.add(iss);
         return new ValidationResult(IssueSeverity.FATAL, e.getMessage(), e.getError(), issues);
       } catch (Exception e) {

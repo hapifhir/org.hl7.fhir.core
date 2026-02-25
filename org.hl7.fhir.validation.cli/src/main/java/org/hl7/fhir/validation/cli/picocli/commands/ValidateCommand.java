@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.cli.picocli.commands;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.*;
 import org.hl7.fhir.validation.service.ValidateSourceParameters;
@@ -151,7 +152,9 @@ public class ValidateCommand extends ValidationEngineCommand {
     if (validationEngineOptions.advisorFile != null) {
       log.info("Note: Some validation issues might be hidden by the advisor settings in the file "+ validationEngineOptions.advisorFile);
     }
-
+    if (SystemExitManager.getError() > 0) {
+      return 1;
+    }
     return 0;
   }
 

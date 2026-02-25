@@ -866,7 +866,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (supplementedCodeSystems.containsKey(key)) {
       return supplementedCodeSystems.get(key);
     }
-    CodeSystem cs = getContext().getWorker().fetchSupplementedCodeSystem(system, version, source);
+    CodeSystem cs = getContext().getWorker().fetchSupplementedCodeSystem(system, version, null, source);
     supplementedCodeSystems.put(key, cs);
     return cs;
   }

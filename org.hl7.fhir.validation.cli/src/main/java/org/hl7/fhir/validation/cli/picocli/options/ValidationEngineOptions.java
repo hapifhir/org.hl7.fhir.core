@@ -175,7 +175,7 @@ public class ValidationEngineOptions {
   public List<String> certSources = new ArrayList<>();
 
   @CommandLine.Option(names = {"-matchetype"},
-    description = "File path for match type configuration",
+    description = "File path for matchetype to compare with",
     arity = "1")
   @With
   public List<String> matchetypes = new ArrayList<>();

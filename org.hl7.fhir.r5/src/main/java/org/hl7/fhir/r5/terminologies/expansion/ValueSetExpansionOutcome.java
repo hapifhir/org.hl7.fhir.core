@@ -7,6 +7,7 @@ import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 /**
@@ -17,6 +18,8 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
  */
 @MarkedToMoveToAdjunctPackage
 public class ValueSetExpansionOutcome {
+  private String msgId;
+  private ValueSetProcessBase.OpIssueCode code;
   private ValueSet valueset;
   private String error;
   private TerminologyServiceErrorClass errorClass;
@@ -61,7 +64,25 @@ public class ValueSetExpansionOutcome {
       errList.add(error);
     }
   }
-  
+
+  public ValueSetExpansionOutcome(String error, TerminologyServiceErrorClass errorClass, List<String> errList, boolean fromServer, String msgId, ValueSetProcessBase.OpIssueCode code) {
+    this.valueset = null;
+    this.error = error;
+    this.errorClass = errorClass;
+    this.fromServer = fromServer;
+    if (errList != null) {
+      this.allErrors.addAll(errList);
+    }
+    if (!allErrors.contains(error)) {
+      allErrors.add(error);
+    }
+    if (errList == null || !errList.contains(error)) {
+      errList.add(error);
+    }
+    this.msgId = msgId;
+    this.code = code;
+  }
+
   public ValueSetExpansionOutcome(String error, TerminologyServiceErrorClass errorClass, List<String> errList, List<OperationOutcomeIssueComponent> issueList) {
     this.valueset = null;
     this.error = error;
@@ -110,5 +131,13 @@ public class ValueSetExpansionOutcome {
   }
   public List<OperationOutcomeIssueComponent> getIssues() {
     return issues;
+  }
+
+  public String getMsgId() {
+    return msgId;
+  }
+
+  public ValueSetProcessBase.OpIssueCode getCode() {
+    return code;
   }
 }

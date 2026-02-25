@@ -98,7 +98,8 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
         new TxTester.InternalTxLoader(version),
         tx,
         false,
-        externalsJson
+        externalsJson,
+        testVersion
       );
 
       // Add input loaders

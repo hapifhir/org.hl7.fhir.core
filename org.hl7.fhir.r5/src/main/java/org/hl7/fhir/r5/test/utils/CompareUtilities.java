@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.test.utils;
 
+import lombok.Getter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -39,7 +40,10 @@ public class CompareUtilities extends BaseTestingUtilities {
   private JsonObject externals;
   private Map<String, String> variables;
   private Set<String> modes;
-  private boolean patternMode; 
+  private boolean patternMode;
+
+  @Getter
+  private List<String> warnings = new ArrayList<>();
 
   public CompareUtilities() {
     super();
@@ -61,6 +65,7 @@ public class CompareUtilities extends BaseTestingUtilities {
   
   public CompareUtilities(Set<String> modes, JsonObject externals, Map<String, String> variables) {
     super();
+    this.modes = modes;
     this.externals = externals;
     this.variables = variables;
   }
@@ -489,7 +494,11 @@ public class CompareUtilities extends BaseTestingUtilities {
           for (int i = 0; i < es; i++) {
             if (c >= as) {
               if (i >= es - oc && isOptional(expectedArray.get(i), name, parent)) {
-                return null; // this is OK 
+                String wt = isOptionalWarning(expectedArray.get(i), name, parent);
+                if (wt != null) {
+                  warnings.add(wt);
+                }
+                return null; // this is OK
               } else {
                 return "One or more array items did not match at "+path+" starting at index "+i;
               }
@@ -543,9 +552,24 @@ public class CompareUtilities extends BaseTestingUtilities {
     }
   }
 
+  private String isOptionalWarning(JsonElement e, String name, JsonObject parent) {
+    if (e.isJsonObject()) {
+      JsonObject j = e.asJsonObject();
+      if (j.isJsonString("$optional$") && j.asString("$optional$").startsWith("warning:")) {
+        return j.asString("$optional$").substring("warning:".length());
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
   private boolean passesOptionalFilter(String token) {
     if (token.startsWith("!")) {
       return modes == null || !modes.contains(token.substring(1));
+    } else if (token.startsWith("warning:")) {
+      return true;
     } else {
       return modes != null && modes.contains(token);
     }
