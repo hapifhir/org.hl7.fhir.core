@@ -39,6 +39,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.NoTerminologyServiceException;
+import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.BaseWorkerContext;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
@@ -1479,8 +1480,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
           ValidationResult vr = context.validateCode(options.withNoClient(), code, vsDummy);
           if (vr.isOk()) {
             sys.add(vsi.getSystem());
+          } else if (vr.IsNoService()) {
+            throw new TerminologyServiceException("No Service");
           } else {
-            // ok, we'll try to expand this one then 
+            // ok, we'll try to expand this one then
             ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), vsi, false, false);
             if (vse.isOk()) {
               if (!checkSystems(vse.getValueset().getExpansion().getContains(), code, sys, problems)) {
