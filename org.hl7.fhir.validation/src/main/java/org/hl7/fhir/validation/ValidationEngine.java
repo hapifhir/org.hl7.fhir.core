@@ -944,7 +944,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         locale = Locale.forLanguageTag(language);
       }
     }
-    validator.setAssumeValidRestReferences(defaultInstanceValidatorParameters.isAssumeValidRestReferences());
+    validator.setAssumeValidRestReferences(instanceValidatorParameters.isAssumeValidRestReferences());
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
 
     validator.getContext().getManager().setLocale(locale);
@@ -953,7 +953,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.getValidationControl().putAll(validationControl);
     validator.setAIService(aiService);
 
-    validator.setCheckIPSCodes(defaultInstanceValidatorParameters.isCheckIPSCodes());
+    validator.setCheckIPSCodes(instanceValidatorParameters.isCheckIPSCodes());
 
     validator.setCacheFolder(context.getTxCache().getFolder());
     if (format == FhirFormat.SHC) {
