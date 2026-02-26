@@ -146,7 +146,11 @@ public class ConsentRenderer extends ResourceRenderer {
             first = p.sepFirst(first, ",");
             p.tx(" ");
             String url = r.primitiveValueMN("uri", "url");
-            p.ah(url).tx(url);
+            if (Utilities.isAbsoluteUrlLinkable(url)) {
+              p.ah(url).tx(url);
+            } else {
+              p.code(url);
+            }
           }
         }
         p.txWithWhitespace(context.formatPhrase(RenderingContext.CONSENT_BASIS_POLICY_SUFFIX));
