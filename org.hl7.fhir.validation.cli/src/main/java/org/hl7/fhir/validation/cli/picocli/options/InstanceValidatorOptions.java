@@ -3,10 +3,6 @@ package org.hl7.fhir.validation.cli.picocli.options;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.With;
-import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
-import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
-import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
-import org.hl7.fhir.validation.service.utils.ValidationLevel;
 import picocli.CommandLine;
 
 import java.util.ArrayList;
