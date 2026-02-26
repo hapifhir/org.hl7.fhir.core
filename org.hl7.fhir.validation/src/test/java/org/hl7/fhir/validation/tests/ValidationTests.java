@@ -74,6 +74,7 @@ import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.IgLoader.IDirectPackageProvider;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidatorUtils;
+import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.scoring.*;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.StandAloneValidatorFetcher;
@@ -435,6 +436,12 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         suppress.add(c.getAsString());
       }
     }
+    if (content.has("fhir-validator-cli-options")) {
+      JsonObject jsonObject = content.getAsJsonObject("fhir-validator-cli-options");
+      if (jsonObject.has("max-validation-messages")) {
+        val.setMaxMessages(new ValidatorMaxMessages(jsonObject.get("max-validation-messages").getAsInt(), "validation-tests"));
+      }
+    }
 
     val.setSignatureServices(this);
     if (content.has("logical") == false) {
@@ -702,10 +709,10 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       focus.addProperty("java", "java/" + name.replace("/", "-") + "-" + mode + ".json");
     }
 
-    byte[] cnt = TestingUtilities.findTestResource("validator", "outcomes", "java", name.replace("/", "-") + "-" + mode + ".json") ?
+    byte[] testResourceBytes = TestingUtilities.findTestResource("validator", "outcomes", "java", name.replace("/", "-") + "-" + mode + ".json") ?
       TestingUtilities.loadTestResourceBytes("validator", "outcomes", "java", name.replace("/", "-") + "-" + mode + ".json") :
       " { \"resourceType\" : \"OperationOutcome\" }".getBytes();
-    OperationOutcome goal = (OperationOutcome) new JsonParser().parse(cnt);
+    OperationOutcome expected = (OperationOutcome) new JsonParser().parse(testResourceBytes);
     OperationOutcome actual = content.has("ids-in-errors") ? OperationOutcomeUtilities.createOutcomeSimpleWithIds(errors) : OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     actual.getIssue().forEach(iss -> iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_SLICE_INFO));
@@ -716,7 +723,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     List<String> fails = new ArrayList<>();
 
     Map<OperationOutcomeIssueComponent, OperationOutcomeIssueComponent> map = new HashMap<>();
-    for (OperationOutcomeIssueComponent issGoal : goal.getIssue()) {
+    for (OperationOutcomeIssueComponent issGoal : expected.getIssue()) {
       OperationOutcomeIssueComponent issActual = findMatchingIssue(actual, issGoal);
       if (issActual == null) {
         fails.add("Expected Issue missing: " + issGoal.toString());
@@ -736,7 +743,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         fails.add("Unexpected Issue found: " + issActual.toString());
       }
     }
-    if (goal.getIssue().size() != actual.getIssue().size() && fails.isEmpty()) {
+    if (expected.getIssue().size() != actual.getIssue().size() && fails.isEmpty()) {
       fails.add("Issue count mismatch (check for duplicate error messages)");
     }
 

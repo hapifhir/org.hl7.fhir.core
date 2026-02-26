@@ -197,10 +197,18 @@ public interface IResourceValidator {
    */
   void validate(Object Context, List<ValidationMessage> errors, String initialPath, org.hl7.fhir.r5.elementmodel.Element element) throws FHIRException;
   void validate(Object Context, List<ValidationMessage> errors, String initialPath, org.hl7.fhir.r5.elementmodel.Element element, String profile) throws FHIRException;
+
+  /**
+   * This is the main entry point for the validation of an element. All public entry points end up coming here.
+   */
   void validate(Object Context, List<ValidationMessage> errors, String initialPath, org.hl7.fhir.r5.elementmodel.Element element, List<StructureDefinition> profiles) throws FHIRException;
   
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format) throws FHIRException;
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format, String profile) throws FHIRException;
+
+  /**
+   * This is the programmatic entry point for validation from an InputStream
+   **/
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format, List<StructureDefinition> profiles) throws FHIRException;
 
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.model.Resource resource) throws FHIRException;
