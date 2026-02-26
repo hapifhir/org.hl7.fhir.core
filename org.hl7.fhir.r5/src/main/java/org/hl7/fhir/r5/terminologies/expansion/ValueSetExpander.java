@@ -662,6 +662,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
   }
 
   private void excludeCode(WorkingContext wc, String theSystem, String theCode) {
+
     ValueSetExpansionContainsComponent n = new ValueSet.ValueSetExpansionContainsComponent();
     n.setSystem(theSystem);
     n.setCode(theCode);
@@ -672,51 +673,80 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private void excludeCodes(WorkingContext wc, ConceptSetComponent exc, Parameters expParams, ValueSetExpansionComponent exp, ValueSet vs, String vspath) throws FHIRException, FileNotFoundException, OperationIsTooCostly, IOException {
     opContext.deadCheck("excludeCodes");
     exc.checkNoModifiers("Compose.exclude", "expanding");
-    if (exc.hasSystem() && exc.getConcept().size() == 0 && exc.getFilter().size() == 0) {
+    if (exc.hasSystem() && exc.getConcept().size() == 0 && exc.getFilter().size() == 0 && exc.getValueSet().size() == 0) {
       wc.getExcludeSystems().add(exc.getSystem());
+    } else {
+      List<ValueSet> imports = new ArrayList<ValueSet>();
+      for (UriType imp : exc.getValueSet()) {
+        imports.add(importValueSetForExclude(wc, imp.getValue(), exp, expParams, false, vs));
+      }
+      if (!exc.hasSystem()) {
+        if (imports.isEmpty()) // though this is not supposed to be the case
+          return;
+        ValueSet base = imports.get(0);
+        checkCanonical(exp, base, focus);
+        imports.remove(0);
+        base.checkNoModifiers("Imported ValueSet", "expanding");
+        excludeImport(wc, base.getExpansion().getContains(), imports, exp, null);
+      } else {
+        String sv = exc.getSystem() + (exc.hasVersion() ? "#" + exc.getVersion() : "");
+        if (dwc.getCountIncompleteSystems().contains(sv)) {
+          dwc.setNoTotal(true);
+        }
+
+        CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
+        if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.getTxSupportInfo(exc.getSystem(), exc.getVersion()).isSupported()) {
+          ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
+          ValueSet valueset = vse.getValueset();
+          if (valueset.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
+            sources.add(valueset.getUserString(UserDataNames.VS_EXPANSION_SOURCE));
+          }
+          if (valueset == null)
+            throw failTSE("Error Expanding ValueSet: " + vse.getError());
+          excludeCodes(wc, valueset.getExpansion());
+          return;
+        }
+
+        if (exc.getConcept().isEmpty() && exc.getFilter().isEmpty()) {
+          ValueSet base = imports.get(0);
+          checkCanonical(exp, base, focus);
+          imports.remove(0);
+          base.checkNoModifiers("Imported ValueSet", "expanding");
+          excludeImport(wc, base.getExpansion().getContains(), imports, exp, null);
+        }
+        for (ConceptReferenceComponent c : exc.getConcept()) {
+          if (imports.isEmpty() || filterContainsCode(imports, exc.getSystem(), c.getCode(), exp)) {
+            excludeCode(wc, exc.getSystem(), c.getCode());
+          }
+        }
+
+        if (exc.getFilter().size() > 0) {
+          if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
+            addFragmentWarning(exp, cs);
+          }
+          List<WorkingContext> filters = new ArrayList<>();
+          for (int i = 1; i < exc.getFilter().size(); i++) {
+            WorkingContext wc1 = new WorkingContext();
+            filters.add(wc1);
+            processFilter(exc, exp, expParams, null, cs, false, exc.getFilter().get(i), wc1, null, true, vspath + ".filter[" + i + "]");
+          }
+          ConceptSetFilterComponent fc = exc.getFilter().get(0);
+          WorkingContext wc1 = dwc;
+          processFilter(exc, exp, expParams, imports, cs, false, fc, wc1, filters, true, vspath + ".filter[0]");
+        }
+      }
     }
+  }
 
-    for (UriType imp : exc.getValueSet()) {
-      excludeCodes(wc, importValueSetForExclude(wc, imp.getValue(), exp, expParams, false, vs).getExpansion());
-    }
-    
-    if (exc.hasSystem()) {
-      String sv = exc.getSystem()+(exc.hasVersion() ? "#"+exc.getVersion(): "");
-      if (dwc.getCountIncompleteSystems().contains(sv)) {
-        dwc.setNoTotal(true);
-      }
+  private void excludeImport(WorkingContext wc, List<ValueSetExpansionContainsComponent> list, List<ValueSet> imports, ValueSetExpansionComponent exp, String system) {
+    opContext.deadCheck("excludeImport");
 
-      CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
-      if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.getTxSupportInfo(exc.getSystem(), exc.getVersion()).isSupported()) {
-        ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
-        ValueSet valueset = vse.getValueset();
-        if (valueset.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
-          sources.add(valueset.getUserString(UserDataNames.VS_EXPANSION_SOURCE));
-        }
-        if (valueset == null)
-          throw failTSE("Error Expanding ValueSet: "+vse.getError());
-        excludeCodes(wc, valueset.getExpansion());
-        return;
+    for (ValueSetExpansionContainsComponent c : list) {
+      c.checkNoModifiers("Imported Expansion in Code System", "expanding");
+      if ((imports.isEmpty() || !filterContainsCode(imports, c.getSystem(), c.getCode(), exp)) && (system == null || system.equals(c.getSystem()))) {
+        excludeCode(wc, c.getSystem(), c.getCode());
       }
-
-      for (ConceptReferenceComponent c : exc.getConcept()) {
-        excludeCode(wc, exc.getSystem(), c.getCode());
-      }
-
-      if (exc.getFilter().size() > 0) {
-        if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
-          addFragmentWarning(exp, cs);
-        }
-        List<WorkingContext> filters = new ArrayList<>();
-        for (int i = 1; i < exc.getFilter().size(); i++) {
-          WorkingContext wc1 = new WorkingContext();
-          filters.add(wc1);
-          processFilter(exc, exp, expParams, null, cs, false, exc.getFilter().get(i), wc1, null, true, vspath+".filter["+i+"]");
-        }
-        ConceptSetFilterComponent fc = exc.getFilter().get(0);
-        WorkingContext wc1 = dwc;
-        processFilter(exc, exp, expParams, null, cs, false, fc, wc1, filters, true, vspath+".filter[0]");
-      }
+      excludeImport(wc, c.getContains(), imports, exp, system);
     }
   }
 
@@ -1535,63 +1565,65 @@ public class ValueSetExpander extends ValueSetProcessBase {
         }
       }
     }
-    if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
-      // special case - add all the code system
-      for (ConceptDefinitionComponent def : cs.getConcept()) {
-        addCodeAndDescendents(dwc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), null, exp);
-      }
-      if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
-        addFragmentWarning(exp, cs);
-      }
-      if (cs.getContent() == CodeSystemContentMode.EXAMPLE) {
-        addExampleWarning(exp, cs);
-      }      
-    }
-
-    if (!inc.getConcept().isEmpty()) {
-      dwc.setCanBeHierarchy(false);
-      for (ConceptReferenceComponent c : inc.getConcept()) {
-        c.checkNoModifiers("Code in Value Set", "expanding");
-        ConceptDefinitionComponent def = CodeSystemUtilities.findCodeOrAltCode(cs.getConcept(), c.getCode(), null);
-        boolean inactive = false; // default is true if we're a fragment and  
-        boolean isAbstract = false;
-        if (def == null) {
-          if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
-            addFragmentWarning(exp, cs);
-          } else if (cs.getContent() == CodeSystemContentMode.EXAMPLE) {
-              addExampleWarning(exp, cs);
-          } else {
-            if (checkCodesWhenExpanding) {
-              throw failTSE("Unable to find code '" + c.getCode() + "' in code system " + cs.getUrl());
-            }
-          }
-        } else {
-          def.checkNoModifiers("Code in Code System", "expanding");
-          inactive = CodeSystemUtilities.isInactive(cs, def);
-          isAbstract = CodeSystemUtilities.isNotSelectable(cs, def);
-          String vstatus = determineStatus(cs, def);
-          addCode(dwc, inc.getSystem(), cs.getVersion(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(),
-            null, mergeDesignations(def, convertDesignations(c.getDesignation())), expParams, isAbstract, inactive, imports, noInactive, false,
-            exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), c.getExtension(), exp, vstatus);
+    if (!dwc.getExcludeSystems().contains(cs.getUrl())) {
+      if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
+        // special case - add all the code system
+        for (ConceptDefinitionComponent def : cs.getConcept()) {
+          addCodeAndDescendents(dwc, cs, inc.getSystem(), cs.getVersion(), def, null, expParams, imports, null, new AllConceptsFilter(allErrors), noInactive, exp.getProperty(), null, exp);
+        }
+        if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
+          addFragmentWarning(exp, cs);
+        }
+        if (cs.getContent() == CodeSystemContentMode.EXAMPLE) {
+          addExampleWarning(exp, cs);
         }
       }
-    }
-    if (inc.getFilter().size() > 0) {
-      if (inc.getFilter().size() > 1) {
-        dwc.setCanBeHierarchy(false); // which will be the case if we get around to supporting this
+
+      if (!inc.getConcept().isEmpty()) {
+        dwc.setCanBeHierarchy(false);
+        for (ConceptReferenceComponent c : inc.getConcept()) {
+          c.checkNoModifiers("Code in Value Set", "expanding");
+          ConceptDefinitionComponent def = CodeSystemUtilities.findCodeOrAltCode(cs.getConcept(), c.getCode(), null);
+          boolean inactive = false; // default is true if we're a fragment and
+          boolean isAbstract = false;
+          if (def == null) {
+            if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
+              addFragmentWarning(exp, cs);
+            } else if (cs.getContent() == CodeSystemContentMode.EXAMPLE) {
+              addExampleWarning(exp, cs);
+            } else {
+              if (checkCodesWhenExpanding) {
+                throw failTSE("Unable to find code '" + c.getCode() + "' in code system " + cs.getUrl());
+              }
+            }
+          } else {
+            def.checkNoModifiers("Code in Code System", "expanding");
+            inactive = CodeSystemUtilities.isInactive(cs, def);
+            isAbstract = CodeSystemUtilities.isNotSelectable(cs, def);
+            String vstatus = determineStatus(cs, def);
+            addCode(dwc, inc.getSystem(), cs.getVersion(), c.getCode(), !Utilities.noString(c.getDisplay()) ? c.getDisplay() : def.getDisplay(), c.hasDisplay() ? vsSrc.getLanguage() : cs.getLanguage(),
+              null, mergeDesignations(def, convertDesignations(c.getDesignation())), expParams, isAbstract, inactive, imports, noInactive, false,
+              exp.getProperty(), makeCSProps(def.getDefinition(), def.getProperty()), cs, null, def.getExtension(), c.getExtension(), exp, vstatus);
+          }
+        }
       }
-      if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
-        addFragmentWarning(exp, cs);
+      if (inc.getFilter().size() > 0) {
+        if (inc.getFilter().size() > 1) {
+          dwc.setCanBeHierarchy(false); // which will be the case if we get around to supporting this
+        }
+        if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
+          addFragmentWarning(exp, cs);
+        }
+        List<WorkingContext> filters = new ArrayList<>();
+        for (int i = 1; i < inc.getFilter().size(); i++) {
+          WorkingContext wc = new WorkingContext();
+          filters.add(wc);
+          processFilter(inc, exp, expParams, imports, cs, noInactive, inc.getFilter().get(i), wc, null, false, vspath + ".filter[" + i + "]");
+        }
+        ConceptSetFilterComponent fc = inc.getFilter().get(0);
+        WorkingContext wc = dwc;
+        processFilter(inc, exp, expParams, imports, cs, noInactive, fc, wc, filters, false, vspath + ".filter[0]");
       }
-      List<WorkingContext> filters = new ArrayList<>();
-      for (int i = 1; i < inc.getFilter().size(); i++) {
-        WorkingContext wc = new WorkingContext();
-        filters.add(wc);
-        processFilter(inc, exp, expParams, imports, cs, noInactive, inc.getFilter().get(i), wc, null, false, vspath+".filter["+i+"]");
-      }
-      ConceptSetFilterComponent fc = inc.getFilter().get(0);
-      WorkingContext wc = dwc;
-      processFilter(inc, exp, expParams, imports, cs, noInactive, fc, wc, filters, false, vspath+".filter[0]");
     }
   }
 
