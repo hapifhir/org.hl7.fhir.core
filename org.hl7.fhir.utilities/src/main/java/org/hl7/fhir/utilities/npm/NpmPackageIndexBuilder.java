@@ -68,7 +68,8 @@ public class NpmPackageIndexBuilder {
        * We can then use a streaming parser to get the values of these fields instead of parsing the whole file and
        * allocating memory for everything in it.
        */
-      try (final var parser = new JsonFactory().createParser(content)) {
+      JsonFactory jsonFactory = new JsonFactory();
+      try (final var parser = jsonFactory.createParser(content)) {
         final var fi = new JsonObject();
         int level = 0;
 
