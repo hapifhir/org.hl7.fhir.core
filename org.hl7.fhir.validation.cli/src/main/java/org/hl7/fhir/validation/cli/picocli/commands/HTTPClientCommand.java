@@ -76,8 +76,9 @@ public class HTTPClientCommand implements Callable<Integer> {
   )
   private Integer port;
 
-  @CommandLine.Parameters(
-    index = "0",
+
+  @CommandLine.Option(
+    names = {"-host"},
     description = "Hostname and port combo (or default http port)",
     arity = "1"
   )
@@ -104,10 +105,17 @@ public class HTTPClientCommand implements Callable<Integer> {
       return 0;
     }
 
+    final URI uri;
+    try {
+      uri = host != null ? getUriFromOptions(host, instanceValidatorOptions) : getUriFromOptions(hostname, port, instanceValidatorOptions);
+    } catch (URISyntaxException e) {
+      log.error("Unable to construct URI from options host={} hostname={} port={}", host, hostname, port, e);
+      return 1;
+    }
     for (String source : whatToValidate) {
       try {
         HttpRequest request = HttpRequest.newBuilder()
-          .uri(getUriFromOptions(BASE_URL, port, instanceValidatorOptions))
+          .uri(uri)
           .POST(HttpRequest.BodyPublishers.ofFile(Path.of(source)))
           .header("Content-Type", "application/fhir+json")
           .build();
@@ -119,7 +127,7 @@ public class HTTPClientCommand implements Callable<Integer> {
         if (renderSummary.totalErrors() > 0) {
           System.exit(1);
         }
-      } catch (IOException | URISyntaxException | InterruptedException e) {
+      } catch (IOException | InterruptedException e) {
         log.error(e.getMessage(), e);
         return 1;
       }
@@ -128,13 +136,22 @@ public class HTTPClientCommand implements Callable<Integer> {
     return 0;
   }
 
-  // Created by claude-sonnet-4-6
+  public URI getUriFromOptions(String hostname, InstanceValidatorOptions instanceValidatorOptions) throws URISyntaxException {
+    URIBuilder uriBuilder = new URIBuilder(hostname).setScheme("http");
+    return getUriFromOptions(uriBuilder, instanceValidatorOptions);
+  }
+
   public URI getUriFromOptions(String host, int port, InstanceValidatorOptions instanceValidatorOptions) throws URISyntaxException {
     URIBuilder uriBuilder = new URIBuilder()
       .setScheme("http")
       .setHost(host)
-      .setPort(port)
-      .setPath("/validateResource");
+      .setPort(port);
+    return getUriFromOptions(uriBuilder, instanceValidatorOptions);
+  }
+
+  // Created by claude-sonnet-4-6
+  public URI getUriFromOptions(URIBuilder uriBuilder, InstanceValidatorOptions instanceValidatorOptions) throws URISyntaxException {
+    uriBuilder.setPath("/validateResource");
 
     // String fields
     if (instanceValidatorOptions.jurisdiction != null) {
