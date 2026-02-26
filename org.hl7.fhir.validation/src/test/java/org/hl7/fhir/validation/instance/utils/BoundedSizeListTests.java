@@ -1,6 +1,4 @@
-package org.hl7.fhir.validation.service.utils;
-
-import org.hl7.fhir.validation.instance.utils.BoundedSizeList;
+package org.hl7.fhir.validation.instance.utils;
 
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
