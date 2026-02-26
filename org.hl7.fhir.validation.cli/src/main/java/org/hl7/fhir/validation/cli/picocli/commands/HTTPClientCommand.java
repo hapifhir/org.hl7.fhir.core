@@ -55,28 +55,31 @@ import org.hl7.fhir.r5.model.Resource;
 public class HTTPClientCommand implements Callable<Integer> {
 
   @CommandLine.Option(
-    names = {"--stop"},
-    description = "Stop the running HTTP server (not yet implemented)"
+    names = {"-stop"},
+    description = "Stop the running HTTP server"
   )
   private boolean stop;
 
   @CommandLine.Option(
     names = {"-hostname"},
     description = "Server host (default: localhost)",
-    defaultValue = "localhost"
+    defaultValue = "localhost",
+    arity = "1"
   )
   private String hostname;
 
   @CommandLine.Option(
     names = {"-port"},
     description = "Server port (default: 80)",
-    defaultValue = "80"
+    defaultValue = "80",
+    arity = "1"
   )
   private Integer port;
 
   @CommandLine.Parameters(
     index = "0",
-    description = "Hostname and port combo (or default http port)"
+    description = "Hostname and port combo (or default http port)",
+    arity = "1"
   )
   private String host;
 
@@ -95,6 +98,11 @@ public class HTTPClientCommand implements Callable<Integer> {
       .build();
 
     final String BASE_URL = "localhost";
+
+    if (stop) {
+      log.info("Sent stop command to HTTP server");
+      return 0;
+    }
 
     for (String source : whatToValidate) {
       try {

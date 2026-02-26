@@ -101,7 +101,7 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
       );
       service.startServer();
 
-      log.info("Press Ctrl-C to stop the server, or use the client to ask the server to stop (-client -stop)");
+      log.info("Press Ctrl-C to stop the server, or use the client to ask the server to stop (client -stop)");
 
       // Run indefinitely until interrupted
       while (true) {
