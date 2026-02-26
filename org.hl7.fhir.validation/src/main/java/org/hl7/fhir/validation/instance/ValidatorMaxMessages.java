@@ -11,7 +11,7 @@ public class ValidatorMaxMessages {
   /**
    *
    * @param maxMessages The maximum messages validation will be allowed to collect before stopping
-   * @param source The means by which the timeout was set (from a CLI option, programmatically, etc.)
+   * @param source The means by which the message limit was set (from a CLI option, programmatically, etc.)
    */
   public ValidatorMaxMessages(final int maxMessages, final String source) {
     if (maxMessages < 1) {
