@@ -1,0 +1,26 @@
+{
+  "http://example.org/invalid-valueset-canonical" : null,
+  "http://hl7.org/fhir/us/davinci-hrex/ValueSet/hrex-endpoint-name" : null,
+  "http://fhir.ch/ig/ch-ig/ValueSet/ch-ig-example" : null,
+  "http://hl7.org/fhir/us/qicore/ValueSet/qicore-negation-reason" : null,
+  "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType" : null,
+  "http://hl7.org/fhir/test/CodeSystem/big" : null,
+  "https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_ICD_SEITENLOKALISATION" : null,
+  "#f3b2bd36-199b-4591-b4db-f49db0912b62" : null,
+  "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9" : null,
+  "http://fhir.abda.de/eRezeptAbgabedaten/ValueSet/DAV-VS-ERP-DEUEV-Anlage-8" : null,
+  "#VSPHQ9" : null,
+  "#c1" : null,
+  "#options-1" : null,
+  "http://something/something" : null,
+  "http://loinc.org" : null,
+  "https://sqlonfhir-dstu2.azurewebsites.net/fhir/ValueSet/administrative-gender" : null,
+  "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
+  "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
+    "server" : "https://tx.hl7.org.au/fhir",
+    "filename" : "vs-d209d5b3-0471-46b6-a7ee-83a6cf8ef187.json"
+  },
+  "http://hl7.org/fhir/CodeSystem/c1" : null,
+  "https://sqlonfhir-ci2.azurewebsites.net/fhir/ValueSet/hcxdir-locality" : null,
+  "#f3b2bd36-199b-4591-b4db-f49db0912b6" : null
+}

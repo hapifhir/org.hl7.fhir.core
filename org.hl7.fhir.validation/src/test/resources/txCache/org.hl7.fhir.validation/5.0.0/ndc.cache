@@ -1,0 +1,51 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://hl7.org/fhir/sid/ndc",
+    "code" : "2501-813-16",
+    "display" : "Timoptic 5mg/ml solution"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "Unknown code '2501-813-16' in the CodeSystem 'http://hl7.org/fhir/sid/ndc' version '2021-11-01'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/sid/ndc/vs|2021-11-01: Validate \"[http://hl7.org/fhir/sid/ndc#2501-813-16 (\"Timoptic 5mg/ml solution\")]\"\n1ms http://hl7.org/fhir/sid/ndc/vs|2021-11-01: Check \"http://hl7.org/fhir/sid/ndc#2501-813-16\"\n1ms http://hl7.org/fhir/sid/ndc/vs|2021-11-01: CodeSystem found: http://hl7.org/fhir/sid/ndc|2021-11-01 for http://hl7.org/fhir/sid/ndc|2021-11-01\n1ms http://hl7.org/fhir/sid/ndc/vs|2021-11-01: check code in (http://hl7.org/fhir/sid/ndc) at CodeableConcept.coding[0]\n7661ms http://hl7.org/fhir/sid/ndc/vs|2021-11-01: Code \"2501-813-16\" not found in http://hl7.org/fhir/sid/ndc|2021-11-01: undefined",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code '2501-813-16' in the CodeSystem 'http://hl7.org/fhir/sid/ndc' version '2021-11-01'"
+    },
+    "expression" : ["CodeableConcept.coding[0].code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

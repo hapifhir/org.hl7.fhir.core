@@ -1,0 +1,14 @@
+{
+  "http://unstats.un.org/unsd/methods/m49/m49.htm" : null,
+  "https://fhir.hl7.org.uk/STU3/CodeSystem/CareConnect-NHSNumberVerificationStatus-1" : null,
+  "urn:ietf:bcp:13" : null,
+  "http://mydomain.org/fhir/cs/mydomain" : null,
+  "http://acme.org" : null,
+  "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode" : null,
+  "http://acme.org/not-snomed" : null,
+  "http://myownsystem.info/sct" : null,
+  "urn:oid:1.2.840.10008.2.16.4" : null,
+  "http://example.org/system" : null,
+  "http://spms.min-saude.pt/valueset-list" : null,
+  "http://spms.min-saude.pt/valueset-list-empty-reason" : null
+}

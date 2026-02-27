@@ -1,0 +1,8 @@
+{
+  "systems" : [{
+    "system" : "http://johnmoehrke.github.io/xacml-consent/CodeSystem/cs-health-sensitivity",
+    "url" : "http://johnmoehrke.github.io/xacml-consent/CodeSystem/cs-health-sensitivity",
+    "authoritative" : [],
+    "candidates" : []
+  }]
+}

@@ -1,0 +1,187 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "1000990",
+    "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray",
+  "code" : "1000990",
+  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+  "version" : "02032025",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1000990 (\"oxymetazoline hydrochloride 0.5 MG/ML Nasal Spray\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1000990\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|02032025 for http://www.nlm.nih.gov/research/umls/rxnorm|02032025\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Code \"1000990\" found in http://www.nlm.nih.gov/research/umls/rxnorm|02032025",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "1010603",
+    "display" : "Suboxone 2 MG / 0.5 MG Sublingual Film"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film [Suboxone]",
+  "code" : "1010603",
+  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+  "version" : "02032025",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1010603 (\"Suboxone 2 MG / 0.5 MG Sublingual Film\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1010603\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|02032025 for http://www.nlm.nih.gov/research/umls/rxnorm|02032025\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n4ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Code \"1010603\" found in http://www.nlm.nih.gov/research/umls/rxnorm|02032025",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "1298088",
+    "display" : "Flurazepam Hydrochloride 15 MG Oral Capsule"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "flurazepam hydrochloride 15 MG Oral Capsule",
+  "code" : "1298088",
+  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+  "version" : "02032025",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1298088 (\"Flurazepam Hydrochloride 15 MG Oral Capsule\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1298088\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|02032025 for http://www.nlm.nih.gov/research/umls/rxnorm|02032025\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Code \"1298088\" found in http://www.nlm.nih.gov/research/umls/rxnorm|02032025",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "1010600",
+    "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film",
+  "code" : "1010600",
+  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+  "version" : "02032025",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#1010600 (\"buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#1010600\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|02032025 for http://www.nlm.nih.gov/research/umls/rxnorm|02032025\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Code \"1010600\" found in http://www.nlm.nih.gov/research/umls/rxnorm|02032025",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "428759",
+    "display" : "metformin 250 MG Oral Tablet"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "r5BundleRelativeReferencePolicy":"always", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "metformin 250 MG Oral Tablet",
+  "code" : "428759",
+  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+  "version" : "02032025",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|02032025 for http://www.nlm.nih.gov/research/umls/rxnorm|02032025\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|02032025",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    "code" : "428759",
+    "display" : "metformin 250 MG Oral Tablet"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "metformin 250 MG Oral Tablet",
+  "code" : "428759",
+  "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+  "version" : "02032025",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Validate \"[http://www.nlm.nih.gov/research/umls/rxnorm#428759 (\"metformin 250 MG Oral Tablet\")]\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Check \"http://www.nlm.nih.gov/research/umls/rxnorm#428759\"\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: CodeSystem found: http://www.nlm.nih.gov/research/umls/rxnorm|02032025 for http://www.nlm.nih.gov/research/umls/rxnorm|02032025\n1ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: check code in (http://www.nlm.nih.gov/research/umls/rxnorm) at CodeableConcept.coding[0]\n2ms http://www.nlm.nih.gov/research/umls/rxnorm/vs|02032025: Code \"428759\" found in http://www.nlm.nih.gov/research/umls/rxnorm|02032025",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

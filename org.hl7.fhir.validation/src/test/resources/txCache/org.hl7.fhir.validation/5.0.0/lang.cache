@@ -1,0 +1,55 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:ietf:bcp:47",
+  "code" : "fr-CA"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "French (Canada)",
+  "code" : "fr-CA",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms urn:ietf:bcp:47/vs: Validate \"[urn:ietf:bcp:47#fr-CA (\"undefined\")]\"\n0ms urn:ietf:bcp:47/vs: Check \"urn:ietf:bcp:47#fr-CA\"\n0ms urn:ietf:bcp:47/vs: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n0ms urn:ietf:bcp:47/vs: check code in (urn:ietf:bcp:47) at Coding\n0ms urn:ietf:bcp:47/vs: Code \"fr-CA\" found in urn:ietf:bcp:47|null",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:ietf:bcp:47",
+  "code" : "fr-CA"
+}, "url": "http://hl7.org/fhir/ValueSet/all-languages--0", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "French (Canada)",
+  "code" : "fr-CA",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/ValueSet/all-languages--0|5.0.0: Analysing http://hl7.org/fhir/ValueSet/all-languages--0|5.0.0 for validation purposes\n0ms http://hl7.org/fhir/ValueSet/all-languages--0|5.0.0: Parameters: disp-lang=en-US, generate-narrative, default-to-latest\n0ms http://hl7.org/fhir/ValueSet/all-languages--0|5.0.0: Prepare include[0]: \"(urn:ietf:bcp:47)\"\n0ms http://hl7.org/fhir/ValueSet/all-languages--0|5.0.0: CodeSystem found: \"urn:ietf:bcp:47|null\"\n0ms http://hl7.org/fhir/ValueSet/all-languages--0|5.0.0: Validate \"[urn:ietf:bcp:47#fr-CA (\"undefined\")]\"\n0ms http://hl7.org/fhir/ValueSet/all-languages--0|5.0.0: Check \"urn:ietf:bcp:47#fr-CA\"\n0ms http://hl7.org/fhir/ValueSet/all-languages--0|5.0.0: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n0ms http://hl7.org/fhir/ValueSet/all-languages--0|5.0.0: check code in (urn:ietf:bcp:47) at Coding\n0ms http://hl7.org/fhir/ValueSet/all-languages--0|5.0.0: Code \"fr-CA\" found in urn:ietf:bcp:47|null",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
