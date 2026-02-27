@@ -1654,6 +1654,19 @@ public class FHIRPathEngine {
     return null;
   }
 
+  public static Identifier makeIdentifier(Base base) {
+    if (base == null) {
+      return null;
+    }
+    if (base instanceof Identifier) {
+      return (Identifier) base;
+    }
+    if (base instanceof org.hl7.fhir.r5.elementmodel.Element) {
+      return ObjectConverter.readAsIdentifier((org.hl7.fhir.r5.elementmodel.Element) base);
+    }
+    return null;
+  }
+
   private List<Base> makeNull() {
     List<Base> res = new ArrayList<Base>();
     return res;
@@ -5658,6 +5671,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         Property p = item.getChildByName("reference");
         if (p != null && p.hasValues()) {
           url = convertToString(p.getValues().get(0));
+        }
+        p = item.getChildByName("identifier");
+        if (p != null && p.hasValues()) {
+          id = makeIdentifier(p.getValues().get(0));
         }
       } else if (item.isPrimitive()) {
         url = item.primitiveValue();

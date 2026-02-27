@@ -2317,6 +2317,15 @@ public class FHIRPathEngine {
     return result;
   }
 
+  public static Identifier makeIdentifier(Base base) {
+    if (base == null) {
+      return null;
+    }
+    if (base instanceof Identifier) {
+      return (Identifier) base;
+    }
+    return null;
+  }
 
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
@@ -2330,6 +2339,10 @@ public class FHIRPathEngine {
         Property p = item.getChildByName("reference");
         if (p != null && p.hasValues()) {
           url = convertToString(p.getValues().get(0));
+        }
+        p = item.getChildByName("identifier");
+        if (p != null && p.hasValues()) {
+          id = makeIdentifier(p.getValues().get(0));
         }
       } else if (item.isPrimitive()) {
         url = item.primitiveValue();
