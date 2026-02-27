@@ -27,17 +27,13 @@ import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4b.formats.JsonParser;
 import org.hl7.fhir.r4b.formats.XmlParser;
-import org.hl7.fhir.r4b.model.Base;
-import org.hl7.fhir.r4b.model.Bundle;
+import org.hl7.fhir.r4b.model.*;
 import org.hl7.fhir.r4b.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r4b.model.Resource;
-import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4b.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4b.renderers.RendererFactory;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext.ResourceRendererMode;
-import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.r4b.utils.XVerExtensionManager;
@@ -416,7 +412,7 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) {
       // TODO Auto-generated method stub
       return null;
     }

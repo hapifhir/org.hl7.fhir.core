@@ -22,7 +22,7 @@ v: {
   "system" : "http://www.ama-assn.org/go/cpt",
   "version" : "2023",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://www.ama-assn.org/go/cpt/vs|2023: Validate \"[undefined#99202 (\"undefined\")]\"\n1ms http://www.ama-assn.org/go/cpt/vs|2023: Check \"http://www.ama-assn.org/go/cpt#99202\"\n1ms http://www.ama-assn.org/go/cpt/vs|2023: CodeSystem found: http://www.ama-assn.org/go/cpt|2023 for http://www.ama-assn.org/go/cpt|2023\n1ms http://www.ama-assn.org/go/cpt/vs|2023: check code in () at CodeableConcept.coding[0]\n1ms http://www.ama-assn.org/go/cpt/vs|2023: Code \"99202\" found in http://www.ama-assn.org/go/cpt|2023",
+  "diagnostics" : "0ms tx-op\n1ms http://www.ama-assn.org/go/cpt/vs|2023: Validate \"[http://www.ama-assn.org/go/cpt#99202 (\"undefined\")]\"\n1ms http://www.ama-assn.org/go/cpt/vs|2023: Check \"http://www.ama-assn.org/go/cpt#99202\"\n1ms http://www.ama-assn.org/go/cpt/vs|2023: CodeSystem found: http://www.ama-assn.org/go/cpt|2023 for http://www.ama-assn.org/go/cpt|2023\n1ms http://www.ama-assn.org/go/cpt/vs|2023: check code in (http://www.ama-assn.org/go/cpt) at CodeableConcept.coding[0]\n1ms http://www.ama-assn.org/go/cpt/vs|2023: Code \"99202\" found in http://www.ama-assn.org/go/cpt|2023",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

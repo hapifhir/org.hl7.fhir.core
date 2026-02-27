@@ -631,6 +631,9 @@ public class CompareUtilities extends BaseTestingUtilities {
         }
       }
     } else {
+      if (expectedJsonString.contains("$version$") && variables.containsKey("version")) {
+        expectedJsonString = expectedJsonString.replace("$version$", variables.get("version"));
+      }
       return actualJsonString.equals(expectedJsonString);
     }
   }

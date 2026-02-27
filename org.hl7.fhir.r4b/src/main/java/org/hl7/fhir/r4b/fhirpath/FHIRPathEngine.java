@@ -38,29 +38,11 @@ import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FHIRConstant;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.TypedElementDefinition;
 import org.hl7.fhir.r4b.fhirpath.TypeDetails.ProfiledType;
-import org.hl7.fhir.r4b.model.Base;
-import org.hl7.fhir.r4b.model.BaseDateTimeType;
-import org.hl7.fhir.r4b.model.BooleanType;
-import org.hl7.fhir.r4b.model.CodeableConcept;
-import org.hl7.fhir.r4b.model.Constants;
-import org.hl7.fhir.r4b.model.DateTimeType;
-import org.hl7.fhir.r4b.model.DateType;
-import org.hl7.fhir.r4b.model.DecimalType;
-import org.hl7.fhir.r4b.model.Element;
-import org.hl7.fhir.r4b.model.ElementDefinition;
+import org.hl7.fhir.r4b.model.*;
 import org.hl7.fhir.r4b.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r4b.model.IntegerType;
-import org.hl7.fhir.r4b.model.Property;
 import org.hl7.fhir.r4b.model.Property.PropertyMatcher;
-import org.hl7.fhir.r4b.model.Quantity;
-import org.hl7.fhir.r4b.model.Resource;
-import org.hl7.fhir.r4b.model.StringType;
-import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4b.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r4b.model.TimeType;
-import org.hl7.fhir.r4b.model.TypeConvertor;
-import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
@@ -5203,32 +5185,45 @@ public class FHIRPathEngine {
     return result;
   }
 
+  public static Identifier makeIdentifier(Base base) {
+    if (base == null) {
+      return null;
+    }
+    if (base instanceof Identifier) {
+      return (Identifier) base;
+    }
+    return null;
+  }
+
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    Base refContext = null;
     for (Base item : focus) {
-      String s = convertToString(item);
+      Base refContext = item;
+      String url = null;
+      Identifier id = null;
+
       if (item.fhirType().equals("Reference")) {
         refContext = item;
         Property p = item.getChildByName("reference");
         if (p != null && p.hasValues()) {
-          s = convertToString(p.getValues().get(0));
-        } else {
-          s = null; // a reference without any valid actual reference (just identifier or display,
-                    // but we can't resolve it)
+          url = convertToString(p.getValues().get(0));
         }
-      }
-      if (item.fhirType().equals("canonical")) {
-        s = item.primitiveValue();
+        p = item.getChildByName("identifier");
+        if (p != null && p.hasValues()) {
+          id = makeIdentifier(p.getValues().get(0));
+        }
+      } else if (item.isPrimitive()) {
+        url = item.primitiveValue();
         refContext = item;
       }
-      if (s != null) {
+
+      if (url != null || id != null) {
         Base res = null;
-        if (s.startsWith("#")) {
+        if (url != null && url.startsWith("#")) {
           Property p = context.rootResource.getChildByName("contained");
           if (p != null) {
             for (Base c : p.getValues()) {
-              if (chompHash(s).equals(chompHash(c.getIdBase()))) {
+              if (chompHash(url).equals(chompHash(c.getIdBase()))) {
                 res = c;
                 break;
               }
@@ -5236,7 +5231,7 @@ public class FHIRPathEngine {
           }
         } else if (hostServices != null) {
           try {
-            res = hostServices.resolveReference(this, context.appInfo, s, refContext);
+            res = hostServices.resolveReference(this, context.appInfo, url, id, refContext);
           } catch (Exception e) {
             res = null;
           }

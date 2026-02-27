@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
@@ -236,10 +237,16 @@ public class ValueSetValidator extends BaseValidator {
         }
         i++;
       }
+      ValueSet vss = null;
+      try {
+        vss = (ValueSet) new ObjectConverter(context).convert(vs);
+      } catch (Exception e) {
+        // nothing - any issues will be validation issues elsewhere
+      }
       List<Element> composes = vs.getChildrenByName("compose");
       int cc = 0;     
       for (Element compose : composes) {
-        ok = validateValueSetCompose(valContext, errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), "retired".equals(vs.getNamedChildValue("url", false)), vs, parameters) & ok;
+        ok = validateValueSetCompose(valContext, errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), "retired".equals(vs.getNamedChildValue("url", false)), vs, parameters, vss) & ok;
         cc++;
       }
       for (ParameterDeclaration p : parameters) {
@@ -280,24 +287,24 @@ public class ValueSetValidator extends BaseValidator {
   }
 
 
-  private boolean validateValueSetCompose(ValidationContext valContext, List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired, Element vsSrc, List<ParameterDeclaration> parameters) {
+  private boolean validateValueSetCompose(ValidationContext valContext, List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired, Element vsSrc, List<ParameterDeclaration> parameters, ValueSet vs) {
     boolean ok = true;
     List<Element> includes = compose.getChildrenByName("include");
     int ci = 0;
     for (Element include : includes) {
-      ok = validateValueSetInclude(valContext, errors, include, stack.push(include, ci, null, null), vsid, retired, vsSrc, parameters) && ok;
+      ok = validateValueSetInclude(valContext, errors, include, stack.push(include, ci, null, null), vsid, retired, vsSrc, parameters, vs) && ok;
       ci++;
     }    
     List<Element> excludes = compose.getChildrenByName("exclude");
     int ce = 0;
     for (Element exclude : excludes) {
-      ok = validateValueSetInclude(valContext, errors, exclude, stack.push(exclude, ce, null, null), vsid, retired, vsSrc, parameters) && ok;
+      ok = validateValueSetInclude(valContext, errors, exclude, stack.push(exclude, ce, null, null), vsid, retired, vsSrc, parameters, vs) && ok;
       ce++;
     }    
     return ok;
   }
 
-  private boolean validateValueSetInclude(ValidationContext valContext, List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired,  Element vsSrc, List<ParameterDeclaration> parameters) {
+  private boolean validateValueSetInclude(ValidationContext valContext, List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired,  Element vsSrc, List<ParameterDeclaration> parameters, ValueSet vss) {
     boolean ok = true;
     String system = include.getChildValue("system");
     String version = include.getChildValue("version");
@@ -465,18 +472,18 @@ public class ValueSetValidator extends BaseValidator {
                 for (Element concept : concepts) {
                   // we treat the first differently because we want to know if the system is worth validating. if it is, then we batch the rest
                   if (first) {
-                    systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, csChecker, cs != null);
+                    systemOk = validateValueSetIncludeConcept(errors, concept, stack, stack.push(concept, cc, null, null), system, version, csChecker, cs != null, vss);
                     first = false;
                   } else if (systemOk) {
                     batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version, csChecker));
                     if (batch.size() > VALIDATION_BATCH_SIZE) {
-                      executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
+                      executeValidationBatch(errors, vsid, retired, system, version, batch, stack, vss);
                       batch.clear();
                     }
                   }
                   cc++;
                 }
-                executeValidationBatch(errors, vsid, retired, system, version, batch, stack);
+                executeValidationBatch(errors, vsid, retired, system, version, batch, stack, vss);
               } catch (Exception e) {
                 ok = false;
                 VSCodingValidationRequest cv = batch.get(0);
@@ -499,13 +506,13 @@ public class ValueSetValidator extends BaseValidator {
   }
 
   private void executeValidationBatch(List<ValidationMessage> errors, String vsid, boolean retired, String system,
-      String version, List<VSCodingValidationRequest> batch, NodeStack baseStack) {
+      String version, List<VSCodingValidationRequest> batch, NodeStack baseStack, ValueSet vss) {
     if (batch.size() > 0) {
       IWorkerContext.SystemSupportInformation txInfo = context.getTxSupportInfo(system, version);
       if (warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack,  txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR), I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system+(version == null ? "" : "|"+version), txInfo.getServer())) {
         long t = System.currentTimeMillis();
         log.debug("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
-        context.validateCodeBatch(ValidationOptions.defaults().withExampleOK().setDisplayWarningMode(true), batch, null, false);
+        context.validateCodeBatch(ValidationOptions.defaults().withExampleOK().setDisplayWarningMode(true).withExternalSource(vss), batch, null, false);
         log.debug("  :   .. "+(System.currentTimeMillis()-t)+"ms");
         for (VSCodingValidationRequest cv : batch) {
           if (version == null) {
@@ -519,14 +526,14 @@ public class ValueSetValidator extends BaseValidator {
     }
   }
 
-  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version, CodeSystemChecker slv, boolean locallyKnownCodeSystem) {
+  private boolean validateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stackInc, NodeStack stack, String system, String version, CodeSystemChecker slv, boolean locallyKnownCodeSystem, ValueSet vs) {
     String code = concept.getChildValue("code");
     String display = concept.getChildValue("display");
     slv.checkConcept(code, display);
 
     if (!noTerminologyChecks) {
       if (version == null) {
-        ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK().setDisplayWarningMode(true), new Coding(system, code, display), null);
+        ValidationResult vv = context.validateCode(ValidationOptions.defaults().withExampleOK().withExternalSource(vs).setDisplayWarningMode(true), new Coding(system, code, display), null);
         if (vv.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
           if (isExampleUrl(system)) {
             if (settings.isAllowExamples()) {

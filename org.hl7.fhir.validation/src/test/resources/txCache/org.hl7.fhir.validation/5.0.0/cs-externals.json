@@ -6,10 +6,7 @@
   "http://hl7.org/fhir/ValueSet/account-type" : null,
   "http://something" : null,
   "http://hl7.org/fhir/animal-species" : null,
-  "http://dicom.nema.org/resources/ontology/DCM" : {
-    "server" : "http://tx-dev.fhir.org/r5",
-    "filename" : "cs-6de7b7b0-0c47-4c97-a5dd-516cd3b7b69b.json"
-  },
+  "http://dicom.nema.org/resources/ontology/DCM" : null,
   "#cs1" : null,
   "http://test.org" : null,
   "http://fhir.ch/whateversysstem" : null,
@@ -19,10 +16,7 @@
   "urn:ietf:bcp:13" : null,
   "#cs" : null,
   "http://foo" : null,
-  "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode" : {
-    "server" : "http://tx-dev.fhir.org/r5",
-    "filename" : "cs-34a8c045-dbc0-4ad7-918a-4e611f61c9f1.json"
-  },
+  "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode" : null,
   "http://snomed.info/sct/32506021000036107/version/20170403" : null,
   "http://build.fhir.org/assert-response-code-types" : null,
   "http://snomed.info/sct" : null,
