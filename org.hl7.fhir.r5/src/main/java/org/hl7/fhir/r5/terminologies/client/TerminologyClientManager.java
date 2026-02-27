@@ -40,17 +40,21 @@ public class TerminologyClientManager {
   private ImplicitValueSets implicitValueSets;
 
   public class ServerOptionList {
+    private String url;
     private List<String> authoritative = new ArrayList<String>();
     private List<String> candidates = new ArrayList<String>();
     
-    public ServerOptionList(String address) {
+    public ServerOptionList(String url, String address) {
+      this.url = url;
       candidates.add(address);
     }
     
-    public ServerOptionList() {
+    public ServerOptionList(String url) {
+      this.url = url;
     }
 
-    public ServerOptionList(List<String> auth, List<String> cand) {
+    public ServerOptionList(String url,List<String> auth, List<String> cand) {
+      this.url = url;
       authoritative.addAll(auth);
       candidates.addAll(cand);
     }
@@ -142,6 +146,7 @@ public class TerminologyClientManager {
   private String cacheId;
   private List<TerminologyClientContext> serverList = new ArrayList<>(); // clients by server address
   private Map<String, TerminologyClientContext> serverMap = new HashMap<>(); // clients by server address
+  private Map<String, Boolean> serverSupportMap = new HashMap<>(); // clients by server address
   private Map<String, ServerOptionList> resMap = new HashMap<>(); // client resolution list
   private List<InternalLogEvent> internalLog = new ArrayList<>();
   protected Parameters expParameters;
@@ -229,6 +234,23 @@ public class TerminologyClientManager {
       }
     }
 
+    for (String sys : systems) {
+      String uri = sys.contains("|") ? sys.substring(0, sys.indexOf("|")) : sys;
+      // this list is the list of code systems that have special handling on tx.fhir.org, and might not be resolved above.
+      // we don't want them to go to secondary servers (e.g. VSAC) by accident (they might go deliberately above)
+      if (Utilities.existsInList(uri, "http://unitsofmeasure.org", "http://loinc.org", "http://snomed.info/sct",
+        "http://www.nlm.nih.gov/research/umls/rxnorm", "http://hl7.org/fhir/sid/cvx", "urn:ietf:bcp:13", "urn:ietf:bcp:47",
+        "urn:ietf:rfc:3986", "http://www.ama-assn.org/go/cpt", "urn:oid:1.2.36.1.2001.1005.17", "urn:iso:std:iso:3166",
+        "http://varnomen.hgvs.org", "http://unstats.un.org/unsd/methods/m49/m49.htm", "urn:iso:std:iso:4217",
+        "http://hl7.org/fhir/sid/ndc", "http://fhir.ohdsi.org/CodeSystem/concepts", "http://fdasis.nlm.nih.gov", "https://www.usps.com/")) {
+        TerminologyClientContext pserver = findPrimaryServer(serverList);
+        log(vs, pserver.getAddress(), systems, choices, "Use primary server for "+uri);
+        return pserver;
+      }
+    }
+
+    choices.forEach(choice -> checkActuallySupports(choice));
+
     // now we look for a server that's a candidate for all of them
     for (ServerOptionList ol : choices) {
       for (String s : ol.candidates) {
@@ -242,21 +264,6 @@ public class TerminologyClientManager {
           log(vs, s, systems, choices, "Found candidate server " + s);
           return findClient(s, systems, expand);
         }
-      }
-    }
-    
-    for (String sys : systems) {
-      String uri = sys.contains("|") ? sys.substring(0, sys.indexOf("|")) : sys;
-      // this list is the list of code systems that have special handling on tx.fhir.org, and might not be resolved above.
-      // we don't want them to go to secondary servers (e.g. VSAC) by accident (they might go deliberately above)
-      if (Utilities.existsInList(uri, "http://unitsofmeasure.org", "http://loinc.org", "http://snomed.info/sct",
-          "http://www.nlm.nih.gov/research/umls/rxnorm", "http://hl7.org/fhir/sid/cvx", "urn:ietf:bcp:13", "urn:ietf:bcp:47",
-          "urn:ietf:rfc:3986", "http://www.ama-assn.org/go/cpt", "urn:oid:1.2.36.1.2001.1005.17", "urn:iso:std:iso:3166", 
-          "http://varnomen.hgvs.org", "http://unstats.un.org/unsd/methods/m49/m49.htm", "urn:iso:std:iso:4217", 
-          "http://hl7.org/fhir/sid/ndc", "http://fhir.ohdsi.org/CodeSystem/concepts", "http://fdasis.nlm.nih.gov", "https://www.usps.com/")) {
-        TerminologyClientContext pserver = findPrimaryServer(serverList);
-        log(vs, pserver.getAddress(), systems, choices, "Use primary server for "+uri);
-        return pserver;
       }
     }
 
@@ -310,8 +317,26 @@ public class TerminologyClientManager {
     }
   }
 
+  private void checkActuallySupports(ServerOptionList choice) {
+    boolean hasPrimary = false;
+    for (String s : choice.candidates) {
+      if (isTxFhirOrg(s)) {
+        return;
+      }
+    }
+    choice.candidates.removeIf(server -> !isSupportedServer(server, choice.url));
+  }
+
+  private boolean isSupportedServer(String server, String url) {
+    if (isTxFhirOrg(server)) {
+      return true;
+    }
+    return checkCSAvailable(server, url);
+  }
+
   private boolean isTxFhirOrg(String s) {
-    return Utilities.existsInList(s, "http://tx.fhir.org/r4", "https://tx.fhir.org/r4");
+    String server = s.replace("https://", "http://");
+    return Utilities.startsWithInList(server, "http://tx.fhir.org/", "http://tx-dev.fhir.org/");
   }
 
   private TerminologyClientContext findPrimaryServer(List<TerminologyClientContext> serverList) {
@@ -402,7 +427,7 @@ public class TerminologyClientManager {
 
   private ServerOptionList decideWhichServer(String url) {
     if (IGNORE_TX_REGISTRY || !useEcosystem) {
-      return new ServerOptionList(getMasterClient().getAddress());
+      return new ServerOptionList(url, getMasterClient().getAddress());
     }
     if (expParameters != null) {
       if (!url.contains("|")) {
@@ -426,17 +451,13 @@ public class TerminologyClientManager {
       request = request + "&usage="+usage;
     } 
     try {
-      ServerOptionList ret = new ServerOptionList();
+      ServerOptionList ret = new ServerOptionList(url);
       JsonObject json = JsonParser.parseObjectFromUrl(request);
       for (JsonObject item : json.getJsonObjects("authoritative")) {
-        if (checkCSAvailable(item.asString("url"), url)) {
           ret.authoritative.add(item.asString("url"));
-        }
       }
       for (JsonObject item : json.getJsonObjects("candidates")) {
-        if (checkCSAvailable(item.asString("url"), url)) {
-          ret.candidates.add(item.asString("url"));
-        }
+        ret.candidates.add(item.asString("url"));
       }
       return ret;
     } catch (Exception e) {
@@ -446,12 +467,16 @@ public class TerminologyClientManager {
       }
       logger.logDebugMessage(ILoggingService.LogCategory.TX, ExceptionUtils.getStackTrace(e));
     }
-    return new ServerOptionList( getMasterClient().getAddress());
+    return new ServerOptionList(url, getMasterClient().getAddress());
   }
 
   private boolean checkCSAvailable(String server, String canonical) {
     if (isTxFhirOrg(server)) {
       return true;
+    }
+    String key = server+"^"+canonical;
+    if (serverSupportMap.containsKey(key)) {
+      return serverSupportMap.get(key);
     }
     try {
       var client = findClient(server, null, false);
@@ -462,6 +487,7 @@ public class TerminologyClientManager {
       if (bnd.getEntry().size() == 1 && bnd.getEntry().get(0).hasResource() && bnd.getEntry().get(0).getResource() instanceof CodeSystem) {
         CodeSystem cs = (CodeSystem) bnd.getEntry().get(0).getResource();
         boolean ok = cs.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cs.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT;
+        serverSupportMap.put(key, ok);
         return ok;
       }
       if (canonical.contains("|")) {
@@ -470,12 +496,14 @@ public class TerminologyClientManager {
         if (bnd.getEntry().size() == 1 && bnd.getEntry().get(0).hasResource() && bnd.getEntry().get(0).getResource() instanceof CodeSystem) {
           CodeSystem cs = (CodeSystem) bnd.getEntry().get(0).getResource();
           boolean ok = cs.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cs.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT;
+          serverSupportMap.put(key, ok);
           return ok;
         }
       }
     } catch (Exception e) {
       // nothing
     }
+    serverSupportMap.put(key, false);
     return false;
   }
 
@@ -559,10 +587,13 @@ public class TerminologyClientManager {
         if (cacheFile.exists()) {
           JsonObject json = JsonParser.parseObject(cacheFile);
           for (JsonObject pair : json.getJsonObjects("systems")) {
-            if (pair.has("server")) {
-              resMap.put(pair.asString("system"), new ServerOptionList(pair.asString("server")));
-            } else {
-              resMap.put(pair.asString("system"), new ServerOptionList(pair.getStrings("authoritative"), pair.getStrings("candidates")));
+            String url = pair.asString("url");
+            if (url != null) {
+              if (pair.has("server")) {
+                resMap.put(pair.asString("system"), new ServerOptionList(url, pair.asString("server")));
+              } else {
+                resMap.put(pair.asString("system"), new ServerOptionList(url, pair.getStrings("authoritative"), pair.getStrings("candidates")));
+              }
             }
           }
         }
@@ -579,8 +610,10 @@ public class TerminologyClientManager {
         JsonObject si = new JsonObject();
         json.forceArray("systems").add(si);
         si.add("system", s);
-        si.add("authoritative", resMap.get(s).authoritative);
-        si.add("candidates", resMap.get(s).candidates);
+        ServerOptionList sol = resMap.get(s);
+        si.add("url", sol.url);
+        si.add("authoritative", sol.authoritative);
+        si.add("candidates", sol.candidates);
       }
       try {
         JsonParser.compose(json, cacheFile, true);
