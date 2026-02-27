@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
+import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
@@ -18,37 +19,39 @@ public class InstanceValidatorParameters {
 
   public InstanceValidatorParameters() {}
 
-  public InstanceValidatorParameters(@Nonnull InstanceValidatorParameters defaultInstanceValidatorParameters) {
-    this.assumeValidRestReferences = defaultInstanceValidatorParameters.assumeValidRestReferences;
-    this.hintAboutNonMustSupport = defaultInstanceValidatorParameters.hintAboutNonMustSupport;
-    this.htmlOutput = defaultInstanceValidatorParameters.htmlOutput;
-    this.outputStyle = defaultInstanceValidatorParameters.outputStyle;
-    this.r5BundleRelativeReferencePolicy = defaultInstanceValidatorParameters.r5BundleRelativeReferencePolicy;
-    this.extensions = new ArrayList<>(defaultInstanceValidatorParameters.extensions);
-    this.wantInvariantsInMessages = defaultInstanceValidatorParameters.wantInvariantsInMessages;
-    this.noInvariants = defaultInstanceValidatorParameters.noInvariants;
-    this.questionnaireMode = defaultInstanceValidatorParameters.questionnaireMode;
-    this.unknownCodeSystemsCauseErrors = defaultInstanceValidatorParameters.unknownCodeSystemsCauseErrors;
-    this.level = defaultInstanceValidatorParameters.level;
-    this.bestPracticeLevel = defaultInstanceValidatorParameters.bestPracticeLevel;
-    this.forPublication = defaultInstanceValidatorParameters.forPublication;
-    this.htmlInMarkdownCheck = defaultInstanceValidatorParameters.htmlInMarkdownCheck;
-    this.noUnicodeBiDiControlChars = defaultInstanceValidatorParameters.noUnicodeBiDiControlChars;
-    this.crumbTrails = defaultInstanceValidatorParameters.crumbTrails;
-    this.showMessageIds = defaultInstanceValidatorParameters.showMessageIds;
-    this.allowExampleUrls = defaultInstanceValidatorParameters.allowExampleUrls;
-    this.showMessagesFromReferences = defaultInstanceValidatorParameters.showMessagesFromReferences;
-    this.securityChecks = defaultInstanceValidatorParameters.securityChecks;
-    this.noExperimentalContent = defaultInstanceValidatorParameters.noExperimentalContent;
-    this.showTerminologyRouting = defaultInstanceValidatorParameters.showTerminologyRouting;
-    this.expansionParameters = defaultInstanceValidatorParameters.expansionParameters;
-    this.profiles = new ArrayList<>(defaultInstanceValidatorParameters.profiles);
-    this.doImplicitFHIRPathStringConversion = defaultInstanceValidatorParameters.doImplicitFHIRPathStringConversion;
-    this.allowDoubleQuotesInFHIRPath = defaultInstanceValidatorParameters.allowDoubleQuotesInFHIRPath;
-    this.checkIPSCodes = defaultInstanceValidatorParameters.checkIPSCodes;
-    this.bundleValidationRules = new ArrayList<>(defaultInstanceValidatorParameters.bundleValidationRules);
-    this.jurisdiction = defaultInstanceValidatorParameters.jurisdiction;
-    this.timeout = defaultInstanceValidatorParameters.timeout;
+  public InstanceValidatorParameters(@Nonnull InstanceValidatorParameters instanceValidatorParameters) {
+    this.assumeValidRestReferences = instanceValidatorParameters.assumeValidRestReferences;
+    this.hintAboutNonMustSupport = instanceValidatorParameters.hintAboutNonMustSupport;
+    this.htmlOutput = instanceValidatorParameters.htmlOutput;
+    this.outputStyle = instanceValidatorParameters.outputStyle;
+    this.r5BundleRelativeReferencePolicy = instanceValidatorParameters.r5BundleRelativeReferencePolicy;
+    this.extensions = new ArrayList<>(instanceValidatorParameters.extensions);
+    this.wantInvariantsInMessages = instanceValidatorParameters.wantInvariantsInMessages;
+    this.noInvariants = instanceValidatorParameters.noInvariants;
+    this.questionnaireMode = instanceValidatorParameters.questionnaireMode;
+    this.unknownCodeSystemsCauseErrors = instanceValidatorParameters.unknownCodeSystemsCauseErrors;
+    this.level = instanceValidatorParameters.level;
+    this.bestPracticeLevel = instanceValidatorParameters.bestPracticeLevel;
+    this.forPublication = instanceValidatorParameters.forPublication;
+    this.htmlInMarkdownCheck = instanceValidatorParameters.htmlInMarkdownCheck;
+    this.noUnicodeBiDiControlChars = instanceValidatorParameters.noUnicodeBiDiControlChars;
+    this.crumbTrails = instanceValidatorParameters.crumbTrails;
+    this.showMessageIds = instanceValidatorParameters.showMessageIds;
+    this.allowExampleUrls = instanceValidatorParameters.allowExampleUrls;
+    this.showMessagesFromReferences = instanceValidatorParameters.showMessagesFromReferences;
+    this.securityChecks = instanceValidatorParameters.securityChecks;
+    this.noExperimentalContent = instanceValidatorParameters.noExperimentalContent;
+    this.showTerminologyRouting = instanceValidatorParameters.showTerminologyRouting;
+    this.expansionParameters = instanceValidatorParameters.expansionParameters;
+    this.profiles = new ArrayList<>(instanceValidatorParameters.profiles);
+    this.doImplicitFHIRPathStringConversion = instanceValidatorParameters.doImplicitFHIRPathStringConversion;
+    this.allowDoubleQuotesInFHIRPath = instanceValidatorParameters.allowDoubleQuotesInFHIRPath;
+    this.checkIPSCodes = instanceValidatorParameters.checkIPSCodes;
+    this.bundleValidationRules = new ArrayList<>(instanceValidatorParameters.bundleValidationRules);
+    this.jurisdiction = instanceValidatorParameters.jurisdiction;
+    this.timeout = instanceValidatorParameters.timeout;
+    this.maxValidationMessages = instanceValidatorParameters.getMaxValidationMessages();
+
   }
 
   @JsonProperty("assumeValidRestReferences")
@@ -545,6 +548,24 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @JsonProperty("maxValidationMessages")
+  @SerializedName("maxValidationMessages")
+  private
+  ValidatorMaxMessages maxValidationMessages = null;
+
+  @SerializedName("maxValidationMessages")
+  @JsonProperty("maxValidationMessages")
+  public ValidatorMaxMessages getMaxValidationMessages() {
+    return maxValidationMessages;
+  }
+
+  @SerializedName("maxValidationMessages")
+  @JsonProperty("maxValidationMessages")
+  public InstanceValidatorParameters setMaxValidationMessages(ValidatorMaxMessages maxValidationMessages) {
+    this.maxValidationMessages = maxValidationMessages;
+    return this;
+  }
+
   @SerializedName("timeout")
   @JsonProperty("timeout")
   @Getter
@@ -591,12 +612,13 @@ public class InstanceValidatorParameters {
       && Objects.equals(profiles, that.profiles)
       && Objects.equals(bundleValidationRules, that.bundleValidationRules)
       && Objects.equals(jurisdiction, that.jurisdiction)
-      && timeout == that.timeout;
+      && timeout == that.timeout
+      && Objects.equals(maxValidationMessages, that.maxValidationMessages);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, timeout);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, timeout, maxValidationMessages);
   }
 
   @Override
@@ -631,6 +653,7 @@ public class InstanceValidatorParameters {
       ", checkIPSCodes=" + checkIPSCodes +
       ", bundleValidationRules=" + bundleValidationRules +
       ", jurisdiction='" + jurisdiction + '\'' +
+      ", maxValidationMessages=" + maxValidationMessages +
       ", timeout=" + timeout +
       '}';
   }
