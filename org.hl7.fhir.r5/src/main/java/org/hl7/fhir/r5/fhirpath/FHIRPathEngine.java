@@ -5648,8 +5648,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         Property p = item.getChildByName("reference");
         if (p != null && p.hasValues()) {
           s = convertToString(p.getValues().get(0));
-        } else {
-          s = null; // a reference without any valid actual reference (just identifier or display, but we can't resolve it)
+        } else if (hostServices == null) {
+          // a reference without any valid actual reference (just identifier or display, but we can't resolve it)
+          // if hostServices is != null, we'll give it a change to try resolve it
+          s = null;
         }
       }
       if (item.fhirType().equals("canonical")) {
