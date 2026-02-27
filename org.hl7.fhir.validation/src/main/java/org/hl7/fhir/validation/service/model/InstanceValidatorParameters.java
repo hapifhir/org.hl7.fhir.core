@@ -7,6 +7,7 @@ import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
+import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
@@ -53,6 +54,7 @@ public class InstanceValidatorParameters {
     this.timeout = defaultInstanceValidatorParameters.timeout;
     this.checkDisplay = defaultInstanceValidatorParameters.checkDisplay;
     this.resourceIdRule = defaultInstanceValidatorParameters.resourceIdRule;
+    this.maxValidationMessages = instanceValidatorParameters.getMaxValidationMessages();
   }
 
   @JsonProperty("assumeValidRestReferences")
@@ -549,6 +551,24 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @JsonProperty("maxValidationMessages")
+  @SerializedName("maxValidationMessages")
+  private
+  ValidatorMaxMessages maxValidationMessages = null;
+
+  @SerializedName("maxValidationMessages")
+  @JsonProperty("maxValidationMessages")
+  public ValidatorMaxMessages getMaxValidationMessages() {
+    return maxValidationMessages;
+  }
+
+  @SerializedName("maxValidationMessages")
+  @JsonProperty("maxValidationMessages")
+  public InstanceValidatorParameters setMaxValidationMessages(ValidatorMaxMessages maxValidationMessages) {
+    this.maxValidationMessages = maxValidationMessages;
+    return this;
+  }
+
   @SerializedName("timeout")
   @JsonProperty("timeout")
   @Getter
@@ -632,11 +652,12 @@ public class InstanceValidatorParameters {
       && timeout == that.timeout
       && Objects.equals(checkDisplay, that.checkDisplay)
       && Objects.equals(resourceIdRule, that.resourceIdRule);
+      && Objects.equals(maxValidationMessages, that.maxValidationMessages);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, timeout, checkDisplay, resourceIdRule);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, timeout, checkDisplay, resourceIdRule,maxValidationMessages);
   }
 
   @Override
@@ -671,6 +692,7 @@ public class InstanceValidatorParameters {
       ", checkIPSCodes=" + checkIPSCodes +
       ", bundleValidationRules=" + bundleValidationRules +
       ", jurisdiction='" + jurisdiction + '\'' +
+      ", maxValidationMessages=" + maxValidationMessages +
       ", timeout=" + timeout +
       ", checkDisplay=" + checkDisplay +
       ", resourceIdRule=" + resourceIdRule +

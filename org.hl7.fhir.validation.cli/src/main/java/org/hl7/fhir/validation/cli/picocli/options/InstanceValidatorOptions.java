@@ -220,8 +220,14 @@ public class InstanceValidatorOptions {
   @With
   public List<String> bundleValidationRules = null;
 
+  @CommandLine.Option(names = {"-max-validation-messages"},
+    description = "The maximum amount of validation messages allowed before validation will be stopped. Any issues encountered at this point will be returned. See notes regarding accuracy for these results at " + OptionConstants.CONFLUENCE_WEB_ADDRESS,
+    arity = "1")
+  @With
+  public Integer maxValidationMessages = 0;
+                      
   @CommandLine.Option(names = {"-validation-timeout"},
-    description = "A value in milliseconds after which validation will be stopped. Any issues encountered at this point will be returned, but may not be completely accurate.",
+    description = "A value in milliseconds after which validation will be stopped. Any issues encountered at this point will be returned. See notes regarding accuracy for these results at " + OptionConstants.CONFLUENCE_WEB_ADDRESS,
     arity = "1")
   @With
   public Long validationTimeout = 0L;
