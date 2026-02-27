@@ -2130,7 +2130,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, vsRef, strength) && ok;
         timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
         if (vr != null && !vr.isOk()) {
-          if (vr.IsNoService())
+          if (vr.isNoService())
             txHint(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER, system+"#"+code);
           else if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
             if (strength == BindingStrength.REQUIRED)
@@ -2473,7 +2473,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       if (vr != null && !vr.isOk()) {
-        if (vr.IsNoService())
+        if (vr.isNoService())
           txHint(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER, theSystem+"#"+theCode);
         else if (vr.getErrorClass() != null && !vr.getErrorClass().isInfrastructure()) {
           if (strength == BindingStrength.REQUIRED)
@@ -4281,7 +4281,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             removeTrackedMessagesForLocation(errors, element, path);
           }
           if (vr != null && !vr.isOk()) {
-            if (vr.IsNoService()) {
+            if (vr.isNoService()) {
               txHint(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_15, value);
             } else if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
               txWarning(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());

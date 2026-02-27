@@ -37,6 +37,7 @@ public class NpmPackageIndexBuilder {
   }
 
   private static INpmPackageIndexBuilderDBImplFactory extensionFactory;
+  private static final JsonFactory JSON_FACTORY = new JsonFactory(); // reuse across all seeFile calls
 
   public static final Integer CURRENT_INDEX_VERSION = 2;
   private JsonObject index;
@@ -68,8 +69,7 @@ public class NpmPackageIndexBuilder {
        * We can then use a streaming parser to get the values of these fields instead of parsing the whole file and
        * allocating memory for everything in it.
        */
-      JsonFactory jsonFactory = new JsonFactory();
-      try (final var parser = jsonFactory.createParser(content)) {
+      try (final var parser = JSON_FACTORY.createParser(content)) {
         final var fi = new JsonObject();
         int level = 0;
 

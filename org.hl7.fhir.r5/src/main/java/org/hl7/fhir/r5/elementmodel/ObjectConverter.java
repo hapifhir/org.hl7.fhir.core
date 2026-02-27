@@ -122,7 +122,7 @@ public class ObjectConverter  {
 
   public DateTimeType readAsDateTime(Element e) {
     DateTimeType b = (DateTimeType) new Factory().create("dateTime");
-    ((PrimitiveType) b).setValueAsString(e.primitiveValue());
+    b.setValueAsString(e.primitiveValue());
     return b;
   }
 

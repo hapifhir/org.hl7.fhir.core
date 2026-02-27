@@ -318,7 +318,6 @@ public class TerminologyClientManager {
   }
 
   private void checkActuallySupports(ServerOptionList choice) {
-    boolean hasPrimary = false;
     for (String s : choice.candidates) {
       if (isTxFhirOrg(s)) {
         return;

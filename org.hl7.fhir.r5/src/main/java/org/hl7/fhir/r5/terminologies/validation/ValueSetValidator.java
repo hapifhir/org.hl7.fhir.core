@@ -1481,7 +1481,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           ValidationResult vr = context.validateCode(options.withNoClient(), code, vsDummy);
           if (vr.isOk()) {
             sys.add(vsi.getSystem());
-          } else if (vr.IsNoService()) {
+          } else if (vr.isNoService()) {
             throw new TerminologyServiceException("No Service");
           } else if (EXPAND_AFTER_VALIDATION_WHEN_INFERRING) {
             // this code is marked for removal as of 27-02-2026 - remove if no one misses it. (why on earth would it ever do anything but cause problems?)
