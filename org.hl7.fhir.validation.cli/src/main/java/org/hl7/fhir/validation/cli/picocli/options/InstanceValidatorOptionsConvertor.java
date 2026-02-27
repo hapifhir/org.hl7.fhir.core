@@ -6,6 +6,7 @@ import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.cli.picocli.OptionUtilities;
+import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
@@ -111,9 +112,11 @@ public class InstanceValidatorOptionsConvertor {
         final String profile = options.bundleValidationRules.get(i+1);
         instanceValidatorParameters.addBundleValidationRule(new BundleValidationRule().setRule(rule).setProfile(profile));
       }
-
     }
 
+    if (options.maxValidationMessages != 0) {
+      instanceValidatorParameters.setMaxValidationMessages(new ValidatorMaxMessages(options.maxValidationMessages, "CLI option " + OptionUtilities.getFirstNameForField(InstanceValidatorOptions.class, "maxValidationMessages")));
+    }
     if (options.validationTimeout != 0) {
       instanceValidatorParameters.setTimeout(new ValidationTimeout(options.validationTimeout, "CLI option " + OptionUtilities.getFirstNameForField(InstanceValidatorOptions.class, "validationTimeout")));
     }
