@@ -360,9 +360,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 //    if (existing != null) {
 //      drop(existing); // was list.remove(existing)
 //    }
-    if ("http://terminology.hl7.org/CodeSystem/condition-clinical".equals(cr.getUrl())) {
-      DebugUtilities.breakpoint();
-    }
+
     // -- 4. ok we add it to the list ---------------------------------------------------------------
     if (!enforceUniqueId) {
       if (!listForId.containsKey(cr.getId())) {
