@@ -88,6 +88,7 @@ import javax.annotation.Nonnull;
 public class ValueSetValidator extends ValueSetProcessBase {
 
   public static final String NO_TRY_THE_SERVER = "The local terminology server cannot handle this request";
+  private static final boolean EXPAND_AFTER_VALIDATION_WHEN_INFERRING = false;
   private TerminologyServiceErrorClass unknownSystemError;
 
   public class StringWithCodes {
@@ -1482,7 +1483,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
             sys.add(vsi.getSystem());
           } else if (vr.IsNoService()) {
             throw new TerminologyServiceException("No Service");
-          } else {
+          } else if (EXPAND_AFTER_VALIDATION_WHEN_INFERRING) {
+            // this code is marked for removal as of 27-02-2026 - remove if no one misses it. (why on earth would it ever do anything but cause problems?)
             // ok, we'll try to expand this one then
             ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), vsi, false, false);
             if (vse.isOk()) {
@@ -1493,7 +1495,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
               problems.add(new StringWithCodes(OpIssueCode.NotFound, context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM, code, valueset.getVersionedUrl(), i, vsi.getSystem(), vse.getAllErrors().toString()), I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_UNKNOWN_SYSTEM));
               return false;
             }
-
+          } else {
+            return false;
           }
         }
       }
@@ -1615,8 +1618,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
             if (!unknownSystems.contains(system + '|' + versionCoding)) {
               unknownSystemError = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
               unknownSystems.add(system + '|' + versionCoding);
-              issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, Utilities.noString(path) ? "version" : path + "." + "system",
-                context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, versionCoding, presentVersionList(versions)), OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION));
+              if (!versions.isEmpty()) {
+                issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, Utilities.noString(path) ? "version" : path + "." + "system",
+                  context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM_VERSION, system, versionCoding, presentVersionList(versions)), OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_VERSION));
+              } else {
+                issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.NOTFOUND, Utilities.noString(path) ? "version" : path + "." + "system",
+                  context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system, versionCoding), OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM));
+
+              }
             }
           }
         } else if (cs == null && result != null && !versionCoding.equals(result)) {
