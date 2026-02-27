@@ -297,6 +297,9 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     map.clear();
     list.addAll(source.list);
     map.putAll(source.map);
+    for (Map.Entry<String, List<CachedCanonicalResource<T>>> entry : source.listForUrl.entrySet()) {
+      listForUrl.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+    }
   }
   
   public void register(CanonicalResourceProxy canonicalResourceProxy, PackageInformation packageInfo) {
@@ -357,7 +360,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 //    if (existing != null) {
 //      drop(existing); // was list.remove(existing)
 //    }
-    
+
     // -- 4. ok we add it to the list ---------------------------------------------------------------
     if (!enforceUniqueId) {
       if (!listForId.containsKey(cr.getId())) {

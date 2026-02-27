@@ -405,7 +405,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     @Override
-    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
       ValidationContext c = (ValidationContext) appContext;
 
       if (refContext != null && refContext.hasUserData(UserDataNames.validator_bundle_resolution)) {
@@ -436,7 +436,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       if (externalHostServices != null) {
-        return setParentsBase(externalHostServices.resolveReference(engine, c.getAppContext(), url, refContext));
+        return setParentsBase(externalHostServices.resolveReference(engine, c.getAppContext(), url, identifier, refContext));
       } else if (fetcher != null) {
         try {
           return setParents(fetcher.fetch(InstanceValidator.this, c.getAppContext(), url));
@@ -616,7 +616,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     start = System.currentTimeMillis();
     this.externalHostServices = hostServices;
     this.profileUtilities = new ProfileUtilities(theContext, null, null);
-    fpe = new FHIRPathEngine(context);
+    fpe = new FHIRPathEngine(context, this.profileUtilities);
     validatorServices = new ValidatorHostServices();
     fpe.setHostServices(validatorServices);
     if (theContext.getVersion().startsWith("3.0") || theContext.getVersion().startsWith("1.0"))
@@ -1248,7 +1248,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     timeTracker.tx(t, "ss " + system);
     if (ss) {
       t = System.nanoTime();
-      ValidationResult s = checkCodeOnServer(stack, code, system, version, display, checkDisplay);
+      ValidationResult s = checkCodeOnServer(stack, code, system, version, display, checkDisplay, null);
       timeTracker.tx(t, "vc " + system + "#" + code + " '" + display + "'");
       if (s == null)
         return true;
@@ -1521,7 +1521,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         if (cc.hasCoding()) {
           long t = System.nanoTime();
-          ValidationResult vr = checkCodeOnServer(stack, null, cc);
+          ValidationResult vr = checkCodeOnServer(stack, null, cc, null);
           bh.see(calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, null, null));
           timeTracker.tx(t, "vc " + cc.toString());
         }
@@ -1776,7 +1776,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             // ignore this since we can't validate but it doesn't matter..
           } else {
             checked.set(true);
-            ValidationResult vr = checkCodeOnServer(stack, valueset, cc);
+            ValidationResult vr = checkCodeOnServer(stack, valueset, cc, profile);
             bh.see(calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, vsRef, strength));
             if (!vr.isOk()) {
               bindingsOk = false;
@@ -1835,7 +1835,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           // to validate, we'll validate that the codes actually exist
           if (bindingsOk && false) {
             for (Coding nextCoding : cc.getCoding()) {
-              bh.see(checkBindings(errors, path, element, stack, valueset, nextCoding));
+              bh.see(checkBindings(errors, path, element, stack, valueset, nextCoding, profile));
             }
           }
           timeTracker.tx(t, "vc "+cc.toString());
@@ -1990,10 +1990,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return newIssueComponent;
   }
 
-  public boolean checkBindings(List<ValidationMessage> errors, String path, Element element, NodeStack stack, ValueSet valueset, Coding nextCoding) {
+  public boolean checkBindings(List<ValidationMessage> errors, String path, Element element, NodeStack stack, ValueSet valueset, Coding nextCoding, StructureDefinition profile) {
     boolean ok = true;
     if (isNotBlank(nextCoding.getCode()) && isNotBlank(nextCoding.getSystem()) && context.getTxSupportInfo(nextCoding.getSystem(), nextCoding.getVersion()).isSupported()) {
-      ValidationResult vr = checkCodeOnServer(stack, valueset, nextCoding);
+      ValidationResult vr = checkCodeOnServer(stack, valueset, nextCoding, profile);
       ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, null, null) && ok;
 
       if (vr.getSeverity() != null && !vr.messageIsInIssues()) {
@@ -2125,7 +2125,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         long t = System.nanoTime();
         ValidationResult vr = null;
         if (strength != BindingStrength.EXAMPLE) {
-          vr = checkCodeOnServer(stack, valueset, c);
+          vr = checkCodeOnServer(stack, valueset, c, profile);
         }
         if (strength == BindingStrength.REQUIRED) {
           removeTrackedMessagesForLocation(errors, element, path);
@@ -2133,7 +2133,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, vsRef, strength) && ok;
         timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
         if (vr != null && !vr.isOk()) {
-          if (vr.IsNoService())
+          if (vr.isNoService())
             txHint(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER, system+"#"+code);
           else if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
             if (strength == BindingStrength.REQUIRED)
@@ -2262,7 +2262,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = checkCodeOnServer(stack, valueset, cc);
+        ValidationResult vr = checkCodeOnServer(stack, valueset, cc, profile);
         ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, maxVSUrl, null) && ok;
         timeTracker.tx(t, "vc "+cc.toString());
         if (!vr.isOk()) {
@@ -2301,7 +2301,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = checkCodeOnServer(stack, valueset, c);
+        ValidationResult vr = checkCodeOnServer(stack, valueset, c, profile);
         ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, false, maxVSUrl, null) && ok;
 
         timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
@@ -2466,7 +2466,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ValidationResult vr = null;
       if (strength != BindingStrength.EXAMPLE) {
         checked.set(true);
-        vr = checkCodeOnServer(stack, valueset, c);
+        vr = checkCodeOnServer(stack, valueset, c, profile);
       }
       ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, vr, element, path, strength == BindingStrength.EXTENSIBLE, vsRef, strength) && ok;
 
@@ -2476,7 +2476,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       if (vr != null && !vr.isOk()) {
-        if (vr.IsNoService())
+        if (vr.isNoService())
           txHint(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER, theSystem+"#"+theCode);
         else if (vr.getErrorClass() != null && !vr.getErrorClass().isInfrastructure()) {
           if (strength == BindingStrength.REQUIRED)
@@ -2989,7 +2989,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else if (fixed instanceof org.hl7.fhir.r5.model.Base64BinaryType)
         ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.Base64BinaryType) fixed).asStringValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.Base64BinaryType) fixed).asStringValue(), context);
       else if (fixed instanceof org.hl7.fhir.r5.model.InstantType)
-        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.InstantType) fixed).getValue().toString(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.InstantType) fixed).asStringValue(), context);
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.InstantType) fixed).primitiveValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.InstantType) fixed).primitiveValue(), context);
       else if (fixed instanceof org.hl7.fhir.r5.model.CodeType)
         ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.CodeType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.CodeType) fixed).getValue(), context);
       else if (fixed instanceof org.hl7.fhir.r5.model.Enumeration)
@@ -2999,9 +2999,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else if (fixed instanceof org.hl7.fhir.r5.model.UriType)
         ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.UriType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.UriType) fixed).getValue(), context);
       else if (fixed instanceof org.hl7.fhir.r5.model.DateType)
-        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.DateType) fixed).getValue().toString(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.DateType) fixed).getValue(), context);
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.DateType) fixed).primitiveValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.DateType) fixed).primitiveValue(), context);
+      else if (fixed instanceof org.hl7.fhir.r5.model.TimeType)
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.TimeType) fixed).primitiveValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.TimeType) fixed).primitiveValue(), context);
       else if (fixed instanceof org.hl7.fhir.r5.model.DateTimeType)
-        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.DateTimeType) fixed).getValue().toString(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.DateTimeType) fixed).getValue(), context);
+        ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.DateTimeType) fixed).primitiveValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.DateTimeType) fixed).primitiveValue(), context);
       else if (fixed instanceof org.hl7.fhir.r5.model.OidType)
         ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, check(((org.hl7.fhir.r5.model.OidType) fixed).getValue(), value), I18nConstants._DT_FIXED_WRONG, value, ((org.hl7.fhir.r5.model.OidType) fixed).getValue(), context);
       else if (fixed instanceof org.hl7.fhir.r5.model.UuidType)
@@ -3241,7 +3243,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         int length = e.primitiveValue().length();  
         int spec = ExtensionUtilities.readIntegerExtension(context, ExtensionDefinitions.EXT_MIN_LENGTH, 0);
         ok = rule(errors, "2024-11-02", IssueType.INVALID, e.line(), e.col(), path, length >= spec, I18nConstants.PRIMITIVE_TOO_SHORT, length, spec) && ok;
-
       }
       String regex = context.getExtensionString(ExtensionDefinitions.EXT_REGEX);
       // there's a messy history here - this extension snhould only be on the element definition itself, but for historical reasons 
@@ -3346,6 +3347,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (isCoreDefinition(profile) || (context.hasExtension(ExtensionDefinitions.EXT_DATE_RULES) && ExtensionUtilities.readStringExtension(context, ExtensionDefinitions.EXT_DATE_RULES).contains("tz-for-time"))) {
           dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !hasTime(e.primitiveValue()) || hasTimeZone(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && dok;
         }
+        if (dok) {
+          try {
+            DateTimeType v = new ObjectConverter(getContext()).readAsDateTime(e);
+            dok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueDateTimeType() || !context.getMaxValueDateTimeType().hasValue() || !context.getMaxValueDateTimeType().before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_GT, (context.hasMaxValueDateTimeType() ? context.getMaxValueDateTimeType().primitiveValue() : "")) && dok;
+            dok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueDateTimeType() || !context.getMinValueDateTimeType().hasValue() || !context.getMinValueDateTimeType().after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_LT, (context.hasMinValueDateTimeType() ? context.getMinValueDateTimeType().primitiveValue() : "")) && dok;
+          } catch (Exception ex) {
+            dok = false;
+            rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, e.primitiveValue());
+          }
+        }
         dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
         if (dok) {
           try {
@@ -3364,6 +3375,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
             e.primitiveValue()
             .matches("([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_TIME_VALID) && ok;
+        if (ok) {
+          try {
+            TimeType v = new ObjectConverter(getContext()).readAsTime(e);
+            ok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueTimeType() || !context.getMaxValueTimeType().hasValue() || !context.getMaxValueTimeType().before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_GT, (context.hasMaxValueTimeType() ? context.getMaxValueTimeType().primitiveValue() : "")) && ok;
+            ok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueTimeType() || !context.getMinValueTimeType().hasValue() || !context.getMinValueTimeType().after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_LT, (context.hasMinValueTimeType() ? context.getMinValueTimeType().primitiveValue() : "")) && ok;
+          } catch (Exception ex) {
+            ok = false;
+            rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, e.primitiveValue());
+          }
+        }
+
+
         try {
           TimeType dt = new TimeType(e.primitiveValue());
         } catch (Exception ex) {
@@ -3372,7 +3395,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
       if (type.equals("date")) {
-        boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, e.primitiveValue());
+        boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"),
+          I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, e.primitiveValue());
+        if (dok) {
+          try {
+            DateTimeType v = new ObjectConverter(getContext()).readAsDateTime(e);
+            dok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueDateType() || !context.getMaxValueDateType().hasValue() || !context.getMaxValueDateType().before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_GT, (context.hasMaxValueDateType() ? context.getMaxValueDateType().primitiveValue() : "")) && dok;
+            dok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueDateType() || !context.getMinValueDateType().hasValue() || !context.getMinValueDateType().after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_LT, (context.hasMinValueDateType() ? context.getMinValueDateType().primitiveValue() : "")) && dok;
+          } catch (Exception ex) {
+            dok = false;
+            rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, e.primitiveValue());
+          }
+        }
         dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
         if (dok) {
           try {
@@ -3413,8 +3447,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("integer") || type.equals("unsignedInt") || type.equals("positiveInt")) {
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isInteger(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_VALID, e.primitiveValue())) {
           Integer v = Integer.valueOf(e.getValue());
-          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueIntegerType() || !context.getMaxValueIntegerType().hasValue() || (context.getMaxValueIntegerType().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueIntegerType() ? context.getMaxValueIntegerType() : "")) && ok;
-          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueIntegerType() || !context.getMinValueIntegerType().hasValue() || (context.getMinValueIntegerType().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueIntegerType() ? context.getMinValueIntegerType() : "")) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueIntegerType() || !context.getMaxValueIntegerType().hasValue() || (context.getMaxValueIntegerType().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueIntegerType() ? context.getMaxValueIntegerType().primitiveValue() : "")) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueIntegerType() || !context.getMinValueIntegerType().hasValue() || (context.getMinValueIntegerType().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueIntegerType() ? context.getMinValueIntegerType().primitiveValue() : "")) && ok;
           if (type.equals("unsignedInt"))
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, v >= 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT0) && ok;
           if (type.equals("positiveInt"))
@@ -3426,8 +3460,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("integer64")) {
         if (rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, Utilities.isLong(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER64_VALID, e.primitiveValue())) {
           Long v = Long.valueOf(e.getValue());
-          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueInteger64Type() || !context.getMaxValueInteger64Type().hasValue() || (context.getMaxValueInteger64Type().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueInteger64Type() ? context.getMaxValueInteger64Type() : "")) && ok;
-          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueInteger64Type() || !context.getMinValueInteger64Type().hasValue() || (context.getMinValueInteger64Type().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueInteger64Type() ? context.getMinValueInteger64Type() : "")) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueInteger64Type() || !context.getMaxValueInteger64Type().hasValue() || (context.getMaxValueInteger64Type().getValue() >= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_GT, (context.hasMaxValueInteger64Type() ? context.getMaxValueInteger64Type().primitiveValue() : "")) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueInteger64Type() || !context.getMinValueInteger64Type().hasValue() || (context.getMinValueInteger64Type().getValue() <= v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT, (context.hasMinValueInteger64Type() ? context.getMinValueInteger64Type().primitiveValue() : "")) && ok;
           if (type.equals("unsignedInt"))
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, v >= 0, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT0) && ok;
           if (type.equals("positiveInt"))
@@ -3471,6 +3505,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("instant")) {
         boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
             e.primitiveValue().matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX,  e.primitiveValue());
+        if (dok) {
+          try {
+            DateTimeType v = new ObjectConverter(getContext()).readAsDateTime(e);
+            dok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxValueInstantType() || !context.getMaxValueInstantType().hasValue() || !context.getMaxValueInstantType().before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_GT, (context.hasMaxValueInstantType() ? context.getMaxValueInstantType().primitiveValue() : "")) && dok;
+            dok = rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, !context.hasMinValueInstantType() || !context.getMinValueInstantType().hasValue() || !context.getMinValueInstantType().after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DT_LT, (context.hasMinValueInstantType() ? context.getMinValueInstantType().primitiveValue() : "")) && dok;
+          } catch (Exception ex) {
+            dok = false;
+            rule(errors, "2026-02-20", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, e.primitiveValue());
+          }
+        }
+
         if (dok) {
           try {
             InstantType dt = new InstantType(e.primitiveValue());
@@ -4239,7 +4284,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             removeTrackedMessagesForLocation(errors, element, path);
           }
           if (vr != null && !vr.isOk()) {
-            if (vr.IsNoService()) {
+            if (vr.isNoService()) {
               txHint(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_15, value);
             } else if (vr.getErrorClass() != null && vr.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
               txWarning(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
@@ -8720,23 +8765,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return Locale.US.toLanguageTag();
   }
   // no delay on this one? 
-  public ValidationResult checkCodeOnServer(NodeStack stack, String code, String system, String version, String display, boolean checkDisplay) {
+  public ValidationResult checkCodeOnServer(NodeStack stack, String code, String system, String version, String display, boolean checkDisplay, StructureDefinition profile) {
     String lang = getValidationOptionsLanguage(stack);
     codingObserver.seeCode(stack, system, version, code, display);
-    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), null, context.validateCode(settings.withLanguage(lang), system, version, code, checkDisplay ? display : null)), new Coding(system, version, code, display));
+    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), null, context.validateCode(settings.withLanguage(lang).withExternalSource(profile), system, version, code, checkDisplay ? display : null)), new Coding(system, version, code, display));
   }
 
-  public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c) {
+  public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c, StructureDefinition profile) {
     codingObserver.seeCode(stack, c);
     String lang = getValidationOptionsLanguage(stack);
-    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang).withUseClient(!ValueSetUtilities.isServerSide(c)), c, valueset)), c);
+    return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang).withExternalSource(profile).withUseClient(!ValueSetUtilities.isServerSide(c)), c, valueset)), c);
   }
 
-  public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc) throws CheckCodeOnServerException {
+  public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc, StructureDefinition profile) throws CheckCodeOnServerException {
     codingObserver.seeCode(stack, cc);
     try {
       String lang = getValidationOptionsLanguage(stack);
-      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang).withUseClient(!ValueSetUtilities.hasServerSide(cc)), cc, valueset)), cc);
+      return checkForInactive(filterOutSpecials(stack.getLiteralPath(), valueset, context.validateCode(settings.withLanguage(lang).withExternalSource(profile).withUseClient(!ValueSetUtilities.hasServerSide(cc)), cc, valueset)), cc);
     } catch (Exception e) {
       throw new CheckCodeOnServerException(e);
     }

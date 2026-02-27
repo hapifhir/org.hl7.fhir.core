@@ -62,7 +62,7 @@ class InstanceValidatorTests {
 
     CodeableConcept codeableConcept = mock(CodeableConcept.class);
     ValueSet valueSet = mock(ValueSet.class);
-    instanceValidator.checkCodeOnServer(stack, valueSet, codeableConcept);
+    instanceValidator.checkCodeOnServer(stack, valueSet, codeableConcept, null);
 
     ArgumentCaptor<ValidationOptions> validationOptionsArgumentCaptor = ArgumentCaptor.forClass(ValidationOptions.class);
     verify(context).validateCode(validationOptionsArgumentCaptor.capture(), eq(codeableConcept), eq(valueSet));

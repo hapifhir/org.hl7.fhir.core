@@ -959,6 +959,8 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT0 = "Type_Specific_Checks_DT_Integer_LT0";
   public static final String TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT1 = "Type_Specific_Checks_DT_Integer_LT1";
   public static final String TYPE_SPECIFIC_CHECKS_DT_INTEGER_VALID = "Type_Specific_Checks_DT_Integer_Valid";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_DT_GT = "TYPE_SPECIFIC_CHECKS_DT_DT_GT";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_DT_LT = "TYPE_SPECIFIC_CHECKS_DT_DT_LT";
   public static final String TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML = "TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML";
   public static final String TYPE_SPECIFIC_CHECKS_DT_OID_START = "Type_Specific_Checks_DT_OID_Start";
   public static final String TYPE_SPECIFIC_CHECKS_DT_OID_VALID = "Type_Specific_Checks_DT_OID_Valid";

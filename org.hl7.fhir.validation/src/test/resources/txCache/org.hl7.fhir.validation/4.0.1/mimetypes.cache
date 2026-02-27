@@ -10,6 +10,6 @@
 }}####
 e: {
   "from-server" : true,
-  "error" : "Error from https://tx-dev.fhir.org/r4: Error: 0ms tx-op\n1ms start working\n1ms compose #1"
+  "error" : "Error from https://tx-dev.fhir.org/r4: Error: The code System \"urn:ietf:bcp:13\" has a grammar, and cannot be enumerated directly"
 }
 -------------------------------------------------------------------------------------

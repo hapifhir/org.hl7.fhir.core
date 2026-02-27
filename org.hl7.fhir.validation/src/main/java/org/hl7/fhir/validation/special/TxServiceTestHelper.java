@@ -22,6 +22,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -128,7 +130,7 @@ public class TxServiceTestHelper {
 
       writeDiffToFileSystem( name, expectedResponse, actualResponse);
 
-      String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
@@ -195,7 +197,7 @@ public class TxServiceTestHelper {
 
       writeDiffToFileSystem(name, expectedResponse, actualResponse);
 
-      String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
          FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
@@ -224,6 +226,14 @@ public class TxServiceTestHelper {
     }
     FileUtilities.stringToFile(expected, fullExpected + testName + ".json");
     FileUtilities.stringToFile(actual, fullActual + testName + ".json");
+
+  }
+
+
+  private static Map<String, String> vars() {
+    Map<String, String> vars = new HashMap<String, String>();
+    vars.put("version", "5.0.0");
+    return vars;
 
   }
 }

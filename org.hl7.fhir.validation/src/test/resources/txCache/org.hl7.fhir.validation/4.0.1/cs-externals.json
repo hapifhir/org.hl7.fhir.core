@@ -1,25 +1,19 @@
 {
   "http://www.genenames.org/geneId" : null,
   "urn:oid:1.2.246.537.6.3300.202201" : null,
-  "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9" : {
-    "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "cs-d401bbf6-735a-494a-a521-f7fddfd45cb9.json"
-  },
+  "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9" : null,
   "#c1" : null,
   "urn:oid:2.16.756.5.30.2.6.1" : null,
   "urn:oid:1.2.246.537.5.40193.2013" : null,
   "http://fhir.whatever.com/codes/AllergyClinicalStatus" : null,
   "http://hl7.org/fhir/measure-scoring" : null,
   "http://hl7.org/fhir/test/CodeSystem/imaginary" : null,
-  "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode" : {
-    "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "cs-773b685c-5060-4f18-b6f5-750f33712254.json"
-  },
+  "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode" : null,
   "urn:oid:1.2.246.537.6.1221.201601" : null,
   "http://acme.org/obs-codes" : null,
   "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/hsloc.html" : {
     "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "cs-35053571-f579-472d-8af1-8a31667cbbb0.json"
+    "filename" : "cs-712d6e8c-6c82-4840-a27d-258fe7d5dc4a.json"
   },
   "http://fkcfhir.org/fhir/CodeSystem/FMCOrderSubType" : null,
   "http://something/something" : null,
@@ -29,14 +23,11 @@
   "http://hl7.org/fhir/CodeSystem/c1" : null,
   "http://standardterms.edqm.eu" : {
     "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "cs-d4f4cbcd-eb84-4462-9ade-45ee8f39d817.json"
+    "filename" : "cs-8dab5b72-0fcd-4074-8cc7-ee81fe22305e.json"
   },
   "http://hl7.org/fhir/ValueSet/measure-type" : null,
   "http://terminology.hl7.org/CodeSystem/v3-NullFlavor" : null,
-  "http://terminology.hl7.org/CodeSystem/v2-0532" : {
-    "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "cs-a7b60905-1cbd-4972-b477-ea578f859a37.json"
-  },
+  "http://terminology.hl7.org/CodeSystem/v2-0532" : null,
   "http://fhir.mimic.mit.edu/CodeSystem/admission-class" : null,
   "http://hl7.org/fhir/uv/phd/CodeSystem/PhdObservationCategories" : null,
   "http://hl7.org/fhir/test/CodeSystem/other" : null,
@@ -49,14 +40,11 @@
   "http://terminology.hl7.org/ValueSet/v3-ServiceDeliveryLocationRoleType" : null,
   "https://www.humanservices.gov.au/organisations/health-professionals/enablers/air-vaccine-code-formats" : {
     "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "cs-4f9a7e98-8a30-4a3b-9d48-e1f48895cb26.json"
+    "filename" : "cs-04ff7dcb-2b21-4cbc-ac14-c91949e64c7b.json"
   },
   "http://fkcfhir.org/fhir/CodeSystem/FMCInctrMedRoute" : null,
   "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_ICD_DIAGNOSESICHERHEIT" : null,
-  "http://terminology.hl7.org/CodeSystem/v2-0203" : {
-    "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "cs-cecc9856-52d7-429b-9793-b0a5e9b1ff0b.json"
-  },
+  "http://terminology.hl7.org/CodeSystem/v2-0203" : null,
   "http://fhir.mimic.mit.edu/CodeSystem/admission-type" : null,
   "urn:oid:2.51.1.1" : null,
   "http://terminology.gene.com/fhir/usix/uapi/CodeSystem/uapi-product-name" : null,
@@ -66,10 +54,7 @@
   "http://fkcfhir.org/fhir/CodeSystem/FMCOrderType" : null,
   "http://terminology.gene.com/fhir/usix/uapi/CodeSystem/uapi-sr-type" : null,
   "http://example.org" : null,
-  "http://terminology.hl7.org/CodeSystem/condition-clinical" : {
-    "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "cs-39e76bc4-c432-4212-b415-b40f5fed8713.json"
-  },
+  "http://terminology.hl7.org/CodeSystem/condition-clinical" : null,
   "https://hl7.fi/fhir/finnish-base-profiles/CodeSystem/SecurityLabelCS" : null,
   "http://hl7.org/fhir/ValueSet/participant-role" : null,
   "http://gen.kanta.fi/figen-cs-provenancerolecategory" : null,
@@ -77,16 +62,13 @@
   "http://example.org/profile3" : null,
   "http://snomed.info/sct" : {
     "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "cs-e9005776-4311-46ea-a313-01c7a4c7ceb0.json"
+    "filename" : "cs-f8c5ee63-a7fd-461a-9589-1b0d5520baf1.json"
   },
   "http://unstats.un.org/unsd/methods/m49/m49.htm" : null,
   "urn:oid:1.2.840.114350.1.72.1.7.7.10.696784.13260" : null,
   "urn:oid:2.16.840.1.113883.6.101" : null,
   "http://fhir.mimic.mit.edu/CodeSystem/discharge-dispostion" : null,
-  "http://terminology.hl7.org/CodeSystem/special-values" : {
-    "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "cs-7257f955-c1ff-4536-9aba-5a17e01ac34f.json"
-  },
+  "http://terminology.hl7.org/CodeSystem/special-values" : null,
   "https://smt.esante.gouv.fr/fhir/CodeSystem/tre-r374-nature-activite-smsse-regulee" : null,
   "http://fhir.mimic.mit.edu/CodeSystem/admit-source" : null,
   "http://hl7.org/fhir/test/CodeSystem/big" : null,
@@ -94,7 +76,7 @@
   "http://fkcfhir.org/fhir/CodeSystem/FMCMedTiming" : null,
   "http://nucc.org/provider-taxonomy" : {
     "server" : "http://tx-dev.fhir.org/r4",
-    "filename" : "cs-2c11dac3-8386-4637-9f59-c4956b7f8c9e.json"
+    "filename" : "cs-d9d0303f-5990-4ae9-9d7b-5ca828923fce.json"
   },
   "https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName" : null,
   "http://loinc.org" : null,

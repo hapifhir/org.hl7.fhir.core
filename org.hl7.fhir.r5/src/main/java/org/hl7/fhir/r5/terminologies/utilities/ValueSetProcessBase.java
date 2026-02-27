@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.BaseWorkerContext;
@@ -105,6 +107,7 @@ public class ValueSetProcessBase {
   protected List<String> requiredSupplements = new ArrayList<>();
   protected List<String> usedSupplements = new ArrayList<>();
   protected List<String> allErrors = new ArrayList<>();
+  @Getter @Setter private CanonicalResource externalSource;
 
   protected ValueSetProcessBase(BaseWorkerContext context, TerminologyOperationContext opContext) {
     super();
@@ -210,6 +213,9 @@ public class ValueSetProcessBase {
   }
   
   public void checkCanonical(List<OperationOutcomeIssueComponent> issues, String path, CanonicalResource resource, CanonicalResource source) {
+    if (source == null) {
+      source = this.externalSource;
+    }
     if (resource != null) {
       StandardsStatus standardsStatus = ExtensionUtilities.getStandardsStatus(resource);
       if (standardsStatus == StandardsStatus.DEPRECATED) {

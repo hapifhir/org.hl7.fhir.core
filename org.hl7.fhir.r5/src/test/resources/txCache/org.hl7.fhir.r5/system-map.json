@@ -1,2 +1,17 @@
 {
+  "systems" : [{
+    "system" : "http://acme.org/messagetypes",
+    "authoritative" : [],
+    "candidates" : []
+  },
+  {
+    "system" : "http://cancer.questionnaire.org/system/code/yesno",
+    "authoritative" : [],
+    "candidates" : []
+  },
+  {
+    "system" : "http://example.org",
+    "authoritative" : [],
+    "candidates" : []
+  }]
 }

@@ -47,6 +47,7 @@ import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine.ExpressionNodeWithOffset;
 import org.hl7.fhir.r4b.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.model.Base;
+import org.hl7.fhir.r4b.model.Identifier;
 import org.hl7.fhir.r4b.model.Tuple;
 import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -790,11 +791,11 @@ public class LiquidEngine implements IHostApplicationServices {
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return resolveReference(engine, ctxt.externalContext, url, refContext);
+    return resolveReference(engine, ctxt.externalContext, url, identifier, refContext);
   }
 
   @Override

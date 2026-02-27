@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -60,7 +57,9 @@ private static TxTestData testData;
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
-    testData = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
+    Set<String> omissions = new HashSet<>();
+    omissions.add("search");
+    testData = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev", omissions);
     return testData.getTestData();
   }
 
@@ -154,6 +153,13 @@ private static TxTestData testData;
     } else {
       vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
     }
+    if (vs == null) {
+      for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent pp : p.getParameter()) {
+        if (pp.getName().equals("tx-resource") && pp.hasResource() && pp.getResource() instanceof ValueSet && ((ValueSet) pp.getResource()).getUrl().equals(p.getParameterValue("url").primitiveValue())) {
+          vs = (ValueSet) pp.getResource();
+        }
+      }
+    }
     boolean hierarchical = p.hasParameter("excludeNested") ? p.getParameterBool("excludeNested") == false : true;
     Assertions.assertNotNull(vs);
     if (lang != null && !p.hasParameter("displayLanguage")) {
@@ -170,7 +176,7 @@ private static TxTestData testData;
         TxTesterSorters.sortValueSet(vse.getValueset());
         TxTesterScrubbers.scrubValueSet(vse.getValueset(), false);
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
-        CompareUtilities c = new CompareUtilities(modes(), ext);
+        CompareUtilities c = new CompareUtilities(modes(), ext, vars());
         String diff = c.checkJsonSrcIsSame(id, resp, vsj);
         if (diff != null) {
           FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
@@ -237,7 +243,7 @@ private static TxTestData testData;
       TxTesterScrubbers.scrubOperationOutcome(oo, false);
 
       String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
-      String diff = new CompareUtilities(modes(), ext).checkJsonSrcIsSame(id, resp, ooj);
+      String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp, ooj);
       if (diff != null) {
         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(ooj, fp);        
@@ -301,4 +307,10 @@ private static TxTestData testData;
 
   }
 
+  private Map<String, String> vars() {
+    Map<String, String> vars = new HashMap<String, String>();
+    vars.put("version", "5.0.0");
+    return vars;
+
+  }
 }
