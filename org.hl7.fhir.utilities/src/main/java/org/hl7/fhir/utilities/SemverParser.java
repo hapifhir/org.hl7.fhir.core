@@ -2,8 +2,11 @@ package org.hl7.fhir.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SemverParser {
+  private static final Map<String, ParseResult> PARSE_CACHE = new ConcurrentHashMap<>();
   private final String input;
   private int pos;
   private final List<String> parts;
@@ -548,8 +551,14 @@ public class SemverParser {
 
   // Static convenience method
   public static ParseResult parseSemver(String input) {
+    ParseResult cached = PARSE_CACHE.get(input);
+    if (cached != null) {
+      return cached;
+    }
     SemverParser parser = new SemverParser(input);
-    return parser.parse();
+    ParseResult result = parser.parse();
+    PARSE_CACHE.put(input, result);
+    return result;
   }
 
   public static ParseResult parseSemver(String input, boolean allowWildcards) {
@@ -558,7 +567,14 @@ public class SemverParser {
   }
 
   public static ParseResult parseSemver(String input, boolean allowWildcards, boolean requirePatch) {
+    String cacheKey = input + "|" + allowWildcards + "|" + requirePatch;
+    ParseResult cached = PARSE_CACHE.get(cacheKey);
+    if (cached != null) {
+      return cached;
+    }
     SemverParser parser = new SemverParser(input, allowWildcards, requirePatch);
-    return parser.parse();
+    ParseResult result = parser.parse();
+    PARSE_CACHE.put(cacheKey, result);
+    return result;
   }
 }
