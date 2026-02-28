@@ -4073,7 +4073,16 @@ public class ProfileUtilities {
     if (source != null && source.getSourcePackage() != null && source.getSourcePackage().isCore()) {
       source = null;
     }
-    return context.fetchResource(StructureDefinition.class, u, v, source);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, u, v, source);
+    if (sd == null) {
+      if (makeXVer().matchingUrl(u) && xver.status(u) == XVerExtensionStatus.Valid) {
+        sd = xver.getDefinition(u);
+        if (sd!=null) {
+          generateSnapshot(context.fetchTypeDefinition("Extension"), sd, sd.getUrl(), context.getSpecUrl(), sd.getName());
+        }
+      }
+    }
+    return sd;
   }
 
   // generate a CSV representation of the structure definition
