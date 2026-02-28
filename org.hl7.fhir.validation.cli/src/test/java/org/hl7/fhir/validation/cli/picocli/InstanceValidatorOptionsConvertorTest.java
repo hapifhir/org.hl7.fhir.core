@@ -2,6 +2,8 @@ package org.hl7.fhir.validation.cli.picocli;
 
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptions;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptionsConvertor;
@@ -297,6 +299,18 @@ public class InstanceValidatorOptionsConvertorTest {
           .setLevel(ValidationLevel.WARNINGS)
           .addExtension("http://example.org")
           .addExtension("any")
+      ),
+
+      Arguments.arguments(
+        "checkDisplay CheckCase",
+        new InstanceValidatorOptions().withCheckDisplay("CheckCase"),
+        new InstanceValidatorParameters().setCheckDisplay(CheckDisplayOption.CheckCase)
+      ),
+
+      Arguments.arguments(
+        "resourceIdRule REQUIRED",
+        new InstanceValidatorOptions().withResourceIdRule("required"),
+        new InstanceValidatorParameters().setResourceIdRule(IdStatus.REQUIRED)
       ),
 
       Arguments.arguments(

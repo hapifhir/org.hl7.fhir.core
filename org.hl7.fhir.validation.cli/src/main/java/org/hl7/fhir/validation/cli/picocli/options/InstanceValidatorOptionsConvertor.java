@@ -4,6 +4,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
+import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
+import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.cli.picocli.OptionUtilities;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
@@ -12,7 +14,6 @@ import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
-import picocli.CommandLine;
 
 public class InstanceValidatorOptionsConvertor {
   public InstanceValidatorParameters convert(InstanceValidatorOptions options) {
@@ -120,7 +121,26 @@ public class InstanceValidatorOptionsConvertor {
     if (options.validationTimeout != 0) {
       instanceValidatorParameters.setTimeout(new ValidationTimeout(options.validationTimeout, "CLI option " + OptionUtilities.getFirstNameForField(InstanceValidatorOptions.class, "validationTimeout")));
     }
+
+    if (options.checkDisplay != null) {
+      instanceValidatorParameters.setCheckDisplay(parseCheckDisplayOption(options.checkDisplay));
+    }
+
+    if (options.resourceIdRule != null) {
+      instanceValidatorParameters.setResourceIdRule(parseIdStatus(options.resourceIdRule));
+    }
+
     return instanceValidatorParameters;
+  }
+
+  static IdStatus parseIdStatus(String param) {
+    if (param == null) return IdStatus.OPTIONAL;
+    return IdStatus.valueOf(param.toUpperCase());
+  }
+
+  static CheckDisplayOption parseCheckDisplayOption(String param) {
+    if (param == null) return CheckDisplayOption.Ignore;
+    return CheckDisplayOption.valueOf(param);
   }
 
   static BestPracticeWarningLevel readBestPractice(String s) {
