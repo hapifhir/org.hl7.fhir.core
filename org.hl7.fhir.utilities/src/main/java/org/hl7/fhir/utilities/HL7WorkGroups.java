@@ -106,7 +106,7 @@ public class HL7WorkGroups {
     case "cimi": return "Clinical Information Modeling Initiative";
     case "claims": return "Payer/Provider Information Exchange Work Group";
     case "cqi": return "Clinical Quality Information";
-    case "dev": return "Health Care Devices";
+    case "dev": return "Devices";
     case "ehr": return "Electronic Health Records";
     case "ec": return "Emergency Care";
     case "fhir": return "FHIR Infrastructure";
