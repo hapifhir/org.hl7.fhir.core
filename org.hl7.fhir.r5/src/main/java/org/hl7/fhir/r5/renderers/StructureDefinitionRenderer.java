@@ -706,7 +706,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
 
     // now look for reverse mappings but only to things we haven't already got forward mappings too
-    for (StructureDefinition src : context.getContextUtilities().allStructures()) {
+    List<StructureDefinition> structures = new ArrayList<>(context.getContextUtilities().allStructures());
+    for (StructureDefinition src : structures) {
       if (includeSDForMap(src, true)) {
         for (StructureDefinitionMappingComponent map : src.getMapping()) {
           if (map.hasUri() && map.getUri().equals(profile.getUrl()) && !items.contains(src)) {
