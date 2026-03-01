@@ -1,3 +1,16 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: nl\n"
+"X-Crowdin-File: /org.hl7.fhir.utilities/src/main/resources/source/rendering-phrases-en.po\n"
+"X-Crowdin-File-ID: 236\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Dutch\n"
+"Language: nl_NL\n"
+"PO-Revision-Date: 2026-01-30 15:56\n"
 
 # ACTOR_DEF_ACT
 #: ACTOR_DEF_ACT
@@ -23,13 +36,13 @@ msgstr "Type: {0}"
 #: ACTOR_DERIVED_FROM
 msgctxt "ACTOR_DERIVED_FROM"
 msgid "Derived From"
-msgstr ""
+msgstr "Afgeleid van"
 
 # ACTOR_DERIVED_FROM_NONE
 #: ACTOR_DERIVED_FROM_NONE
 msgctxt "ACTOR_DERIVED_FROM_NONE"
 msgid "(none)"
-msgstr ""
+msgstr "(geen)"
 
 # ADD_BIND_ADD_BIND
 #: ADD_BIND_ADD_BIND
@@ -145,12 +158,12 @@ msgstr "Deze waardelijst is een component van de basiswaardelijst"
 # BUNDLE_DOCUMENT_CONTENT
 #: BUNDLE_DOCUMENT_CONTENT
 msgid "Document Content"
-msgstr ""
+msgstr "Documentinhoud"
 
 # BUNDLE_DOCUMENT_DETAILS
 #: BUNDLE_DOCUMENT_DETAILS
 msgid "Document Details"
-msgstr ""
+msgstr "Documentdetails"
 
 # BUNDLE_ETAG
 #: BUNDLE_ETAG
@@ -630,27 +643,27 @@ msgstr "Concepten"
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> definieert de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> definieert de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr "!!Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> definieert de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>die alleen als voorbeeld dienen</b>:"
+msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> definieert de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>die alleen als voorbeeld dienen</b>:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> heeft <b>een fragment</b> met de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> heeft <b>een fragment</b> met de volgende code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "!!Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> bevat codes<param name=\"h\"/>, maar geen van die codes staan hier"
+msgstr "Dit <param name=\"cased\"/> codesysteem <param name=\"cs\"/> definieert codes<param name=\"h\"/>, maar geen van die codes staan hier"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "!!Dit codesysteem supplement <param name=\"cs\"/> definieert {0} op de volgende code<if test=\"code-count != 1\">s</if>:"
+msgstr "Dit codesysteem supplement <param name=\"cs\"/> definieert {0} op de volgende code<if test=\"code-count != 1\">s</if>:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -745,7 +758,7 @@ msgstr "Deze CodeSystem resource is een supplement voor"
 # CODE_SYS_SUPP_CODE_NOT_HERE
 #: CODE_SYS_SUPP_CODE_NOT_HERE
 msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
-msgstr ""
+msgstr "Dit CodeSystem-supplement wordt hier niet gebruikt; het wordt mogelijk ergens anders gebruikt (bijv. specificaties en/of implementaties die deze content gebruiken)"
 
 # CODE_SYS_THE_VALUE_SET
 #: CODE_SYS_THE_VALUE_SET
@@ -806,13 +819,13 @@ msgstr "Bron code"
 #: CONC_MAP_SOURCE_CARD
 msgctxt "CONC_MAP_SOURCE_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Kard."
 
 # CONC_MAP_SOURCE_TYPE
 #: CONC_MAP_SOURCE_TYPE
 msgctxt "CONC_MAP_SOURCE_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 # CONC_MAP_SRC_DET
 #: CONC_MAP_SRC_DET
@@ -834,7 +847,7 @@ msgstr "Doel code"
 #: CONC_MAP_TRGT_CARD
 msgctxt "CONC_MAP_TRGT_CARD"
 msgid "Card."
-msgstr ""
+msgstr "Kard."
 
 # CONC_MAP_TRGT_DET
 #: CONC_MAP_TRGT_DET
@@ -845,7 +858,7 @@ msgstr "Doel conceptdetails"
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 # CONF_MAY
 #: CONF_MAY
@@ -1078,7 +1091,7 @@ msgstr ""
 # CS_VERSION_NOTHING_TEXT
 #: CS_VERSION_NOTHING_TEXT
 msgid "Not Stated (use latest from terminology server)"
-msgstr ""
+msgstr "Niet vermeld (gebruik de laatste van de terminologieserver)"
 
 # DATA_REND_AFTERNOON
 #: DATA_REND_AFTERNOON
@@ -1324,7 +1337,7 @@ msgstr "bij de maaltijd"
 # DATA_REND_MKDWN_LNK
 #: DATA_REND_MKDWN_LNK
 msgid "Unable to resolve markdown link ''{0}''"
-msgstr "!!Kan markdown-link niet volgen"
+msgstr "Kan markdown-link \"{0}\" niet volgen"
 
 # DATA_REND_MORNING
 #: DATA_REND_MORNING
@@ -1495,7 +1508,7 @@ msgstr "voor"
 #: DIAG_REP_REND_IDENTIFIER
 msgctxt "DIAG_REP_REND_IDENTIFIER"
 msgid "Identifier"
-msgstr "Identifier"
+msgstr ""
 
 # DIAG_REP_REND_NOTRES
 #: DIAG_REP_REND_NOTRES
@@ -1556,7 +1569,7 @@ msgstr "Ongespecificeerd subject"
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr "!!<param name=\"status\"/> Document van <param name=\"date\"/> door <param name=\"author\"/> voor <param name=\"subject\"/> <if test=\"has-encounter = true\"> in contactmoment <param name=\"encounter\"/></if>"
+msgstr "<param name=\"status\"/> Document van <param name=\"date\"/> door <param name=\"author\"/> over <param name=\"subject\"/> <if test=\"has-encounter = true\"> tijdens contactmoment <param name=\"encounter\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
@@ -1651,12 +1664,12 @@ msgstr "Kan gerefereerde actor {0} niet vinden"
 # FMM_TABLE
 #: FMM_TABLE
 msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "!!<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Volwassenheidsniveau</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standaard status\">{2}</a></td></tr></tbody></table>"
+msgstr "<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Volwassenheidsniveau</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standaard status\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
 msgid "This element has additional bindings"
-msgstr ""
+msgstr "Dit element heeft additionele bindings"
 
 # GENERAL_ADD_LANG
 #: GENERAL_ADD_LANG
@@ -1671,7 +1684,7 @@ msgstr "Binding"
 # GENERAL_BINDINGS
 #: GENERAL_BINDINGS
 msgid "Bindings"
-msgstr ""
+msgstr "Bindings"
 
 # GENERAL_BINDING_NO_DESC
 #: GENERAL_BINDING_NO_DESC
@@ -1681,12 +1694,12 @@ msgstr "Omschrijving ontbreekt"
 # GENERAL_BINDING_NO_VS_1
 #: GENERAL_BINDING_NO_VS_1
 msgid "Binding Description"
-msgstr ""
+msgstr "Binding omschrijving"
 
 # GENERAL_BINDING_NO_VS_2
 #: GENERAL_BINDING_NO_VS_2
 msgid "This binding doesn''t define a testable ValueSet"
-msgstr ""
+msgstr "Deze binding definieert geen testbare waardelijst"
 
 # GENERAL_BIND_MIN_ALLOW
 #: GENERAL_BIND_MIN_ALLOW
@@ -1712,7 +1725,7 @@ msgstr "Code"
 # GENERAL_CODESYSTEM
 #: GENERAL_CODESYSTEM
 msgid "Code System"
-msgstr ""
+msgstr "Codesysteem"
 
 # GENERAL_COMMENT
 #: GENERAL_COMMENT
@@ -1743,7 +1756,7 @@ msgstr "Conformance"
 #: GENERAL_CONSTRAINTS
 msgctxt "GENERAL_CONSTRAINTS"
 msgid "Constraints"
-msgstr ""
+msgstr "Constrains"
 
 # GENERAL_CONTACT
 #: GENERAL_CONTACT
@@ -1801,7 +1814,7 @@ msgstr "Omschrijving & constraints"
 #: GENERAL_DETAILS
 msgctxt "GENERAL_DETAILS"
 msgid "Details"
-msgstr "Details"
+msgstr ""
 
 # GENERAL_DOCUMENTATION
 #: GENERAL_DOCUMENTATION
@@ -1827,7 +1840,7 @@ msgstr "Filter"
 #: GENERAL_FIXED_VALUE
 msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
-msgstr ""
+msgstr "Vaste waarde: {0}"
 
 # GENERAL_FLAGS
 #: GENERAL_FLAGS
@@ -1892,7 +1905,7 @@ msgstr "Verplichtingen"
 #: GENERAL_OBLIGATIONS
 msgctxt "GENERAL_OBLIGATIONS"
 msgid "Obligations"
-msgstr ""
+msgstr "Verplichtingen"
 
 # GENERAL_OID
 #: GENERAL_OID
@@ -1913,7 +1926,7 @@ msgstr "Parameters"
 #: GENERAL_PATTERN_VALUE
 msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
-msgstr ""
+msgstr "Patternwaarde: {0}"
 
 # GENERAL_PREFERRED
 #: GENERAL_PREFERRED
@@ -1961,7 +1974,7 @@ msgstr "Verplicht"
 # GENERAL_REQUIRED_BINDING
 #: GENERAL_REQUIRED_BINDING
 msgid "Required Binding to ValueSet {0}"
-msgstr ""
+msgstr "Verplichte binding met waardelijst {0}"
 
 # GENERAL_RESOURCE
 #: GENERAL_RESOURCE
@@ -1978,7 +1991,7 @@ msgstr "Veiligheidslabel"
 #: GENERAL_SOURCE
 msgctxt "GENERAL_SOURCE"
 msgid "Source"
-msgstr ""
+msgstr "Bron"
 
 # GENERAL_SRC
 #: GENERAL_SRC
@@ -2025,12 +2038,12 @@ msgstr "Type"
 # GENERAL_TYPE_PROFILE
 #: GENERAL_TYPE_PROFILE
 msgid "This element has profiles on it's type: {0}"
-msgstr ""
+msgstr "Dit element heeft profielen op zijn type: {0}"
 
 # GENERAL_TYPE_TARGET_PROFILE
 #: GENERAL_TYPE_TARGET_PROFILE
 msgid "This element has restrictions/profiles on it's targets: {0}"
-msgstr ""
+msgstr "Dit element heeft beperkingen/profielen op zijn doelen: {0}"
 
 # GENERAL_UCUM
 #: GENERAL_UCUM
@@ -2065,17 +2078,17 @@ msgstr "Waardelijst"
 # GENERAL_VALUE_BOUNDED
 #: GENERAL_VALUE_BOUNDED
 msgid "The value must be between {0} and {1} (or equal)"
-msgstr ""
+msgstr "De waarde moet liggen tussen {0} en {1} (of gelijk zijn aan)"
 
 # GENERAL_VALUE_MAX
 #: GENERAL_VALUE_MAX
 msgid "The value must be less or equal to {0}"
-msgstr ""
+msgstr "De waarde moet kleiner of gelijk zijn aan {0}"
 
 # GENERAL_VALUE_MIN
 #: GENERAL_VALUE_MIN
 msgid "The value must be greater or equal to {0}"
-msgstr ""
+msgstr "De waarde moet groter of gelijk zijn aan {0}"
 
 # GENERAL_VER
 #: GENERAL_VER
@@ -2292,7 +2305,7 @@ msgstr "Periode"
 # OBLIGATION_SOURCE
 #: OBLIGATION_SOURCE
 msgid "This obligation is defined in the profile {0}"
-msgstr ""
+msgstr "Deze verplichting is gedefinieerd in het profiel {0}"
 
 # OBLIG_ACT
 #: OBLIG_ACT
@@ -2323,7 +2336,7 @@ msgstr "Outputparameters profiel:"
 #: OP_DEF_SCO
 msgctxt "OP_DEF_SCO"
 msgid "Scope"
-msgstr "Scope"
+msgstr ""
 
 # OP_DEF_URL
 #: OP_DEF_URL
@@ -3004,57 +3017,57 @@ msgstr "Waardelijst:"
 # R44B_DERIVES_FROM
 #: R44B_DERIVES_FROM
 msgid "derives from"
-msgstr ""
+msgstr "leidt af van"
 
 # R44B_HAS_TARGET
 #: R44B_HAS_TARGET
 msgid "has target"
-msgstr ""
+msgstr "heeft doel"
 
 # R44B_HAS_TYPE
 #: R44B_HAS_TYPE
 msgid "has type"
-msgstr ""
+msgstr "heeft type"
 
 # R44B_NOT_COMP
 #: R44B_NOT_COMP
 msgid "This is an {0} IG that is not compatible with {1}\" because"
-msgstr ""
+msgstr "Dit is een {0} IG die niet compatibel is met {1}\" omdat"
 
 # R44B_NOT_IN
 #: R44B_NOT_IN
 msgid "The following resources are not in the {0} version"
-msgstr ""
+msgstr "De volgende resources staan niet in de {0} versie"
 
 # R44B_ONLY_IN
 #: R44B_ONLY_IN
 msgid "The following resources are only in the {0} version"
-msgstr ""
+msgstr "De volgende resources zijn alleen beschikbaar in de {0} versie"
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
 msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
-msgstr ""
+msgstr "Packages voor zowel <a href=\"{0}\">R4 ({1}.r4)</a> en <a href=\"{2}\">R4B ({3}.r4b)</a> zijn beschikbaar."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
 msgid "While checking for {0} compatibility, the following {1} problems were found"
-msgstr ""
+msgstr "Bij het controleren op {0} compatibiliteit zijn de volgende {1} problemen gevonden"
 
 # R44B_REFERS_TO
 #: R44B_REFERS_TO
 msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
-msgstr ""
+msgstr "<a href=\"{0}\">{1}</a> verwijst naar het canonieke type op {2}"
 
 # R44B_USE_OK
 #: R44B_USE_OK
 msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1} systems."
-msgstr ""
+msgstr "Dit is een {0} IG. Geen van de gebruikte functies zijn gewijzigd in {1}, dus het kan zoals het is gebruikt worden met {1} systemen."
 
 # R44B_WRONG_MSG
 #: R44B_WRONG_MSG
 msgid "Something went wrong with the cross-version analysis because"
-msgstr ""
+msgstr "Er is iets misgegaan met de cross-versie analyse omdat"
 
 # REND_ADDED
 #: REND_ADDED
@@ -3170,7 +3183,7 @@ msgstr "Fout bij weergave: {0}"
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
 msgid "Information Source: <param name=\"source\"/>"
-msgstr "!!Informatiebron: <param name=\"source\"/>"
+msgstr "Informatiebron: <param name=\"source\"/>"
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
@@ -3220,504 +3233,504 @@ msgstr "versie: {0}"
 # SDR_ALL_ELEM
 #: SDR_ALL_ELEM
 msgid "**ALL** elements"
-msgstr ""
+msgstr "**ALLE** elementen"
 
 # SDR_ALL_EXT
 #: SDR_ALL_EXT
 msgid "**ALL** extensions"
-msgstr ""
+msgstr "**ALLE** extensies"
 
 # SDR_ANY_ORDER
 #: SDR_ANY_ORDER
 msgid "// sliced by {0} in any order"
-msgstr ""
+msgstr "// opgedeeld op {0} in willekeurige volgorde"
 
 # SDR_BP
 #: SDR_BP
 msgid "best practice"
-msgstr ""
+msgstr "best practice"
 
 # SDR_CAPSTMT
 #: SDR_CAPSTMT
 msgid "CapabilityStatements using this {0}"
-msgstr ""
+msgstr "CapabilityStatements met deze {0}"
 
 # SDR_CH_DET
 #: SDR_CH_DET
 msgid "New Content"
-msgstr ""
+msgstr "Nieuwe content"
 
 # SDR_CH_NO
 #: SDR_CH_NO
 msgid "No changes"
-msgstr ""
+msgstr "Geen wijzigingen"
 
 # SDR_CLICK_COPY
 #: SDR_CLICK_COPY
 msgid "Click to copy URL"
-msgstr ""
+msgstr "Klik om de url te kopiëren"
 
 # SDR_CODE_FROM
 #: SDR_CODE_FROM
 msgid "(a valid code from {0})"
-msgstr ""
+msgstr "(een geldige code uit {0})"
 
 # SDR_COMPLY
 #: SDR_COMPLY
 msgid "Comply with this profile {0}"
-msgstr ""
+msgstr "Conform dit profiel {0}"
 
 # SDR_CONCEPT_DOMAIN
 #: SDR_CONCEPT_DOMAIN
 msgid "Concept Domain"
-msgstr ""
+msgstr "Conceptdomein"
 
 # SDR_CONT_CH_DET_CS
 #: SDR_CONT_CH_DET_CS
 msgid "The list of codes defined by the code system has changed"
-msgstr ""
+msgstr "De lijst met codes gedefinieerd door het codesysteem is gewijzigd"
 
 # SDR_CONT_CH_DET_SD
 #: SDR_CONT_CH_DET_SD
 msgid "The data elements list has changed"
-msgstr ""
+msgstr "De lijst met dataelementen is gewijzigd"
 
 # SDR_CONT_CH_DET_VS
 #: SDR_CONT_CH_DET_VS
 msgid "The logical definition of the value set has changed"
-msgstr ""
+msgstr "De logische definitie van de waardelijst is gewijzigd"
 
 # SDR_CONT_CH_NO
 #: SDR_CONT_CH_NO
 msgid "Unable to evaluate changes to content"
-msgstr ""
+msgstr "Kan geen wijzigingen aan de content controleren"
 
 # SDR_DEFN_CH_DET_CS
 #: SDR_DEFN_CH_DET_CS
 msgctxt "SDR_DEFN_CH_DET_CS"
 msgid "One or more text definitions/displays have changed"
-msgstr ""
+msgstr "Eén of meer tekstdefinities/weergaven zijn gewijzigd"
 
 # SDR_DEFN_CH_DET_SD
 #: SDR_DEFN_CH_DET_SD
 msgid "One or more text definitions, invariants or bindings have changed"
-msgstr ""
+msgstr "Eén of meer tekstdefinities, invarianten of bindings zijn gewijzigd"
 
 # SDR_DEFN_CH_DET_VS
 #: SDR_DEFN_CH_DET_VS
 msgctxt "SDR_DEFN_CH_DET_VS"
 msgid "One or more text definitions/displays have changed"
-msgstr ""
+msgstr "Eén of meer tekstdefinities zijn gewijzigd"
 
 # SDR_DEFN_CH_NO
 #: SDR_DEFN_CH_NO
 msgid "Unable to evaluate changes to definitions"
-msgstr ""
+msgstr "Kan geen wijzigingen aan de defnities controleren"
 
 # SDR_DERIVED
 #: SDR_DERIVED
 msgid "Derived from this {0}"
-msgstr ""
+msgstr "Afgeleid van {0}"
 
 # SDR_DRAFT
 #: SDR_DRAFT
 msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
-msgstr ""
+msgstr "Dit is een experimentele extensie-definitie; de commissie zoekt implementatiefeedback en de definitie of content van de extensie kan in volgende versies wijzigen"
 
 # SDR_DRAW_IN
 #: SDR_DRAW_IN
 msgid "Draw in Obligations & Additional Bindings from this {0}"
-msgstr ""
+msgstr "Haal Verplichtingen & Additionele bindings uit {0}"
 
 # SDR_EXAMPLE
 #: SDR_EXAMPLE
 msgid "Examples for this {0}"
-msgstr ""
+msgstr "Voorbeelden voor {0}"
 
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
 msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
-msgstr ""
+msgstr "Dit is een experimentele extensie-definitie; de definitie is bedoeld voor testdoeleinden, onderwijs of evaluatie, en er is geen verwachting dat de definitie verder wordt gebracht voor werkelijk gebruik."
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
 msgid "Simple Extension with the type {0}: {1}"
-msgstr ""
+msgstr "Eenvoudige extensie met type {0}: {1}"
 
 # SDR_EXTENSION_SUMMARY_MODIFIER
 #: SDR_EXTENSION_SUMMARY_MODIFIER
 msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
-msgstr ""
+msgstr "Eenvoudige <b>Modifier</b> extensie met type {0}: {1}"
 
 # SDR_EXT_ANY
 #: SDR_EXT_ANY
 msgid "This extension does not specify which elements it should be used on"
-msgstr ""
+msgstr "Deze extensie definieert niet welke elementen deze op is bedoeld"
 
 # SDR_EXT_CHANGED
 #: SDR_EXT_CHANGED
 msgid "The extension is represented a little differently in {0}"
-msgstr ""
+msgstr "De extensie wordt lichtelijk anders weergegeven in {0}"
 
 # SDR_EXT_CTXT_PATH
 #: SDR_EXT_CTXT_PATH
 msgid "In addition, the extension can only be used when this FHIRPath expression is true"
-msgstr ""
+msgstr "Daarbij kan de extensie alleen worden gebruikt wanneer deze FHIRPath-expressie waar is"
 
 # SDR_EXT_CTXT_PATHS
 #: SDR_EXT_CTXT_PATHS
 msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
-msgstr ""
+msgstr "Daarbij kan de extensie alleen worden gebruikt wanneer deze FHIRPath-expressies waar zijn"
 
 # SDR_EXT_DEPR
 #: SDR_EXT_DEPR
 msgid "This extension is deprecated and should no longer be used"
-msgstr ""
+msgstr "Deze extensie is verouderd en zou niet meer moeten worden gebruikt"
 
 # SDR_EXT_ELEM
 #: SDR_EXT_ELEM
 msgid "This extension may be used on the following element(s)"
-msgstr ""
+msgstr "Deze extensie kan worden gebruikt op de volgende element(en)"
 
 # SDR_EXT_ELEM_ID
 #: SDR_EXT_ELEM_ID
 msgid "Element ID"
-msgstr ""
+msgstr "Element-id"
 
 # SDR_EXT_EXT
 #: SDR_EXT_EXT
 msgctxt "SDR_EXT_EXT"
 msgid "Extension"
-msgstr ""
+msgstr "Extensie"
 
 # SDR_EXT_MOD
 #: SDR_EXT_MOD
 msgid "This extension is a modifier extension."
-msgstr ""
+msgstr "Dit is een modifier-extensie."
 
 # SDR_EXT_PATH
 #: SDR_EXT_PATH
 msgctxt "SDR_EXT_PATH"
 msgid "Path"
-msgstr ""
+msgstr "Pad"
 
 # SDR_EXT_UNCHANGED
 #: SDR_EXT_UNCHANGED
 msgid "The extension is unchanged in {0}"
-msgstr ""
+msgstr "De extensie is ongewijzigd in {0}"
 
 # SDR_EXT_VER_PFX
 #: SDR_EXT_VER_PFX
 msgid "This extension is allowed for use with"
-msgstr ""
+msgstr "Deze extensie is toegestaan voor gebruik met"
 
 # SDR_EXT_VER_SFX
 #: SDR_EXT_VER_SFX
 msgid "."
-msgstr ""
+msgstr "."
 
 # SDR_FIXED_VALUE
 #: SDR_FIXED_VALUE
 msgctxt "SDR_FIXED_VALUE"
 msgid "Fixed Value: {0}"
-msgstr ""
+msgstr "Vaste waarde: {0}"
 
 # SDR_FROM
 #: SDR_FROM
 msgid "From {0}"
-msgstr ""
+msgstr "Van {0}"
 
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
 msgid "// from Element: <a href=\"{0}\">extension</a>"
-msgstr ""
+msgstr "// van Element: <a href=\"{0}\">extensie</a>"
 
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
 msgid "here"
-msgstr ""
+msgstr "hier"
 
 # SDR_GUIDANCE_PFX
 #: SDR_GUIDANCE_PFX
 msgid "Guidance on how to interpret the contents of this table can be found"
-msgstr ""
+msgstr "Richtlijnen over hoe je deze tabel moet lezen vind je"
 
 # SDR_GUIDANCE_SFX
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
-msgid "-- no content: do not translate #66 --"
-msgstr ""
+msgid "-- no content: do not translate #1 --"
+msgstr "-- geen inhoud: #1 niet vertalen --"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
 msgid "Impose this profile {0}"
-msgstr ""
+msgstr "Veronderstel dit profiel {0}"
 
 # SDR_INTRP_CH_DET_VS
 #: SDR_INTRP_CH_DET_VS
 msgid "The expansion has changed"
-msgstr ""
+msgstr "De expansie is gewijzigd"
 
 # SDR_INTRP_CH_NO_VS
 #: SDR_INTRP_CH_NO_VS
 msgid "Unable to evaluate changes to the expansion"
-msgstr ""
+msgstr "Kan wijzigingen in de expansie niet controleren"
 
 # SDR_LIMITED_ONE
 #: SDR_LIMITED_ONE
 msgid "This element is an array in the base standard, but the profile only allows one element"
-msgstr ""
+msgstr "Dit element is een array in de basisstandaard, maar het profiel staat maar 1 element toe."
 
 # SDR_META_CH_DET
 #: SDR_META_CH_DET
 msgid "The resource metadata has changed ({0})"
-msgstr ""
+msgstr "De resource-metadata is gewijzigd ({0})"
 
 # SDR_META_CH_NO
 #: SDR_META_CH_NO
 msgid "Unable to evaluate changes to metadata"
-msgstr ""
+msgstr "Kan wijzigingen aan de metadata niet controleren"
 
 # SDR_MOD
 #: SDR_MOD
 msgid "(this element modifies the meaning of other elements)"
-msgstr ""
+msgstr "(dit element wijzigt de betekenis van andere elementen)"
 
 # SDR_MOD_SUPP
 #: SDR_MOD_SUPP
 msgid "(this element modifies the meaning of other elements, and must be supported)"
-msgstr ""
+msgstr "(dit element wijzigt de betekenis van andere elementen en moet worden ondersteund)"
 
 # SDR_MULTIPLE_PROFILES
 #: SDR_MULTIPLE_PROFILES
 msgid "Multiple profiles are not supported at this time"
-msgstr ""
+msgstr "Meerdere profielen worden momenteel niet ondersteund"
 
 # SDR_NOT_DONE_CC
 #: SDR_NOT_DONE_CC
 msgid "Error describing concept - not done yet (no codings, no text)"
-msgstr ""
+msgstr "Fout bij beschrijven van concept - nog niet gedaan (geen codings, geen text)"
 
 # SDR_NOT_GEN
 #: SDR_NOT_GEN
 msgid "Generating text summary of fixed value not yet done for type {0}"
-msgstr ""
+msgstr "Genereren van tekstsamenvatting van vaste waarde nog niet gedaan voor type {0}"
 
 # SDR_NOT_HANDLED_EXT
 #: SDR_NOT_HANDLED_EXT
 msgid "Not handled yet: complex extension ''{0}''"
-msgstr ""
+msgstr "Nog niet ondersteund: complexe extensie ''{0}''"
 
 # SDR_NOT_USED
 #: SDR_NOT_USED
 msgid "This {0} is not used by any profiles in this Implementation Guide"
-msgstr ""
+msgstr "{0} wordt niet gebruikt in enig profiel in deze Implementatiegids"
 
 # SDR_OFF_URL
 #: SDR_OFF_URL
 msgid "The official URL for this profile is"
-msgstr ""
+msgstr "De officiële url voor dit profiel is"
 
 # SDR_ONE_OF
 #: SDR_ONE_OF
 msgid "One of these {0}"
-msgstr ""
+msgstr "Een van deze {0}"
 
 # SDR_ONLY_ONE
 #: SDR_ONLY_ONE
 msgid "Only One!"
-msgstr ""
+msgstr "Slechts één!"
 
 # SDR_PATTERN_VALUE
 #: SDR_PATTERN_VALUE
 msgctxt "SDR_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
-msgstr ""
+msgstr "Patternwaarde: {0}"
 
 # SDR_PRIM_VALUE
 #: SDR_PRIM_VALUE
 msgid "Primitive Value {0}"
-msgstr ""
+msgstr "Primitieve waarde {0}"
 
 # SDR_REFER
 #: SDR_REFER
 msgid "Refer to this {0}"
-msgstr ""
+msgstr "Zie {0}"
 
 # SDR_REQUIRED
 #: SDR_REQUIRED
 msgid "This element is required"
-msgstr ""
+msgstr "Dit element is verplicht"
 
 # SDR_SEARCH
 #: SDR_SEARCH
 msgid "Search Parameters using this {0}"
-msgstr ""
+msgstr "Zoekparameters met {0}"
 
 # SDR_SORTED
 #: SDR_SORTED
 msgid "// sliced by {0} in the specified order {1}"
-msgstr ""
+msgstr "// verdeeld op {0} in de gedefinieerde volgorde {1}"
 
 # SDR_SRC_FHIR
 #: SDR_SRC_FHIR
 msgid "FHIR Std."
-msgstr ""
+msgstr "FHIR Std."
 
 # SDR_SRC_IG
 #: SDR_SRC_IG
 msgid "This IG"
-msgstr ""
+msgstr "Deze IG"
 
 # SDR_SUPP
 #: SDR_SUPP
 msgid "(this element must be supported)"
-msgstr ""
+msgstr "(dit element moet worden ondersteund)"
 
 # SDR_UNK_EXT
 #: SDR_UNK_EXT
 msgid "Not handled yet: unknown extension ''{0}''"
-msgstr ""
+msgstr "Nog niet ondersteund: onbekende extensie ''{0}''"
 
 # SDR_USAGE
 #: SDR_USAGE
 msgid "Usages"
-msgstr ""
+msgstr "Gebruik"
 
 # SDR_USE
 #: SDR_USE
 msgid "Use this {0}"
-msgstr ""
+msgstr "Gebruik {0}"
 
 # SDR_VER_BEF
 #: SDR_VER_BEF
 msgid "For versions until {0}"
-msgstr ""
+msgstr "Voor versies tot {0}"
 
 # SDR_VER_FOR
 #: SDR_VER_FOR
 msgid "For version {0}"
-msgstr ""
+msgstr "Voor versie {0}"
 
 # SDR_VER_FROM_PFX
 #: SDR_VER_FROM_PFX
 msgctxt "SDR_VER_FROM_PFX"
 msgid "FHIR versions"
-msgstr ""
+msgstr "FHIR-versies"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
 msgid "and after"
-msgstr ""
+msgstr "en na"
 
 # SDR_VER_ON
 #: SDR_VER_ON
 msgid "For versions {0} onwards"
-msgstr ""
+msgstr "Voor versies {0} vanaf"
 
 # SDR_VER_RANGE
 #: SDR_VER_RANGE
 msgid "For versions {0} to {1}"
-msgstr ""
+msgstr "Voor versies {0} tot {1}"
 
 # SDR_VER_RANGE_MID
 #: SDR_VER_RANGE_MID
 msgctxt "SDR_VER_RANGE_MID"
 msgid "to"
-msgstr ""
+msgstr "naar"
 
 # SDR_VER_RANGE_PFX
 #: SDR_VER_RANGE_PFX
 msgctxt "SDR_VER_RANGE_PFX"
 msgid "FHIR versions"
-msgstr ""
+msgstr "FHIR-versies"
 
 # SDR_VER_RANGE_SFX
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
-msgid "-- no content: do not translate #67 --"
-msgstr ""
+msgid "-- no content: do not translate #2 --"
+msgstr "-- geen inhoud: #2 niet vertalen --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
 msgid "FHIR versions up to"
-msgstr ""
+msgstr "FHIR versies tot"
 
 # SDR_VER_TO_SFX
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
-msgid "-- no content: do not translate #68 --"
-msgstr ""
+msgid "-- no content: do not translate #3 --"
+msgstr "-- geen inhoud: #3 niet vertalen --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
 msgid "For unknown versions"
-msgstr ""
+msgstr "Voor onbekende versies"
 
 # SDT_DEF
 #: SDT_DEF
 msgctxt "SDT_DEF"
 msgid "Definition"
-msgstr ""
+msgstr "Definitie"
 
 # SDT_DT
 #: SDT_DT
 msgid "DataType"
-msgstr ""
+msgstr "Datatype"
 
 # SDT_DT_PROF
 #: SDT_DT_PROF
 msgid "DataType Profile"
-msgstr ""
+msgstr "Datatype-profiel"
 
 # SDT_EXTENSION
 #: SDT_EXTENSION
 msgctxt "SDT_EXTENSION"
 msgid "Extension"
-msgstr ""
+msgstr "Extensie"
 
 # SDT_LM
 #: SDT_LM
 msgctxt "SDT_LM"
 msgid "Logical Model"
-msgstr ""
+msgstr "Logisch model"
 
 # SDT_LM_PROF
 #: SDT_LM_PROF
 msgid "Logical Model Profile"
-msgstr ""
+msgstr "Logisch model-profiel"
 
 # SDT_OBLIGATION_PROFILE
 #: SDT_OBLIGATION_PROFILE
 msgid "Obligation Profile"
-msgstr ""
+msgstr "Verplichtingen profiel"
 
 # SDT_ORIGINAL_SOURCE
 #: SDT_ORIGINAL_SOURCE
 msgid "Original Source"
-msgstr ""
+msgstr "Originele bron"
 
 # SDT_PT
 #: SDT_PT
 msgid "Primitive Type"
-msgstr ""
+msgstr "Primitief type"
 
 # SDT_PT_PROF
 #: SDT_PT_PROF
 msgid "Primitive Type Profile"
-msgstr ""
+msgstr "Primitief type-profiel"
 
 # SDT_RES
 #: SDT_RES
 msgctxt "SDT_RES"
 msgid "Resource"
-msgstr ""
+msgstr "Resource"
 
 # SDT_RES_PROF
 #: SDT_RES_PROF
 msgctxt "SDT_RES_PROF"
 msgid "Profile"
-msgstr ""
+msgstr "Profiel"
 
 # SD_COMP_HEAD_CARD_L
 #: SD_COMP_HEAD_CARD_L
@@ -3920,7 +3933,7 @@ msgstr "Er is een slice zonder discriminator bij {0}"
 # SD_XIG_LINK
 #: SD_XIG_LINK
 msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
-msgstr ""
+msgstr "<p>U kunt ook controleren op <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">gebruik in de FHIR IG statistieken</a></p>"
 
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED
@@ -3996,17 +4009,17 @@ msgstr "Alle resources"
 # STATUS_MSG_AUTOBUILD
 #: STATUS_MSG_AUTOBUILD
 msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
-msgstr ""
+msgstr "{0}, gepubliceerd door {1}. Deze gids is geen geautoriseerde publicatie; het is de continue build voor versie {2}  gebouwd door FHIR (HL7&reg; FHIR&reg; Standaard) CI Build. Deze versie is gebaseerd op de huidige inhoud van <a href=''{3}''>{3}</a> en wijzigt regelmatig. Zie het <a href=''{4}/history.html''>overzicht van gepubliceerde versies</a>"
 
 # STATUS_MSG_LOCAL_BUILD
 #: STATUS_MSG_LOCAL_BUILD
 msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
-msgstr ""
+msgstr "{0} - Lokale ontwikkelversie (v{1}) gebouwd door FHIR (HL7® FHIR® Standard) Build Tools. Zie het <a href=''{2}/history.html''>overzicht van gepubliceerde versies</a>"
 
 # STATUS_MSG_PUBLICATION_HOLDER
 #: STATUS_MSG_PUBLICATION_HOLDER
 msgid "Publication Build: This will be filled in by the publication tooling"
-msgstr ""
+msgstr "Publicatie Build: Deze zal ingevuld worden door de publicatietooling"
 
 # STRUC_DEF_ABSTRACT
 #: STRUC_DEF_ABSTRACT
@@ -4172,7 +4185,7 @@ msgstr "Complex"
 # STRUC_DEF_COMPLEXBRACK
 #: STRUC_DEF_COMPLEXBRACK
 msgid "(Complex)"
-msgstr "!!(complex)"
+msgstr "(Complex)"
 
 # STRUC_DEF_COMP_DOC
 #: STRUC_DEF_COMP_DOC
@@ -4223,7 +4236,7 @@ msgstr "Content/regels voor alle types"
 # STRUC_DEF_COPY_CODING
 #: STRUC_DEF_COPY_CODING
 msgid "Click to Copy as Coding"
-msgstr ""
+msgstr "Klik om te kopiëren als Coding"
 
 # STRUC_DEF_COPY_URL
 #: STRUC_DEF_COPY_URL
@@ -4426,7 +4439,7 @@ msgstr "Grade"
 #: STRUC_DEF_ID
 msgctxt "STRUC_DEF_ID"
 msgid "Id"
-msgstr "Id"
+msgstr ""
 
 # STRUC_DEF_ID_EXPECT
 #: STRUC_DEF_ID_EXPECT
@@ -4456,7 +4469,7 @@ msgstr "Als"
 # STRUC_DEF_IMPLEMENTS
 #: STRUC_DEF_IMPLEMENTS
 msgid "Interfaces Implemented"
-msgstr ""
+msgstr "Geïmplementeerde interfaces"
 
 # STRUC_DEF_IMPOSE_PROFILE
 #: STRUC_DEF_IMPOSE_PROFILE
@@ -4648,7 +4661,7 @@ msgstr "Is modifier"
 # STRUC_DEF_MODIFIER_EXT
 #: STRUC_DEF_MODIFIER_EXT
 msgid "This is a modifier extension"
-msgstr ""
+msgstr "Dit is een modifier-extensie"
 
 # STRUC_DEF_MUST_SUPPORT
 #: STRUC_DEF_MUST_SUPPORT
@@ -5421,7 +5434,7 @@ msgstr "Oostenrijkse editie"
 # VALUE_SET_AUS
 #: VALUE_SET_AUS
 msgid "Australian Edition"
-msgstr "!!Australisch"
+msgstr "Australische editie"
 
 # VALUE_SET_BE
 #: VALUE_SET_BE
@@ -5431,7 +5444,7 @@ msgstr "Belgische editie"
 # VALUE_SET_CA
 #: VALUE_SET_CA
 msgid "Canadian Edition"
-msgstr ""
+msgstr "Canadese Editie"
 
 # VALUE_SET_CA_EN
 #: VALUE_SET_CA_EN
@@ -5679,8 +5692,8 @@ msgstr "Loinc v"
 #: VALUE_SET_NEEDS_SUPPL
 msgid "This ValueSet requires the Code system Supplement"
 msgid_plural "This ValueSet requires the Code system Supplements"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Deze waardelijst vereist het CodeSystem-supplement"
+msgstr[1] "Deze waardelijst vereist de CodeSystem-supplementen"
 
 # VALUE_SET_NO
 #: VALUE_SET_NO
@@ -5850,17 +5863,17 @@ msgstr ". waar de codes staan in"
 # VSR_LOGICAL
 #: VSR_LOGICAL
 msgid "Logical Definition (CLD)"
-msgstr ""
+msgstr "Logische definitie (CLD)"
 
 # VSR_NO_DEF
 #: VSR_NO_DEF
 msgid "No formal definition provided for this value set"
-msgstr ""
+msgstr "Er is geen formele definitie voor deze waardelijst opgegeven"
 
 # VSR_TRIGGER
 #: VSR_TRIGGER
 msgid "Used as a trigger criteria in"
-msgstr ""
+msgstr "Gebruikt als triggercriterium in"
 
 # VS_ABSTRACT_CODE_HINT
 #: VS_ABSTRACT_CODE_HINT
@@ -5870,47 +5883,47 @@ msgstr "Deze code is niet selecteerbaar (''Abstract'')"
 # VS_VERSION_BY_PACKAGE
 #: VS_VERSION_BY_PACKAGE
 msgid "Version is not explicitly stated, which means it is fixed to {0}, the version found through the package references"
-msgstr ""
+msgstr "Versie is niet expliciet aangegeven, wat betekent dat het de waarde {0} heeft, die is gevonden via de packet-referenties"
 
 # VS_VERSION_FOUND
 #: VS_VERSION_FOUND
 msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
-msgstr ""
+msgstr "Versie is niet expliciet vermeld. Bij het bouwen van deze specificatie is de meest recente versie {0} gebruikt"
 
 # VS_VERSION_NONE
 #: VS_VERSION_NONE
 msgid "Version is not explicitly stated, and the target {0} has no stated version either"
-msgstr ""
+msgstr "Versie is niet expliciet en het doel {0} heeft ook geen opgegeven versie"
 
 # VS_VERSION_NOTHING
 #: VS_VERSION_NOTHING
 msgid "Version is not explicitly stated. No matching {0} found"
-msgstr ""
+msgstr "Versie is niet expliciet aangegeven. Geen overeenkomende {0} gevonden"
 
 # VS_VERSION_NOTHING_TEXT
 #: VS_VERSION_NOTHING_TEXT
 msgid "Not State"
-msgstr ""
+msgstr "Niet genoemd"
 
 # VS_VERSION_STATED
 #: VS_VERSION_STATED
 msgid "Version is explicitly stated to be {0}"
-msgstr ""
+msgstr "Versie is expliciet {0}"
 
 # VS_VERSION_THIS_PACKAGE
 #: VS_VERSION_THIS_PACKAGE
 msgid "Version is not explicitly stated, which means it is fixed to the version provided in this specification"
-msgstr ""
+msgstr "Versie is niet expliciet, wat betekent dat het de vaste waarde heeft uit deze specificatie"
 
 # VS_VERSION_WILDCARD
 #: VS_VERSION_WILDCARD
 msgid "Version is stated to be {0}. When building this specification, the most recent matching version {1} has been used"
-msgstr ""
+msgstr "Versie is {0}. Bij het bouwen van deze specificatie, wordt de meest recente overeenkomende versie {1} gebruikt"
 
 # VS_VERSION_WILDCARD_BY_PACKAGE
 #: VS_VERSION_WILDCARD_BY_PACKAGE
 msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
-msgstr ""
+msgstr "Versie is {0}, wat betekent dat de vaste waarde {1} heeft via de packet-referenties"
 
 # _NA
 #: _NA
