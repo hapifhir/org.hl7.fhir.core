@@ -301,6 +301,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<CodeSystem>(false, minimalMemory);
   private final HashMap<String, SystemSupportInformation> supportedCodeSystems = new HashMap<>();
   private final Set<String> unsupportedCodeSystems = new HashSet<String>(); // know that the terminology server doesn't support them
+  private final Map<String, ValidationResult> unsupportedSystemResults = new HashMap<>(); // first server result per unsupported system, replayed for dedup
   private CanonicalResourceManager<ValueSet> valueSets = new CanonicalResourceManager<ValueSet>(false, minimalMemory);
   private CanonicalResourceManager<ConceptMap> maps = new CanonicalResourceManager<ConceptMap>(false, minimalMemory);
   protected CanonicalResourceManager<StructureMap> transforms = new CanonicalResourceManager<StructureMap>(false, minimalMemory);
@@ -1548,7 +1549,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     String codeKey = getCodeKey(code);
     if (unsupportedCodeSystems.contains(codeKey)) {
-      return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, code.getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues);      
+      ValidationResult cached = unsupportedSystemResults.get(codeKey);
+      if (cached != null) {
+        return cached;
+      }
+      return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, code.getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues).setUnknownSystems(new HashSet<>(Set.of(codeKey)));
     }
     
     // if that failed, we try to validate on the server
@@ -1578,8 +1583,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res.setDiagnostics("Local Error: "+localError.trim()+". Server Error: "+res.getMessage());
     } else if (!res.isOk() && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && res.getUnknownSystems() != null && res.getUnknownSystems().contains(codeKey) && localWarning != null) {
       // we had some problem evaluating locally, but the server doesn't know the code system, so we'll just go with the local error
-      res = new ValidationResult(IssueSeverity.WARNING, localWarning, null);
-      res.setDiagnostics("Local Warning: "+localWarning.trim()+". Server Error: "+res.getMessage());
+      ValidationResult serverRes = res;
+      res = new ValidationResult(IssueSeverity.WARNING, localWarning, null).setErrorClass(TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);
+      res.setDiagnostics("Local Warning: "+localWarning.trim()+". Server Error: "+serverRes.getMessage());
+      updateUnsupportedCodeSystems(res, code, getCodeKey(code));
       return res;
     }
     updateUnsupportedCodeSystems(res, code, codeKey);
@@ -1722,8 +1729,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private void updateUnsupportedCodeSystems(ValidationResult res, Coding code, String codeKey) {
-    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && !code.hasVersion() && fetchCodeSystem(codeKey) == null) {
+    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && !code.hasVersion()) {
       unsupportedCodeSystems.add(codeKey);
+      if (!unsupportedSystemResults.containsKey(codeKey)) {
+        unsupportedSystemResults.put(codeKey, res);
+      }
     }
   }
 
@@ -1813,6 +1823,29 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return new ValidationResult(IssueSeverity.WARNING, "Unable to validate code without using server", TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, null);      
     }
     
+    // Check if ALL coding systems are known-unsupported; skip server call if so
+    boolean allUnsupported = true;
+    for (Coding c : code.getCoding()) {
+      String cKey = c.hasVersion() ? c.getSystem()+"|"+c.getVersion() : c.getSystem();
+      if (!unsupportedCodeSystems.contains(cKey)) {
+        allUnsupported = false;
+        break;
+      }
+    }
+    if (allUnsupported && !code.getCoding().isEmpty()) {
+      String firstKey = code.getCoding().get(0).hasVersion() ? code.getCoding().get(0).getSystem()+"|"+code.getCoding().get(0).getVersion() : code.getCoding().get(0).getSystem();
+      ValidationResult cached = unsupportedSystemResults.get(firstKey);
+      if (cached != null) {
+        res = cached;
+      } else {
+        res = new ValidationResult(IssueSeverity.ERROR, "Code system(s) not supported", TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues);
+      }
+      if (cachingAllowed) {
+        txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
+      }
+      return res;
+    }
+
     // if that failed, we try to validate on the server
     if (noTerminologyServer) {
       return new ValidationResult(IssueSeverity.ERROR, "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE, null);
@@ -1833,6 +1866,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (cachingAllowed) {
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
+    }
+    // Track unsupported systems from CC result so future CC calls can skip server
+    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+      for (Coding c : code.getCoding()) {
+        if (c.hasSystem() && !c.hasVersion()) {
+          unsupportedCodeSystems.add(c.getSystem());
+          if (!unsupportedSystemResults.containsKey(c.getSystem())) {
+            unsupportedSystemResults.put(c.getSystem(), res);
+          }
+        }
+      }
     }
     return res;
   }
