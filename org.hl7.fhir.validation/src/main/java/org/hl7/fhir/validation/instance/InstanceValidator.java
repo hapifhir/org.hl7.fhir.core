@@ -763,6 +763,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public void setDoImplicitFHIRPathStringConversion(boolean doImplicitFHIRPathStringConversion) {
     fpe.setDoImplicitStringConversion(doImplicitFHIRPathStringConversion);
   }
+  
+  public ValidatorHostServices getValidatorHostServies() {
+    return this.validatorServices;
+  }
 
   private boolean allowUnknownExtension(String url) {
     if ((settings.isAllowExamples() && (url.contains("example.org") || url.contains("acme.com"))) || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression"))
@@ -9107,6 +9111,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public IResourceValidator setJurisdiction(Coding jurisdiction) {
     settings.setJurisdiction(jurisdiction);
     return this;
+  }
+  
+  public void resolveReferencesInBundle(Element element) {
+    setParents(element);
+    if (element!=null && BUNDLE.equals(element.fhirType()))
+      resolveBundleReferences(element, new ArrayList<Element>());
   }
 
 }
