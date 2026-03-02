@@ -17,31 +17,20 @@ v: {
   "code" : "619728",
   "system" : "http://www.ncbi.nlm.nih.gov/clinvar",
   "severity" : "error",
-  "error" : "A definition for CodeSystem 'http://www.ncbi.nlm.nih.gov/clinvar' could not be found, so the code cannot be validated; Unable to check whether the code is in the value set '' because the code system http://www.ncbi.nlm.nih.gov/clinvar was not found",
+  "error" : "A definition for CodeSystem 'http://www.ncbi.nlm.nih.gov/clinvar' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "https://tx-nordics.fhir.org/fhir/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
   "unknown-systems" : "http://www.ncbi.nlm.nih.gov/clinvar",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-nordics.fhir.org/fhir/r4"
-    }],
-    "severity" : "warning",
-    "code" : "not-found",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "vs-invalid"
-      }],
-      "text" : "Unable to check whether the code is in the value set '' because the code system http://www.ncbi.nlm.nih.gov/clinvar was not found"
-    }
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-nordics.fhir.org/fhir/r4"
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -52,7 +41,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://www.ncbi.nlm.nih.gov/clinvar' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }
@@ -77,31 +65,21 @@ v: {
   "code" : "619728",
   "system" : "http://www.ncbi.nlm.nih.gov/clinvar",
   "severity" : "error",
-  "error" : "A definition for CodeSystem 'http://www.ncbi.nlm.nih.gov/clinvar' could not be found, so the code cannot be validated; Unable to check whether the code is in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0' because the code system http://www.ncbi.nlm.nih.gov/clinvar was not found",
+  "error" : "A definition for CodeSystem 'http://www.ncbi.nlm.nih.gov/clinvar' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED",
-  "server" : "https://tx-nordics.fhir.org/fhir/r4",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0: Analysing http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0 for validation purposes\n1ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0: Prepare include[0]: \"(http://www.ncbi.nlm.nih.gov/clinvar)\"\n1ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0: CodeSystem version undefined not found: \"http://www.ncbi.nlm.nih.gov/clinvar\"\n1ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0: Validate \"[http://www.ncbi.nlm.nih.gov/clinvar#619728 (\"undefined\")]\"\n1ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0: Check \"http://www.ncbi.nlm.nih.gov/clinvar#619728\"\n1ms http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0: CodeSystem not found: http://www.ncbi.nlm.nih.gov/clinvar",
   "unknown-systems" : "http://www.ncbi.nlm.nih.gov/clinvar",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
     "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-nordics.fhir.org/fhir/r4"
-    }],
-    "severity" : "warning",
-    "code" : "not-found",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "vs-invalid"
-      }],
-      "text" : "Unable to check whether the code is in the value set 'http://hl7.org/fhir/us/mcode/ValueSet/mcode-clinvar-vs--0|1.0.0' because the code system http://www.ncbi.nlm.nih.gov/clinvar was not found"
-    }
-  },
-  {
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-nordics.fhir.org/fhir/r4"
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
     }],
     "severity" : "error",
     "code" : "not-found",
@@ -112,7 +90,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://www.ncbi.nlm.nih.gov/clinvar' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

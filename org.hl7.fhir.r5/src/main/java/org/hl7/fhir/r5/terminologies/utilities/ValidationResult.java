@@ -238,7 +238,7 @@ public class ValidationResult {
     return CommaSeparatedStringBuilder.join("; ", trimmed);
   }
 
-  public boolean IsNoService() {
+  public boolean isNoService() {
     return errorClass == TerminologyServiceErrorClass.NOSERVICE;
   }
 

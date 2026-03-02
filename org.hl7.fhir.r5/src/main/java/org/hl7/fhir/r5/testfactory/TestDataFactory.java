@@ -338,7 +338,7 @@ public class TestDataFactory {
     } catch (Exception e) {
       if (!localData.exists()) {
         log("Unable to download copy of FHIR testing data: "+ e.getMessage());
-        throw new FHIRException("Unable to download copy of FHIR testing data", e);
+        throw new FHIRException("Unable to download copy of FHIR testing data: "+e.getMessage(), e);
       }
     }
   }

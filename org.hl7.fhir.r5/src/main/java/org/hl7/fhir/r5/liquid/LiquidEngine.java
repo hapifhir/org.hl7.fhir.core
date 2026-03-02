@@ -47,13 +47,7 @@ import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.IdType;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.Tuple;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.KeyIssuer;
 import org.hl7.fhir.utilities.MarkDownProcessor;
@@ -978,11 +972,11 @@ public class LiquidEngine implements IHostApplicationServices {
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return resolveReference(engine, ctxt.externalContext, url, refContext);
+    return resolveReference(engine, ctxt.externalContext, url, identifier, refContext);
   }
 
   @Override

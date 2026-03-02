@@ -220,9 +220,44 @@ public class InstanceValidatorOptions {
   @With
   public List<String> bundleValidationRules = null;
 
+  @CommandLine.Option(names = {"-max-validation-messages"},
+    description = "The maximum amount of validation messages allowed before validation will be stopped. Any issues encountered at this point will be returned. See notes regarding accuracy for these results at " + OptionConstants.CONFLUENCE_WEB_ADDRESS,
+    arity = "1")
+  @With
+  public Integer maxValidationMessages = 0;
+                      
   @CommandLine.Option(names = {"-validation-timeout"},
-    description = "A value in milliseconds after which validation will be stopped. Any issues encountered at this point will be returned, but may not be completely accurate.",
+    description = "A value in milliseconds after which validation will be stopped. Any issues encountered at this point will be returned. See notes regarding accuracy for these results at " + OptionConstants.CONFLUENCE_WEB_ADDRESS,
     arity = "1")
   @With
   public Long validationTimeout = 0L;
+
+  // Created by claude-sonnet-4-6
+  @CommandLine.Option(names = {"-check-display"},
+    description = """
+      How to validate the display text on coded elements (Coding, CodeableConcept).
+                 * Ignore (default): display text is not checked
+                 * Check: display must exactly match the code system's canonical text
+                 * CheckCase: match ignoring case differences
+                 * CheckSpace: match ignoring whitespace differences
+                 * CheckCaseAndSpace: match ignoring both case and whitespace differences
+    """,
+    arity = "1")
+  @With
+  public String checkDisplay = null;
+
+  // Created by claude-sonnet-4-6
+  @CommandLine.Option(names = {"-resource-id-rule"},
+    description = """
+      Whether the top-level resource being validated must have a Resource.id element (optional,
+              required, prohibited).
+                 * optional (default): id may be present or absent
+                 * required: id must be present; an error is raised if missing
+                 * prohibited: id must not be present; an error is raised if found
+              Note: this rule applies to the outermost resource only. The validator independently enforces id
+              rules for contained resources (always required) and bundle entries/parameters (always optional).
+    """,
+    arity = "1")
+  @With
+  public String resourceIdRule = null;
 }

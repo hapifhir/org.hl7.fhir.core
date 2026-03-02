@@ -156,6 +156,8 @@ import com.google.gson.JsonObject;
 @MarkedToMoveToAdjunctPackage
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext, IWorkerContextManager, IOIDServices {
   private static boolean allowedToIterateTerminologyResources;
+  private int definitionsVersion = 0;
+  private Map<String, Object> analyses = new HashMap();
 
 
   public interface IByteProvider {
@@ -449,6 +451,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     PackageHackerR5.fixLoadedResource(r, packageInfo);
 
     synchronized (lock) {
+      definitionsChanged();
       if (packageInfo != null) {
         packages.put(packageInfo.getVID(), packageInfo);
       }
@@ -541,7 +544,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void cacheResourceFromPackage(Resource r, PackageInformation packageInfo) throws FHIRException {
 
-    synchronized (lock) {   
+    synchronized (lock) {
+      definitionsChanged();
       if (packageInfo != null) {
         packages.put(packageInfo.getVID(), packageInfo);
       }
@@ -1063,10 +1067,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (pIn == null) {
       throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
     }
-    if (vs.hasUrl() && (vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-time-units") || vs.getUrl().equals("http://hl7.org/fhir/ValueSet/all-distance-units"))) {
-      return new ValueSetExpansionOutcome("This value set is not expanded correctly at this time (will be fixed in a future version)", TerminologyServiceErrorClass.VALUESET_UNSUPPORTED, false);
-    }
-    
+
     Parameters p = getExpansionParameters(); // it's already a copy
     if (p == null) {
       p = new Parameters();
@@ -1493,6 +1494,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         vsc.setUnknownSystems(unknownSystems);
         vsc.setThrowToServer(options.isUseServer() && terminologyClientManager.hasClient());
+        vsc.setExternalSource((CanonicalResource) options.getExternalSource());
         if (!ValueSetUtilities.isServerSide(code.getSystem())) {
           res = vsc.validateCode(path, code.copy());
           if (txCache != null && cachingAllowed) {
@@ -1673,7 +1675,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected ValueSetValidator constructValueSetCheckerSimple( ValidationOptions options,  ValueSet vs) {
-    return new ValueSetValidator(this, new TerminologyOperationContext(this, options, "validation"), options, vs, getExpansionParameters(), terminologyClientManager, registry);
+    ValueSetValidator vsv = new ValueSetValidator(this, new TerminologyOperationContext(this, options, "validation"), options, vs, getExpansionParameters(), terminologyClientManager, registry);
+    vsv.setExternalSource((CanonicalResource) options.getExternalSource());
+    return vsv;
   }
 
   protected Parameters constructParameters(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tcd, ValueSet vs, boolean hierarchical) {
@@ -2324,19 +2328,44 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
 
+  private List<String> cachedResourceNames = null;
+  private Set<String> cachedResourceNameSet = null;
+
   public List<String> getResourceNames(FhirPublication fhirVersion) {
-    return getResourceNames();    
+    return getResourceNames();
   }
-  
+
+  public List<String> getResourceNames() {
+    synchronized (lock) {
+      if (cachedResourceNames == null) {
+        cachedResourceNames = generateResourceNames();
+      }
+      return cachedResourceNames;
+    }
+  }
+
+  public List<String> generateResourceNames() {
+    Set<String> result = new HashSet<String>();
+    for (StructureDefinition sd : listStructures()) {
+      if (sd.getKind() == StructureDefinition.StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.hasUserData(UserDataNames.loader_urls_patched))
+        result.add(sd.getName());
+    }
+    return Utilities.sorted(result);
+  }
+
   public Set<String> getResourceNamesAsSet(FhirPublication fhirVersion) {
     return getResourceNamesAsSet();
   }
   
   @Override
   public Set<String> getResourceNamesAsSet() {
-    Set<String> res = new HashSet<String>();
-    res.addAll(getResourceNames());
-    return res;
+    synchronized (lock) {
+      if (cachedResourceNameSet == null) {
+        cachedResourceNameSet =  new HashSet<String>();
+        cachedResourceNameSet.addAll(getResourceNames());
+      }
+      return cachedResourceNameSet;
+    }
   }
 
   @Override
@@ -3036,7 +3065,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void dropResource(String fhirType, String id) {
     synchronized (lock) {
-
+      definitionsChanged();
       Map<String, ResourceProxy> map = allResourcesById.get(fhirType);
       if (map == null) {
         map = new HashMap<String, ResourceProxy>();
@@ -3079,22 +3108,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
   }
-
-  private <T extends CanonicalResource> void dropMetadataResource(Map<String, T> map, String id) {
-    T res = map.get(id);
-    if (res != null) {
-      map.remove(id);
-      if (map.containsKey(res.getUrl())) {
-        map.remove(res.getUrl());
-      }
-      if (res.getVersion() != null) {
-        if (map.containsKey(res.getUrl()+"|"+res.getVersion())) {
-          map.remove(res.getUrl()+"|"+res.getVersion());
-        }
-      }
-    }
-  }
-
   
   public String listSupportedSystems() {
     synchronized (lock) {
@@ -3908,4 +3921,29 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public IWorkerContextManager getManager() {
     return this;
   }
+
+  public int getDefinitionsVersion() {
+    return definitionsVersion;
+  }
+
+  private void definitionsChanged() {
+    definitionsVersion++;
+    synchronized (lock) {
+      analyses.clear();
+      cachedResourceNames = null;
+      cachedResourceNameSet = null;
+    }
+  }
+  public void storeAnalysis(Class className, Object analysis) {
+    synchronized (lock) {
+      analyses.put(className.getName(), analysis);
+    }
+  }
+
+  public Object retrieveAnalysis(Class className) {
+    synchronized (lock) {
+      return analyses.get(className.getName());
+    }
+  }
+
 }
