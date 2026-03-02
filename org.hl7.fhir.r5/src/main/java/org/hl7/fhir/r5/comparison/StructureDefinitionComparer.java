@@ -358,35 +358,39 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 
   private boolean compareChildren(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, IOException, FHIRFormatError {
     boolean def = false;
-    
-    List<DefinitionNavigator> lc = left.children();
-    List<DefinitionNavigator> rc = right.children();
-    // it's possible that one of these profiles walks into a data type and the other doesn't
-    // if it does, we have to load the children for that data into the profile that doesn't 
-    // walk into it
-    if (lc.isEmpty() && !rc.isEmpty() && right.current().getType().size() == 1 && left.hasTypeChildren(right.current().getType().get(0), left.getStructure()))
-      lc = left.childrenFromType(right.current().getType().get(0), right.getStructure());
-    if (rc.isEmpty() && !lc.isEmpty() && left.current().getType().size() == 1 && right.hasTypeChildren(left.current().getType().get(0), right.getStructure()))
-      rc = right.childrenFromType(left.current().getType().get(0), left.getStructure());
-    
-    List<DefinitionNavigator> matchR = new ArrayList<>();
-    for (DefinitionNavigator l : lc) {
-      DefinitionNavigator r = findInList(rc, l);
-      if (r == null) {
-        comp.getUnion().getSnapshot().getElement().add(l.current().copy());
-        res.getChildren().add(new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(l.getStructure(), l.current()), vmI(IssueSeverity.INFORMATION, "Removed this element", path)));
-      } else {
-        matchR.add(r);
-        StructuralMatch<ElementDefinitionNode> sm = new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(l.getStructure(), l.current()), new ElementDefinitionNode(r.getStructure(), r.current()));
-        res.getChildren().add(sm);
-        def = compareElements(comp, sm, l.globalPath(), null, l, r) || def;
+
+    if (!left.isChildrenFromReference() || !right.isChildrenFromReference()) {
+      List<DefinitionNavigator> lc = left.children();
+      List<DefinitionNavigator> rc = right.children();
+      // it's possible that one of these profiles walks into a data type and the other doesn't
+      // if it does, we have to load the children for that data into the profile that doesn't
+      // walk into it
+      if (lc.isEmpty() && !rc.isEmpty() && right.current().getType().size() == 1 && left.hasTypeChildren(right.current().getType().get(0), left.getStructure()))
+        lc = left.childrenFromType(right.current().getType().get(0), right.getStructure());
+      if (rc.isEmpty() && !lc.isEmpty() && left.current().getType().size() == 1 && right.hasTypeChildren(left.current().getType().get(0), right.getStructure()))
+        rc = right.childrenFromType(left.current().getType().get(0), left.getStructure());
+
+      List<DefinitionNavigator> matchR = new ArrayList<>();
+      for (DefinitionNavigator l : lc) {
+        DefinitionNavigator r = findInList(rc, l);
+        if (r == null) {
+          comp.getUnion().getSnapshot().getElement().add(l.current().copy());
+          res.getChildren().add(new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(l.getStructure(), l.current()), vmI(IssueSeverity.INFORMATION, "Removed this element", path)));
+        } else {
+          matchR.add(r);
+          StructuralMatch<ElementDefinitionNode> sm = new StructuralMatch<ElementDefinitionNode>(new ElementDefinitionNode(l.getStructure(), l.current()), new ElementDefinitionNode(r.getStructure(), r.current()));
+          res.getChildren().add(sm);
+          def = compareElements(comp, sm, l.globalPath(), null, l, r) || def;
+        }
       }
-    }
-    for (DefinitionNavigator r : rc) {
-      if (!matchR.contains(r)) {
-        comp.getUnion().getSnapshot().getElement().add(r.current().copy());
-        res.getChildren().add(new StructuralMatch<ElementDefinitionNode>(vmI(IssueSeverity.INFORMATION, "Added this element", path), new ElementDefinitionNode(r.getStructure(), r.current())));        
+      for (DefinitionNavigator r : rc) {
+        if (!matchR.contains(r)) {
+          comp.getUnion().getSnapshot().getElement().add(r.current().copy());
+          res.getChildren().add(new StructuralMatch<ElementDefinitionNode>(vmI(IssueSeverity.INFORMATION, "Added this element", path), new ElementDefinitionNode(r.getStructure(), r.current())));
+        }
       }
+    } else {
+      def = true;
     }
     return def;
   }
