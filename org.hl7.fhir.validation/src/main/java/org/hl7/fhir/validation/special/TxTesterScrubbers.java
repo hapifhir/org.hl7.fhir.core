@@ -119,7 +119,7 @@ public class TxTesterScrubbers {
   public static void scrubOperationOutcome(OperationOutcome po, boolean tight) {
     if (po != null) {
       scrubDomainResource(po, tight);
-      po.getIssue().removeIf(i -> i.hasDiagnostics() & !i.hasDetails());
+      po.getIssue().removeIf(i -> i.hasDiagnostics() && !i.hasDetails());
       for (OperationOutcomeIssueComponent iss : po.getIssue()) {
         if (iss.hasDiagnostics() && !iss.getDiagnostics().toLowerCase().contains("x-request-id")) {
           iss.setDiagnostics(null);

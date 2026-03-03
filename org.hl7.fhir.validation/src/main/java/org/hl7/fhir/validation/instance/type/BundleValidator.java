@@ -1275,7 +1275,7 @@ public class BundleValidator extends BaseValidator {
                   }
                 } else {
                   String b64 = Base64URL.encode(toSign).toString();
-                  ok = rule(errors, "2025-06-13", IssueType.VALUE, stack, parts[1].equals(b64), I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF) & ok;
+                  ok = rule(errors, "2025-06-13", IssueType.VALUE, stack, parts[1].equals(b64), I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF) && ok;
                 }
               } 
             }
