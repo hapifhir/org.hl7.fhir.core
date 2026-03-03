@@ -115,13 +115,17 @@ public class HTTPClientCommand implements Callable<Integer> {
       }
     }
 
-
     try {
       uri = host != null ? getValidationUriFromOptions(host, instanceValidatorOptions) : getValidationUriFromOptions(hostname, port, instanceValidatorOptions);
     } catch (URISyntaxException e) {
       logExceptionOnURIGet(e);
       return 1;
     }
+
+    if (whatToValidate == null) {
+      return 0;
+    }
+
     for (String source : whatToValidate) {
       try {
         HttpRequest request = HttpRequest.newBuilder()

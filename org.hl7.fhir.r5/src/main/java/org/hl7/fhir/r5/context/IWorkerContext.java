@@ -77,11 +77,11 @@ public interface IWorkerContext {
    * The context increments this anytime any definitions change. (that is, any
    * resources are made available through the fetch*() methods, or removed
    * from being available)
-   *
+   * <p/>
    * Consumers can track this and reload any cached analysis if the value changes
    * Consumers of the IWorkerContext in the core library do this, and it makes a
    * significant difference to performance
-   *
+   * <p/>
    * Contexts that aren't in a good position to track the content can just return a
    * serially incrementing number, but then the performance benefits of caching will
    * be lost
@@ -95,7 +95,7 @@ public interface IWorkerContext {
    * and return them if the loaded set hasn't changed
    *
    * @param className - the class name asking for analysis to be stored
-   * @return the object previously stored, if there's been no change
+   * @param analysis the object to store if there's been a change
    */
   public void storeAnalysis(Class className, Object analysis);
 
