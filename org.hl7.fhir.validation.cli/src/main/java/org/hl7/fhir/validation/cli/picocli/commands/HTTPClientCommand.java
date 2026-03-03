@@ -6,7 +6,6 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptions;
 import org.hl7.fhir.validation.service.ValidationOutputRenderSummary;
 import org.hl7.fhir.validation.service.ValidationOutputRenderUtilities;
-import org.hl7.fhir.validation.service.renderers.*;
 import picocli.CommandLine;
 
 import java.io.IOException;
@@ -100,16 +99,27 @@ public class HTTPClientCommand implements Callable<Integer> {
 
     final String BASE_URL = "localhost";
 
+    final URI uri;
+
     if (stop) {
-      log.info("Sent stop command to HTTP server");
-      return 0;
+      try {
+        uri = host != null ? getStopUri(host) : getStopUri(hostname, port);
+        HttpRequest.newBuilder()
+          .uri(uri)
+          .POST(HttpRequest.BodyPublishers.ofString("{}"))
+          .build();
+        return 0;
+      }  catch (URISyntaxException e) {
+        logExceptionOnURIGet(e);
+        return 1;
+      }
     }
 
-    final URI uri;
+
     try {
-      uri = host != null ? getUriFromOptions(host, instanceValidatorOptions) : getUriFromOptions(hostname, port, instanceValidatorOptions);
+      uri = host != null ? getValidationUriFromOptions(host, instanceValidatorOptions) : getValidationUriFromOptions(hostname, port, instanceValidatorOptions);
     } catch (URISyntaxException e) {
-      log.error("Unable to construct URI from options host={} hostname={} port={}", host, hostname, port, e);
+      logExceptionOnURIGet(e);
       return 1;
     }
     for (String source : whatToValidate) {
@@ -136,21 +146,42 @@ public class HTTPClientCommand implements Callable<Integer> {
     return 0;
   }
 
-  public URI getUriFromOptions(String hostname, InstanceValidatorOptions instanceValidatorOptions) throws URISyntaxException {
-    URIBuilder uriBuilder = new URIBuilder(hostname).setScheme("http");
-    return getUriFromOptions(uriBuilder, instanceValidatorOptions);
+  private void logExceptionOnURIGet(URISyntaxException e) {
+    log.error("Unable to construct URI from options host={} hostname={} port={}", host, hostname, port, e);
   }
 
-  public URI getUriFromOptions(String host, int port, InstanceValidatorOptions instanceValidatorOptions) throws URISyntaxException {
+  public URI getStopUri(String host, int port) throws URISyntaxException {
     URIBuilder uriBuilder = new URIBuilder()
       .setScheme("http")
       .setHost(host)
       .setPort(port);
-    return getUriFromOptions(uriBuilder, instanceValidatorOptions);
+    return getStopUri(uriBuilder);
+  }
+  public URI getStopUri(String hostname) throws URISyntaxException {
+    URIBuilder uriBuilder = new URIBuilder(hostname);
+    return getStopUri(uriBuilder);
+  }
+
+  public URI getStopUri(URIBuilder uriBuilder) throws URISyntaxException {
+    uriBuilder.setPath("/stop");
+    return uriBuilder.build();
+  }
+
+  public URI getValidationUriFromOptions(String hostname, InstanceValidatorOptions instanceValidatorOptions) throws URISyntaxException {
+    URIBuilder uriBuilder = new URIBuilder(hostname).setScheme("http");
+    return getValidationUriFromOptions(uriBuilder, instanceValidatorOptions);
+  }
+
+  public URI getValidationUriFromOptions(String host, int port, InstanceValidatorOptions instanceValidatorOptions) throws URISyntaxException {
+    URIBuilder uriBuilder = new URIBuilder()
+      .setScheme("http")
+      .setHost(host)
+      .setPort(port);
+    return getValidationUriFromOptions(uriBuilder, instanceValidatorOptions);
   }
 
   // Created by claude-sonnet-4-6
-  public URI getUriFromOptions(URIBuilder uriBuilder, InstanceValidatorOptions instanceValidatorOptions) throws URISyntaxException {
+  public URI getValidationUriFromOptions(URIBuilder uriBuilder, InstanceValidatorOptions instanceValidatorOptions) throws URISyntaxException {
     uriBuilder.setPath("/validateResource");
 
     // String fields
