@@ -31,7 +31,7 @@
         <junit_platform_launcher_version>1.14.0</junit_platform_launcher_version>
         <maven_surefire_version>3.5.3</maven_surefire_version>
         <maven_clean_version>3.1.0</maven_clean_version>
-        <okhttp.version>4.11.0</okhttp.version>
+        <okhttp.version>5.3.2</okhttp.version>
         <jacoco_version>0.8.12</jacoco_version>
         <lombok_version>1.18.38</lombok_version>
         <byte_buddy_version>1.14.8</byte_buddy_version>
@@ -49,6 +49,7 @@
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
         <logback.version>1.5.25</logback.version>
         <log4jVersion>2.25.3</log4jVersion>
+        <okio.version>3.16.4</okio.version>
         <jackson_annotations_version>2.21</jackson_annotations_version>
     </properties>
 
@@ -264,47 +265,31 @@
                 <artifactId>poi-ooxml-full</artifactId>
                 <version>${apache_poi_version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
-                <artifactId>okhttp</artifactId>
+                <artifactId>okhttp-bom</artifactId>
+                <version>${okhttp.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp-jvm</artifactId>
                 <version>${okhttp.version}</version>
                 <exclusions>
-                    <!-- Exclude this because older jetbrains pom contains an insecure pom definition-->
+                    <!-- Exclude this because we do not use jetbrains-->
                     <exclusion>
                         <groupId>org.jetbrains</groupId>
                         <artifactId>annotations</artifactId>
                     </exclusion>
-                    <exclusion>
-                        <groupId>com.squareup.okio</groupId>
-                        <artifactId>okio</artifactId>
-                    </exclusion>
-                    <!-- Excluding brotli impl until https://github.com/square/okhttp/issues/7738 is resolved -->
+                    <!-- Excluding brotli because we do not use it, and including it can lead to vulnerabilities: https://github.com/square/okhttp/issues/7738 -->
                     <exclusion>
                         <groupId>com.squareup.okhttp3</groupId>
                         <artifactId>okhttp-brotli</artifactId>
                     </exclusion>
-                    <exclusion>
-                        <groupId>com.squareup.okio</groupId>
-                        <artifactId>okio-jvm</artifactId>
-                    </exclusion>
                 </exclusions>
-            </dependency>
-
-            <!-- Included because okttp3 used vulnerable versions -->
-            <dependency>
-                <groupId>org.jetbrains</groupId>
-                <artifactId>annotations</artifactId>
-                <version>16.0.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.squareup.okio</groupId>
-                <artifactId>okio</artifactId>
-                <version>3.4.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.squareup.okio</groupId>
-                <artifactId>okio-jvm</artifactId>
-                <version>3.4.0</version>
             </dependency>
 
             <dependency>
@@ -316,6 +301,25 @@
                 <groupId>com.squareup.okhttp3</groupId>
                 <artifactId>mockwebserver</artifactId>
                 <version>${okhttp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okio</groupId>
+                <artifactId>okio</artifactId>
+                <version>${okio.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okio</groupId>
+                <artifactId>okio-jvm</artifactId>
+                <version>${okio.version}</version>
+            </dependency>
+
+            <!-- Fixes older 2.2.20 in okio-->
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib</artifactId>
+                <version>2.2.21</version>
             </dependency>
 
             <dependency>
