@@ -969,7 +969,7 @@ public class StructureDefinitionValidator extends BaseValidator {
                     while (t != null && t != psd) {
                       t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
                     }
-                    ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID_REF, tc, etype, tsd.getVersionedUrl(), name, type) & ok;
+                    ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID_REF, tc, etype, tsd.getVersionedUrl(), name, type) && ok;
                     if (t != null) {
                       if (!sd.getAbstract() && esd.getAbstract()) {
                         warning(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_ABSTRACT_WARNING, tc, etype, tsd.getVersionedUrl(), name, type);

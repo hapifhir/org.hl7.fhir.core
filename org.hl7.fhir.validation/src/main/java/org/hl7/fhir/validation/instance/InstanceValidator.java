@@ -1252,7 +1252,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       timeTracker.tx(t, "vc " + system + "#" + code + " '" + display + "'");
       if (s == null)
         return true;
-      ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, s, element, path, false, null, null) & ok;
+      ok = calculateSeverityForTxIssuesAndUpdateErrors(errors, s, element, path, false, null, null) && ok;
 
       if (s.isOk()) {
         if (s.getMessage() != null && !s.messageIsInIssues()) {
@@ -4068,7 +4068,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkReferences(ValidationContext valContext, List<ValidationMessage> errors, Element e, String path, String xpath, XhtmlNode node, Element resource) {
     boolean ok = true;
-    if (node.getNodeType() == NodeType.Element & "a".equals(node.getName()) && node.getAttribute("href") != null) {
+    if (node.getNodeType() == NodeType.Element && "a".equals(node.getName()) && node.getAttribute("href") != null) {
       String href = node.getAttribute("href");
       if (rule(errors, "2024-07-20", IssueType.INVALID, e.line(), e.col(), path, !Utilities.noString(href), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_XHTML_EMPTY_HREF, xpath, Utilities.stripEoln(node.allText()))) {
         if (href.startsWith("#") && !href.equals("#")) {
@@ -4217,7 +4217,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean checkImageSources(ValidationContext valContext, List<ValidationMessage> errors, Element e, String path, String xpath, XhtmlNode node, Element resource) {
     boolean ok = true;
-    if (node.getNodeType() == NodeType.Element & "img".equals(node.getName()) && node.getAttribute("src") != null) {
+    if (node.getNodeType() == NodeType.Element && "img".equals(node.getName()) && node.getAttribute("src") != null) {
       String src = node.getAttribute("src");
       if (src.startsWith("#")) {
         String ref = src.substring(1);
@@ -7263,7 +7263,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     // check type invariants (after we've sliced the children)
-    ok = checkInvariants(valContext, errors, profile, definition, resource, element, stack, false) & ok;
+    ok = checkInvariants(valContext, errors, profile, definition, resource, element, stack, false) && ok;
     
     vi.setValid(ok);    
 
@@ -7527,7 +7527,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (type.equals("CodeableConcept")) {
         BooleanHolder bh = new BooleanHolder();
         checkDisplay = checkCodeableConcept(checkBindings ? errors : new ArrayList<>(), ei.getPath(), ei.getElement(), profile, checkDefn, localStack, bh);
-        ok = (bh.ok() || !checkBindings) & ok;
+        ok = (bh.ok() || !checkBindings) && ok;
         thisIsCodeableConcept = true;
       } else if (type.equals("Narrative")) {
         ok = checkNarrative(valContext, errors, ei.getPath(), ei.getElement(), resource, profile, checkDefn, actualType, localStack, pct, mode) && ok;
