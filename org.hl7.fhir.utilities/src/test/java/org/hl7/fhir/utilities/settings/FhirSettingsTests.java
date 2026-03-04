@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.settings;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -99,5 +100,34 @@ public class FhirSettingsTests implements ResourceLoaderTests {
 
     assertEquals("http://dummy2.com", servers.get(1).url);
 
+  }
+
+  @Test
+  public void testParseClientCredentialsSettings() throws IOException {
+    Path path = Files.createTempFile("fhir-settings-cc", "json").toAbsolutePath();
+    copyResourceToFile(path, "settings", "settings-client-credentials.json");
+
+    FhirSettingsPOJO fhirSettings = FhirSettings.getFhirSettingsPOJO(path.toString());
+
+    List<ServerDetailsPOJO> servers = fhirSettings.getServers();
+    assertEquals(1, servers.size());
+
+    ServerDetailsPOJO server = servers.get(0);
+    assertEquals("https://tx.example.org/fhir", server.getUrl());
+    assertEquals("fhir", server.getType());
+    assertEquals("client_credentials", server.getAuthenticationType());
+    assertEquals("my-client-id", server.getClientId());
+    assertEquals("my-client-secret", server.getClientSecret());
+    assertEquals("https://auth.example.org/token", server.getTokenEndpoint());
+  }
+
+  @Test
+  public void testClientCredentialsMissingFieldsThrows() throws IOException {
+    Path path = Files.createTempFile("fhir-settings-cc-bad", "json").toAbsolutePath();
+    copyResourceToFile(path, "settings", "settings-client-credentials-missing.json");
+
+    assertThrows(IllegalArgumentException.class, () -> {
+      FhirSettings.getFhirSettingsPOJO(path.toString());
+    });
   }
 }

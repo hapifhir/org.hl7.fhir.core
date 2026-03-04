@@ -233,6 +233,25 @@ public class FhirSettings {
       if (server.getAuthenticationType() == null) {
         server.setAuthenticationType("none");
       }
+      if ("client_credentials".equals(server.getAuthenticationType())) {
+        validateClientCredentialsFields(server);
+      }
+    }
+  }
+
+  private static void validateClientCredentialsFields(ServerDetailsPOJO server) {
+    String serverUrl = server.getUrl() != null ? server.getUrl() : "(unknown)";
+    if (server.getClientId() == null || server.getClientId().isEmpty()) {
+      throw new IllegalArgumentException("Server entry for " + serverUrl
+        + " has authenticationType 'client_credentials' but missing required field: clientId");
+    }
+    if (server.getClientSecret() == null || server.getClientSecret().isEmpty()) {
+      throw new IllegalArgumentException("Server entry for " + serverUrl
+        + " has authenticationType 'client_credentials' but missing required field: clientSecret");
+    }
+    if (server.getTokenEndpoint() == null || server.getTokenEndpoint().isEmpty()) {
+      throw new IllegalArgumentException("Server entry for " + serverUrl
+        + " has authenticationType 'client_credentials' but missing required field: tokenEndpoint");
     }
   }
 

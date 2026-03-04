@@ -60,7 +60,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     return request.withHeaders(headers);
   }
 
-  protected HTTPRequest requestWithManagedHeaders(HTTPRequest httpRequest) {
+  protected HTTPRequest requestWithManagedHeaders(HTTPRequest httpRequest) throws IOException {
     HTTPRequest requestWithDefaultHeaders = httpRequestWithDefaultHeaders(httpRequest);
 
     List<HTTPHeader> headers = new ArrayList<>();
@@ -103,6 +103,10 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
             String apiKeyCredential = settings.getApikey();
             headers.add(new HTTPHeader("Api-Key", apiKeyCredential));
             break;
+          case "client_credentials":
+            String oauthToken = HTTPTokenManager.getToken(settings);
+            headers.add(new HTTPHeader("Authorization", "Bearer " + oauthToken));
+            break;
         }
       }
     }
@@ -112,25 +116,15 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
   public HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT:
-
-        HTTPRequest httpRequestWithDirectHeaders = requestWithManagedHeaders(httpRequest);
-        assert httpRequestWithDirectHeaders.getUrl() != null;
-
-        RequestBody body = httpRequestWithDirectHeaders.getBody() == null ? null : RequestBody.create(httpRequestWithDirectHeaders.getBody());
-        Request.Builder requestBuilder = new Request.Builder()
-          .url(httpRequestWithDirectHeaders.getUrl())
-          .method(httpRequestWithDirectHeaders.getMethod().name(), body);
-
-        for (HTTPHeader header : httpRequestWithDirectHeaders.getHeaders()) {
-          requestBuilder.addHeader(header.getName(), header.getValue());
+        HTTPResult result = executeDirectRequest(httpRequest);
+        if ((result.getCode() == 401 || result.getCode() == 403)) {
+          ServerDetailsPOJO server = ManagedWebAccessUtils.getServer(getServerTypes(), httpRequest.getUrl().toString(), getServerAuthDetails());
+          if (server != null && "client_credentials".equals(server.getAuthenticationType())) {
+            HTTPTokenManager.invalidateToken(server);
+            result = executeDirectRequest(httpRequest);
+          }
         }
-        OkHttpClient okHttpClient = getOkHttpClient();
-        //TODO check and throw based on httpRequest:
-
-        if (!ManagedWebAccess.inAllowedPaths(httpRequestWithDirectHeaders.getUrl().toString())) {
-              throw new IOException("The pathname '"+httpRequestWithDirectHeaders.getUrl().toString()+"' cannot be accessed by policy");}
-        Response response = okHttpClient.newCall(requestBuilder.build()).execute();
-        return getHTTPResult(response);
+        return result;
       case MANAGED:
         HTTPRequest httpRequestWithManagedHeaders = requestWithManagedHeaders(httpRequest);
         assert httpRequestWithManagedHeaders.getUrl() != null;
@@ -140,6 +134,28 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
       default:
         throw new IOException("Internal Error");
     }
+  }
+
+  private HTTPResult executeDirectRequest(HTTPRequest httpRequest) throws IOException {
+    HTTPRequest httpRequestWithDirectHeaders = requestWithManagedHeaders(httpRequest);
+    assert httpRequestWithDirectHeaders.getUrl() != null;
+
+    RequestBody body = httpRequestWithDirectHeaders.getBody() == null ? null : RequestBody.create(httpRequestWithDirectHeaders.getBody());
+    Request.Builder requestBuilder = new Request.Builder()
+      .url(httpRequestWithDirectHeaders.getUrl())
+      .method(httpRequestWithDirectHeaders.getMethod().name(), body);
+
+    for (HTTPHeader header : httpRequestWithDirectHeaders.getHeaders()) {
+      requestBuilder.addHeader(header.getName(), header.getValue());
+    }
+    OkHttpClient okHttpClient = getOkHttpClient();
+    //TODO check and throw based on httpRequest:
+
+    if (!ManagedWebAccess.inAllowedPaths(httpRequestWithDirectHeaders.getUrl().toString())) {
+      throw new IOException("The pathname '" + httpRequestWithDirectHeaders.getUrl().toString() + "' cannot be accessed by policy");
+    }
+    Response response = okHttpClient.newCall(requestBuilder.build()).execute();
+    return getHTTPResult(response);
   }
 
   private HTTPResult getHTTPResult(Response execute) throws IOException {

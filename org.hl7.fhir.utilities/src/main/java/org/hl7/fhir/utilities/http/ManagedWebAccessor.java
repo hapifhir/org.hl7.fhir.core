@@ -82,6 +82,11 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
           client.setApiKey(settings.getApikey());
           client.setAuthenticationMode(HTTPAuthenticationMode.APIKEY);
           break;
+        case "client_credentials" :
+          String oauthToken = HTTPTokenManager.getToken(settings);
+          client.setToken(oauthToken);
+          client.setAuthenticationMode(HTTPAuthenticationMode.TOKEN);
+          break;
         }
         if (settings.getHeaders() != null) {
           for (String n : settings.getHeaders().keySet()) {
@@ -96,6 +101,25 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
     return client;
   }
 
+  @FunctionalInterface
+  private interface ClientAction {
+    HTTPResult execute(SimpleHTTPClient client) throws IOException;
+  }
+
+  private HTTPResult executeWithRetry(String url, ClientAction action) throws IOException {
+    SimpleHTTPClient client = setupClient(url);
+    HTTPResult result = action.execute(client);
+    if ((result.getCode() == 401 || result.getCode() == 403)) {
+      ServerDetailsPOJO server = ManagedWebAccessUtils.getServer(getServerTypes(), url, getServerAuthDetails());
+      if (server != null && "client_credentials".equals(server.getAuthenticationType())) {
+        HTTPTokenManager.invalidateToken(server);
+        client = setupClient(url);
+        result = action.execute(client);
+      }
+    }
+    return result;
+  }
+
   public HTTPResult get(String url) throws IOException {
     return get(url, null);
   }
@@ -103,8 +127,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   public HTTPResult get(String url, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
-      SimpleHTTPClient client = setupClient(url);
-      return client.get(url, accept);
+      return executeWithRetry(url, c -> c.get(url, accept));
     case MANAGED:
       return ManagedWebAccess.getAccessor().get(getServerTypes(), url, accept, newHeaders());
     case PROHIBITED:
@@ -121,8 +144,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   public HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
-      SimpleHTTPClient client = setupClient(url);
-      return client.post(url, contentType, content, accept);
+      return executeWithRetry(url, c -> c.post(url, contentType, content, accept));
     case MANAGED:
       return ManagedWebAccess.getAccessor().post(getServerTypes(), url, content, contentType, accept, newHeaders());
     case PROHIBITED:
@@ -139,8 +161,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   public HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
-      SimpleHTTPClient client = setupClient(url);
-      return client.put(url, contentType, content, accept);
+      return executeWithRetry(url, c -> c.put(url, contentType, content, accept));
     case MANAGED:
       return ManagedWebAccess.getAccessor().put(getServerTypes(), url, content, contentType, accept, newHeaders());
     case PROHIBITED:

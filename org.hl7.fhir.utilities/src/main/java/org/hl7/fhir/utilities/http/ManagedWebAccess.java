@@ -136,6 +136,17 @@ public class ManagedWebAccess {
     return fhirAccessor().httpCall(httpRequest);
   }
 
+  /**
+   * Adds a server auth detail entry, prepending it so it takes priority over
+   * entries loaded from fhir-settings.json. Call this after loadFromFHIRSettings().
+   */
+  public static void addServerAuthDetail(ServerDetailsPOJO server) {
+    if (serverAuthDetails == null) {
+      serverAuthDetails = new ArrayList<>();
+    }
+    serverAuthDetails.add(0, server);
+  }
+
   public static void loadFromFHIRSettings() {
     setAccessPolicy(FhirSettings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
     setUserAgent("hapi-fhir-tooling-client");
