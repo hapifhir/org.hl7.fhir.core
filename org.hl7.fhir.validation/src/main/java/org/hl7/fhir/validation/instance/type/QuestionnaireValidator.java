@@ -255,10 +255,10 @@ public class QuestionnaireValidator extends BaseValidator {
           for (Element ext : list) {
             if (!ext.hasUserData(UserDataNames.matchingParameter)) {
               String name = ext.getExtensionString("name");
-              warning(errors, "2025-03-22", IssueType.BUSINESSRULE, ns, Utilities.existsInList(name,
+              warning(errors, "2025-03-22", IssueType.BUSINESSRULE, ns, Utilities.existsInList(name, 
                   "abstract", "activeOnly", "check-system-version", "check-valueset-version", "context", "contextDirection", "count", "date", "default-valueset-version", "designation", "displayLanguage", "exclude-system", "excludeNested",
-                  "excludeNotForUI", "excludePostCoordinated", "filter", "filterProperty", "force-system-version", "force-valueset-version", "includeDefinition", "includeDesignations", "inferSystem", "lenient-display-validation",
-                  "manifest", "offset", "property", "system-version", "useSupplement", "valueset-membership-only"),
+                  "excludeNotForUI", "excludePostCoordinated", "filter", "filterProperty", "force-system-version", "force-valueset-version", "includeDefinition", "includeDesignations", "inferSystem", "lenient-display-validation", 
+                  "manifest", "offset", "property", "system-version", "useSupplement", "valueset-membership-only"), 
                   I18nConstants.VALUESET_PARAMETER_UNRECOGNISED_BINDING_PARAMETER, name, vs.getVersionedUrl());
             }
           }
@@ -547,17 +547,17 @@ public class QuestionnaireValidator extends BaseValidator {
     if ((q.hasEffectivePeriod()) && element.hasChild("authored")) {
       NodeStack vns = stack.push(element.getNamedChild("authored"), -1, null, null);
       DateTimeType vdt = new DateTimeType(element.getNamedChildValue("authored"));
-
+      
       if (q.getEffectivePeriod().hasEnd()) {
         warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, vns, !vdt.after(q.getEffectivePeriod().getEndElement()), I18nConstants.QUESTIONNAIRE_QR_AUTHOR_END, vdt.toHumanDisplay(), q.getEffectivePeriod().getEndElement().toHumanDisplay());
       }
       if (q.getEffectivePeriod().hasStart()) {
         warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, vns, !vdt.before(q.getEffectivePeriod().getStartElement()), I18nConstants.QUESTIONNAIRE_QR_AUTHOR_START, vdt.toHumanDisplay(), q.getEffectivePeriod().getStartElement().toHumanDisplay());
       }
-
-    }
+      
+    } 
     return ok;
-
+    
   }
 
   private boolean validateQuestionnaireResponseItem(ValidationContext hostContext, QuestionnaireWithContext qsrc, QuestionnaireItemComponent qItem, List<ValidationMessage> errors, Element element, NodeStack stack, boolean notCompleted, Element questionnaireResponseRoot, QStack qstack) {
@@ -592,7 +592,7 @@ public class QuestionnaireValidator extends BaseValidator {
       int mo = ExtensionUtilities.readIntegerExtension(qItem, ExtensionDefinitions.EXT_MINOCCURS, -1);
       ok.see(rule(errors, NO_RULE_DATE, IssueType.INVALID, stack, mo < 0 || answers.size() >= mo, I18nConstants.QUESTIONNAIRE_QR_ITEM_MIN_OCCURS, mo, answers.size()));
     }
-
+    
     int i = 0;
     for (Element answer : answers) {
       NodeStack ns = stack.push(answer, i, null, null);
@@ -831,7 +831,7 @@ public class QuestionnaireValidator extends BaseValidator {
       if (qItem.hasExtension(ExtensionDefinitions.EXT_MIMETYPE)) {
         String mimeType = value.getNamedChildValue("contentType");
         if (mimeType == null) {
-          ok = rule(errors, "2024-05-07", IssueType.REQUIRED, ns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOT_ATTACHMENT_MIMETYPE) && ok;
+          ok = rule(errors, "2024-05-07", IssueType.REQUIRED, ns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_NOT_ATTACHMENT_MIMETYPE) && ok;        
         } else {
           boolean mtok = false;
           List<String> allowed = new ArrayList<String>();
@@ -844,8 +844,8 @@ public class QuestionnaireValidator extends BaseValidator {
             }
           }
           ok = rule(errors, "2024-05-07", IssueType.REQUIRED, ns, mtok, I18nConstants.QUESTIONNAIRE_QR_ITEM_BAD_ATTACHMENT_MIMETYPE, mimeType, CommaSeparatedStringBuilder.join(", ", allowed)) && ok;
-        }
-      }
+        }      
+      }    
       if (qItem.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE) && value.hasChild("data")) {
         int max = ExtensionUtilities.readIntegerExtension(qItem, ExtensionDefinitions.EXT_MAX_SIZE, -1);
         if (max > 0) {
@@ -858,7 +858,7 @@ public class QuestionnaireValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean mimeTypeMatches(String mimeType, String pattern) {
+  private boolean mimeTypeMatches(String mimeType, String pattern) {    
     return mimeType.startsWith(pattern);
   }
 
@@ -868,7 +868,7 @@ public class QuestionnaireValidator extends BaseValidator {
     if (v != null) {
       NodeStack vns = ns.push(v, -1, null, null);
       try {
-        DateTimeType vdt = new DateTimeType(v.primitiveValue());
+        DateTimeType vdt = new DateTimeType(v.primitiveValue()); 
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MINVALUE)) {
           DateTimeType dt = new DateTimeType(qItem.getExtensionByUrl(ExtensionDefinitions.EXT_MINVALUE).getValue().primitiveValue());
           ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, !dt.after(vdt), I18nConstants.QUESTIONNAIRE_QR_ITEM_DATE_MIN, v.primitiveValue(), dt.primitiveValue()) && ok;
@@ -915,7 +915,7 @@ public class QuestionnaireValidator extends BaseValidator {
     if (v != null) {
       NodeStack vns = ns.push(v, -1, null, null);
       try {
-        TimeType vdt = new TimeType(v.primitiveValue());
+        TimeType vdt = new TimeType(v.primitiveValue()); 
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MINVALUE)) {
           TimeType dt = new TimeType(qItem.getExtensionByUrl(ExtensionDefinitions.EXT_MINVALUE).getValue().primitiveValue());
           ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, vdt.primitiveValue().compareTo(dt.primitiveValue()) >= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_TIME_MIN, v.primitiveValue(), dt.primitiveValue()) && ok;
@@ -962,7 +962,7 @@ public class QuestionnaireValidator extends BaseValidator {
     if (v != null) {
       NodeStack vns = ns.push(v, -1, null, null);
       try {
-        DateTimeType vdt = new DateTimeType(v.primitiveValue());
+        DateTimeType vdt = new DateTimeType(v.primitiveValue()); 
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MINVALUE)) {
           DateTimeType dt = new DateTimeType(qItem.getExtensionByUrl(ExtensionDefinitions.EXT_MINVALUE).getValue().primitiveValue());
           ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, !dt.after(vdt), I18nConstants.QUESTIONNAIRE_QR_ITEM_DATE_MIN, v.primitiveValue(), dt.primitiveValue()) && ok;
@@ -1011,11 +1011,11 @@ public class QuestionnaireValidator extends BaseValidator {
       if (v.primitiveValue() != null) {
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MIN_LENGTH) ) {
           int ml = ExtensionUtilities.readIntegerExtension(qItem, ExtensionDefinitions.EXT_MIN_LENGTH, -1);
-          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, ml < 0 || v.primitiveValue().length() >= ml, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_MIN_LENGTH, v.primitiveValue(), ml) && ok;
+          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, ml < 0 || v.primitiveValue().length() >= ml, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_MIN_LENGTH, v.primitiveValue(), ml) && ok;        
         }
         if (qItem.hasMaxLength()) {
           int ml = qItem.getMaxLength();
-          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, ml < 0 || v.primitiveValue().length() <= ml, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_MAX_LENGTH, v.primitiveValue(), ml) && ok;
+          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, ml < 0 || v.primitiveValue().length() <= ml, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_MAX_LENGTH, v.primitiveValue(), ml) && ok;                
         }
         if (qItem.hasExtension(ExtensionDefinitions.EXT_REGEX) ) {
           String regex = ExtensionUtilities.readStringExtension(qItem, ExtensionDefinitions.EXT_REGEX);
@@ -1023,7 +1023,7 @@ public class QuestionnaireValidator extends BaseValidator {
           if (ef == null) {
             ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, v.primitiveValue().matches(regex), I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_REGEX, v.primitiveValue(), regex) && ok;
           } else {
-            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, v.primitiveValue().matches(regex), I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_REGEX_EF, v.primitiveValue(), regex, ef) && ok;
+            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, v.primitiveValue().matches(regex), I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_REGEX_EF, v.primitiveValue(), regex, ef) && ok;                   
           }
         }
         warning(errors, "2024-05-07", IssueType.INVARIANT, vns, !(v.primitiveValue().contains("\r") || v.primitiveValue().contains("\n")), I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_ILLEGAL_CHARS, v.primitiveValue());
@@ -1031,11 +1031,11 @@ public class QuestionnaireValidator extends BaseValidator {
 
           ValueSet vs = context.findTxResource(ValueSet.class, qItem.getAnswerValueSet());
           if (vs == null) {
-            warning(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_VS_BAD, qItem.getAnswerValueSet());
+            warning(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_VS_BAD, qItem.getAnswerValueSet()); 
           } else {
             ValidationResult vr = context.validateCode(settings, v.primitiveValue(), vs);
             if (!vr.isOk()) {
-              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_VS_FAIL, v.primitiveValue(), qItem.getAnswerValueSet()) && ok;
+              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_VS_FAIL, v.primitiveValue(), qItem.getAnswerValueSet()) && ok;                
             }
           }
         }
@@ -1075,7 +1075,7 @@ public class QuestionnaireValidator extends BaseValidator {
     if (v != null && v.fhirType().equals("decimal")) {
       NodeStack vns = ns.push(v, -1, null, null);
       try {
-        DecimalType vdt = new DecimalType(v.primitiveValue());
+        DecimalType vdt = new DecimalType(v.primitiveValue()); 
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MINVALUE)) {
           DecimalType dt = new DecimalType(qItem.getExtensionByUrl(ExtensionDefinitions.EXT_MINVALUE).getValue().primitiveValue());
           ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, dt.compareTo(vdt) <= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_MIN, v.primitiveValue(), dt.primitiveValue()) && ok;
@@ -1152,30 +1152,30 @@ public class QuestionnaireValidator extends BaseValidator {
           vdt.setComparator(QuantityComparator.valueOf(v.getNamedChildValue("comparator")));
         }
 
-
+        
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MIN_QUANTITY)) {
           Quantity dt = qItem.getExtensionByUrl(ExtensionDefinitions.EXT_MIN_QUANTITY).getValueQuantity();
           if (!dt.hasSystem() || !dt.hasCode() || !vdt.hasSystem() || !vdt.hasCode()) {
-            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN_UNITS, genDisplay(dt), genDisplay(vdt)) && ok;
+            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN_UNITS, genDisplay(dt), genDisplay(vdt)) && ok;            
           } else if (dt.getSystem().equals(vdt.getSystem()) &&  dt.getCode().equals(vdt.getCode())) {
             ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, dt.getValue().compareTo(vdt.getValue()) >= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MIN, genDisplay(vdt), genDisplay(dt)) && ok;
           } else if ("http://unitsofmeasure.org".equals(dt.getSystem()) && "http://unitsofmeasure.org".equals(vdt.getSystem())) {
             ok = checkUcumQuantity(errors, vns, vdt, dt, true);
           } else {
-            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN, genDisplay(dt), genDisplay(vdt)) && ok;
+            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MIN, genDisplay(dt), genDisplay(vdt)) && ok;                        
           }
         }
-
+        
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MAX_QUANTITY)) {
           Quantity dt = qItem.getExtensionByUrl(ExtensionDefinitions.EXT_MAX_QUANTITY).getValueQuantity();
           if (!dt.hasSystem() || !dt.hasCode() || !vdt.hasSystem() || !vdt.hasCode()) {
-            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX_UNITS, genDisplay(dt), genDisplay(vdt)) && ok;
+            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX_UNITS, genDisplay(dt), genDisplay(vdt)) && ok;            
           } else if (dt.getSystem().equals(vdt.getSystem()) &&  dt.getCode().equals(vdt.getCode())) {
             ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, dt.getValue().compareTo(vdt.getValue()) >= 0, I18nConstants.QUESTIONNAIRE_QR_ITEM_QUANTITY_MAX, genDisplay(vdt), genDisplay(dt)) && ok;
           } else if ("http://unitsofmeasure.org".equals(dt.getSystem()) && "http://unitsofmeasure.org".equals(vdt.getSystem())) {
             ok = checkUcumQuantity(errors, vns, vdt, dt, false);
           } else {
-            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX, genDisplay(dt), genDisplay(vdt)) && ok;
+            ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns,  false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_CANNOT_COMPARE_MAX, genDisplay(dt), genDisplay(vdt)) && ok;                        
           }
         }
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MAX_DECIMALS)) {
@@ -1187,19 +1187,19 @@ public class QuestionnaireValidator extends BaseValidator {
           List<String> allowed = new ArrayList<>();
           for (Extension ex : qItem.getExtensionsByUrl(ExtensionDefinitions.EXT_Q_UNIT_OPTION)) {
             allowed.add(genDisplay(ex.getValueCoding()));
-            matched = matched || matchesUnit(vdt, ex.getValueCoding());
+            matched = matched || matchesUnit(vdt, ex.getValueCoding()); 
           }
-          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, matched, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_INVALID_UNITS, genDisplay(vdt), CommaSeparatedStringBuilder.join(",", allowed)) && ok;
+          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, matched, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_INVALID_UNITS, genDisplay(vdt), CommaSeparatedStringBuilder.join(",", allowed)) && ok;  
         }
         if (qItem.hasExtension(ExtensionDefinitions.EXT_Q_UNIT_VALUESET)) {
           String url = ExtensionUtilities.readStringExtension(qItem, ExtensionDefinitions.EXT_Q_UNIT_VALUESET);
           ValueSet vs = context.findTxResource(ValueSet.class, url);
           if (vs == null) {
-            warning(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_INVALID_UNIT_VS, url);
+            warning(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_INVALID_UNIT_VS, url); 
           } else {
             ValidationResult vr = context.validateCode(settings, vdt.getSystem(), null, vdt.getCode(), null, vs);
             if (!vr.isOk()) {
-              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_UNIT_FAIL_VS, genDisplay(vdt), url) && ok;
+              ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_UNIT_FAIL_VS, genDisplay(vdt), url) && ok;                
             }
           }
         }
@@ -1254,12 +1254,12 @@ public class QuestionnaireValidator extends BaseValidator {
     }
     return system;
   }
+   
 
-
-  private boolean matchesUnit(Quantity q, Coding c) {
-    return
-        (!c.hasSystem() || c.getSystem().equals(q.getSystem())) &&
-        (!c.hasCode() || c.getCode().equals(q.getCode())) &&
+  private boolean matchesUnit(Quantity q, Coding c) {    
+    return 
+        (!c.hasSystem() || c.getSystem().equals(q.getSystem())) &&  
+        (!c.hasCode() || c.getCode().equals(q.getCode())) &&  
         (!c.hasDisplay() || c.getDisplay().equals(q.getUnit()));
   }
 
@@ -1269,7 +1269,7 @@ public class QuestionnaireValidator extends BaseValidator {
     if (v != null && v.fhirType().equals("integer")) {
       NodeStack vns = ns.push(v, -1, null, null);
       try {
-        int vdt = Integer.parseInt(v.primitiveValue());
+        int vdt = Integer.parseInt(v.primitiveValue()); 
         if (qItem.hasExtension(ExtensionDefinitions.EXT_MINVALUE)) {
           int dt = Integer.parseInt(qItem.getExtensionByUrl(ExtensionDefinitions.EXT_MINVALUE).getValue().primitiveValue());
           ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, vdt >= dt, I18nConstants.QUESTIONNAIRE_QR_ITEM_INTEGER_MIN, vdt, dt) && ok;
@@ -1339,7 +1339,7 @@ public class QuestionnaireValidator extends BaseValidator {
             ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_REF_CANT, ref) && ok;
           }
         } else {
-          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, rt == null || context.getResourceNamesAsSet().contains(rt), I18nConstants.QUESTIONNAIRE_QR_ITEM_REF_INVALID_GENERAL, rt, ref) && ok;
+          ok = rule(errors, "2024-05-07", IssueType.INVARIANT, vns, rt == null || context.getResourceNamesAsSet().contains(rt), I18nConstants.QUESTIONNAIRE_QR_ITEM_REF_INVALID_GENERAL, rt, ref) && ok;          
         }
       }
     }
@@ -1352,7 +1352,7 @@ public class QuestionnaireValidator extends BaseValidator {
     } else {
       return super.extractResourceType(ref);
     }
-
+    
   }
 
   private String validateQuestionnaireResponseItemType(List<ValidationMessage> errors, Element element, NodeStack stack, BooleanHolder ok, String... types) {
@@ -1423,7 +1423,7 @@ public class QuestionnaireValidator extends BaseValidator {
           } else if (res.getSeverity() != null) {
             super.addValidationMessage(errors, NO_RULE_DATE, IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity(), Source.TerminologyEngine, null);
           } else if (res.getMessage() != null) {
-            super.addValidationMessage(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity() == null ? IssueSeverity.INFORMATION : res.getSeverity(), Source.TerminologyEngine, null);
+            super.addValidationMessage(errors, NO_RULE_DATE, IssueType.INFORMATIONAL, value.line(), value.col(), stack.getLiteralPath(), res.getMessage(), res.getSeverity() == null ? IssueSeverity.INFORMATION : res.getSeverity(), Source.TerminologyEngine, null);          
           }
         }
       } catch (Exception e) {
@@ -1595,7 +1595,7 @@ public class QuestionnaireValidator extends BaseValidator {
             found = found || (c.hasDisplay() && c.getDisplay().equalsIgnoreCase(v.primitiveValue())) || (c.hasCode() && c.getCode().equalsIgnoreCase(v.primitiveValue()));
           }
         }
-        ok = warning(errors, NO_RULE_DATE, IssueType.INVARIANT, v.line(), v.col(), stack.getLiteralPath(), !found, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING, v.primitiveValue()) && ok;
+        ok = warning(errors, NO_RULE_DATE, IssueType.INVARIANT, v.line(), v.col(), stack.getLiteralPath(), !found, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_IN_CODING, v.primitiveValue()) && ok;        
       }
     } else {
       hint(errors, NO_RULE_DATE, IssueType.INVARIANT, v.line(), v.col(), stack.getLiteralPath(), false, I18nConstants.QUESTIONNAIRE_QR_ITEM_STRINGNOOPTIONS);
