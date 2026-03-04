@@ -48,62 +48,79 @@ public class SimpleHTTPClient {
     return get(url, null);    
   }
   
-  public HTTPResult get(String url, String accept) throws IOException {
+  public HTTPResult get(String urlString, String accept) throws IOException {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    
-    URL u = new URL(url);
-//    boolean isSSL = url.startsWith("https://");
-    
-    // handling redirects - setInstanceFollowRedirects(true) doesn't handle crossing http to https
 
     Map<String, Integer> visited = new HashMap<>();
-    HttpURLConnection c = null;
+    HttpURLConnection connection = null;
     boolean done = false;
-
+    boolean setAuthenticationHeaders = true;
     while (!done) {
-      int times = visited.compute(url, (key, count) -> count == null ? 1 : count + 1);
+      int times = visited.compute(urlString, (key, count) -> count == null ? 1 : count + 1);
       if (times > MAX_REDIRECTS)
         throw new IOException("Stuck in redirect loop");
 
-      u = new URL(url);
-      c = (HttpURLConnection) u.openConnection();
-      c.setRequestMethod("GET");
-      if (accept != null) {
-        c.setRequestProperty("Accept", accept);
-      }
-      setHeaders(c);
-      c.setInstanceFollowRedirects(false);
+      connection = getGetConnection(urlString, accept, setAuthenticationHeaders);
 
-      switch (c.getResponseCode()) {
+      //(this implicitly establishes the connection)
+      switch (connection.getResponseCode()) {
         case HttpURLConnection.HTTP_MOVED_PERM:
         case HttpURLConnection.HTTP_MOVED_TEMP:
         case 307:
         case 308: // Same as HTTP_MOVED_PERM, but does not allow changing the request method from POST to GET
-          String location = c.getHeaderField("Location");
+          String location = connection.getHeaderField("Location");
           location = URLDecoder.decode(location, "UTF-8");
-          URL base = new URL(url);
+
+          URL base = new URL(urlString);
           URL next = new URL(base, location);  // Deal with relative URLs
-          url = next.toExternalForm();
+
+          if (isNotSameHost(base, next)) {
+            setAuthenticationHeaders = false;
+          }
+
+          urlString = next.toExternalForm();
           continue;
         default:
           done = true;
       }
     }
     
-    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(),  c.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
+    return new HTTPResult(urlString, connection.getResponseCode(), connection.getResponseMessage(),  connection.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(connection.getResponseCode() >= 400 ? connection.getErrorStream() : connection.getInputStream()));
   }
 
-  private void setHeaders(HttpURLConnection c) {
+  private boolean isNotSameHost(URL base, URL next) {
+    return !base.getHost().equals(next.getHost());
+  }
+
+  protected HttpURLConnection getGetConnection(String urlString, String accept, boolean setAuthenticationHeaders) throws IOException {
+    URL url = new URL(urlString);
+    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestMethod("GET");
+    if (accept != null) {
+      connection.setRequestProperty("Accept", accept);
+    }
+    setHeaders(connection, setAuthenticationHeaders);
+    connection.setInstanceFollowRedirects(false);
+    return connection;
+  }
+
+  private void setHeaders(HttpURLConnection connection) {
+    setHeaders(connection, true);
+  }
+
+  private void setHeaders(HttpURLConnection connection, boolean setAuthenticationHeaders) {
     if (headers != null) {
       for (HTTPHeader header : headers) {
-        c.setRequestProperty(header.getName(), header.getValue());
+        connection.setRequestProperty(header.getName(), header.getValue());
       }
     }
-    c.setConnectTimeout(15000);
-    c.setReadTimeout(15000);
-    setAuthenticationHeader(c);
+    connection.setConnectTimeout(15000);
+    connection.setReadTimeout(15000);
+    if (setAuthenticationHeaders) {
+      setAuthenticationHeader(connection);
+    }
   }
 
   private void setAuthenticationHeader(HttpURLConnection c) {
