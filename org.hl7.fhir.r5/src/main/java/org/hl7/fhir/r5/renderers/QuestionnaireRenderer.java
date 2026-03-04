@@ -72,14 +72,17 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       throw new Error("Unknown questionnaire Renderer Mode"); 
     } 
 
-    boolean first = true;
-    for (ResourceWrapper cont : q.children("contained")) {
-      if (first) {
-        x.h2().tx("Contained Resources");
-        first = false;
+    if (context.forValidResource()) {
+      boolean first = true;
+
+      for (ResourceWrapper cont : q.children("contained")) {
+        if (first) {
+          x.h2().tx("Contained Resources");
+          first = false;
+        }
+        x.hr();
+        RendererFactory.factory(cont, context.forContained()).setInner(true).buildNarrative(status, x, cont);
       }
-      x.hr();
-      RendererFactory.factory(cont, context.forContained()).setInner(true).buildNarrative(status, x, cont);
     }
   } 
 
