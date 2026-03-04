@@ -398,7 +398,7 @@ public class XhtmlComposer {
   private boolean composePlainText(XhtmlNode x, StringBuilder b, boolean lastWS) {
     if (x.getNodeType() == NodeType.Text) {
       String s = x.getContent();
-      if (!lastWS & (s.startsWith(" ") || s.startsWith("\r") || s.startsWith("\n") || s.endsWith("\t"))) {
+      if (!lastWS && (s.startsWith(" ") || s.startsWith("\r") || s.startsWith("\n") || s.endsWith("\t"))) {
         b.append(" ");
         lastWS = true;
       }
@@ -408,7 +408,7 @@ public class XhtmlComposer {
       if (!Utilities.noString(st)) {
         b.append(st);
         lastWS = false;
-        if (!lastWS & (s.endsWith(" ") || s.endsWith("\r") || s.endsWith("\n") || s.endsWith("\t"))) {
+        if (!lastWS && (s.endsWith(" ") || s.endsWith("\r") || s.endsWith("\n") || s.endsWith("\t"))) {
           b.append(" ");
           lastWS = true;
         }

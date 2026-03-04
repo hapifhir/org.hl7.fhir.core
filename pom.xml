@@ -26,7 +26,7 @@
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.4.0</hapi_fhir_version>
         <validator_test_case_version>1.7.51</validator_test_case_version>
-        <jackson_version>2.17.0</jackson_version>
+        <jackson_version>2.21.1</jackson_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
         <junit_platform_launcher_version>1.14.0</junit_platform_launcher_version>
         <maven_surefire_version>3.5.3</maven_surefire_version>
@@ -50,6 +50,7 @@
         <logback.version>1.5.25</logback.version>
         <log4jVersion>2.25.3</log4jVersion>
         <okio.version>3.16.4</okio.version>
+        <jackson_annotations_version>2.21</jackson_annotations_version>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -343,6 +344,12 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson_version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson_annotations_version}</version>
             </dependency>
 
             <dependency>
@@ -869,7 +876,7 @@
                         <skip>false</skip>
                         <rules>
                             <requireJavaVersion>
-                                <version>(11,)</version>
+                                <version>(17,)</version>
                             </requireJavaVersion>
 
                             <requireReleaseDeps>
