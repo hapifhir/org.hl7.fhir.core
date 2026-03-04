@@ -101,7 +101,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
-			<artifactId>okhttp</artifactId>
+			<artifactId>okhttp-jvm</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -163,7 +163,6 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>mockwebserver</artifactId>
-			<version>${okhttp.version}</version>
 			<optional>true</optional>
 			<scope>test</scope>
 		</dependency>

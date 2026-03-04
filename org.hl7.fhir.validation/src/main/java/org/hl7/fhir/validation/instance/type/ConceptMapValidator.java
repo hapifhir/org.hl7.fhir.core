@@ -374,13 +374,13 @@ public class ConceptMapValidator extends BaseValidator {
           if (!noTerminologyChecks && ctxt.hasSourceVS() && ctxt.source != null) {
             ValidationResult vr = context.validateCode(options.withCheckValueSetOnly().withNoServer(), ctxt.source.url, ctxt.source.version, c, null, ctxt.sourceScope.vs);
             if (!warningOrError(ctxt.source.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS, c, ctxt.sourceScope.vs.getVersionedUrl())) {
-              ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
+              ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) && ok;
             } else {
               // processConceptIssues(errors, concept, stack, system, version, vv, display);
             }
           }
         } else {
-          ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
+          ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) && ok;
         }
       } else {
         addToBatch(errors, baseStack, code, cstack, ctxt.source, ctxt.sourceScope);
@@ -429,7 +429,7 @@ public class ConceptMapValidator extends BaseValidator {
             }
           }
         } else {
-          ok = (ctxt.target.cs.getContent() != CodeSystemContentMode.COMPLETE) & ok;
+          ok = (ctxt.target.cs.getContent() != CodeSystemContentMode.COMPLETE) && ok;
         }
       } else {
         addToBatch(errors, baseStack, code, cstack, ctxt.target, ctxt.targetScope);

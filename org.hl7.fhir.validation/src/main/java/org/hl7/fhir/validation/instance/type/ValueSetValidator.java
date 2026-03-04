@@ -246,7 +246,7 @@ public class ValueSetValidator extends BaseValidator {
       List<Element> composes = vs.getChildrenByName("compose");
       int cc = 0;     
       for (Element compose : composes) {
-        ok = validateValueSetCompose(valContext, errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), "retired".equals(vs.getNamedChildValue("url", false)), vs, parameters, vss) & ok;
+        ok = validateValueSetCompose(valContext, errors, compose, stack.push(compose, composes.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), "retired".equals(vs.getNamedChildValue("url", false)), vs, parameters, vss) && ok;
         cc++;
       }
       for (ParameterDeclaration p : parameters) {
@@ -494,7 +494,7 @@ public class ValueSetValidator extends BaseValidator {
         }
         int cf = 0;
         for (Element filter : filters) {
-          ok = validateValueSetIncludeFilter(errors, filter, stack.push(filter, cf, null, null), system, version, cs, csChecker, parameters) & ok;
+          ok = validateValueSetIncludeFilter(errors, filter, stack.push(filter, cf, null, null), system, version, cs, csChecker, parameters) && ok;
           cf++;
         }    
       }
