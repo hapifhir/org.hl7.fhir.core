@@ -178,7 +178,6 @@ public class DefinitionNavigator {
 
   private void loadChildren() throws DefinitionException {
     if (level > LEVEL_LIMIT) {
-      System.out.println("Level limit reached @ "+level+": "+globalPath);
       throw new Error("Level limit reached @ "+level+": "+globalPath);
     }
     children = new ArrayList<DefinitionNavigator>();

@@ -301,7 +301,7 @@ public class PackageReGenerator {
             ValueSetExpansionOutcome exp = context.expandVS(e.valueSet, true, hierarchical);
             if (exp.isOk()) {
               e.valueSet.setExpansion(exp.getValueset().getExpansion());
-              log.info("Generated Expansion for "+n);
+              if (verbose) log.info("Generated Expansion for "+n);
             } else {
               e.valueSet.setExpansion(null);
               e.error = exp.getError();

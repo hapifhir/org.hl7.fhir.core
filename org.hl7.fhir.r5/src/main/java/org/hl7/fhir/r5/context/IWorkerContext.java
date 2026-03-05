@@ -88,7 +88,7 @@ public interface IWorkerContext {
    *
    * @return a number that changes each time the content that the context represents changes
    */
-  public int getDefinitionsVersion();
+  public long getDefinitionsVersion();
 
   /**
    * as an alternative to tracking, the context can store analysis for consumers of the context,
