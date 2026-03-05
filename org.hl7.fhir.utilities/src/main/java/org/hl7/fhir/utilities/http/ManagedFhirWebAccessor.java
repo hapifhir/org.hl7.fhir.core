@@ -60,7 +60,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     return request.withHeaders(headers);
   }
 
-  protected HTTPRequest requestWithManagedHeaders(HTTPRequest httpRequest) {
+  protected HTTPRequest requestWithAuthorizationHeaders(HTTPRequest httpRequest) {
     HTTPRequest requestWithDefaultHeaders = httpRequestWithDefaultHeaders(httpRequest);
 
     List<HTTPHeader> headers = new ArrayList<>();
@@ -111,30 +111,30 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
 
   public HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
-      case DIRECT:
+      case DIRECT: {
+        HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
+        assert requestWithAuthorizationHeaders.getUrl() != null;
 
-        HTTPRequest httpRequestWithDirectHeaders = requestWithManagedHeaders(httpRequest);
-        assert httpRequestWithDirectHeaders.getUrl() != null;
-
-        RequestBody body = httpRequestWithDirectHeaders.getBody() == null ? null : RequestBody.create(httpRequestWithDirectHeaders.getBody());
+        RequestBody body = requestWithAuthorizationHeaders.getBody() == null ? null : RequestBody.create(requestWithAuthorizationHeaders.getBody());
         Request.Builder requestBuilder = new Request.Builder()
-          .url(httpRequestWithDirectHeaders.getUrl())
-          .method(httpRequestWithDirectHeaders.getMethod().name(), body);
+          .url(requestWithAuthorizationHeaders.getUrl())
+          .method(requestWithAuthorizationHeaders.getMethod().name(), body);
 
-        for (HTTPHeader header : httpRequestWithDirectHeaders.getHeaders()) {
+        for (HTTPHeader header : requestWithAuthorizationHeaders.getHeaders()) {
           requestBuilder.addHeader(header.getName(), header.getValue());
         }
         OkHttpClient okHttpClient = getOkHttpClient();
-        //TODO check and throw based on httpRequest:
 
-        if (!ManagedWebAccess.inAllowedPaths(httpRequestWithDirectHeaders.getUrl().toString())) {
-              throw new IOException("The pathname '"+httpRequestWithDirectHeaders.getUrl().toString()+"' cannot be accessed by policy");}
+        if (!ManagedWebAccess.inAllowedPaths(requestWithAuthorizationHeaders.getUrl().toString())) {
+          throw new IOException("The pathname '" + requestWithAuthorizationHeaders.getUrl().toString() + "' cannot be accessed by policy");
+        }
         Response response = okHttpClient.newCall(requestBuilder.build()).execute();
         return getHTTPResult(response);
+      }
       case MANAGED:
-        HTTPRequest httpRequestWithManagedHeaders = requestWithManagedHeaders(httpRequest);
-        assert httpRequestWithManagedHeaders.getUrl() != null;
-        return ManagedWebAccess.getFhirWebAccessor().httpCall(httpRequestWithManagedHeaders);
+        HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
+        assert requestWithAuthorizationHeaders.getUrl() != null;
+        return ManagedWebAccess.getFhirWebAccessor().httpCall(requestWithAuthorizationHeaders);
       case PROHIBITED:
         throw new IOException("Access to the internet is not allowed by local security policy");
       default:
@@ -159,6 +159,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
       okHttpClient = new OkHttpClient();
     }
     OkHttpClient.Builder builder = okHttpClient.newBuilder();
+    // FIXME add authenticator here for managing redirects?
     if (logger != null) builder.addInterceptor(loggingInterceptor);
     builder.addInterceptor(new RetryInterceptor(retries));
     builder.proxyAuthenticator(new ProxyAuthenticator());

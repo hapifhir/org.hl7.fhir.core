@@ -8,7 +8,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 import java.io.IOException;
+import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import okhttp3.HttpUrl;
@@ -36,7 +38,7 @@ public class SimpleHTTPClientTest {
   }
 
   @Test
-  public void testGetApplicationJson() throws IOException, InterruptedException {
+  void testGetApplicationJson() throws IOException, InterruptedException {
 
     HttpUrl serverUrl = server.url("fhir/us/core/package-list.json?nocache=1724353440974");
 
@@ -79,7 +81,7 @@ public class SimpleHTTPClientTest {
 
   @ParameterizedTest
   @MethodSource("getRedirectArgs")
-  public void testRedirectsGet(int code, String[] urlArgs) throws IOException, InterruptedException {
+  void testRedirectsGet(int code, String[] urlArgs) throws IOException, InterruptedException {
 
     HttpUrl[] urls = new HttpUrl[urlArgs.length];
     for (int i = 0; i < urlArgs.length; i++) {
@@ -96,11 +98,10 @@ public class SimpleHTTPClientTest {
       new MockResponse()
         .setBody("Monkeys").setResponseCode(200)
     );
-    HttpUrl[] url = urls;
 
-    SimpleHTTPClient http = new SimpleHTTPClient();
+    SimpleHTTPClient httpClient = new SimpleHTTPClient();
 
-    HTTPResult res = http.get(url[0].url().toString(), "application/json");
+    HTTPResult res = httpClient.get(urls[0].url().toString(), "application/json");
 
     assertThat(res.getCode()).isEqualTo(200);
     assertThat(res.getContentAsString()).isEqualTo("Monkeys");
@@ -115,8 +116,7 @@ public class SimpleHTTPClientTest {
 
   @ParameterizedTest
   @MethodSource("getRedirectArgs")
-  public void testRedirectsToDifferentServers(int code, String[] urlArgs) throws IOException, InterruptedException {
-
+  void testRedirectsToDifferentServers(int code, String[] urlArgs) throws IOException, InterruptedException {
     HttpUrl[] urls = new HttpUrl[urlArgs.length];
     for (int i = 0; i < urlArgs.length; i++) {
       if (i < urlArgs.length - 1) {
@@ -137,19 +137,18 @@ public class SimpleHTTPClientTest {
       new MockResponse()
         .setBody("Monkeys").setResponseCode(200)
     );
-    HttpUrl[] url = urls;
 
-    SimpleHTTPClient http = Mockito.spy(new SimpleHTTPClient(){
-
+    SimpleHTTPClient httpClientSpy = Mockito.spy(new SimpleHTTPClient(){
     });
-
+    AuthProvider myAuthProvider = Mockito.mock(AuthProvider.class);
+    httpClientSpy.setAuthprovider(myAuthProvider);
     assertThrows(UnknownHostException.class, () -> {
-       http.get(url[0].url().toString(), "application/json");
+       httpClientSpy.get(urls[0].url().toString(), "application/json");
     });
 
     assertThat(server.getRequestCount()).isEqualTo(urlArgs.length - 1);
 
-    verify(http, times(1)).getGetConnection(eq("http://example.org/redirected"), anyString(), eq(false));
+    verify(myAuthProvider, times(1)).getHTTPAuthenticationMode(new URL("http://example.org/redirected"));
 
     for (int i = 0; i < urlArgs.length - 1; i++) {
       RecordedRequest packageRequest = server.takeRequest();
