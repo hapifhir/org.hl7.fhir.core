@@ -182,7 +182,7 @@ public class CodeSystemValidator extends BaseValidator {
             if (csSupp != null) {
               if (csSupp.hasHierarchyMeaningElement() && cs.hasChild("hierarchyMeaning")) {
                 String hm = cs.getNamedChildValue("hierarchyMeaning");
-                ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), hm.equals(csSupp.getHierarchyMeaning().toCode()), I18nConstants.CODESYSTEM_CS_SUPP_HIERARCHY_MEANING, hm, csSupp.getHierarchyMeaning().toCode()) & ok;
+                ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), hm.equals(csSupp.getHierarchyMeaning().toCode()), I18nConstants.CODESYSTEM_CS_SUPP_HIERARCHY_MEANING, hm, csSupp.getHierarchyMeaning().toCode()) && ok;
               }
 
 

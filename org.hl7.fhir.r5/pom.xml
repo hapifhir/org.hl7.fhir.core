@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>org.hl7.fhir.core</artifactId>
-		<version>6.8.2-SNAPSHOT</version>
+		<version>6.8.3-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -101,7 +101,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
-			<artifactId>okhttp</artifactId>
+			<artifactId>okhttp-jvm</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -163,7 +163,6 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>mockwebserver</artifactId>
-			<version>${okhttp.version}</version>
 			<optional>true</optional>
 			<scope>test</scope>
 		</dependency>

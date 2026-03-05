@@ -1,2 +1,26 @@
 {
+  "systems" : [{
+    "system" : "http://acme.org/devices/clinical-codes",
+    "url" : "http://acme.org/devices/clinical-codes",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r3"]
+  },
+  {
+    "system" : "http://loinc.org",
+    "url" : "http://loinc.org",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r3"]
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "url" : "http://snomed.info/sct",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r3"]
+  },
+  {
+    "system" : "http://unitsofmeasure.org",
+    "url" : "http://unitsofmeasure.org",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r3"]
+  }]
 }

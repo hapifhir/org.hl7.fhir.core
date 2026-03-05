@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.context;
 
+import com.sun.jdi.ClassType;
 import lombok.Getter;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -71,6 +72,41 @@ public interface IWorkerContext {
    * @return the version of the base definitions loaded in context
    */
   public String getVersion();
+
+  /**
+   * The context increments this anytime any definitions change. (that is, any
+   * resources are made available through the fetch*() methods, or removed
+   * from being available)
+   *
+   * Consumers can track this and reload any cached analysis if the value changes
+   * Consumers of the IWorkerContext in the core library do this, and it makes a
+   * significant difference to performance
+   *
+   * Contexts that aren't in a good position to track the content can just return a
+   * serially incrementing number, but then the performance benefits of caching will
+   * be lost
+   *
+   * @return a number that changes each time the content that the context represents changes
+   */
+  public int getDefinitionsVersion();
+
+  /**
+   * as an alternative to tracking, the context can store analysis for consumers of the context,
+   * and return them if the loaded set hasn't changed
+   *
+   * @param className - the class name asking for analysis to be stored
+   * @return the object previously stored, if there's been no change
+   */
+  public void storeAnalysis(Class className, Object analysis);
+
+  /**
+   * as an alternative to tracking, the context can store analysis for consumers of the context,
+   * and return them if the loaded set hasn't changed
+   *
+   * @param className - the class name asking for analysis to be stored
+   * @return the object previously stored, if there's been no change
+   */
+  public Object retrieveAnalysis(Class className);
 
   /**
    * @return The URL that points to the specification for the version loaded
@@ -801,5 +837,6 @@ public interface IWorkerContext {
   public boolean isForPublication();
   @Deprecated
   public void setForPublication(boolean value);
+
 
 }

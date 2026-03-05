@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -71,7 +72,7 @@ public class FHIRPathHostServices implements IHostApplicationServices {
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
     if (structureMapUtilities.getServices() == null)
       return null;
     return structureMapUtilities.getServices().resolveReference(appContext, url);
