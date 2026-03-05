@@ -580,7 +580,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    */
   @Override
   public NpmPackage addPackageToCache(String id, final String version, final InputStream packageTgzInputStream, final String sourceDesc) throws IOException {
-    String sid = stripAlias(id);
+    String sid = fixPrefix(stripAlias(id));
     checkValidVersionString(version, sid);
     return locks.getPackageLock(sid + "#" + version).doWriteWithLock(() -> {
 
@@ -589,9 +589,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       NpmPackage extractedNpm = NpmPackage.extractFromTgz(packageTgzInputStream, sourceDesc, tempDir, minimalMemory);
 
       log.info("");
-      log.info("Installing " + sid + "#" + version);
+      log.info("Installing " + stripAlias(id) + "#" + version);
 
-      if ((extractedNpm.name() != null && sid != null && !sid.equalsIgnoreCase(extractedNpm.name()) && !sid.equalsIgnoreCase(extractedNpm.name()+"."+VersionUtilities.getNameForVersion(extractedNpm.fhirVersion())))) {
+      if ((extractedNpm.name() != null && sid != null && !sid.equalsIgnoreCase(fixPrefix(extractedNpm.name())) && !sid.equalsIgnoreCase(fixPrefix(extractedNpm.name())+"."+VersionUtilities.getNameForVersion(extractedNpm.fhirVersion())))) {
         if (!suppressErrors && (!sid.equals("hl7.fhir.r5.core") && !sid.equals("hl7.fhir.us.immds"))) {// temporary work around
           throw new IOException("Attempt to import a mis-identified package. Expected " + sid + ", got " + extractedNpm.name());
         }
@@ -686,6 +686,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   @Override
   public NpmPackage loadPackage(String id, String version) throws FHIRException, IOException {
+    checkNotBlacklisted(id);
+
     id = stripAlias(id);
     //ok, try to resolve locally
     if (!Utilities.noString(version) && version.startsWith("file:")) {
@@ -740,6 +742,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       throw new FHIRException("Unable to find package " + id + "#" + version);
     }
     return addPackageToCache(id, source.version, source.stream, source.url);
+  }
+
+  private void checkNotBlacklisted(String id) {
+    if ("fhir.base.template".equals(id)) {
+      System.out.println("This content depends on fhir.base.template which is no longer considered secure to use. See notification on chat.fhir.org (tbd)");
+    }
   }
 
   private InputStreamWithSrc fetchSourceFromUrlSpecific(String url) {

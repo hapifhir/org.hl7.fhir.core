@@ -213,4 +213,12 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
       return id;
     }
   }
+
+  protected String fixPrefix(String id) {
+    if (id != null && id.startsWith("@") && id.contains("/")) {
+      return id.replace("@", "$$").replace("/", "$");
+    } else {
+      return id;
+    }
+  }
 }
