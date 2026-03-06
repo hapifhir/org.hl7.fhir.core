@@ -69,7 +69,11 @@ public class ServerDetailsPOJOAuthProvider implements AuthProvider {
 
   @Override
   public Map<String, String> getHeaders(URL url) {
-    return Map.of();
+    ServerDetailsPOJO serverDetails = getServerDetails(url);
+    if (serverDetails == null) {
+      return null;
+    }
+    return serverDetails.getHeaders();
   }
 
   /**

@@ -59,6 +59,9 @@ public class SimpleHTTPClient {
     Map<String, Integer> visited = new HashMap<>();
     HttpURLConnection connection = null;
     boolean done = false;
+
+    /* Use the manually set headers from this class. IF a redirect happens, these will be ignored an ALL future
+     redirects in favor of authprovider supplied headers. */
     boolean useHeadersFromThis = true;
     while (!done) {
       int times = visited.compute(urlString, (key, count) -> count == null ? 1 : count + 1);
