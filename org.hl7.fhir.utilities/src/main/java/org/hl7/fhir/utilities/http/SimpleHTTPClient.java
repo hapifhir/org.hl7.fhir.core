@@ -94,7 +94,7 @@ public class SimpleHTTPClient {
   }
 
   private boolean isNotSameHost(URL base, URL next) {
-    return !base.getHost().equals(next.getHost());
+    return !(base.getHost().equals(next.getHost()) && base.getProtocol().equals(next.getProtocol()));
   }
 
   private HttpURLConnection getGetConnection(String urlString, String accept, boolean useHeadersFromThis) throws IOException {
