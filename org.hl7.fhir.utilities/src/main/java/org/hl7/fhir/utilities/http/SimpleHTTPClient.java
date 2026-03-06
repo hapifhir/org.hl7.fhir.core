@@ -97,9 +97,13 @@ public class SimpleHTTPClient {
     return !(base.getHost().equals(next.getHost()) && base.getProtocol().equals(next.getProtocol()));
   }
 
-  private HttpURLConnection getGetConnection(String urlString, String accept, boolean useHeadersFromThis) throws IOException {
+  protected HttpURLConnection getHttpConnection(String urlString) throws IOException {
     URL url = new URL(urlString);
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    return (HttpURLConnection) url.openConnection();
+  }
+
+  private HttpURLConnection getGetConnection(String urlString, String accept, boolean useHeadersFromThis) throws IOException {
+    HttpURLConnection connection = getHttpConnection(urlString);
     connection.setRequestMethod("GET");
     if (accept != null) {
       connection.setRequestProperty("Accept", accept);
@@ -114,7 +118,6 @@ public class SimpleHTTPClient {
   }
 
   private void setHeaders(HttpURLConnection connection, boolean useHeadersFromThis) {
-
     connection.setConnectTimeout(15000);
     connection.setReadTimeout(15000);
     if (useHeadersFromThis) {
@@ -134,7 +137,7 @@ public class SimpleHTTPClient {
     }
   }
 
-  private void setAuthenticationHeadersFromProvider(HttpURLConnection connection) {
+  protected void setAuthenticationHeadersFromProvider(HttpURLConnection connection) {
     if (authprovider == null) {
       return;
     }
@@ -163,7 +166,8 @@ public class SimpleHTTPClient {
     }
   }
 
-  private void setAuthenticationHeadersFromThis(HttpURLConnection connection) {
+  protected void setAuthenticationHeadersFromThis(HttpURLConnection connection) {
+
     if (authenticationMode == null) {
       return;
     }
@@ -183,8 +187,7 @@ public class SimpleHTTPClient {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    URL url = new URL(urlString);
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    HttpURLConnection connection = getHttpConnection(urlString);
     connection.setDoOutput(true);
     connection.setDoInput(true);
     connection.setRequestMethod("POST");
@@ -203,8 +206,8 @@ public class SimpleHTTPClient {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    URL url = new URL(urlString);
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+    HttpURLConnection connection = getHttpConnection(urlString);
     connection.setDoOutput(true);
     connection.setDoInput(true);
     connection.setRequestMethod("PUT");
