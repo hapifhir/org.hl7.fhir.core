@@ -23,7 +23,10 @@ public class SimpleHTTPClient {
   private static final int MAX_REDIRECTS = 5;
   private static int counter = 1;
 
-  private List<HTTPHeader> headers = new ArrayList<>();
+  private final List<HTTPHeader> headers = new ArrayList<>();
+
+  @Getter @Setter
+  private AuthProvider authprovider;
 
   @Getter @Setter
   private HTTPAuthenticationMode authenticationMode;
@@ -48,118 +51,182 @@ public class SimpleHTTPClient {
     return get(url, null);    
   }
   
-  public HTTPResult get(String url, String accept) throws IOException {
+  public HTTPResult get(String urlString, String accept) throws IOException {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    
-    URL u = new URL(url);
-//    boolean isSSL = url.startsWith("https://");
-    
-    // handling redirects - setInstanceFollowRedirects(true) doesn't handle crossing http to https
 
     Map<String, Integer> visited = new HashMap<>();
-    HttpURLConnection c = null;
+    HttpURLConnection connection = null;
     boolean done = false;
 
+    /* Use the manually set headers from this class. IF a redirect happens, these will be ignored an ALL future
+     redirects in favor of authprovider supplied headers. */
+    boolean useHeadersFromThis = true;
     while (!done) {
-      int times = visited.compute(url, (key, count) -> count == null ? 1 : count + 1);
+      int times = visited.compute(urlString, (key, count) -> count == null ? 1 : count + 1);
       if (times > MAX_REDIRECTS)
         throw new IOException("Stuck in redirect loop");
 
-      u = new URL(url);
-      c = (HttpURLConnection) u.openConnection();
-      c.setRequestMethod("GET");
-      if (accept != null) {
-        c.setRequestProperty("Accept", accept);
-      }
-      setHeaders(c);
-      c.setInstanceFollowRedirects(false);
+      connection = getGetConnection(urlString, accept, useHeadersFromThis);
 
-      switch (c.getResponseCode()) {
-        case HttpURLConnection.HTTP_MOVED_PERM:
-        case HttpURLConnection.HTTP_MOVED_TEMP:
-        case 307:
-        case 308: // Same as HTTP_MOVED_PERM, but does not allow changing the request method from POST to GET
-          String location = c.getHeaderField("Location");
-          location = URLDecoder.decode(location, "UTF-8");
-          URL base = new URL(url);
+      //(connection.getResponseCode() implicitly establishes the connection)
+      switch (connection.getResponseCode()) {
+        case HttpURLConnection.HTTP_MOVED_PERM,
+             HttpURLConnection.HTTP_MOVED_TEMP,
+             307,
+             308: // Same as HTTP_MOVED_PERM, but does not allow changing the request method from POST to GET
+          String location = connection.getHeaderField("Location");
+          if (location == null) {
+            throw new IOException("Location header missing in " + connection.getResponseCode() + " redirect");
+          }
+          location = URLDecoder.decode(location, StandardCharsets.UTF_8);
+
+          URL base = new URL(urlString);
           URL next = new URL(base, location);  // Deal with relative URLs
-          url = next.toExternalForm();
+
+          if (isNotSameHost(base, next)) {
+            useHeadersFromThis = false;
+          }
+
+          urlString = next.toExternalForm();
           continue;
         default:
           done = true;
       }
     }
     
-    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(),  c.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
+    return new HTTPResult(urlString, connection.getResponseCode(), connection.getResponseMessage(),  connection.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(connection.getResponseCode() >= 400 ? connection.getErrorStream() : connection.getInputStream()));
   }
 
-  private void setHeaders(HttpURLConnection c) {
-    if (headers != null) {
+  private boolean isNotSameHost(URL base, URL next) {
+    return !(base.getHost().equals(next.getHost()) && base.getProtocol().equals(next.getProtocol()));
+  }
+
+  protected HttpURLConnection getHttpConnection(String urlString) throws IOException {
+    URL url = new URL(urlString);
+    return (HttpURLConnection) url.openConnection();
+  }
+
+  private HttpURLConnection getGetConnection(String urlString, String accept, boolean useHeadersFromThis) throws IOException {
+    HttpURLConnection connection = getHttpConnection(urlString);
+    connection.setRequestMethod("GET");
+    if (accept != null) {
+      connection.setRequestProperty("Accept", accept);
+    }
+    setHeaders(connection, useHeadersFromThis);
+    connection.setInstanceFollowRedirects(false);
+    return connection;
+  }
+
+  private void setHeaders(HttpURLConnection connection) {
+    setHeaders(connection, true);
+  }
+
+  private void setHeaders(HttpURLConnection connection, boolean useHeadersFromThis) {
+    connection.setConnectTimeout(15000);
+    connection.setReadTimeout(15000);
+    if (useHeadersFromThis) {
+      setAuthenticationHeadersFromThis(connection);
+
       for (HTTPHeader header : headers) {
-        c.setRequestProperty(header.getName(), header.getValue());
+        connection.setRequestProperty(header.getName(), header.getValue());
+      }
+    } else if (authprovider != null) {
+      setAuthenticationHeadersFromProvider(connection);
+
+      URL url = connection.getURL();
+      Map<String, String> providedHeaders = authprovider.getHeaders(url);
+      if (providedHeaders != null) {
+        for (Map.Entry<String, String> entry : providedHeaders.entrySet()) {
+          connection.setRequestProperty(entry.getKey(), entry.getValue());
+        }
       }
     }
-    c.setConnectTimeout(15000);
-    c.setReadTimeout(15000);
-    setAuthenticationHeader(c);
   }
 
-  private void setAuthenticationHeader(HttpURLConnection c) {
-    String authHeaderValue = null;
-    if (authenticationMode == HTTPAuthenticationMode.TOKEN) {
-      authHeaderValue = "Bearer " + token;
-    } else if (authenticationMode == HTTPAuthenticationMode.BASIC) {
-      String auth = username+":"+password;
-      byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-      authHeaderValue = "Basic " + new String(encodedAuth);
-    } else if (authenticationMode == HTTPAuthenticationMode.APIKEY) {
-      c.setRequestProperty("Api-Key", apiKey);
+  private void setAuthenticationHeadersFromProvider(HttpURLConnection connection) {
+    if (authprovider == null) {
+      return;
     }
-
-    if (authHeaderValue != null) {
-      c.setRequestProperty("Authorization", authHeaderValue);
+    URL url = connection.getURL();
+    HTTPAuthenticationMode authenticationMode = authprovider.getHTTPAuthenticationMode(url);
+    if (authenticationMode == null) {
+      return;
+    }
+    switch (authenticationMode) {
+      case TOKEN -> {
+        String providedToken = authprovider.getToken(url);
+        connection.setRequestProperty("Authorization", "Bearer " + providedToken);
+      }
+      case BASIC -> {
+        String providedUsername = authprovider.getUsername(url);
+        String providedPassword = authprovider.getPassword(url);
+        String auth = providedUsername + ":" + providedPassword;
+        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+        connection.setRequestProperty("Authorization", "Basic " + new String(encodedAuth));
+      }
+      case APIKEY -> {
+        String providedAPIKey = authprovider.getAPIKey(url);
+        connection.setRequestProperty("Api-Key", providedAPIKey);
+      }
+      default -> { /* do nothing */ }
     }
   }
 
-  public HTTPResult post(String url, String contentType, byte[] content, String accept) throws IOException {
+  private void setAuthenticationHeadersFromThis(HttpURLConnection connection) {
+
+    if (authenticationMode == null) {
+      return;
+    }
+    switch (authenticationMode) {
+      case TOKEN -> connection.setRequestProperty("Authorization", "Bearer " + token);
+      case BASIC -> {
+        String auth = username + ":" + password;
+        byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+        connection.setRequestProperty("Authorization", "Basic " + new String(encodedAuth));
+      }
+      case APIKEY -> connection.setRequestProperty("Api-Key", apiKey);
+      default -> { /* do nothing */}
+    }
+  }
+
+  public HTTPResult post(String urlString, String contentType, byte[] content, String accept) throws IOException {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    URL u = new URL(url);
-    HttpURLConnection c = (HttpURLConnection) u.openConnection();
-    c.setDoOutput(true);
-    c.setDoInput(true);
-    c.setRequestMethod("POST");
-    c.setRequestProperty("Content-Type", contentType);
+    HttpURLConnection connection = getHttpConnection(urlString);
+    connection.setDoOutput(true);
+    connection.setDoInput(true);
+    connection.setRequestMethod("POST");
+    connection.setRequestProperty("Content-Type", contentType);
     if (accept != null) {
-      c.setRequestProperty("Accept", accept);
+      connection.setRequestProperty("Accept", accept);
     }
-    setHeaders(c);
-    c.getOutputStream().write(content);
-    c.getOutputStream().close();    
-    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
+    setHeaders(connection);
+    connection.getOutputStream().write(content);
+    connection.getOutputStream().close();
+    return new HTTPResult(urlString, connection.getResponseCode(), connection.getResponseMessage(), connection.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(connection.getResponseCode() >= 400 ? connection.getErrorStream() : connection.getInputStream()));
   }
 
  
-  public HTTPResult put(String url, String contentType, byte[] content, String accept) throws IOException {
+  public HTTPResult put(String urlString, String contentType, byte[] content, String accept) throws IOException {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    URL u = new URL(url);
-    HttpURLConnection c = (HttpURLConnection) u.openConnection();
-    c.setDoOutput(true);
-    c.setDoInput(true);
-    c.setRequestMethod("PUT");
-    c.setRequestProperty("Content-type", contentType);
+
+    HttpURLConnection connection = getHttpConnection(urlString);
+    connection.setDoOutput(true);
+    connection.setDoInput(true);
+    connection.setRequestMethod("PUT");
+    connection.setRequestProperty("Content-type", contentType);
     if (accept != null) {
-      c.setRequestProperty("Accept", accept);
+      connection.setRequestProperty("Accept", accept);
     }
-    setHeaders(c);
-    c.getOutputStream().write(content);
-    c.getOutputStream().close();    
-    return new HTTPResult(url, c.getResponseCode(), c.getResponseMessage(), c.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(c.getResponseCode() >= 400 ? c.getErrorStream() : c.getInputStream()));
+    setHeaders(connection);
+    connection.getOutputStream().write(content);
+    connection.getOutputStream().close();
+    return new HTTPResult(urlString, connection.getResponseCode(), connection.getResponseMessage(), connection.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(connection.getResponseCode() >= 400 ? connection.getErrorStream() : connection.getInputStream()));
   }
 
   public static int nextCounter() {

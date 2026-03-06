@@ -26,10 +26,10 @@ public class ManagedFhirWebAccessorTests {
     ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(expectedUserAgent, null)
       .withBasicAuth("dummy-user", "dummy-password");
 
-    HTTPRequest requestWithManagedHeaders = builder.requestWithManagedHeaders(request);
-    assertRequestContainsExpectedAgentHeader(requestWithManagedHeaders);
+    HTTPRequest requestWithAuthorizationHeaders = builder.requestWithAuthorizationHeaders(request);
+    assertRequestContainsExpectedAgentHeader(requestWithAuthorizationHeaders);
 
-    Assertions.assertNotNull(HTTPHeaderUtil.getSingleHeader(requestWithManagedHeaders.getHeaders(),"Authorization"), "Authorization header null.");
+    Assertions.assertNotNull(HTTPHeaderUtil.getSingleHeader(requestWithAuthorizationHeaders.getHeaders(),"Authorization"), "Authorization header null.");
   }
 
   private void assertRequestContainsExpectedAgentHeader(HTTPRequest requestWithDefaultHeaders) {
