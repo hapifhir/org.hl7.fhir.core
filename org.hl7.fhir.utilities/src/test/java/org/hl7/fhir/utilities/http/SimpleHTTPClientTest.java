@@ -122,7 +122,7 @@ public class SimpleHTTPClientTest {
       if (i < urlArgs.length - 1) {
         urls[i] = server.url(urlArgs[i]);
       } else {
-        urls[i] = HttpUrl.parse("http://example.org/redirected");
+        urls[i] = HttpUrl.parse("http://example.invalid/redirected");
       }
 
       if (i > 0) {
@@ -148,7 +148,7 @@ public class SimpleHTTPClientTest {
 
     assertThat(server.getRequestCount()).isEqualTo(urlArgs.length - 1);
 
-    verify(myAuthProvider, times(1)).getHTTPAuthenticationMode(new URL("http://example.org/redirected"));
+    verify(myAuthProvider, times(1)).getHTTPAuthenticationMode(new URL("http://example.invalid/redirected"));
 
     for (int i = 0; i < urlArgs.length - 1; i++) {
       RecordedRequest packageRequest = server.takeRequest();
