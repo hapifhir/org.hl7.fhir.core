@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.npm;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
    * if it can not be found at any of them.
    */
   @Nullable
-  protected InputStreamWithSrc loadFromPackageServer(String id, String version) {
+  protected InputStreamWithSrc loadFromPackageServer(String id, String version) throws FileNotFoundException {
 
     for (PackageServer nextPackageServer : getPackageServers()) {
       if (okToUsePackageServer(nextPackageServer.getUrl(), id)) {

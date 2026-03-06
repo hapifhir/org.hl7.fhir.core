@@ -329,7 +329,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
   }
 
-  protected InputStreamWithSrc loadFromPackageServer(String id, String version) {
+  protected InputStreamWithSrc loadFromPackageServer(String id, String version) throws FileNotFoundException {
     InputStreamWithSrc retVal = super.loadFromPackageServer(id, version);
     if (retVal != null) {
       return retVal;
@@ -494,6 +494,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   @Override
   public NpmPackage loadPackageFromCacheOnly(String id, @Nullable String version) throws IOException {
     id = stripAlias(id);
+    String fid = fixPrefix(id);
 
     if (!Utilities.noString(version) && version.startsWith("file:")) {
       return loadPackageFromFile(id, version.substring(5));
@@ -508,7 +509,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       }
     }
 
-    String foundPackageFolder = findPackageFolder(id, version);
+    String foundPackageFolder = findPackageFolder(fid, version);
     if (foundPackageFolder != null) {
       NpmPackage foundPackage = locks.getPackageLock(foundPackageFolder).doReadWithLock(() -> {
         String path = Utilities.path(cacheFolder, foundPackageFolder);
@@ -602,9 +603,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       try {
         if (!sid.equals(extractedNpm.getNpm().asString("name")) || !version.equals(extractedNpm.getNpm().asString("version"))) {
           if (!sid.equals(extractedNpm.getNpm().asString("name"))) {
-            extractedNpm.getNpm().add("original-name", extractedNpm.getNpm().asString("name"));
-            extractedNpm.getNpm().remove("name");
-            extractedNpm.getNpm().add("name", sid);
+//            extractedNpm.getNpm().add("original-name", extractedNpm.getNpm().asString("name"));
+//            extractedNpm.getNpm().remove("name");
+//            extractedNpm.getNpm().add("name", sid);
           }
           if (!version.equals(extractedNpm.getNpm().asString("version"))) {
             extractedNpm.getNpm().add("original-version", extractedNpm.getNpm().asString("version"));
@@ -820,13 +821,12 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   // ----- the old way, from before package server, while everything gets onto the package server
-  private InputStreamWithSrc fetchTheOldWay(String id, String v) {
+  private InputStreamWithSrc fetchTheOldWay(String id, String v) throws FileNotFoundException {
     String url = getUrlForPackage(id);
     if (url == null) {
       try {
         url = ciBuildClient.getPackageUrl(id);
       } catch (Exception ignored) {
-
       }
     }
     if (url == null) {
