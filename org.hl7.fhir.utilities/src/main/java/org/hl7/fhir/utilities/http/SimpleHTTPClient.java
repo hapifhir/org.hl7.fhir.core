@@ -74,7 +74,10 @@ public class SimpleHTTPClient {
              307,
              308: // Same as HTTP_MOVED_PERM, but does not allow changing the request method from POST to GET
           String location = connection.getHeaderField("Location");
-          location = URLDecoder.decode(location, "UTF-8");
+          if (location == null) {
+            throw new IOException("Location header missing in " + connection.getResponseCode() + " redirect");
+          }
+          location = URLDecoder.decode(location, StandardCharsets.UTF_8);
 
           URL base = new URL(urlString);
           URL next = new URL(base, location);  // Deal with relative URLs
@@ -131,13 +134,15 @@ public class SimpleHTTPClient {
 
       URL url = connection.getURL();
       Map<String, String> providedHeaders = authprovider.getHeaders(url);
-      for (Map.Entry<String, String> entry : providedHeaders.entrySet()) {
-        connection.setRequestProperty(entry.getKey(), entry.getValue());
+      if (providedHeaders != null) {
+        for (Map.Entry<String, String> entry : providedHeaders.entrySet()) {
+          connection.setRequestProperty(entry.getKey(), entry.getValue());
+        }
       }
     }
   }
 
-  protected void setAuthenticationHeadersFromProvider(HttpURLConnection connection) {
+  private void setAuthenticationHeadersFromProvider(HttpURLConnection connection) {
     if (authprovider == null) {
       return;
     }
@@ -166,7 +171,7 @@ public class SimpleHTTPClient {
     }
   }
 
-  protected void setAuthenticationHeadersFromThis(HttpURLConnection connection) {
+  private void setAuthenticationHeadersFromThis(HttpURLConnection connection) {
 
     if (authenticationMode == null) {
       return;

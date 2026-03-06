@@ -3,7 +3,7 @@ package org.hl7.fhir.utilities.http;
 import java.net.URL;
 import java.util.Map;
 
-interface AuthProvider {
+public interface AuthProvider {
   HTTPAuthenticationMode getHTTPAuthenticationMode(URL url);
 
   String getUsername(URL url);

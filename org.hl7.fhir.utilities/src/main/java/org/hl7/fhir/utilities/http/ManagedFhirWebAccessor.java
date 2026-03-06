@@ -159,7 +159,6 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
       okHttpClient = new OkHttpClient();
     }
     OkHttpClient.Builder builder = okHttpClient.newBuilder();
-    // FIXME add authenticator here for managing redirects?
     if (logger != null) builder.addInterceptor(loggingInterceptor);
     builder.addInterceptor(new RetryInterceptor(retries));
     builder.proxyAuthenticator(new ProxyAuthenticator());
