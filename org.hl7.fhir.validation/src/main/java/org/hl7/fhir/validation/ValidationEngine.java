@@ -38,6 +38,16 @@ import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.liquid.BaseTableWrapper;
+import org.hl7.fhir.r5.liquid.GlobalObject.GlobalObjectRandomFunction;
+import org.hl7.fhir.r5.liquid.LiquidEngine;
+import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.DateType;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.testfactory.ProfileBasedFactory;
+import org.hl7.fhir.r5.testfactory.TestDataFactory;
+import org.hl7.fhir.r5.testfactory.TestDataHostServices;
+import org.hl7.fhir.r5.testfactory.dataprovider.InlineTableDataProvider;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
@@ -881,6 +891,109 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.getFocus().getBytes()), cnt.getCntType());
     ExpressionNode exp = fpe.parse(expression);
     return fpe.evaluateToString(new ValidationContext(context), e, e, e, exp);
+  }
+
+  public String evaluateFhirPath(byte[] resource, FhirFormat format, String expression) throws FHIRException, IOException {
+    FHIRPathEngine fpe = this.getValidator(null).getFHIRPathEngine();
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
+    ExpressionNode exp = fpe.parse(expression);
+    return fpe.evaluateToString(new ValidationContext(context), e, e, e, exp);
+  }
+
+  public OperationOutcome compareMatchetype(byte[] resource, FhirFormat resourceFormat,
+      byte[] matchetype, FhirFormat matchetypeFormat) throws FHIRException, IOException {
+    InstanceValidator validator = getValidator(resourceFormat);
+    Element res = Manager.parseSingle(context, new ByteArrayInputStream(resource), resourceFormat);
+    Element exp = Manager.parseSingle(context, new ByteArrayInputStream(matchetype), matchetypeFormat);
+
+    MatchetypeValidator mv = new MatchetypeValidator(validator.getFHIRPathEngine());
+    List<ValidationMessage> messages = new ArrayList<>();
+    mv.compare(messages, res.fhirType(), exp, res);
+
+    OperationOutcome oo = new OperationOutcome();
+    if (messages.isEmpty()) {
+      oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.INFORMATION)
+        .setCode(OperationOutcome.IssueType.INFORMATIONAL)
+        .getDetails().setText("Matchetype comparison: All OK");
+    } else {
+      for (ValidationMessage msg : messages) {
+        oo.addIssue()
+          .setSeverity(OperationOutcome.IssueSeverity.fromCode(msg.getLevel().toCode()))
+          .setCode(OperationOutcome.IssueType.fromCode(msg.getType().toCode()))
+          .getDetails().setText(msg.getMessage());
+      }
+    }
+    return oo;
+  }
+
+  public byte[] generateTestData(String profileUrl, org.hl7.fhir.utilities.json.model.JsonArray data,
+      org.hl7.fhir.utilities.json.model.JsonArray mappings, FhirFormat outputFormat, boolean asBundle) throws Exception {
+    StructureDefinition profile = context.fetchResource(StructureDefinition.class, profileUrl);
+    if (profile == null) {
+      throw new FHIRException("Profile not found: " + profileUrl);
+    }
+    if (!profile.hasSnapshot()) {
+      new ProfileUtilities(context, null, null).setAutoFixSliceNames(true)
+          .generateSnapshot(context.fetchResource(StructureDefinition.class, profile.getBaseDefinition()),
+              profile, profile.getUrl(), null, profile.getName());
+    }
+
+    FHIRPathEngine fpe = new FHIRPathEngine(context);
+    TestDataHostServices hs = new TestDataHostServices(context,
+        new DateTimeType(new Date()), new DateType(new Date()),
+        new StringType(VersionUtilities.getSpecUrl(context.getVersion())));
+    hs.registerFunction(new GlobalObjectRandomFunction());
+    hs.registerFunction(new BaseTableWrapper.TableColumnFunction());
+    hs.registerFunction(new BaseTableWrapper.TableDateColumnFunction());
+    hs.registerFunction(new TestDataFactory.CellLookupFunction());
+    hs.registerFunction(new TestDataFactory.TableLookupFunction());
+    fpe.setHostServices(hs);
+
+    // Ensure base test data SQLite file is available
+    String baseDataPath = Utilities.path("[tmp]", "fhir-test-data.db");
+    File baseDataFile = new File(baseDataPath);
+    if (!baseDataFile.exists()) {
+      try {
+        org.hl7.fhir.utilities.json.model.JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl("http://fhir.org/downloads/test-data-versions.json");
+        org.hl7.fhir.utilities.json.model.JsonObject current = json.forceArray("versions").get(0).asJsonObject();
+        String filename = current.asString("filename");
+        org.hl7.fhir.utilities.http.HTTPResult result = org.hl7.fhir.utilities.http.ManagedWebAccess.get(Utilities.strings("general"), "http://fhir.org/downloads/" + filename);
+        FileUtilities.bytesToFile(result.getContent(), baseDataFile);
+      } catch (Exception e) {
+        throw new FHIRException("Unable to download FHIR base test data (fhir-test-data.db). " +
+            "Run the validator once with -instance-factory to download it, or check network access: " + e.getMessage(), e);
+      }
+    }
+
+    InlineTableDataProvider tbl = new InlineTableDataProvider(data);
+    ProfileBasedFactory factory = new ProfileBasedFactory(fpe,
+        baseDataPath, tbl, new HashMap<>(),
+        mappings != null ? mappings : new org.hl7.fhir.utilities.json.model.JsonArray());
+    factory.setTesting(true);
+
+    if (asBundle) {
+      Element bundle = Manager.parse(context,
+          new ByteArrayInputStream("{\"resourceType\":\"Bundle\",\"type\":\"collection\"}".getBytes()), FhirFormat.JSON).get(0).getElement();
+      bundle.makeElement("id").setValue(java.util.UUID.randomUUID().toString().toLowerCase());
+      while (tbl.nextRow()) {
+        Element resource = factory.generate(profile);
+        Element be = bundle.makeElement("entry");
+        be.makeElement("fullUrl").setValue("urn:uuid:" + java.util.UUID.randomUUID().toString().toLowerCase());
+        be.makeElement("resource").getChildren().addAll(resource.getChildren());
+      }
+      tbl.reset();
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      Manager.compose(context, bundle, bs, outputFormat, OutputStyle.PRETTY, null);
+      return bs.toByteArray();
+    } else {
+      if (tbl.nextRow()) {
+        byte[] result = factory.generateFormat(profile, outputFormat);
+        tbl.reset();
+        return result;
+      } else {
+        throw new FHIRException("No data rows provided for test data generation");
+      }
+    }
   }
 
   public StructureDefinition snapshot(String source, String version) throws FHIRException, IOException {
