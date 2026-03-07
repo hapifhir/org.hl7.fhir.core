@@ -595,7 +595,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
       if (!suppressErrors && extractedNpm.name() != null && actualId != null &&
           !fileSystemId.equalsIgnoreCase(encodeIdForFilesystem(extractedNpm.name())) &&
-          !fileSystemId.equalsIgnoreCase(encodeIdForFilesystem(extractedNpm.name())+"."+VersionUtilities.getNameForVersion(extractedNpm.fhirVersion())))) {
+          !fileSystemId.equalsIgnoreCase(encodeIdForFilesystem(extractedNpm.name())+"."+VersionUtilities.getNameForVersion(extractedNpm.fhirVersion()))) {
           throw new IOException("Attempt to import a mis-identified package. Expected " + actualId + ", got " + extractedNpm.name());
       }
 
