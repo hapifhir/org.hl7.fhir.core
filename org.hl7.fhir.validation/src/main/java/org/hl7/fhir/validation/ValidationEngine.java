@@ -610,14 +610,18 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return list;
   }
 
+  @Deprecated(since="2026-02-20")
   public OperationOutcome validate(String source, List<String> profiles, IValidationEngineLoader loader, boolean all) throws FHIRException, IOException, InterruptedException {
     List<String> l = new ArrayList<String>();
     List<SourceFile> refs = new ArrayList<>();
     l.add(source);
-    return (OperationOutcome) validate(l, profiles, refs, null, loader, all, 0, true);
+    return (OperationOutcome) validate(l, new InstanceValidatorParameters().setProfiles(profiles), refs, null, loader, all, 0, true);
   }
 
-  public Resource validate(List<String> sources, List<String> profiles, List<SourceFile> refs, List<ValidationRecord> record, IValidationEngineLoader loader, boolean all, int delay, boolean first) throws FHIRException, IOException, InterruptedException {
+  //FIXME
+  // from CLI (direct)
+  // from MatchboxService
+  public Resource validate(List<String> sources, InstanceValidatorParameters instanceValidatorParameters, List<SourceFile> refs, List<ValidationRecord> record, IValidationEngineLoader loader, boolean all, int delay, boolean first) throws FHIRException, IOException, InterruptedException {
     boolean asBundle = ValidatorUtils.parseSources(sources, refs, context);
     Bundle results = new Bundle();
     results.setType(Bundle.BundleType.COLLECTION);
@@ -658,7 +662,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         log.info("  Validate " + ref.getRef());
 
         try {
-          OperationOutcome outcome = validate(ref.getRef(), ref.getCnt().getFocus(), ref.getCnt().getCntType(), profiles, record);
+          OperationOutcome outcome = validate(ref.getRef(), ref.getCnt().getFocus(), ref.getCnt().getCntType(), instanceValidatorParameters, record);
           ExtensionUtilities.addStringExtension(outcome, ExtensionDefinitions.EXT_OO_FILE, ref.getRef());
           log.info(" " + context.clock().milestone());
           results.addEntry().setResource(outcome);
@@ -677,14 +681,19 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       return results.getEntryFirstRep().getResource();
   }
 
-
-  public ValidatedFragments validateAsFragments(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
-    InstanceValidator validator = getValidator(cntType);
-    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
+  // FIXME from validator-wrapper (indirect)
+  public ValidatedFragments validateAsFragments(byte[] source, FhirFormat cntType, InstanceValidatorParameters instanceValidatorParameters, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
+    InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
+    //FIXME set instance validator options
+    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(instanceValidatorParameters.getProfiles()));
     return new ValidatedFragments(validator.validatedContent,
       ValidationTime.fromTimeTracker(validator.timeTracker));
   }
 
+  /**
+   * @deprecated
+   */
+  @Deprecated(since="2026-02-20")
   public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator(cntType);
 
@@ -692,13 +701,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
-  public OperationOutcome validate(String location, ByteProvider source, FhirFormat cntType, List<String> profiles, List<ValidationRecord> record) throws FHIRException, IOException, EOperationOutcome, SAXException {
+  //FIXME from CLI (indirect)
+  public OperationOutcome validate(String location, ByteProvider source, FhirFormat cntType, InstanceValidatorParameters instanceValidatorParameters, List<ValidationRecord> record) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
       SchemaValidator.validateSchema(location, cntType, messages);
     }
-    InstanceValidator validator = getValidator(cntType);
-    Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(profiles));
+    InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
+    //FIXME set instance validator options
+    Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(instanceValidatorParameters.getProfiles()));
     boolean first = true;
     for (String fn : matchetypes) {
       if (first) {
@@ -738,6 +749,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
+  /**
+   * @deprecated
+   */
+  @Deprecated(since="2026-02-20")
   public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
@@ -901,10 +916,14 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public InstanceValidator getValidator(FhirFormat format) throws FHIRException, IOException {
+    return getValidator(format, defaultInstanceValidatorParameters);
+  }
+
+  public InstanceValidator getValidator(FhirFormat format, InstanceValidatorParameters instanceValidatorParameters) throws FHIRException, IOException {
     InstanceValidator validator = new InstanceValidator(context, null, null, new ValidatorSession(), new ValidatorSettings());
     context.getTxClientManager().setUsage("validation");
 
-    validator.initializeFromParameters(defaultInstanceValidatorParameters);
+    validator.initializeFromParameters(instanceValidatorParameters);
 
     validator.getSettings().getCertificateFolders().clear(); // they should be empty though
     validator.getSettings().getCertificates().clear();
@@ -925,7 +944,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         locale = Locale.forLanguageTag(language);
       }
     }
-    validator.setAssumeValidRestReferences(defaultInstanceValidatorParameters.isAssumeValidRestReferences());
+    validator.setAssumeValidRestReferences(instanceValidatorParameters.isAssumeValidRestReferences());
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
 
     validator.getContext().getManager().setLocale(locale);
@@ -934,7 +953,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.getValidationControl().putAll(validationControl);
     validator.setAIService(aiService);
 
-    validator.setCheckIPSCodes(defaultInstanceValidatorParameters.isCheckIPSCodes());
+    validator.setCheckIPSCodes(instanceValidatorParameters.isCheckIPSCodes());
 
     validator.setCacheFolder(context.getTxCache().getFolder());
     if (format == FhirFormat.SHC) {
