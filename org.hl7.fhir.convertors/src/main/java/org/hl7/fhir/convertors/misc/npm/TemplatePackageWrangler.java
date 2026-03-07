@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.misc.npm;
 
+import net.sourceforge.plantuml.abel.LinkStrategy;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -12,10 +13,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class TemplatePackageWrangler {
 
@@ -29,7 +30,7 @@ public class TemplatePackageWrangler {
       new TemplatePackageWrangler().execute(ManagedFileAccess.file(args[0]), args[1], sh, packages);
       FileUtilities.stringToFile(sh.toString(), Utilities.path(args[1], "publish.sh"));
     } catch (Exception e) {
-
+      e.printStackTrace();
     }
     JsonObject json = new JsonObject();
     for (String p : Utilities.sorted(packages)) {
@@ -40,31 +41,38 @@ public class TemplatePackageWrangler {
 
   private void execute(File file, String dest, StringBuilder sh, Set<String> packageList) throws IOException {
     Map<String, String> packages = new HashMap<>();
-    for (File f : file.listFiles()) {
-      String name = f.getName().replace(".tgz", "");
-      int splitAt = -1;
-      for (int i = 0; i < name.length() - 1; i++) {
-        if (name.charAt(i) == '-' && Character.isDigit(name.charAt(i + 1))) {
-          splitAt = i;
-          break;
+    try (Stream<String> lines = Files.lines(Path.of("/Users/grahamegrieve/temp/package-list.txt"))) {
+      lines.forEach(name -> {
+        try {
+          int splitAt = -1;
+          for (int i = 0; i < name.length() - 1; i++) {
+            if (name.charAt(i) == '-' && Character.isDigit(name.charAt(i + 1))) {
+              splitAt = i;
+              break;
+            }
+          }
+          if (splitAt > -1) {
+            String id = name.substring(0, splitAt);
+            String version = name.substring(splitAt + 1);
+            if (!packages.containsKey(id)) {
+              packages.put(id, version);
+            } else {
+              String v = packages.get(id);
+              if (VersionUtilities.isThisOrLater(v, version, VersionUtilities.VersionPrecision.FULL)) {
+                packages.put(id, version);
+              }
+            }
+          }
+        } catch (Exception e) {
+          // nothing
         }
-      }
-      if (splitAt == -1) {
-        // handle error - no version found
+      });
+    }
+
+    for (String id : Utilities.sorted(packages.keySet())) {
+      if (packages.containsKey(id)) {
         continue;
       }
-      String id = name.substring(0, splitAt);
-      String version = name.substring(splitAt + 1);
-      if (!packages.containsKey(id)) {
-        packages.put(id, version);
-      } else {
-        String v = packages.get(id);
-        if (VersionUtilities.isThisOrLater(v, version, VersionUtilities.VersionPrecision.FULL)) {
-          packages.put(id, version);
-        }
-      }
-    }
-    for (String id : Utilities.sorted(packages.keySet())) {
       packageList.add(id);
       String fn = id + "-" + packages.get(id) + ".tgz";
       File f = new File(Utilities.path(file.getAbsolutePath(), fn));
