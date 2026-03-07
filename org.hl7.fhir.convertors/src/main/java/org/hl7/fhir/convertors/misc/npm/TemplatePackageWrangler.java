@@ -78,7 +78,6 @@ public class TemplatePackageWrangler {
       File f = new File(Utilities.path(file.getAbsolutePath(), fn));
       NpmPackage npm = NpmPackage.fromPackage(new FileInputStream(f));
       String v = npm.version();
-      System.out.println("Package " + id + "#" + v);
       File tgt = new File(Utilities.path(dest, id + "#" + v));
       if (!tgt.exists()) {
         FileUtilities.createDirectory(tgt);
