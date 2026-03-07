@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.npm;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
    * if it can not be found at any of them.
    */
   @Nullable
-  protected InputStreamWithSrc loadFromPackageServer(String id, String version) {
+  protected InputStreamWithSrc loadFromPackageServer(String id, String version) throws FileNotFoundException {
 
     for (PackageServer nextPackageServer : getPackageServers()) {
       if (okToUsePackageServer(nextPackageServer.getUrl(), id)) {
@@ -108,16 +109,16 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   public abstract NpmPackage loadPackageFromCacheOnly(String id, @Nullable String version) throws IOException;
 
   @Override
-  public String getPackageUrl(String packageId) throws IOException {
-    packageId = stripAlias(packageId);
+  public String getPackageUrl(String statedPackageId) throws IOException {
+    String actualPackageId = stripAlias(statedPackageId);
     String result = null;
-    NpmPackage npm = loadPackageFromCacheOnly(packageId);
+    NpmPackage npm = loadPackageFromCacheOnly(actualPackageId);
     if (npm != null) {
       return npm.canonical();
     }
 
     for (PackageServer nextPackageServer : getPackageServers()) {
-      result = getPackageUrl(packageId, nextPackageServer);
+      result = getPackageUrl(actualPackageId, nextPackageServer);
       if (result != null) {
         return result;
       }
@@ -185,9 +186,9 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   }
 
   @Override
-  public NpmPackage loadPackage(String idAndVer) throws FHIRException, IOException {
-    idAndVer = stripAlias(idAndVer);
-    return loadPackage(idAndVer, null);
+  public NpmPackage loadPackage(String statedIdAndVer) throws FHIRException, IOException {
+    String actualIdAndVer = stripAlias(statedIdAndVer);
+    return loadPackage(actualIdAndVer, null);
   }
 
 
@@ -209,6 +210,22 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   protected String stripAlias(String id) {
     if (id != null && id.contains("@npm:")) {
       return id.substring(id.indexOf("@npm:")+5);
+    } else {
+      return id;
+    }
+  }
+
+  /**
+   * this is a one way transform, but it must maintain uniqueness
+   *
+   * @ is ok in file names, but / is not
+   *
+   * @param id
+   * @return
+   */
+  protected String encodeIdForFilesystem(String id) {
+    if (id != null && id.startsWith("@") && id.contains("/")) {
+      return id.replace("/", "$");
     } else {
       return id;
     }
