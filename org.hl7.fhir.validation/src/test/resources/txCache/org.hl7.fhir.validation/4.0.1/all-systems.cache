@@ -7736,9 +7736,97 @@ v: {
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r4",
   "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/ValueSet/languages|4.0.1: Analysing http://hl7.org/fhir/ValueSet/languages|4.0.1 for validation purposes\n2ms http://hl7.org/fhir/ValueSet/languages|4.0.1: Parameters: disp-lang=en-AU, generate-narrative, default-to-latest\n2ms http://hl7.org/fhir/ValueSet/languages|4.0.1: Prepare include[0]: \"(urn:ietf:bcp:47)(ar,bn,cs,da,de,de-AT,de-CH,de-DE,el,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,fi,fr,fr-BE,fr-CH,fr-FR,fy,fy-NL,hi,hr,it,it-CH,it-IT,ja,ko,nl,nl-BE,nl-NL,no,no-NO,pa,pl,pt,pt-BR,ru,ru-RU,sr,sr-RS,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW)\"\n2ms http://hl7.org/fhir/ValueSet/languages|4.0.1: CodeSystem found: \"urn:ietf:bcp:47|null\"\n2ms http://hl7.org/fhir/ValueSet/languages|4.0.1: Validate \"[undefined#en-AU (\"undefined\")]\" and infer system\n2ms http://hl7.org/fhir/ValueSet/languages|4.0.1: Check \"undefined#en-AU\"\n2ms http://hl7.org/fhir/ValueSet/languages|4.0.1: Inferred CodeSystem = \"urn:ietf:bcp:47\"\n2ms http://hl7.org/fhir/ValueSet/languages|4.0.1: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n2ms http://hl7.org/fhir/ValueSet/languages|4.0.1: check code in (urn:ietf:bcp:47)(ar,bn,cs,da,de,de-AT,de-CH,de-DE,el,en,en-AU,en-CA,en-GB,en-IN,en-NZ,en-SG,en-US,es,es-AR,es-ES,es-UY,fi,fr,fr-BE,fr-CH,fr-FR,fy,fy-NL,hi,hr,it,it-CH,it-IT,ja,ko,nl,nl-BE,nl-NL,no,no-NO,pa,pl,pt,pt-BR,ru,ru-RU,sr,sr-RS,sv,sv-SE,te,zh,zh-CN,zh-HK,zh-SG,zh-TW) at \n2ms http://hl7.org/fhir/ValueSet/languages|4.0.1: Code \"en-AU\" found in urn:ietf:bcp:47|null",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://hl7.org/fhir/ValueSet/measure-type",
+    "code" : "structure",
+    "display" : "Structure"
+  }]
+}, "url": "http://hl7.org/fhir/ValueSet/measure-type", "version": "4.0.1", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "severity" : "error",
+  "error" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/measure-type|4.0.1'; The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/measure-type')",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/measure-type|4.0.1: Analysing http://hl7.org/fhir/ValueSet/measure-type|4.0.1 for validation purposes\n1ms http://hl7.org/fhir/ValueSet/measure-type|4.0.1: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/ValueSet/measure-type|4.0.1: Prepare include[0]: \"(http://terminology.hl7.org/CodeSystem/measure-type)\"\n1ms http://hl7.org/fhir/ValueSet/measure-type|4.0.1: CodeSystem found: \"http://terminology.hl7.org/CodeSystem/measure-type|3.0.1\"\n1ms http://hl7.org/fhir/ValueSet/measure-type|4.0.1: Validate \"[http://hl7.org/fhir/ValueSet/measure-type#structure (\"Structure\")]\"\n1ms http://hl7.org/fhir/ValueSet/measure-type|4.0.1: Check \"http://hl7.org/fhir/ValueSet/measure-type#structure\"",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "this-code-not-in-vs"
+      }],
+      "text" : "The provided code 'http://hl7.org/fhir/ValueSet/measure-type#structure ('Structure')' was not found in the value set 'http://hl7.org/fhir/ValueSet/measure-type|4.0.1'"
+    },
+    "expression" : ["CodeableConcept.coding[0].code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Terminology_TX_System_ValueSet2"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-data"
+      }],
+      "text" : "The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/measure-type')"
+    },
+    "expression" : ["CodeableConcept.coding[0].system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "TX_GENERAL_CC_ERROR_MESSAGE"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "No valid coding was found for the value set 'http://hl7.org/fhir/ValueSet/measure-type|4.0.1'"
+    }
+  }]
 }
 
 }

@@ -65,6 +65,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
@@ -1223,7 +1224,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       resolvedUrls.put(type+"|"+url, true);
       return true;
     }
-    if (context.getNSUrlMap().containsKey(url)) {
+    if (NamingSystemUtilities.hasNamingSystem(context, url)) {
       resolvedUrls.put(type+"|"+url, true);
       return true;
     }

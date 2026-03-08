@@ -317,7 +317,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private final CanonicalResourceManager<ActorDefinition> actors = new CanonicalResourceManager<ActorDefinition>(false, minimalMemory);
   private final CanonicalResourceManager<Requirements> requirements = new CanonicalResourceManager<Requirements>(false, minimalMemory);
   private final CanonicalResourceManager<NamingSystem> systems = new CanonicalResourceManager<NamingSystem>(false, minimalMemory);
-  private Map<String, NamingSystem> systemUrlMap;
 
   private LanguageSubtagRegistry registry;
   
@@ -407,7 +406,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       questionnaires.copy(other.questionnaires);
       operations.copy(other.operations);
       systems.copy(other.systems);
-      systemUrlMap = null;
       guides.copy(other.guides);
       capstmts.copy(other.capstmts);
       measures.copy(other.measures);
@@ -655,7 +653,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           transforms.see((StructureMap) m, packageInfo);
         } else if (r instanceof NamingSystem) {
           systems.see((NamingSystem) m, packageInfo);
-          systemUrlMap = null;
         } else if (r instanceof Requirements) {
           requirements.see((Requirements) m, packageInfo);
         } else if (r instanceof ActorDefinition) {
@@ -665,29 +662,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  public Map<String, NamingSystem> getNSUrlMap() {
-    if (systemUrlMap == null) {
-      systemUrlMap = new HashMap<>();
-      try {
-      List<NamingSystem> nsl = systems.getList();
-      for (NamingSystem ns : nsl) {
-        for (NamingSystemUniqueIdComponent uid : ns.getUniqueId()) {
-          if (uid.getType() == NamingSystemIdentifierType.URI && uid.hasValue()) {
-            systemUrlMap.put(uid.getValue(), ns) ;
-          }
-        }        
-      }
-      } catch (Exception e) {
-        if (!nsFailHasFailed) {
-          e.printStackTrace();
-          nsFailHasFailed  = true;
-        }
-      }
-    }
-    return systemUrlMap;
-  }
-
-  
   public void fixOldSD(StructureDefinition sd) {
     if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.getType().equals("Extension") && sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/")) {
       sd.setSnapshot(null);
@@ -792,20 +766,42 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (system == null) {
       return null;
     }
+    String s = null;
+    String v = null;
     if (system.contains("|")) {
-      String s = system.substring(0, system.indexOf("|"));
-      String v = system.substring(system.indexOf("|")+1);
+      s = system.substring(0, system.indexOf("|"));
+      v = system.substring(system.indexOf("|")+1);
       return fetchCodeSystem(s, v);
+    } else {
+      s = system;
     }
     CodeSystem cs;
     synchronized (lock) {
-
       cs = codeSystems.get(system);
     }
     if (cs == null && locator != null) {
       locator.findResource(this, system);
       synchronized (lock) {
         cs = codeSystems.get(system);
+      }
+    }
+    // try implicit code systems
+    if (cs == null) {
+      Resource resource = fetchResource(Resource.class, system, version);
+      if (resource != null) {
+        switch (resource.fhirType()) {
+          case "StructureDefinition":
+            return ImplicitCodeSystemSupport.convertStructure((StructureDefinition) resource);
+          case "Questionnaire":
+            return ImplicitCodeSystemSupport.convertQuestionnaire((Questionnaire) resource);
+          case "Requirements":
+            return ImplicitCodeSystemSupport.convertRequirements((Requirements) resource);
+          case "Measure":
+            return ImplicitCodeSystemSupport.convertMeasure((Measure) resource);
+          default:
+            log.warn("The resource type "+resource.fhirType()+" cannot be treated as a CodeSystem");
+            return null;
+        }
       }
     }
     return cs;
@@ -1532,6 +1528,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues).setUnknownSystems(unknownSystems);
       } else if (type == TerminologyServiceErrorClass.INTERNAL_ERROR) {
         return new ValidationResult(IssueSeverity.FATAL, localError, TerminologyServiceErrorClass.INTERNAL_ERROR, issues);
+      } else if ("No_Service".equals(localError)) {
+        return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.NOSERVICE, issues);
       } else {
         return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.UNKNOWN, issues);
       }
@@ -1539,7 +1537,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (localWarning != null && !terminologyClientManager.hasClient()) {
       return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localWarning), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);       
     }
-    if (!options.isUseServer()) {
+    if (!options.isUseServer() || fetchResource(Resource.class, code.getSystem()) != null) {
       if (localWarning != null) {
         return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localWarning), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);       
       } else {
@@ -2931,7 +2929,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected IWorkerContextManager.IPackageLoadingTracker packageTracker;
   private boolean forPublication;
   private boolean cachingAllowed = true;
-  private static boolean nsFailHasFailed;
 
   public Resource fetchResourceById(String type, String uri, FhirPublication fhirVersion) {
     return fetchResourceById(type, uri);
@@ -3100,7 +3097,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         transforms.drop(id);
       } else if (fhirType.equals("NamingSystem")) {
         systems.drop(id);
-        systemUrlMap = null;
       } else if (fhirType.equals("ActorDefinition")) {
         actors.drop(id);
       } else if (fhirType.equals("Requirements")) {

@@ -819,8 +819,6 @@ public interface IWorkerContext {
 
 
   // todo: figure these out
-  @Deprecated
-  public Map<String, NamingSystem> getNSUrlMap();
 
   @Deprecated
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();

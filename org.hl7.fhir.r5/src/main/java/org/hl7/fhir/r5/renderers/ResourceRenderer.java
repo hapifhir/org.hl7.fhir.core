@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper.ElementKind;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
@@ -339,7 +340,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     String url = canonical.asStringValue();
     Resource target = context.getWorker().fetchResource(Resource.class, url, null, res.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
-      NamingSystem ns = context.getContextUtilities().fetchNamingSystem(url);
+      NamingSystem ns = NamingSystemUtilities.getNamingSystem(context.getContext(), url);
       if (ns != null) {
         x.code().tx(url);
         if (lang!=null)

@@ -680,13 +680,21 @@ public class ValueSetValidator extends ValueSetProcessBase {
               warningMessage = context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, system);  
               oic = OpIssueCode.InvalidData;
               itype = IssueType.INVALID;
-            } else if (wv == null) {
-              msgid = I18nConstants.UNKNOWN_CODESYSTEM;
-              warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
-              unknownSystems.add(system);
             } else {
-              msgid = getUnknownCodeSystemMessageId(system, wv);
-              warningMessage = getUnknownCodeSystemMessage(system, wv);
+              Resource resX = context.fetchResource(Resource.class, system);
+              if (resX != null) {
+                msgid = I18nConstants.TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE;
+                warningMessage = context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE, system, resX.fhirType());
+                oic = OpIssueCode.InvalidData;
+                itype = IssueType.INVALID;
+              } else if (wv == null) {
+                msgid = I18nConstants.UNKNOWN_CODESYSTEM;
+                warningMessage = context.formatMessage(I18nConstants.UNKNOWN_CODESYSTEM, system);
+                unknownSystems.add(system);
+              } else {
+                msgid = getUnknownCodeSystemMessageId(system, wv);
+                warningMessage = getUnknownCodeSystemMessage(system, wv);
+              }
             }
             if (!inExpansion) {
               if (valueset != null && valueset.hasExpansion()) {
@@ -1482,7 +1490,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
           if (vr.isOk()) {
             sys.add(vsi.getSystem());
           } else if (vr.isNoService()) {
-            throw new TerminologyServiceException("No Service");
+            throw new TerminologyServiceException("No_Service");
           } else if (EXPAND_AFTER_VALIDATION_WHEN_INFERRING) {
             // this code is marked for removal as of 27-02-2026 - remove if no one misses it. (why on earth would it ever do anything but cause problems?)
             // ok, we'll try to expand this one then

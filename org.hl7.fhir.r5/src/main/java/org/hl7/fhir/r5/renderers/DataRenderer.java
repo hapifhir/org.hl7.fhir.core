@@ -47,6 +47,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.JurisdictionUtilities;
+import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.SnomedUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 
@@ -1300,7 +1301,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     CodeSystem cs = context.getWorker().fetchCodeSystem(c.primitiveValue("system"));
     NamingSystem ns = null;
     if (cs == null) {
-      ns = context.getContextUtilities().fetchNamingSystem(c.primitiveValue("system"));
+      ns = NamingSystemUtilities.getNamingSystem(context.getContext(), c.primitiveValue("system"));
     }
     if (ns != null) {
       systemLink = null;
@@ -1499,7 +1500,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     } else if ("urn:ietf:rfc:3986".equals(ii.primitiveValue("system")) && s.startsWith("urn:uuid:")) { 
       s = "UUID:"+s.substring(9); 
     } else {  
-      NamingSystem ns = context.getContext().getNSUrlMap().get(ii.primitiveValue("system")); 
+      NamingSystem ns = NamingSystemUtilities.getNamingSystem(context.getContext(), ii.primitiveValue("system"));
       if (ns != null) { 
         s = crPresent(ns)+"#"+s; 
       } 
@@ -1544,7 +1545,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } 
       x.tx("/"); 
     } else if (ii.has("system")) { 
-      NamingSystem ns = context.getContext().getNSUrlMap().get(ii.primitiveValue("system")); 
+      NamingSystem ns = NamingSystemUtilities.getNamingSystem(context.getContext(), ii.primitiveValue("system"));
       if (ns != null) { 
         if (ns.hasWebPath()) { 
           x.ah(context.prefixLocalHref(ns.getWebPath()), ns.getDescription()).tx(crPresent(ns));         

@@ -38,6 +38,7 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -412,18 +413,8 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (source == null) {
       return null;
     }
-    String url = ProfileUtilities.getUrlFromCSUrl(source);
-    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
-    if (sd != null) {
-      return sd;
-    }
-    for (StructureDefinition t : context.getContextUtilities().allStructures()) {
-      String u = ProfileUtilities.getCSUrl(t);
-      if (source.equals(u)) {
-        return t;
-      }
-    }
-    return null;
+    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, source);
+    return sd;
   }
 
   private void renderModelMap(StructureDefinition sdSrc, StructureDefinition sdTgt, RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,

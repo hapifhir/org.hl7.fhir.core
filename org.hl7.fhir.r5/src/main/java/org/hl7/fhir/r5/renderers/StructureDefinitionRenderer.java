@@ -678,9 +678,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     for (ConceptMap cm : context.getContext().fetchResourcesByType(ConceptMap.class)) {
       for (ConceptMapGroupComponent grp : cm.getGroup()) {
-        if (grp.hasSource() && grp.getSource().equals(ProfileUtilities.getCSUrl(profile))) {
+        if (grp.hasSource() && grp.getSource().equals(profile.getUrl())) {
           boolean matched = true;
-          String url = ProfileUtilities.getUrlFromCSUrl(grp.getTarget());
+          String url = grp.getTarget();
           if (url != null) {
             StructureDefinition sd = context.getProfileUtilities().findProfile(url, profile);
             if (includeSDForMap(sd, false) && !items.contains(sd)) {
@@ -692,7 +692,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!matched) {
             for (StructureDefinition sd : context.getContextUtilities().allStructures()) {
               if (includeSDForMap(sd, false)) {
-                String url2 = ProfileUtilities.getCSUrl(sd);
+                String url2 = sd.getUrl();
                 if (url2.equals(grp.getTarget()) && !items.contains(sd)) {
                   items.add(sd);
                   res.add(new ConceptMapMappingProvider(context, sd, false, cm, grp));
@@ -720,9 +720,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
     for (ConceptMap cm : context.getContext().fetchResourcesByType(ConceptMap.class)) {
       for (ConceptMapGroupComponent grp : cm.getGroup()) {
-        if (grp.hasTarget() && grp.getTarget().equals(ProfileUtilities.getCSUrl(profile))) {
+        if (grp.hasTarget() && grp.getTarget().equals(profile.getUrl())) {
           boolean matched = true;
-          String url = ProfileUtilities.getUrlFromCSUrl(grp.getSource());
+          String url = grp.getSource();
           if (url != null) {
             StructureDefinition sd = context.getProfileUtilities().findProfile(url, profile);
             if (includeSDForMap(sd, false) && !items.contains(sd)) {
@@ -734,7 +734,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!matched) {
             for (StructureDefinition sd : context.getContextUtilities().allStructures()) {
               if (includeSDForMap(sd, false)) {
-                String url2 = ProfileUtilities.getCSUrl(sd);
+                String url2 = sd.getUrl();
                 if (url2.equals(grp.getSource()) && !items.contains(sd)) {
                   items.add(sd);
                   res.add(new ConceptMapMappingProvider(context, sd, true, cm, grp));
