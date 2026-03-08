@@ -515,6 +515,304 @@ class FhirValidatorHttpServiceTest {
     assertEquals(405, response.statusCode());
   }
 
+  // ─── Convert endpoint tests ───
+
+  @Test
+  @DisplayName("Convert - JSON to XML")
+  void testConvertJsonToXml() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/convert"))
+      .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
+      .header("Content-Type", "application/fhir+json")
+      .header("Accept", "application/fhir+xml")
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(200, response.statusCode());
+    assertTrue(response.headers().firstValue("Content-Type").orElse("").contains("application/fhir+xml"));
+    assertTrue(response.body().contains("<Patient"));
+    assertTrue(response.body().contains("Doe"));
+  }
+
+  @Test
+  @DisplayName("Convert - XML to JSON")
+  void testConvertXmlToJson() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/convert"))
+      .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_XML))
+      .header("Content-Type", "application/fhir+xml")
+      .header("Accept", "application/fhir+json")
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(200, response.statusCode());
+    assertTrue(response.headers().firstValue("Content-Type").orElse("").contains("application/fhir+json"));
+    assertTrue(response.body().contains("\"resourceType\":\"Patient\""));
+    assertTrue(response.body().contains("Doe"));
+  }
+
+  @Test
+  @DisplayName("Convert - GET method not allowed")
+  void testConvertGetNotAllowed() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/convert"))
+      .GET()
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(405, response.statusCode());
+  }
+
+  // ─── Snapshot endpoint tests ───
+
+  @Test
+  @DisplayName("Snapshot - Generate snapshot for StructureDefinition")
+  void testSnapshotGeneration() throws Exception {
+    setUpService(getValidationEngine());
+
+    // Minimal StructureDefinition with a differential
+    String sd = "{\n" +
+      "  \"resourceType\": \"StructureDefinition\",\n" +
+      "  \"id\": \"test-patient\",\n" +
+      "  \"url\": \"http://example.org/fhir/StructureDefinition/test-patient\",\n" +
+      "  \"name\": \"TestPatient\",\n" +
+      "  \"status\": \"draft\",\n" +
+      "  \"kind\": \"resource\",\n" +
+      "  \"abstract\": false,\n" +
+      "  \"type\": \"Patient\",\n" +
+      "  \"baseDefinition\": \"http://hl7.org/fhir/StructureDefinition/Patient\",\n" +
+      "  \"derivation\": \"constraint\",\n" +
+      "  \"differential\": {\n" +
+      "    \"element\": [{\n" +
+      "      \"id\": \"Patient.name\",\n" +
+      "      \"path\": \"Patient.name\",\n" +
+      "      \"min\": 1\n" +
+      "    }]\n" +
+      "  }\n" +
+      "}";
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/snapshot"))
+      .POST(HttpRequest.BodyPublishers.ofString(sd))
+      .header("Content-Type", "application/fhir+json")
+      .header("Accept", "application/fhir+json")
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(200, response.statusCode());
+    assertTrue(response.body().contains("snapshot"));
+    assertTrue(response.body().contains("StructureDefinition"));
+  }
+
+  @Test
+  @DisplayName("Snapshot - GET method not allowed")
+  void testSnapshotGetNotAllowed() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/snapshot"))
+      .GET()
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(405, response.statusCode());
+  }
+
+  // ─── Narrative endpoint tests ───
+
+  @Test
+  @DisplayName("Narrative - Generate narrative for Patient")
+  void testNarrativeGeneration() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/narrative"))
+      .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
+      .header("Content-Type", "application/fhir+json")
+      .header("Accept", "application/fhir+json")
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(200, response.statusCode());
+    assertTrue(response.body().contains("Patient"));
+    // Narrative should include the text div
+    assertTrue(response.body().contains("text"));
+  }
+
+  @Test
+  @DisplayName("Narrative - GET method not allowed")
+  void testNarrativeGetNotAllowed() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/narrative"))
+      .GET()
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(405, response.statusCode());
+  }
+
+  // ─── Version endpoint tests ───
+
+  @Test
+  @DisplayName("Version - Missing targetVersion returns 400")
+  void testVersionMissingTargetVersion() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/version"))
+      .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
+      .header("Content-Type", "application/fhir+json")
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(400, response.statusCode());
+    assertTrue(response.body().contains("Missing required query parameter: targetVersion"));
+  }
+
+  @Test
+  @DisplayName("Version - GET method not allowed")
+  void testVersionGetNotAllowed() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/version"))
+      .GET()
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(405, response.statusCode());
+  }
+
+  // ─── Transform endpoint tests ───
+
+  @Test
+  @DisplayName("Transform - Missing map parameter returns 400")
+  void testTransformMissingMap() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/transform"))
+      .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
+      .header("Content-Type", "application/fhir+json")
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(400, response.statusCode());
+    assertTrue(response.body().contains("Missing required query parameter: map"));
+  }
+
+  @Test
+  @DisplayName("Transform - GET method not allowed")
+  void testTransformGetNotAllowed() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/transform"))
+      .GET()
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(405, response.statusCode());
+  }
+
+  // ─── Compile endpoint tests ───
+
+  @Test
+  @DisplayName("Compile - Missing url parameter returns 400")
+  void testCompileMissingUrl() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/compile"))
+      .POST(HttpRequest.BodyPublishers.noBody())
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(400, response.statusCode());
+    assertTrue(response.body().contains("Missing required query parameter: url"));
+  }
+
+  @Test
+  @DisplayName("Compile - Unknown map returns 500")
+  void testCompileUnknownMap() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/compile?url=" + java.net.URLEncoder.encode("http://example.org/fhir/StructureMap/nonexistent", "UTF-8")))
+      .GET()
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(500, response.statusCode());
+    assertTrue(response.body().contains("Compile map failed"));
+  }
+
+  // ─── OpenAPI / Docs endpoint tests ───
+
+  @Test
+  @DisplayName("OpenAPI - Returns valid JSON spec")
+  void testOpenApiSpec() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/openapi.json"))
+      .GET()
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(200, response.statusCode());
+    assertTrue(response.headers().firstValue("Content-Type").orElse("").contains("application/json"));
+    assertTrue(response.body().contains("\"openapi\":\"3.0.3\""));
+    assertTrue(response.body().contains("/validateResource"));
+    assertTrue(response.body().contains("/fhirpath"));
+    assertTrue(response.body().contains("/convert"));
+    assertTrue(response.body().contains("/snapshot"));
+    assertTrue(response.body().contains("/narrative"));
+    assertTrue(response.body().contains("/transform"));
+    assertTrue(response.body().contains("/version"));
+    assertTrue(response.body().contains("/compile"));
+  }
+
+  @Test
+  @DisplayName("Docs - Returns HTML page with Redoc")
+  void testDocsPage() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/docs"))
+      .GET()
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(200, response.statusCode());
+    assertTrue(response.headers().firstValue("Content-Type").orElse("").contains("text/html"));
+    assertTrue(response.body().contains("redoc"));
+    assertTrue(response.body().contains("openapi.json"));
+  }
+
   @Test
   @DisplayName("Parameter Parsing - Invalid Enum Values")
   void testParameterParsingInvalidEnums() throws Exception {

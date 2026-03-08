@@ -998,6 +998,91 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
   }
 
+  public byte[] convertFormat(byte[] resource, FhirFormat inputFormat, FhirFormat outputFormat) throws FHIRException, IOException {
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), inputFormat);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Manager.compose(context, e, baos, outputFormat, OutputStyle.PRETTY, null);
+    return baos.toByteArray();
+  }
+
+  public byte[] generateSnapshot(byte[] resource, FhirFormat format) throws FHIRException, IOException {
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
+    Resource res = new ObjectConverter(context).convert(e);
+    if (!(res instanceof StructureDefinition))
+      throw new FHIRException("Require a StructureDefinition for generating a snapshot");
+    StructureDefinition sd = (StructureDefinition) res;
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    if (base == null)
+      throw new FHIRException("Unable to find base definition: " + sd.getBaseDefinition());
+    new ProfileUtilities(context, null, null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (format == FhirFormat.XML) {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, sd);
+    } else {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, sd);
+    }
+    return baos.toByteArray();
+  }
+
+  public byte[] generateNarrative(byte[] resource, FhirFormat format) throws FHIRException, IOException, EOperationOutcome {
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
+    Resource res = new ObjectConverter(context).convert(e);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    genResource(res, rc);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (format == FhirFormat.XML) {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, res);
+    } else {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, res);
+    }
+    return baos.toByteArray();
+  }
+
+  public byte[] transform(byte[] resource, FhirFormat format, String mapUri, FhirFormat outputFormat) throws FHIRException, IOException {
+    Element result = transform(ByteProvider.forBytes(resource), format, mapUri);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Manager.compose(context, result, baos, outputFormat, OutputStyle.PRETTY, null);
+    return baos.toByteArray();
+  }
+
+  public byte[] convertVersion(byte[] resource, FhirFormat format, String targetVer) throws Exception {
+    Content cnt = new Content();
+    cnt.setFocus(ByteProvider.forBytes(resource));
+    cnt.setCntType(format);
+    Element src = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
+    boolean canDoNative = src.hasChild("url", false);
+    if (canDoNative) {
+      if (VersionUtilities.isR2Ver(version)) {
+        return VersionConvertor.convertVersionNativeR2(targetVer, cnt, format);
+      } else if (VersionUtilities.isR2BVer(version)) {
+        return VersionConvertor.convertVersionNativeR2b(targetVer, cnt, format);
+      } else if (VersionUtilities.isR3Ver(version)) {
+        return VersionConvertor.convertVersionNativeR3(targetVer, cnt, format);
+      } else if (VersionUtilities.isR4Ver(version)) {
+        return VersionConvertor.convertVersionNativeR4(targetVer, cnt, format);
+      } else if (VersionUtilities.isR4BVer(version)) {
+        return VersionConvertor.convertVersionNativeR4b(targetVer, cnt, format);
+      } else if (VersionUtilities.isR5Ver(version)) {
+        return VersionConvertor.convertVersionNativeR5(targetVer, cnt, format);
+      } else {
+        throw new FHIRException("Source version not supported yet: " + version);
+      }
+    }
+    throw new FHIRException("Version conversion via StructureMap not supported in HTTP mode. Resource must have a 'url' element for native conversion.");
+  }
+
+  public byte[] compileMap(String mapUri, FhirFormat outputFormat) throws FHIRException, IOException {
+    StructureMap map = context.fetchResource(StructureMap.class, mapUri);
+    if (map == null) throw new FHIRException("Unable to find map: " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (outputFormat == FhirFormat.XML) {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+    } else {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+    }
+    return baos.toByteArray();
+  }
+
   public StructureDefinition snapshot(String source, String version) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false, true);
     Resource res = igLoader.loadResourceByVersion(version, cnt.getFocus().getBytes(), Utilities.getFileNameForName(source));
