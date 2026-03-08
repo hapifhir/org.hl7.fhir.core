@@ -457,10 +457,12 @@ public class Property {
       if (!"xhtml".equals(t)) {
         for (TypeRefComponent aType: ed.getType()) {
           if (aType.getWorkingCode().equals(t)) {
-            if (aType.hasProfile()) {
-              assert aType.getProfile().size() == 1; 
+            if (aType.hasProfile() && aType.getProfile().size() == 1) {
               url = aType.getProfile().get(0).getValue();
             } else {
+              // if we've got a choice, then we fall back to ignore the profile,
+              // and parsing on the base type. This is less efficient but we don't
+              // know which type applies
               url = ProfileUtilities.sdNs(t, null);
             }
             break;
