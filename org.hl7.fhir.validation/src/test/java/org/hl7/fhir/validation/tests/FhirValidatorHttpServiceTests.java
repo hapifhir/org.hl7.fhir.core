@@ -796,12 +796,30 @@ class FhirValidatorHttpServiceTest {
   }
 
   @Test
-  @DisplayName("Docs - Returns HTML page with Redoc")
+  @DisplayName("Docs - Returns Swagger UI HTML page")
   void testDocsPage() throws Exception {
     setUpService(getValidationEngine());
 
     HttpRequest request = HttpRequest.newBuilder()
       .uri(URI.create(BASE_URL + "/docs"))
+      .GET()
+      .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals(200, response.statusCode());
+    assertTrue(response.headers().firstValue("Content-Type").orElse("").contains("text/html"));
+    assertTrue(response.body().contains("swagger-ui"));
+    assertTrue(response.body().contains("openapi.json"));
+  }
+
+  @Test
+  @DisplayName("Redoc - Returns Redoc HTML page")
+  void testRedocPage() throws Exception {
+    setUpService(getValidationEngine());
+
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(URI.create(BASE_URL + "/redoc"))
       .GET()
       .build();
 
