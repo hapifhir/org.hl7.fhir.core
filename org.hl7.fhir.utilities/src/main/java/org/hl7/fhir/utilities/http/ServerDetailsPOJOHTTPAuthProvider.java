@@ -6,8 +6,9 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * This implementation provides authentication information for specific URLs by checking against an iterable collection
- * of ServerDetailsPOJO objects. The information for the first matching URL will be used.
+ * An {@link HTTPAuthProvider} implementation that provides authentication information for specific URLs by performing a
+ * URL prefix match against an iterable collection of {@link ServerDetailsPOJO} objects. The information for the first
+ * matching entry will be used.
  */
 public class ServerDetailsPOJOHTTPAuthProvider implements HTTPAuthProvider {
 
@@ -81,12 +82,12 @@ public class ServerDetailsPOJOHTTPAuthProvider implements HTTPAuthProvider {
   }
 
   /**
-   * Get server details matching a specific URL.
+   * Returns the first {@link ServerDetailsPOJO} whose URL is a prefix of the given URL, or {@code null} if none match.
    * <p>
-   * Note: this is not particularly efficient, but intended for the niche case of managing 30x HTTP redirects.
-   * If efficiency becomes an issue here, this may need refactoring or a cache to speed things up.
-   * @param url The URL to find in the servers list
-   * @return the associated details for that server
+   * Note: this performs a linear scan on every call and is not optimized for frequent lookups. If performance
+   * becomes a concern, consider caching the result or using a more efficient data structure.
+   * @param url The URL to match against the servers list
+   * @return the associated server details, or {@code null} if no match is found
    */
   private ServerDetailsPOJO getServerDetails(URL url) {
     return ManagedWebAccessUtils.getServer(serverTypes, url.toString(), servers);
