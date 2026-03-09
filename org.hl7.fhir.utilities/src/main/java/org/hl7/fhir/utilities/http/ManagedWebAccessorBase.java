@@ -27,7 +27,7 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
   @Getter
   private final Map<String, String> headers = new HashMap<>();
 
-  public ManagedWebAccessorBase(Iterable<String> serverTypes, String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
+  ManagedWebAccessorBase(Iterable<String> serverTypes, String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
     this.serverTypes = serverTypes;
     this.userAgent = userAgent;
     this.serverAuthDetails = serverAuthDetails;

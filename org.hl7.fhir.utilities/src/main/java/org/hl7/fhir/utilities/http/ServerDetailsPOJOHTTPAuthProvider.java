@@ -5,12 +5,16 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import java.net.URL;
 import java.util.Map;
 
-public class ServerDetailsPOJOAuthProvider implements AuthProvider {
+/**
+ * This implementation provides authentication information for specific URLs by checking against an iterable collection
+ * of ServerDetailsPOJO objects. The information for the first matching URL will be used.
+ */
+public class ServerDetailsPOJOHTTPAuthProvider implements HTTPAuthProvider {
 
   private final Iterable<ServerDetailsPOJO> servers;
   private final Iterable<String> serverTypes;
 
-  public ServerDetailsPOJOAuthProvider(final Iterable<String> serverTypes, final Iterable<ServerDetailsPOJO> servers) {
+  public ServerDetailsPOJOHTTPAuthProvider(final Iterable<String> serverTypes, final Iterable<ServerDetailsPOJO> servers) {
     this.serverTypes = serverTypes;
     this.servers = servers;
   }

@@ -18,6 +18,19 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * An HTTP client supporting simple GET, PUT, POST operations with no FHIR-specific code.
+ * <p/>
+ * This client manages authentication using the following logic:
+ * 1. If authenticationMode is not null, it will use the classes internal fields to set the relevant HTTP authentication
+ * headers see (#org.hl7.fhir.utilities.http.HTTPAuthenticationMode):
+ *   NONE - no headers will be set
+ *   BASIC - uses the username and password fields for basic authentication
+ *   TOKEN - uses the token field for token authentication
+ *   APIKEY - uses the apiKey field for API key authentication
+ * 2. If authenticationMode is null or a HTTP 30x redirect occurs, the client will attempt to utilize the supplied
+ * authProvider implementation to resolve authentication for the new URL. See
+ */
 public class SimpleHTTPClient {
 
   private static final int MAX_REDIRECTS = 5;
@@ -26,7 +39,7 @@ public class SimpleHTTPClient {
   private final List<HTTPHeader> headers = new ArrayList<>();
 
   @Getter @Setter
-  private AuthProvider authprovider;
+  private HTTPAuthProvider authProvider;
 
   @Getter @Setter
   private HTTPAuthenticationMode authenticationMode;
@@ -60,15 +73,15 @@ public class SimpleHTTPClient {
     HttpURLConnection connection = null;
     boolean done = false;
 
-    /* Use the manually set headers from this class. IF a redirect happens, these will be ignored an ALL future
-     redirects in favor of authprovider supplied headers. */
-    boolean useHeadersFromThis = true;
+    /* Use the manually set headers from this class if configured via authenticationMode. IF a redirect happens, these
+    will be ignored an ALL future redirects in favor of authprovider supplied headers. */
+    boolean useHeadersFromThis = authenticationMode != null;
     while (!done) {
       int times = visited.compute(urlString, (key, count) -> count == null ? 1 : count + 1);
       if (times > MAX_REDIRECTS)
         throw new IOException("Stuck in redirect loop");
 
-      connection = getGetConnection(urlString, accept, useHeadersFromThis);
+      connection = getHttpGetConnection(urlString, accept, useHeadersFromThis);
 
       //(connection.getResponseCode() implicitly establishes the connection)
       switch (connection.getResponseCode()) {
@@ -108,7 +121,7 @@ public class SimpleHTTPClient {
     return (HttpURLConnection) url.openConnection();
   }
 
-  private HttpURLConnection getGetConnection(String urlString, String accept, boolean useHeadersFromThis) throws IOException {
+  private HttpURLConnection getHttpGetConnection(String urlString, String accept, boolean useHeadersFromThis) throws IOException {
     HttpURLConnection connection = getHttpConnection(urlString);
     connection.setRequestMethod("GET");
     if (accept != null) {
@@ -132,11 +145,11 @@ public class SimpleHTTPClient {
       for (HTTPHeader header : headers) {
         connection.setRequestProperty(header.getName(), header.getValue());
       }
-    } else if (authprovider != null) {
+    } else if (authProvider != null) {
       setAuthenticationHeadersFromProvider(connection);
 
       URL url = connection.getURL();
-      Map<String, String> providedHeaders = authprovider.getHeaders(url);
+      Map<String, String> providedHeaders = authProvider.getHeaders(url);
       if (providedHeaders != null) {
         for (Map.Entry<String, String> entry : providedHeaders.entrySet()) {
           connection.setRequestProperty(entry.getKey(), entry.getValue());
@@ -146,28 +159,28 @@ public class SimpleHTTPClient {
   }
 
   private void setAuthenticationHeadersFromProvider(HttpURLConnection connection) {
-    if (authprovider == null) {
+    if (authProvider == null) {
       return;
     }
     URL url = connection.getURL();
-    HTTPAuthenticationMode authenticationMode = authprovider.getHTTPAuthenticationMode(url);
+    HTTPAuthenticationMode authenticationMode = authProvider.getHTTPAuthenticationMode(url);
     if (authenticationMode == null) {
       return;
     }
     switch (authenticationMode) {
       case TOKEN -> {
-        String providedToken = authprovider.getToken(url);
+        String providedToken = authProvider.getToken(url);
         connection.setRequestProperty("Authorization", "Bearer " + providedToken);
       }
       case BASIC -> {
-        String providedUsername = authprovider.getUsername(url);
-        String providedPassword = authprovider.getPassword(url);
+        String providedUsername = authProvider.getUsername(url);
+        String providedPassword = authProvider.getPassword(url);
         String auth = providedUsername + ":" + providedPassword;
         byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
         connection.setRequestProperty("Authorization", "Basic " + new String(encodedAuth));
       }
       case APIKEY -> {
-        String providedAPIKey = authprovider.getAPIKey(url);
+        String providedAPIKey = authProvider.getAPIKey(url);
         connection.setRequestProperty("Api-Key", providedAPIKey);
       }
       default -> { /* do nothing */ }

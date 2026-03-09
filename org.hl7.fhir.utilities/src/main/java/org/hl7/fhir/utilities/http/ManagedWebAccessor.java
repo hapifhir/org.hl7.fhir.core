@@ -41,7 +41,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
       throw new IOException("The pathname '"+url+"' cannot be accessed by policy");
     }
     SimpleHTTPClient client = new SimpleHTTPClient();
-    client.setAuthprovider(new ServerDetailsPOJOAuthProvider(getServerTypes(), getServerAuthDetails()));
+    client.setAuthProvider(new ServerDetailsPOJOHTTPAuthProvider(getServerTypes(), getServerAuthDetails()));
     for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
       client.addHeader(entry.getKey(), entry.getValue());
     }

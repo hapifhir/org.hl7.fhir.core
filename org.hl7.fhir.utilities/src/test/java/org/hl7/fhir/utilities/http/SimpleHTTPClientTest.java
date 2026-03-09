@@ -147,8 +147,8 @@ public class SimpleHTTPClientTest {
 
     final SimpleHTTPClient httpClient = getHTTPClient(connections);
 
-    AuthProvider myAuthProvider = Mockito.mock(AuthProvider.class);
-    httpClient.setAuthprovider(myAuthProvider);
+    HTTPAuthProvider myAuthProvider = Mockito.mock(HTTPAuthProvider.class);
+    httpClient.setAuthProvider(myAuthProvider);
     httpClient.setAuthenticationMode(HTTPAuthenticationMode.TOKEN);
     httpClient.setToken("thisToken");
     assertThrows(UnknownHostException.class, () -> {
@@ -182,10 +182,10 @@ public class SimpleHTTPClientTest {
     final URL exampleInvalidUrl = new URL(EXAMPLE_INVALID_REDIRECTED);
     final SimpleHTTPClient httpClient = getHTTPClient(connections);
 
-    AuthProvider myAuthProvider = Mockito.mock(AuthProvider.class);
+    HTTPAuthProvider myAuthProvider = Mockito.mock(HTTPAuthProvider.class);
     doReturn(HTTPAuthenticationMode.TOKEN).when(myAuthProvider).getHTTPAuthenticationMode(exampleInvalidUrl);
     doReturn("thatToken").when(myAuthProvider).getToken(exampleInvalidUrl);
-    httpClient.setAuthprovider(myAuthProvider);
+    httpClient.setAuthProvider(myAuthProvider);
     httpClient.setAuthenticationMode(HTTPAuthenticationMode.TOKEN);
     httpClient.setToken("thisToken");
     assertThrows(UnknownHostException.class, () -> {
@@ -218,10 +218,10 @@ public class SimpleHTTPClientTest {
     final URL exampleInvalidUrl = new URL(EXAMPLE_INVALID_REDIRECTED);
     final SimpleHTTPClient httpClient = getHTTPClient(connections);
 
-    AuthProvider myAuthProvider = Mockito.mock(AuthProvider.class);
+    HTTPAuthProvider myAuthProvider = Mockito.mock(HTTPAuthProvider.class);
     doReturn(HTTPAuthenticationMode.APIKEY).when(myAuthProvider).getHTTPAuthenticationMode(exampleInvalidUrl);
     doReturn("thatApiKey").when(myAuthProvider).getAPIKey(exampleInvalidUrl);
-    httpClient.setAuthprovider(myAuthProvider);
+    httpClient.setAuthProvider(myAuthProvider);
     httpClient.setAuthenticationMode(HTTPAuthenticationMode.TOKEN);
     httpClient.setToken("thisToken");
     assertThrows(UnknownHostException.class, () -> {
@@ -254,11 +254,11 @@ public class SimpleHTTPClientTest {
     final URL exampleInvalidUrl = new URL(EXAMPLE_INVALID_REDIRECTED);
     final SimpleHTTPClient httpClient = getHTTPClient(connections);
 
-    AuthProvider myAuthProvider = Mockito.mock(AuthProvider.class);
+    HTTPAuthProvider myAuthProvider = Mockito.mock(HTTPAuthProvider.class);
     doReturn(HTTPAuthenticationMode.BASIC).when(myAuthProvider).getHTTPAuthenticationMode(exampleInvalidUrl);
     doReturn("thatUser").when(myAuthProvider).getUsername(exampleInvalidUrl);
     doReturn("thatPass").when(myAuthProvider).getPassword(exampleInvalidUrl);
-    httpClient.setAuthprovider(myAuthProvider);
+    httpClient.setAuthProvider(myAuthProvider);
     httpClient.setAuthenticationMode(HTTPAuthenticationMode.TOKEN);
     httpClient.setToken("thisToken");
     assertThrows(UnknownHostException.class, () -> {
