@@ -10,7 +10,7 @@ import java.util.Map;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 /**
- * Simple HTTP client for making requests to a server.
+ * Manages access via a simple HTTP client for making requests to a server with no FHIR-specific code.
  */
 public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccessor> {
 
