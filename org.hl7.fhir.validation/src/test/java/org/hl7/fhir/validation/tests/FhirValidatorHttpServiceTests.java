@@ -89,7 +89,7 @@ class FhirValidatorHttpServiceTest {
     setUpService(getValidationEngine());
 
     HttpRequest request = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=OPTIONAL&anyExtensionsAllowed=true&bpWarnings=Ignore&displayOption=Ignore"))
+      .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=OPTIONAL&bestPracticeLevel=Ignore&checkDisplay=Ignore"))
       .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
       .header("Content-Type", "application/fhir+json")
       .header("Accept", "application/fhir+json")
@@ -103,9 +103,8 @@ class FhirValidatorHttpServiceTest {
 
     String ss = response.body();
     assertTrue(ss.contains("OperationOutcome"), "Response should contain OperationOutcome, got: " + ss.substring(0, Math.min(200, ss.length())));
-    // With resourceIdRule=OPTIONAL, a valid Patient should produce All OK or only informational issues
-    assertTrue(ss.contains("All OK") || ss.contains("informational") || ss.contains("information"),
-      "Expected success or informational outcome, got: " + ss.substring(0, Math.min(300, ss.length())));
+    // With resourceIdRule=OPTIONAL, a valid Patient should produce All OK
+    assertTrue(ss.contains("All OK"), "Expected All OK for valid Patient with resourceIdRule=OPTIONAL, got: " + ss.substring(0, Math.min(500, ss.length())));
   }
 
   @Test
