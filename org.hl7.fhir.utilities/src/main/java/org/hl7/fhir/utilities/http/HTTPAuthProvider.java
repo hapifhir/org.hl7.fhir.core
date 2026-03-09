@@ -40,7 +40,7 @@ public interface HTTPAuthProvider {
 
   /**
    * Any non-authorization headers intended for use with this server.
-   * <p/>
+   * <p>
    * IMPORTANT: These headers are not associated with any HTTPAuthenticationMode and are intended to always be added to
    * requests.
    * @param url The URL to provide information for

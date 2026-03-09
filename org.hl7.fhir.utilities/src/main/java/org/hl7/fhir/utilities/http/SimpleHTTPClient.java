@@ -20,16 +20,24 @@ import lombok.Setter;
 
 /**
  * An HTTP client supporting simple GET, PUT, POST operations with no FHIR-specific code.
- * <p/>
+ * <p>
  * This client manages authentication using the following logic:
- * 1. If authenticationMode is not null, it will use the classes internal fields to set the relevant HTTP authentication
- * headers see (#org.hl7.fhir.utilities.http.HTTPAuthenticationMode):
- *   NONE - no headers will be set
- *   BASIC - uses the username and password fields for basic authentication
- *   TOKEN - uses the token field for token authentication
- *   APIKEY - uses the apiKey field for API key authentication
- * 2. If authenticationMode is null or a HTTP 30x redirect occurs, the client will attempt to utilize the supplied
- * authProvider implementation to resolve authentication for the new URL. See
+ * <ol>
+ *   <li>If {@code authenticationMode} is not null, it will use the class's internal fields to set the relevant HTTP
+ *   authentication headers (see {@link HTTPAuthenticationMode}):
+ *   <ul>
+ *     <li>NONE - no authentication headers will be set</li>
+ *     <li>BASIC - uses the username and password fields for basic authentication headers</li>
+ *     <li>TOKEN - uses the token field for the token authentication header</li>
+ *     <li>APIKEY - uses the apiKey field for the API key authentication header</li>
+ *   </ul>
+ *   Note: headers added via {@code addHeader()} are always applied alongside these authentication headers.
+ *   </li>
+ *   <li>If {@code authenticationMode} is null or a HTTP 30x redirect to a different host occurs, the client will
+ *   attempt to utilize the supplied {@code authProvider} implementation to resolve authentication and set headers for
+ *   the new URL.
+ *   See {@link HTTPAuthProvider}.</li>
+ * </ol>
  */
 public class SimpleHTTPClient {
 

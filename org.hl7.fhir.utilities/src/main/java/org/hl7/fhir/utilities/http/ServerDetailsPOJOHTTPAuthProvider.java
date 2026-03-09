@@ -82,7 +82,7 @@ public class ServerDetailsPOJOHTTPAuthProvider implements HTTPAuthProvider {
 
   /**
    * Get server details matching a specific URL.
-   * <p/>
+   * <p>
    * Note: this is not particularly efficient, but intended for the niche case of managing 30x HTTP redirects.
    * If efficiency becomes an issue here, this may need refactoring or a cache to speed things up.
    * @param url The URL to find in the servers list
