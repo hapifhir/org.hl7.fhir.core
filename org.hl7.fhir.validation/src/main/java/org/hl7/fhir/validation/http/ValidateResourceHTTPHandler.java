@@ -171,6 +171,12 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
         case "validationTimeout":
           params.setTimeout(new ValidationTimeout(Long.parseLong(pair.getValue()), "http-query"));
           break;
+        case "resourceIdRule":
+          params.setResourceIdRule(IdStatus.valueOf(pair.getValue()));
+          break;
+        case "checkDisplay":
+          params.setCheckDisplay(CheckDisplayOption.valueOf(pair.getValue()));
+          break;
         case "extension":
           params.addExtension(pair.getValue());
           break;
