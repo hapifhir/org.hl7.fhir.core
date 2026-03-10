@@ -120,7 +120,7 @@ public class NodeStack {
   }
 
   private NodeStack pushInternal(Element element, int count, ElementDefinition definition, ElementDefinition type, String sep) {
-    if (definition == null & element.getProperty() != null) {
+    if (definition == null && element.getProperty() != null) {
       definition = element.getProperty().getDefinition();
     }
     NodeStack res = new NodeStack(context);

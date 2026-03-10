@@ -322,7 +322,7 @@ public class ConsentRenderer extends ResourceRenderer {
     if (role != null) {
       renderDataType(status, x, role);
     } else {
-      x.tx(context.formatPhrase(RenderingContext.CSTABLE_HEAD_ACTOR));
+      x.tx(context.formatPhrasePlural(1, RenderingContext.CSTABLE_HEAD_ACTOR, ":"));
     }
     x.tx(": ");
     if (reference != null) {

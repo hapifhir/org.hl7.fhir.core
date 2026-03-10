@@ -156,7 +156,7 @@ import com.google.gson.JsonObject;
 @MarkedToMoveToAdjunctPackage
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext, IWorkerContextManager, IOIDServices {
   private static boolean allowedToIterateTerminologyResources;
-  private int definitionsVersion = 0;
+  private long definitionsVersion = 0;
   private Map<String, Object> analyses = new HashMap();
 
 
@@ -3922,7 +3922,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return this;
   }
 
-  public int getDefinitionsVersion() {
+  public long getDefinitionsVersion() {
     return definitionsVersion;
   }
 
