@@ -13,6 +13,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeType;
@@ -136,7 +137,7 @@ public class SnapshotGenerationPreProcessor {
     if (srcWrapper.hasExtension(ExtensionDefinitions.EXT_ADDITIONAL_BASE)) {
        insertMissingSparseElements(diff.getElement(), srcWrapper.getTypeName());
        for (Extension ext : srcWrapper.getExtensionsByUrl(ExtensionDefinitions.EXT_ADDITIONAL_BASE)) {
-         StructureDefinition ab = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue());
+         StructureDefinition ab = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue(), ExtensionUtilities.getVersionResolutionRules(ext.getValue()));
          if (ab == null) {
            throw new FHIRException("Unable to find additional base '"+ext.getValue().primitiveValue()+"'");
          }
@@ -546,11 +547,11 @@ public class SnapshotGenerationPreProcessor {
       if (t1.getProfile().size() > 1 || t2.getProfile().size() > 1) {
         throw new FHIRException("Not handled yet: multiple profiles");        
       }
-      StructureDefinition sd1 = context.fetchResource(StructureDefinition.class, t1.getProfile().get(0).asStringValue());
+      StructureDefinition sd1 = context.fetchResource(StructureDefinition.class, t1.getProfile().get(0).asStringValue(), ExtensionUtilities.getVersionResolutionRules(t1.getProfile().get(0)));
       if (sd1 == null) {
         throw new FHIRException("Unknown type profile at '"+path+"': "+t1.getProfile().get(0).asStringValue());                
       }
-      StructureDefinition sd2 = context.fetchResource(StructureDefinition.class, t2.getProfile().get(0).asStringValue());
+      StructureDefinition sd2 = context.fetchResource(StructureDefinition.class, t2.getProfile().get(0).asStringValue(), ExtensionUtilities.getVersionResolutionRules(t2.getProfile().get(0)));
       if (sd2 == null) {
         throw new FHIRException("Unknown type profile at '"+path+"': "+t2.getProfile().get(0).asStringValue());                
       }
@@ -605,7 +606,7 @@ public class SnapshotGenerationPreProcessor {
   private boolean specialises(StructureDefinition focus, StructureDefinition other) {
     // we ignore impose and compliesWith - for now?
     for (String url : focus.getBaseDefinitions()) {
-      StructureDefinition base = context.fetchResource(StructureDefinition.class, url);
+      StructureDefinition base = context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
       if (base != null) {
         if (base == other || specialises(base, other)) {
           return true;

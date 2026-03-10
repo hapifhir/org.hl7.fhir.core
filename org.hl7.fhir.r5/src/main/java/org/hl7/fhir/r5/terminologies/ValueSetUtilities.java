@@ -222,7 +222,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     else if (status == StandardsStatus.NORMATIVE && context != null) {
       for (ConceptSetComponent csc : vs.getCompose().getInclude()) {
         if (csc.hasSystem()) {
-          CodeSystem cs = context.fetchCodeSystem(csc.getSystem());
+          CodeSystem cs = context.fetchCodeSystem(csc.getSystem(), ExtensionUtilities.getVersionResolutionRules(csc.getSystemElement()));
           if (cs != null) {
             CodeSystemUtilities.markStatus(cs, wg, status, fmm, normativeVersion);
           }
@@ -400,7 +400,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     Set<String> systems = new HashSet<>();
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       for (CanonicalType ct : inc.getValueSet()) {
-        ValueSet vsr = ctxt.findTxResource(ValueSet.class, ct.asStringValue(), null, vs);
+        ValueSet vsr = ctxt.findTxResource(ValueSet.class, ct.asStringValue(), ExtensionUtilities.getVersionResolutionRules(ct), null, vs);
         if (vsr != null) {
           systems.addAll(listSystems(ctxt, vsr));
         }

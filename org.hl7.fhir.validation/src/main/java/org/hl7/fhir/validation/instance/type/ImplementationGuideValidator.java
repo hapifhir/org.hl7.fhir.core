@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -76,7 +77,7 @@ public class ImplementationGuideValidator extends BaseValidator {
     ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), packageId == null || packageId.matches(FilesystemPackageCacheManager.PACKAGE_REGEX), I18nConstants.IG_DEPENDENCY_INVALID_PACKAGEID, packageId) && ok;         
 
     try {
-      ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, url);
+      ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, url, ExtensionUtilities.getVersionResolutionRules(dependency.getNamedChild("uri")));
       warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), fetchedIgDependency != null, I18nConstants.IG_DEPENDENCY_INVALID_URL, url);                   
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       if (url != null && packageId != null && (fetchedIgDependency == null || !fetchedIgDependency.hasUserData(UserDataNames.IG_FAKE))) {

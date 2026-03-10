@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
@@ -185,7 +186,7 @@ public class ValueSetValidator extends BaseValidator {
     case "http://www.ama-assn.org/go/cpt": return new CPTChecker(context, settings, xverManager, errors, session); 
     case "urn:ietf:bcp:47": return new BCP47Checker(context, settings, xverManager, errors, session);  
     default: 
-      CodeSystem cs = context.fetchCodeSystem(system);
+      CodeSystem cs = context.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule());
       if (cs != null) {
         return new CodeSystemBasedChecker(context, settings, xverManager, errors, cs, session);
       } else {
@@ -327,14 +328,14 @@ public class ValueSetValidator extends BaseValidator {
       int i = 0;
       for (Element ve : valuesets) {
         String v = ve.getValue();
-        ValueSet vs = context.findTxResource(ValueSet.class, v);
+        ValueSet vs = context.findTxResource(ValueSet.class, v, ExtensionUtilities.getVersionResolutionRules(ve));
         if (vs == null) {
           // we couldn't find it, but it might be an implicit value set 
           ValueSetExpansionOutcome vse = context.expandVS(new ExpansionOptions().withCacheOk(true).withHierarchical(false).withMaxCount(0), v);
           if (!vse.isOk() ) {
             NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
 
-            Resource rs = context.fetchResource(Resource.class, v);
+            Resource rs = context.fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRules(ve));
             if (rs != null) {
               warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
             } else { 
@@ -372,7 +373,7 @@ public class ValueSetValidator extends BaseValidator {
         }
       }
       if (version == null) {
-        CodeSystem cs = context.fetchCodeSystem(system);
+        CodeSystem cs = context.fetchCodeSystem(system, ExtensionUtilities.getVersionResolutionRules(include));
 
         if (cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(system) && fetcher != null) {
           Set<IValidatorResourceFetcher.ResourceVersionInformation> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), system);
@@ -387,10 +388,10 @@ public class ValueSetValidator extends BaseValidator {
     CodeSystemChecker csChecker = getSystemValidator(system, errors);
     CodeSystem cs = null;
     if (!Utilities.noString(system)) {
-      cs = context.fetchCodeSystem(system, version, null);
+      cs = context.fetchCodeSystem(system, ExtensionUtilities.getVersionResolutionRules(include), version, null);
       if (cs == null) {
         // can we get it from a terminology server? 
-        cs = context.findTxResource(CodeSystem.class, system, version, null);
+        cs = context.findTxResource(CodeSystem.class, system, ExtensionUtilities.getVersionResolutionRules(include), version, null);
       }
       boolean validateConcepts = true;
       if (cs != null) { // if it's null, we can't analyse this
@@ -435,7 +436,7 @@ public class ValueSetValidator extends BaseValidator {
             }
           }
         }
-        ValueSet vs = context.findTxResource(ValueSet.class, system, version, null);
+        ValueSet vs = context.findTxResource(ValueSet.class, system, ExtensionUtilities.getVersionResolutionRules(include), version, null);
         if (vs != null) {
           validateConcepts = false;
           List<String> systems = TerminologyUtilities.listSystems(vs);

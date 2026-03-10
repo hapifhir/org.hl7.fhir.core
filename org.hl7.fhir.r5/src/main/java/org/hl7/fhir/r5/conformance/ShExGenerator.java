@@ -1240,7 +1240,7 @@ public class ShExGenerator {
       for (String dt : new HashSet<String>(datatypes)) {
         if (!emittedDatatypes.contains(dt)) {
           StructureDefinition sd = context.fetchResource(StructureDefinition.class,
-            ProfileUtilities.sdNs(dt, null));
+            ProfileUtilities.sdNs(dt, null), IWorkerContext.VersionResolutionRules.defaultRule());
           // TODO: Figure out why the line below doesn't work
           // if (sd != null && !uniq_structures.contains(sd))
           if(sd != null && !uniq_structure_urls.contains(sd.getUrl()))
@@ -1884,7 +1884,7 @@ public class ShExGenerator {
   // TODO: find a utility that implements this
   private ValueSet resolveBindingReference(DomainResource ctxt, String reference) {
     try {
-      return context.fetchResource(ValueSet.class, reference);
+      return context.fetchResource(ValueSet.class, reference, IWorkerContext.VersionResolutionRules.defaultRule());
     } catch (Throwable e) {
       return null;
     }

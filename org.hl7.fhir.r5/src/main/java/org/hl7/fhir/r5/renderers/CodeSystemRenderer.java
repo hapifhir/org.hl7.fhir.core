@@ -10,6 +10,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -184,7 +185,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
           XhtmlNode td = tr.td();
           String url = p.getExtensionString(ExtensionDefinitions.EXT_PROPERTY_VALUESET);
           if (url != null) {
-            ValueSet vs = context.getContext().fetchResource(ValueSet.class, url);
+            ValueSet vs = context.getContext().fetchResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRules(p.getExtensionByUrl(ExtensionDefinitions.EXT_PROPERTY_VALUESET).getValue()));
             if (vs == null) {
               td.code().tx(url);
             } else {
@@ -597,7 +598,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
                 if (nolink) {
                   td.code(pv);
                 } else {
-                  CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pv);
+                  CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pv, ExtensionUtilities.getVersionResolutionRules(pcv.getValue()));
                   if (cr != null) {
                     if (cr.hasWebPath()) {
                       td.ah(context.prefixLocalHref(cr.getWebPath()), cr.getVersionedUrl()).tx(cr.present());
@@ -787,7 +788,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       td.tx((cs.getContent().getDisplay())+": "+describeContent(cs.getContent(), cs));
       if (cs.getContent() == CodeSystemContentMode.SUPPLEMENT) {
         td.tx(" ");
-        CodeSystem tgt = context.getContext().fetchCodeSystem(cs.getSupplements());
+        CodeSystem tgt = context.getContext().fetchCodeSystem(cs.getSupplements(), ExtensionUtilities.getVersionResolutionRules(cs.getSupplementsElement()));
         if (tgt != null) {
           td.ah(tgt.getWebPath()).tx(tgt.present());
         } else {
@@ -805,7 +806,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (cs.hasValueSet()) {
       tr = tbl.tr();
       tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VALUESET)+":");
-      ValueSet vs = context.getContext().findTxResource(ValueSet.class, cs.getValueSet());
+      ValueSet vs = context.getContext().findTxResource(ValueSet.class, cs.getValueSet(), ExtensionUtilities.getVersionResolutionRules(cs.getValueSetElement()));
       if (vs == null) {
         tr.td().tx(context.formatPhrase(RenderingContext.CODE_SYS_THE_VALUE_SET, cs.getValueSet())+")");
       } else {

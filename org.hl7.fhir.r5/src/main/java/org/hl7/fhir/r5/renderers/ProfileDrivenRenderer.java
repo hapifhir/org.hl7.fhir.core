@@ -15,6 +15,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
@@ -387,7 +388,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             x.add(tbl);
           }
         } else if (isExtension(p)) {
-          StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, p.getUrl());          
+          StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, p.getUrl(), IWorkerContext.VersionResolutionRules.defaultRule());
           for (ResourceWrapper v : p.getValues()) {
             if (v != null) {
               ResourceWrapper vp = v.child("value");
@@ -599,7 +600,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           String url = v.primitiveValue("url");
           if (url != null) {
             // 1. check extension is valid
-            StructureDefinition ed = getContext().getWorker().fetchResource(StructureDefinition.class, url);
+            StructureDefinition ed = getContext().getWorker().fetchResource(StructureDefinition.class, url, ExtensionUtilities.getVersionResolutionRulesBase(v.getBase()));
             if (ed == null) {
               if (xverManager == null) {
                 xverManager = XVerExtensionManagerFactory.createExtensionManager(context.getWorker());

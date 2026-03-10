@@ -970,7 +970,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
 
-  protected ValueSet resolveBindingReference(DomainResource ctxt, String reference, String uri, Resource src) {
+  protected ValueSet resolveBindingReference(DomainResource ctxt, String reference, org.hl7.fhir.r5.model.Element refCtxt, String uri, Resource src) {
     if (reference != null) {
       if (reference.equals("http://www.rfc-editor.org/bcp/bcp13.txt")) {
         reference = "http://hl7.org/fhir/ValueSet/mimetypes";
@@ -984,11 +984,11 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       } else {
         reference = cu.pinValueSet(reference);
         long t = System.nanoTime();
-        ValueSet fr = context.findTxResource(ValueSet.class, reference, null, src);
+        ValueSet fr = context.findTxResource(ValueSet.class, reference, ExtensionUtilities.getVersionResolutionRules(refCtxt), null, src);
         if (fr == null) {
           if (!Utilities.isAbsoluteUrl(reference)) {
             reference = resolve(uri, reference);
-            fr = context.findTxResource(ValueSet.class, reference, null, src);
+            fr = context.findTxResource(ValueSet.class, reference, ExtensionUtilities.getVersionResolutionRules(refCtxt), null, src);
           }
         }
         if (fr == null) {

@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
@@ -397,7 +398,7 @@ public abstract class PEDefinition {
 
   public ValueSet valueSet() {
     if (definition.getBinding().hasValueSet()) {
-      return builder.getContext().fetchResource(ValueSet.class, definition.getBinding().getValueSet());
+      return builder.getContext().fetchResource(ValueSet.class, definition.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(definition.getBinding().getValueSetElement()));
     }
     return null;
   }

@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.context;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
@@ -22,7 +23,7 @@ public interface IWorkerContextManager {
   }
 
   interface ICanonicalResourceLocator {
-    void findResource(Object caller, String url); // if it can be found, put it in the context
+    void findResource(Object caller, String url, IWorkerContext.VersionResolutionRules rules); // if it can be found, put it in the context
   }
 
   public IPackageCacheManager packageManager();

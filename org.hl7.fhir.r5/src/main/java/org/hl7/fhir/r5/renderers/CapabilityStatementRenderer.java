@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -1046,7 +1047,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         tr = tbl.tr();
         tr.td().code().tx(ExtensionUtilities.readStringExtension(ext, "search"));
         String url = ExtensionUtilities.readStringExtension(ext, "profile");
-        StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
+        StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
         if (sd != null) {
           tr.td().code().ah(sd.getWebPath()).tx(sd.present());
         } else {
@@ -1699,7 +1700,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       return;
     }
 
-    Resource cr = context.getContext().fetchResource(Resource.class, canonicalUri);
+    Resource cr = context.getContext().fetchResource(Resource.class, canonicalUri, IWorkerContext.VersionResolutionRules.defaultRule());
     if (cr == null) {
       node.addText(name);
     }

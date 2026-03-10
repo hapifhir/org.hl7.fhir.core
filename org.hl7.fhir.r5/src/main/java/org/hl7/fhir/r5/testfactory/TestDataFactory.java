@@ -279,7 +279,7 @@ public class TestDataFactory {
       factory.setTesting(testing);
       factory.setMarkProfile(details.asBoolean("mark-profile"));
       String purl = details.asString( "profile");
-      StructureDefinition profile = context.fetchResource(StructureDefinition.class, purl);
+      StructureDefinition profile = context.fetchResource(StructureDefinition.class, purl, IWorkerContext.VersionResolutionRules.defaultRule());
       if (profile == null) {
         error("Unable to find profile "+purl);
       } else if (!profile.hasSnapshot()) {
@@ -498,7 +498,7 @@ public class TestDataFactory {
   public TableDataProvider loadTableProvider(String path, Locale locale) {
     TableDataProvider tbl;
     if (Utilities.isAbsoluteUrl(path)) {
-      ValueSet vs = context.findTxResource(ValueSet.class, path);
+      ValueSet vs = context.findTxResource(ValueSet.class, path, IWorkerContext.VersionResolutionRules.defaultRule());
       if (vs == null) {
         throw new FHIRException("ValueSet "+path+" not found");
       } else {

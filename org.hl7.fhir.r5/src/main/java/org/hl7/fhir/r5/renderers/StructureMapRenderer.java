@@ -12,6 +12,7 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
@@ -155,7 +156,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
         x.b().tx("  prefix ");
         x.tx(""+prefix);
         x.color(COLOR_SYNTAX).tx(" = \"");
-        CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getSource());
+        CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getSource(), ExtensionUtilities.getVersionResolutionRules(cg.getSourceElement()));
         if (cs != null && cs.hasWebPath()) {
           x.ah(context.prefixLocalHref(cs.getWebPath()), cs.present()).tx(cg.getSource());
         } else {
@@ -169,7 +170,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
         x.b().tx("  prefix ");
         x.tx(""+prefix);
         x.color(COLOR_SYNTAX).tx(" = \"");
-        CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getTarget());
+        CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getTarget(), ExtensionUtilities.getVersionResolutionRules(cg.getTargetElement()));
         if (cs != null && cs.hasWebPath()) {
           x.ah(context.prefixLocalHref(cs.getWebPath()), cs.present()).tx(cg.getTarget());
         } else {
@@ -257,7 +258,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
     for (StructureMapStructureComponent s : map.getStructure()) {
       x.b().tx("uses");
       x.color(COLOR_SYNTAX).tx(" \"");
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, s.getUrl());
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, s.getUrl(), ExtensionUtilities.getVersionResolutionRules(s.getUrlElement()));
       if (sd != null && sd.hasWebPath()) {
         x.ah(context.prefixLocalHref(sd.getWebPath()), sd.present()).tx(s.getUrl());
       } else {
@@ -282,7 +283,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
     for (UriType s : map.getImport()) {
       x.b().tx("imports");
       x.color(COLOR_SYNTAX).tx(" \"");
-      StructureMap m = context.getContext().fetchResource(StructureMap.class, s.getValue());
+      StructureMap m = context.getContext().fetchResource(StructureMap.class, s.getValue(), ExtensionUtilities.getVersionResolutionRules(s));
       if (m != null) {
         x.ah(context.prefixLocalHref(m.getWebPath()), m.present()).tx(s.getValue());
       } else {

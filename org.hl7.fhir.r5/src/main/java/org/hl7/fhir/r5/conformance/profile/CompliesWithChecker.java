@@ -205,8 +205,8 @@ public class CompliesWithChecker {
       case NULL: return false;
       case POSITION: return false;
       case PROFILE: 
-        StructureDefinition sd1 = context.fetchResource(StructureDefinition.class, dt1.value.primitiveValue());
-        StructureDefinition sd2 = context.fetchResource(StructureDefinition.class, dt2.value.primitiveValue());
+        StructureDefinition sd1 = context.fetchResource(StructureDefinition.class, dt1.value.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(dt1.value));
+        StructureDefinition sd2 = context.fetchResource(StructureDefinition.class, dt2.value.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(dt2.value));
         if (sd1 == null || sd2 == null) {
           return false;
         }
@@ -218,7 +218,7 @@ public class CompliesWithChecker {
               if (url.equals(sde.getUrl()) || url.equals(sde.getVersionedUrl())) {
                 return true;
               }
-              sde = context.fetchResource(StructureDefinition.class, sde.getBaseDefinition());
+              sde = context.fetchResource(StructureDefinition.class, sde.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sde.getBaseDefinitionElement()));
             }
           }
         }
@@ -230,7 +230,7 @@ public class CompliesWithChecker {
               if (url.equals(sde.getUrl()) || url.equals(sde.getVersionedUrl())) {
                 return true;
               }
-              sde = context.fetchResource(StructureDefinition.class, sde.getBaseDefinition());
+              sde = context.fetchResource(StructureDefinition.class, sde.getBaseDefinition(),  ExtensionUtilities.getVersionResolutionRules(sde.getBaseDefinitionElement()));
             }
           }
         }
@@ -239,7 +239,7 @@ public class CompliesWithChecker {
           if (sd2.getVersionedUrl().equals(sde.getVersionedUrl())) {
             return true;
           }
-          sde = context.fetchResource(StructureDefinition.class, sde.getBaseDefinition());
+          sde = context.fetchResource(StructureDefinition.class, sde.getBaseDefinition(),  ExtensionUtilities.getVersionResolutionRules(sde.getBaseDefinitionElement()));
         }
         return false;
       case TYPE: return dt1.value.primitiveValue().equals(dt2.value.primitiveValue());
@@ -462,8 +462,8 @@ public class CompliesWithChecker {
       } else if (c.getBinding().getStrength() == BindingStrength.EXTENSIBLE && a.getBinding().getStrength() == BindingStrength.REQUIRED) {
         messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NOT_VALID, "binding.strength", a.getBinding().getStrength(), c.getBinding().getStrength(), c.getId()), IssueSeverity.ERROR));
       } else if (!c.getBinding().getValueSet().equals(a.getBinding().getValueSet())) {
-        ValueSet cVS = context.fetchResource(ValueSet.class, c.getBinding().getValueSet());
-        ValueSet aVS = context.fetchResource(ValueSet.class, a.getBinding().getValueSet());
+        ValueSet cVS = context.fetchResource(ValueSet.class, c.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(c.getBinding().getValueSetElement()));
+        ValueSet aVS = context.fetchResource(ValueSet.class, a.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(a.getBinding().getValueSetElement()));
         if (aVS == null || cVS == null) {
           if (aVS == null) {
             messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, claimeePath, context.formatMessage(I18nConstants.PROFILE_COMPLIES_WITH_NO_VS, a.getBinding().getValueSet()), IssueSeverity.WARNING));

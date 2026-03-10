@@ -679,7 +679,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     List<ValueSet> imports = new ArrayList<ValueSet>();
     for (UriType imp : exc.getValueSet()) {
-      imports.add(importValueSetForExclude(wc, imp.getValue(), exp, expParams, false, vs));
+      imports.add(importValueSetForExclude(wc, imp.getValue(), imp, exp, expParams, false, vs));
     }
     if (!exc.hasSystem()) {
       if (imports.isEmpty()) // though this is not supposed to be the case
@@ -696,7 +696,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       dwc.setNoTotal(true);
     }
 
-    CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem());
+    CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem(), ExtensionUtilities.getVersionResolutionRules(exc));
     if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.getTxSupportInfo(exc.getSystem(), exc.getVersion()).isSupported()) {
       ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
       ValueSet valueset = vse.getValueset();
@@ -1140,15 +1140,15 @@ public class ValueSetExpander extends ValueSetProcessBase {
     return false;
   }
 
-  private ValueSet importValueSet(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws OperationIsTooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
+  private ValueSet importValueSet(WorkingContext wc, String value, Element valueCtxt, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws OperationIsTooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw fail(I18nConstants.VS_EXP_IMPORT_NULL);
     String url = getCu().pinValueSet(value, expParams);
-    ValueSet vs = context.findTxResource(ValueSet.class, url, null, valueSet);
+    ValueSet vs = context.findTxResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRulesBase(valueCtxt), null, valueSet);
     if (vs == null) {
       boolean pinned = !url.equals(value);
       String ver = pinned ? url.substring(value.length()+1) : null;
-      if (context.fetchResource(CodeSystem.class, url, null, valueSet) != null) {
+      if (context.fetchResource(CodeSystem.class, url, ExtensionUtilities.getVersionResolutionRulesBase(valueCtxt), null, valueSet) != null) {
         throw failWithUnknownVSException(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED : I18nConstants.VS_EXP_IMPORT_CS, true, value, ver);
       } else  {
         throw failWithUnknownVSException(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED : I18nConstants.VS_EXP_IMPORT_UNK, true, value, ver);
@@ -1204,15 +1204,15 @@ public class ValueSetExpander extends ValueSetProcessBase {
   
 
 
-  private ValueSet importValueSetForExclude(WorkingContext wc, String value, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws OperationIsTooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
+  private ValueSet importValueSetForExclude(WorkingContext wc, String value, Element valueCtxt, ValueSetExpansionComponent exp, Parameters expParams, boolean noInactive, ValueSet valueSet) throws OperationIsTooCostly, TerminologyServiceException, FileNotFoundException, IOException, FHIRFormatError {
     if (value == null)
       throw fail(I18nConstants.VS_EXP_IMPORT_NULL_X);
     String url = getCu().pinValueSet(value, expParams);
-    ValueSet vs = context.findTxResource(ValueSet.class, url, null, valueSet);
+    ValueSet vs = context.findTxResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRules(valueCtxt),null, valueSet);
     if (vs == null) {
       boolean pinned = !url.equals(value);
       String ver = pinned ? url.substring(value.length()+1) : null;
-      if (context.fetchResource(CodeSystem.class, url, null, valueSet) != null) {
+      if (context.fetchResource(CodeSystem.class, url, ExtensionUtilities.getVersionResolutionRules(valueCtxt), null, valueSet) != null) {
         throw fail(pinned ? I18nConstants.VS_EXP_IMPORT_CS_PINNED_X : I18nConstants.VS_EXP_IMPORT_CS_X, value, ver);
       } else  {
         throw fail(pinned ? I18nConstants.VS_EXP_IMPORT_UNK_PINNED_X : I18nConstants.VS_EXP_IMPORT_UNK_X, value, ver);
@@ -1326,7 +1326,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     inc.checkNoModifiers("Compose.include", "expanding");
     List<ValueSet> imports = new ArrayList<ValueSet>();
     for (CanonicalType imp : inc.getValueSet()) {
-      imports.add(importValueSet(dwc, imp.getValue(), exp, expParams, noInactive, valueSet));
+      imports.add(importValueSet(dwc, imp.getValue(), imp, exp, expParams, noInactive, valueSet));
     }
 
     if (!inc.hasSystem()) {
@@ -1343,7 +1343,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         dwc.setNoTotal(true);
       }
       String version = determineVersion(inc.getSystem(), inc.getVersion(), exp, expParams);
-      CodeSystem cs = context.fetchSupplementedCodeSystem(inc.getSystem(), version, requiredSupplements, valueSet);
+      CodeSystem cs = context.fetchSupplementedCodeSystem(inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), version, requiredSupplements, valueSet);
       if (cs != null) {
         checkVersion(inc.getSystem(), cs.getVersion(), exp, expParams);
       }
@@ -1374,7 +1374,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (!requiredSupplements.isEmpty()) {
           List<CodeSystem> additionalSupplements = new ArrayList<>();
           for (String s : requiredSupplements) {
-            CodeSystem scs = context.findTxResource(CodeSystem.class, s);
+            CodeSystem scs = context.findTxResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
             if (scs != null && cs.getUrl().equals(scs.getSupplements())) {
               additionalSupplements.add(scs);
             }

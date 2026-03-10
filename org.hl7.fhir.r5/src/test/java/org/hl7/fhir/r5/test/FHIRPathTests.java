@@ -96,7 +96,7 @@ public class FHIRPathTests {
 
     @Override
     public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-      return context.fetchResource(ValueSet.class, url);
+      return context.fetchResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     }
 
     @Override

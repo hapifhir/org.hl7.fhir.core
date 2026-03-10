@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Locale;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
@@ -272,7 +273,7 @@ public class ResourceWrapperModel extends ResourceWrapper {
   public String getCodeSystemUri() {
     ElementDefinition pd = model.getProperty().getDefinition(); 
     if (pd != null && pd.hasBinding() && pd.getBinding().hasValueSet()) { 
-      ValueSet vs = contextUtils.getWorker().fetchResource(ValueSet.class, pd.getBinding().getValueSet()); 
+      ValueSet vs = contextUtils.getWorker().fetchResource(ValueSet.class, pd.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(pd.getBinding().getValueSetElement()));
       if (vs != null && vs.hasCompose() && !vs.getCompose().hasExclude() && vs.getCompose().getInclude().size() == 1) { 
         return vs.getCompose().getIncludeFirstRep().getSystem(); 
       } 

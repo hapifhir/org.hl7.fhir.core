@@ -21,6 +21,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.BackboneType;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
@@ -132,7 +133,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
           path = parts[0]; 
           parts[0] = parts[0].substring(0, parts[0].indexOf(".")); 
         } 
-        StructureDefinition p = getContext().getWorker().fetchResource(StructureDefinition.class, parts[0]); 
+        StructureDefinition p = getContext().getWorker().fetchResource(StructureDefinition.class, parts[0], IWorkerContext.VersionResolutionRules.defaultRule());
         if (p == null) { 
           p = getContext().getWorker().fetchTypeDefinition(parts[0]); 
         } 
@@ -140,7 +141,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
           p = getContext().getWorker().fetchTypeDefinition(context.getTypeMap().get(parts[0]));           
         } 
         if (p == null) { 
-          p = getContext().getWorker().fetchResource(StructureDefinition.class, link); 
+          p = getContext().getWorker().fetchResource(StructureDefinition.class, link, IWorkerContext.VersionResolutionRules.defaultRule());
         } 
         if (p != null) { 
           if ("Extension".equals(p.getType())) { 
@@ -267,7 +268,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       return (context.formatPhrase(RenderingContext.GENERAL_NCI_THES)); 
     
 
-    CodeSystem cs = context.getContext().fetchCodeSystem(system); 
+    CodeSystem cs = context.getContext().fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule());
     if (cs != null) { 
       return crPresent(cs); 
     } 
@@ -323,7 +324,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if ("fr-CA".equals(lang)) { 
       return "French (Canadian)"; // this one was omitted from the value set 
     } 
-    ValueSet v = getContext().getWorker().findTxResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages"); 
+    ValueSet v = getContext().getWorker().findTxResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages", IWorkerContext.VersionResolutionRules.defaultRule());
     if (v != null) { 
       ConceptReferenceComponent l = null; 
       for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) { 
@@ -426,7 +427,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   private String getExtensionLabel(Extension ext) { 
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.getUrl()); 
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.getUrl(), IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd != null && ext.hasValue() && ext.getValue().isPrimitive() && sd.hasSnapshot()) { 
       for (ElementDefinition ed : sd.getSnapshot().getElement()) { 
         if (Utilities.existsInList(ed.getPath(), "Extension", "Extension.value[x]") && ed.hasLabel()) { 
@@ -438,7 +439,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
   private String getExtensionLabel(ResourceWrapper ext) { 
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.primitiveValue("url")); 
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.primitiveValue("url"), IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd != null && ext.has("value") && ext.child("value").isPrimitive() && sd.hasSnapshot()) { 
       for (ElementDefinition ed : sd.getSnapshot().getElement()) { 
         if (Utilities.existsInList(ed.getPath(), "Extension", "Extension.value[x]") && ed.hasLabel()) { 
@@ -455,7 +456,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
 
   private boolean canRender(ResourceWrapper ext) { 
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.primitiveValue("url")); 
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, ext.primitiveValue("url"), IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd != null && ext.has("value") && ext.isPrimitive("value") && sd.hasSnapshot()) { 
       for (ElementDefinition ed : sd.getSnapshot().getElement()) { 
         if (Utilities.existsInList(ed.getPath(), "Extension", "Extension.value[x]") && ed.hasLabel()) { 
@@ -997,7 +998,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.code().tx("Value calculated by: ");
         renderExpression(status, x, wrapNC(ext.getValue()));
       } else {
-        StructureDefinition def = context.getContext().fetchResource(StructureDefinition.class, url);
+        StructureDefinition def = context.getContext().fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
         if (def == null) {
           x.code().tx(tail(url)+": ");
         } else {
@@ -1031,7 +1032,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         x.code().tx("Value calculated by: ");
         renderExpression(status, x, ext.child("value"));
       } else {
-        StructureDefinition def = context.getContext().fetchResource(StructureDefinition.class, url);
+        StructureDefinition def = context.getContext().fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
         if (def == null) {
           x.code().tx(tail(url)+": ");
         } else {
@@ -1067,7 +1068,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         if (v.startsWith("mailto:")) { 
           x.ah(v).addText(v.substring(7)); 
         } else { 
-          Resource r = context.getContext().fetchResource(Resource.class, v); 
+          Resource r = context.getContext().fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRulesBase(uri.getBase()));
           if (r != null && r.getWebPath() != null) { 
             if (r instanceof CanonicalResource) { 
               x.ah(context.prefixLocalHref(r.getWebPath())).addText(crPresent((CanonicalResource) r));           
@@ -1231,7 +1232,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       if (version != null) { 
         url = url + "|"+version; 
       } 
-      CodeSystem cs = context.getWorker().fetchCodeSystem(url); 
+      CodeSystem cs = context.getWorker().fetchCodeSystem(url, IWorkerContext.VersionResolutionRules.defaultRule());
       if (cs != null && cs.hasWebPath()) { 
         return cs.getWebPath(); 
       } 
@@ -1267,7 +1268,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         return "https://en.wikipedia.org/wiki/ISO_3166-2"; 
       } 
     } else { 
-      CodeSystem cs = context.getWorker().fetchCodeSystem(system, version, source);
+      CodeSystem cs = context.getWorker().fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule(), version, source);
       if (cs != null && cs.hasWebPath()) { 
         if (!Utilities.noString(code)) { 
           return cs.getWebPath()+"#"+cs.getId()+"-"+Utilities.nmtokenize(code); 
@@ -1298,7 +1299,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       display = c.primitiveValue("code"); 
     } 
 
-    CodeSystem cs = context.getWorker().fetchCodeSystem(c.primitiveValue("system"));
+    CodeSystem cs = context.getWorker().fetchCodeSystem(c.primitiveValue("system"), ExtensionUtilities.getVersionResolutionRulesBase(c.getBase()));
     NamingSystem ns = null;
     if (cs == null) {
       ns = NamingSystemUtilities.getNamingSystem(context.getContext(), c.primitiveValue("system"));
@@ -2007,7 +2008,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       boolean first = true; 
       for (ResourceWrapper p : dr.children("profile")) { 
         if (first) first = false; else td.tx(" | "); 
-        sd = context.getWorker().fetchResource(StructureDefinition.class, p.primitiveValue()); 
+        sd = context.getWorker().fetchResource(StructureDefinition.class, p.primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(p.getBase()));
         if (sd != null && sd.hasWebPath()) { 
           td.ah(context.prefixLocalHref(sd.getWebPath())).tx(crPresent(sd)); 
         } else { 

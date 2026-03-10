@@ -5,6 +5,7 @@ import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
@@ -89,6 +90,7 @@ public class ConceptMapValidator extends BaseValidator {
   public static class CSReference {
     private String url;
     private String version;
+    private Element src;
     private CodeSystem cs;
   }
   
@@ -157,7 +159,7 @@ public class ConceptMapValidator extends BaseValidator {
         String code = property.getChildValue("code");
         String type = property.getChildValue("type");
         String system = property.getChildValue("system");
-        CodeSystem cs = system != null ? context.fetchCodeSystem(system) : null;
+        CodeSystem cs = system != null ? context.fetchCodeSystem(system, ExtensionUtilities.getVersionResolutionRules(property.getNamedChild("system"))) : null;
         ok = rule(errors, "2023-03-05", IssueType.REQUIRED, property.line(), property.col(), stack.push(property, ci, null, null).getLiteralPath(), 
             !"code".equals(type) || system != null, I18nConstants.CONCEPTMAP_GROUP_TARGET_PROPERTY_TYPE_NO_SYSTEM) && ok;
         warning(errors, "2023-03-05", IssueType.REQUIRED, property.line(), property.col(), stack.push(property, ci, null, null).getLiteralPath(), 
@@ -229,17 +231,20 @@ public class ConceptMapValidator extends BaseValidator {
       if (cm.hasChild(n, false)) {
         Element e = cm.getNamedChild(n, false);
         String ref = null;
+        Element refCtxt = null;
         if (e.isPrimitive()) {
           ref = e.primitiveValue();
+          refCtxt = e;
         } else if (e.hasChild("reference", false)) {
           ref = e.getNamedChildValue("reference", false);
+          refCtxt = e.getNamedChild("reference");
         }
         if (ref != null) {
           VSReference res = new VSReference();
           if (ref.contains("|")) {
             res.url = ref.substring(0, ref.indexOf("|"));
             res.version = ref.substring(ref.indexOf("|")+1);
-            Resource r = context.fetchResource(Resource.class, res.url, res.version, null);
+            Resource r = context.fetchResource(Resource.class, res.url, ExtensionUtilities.getVersionResolutionRules(refCtxt), res.version, null);
             if (r != null) {
               if (r instanceof ValueSet) {
                 res.vs = (ValueSet) r;
@@ -249,11 +254,11 @@ public class ConceptMapValidator extends BaseValidator {
               }
             } 
             if (res.vs == null) {
-              res.vs = context.findTxResource(ValueSet.class, res.url, res.version, null);
+              res.vs = context.findTxResource(ValueSet.class, res.url, IWorkerContext.VersionResolutionRules.defaultRule(), res.version, null);
             }
           } else {
             res.url = ref;
-            Resource r = context.fetchResource(Resource.class, res.url);
+            Resource r = context.fetchResource(Resource.class, res.url, ExtensionUtilities.getVersionResolutionRules(refCtxt));
             if (r != null) {
               if (r instanceof ValueSet) {
                 res.vs = (ValueSet) r;
@@ -263,7 +268,7 @@ public class ConceptMapValidator extends BaseValidator {
               }
             } 
             if (res.vs == null) {
-              res.vs = context.findTxResource(ValueSet.class, res.url);
+              res.vs = context.findTxResource(ValueSet.class, res.url, IWorkerContext.VersionResolutionRules.defaultRule());
             }
           }
           return res;
@@ -336,8 +341,10 @@ public class ConceptMapValidator extends BaseValidator {
   private CSReference readCSReference(Element ref, Element version, ValueSet vs) {
     CSReference res = new CSReference();
     res.url = ref.primitiveValue();
+    res.src = ref;
     if (version != null) {
-      res.version = version.primitiveValue(); 
+      res.version = version.primitiveValue();
+      res.src = version;
     } else if (res.url.contains("|")) {
       res.version = res.url.substring(res.url.indexOf("|")+1);
       res.url = res.url.substring(0, res.url.indexOf("|"));
@@ -348,7 +355,7 @@ public class ConceptMapValidator extends BaseValidator {
         }
       }
     }
-    res.cs = context.fetchCodeSystem(res.url, res.version, vs);
+    res.cs = context.fetchCodeSystem(res.url, ExtensionUtilities.getVersionResolutionRules(res.src), res.version, vs);
     return res;
   }
 
