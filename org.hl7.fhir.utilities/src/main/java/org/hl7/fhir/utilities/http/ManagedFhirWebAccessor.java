@@ -85,6 +85,10 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
             String apiKeyCredential = getToken();
             headers.add(new HTTPHeader("Api-Key", apiKeyCredential));
             break;
+          case CLIENT_CREDENTIALS:
+            String ccToken = HTTPTokenManager.getToken(getClientCredentialsServer());
+            headers.add(new HTTPHeader("Authorization", "Bearer " + ccToken));
+            break;
         }
       }
     } else {
@@ -118,9 +122,9 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
       case DIRECT:
         HTTPResult result = executeDirectRequest(httpRequest);
         if ((result.getCode() == 401 || result.getCode() == 403)) {
-          ServerDetailsPOJO server = ManagedWebAccessUtils.getServer(getServerTypes(), httpRequest.getUrl().toString(), getServerAuthDetails());
-          if (server != null && "client_credentials".equals(server.getAuthenticationType())) {
-            HTTPTokenManager.invalidateToken(server);
+          ServerDetailsPOJO ccServer = getClientCredentialsServerForRetry(httpRequest.getUrl().toString());
+          if (ccServer != null) {
+            HTTPTokenManager.invalidateToken(ccServer);
             result = executeDirectRequest(httpRequest);
           }
         }

@@ -23,6 +23,9 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
   private String token;
 
   @Getter
+  private ServerDetailsPOJO clientCredentialsServer;
+
+  @Getter
   private final List<ServerDetailsPOJO> serverAuthDetails;
   @Getter
   private final Map<String, String> headers = new HashMap<>();
@@ -62,6 +65,12 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
     return self();
   }
 
+  public B withClientCredentials(ServerDetailsPOJO server) {
+    this.authenticationMode = HTTPAuthenticationMode.CLIENT_CREDENTIALS;
+    this.clientCredentialsServer = server;
+    return self();
+  }
+
   public B withNoneAuth() {
     this.authenticationMode = HTTPAuthenticationMode.NONE;
     setAllAuthHeadersToNull();
@@ -74,9 +83,21 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
     return self();
   }
 
+  protected ServerDetailsPOJO getClientCredentialsServerForRetry(String url) {
+    if (authenticationMode == HTTPAuthenticationMode.CLIENT_CREDENTIALS) {
+      return clientCredentialsServer;
+    }
+    ServerDetailsPOJO server = ManagedWebAccessUtils.getServer(serverTypes, url, serverAuthDetails);
+    if (server != null && "client_credentials".equals(server.getAuthenticationType())) {
+      return server;
+    }
+    return null;
+  }
+
   private void setAllAuthHeadersToNull() {
     this.token = null;
     this.username = null;
     this.password = null;
+    this.clientCredentialsServer = null;
   }
 }
