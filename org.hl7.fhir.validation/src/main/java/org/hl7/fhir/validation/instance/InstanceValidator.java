@@ -7628,7 +7628,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         errors.addAll(goodProfiles.values().iterator().next());
       } else if (goodProfiles.size() == 0) {
         Collections.sort(profiles);
-        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOMATCH, StringUtils.join("; ", profiles)) && ok;
+        ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), ei.getPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOMATCH, CommaSeparatedStringBuilder.join(", ", profiles)) && ok;
         for (String m : badProfiles.keySet()) {
           p = this.profileUtilities.findProfileStr(m, profile);
           for (ValidationMessage message : badProfiles.get(m)) {

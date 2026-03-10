@@ -859,9 +859,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return resource;
   }
 
-
-
-
   public String listMapUrls() {
     return Utilities.listCanonicalUrls(transforms.keys());
   }

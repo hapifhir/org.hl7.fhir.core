@@ -98,7 +98,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 
     ResourceWrapper b = qr.child("questionnaire");
     String ref = b == null ? null : b.primitiveValue();
-    Questionnaire q = context.getContext().fetchResource(Questionnaire.class, ref, ExtensionUtilities.getVersionResolutionRulesBase(b.getBase()));
+    Questionnaire q = context.getContext().fetchResource(Questionnaire.class, ref, ExtensionUtilities.getVersionResolutionRulesBase(b == null ? null : b.getBase()));
     
     r.setIcon("icon_q_root.gif", context.formatPhrase(RenderingContext.QUEST_RESP_ROOT));
     r.getCells().add(gen.new Cell(null, null, qr.getId(), null, null));

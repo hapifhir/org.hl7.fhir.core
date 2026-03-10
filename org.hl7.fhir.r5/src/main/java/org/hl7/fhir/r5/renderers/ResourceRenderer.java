@@ -199,13 +199,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   public String canonicalTitle(ResourceWrapper r) {
-    if (r.has("title")) {
+    if (r.hasPrimitiveValue("title")) {
       return r.primitiveValue("title");
     }
-    if (r.has("name")) {
+    if (r.hasPrimitiveValue("name")) {
       return r.primitiveValue("name");
     }
-    if (r.has("id")) {
+    if (r.hasPrimitiveValue("id")) {
       return r.primitiveValue("id");
     }
     return "?title?";

@@ -685,7 +685,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
               itype = IssueType.INVALID;
             } else {
               Resource resX = context.fetchResource(Resource.class, system, IWorkerContext.VersionResolutionRules.defaultRule());
-              if (resX != null) {
+              if (resX != null && !"CodeSystem".equals(resX.fhirType())) {
                 msgid = I18nConstants.TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE;
                 warningMessage = context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE, system, resX.fhirType());
                 oic = OpIssueCode.InvalidData;
