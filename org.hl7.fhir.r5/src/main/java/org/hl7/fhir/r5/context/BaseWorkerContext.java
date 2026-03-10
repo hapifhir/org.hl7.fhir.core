@@ -2388,7 +2388,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
    
     List<String> pvlist = new ArrayList<>();
-    if (sourceForReference != null && sourceForReference.getSourcePackage() != null) {
+    if (sourceForReference != null && sourceForReference.getSourcePackage() != null && rules != VersionResolutionRules.LATEST) {
       populatePVList(pvlist, sourceForReference.getSourcePackage());
     }
     

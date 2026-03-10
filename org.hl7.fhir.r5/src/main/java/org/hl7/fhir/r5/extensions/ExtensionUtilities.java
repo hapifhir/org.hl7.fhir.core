@@ -1490,14 +1490,14 @@ public class ExtensionUtilities {
       return IWorkerContext.VersionResolutionRules.defaultRule();
     }
     String rule = element.getExtensionString(ExtensionDefinitions.CANONICAL_RESOLUTION_METHOD);
-    return rule == null ? IWorkerContext.VersionResolutionRules.defaultRule() : IWorkerContext.VersionResolutionRules.valueOf(rule);
+    return rule == null ? IWorkerContext.VersionResolutionRules.defaultRule() : IWorkerContext.VersionResolutionRules.fromCode(rule);
   }
   public static IWorkerContext.VersionResolutionRules getVersionResolutionRules(org.hl7.fhir.r5.elementmodel.Element element) {
     if (element == null) {
       return IWorkerContext.VersionResolutionRules.defaultRule();
     }
     String rule = element.getExtensionString(ExtensionDefinitions.CANONICAL_RESOLUTION_METHOD);
-    return rule == null ? IWorkerContext.VersionResolutionRules.defaultRule() : IWorkerContext.VersionResolutionRules.valueOf(rule);
+    return rule == null ? IWorkerContext.VersionResolutionRules.defaultRule() : IWorkerContext.VersionResolutionRules.fromCode(rule);
   }
 
   public static IWorkerContext.VersionResolutionRules getVersionResolutionRulesBase(Base base) {

@@ -385,7 +385,10 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     addToMap(cr.getId(), cr); // we do this so we can drop by id - if not enforcing id, it's just the most recent resource with this id
     addToMap(cr.hasVersion() ? cr.getUrl()+"|"+cr.getVersion() : cr.getUrl()+"|#0", cr);
     if (pv != null) {
-      addToMap(pv+":"+(cr.hasVersion() ? cr.getUrl()+"|"+cr.getVersion() : cr.getUrl()+"|#0"), cr);
+      if (cr.hasVersion()) {
+        addToMap(pv + ":" + cr.getUrl() + "|" + cr.getVersion(), cr);
+      }
+      addToMap(pv+":"+cr.getUrl(), cr);
     }
     int ndx = set.indexOf(cr);
     if (ndx == set.size()-1) {

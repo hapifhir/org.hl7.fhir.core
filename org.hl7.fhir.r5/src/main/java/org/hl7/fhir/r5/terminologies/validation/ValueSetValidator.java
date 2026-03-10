@@ -668,7 +668,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         String workingVersion = valueset == null ? code.getVersion() : getCodeSystemVersionFromValueSet(system, code.getCode());
         CodeSystem csa = context.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule()); // get the latest
         VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
-        String wv = determineVersion(path, system, workingVersion, code.getVersion(), issues, va);
+        String wv = determineVersion(path, system, null, workingVersion, code.getVersion(), issues, va);
         CodeSystem cs = resolveCodeSystem(system, wv, null, null);
         if (cs == null) {
           if (!VersionUtilities.isR6Plus(context.getVersion()) && "urn:ietf:bcp:13".equals(system) && Utilities.existsInList(code.getCode(), "xml", "json", "ttl") && "http://hl7.org/fhir/ValueSet/mimetypes".equals(valueset.getUrl())) {
@@ -799,7 +799,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     String valueSetImpliedVersion = valueset == null ? code.getVersion() : getCodeSystemVersionFromValueSet(system, code.getCode());
     CodeSystem csa = context.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule()); // get the latest
     VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
-    String wv = determineVersion(path, system, valueSetImpliedVersion, code.getVersion(), issues, va);
+    String wv = determineVersion(path, system, null, valueSetImpliedVersion, code.getVersion(), issues, va);
     if (!checkRequiredSupplements(info)) {
       return new ValidationResult(IssueSeverity.ERROR, issues.get(issues.size()-1).getDetails().getText(), issues);
     }
@@ -1586,7 +1586,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return result;
   }
 
-  private String determineVersion(String path, @Nonnull String system, String versionVS, String versionCoding, List<OperationOutcomeIssueComponent> issues, VersionAlgorithm va) {
+  private String determineVersion(String path, @Nonnull String system, Element sysContext, String versionVS, String versionCoding, List<OperationOutcomeIssueComponent> issues, VersionAlgorithm va) {
     Resource source = valueset;
 
     // phase 1: get correct system version
@@ -1604,7 +1604,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         checkedVersionCombinations.add(key);
 
         // phase 4: is the determined version compatible?
-        CodeSystem cs = context.fetchResource(CodeSystem.class, system, IWorkerContext.VersionResolutionRules.defaultRule(), result, source);
+        CodeSystem cs = context.fetchResource(CodeSystem.class, system, ExtensionUtilities.getVersionResolutionRules(sysContext), result, source);
         if (cs != null) {
           checkVersion(path, system, cs.getVersion(), va, issues);
         }
@@ -1787,7 +1787,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     // ok, we need the code system
     CodeSystem csa = context.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule()); //
     VersionAlgorithm va = csa == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(csa.getVersionAlgorithm());
-    String actualVersion = determineVersion(path, system, vsi.getVersion(), version, issues, va);
+    String actualVersion = determineVersion(path, system, vsi, vsi.getVersion(), version, issues, va);
     CodeSystem cs = resolveCodeSystem(system, actualVersion, null, valueset);
     if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
       if (throwToServer) {
