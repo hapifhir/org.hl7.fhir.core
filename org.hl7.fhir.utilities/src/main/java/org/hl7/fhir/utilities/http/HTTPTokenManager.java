@@ -139,6 +139,8 @@ public class HTTPTokenManager {
       conn.setRequestMethod("POST");
       conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
       conn.setRequestProperty("Accept", "application/json");
+      conn.setConnectTimeout(10_000);
+      conn.setReadTimeout(10_000);
       conn.setDoOutput(true);
 
       try (OutputStream os = conn.getOutputStream()) {
@@ -152,27 +154,41 @@ public class HTTPTokenManager {
       }
 
       String responseBody = readResponseBody(conn);
-      JsonObject json = JsonParser.parseString(responseBody).getAsJsonObject();
-
-      if (!json.has("access_token") || json.get("access_token").isJsonNull()) {
-        throw new IOException("Token endpoint response missing 'access_token' field");
-      }
-
-      String accessToken = json.get("access_token").getAsString();
-
-      int expiresIn;
-      if (json.has("expires_in") && !json.get("expires_in").isJsonNull()) {
-        expiresIn = json.get("expires_in").getAsInt();
-      } else {
-        log.warn("Token endpoint response missing 'expires_in', defaulting to {}s", DEFAULT_EXPIRES_IN);
-        expiresIn = DEFAULT_EXPIRES_IN;
-      }
-
-      long expiresAtMillis = System.currentTimeMillis() + (expiresIn * 1000L);
-      return new CachedToken(accessToken, expiresAtMillis);
+      return parseTokenResponse(tokenEndpoint, responseBody);
     } finally {
       conn.disconnect();
     }
+  }
+
+  private static CachedToken parseTokenResponse(String tokenEndpoint, String responseBody) throws IOException {
+    JsonObject json;
+    try {
+      json = JsonParser.parseString(responseBody).getAsJsonObject();
+    } catch (Exception e) {
+      throw new IOException("Token endpoint " + tokenEndpoint + " returned non-JSON response: " + responseBody, e);
+    }
+
+    if (!json.has("access_token") || json.get("access_token").isJsonNull()) {
+      throw new IOException("Token endpoint " + tokenEndpoint + " response missing 'access_token' field");
+    }
+
+    String accessToken = json.get("access_token").getAsString();
+
+    int expiresIn;
+    if (json.has("expires_in") && !json.get("expires_in").isJsonNull()) {
+      try {
+        expiresIn = json.get("expires_in").getAsInt();
+      } catch (NumberFormatException e) {
+        log.warn("Token endpoint {} returned non-integer expires_in, defaulting to {}s", tokenEndpoint, DEFAULT_EXPIRES_IN);
+        expiresIn = DEFAULT_EXPIRES_IN;
+      }
+    } else {
+      log.warn("Token endpoint {} response missing 'expires_in', defaulting to {}s", tokenEndpoint, DEFAULT_EXPIRES_IN);
+      expiresIn = DEFAULT_EXPIRES_IN;
+    }
+
+    long expiresAtMillis = System.currentTimeMillis() + (expiresIn * 1000L);
+    return new CachedToken(accessToken, expiresAtMillis);
   }
 
   private static String readResponseBody(HttpURLConnection conn) throws IOException {
@@ -199,7 +215,7 @@ public class HTTPTokenManager {
         }
         return sb.toString();
       }
-    } catch (Exception e) {
+    } catch (IOException e) {
       return "(unable to read error body)";
     }
   }

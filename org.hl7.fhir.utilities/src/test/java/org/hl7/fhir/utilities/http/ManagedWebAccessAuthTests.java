@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -308,6 +309,166 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
     // Third request used fresh token after invalidation
     RecordedRequest retryRequest = server.takeRequest();
     assertThat(retryRequest.getHeader("Authorization")).isEqualTo("Bearer fresh-token");
+  }
+
+  @Test
+  public void testClientCredentialsProgrammaticApi() throws Exception {
+    tokenServer = new MockWebServer();
+    tokenServer.start();
+
+    tokenServer.enqueue(new MockResponse()
+      .setBody("{\"access_token\":\"programmatic-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
+      .addHeader("Content-Type", "application/json")
+      .setResponseCode(200));
+
+    ServerDetailsPOJO serverPojo = ServerDetailsPOJO.builder()
+      .url(server.url("").toString())
+      .authenticationType("client_credentials")
+      .type("fhir")
+      .clientId("testClient")
+      .clientSecret("testSecret")
+      .tokenEndpoint(tokenServer.url("/token").toString())
+      .build();
+
+    // Use the programmatic .withClientCredentials() API instead of settings-based lookup
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(DUMMY_AGENT, null)
+      .withClientCredentials(serverPojo);
+
+    HttpUrl serverUrl = server.url("blah/blah/blah?arg=blah");
+    server.enqueue(new MockResponse()
+      .setBody("Dummy Response").setResponseCode(200));
+
+    HTTPResult result = builder.httpCall(new HTTPRequest().withUrl(serverUrl.toString()).withMethod(HTTPRequest.HttpMethod.GET));
+
+    assertThat(result.getCode()).isEqualTo(200);
+
+    RecordedRequest fhirRequest = server.takeRequest();
+    assertThat(fhirRequest.getHeader("Authorization")).isEqualTo("Bearer programmatic-token");
+  }
+
+  @Test
+  public void testClientCredentialsProgrammaticApiOnManagedWebAccessor() throws Exception {
+    tokenServer = new MockWebServer();
+    tokenServer.start();
+
+    tokenServer.enqueue(new MockResponse()
+      .setBody("{\"access_token\":\"web-programmatic-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
+      .addHeader("Content-Type", "application/json")
+      .setResponseCode(200));
+
+    ServerDetailsPOJO serverPojo = ServerDetailsPOJO.builder()
+      .url(server.url("").toString())
+      .authenticationType("client_credentials")
+      .type("fhir")
+      .clientId("testClient")
+      .clientSecret("testSecret")
+      .tokenEndpoint(tokenServer.url("/token").toString())
+      .build();
+
+    ManagedWebAccessor accessor = new ManagedWebAccessor(Arrays.asList("fhir"), DUMMY_AGENT, null)
+      .withClientCredentials(serverPojo);
+
+    server.enqueue(new MockResponse()
+      .setBody("Dummy Response").setResponseCode(200));
+
+    HTTPResult result = accessor.get(server.url("blah").toString(), "application/json");
+
+    assertThat(result.getCode()).isEqualTo(200);
+
+    RecordedRequest webRequest = server.takeRequest();
+    assertThat(webRequest.getHeader("Authorization")).isEqualTo("Bearer web-programmatic-token");
+  }
+
+  @Test
+  public void testManagedWebAccessorRetryOn401() throws Exception {
+    tokenServer = new MockWebServer();
+    tokenServer.start();
+
+    // First token
+    tokenServer.enqueue(new MockResponse()
+      .setBody("{\"access_token\":\"expired-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
+      .addHeader("Content-Type", "application/json")
+      .setResponseCode(200));
+
+    // Second token after invalidation
+    tokenServer.enqueue(new MockResponse()
+      .setBody("{\"access_token\":\"fresh-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
+      .addHeader("Content-Type", "application/json")
+      .setResponseCode(200));
+
+    ServerDetailsPOJO serverPojo = ServerDetailsPOJO.builder()
+      .url(server.url("").toString())
+      .authenticationType("client_credentials")
+      .type("fhir")
+      .clientId("testClient")
+      .clientSecret("testSecret")
+      .tokenEndpoint(tokenServer.url("/token").toString())
+      .build();
+
+    ManagedWebAccessor accessor = new ManagedWebAccessor(Arrays.asList("fhir"), DUMMY_AGENT, List.of(serverPojo));
+
+    // SimpleHTTPClient does not have a retry interceptor, so one 401 is enough
+    server.enqueue(new MockResponse()
+      .setBody("Unauthorized").setResponseCode(401));
+
+    // After token invalidation and re-fetch, the fresh token request succeeds
+    server.enqueue(new MockResponse()
+      .setBody("Success").setResponseCode(200));
+
+    HTTPResult result = accessor.get(server.url("blah").toString(), "application/json");
+
+    assertThat(result.getCode()).isEqualTo(200);
+    assertThat(result.getContentAsString()).isEqualTo("Success");
+
+    // Two token fetches
+    assertThat(tokenServer.getRequestCount()).isEqualTo(2);
+
+    // First request used expired token, second used fresh token
+    RecordedRequest firstRequest = server.takeRequest();
+    assertThat(firstRequest.getHeader("Authorization")).isEqualTo("Bearer expired-token");
+    RecordedRequest retryRequest = server.takeRequest();
+    assertThat(retryRequest.getHeader("Authorization")).isEqualTo("Bearer fresh-token");
+  }
+
+  @Test
+  public void testManagedWebAccessorRetryOn403() throws Exception {
+    tokenServer = new MockWebServer();
+    tokenServer.start();
+
+    tokenServer.enqueue(new MockResponse()
+      .setBody("{\"access_token\":\"old-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
+      .addHeader("Content-Type", "application/json")
+      .setResponseCode(200));
+
+    tokenServer.enqueue(new MockResponse()
+      .setBody("{\"access_token\":\"new-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
+      .addHeader("Content-Type", "application/json")
+      .setResponseCode(200));
+
+    ServerDetailsPOJO serverPojo = ServerDetailsPOJO.builder()
+      .url(server.url("").toString())
+      .authenticationType("client_credentials")
+      .type("fhir")
+      .clientId("testClient")
+      .clientSecret("testSecret")
+      .tokenEndpoint(tokenServer.url("/token").toString())
+      .build();
+
+    ManagedWebAccessor accessor = new ManagedWebAccessor(Arrays.asList("fhir"), DUMMY_AGENT, List.of(serverPojo));
+
+    server.enqueue(new MockResponse()
+      .setBody("Forbidden").setResponseCode(403));
+    server.enqueue(new MockResponse()
+      .setBody("Success").setResponseCode(200));
+
+    HTTPResult result = accessor.get(server.url("blah").toString(), "application/json");
+
+    assertThat(result.getCode()).isEqualTo(200);
+
+    RecordedRequest retryRequest = server.takeRequest();
+    assertThat(retryRequest.getHeader("Authorization")).isEqualTo("Bearer old-token");
+    RecordedRequest finalRequest = server.takeRequest();
+    assertThat(finalRequest.getHeader("Authorization")).isEqualTo("Bearer new-token");
   }
 
   @Test

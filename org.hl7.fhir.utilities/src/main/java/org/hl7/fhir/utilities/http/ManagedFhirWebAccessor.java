@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.http;
 
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.http.okhttpimpl.LoggingInterceptor;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWebAccessor> {
 
   /**
@@ -124,8 +126,12 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
         if ((result.getCode() == 401 || result.getCode() == 403)) {
           ServerDetailsPOJO ccServer = getClientCredentialsServerForRetry(httpRequest.getUrl().toString());
           if (ccServer != null) {
+            log.debug("Received HTTP {} from {}; invalidating OAuth token and retrying", result.getCode(), httpRequest.getUrl());
             HTTPTokenManager.invalidateToken(ccServer);
             result = executeDirectRequest(httpRequest);
+            if (result.getCode() == 401 || result.getCode() == 403) {
+              log.warn("Retry after OAuth token refresh still returned HTTP {} from {}", result.getCode(), httpRequest.getUrl());
+            }
           }
         }
         return result;

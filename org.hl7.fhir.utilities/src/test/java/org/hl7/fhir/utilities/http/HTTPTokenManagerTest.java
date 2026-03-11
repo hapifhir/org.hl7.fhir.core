@@ -176,4 +176,18 @@ public class HTTPTokenManagerTest {
     RecordedRequest secondRequest = tokenServer.takeRequest();
     assertThat(secondRequest.getBody().readUtf8()).contains("grant_type=client_credentials");
   }
+
+  @Test
+  public void testNonJsonResponseThrowsIOException() {
+    ServerDetailsPOJO server = buildServer("myClient", "mySecret");
+
+    tokenServer.enqueue(new MockResponse()
+      .setBody("<html>Bad Gateway</html>")
+      .addHeader("Content-Type", "text/html")
+      .setResponseCode(200));
+
+    assertThatThrownBy(() -> HTTPTokenManager.getToken(server))
+      .isInstanceOf(IOException.class)
+      .hasMessageContaining("non-JSON response");
+  }
 }

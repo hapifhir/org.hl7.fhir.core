@@ -297,7 +297,7 @@ public class OAuthClientCredentialsIntegrationTest {
   }
 
   // -----------------------------------------------------------------------
-  // Test 6: ManagedWebAccessor path (non-FHIR, e.g. npm package servers)
+  // Test 6: ManagedWebAccessor path (SimpleHTTPClient-based)
   //
   // Verifies that the SimpleHTTPClient-based ManagedWebAccessor also
   // handles client_credentials correctly, not just the OkHttp-based
@@ -341,11 +341,11 @@ public class OAuthClientCredentialsIntegrationTest {
   }
 
   // -----------------------------------------------------------------------
-  // Test 8: Token endpoint failure produces a clear error
+  // Test 7: Token endpoint failure produces a clear error
   //
-  // Verifies that when the token endpoint is unreachable or returns an
-  // error, the IOException propagates with a descriptive message rather
-  // than a confusing NullPointerException or silent failure.
+  // Verifies that when the token endpoint returns an error, the IOException
+  // propagates with a descriptive message rather than a confusing
+  // NullPointerException or silent failure.
   // -----------------------------------------------------------------------
   @Test
   public void testTokenEndpointFailureProducesDescriptiveError() throws Exception {

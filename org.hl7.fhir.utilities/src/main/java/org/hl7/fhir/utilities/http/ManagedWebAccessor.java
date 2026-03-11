@@ -7,11 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 /**
  * Simple HTTP client for making requests to a server.
  */
+@Slf4j
 public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccessor> {
 
   public ManagedWebAccessor(Iterable<String> serverTypes, String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
@@ -126,9 +128,13 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
     if ((result.getCode() == 401 || result.getCode() == 403)) {
       ServerDetailsPOJO ccServer = getClientCredentialsServerForRetry(url);
       if (ccServer != null) {
+        log.debug("Received HTTP {} from {}; invalidating OAuth token and retrying", result.getCode(), url);
         HTTPTokenManager.invalidateToken(ccServer);
         client = setupClient(url);
         result = action.execute(client);
+        if (result.getCode() == 401 || result.getCode() == 403) {
+          log.warn("Retry after OAuth token refresh still returned HTTP {} from {}", result.getCode(), url);
+        }
       }
     }
     return result;

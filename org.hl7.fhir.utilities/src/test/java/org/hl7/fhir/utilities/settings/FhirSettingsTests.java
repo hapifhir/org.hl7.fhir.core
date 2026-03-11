@@ -126,7 +126,7 @@ public class FhirSettingsTests implements ResourceLoaderTests {
     Path path = Files.createTempFile("fhir-settings-cc-bad", "json").toAbsolutePath();
     copyResourceToFile(path, "settings", "settings-client-credentials-missing.json");
 
-    assertThrows(IllegalArgumentException.class, () -> {
+    assertThrows(IOException.class, () -> {
       FhirSettings.getFhirSettingsPOJO(path.toString());
     });
   }

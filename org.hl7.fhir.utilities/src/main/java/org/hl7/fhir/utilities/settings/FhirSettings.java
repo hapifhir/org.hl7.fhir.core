@@ -221,7 +221,7 @@ public class FhirSettings {
    * Normalizes settings after deserialization to ensure required fields have safe defaults.
    * This prevents NPEs when switch statements expect non-null values.
    */
-  private static void normalizeSettings(FhirSettingsPOJO settings) {
+  private static void normalizeSettings(FhirSettingsPOJO settings) throws IOException {
     if (settings == null || settings.getServers() == null) {
       return;
     }
@@ -239,18 +239,18 @@ public class FhirSettings {
     }
   }
 
-  private static void validateClientCredentialsFields(ServerDetailsPOJO server) {
+  private static void validateClientCredentialsFields(ServerDetailsPOJO server) throws IOException {
     String serverUrl = server.getUrl() != null ? server.getUrl() : "(unknown)";
     if (server.getClientId() == null || server.getClientId().isEmpty()) {
-      throw new IllegalArgumentException("Server entry for " + serverUrl
+      throw new IOException("Server entry for " + serverUrl
         + " has authenticationType 'client_credentials' but missing required field: clientId");
     }
     if (server.getClientSecret() == null || server.getClientSecret().isEmpty()) {
-      throw new IllegalArgumentException("Server entry for " + serverUrl
+      throw new IOException("Server entry for " + serverUrl
         + " has authenticationType 'client_credentials' but missing required field: clientSecret");
     }
     if (server.getTokenEndpoint() == null || server.getTokenEndpoint().isEmpty()) {
-      throw new IllegalArgumentException("Server entry for " + serverUrl
+      throw new IOException("Server entry for " + serverUrl
         + " has authenticationType 'client_credentials' but missing required field: tokenEndpoint");
     }
   }
