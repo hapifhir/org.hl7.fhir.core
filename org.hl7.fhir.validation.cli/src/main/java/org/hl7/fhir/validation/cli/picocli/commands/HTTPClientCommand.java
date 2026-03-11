@@ -23,16 +23,13 @@ import org.hl7.fhir.r5.model.Resource;
 /**
  * HTTP client command for interacting with the FHIR validator HTTP server.
  * <p/>
- * This command is intended to send commands to a running validator HTTP server,
- * such as stopping the server remotely or checking its status.
+ * This command sends requests to a running validator HTTP server, including
+ * validation and stop requests.
  * <p/>
- * Note: This command is not yet fully implemented. It currently serves as a
- * placeholder for future HTTP client functionality.
- * <p/>
- * Planned usage:
+ * Usage:
  * <pre>
- * java -jar validator_cli.jar client --stop -port 8080
- * java -jar validator_cli.jar client --status -host localhost -port 8080
+ * java -jar validator_cli.jar client -port 3000 ./resources/resource.json
+ * java -jar validator_cli.jar client -port 3000 -stop
  * </pre>
  */
 @Slf4j
@@ -41,13 +38,12 @@ import org.hl7.fhir.r5.model.Resource;
   description = """
     HTTP client for interacting with the FHIR validator HTTP server.
 
-    This command is intended to send commands to a running validator
-    HTTP server, such as stopping the server remotely.
+    This command is intended to send requests to a running validator
+    HTTP server, such as validation and server stop requests.
 
-    Note: This command is not yet fully implemented.
-
-    Example (planned):
-      java -jar validator_cli.jar client --stop -port 8080
+    Examples:
+      java -jar validator_cli.jar client -port 3000 ./resources/resource.json
+      java -jar validator_cli.jar client -port 3000 stop
     """,
   hidden = false
 )
