@@ -89,112 +89,112 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
 
     for (NameValuePair pair : pairs) {
       switch (pair.getName()) {
-        case "jurisdiction":
+        case ParamNames.JURISDICTION:
           params.setJurisdiction(pair.getValue());
           break;
-        case "expansionParameters":
+        case ParamNames.EXPANSION_PARAMETERS:
           params.setExpansionParameters(pair.getValue());
           break;
-        case "htmlOutput":
+        case ParamNames.HTML_OUTPUT:
           params.setHtmlOutput(pair.getValue());
           break;
-        case "outputStyle":
+        case ParamNames.OUTPUT_STYLE:
           params.setOutputStyle(pair.getValue());
           break;
-        case "r5BundleRelativeReferencePolicy":
+        case ParamNames.R5_BUNDLE_RELATIVE_REFERENCE_POLICY:
           params.setR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy.fromCode(pair.getValue()));
           break;
-        case "questionnaireMode":
+        case ParamNames.QUESTIONNAIRE_MODE:
           params.setQuestionnaireMode(QuestionnaireMode.fromCode(pair.getValue()));
           break;
-        case "level":
+        case ParamNames.LEVEL:
           params.setLevel(ValidationLevel.fromCode(pair.getValue()));
           break;
-        case "bestPracticeLevel":
+        case ParamNames.BEST_PRACTICE_LEVEL:
           params.setBestPracticeLevel(BestPracticeWarningLevel.valueOf(pair.getValue()));
           break;
-        case "htmlInMarkdownCheck":
+        case ParamNames.HTML_IN_MARKDOWN_CHECK:
           params.setHtmlInMarkdownCheck(HtmlInMarkdownCheck.fromCode(pair.getValue()));
           break;
-        case "assumeValidRestReferences":
+        case ParamNames.ASSUME_VALID_REST_REFERENCES:
           params.setAssumeValidRestReferences(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "hintAboutNonMustSupport":
+        case ParamNames.HINT_ABOUT_NON_MUST_SUPPORT:
           params.setHintAboutNonMustSupport(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "wantInvariantsInMessages":
+        case ParamNames.WANT_INVARIANTS_IN_MESSAGES:
           params.setWantInvariantsInMessages(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "noInvariants":
+        case ParamNames.NO_INVARIANTS:
           params.setNoInvariants(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "unknownCodeSystemsCauseErrors":
+        case ParamNames.UNKNOWN_CODE_SYSTEMS_CAUSE_ERRORS:
           params.setUnknownCodeSystemsCauseErrors(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "forPublication":
+        case ParamNames.FOR_PUBLICATION:
           params.setForPublication(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "noUnicodeBiDiControlChars":
+        case ParamNames.NO_UNICODE_BI_DI_CONTROL_CHARS:
           params.setNoUnicodeBiDiControlChars(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "verbose":
+        case ParamNames.VERBOSE:
           if (Boolean.parseBoolean(pair.getValue())) {
             params.setCrumbTrails(true);
             params.setShowMessageIds(true);
           }
           break;
-        case "showMessageIds":
+        case ParamNames.SHOW_MESSAGE_IDS:
           params.setShowMessageIds(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "allowExampleUrls":
+        case ParamNames.ALLOW_EXAMPLE_URLS:
           params.setAllowExampleUrls(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "showMessagesFromReferences":
+        case ParamNames.SHOW_MESSAGES_FROM_REFERENCES:
           params.setShowMessagesFromReferences(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "securityChecks":
+        case ParamNames.SECURITY_CHECKS:
           params.setSecurityChecks(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "noExperimentalContent":
+        case ParamNames.NO_EXPERIMENTAL_CONTENT:
           params.setNoExperimentalContent(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "showTerminologyRouting":
+        case ParamNames.SHOW_TERMINOLOGY_ROUTING:
           params.setShowTerminologyRouting(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "doImplicitFHIRPathStringConversion":
+        case ParamNames.DO_IMPLICIT_FHIR_PATH_STRING_CONVERSION:
           params.setDoImplicitFHIRPathStringConversion(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "allowDoubleQuotesInFHIRPath":
+        case ParamNames.ALLOW_DOUBLE_QUOTES_IN_FHIR_PATH:
           params.setAllowDoubleQuotesInFHIRPath(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "checkIPSCodes":
+        case ParamNames.CHECK_IPS_CODES:
           params.setCheckIPSCodes(Boolean.parseBoolean(pair.getValue()));
           break;
-        case "checkDisplay":
+        case ParamNames.CHECK_DISPLAY:
           params.setCheckDisplay(CheckDisplayOption.valueOf(pair.getValue()));
           break;
-        case "resourceIdRule":
+        case ParamNames.RESOURCE_ID_RULE:
           params.setResourceIdRule(IdStatus.fromCode(pair.getValue()));
           break;
-        case "maxValidationMessages":
+        case ParamNames.MAX_VALIDATION_MESSAGES:
           int maxMessages = Integer.parseInt(pair.getValue());
           if (maxMessages > 0) {
             params.setMaxValidationMessages(new ValidatorMaxMessages(maxMessages, "http-query"));
           }
           break;
-        case "validationTimeout":
+        case ParamNames.VALIDATION_TIMEOUT:
           params.setTimeout(new ValidationTimeout(Long.parseLong(pair.getValue()), "http-query"));
           break;
-        case "extension":
+        case ParamNames.EXTENSION:
           params.addExtension(pair.getValue());
           break;
-        case "profile":
+        case ParamNames.PROFILE:
           params.addProfile(pair.getValue());
           break;
-        case "bundleValidationRule":
+        case ParamNames.BUNDLE_VALIDATION_RULE:
           bundleRules.add(pair.getValue());
           break;
-        case "bundleValidationProfile":
+        case ParamNames.BUNDLE_VALIDATION_PROFILE:
           bundleProfiles.add(pair.getValue());
           break;
       }
