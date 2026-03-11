@@ -6,10 +6,9 @@ package org.hl7.fhir.validation.http;
  * Used by both the server-side handler and the HTTP client to ensure parameter
  * names are consistent and not duplicated as magic strings.
  */
-public final class ParamNames extends ValidateResourceHTTPHandler {
-
+public final class ParamNames  {
   private ParamNames() {
-    super(null);
+    /* This utility class should not be instantiated */
   }
 
   public static final String JURISDICTION = "jurisdiction";
