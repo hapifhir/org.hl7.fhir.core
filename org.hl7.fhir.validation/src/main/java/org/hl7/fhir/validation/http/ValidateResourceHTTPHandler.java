@@ -137,6 +137,12 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
         case "noUnicodeBiDiControlChars":
           params.setNoUnicodeBiDiControlChars(Boolean.parseBoolean(pair.getValue()));
           break;
+        case "verbose":
+          if (Boolean.parseBoolean(pair.getValue())) {
+            params.setCrumbTrails(true);
+            params.setShowMessageIds(true);
+          }
+          break;
         case "showMessageIds":
           params.setShowMessageIds(Boolean.parseBoolean(pair.getValue()));
           break;
