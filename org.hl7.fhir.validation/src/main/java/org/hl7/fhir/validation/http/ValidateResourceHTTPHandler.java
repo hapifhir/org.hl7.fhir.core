@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.ValidationRecord;
+import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
@@ -44,11 +45,6 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
       return;
     }
 
-    List<String> profiles = null;
-    IdStatus resourceIdRule = null;
-    boolean anyExtensionsAllowed = false;
-    BestPracticeWarningLevel bpWarnings = null;
-    CheckDisplayOption displayOption = null;
     byte[] resourceBytes = null;
     Manager.FhirFormat format = null;
     InstanceValidatorParameters instanceValidatorParameters = new InstanceValidatorParameters();
@@ -167,6 +163,18 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
           break;
         case "checkIPSCodes":
           params.setCheckIPSCodes(Boolean.parseBoolean(pair.getValue()));
+          break;
+        case "checkDisplay":
+          params.setCheckDisplay(CheckDisplayOption.valueOf(pair.getValue()));
+          break;
+        case "resourceIdRule":
+          params.setResourceIdRule(IdStatus.fromCode(pair.getValue()));
+          break;
+        case "maxValidationMessages":
+          int maxMessages = Integer.parseInt(pair.getValue());
+          if (maxMessages > 0) {
+            params.setMaxValidationMessages(new ValidatorMaxMessages(maxMessages, "http-query"));
+          }
           break;
         case "validationTimeout":
           params.setTimeout(new ValidationTimeout(Long.parseLong(pair.getValue()), "http-query"));

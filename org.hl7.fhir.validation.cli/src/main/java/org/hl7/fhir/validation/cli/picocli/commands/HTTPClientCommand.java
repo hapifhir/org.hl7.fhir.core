@@ -212,6 +212,12 @@ public class HTTPClientCommand implements Callable<Integer> {
     if (instanceValidatorOptions.htmlInMarkdownCheck != null) {
       uriBuilder.addParameter("htmlInMarkdownCheck", instanceValidatorOptions.htmlInMarkdownCheck);
     }
+    if (instanceValidatorOptions.checkDisplay != null) {
+      uriBuilder.addParameter("checkDisplay", instanceValidatorOptions.checkDisplay);
+    }
+    if (instanceValidatorOptions.resourceIdRule != null) {
+      uriBuilder.addParameter("resourceIdRule", instanceValidatorOptions.resourceIdRule);
+    }
 
     // Boolean flags - only add when true (non-default)
     if (instanceValidatorOptions.assumeValidRestReferences) {
@@ -267,6 +273,9 @@ public class HTTPClientCommand implements Callable<Integer> {
     }
 
     // Numeric fields
+    if (instanceValidatorOptions.maxValidationMessages != null && instanceValidatorOptions.maxValidationMessages > 0) {
+      uriBuilder.addParameter("maxValidationMessages", String.valueOf(instanceValidatorOptions.maxValidationMessages));
+    }
     if (instanceValidatorOptions.validationTimeout != null && instanceValidatorOptions.validationTimeout > 0) {
       uriBuilder.addParameter("validationTimeout", String.valueOf(instanceValidatorOptions.validationTimeout));
     }
