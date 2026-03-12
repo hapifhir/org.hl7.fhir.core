@@ -1,16 +1,19 @@
 {
   "systems" : [{
     "system" : "http://acme.org/messagetypes",
+    "url" : "http://acme.org/messagetypes",
     "authoritative" : [],
     "candidates" : []
   },
   {
     "system" : "http://cancer.questionnaire.org/system/code/yesno",
+    "url" : "http://cancer.questionnaire.org/system/code/yesno",
     "authoritative" : [],
     "candidates" : []
   },
   {
     "system" : "http://example.org",
+    "url" : "http://example.org",
     "authoritative" : [],
     "candidates" : []
   }]
