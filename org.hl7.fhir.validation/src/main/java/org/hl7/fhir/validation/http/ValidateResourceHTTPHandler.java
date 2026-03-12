@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
@@ -58,7 +59,7 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
       // Get InstanceValidatorParameters objects from query string exchange.getRequestURI().getQuery();
       instanceValidatorParameters = getInstanceValidatorParameters(exchange.getRequestURI().getQuery());
 
-    } catch (Exception e) {
+    } catch (IllegalArgumentException e) {
       OperationOutcome outcome = OperationOutcomeUtilities.createError("Operation failed: " + e.getMessage());
       sendOperationOutcome(exchange, 400, outcome, getAcceptHeader(exchange));
       return;
@@ -76,7 +77,7 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
     }
   }
 
-  public InstanceValidatorParameters getInstanceValidatorParameters(String httpQueryString) {
+  public InstanceValidatorParameters getInstanceValidatorParameters(String httpQueryString) throws IllegalArgumentException{
     InstanceValidatorParameters params = new InstanceValidatorParameters();
     if (httpQueryString == null || httpQueryString.isEmpty()) {
       return params;
@@ -171,10 +172,16 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
           params.setCheckIPSCodes(Boolean.parseBoolean(pair.getValue()));
           break;
         case ParamNames.CHECK_DISPLAY:
-          params.setCheckDisplay(CheckDisplayOption.valueOf(pair.getValue()));
+          CheckDisplayOption checkDisplayOption = CheckDisplayOption.valueOf(pair.getValue());
+          params.setCheckDisplay(checkDisplayOption);
           break;
         case ParamNames.RESOURCE_ID_RULE:
-          params.setResourceIdRule(IdStatus.fromCode(pair.getValue()));
+          try {
+            IdStatus resourceIdRule = IdStatus.fromCode(pair.getValue());
+            params.setResourceIdRule(resourceIdRule);
+          } catch (FHIRException e) {
+            throw new IllegalArgumentException("Illegal argument for " + pair.getName() + "=" + pair.getValue(), e);
+          }
           break;
         case ParamNames.MAX_VALIDATION_MESSAGES:
           int maxMessages = Integer.parseInt(pair.getValue());
@@ -197,6 +204,8 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
         case ParamNames.BUNDLE_VALIDATION_PROFILE:
           bundleProfiles.add(pair.getValue());
           break;
+        default:
+          throw new IllegalArgumentException("Unknown parameter " + pair.getValue());
       }
     }
 
