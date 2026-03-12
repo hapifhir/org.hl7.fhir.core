@@ -112,7 +112,7 @@ class FhirValidatorHttpServiceTest {
     setUpService(getValidationEngine());
 
     HttpRequest request = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=REQUIRED&anyExtensionsAllowed=false&bpWarnings=Warning&displayOption=Check"))
+      .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=REQUIRED&bestPractice=Warning&checkDisplay=Check"))
       .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_XML))
       .header("Content-Type", "application/fhir+xml")
       .header("Accept", "application/fhir+xml")
