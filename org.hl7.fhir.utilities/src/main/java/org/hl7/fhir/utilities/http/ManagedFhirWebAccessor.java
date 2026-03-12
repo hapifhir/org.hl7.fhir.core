@@ -1,6 +1,5 @@
 package org.hl7.fhir.utilities.http;
 
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.http.okhttpimpl.LoggingInterceptor;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
 public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWebAccessor> {
 
   /**
@@ -72,72 +70,19 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
       headers.add(new HTTPHeader(entry.getKey(), entry.getValue()));
     }
 
-    if (getAuthenticationMode() != null) {
-      if (getAuthenticationMode() != HTTPAuthenticationMode.NONE) {
-        switch (getAuthenticationMode()) {
-          case BASIC:
-            final String basicCredential = Credentials.basic(getUsername(), getPassword());
-            headers.add(new HTTPHeader("Authorization", basicCredential));
-            break;
-          case TOKEN:
-            String tokenCredential = "Bearer " + getToken();
-            headers.add(new HTTPHeader("Authorization", tokenCredential));
-            break;
-          case APIKEY:
-            String apiKeyCredential = getToken();
-            headers.add(new HTTPHeader("Api-Key", apiKeyCredential));
-            break;
-          case CLIENT_CREDENTIALS:
-            String ccToken = HTTPTokenManager.getToken(getClientCredentialsServer());
-            headers.add(new HTTPHeader("Authorization", "Bearer " + ccToken));
-            break;
-        }
-      }
-    } else {
-      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(getServerTypes(), httpRequest.getUrl().toString(), getServerAuthDetails());
-      if (settings != null) {
-        switch (settings.getAuthenticationType()) {
-          case "basic":
-            final String basicCredential = Credentials.basic(settings.getUsername(), settings.getPassword());
-            headers.add(new HTTPHeader("Authorization", basicCredential));
-            break;
-          case "token":
-            String tokenCredential = "Bearer " + settings.getToken();
-            headers.add(new HTTPHeader("Authorization", tokenCredential));
-            break;
-          case "apikey":
-            String apiKeyCredential = settings.getApikey();
-            headers.add(new HTTPHeader("Api-Key", apiKeyCredential));
-            break;
-          case "client_credentials":
-            String oauthToken = HTTPTokenManager.getToken(settings);
-            headers.add(new HTTPHeader("Authorization", "Bearer " + oauthToken));
-            break;
-        }
-      }
+    ResolvedAuth auth = resolveAuth(httpRequest.getUrl() != null ? httpRequest.getUrl().toString() : null);
+    for (Map.Entry<String, String> entry : auth.getHeaders().entrySet()) {
+      headers.add(new HTTPHeader(entry.getKey(), entry.getValue()));
     }
+
     return httpRequest.withHeaders(headers);
   }
 
   public HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT:
-        HTTPResult result = executeDirectRequest(httpRequest);
-        if (result.getCode() == 401 || result.getCode() == 403) {
-          ServerDetailsPOJO ccServer = httpRequest.getUrl() != null ?
-            getClientCredentialsServerForRetry(httpRequest.getUrl().toString()) : null;
-          if (ccServer != null) {
-            log.debug("Received HTTP {} from {}; invalidating OAuth token and retrying",
-              result.getCode(), httpRequest.getUrl());
-            HTTPTokenManager.invalidateToken(ccServer);
-            result = executeDirectRequest(httpRequest);
-            if (result.getCode() == 401 || result.getCode() == 403) {
-              log.warn("Retry after OAuth token refresh still returned HTTP {} from {}",
-                result.getCode(), httpRequest.getUrl());
-            }
-          }
-        }
-        return result;
+        String url = httpRequest.getUrl() != null ? httpRequest.getUrl().toString() : null;
+        return executeWithTokenRetry(url, () -> executeDirectRequest(httpRequest));
       case MANAGED:
         HTTPRequest httpRequestWithManagedHeaders = requestWithManagedHeaders(httpRequest);
         assert httpRequestWithManagedHeaders.getUrl() != null;
