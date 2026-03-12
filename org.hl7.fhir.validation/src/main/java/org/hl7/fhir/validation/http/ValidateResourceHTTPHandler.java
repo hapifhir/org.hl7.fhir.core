@@ -180,7 +180,7 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
             IdStatus resourceIdRule = IdStatus.fromCode(pair.getValue());
             params.setResourceIdRule(resourceIdRule);
           } catch (FHIRException e) {
-            throw new IllegalArgumentException("Illegal argument for " + pair.getName() + "=" + pair.getValue(), e);
+            throwIllegalArgumentException(pair, e);
           }
           break;
         case ParamNames.MAX_VALIDATION_MESSAGES:
@@ -205,7 +205,7 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
           bundleProfiles.add(pair.getValue());
           break;
         default:
-          throw new IllegalArgumentException("Unknown parameter " + pair.getValue());
+          throwIllegalArgumentException(pair, null);
       }
     }
 
@@ -214,7 +214,10 @@ class ValidateResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler
         .setRule(bundleRules.get(i))
         .setProfile(bundleProfiles.get(i)));
     }
-
     return params;
+  }
+
+  private static void throwIllegalArgumentException(NameValuePair pair, Exception e) {
+    throw new IllegalArgumentException("Unable to process param " + pair.getName() + "=" + pair.getValue(), e);
   }
 }
