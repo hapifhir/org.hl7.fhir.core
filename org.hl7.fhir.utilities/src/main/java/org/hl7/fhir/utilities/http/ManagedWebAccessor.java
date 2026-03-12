@@ -31,18 +31,9 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
       throw new IOException("The pathname '" + url + "' cannot be accessed by policy");
     }
     SimpleHTTPClient client = new SimpleHTTPClient();
-
-    for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
+    for (Map.Entry<String, String> entry : newHeaders(url).entrySet()) {
       client.addHeader(entry.getKey(), entry.getValue());
     }
-    if (getUserAgent() != null) {
-      client.addHeader("User-Agent", getUserAgent());
-    }
-    ResolvedAuth auth = resolveAuth(url);
-    for (Map.Entry<String, String> entry : auth.getHeaders().entrySet()) {
-      client.addHeader(entry.getKey(), entry.getValue());
-    }
-
     return client;
   }
 

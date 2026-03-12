@@ -106,9 +106,7 @@ public class HTTPTokenManager {
    * {@link #getToken} call to fetch a fresh token from the endpoint.
    */
   public static void invalidateToken(ServerDetailsPOJO server) {
-    String key = getCacheKey(server);
-    cache.remove(key);
-    locks.remove(key);
+    cache.remove(getCacheKey(server));
   }
 
   public static void clearCache() {
