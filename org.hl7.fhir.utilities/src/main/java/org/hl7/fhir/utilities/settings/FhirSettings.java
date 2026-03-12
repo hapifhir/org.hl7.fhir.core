@@ -241,15 +241,15 @@ public class FhirSettings {
 
   private static void validateClientCredentialsFields(ServerDetailsPOJO server) throws IOException {
     String serverUrl = server.getUrl() != null ? server.getUrl() : "(unknown)";
-    if (server.getClientId() == null || server.getClientId().isEmpty()) {
+    if (Utilities.noString(server.getClientId())) {
       throw new IOException("Server entry for " + serverUrl
         + " has authenticationType 'client_credentials' but missing required field: clientId");
     }
-    if (server.getClientSecret() == null || server.getClientSecret().isEmpty()) {
+    if (Utilities.noString(server.getClientSecret())) {
       throw new IOException("Server entry for " + serverUrl
         + " has authenticationType 'client_credentials' but missing required field: clientSecret");
     }
-    if (server.getTokenEndpoint() == null || server.getTokenEndpoint().isEmpty()) {
+    if (Utilities.noString(server.getTokenEndpoint())) {
       throw new IOException("Server entry for " + serverUrl
         + " has authenticationType 'client_credentials' but missing required field: tokenEndpoint");
     }

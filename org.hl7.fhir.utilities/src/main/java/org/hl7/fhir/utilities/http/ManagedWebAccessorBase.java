@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.http;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
@@ -88,17 +89,10 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
     return self();
   }
 
+  @AllArgsConstructor
+  @Getter
   protected static class ResolvedAuth {
     private final Map<String, String> headers;
-    private final ServerDetailsPOJO clientCredentialsServer;
-
-    ResolvedAuth(Map<String, String> headers, ServerDetailsPOJO clientCredentialsServer) {
-      this.headers = headers;
-      this.clientCredentialsServer = clientCredentialsServer;
-    }
-
-    public Map<String, String> getHeaders() { return headers; }
-    public ServerDetailsPOJO getClientCredentialsServer() { return clientCredentialsServer; }
   }
 
   @FunctionalInterface
@@ -108,16 +102,13 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
 
   protected ResolvedAuth resolveAuth(String url) throws IOException {
     Map<String, String> authHeaders = new HashMap<>();
-    ServerDetailsPOJO resolvedCcServer = null;
 
     if (authenticationMode != null) {
       switch (authenticationMode) {
         case NONE:
           break;
         case BASIC:
-          String auth = username + ":" + password;
-          byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-          authHeaders.put("Authorization", "Basic " + new String(encodedAuth));
+          authHeaders.put("Authorization", basicAuthHeader(username, password));
           break;
         case TOKEN:
           authHeaders.put("Authorization", "Bearer " + token);
@@ -126,7 +117,6 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
           authHeaders.put("Api-Key", token);
           break;
         case CLIENT_CREDENTIALS:
-          resolvedCcServer = clientCredentialsServer;
           String ccToken = HTTPTokenManager.getToken(clientCredentialsServer);
           authHeaders.put("Authorization", "Bearer " + ccToken);
           break;
@@ -136,9 +126,7 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
       if (settings != null) {
         switch (settings.getAuthenticationType()) {
           case "basic":
-            String sAuth = settings.getUsername() + ":" + settings.getPassword();
-            byte[] sEncodedAuth = Base64.getEncoder().encode(sAuth.getBytes(StandardCharsets.UTF_8));
-            authHeaders.put("Authorization", "Basic " + new String(sEncodedAuth));
+            authHeaders.put("Authorization", basicAuthHeader(settings.getUsername(), settings.getPassword()));
             break;
           case "token":
             authHeaders.put("Authorization", "Bearer " + settings.getToken());
@@ -147,7 +135,6 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
             authHeaders.put("Api-Key", settings.getApikey());
             break;
           case "client_credentials":
-            resolvedCcServer = settings;
             String oauthToken = HTTPTokenManager.getToken(settings);
             authHeaders.put("Authorization", "Bearer " + oauthToken);
             break;
@@ -157,7 +144,13 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
         }
       }
     }
-    return new ResolvedAuth(authHeaders, resolvedCcServer);
+    return new ResolvedAuth(authHeaders);
+  }
+
+  private static String basicAuthHeader(String username, String password) {
+    String auth = username + ":" + password;
+    byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+    return "Basic " + new String(encodedAuth);
   }
 
   protected HTTPResult executeWithTokenRetry(String url, IOSupplier<HTTPResult> action) throws IOException {

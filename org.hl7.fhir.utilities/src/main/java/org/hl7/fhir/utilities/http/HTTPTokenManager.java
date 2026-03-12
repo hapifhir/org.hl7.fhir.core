@@ -1,8 +1,6 @@
 package org.hl7.fhir.utilities.http;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -14,6 +12,8 @@ import com.google.gson.JsonParser;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 /**
@@ -124,8 +124,8 @@ public class HTTPTokenManager {
    */
   private static CachedToken requestTokenWithClientCredentials(ServerDetailsPOJO server) throws IOException {
     String body = "grant_type=client_credentials"
-      + "&client_id=" + urlEncode(server.getClientId())
-      + "&client_secret=" + urlEncode(server.getClientSecret());
+      + "&client_id=" + Utilities.URLEncode(server.getClientId())
+      + "&client_secret=" + Utilities.URLEncode(server.getClientSecret());
     return executeTokenRequest(server.getTokenEndpoint(), body);
   }
 
@@ -149,11 +149,11 @@ public class HTTPTokenManager {
 
       int responseCode = conn.getResponseCode();
       if (responseCode < 200 || responseCode >= 300) {
-        String errorBody = readErrorStream(conn);
+        String errorBody = readErrorBody(conn);
         throw new IOException("Token endpoint returned HTTP " + responseCode + ": " + errorBody);
       }
 
-      String responseBody = readResponseBody(conn);
+      String responseBody = FileUtilities.streamToString(conn.getInputStream());
       return parseTokenResponse(tokenEndpoint, responseBody);
     } finally {
       conn.disconnect();
@@ -191,41 +191,14 @@ public class HTTPTokenManager {
     return new CachedToken(accessToken, expiresAtMillis);
   }
 
-  private static String readResponseBody(HttpURLConnection conn) throws IOException {
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
-      StringBuilder sb = new StringBuilder();
-      String line;
-      while ((line = reader.readLine()) != null) {
-        sb.append(line);
-      }
-      return sb.toString();
-    }
-  }
-
   /** Reads the error stream for inclusion in error messages. Never throws. */
-  private static String readErrorStream(HttpURLConnection conn) {
+  private static String readErrorBody(HttpURLConnection conn) {
     try {
       java.io.InputStream es = conn.getErrorStream();
       if (es == null) return "(no error body)";
-      try (BufferedReader reader = new BufferedReader(new InputStreamReader(es, StandardCharsets.UTF_8))) {
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-          sb.append(line);
-        }
-        return sb.toString();
-      }
+      return FileUtilities.streamToString(es);
     } catch (IOException e) {
       return "(unable to read error body)";
-    }
-  }
-
-  private static String urlEncode(String value) {
-    try {
-      return java.net.URLEncoder.encode(value, StandardCharsets.UTF_8.name());
-    } catch (java.io.UnsupportedEncodingException e) {
-      // UTF-8 is always supported
-      throw new RuntimeException(e);
     }
   }
 }
