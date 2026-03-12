@@ -35,9 +35,24 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
       headers.put("Authorization", "Bearer " + oauthToken);
     } else if (getAuthenticationMode() == null) {
       ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(getServerTypes(), url, getServerAuthDetails());
-      if (settings != null && "client_credentials".equals(settings.getAuthenticationType())) {
-        String oauthToken = HTTPTokenManager.getToken(settings);
-        headers.put("Authorization", "Bearer " + oauthToken);
+      if (settings != null) {
+        switch (settings.getAuthenticationType()) {
+          case "basic":
+            String auth = settings.getUsername() + ":" + settings.getPassword();
+            byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
+            headers.put("Authorization", "Basic " + new String(encodedAuth));
+            break;
+          case "token":
+            headers.put("Authorization", "Bearer " + settings.getToken());
+            break;
+          case "apikey":
+            headers.put("Api-Key", settings.getApikey());
+            break;
+          case "client_credentials":
+            String oauthToken = HTTPTokenManager.getToken(settings);
+            headers.put("Authorization", "Bearer " + oauthToken);
+            break;
+        }
       }
     }
 
@@ -125,16 +140,14 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   private HTTPResult executeWithRetry(String url, ClientAction action) throws IOException {
     SimpleHTTPClient client = setupClient(url);
     HTTPResult result = action.execute(client);
-    if ((result.getCode() == 401 || result.getCode() == 403)) {
-      ServerDetailsPOJO ccServer = getClientCredentialsServerForRetry(url);
-      if (ccServer != null) {
-        log.debug("Received HTTP {} from {}; invalidating OAuth token and retrying", result.getCode(), url);
-        HTTPTokenManager.invalidateToken(ccServer);
-        client = setupClient(url);
-        result = action.execute(client);
-        if (result.getCode() == 401 || result.getCode() == 403) {
-          log.warn("Retry after OAuth token refresh still returned HTTP {} from {}", result.getCode(), url);
-        }
+    ServerDetailsPOJO ccServer = getClientCredentialsServerForRetry(url);
+    if (ccServer != null && (result.getCode() == 401 || result.getCode() == 403)) {
+      log.debug("Received HTTP {} from {}; invalidating OAuth token and retrying", result.getCode(), url);
+      HTTPTokenManager.invalidateToken(ccServer);
+      client = setupClient(url);
+      result = action.execute(client);
+      if (result.getCode() == 401 || result.getCode() == 403) {
+        log.warn("Retry after OAuth token refresh still returned HTTP {} from {}", result.getCode(), url);
       }
     }
     return result;

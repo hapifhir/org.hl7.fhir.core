@@ -123,15 +123,13 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT:
         HTTPResult result = executeDirectRequest(httpRequest);
-        if ((result.getCode() == 401 || result.getCode() == 403)) {
-          ServerDetailsPOJO ccServer = getClientCredentialsServerForRetry(httpRequest.getUrl().toString());
-          if (ccServer != null) {
-            log.debug("Received HTTP {} from {}; invalidating OAuth token and retrying", result.getCode(), httpRequest.getUrl());
-            HTTPTokenManager.invalidateToken(ccServer);
-            result = executeDirectRequest(httpRequest);
-            if (result.getCode() == 401 || result.getCode() == 403) {
-              log.warn("Retry after OAuth token refresh still returned HTTP {} from {}", result.getCode(), httpRequest.getUrl());
-            }
+        ServerDetailsPOJO ccServer = getClientCredentialsServerForRetry(httpRequest.getUrl().toString());
+        if (ccServer != null && (result.getCode() == 401 || result.getCode() == 403)) {
+          log.debug("Received HTTP {} from {}; invalidating OAuth token and retrying", result.getCode(), httpRequest.getUrl());
+          HTTPTokenManager.invalidateToken(ccServer);
+          result = executeDirectRequest(httpRequest);
+          if (result.getCode() == 401 || result.getCode() == 403) {
+            log.warn("Retry after OAuth token refresh still returned HTTP {} from {}", result.getCode(), httpRequest.getUrl());
           }
         }
         return result;
