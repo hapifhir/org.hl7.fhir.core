@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 /**
@@ -105,7 +106,9 @@ public class HTTPTokenManager {
    * {@link #getToken} call to fetch a fresh token from the endpoint.
    */
   public static void invalidateToken(ServerDetailsPOJO server) {
-    cache.remove(getCacheKey(server));
+    String key = getCacheKey(server);
+    cache.remove(key);
+    locks.remove(key);
   }
 
   public static void clearCache() {
@@ -168,11 +171,10 @@ public class HTTPTokenManager {
       throw new IOException("Token endpoint " + tokenEndpoint + " returned non-JSON response: " + responseBody, e);
     }
 
-    if (!json.has("access_token") || json.get("access_token").isJsonNull()) {
+    String accessToken = JsonUtilities.str(json, "access_token");
+    if (accessToken == null) {
       throw new IOException("Token endpoint " + tokenEndpoint + " response missing 'access_token' field");
     }
-
-    String accessToken = json.get("access_token").getAsString();
 
     int expiresIn;
     if (json.has("expires_in") && !json.get("expires_in").isJsonNull()) {

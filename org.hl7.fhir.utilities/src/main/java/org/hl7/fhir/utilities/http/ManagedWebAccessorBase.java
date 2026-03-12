@@ -155,7 +155,7 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
 
   protected HTTPResult executeWithTokenRetry(String url, IOSupplier<HTTPResult> action) throws IOException {
     HTTPResult result = action.get();
-    if (result.getCode() == 401 || result.getCode() == 403) {
+    if (clientCredentialsMayApply() && (result.getCode() == 401 || result.getCode() == 403)) {
       ServerDetailsPOJO ccServer = findClientCredentialsServer(url);
       if (ccServer != null) {
         log.debug("Received HTTP {} ; invalidating OAuth token and retrying", result.getCode());
@@ -167,6 +167,10 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
       }
     }
     return result;
+  }
+
+  private boolean clientCredentialsMayApply() {
+    return authenticationMode == null || authenticationMode == HTTPAuthenticationMode.CLIENT_CREDENTIALS;
   }
 
   private ServerDetailsPOJO findClientCredentialsServer(String url) {
