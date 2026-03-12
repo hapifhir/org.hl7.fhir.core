@@ -82,7 +82,25 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT:
         String url = httpRequest.getUrl() != null ? httpRequest.getUrl().toString() : null;
-        return executeWithTokenRetry(url, () -> executeDirectRequest(httpRequest));
+        return executeWithTokenRetry(url, () -> {
+          HTTPRequest requestWithHeaders = requestWithManagedHeaders(httpRequest);
+          assert requestWithHeaders.getUrl() != null;
+
+          RequestBody body = requestWithHeaders.getBody() == null ? null : RequestBody.create(requestWithHeaders.getBody());
+          Request.Builder requestBuilder = new Request.Builder()
+            .url(requestWithHeaders.getUrl())
+            .method(requestWithHeaders.getMethod().name(), body);
+
+          for (HTTPHeader header : requestWithHeaders.getHeaders()) {
+            requestBuilder.addHeader(header.getName(), header.getValue());
+          }
+
+          if (!ManagedWebAccess.inAllowedPaths(requestWithHeaders.getUrl().toString())) {
+            throw new IOException("The pathname '" + requestWithHeaders.getUrl().toString() + "' cannot be accessed by policy");
+          }
+          Response response = getOkHttpClient().newCall(requestBuilder.build()).execute();
+          return getHTTPResult(response);
+        });
       case MANAGED:
         HTTPRequest httpRequestWithManagedHeaders = requestWithManagedHeaders(httpRequest);
         assert httpRequestWithManagedHeaders.getUrl() != null;
@@ -92,28 +110,6 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
       default:
         throw new IOException("Internal Error");
     }
-  }
-
-  private HTTPResult executeDirectRequest(HTTPRequest httpRequest) throws IOException {
-    HTTPRequest httpRequestWithDirectHeaders = requestWithManagedHeaders(httpRequest);
-    assert httpRequestWithDirectHeaders.getUrl() != null;
-
-    RequestBody body = httpRequestWithDirectHeaders.getBody() == null ? null : RequestBody.create(httpRequestWithDirectHeaders.getBody());
-    Request.Builder requestBuilder = new Request.Builder()
-      .url(httpRequestWithDirectHeaders.getUrl())
-      .method(httpRequestWithDirectHeaders.getMethod().name(), body);
-
-    for (HTTPHeader header : httpRequestWithDirectHeaders.getHeaders()) {
-      requestBuilder.addHeader(header.getName(), header.getValue());
-    }
-    OkHttpClient okHttpClient = getOkHttpClient();
-    //TODO check and throw based on httpRequest:
-
-    if (!ManagedWebAccess.inAllowedPaths(httpRequestWithDirectHeaders.getUrl().toString())) {
-      throw new IOException("The pathname '" + httpRequestWithDirectHeaders.getUrl().toString() + "' cannot be accessed by policy");
-    }
-    Response response = okHttpClient.newCall(requestBuilder.build()).execute();
-    return getHTTPResult(response);
   }
 
   private HTTPResult getHTTPResult(Response execute) throws IOException {
