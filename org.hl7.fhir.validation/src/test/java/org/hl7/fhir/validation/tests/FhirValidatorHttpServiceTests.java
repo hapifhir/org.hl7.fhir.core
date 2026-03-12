@@ -137,7 +137,7 @@ class FhirValidatorHttpServiceTest {
     String profilesParam = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient";
 
     HttpRequest request = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/validateResource?profiles=" + java.net.URLEncoder.encode(profilesParam, "UTF-8")))
+      .uri(URI.create(BASE_URL + "/validateResource?profile=" + java.net.URLEncoder.encode(profilesParam, "UTF-8")))
       .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
       .header("Content-Type", "application/fhir+json")
       .build();
@@ -157,9 +157,8 @@ class FhirValidatorHttpServiceTest {
   void testValidateResourceWithProfilesSuccess() throws Exception {
     setUpService(getValidationEngineWithIG());
 
-    String profilesParam = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient";
     HttpRequest request = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/validateResource?profiles=http%3A%2F%2Fhl7.org%2Ffhir%2Fus%2Fcore%2FStructureDefinition%2Fus-core-patient"))
+      .uri(URI.create(BASE_URL + "/validateResource?bestPractice=Ignore&profile=http%3A%2F%2Fhl7.org%2Ffhir%2Fus%2Fcore%2FStructureDefinition%2Fus-core-patient"))
       .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
       .header("Content-Type", "application/fhir+json")
       .build();
@@ -180,11 +179,10 @@ class FhirValidatorHttpServiceTest {
     setUpService(getValidationEngine());
     
     HttpRequest request = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/validateResource" +
+      .uri(URI.create(BASE_URL + "/validateResource?" +
         "&resourceIdRule=PROHIBITED" +
-        "&anyExtensionsAllowed=false" +
-        "&bpWarnings=Error" +
-        "&displayOption=CheckCaseAndSpace"))
+        "&bestPractice=Ignore" +
+        "&checkDisplay=CheckCaseAndSpace"))
       .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
       .header("Content-Type", "application/fhir+json")
       .build();
