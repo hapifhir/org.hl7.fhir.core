@@ -89,7 +89,7 @@ class FhirValidatorHttpServiceTest {
     setUpService(getValidationEngine());
 
     HttpRequest request = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=OPTIONAL&anyExtensionsAllowed=true&bpWarnings=Ignore&displayOption=Ignore"))
+      .uri(URI.create(BASE_URL + "/validateResource?resourceIdRule=OPTIONAL&extension=any&bestPractice=Ignore&checkDisplay=Ignore"))
       .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
       .header("Content-Type", "application/fhir+json")
       .header("Accept", "application/fhir+json")
@@ -215,9 +215,9 @@ class FhirValidatorHttpServiceTest {
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
     // Assert
-    //assertEquals(400, response.statusCode());
+    assertEquals(400, response.statusCode());
     String actual = response.body();
-    String expected = "{\"resourceType\":\"OperationOutcome\",\"text\":{\"status\":\"generated\",\"div\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\">Operation failed: No enum constant org.hl7.fhir.r5.utils.validation.constants.IdStatus.INVALID</div>\"},\"issue\":[{\"severity\":\"error\",\"code\":\"exception\",\"details\":{\"text\":\"Operation failed: No enum constant org.hl7.fhir.r5.utils.validation.constants.IdStatus.INVALID\"}}]}";
+    String expected = "{\"resourceType\":\"OperationOutcome\",\"text\":{\"status\":\"generated\",\"div\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\">Operation failed: Unable to process param resourceIdRule=INVALID</div>\"},\"issue\":[{\"severity\":\"error\",\"code\":\"exception\",\"details\":{\"text\":\"Operation failed: Unable to process param resourceIdRule=INVALID\"}}]}";
     assertEquals(expected, actual);
   }
 
