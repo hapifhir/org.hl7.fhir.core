@@ -1382,10 +1382,11 @@ For resource issues, this will be a simple XPath limited to element names, repet
       @Override 
       public String toString() { 
         String srvr = hasExtension(ExtensionDefinitions.EXT_ISSUE_SERVER) ? " (from "+getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER)+")" : "";
+        String ctxt = hasExtension(ExtensionDefinitions.EXT_ISSUE_MSG_CTXT) ? " (context: "+getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_CTXT)+")" : "";
         if (getExpression().size() == 1) { 
-          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression().get(0)+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+srvr; 
+          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression().get(0)+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+ctxt+srvr;
         } else { 
-          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression()+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+srvr; 
+          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression()+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+ctxt+srvr;
         } 
       } 
 

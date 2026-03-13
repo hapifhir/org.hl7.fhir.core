@@ -1587,8 +1587,8 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
 
-  public static void renderVersionReference(RenderingContext context, Resource tgt, String statedVersion, String resolutionMethod, String actualVersion, boolean fromPackages, XhtmlNode x, boolean fromThisPackage, String type, String none_phrase) {
-    if ("latest".equals(resolutionMethod)) {
+  public static void renderVersionReference(RenderingContext context, Resource tgt, String statedVersion, IWorkerContext.VersionResolutionRules resolutionMethod, String actualVersion, boolean fromPackages, XhtmlNode x, boolean fromThisPackage, String type, String none_phrase) {
+    if (resolutionMethod == IWorkerContext.VersionResolutionRules.LATEST) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_LATEST, actualVersion));
       x.tx("\uD83D\uDE80");
       x.tx(" Latest");

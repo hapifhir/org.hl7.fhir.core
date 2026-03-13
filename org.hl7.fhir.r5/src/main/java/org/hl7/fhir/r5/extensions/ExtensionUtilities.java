@@ -38,6 +38,16 @@ public class ExtensionUtilities {
     return ex;
   }
 
+  public static Extension makeIssueContext(String msgId) {
+    Extension ex = new Extension();
+    // todo: write this up and get it published with the pack (and handle the redirect?)
+    ex.setUrl(ExtensionDefinitions.EXT_ISSUE_MSG_CTXT);
+    StringType c = new StringType();
+    c.setValue(msgId);
+    ex.setValue(c);
+    return ex;
+  }
+
   public static boolean hasExtension(DomainResource de, String url) {
     return getExtension(de, url) != null;
   }
@@ -1509,7 +1519,7 @@ public class ExtensionUtilities {
     } else if (base instanceof Element) {
       return getVersionResolutionRules((Element) base);
     } else {
-      return null;
+      return IWorkerContext.VersionResolutionRules.defaultRule();
     }
   }
 }

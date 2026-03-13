@@ -584,7 +584,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         } 
       } else { 
         ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"),
-          ExtensionUtilities.getVersionResolutionRulesBase(i.getBase("answerValueSet")), null, q.getResourceNative());
+          ExtensionUtilities.getVersionResolutionRulesBase(i.getBaseForChild("answerValueSet")), null, q.getResourceNative());
         if (vs == null  || !vs.hasWebPath()) { 
           defn.getPieces().add(gen.new Piece(null, i.primitiveValue("answerValueSet"), null));                     
         } else { 
@@ -827,7 +827,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         } 
       } else { 
         ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"),
-          ExtensionUtilities.getVersionResolutionRulesBase(i.getBase("answerValueSet")), null, q.getResourceNative());
+          ExtensionUtilities.getVersionResolutionRulesBase(i.getBaseForChild("answerValueSet")), null, q.getResourceNative());
         if (vs == null  || !vs.hasWebPath()) { 
           ans.tx(i.primitiveValue("answerValueSet"));                     
         } else { 
@@ -930,7 +930,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         } 
       } else { 
         vs = context.getContext().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"),
-          ExtensionUtilities.getVersionResolutionRulesBase(i.getBase("answerValueSet")), null, q.getResourceNative());
+          ExtensionUtilities.getVersionResolutionRulesBase(i.getBaseForChild("answerValueSet")), null, q.getResourceNative());
       } 
       if (vs != null) { 
         ValueSetExpansionOutcome exp = context.getContext().expandVS(ExpansionOptions.cacheNoHeirarchy().withLanguage(context.getLocale().getLanguage()), vs);
@@ -1046,7 +1046,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (qi.has("answerValueSet")) { 
       defn(tbl, context.formatPhrase(RenderingContext.GENERAL_VALUESET), qi.primitiveValue("definition"),
         context.getWorker().findTxResource(ValueSet.class, qi.primitiveValue("answerValueSet"),
-          ExtensionUtilities.getVersionResolutionRulesBase(qi.getBase("answerValueSet")), null, q.getResourceNative()));
+          ExtensionUtilities.getVersionResolutionRulesBase(qi.getBaseForChild("answerValueSet")), null, q.getResourceNative()));
     } 
     if (qi.has("answerOption")) { 
       XhtmlNode tr = tbl.tr(); 

@@ -201,7 +201,7 @@ public class LibraryRenderer extends ResourceRenderer {
         p.tx(title);
         p.tx(": ");
       }
-      Resource res = context.getContext().fetchResource(Resource.class, url, ExtensionUtilities.getVersionResolutionRulesBase(att.getBase("url")));
+      Resource res = context.getContext().fetchResource(Resource.class, url, ExtensionUtilities.getVersionResolutionRulesBase(att.getBaseForChild("url")));
       if (res == null || !res.hasWebPath()) {
         p.code().ah(context.prefixLocalHref(url)).tx(url);        
       } else if (res instanceof CanonicalResource) {

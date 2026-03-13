@@ -13,7 +13,6 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
@@ -32,7 +31,6 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -49,7 +47,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (r.isDirect()) {
       renderResourceTechDetails(r, x);
       genSummaryTable(status, x, (ConceptMap) r.getBase());
-      render(status, r, x, (ConceptMap) r.getBase(), false);      
+      render(status, r, x, (ConceptMap) r.getBase(), false);
     } else {
       // the intention is to change this in the future
       x.para().tx("ConceptMapRenderer only renders native resources directly");

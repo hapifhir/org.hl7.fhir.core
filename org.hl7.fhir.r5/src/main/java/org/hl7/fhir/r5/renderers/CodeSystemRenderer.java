@@ -10,7 +10,6 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
-import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -57,7 +56,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (r.isDirect()) {   
       renderResourceTechDetails(r, x);
       genSummaryTable(status, x, (CodeSystem) r.getBase());
-      render(status, x, (CodeSystem) r.getBase(), r);      
+      render(status, x, (CodeSystem) r.getBase(), r);
     } else {
       // the intention is to change this in the future
       x.para().tx("CodeSystemRenderer only renders native resources directly");

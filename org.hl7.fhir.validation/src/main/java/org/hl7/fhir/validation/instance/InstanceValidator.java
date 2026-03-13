@@ -1485,7 +1485,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
           if (binding.hasValueSet()) {
             String vsRef = binding.getValueSet();
-            ValueSet valueset =  resolveBindingReference(profile, vsRef, binding.getValueSetElement(), profile.getUrl(), profile);
+            ValueSet valueset = resolveBindingReference(profile, vsRef, binding.getValueSetElement(), profile.getUrl(), profile);
             BindingStrength strength = binding.getStrength();
             Extension maxVS = binding.getExtensionByUrl(ExtensionDefinitions.EXT_MAX_VALUESET);
             
@@ -1895,6 +1895,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         OperationOutcomeIssueComponent issueWithCalculatedSeverity = getTxIssueWithCalculatedSeverity(issue, bindingStrength);
         var validationMessage = buildValidationMessage(validationResult.getTxLink(), validationResult.getDiagnostics(), element.line(), element.col(), path, issueWithCalculatedSeverity);
         if (!isSuppressedValidationMessage(validationMessage.getLocation(), validationMessage.getMessageId()) && !hasMessage(errors, validationMessage)) {
+          noteContext(validationMessage);
           errors.add(validationMessage);
           if (validationMessage.isError()) {
             noErrorsFound = false;
@@ -6644,6 +6645,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // if we have (*or if we still are*), then we'll just return our existing errors
 
     timeTracker.checkValidationTimeoutExceeded();
+
+    validationContext = defn.getVersionedUrl();
 
     boolean ok = true;
     ResourceValidationTracker resTracker = getResourceTracker(element);

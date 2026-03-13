@@ -185,7 +185,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       cs = null;
     }
     String statedVersion = inc.getVersion();
-    String resolutionMethod = inc.getExtensionString(ExtensionDefinitions.CANONICAL_RESOLUTION_METHOD);
+    IWorkerContext.VersionResolutionRules resolutionMethod = ExtensionUtilities.getVersionResolutionRules(inc);
     String actualVersion = cs == null ? null : cs.getVersion();
     boolean fromPackages = cs == null ? false : cs.hasSourcePackage();
     boolean fromThisPackage = cs == null ? false : !Utilities.isAbsoluteUrlLinkable(cs.getWebPath());
