@@ -3456,6 +3456,7 @@ msgstr ""
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
 msgid "-- no content: do not translate #144 --"
+msgid "-- no content: do not translate #157 --"
 msgstr ""
 
 # SDR_IMPOSE
@@ -3646,6 +3647,7 @@ msgstr ""
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
 msgid "-- no content: do not translate #145 --"
+msgid "-- no content: do not translate #158 --"
 msgstr ""
 
 # SDR_VER_TO_PFX
@@ -3657,6 +3659,7 @@ msgstr ""
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
 msgid "-- no content: do not translate #146 --"
+msgid "-- no content: do not translate #159 --"
 msgstr ""
 
 # SDR_VER_UNK

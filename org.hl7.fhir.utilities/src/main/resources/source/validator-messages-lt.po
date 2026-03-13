@@ -1222,6 +1222,9 @@ msgstr ""
 # CONFORMANCE_STATEMENT_WORD
 #: CONFORMANCE_STATEMENT_WORD
 msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause: ''{1}''"
+# CONFORMANCE_STATEMENT_WORD
+#: CONFORMANCE_STATEMENT_WORD
+msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause"
 msgstr ""
 
 # CONTAINED_ORPHAN_DOM3
@@ -1854,6 +1857,7 @@ msgstr ""
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES"
 msgid "-- no content: do not translate #147 --"
+msgid "-- no content: do not translate #160 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} type profiles"
 msgstr[0] ""
 msgstr[1] ""
@@ -1863,6 +1867,7 @@ msgstr[2] ""
 #: FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_MULTIPLE_TYPES"
 msgid "-- no content: do not translate #148 --"
+msgid "-- no content: do not translate #161 --"
 msgid_plural "Error in discriminator at {1}: no children, {0} types"
 msgstr[0] ""
 msgstr[1] ""
@@ -1887,6 +1892,7 @@ msgstr ""
 #: FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES
 msgctxt "FHIRPATH_DISCRIMINATOR_RESOLVE_MULTIPLE_TYPES"
 msgid "-- no content: do not translate #149 --"
+msgid "-- no content: do not translate #162 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible types on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -1911,6 +1917,7 @@ msgstr ""
 #: FHIRPATH_FOCUS
 msgctxt "FHIRPATH_FOCUS"
 msgid "-- no content: do not translate #150 --"
+msgid "-- no content: do not translate #163 --"
 msgid_plural "Error evaluating FHIRPath expression: focus for {1} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -1930,6 +1937,7 @@ msgstr ""
 #: FHIRPATH_LEFT_VALUE
 msgctxt "FHIRPATH_LEFT_VALUE"
 msgid "-- no content: do not translate #151 --"
+msgid "-- no content: do not translate #164 --"
 msgid_plural "Error evaluating FHIRPath expression: left operand to {1} can only have 1 value, but has {0} values ({2})"
 msgstr[0] ""
 msgstr[1] ""
@@ -2004,6 +2012,7 @@ msgstr ""
 #: FHIRPATH_PARAMETER_CARD
 msgctxt "FHIRPATH_PARAMETER_CARD"
 msgid "-- no content: do not translate #152 --"
+msgid "-- no content: do not translate #165 --"
 msgid_plural "Error evaluating FHIRPath expression: parameter {1} can only have one value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -2038,6 +2047,7 @@ msgstr ""
 #: FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET
 msgctxt "FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET"
 msgid "-- no content: do not translate #153 --"
+msgid "-- no content: do not translate #166 --"
 msgid_plural "Invalid use of resolve() in discriminator - {0} possible target type profiles on {1} (can only be one)"
 msgstr[0] ""
 msgstr[1] ""
@@ -2047,6 +2057,7 @@ msgstr[2] ""
 #: FHIRPATH_RIGHT_VALUE
 msgctxt "FHIRPATH_RIGHT_VALUE"
 msgid "-- no content: do not translate #154 --"
+msgid "-- no content: do not translate #167 --"
 msgid_plural "Error evaluating FHIRPath expression: right operand to {1} can only have 1 value, but has {0} values"
 msgstr[0] ""
 msgstr[1] ""
@@ -2884,6 +2895,7 @@ msgstr ""
 #: MULTIPLE_LOGICAL_MODELS
 msgctxt "MULTIPLE_LOGICAL_MODELS"
 msgid "-- no content: do not translate #155 --"
+msgid "-- no content: do not translate #168 --"
 msgid_plural "{0} Logical Models found in supplied profiles, so unable to parse logical model (can only be one, found {1})"
 msgstr[0] ""
 msgstr[1] ""
@@ -2932,6 +2944,7 @@ msgstr ""
 # NO_VALID_DISPLAY_AT_ALL
 #: NO_VALID_DISPLAY_AT_ALL
 msgid "Cannot validate display ''{0}'' for {1}#{2} in language {3}: No displays are known"
+msgid "Cannot validate display Name ''{0}'' for {1}#{2}: No displays are known"
 msgstr ""
 
 # NO_VALID_DISPLAY_FOUND
@@ -2966,6 +2979,7 @@ msgstr ""
 # NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
 #: NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
 msgid "There are no valid display names found for the code {1}#{2} for language(s) ''{3}''. The display is ''{4}'' which is the default language display"
+msgid "There are no valid display names found for the code {1}#{2} for language(s) ''{3}''. The display is ''{4}'' the default language display"
 msgstr ""
 
 # Named_items_are_out_of_order_in_the_slice
@@ -3793,6 +3807,7 @@ msgstr ""
 #: Questionnaire_QR_Item_OnlyOneI
 msgctxt "Questionnaire_QR_Item_OnlyOneI"
 msgid "-- no content: do not translate #156 --"
+msgid "-- no content: do not translate #169 --"
 msgid_plural "Only one response item with the linkId {1} allowed - found {0} items"
 msgstr[0] ""
 msgstr[1] ""
