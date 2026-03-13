@@ -452,7 +452,7 @@ class FhirValidatorHttpServiceTest {
     // Now validate against the loaded profile - it should be available
     String profilesParam = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient";
     HttpRequest validateRequest = HttpRequest.newBuilder()
-      .uri(URI.create(BASE_URL + "/validateResource?profiles=" + java.net.URLEncoder.encode(profilesParam, "UTF-8")))
+      .uri(URI.create(BASE_URL + "/validateResource?profile=" + java.net.URLEncoder.encode(profilesParam, "UTF-8")))
       .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_PATIENT_JSON))
       .header("Content-Type", "application/fhir+json")
       .build();
