@@ -737,13 +737,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference) {
     CodeSystem cs = (CodeSystem) fetchResource(CodeSystem.class, system, rules, version, sourceOfReference);
-    // disabled 2026-03-13 GDG - what on earth does this do, and why?
-//    if (cs == null && locator != null) {
-//      locator.findResource(this, system, rules);
-//      synchronized (lock) {
-//        cs = codeSystems.get(system);
-//      }
-//    }
+    if (cs == null && locator != null) {
+      locator.findResource(this, system+(version != null ? "|"+version : ""), rules);
+      cs = (CodeSystem) fetchResource(CodeSystem.class, system, rules, version, sourceOfReference);
+    }
 
     // try implicit code systems
     if (cs == null) {

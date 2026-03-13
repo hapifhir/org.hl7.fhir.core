@@ -1168,8 +1168,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     String statusMessage = null;
     if (inactive) {
-      statusMessage = context.formatMessage(I18nConstants.INACTIVE_CONCEPT_FOUND, status == null ? "inactive" : status, cc.getCode());
+      statusMessage = context.formatMessage(I18nConstants.INACTIVE_CONCEPT_FOUND, "inactive", cc.getCode());
       info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, statusMessage, OpIssueCode.CodeComment, null, I18nConstants.INACTIVE_CONCEPT_FOUND));
+      if ("retired".equals(status)) {
+        String sMsg2 = context.formatMessage(I18nConstants.INACTIVE_CONCEPT_FOUND, status, cc.getCode());
+        info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, sMsg2, OpIssueCode.CodeComment, null, I18nConstants.INACTIVE_CONCEPT_FOUND));
+        statusMessage = sMsg2+"; "+statusMessage;
+      }
     } else if (status != null && "deprecated".equals(status.toLowerCase())) {
       statusMessage = context.formatMessage(I18nConstants.DEPRECATED_CONCEPT_FOUND, status == null ? "inactive" : status, cc.getCode());
       info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, statusMessage, OpIssueCode.CodeComment, null, I18nConstants.DEPRECATED_CONCEPT_FOUND));

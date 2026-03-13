@@ -176,7 +176,7 @@ public class TxServiceTestHelper {
           parameters.addParameter("inactive", true);
         }
         if (validationResult.getStatus() != null) {
-          parameters.addParameter("status", validationResult.getStatus());
+          parameters.addCodeParameter("status", validationResult.getStatus());
         }
         if (validationResult.getUnknownSystems() != null) {
           for (String s : validationResult.getUnknownSystems()) {
