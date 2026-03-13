@@ -457,10 +457,11 @@ public class ProfilePathProcessor {
     String path = currentBase.getContentReference().substring(currentBase.getContentReference().indexOf("#")+1);
 
     // work backwards and find the nearest case
-    int res = base.getElement().indexOf(currentBase) - 1;    
+    // Important: we must find the base element, not a slice (slices have the same path as their base)
+    int res = base.getElement().indexOf(currentBase) - 1;
     while (res >= 0) {
       ElementDefinition ed = base.getElement().get(res);
-      if (path.equals(ed.getPath())) {
+      if (path.equals(ed.getPath()) && !ed.hasSliceName()) {
         return res;
       }
       res--;
