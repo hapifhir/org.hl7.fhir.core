@@ -347,7 +347,9 @@ public interface IWorkerContext {
    * @return the resource if known (or null)
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules);
-  @Deprecated public <T extends Resource> T fetchResource(Class<T> class_, String uri);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
+    return fetchResource(class_, uri, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -395,7 +397,9 @@ public interface IWorkerContext {
    * @return if the resource is known
    */
   public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource sourceOfReference);
-  //@Deprecated public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource sourceOfReference) {
+    return fetchResource(class_, uri, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  };
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -418,7 +422,9 @@ public interface IWorkerContext {
    * @return the resource if known (or an exception will be thrown)
    */
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, VersionResolutionRules rules) throws FHIRException;
-  @Deprecated public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
+  @Deprecated(since="2026-03-10")  default public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
+    return fetchResourceWithException(class_, uri, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -443,7 +449,9 @@ public interface IWorkerContext {
    * @return if the resource is known. Will throw an exception if the resource is not known
    */
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource sourceOfReference) throws FHIRException;
-  @Deprecated public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, Resource sourceOfReference) throws FHIRException;
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, Resource sourceOfReference) throws FHIRException {
+    return fetchResourceWithException(class_, uri, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  }
 
   /**
    * Find an identified resource, but do not do any processing on it.
@@ -468,7 +476,9 @@ public interface IWorkerContext {
    * @return the resource if known (or an exception will be thrown)
    */
   public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules);
-  @Deprecated public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+    return fetchResourceRaw(class_, uri, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -525,7 +535,9 @@ public interface IWorkerContext {
    * @param rules - additional rules that apply when resolving the version to use
    */
   public <T extends Resource> T findTxResource(Class<T> class_, String canonical, VersionResolutionRules rules);
-  @Deprecated public <T extends Resource> T findTxResource(Class<T> class_, String canonical);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T findTxResource(Class<T> class_, String canonical) {
+    return findTxResource(class_, canonical, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * this first does a fetch resource, and if nothing is found, looks in the
@@ -537,7 +549,9 @@ public interface IWorkerContext {
    * @param sourceOfReference where the reference was found (if the reference is in a resource)
    */
   public <T extends Resource> T findTxResource(Class<T> class_, String canonical, VersionResolutionRules rules, String version, Resource sourceOfReference);
-  @Deprecated public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version, Resource sourceOfReference) {
+    return findTxResource(class_, canonical, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  }
 
   /**
    * Get a copy of the expansion parameters to be passed through the terminology server when txServer calls are made
@@ -560,7 +574,9 @@ public interface IWorkerContext {
    * @return
    */
   public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules);
-  @Deprecated public CodeSystem fetchCodeSystem(String system);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchCodeSystem(String system) {
+    return fetchCodeSystem(system, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Find the code system definition for the nominated system uri.
@@ -574,7 +590,9 @@ public interface IWorkerContext {
    * @param sourceOfReference where the reference was found (if the reference is in a resource)
    */
   public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference);
-  @Deprecated public CodeSystem fetchCodeSystem(String system, String version, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchCodeSystem(String system, String version, Resource sourceOfReference) {
+    return fetchCodeSystem(system, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  }
 
   /**
    * Like fetchCodeSystem, except that the context will find any CodeSysetm supplements and merge them into the
@@ -583,7 +601,9 @@ public interface IWorkerContext {
    * @param rules - additional rules that apply when resolving the version to use
    */
   public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules);
-  @Deprecated public CodeSystem fetchSupplementedCodeSystem(String system);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchSupplementedCodeSystem(String system) {
+    return fetchSupplementedCodeSystem(system, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Like fetchCodeSystem, except that the context will find any appropriate CodeSystem supplements and merge them into the
@@ -598,7 +618,9 @@ public interface IWorkerContext {
    * @param sourceOfReference where the reference was found (if the reference is in a resource)
    */
   public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules, String version, List<String> specifiedSupplements, Resource sourceOfReference);
-  @Deprecated public CodeSystem fetchSupplementedCodeSystem(String systems, String version, List<String> specifiedSupplements, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchSupplementedCodeSystem(String system, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
+    return fetchSupplementedCodeSystem(system, VersionResolutionRules.defaultRule(), version, specifiedSupplements, sourceOfReference);
+  }
 
   /**
    * ValueSet Expansion - see $expand
