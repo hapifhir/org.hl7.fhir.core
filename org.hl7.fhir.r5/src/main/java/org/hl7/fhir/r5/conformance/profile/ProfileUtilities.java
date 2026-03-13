@@ -2972,7 +2972,7 @@ public class ProfileUtilities {
             nb.setDescription(d.getDescription());
           }
           if (d.hasValueSet()) {
-            nb.setValueSet(d.getValueSet());
+            nb.setValueSetElement(d.getValueSetElement());
           }
           for (ElementDefinitionBindingAdditionalComponent ab : d.getAdditional()) {
             ElementDefinitionBindingAdditionalComponent eab = getMatchingAdditionalBinding(nb, ab);
