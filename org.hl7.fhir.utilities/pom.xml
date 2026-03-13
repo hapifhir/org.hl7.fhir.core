@@ -171,13 +171,6 @@
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.mockftpserver</groupId>
-            <artifactId>MockFtpServer</artifactId>
-            <version>3.1.0</version>
-            <scope>test</scope>
-        </dependency>
         
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
