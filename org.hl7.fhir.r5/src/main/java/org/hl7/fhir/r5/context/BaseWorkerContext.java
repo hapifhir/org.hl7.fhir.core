@@ -727,28 +727,24 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules) {
-    if (system == null) {
-      return null;
-    }
-    String s = null;
-    String v = null;
-    if (system.contains("|")) {
-      s = system.substring(0, system.indexOf("|"));
-      v = system.substring(system.indexOf("|")+1);
-      return fetchCodeSystem(s, rules, v);
-    } else {
-      s = system;
-    }
-    CodeSystem cs;
-    synchronized (lock) {
-      cs = codeSystems.get(system);
-    }
-    if (cs == null && locator != null) {
-      locator.findResource(this, system, null);
-      synchronized (lock) {
-        cs = codeSystems.get(system);
-      }
-    }
+    return fetchCodeSystem(system, rules, null, null);
+  }
+
+
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version) {
+    return fetchCodeSystem(system, rules, version, null);
+  }
+
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference) {
+    CodeSystem cs = (CodeSystem) fetchResource(CodeSystem.class, system, rules, version, sourceOfReference);
+    // disabled 2026-03-13 GDG - what on earth does this do, and why?
+//    if (cs == null && locator != null) {
+//      locator.findResource(this, system, rules);
+//      synchronized (lock) {
+//        cs = codeSystems.get(system);
+//      }
+//    }
+
     // try implicit code systems
     if (cs == null) {
       Resource resource = fetchResource(Resource.class, system, rules, version);
@@ -770,28 +766,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     return cs;
   }
-
-
-  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version) {
-    return fetchCodeSystem(system, rules, version, null);
-  }
-
-  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference) {
-    if (version == null) {
-      return fetchCodeSystem(system, rules);
-    }
-    CodeSystem cs;
-    synchronized (lock) {
-      cs = codeSystems.get(system, version);
-    }
-    if (cs == null && locator != null) {
-      locator.findResource(this, system, rules);
-      synchronized (lock) {
-        cs = codeSystems.get(system);
-      }
-    }
-    return cs;
-  } 
 
   @Override
   public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules) {
@@ -1492,7 +1466,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues).setUnknownSystems(unknownSystems);
       } else if (type == TerminologyServiceErrorClass.INTERNAL_ERROR) {
         return new ValidationResult(IssueSeverity.FATAL, localError, TerminologyServiceErrorClass.INTERNAL_ERROR, issues);
-      } else if ("No_Service".equals(localError)) {
+      } else if (TerminologyServiceException.NO_SERVICE_CODE.equals(localError)) {
         return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.NOSERVICE, issues);
       } else {
         return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.UNKNOWN, issues);
@@ -1505,14 +1479,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (localWarning != null) {
         return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localWarning), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
       } else {
-        return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
+        return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
       }
     }
     if (options.isUseClient() && fetchResource(Resource.class, code.getSystem(), VersionResolutionRules.defaultRule()) != null) {
       if (localWarning != null) {
         return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localWarning), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
       } else {
-        return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
+        return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
       }
     }
     String codeKey = getCodeKey(code);
@@ -2386,7 +2360,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       }
     }
-   
+
     List<String> pvlist = new ArrayList<>();
     if (sourceForReference != null && sourceForReference.getSourcePackage() != null && rules != VersionResolutionRules.LATEST) {
       populatePVList(pvlist, sourceForReference.getSourcePackage());
@@ -3902,8 +3876,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
   public void storeAnalysis(Class className, Object analysis) {
-    synchronized (lock) {
-      analyses.put(className.getName(), analysis);
+    if (definitionsVersion >= 0) {
+      synchronized (lock) {
+        analyses.put(className.getName(), analysis);
+      }
     }
   }
 
@@ -3911,50 +3887,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     synchronized (lock) {
       return analyses.get(className.getName());
     }
-  }
-
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
-    return fetchResource(class_, uri, VersionResolutionRules.defaultRule());
-  }
-
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource sourceOfReference) {
-    return fetchResource(class_, uri, VersionResolutionRules.defaultRule(), version, sourceOfReference);
-  }
-
-  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
-    return fetchResourceWithException(class_, uri, VersionResolutionRules.defaultRule());
-  }
-
-  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, Resource sourceOfReference) throws FHIRException {
-    return fetchResourceWithException(class_, uri, VersionResolutionRules.defaultRule(), version, sourceOfReference);
-  }
-
-  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
-    return  fetchResourceRaw(class_, uri, VersionResolutionRules.defaultRule());
-  }
-
-  public <T extends Resource> T findTxResource(Class<T> class_, String canonical) {
-    return findTxResource(class_, canonical, VersionResolutionRules.defaultRule());
-  }
-
-  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version, Resource sourceOfReference) {
-    return findTxResource(class_, canonical, VersionResolutionRules.defaultRule(), version, sourceOfReference);
-  }
-
-  public CodeSystem fetchCodeSystem(String system) {
-    return fetchCodeSystem(system, VersionResolutionRules.defaultRule());
-  }
-
-  public CodeSystem fetchCodeSystem(String system, String version, Resource sourceOfReference) {
-    return fetchCodeSystem(system, VersionResolutionRules.defaultRule(), version, sourceOfReference);
-  }
-
-  public CodeSystem fetchSupplementedCodeSystem(String system) {
-    return fetchSupplementedCodeSystem(system, VersionResolutionRules.defaultRule());
-  }
-
-  public CodeSystem fetchSupplementedCodeSystem(String system, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
-    return fetchSupplementedCodeSystem(system, VersionResolutionRules.defaultRule(), version, specifiedSupplements, sourceOfReference);
   }
 
   }
