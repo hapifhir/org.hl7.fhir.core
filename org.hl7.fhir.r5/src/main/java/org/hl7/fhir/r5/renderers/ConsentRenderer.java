@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.renderers;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -310,7 +311,7 @@ public class ConsentRenderer extends ResourceRenderer {
   }
 
   private String chooseNameForExtension(String url) {
-    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
+    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd == null) {
       return Utilities.urlTail(url);
     } else {

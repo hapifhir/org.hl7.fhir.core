@@ -124,6 +124,9 @@ public class OperationOutcomeUtilities {
       issue.getExtension().add(ExtensionUtilities.makeIssueMessageId(message.getMessageId()));
     }
     issue.setUserData(UserDataNames.validator_source_msg, message);
+    if (message.getValidationContext() != null) {
+      issue.getExtension().add(ExtensionUtilities.makeIssueContext(message.getValidationContext()));
+    }
     return issue;
   }
 
@@ -225,6 +228,9 @@ public class OperationOutcomeUtilities {
     }
     if (message.getServer() != null) {
       issue.addExtension(ExtensionDefinitions.EXT_ISSUE_SERVER, new UrlType(message.getServer()));
+    }
+    if (message.getValidationContext() != null) {
+      issue.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_CTXT, new StringType(message.getValidationContext()));
     }
     return issue;
   }

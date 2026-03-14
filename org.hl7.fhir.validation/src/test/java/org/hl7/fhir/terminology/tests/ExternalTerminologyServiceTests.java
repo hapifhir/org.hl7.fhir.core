@@ -30,6 +30,7 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.validation.special.TxTestData;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
+import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -106,9 +107,20 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     modes.add("snomed");
   }
 
+  private void logTestSkip(String reason) {
+    if (setup != null) {
+      System.out.println("Skipping test: " + setup.suite.asString("name") + " " + setup.test.asString("name") + " reason: " + reason);
+    }
+  }
+
   @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
+    if (false && TestUtilities.runningAsSurefire()) {
+      logTestSkip("Running in surefire.");
+      return;
+    }
+
     if (setup == null) {
       if (error == 0) {
         System.out.println("tx.fhir.org passed all "+(count - skipped)+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");

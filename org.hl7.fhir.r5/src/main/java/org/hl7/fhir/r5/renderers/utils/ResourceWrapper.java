@@ -197,6 +197,11 @@ public abstract class ResourceWrapper {
     return child == null ? null : child.primitiveValue();
   }
 
+  public Base getBaseForChild(String name) {
+    ResourceWrapper child = firstChild(name);
+    return child == null ? null : child.getBase();
+  }
+
   private void loadChildren() {
     if (children == null) {
       children = new ArrayList<>();

@@ -66,53 +66,17 @@ import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.ActorDefinition;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.ConceptMap;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.DomainResource;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.IdType;
-import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.Library;
-import org.hl7.fhir.r5.model.Measure;
-import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
-import org.hl7.fhir.r5.model.OperationDefinition;
-import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.PackageInformation;
-import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.model.PlanDefinition;
-import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Questionnaire;
-import org.hl7.fhir.r5.model.Requirements;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.SearchParameter;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.StructureMap;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.UrlType;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
@@ -317,7 +281,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private final CanonicalResourceManager<ActorDefinition> actors = new CanonicalResourceManager<ActorDefinition>(false, minimalMemory);
   private final CanonicalResourceManager<Requirements> requirements = new CanonicalResourceManager<Requirements>(false, minimalMemory);
   private final CanonicalResourceManager<NamingSystem> systems = new CanonicalResourceManager<NamingSystem>(false, minimalMemory);
-  private Map<String, NamingSystem> systemUrlMap;
 
   private LanguageSubtagRegistry registry;
   
@@ -407,7 +370,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       questionnaires.copy(other.questionnaires);
       operations.copy(other.operations);
       systems.copy(other.systems);
-      systemUrlMap = null;
       guides.copy(other.guides);
       capstmts.copy(other.capstmts);
       measures.copy(other.measures);
@@ -480,7 +442,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
           return;
         }
-        CanonicalResource ex = fetchResourceWithException(r.getType(), url);
+        CanonicalResource ex = fetchResourceWithException(r.getType(), url, VersionResolutionRules.defaultRule());
         throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url, r.getVersion(), ex.getVersion(),
             ex.fhirType()));
       }
@@ -617,7 +579,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
             return;
           }
-          CanonicalResource ex = (CanonicalResource) fetchResourceWithException(r.getClass(), url);
+          CanonicalResource ex = (CanonicalResource) fetchResourceWithException(r.getClass(), url, VersionResolutionRules.defaultRule());
           throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url, ((CanonicalResource) r).getVersion(), ex.getVersion(),
               ex.fhirType()));
         }
@@ -655,7 +617,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           transforms.see((StructureMap) m, packageInfo);
         } else if (r instanceof NamingSystem) {
           systems.see((NamingSystem) m, packageInfo);
-          systemUrlMap = null;
         } else if (r instanceof Requirements) {
           requirements.see((Requirements) m, packageInfo);
         } else if (r instanceof ActorDefinition) {
@@ -665,29 +626,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  public Map<String, NamingSystem> getNSUrlMap() {
-    if (systemUrlMap == null) {
-      systemUrlMap = new HashMap<>();
-      try {
-      List<NamingSystem> nsl = systems.getList();
-      for (NamingSystem ns : nsl) {
-        for (NamingSystemUniqueIdComponent uid : ns.getUniqueId()) {
-          if (uid.getType() == NamingSystemIdentifierType.URI && uid.hasValue()) {
-            systemUrlMap.put(uid.getValue(), ns) ;
-          }
-        }        
-      }
-      } catch (Exception e) {
-        if (!nsFailHasFailed) {
-          e.printStackTrace();
-          nsFailHasFailed  = true;
-        }
-      }
-    }
-    return systemUrlMap;
-  }
-
-  
   public void fixOldSD(StructureDefinition sd) {
     if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.getType().equals("Extension") && sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/")) {
       sd.setSnapshot(null);
@@ -788,54 +726,47 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }  
 
   @Override
-  public CodeSystem fetchCodeSystem(String system) {
-    if (system == null) {
-      return null;
-    }
-    if (system.contains("|")) {
-      String s = system.substring(0, system.indexOf("|"));
-      String v = system.substring(system.indexOf("|")+1);
-      return fetchCodeSystem(s, v);
-    }
-    CodeSystem cs;
-    synchronized (lock) {
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules) {
+    return fetchCodeSystem(system, rules, null, null);
+  }
 
-      cs = codeSystems.get(system);
-    }
+
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version) {
+    return fetchCodeSystem(system, rules, version, null);
+  }
+
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference) {
+    CodeSystem cs = (CodeSystem) fetchResource(CodeSystem.class, system, rules, version, sourceOfReference);
     if (cs == null && locator != null) {
-      locator.findResource(this, system);
-      synchronized (lock) {
-        cs = codeSystems.get(system);
+      locator.findResource(this, system+(version != null ? "|"+version : ""), rules);
+      cs = (CodeSystem) fetchResource(CodeSystem.class, system, rules, version, sourceOfReference);
+    }
+
+    // try implicit code systems
+    if (cs == null) {
+      Resource resource = fetchResource(Resource.class, system, rules, version);
+      if (resource != null) {
+        switch (resource.fhirType()) {
+          case "StructureDefinition":
+            return ImplicitCodeSystemSupport.convertStructure((StructureDefinition) resource);
+          case "Questionnaire":
+            return ImplicitCodeSystemSupport.convertQuestionnaire((Questionnaire) resource);
+          case "Requirements":
+            return ImplicitCodeSystemSupport.convertRequirements((Requirements) resource);
+          case "Measure":
+            return ImplicitCodeSystemSupport.convertMeasure((Measure) resource);
+          default:
+            log.warn("The resource type "+resource.fhirType()+" cannot be treated as a CodeSystem");
+            return null;
+        }
       }
     }
     return cs;
   }
-
-
-  public CodeSystem fetchCodeSystem(String system, String version) {
-    return fetchCodeSystem(system, version, null);
-  }
-
-  public CodeSystem fetchCodeSystem(String system, String version, Resource sourceOfReference) {
-    if (version == null) {
-      return fetchCodeSystem(system);
-    }
-    CodeSystem cs;
-    synchronized (lock) {
-      cs = codeSystems.get(system, version);
-    }
-    if (cs == null && locator != null) {
-      locator.findResource(this, system);
-      synchronized (lock) {
-        cs = codeSystems.get(system);
-      }
-    }
-    return cs;
-  } 
 
   @Override
-  public CodeSystem fetchSupplementedCodeSystem(String system) {
-    CodeSystem cs = fetchCodeSystem(system);
+  public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules) {
+    CodeSystem cs = fetchCodeSystem(system, rules);
     if (cs != null) {
       List<CodeSystem> supplements = codeSystems.getSupplements(cs);
       if (supplements.size() > 0) {
@@ -846,8 +777,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public CodeSystem fetchSupplementedCodeSystem(String system, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
-    CodeSystem cs = fetchCodeSystem(system, version, sourceOfReference);
+  public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
+    CodeSystem cs = fetchCodeSystem(system, rules, version, sourceOfReference);
     if (cs != null) {
       List<CodeSystem> supplements = codeSystems.getSupplements(cs);
       List<CodeSystem> activeSupplements = new ArrayList<>();
@@ -928,7 +859,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public ValueSetExpansionOutcome expandVS(Resource src, ElementDefinitionBindingComponent binding, boolean cacheOk, boolean heirarchical) throws FHIRException {
     ValueSet vs = null;
-    vs = fetchResource(ValueSet.class, binding.getValueSet(), null, src);
+    vs = fetchResource(ValueSet.class, binding.getValueSet(),  ExtensionUtilities.getVersionResolutionRules(binding.getValueSetElement()), null, src);
     if (vs == null) {
       throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, binding.getValueSet()));
     }
@@ -1532,6 +1463,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED, issues).setUnknownSystems(unknownSystems);
       } else if (type == TerminologyServiceErrorClass.INTERNAL_ERROR) {
         return new ValidationResult(IssueSeverity.FATAL, localError, TerminologyServiceErrorClass.INTERNAL_ERROR, issues);
+      } else if (TerminologyServiceException.NO_SERVICE_CODE.equals(localError)) {
+        return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.NOSERVICE, issues);
       } else {
         return new ValidationResult(IssueSeverity.ERROR, localError, TerminologyServiceErrorClass.UNKNOWN, issues);
       }
@@ -1541,9 +1474,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (!options.isUseServer()) {
       if (localWarning != null) {
-        return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localWarning), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);       
+        return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localWarning), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
       } else {
-        return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
+        return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
+      }
+    }
+    if (options.isUseClient() && fetchResource(Resource.class, code.getSystem(), VersionResolutionRules.defaultRule()) != null) {
+      if (localWarning != null) {
+        return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localWarning), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
+      } else {
+        return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER, localError), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS, issues);
       }
     }
     String codeKey = getCodeKey(code);
@@ -1618,7 +1558,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     if (options.isUseClient() && parent.getSystem().equals(child.getSystem())) {
-      CodeSystem cs = fetchCodeSystem(parent.getSystem());
+      CodeSystem cs = fetchCodeSystem(parent.getSystem(), ExtensionUtilities.getVersionResolutionRules(parent.getSystemElement()));
       if (cs != null) {
         Boolean b = CodeSystemUtilities.subsumes(cs, parent.getCode(), child.getCode());
         if (txCache != null && cachingAllowed) {
@@ -1722,7 +1662,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private void updateUnsupportedCodeSystems(ValidationResult res, Coding code, String codeKey) {
-    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && !code.hasVersion() && fetchCodeSystem(codeKey) == null) {
+    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && !code.hasVersion() && fetchCodeSystem(codeKey, ExtensionUtilities.getVersionResolutionRules(code.getSystemElement())) == null) {
       unsupportedCodeSystems.add(codeKey);
     }
   }
@@ -1885,7 +1825,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     for (CanonicalType u : inc.getValueSet()) {
-      ValueSet vs = fetchResource(ValueSet.class, u.getValue());
+      ValueSet vs = fetchResource(ValueSet.class, u.getValue(), ExtensionUtilities.getVersionResolutionRules(inc));
       if (vs != null) {
         findRelevantSystems(set, vs);
       } else if (u.getValue() != null && u.getValue().startsWith("http://snomed.info/sct")) {
@@ -1969,7 +1909,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (systems != null) {
       for (String s : systems) {
-        cache = addDependentCodeSystem(opCtxt, terminologyClientContext, pin, s, null) || cache;
+        cache = addDependentCodeSystem(opCtxt, terminologyClientContext, pin, s, null, null) || cache;
       }
     }
     pin.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
@@ -2015,14 +1955,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ConceptSetComponent inc, Resource src) {
     boolean cache = false;
     for (CanonicalType c : inc.getValueSet()) {
-      ValueSet vs = fetchResource(ValueSet.class, c.getValue(), null, src);
+      ValueSet vs = fetchResource(ValueSet.class, c.getValue(), ExtensionUtilities.getVersionResolutionRules(c), null, src);
       if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
         cache = checkAddToParams(tc, pin, vs) || cache;
         addDependentResources(opCtxt, tc, pin, vs);
         for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
           if (ext.hasValueCanonicalType()) {
             String url = ext.getValueCanonicalType().asStringValue();
-            CodeSystem supp = fetchResource(CodeSystem.class, url);
+            CodeSystem supp = fetchResource(CodeSystem.class, url, ExtensionUtilities.getVersionResolutionRules(ext.getValue()));
             if (supp != null) {
               if (opCtxt != null) {
                 opCtxt.seeSupplement(supp);
@@ -2034,13 +1974,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     String sys = inc.getSystem();
-    cache = addDependentCodeSystem(opCtxt, tc, pin, sys, src) || cache;
+    cache = addDependentCodeSystem(opCtxt, tc, pin, sys, src, inc) || cache;
     return cache;
   }
 
-  public boolean addDependentCodeSystem(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, String sys, Resource src) {
+  public boolean addDependentCodeSystem(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, String sys, Resource src, Element element) {
     boolean cache = false;
-    CodeSystem cs = fetchResource(CodeSystem.class, sys, null, src);
+    CodeSystem cs = fetchResource(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(element), null, src);
     if (cs != null && !hasCanonicalResource(pin, "tx-resource", cs.getVUrl()) && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
       cache = checkAddToParams(tc, pin, cs) || cache;
     }
@@ -2369,24 +2309,24 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   @Override
-  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
-    return fetchResourceWithException(class_, uri, null, null);
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, VersionResolutionRules rules) throws FHIRException {
+    return fetchResourceWithException(class_, uri, rules, null, null);
   }
 
-  public <T extends Resource> T fetchResourceWithException(String cls, String uri) throws FHIRException {
-    return fetchResourceWithExceptionByVersion(cls, uri, null, null);
+  public <T extends Resource> T fetchResourceWithException(String cls, String uri, VersionResolutionRules rules) throws FHIRException {
+    return fetchResourceWithExceptionByVersion(cls, uri, rules,null, null);
   }
 
-  public <T extends Resource> T fetchResourceByVersionWithException(Class<T> class_, String uri, String version) throws FHIRException {
-    return fetchResourceWithExceptionByVersion(class_, uri, version, null);
+  public <T extends Resource> T fetchResourceByVersionWithException(Class<T> class_, String uri, VersionResolutionRules rules, String version) throws FHIRException {
+    return fetchResourceWithExceptionByVersion(class_, uri, rules, version, null);
   }
 
-  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, Resource sourceForReference) throws FHIRException {
-    return fetchResourceWithExceptionByVersion(class_, uri, version, sourceForReference);
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource sourceForReference) throws FHIRException {
+    return fetchResourceWithExceptionByVersion(class_, uri, rules, version, sourceForReference);
   }
   
   @SuppressWarnings("unchecked")
-  public <T extends Resource> T fetchResourceWithExceptionByVersion(Class<T> class_, String uri, String version, Resource sourceForReference) throws FHIRException {
+  public <T extends Resource> T fetchResourceWithExceptionByVersion(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource sourceForReference) throws FHIRException {
     if (uri == null) {
       return null;
     }
@@ -2417,9 +2357,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       }
     }
-   
+
     List<String> pvlist = new ArrayList<>();
-    if (sourceForReference != null && sourceForReference.getSourcePackage() != null) {
+    if (sourceForReference != null && sourceForReference.getSourcePackage() != null && rules != VersionResolutionRules.LATEST) {
       populatePVList(pvlist, sourceForReference.getSourcePackage());
     }
     
@@ -2647,7 +2587,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
   
   @SuppressWarnings("unchecked")
-  public <T extends Resource> T fetchResourceWithExceptionByVersion(String cls, String uri, String version, CanonicalResource source) throws FHIRException {
+  public <T extends Resource> T fetchResourceWithExceptionByVersion(String cls, String uri, VersionResolutionRules rules, String version, CanonicalResource source) throws FHIRException {
     if (uri == null) {
       return null;
     }
@@ -2926,12 +2866,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  private Set<String> notCanonical = new HashSet<String>();
-
   protected IWorkerContextManager.IPackageLoadingTracker packageTracker;
   private boolean forPublication;
   private boolean cachingAllowed = true;
-  private static boolean nsFailHasFailed;
 
   public Resource fetchResourceById(String type, String uri, FhirPublication fhirVersion) {
     return fetchResourceById(type, uri);
@@ -2962,26 +2899,26 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource sourceForReference) {
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource sourceForReference) {
     try {
-      return fetchResourceWithException(class_, uri, version, sourceForReference);
+      return fetchResourceWithException(class_, uri, rules, version, sourceForReference);
     } catch (FHIRException e) {
       throw new Error(e);
     }    
   }
   
 
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules) {
     try {
-      return fetchResourceWithException(class_, uri, null, null);
+      return fetchResourceWithException(class_, uri, rules, null, null);
     } catch (FHIRException e) {
       throw new Error(e);
     }
   }
 
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version) {
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules, String version) {
     try {
-      return fetchResourceWithExceptionByVersion(class_, uri, version, null);
+      return fetchResourceWithExceptionByVersion(class_, uri, rules, version, null);
     } catch (FHIRException e) {
       throw new Error(e);
     }
@@ -2990,7 +2927,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri) {
     try {
-      return fetchResourceWithException(class_, uri) != null;
+      return fetchResourceWithException(class_, uri, VersionResolutionRules.defaultRule()) != null;
     } catch (Exception e) {
       return false;
     }
@@ -2998,7 +2935,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public <T extends Resource> boolean hasResource(String cls, String uri) {
     try {
-      return fetchResourceWithException(cls, uri) != null;
+      return fetchResourceWithException(cls, uri, VersionResolutionRules.defaultRule()) != null;
     } catch (Exception e) {
       return false;
     }
@@ -3006,7 +2943,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public <T extends Resource> boolean hasResourceVersion(Class<T> class_, String uri, String version) {
     try {
-      return fetchResourceWithExceptionByVersion(class_, uri, version, null) != null;
+      return fetchResourceWithExceptionByVersion(class_, uri, VersionResolutionRules.defaultRule(), version, null) != null;
     } catch (Exception e) {
       return false;
     }
@@ -3014,7 +2951,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public <T extends Resource> boolean hasResourceVersion(String cls, String uri, String version) {
     try {
-      return fetchResourceWithExceptionByVersion(cls, uri, version, null) != null;
+      return fetchResourceWithExceptionByVersion(cls, uri, VersionResolutionRules.defaultRule(), version, null) != null;
     } catch (Exception e) {
       return false;
     }
@@ -3022,15 +2959,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri, String version, Resource sourceForReference) {
     try {
-      return fetchResourceWithExceptionByVersion(class_, uri, version, sourceForReference) != null;
-    } catch (Exception e) {
-      return false;
-    }
-  }
-
-  public <T extends Resource> boolean hasResourceVersion(String cls, String uri, String version, FhirPublication fhirVersion) {
-    try {
-      return fetchResourceWithExceptionByVersion(cls, uri, version, null) != null;
+      return fetchResourceWithExceptionByVersion(class_, uri, VersionResolutionRules.defaultRule(), version, sourceForReference) != null;
     } catch (Exception e) {
       return false;
     }
@@ -3038,26 +2967,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri, Resource sourceOfReference) {
     try {
-      return fetchResourceWithExceptionByVersion(class_, uri, version, null) != null;
+      return fetchResourceWithExceptionByVersion(class_, uri, VersionResolutionRules.defaultRule(), version, null) != null;
     } catch (Exception e) {
       return false;
     }
   }
-
-  public void reportStatus(JsonObject json) {
-    synchronized (lock) {
-      json.addProperty("codeystem-count", codeSystems.size());
-      json.addProperty("valueset-count", valueSets.size());
-      json.addProperty("conceptmap-count", maps.size());
-      json.addProperty("transforms-count", transforms.size());
-      json.addProperty("structures-count", structures.size());
-      json.addProperty("guides-count", guides.size());
-      json.addProperty("statements-count", capstmts.size());
-      json.addProperty("measures-count", measures.size());
-      json.addProperty("libraries-count", libraries.size());
-    }
-  }
-
 
   public void dropResource(Resource r) throws FHIRException {
     dropResource(r.fhirType(), r.getId());   
@@ -3100,7 +3014,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         transforms.drop(id);
       } else if (fhirType.equals("NamingSystem")) {
         systems.drop(id);
-        systemUrlMap = null;
       } else if (fhirType.equals("ActorDefinition")) {
         actors.drop(id);
       } else if (fhirType.equals("Requirements")) {
@@ -3108,34 +3021,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
   }
-  
-  public String listSupportedSystems() {
-    synchronized (lock) {
-      String sl = null;
-      for (String s : supportedCodeSystems.keySet()) {
-        SystemSupportInformation ss = supportedCodeSystems.get(s);
-        if (ss.isSupported()) {
-          sl = sl == null ? s : sl + "\r\n" + s;
-        }
-      }
-      return sl;
-    }
-  }
 
 
-  public int totalCount() {
-    synchronized (lock) {
-      return valueSets.size() +  maps.size() + structures.size() + transforms.size();
-    }
-  }
-  
-  public List<ConceptMap> listMaps() {
-    List<ConceptMap> m = new ArrayList<ConceptMap>();
-    synchronized (lock) {
-      maps.listAll(m);
-    }
-    return m;
-  }
 
   public List<StructureDefinition> listStructures() {
     List<StructureDefinition> m = new ArrayList<StructureDefinition>();
@@ -3167,36 +3054,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private String getUri(NamingSystem ns) {
-    for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
-      if (id.getType() == NamingSystemIdentifierType.URI) {
-        return id.getValue();
-      }
-    }
-    return null;
-  }
-
-  private boolean hasOid(NamingSystem ns, String oid) {
-    for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
-      if (id.getType() == NamingSystemIdentifierType.OID && id.getValue().equals(oid)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public void cacheVS(JsonObject json, Map<String, ValidationResult> t) {
-    synchronized (lock) {
-      validationCache.put(json.get("url").getAsString(), t);
-    }
-  }
-
-  public SearchParameter getSearchParameter(String code) {
-    synchronized (lock) {
-      return searchParameters.get(code);
-    }
-  }
-
   @Override
   public org.hl7.fhir.r5.context.ILoggingService getLogger() {
     return logger;
@@ -3210,7 +3067,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public StructureDefinition fetchTypeDefinition(String typeName) {
     if (Utilities.isAbsoluteUrl(typeName)) {
-      StructureDefinition res = fetchResource(StructureDefinition.class, typeName);
+      StructureDefinition res = fetchResource(StructureDefinition.class, typeName, VersionResolutionRules.defaultRule());
       if (res != null) {
         return res;
       }
@@ -3601,7 +3458,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     txCache.unload();
 }
   
-  private <T extends Resource> T doFindTxResource(Class<T> class_, String canonical) {
+  private <T extends Resource> T doFindTxResource(Class<T> class_, String canonical, VersionResolutionRules rules) {
     // well, we haven't found it locally. We're going look it up
     if (class_ == ValueSet.class) {
       ValueSet ivs = new ImplicitValueSets(getExpansionParameters()).generateImplicitValueSet(canonical);
@@ -3656,35 +3513,35 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version, Resource sourceOfReference) {
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, VersionResolutionRules rules, String version, Resource sourceOfReference) {
     if (canonical == null) {
       return null;
     }
-   T result = fetchResource(class_, canonical, version, sourceOfReference);
+   T result = fetchResource(class_, canonical, rules, version, sourceOfReference);
    if (result == null) {
-     result = doFindTxResource(class_, canonical);
+     result = doFindTxResource(class_, canonical, rules);
    }
    return result;
   }
 
-  public <T extends Resource> T findTxResource(Class<T> class_, String canonical) {
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, VersionResolutionRules rules) {
     if (canonical == null) {
       return null;
     }
-    T result = fetchResource(class_, canonical);
+    T result = fetchResource(class_, canonical, rules);
     if (result == null) {
-      result = doFindTxResource(class_, canonical);
+      result = doFindTxResource(class_, canonical, rules);
     }
     return result;
   }
   
-  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version) {
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, VersionResolutionRules rules, String version) {
     if (canonical == null) {
       return null;
     }
-    T result = fetchResource(class_, canonical, version);
+    T result = fetchResource(class_, canonical, rules, version);
     if (result == null) {
-      result = doFindTxResource(class_, canonical+"|"+version);
+      result = doFindTxResource(class_, canonical+"|"+version, rules);
     }
     return result;
   }
@@ -3935,8 +3792,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
   public void storeAnalysis(Class className, Object analysis) {
-    synchronized (lock) {
-      analyses.put(className.getName(), analysis);
+    if (definitionsVersion >= 0) {
+      synchronized (lock) {
+        analyses.put(className.getName(), analysis);
+      }
     }
   }
 
@@ -3946,4 +3805,4 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-}
+  }

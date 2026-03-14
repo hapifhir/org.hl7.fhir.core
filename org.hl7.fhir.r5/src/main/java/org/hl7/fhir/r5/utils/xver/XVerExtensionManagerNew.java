@@ -43,7 +43,7 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
         return XVerExtensionStatus.BadVersion;
       }
     }
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd == null) {
       // well, it's not an approved extension, but why? We're going to look in the old
       // version stuff to see whether it's a valid element or not - it'll affect the return value.
@@ -84,7 +84,7 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
 
   @Override
   public StructureDefinition getDefinition(String url) {
-    return context.fetchResource(StructureDefinition.class, url);
+    return context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
   }
 }
 

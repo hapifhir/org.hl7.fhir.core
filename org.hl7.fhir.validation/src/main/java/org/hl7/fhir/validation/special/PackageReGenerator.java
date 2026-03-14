@@ -18,6 +18,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -396,7 +397,7 @@ public class PackageReGenerator {
 
   private void chaseDependenciesCS(CodeSystem cs) {
     if (cs.hasSupplements()) {
-      processResource(context.fetchResource(CodeSystem.class, cs.getSupplements()));
+      processResource(context.fetchResource(CodeSystem.class, cs.getSupplements(), ExtensionUtilities.getVersionResolutionRules(cs.getSupplementsElement())));
     }
     for (CodeSystem css : context.fetchResourcesByType(CodeSystem.class)) {
       if (css.supplements(cs)) {
@@ -416,31 +417,31 @@ public class PackageReGenerator {
 
   private void chaseDependenciesVS(ConceptSetComponent inc, ValueSet vs) {
     for (CanonicalType c : inc.getValueSet()) {
-      processResource(context.fetchResource(ValueSet.class, c.primitiveValue()));
+      processResource(context.fetchResource(ValueSet.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
     }
-    processResource(context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion(), vs));
+    processResource(context.fetchResource(CodeSystem.class, inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), vs));
   }
 
   private void chaseDependenciesSD(StructureDefinition sd) {
     if (sd.hasBaseDefinition()) {
-      processResource(context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()));
+      processResource(context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement())));
     }
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ed.getBinding().hasValueSet()) {
-        processResource(context.fetchResource(ValueSet.class, ed.getBinding().getValueSet()));
+        processResource(context.fetchResource(ValueSet.class, ed.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(ed.getBinding().getValueSetElement())));
         for (ElementDefinitionBindingAdditionalComponent adb : ed.getBinding().getAdditional()) {
-          processResource(context.fetchResource(ValueSet.class, adb.getValueSet()));
+          processResource(context.fetchResource(ValueSet.class, adb.getValueSet(), ExtensionUtilities.getVersionResolutionRules(adb.getValueSetElement())));
         }
       }
       for (TypeRefComponent tr : ed.getType()) {
         if (Utilities.isAbsoluteUrl(tr.getCode())) {
-          processResource(context.fetchResource(StructureDefinition.class, tr.getCode()));
+          processResource(context.fetchResource(StructureDefinition.class, tr.getCode(), ExtensionUtilities.getVersionResolutionRules(tr.getCodeElement())));
         }
         for (CanonicalType c : tr.getProfile()) {
-          processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue()));
+          processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
         }
         for (CanonicalType c : tr.getTargetProfile()) {
-          processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue()));
+          processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
         }
       }
       if(includeConformsTo) {
@@ -459,7 +460,7 @@ public class PackageReGenerator {
       if (node.getFunction() == ExpressionNode.Function.ConformsTo || node.getFunction() == ExpressionNode.Function.MemberOf) {
         Base c = getConstantParam(node);
         if (c != null) {
-          processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue()));
+          processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(c)));
         }
       }
       processExpression(node.getInner());
@@ -483,79 +484,79 @@ public class PackageReGenerator {
 
   private void chaseDependenciesCS(CapabilityStatement cs) {
     for (CanonicalType c : cs.getInstantiates()) {
-      processResource(context.fetchResource(CapabilityStatement.class, c.primitiveValue()));
+      processResource(context.fetchResource(CapabilityStatement.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
     }
     for (CanonicalType c : cs.getImports()) {
-      processResource(context.fetchResource(CapabilityStatement.class, c.primitiveValue()));
+      processResource(context.fetchResource(CapabilityStatement.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
     }
     for (CanonicalType c : cs.getImplementationGuide()) {
-      processResource(context.fetchResource(CapabilityStatement.class, c.primitiveValue()));
+      processResource(context.fetchResource(CapabilityStatement.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
     }
     for (CapabilityStatementRestComponent r : cs.getRest()) {
       for (CapabilityStatementRestResourceComponent rr : r.getResource()) {
         if (rr.hasProfile()) {
-          processResource(context.fetchResource(StructureDefinition.class, rr.getProfile()));
+          processResource(context.fetchResource(StructureDefinition.class, rr.getProfile(), ExtensionUtilities.getVersionResolutionRules(rr.getProfileElement())));
         }
         for (CanonicalType c : rr.getSupportedProfile()) {
-          processResource(context.fetchResource(StructureDefinition.class, c.primitiveValue()));
+          processResource(context.fetchResource(StructureDefinition.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
         }
         for (CapabilityStatementRestResourceSearchParamComponent sp : rr.getSearchParam()) {
           if (sp.hasDefinition()) {
-            processResource(context.fetchResource(SearchParameter.class, sp.getDefinition()));
+            processResource(context.fetchResource(SearchParameter.class, sp.getDefinition(), ExtensionUtilities.getVersionResolutionRules(sp.getDefinitionElement())));
           }
         }
         for (CapabilityStatementRestResourceOperationComponent od : rr.getOperation()) {
           if (od.hasDefinition()) {
-            processResource(context.fetchResource(OperationDefinition.class, od.getDefinition()));
+            processResource(context.fetchResource(OperationDefinition.class, od.getDefinition(), ExtensionUtilities.getVersionResolutionRules(od.getDefinitionElement())));
           }
         }
       }
       for (CapabilityStatementRestResourceSearchParamComponent sp : r.getSearchParam()) {
         if (sp.hasDefinition()) {
-          processResource(context.fetchResource(SearchParameter.class, sp.getDefinition()));
+          processResource(context.fetchResource(SearchParameter.class, sp.getDefinition(), ExtensionUtilities.getVersionResolutionRules(sp.getDefinitionElement())));
         }
       }
       for (CapabilityStatementRestResourceOperationComponent od : r.getOperation()) {
         if (od.hasDefinition()) {
-          processResource(context.fetchResource(OperationDefinition.class, od.getDefinition()));
+          processResource(context.fetchResource(OperationDefinition.class, od.getDefinition(), ExtensionUtilities.getVersionResolutionRules(od.getDefinitionElement())));
         }
       }
     }
     for (CapabilityStatementDocumentComponent doc : cs.getDocument()) {
       if (doc.hasProfile()) {
-        processResource(context.fetchResource(StructureDefinition.class, doc.getProfile()));
+        processResource(context.fetchResource(StructureDefinition.class, doc.getProfile(), ExtensionUtilities.getVersionResolutionRules(doc.getProfileElement())));
       }
     }
   }
 
   private void chaseDependenciesOD(OperationDefinition od) {
     if (od.hasBase()) {
-      processResource(context.fetchResource(SearchParameter.class, od.getBase()));
+      processResource(context.fetchResource(SearchParameter.class, od.getBase(), ExtensionUtilities.getVersionResolutionRules(od.getBaseElement())));
     }
     if (od.hasInputProfile()) {
-      processResource(context.fetchResource(StructureDefinition.class, od.getInputProfile()));
+      processResource(context.fetchResource(StructureDefinition.class, od.getInputProfile(), ExtensionUtilities.getVersionResolutionRules(od.getInputProfileElement())));
     }
     if (od.hasOutputProfile()) {
-      processResource(context.fetchResource(StructureDefinition.class, od.getOutputProfile()));
+      processResource(context.fetchResource(StructureDefinition.class, od.getOutputProfile(), ExtensionUtilities.getVersionResolutionRules(od.getOutputProfileElement())));
     }
     for (OperationDefinitionParameterComponent p : od.getParameter()) {
       for (CanonicalType c : p.getTargetProfile()) {
-        processResource(context.fetchResource(StructureDefinition.class, c.primitiveValue()));
+        processResource(context.fetchResource(StructureDefinition.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
       }
 
       if (p.getBinding().hasValueSet()) {
-        processResource(context.fetchResource(ValueSet.class, p.getBinding().getValueSet()));
+        processResource(context.fetchResource(ValueSet.class, p.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(p.getBinding().getValueSetElement())));
       }
     }
   }
 
   private void chaseDependenciesSP(SearchParameter sp) {
     if (sp.hasDerivedFrom()) {
-      processResource(context.fetchResource(SearchParameter.class, sp.getDerivedFrom()));
+      processResource(context.fetchResource(SearchParameter.class, sp.getDerivedFrom(), ExtensionUtilities.getVersionResolutionRules(sp.getDerivedFromElement())));
     }
     for (SearchParameterComponentComponent c : sp.getComponent()) {
       if (c.hasDefinition()) {
-        processResource(context.fetchResource(SearchParameter.class, c.getDefinition()));
+        processResource(context.fetchResource(SearchParameter.class, c.getDefinition(), ExtensionUtilities.getVersionResolutionRules(c.getDefinitionElement())));
       }
     }
   }
@@ -569,7 +570,7 @@ public class PackageReGenerator {
     if (b instanceof CanonicalType) {
       CanonicalType ct = (CanonicalType) b;
       if (!ct.hasVersion()) {
-        Resource res = context.fetchResource(Resource.class, ct.getValue(), null, src);
+        Resource res = context.fetchResource(Resource.class, ct.getValue(), ExtensionUtilities.getVersionResolutionRules(ct), null, src);
         if (res != null && res instanceof CanonicalResource) {
           CanonicalResource cr = (CanonicalResource) res;
           ct.addVersion(cr.getVersion());
@@ -579,7 +580,7 @@ public class PackageReGenerator {
     if (b instanceof ConceptSetComponent) {
       ConceptSetComponent cs = (ConceptSetComponent) b;
       if (!cs.hasVersion()) {
-        Resource res = context.fetchResource(Resource.class, cs.getSystem(), null, src);
+        Resource res = context.fetchResource(Resource.class, cs.getSystem(), ExtensionUtilities.getVersionResolutionRules(cs), null, src);
         if (res != null && res instanceof CanonicalResource) {
           CanonicalResource cr = (CanonicalResource) res;
           cs.setVersion(cr.getVersion());
@@ -686,11 +687,12 @@ public class PackageReGenerator {
   private void processSD(StructureDefinition sd, String packageId) {
     for (ElementDefinition ed : sd.getDifferential().getElement()) {
       if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
-        processValueSet(ed.getBinding().getValueSet(), packageId+":"+sd.getVersionedUrl()+"#"+ed.getId());
+        processValueSet(ed.getBinding().getValueSetElement(), packageId+":"+sd.getVersionedUrl()+"#"+ed.getId());
       }
     }
     if (scope != ExpansionPackageGeneratorScope.IG_ONLY && sd.getBaseDefinition() != null) {
-      StructureDefinition bsd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), null, sd);
+      StructureDefinition bsd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(),
+        ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()), null, sd);
       if (bsd != null) {
         if (!bsd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition") || scope == ExpansionPackageGeneratorScope.EVERYTHING) {
           processSD(bsd, bsd.getSourcePackage().getVID());
@@ -700,9 +702,9 @@ public class PackageReGenerator {
   }
 
 
-  private void processValueSet(String valueSet, String source) {
-    String url = cu.pinValueSet(valueSet);
-    ValueSet vs = context.fetchResource(ValueSet.class, url);
+  private void processValueSet(UriType valueSet, String source) {
+    String url = cu.pinValueSet(valueSet.primitiveValue());
+    ValueSet vs = context.fetchResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRules(valueSet));
     if (vs != null) {
       TerminologyResourceEntry e = entries.get(vs.getVersionedUrl());
       if (e == null) {
@@ -714,14 +716,14 @@ public class PackageReGenerator {
         for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
           for (CanonicalType v : inc.getValueSet()) {
             if (v.hasValue()) {
-              processValueSet(v.primitiveValue(), source);
+              processValueSet(v, source);
             }
           }
         }
         for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
           for (CanonicalType v : inc.getValueSet()) {
             if (v.hasValue()) {
-              processValueSet(v.primitiveValue(), source);
+              processValueSet(v, source);
             }
           }
         }

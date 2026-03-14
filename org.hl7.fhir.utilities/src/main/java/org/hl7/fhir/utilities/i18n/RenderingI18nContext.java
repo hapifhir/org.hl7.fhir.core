@@ -1144,6 +1144,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VS_VERSION_BY_PACKAGE = "VS_VERSION_BY_PACKAGE";
   public static final String VS_VERSION_THIS_PACKAGE = "VS_VERSION_THIS_PACKAGE";
   public static final String VS_VERSION_WILDCARD_BY_PACKAGE = "VS_VERSION_WILDCARD_BY_PACKAGE";
+  public static final String VS_VERSION_LATEST = "VS_VERSION_LATEST";
   public static final String VS_VERSION_FOUND = "VS_VERSION_FOUND";
   public static final String VS_VERSION_NONE = "VS_VERSION_NONE";
   public static final String VS_VERSION_NOTHING = "VS_VERSION_NOTHING";

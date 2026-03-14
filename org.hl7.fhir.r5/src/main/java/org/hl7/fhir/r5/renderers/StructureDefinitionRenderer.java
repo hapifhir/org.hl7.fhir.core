@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ElementChoiceGroup;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.ExtensionContext;
 import org.hl7.fhir.r5.conformance.profile.SnapshotGenerationPreProcessor;
 import org.hl7.fhir.r5.context.ExpansionOptions;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.IParser;
@@ -529,7 +530,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         url = source.getUrl(); 
       } 
       if (!url.equals(source.getUrl())) { 
-        source = context.getProfileUtilities().findProfile(url, source);
+        source = context.getProfileUtilities().findProfileStr(url, source);
         if (source == null) { 
           throw new FHIRException(context.formatPhrase(RenderingContext.STRUC_DEF_REND_UNABLE_RES, url, contentReference)); 
         } 
@@ -669,7 +670,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     // first, does this have mappings to other models?
     for (StructureDefinitionMappingComponent map : profile.getMapping()) {
       if (map.hasUri()) {
-        StructureDefinition sd = context.getProfileUtilities().findProfile(map.getUri(), profile);
+        StructureDefinition sd = context.getProfileUtilities().findProfile(map.getUriElement(), profile);
         if (includeSDForMap(sd, true)) {
           items.add(sd);
           res.add(new StructureDefinitionMappingProvider(context, sd, false, profile, map, context.getProfileUtilities().getFpe()));
@@ -678,11 +679,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     for (ConceptMap cm : context.getContext().fetchResourcesByType(ConceptMap.class)) {
       for (ConceptMapGroupComponent grp : cm.getGroup()) {
-        if (grp.hasSource() && grp.getSource().equals(ProfileUtilities.getCSUrl(profile))) {
+        if (grp.hasSource() && grp.getSource().equals(profile.getUrl())) {
           boolean matched = true;
-          String url = ProfileUtilities.getUrlFromCSUrl(grp.getTarget());
+          String url = grp.getTarget();
           if (url != null) {
-            StructureDefinition sd = context.getProfileUtilities().findProfile(url, profile);
+            StructureDefinition sd = context.getProfileUtilities().findProfile(grp.getTargetElement(), profile);
             if (includeSDForMap(sd, false) && !items.contains(sd)) {
               matched = true;
               items.add(sd);
@@ -692,7 +693,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!matched) {
             for (StructureDefinition sd : context.getContextUtilities().allStructures()) {
               if (includeSDForMap(sd, false)) {
-                String url2 = ProfileUtilities.getCSUrl(sd);
+                String url2 = sd.getUrl();
                 if (url2.equals(grp.getTarget()) && !items.contains(sd)) {
                   items.add(sd);
                   res.add(new ConceptMapMappingProvider(context, sd, false, cm, grp));
@@ -720,11 +721,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
     for (ConceptMap cm : context.getContext().fetchResourcesByType(ConceptMap.class)) {
       for (ConceptMapGroupComponent grp : cm.getGroup()) {
-        if (grp.hasTarget() && grp.getTarget().equals(ProfileUtilities.getCSUrl(profile))) {
+        if (grp.hasTarget() && grp.getTarget().equals(profile.getUrl())) {
           boolean matched = true;
-          String url = ProfileUtilities.getUrlFromCSUrl(grp.getSource());
+          String url = grp.getSource();
           if (url != null) {
-            StructureDefinition sd = context.getProfileUtilities().findProfile(url, profile);
+            StructureDefinition sd = context.getProfileUtilities().findProfile(grp.getSourceElement(), profile);
             if (includeSDForMap(sd, false) && !items.contains(sd)) {
               matched = true;
               items.add(sd);
@@ -734,7 +735,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!matched) {
             for (StructureDefinition sd : context.getContextUtilities().allStructures()) {
               if (includeSDForMap(sd, false)) {
-                String url2 = ProfileUtilities.getCSUrl(sd);
+                String url2 = sd.getUrl();
                 if (url2.equals(grp.getSource()) && !items.contains(sd)) {
                   items.add(sd);
                   res.add(new ConceptMapMappingProvider(context, sd, true, cm, grp));
@@ -847,7 +848,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     } 
     for (String col : cols) { 
       if (!"$all".equals(col)) { 
-        ActorDefinition actor = context.getWorker().fetchResource(ActorDefinition.class, col); 
+        ActorDefinition actor = context.getWorker().fetchResource(ActorDefinition.class, col, IWorkerContext.VersionResolutionRules.defaultRule());
         if (actor == null) { 
           columns.add(new Column(col, urlTail(col), context.formatPhrase(RenderingContext.STRUC_DEF_UNDEF_ACT, col, col)+" "));           
         } else { 
@@ -1612,7 +1613,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (!c.getPieces().isEmpty())
           c.addPiece(gen.new Piece("br"));
         String fullUrl = url.startsWith("#") ? baseURL + url : url;
-        StructureDefinition ed = context.getProfileUtilities().findProfile(url, profile);
+        StructureDefinition ed = context.getProfileUtilities().findProfileStr(url, profile);
         String ref = null;
         String ref2 = null;
         String fixedUrl = null;
@@ -1623,7 +1624,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (fixedUrl.equals(url))
               fixedUrl = null;
             else {
-              StructureDefinition ed2 = context.getProfileUtilities().findProfile(fixedUrl, profile);
+              StructureDefinition ed2 = context.getProfileUtilities().findProfileStr(fixedUrl, profile);
               if (ed2 != null) {
                 String p2 = ed2.getWebPath();
                 if (p2 != null) {
@@ -1677,7 +1678,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             } else {
               c.getPieces().add(gen.new Piece(null, ", ", null));
             }
-            StructureDefinition sdt = context.getWorker().fetchResource(StructureDefinition.class, fi.getValue().primitiveValue());
+            StructureDefinition sdt = context.getWorker().fetchResource(StructureDefinition.class, fi.getValue().primitiveValue(), ExtensionUtilities.getVersionResolutionRules(fi.getValue()));
             if (sdt != null) {
               c.getPieces().add(gen.new Piece(sdt.getWebPath(), sdt.present(), sdt.getDescription()));
             } else {
@@ -2182,7 +2183,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private boolean isAbstractBaseProfile(String source, StructureDefinition resource) {
-    StructureDefinition sd = context.getProfileUtilities().findProfile(source, resource);
+    StructureDefinition sd = context.getProfileUtilities().findProfileStr(source, resource);
     return (sd != null) && sd.getAbstract() && sd.hasUrl() && sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/"); 
   } 
  
@@ -2203,7 +2204,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
  
   private void getAncestorElements(List<String> inscope, StructureDefinition profile, List<SourcedElementDefinition> ancestors) { 
-    StructureDefinition base = context.getProfileUtilities().findProfile(profile.getBaseDefinition(), profile);
+    StructureDefinition base = context.getProfileUtilities().findProfile(profile.getBaseDefinitionElement(), profile);
     if (base != null) { 
       List<String> newList = Utilities.copyAdd(inscope, base.getVersionedUrl()); 
       if (inscope.contains(base.getVersionedUrl())) {
@@ -2246,7 +2247,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           } 
         } 
         String iu = ct.primitiveValue(); 
-        StructureDefinition sd = context.getProfileUtilities().findProfile(iu, source);
+        StructureDefinition sd = context.getProfileUtilities().findProfile(ct, source);
         if (sd == null) {
           sd = context.findLinkableResource(StructureDefinition.class, iu);
         }
@@ -2309,7 +2310,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     List<TypeRefComponent> types = e.getType(); 
     if (!e.hasType()) { 
       if (root) { // we'll use base instead of types then 
-        StructureDefinition bsd = profile == null ? null : context.getProfileUtilities().findProfile(profile.getBaseDefinition(), profile); 
+        StructureDefinition bsd = profile == null ? null : context.getProfileUtilities().findProfile(profile.getBaseDefinitionElement(), profile);
         if (bsd != null) { 
           String v = ""; 
           if (profile != null && (profile.getBaseDefinition().contains("|") || hasMultipleVersions(context.getWorker().fetchResourceVersions(StructureDefinition.class, profile.getBaseDefinition())))) {
@@ -2353,7 +2354,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         if (t.hasTarget()) { 
           if (t.hasProfile()) { 
             String ref = t.getProfile().get(0).asStringValue(); 
-            StructureDefinition tsd = context.getProfileUtilities().findProfile(ref, profile);
+            StructureDefinition tsd = context.getProfileUtilities().findProfile(t.getProfile().get(0), profile);
             if (tsd != null) { 
               // if there's multiple possible matches in scope, we will be explicit about the version 
               if (ref.contains("|") || hasMultipleVersions(context.getContext().fetchResourceVersions(StructureDefinition.class, ref))) {
@@ -2502,7 +2503,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private void genTargetLink(HierarchicalTableGenerator gen, String profileBaseFileName, String corePath, Cell c, TypeRefComponent t, String u, StructureDefinition src) {
     if (u.startsWith("http://hl7.org/fhir/StructureDefinition/")) { 
-      StructureDefinition sd = context.getProfileUtilities().findProfile(u, src); 
+      StructureDefinition sd = context.getProfileUtilities().findProfileStr(u, src);
       if (sd != null) { 
         String disp = sd.hasTitle() ? sd.getTitle() : sd.getName(); 
         c.addPiece(checkForNoChange(t, gen.new Piece(checkPrepend(corePath, sd.getWebPath()), disp, null))); 
@@ -2511,7 +2512,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         c.addPiece(checkForNoChange(t, gen.new Piece(context.getPkp().getLinkFor(corePath, rn), rn, null))); 
       } 
     } else if (Utilities.isAbsoluteUrl(u)) { 
-      StructureDefinition sd = context.getProfileUtilities().findProfile(u, src); 
+      StructureDefinition sd = context.getProfileUtilities().findProfileStr(u, src);
       if (sd != null && context.getPkp() != null) { 
         String v = ""; 
         if (u.contains("|") || hasMultipleVersions(context.getWorker().fetchResourceVersions(StructureDefinition.class, u))) {
@@ -2632,7 +2633,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private ExtensionContext locateExtension(Class<StructureDefinition> class1, String value, StructureDefinition sd)  {
     if (value.contains("#")) { 
-      StructureDefinition ext = context.getProfileUtilities().findProfile(value.substring(0, value.indexOf("#")), sd);
+      StructureDefinition ext = context.getProfileUtilities().findProfileStr(value.substring(0, value.indexOf("#")), sd);
       if (ext == null) 
         return null; 
       String tail = value.substring(value.indexOf("#")+1); 
@@ -2645,7 +2646,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
       return null; 
     } else { 
-      StructureDefinition ext = context.getProfileUtilities().findProfile(value, sd);
+      StructureDefinition ext = context.getProfileUtilities().findProfileStr(value, sd);
       if (ext == null) 
         return null; 
       else  
@@ -2656,7 +2657,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
   private boolean extensionIsComplex(String value, StructureDefinition sd) {
     if (value.contains("#")) { 
-      StructureDefinition ext = context.getProfileUtilities().findProfile(value.substring(0, value.indexOf("#")), sd);
+      StructureDefinition ext = context.getProfileUtilities().findProfileStr(value.substring(0, value.indexOf("#")), sd);
       if (ext == null) 
         return false; 
       String tail = value.substring(value.indexOf("#")+1); 
@@ -2675,7 +2676,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         j++; 
       return j - i > 5; 
     } else { 
-      StructureDefinition ext = context.getProfileUtilities().findProfile(value, sd);
+      StructureDefinition ext = context.getProfileUtilities().findProfileStr(value, sd);
       return ext != null && ext.getSnapshot().getElement().size() > 5; 
     } 
   } 
@@ -2943,7 +2944,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           if (!c.getPieces().isEmpty())  
             c.addPiece(gen.new Piece("br")); 
           String fullUrl = url.startsWith("#") ? baseURL+url : url; 
-          StructureDefinition ed = context.getProfileUtilities().findProfile(url, profile); 
+          StructureDefinition ed = context.getProfileUtilities().findProfileStr(url, profile);
           String ref = null; 
           if (ed != null) { 
             String p = ed.getWebPath(); 
@@ -3202,7 +3203,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         String ts = tr.getWorkingCode();
         String tu = tr.getWorkingCode();
         if (Utilities.isAbsoluteUrl(ts)) {
-          StructureDefinition sd = context.getProfileUtilities().findProfile(ts, src);
+          StructureDefinition sd = context.getProfileUtilities().findProfileStr(ts, src);
           if (sd != null) {
             ts = sd.getType();
           }
@@ -3289,7 +3290,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             for (CanonicalType pt : tr.getProfile()) { 
               if (!mustSupportMode || allProfilesMustSupport(tr.getProfile()) || isMustSupport(pt)) { 
                 if (first) first = false; else typeCell.addPiece(gen.new Piece(null, " | ", null)); 
-                StructureDefinition psd = context.getProfileUtilities().findProfile(pt.getValue(), src); 
+                StructureDefinition psd = context.getProfileUtilities().findProfile(pt, src);
                 if (psd == null) 
                   typeCell.addPiece(gen.new Piece(null, "?gen-e2?", null)); 
                 else 
@@ -3425,7 +3426,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     res.setCardinality(cardinality); 
     res.setProfileLink(profile.getWebPath()); 
     res.setResType(profile.getTypeName()); 
-    StructureDefinition base = context.getProfileUtilities().findProfile(res.getResType(), profile);
+    StructureDefinition base = context.getProfileUtilities().findProfileStr(res.getResType(), profile);
     if (base != null) 
       res.setResLink(base.getWebPath()); 
     res.setId(context.prefixAnchor(profile.getId())); 
@@ -3556,7 +3557,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             if (refProfiles.size() > 0) { 
               String uri = refProfiles.get(0); 
               if (uri != null) { 
-                StructureDefinition sd = context.getProfileUtilities().findProfile(uri, profile);
+                StructureDefinition sd = context.getProfileUtilities().findProfileStr(uri, profile);
                 if (sd != null && (!onlyConstraints || (sd.getDerivation() == TypeDerivationRule.CONSTRAINT && (constraintPrefix == null || sd.getUrl().startsWith(constraintPrefix))))) { 
                   res.getChildren().add(buildSpanningTable(nameForElement(ed), card, sd, processed, onlyConstraints, constraintPrefix)); 
                 } 
@@ -3818,14 +3819,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         sp.b().tx(". "+title); 
         link(sp, ec.getId(), anchorPrefix); 
         if (isProfiledExtension(ec)) { 
-          StructureDefinition extDefn = context.getProfileUtilities().findProfile(ec.getType().get(0).getProfile().get(0).getValue(), sd);
+          StructureDefinition extDefn = context.getProfileUtilities().findProfile(ec.getType().get(0).getProfile().get(0), sd);
           if (extDefn == null) { 
             generateElementInner(status, t, sd, ec, 1, null, compareElement, null, false, "", anchorPrefix, elements, res);
           } else { 
             ElementDefinition valueDefn = getExtensionValueDefinition(extDefn); 
             ElementDefinition compareValueDefn = null; 
             try { 
-              StructureDefinition compareExtDefn = context.getProfileUtilities().findProfile(compareElement.getType().get(0).getProfile().get(0).getValue(), sd);
+              StructureDefinition compareExtDefn = context.getProfileUtilities().findProfile(compareElement.getType().get(0).getProfile().get(0), sd);
               compareValueDefn = getExtensionValueDefinition(extDefn); 
             } catch (Exception except) {} 
             generateElementInner(status, t, sd, ec, valueDefn == null || valueDefn.prohibited() ? 2 : 3, valueDefn, compareElement, compareValueDefn, false, "", anchorPrefix, elements, res);
@@ -3871,10 +3872,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     Map<String, ElementDefinition> sdCache = sdMapCache.get(url); 
  
     if (sdCache == null) { 
-      StructureDefinition sd = (StructureDefinition) context.getProfileUtilities().findProfile(url, srcSd);
+      StructureDefinition sd = (StructureDefinition) context.getProfileUtilities().findProfileStr(url, srcSd);
       if (sd == null) { 
         if (url.equals("http://hl7.org/fhir/StructureDefinition/Base")) { 
-          sd = (StructureDefinition) context.getProfileUtilities().findProfile("http://hl7.org/fhir/StructureDefinition/Element", null);
+          sd = (StructureDefinition) context.getProfileUtilities().findProfileStr("http://hl7.org/fhir/StructureDefinition/Element", null);
         } 
         if (sd == null) { 
           throw new FHIRException(context.formatPhrase(RenderingContext.STRUC_DEF_FHIR_EXCEP, url)+" "); 
@@ -4328,7 +4329,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (d.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) { 
       StandardsStatus ss = StandardsStatus.fromCode(d.getExtensionString(ExtensionDefinitions.EXT_STANDARDS_STATUS)); 
       //      gc.addStyledText("Standards Status = "+ss.toDisplay(), ss.getAbbrev(), "black", ss.getColor(), baseSpecUrl()+, true); 
-      StructureDefinition sdb = context.getProfileUtilities().findProfile(sd.getBaseDefinition(), sd);
+      StructureDefinition sdb = context.getProfileUtilities().findProfile(sd.getBaseDefinitionElement(), sd);
       if (sdb != null) { 
         StandardsStatus base = determineStandardsStatus(sdb, (ElementDefinition) d.getUserData(UserDataNames.SNAPSHOT_DERIVATION_POINTER)); 
         if (base != null) { 
@@ -4492,7 +4493,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           String iu = ext.getValue().primitiveValue(); 
           XhtmlNode bb = ul.li(); 
           bb.tx(context.formatPhrase(RenderingContext.STRUC_DEF_OBLIG_FROM)+" ");            
-          StructureDefinition sd = context.getProfileUtilities().findProfile(iu, sdx);
+          StructureDefinition sd = context.getProfileUtilities().findProfile(ext.getValueUriType(), sdx);
           if (sd == null) {  
             bb.code().tx(iu);                      
           } else if (sd.hasWebPath()) {  
@@ -4523,7 +4524,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     DataType au = ExtensionUtilities.getAllowedUnits(d); 
     if (au instanceof CanonicalType) { 
       String url = ((CanonicalType) au).asStringValue(); 
-      ValueSet vs = context.getContext().findTxResource(ValueSet.class, url); 
+      ValueSet vs = context.getContext().findTxResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRules(au));
       ret.tx(context.formatPhrase(RenderingContext.GENERAL_VALUESET)+" ");          
       genCT(ret, url, vs); 
       return ret; 
@@ -4573,7 +4574,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     ret.tx(text); 
     var ul = ret.ul(); 
     for (CanonicalType ct : list) { 
-      CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class,  ct.getValue()); 
+      CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class,  ct.getValue(), ExtensionUtilities.getVersionResolutionRules(ct));
       genCT(ul.li(), ct.getValue(), cr);       
     } 
     return ret; 
@@ -4587,7 +4588,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (sd.hasExtension(ExtensionDefinitions.EXT_STANDARDS_STATUS)) { 
         return ExtensionUtilities.getStandardsStatus(sd); 
       } 
-      sd = context.getProfileUtilities().findProfile(sd.getBaseDefinition(), sd);
+      sd = context.getProfileUtilities().findProfile(sd.getBaseDefinitionElement(), sd);
     } 
     return null; 
   } 
@@ -4957,7 +4958,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return null; 
     } 
     if (!mustSupportOnly || isMustSupport(pt)) { 
-      StructureDefinition p = context.getProfileUtilities().findProfile(pt.getValue(), sd);
+      StructureDefinition p = context.getProfileUtilities().findProfile(pt, sd);
       return new ResolvedCanonical(pt.getValue(), p); 
     } else { 
       return null; 
@@ -5326,7 +5327,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return "" + (context.formatPhrase(RenderingContext.STRUC_DEF_LOINC_CODE)) + " " + coding.getCode() + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
     if ("http://unitsofmeasure.org/".equals(coding.getSystem())) 
       return " (" + (context.formatPhrase(RenderingContext.GENERAL_UCUM)) + ": " + coding.getCode() + ")"; 
-    CodeSystem cs = context.getContext().fetchCodeSystem(coding.getSystem()); 
+    CodeSystem cs = context.getContext().fetchCodeSystem(coding.getSystem(), IWorkerContext.VersionResolutionRules.defaultRule());
     if (cs == null) 
       return "<span title=\"" + coding.getSystem() + "\">" + coding.getCode() + "</a>" + (!coding.hasDisplay() ? "" : "(\"" + gt(coding.getDisplayElement()) + "\")"); 
     else 
@@ -5586,10 +5587,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     // ok, now we collect constraints on the value domain, which maybe in sub-elements, though at some point we give up 
     if (defn.hasFixed()) {
-      e.getConstraints().add(TableElementConstraint.makeValueVS(TableElementConstraintType.FIXED, path, defn.getFixed(), defn.getBinding().getStrength(), defn.getBinding().getValueSet(), sd));
+      e.getConstraints().add(TableElementConstraint.makeValueVS(TableElementConstraintType.FIXED, path, defn.getFixed(), defn.getBinding().getStrength(), defn.getBinding().getValueSet(), defn.getBinding().getValueSetElement(), sd));
     }
     if (defn.hasPattern()) {
-      e.getConstraints().add(TableElementConstraint.makeValueVS(TableElementConstraintType.PATTERN, path, defn.getPattern(), defn.getBinding().getStrength(), defn.getBinding().getValueSet(), sd));
+      e.getConstraints().add(TableElementConstraint.makeValueVS(TableElementConstraintType.PATTERN, path, defn.getPattern(), defn.getBinding().getStrength(), defn.getBinding().getValueSet(), defn.getBinding().getValueSetElement(), sd));
     }
     if (defn.hasMinValue() || defn.hasMaxValue()) {
       e.getConstraints().add(TableElementConstraint.makeRange(TableElementConstraintType.RANGE, path, defn.getMinValue(), defn.getMaxValue(), sd));
@@ -5598,7 +5599,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       e.getConstraints().add(TableElementConstraint.makeValue(TableElementConstraintType.MAXLENGTH, path, defn.getMaxLengthElement(), sd));
     }
     if (defn.hasBinding() && defn.getBinding().hasValueSet() && (!cardinality || (diffDefn != null && diffDefn.hasBinding())) && !defn.hasFixedOrPattern()) {
-      e.getConstraints().add(TableElementConstraint.makeBinding(TableElementConstraintType.BINDING, path, defn.getBinding().getStrength(), defn.getBinding().getValueSet(), sd));
+      e.getConstraints().add(TableElementConstraint.makeBinding(TableElementConstraintType.BINDING, path, defn.getBinding().getStrength(), defn.getBinding().getValueSet(), defn.getBinding().getValueSetElement(), sd));
     }
   }
 
