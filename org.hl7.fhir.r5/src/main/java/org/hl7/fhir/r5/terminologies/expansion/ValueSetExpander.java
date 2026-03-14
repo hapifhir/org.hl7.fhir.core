@@ -111,7 +111,6 @@ import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.*;
-import org.hl7.fhir.utilities.graphql.StringValue;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -1185,8 +1184,9 @@ public class ValueSetExpander extends ValueSetProcessBase {
       }
     }
     checkCanonical(exp, vs, focus);
+    expParams = expParams.copy();
+    expParams.getParameter().removeIf(pp -> Utilities.existsInList(pp.getName(), "offset", "count"));
     if (noInactive) {
-      expParams = expParams.copy();
       expParams.addParameter("activeOnly", true);
     }
     ValueSetExpander expander = new ValueSetExpander(context, opContext.copy(), allErrors);
@@ -1324,7 +1324,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     for (ValueSetExpansionContainsComponent c : list) {
       c.checkNoModifiers("Imported Expansion in Code System", "expanding");
       String vstatus = determineStatus(vsSrc, c);
-      ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), c.getVersion(), c.getCode(), c.getDisplay(), lang, parent, translateDesignations(c), expParams,
+      ValueSetExpansionContainsComponent np = addCode(dwc, c.getSystem(), containsVersion(c, exp), c.getCode(), c.getDisplay(), lang, parent, translateDesignations(c), expParams,
             c.getAbstract(), c.getInactive(), filter, noInactive, false, vsProps, makeCSProps(c.getExtensionString(ExtensionDefinitions.EXT_DEFINITION), null),
         null, c.getProperty(), null, c.getExtension(), exp, vstatus);
       if (np != null) {
@@ -1333,6 +1333,26 @@ public class ValueSetExpander extends ValueSetProcessBase {
       count = count + copyImportContains(c.getContains(), np, expParams, filter, noInactive, vsProps, vsSrc, exp);
     }
     return count;
+  }
+
+  private String containsVersion(ValueSetExpansionContainsComponent c, ValueSetExpansionComponent exp) {
+    if (c.hasVersion()) {
+      return c.getVersion();
+    }
+    Map<String, String> versionMap = (Map<String, String>) exp.getUserData(UserDataNames.VS_EXPANSION_VERSION_MAP);
+    if (versionMap == null) {
+      versionMap = new HashMap();
+      for (ValueSetExpansionParameterComponent pp : exp.getParameter()) {
+        if ("used-codesystem".equals(pp.getName()) && pp.hasValue()) {
+          String pv = pp.getValue().primitiveValue();
+          if (pv != null && pv.contains("|")) {
+            versionMap.put(pv.substring(0, pv.indexOf("|")), pv.substring(pv.indexOf("|") + 1));
+          }
+        }
+      }
+      exp.setUserData(UserDataNames.VS_EXPANSION_VERSION_MAP, versionMap);
+    }
+    return versionMap.get(c.getSystem());
   }
 
   private List<ConceptDefinitionDesignationComponent> translateDesignations(ValueSetExpansionContainsComponent c) {
@@ -1871,7 +1891,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     if (!includes.isEmpty() && !excludes.isEmpty()) {
       String system = includes.get(0).getSystem();
-      boolean allSameSystem = includes.stream().allMatch(i -> system.equals(i.getSystem()) && i.hasVersion())
+      boolean allSameSystem = includes.stream().allMatch(i -> system != null && system.equals(i.getSystem()) && i.hasVersion())
         && excludes.stream().allMatch(e -> system.equals(e.getSystem()) && e.hasVersion());
       boolean noOverlap = includes.stream().noneMatch(i -> excludes.stream().anyMatch(e -> e.hasVersion() && e.getVersion().equals(i.getVersion())));
 
