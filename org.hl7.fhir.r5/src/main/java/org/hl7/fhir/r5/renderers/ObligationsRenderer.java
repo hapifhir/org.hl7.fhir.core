@@ -40,7 +40,6 @@ public class ObligationsRenderer extends Renderer {
     private boolean matched = false;
     private boolean removed = false;
     private String source;
-    //  private ValueSet vs;
     
     private ObligationDetail compare;
     private int count = 1;

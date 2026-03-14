@@ -368,29 +368,6 @@ public interface IWorkerContext {
    *
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
-   * @param rules - additional rules that apply when resolving the version to use            
-   * @param version the version. Don't provide both a version and a |version suffix
-   * @return if the resource is known
-   */
- // public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
-
-  /**
-   * Fetch (load if necessary) an identified resource. The most common use of this is to access the
-   * standard conformance resources that are part of the standard - structure
-   * definitions, value sets, concept maps, etc.
-   **
-   * The URI can have one of 3 formats:
-   *  - a full URL e.g. http://acme.org/fhir/ValueSet/[id]
-   *  - a relative URL e.g. ValueSet/[id]
-   *  - a logical id e.g. [id]
-   *
-   * It's an error if the second form doesn't agree with class_. It's an
-   * error if class_ is null for the last form
-   *
-   * class can be Resource, DomainResource or CanonicalResource, which means resource of all kinds
-   *
-   * @param class_ the type of resource
-   * @param uri the URL of the resource, optionally with a |version suffix
    * @param rules - additional rules that apply when resolving the version to use
    * @param version the version. Don't provide both a version and a |version suffix
    * @param sourceOfReference where the reference was found (if the reference is in a resource)
@@ -813,7 +790,7 @@ public interface IWorkerContext {
           case "latest": return LATEST;
           case "manifest": return MANIFEST;
           default:
-            throw new Error("Unknown VersionResolutionRules code: "+rule);
+            throw new IllegalArgumentException("Unknown VersionResolutionRules code: "+rule);
         }
       }
     }

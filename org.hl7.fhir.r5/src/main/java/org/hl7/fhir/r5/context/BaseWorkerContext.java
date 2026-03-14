@@ -2866,8 +2866,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  private Set<String> notCanonical = new HashSet<String>();
-
   protected IWorkerContextManager.IPackageLoadingTracker packageTracker;
   private boolean forPublication;
   private boolean cachingAllowed = true;
@@ -2967,14 +2965,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  public <T extends Resource> boolean hasResourceVersion(String cls, String uri, String version, FhirPublication fhirVersion) {
-    try {
-      return fetchResourceWithExceptionByVersion(cls, uri, VersionResolutionRules.defaultRule(), version, null) != null;
-    } catch (Exception e) {
-      return false;
-    }
-  }
-
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri, Resource sourceOfReference) {
     try {
       return fetchResourceWithExceptionByVersion(class_, uri, VersionResolutionRules.defaultRule(), version, null) != null;
@@ -2982,21 +2972,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return false;
     }
   }
-
-  public void reportStatus(JsonObject json) {
-    synchronized (lock) {
-      json.addProperty("codeystem-count", codeSystems.size());
-      json.addProperty("valueset-count", valueSets.size());
-      json.addProperty("conceptmap-count", maps.size());
-      json.addProperty("transforms-count", transforms.size());
-      json.addProperty("structures-count", structures.size());
-      json.addProperty("guides-count", guides.size());
-      json.addProperty("statements-count", capstmts.size());
-      json.addProperty("measures-count", measures.size());
-      json.addProperty("libraries-count", libraries.size());
-    }
-  }
-
 
   public void dropResource(Resource r) throws FHIRException {
     dropResource(r.fhirType(), r.getId());   
@@ -3046,34 +3021,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
   }
-  
-  public String listSupportedSystems() {
-    synchronized (lock) {
-      String sl = null;
-      for (String s : supportedCodeSystems.keySet()) {
-        SystemSupportInformation ss = supportedCodeSystems.get(s);
-        if (ss.isSupported()) {
-          sl = sl == null ? s : sl + "\r\n" + s;
-        }
-      }
-      return sl;
-    }
-  }
 
 
-  public int totalCount() {
-    synchronized (lock) {
-      return valueSets.size() +  maps.size() + structures.size() + transforms.size();
-    }
-  }
-  
-  public List<ConceptMap> listMaps() {
-    List<ConceptMap> m = new ArrayList<ConceptMap>();
-    synchronized (lock) {
-      maps.listAll(m);
-    }
-    return m;
-  }
 
   public List<StructureDefinition> listStructures() {
     List<StructureDefinition> m = new ArrayList<StructureDefinition>();
@@ -3102,36 +3051,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public StructureDefinition getStructure(String code) {
     synchronized (lock) {
       return structures.get(code);
-    }
-  }
-
-  private String getUri(NamingSystem ns) {
-    for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
-      if (id.getType() == NamingSystemIdentifierType.URI) {
-        return id.getValue();
-      }
-    }
-    return null;
-  }
-
-  private boolean hasOid(NamingSystem ns, String oid) {
-    for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
-      if (id.getType() == NamingSystemIdentifierType.OID && id.getValue().equals(oid)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public void cacheVS(JsonObject json, Map<String, ValidationResult> t) {
-    synchronized (lock) {
-      validationCache.put(json.get("url").getAsString(), t);
-    }
-  }
-
-  public SearchParameter getSearchParameter(String code) {
-    synchronized (lock) {
-      return searchParameters.get(code);
     }
   }
 

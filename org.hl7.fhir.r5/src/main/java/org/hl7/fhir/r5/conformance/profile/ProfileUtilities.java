@@ -2916,8 +2916,8 @@ public class ProfileUtilities {
             addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "illegal attempt to change the binding on "+derived.getPath()+" from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode(), ValidationMessage.IssueSeverity.ERROR));
 //            throw new DefinitionException("StructureDefinition "+pn+" at "+derived.getPath()+": illegal attempt to change a binding from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode());
           else if (base.hasBinding() && derived.hasBinding() && base.getBinding().getStrength() == BindingStrength.REQUIRED && base.getBinding().hasValueSet() && derived.getBinding().hasValueSet()) {
-            ValueSet baseVs = context.findTxResource(ValueSet.class, base.getBinding().getValueSet(), vr(base.getBinding().getValueSetElement()), null, srcSD);
-            ValueSet contextVs = context.findTxResource(ValueSet.class, derived.getBinding().getValueSet(), vr(derived.getBinding().getValueSetElement()), null, derivedSrc);
+            ValueSet baseVs = context.findTxResource(ValueSet.class, base.getBinding().getValueSet(), getVersionResolutionRules(base.getBinding().getValueSetElement()), null, srcSD);
+            ValueSet contextVs = context.findTxResource(ValueSet.class, derived.getBinding().getValueSet(), getVersionResolutionRules(derived.getBinding().getValueSetElement()), null, derivedSrc);
             if (baseVs == null) {
               addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+base.getPath(), "Binding "+base.getBinding().getValueSet()+" could not be located", ValidationMessage.IssueSeverity.WARNING));
             } else if (contextVs == null) {
@@ -3085,7 +3085,7 @@ public class ProfileUtilities {
     //updateURLs(url, webUrl, dest);
   }
 
-  private IWorkerContext.VersionResolutionRules vr(Element element) {
+  private IWorkerContext.VersionResolutionRules getVersionResolutionRules(Element element) {
     return ExtensionUtilities.getVersionResolutionRules(element);
   }
 
@@ -3594,10 +3594,11 @@ public class ProfileUtilities {
 //  }
 
 
-  public StructureDefinition getProfile(StructureDefinition source, String url, UriType ref) {
+  public StructureDefinition getProfile(StructureDefinition source, UriType ref) {
     if (ref == null) {
-      ref = new UriType(url);
+      return null;
     }
+    String url = ref.primitiveValue();
   	StructureDefinition profile = null;
   	String code = null;
   	if (url.startsWith("#")) {

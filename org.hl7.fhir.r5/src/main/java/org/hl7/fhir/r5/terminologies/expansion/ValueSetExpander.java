@@ -1863,22 +1863,23 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
   // special case: excluding a different version from the include
   private void checkForExclusionVersionSpecialCase(ValueSetComposeComponent compose, ValueSetExpansionComponent expansion) {
-    if (!ignoreVersionWhenMatching) {
-      List<ConceptSetComponent> includes = compose.getInclude();
-      List<ConceptSetComponent> excludes = compose.getExclude();
+    if (ignoreVersionWhenMatching) {
+      return;
+    }
+    List<ConceptSetComponent> includes = compose.getInclude();
+    List<ConceptSetComponent> excludes = compose.getExclude();
 
-      if (!includes.isEmpty() && !excludes.isEmpty()) {
-        String system = includes.get(0).getSystem();
-        boolean allSameSystem = includes.stream().allMatch(i -> system.equals(i.getSystem()) && i.hasVersion())
-          && excludes.stream().allMatch(e -> system.equals(e.getSystem()) && e.hasVersion());
-        boolean noOverlap = includes.stream().noneMatch(i -> excludes.stream().anyMatch(e -> e.hasVersion() && e.getVersion().equals(i.getVersion())));
+    if (!includes.isEmpty() && !excludes.isEmpty()) {
+      String system = includes.get(0).getSystem();
+      boolean allSameSystem = includes.stream().allMatch(i -> system.equals(i.getSystem()) && i.hasVersion())
+        && excludes.stream().allMatch(e -> system.equals(e.getSystem()) && e.hasVersion());
+      boolean noOverlap = includes.stream().noneMatch(i -> excludes.stream().anyMatch(e -> e.hasVersion() && e.getVersion().equals(i.getVersion())));
 
-        if (allSameSystem && noOverlap) {
-          excludeSpecialCase = true;
-          if (!ignoreVersionWhenMatchingSet) {
-            ignoreVersionWhenMatching = true;
-            focus.getExpansion().addParameter().setName("versionsMatch").setValue(new BooleanType(true));
-          }
+      if (allSameSystem && noOverlap) {
+        excludeSpecialCase = true;
+        if (!ignoreVersionWhenMatchingSet) {
+          ignoreVersionWhenMatching = true;
+          focus.getExpansion().addParameter().setName("versionsMatch").setValue(new BooleanType(true));
         }
       }
     }

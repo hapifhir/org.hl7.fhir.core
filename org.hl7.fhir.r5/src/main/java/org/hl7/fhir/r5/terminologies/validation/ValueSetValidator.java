@@ -917,12 +917,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return null;
     }
     if (version != null) {
-      boolean inList = false;
       for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
-        inList = inList || version.equals(inc.getVersion());
-      }
-      if (inList) {
-        return version;
+        if (version.equals(inc.getVersion())) {
+          return version;
+        }
       }
     }
 
@@ -1627,21 +1625,21 @@ public class ValueSetValidator extends ValueSetProcessBase {
             includes.add(inc);
           }
         }
-        Set<String> vset = new HashSet<>();
+        Set<String> versionSet = new HashSet<>();
         for (ConceptSetComponent inc : includes) {
           if (inc.hasVersion()) {
-            vset.add(inc.getVersion());
+            versionSet.add(inc.getVersion());
           }
         }
-        if (vset.size() > 0) {
-          determinedVersion = pickApplicableVersion(vset, system, code, display);
+        if (versionSet.size() > 0) {
+          determinedVersion = pickApplicableVersion(versionSet, system, code, display);
         }
       }
 
       int i = 0;
       int c = 0;
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
-        if ((determinedVersion == null || determinedVersion.equals(vsi.getVersion())) && useThisVersion(vsi, version)) {
+        if ((determinedVersion == null || determinedVersion.equals(vsi.getVersion())) && shouldUseThisVersion(vsi, version)) {
           Boolean ok = inComponent(path, vsi, i, system, version, instanceVersion, code, display,valueset.getCompose().getInclude().size() == 1, info, vspath + ".include[" + c + "]", info.getIssues(), false);
           i++;
           c++;
@@ -1672,7 +1670,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     return result;
   }
 
-  private boolean useThisVersion(ConceptSetComponent vsi, String version) {
+  private boolean shouldUseThisVersion(ConceptSetComponent vsi, String version) {
     if (version == null || version.equals(vsi.getVersion())) {
       return true;
     }

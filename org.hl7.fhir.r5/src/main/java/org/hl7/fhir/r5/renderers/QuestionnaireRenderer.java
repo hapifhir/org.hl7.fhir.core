@@ -477,7 +477,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       path = d.substring(d.indexOf("#")+1); 
       d = d.substring(0, d.indexOf("#")); 
     } 
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, ExtensionUtilities.getVersionResolutionRulesBase(i.child("definition").getBase()), null, q.getResourceNative());
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, ExtensionUtilities.getVersionResolutionRulesBase(i.getBaseForChild("definition")), null, q.getResourceNative());
     if (sd != null) { 
       String url = sd.getWebPath(); 
       if (url != null) { 
@@ -498,7 +498,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       path = d.substring(d.indexOf("#")+1); 
       d = d.substring(0, d.indexOf("#")); 
     } 
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, ExtensionUtilities.getVersionResolutionRulesBase(i.child("definition").getBase()), null, q.getResourceNative());
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, ExtensionUtilities.getVersionResolutionRulesBase(i.getBaseForChild("definition")), null, q.getResourceNative());
     if (sd != null) { 
       String url = sd.getWebPath(); 
       if (url != null) { 

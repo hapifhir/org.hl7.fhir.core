@@ -103,9 +103,9 @@ public class ImplicitCodeSystemSupport {
         cc.setDefinition(str.getDescription());
         for (var comp : str.getComponent()) {
           CodeSystem.ConceptDefinitionComponent cc2 = cc.addConcept();
-          cc.setCode(comp.getLinkId());
-          cc.setDisplay(comp.getCode().getText());
-          cc.setDefinition(comp.getDescription());
+          cc2.setCode(comp.getLinkId());
+          cc2.setDisplay(comp.getCode().getText());
+          cc2.setDefinition(comp.getDescription());
         }
       }
     }
