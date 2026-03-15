@@ -37,6 +37,7 @@ import org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.NPMPackageGenerator;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -395,9 +396,10 @@ public class PackageReGenerator {
     if (cs.hasSupplements()) {
       processResource(context.fetchResource(CodeSystem.class, cs.getSupplements(), ExtensionUtilities.getVersionResolutionRules(cs.getSupplementsElement())));
     }
-    for (CodeSystem css : context.fetchResourcesByType(CodeSystem.class)) {
-      if (css.supplements(cs)) {
-        processResource(css);
+    List<CodeSystem> supplements = (List<CodeSystem>) cs.getUserData(UserDataNames.CS_SUPPLEMENT_LIST);
+    if (supplements != null) {
+      for (CodeSystem sup : supplements) {
+        processResource(sup);
       }
     }
   }
@@ -415,7 +417,7 @@ public class PackageReGenerator {
     for (CanonicalType c : inc.getValueSet()) {
       processResource(context.fetchResource(ValueSet.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
     }
-    processResource(context.fetchResource(CodeSystem.class, inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), vs));
+    processResource(context.fetchSupplementedCodeSystem(inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), null, vs));
   }
 
   private void chaseDependenciesSD(StructureDefinition sd) {

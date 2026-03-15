@@ -841,6 +841,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static CodeSystem mergeSupplements(@Nonnull CodeSystem cs, @Nonnull List<CodeSystem> supplements) {
     CodeSystem ret = cs.copy();
+    ret.setUserData(UserDataNames.CS_SUPPLEMENT_LIST, supplements);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (CodeSystem sup : supplements) {
       b.append(sup.getVersionedUrl());      

@@ -159,4 +159,5 @@ public class UserDataNames {
   public static final String VERSION_PINNED_ON_LOAD = "VERSION_PINNED_ON_LOAD";
   public static final String IGNORE_ISSUE_MESSAGE = "IGNORE_ISSUE_MESSAGE";
   public static final String VS_EXPANSION_VERSION_MAP = "VS_EXPANSION_VERSION_MAP";
+  public static final String CS_SUPPLEMENT_LIST = "CS_SUPPLEMENT_LIST";
 }
