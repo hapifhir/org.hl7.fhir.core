@@ -37,11 +37,7 @@ import org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.NPMPackageGenerator;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.ZipGenerator;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -447,8 +443,12 @@ public class PackageReGenerator {
       if(includeConformsTo) {
         for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
           if (inv.hasExpression()) {
-            ExpressionNode node = pathEngine.parse(inv.getExpression());
-            processExpression(node);
+            try {
+              ExpressionNode node = pathEngine.parse(inv.getExpression());
+              processExpression(node);
+            } catch (Exception e) {
+              log.error("Error in FHIRPath expression: "+inv.getExpression());
+            }
           }
         }
       }
@@ -712,7 +712,7 @@ public class PackageReGenerator {
         e.sources.add(source);
         e.valueSet = vs;
         entries.put(vs.getVersionedUrl(), e);
-        source = vs.getSourcePackage().getVID()+":"+vs.getVersionedUrl();
+        source = vs.getSourcePackage() != null ? vs.getSourcePackage().getVID()+":"+vs.getVersionedUrl() : null;
         for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
           for (CanonicalType v : inc.getValueSet()) {
             if (v.hasValue()) {

@@ -575,7 +575,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.has("answerValueSet")) { 
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br")); 
       defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.QUEST_VALUE)+" "), null)); 
-      if (Utilities.noString(i.primitiveValue("answerValueSet")) && i.primitiveValue("answerValueSet").startsWith("#")) {
+      if (Utilities.noString(i.primitiveValue("answerValueSet"))) {
+        // this is a weird place to be, but there's not much we can do.
+      } else if (i.primitiveValue("answerValueSet").startsWith("#")) {
         ResourceWrapper vs = q.getContained(i.primitiveValue("answerValueSet").substring(1)); 
         if (vs == null) { 
           defn.getPieces().add(gen.new Piece(null, i.primitiveValue("answerValueSet"), null));                     

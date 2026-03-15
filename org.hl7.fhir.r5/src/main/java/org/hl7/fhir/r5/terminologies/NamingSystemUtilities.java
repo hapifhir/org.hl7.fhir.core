@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.utils.ResourceSorters;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class NamingSystemUtilities {
   private static Map<String, NamingSystem> systemUrlMap(IWorkerContext context) {
@@ -21,9 +22,12 @@ public class NamingSystemUtilities {
         for (NamingSystem.NamingSystemUniqueIdComponent uid : ns.getUniqueId()) {
           if (uid.getType() == NamingSystem.NamingSystemIdentifierType.URI && uid.hasValue()) {
             result.put(uid.getValue(), ns);
+          } else if (uid.getType() == NamingSystem.NamingSystemIdentifierType.OID) {
+            result.put("urn:oid:" + uid.getValue(), ns);
           }
         }
       }
+      context.storeAnalysis(NamingSystemUtilities.class, result);
     }
     return result;
   }
@@ -33,7 +37,7 @@ public class NamingSystemUtilities {
     return map.get(system);
   }
 
-  public static boolean hasNamingSystem(SimpleWorkerContext context, String system) {
+  public static boolean hasNamingSystem(IWorkerContext context, String system) {
     Map<String, NamingSystem> map = systemUrlMap(context);
     return map.containsKey(system);
   }
