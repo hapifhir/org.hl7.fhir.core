@@ -12,6 +12,7 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
@@ -25,6 +26,7 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper.ElementKind;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
@@ -197,13 +199,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   public String canonicalTitle(ResourceWrapper r) {
-    if (r.has("title")) {
+    if (r.hasPrimitiveValue("title")) {
       return r.primitiveValue("title");
     }
-    if (r.has("name")) {
+    if (r.hasPrimitiveValue("name")) {
       return r.primitiveValue("name");
     }
-    if (r.has("id")) {
+    if (r.hasPrimitiveValue("id")) {
       return r.primitiveValue("id");
     }
     return "?title?";
@@ -232,7 +234,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public <T extends Resource> void renderCanonical(RenderingStatus status, XhtmlNode x, Class<T> class_, ResourceWrapper canonical) throws UnsupportedEncodingException, IOException {
     if (!renderPrimitiveWithNoValue(status, x, canonical)) {
-      CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), null, canonical.getResourceNative());
+      CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(canonical.getBase()), null, canonical.getResourceNative());
       if (target != null && target.hasWebPath()) {
         if (canonical.primitiveValue().contains("|")) {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +target.getVersion()+")");
@@ -259,7 +261,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       return "";
     }
     String url = canonical.primitiveValue();
-    Resource target = context.getWorker().fetchResource(Resource.class, url, null, canonical.getResourceNative());
+    Resource target = context.getWorker().fetchResource(Resource.class, url, ExtensionUtilities.getVersionResolutionRulesBase(canonical.getBase()), null, canonical.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
       return url;       
     } else {
@@ -337,9 +339,9 @@ public abstract class ResourceRenderer extends DataRenderer {
       return;
     }
     String url = canonical.asStringValue();
-    Resource target = context.getWorker().fetchResource(Resource.class, url, null, res.getResourceNative());
+    Resource target = context.getWorker().fetchResource(Resource.class, url, ExtensionUtilities.getVersionResolutionRules(canonical), null, res.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
-      NamingSystem ns = context.getContextUtilities().fetchNamingSystem(url);
+      NamingSystem ns = NamingSystemUtilities.getNamingSystem(context.getContext(), url);
       if (ns != null) {
         x.code().tx(url);
         if (lang!=null)
@@ -643,7 +645,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (rr != null) {
           x.ah(rr.getWebPath()).addText(RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));           
         } else {
-          Resource r = context.getContext().fetchResource(Resource.class, v); 
+          Resource r = context.getContext().fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRules(uri));
           if (r != null && r.getWebPath() != null) { 
               x.ah(context.prefixLocalHref(r.getWebPath())).addText(RendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));           
           } else { 
@@ -686,7 +688,7 @@ public abstract class ResourceRenderer extends DataRenderer {
             x.ah(context.prefixLocalHref(rr.getWebPath())).addText(RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
           }
         } else {
-          Resource r = context.getContext().fetchResource(Resource.class, v); 
+          Resource r = context.getContext().fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRulesBase(uri.getBase()));
           if (r != null && r.getWebPath() != null) { 
               x.ah(context.prefixLocalHref(r.getWebPath())).addText(RendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));           
           } else if (r != null) { 
@@ -713,11 +715,11 @@ public abstract class ResourceRenderer extends DataRenderer {
    * @param <T>
    */
   protected <T extends Resource> T findCanonical(Class<T> class_, UriType canonical, ResourceWrapper sourceOfReference) {
-    return context.getContext().fetchResource(class_, canonical.asStringValue(), null, sourceOfReference.getResourceNative());
+    return context.getContext().fetchResource(class_, canonical.asStringValue(), ExtensionUtilities.getVersionResolutionRules(canonical), null, sourceOfReference.getResourceNative());
   }
 
   protected <T extends Resource> T findCanonical(Class<T> class_, String canonical, ResourceWrapper sourceOfReference) {
-    return context.getContext().fetchResource(class_, canonical, null, sourceOfReference.getResourceNative());
+    return context.getContext().fetchResource(class_, canonical, IWorkerContext.VersionResolutionRules.defaultRule(), null, sourceOfReference.getResourceNative());
   }
 
 
@@ -770,7 +772,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           return rr;
         }
       }
-      Resource r = context.getWorker().fetchResource(Resource.class, url, version, resource == null ? null : resource.getResourceNative());
+      Resource r = context.getWorker().fetchResource(Resource.class, url, IWorkerContext.VersionResolutionRules.defaultRule(), version, resource == null ? null : resource.getResourceNative());
       if (r != null) {
         return new ResourceWithReference(ResourceReferenceKind.EXTERNAL, url, r.getWebPath(), wrap(r));
       }
@@ -888,7 +890,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
    protected void renderCommitteeLink(XhtmlNode x, CanonicalResource cr) {
      String code = ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_WORKGROUP);
-     CodeSystem cs = context.getWorker().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group");
+     CodeSystem cs = context.getWorker().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group", IWorkerContext.VersionResolutionRules.defaultRule());
      if (cs == null || !cs.hasWebPath())
        x.tx(code);
      else {
@@ -1368,7 +1370,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   protected void renderCommitteeLink(XhtmlNode x, ResourceWrapper cr) {
     String code = cr.extensionString(ExtensionDefinitions.EXT_WORKGROUP);
-    CodeSystem cs = context.getContext().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group");
+    CodeSystem cs = context.getContext().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group", IWorkerContext.VersionResolutionRules.defaultRule());
     if (cs == null || !cs.hasWebPath())
       x.tx(code);
     else {
@@ -1585,8 +1587,15 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
 
-  public static void renderVersionReference(RenderingContext context, Resource tgt, String statedVersion, String actualVersion, boolean fromPackages, XhtmlNode x, boolean fromThisPackage, String type, String none_phrase) {
-    if (statedVersion != null && actualVersion != null && !statedVersion.equals(actualVersion) && fromPackages) {
+  public static void renderVersionReference(RenderingContext context, Resource tgt, String statedVersion, IWorkerContext.VersionResolutionRules resolutionMethod, String actualVersion, boolean fromPackages, XhtmlNode x, boolean fromThisPackage, String type, String none_phrase) {
+    if (resolutionMethod == IWorkerContext.VersionResolutionRules.LATEST) {
+      x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_LATEST, actualVersion));
+      x.tx("\uD83D\uDE80");
+      x.tx(" Latest");
+      XhtmlNode span = x.span();
+      span.style("opacity: 0.5");
+      span.tx(" ("+actualVersion+")");
+    } else if (statedVersion != null && actualVersion != null && !statedVersion.equals(actualVersion) && fromPackages) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_WILDCARD_BY_PACKAGE, statedVersion, actualVersion));
       x.tx("\uD83D\uDCCD");
       x.tx(actualVersion);

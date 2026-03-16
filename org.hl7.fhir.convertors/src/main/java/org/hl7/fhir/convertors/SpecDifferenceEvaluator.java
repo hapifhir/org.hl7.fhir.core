@@ -855,9 +855,9 @@ public class SpecDifferenceEvaluator {
     if (!canonicalsMatch(rev.getValueSet(), orig.getValueSet())) {
       XhtmlNode li = ul.li();
       li.tx("Change value set from ");
-      describeReference(li, orig.getValueSet());
+      describeReference(li, orig.getValueSet(), orig.getValueSetElement());
       li.tx(" to ");
-      describeReference(li, rev.getValueSet());
+      describeReference(li, rev.getValueSet(), rev.getValueSetElement());
     }
     if (!maxValueSetsMatch(rev, orig)) {
       XhtmlNode li = ul.li();
@@ -941,7 +941,7 @@ public class SpecDifferenceEvaluator {
     if (ref == null) {
       li.code().tx("none");
     } else {
-      ValueSet vs = context.fetchResource(ValueSet.class, ref);
+      ValueSet vs = context.fetchResource(ValueSet.class, ref, IWorkerContext.VersionResolutionRules.defaultRule());
       if (vs == null || !vs.hasWebPath()) {
         li.code().tx(ref);
       } else {
@@ -989,8 +989,8 @@ public class SpecDifferenceEvaluator {
       binding.setAttribute("max", getMaxValueSet(orig.getBinding()));
   }
 
-  private void describeReference(XhtmlNode li, String ref) {
-    Resource res = context.fetchResource(Resource.class, ref);
+  private void describeReference(XhtmlNode li, String ref, org.hl7.fhir.r5.model.Element ctxt) {
+    Resource res = context.fetchResource(Resource.class, ref, ExtensionUtilities.getVersionResolutionRules(ctxt));
     if (res != null && res.hasWebPath()) {
       if (res instanceof CanonicalResource) {
         CanonicalResource cr = (CanonicalResource) res;

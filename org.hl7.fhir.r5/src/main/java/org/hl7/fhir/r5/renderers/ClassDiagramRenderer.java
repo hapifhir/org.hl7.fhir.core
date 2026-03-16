@@ -561,7 +561,7 @@ public class ClassDiagramRenderer {
     double y = item.bottom()+MARGIN_Y;
     if (classNames != null) {
       for (String cn : classNames) {
-        StructureDefinition sd = context.fetchResource(StructureDefinition.class, cn);
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, cn, IWorkerContext.VersionResolutionRules.defaultRule());
         if (sd == null) {
           sd = cutils.fetchStructureByName(cn);
         }
@@ -569,7 +569,7 @@ public class ClassDiagramRenderer {
           throw new FHIRException("Unable to find class '"+cn+"'");
         }
         ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
-        StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), IWorkerContext.VersionResolutionRules.defaultRule());
         p = determineMetrics(sd, ed, item, ed.getName(), null, base, ClassItemMode.NORMAL);
         x = Math.max(x, p.x+MARGIN_X);
         y = Math.max(y, p.y+MARGIN_Y);
@@ -592,7 +592,7 @@ public class ClassDiagramRenderer {
     double x = item.right()+MARGIN_X;
     double y = item.bottom()+MARGIN_Y;
     ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
-    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), IWorkerContext.VersionResolutionRules.defaultRule());
     p = determineMetrics(sd, ed, item, ed.getName(), null, base, ClassItemMode.NORMAL);
     x = Math.max(x, p.x+MARGIN_X);
     y = Math.max(y, p.y+MARGIN_Y);
@@ -890,7 +890,7 @@ public class ClassDiagramRenderer {
         }
         flag(div, ls, e.hasMaxLength(), "<L", "black", "#95fc9c", rc.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH, e.getMaxLength()), null);
         if (e.hasBinding()) {
-          ValueSet vs = context.fetchResource(ValueSet.class, path);
+          ValueSet vs = context.fetchResource(ValueSet.class, path, IWorkerContext.VersionResolutionRules.defaultRule());
           if (e.getBinding().getStrength() == BindingStrength.REQUIRED) {
             flag(div, ls, true, "B!", "black", "#fad570", rc.formatPhrase(RenderingContext.GENERAL_REQUIRED_BINDING, describeVS(e.getBinding().getValueSet(), vs)), vsLink(e.getBinding().getValueSet(), vs));            
           } else if (e.getBinding().getStrength() == BindingStrength.EXTENSIBLE) {
@@ -912,7 +912,7 @@ public class ClassDiagramRenderer {
                   first = false;
                 else 
                   div.tx(ls.see(" | "));
-                StructureDefinition sdt = context.fetchResource(StructureDefinition.class, p.asStringValue(), null, sd);
+                StructureDefinition sdt = context.fetchResource(StructureDefinition.class, p.asStringValue(), ExtensionUtilities.getVersionResolutionRules(p), null, sd);
                 String s = sdt == null ? tail(p.asStringValue()) : sdt.getName();
                 ls.check(html, div, left, top, s.length(), null);
                 encodeType(div, ls, s);
@@ -935,7 +935,7 @@ public class ClassDiagramRenderer {
           }
           if (hasBinding) {
             ElementDefinitionBindingComponent b = e.getBinding();
-            ValueSet vs = context.fetchResource(ValueSet.class, b.getValueSet()); 
+            ValueSet vs = context.fetchResource(ValueSet.class, b.getValueSet(), ExtensionUtilities.getVersionResolutionRules(b.getValueSetElement()));
             String name = vs != null ? vs.getName() : tail(b.getValueSet());
             if (name.toLowerCase().endsWith(" codes"))
               name = name.substring(0, name.length()-5);
@@ -1234,13 +1234,13 @@ public class ClassDiagramRenderer {
   private ClassItem drawElement(XhtmlNode svg, List<String> classNames) throws Exception {
     if (classNames != null) {
       for (String cn : classNames) {
-        StructureDefinition sd = context.fetchResource(StructureDefinition.class, cn);
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, cn, IWorkerContext.VersionResolutionRules.defaultRule());
         if (sd == null) {
           sd = cutils.fetchStructureByName(cn);
         }
         ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
 
-        StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());       
+        StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
         ClassItem parent = base == null ? null : classes.get(base.getName());
         if (parent == null) {
           drawClass(svg, sd, ed, cn, sd.getStandardsStatus(), base);
@@ -1256,7 +1256,7 @@ public class ClassDiagramRenderer {
   private ClassItem drawClassElement(XhtmlNode svg, StructureDefinition sd) throws FHIRException, IOException {
     ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
 
-    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());       
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
     ClassItem parent = base == null ? null : classes.get(base.getName());
     if (parent == null) {
       drawClass(svg, sd, ed, ed.getName(), sd.getStandardsStatus(), base);
@@ -1715,7 +1715,7 @@ public class ClassDiagramRenderer {
 
     ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
 
-    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());       
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
     drawClass(svg, sd, ed, ed.getPath(), sd.getStandardsStatus(), base);
   }
 
@@ -1734,7 +1734,7 @@ public class ClassDiagramRenderer {
     double x = item.right()+MARGIN_X;
     double y = item.bottom()+MARGIN_Y;
     ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
-    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
     p = determineMetrics(sd, ed, item, ed.getName(), null, base, ClassItemMode.NORMAL);
     x = Math.max(x, p.x+MARGIN_X);
     y = Math.max(y, p.y+MARGIN_Y);

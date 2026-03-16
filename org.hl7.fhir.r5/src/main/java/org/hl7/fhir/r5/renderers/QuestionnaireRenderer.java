@@ -12,7 +12,9 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.ExpansionOptions;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Resource;
@@ -269,9 +271,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   } 
 
   private String getSDCLink(String url, String path) { 
-    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url); 
+    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd == null) { 
-      sd = context.getContext().fetchResource(StructureDefinition.class, path); 
+      sd = context.getContext().fetchResource(StructureDefinition.class, path, IWorkerContext.VersionResolutionRules.defaultRule());
     } 
     if (sd != null && sd.hasWebPath()) { 
       return sd.getWebPath(); 
@@ -378,7 +380,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           defn.getPieces().add(gen.new Piece(vs.getWebPath(), RendererFactory.factory(vs, context.forContained()).buildSummary(vs), null));                               
         } 
       } else { 
-        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet")); 
+        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"),
+          ExtensionUtilities.getVersionResolutionRulesBase(i.child("answerValueSet").getBase()));
         if (vs == null  || !vs.hasWebPath()) { 
           defn.getPieces().add(gen.new Piece(null, i.primitiveValue("answerValueSet"), null));                     
         } else { 
@@ -474,7 +477,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       path = d.substring(d.indexOf("#")+1); 
       d = d.substring(0, d.indexOf("#")); 
     } 
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, null, q.getResourceNative());
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, ExtensionUtilities.getVersionResolutionRulesBase(i.getBaseForChild("definition")), null, q.getResourceNative());
     if (sd != null) { 
       String url = sd.getWebPath(); 
       if (url != null) { 
@@ -495,7 +498,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       path = d.substring(d.indexOf("#")+1); 
       d = d.substring(0, d.indexOf("#")); 
     } 
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, null, q.getResourceNative());
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, ExtensionUtilities.getVersionResolutionRulesBase(i.getBaseForChild("definition")), null, q.getResourceNative());
     if (sd != null) { 
       String url = sd.getWebPath(); 
       if (url != null) { 
@@ -511,7 +514,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   private void addExpression(Piece p, ResourceWrapper exp, String label, String url) { 
     XhtmlNode x = new XhtmlNode(NodeType.Element, "li").style("font-size: 11px"); 
     p.addHtml(x); 
-    CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, url); 
+    CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, url, ExtensionUtilities.getVersionResolutionRulesBase(exp.getBase()));
     if (cr != null && cr.hasWebPath()) { 
       x.ah(cr.getWebPath()).tx(label); 
     } else { 
@@ -572,7 +575,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.has("answerValueSet")) { 
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br")); 
       defn.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.QUEST_VALUE)+" "), null)); 
-      if (Utilities.noString(i.primitiveValue("answerValueSet")) && i.primitiveValue("answerValueSet").startsWith("#")) {
+      if (Utilities.noString(i.primitiveValue("answerValueSet"))) {
+        // this is a weird place to be, but there's not much we can do.
+      } else if (i.primitiveValue("answerValueSet").startsWith("#")) {
         ResourceWrapper vs = q.getContained(i.primitiveValue("answerValueSet").substring(1)); 
         if (vs == null) { 
           defn.getPieces().add(gen.new Piece(null, i.primitiveValue("answerValueSet"), null));                     
@@ -580,7 +585,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           defn.getPieces().add(gen.new Piece(vs.getWebPath(), RendererFactory.factory(vs, context.forContained()).buildSummary(vs), null));                               
         } 
       } else { 
-        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"), null, q.getResourceNative());
+        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"),
+          ExtensionUtilities.getVersionResolutionRulesBase(i.getBaseForChild("answerValueSet")), null, q.getResourceNative());
         if (vs == null  || !vs.hasWebPath()) { 
           defn.getPieces().add(gen.new Piece(null, i.primitiveValue("answerValueSet"), null));                     
         } else { 
@@ -822,7 +828,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           ans.ah(context.prefixLocalHref(vs.getWebPath())).tx(RendererFactory.factory(vs, context.forContained()).buildSummary(vs));                               
         } 
       } else { 
-        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"), null, q.getResourceNative());
+        ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"),
+          ExtensionUtilities.getVersionResolutionRulesBase(i.getBaseForChild("answerValueSet")), null, q.getResourceNative());
         if (vs == null  || !vs.hasWebPath()) { 
           ans.tx(i.primitiveValue("answerValueSet"));                     
         } else { 
@@ -924,7 +931,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           vs.setUrl(q.primitiveValue("url")+"--"+contained); 
         } 
       } else { 
-        vs = context.getContext().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"), null, q.getResourceNative());
+        vs = context.getContext().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"),
+          ExtensionUtilities.getVersionResolutionRulesBase(i.getBaseForChild("answerValueSet")), null, q.getResourceNative());
       } 
       if (vs != null) { 
         ValueSetExpansionOutcome exp = context.getContext().expandVS(ExpansionOptions.cacheNoHeirarchy().withLanguage(context.getLocale().getLanguage()), vs);
@@ -1038,7 +1046,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     // content control 
     defn(tbl, context.formatPhrase(RenderingContext.QUEST_MAX_LENGTH), qi.primitiveValue("maxLength")); 
     if (qi.has("answerValueSet")) { 
-      defn(tbl, context.formatPhrase(RenderingContext.GENERAL_VALUESET), qi.primitiveValue("definition"), context.getWorker().findTxResource(ValueSet.class,  qi.primitiveValue("answerValueSet"), null, q.getResourceNative()));
+      defn(tbl, context.formatPhrase(RenderingContext.GENERAL_VALUESET), qi.primitiveValue("definition"),
+        context.getWorker().findTxResource(ValueSet.class, qi.primitiveValue("answerValueSet"),
+          ExtensionUtilities.getVersionResolutionRulesBase(qi.getBaseForChild("answerValueSet")), null, q.getResourceNative()));
     } 
     if (qi.has("answerOption")) { 
       XhtmlNode tr = tbl.tr(); 
@@ -1094,7 +1104,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     } 
     if (qi.hasExtension("http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-Questionnaire-observationLinkPeriod")) { 
       XhtmlNode tr = tbl.tr(); 
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, ExtensionDefinitions.EXT_O_LINK_PERIOD); 
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, ExtensionDefinitions.EXT_O_LINK_PERIOD, IWorkerContext.VersionResolutionRules.defaultRule());
       if (sd != null && sd.hasWebPath()) { 
         tr.td().ah(sd.getWebPath()).tx(context.formatPhrase(RenderingContext.QUEST_OBSERVATION)); 
       } else { 

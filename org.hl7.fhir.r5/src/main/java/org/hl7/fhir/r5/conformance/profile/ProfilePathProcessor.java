@@ -10,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ElementRedirection;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
@@ -457,10 +459,11 @@ public class ProfilePathProcessor {
     String path = currentBase.getContentReference().substring(currentBase.getContentReference().indexOf("#")+1);
 
     // work backwards and find the nearest case
-    int res = base.getElement().indexOf(currentBase) - 1;    
+    // Important: we must find the base element, not a slice (slices have the same path as their base)
+    int res = base.getElement().indexOf(currentBase) - 1;
     while (res >= 0) {
       ElementDefinition ed = base.getElement().get(res);
-      if (path.equals(ed.getPath())) {
+      if (path.equals(ed.getPath()) && !ed.hasSliceName()) {
         return res;
       }
       res--;
@@ -691,7 +694,8 @@ public class ProfilePathProcessor {
       && !"Reference".equals(diffMatches.get(0).getType().get(0).getWorkingCode())
       && !(currentBase.getType().get(0).hasProfile() && currentBase.getType().get(0).getProfile().get(0).primitiveValue().equals(diffMatches.get(0).getType().get(0).getProfile().get(0).primitiveValue()))) {
       CanonicalType firstTypeProfile = diffMatches.get(0).getType().get(0).getProfile().get(0);
-      StructureDefinition firstTypeStructureDefinition = profileUtilities.getContext().fetchResource(StructureDefinition.class, firstTypeProfile.getValue());
+      StructureDefinition firstTypeStructureDefinition = profileUtilities.getContext().fetchResource(StructureDefinition.class, firstTypeProfile.getValue(),
+        ExtensionUtilities.getVersionResolutionRules(firstTypeProfile));
       if (firstTypeStructureDefinition == null && profileUtilities.getXver() != null && profileUtilities.getXver().matchingUrl(firstTypeProfile.getValue())) {
         switch (profileUtilities.getXver().status(firstTypeProfile.getValue())) {
           case BadVersion:
@@ -718,7 +722,7 @@ public class ProfilePathProcessor {
             throw new FHIRException(profileUtilities.getContext().formatMessage(I18nConstants.ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED, firstTypeStructureDefinition.getUrl(), "Source for first element"));
           }
         } else if (!firstTypeStructureDefinition.hasSnapshot()) {
-          StructureDefinition sdb = profileUtilities.getContext().fetchResource(StructureDefinition.class, firstTypeStructureDefinition.getBaseDefinition());
+          StructureDefinition sdb = profileUtilities.getContext().fetchResource(StructureDefinition.class, firstTypeStructureDefinition.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(firstTypeStructureDefinition.getBaseDefinitionElement()));
           if (sdb == null)
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, firstTypeStructureDefinition.getBaseDefinition(), firstTypeStructureDefinition.getUrl()));
           profileUtilities.checkNotGenerating(sdb, "an extension base");
@@ -851,7 +855,7 @@ public class ProfilePathProcessor {
         while (cursors.diffCursor <= getDiffLimit() && getDifferential().getElement().size() > cursors.diffCursor && profileUtilities.pathStartsWith(getDifferential().getElement().get(cursors.diffCursor).getPath(), diffMatches.get(0).getPath() + "."))
           cursors.diffCursor++;
         if (outcome.hasContentReference()) {
-          ProfileUtilities.ElementDefinitionResolution target = profileUtilities.getElementById(getSourceStructureDefinition(), cursors.base.getElement(), outcome.getContentReference());
+          ProfileUtilities.ElementDefinitionResolution target = profileUtilities.getElementById(getSourceStructureDefinition(), cursors.base.getElement(), outcome.getContentReferenceElement());
           if (target == null)
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNABLE_TO_RESOLVE_REFERENCE_TO_, outcome.getContentReference()));
           profileUtilities.replaceFromContentReference(outcome, target.getElement());
@@ -1086,7 +1090,7 @@ public class ProfilePathProcessor {
           throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, currentBasePath, getDifferential().getElement().get(cursors.diffCursor).getPath(), profileUtilities.typeCode(outcome.getType()), getProfileName()));
         }
         if (outcome.hasContentReference()) {
-          ProfileUtilities.ElementDefinitionResolution tgt = profileUtilities.getElementById(getSourceStructureDefinition(), cursors.base.getElement(), outcome.getContentReference());
+          ProfileUtilities.ElementDefinitionResolution tgt = profileUtilities.getElementById(getSourceStructureDefinition(), cursors.base.getElement(), outcome.getContentReferenceElement());
           if (tgt == null)
             throw new DefinitionException(profileUtilities.getContext().formatMessage(I18nConstants.UNABLE_TO_RESOLVE_REFERENCE_TO_, outcome.getContentReference()));
           profileUtilities.replaceFromContentReference(outcome, tgt.getElement());
@@ -1373,7 +1377,7 @@ public class ProfilePathProcessor {
           }
         }
         if (profiles.size() == 1) {
-          StructureDefinition sdt = profileUtilities.getContext().fetchResource(StructureDefinition.class, profiles.get(0));
+          StructureDefinition sdt = profileUtilities.getContext().fetchResource(StructureDefinition.class, profiles.get(0), IWorkerContext.VersionResolutionRules.defaultRule());
           if (sdt != null) {
             ElementDefinition edt = sdt.getSnapshot().getElementFirstRep();
             if (edt.isMandatory() && !outcome.isMandatory()) {

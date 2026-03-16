@@ -34,6 +34,9 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
+import org.hl7.fhir.r5.tools.ExtensionConstants;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -16923,6 +16926,10 @@ public class ImplementationGuide extends CanonicalResource {
     return null;
   }
 
+  public String getFullPackageId() {
+    String prefix = hasExtension(ExtensionConstants.EXT_PACKAGE_SCOPE) ? "@"+ ExtensionUtilities.readStringExtension(this, ExtensionConstants.EXT_PACKAGE_SCOPE) +"/" : "";
+    return prefix + getPackageId();
+  }
 
 }
 

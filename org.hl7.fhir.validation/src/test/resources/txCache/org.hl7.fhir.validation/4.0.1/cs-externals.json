@@ -71,6 +71,7 @@
   "http://terminology.hl7.org/CodeSystem/special-values" : null,
   "https://smt.esante.gouv.fr/fhir/CodeSystem/tre-r374-nature-activite-smsse-regulee" : null,
   "http://fhir.mimic.mit.edu/CodeSystem/admit-source" : null,
+  "Location1" : null,
   "http://hl7.org/fhir/test/CodeSystem/big" : null,
   "http://hl7.org/fhir/measure-type" : null,
   "http://fkcfhir.org/fhir/CodeSystem/FMCMedTiming" : null,
@@ -80,6 +81,7 @@
   },
   "https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName" : null,
   "http://loinc.org" : null,
+  "Location!" : null,
   "Location" : null,
   "#f3b2bd36-199b-4591-b4db-f49db0912b6" : null
 }

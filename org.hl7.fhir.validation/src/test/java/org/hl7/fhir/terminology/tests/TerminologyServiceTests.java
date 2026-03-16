@@ -15,6 +15,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ExpansionOptions;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -147,16 +148,21 @@ private static TxTestData testData;
 
   private void expand(String id, ValidationEngine engine, Resource req, String resp, String lang, String fp, JsonObject ext) throws IOException {
     org.hl7.fhir.r5.model.Parameters p = ( org.hl7.fhir.r5.model.Parameters) req;
-    ValueSet vs;
+    ValueSet vs = null;
     if (p.hasParameter("valueSetVersion")) {      
-      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue());
-    } else {
-      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule(), p.getParameterValue("valueSetVersion").primitiveValue());
+    } else if (p.hasParameter("url")) {
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule());
     }
     if (vs == null) {
       for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent pp : p.getParameter()) {
+        if (pp.getName().equals("valueSet")) {
+          vs = (ValueSet) pp.getResource();
+          break;
+        }
         if (pp.getName().equals("tx-resource") && pp.hasResource() && pp.getResource() instanceof ValueSet && ((ValueSet) pp.getResource()).getUrl().equals(p.getParameterValue("url").primitiveValue())) {
           vs = (ValueSet) pp.getResource();
+          break;
         }
       }
     }

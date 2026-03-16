@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
@@ -184,7 +185,7 @@ public class OpenApiGenerator {
 
   private OperationDefinition fetchOperationDefinition(CapabilityStatementRestResourceOperationComponent op, Resource cs) {
     if (op.hasDefinition()) {
-      return context.fetchResource(OperationDefinition.class, op.getDefinition(), null, cs);
+      return context.fetchResource(OperationDefinition.class, op.getDefinition(), ExtensionUtilities.getVersionResolutionRules(op.getDefinitionElement()), null, cs);
     }
     return null;
   }
@@ -278,7 +279,7 @@ public class OpenApiGenerator {
         p.in(ParameterLocation.query).description(spc.getDocumentation());
         p.schema().type(getSchemaType(spc.getType()));
         if (spc.hasDefinition()) {
-          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition(), null, cs);
+          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition(), ExtensionUtilities.getVersionResolutionRules(spc.getDefinitionElement()), null, cs);
           if (sp != null) {
             p.description(sp.getDescription());
           }
@@ -315,7 +316,7 @@ public class OpenApiGenerator {
         p.in(ParameterLocation.query).description(spc.getDocumentation());
         p.schema().type(getSchemaType(spc.getType()));
         if (spc.hasDefinition()) {
-          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition(), null, cs);
+          SearchParameter sp = context.fetchResource(SearchParameter.class, spc.getDefinition(), ExtensionUtilities.getVersionResolutionRules(spc.getDefinitionElement()), null, cs);
           if (sp != null) {
             p.description(sp.getDescription());
           }

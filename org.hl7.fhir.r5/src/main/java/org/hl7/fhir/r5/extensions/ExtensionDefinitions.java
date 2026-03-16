@@ -1,10 +1,13 @@
 package org.hl7.fhir.r5.extensions;
 
+import org.hl7.fhir.r5.model.Extension;
+
 import java.util.List;
 
 public class ExtensionDefinitions {
 
   public static final String EXT_ISSUE_MSG_ID = "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id";
+  public static final String EXT_ISSUE_MSG_CTXT = "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-context";
   public static final String EXT_ISSUE_LINE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line";
   public static final String EXT_ISSUE_COL = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col";
   public static final String EXT_OO_FILE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-file";
@@ -223,4 +226,5 @@ public class ExtensionDefinitions {
   public static final String EXT_ADDITIONAL_RESOURCE = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource";
   public static final String EXT_IG_EXPANSION_PARAMETERS = "http://hl7.org/fhir/tools/StructureDefinition/expansion-parameters";
   public static final String EXT_SUPPL_TYPE = "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-type";
+  public static final String CANONICAL_RESOLUTION_METHOD = "http://hl7.org/fhir/StructureDefinition/version-resolution-method";
 }

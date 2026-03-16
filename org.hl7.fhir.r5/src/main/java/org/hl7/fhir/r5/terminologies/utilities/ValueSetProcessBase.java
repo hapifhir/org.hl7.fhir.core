@@ -311,7 +311,7 @@ public class ValueSetProcessBase {
     if (system == null || candidate == null || criteria == null) {
       return false;
     }
-    CodeSystem cs = context.fetchCodeSystem(system);
+    CodeSystem cs = context.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule());
     VersionAlgorithm va = cs == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(cs.getVersionAlgorithm());
     if (va == VersionAlgorithm.Unknown) {
       va = VersionAlgorithm.guessFormat(candidate);

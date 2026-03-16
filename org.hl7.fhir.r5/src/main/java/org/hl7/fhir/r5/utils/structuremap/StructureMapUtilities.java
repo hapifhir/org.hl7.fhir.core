@@ -1226,7 +1226,7 @@ public class StructureMapUtilities {
         if (found)
           throw new FHIRException("Multiple targets found in map " + map.getUrl());
         found = true;
-        res = worker.fetchResource(StructureDefinition.class, uses.getUrl());
+        res = worker.fetchResource(StructureDefinition.class, uses.getUrl(), ExtensionUtilities.getVersionResolutionRules(uses.getUrlElement()));
         if (res == null)
           throw new FHIRException("Unable to find " + uses.getUrl() + " referenced from map " + map.getUrl());
       }
@@ -1436,7 +1436,7 @@ public class StructureMapUtilities {
         }
       }
     } else {
-      StructureMap sm = worker.fetchResource(StructureMap.class, value);
+      StructureMap sm = worker.fetchResource(StructureMap.class, value, IWorkerContext.VersionResolutionRules.defaultRule());
       if (sm != null)
         res.add(sm);
     }
@@ -1521,7 +1521,7 @@ public class StructureMapUtilities {
     // check the aliases
     for (StructureMapStructureComponent imp : map.getStructure()) {
       if (imp.hasAlias() && statedType.equals(imp.getAlias())) {
-        StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl());
+        StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl(), ExtensionUtilities.getVersionResolutionRules(imp.getUrlElement()));
         if (sd != null)
           statedType = sd.getType();
         break;
@@ -1529,12 +1529,12 @@ public class StructureMapUtilities {
     }
 
     if (Utilities.isAbsoluteUrl(actualType)) {
-      StructureDefinition sd = worker.fetchResource(StructureDefinition.class, actualType);
+      StructureDefinition sd = worker.fetchResource(StructureDefinition.class, actualType, IWorkerContext.VersionResolutionRules.defaultRule());
       if (sd != null)
         actualType = sd.getType();
     }
     if (Utilities.isAbsoluteUrl(statedType)) {
-      StructureDefinition sd = worker.fetchResource(StructureDefinition.class, statedType);
+      StructureDefinition sd = worker.fetchResource(StructureDefinition.class, statedType, IWorkerContext.VersionResolutionRules.defaultRule());
       if (sd != null)
         statedType = sd.getType();
     }
@@ -1545,7 +1545,7 @@ public class StructureMapUtilities {
     // check the aliases
     for (StructureMapStructureComponent imp : map.getStructure()) {
       if (imp.hasAlias() && statedType.equals(imp.getAlias())) {
-        StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl());
+        StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl(), ExtensionUtilities.getVersionResolutionRules(imp.getUrlElement()));
         if (sd == null)
           throw new FHIRException("Unable to resolve structure " + imp.getUrl());
         return sd.getId(); // should be sd.getType(), but R2...
@@ -1947,7 +1947,7 @@ public class StructureMapUtilities {
     String system = null;
     String display = null;
     String version = null;
-    ValueSet vs = Utilities.noString(uri) ? null : worker.fetchResourceWithException(ValueSet.class, uri);
+    ValueSet vs = Utilities.noString(uri) ? null : worker.fetchResourceWithException(ValueSet.class, uri, IWorkerContext.VersionResolutionRules.defaultRule());
     if (vs != null) {
       ValueSetExpansionOutcome vse = worker.expandVS(vs, true, false);
       if (vse.getError() != null)
@@ -2065,7 +2065,7 @@ public class StructureMapUtilities {
       } else {
         if (conceptMapUrl.contains("#")) {
           String[] p = conceptMapUrl.split("\\#");
-          StructureMap mapU = worker.fetchResource(StructureMap.class, p[0]);
+          StructureMap mapU = worker.fetchResource(StructureMap.class, p[0], IWorkerContext.VersionResolutionRules.defaultRule());
           for (Resource r : mapU.getContained()) {
             if (r instanceof ConceptMap && r.getId().equals(p[1])) {
               cmap = (ConceptMap) r;
@@ -2074,7 +2074,7 @@ public class StructureMapUtilities {
           }
         }
         if (cmap == null)
-          cmap = worker.fetchResource(ConceptMap.class, conceptMapUrl);
+          cmap = worker.fetchResource(ConceptMap.class, conceptMapUrl, IWorkerContext.VersionResolutionRules.defaultRule());
       }
       Coding outcome = null;
       boolean done = false;
@@ -2456,7 +2456,7 @@ public class StructureMapUtilities {
     if (var == null) {
       assert (Utilities.noString(element));
       // 1. start the new structure definition
-      StructureDefinition sdn = worker.fetchResource(StructureDefinition.class, type.getType());
+      StructureDefinition sdn = worker.fetchResource(StructureDefinition.class, type.getType(), IWorkerContext.VersionResolutionRules.defaultRule());
       if (sdn == null)
         throw new FHIRException("Unable to find definition for " + type.getType());
       ElementDefinition edn = sdn.getSnapshot().getElementFirstRep();
@@ -2652,7 +2652,7 @@ public class StructureMapUtilities {
     for (StructureMapStructureComponent imp : map.getStructure()) {
       if ((imp.getMode() == StructureMapModelMode.SOURCE && mode == StructureMapInputMode.SOURCE) ||
         (imp.getMode() == StructureMapModelMode.TARGET && mode == StructureMapInputMode.TARGET)) {
-        StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl());
+        StructureDefinition sd = worker.fetchResource(StructureDefinition.class, imp.getUrl(), ExtensionUtilities.getVersionResolutionRules(imp.getUrlElement()));
         if (sd == null)
           throw new FHIRException("Import " + imp.getUrl() + " cannot be resolved");
         if (sd.getId().equals(type)) {

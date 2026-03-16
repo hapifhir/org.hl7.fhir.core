@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.extensions;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.*;
 
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -32,6 +33,16 @@ public class ExtensionUtilities {
     // todo: write this up and get it published with the pack (and handle the redirect?)
     ex.setUrl(ExtensionDefinitions.EXT_ISSUE_MSG_ID);
     CodeType c = new CodeType();
+    c.setValue(msgId);
+    ex.setValue(c);
+    return ex;
+  }
+
+  public static Extension makeIssueContext(String msgId) {
+    Extension ex = new Extension();
+    // todo: write this up and get it published with the pack (and handle the redirect?)
+    ex.setUrl(ExtensionDefinitions.EXT_ISSUE_MSG_CTXT);
+    StringType c = new StringType();
     c.setValue(msgId);
     ex.setValue(c);
     return ex;
@@ -1482,5 +1493,33 @@ public class ExtensionUtilities {
 
   public static boolean isModifier(String url) {
     return Utilities.existsInList(url, "http://hl7.org/fhir/StructureDefinition/artifact-status", "http://hl7.org/fhir/StructureDefinition/capabilitystatement-prohibited", "http://hl7.org/fhir/StructureDefinition/request-doNotPerform");
+  }
+
+  public static IWorkerContext.VersionResolutionRules getVersionResolutionRules(Element element) {
+    if (element == null) {
+      return IWorkerContext.VersionResolutionRules.defaultRule();
+    }
+    String rule = element.getExtensionString(ExtensionDefinitions.CANONICAL_RESOLUTION_METHOD);
+    return rule == null ? IWorkerContext.VersionResolutionRules.defaultRule() : IWorkerContext.VersionResolutionRules.fromCode(rule);
+  }
+  public static IWorkerContext.VersionResolutionRules getVersionResolutionRules(org.hl7.fhir.r5.elementmodel.Element element) {
+    if (element == null) {
+      return IWorkerContext.VersionResolutionRules.defaultRule();
+    }
+    String rule = element.getExtensionString(ExtensionDefinitions.CANONICAL_RESOLUTION_METHOD);
+    return rule == null ? IWorkerContext.VersionResolutionRules.defaultRule() : IWorkerContext.VersionResolutionRules.fromCode(rule);
+  }
+
+  public static IWorkerContext.VersionResolutionRules getVersionResolutionRulesBase(Base base) {
+    if (base == null) {
+      return IWorkerContext.VersionResolutionRules.defaultRule();
+    }
+    if (base instanceof org.hl7.fhir.r5.elementmodel.Element) {
+      return getVersionResolutionRules((org.hl7.fhir.r5.elementmodel.Element) base);
+    } else if (base instanceof Element) {
+      return getVersionResolutionRules((Element) base);
+    } else {
+      return IWorkerContext.VersionResolutionRules.defaultRule();
+    }
   }
 }

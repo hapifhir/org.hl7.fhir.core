@@ -60,7 +60,7 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+    public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules) {
       return null;
     }
 
@@ -270,7 +270,7 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+      public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules) {
         return null;
       }
 
