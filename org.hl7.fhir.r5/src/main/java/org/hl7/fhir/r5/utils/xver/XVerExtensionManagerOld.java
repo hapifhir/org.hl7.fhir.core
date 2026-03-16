@@ -148,6 +148,8 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
       }
       sd.getDifferential().addElement().setPath(epath+".url").setFixed(new UriType(s));
       sd.getDifferential().addElement().setPath(epath+".value[x]").setMax("0");
+    } else if (elt.has("ref")) {
+      // we do nothing here - this is a problem of context
     } else {
       throw new FHIRException("Internal error - unknown element "+apath);
     }
