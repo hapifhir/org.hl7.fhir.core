@@ -3,8 +3,6 @@ package org.hl7.fhir.utilities.http;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
