@@ -44,8 +44,8 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     return this;
   }
 
-  public ManagedFhirWebAccessor(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
-    super(Arrays.asList("fhir"), userAgent, serverAuthDetails);
+  public ManagedFhirWebAccessor(String userAgent, IHTTPAuthenticationProvider authenticationProvider) {
+    super(Arrays.asList("fhir"), userAgent, authenticationProvider);
     this.timeout = 5000;
     this.timeoutUnit = TimeUnit.MILLISECONDS;
   }
@@ -70,40 +70,9 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
       headers.add(new HTTPHeader(entry.getKey(), entry.getValue()));
     }
 
-    if (getAuthenticationMode() != null) {
-      if (getAuthenticationMode() != HTTPAuthenticationMode.NONE) {
-        switch (getAuthenticationMode()) {
-          case BASIC:
-            final String basicCredential = Credentials.basic(getUsername(), getPassword());
-            headers.add(new HTTPHeader("Authorization", basicCredential));
-            break;
-          case TOKEN:
-            String tokenCredential = "Bearer " + getToken();
-            headers.add(new HTTPHeader("Authorization", tokenCredential));
-            break;
-          case APIKEY:
-            String apiKeyCredential = getToken();
-            headers.add(new HTTPHeader("Api-Key", apiKeyCredential));
-            break;
-        }
-      }
-    } else {
-      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(getServerTypes(), httpRequest.getUrl().toString(), getServerAuthDetails());
-      if (settings != null) {
-        switch (settings.getAuthenticationType()) {
-          case "basic":
-            final String basicCredential = Credentials.basic(settings.getUsername(), settings.getPassword());
-            headers.add(new HTTPHeader("Authorization", basicCredential));
-            break;
-          case "token":
-            String tokenCredential = "Bearer " + settings.getToken();
-            headers.add(new HTTPHeader("Authorization", tokenCredential));
-            break;
-          case "apikey":
-            String apiKeyCredential = settings.getApikey();
-            headers.add(new HTTPHeader("Api-Key", apiKeyCredential));
-            break;
-        }
+    if (getHttpAuthHeaderProvider() != null && getHttpAuthHeaderProvider().canProvideHeaders(httpRequest.getUrl())) {
+      for (Map.Entry<String, String> entry : getHttpAuthHeaderProvider().getHeaders(httpRequest.getUrl()).entrySet()) {
+           headers.add(new HTTPHeader(entry.getKey(), entry.getValue()));
       }
     }
     return httpRequest.withHeaders(headers);

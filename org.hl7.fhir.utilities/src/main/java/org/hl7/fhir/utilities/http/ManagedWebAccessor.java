@@ -1,35 +1,26 @@
 package org.hl7.fhir.utilities.http;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 /**
  * Manages access via a simple HTTP client for making requests to a server with no FHIR-specific code.
  */
 public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccessor> {
 
-  public ManagedWebAccessor(Iterable<String> serverTypes, String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
-    super(serverTypes, userAgent, serverAuthDetails);
+  public ManagedWebAccessor(Iterable<String> serverTypes, String userAgent, IHTTPAuthenticationProvider httpAuthHeaderProvider) {
+    super(serverTypes, userAgent, httpAuthHeaderProvider);
   }
   
-  private Map<String, String> newHeaders() {
+  private Map<String, String> newHeaders(String urlString) throws MalformedURLException {
+    URL url = new URL(urlString);
     Map<String, String> headers = new HashMap<>(this.getHeaders());
-    if (getAuthenticationMode() == HTTPAuthenticationMode.TOKEN) {
-      headers.put("Authorization", "Bearer " + getToken());
-    } else if (getAuthenticationMode() == HTTPAuthenticationMode.BASIC) {
-      String auth = getUsername() +":"+ getPassword();
-      byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
-      headers.put("Authorization", "Basic " + new String(encodedAuth));
-    } else if (getAuthenticationMode() == HTTPAuthenticationMode.APIKEY) {
-      headers.put("Api-Key", getToken());
+    if (this.getHttpAuthHeaderProvider().canProvideHeaders(url)) {
+      headers.putAll(this.getHttpAuthHeaderProvider().getHeaders(url));
     }
-
     if (getUserAgent() != null) {
       headers.put("User-Agent", getUserAgent());
     }
@@ -40,58 +31,14 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
     if (!ManagedWebAccess.inAllowedPaths(url)) {
       throw new IOException("The pathname '"+url+"' cannot be accessed by policy");
     }
-    SimpleHTTPClient client = new SimpleHTTPClient();
-    client.setAuthProvider(new ServerDetailsPOJOHTTPAuthProvider(getServerTypes(), getServerAuthDetails()));
+    SimpleHTTPClient client = new SimpleHTTPClient(getHttpAuthHeaderProvider());
+
     for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
       client.addHeader(entry.getKey(), entry.getValue());
     }
 
     if (getUserAgent() != null) {
       client.addHeader("User-Agent", getUserAgent());
-    }
-    if (getAuthenticationMode() != null) {
-      if (getAuthenticationMode() != HTTPAuthenticationMode.NONE) {
-        client.setAuthenticationMode(getAuthenticationMode());
-        switch (getAuthenticationMode()) {
-          case BASIC:
-            client.setUsername(getUsername());
-            client.setPassword(getPassword());
-            break;
-          case TOKEN:
-            client.setToken(getToken());
-            break;
-          case APIKEY:
-            client.setApiKey(getToken());
-            break;
-          case NONE:
-          default:
-        }
-      }
-    } else {
-      ServerDetailsPOJO settings = ManagedWebAccessUtils.getServer(getServerTypes(), url, getServerAuthDetails());
-      if (settings != null) {
-        switch (settings.getAuthenticationType()) {
-          case "basic":
-            client.setUsername(settings.getUsername());
-            client.setPassword(settings.getPassword());
-            client.setAuthenticationMode(HTTPAuthenticationMode.BASIC);
-            break;
-          case "token":
-            client.setToken(settings.getToken());
-            client.setAuthenticationMode(HTTPAuthenticationMode.TOKEN);
-            break;
-          case "apikey":
-            client.setApiKey(settings.getApikey());
-            client.setAuthenticationMode(HTTPAuthenticationMode.APIKEY);
-            break;
-          default:
-        }
-        if (settings.getHeaders() != null) {
-          for (String n : settings.getHeaders().keySet()) {
-            client.addHeader(n, settings.getHeaders().get(n));
-          }
-        }
-      }
     }
     return client;
   }
@@ -106,7 +53,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
         SimpleHTTPClient client = setupSimpleHTTPClient(url);
         yield client.get(url, accept);
       }
-      case MANAGED -> ManagedWebAccess.getAccessor().get(getServerTypes(), url, accept, newHeaders());
+      case MANAGED ->  ManagedWebAccess.getAccessor().get(getServerTypes(), url, accept, newHeaders(url));
       case PROHIBITED -> throw new IOException("Access to the internet is not allowed by local security policy");
       default -> throw new IOException("Internal Error");
     };
@@ -122,7 +69,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
       SimpleHTTPClient client = setupSimpleHTTPClient(url);
       return client.post(url, contentType, content, accept);
     case MANAGED:
-      return ManagedWebAccess.getAccessor().post(getServerTypes(), url, content, contentType, accept, newHeaders());
+      return ManagedWebAccess.getAccessor().post(getServerTypes(), url, content, contentType, accept, newHeaders(url));
     case PROHIBITED:
       throw new IOException("Access to the internet is not allowed by local security policy");
     default:
@@ -140,7 +87,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
       SimpleHTTPClient client = setupSimpleHTTPClient(url);
       return client.put(url, contentType, content, accept);
     case MANAGED:
-      return ManagedWebAccess.getAccessor().put(getServerTypes(), url, content, contentType, accept, newHeaders());
+      return ManagedWebAccess.getAccessor().put(getServerTypes(), url, content, contentType, accept, newHeaders(url));
     case PROHIBITED:
       throw new IOException("Access to the internet is not allowed by local security policy");
     default:

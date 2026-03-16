@@ -144,7 +144,7 @@ public class TerminologyCacheManager {
     }
   }
 
-  
+  /*FIXME delete this if need be or implement basic auth
   public void commit(String token) throws IOException {
     // create a zip of all the files 
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
@@ -163,5 +163,5 @@ public class TerminologyCacheManager {
       log.info("Sent cache");
     }
   }
-
+*/
 }

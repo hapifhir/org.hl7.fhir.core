@@ -82,7 +82,9 @@ public class ManagedWebAccess {
 
   @Getter
   private static String userAgent;
-  private static List<ServerDetailsPOJO> serverAuthDetails;
+
+  private static List<ServerDetailsPOJO> serverDetailsList;
+  private static IHTTPAuthenticationProvider defaultAuthenticationProvider;
 
   public static WebAccessPolicy getAccessPolicy() {
     return accessPolicy;
@@ -109,11 +111,19 @@ public class ManagedWebAccess {
   }
 
   public static ManagedWebAccessor accessor(Iterable<String> serverTypes) {
-    return new ManagedWebAccessor(serverTypes, userAgent, serverAuthDetails);
+    return new ManagedWebAccessor(serverTypes, userAgent, defaultAuthenticationProvider);
+  }
+
+  public static ManagedWebAccessor accessor(Iterable<String> serverTypes, IHTTPAuthenticationProvider authenticationProvider) {
+    return new ManagedWebAccessor(serverTypes, userAgent, authenticationProvider);
   }
 
   public static ManagedFhirWebAccessor fhirAccessor() {
-    return new ManagedFhirWebAccessor(userAgent, serverAuthDetails);
+    return new ManagedFhirWebAccessor(userAgent, defaultAuthenticationProvider);
+  }
+
+  public static ManagedFhirWebAccessor fhirAccessor(IHTTPAuthenticationProvider authenticationProvider) {
+    return new ManagedFhirWebAccessor(userAgent, authenticationProvider);
   }
 
   public static HTTPResult get(Iterable<String> serverTypes, String url) throws IOException {
@@ -139,15 +149,8 @@ public class ManagedWebAccess {
   public static void loadFromFHIRSettings() {
     setAccessPolicy(FhirSettings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
     setUserAgent("hapi-fhir-tooling-client");
-    serverAuthDetails = new ArrayList<>();
-    serverAuthDetails.addAll(FhirSettings.getServers());
-  }
-
-  public static void loadFromFHIRSettings(FhirSettings settings) {
-    setAccessPolicy(settings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
-    setUserAgent("hapi-fhir-tooling-client");
-    serverAuthDetails = new ArrayList<>();
-    serverAuthDetails.addAll(settings.getServers());
+    serverDetailsList = FhirSettings.getServers();
+    defaultAuthenticationProvider = new ServerDetailsPOJOHTTPAuthProvider(serverDetailsList);
   }
 
   public static String makeSecureRef(String url) {
@@ -165,8 +168,8 @@ public class ManagedWebAccess {
       
       // Check if this URL matches a configured server with allowHttp: true
       // This allows HTTP for trusted internal servers (e.g., Docker service names)
-      if (serverAuthDetails != null) {
-        for (ServerDetailsPOJO server : serverAuthDetails) {
+      if (serverDetailsList != null) {
+        for (ServerDetailsPOJO server : serverDetailsList) {
           if (server.getAllowHttp() != null && server.getAllowHttp() && server.getUrl() != null && !server.getUrl().isEmpty()) {
             // Match if the URL starts with the configured server URL
             if (url.startsWith(server.getUrl())) {
