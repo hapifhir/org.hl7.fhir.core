@@ -165,13 +165,11 @@ public class TerminologyCacheManager {
   }
 
   private class TerminologyCacheManagerAuthenticationProvider implements IHTTPAuthenticationProvider {
-    private String user;
-    private String password;
+    private String basicAuth;
 
     public TerminologyCacheManagerAuthenticationProvider(String token) {
       super();
-      user = token.substring(0, token.indexOf(':'));
-      password = token.substring(token.indexOf(':') + 1))
+      basicAuth = token;
     }
 
     @Override
@@ -181,13 +179,11 @@ public class TerminologyCacheManager {
 
     @Override
     public Map<String, String> getHeaders(URL url) {
+      Map<String, String> map = new HashMap<>();
       if (canProvideHeaders(url)) {
-        Map<String, String> map = new HashMap<>();
-        String auth = user + ":" + password;
-        map.put("Authorization", "Basic " + Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8)));
-        return map;
+        map.put("Authorization", "Basic " + Base64.getEncoder().encode(basicAuth.getBytes(StandardCharsets.UTF_8)));
       }
+      return map;
     }
   }
-*/
 }
