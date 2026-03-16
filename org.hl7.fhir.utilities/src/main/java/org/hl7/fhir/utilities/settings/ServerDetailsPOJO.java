@@ -15,7 +15,7 @@ public class ServerDetailsPOJO {
   
     String url;
 
-    // possible values: none, basic, token, apikey
+    // possible values: none, basic, token, apikey, client_credentials
     String authenticationType;
 
   /**
@@ -47,4 +47,10 @@ public class ServerDetailsPOJO {
     Boolean allowHttp;
 
     Map<String, String> headers;
+
+    String clientId;
+
+    String clientSecret;
+
+    String tokenEndpoint;
 }

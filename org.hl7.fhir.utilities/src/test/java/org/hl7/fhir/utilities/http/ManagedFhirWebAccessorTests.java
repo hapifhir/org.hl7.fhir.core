@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.http;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,7 @@ public class ManagedFhirWebAccessorTests {
 
   @Test
   @DisplayName("Test default headers are added correctly.")
-  void addDefaultBasicHeader() {
+  void addDefaultBasicHeader() throws IOException {
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com");
 
     ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(expectedUserAgent, null)
