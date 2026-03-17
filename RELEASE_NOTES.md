@@ -18,6 +18,7 @@
   * Don't produce duplicate value sets
 * Fix bug parsing with multiple profiles for a type
 * Fix bug validating codes with no server
+* Fix error generating snapshot for deeply recursive nested resources
 
 ## Other code changes
 
