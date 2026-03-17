@@ -41,7 +41,7 @@ public class ExtensionUtilities {
   public static Extension makeIssueContext(String msgId) {
     Extension ex = new Extension();
     // todo: write this up and get it published with the pack (and handle the redirect?)
-    ex.setUrl(ExtensionDefinitions.EXT_ISSUE_MSG_CTXT);
+    ex.setUrl(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT);
     StringType c = new StringType();
     c.setValue(msgId);
     ex.setValue(c);

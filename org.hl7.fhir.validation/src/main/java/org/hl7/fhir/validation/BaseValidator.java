@@ -726,8 +726,8 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     if (issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID) != null) {
       validationMessage.setMessageId(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID));
     }
-    if (issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_CTXT) != null) {
-      validationMessage.setValidationContext(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_CTXT));
+    if (issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT) != null) {
+      validationMessage.setValidationContext(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT));
     }
     if (issue.hasDiagnostics()) {
       validationMessage.setDiagnostics(issue.getDiagnostics());

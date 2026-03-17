@@ -545,7 +545,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         return new ElementInStructure(source, ed); 
       } 
     } 
-    throw new Error(context.formatPhrase(RenderingContext.STRUC_DEF_CANT_FIND, contentReference, elements.toString(), source.getUrl())); 
+    throw new FHIRException(context.formatPhrase(RenderingContext.STRUC_DEF_CANT_FIND, contentReference, elements.toString(), source.getUrl()));
     //    return null; 
   } 
  

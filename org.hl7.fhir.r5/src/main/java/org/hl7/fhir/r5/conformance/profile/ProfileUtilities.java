@@ -4306,11 +4306,7 @@ public class ProfileUtilities {
     if (ed.hasContentReference() && ed.getContentReference().startsWith("#")) {
       String s = ed.getContentReference();
       String typeURL = getUrlForSource(type, srcSD);
-      if (replacedIds.containsKey(s.substring(1))) {
-        ed.setContentReference(typeURL+"#"+ replacedIds.get(s.substring(1)));
-      } else {
-        ed.setContentReference(typeURL+s);
-      }
+      ed.setContentReference(typeURL+s);
     }
   }
 

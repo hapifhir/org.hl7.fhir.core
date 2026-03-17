@@ -1,13 +1,9 @@
 package org.hl7.fhir.r5.extensions;
 
-import org.hl7.fhir.r5.model.Extension;
-
-import java.util.List;
-
 public class ExtensionDefinitions {
 
   public static final String EXT_ISSUE_MSG_ID = "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id";
-  public static final String EXT_ISSUE_MSG_CTXT = "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-context";
+  public static final String EXT_ISSUE_ISSUE_CTXT = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context";
   public static final String EXT_ISSUE_LINE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line";
   public static final String EXT_ISSUE_COL = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col";
   public static final String EXT_OO_FILE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-file";
