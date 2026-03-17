@@ -14,7 +14,7 @@
 * Various Performance Improvements
 * Package Regenerator
   * Performance Improvements
-  * More robust against errors in FHIRPath expressions
+  * more robust against errors in FHIRPath expressions
   * Don't produce duplicate value sets
 * Fix bug parsing with multiple profiles for a type
 * Fix bug validating codes with no server

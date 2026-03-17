@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.OperationOutcome;
@@ -16,13 +17,14 @@ import java.io.PrintStream;
 
 @Slf4j
 public class ValidationOutputRenderUtilities {
-  public static ValidationOutputRenderSummary renderValidationOutput(Resource resource, String output, String outputStyle, boolean isCrumbTrails, boolean isShowMessageIds, String runDate) throws IOException {
+  public static ValidationOutputRenderSummary renderValidationOutput(Resource resource, String output, String outputStyle, boolean isCrumbTrails, boolean isShowMessageIds, String runDate, IWorkerContext context) throws IOException {
     int errorCount = 0;
     PrintStream outputStream = null;
     ValidationOutputRenderer renderer = makeValidationOutputRenderer(output, outputStyle);
     renderer.setCrumbTrails(isCrumbTrails);
     renderer.setShowMessageIds(isShowMessageIds);
     renderer.setRunDate(runDate);
+    renderer.setContext(context);
     if (renderer.isSingleFile()) {
       if (output == null) {
         outputStream = new PrintStream(new Slf4JOutputStream());
