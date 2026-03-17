@@ -48,8 +48,15 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
  * By using accessPolicy, allowedDomains and accessor, a host java application can control 
  * whether this library has direct access to the web (and which domains it is allowed to access),
  * or whether the host application provides controlled access, or whether no access is allowed at all
- * (in which case other information providers need to be provided)
- *  
+ * (in which case other information providers need to be provided).
+ * <p/>
+ * Web access with these managed features is provided through the following four methods:
+ * <ul>
+ *   <li>{@link #accessor(Iterable)}</li>
+ *   <li>{@link #accessor(Iterable, IHTTPAuthenticationProvider)}</li>
+ *   <li>{@link #fhirAccessor()}</li>
+ *   <li>{@link #fhirAccessor(IHTTPAuthenticationProvider)}</li>
+ * </ul>
  * @author Grahame
  *
  */
@@ -110,18 +117,50 @@ public class ManagedWebAccess {
     ManagedWebAccess.userAgent = userAgent;
   }
 
+  /**
+   * Get an accessor for non-FHIR web servers. This web accessor will use the server settings in fhir-settings.json to
+   * manage authentication.
+   *
+   * @param serverTypes server types to be considered by a client
+   * @return a web accessor
+   */
   public static ManagedWebAccessor accessor(Iterable<String> serverTypes) {
     return new ManagedWebAccessor(serverTypes, userAgent, defaultAuthenticationProvider);
   }
 
+  /**
+   * Get an accessor for non-FHIR web servers. This web accessor will only use the provided authenticationProvider to
+   * manage authentication. If you need to combine your own authentication provider with the server settings in
+   * fhir-settings.json, consider using {@link HTTPAuthenticationProviderChain} to chain your
+   * implementation with {@link ServerDetailsPOJOHTTPAuthProvider}
+   *
+   * @param serverTypes server types to be considered by a client
+   * @param authenticationProvider provides necessary headers for authenticating http requests
+   * @return a web accessor
+   */
   public static ManagedWebAccessor accessor(Iterable<String> serverTypes, IHTTPAuthenticationProvider authenticationProvider) {
     return new ManagedWebAccessor(serverTypes, userAgent, authenticationProvider);
   }
 
+  /**
+   * Get an accessor for FHIR servers. This accessor will use the server settings in fhir-settings.json to manage
+   * authentication.
+   *
+   * @return a FHIR accessor
+   */
   public static ManagedFhirWebAccessor fhirAccessor() {
     return new ManagedFhirWebAccessor(userAgent, defaultAuthenticationProvider);
   }
 
+  /**
+   * Get an accessor for FHIR servers. This web accessor will only use the provided authenticationProvider to
+   * manage authentication. If you need to combine your own authentication provider with the server settings in
+   * fhir-settings.json, consider using {@link HTTPAuthenticationProviderChain} to chain your
+   * implementation with {@link ServerDetailsPOJOHTTPAuthProvider}
+   *
+   * @param authenticationProvider provides necessary headers for authenticating http requests
+   * @return a FHIR accessor
+   */
   public static ManagedFhirWebAccessor fhirAccessor(IHTTPAuthenticationProvider authenticationProvider) {
     return new ManagedFhirWebAccessor(userAgent, authenticationProvider);
   }

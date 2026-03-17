@@ -1,10 +1,8 @@
 package org.hl7.fhir.utilities.http;
 
 import lombok.Getter;
-import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>> {

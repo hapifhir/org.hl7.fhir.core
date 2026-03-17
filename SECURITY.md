@@ -42,16 +42,17 @@ restricting path access to particular directories.
 ## Network access
 
 The library will access the web to download needed collateral, or to access terminology resources or servers.
-All access is by http(s) using the httpok library, and is controlled by the class ManagedWebAccess. You can
-set the static features of this class to completely cut the library off from the  web, or provide your own
-web accessor, or limit the web resources accessed to particular domains or sub-domains. See ManagedWebAccess
-for details.
+All access is by http(s) using the okhttp library or java.net.HttpURLConnection, and is controlled by the class 
+ManagedWebAccess. Authentication is for individual servers can be configured through the fhir-settings.json file. 
+You can set the static features of this class to completely cut the library off from the web, provide your own web 
+accessor, provide your own provider of authentication, or limit the web resources accessed to particular domains or 
+sub-domains. See the ManagedWebAccess JavaDoc for details.
 
 Note that for legacy reasons, network access can also be prohibited using
 FhirSettings.setProhibitNetworkAccess(), but this is deprecated.
 
-Note that libraries that this library depends on may still access the network directly. Review
-of the use of these libraries is ongoing.
+Note that libraries that this library depends on may still access the network directly. Review of the use of these 
+libraries is ongoing.
 
 Validator: The validator CLI accesses the web to download packages and make use of the
 terminology server, which defaults to https://tx.fhir.org.
