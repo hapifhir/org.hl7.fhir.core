@@ -1,6 +1,6 @@
 ## Security Notices
 
-* TODO: HTTP Authentication Notes
+* ManagedWebAccess has been reworked for cleaner management of authorization. This also includes changes to the management of 30x redirects in the SimpleHTTPClient (see [security advisory note](todo)).
 * This release of the Validator supports scoped packages (see [security advisory note](todo))
 
 ## Validator Changes
@@ -14,10 +14,10 @@
 * Various Performance Improvements
 * Package Regenerator
   * Performance Improvements
-  * more robust against errors in FHIRPath expressions
+  * More robust against errors in FHIRPath expressions
   * Don't produce duplicate value sets
 * Fix bug parsing with multiple profiles for a type
-* fix bug validating codes with no server
+* Fix bug validating codes with no server
 
 ## Other code changes
 
