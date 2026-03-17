@@ -4,8 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -426,6 +428,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private JsonObject resourceGroupings; 
   private MapStructureMode mappingsMode;
   private List<StructureDefinition> mappingTargets = new ArrayList<>();
+  // Render-local store for pattern values merged into existing in-scope rows.
+  private final Map<ElementDefinition, List<Base>> mergedPatternValues = new IdentityHashMap<>();
  
   public static class UnusedTracker { 
     private boolean used; 
@@ -620,6 +624,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private TableModel generateTableInner(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, boolean logicalModel, boolean allInvariants, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx, HierarchicalTableGenerator gen) throws IOException {
+    mergedPatternValues.clear();
     List<ElementDefinition> list;
     if (diff) {
       list = new SnapshotGenerationPreProcessor(context.getProfileUtilities()).supplementMissingDiffElements(profile);
@@ -2062,7 +2067,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).addStyle("color: darkgreen")));
           } else {
             c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_AS_SHOWN), null).addStyle("color: darkgreen")));
-            genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath, false);
+            genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath, false, null, null, null);
           }
           if (isCoded(definition.getFixed()) && !hasDescription(definition.getFixed())) {
             Piece p = describeCoded(gen, definition.getFixed());
@@ -2078,7 +2083,25 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen")));
           else {
             c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_LEAST_FOLLOW), null).addStyle("color: darkgreen")));
-            genFixedValue(gen, row, definition.getPattern(), snapshot, true, corePath, mustSupportOnly);
+            genFixedValue(gen, row, definition.getPattern(), snapshot, true, corePath, mustSupportOnly, definition.getPath(), definition.getId(), inScopeElements);
+          }
+        } else if (hasMergedPatternValues(definition)) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_FIXED_VALUE)) + " ", null).addStyle("font-weight:bold"));
+          boolean first = true;
+          for (Base b : getMergedPatternValues(definition)) {
+            if (!first) {
+              c.addPiece(gen.new Piece(null, ", ", null));
+            }
+            String s = formatMergedPatternValue(b);
+            String link = null;
+            if (Utilities.isAbsoluteUrl(s) && context.getPkp() != null) {
+              link = context.getPkp().getLinkForUrl(corePath, s);
+            }
+            c.getPieces().add(gen.new Piece(link, s, null).addStyle("color: darkgreen"));
+            first = false;
           }
         } else if (definition.hasExample()) {
           for (ElementDefinitionExampleComponent ex : definition.getExample()) {
@@ -2725,7 +2748,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return b; 
   } 
  
-  private void genFixedValue(HierarchicalTableGenerator gen, Row erow, DataType value, boolean snapshot, boolean pattern, String corePath, boolean skipnoValue) { 
+  private void genFixedValue(HierarchicalTableGenerator gen, Row erow, DataType value, boolean snapshot, boolean pattern, String corePath, boolean skipnoValue, String path, String id, List<ElementDefinition> inScopeElements) { 
     String ref = context.getPkp().getLinkFor(corePath, value.fhirType()); 
     if (ref != null && ref.contains(".html")) { 
       ref = ref.substring(0, ref.indexOf(".html"))+"-definitions.html#"; 
@@ -2733,10 +2756,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       ref = "?gen-fv?"; 
     } 
     StructureDefinition sd = context.getWorker().fetchTypeDefinition(value.fhirType()); 
- 
     for (org.hl7.fhir.r5.model.Property t : value.children()) { 
       ElementDefinition ed = findElementDefinitionOrNull(sd, t.getName()); 
       if (ed != null) { // might be null because of added properties across versions 
+        String childPath = path == null ? null : path+"."+t.getName();
+        String childId = id == null ? null : id+"."+t.getName();
+        if (pattern && childPath != null && hasPathInScope(childPath, childId, inScopeElements)) {
+          mergePatternValuesIntoScope(childPath, childId, t.getValues(), inScopeElements);
+          continue;
+        }
         if (t.getValues().size() > 0 || snapshot) { 
           if (t.getValues().size() == 0 || (t.getValues().size() == 1 && t.getValues().get(0).isEmpty())) { 
             if (!skipnoValue) { 
@@ -2841,7 +2869,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 c.addPiece(gen.new Piece("br")); 
                 c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_FIXED_VALUE)+" ", null).addStyle("font-weight: bold")); 
                 c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_COMPLEXBRACK), null).addStyle("color: darkgreen")); 
-                genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath, skipnoValue); 
+                genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath, skipnoValue, childPath, childId, inScopeElements); 
               } 
             } 
           } 
@@ -2849,6 +2877,86 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
     } 
   } 
+
+  private boolean hasMergedPatternValues(ElementDefinition definition) {
+    List<Base> values = mergedPatternValues.get(definition);
+    return values != null && !values.isEmpty();
+  }
+
+  private List<Base> getMergedPatternValues(ElementDefinition definition) {
+    return mergedPatternValues.getOrDefault(definition, Collections.emptyList());
+  }
+
+  private String formatMergedPatternValue(Base b) throws IOException {
+    if (b == null) {
+      return "";
+    }
+    if (b.isPrimitive()) {
+      return b.primitiveValue();
+    }
+    if (b instanceof DataType) {
+      return buildJson((DataType) b);
+    }
+    return b.toString();
+  }
+
+  private void mergePatternValuesIntoScope(String childPath, String childId, List<Base> values, List<ElementDefinition> inScopeElements) {
+    if (Utilities.noString(childPath) || values == null || values.isEmpty() || inScopeElements == null) {
+      return;
+    }
+    for (ElementDefinition ed : inScopeElements) {
+      if (!matchesInScopeElement(childPath, childId, ed)) {
+        continue;
+      }
+      List<Base> merged = mergedPatternValues.computeIfAbsent(ed, k -> new ArrayList<>());
+      for (Base value : values) {
+        if (value != null && !containsMergedValue(merged, value)) {
+          merged.add(value.copy());
+        }
+      }
+    }
+  }
+
+  private boolean containsMergedValue(List<Base> merged, Base value) {
+    for (Base b : merged) {
+      if (b != null && b.equalsDeep(value)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean hasPathInScope(String path, String id, List<ElementDefinition> inScopeElements) {
+    if (path == null || inScopeElements == null) {
+      return false;
+    }
+    for (ElementDefinition ed : inScopeElements) {
+      if (matchesInScopeElement(path, id, ed)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean matchesInScopeElement(String path, String id, ElementDefinition candidate) {
+    if (candidate == null || !candidate.hasPath() || !matchesInScopePath(path, candidate.getPath())) {
+      return false;
+    }
+    if (Utilities.noString(id) || !id.contains(":")) {
+      return true;
+    }
+    if (!candidate.hasId()) {
+      return false;
+    }
+    return matchesInScopePath(id, candidate.getId());
+  }
+
+  private boolean matchesInScopePath(String path, String candidate) {
+    if (path.equals(candidate)) {
+      return true;
+    }
+    return candidate.endsWith("[x]") && path.startsWith(candidate.substring(0, candidate.length()-3));
+  }
  
  
   private ElementDefinition findElementDefinition(StructureDefinition sd, String name) { 
