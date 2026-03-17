@@ -115,6 +115,21 @@ public class BaseHTTPHandler {
     }
   }
 
+  protected void sendResource(HttpExchange exchange, int statusCode, org.hl7.fhir.r5.model.Resource resource, String format) throws IOException {
+    try {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      if ("xml".equalsIgnoreCase(format)) {
+        new XmlParser().compose(baos, resource);
+        sendResponse(exchange, statusCode, baos.toString(StandardCharsets.UTF_8.name()), "application/fhir+xml");
+      } else {
+        new JsonParser().compose(baos, resource);
+        sendResponse(exchange, statusCode, baos.toString(StandardCharsets.UTF_8.name()), "application/fhir+json");
+      }
+    } catch (Exception e) {
+      sendResponse(exchange, 500, "Error serializing response: " + e.getMessage(), "text/plain");
+    }
+  }
+
   protected void sendResponse(HttpExchange exchange, int statusCode, String response, String contentType) throws IOException {
     byte[] responseBytes = response.getBytes(StandardCharsets.UTF_8);
     exchange.getResponseHeaders().set("Content-Type", contentType);

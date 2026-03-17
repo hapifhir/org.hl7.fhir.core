@@ -31,7 +31,19 @@ public class FhirValidatorHttpService {
     server = HttpServer.create(new InetSocketAddress(port), 0);
 
     server.createContext("/validateResource", new ValidateResourceHTTPHandler(this));
+    server.createContext("/fhirpath", new FhirPathHTTPHandler(this));
+    server.createContext("/matchetype", new MatchetypeHTTPHandler(this));
+    server.createContext("/testdata", new TestDataHTTPHandler(this));
     server.createContext("/loadIG", new LoadIGHTTPHandler(this));
+    server.createContext("/convert", new ConvertHTTPHandler(this));
+    server.createContext("/snapshot", new SnapshotHTTPHandler(this));
+    server.createContext("/narrative", new NarrativeHTTPHandler(this));
+    server.createContext("/transform", new TransformHTTPHandler(this));
+    server.createContext("/version", new VersionHTTPHandler(this));
+    server.createContext("/compile", new CompileHTTPHandler(this));
+    server.createContext("/openapi.json", new OpenApiHTTPHandler());
+    server.createContext("/docs", new DocsHTTPHandler(DocsHTTPHandler.SWAGGER_HTML));
+    server.createContext("/redoc", new DocsHTTPHandler(DocsHTTPHandler.REDOC_HTML));
     server.createContext("/txTest", new TxTestHTTPHandler(this));
     server.createContext("/stop", new StopHTTPHandler(this));
 
