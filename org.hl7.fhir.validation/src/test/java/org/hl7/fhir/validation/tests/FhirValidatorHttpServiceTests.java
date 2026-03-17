@@ -17,7 +17,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -248,7 +247,7 @@ class FhirValidatorHttpServiceTest {
           <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id">
             <valueCode value="http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6" />
           </extension>
-          <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-message-context">
+          <extension url="http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context">
              <valueString value="http://hl7.org/fhir/StructureDefinition/Patient|4.0.1"/>
           </extension>
           <severity value="warning" />
@@ -347,7 +346,7 @@ class FhirValidatorHttpServiceTest {
                     "valueCode": "Validation_VAL_Profile_Minimum"
                   },
                   {
-                     "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-context",
+                     "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
                       "valueString": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient|5.0.1"
                    }
                 ],
@@ -379,7 +378,7 @@ class FhirValidatorHttpServiceTest {
                     "valueCode": "Validation_VAL_Profile_Minimum"
                    },
                    {
-                     "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-context",
+                     "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context",
                      "valueString": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient|5.0.1"
                    }
                 ],
