@@ -1,6 +1,6 @@
-## Security Notices 
+## Security Notices
 
-* TODO: HTTP Authentication Notes
+* ManagedWebAccess has been reworked for cleaner management of authorization. This also includes changes to the management of 30x redirects in the SimpleHTTPClient (see [security advisory note](todo)).
 * This release of the Validator supports scoped packages (see [security advisory note](todo))
 
 ## Validator Changes
@@ -13,20 +13,20 @@
 * Fix bugs in expansion and validation when valueset includes two different versions of the same code system
 * Various Performance Improvements
 * Package Regenerator
-  * Performance Improvements 
-  * more robust against errors in FHIRPath expressions 
-  * Don't produce duplicate value sets 
+  * Performance Improvements
+  * More robust against errors in FHIRPath expressions
+  * Don't produce duplicate value sets
 * Fix bug parsing with multiple profiles for a type
-* fix bug validating codes with no server
+* Fix bug validating codes with no server
 
 ## Other code changes
 
 * The IWorkerContext has been changed, which impacts on all uses of the HAPI core library:
   * Introduce VersionResolutionRules when resolving versions for canonical references
-  * Add Identifier when resolving References to support logical references 
+  * Add Identifier when resolving References to support logical references
   * Add the methods storeAnalysis/retrieveAnalysis for caching analysis of the loaded resources - caches are wiped when loaded content changes
   * Remove the NamingSystem related function in preference to using the analysis methods
-* Fix NPE rendering Questionnaires 
+* Fix NPE rendering Questionnaires
 * Expansion bugs: imported valueSet excludes ignored + expansion.total inconsistent
 * Remove FTPClient, tests, and supporting dependencies
 * Fix rendering bug where naming system resolution was a little random

@@ -6,23 +6,25 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.IHTTPAuthenticationProvider;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 
 @MarkedToMoveToAdjunctPackage
@@ -144,7 +146,6 @@ public class TerminologyCacheManager {
     }
   }
 
-  
   public void commit(String token) throws IOException {
     // create a zip of all the files 
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
@@ -153,8 +154,7 @@ public class TerminologyCacheManager {
     // post it to
     String url = "https://tx-dev.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip";
     log.info("Sending tx-cache to "+url+" ("+Utilities.describeSize(bs.toByteArray().length)+")");
-    HTTPResult res = ManagedWebAccess.accessor(Arrays.asList("web"))
-        .withBasicAuth(token.substring(0, token.indexOf(':')), token.substring(token.indexOf(':') + 1))
+    HTTPResult res = ManagedWebAccess.accessor(Arrays.asList("web"), new TerminologyCacheManagerAuthenticationProvider(token))
         .put(url, bs.toByteArray(), null, "application/zip");
     
     if (res.getCode() >= 300) {
@@ -164,4 +164,26 @@ public class TerminologyCacheManager {
     }
   }
 
+  private class TerminologyCacheManagerAuthenticationProvider implements IHTTPAuthenticationProvider {
+    private String basicAuth;
+
+    public TerminologyCacheManagerAuthenticationProvider(String token) {
+      super();
+      basicAuth = token;
+    }
+
+    @Override
+    public boolean canProvideHeaders(URL url) {
+      return url.getHost().equals("tx-dev.fhir.org");
+    }
+
+    @Override
+    public Map<String, String> getHeaders(URL url) {
+      Map<String, String> map = new HashMap<>();
+      if (canProvideHeaders(url)) {
+        map.put("Authorization", "Basic " + Base64.getEncoder().encode(basicAuth.getBytes(StandardCharsets.UTF_8)));
+      }
+      return map;
+    }
+  }
 }
