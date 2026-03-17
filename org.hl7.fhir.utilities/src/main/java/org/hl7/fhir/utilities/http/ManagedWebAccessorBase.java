@@ -15,6 +15,12 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
   @Getter
   private final IHTTPAuthenticationProvider httpAuthHeaderProvider;
 
+  /**
+   * A set of headers to be added to HTTP requests.
+   * <p/>
+   * Important: these headers should not contain any sensitive or private information, such as authentication. Such
+   * headers should be managed by {@link IHTTPAuthenticationProvider} implementations.
+   */
   @Getter
   private final Map<String, String> headers = new HashMap<>();
 
