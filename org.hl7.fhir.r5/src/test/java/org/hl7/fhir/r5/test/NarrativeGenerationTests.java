@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.liquid.LiquidEngine;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Resource;
@@ -43,6 +44,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -53,6 +55,15 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class NarrativeGenerationTests {
+  @BeforeAll
+  public static void beforeAll() {
+    LiquidEngine.setAllowLiquidEvaluation(true);
+  }
+
+  @AfterAll
+  public static void afterAll() {
+    LiquidEngine.setAllowLiquidEvaluation(false);
+  }
 
   public static class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
 

@@ -59,6 +59,7 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r5.liquid.LiquidEngine;
 import org.hl7.fhir.validation.cli.picocli.CLI;
 import org.hl7.fhir.validation.service.ValidationService;
 
@@ -86,6 +87,7 @@ public class ValidatorCli {
 
   public static void main(String[] args) {
     System.setProperty("slf4j.internal.verbosity", "WARN");
+    LiquidEngine.setAllowLiquidEvaluation(true);
     CLI cli = new CLI(new ValidationService());
     try {
       int exitCode = cli.parseArgsAndExecuteCommand(args);
