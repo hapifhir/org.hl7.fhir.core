@@ -75,8 +75,6 @@ public class SimpleHTTPClient {
     boolean done = false;
     URL originalUrl = new URL(urlString);
     URL url = originalUrl;
-    /* Use the manually set headers from this class if configured via authenticationMode. IF a redirect happens, these
-    will be ignored an ALL future redirects in favor of authprovider supplied headers. */
 
     while (!done) {
       int times = visited.compute(urlString, (key, count) -> count == null ? 1 : count + 1);
