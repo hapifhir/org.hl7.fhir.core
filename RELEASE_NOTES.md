@@ -1,6 +1,6 @@
 ## Security Notices
 
-* ManagedWebAccess has been reworked for cleaner management of authorization. This also includes changes to the management of 30x redirects in the SimpleHTTPClient (see [security advisory note](todo)).
+* ManagedWebAccess has been reworked for cleaner management of authorization. This also includes changes to the management of 30x redirects in the SimpleHTTPClient (see [security advisory note](https://github.com/hapifhir/org.hl7.fhir.core/security/advisories/GHSA-p7m9-v2cm-2h7m)).
 * This release of the Validator supports scoped packages (see [security advisory note](https://www.fhir.org/guides/security-notices/2026-03-npm-dependencies.html))
 
 ## Validator Changes
