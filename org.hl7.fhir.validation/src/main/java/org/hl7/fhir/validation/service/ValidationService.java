@@ -318,7 +318,8 @@ public class ValidationService {
         log.info("Done. " + validationEngine.getContext().clock().report() + ". Memory = " + Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed() + mbean.getNonHeapMemoryUsage().getUsed()));
         log.info("");
 
-        ValidationOutputRenderSummary renderSummary = renderValidationOutput(resource, validateSourceParameters.output(), instanceValidatorParameters.getOutputStyle(), instanceValidatorParameters.isCrumbTrails(), instanceValidatorParameters.isShowMessageIds(), runDate);
+        ValidationOutputRenderSummary renderSummary = renderValidationOutput(resource, validateSourceParameters.output(), instanceValidatorParameters.getOutputStyle(),
+          instanceValidatorParameters.isCrumbTrails(), instanceValidatorParameters.isShowMessageIds(), runDate, validationEngine.getContext());
         errorCount += renderSummary.totalErrors();
 
         if (instanceValidatorParameters.getHtmlOutput() != null) {

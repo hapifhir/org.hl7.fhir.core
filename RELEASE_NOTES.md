@@ -5,7 +5,7 @@
 
 ## Validator Changes
 
-* Introduce HTTP client/server mode for performance when validating in pipelines
+* Introduce HTTP client/server mode for performance when validating in pipelines. See [Documentation](https://confluence.hl7.org/spaces/FHIR/pages/35718580/Using+the+FHIR+Validator#UsingtheFHIRValidator-RunningtheValidatorasalocalHTTPservice)
 * Add support for scoped packages in package cache
 * Fix bugs chasing package versioned references when no version supplied
 * Fix snapshot generation for nested slices with contentReference (h/t glichtner)
