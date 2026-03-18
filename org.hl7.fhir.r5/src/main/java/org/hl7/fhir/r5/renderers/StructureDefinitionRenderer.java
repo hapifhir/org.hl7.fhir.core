@@ -1005,7 +1005,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setIcon("icon_element.gif", context.formatPhrase(RenderingContext.TEXT_ICON_ELEMENT)); 
       } else { 
         row.setIcon("icon_resource.png", context.formatPhrase(RenderingContext.GENERAL_RESOURCE)); 
-      } 
+      }
+      if (hasFixedPatternOrMergedValues(element)) {
+        setFixedPatternIcon(row, element);
+      }
       if (element.hasUserData(UserDataNames.render_opaque)) { 
         row.setOpacity("0.5"); 
       } 
@@ -1614,6 +1617,12 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
         c.addPiece(piece);
       }
+      if (shouldRenderFallbackShortForMergedPattern(definition, fallback)) {
+        if (!c.getPieces().isEmpty()) {
+          c.addPiece(gen.new Piece("br"));
+        }
+        c.addPiece(gen.new Piece(null, gt(fallback.getShortElement()), null));
+      }
       if (url != null) {
         if (!c.getPieces().isEmpty())
           c.addPiece(gen.new Piece("br"));
@@ -2091,6 +2100,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           }
           c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_FIXED_VALUE)) + " ", null).addStyle("font-weight:bold"));
           boolean first = true;
+          boolean hasComplexMergedValue = false;
           for (Base b : getMergedPatternValues(definition)) {
             if (!first) {
               c.addPiece(gen.new Piece(null, ", ", null));
@@ -2101,7 +2111,17 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
               link = context.getPkp().getLinkForUrl(corePath, s);
             }
             c.getPieces().add(gen.new Piece(link, s, null).addStyle("color: darkgreen"));
+            if (b instanceof DataType && !b.isPrimitive()) {
+              hasComplexMergedValue = true;
+            }
             first = false;
+          }
+          if (useTableForFixedValues && allowSubRows && hasComplexMergedValue) {
+            for (Base b : getMergedPatternValues(definition)) {
+              if (b instanceof DataType && !b.isPrimitive()) {
+                genFixedValue(gen, row, (DataType) b, snapshot, true, corePath, mustSupportOnly, definition.getPath(), definition.getId(), inScopeElements);
+              }
+            }
           }
         } else if (definition.hasExample()) {
           for (ElementDefinitionExampleComponent ex : definition.getExample()) {
@@ -2761,9 +2781,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (ed != null) { // might be null because of added properties across versions 
         String childPath = path == null ? null : path+"."+t.getName();
         String childId = id == null ? null : id+"."+t.getName();
-        if (pattern && childPath != null && hasPathInScope(childPath, childId, inScopeElements)) {
-          mergePatternValuesIntoScope(childPath, childId, t.getValues(), inScopeElements);
-          continue;
+        if (pattern && childPath != null && inScopeElements != null) {
+          if (hasPathInScope(childPath, childId, inScopeElements)) {
+            mergePatternValuesIntoScope(childPath, childId, t.getValues(), inScopeElements);
+            continue;
+          } else if (hasDescendantPathInScope(childPath, childId, inScopeElements)) {
+            for (Base mergedValue : t.getValues()) {
+              if (mergedValue instanceof DataType && !mergedValue.isPrimitive()) {
+                genFixedValue(gen, erow, (DataType) mergedValue, snapshot, true, corePath, skipnoValue, childPath, childId, inScopeElements);
+              }
+            }
+            continue;
+          }
         }
         if (t.getValues().size() > 0 || snapshot) { 
           if (t.getValues().size() == 0 || (t.getValues().size() == 1 && t.getValues().get(0).isEmpty())) { 
@@ -2880,7 +2909,39 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
   private boolean hasMergedPatternValues(ElementDefinition definition) {
     List<Base> values = mergedPatternValues.get(definition);
-    return values != null && !values.isEmpty();
+    if (values == null || values.isEmpty()) {
+      return false;
+    }
+    for (Base value : values) {
+      if (isRenderableMergedPatternValue(value)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean shouldRenderFallbackShortForMergedPattern(ElementDefinition definition, ElementDefinition fallback) {
+    if (definition == null || fallback == null || !definition.hasShort() || !fallback.hasShort() || !hasMergedPatternValues(definition)) {
+      return false;
+    }
+    String fallbackShort = gt(fallback.getShortElement());
+    if (Utilities.noString(fallbackShort) || !fallbackShort.contains("|")) {
+      return false;
+    }
+    String definitionShort = gt(definition.getShortElement());
+    return !fallbackShort.equals(definitionShort);
+  }
+
+  private boolean hasFixedPatternOrMergedValues(ElementDefinition definition) {
+    return definition != null && (definition.hasFixed() || definition.hasPattern() || hasMergedPatternValues(definition));
+  }
+
+  private void setFixedPatternIcon(Row row, ElementDefinition definition) {
+    if (definition.hasPattern() && !definition.hasFixed()) {
+      row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingContext.STRUC_DEF_REQ_PATT));
+    } else {
+      row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingContext.STRUC_DEF_FIXED_VALUE));
+    }
   }
 
   private List<Base> getMergedPatternValues(ElementDefinition definition) {
@@ -2895,6 +2956,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return b.primitiveValue();
     }
     if (b instanceof DataType) {
+      if (!b.isPrimitive()) {
+        return context.formatPhrase(RenderingContext.STRUC_DEF_COMPLEXBRACK);
+      }
       return buildJson((DataType) b);
     }
     return b.toString();
@@ -2910,11 +2974,21 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
       List<Base> merged = mergedPatternValues.computeIfAbsent(ed, k -> new ArrayList<>());
       for (Base value : values) {
-        if (value != null && !containsMergedValue(merged, value)) {
+        if (isRenderableMergedPatternValue(value) && !containsMergedValue(merged, value)) {
           merged.add(value.copy());
         }
       }
     }
+  }
+
+  private boolean isRenderableMergedPatternValue(Base value) {
+    if (value == null) {
+      return false;
+    }
+    if (value.isPrimitive()) {
+      return !Utilities.noString(value.primitiveValue());
+    }
+    return !value.isEmpty();
   }
 
   private boolean containsMergedValue(List<Base> merged, Base value) {
@@ -2934,6 +3008,41 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       if (matchesInScopeElement(path, id, ed)) {
         return true;
       }
+    }
+    return false;
+  }
+
+  private boolean hasDescendantPathInScope(String path, String id, List<ElementDefinition> inScopeElements) {
+    if (path == null || inScopeElements == null) {
+      return false;
+    }
+    for (ElementDefinition ed : inScopeElements) {
+      if (ed == null || !ed.hasPath()) {
+        continue;
+      }
+      if (isPathDescendant(path, ed.getPath())) {
+        if (Utilities.noString(id) || !id.contains(":")) {
+          return true;
+        }
+        if (ed.hasId() && ed.getId().startsWith(id + ".")) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean isPathDescendant(String basePath, String candidatePath) {
+    if (candidatePath == null || candidatePath.equals(basePath)) {
+      return false;
+    }
+    if (candidatePath.startsWith(basePath + ".")) {
+      return true;
+    }
+    if (basePath.endsWith("[x]")) {
+      String prefix = basePath.substring(0, basePath.length() - 3);
+      int dot = candidatePath.indexOf('.', prefix.length());
+      return candidatePath.startsWith(prefix) && dot > -1;
     }
     return false;
   }
@@ -5712,6 +5821,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private String chooseIcon(StructureDefinition profile, ElementDefinition element, TypeRefComponent tr) {
+    if (element.hasFixedOrPattern()) {
+      return "icon_fixed.gif";
+    }
 
     if (tail(element.getPath()).equals("extension") && isExtension(element)) { 
       if (element.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue(), profile))

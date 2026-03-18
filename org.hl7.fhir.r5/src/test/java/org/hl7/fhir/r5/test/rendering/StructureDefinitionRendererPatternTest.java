@@ -9,9 +9,11 @@ import java.lang.reflect.Method;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.HumanName;
+import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionDifferentialComponent;
@@ -72,11 +74,13 @@ public class StructureDefinitionRendererPatternTest {
     assertNoSyntheticPatternRowWithGiven(snapshotTable);
     assertPatternVisible(snapshotTable);
     assertMergedPatternValueVisible(snapshotTable);
+    assertHasLockIcon(snapshotTable);
 
     String differentialTable = render(sd, true, false);
     assertNoSyntheticPatternRowWithGiven(differentialTable);
     assertPatternVisible(differentialTable);
     assertMergedPatternValueVisible(differentialTable);
+    assertHasLockIcon(differentialTable);
 
     String snapshotAttributeTable = render(sd, false, true);
     assertNoSyntheticPatternRow(snapshotAttributeTable);
@@ -145,6 +149,74 @@ public class StructureDefinitionRendererPatternTest {
     assertTrue(matchesInScopeElement(renderer, "Patient.name.given", "Patient.name.given", unslicedGiven));
   }
 
+  @Test
+  public void complexPatternKeepsComplexMarkerAndMergesNestedChildValues() throws Exception {
+    StructureDefinition sd = makeBasePatientProfile("PatientIdentifierPatternNested");
+
+    Identifier identifierPattern = new Identifier();
+    identifierPattern.getType().addCoding(new Coding()
+      .setSystem("http://fhir.de/CodeSystem/identifier-type-de-basis")
+      .setCode("KVZ10"));
+
+    ElementDefinition identifier = new ElementDefinition();
+    identifier.setId("Patient.identifier");
+    identifier.setPath("Patient.identifier");
+    identifier.setPattern(identifierPattern);
+    sd.getDifferential().addElement(identifier);
+
+    addMustSupportElement(sd, "Patient.identifier.type", "Patient.identifier.type");
+    addMustSupportElement(sd, "Patient.identifier.type.coding", "Patient.identifier.type.coding");
+    addMustSupportElement(sd, "Patient.identifier.type.coding.system", "Patient.identifier.type.coding.system");
+    addMustSupportElement(sd, "Patient.identifier.type.coding.code", "Patient.identifier.type.coding.code");
+    generateSnapshot(sd);
+
+    String html = render(sd, false, false);
+    assertTrue(html.contains("Fixed Value"));
+    assertTrue(html.contains("(Complex)"));
+    assertTrue(html.contains("http://fhir.de/CodeSystem/identifier-type-de-basis"));
+    assertTrue(html.contains("KVZ10"));
+    assertFalse(html.contains("Identifier.type.coding"));
+  }
+
+  @Test
+  public void typePatternCreatesNestedRowsWhenCodingIsOutOfScope() throws Exception {
+    StructureDefinition sd = makeBasePatientProfile("PatientIdentifierTypePattern");
+
+    ElementDefinition typePattern = new ElementDefinition();
+    typePattern.setId("Patient.identifier.type");
+    typePattern.setPath("Patient.identifier.type");
+    typePattern.setPattern(new org.hl7.fhir.r5.model.CodeableConcept().addCoding(
+      new Coding().setSystem("http://fhir.de/CodeSystem/identifier-type-de-basis").setCode("KVZ10")
+    ));
+    typePattern.setMustSupport(true);
+    sd.getDifferential().addElement(typePattern);
+    generateSnapshot(sd);
+
+    String html = render(sd, true, false);
+    assertTrue(html.contains("Required Pattern"));
+    assertTrue(html.contains(">coding<"));
+    assertTrue(html.contains("http://fhir.de/CodeSystem/identifier-type-de-basis"));
+    assertTrue(html.contains("KVZ10"));
+  }
+
+  @Test
+  public void requiredBindingAndMergedPatternValueAreBothRendered() throws Exception {
+    StructureDefinition sd = makeBasePatientProfile("PatientNameUsePattern");
+
+    HumanName pattern = new HumanName();
+    pattern.setUse(HumanName.NameUse.MAIDEN);
+    addNamePattern(sd, pattern);
+    addMustSupportElement(sd, "Patient.name.use", "Patient.name.use");
+    generateSnapshot(sd);
+
+    String html = render(sd, false, false);
+    assertTrue(html.contains("usual | official | temp | nickname | anonymous | old | maiden"));
+    assertTrue(html.contains("Binding:"));
+    assertTrue(html.contains("#required"));
+    assertTrue(html.contains("Fixed Value"));
+    assertTrue(html.contains("maiden"));
+  }
+
   private boolean matchesInScopeElement(StructureDefinitionRenderer renderer, String path, String id, ElementDefinition candidate) throws Exception {
     Method m = StructureDefinitionRenderer.class.getDeclaredMethod("matchesInScopeElement", String.class, String.class, ElementDefinition.class);
     m.setAccessible(true);
@@ -178,6 +250,12 @@ public class StructureDefinitionRendererPatternTest {
 
   private void assertMergedPatternValueVisible(String html) {
     assertTrue(html.contains("Simone"));
+  }
+
+  private void assertHasLockIcon(String html) {
+    assertTrue(
+      html.contains("icon_fixed.gif") || html.contains("title=\"Required Pattern\"") || html.contains("title=\"Fixed Value\"")
+    );
   }
 
   private StructureDefinition makeBasePatientProfile(String id) {
@@ -217,6 +295,14 @@ public class StructureDefinitionRendererPatternTest {
     given.setPath("Patient.name.given");
     given.setMustSupport(true);
     sd.getDifferential().addElement(given);
+  }
+
+  private void addMustSupportElement(StructureDefinition sd, String id, String path) {
+    ElementDefinition element = new ElementDefinition();
+    element.setId(id);
+    element.setPath(path);
+    element.setMustSupport(true);
+    sd.getDifferential().addElement(element);
   }
 
   private void generateSnapshot(StructureDefinition sd) {
