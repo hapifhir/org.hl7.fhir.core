@@ -1991,6 +1991,17 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           binding = makeUnifiedBinding(valueDefn.getBinding(), valueDefn);
         else if (definition.hasBinding())
           binding = makeUnifiedBinding(definition.getBinding(), definition);
+        else if (fallback != null && fallback.hasBinding())
+          binding = makeUnifiedBinding(fallback.getBinding(), fallback);
+        if (shouldRenderRequiredBindingCodeList(definition, fallback, binding)) {
+          String valueList = renderRequiredBindingCodeList(binding);
+          if (!Utilities.noString(valueList)) {
+            if (!c.getPieces().isEmpty()) {
+              c.addPiece(gen.new Piece("br"));
+            }
+            c.getPieces().add(gen.new Piece(null, valueList, null));
+          }
+        }
         if (binding != null && !binding.isEmpty()) {
           if (!c.getPieces().isEmpty())
             c.addPiece(gen.new Piece("binding", "br"));
@@ -2930,6 +2941,61 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     String definitionShort = gt(definition.getShortElement());
     return !fallbackShort.equals(definitionShort);
+  }
+
+  private boolean shouldRenderRequiredBindingCodeList(ElementDefinition definition, ElementDefinition fallback, ElementDefinitionBindingComponent binding) {
+    if (binding == null || !binding.hasValueSet() || !binding.hasStrength() || binding.getStrength() != org.hl7.fhir.r5.model.Enumerations.BindingStrength.REQUIRED) {
+      return false;
+    }
+    if (definition == null || !hasMergedPatternValues(definition)) {
+      return false;
+    }
+    ElementDefinition source = definition.hasType() ? definition : fallback;
+    if (source == null || !source.hasType()) {
+      return false;
+    }
+    String type = source.getTypeFirstRep().getWorkingCode();
+    if (!"code".equals(type)) {
+      return false;
+    }
+    return true;
+  }
+
+  private String renderRequiredBindingCodeList(ElementDefinitionBindingComponent binding) {
+    try {
+      ValueSetExpansionOutcome exp = context.getContext().expandVS(
+        ExpansionOptions.cacheNoHeirarchy().withLanguage(context.getLocale().getLanguage()).withMaxCount(64),
+        binding.getValueSet()
+      );
+      if (exp == null || !exp.isOk() || exp.getValueset() == null || !exp.getValueset().hasExpansion()) {
+        return null;
+      }
+      List<String> codes = new ArrayList<>();
+      collectExpandedCodes(exp.getValueset().getExpansion().getContains(), codes, 32);
+      if (codes.size() < 2) {
+        return null;
+      }
+      return String.join(" | ", codes);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  private void collectExpandedCodes(List<ValueSetExpansionContainsComponent> contains, List<String> codes, int max) {
+    if (contains == null || codes.size() >= max) {
+      return;
+    }
+    for (ValueSetExpansionContainsComponent cc : contains) {
+      if (codes.size() >= max) {
+        return;
+      }
+      if (cc.hasCode() && !codes.contains(cc.getCode())) {
+        codes.add(cc.getCode());
+      }
+      if (cc.hasContains()) {
+        collectExpandedCodes(cc.getContains(), codes, max);
+      }
+    }
   }
 
   private boolean hasFixedPatternOrMergedValues(ElementDefinition definition) {
