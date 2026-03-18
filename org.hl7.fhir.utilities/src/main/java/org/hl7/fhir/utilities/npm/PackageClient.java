@@ -17,7 +17,6 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccessor;
@@ -25,9 +24,6 @@ import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-
-import static org.hl7.fhir.utilities.VersionUtilities.checkVersionNotNullAndValid;
-import static org.hl7.fhir.utilities.VersionUtilities.fixForSpecialValue;
 
 @Slf4j
 public class PackageClient {
@@ -178,22 +174,16 @@ public class PackageClient {
     return null;
   }
  
-  private InputStream fetchUrl(String source, String accept) throws IOException {
-    ManagedWebAccessor webAccessor = ManagedWebAccess.accessor(Arrays.asList("web"));
-    if (server.getAuthenticationMode() == HTTPAuthenticationMode.TOKEN) {
-      webAccessor.withToken(server.getToken());
-    } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.BASIC) {
-      webAccessor.withBasicAuth(server.getUsername(), server.getPassword());
-    } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.APIKEY) {
-      webAccessor.withApiKey(server.getApiKey());
-    }
-    HTTPResult res = webAccessor.get(source, accept);
+  private InputStream fetchUrl(String urlString, String accept) throws IOException {
+    ManagedWebAccessor webAccessor = ManagedWebAccess.accessor(Arrays.asList("web"), new PackageServerHTTPAuthProvider(server));
+
+    HTTPResult res = webAccessor.get(urlString, accept);
     res.checkThrowException();
     return new ByteArrayInputStream(res.getContent());
   }
 
-  private JsonObject fetchJson(String source) throws IOException {
-    String src = FileUtilities.streamToString(fetchUrl(source, "application/json"));
+  private JsonObject fetchJson(String urlString) throws IOException {
+    String src = FileUtilities.streamToString(fetchUrl(urlString, "application/json"));
     return JsonParser.parseObject(src);
   }
   

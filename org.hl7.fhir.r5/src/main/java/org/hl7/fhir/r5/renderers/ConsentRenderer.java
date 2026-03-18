@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.renderers;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -146,7 +147,11 @@ public class ConsentRenderer extends ResourceRenderer {
             first = p.sepFirst(first, ",");
             p.tx(" ");
             String url = r.primitiveValueMN("uri", "url");
-            p.ah(url).tx(url);
+            if (Utilities.isAbsoluteUrlLinkable(url)) {
+              p.ah(url).tx(url);
+            } else {
+              p.code(url);
+            }
           }
         }
         p.txWithWhitespace(context.formatPhrase(RenderingContext.CONSENT_BASIS_POLICY_SUFFIX));
@@ -306,7 +311,7 @@ public class ConsentRenderer extends ResourceRenderer {
   }
 
   private String chooseNameForExtension(String url) {
-    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
+    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd == null) {
       return Utilities.urlTail(url);
     } else {
@@ -318,7 +323,7 @@ public class ConsentRenderer extends ResourceRenderer {
     if (role != null) {
       renderDataType(status, x, role);
     } else {
-      x.tx(context.formatPhrase(RenderingContext.CSTABLE_HEAD_ACTOR));
+      x.tx(context.formatPhrasePlural(1, RenderingContext.CSTABLE_HEAD_ACTOR, ":"));
     }
     x.tx(": ");
     if (reference != null) {

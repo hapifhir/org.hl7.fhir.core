@@ -13,6 +13,7 @@ import org.fhir.ucum.Pair;
 import org.fhir.ucum.UcumException;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
@@ -165,7 +166,7 @@ public class QuestionnaireValidator extends BaseValidator {
       Element e = list.get(i);
       NodeStack ns = stack.push(e, i, e.getProperty().getDefinition(), e.getProperty().getDefinition());
       String url = e.primitiveValue();
-      Questionnaire q = context.fetchResource(Questionnaire.class, url);
+      Questionnaire q = context.fetchResource(Questionnaire.class, url, ExtensionUtilities.getVersionResolutionRules(e));
       if (warning(errors, "2023-06-15", IssueType.BUSINESSRULE, ns, q != null, I18nConstants.QUESTIONNAIRE_Q_UNKNOWN_DERIVATION, url)) {
         Element ext = e.getExtension("http://hl7.org/fhir/StructureDefinition/questionnaire-derivationType");
         if (warning(errors, "2023-06-15", IssueType.BUSINESSRULE, ns, ext != null, I18nConstants.QUESTIONNAIRE_Q_NO_DERIVATION_TYPE, url)) {
@@ -239,7 +240,7 @@ public class QuestionnaireValidator extends BaseValidator {
     if ((VersionUtilities.isR4Plus(context.getVersion())) && (item.hasChildren("answerValueSet"))) {
       String url = item.getNamedChildValue("answerValueSet");
       if (url != null) {
-        ValueSet vs = context.findTxResource(ValueSet.class, url);
+        ValueSet vs = context.findTxResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRules(item.getNamedChild("answerValueSet")));
         if (vs != null && vs.hasExtension(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
           List<Element> list = item.getNamedChild("answerValueSet").getExtensions(ExtensionDefinitions.EXT_BINDING_PARAMETER);
           for (Extension ve : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VALUESET_PARAMETER)) {
@@ -340,7 +341,7 @@ public class QuestionnaireValidator extends BaseValidator {
           int ml = Utilities.parseInt(e.primitiveValue(), 0);
           ok = rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ne, ml <= qi.getMaxLength(), I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_NC_MAXLENGTH, derivation.questionnaire.getUrl(), linkId, qi.getMaxLength()) && ok;
         } else {
-          ok = rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ns, false, I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_MAXLENGTH, derivation.questionnaire.getUrl(), linkId, qi.getMaxLength()) & ok;          
+          ok = rule(errors, "2023-06-15", IssueType.BUSINESSRULE, ns, false, I18nConstants.QUESTIONNAIRE_Q_ITEM_DERIVED_MAXLENGTH, derivation.questionnaire.getUrl(), linkId, qi.getMaxLength()) && ok;
         }
       }
 
@@ -498,6 +499,7 @@ public class QuestionnaireValidator extends BaseValidator {
     boolean ok = true;
     Element q = element.getNamedChild("questionnaire", false);
     String questionnaire = null;
+    Element qCtxt = null;
     if (q != null) {
       /*
        * q.getValue() is correct for R4 content, but we'll also accept the second
@@ -507,8 +509,10 @@ public class QuestionnaireValidator extends BaseValidator {
        */
       if (isNotBlank(q.getValue())) {
         questionnaire = q.getValue();
+        qCtxt = q;
       } else if (isNotBlank(q.getChildValue("reference"))) {
         questionnaire = q.getChildValue("reference");
+        qCtxt = q.getNamedChild("reference");
       }
     }
     boolean qok;
@@ -523,7 +527,7 @@ public class QuestionnaireValidator extends BaseValidator {
       if (questionnaire.startsWith("#")) {
         qsrc = QuestionnaireWithContext.fromContainedResource(stack.getLiteralPath(), element, (Questionnaire) loadContainedResource(errors, stack.getLiteralPath(), element, questionnaire.substring(1), Questionnaire.class));        
       } else {
-        qsrc = QuestionnaireWithContext.fromQuestionnaire(context.fetchResource(Questionnaire.class, questionnaire));          
+        qsrc = QuestionnaireWithContext.fromQuestionnaire(context.fetchResource(Questionnaire.class, questionnaire, ExtensionUtilities.getVersionResolutionRules(qCtxt)));
       }
       if (questionnaireMode == QuestionnaireMode.REQUIRED) {
         qok = rule(errors, NO_RULE_DATE, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
@@ -1016,7 +1020,7 @@ public class QuestionnaireValidator extends BaseValidator {
         warning(errors, "2024-05-07", IssueType.INVARIANT, vns, !(v.primitiveValue().contains("\r") || v.primitiveValue().contains("\n")), I18nConstants.QUESTIONNAIRE_QR_ITEM_STRING_ILLEGAL_CHARS, v.primitiveValue());
         if (qItem.hasAnswerValueSet()) {
 
-          ValueSet vs = context.findTxResource(ValueSet.class, qItem.getAnswerValueSet());
+          ValueSet vs = context.findTxResource(ValueSet.class, qItem.getAnswerValueSet(), ExtensionUtilities.getVersionResolutionRules(qItem.getAnswerValueSetElement()));
           if (vs == null) {
             warning(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_VS_BAD, qItem.getAnswerValueSet()); 
           } else {
@@ -1180,7 +1184,7 @@ public class QuestionnaireValidator extends BaseValidator {
         }
         if (qItem.hasExtension(ExtensionDefinitions.EXT_Q_UNIT_VALUESET)) {
           String url = ExtensionUtilities.readStringExtension(qItem, ExtensionDefinitions.EXT_Q_UNIT_VALUESET);
-          ValueSet vs = context.findTxResource(ValueSet.class, url);
+          ValueSet vs = context.findTxResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRules(qItem.getExtensionByUrl(ExtensionDefinitions.EXT_Q_UNIT_VALUESET).getValueUriType()));
           if (vs == null) {
             warning(errors, "2024-05-07", IssueType.INVARIANT, vns, false, I18nConstants.QUESTIONNAIRE_QR_ITEM_DECIMAL_INVALID_UNIT_VS, url); 
           } else {
@@ -1385,7 +1389,7 @@ public class QuestionnaireValidator extends BaseValidator {
     if (ref.startsWith("#") && qSrc.container != null) {
       vs = (ValueSet) loadContainedResource(errors, qSrc.containerPath, qSrc.container, ref.substring(1), ValueSet.class);
     } else {
-      vs = resolveBindingReference(qSrc.q(), ref, qSrc.q().getUrl(), qSrc.q());
+      vs = resolveBindingReference(qSrc.q(), ref, null, qSrc.q().getUrl(), qSrc.q());
     }
     if (warning(errors, "2024-05-07", IssueType.CODEINVALID, value.line(), value.col(), stack.getLiteralPath(), vs != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(ref))) {
       try {

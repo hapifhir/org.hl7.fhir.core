@@ -151,7 +151,7 @@ public class TurtleGeneratorTests {
    */
   private String generateTurtleClassFromProfileName(String profileName) throws IOException, UcumException {
     String resourceUri = ProfileUtilities.sdNs(profileName, null);
-    Resource resource = workerContext.fetchResource(Resource.class, resourceUri);
+    Resource resource = workerContext.fetchResource(Resource.class, resourceUri, IWorkerContext.VersionResolutionRules.defaultRule());
     Element resourceElement = resourceParser.parse(resource);
     var turtleFilePath = outputTurtleDirectory.resolve(profileName + ".ttl").toString();
     try (OutputStream outputStream = ManagedFileAccess.outStream(turtleFilePath)) {

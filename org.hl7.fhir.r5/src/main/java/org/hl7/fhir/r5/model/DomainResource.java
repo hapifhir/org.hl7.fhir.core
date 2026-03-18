@@ -479,12 +479,12 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
 
   public boolean hasPrimitiveExtension(String url) {
     for (Extension e : getModifierExtension()) {
-      if (url.equals(e.getUrl()) & e.hasValue() && e.getValue().isPrimitive()) {
+      if (url.equals(e.getUrl()) && e.hasValue() && e.getValue().isPrimitive()) {
         return true;
       }
     }
     for (Extension e : getExtension()) {
-      if (url.equals(e.getUrl()) & e.hasValue() && e.getValue().isPrimitive()) {
+      if (url.equals(e.getUrl()) && e.hasValue() && e.getValue().isPrimitive()) {
         return true;
       }
     }

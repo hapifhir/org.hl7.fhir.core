@@ -10,7 +10,7 @@ v: {
   "code" : "fr-CA",
   "system" : "urn:ietf:bcp:47",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n1ms urn:ietf:bcp:47/vs: Validate \"[undefined#fr-CA (\"undefined\")]\"\n1ms urn:ietf:bcp:47/vs: Check \"urn:ietf:bcp:47#fr-CA\"\n1ms urn:ietf:bcp:47/vs: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n1ms urn:ietf:bcp:47/vs: check code in () at Coding\n1ms urn:ietf:bcp:47/vs: Code \"fr-CA\" found in urn:ietf:bcp:47|null",
+  "diagnostics" : "0ms tx-op\n0ms urn:ietf:bcp:47/vs: Validate \"[urn:ietf:bcp:47#fr-CA (\"undefined\")]\"\n1ms urn:ietf:bcp:47/vs: Check \"urn:ietf:bcp:47#fr-CA\"\n1ms urn:ietf:bcp:47/vs: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n1ms urn:ietf:bcp:47/vs: check code in (urn:ietf:bcp:47) at Coding\n1ms urn:ietf:bcp:47/vs: Code \"fr-CA\" found in urn:ietf:bcp:47|null",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

@@ -22,6 +22,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -33,10 +35,10 @@ public class TxServiceTestHelper {
     if (!isCodeSystem) {
       if (p.hasParameter("valueSetVersion")) {
         valueSetUrl = p.getParameterValue("url").primitiveValue()+"|"+p.getParameterValue("valueSetVersion").primitiveValue();
-        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue(), null);
+        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule(), p.getParameterValue("valueSetVersion").primitiveValue(), null);
       } else {
         valueSetUrl = p.getParameterValue("url").primitiveValue();
-        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule());
       }
     }
     ValidationResult validationResult = null;
@@ -128,7 +130,7 @@ public class TxServiceTestHelper {
 
       writeDiffToFileSystem( name, expectedResponse, actualResponse);
 
-      String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
@@ -174,7 +176,7 @@ public class TxServiceTestHelper {
           parameters.addParameter("inactive", true);
         }
         if (validationResult.getStatus() != null) {
-          parameters.addParameter("status", validationResult.getStatus());
+          parameters.addCodeParameter("status", validationResult.getStatus());
         }
         if (validationResult.getUnknownSystems() != null) {
           for (String s : validationResult.getUnknownSystems()) {
@@ -195,7 +197,7 @@ public class TxServiceTestHelper {
 
       writeDiffToFileSystem(name, expectedResponse, actualResponse);
 
-      String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
          FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
@@ -224,6 +226,14 @@ public class TxServiceTestHelper {
     }
     FileUtilities.stringToFile(expected, fullExpected + testName + ".json");
     FileUtilities.stringToFile(actual, fullActual + testName + ".json");
+
+  }
+
+
+  private static Map<String, String> vars() {
+    Map<String, String> vars = new HashMap<String, String>();
+    vars.put("version", "5.0.0");
+    return vars;
 
   }
 }

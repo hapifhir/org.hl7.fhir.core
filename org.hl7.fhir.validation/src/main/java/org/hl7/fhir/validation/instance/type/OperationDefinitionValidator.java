@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.DataType;
@@ -37,7 +38,7 @@ public class OperationDefinitionValidator extends BaseValidator {
       String url = od.getNamedChildValue("url");
       String base = od.getNamedChildValue("base");
       String last = url;
-      OperationDefinition opDef = context.fetchResource(OperationDefinition.class, base);
+      OperationDefinition opDef = context.fetchResource(OperationDefinition.class, base, ExtensionUtilities.getVersionResolutionRules(od.getNamedChild("url")));
       while (opDef != null) {
         if (url.equals(opDef.getUrl())) {
           ok = false;
@@ -46,22 +47,22 @@ public class OperationDefinitionValidator extends BaseValidator {
         }
         last = base;
         base = opDef.getBase();
-        opDef = context.fetchResource(OperationDefinition.class, base);
+        opDef = context.fetchResource(OperationDefinition.class, base, ExtensionUtilities.getVersionResolutionRules(opDef.getBaseElement()));
       }
     }
     if (od.hasChild("inputProfile")) {
-      ok = validateProfile(errors, stack.push(od.getNamedChild("inputProfile"), -1, null, null), od, od.getNamedChildValue("inputProfile"), "in") && ok;
+      ok = validateProfile(errors, stack.push(od.getNamedChild("inputProfile"), -1, null, null), od, od.getNamedChild("inputProfile"), "in") && ok;
     }
     if (od.hasChild("outputProfile")) {
-      ok = validateProfile(errors, stack.push(od.getNamedChild("outputProfile"), -1, null, null), od, od.getNamedChildValue("outputProfile"), "out") && ok;      
+      ok = validateProfile(errors, stack.push(od.getNamedChild("outputProfile"), -1, null, null), od, od.getNamedChild("outputProfile"), "out") && ok;
     }
 
     return ok;
   }
 
-  private boolean validateProfile(List<ValidationMessage> errors, NodeStack stack, Element od, String url, String use) {
+  private boolean validateProfile(List<ValidationMessage> errors, NodeStack stack, Element od, Element url, String use) {
     boolean  ok = true;
-    StructureDefinition sdt = context.fetchResource(StructureDefinition.class, url);
+    StructureDefinition sdt = context.fetchResource(StructureDefinition.class, url.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(url));
     if (rule(errors, "2025-04-08", IssueType.UNKNOWN, stack, sdt != null, I18nConstants.OPDEF_PROFILE_NOT_FOUND, use, url) &&
         rule(errors, "2025-04-08", IssueType.INVALID, stack, "Parameters".equals(sdt.getType()), I18nConstants.OPDEF_PROFILE_NOT_PARAMETERS, use, url)) {
       DefinitionNavigator profile = new DefinitionNavigator(context, sdt, false, true);

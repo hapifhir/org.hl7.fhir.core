@@ -24,10 +24,7 @@ import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.context.ContextUtilities;
-import org.hl7.fhir.r5.context.ILoggingService;
-import org.hl7.fhir.r5.context.IWorkerContextManager;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.context.*;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -41,6 +38,16 @@ import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.liquid.BaseTableWrapper;
+import org.hl7.fhir.r5.liquid.GlobalObject.GlobalObjectRandomFunction;
+import org.hl7.fhir.r5.liquid.LiquidEngine;
+import org.hl7.fhir.r5.model.DateTimeType;
+import org.hl7.fhir.r5.model.DateType;
+import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.testfactory.ProfileBasedFactory;
+import org.hl7.fhir.r5.testfactory.TestDataFactory;
+import org.hl7.fhir.r5.testfactory.TestDataHostServices;
+import org.hl7.fhir.r5.testfactory.dataprovider.InlineTableDataProvider;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
@@ -65,6 +72,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
@@ -610,14 +618,18 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return list;
   }
 
+  @Deprecated(since="2026-02-20")
   public OperationOutcome validate(String source, List<String> profiles, IValidationEngineLoader loader, boolean all) throws FHIRException, IOException, InterruptedException {
     List<String> l = new ArrayList<String>();
     List<SourceFile> refs = new ArrayList<>();
     l.add(source);
-    return (OperationOutcome) validate(l, profiles, refs, null, loader, all, 0, true);
+    return (OperationOutcome) validate(l, new InstanceValidatorParameters().setProfiles(profiles), refs, null, loader, all, 0, true);
   }
 
-  public Resource validate(List<String> sources, List<String> profiles, List<SourceFile> refs, List<ValidationRecord> record, IValidationEngineLoader loader, boolean all, int delay, boolean first) throws FHIRException, IOException, InterruptedException {
+  //FIXME
+  // from CLI (direct)
+  // from MatchboxService
+  public Resource validate(List<String> sources, InstanceValidatorParameters instanceValidatorParameters, List<SourceFile> refs, List<ValidationRecord> record, IValidationEngineLoader loader, boolean all, int delay, boolean first) throws FHIRException, IOException, InterruptedException {
     boolean asBundle = ValidatorUtils.parseSources(sources, refs, context);
     Bundle results = new Bundle();
     results.setType(Bundle.BundleType.COLLECTION);
@@ -658,7 +670,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         log.info("  Validate " + ref.getRef());
 
         try {
-          OperationOutcome outcome = validate(ref.getRef(), ref.getCnt().getFocus(), ref.getCnt().getCntType(), profiles, record);
+          OperationOutcome outcome = validate(ref.getRef(), ref.getCnt().getFocus(), ref.getCnt().getCntType(), instanceValidatorParameters, record);
           ExtensionUtilities.addStringExtension(outcome, ExtensionDefinitions.EXT_OO_FILE, ref.getRef());
           log.info(" " + context.clock().milestone());
           results.addEntry().setResource(outcome);
@@ -677,14 +689,19 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       return results.getEntryFirstRep().getResource();
   }
 
-
-  public ValidatedFragments validateAsFragments(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
-    InstanceValidator validator = getValidator(cntType);
-    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
+  // FIXME from validator-wrapper (indirect)
+  public ValidatedFragments validateAsFragments(byte[] source, FhirFormat cntType, InstanceValidatorParameters instanceValidatorParameters, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
+    InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
+    //FIXME set instance validator options
+    validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(instanceValidatorParameters.getProfiles()));
     return new ValidatedFragments(validator.validatedContent,
       ValidationTime.fromTimeTracker(validator.timeTracker));
   }
 
+  /**
+   * @deprecated
+   */
+  @Deprecated(since="2026-02-20")
   public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator(cntType);
 
@@ -692,13 +709,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
-  public OperationOutcome validate(String location, ByteProvider source, FhirFormat cntType, List<String> profiles, List<ValidationRecord> record) throws FHIRException, IOException, EOperationOutcome, SAXException {
+  //FIXME from CLI (indirect)
+  public OperationOutcome validate(String location, ByteProvider source, FhirFormat cntType, InstanceValidatorParameters instanceValidatorParameters, List<ValidationRecord> record) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
       SchemaValidator.validateSchema(location, cntType, messages);
     }
-    InstanceValidator validator = getValidator(cntType);
-    Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(profiles));
+    InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
+    //FIXME set instance validator options
+    Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(instanceValidatorParameters.getProfiles()));
     boolean first = true;
     for (String fn : matchetypes) {
       if (first) {
@@ -738,6 +757,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
+  /**
+   * @deprecated
+   */
+  @Deprecated(since="2026-02-20")
   public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
@@ -870,6 +893,194 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return fpe.evaluateToString(new ValidationContext(context), e, e, e, exp);
   }
 
+  public String evaluateFhirPath(byte[] resource, FhirFormat format, String expression) throws FHIRException, IOException {
+    FHIRPathEngine fpe = this.getValidator(null).getFHIRPathEngine();
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
+    ExpressionNode exp = fpe.parse(expression);
+    return fpe.evaluateToString(new ValidationContext(context), e, e, e, exp);
+  }
+
+  public OperationOutcome compareMatchetype(byte[] resource, FhirFormat resourceFormat,
+      byte[] matchetype, FhirFormat matchetypeFormat) throws FHIRException, IOException {
+    InstanceValidator validator = getValidator(resourceFormat);
+    Element res = Manager.parseSingle(context, new ByteArrayInputStream(resource), resourceFormat);
+    Element exp = Manager.parseSingle(context, new ByteArrayInputStream(matchetype), matchetypeFormat);
+
+    MatchetypeValidator mv = new MatchetypeValidator(validator.getFHIRPathEngine());
+    List<ValidationMessage> messages = new ArrayList<>();
+    mv.compare(messages, res.fhirType(), exp, res);
+
+    OperationOutcome oo = new OperationOutcome();
+    if (messages.isEmpty()) {
+      oo.addIssue().setSeverity(OperationOutcome.IssueSeverity.INFORMATION)
+        .setCode(OperationOutcome.IssueType.INFORMATIONAL)
+        .getDetails().setText("Matchetype comparison: All OK");
+    } else {
+      for (ValidationMessage msg : messages) {
+        oo.addIssue()
+          .setSeverity(OperationOutcome.IssueSeverity.fromCode(msg.getLevel().toCode()))
+          .setCode(OperationOutcome.IssueType.fromCode(msg.getType().toCode()))
+          .getDetails().setText(msg.getMessage());
+      }
+    }
+    return oo;
+  }
+
+  public byte[] generateTestData(String profileUrl, org.hl7.fhir.utilities.json.model.JsonArray data,
+      org.hl7.fhir.utilities.json.model.JsonArray mappings, FhirFormat outputFormat, boolean asBundle) throws Exception {
+    StructureDefinition profile = context.fetchResource(StructureDefinition.class, profileUrl);
+    if (profile == null) {
+      throw new FHIRException("Profile not found: " + profileUrl);
+    }
+    if (!profile.hasSnapshot()) {
+      new ProfileUtilities(context, null, null).setAutoFixSliceNames(true)
+          .generateSnapshot(context.fetchResource(StructureDefinition.class, profile.getBaseDefinition()),
+              profile, profile.getUrl(), null, profile.getName());
+    }
+
+    FHIRPathEngine fpe = new FHIRPathEngine(context);
+    TestDataHostServices hs = new TestDataHostServices(context,
+        new DateTimeType(new Date()), new DateType(new Date()),
+        new StringType(VersionUtilities.getSpecUrl(context.getVersion())));
+    hs.registerFunction(new GlobalObjectRandomFunction());
+    hs.registerFunction(new BaseTableWrapper.TableColumnFunction());
+    hs.registerFunction(new BaseTableWrapper.TableDateColumnFunction());
+    hs.registerFunction(new TestDataFactory.CellLookupFunction());
+    hs.registerFunction(new TestDataFactory.TableLookupFunction());
+    fpe.setHostServices(hs);
+
+    // Ensure base test data SQLite file is available
+    String baseDataPath = Utilities.path("[tmp]", "fhir-test-data.db");
+    File baseDataFile = new File(baseDataPath);
+    if (!baseDataFile.exists()) {
+      try {
+        org.hl7.fhir.utilities.json.model.JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl("http://fhir.org/downloads/test-data-versions.json");
+        org.hl7.fhir.utilities.json.model.JsonObject current = json.forceArray("versions").get(0).asJsonObject();
+        String filename = current.asString("filename");
+        org.hl7.fhir.utilities.http.HTTPResult result = org.hl7.fhir.utilities.http.ManagedWebAccess.get(Utilities.strings("general"), "http://fhir.org/downloads/" + filename);
+        FileUtilities.bytesToFile(result.getContent(), baseDataFile);
+      } catch (Exception e) {
+        throw new FHIRException("Unable to download FHIR base test data (fhir-test-data.db). " +
+            "Run the validator once with -instance-factory to download it, or check network access: " + e.getMessage(), e);
+      }
+    }
+
+    InlineTableDataProvider tbl = new InlineTableDataProvider(data);
+    ProfileBasedFactory factory = new ProfileBasedFactory(fpe,
+        baseDataPath, tbl, new HashMap<>(),
+        mappings != null ? mappings : new org.hl7.fhir.utilities.json.model.JsonArray());
+    factory.setTesting(true);
+
+    if (asBundle) {
+      Element bundle = Manager.parse(context,
+          new ByteArrayInputStream("{\"resourceType\":\"Bundle\",\"type\":\"collection\"}".getBytes()), FhirFormat.JSON).get(0).getElement();
+      bundle.makeElement("id").setValue(java.util.UUID.randomUUID().toString().toLowerCase());
+      while (tbl.nextRow()) {
+        Element resource = factory.generate(profile);
+        Element be = bundle.makeElement("entry");
+        be.makeElement("fullUrl").setValue("urn:uuid:" + java.util.UUID.randomUUID().toString().toLowerCase());
+        be.makeElement("resource").getChildren().addAll(resource.getChildren());
+      }
+      tbl.reset();
+      ByteArrayOutputStream bs = new ByteArrayOutputStream();
+      Manager.compose(context, bundle, bs, outputFormat, OutputStyle.PRETTY, null);
+      return bs.toByteArray();
+    } else {
+      if (tbl.nextRow()) {
+        byte[] result = factory.generateFormat(profile, outputFormat);
+        tbl.reset();
+        return result;
+      } else {
+        throw new FHIRException("No data rows provided for test data generation");
+      }
+    }
+  }
+
+  public byte[] convertFormat(byte[] resource, FhirFormat inputFormat, FhirFormat outputFormat) throws FHIRException, IOException {
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), inputFormat);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Manager.compose(context, e, baos, outputFormat, OutputStyle.PRETTY, null);
+    return baos.toByteArray();
+  }
+
+  public byte[] generateSnapshot(byte[] resource, FhirFormat format) throws FHIRException, IOException {
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
+    Resource res = new ObjectConverter(context).convert(e);
+    if (!(res instanceof StructureDefinition))
+      throw new FHIRException("Require a StructureDefinition for generating a snapshot");
+    StructureDefinition sd = (StructureDefinition) res;
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    if (base == null)
+      throw new FHIRException("Unable to find base definition: " + sd.getBaseDefinition());
+    new ProfileUtilities(context, null, null).setAutoFixSliceNames(true).generateSnapshot(base, sd, sd.getUrl(), null, sd.getName());
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (format == FhirFormat.XML) {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, sd);
+    } else {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, sd);
+    }
+    return baos.toByteArray();
+  }
+
+  public byte[] generateNarrative(byte[] resource, FhirFormat format) throws FHIRException, IOException, EOperationOutcome {
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
+    Resource res = new ObjectConverter(context).convert(e);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    genResource(res, rc);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (format == FhirFormat.XML) {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, res);
+    } else {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, res);
+    }
+    return baos.toByteArray();
+  }
+
+  public byte[] transform(byte[] resource, FhirFormat format, String mapUri, FhirFormat outputFormat) throws FHIRException, IOException {
+    Element result = transform(ByteProvider.forBytes(resource), format, mapUri);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Manager.compose(context, result, baos, outputFormat, OutputStyle.PRETTY, null);
+    return baos.toByteArray();
+  }
+
+  public byte[] convertVersion(byte[] resource, FhirFormat format, String targetVer) throws Exception {
+    Content cnt = new Content();
+    cnt.setFocus(ByteProvider.forBytes(resource));
+    cnt.setCntType(format);
+    Element src = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
+    boolean canDoNative = src.hasChild("url", false);
+    if (canDoNative) {
+      if (VersionUtilities.isR2Ver(version)) {
+        return VersionConvertor.convertVersionNativeR2(targetVer, cnt, format);
+      } else if (VersionUtilities.isR2BVer(version)) {
+        return VersionConvertor.convertVersionNativeR2b(targetVer, cnt, format);
+      } else if (VersionUtilities.isR3Ver(version)) {
+        return VersionConvertor.convertVersionNativeR3(targetVer, cnt, format);
+      } else if (VersionUtilities.isR4Ver(version)) {
+        return VersionConvertor.convertVersionNativeR4(targetVer, cnt, format);
+      } else if (VersionUtilities.isR4BVer(version)) {
+        return VersionConvertor.convertVersionNativeR4b(targetVer, cnt, format);
+      } else if (VersionUtilities.isR5Ver(version)) {
+        return VersionConvertor.convertVersionNativeR5(targetVer, cnt, format);
+      } else {
+        throw new FHIRException("Source version not supported yet: " + version);
+      }
+    }
+    throw new FHIRException("Version conversion via StructureMap not supported in HTTP mode. Resource must have a 'url' element for native conversion.");
+  }
+
+  public byte[] compileMap(String mapUri, FhirFormat outputFormat) throws FHIRException, IOException {
+    StructureMap map = context.fetchResource(StructureMap.class, mapUri);
+    if (map == null) throw new FHIRException("Unable to find map: " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (outputFormat == FhirFormat.XML) {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+    } else {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+    }
+    return baos.toByteArray();
+  }
+
   public StructureDefinition snapshot(String source, String version) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false, true);
     Resource res = igLoader.loadResourceByVersion(version, cnt.getFocus().getBytes(), Utilities.getFileNameForName(source));
@@ -901,10 +1112,14 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   public InstanceValidator getValidator(FhirFormat format) throws FHIRException, IOException {
+    return getValidator(format, defaultInstanceValidatorParameters);
+  }
+
+  public InstanceValidator getValidator(FhirFormat format, InstanceValidatorParameters instanceValidatorParameters) throws FHIRException, IOException {
     InstanceValidator validator = new InstanceValidator(context, null, null, new ValidatorSession(), new ValidatorSettings());
     context.getTxClientManager().setUsage("validation");
 
-    validator.initializeFromParameters(defaultInstanceValidatorParameters);
+    validator.initializeFromParameters(instanceValidatorParameters);
 
     validator.getSettings().getCertificateFolders().clear(); // they should be empty though
     validator.getSettings().getCertificates().clear();
@@ -925,7 +1140,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         locale = Locale.forLanguageTag(language);
       }
     }
-    validator.setAssumeValidRestReferences(defaultInstanceValidatorParameters.isAssumeValidRestReferences());
+    validator.setAssumeValidRestReferences(instanceValidatorParameters.isAssumeValidRestReferences());
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
 
     validator.getContext().getManager().setLocale(locale);
@@ -934,7 +1149,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     validator.getValidationControl().putAll(validationControl);
     validator.setAIService(aiService);
 
-    validator.setCheckIPSCodes(defaultInstanceValidatorParameters.isCheckIPSCodes());
+    validator.setCheckIPSCodes(instanceValidatorParameters.isCheckIPSCodes());
 
     validator.setCacheFolder(context.getTxCache().getFolder());
     if (format == FhirFormat.SHC) {
@@ -1201,7 +1416,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical, List<CanonicalType> targets) throws FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, IWorkerContext.VersionResolutionRules rules, String type, boolean canonical, List<CanonicalType> targets) throws FHIRException {
     // some of this logic might take a while, and it's not going to change once loaded
     if (resolvedUrls .containsKey(type+"|"+url)) {
       return resolvedUrls.get(type+"|"+url);
@@ -1223,7 +1438,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       resolvedUrls.put(type+"|"+url, true);
       return true;
     }
-    if (context.getNSUrlMap().containsKey(url)) {
+    if (NamingSystemUtilities.hasNamingSystem(context, url)) {
       resolvedUrls.put(type+"|"+url, true);
       return true;
     }
@@ -1243,7 +1458,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     }
     if (fetcher != null) {
       try {
-        boolean ok = fetcher.resolveURL(validator, appContext, path, url, type, canonical, targets);
+        boolean ok = fetcher.resolveURL(validator, appContext, path, url, rules, type, canonical, targets);
         resolvedUrls.put(type+"|"+url, ok);
         return ok;
       } catch (Exception e) {

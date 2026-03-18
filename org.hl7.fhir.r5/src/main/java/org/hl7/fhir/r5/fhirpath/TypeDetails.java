@@ -274,7 +274,7 @@ public class TypeDetails {
         list.addAll(context.fetchTypeDefinitions(n));
       } else {
         String t = ProfiledType.ns(n);
-        StructureDefinition sd = context.fetchResource(StructureDefinition.class, t);
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, t, IWorkerContext.VersionResolutionRules.defaultRule());
         if (sd != null) {
           list.add(sd);
         }
@@ -293,9 +293,9 @@ public class TypeDetails {
           }
           if (sd.hasBaseDefinition()) {
             if (sd.getType().equals("uri"))
-              sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/string");
+              sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/string", IWorkerContext.VersionResolutionRules.defaultRule());
             else
-              sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+              sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), IWorkerContext.VersionResolutionRules.defaultRule());
           } else {
             sd = null;
           }

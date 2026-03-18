@@ -42,7 +42,6 @@ import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -124,6 +123,9 @@ public class OperationOutcomeUtilities {
       issue.getExtension().add(ExtensionUtilities.makeIssueMessageId(message.getMessageId()));
     }
     issue.setUserData(UserDataNames.validator_source_msg, message);
+    if (message.getValidationContext() != null) {
+      issue.getExtension().add(ExtensionUtilities.makeIssueContext(message.getValidationContext()));
+    }
     return issue;
   }
 
@@ -225,6 +227,9 @@ public class OperationOutcomeUtilities {
     }
     if (message.getServer() != null) {
       issue.addExtension(ExtensionDefinitions.EXT_ISSUE_SERVER, new UrlType(message.getServer()));
+    }
+    if (message.getValidationContext() != null) {
+      issue.addExtension(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT, new StringType(message.getValidationContext()));
     }
     return issue;
   }

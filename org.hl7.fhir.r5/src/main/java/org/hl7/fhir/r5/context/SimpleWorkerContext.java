@@ -746,16 +746,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	  return validatorFactory.makeValidator(this, xverManager, null).setJurisdiction(JurisdictionUtilities.getJurisdictionCodingFromLocale(Locale.getDefault().getCountry()));
 	}
 
-  @Override
-  public List<String> getResourceNames() {
-    Set<String> result = new HashSet<String>();
-    for (StructureDefinition sd : listStructures()) {
-      if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.hasUserData(UserDataNames.loader_urls_patched))
-        result.add(sd.getName());
-    }
-    return Utilities.sorted(result);
-  }
-
  
   public Questionnaire getQuestionnaire() {
     return questionnaire;
@@ -838,8 +828,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   @Override
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
-    T r = super.fetchResource(class_, uri);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules) {
+    T r = super.fetchResource(class_, uri, rules);
     if (r instanceof StructureDefinition) {
       StructureDefinition p = (StructureDefinition)r;
       try {
@@ -854,23 +844,20 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   @Override
-  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
-    T r = super.fetchResource(class_, uri);
+  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules) {
+    T r = super.fetchResource(class_, uri, rules);
     return r;
   }
 
   @Override
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource source) {
-    T resource = super.fetchResource(class_, uri, version, source);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource source) {
+    T resource = super.fetchResource(class_, uri, rules, version, source);
     if (resource instanceof StructureDefinition) {
       StructureDefinition structureDefinition = (StructureDefinition)resource;
       generateSnapshot(structureDefinition, "4");
     }
     return resource;
   }
-
-
-
 
   public String listMapUrls() {
     return Utilities.listCanonicalUrls(transforms.keys());

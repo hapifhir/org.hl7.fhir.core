@@ -46,8 +46,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:665c140b-a60d-4be8-ba29-0e50eeb62ccb",
-    "timestamp" : "2026-02-14T08:56:35.690Z",
+    "identifier" : "urn:uuid:ac43bdae-ffdd-42c6-9e10-ca74f3ac28bc",
+    "timestamp" : "2026-03-11T18:16:50.930Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -135,8 +135,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:c5b696d8-6839-46d3-9fc6-b6456bd3d7d7",
-    "timestamp" : "2026-02-14T08:56:36.893Z",
+    "identifier" : "urn:uuid:aa4cdf3a-1d0a-4621-aa55-c483e0817123",
+    "timestamp" : "2026-03-11T18:16:51.812Z",
     "total" : 8,
     "offset" : 0,
     "parameter" : [{
@@ -251,8 +251,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:7ef068ed-aead-4a39-8731-c015613f0706",
-    "timestamp" : "2026-02-14T08:56:40.241Z",
+    "identifier" : "urn:uuid:6fd9e5c3-b4d3-4894-bddb-fddea1f2164c",
+    "timestamp" : "2026-03-11T18:16:54.471Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -329,11 +329,12 @@ e: {
 v: {
   "code" : "LP43571-6",
   "system" : "http://loinc.org",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.81: Validate \"[undefined#LP43571-6 (\"undefined\")]\"\n2ms http://loinc.org/vs|2.81: Check \"http://loinc.org#LP43571-6\"\n4ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n4ms http://loinc.org/vs|2.81: check code in () at Coding\n4ms http://loinc.org/vs|2.81: Code \"LP43571-6\" not found in http://loinc.org|2.81: undefined",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.81: Validate \"[http://loinc.org#LP43571-6 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.81: Check \"http://loinc.org#LP43571-6\"\n5ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n5ms http://loinc.org/vs|2.81: check code in (http://loinc.org) at Coding\n5ms http://loinc.org/vs|2.81: Code \"LP43571-6\" not found in http://loinc.org|2.81: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -380,8 +381,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:25f87bfa-e63a-479d-b067-ab2dfedbc3bf",
-    "timestamp" : "2026-02-14T08:56:46.909Z",
+    "identifier" : "urn:uuid:89eacb55-acf8-4711-b301-d636b4b6eac4",
+    "timestamp" : "2026-03-11T18:17:00.026Z",
     "total" : 1,
     "offset" : 0,
     "parameter" : [{
@@ -426,7 +427,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.81: Validate \"[undefined#38269-7 (\"undefined\")]\"\n2ms http://loinc.org/vs|2.81: Check \"http://loinc.org#38269-7\"\n4ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n4ms http://loinc.org/vs|2.81: check code in () at Coding\n4ms http://loinc.org/vs|2.81: Code \"38269-7\" found in http://loinc.org|2.81",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.81: Validate \"[http://loinc.org#38269-7 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.81: Check \"http://loinc.org#38269-7\"\n5ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n5ms http://loinc.org/vs|2.81: check code in (http://loinc.org) at Coding\n5ms http://loinc.org/vs|2.81: Code \"38269-7\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -469,8 +470,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:cc9fd8cf-68f5-42d3-827d-071584f8ae5e",
-    "timestamp" : "2026-02-14T08:56:53.409Z",
+    "identifier" : "urn:uuid:173990ec-c768-427e-8bed-a245627d1bbd",
+    "timestamp" : "2026-03-11T18:17:05.558Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
@@ -562,8 +563,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:9d97c7ee-ce14-4cb6-b7d0-48442ed1da5a",
-    "timestamp" : "2026-02-14T08:56:54.613Z",
+    "identifier" : "urn:uuid:6a0d589c-b7e7-4960-a6a8-636f57edc96e",
+    "timestamp" : "2026-03-11T18:17:06.349Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
@@ -652,8 +653,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:9123da74-8365-4499-b4ef-879ff0219cb8",
-    "timestamp" : "2026-02-14T08:56:55.834Z",
+    "identifier" : "urn:uuid:2ae3d65f-ac01-4bcf-a848-3feb73f7013e",
+    "timestamp" : "2026-03-11T18:17:07.182Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
@@ -740,8 +741,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:8d309cdb-3505-42e9-8833-a449ba3f9373",
-    "timestamp" : "2026-02-14T08:56:57.020Z",
+    "identifier" : "urn:uuid:643cdb1c-c1b5-4632-a8bd-9df2d9fa0479",
+    "timestamp" : "2026-03-11T18:17:08.026Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
@@ -834,8 +835,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:acb3c957-55ad-461c-8a26-623473cd98af",
-    "timestamp" : "2026-02-14T08:56:58.209Z",
+    "identifier" : "urn:uuid:37f1875f-73aa-4815-91f9-9d5cef6b7c8e",
+    "timestamp" : "2026-03-11T18:17:08.887Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
@@ -919,8 +920,8 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:2751849a-18c1-4d90-aa4e-d0f73e88e9b7",
-    "timestamp" : "2026-02-14T08:56:59.379Z",
+    "identifier" : "urn:uuid:da90c3ca-5615-431c-9d94-18bff8e80267",
+    "timestamp" : "2026-03-11T18:17:09.792Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{

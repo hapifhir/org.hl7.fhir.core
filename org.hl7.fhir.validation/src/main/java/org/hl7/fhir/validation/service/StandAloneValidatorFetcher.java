@@ -185,7 +185,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
   
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical, List<CanonicalType> targets) throws IOException, FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, IWorkerContext.VersionResolutionRules rules, String type, boolean canonical, List<CanonicalType> targets) throws IOException, FHIRException {
     if (!Utilities.isAbsoluteUrl(url)) {
       return false;
     }
@@ -262,7 +262,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       }
       if (pi != null) {
         context.getManager().loadFromPackage(pi, null);
-        return pi.hasCanonical(url) ||  context.fetchResource(Resource.class, url) != null;
+        return pi.hasCanonical(url) ||  context.fetchResource(Resource.class, url, IWorkerContext.VersionResolutionRules.defaultRule()) != null;
       }
     }
 
@@ -392,9 +392,9 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   @Override
-  public void findResource(Object validator, String url) {
+  public void findResource(Object validator, String url, IWorkerContext.VersionResolutionRules rules) {
     try {
-      resolveURL((IResourceValidator) validator, null, null, url, null, false, null);
+      resolveURL((IResourceValidator) validator, null, null, url, rules,null, false, null);
     } catch (Exception e) {
     }
   }

@@ -209,7 +209,7 @@ public class JsonParser extends ParserBase {
         if (!rd.isJsonString()) {
           logError(errors, "2022-11-26", line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.RESOURCEDEFINITION_PROPERTY_WRONG_TYPE, rd.type().toName()), IssueSeverity.ERROR);
         } else {
-          sd = context.fetchResource(StructureDefinition.class, rd.asString());
+          sd = context.fetchResource(StructureDefinition.class, rd.asString(), IWorkerContext.VersionResolutionRules.defaultRule());
           if (sd == null) {
             logError(errors, "2022-11-26", line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.RESOURCEDEFINITION_PROPERTY_UNKNOWN, rd.asString()), IssueSeverity.ERROR);
           }
@@ -567,7 +567,7 @@ public class JsonParser extends ParserBase {
         }
       }
       if (type != null) {
-        StructureDefinition sd = context.fetchResource(StructureDefinition.class, type);
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, type, IWorkerContext.VersionResolutionRules.defaultRule());
         if (sd == null) {
           logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.TYPE_SPECIFIER_ILLEGAL_TYPE, type, cond), IssueSeverity.ERROR);
         } else {
@@ -752,7 +752,7 @@ public class JsonParser extends ParserBase {
       logError(errors, "2022-11-26", line(res), col(res), npath, IssueType.INVALID, context.formatMessage(I18nConstants.RESOURCETYPE_PROPERTY_WRONG_TYPE, rt.type().toName()), IssueSeverity.FATAL);
     } else {
       String name = rt.asString();
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null), IWorkerContext.VersionResolutionRules.defaultRule());
       if (sd == null) {
         logError(errors, ValidationMessage.NO_RULE_DATE, line(res), col(res), npath, IssueType.INVALID, context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name), IssueSeverity.FATAL);			    
       } else {

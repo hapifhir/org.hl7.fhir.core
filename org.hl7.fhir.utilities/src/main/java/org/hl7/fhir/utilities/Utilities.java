@@ -191,6 +191,28 @@ public class Utilities {
     return result.toString();
   }
 
+  public static String escapeUrl(String canonical) {
+    StringBuilder sb = new StringBuilder();
+    byte[] bytes = canonical.getBytes(StandardCharsets.UTF_8);
+    for (byte b : bytes) {
+      int c = b & 0xFF;
+      if (isUnreserved(c)) {
+        sb.append((char) c);
+      } else {
+        sb.append('%');
+        sb.append(Character.forDigit((c >> 4) & 0xF, 16));
+        sb.append(Character.forDigit(c & 0xF, 16));
+      }
+    }
+    return sb.toString();
+  }
+
+  private static boolean isUnreserved(int c) {
+    return (c >= 'A' && c <= 'Z')
+      || (c >= 'a' && c <= 'z')
+      || (c >= '0' && c <= '9')
+      || c == '-' || c == '_' || c == '.' || c == '~';
+  }
   public enum DecimalStatus {
     BLANK, SYNTAX, RANGE, OK
   }

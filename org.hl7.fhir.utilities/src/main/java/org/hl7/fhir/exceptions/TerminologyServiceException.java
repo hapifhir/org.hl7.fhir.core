@@ -33,7 +33,9 @@ package org.hl7.fhir.exceptions;
 
 public class TerminologyServiceException extends FHIRException {
 
-	public TerminologyServiceException() {
+  public static final String NO_SERVICE_CODE = "No_Service";
+
+  public TerminologyServiceException() {
 		super();
 	}
 

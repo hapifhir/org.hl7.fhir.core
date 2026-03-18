@@ -12,19 +12,9 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.DataRenderer;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
@@ -219,6 +209,7 @@ public class ElementTable {
     private String path;
     private BindingStrength strength;
     private String valueSet;
+    private Element ctxt;
     private List<TypeRefComponent> types;
     private List<CanonicalType> list;
     private Resource source;
@@ -232,13 +223,14 @@ public class ElementTable {
       return self;
     }
 
-    public static TableElementConstraint makeValueVS(TableElementConstraintType type, String path, DataType value, BindingStrength strength, String valueSet, Resource source) {
+    public static TableElementConstraint makeValueVS(TableElementConstraintType type, String path, DataType value, BindingStrength strength, String valueSet, Element ctxt, Resource source) {
       TableElementConstraint self = new TableElementConstraint();
       self.type = type;
       self.path = path;
       self.value = value;
       self.strength = strength;
       self.valueSet = valueSet;
+      self.ctxt = ctxt;
       self.source = source;
       return self;
     }
@@ -253,12 +245,13 @@ public class ElementTable {
       return self;
     }
 
-    public static TableElementConstraint makeBinding(TableElementConstraintType type, String path, BindingStrength strength, String valueSet, Resource source) {
+    public static TableElementConstraint makeBinding(TableElementConstraintType type, String path, BindingStrength strength, String valueSet, Element ctxt, Resource source) {
       TableElementConstraint self = new TableElementConstraint();
       self.type = type;
       self.path = path;
       self.strength = strength;
       self.valueSet = valueSet;
+      self.ctxt = ctxt;
       self.source = source;
       return self;
     }
@@ -627,7 +620,7 @@ public class ElementTable {
   }
 
   private void renderBinding(XhtmlNode x, TableElementConstraint c, String phrase) {
-    ValueSet vs = context.getContext().findTxResource(ValueSet.class, c.valueSet, null, c.source);
+    ValueSet vs = context.getContext().findTxResource(ValueSet.class, c.valueSet, ExtensionUtilities.getVersionResolutionRules(c.ctxt), null, c.source);
     if (vs == null) {
       x.tx(phrase+"an unknown valueset ");
       x.code().tx(c.valueSet);      
@@ -727,7 +720,7 @@ public class ElementTable {
     if (v.isPrimitive()) {
       String s = v.primitiveValue();
       if (Utilities.isAbsoluteUrl(s)) {
-        Resource res = context.getContext().fetchResource(Resource.class, s);
+        Resource res = context.getContext().fetchResource(Resource.class, s, ExtensionUtilities.getVersionResolutionRules(v));
         if (res != null && res.hasWebPath()) {
           x.ah(res.getWebPath()).tx(res instanceof CanonicalResource ? ((CanonicalResource) res).present() : s);                    
         } else if (Utilities.isAbsoluteUrlLinkable(s)) {
@@ -855,7 +848,7 @@ public class ElementTable {
         x.tx(", ");
       }
       String s = list.get(i).primitiveValue();
-      Resource res = context.getContext().fetchResource(Resource.class, s);
+      Resource res = context.getContext().fetchResource(Resource.class, s, ExtensionUtilities.getVersionResolutionRules(list.get(i)));
       if (res != null && res.hasWebPath()) {
         x.ah(res.getWebPath()).tx(res instanceof CanonicalResource ? ((CanonicalResource) res).present() : s);
       } else {

@@ -189,6 +189,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected IValidationPolicyAdvisor policyAdvisor;
   protected boolean noTerminologyChecks;
   protected ValidatorSettings settings;
+  protected String validationContext;
   
   // these two related to removing warnings on extensible bindings in structures that have derivatives that replace their bindings
   protected List<TrackedLocationRelatedMessage> trackedMessages = new ArrayList<>();   
@@ -416,7 +417,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected boolean hint(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingHints() && !isSuppressedValidationMessage(path, theMessage)) {
       String message = context.formatMessage(theMessage, theMessageArguments);
-      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.INFORMATION, null);
+      addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.INFORMATION, theMessage);
     }
     return thePass;
   }
@@ -470,6 +471,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       ValidationMessage vm = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, message, IssueSeverity.ERROR).setMessageId(idForMessage(theMessage, message));
       vm.setRuleDate(ruleDate);
       if (checkMsgId(theMessage, vm)) {
+        noteContext(vm);
         errors.add(vm.setTxLink(txLink).setDiagnostics(diagnostics));
       }
     }
@@ -660,6 +662,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     ValidationMessage validationMessage = new ValidationMessage(theSource, type, line, col, path, msg, theSeverity).setMessageId(id);
     validationMessage.setRuleDate(ruleDate);
     if (doingLevel(theSeverity) && !hasMessage(errors, validationMessage) && checkMsgId(id, validationMessage)) {
+      noteContext(validationMessage);
       errors.add(validationMessage);
     }
     return validationMessage;
@@ -698,6 +701,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(idForMessage(msg, nmsg)).setDiagnostics(diagnostics);
       vmsg.setRuleDate(ruleDate);
       if (checkMsgId(msg, vmsg)) {
+        noteContext(vmsg);
         errors.add(vmsg);
       }
     }
@@ -722,6 +726,9 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     if (issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID) != null) {
       validationMessage.setMessageId(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID));
     }
+    if (issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT) != null) {
+      validationMessage.setValidationContext(issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT));
+    }
     if (issue.hasDiagnostics()) {
       validationMessage.setDiagnostics(issue.getDiagnostics());
     }
@@ -745,6 +752,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setDiagnostics(diagnostics).setMessageId(msg);
       vmsg.setRuleDate(ruleDate);
       if (checkMsgId(msg, vmsg)) {
+        noteContext(vmsg);
         errors.add(vmsg);
       }
       trackedMessages.add(new TrackedLocationRelatedMessage(location, vmsg));
@@ -949,8 +957,15 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     vm.setRuleDate(ruleDate);
     if (checkMsgId(id, vm)) {
       if (doingLevel(theSeverity)) {
+        noteContext(vm);
         errors.add(vm.setMessageId(id));
       }
+    }
+  }
+
+  protected void noteContext(ValidationMessage vm) {
+    if (validationContext != null) {
+      vm.setValidationContext(validationContext);
     }
   }
 
@@ -970,7 +985,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
 
-  protected ValueSet resolveBindingReference(DomainResource ctxt, String reference, String uri, Resource src) {
+  protected ValueSet resolveBindingReference(DomainResource ctxt, String reference, org.hl7.fhir.r5.model.Element refCtxt, String uri, Resource src) {
     if (reference != null) {
       if (reference.equals("http://www.rfc-editor.org/bcp/bcp13.txt")) {
         reference = "http://hl7.org/fhir/ValueSet/mimetypes";
@@ -984,11 +999,11 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
       } else {
         reference = cu.pinValueSet(reference);
         long t = System.nanoTime();
-        ValueSet fr = context.findTxResource(ValueSet.class, reference, null, src);
+        ValueSet fr = context.findTxResource(ValueSet.class, reference, ExtensionUtilities.getVersionResolutionRules(refCtxt), null, src);
         if (fr == null) {
           if (!Utilities.isAbsoluteUrl(reference)) {
             reference = resolve(uri, reference);
-            fr = context.findTxResource(ValueSet.class, reference, null, src);
+            fr = context.findTxResource(ValueSet.class, reference, ExtensionUtilities.getVersionResolutionRules(refCtxt), null, src);
           }
         }
         if (fr == null) {

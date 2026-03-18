@@ -889,6 +889,7 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_SYSTEM_UNKNOWN = "Terminology_TX_System_Unknown";
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET = "Terminology_TX_System_ValueSet";
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET2 = "Terminology_TX_System_ValueSet2";
+  public static final String TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE = "TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE";
   public static final String TERMINOLOGY_TX_SYSTEM_WRONG_BUILD = "TERMINOLOGY_TX_SYSTEM_WRONG_BUILD";
   public static final String TERMINOLOGY_TX_SYSTEM_WRONG_HTML = "TERMINOLOGY_TX_SYSTEM_WRONG_HTML";
   public static final String TERMINOLOGY_TX_UNKNOWN_OID = "TERMINOLOGY_TX_UNKNOWN_OID";
@@ -959,6 +960,8 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT0 = "Type_Specific_Checks_DT_Integer_LT0";
   public static final String TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT1 = "Type_Specific_Checks_DT_Integer_LT1";
   public static final String TYPE_SPECIFIC_CHECKS_DT_INTEGER_VALID = "Type_Specific_Checks_DT_Integer_Valid";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_DT_GT = "TYPE_SPECIFIC_CHECKS_DT_DT_GT";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_DT_LT = "TYPE_SPECIFIC_CHECKS_DT_DT_LT";
   public static final String TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML = "TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML";
   public static final String TYPE_SPECIFIC_CHECKS_DT_OID_START = "Type_Specific_Checks_DT_OID_Start";
   public static final String TYPE_SPECIFIC_CHECKS_DT_OID_VALID = "Type_Specific_Checks_DT_OID_Valid";
@@ -1477,6 +1480,7 @@ public class I18nConstants {
   public static final String SD_CIRCULAR_DEFINITION = "SD_CIRCULAR_DEFINITION";
   public static final String PROFILE_COMPLIES_WITH_SLICING_NO_EXPAND = "PROFILE_COMPLIES_WITH_SLICING_NO_EXPAND";
   public static final String PROFILE_COMPLIES_WITH_SLICING_NO_VALUE = "PROFILE_COMPLIES_WITH_SLICING_NO_VALUE";
+  public static final String VALIDATION_MAX_MESSAGES_EXCEEDED = "VALIDATION_MAX_MESSAGES_EXCEEDED";
   public static final String VALIDATION_TIMEOUT_EXCEEDED = "VALIDATION_TIMEOUT_EXCEEDED";
   public static final String ABSTRACT_CODE_NOT_ALLOWED = "ABSTRACT_CODE_NOT_ALLOWED";
 }
