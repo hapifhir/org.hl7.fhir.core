@@ -355,7 +355,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
       boolean hasComment = false;
       boolean hasProperties = false;
-      boolean ok = true;
+      boolean isSimple = true;
       Map<String, HashSet<String>> props = new HashMap<String, HashSet<String>>();
       Map<String, HashSet<String>> sources = new HashMap<String, HashSet<String>>();
       Map<String, HashSet<String>> targets = new HashMap<String, HashSet<String>>();
@@ -364,7 +364,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       sources.get("code").add(grp.getSource());
       targets.get("code").add(grp.getTarget());
       for (SourceElementComponent ccl : grp.getElement()) {
-        ok = ok && (ccl.getNoMap() || (ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty()));
+        isSimple = isSimple && (ccl.getNoMap() || (ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty()));
         if (ccl.hasExtension(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT)) {
           hasComment = true;
         }
@@ -394,9 +394,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       StructureDefinition sdSrc = findSourceStructure(grp.getSource(), grp.getSourceElement());
       StructureDefinition sdTgt = findSourceStructure(grp.getTarget(), grp.getTargetElement());
       if (sdSrc != null && sdTgt != null) {
-        renderModelMap(sdSrc, sdTgt, status, res, x, gc, eqpath, grp, hasComment, hasProperties, ok, props, sources, targets);
+        renderModelMap(sdSrc, sdTgt, status, res, x, gc, eqpath, grp, hasComment, hasProperties, isSimple, props, sources, targets);
       } else {
-        renderCodeSystemMap(status, res, x, gc, eqpath, grp, hasComment, hasProperties, ok, props, sources, targets);
+        renderCodeSystemMap(status, res, x, gc, eqpath, grp, hasComment, hasProperties, isSimple, props, sources, targets);
       }
     }
   }
@@ -488,7 +488,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   }
   
   private void renderCodeSystemMap(RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,
-      ConceptMapGroupComponent grp, boolean hasComment, boolean hasProperties, boolean ok,
+      ConceptMapGroupComponent grp, boolean hasComment, boolean hasProperties, boolean isSimple,
       Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets)
       throws UnsupportedEncodingException, IOException {
     XhtmlNode pp = x.para();
@@ -507,7 +507,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     }
 
     String display;
-    if (ok) {
+    if (isSimple) {
       // simple
       XhtmlNode tbl = x.table( "grid", false);
       XhtmlNode tr = tbl.tr();
@@ -516,6 +516,17 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT));
       if (hasComment)
         tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
+      if (hasProperties) {
+        for (String s : props.keySet()) {
+          if (s != null) {
+            if (props.get(s).size() == 1) {
+              String url = props.get(s).iterator().next();
+              renderCSDetailsLink(tr.td(), url, false);
+            } else
+              tr.td().b().addText(getDescForConcept(s));
+          }
+        }
+      }
       for (SourceElementComponent ccl : grp.getElement()) {
         tr = tbl.tr();
         XhtmlNode td = tr.td();
@@ -558,6 +569,14 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               td.tx(" ("+display+")");
             if (hasComment)
               tr.td().addText(ccm.getComment());
+            if (hasProperties) {
+              for (String s : props.keySet()) {
+                if (s != null) {
+                  td = tr.td();
+                  td.addText(getValue(ccm.getProperty(), s));
+                }
+              }
+            }
           }
         }
         addUnmapped(tbl, grp);
