@@ -323,7 +323,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   public boolean see(CachedCanonicalResource<T> cr) {
     // -- 1. exit conditions -----------------------------------------------------------------------------
 
-    // ignore UTG NUCC erroneous code system
+    // ignore erroneous code systems found in THO
     if (cr.getPackageInfo() != null
       && cr.getPackageInfo().getId() != null
       && cr.getPackageInfo().getId().startsWith("hl7.terminology")

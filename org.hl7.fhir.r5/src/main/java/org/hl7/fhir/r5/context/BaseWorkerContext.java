@@ -431,89 +431,81 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url, r.getVersion(), ex.getVersion(),
           ex.fhirType()));
       }
-      boolean added = false;
-      switch (r.getType()) {
-        case "StructureDefinition":
-          if ("1.4.0".equals(version)) {
-            StructureDefinition sd = (StructureDefinition) r.getResource();
-            fixOldSD(sd);
-          }
-          added = structures.register(r, packageInfo);
-          if (added) {
-            typeManager.see(r);
-          }
-          break;
-        case "ValueSet":
-          added = valueSets.register(r, packageInfo);
-          break;
-        case "CodeSystem":
-          added = codeSystems.register(r, packageInfo);
-          break;
-        case "ImplementationGuide":
-          added = guides.register(r, packageInfo);
-          break;
-        case "CapabilityStatement":
-          added = capstmts.register(r, packageInfo);
-          break;
-        case "Measure":
-          added = measures.register(r, packageInfo);
-          break;
-        case "Library":
-          added = libraries.register(r, packageInfo);
-          break;
-        case "SearchParameter":
-          added = searchParameters.register(r, packageInfo);
-          break;
-        case "PlanDefinition":
-          added = plans.register(r, packageInfo);
-          break;
-        case "OperationDefinition":
-          added = operations.register(r, packageInfo);
-          break;
-        case "Questionnaire":
-          added = questionnaires.register(r, packageInfo);
-          break;
-        case "ConceptMap":
-          added = maps.register(r, packageInfo);
-          break;
-        case "StructureMap":
-          added = transforms.register(r, packageInfo);
-          break;
-        case "NamingSystem":
-          added = systems.register(r, packageInfo);
-          break;
-        case "Requirements":
-          added = requirements.register(r, packageInfo);
-          break;
-        case "ActorDefinition":
-          added = actors.register(r, packageInfo);
-          break;
-      }
+      boolean added = registerResource(r, packageInfo);
       if (added) {
-        if (r.getId() != null) {
-          Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
-          if (map == null) {
-            map = new HashMap<String, ResourceProxy>();
-            allResourcesById.put(r.getType(), map);
-          }
-          if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
-            map.put(r.getId(), new ResourceProxy(r));
-          }
-        }
-        if (r.getUrl() != null) {
-          List<ResourceProxy> list = allResourcesByUrl.get(r.getUrl());
-          if (list == null) {
-            list = new ArrayList<>();
-            allResourcesByUrl.put(r.getUrl(), list);
-          }
-          list.add(new ResourceProxy(r));
-        }
+        registerInAllResourceIndex(r, packageInfo);
       }
     }
   }
 
-  public void cacheResourceFromPackage(Resource r, PackageInformation packageInfo) throws FHIRException {
+  private void registerInAllResourceIndex(CanonicalResourceProxy r, PackageInformation packageInfo) {
+    if (r.getId() != null) {
+      Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
+      if (map == null) {
+        map = new HashMap<String, ResourceProxy>();
+        allResourcesById.put(r.getType(), map);
+      }
+      if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
+        map.put(r.getId(), new ResourceProxy(r));
+      }
+    }
+    if (r.getUrl() != null) {
+      List<ResourceProxy> list = allResourcesByUrl.get(r.getUrl());
+      if (list == null) {
+        list = new ArrayList<>();
+        allResourcesByUrl.put(r.getUrl(), list);
+      }
+      list.add(new ResourceProxy(r));
+    }
+  }
 
+  private boolean registerResource(CanonicalResourceProxy r, PackageInformation packageInfo) {
+    switch (r.getType()) {
+      case "StructureDefinition":
+        if ("1.4.0".equals(version)) {
+          StructureDefinition sd = (StructureDefinition) r.getResource();
+          fixOldSD(sd);
+        }
+        boolean added = structures.register(r, packageInfo);
+        if (added) {
+          typeManager.see(r);
+        }
+        return added;
+      case "ValueSet":
+        return valueSets.register(r, packageInfo);
+      case "CodeSystem":
+        return codeSystems.register(r, packageInfo);
+      case "ImplementationGuide":
+        return guides.register(r, packageInfo);
+      case "CapabilityStatement":
+        return capstmts.register(r, packageInfo);
+      case "Measure":
+        return measures.register(r, packageInfo);
+      case "Library":
+        return libraries.register(r, packageInfo);
+      case "SearchParameter":
+        return searchParameters.register(r, packageInfo);
+      case "PlanDefinition":
+        return plans.register(r, packageInfo);
+      case "OperationDefinition":
+        return operations.register(r, packageInfo);
+      case "Questionnaire":
+        return questionnaires.register(r, packageInfo);
+      case "ConceptMap":
+        return maps.register(r, packageInfo);
+      case "StructureMap":
+        return transforms.register(r, packageInfo);
+      case "NamingSystem":
+        return systems.register(r, packageInfo);
+      case "Requirements":
+        return requirements.register(r, packageInfo);
+      case "ActorDefinition":
+        return actors.register(r, packageInfo);
+    }
+    return false;
+  }
+
+  public void cacheResourceFromPackage(Resource r, PackageInformation packageInfo) throws FHIRException {
     synchronized (lock) {
       definitionsChanged();
       if (packageInfo != null) {
@@ -813,11 +805,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public SystemSupportInformation getTxSupportInfo(String system, String version) throws TerminologyServiceException {
     synchronized (lock) {
-      String vurl = CanonicalType.urlWithVersion(system, version);
-      if (codeSystems.has(vurl) && codeSystems.get(vurl).getContent() != CodeSystemContentMode.NOTPRESENT) {
+      String urlWithVersion = CanonicalType.urlWithVersion(system, version);
+      if (codeSystems.has(urlWithVersion) && codeSystems.get(urlWithVersion).getContent() != CodeSystemContentMode.NOTPRESENT) {
         return new SystemSupportInformation(true, "internal", TerminologyClientContext.LATEST_VERSION, null);
-      } else if (supportedCodeSystems.containsKey(vurl)) {
-        return supportedCodeSystems.get(vurl);
+      } else if (supportedCodeSystems.containsKey(urlWithVersion)) {
+        return supportedCodeSystems.get(urlWithVersion);
       } else {
         Resource res = fetchCodeSystem(system, VersionResolutionRules.defaultRule(), version);
         if (res != null) {
@@ -831,8 +823,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           }
           if (terminologyClientManager != null) {
             try {
-              TerminologyClientContext client = terminologyClientManager.chooseServer(null, Set.of(vurl), false);
-              supportedCodeSystems.put(vurl, new SystemSupportInformation(client.supportsSystem(vurl), client.getAddress(), client.getTxTestVersion(), client.supportsSystem(vurl) ? null : "The server does not support this code system"));
+              TerminologyClientContext client = terminologyClientManager.chooseServer(null, Set.of(urlWithVersion), false);
+              supportedCodeSystems.put(urlWithVersion, new SystemSupportInformation(client.supportsSystem(urlWithVersion), client.getAddress(), client.getTxTestVersion(), client.supportsSystem(urlWithVersion) ? null : "The server does not support this code system"));
             } catch (Exception e) {
               if (canRunWithoutTerminology) {
                 noTerminologyServer = true;
@@ -848,8 +840,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
                 throw new TerminologyServiceException(e);
               }
             }
-            if (supportedCodeSystems.containsKey(vurl)) {
-              return supportedCodeSystems.get(vurl);
+            if (supportedCodeSystems.containsKey(urlWithVersion)) {
+              return supportedCodeSystems.get(urlWithVersion);
             }
           }
         }

@@ -2690,8 +2690,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean checkExtensionContext(Object appContext, List<ValidationMessage> errors, Element resource, Element container, StructureDefinition definition, NodeStack stack, ValidationContext valContext, boolean modifier) {
-    String extUrl = definition.getUrl();
-    String extUrlV = definition.getUrl()+(definition.hasVersion() ? " v"+definition.getVersion() : "");
+    String extensionUrl = definition.getUrl();
+    String extensionUrlVersioned = definition.getUrl()+(definition.hasVersion() ? " v"+definition.getVersion() : "");
     boolean ok = false;
     Set<String> pset = new HashSet<>();
     CommaSeparatedStringBuilder contexts = new CommaSeparatedStringBuilder();
@@ -2711,17 +2711,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String v = ExtensionUtilities.readStringExtension(ext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START);
         ok = rule(errors, "2025-01-07", IssueType.BUSINESSRULE, container.line(), container.col(), stack.getLiteralPath(), 
             VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) >= 0,
-            I18nConstants.EXTENSION_FHIR_VERSION_EARLIEST, extUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(context.getVersion()), context.getVersion()) && ok;
+            I18nConstants.EXTENSION_FHIR_VERSION_EARLIEST, extensionUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(context.getVersion()), context.getVersion()) && ok;
       }
       if (ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END)) {
         String v = ExtensionUtilities.readStringExtension(ext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END);
         ok = rule(errors, "2025-01-07", IssueType.BUSINESSRULE, container.line(), container.col(), stack.getLiteralPath(), 
             VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) <= 0,
-            I18nConstants.EXTENSION_FHIR_VERSION_LATEST, extUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(context.getVersion()), context.getVersion()) && ok;
+            I18nConstants.EXTENSION_FHIR_VERSION_LATEST, extensionUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(context.getVersion()), context.getVersion()) && ok;
       }
     }
     boolean vv = false;
-    for (StructureDefinitionContextComponent ctxt : fixContexts(extUrl, definition.getContext())) {
+    for (StructureDefinitionContextComponent ctxt : fixContexts(extensionUrl, definition.getContext())) {
       if (ok) {
         break;
       }
@@ -2764,7 +2764,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
 
           if (!ok) {
-            if (checkConformsToProfile(appContext, errors, resource, container, stack, extUrl, ctxt.getExpression(), pu, definition)) {
+            if (checkConformsToProfile(appContext, errors, resource, container, stack, extensionUrl, ctxt.getExpression(), pu, definition)) {
               for (String p : plist) {
                 if (ok) {
                   break;
@@ -2825,13 +2825,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!ok) {
       if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
         warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
-            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_XVER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_XVER, extUrlV, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER));
+            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_XVER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_XVER, extensionUrlVersioned, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER));
       } else if (vv) {
         rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
-            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_VER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_VER, extUrlV, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER), context.getVersion());
+            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_VER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_VER, extensionUrlVersioned, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER), context.getVersion());
       } else {
         rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
-            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG, extUrlV, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER));
+            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG, extensionUrlVersioned, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER));
       }
       return false;
     } else {
@@ -2839,10 +2839,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         for (StringType s : definition.getContextInvariant()) {
           if (!fpe.evaluateToBoolean(valContext, resource, valContext.getRootResource(), container, fpe.parse(s.getValue()))) {
             if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
-              warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extUrlV, s.getValue());
+              warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extensionUrlVersioned, s.getValue());
               return true;
             } else {
-              rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extUrlV, s.getValue());
+              rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extensionUrlVersioned, s.getValue());
               return false;
             }
           }
