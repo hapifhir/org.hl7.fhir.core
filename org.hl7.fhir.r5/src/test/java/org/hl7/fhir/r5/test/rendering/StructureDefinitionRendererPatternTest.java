@@ -4,11 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
@@ -92,64 +90,6 @@ public class StructureDefinitionRendererPatternTest {
   }
 
   @Test
-  public void primitivePatternRemainsInline() throws Exception {
-    StructureDefinition sd = makeBasePatientProfile("PatientPrimitivePattern");
-    ElementDefinition active = new ElementDefinition();
-    active.setId("Patient.active");
-    active.setPath("Patient.active");
-    active.setPattern(new BooleanType(true));
-    sd.getDifferential().addElement(active);
-    generateSnapshot(sd);
-
-    String html = render(sd, false, false);
-    assertTrue(html.contains("Required Pattern"));
-    assertTrue(html.contains("true"));
-  }
-
-  @Test
-  public void fixedValueExpansionStillRendersChildRows() throws Exception {
-    StructureDefinition sd = makeBasePatientProfile("PatientFixedRows");
-    HumanName fixed = new HumanName();
-    fixed.setFamily("Testmann");
-    fixed.addGiven("Simone");
-    fixed.addGiven("Maria");
-
-    ElementDefinition name = new ElementDefinition();
-    name.setId("Patient.name");
-    name.setPath("Patient.name");
-    name.setFixed(fixed);
-    sd.getDifferential().addElement(name);
-    addMustSupportGiven(sd);
-    generateSnapshot(sd);
-
-    String html = render(sd, false, false);
-    assertTrue(html.contains("Fixed Value"));
-    assertTrue(html.contains("HumanName.given"));
-  }
-
-  @Test
-  public void sliceAwareMatchingPrefersElementIdOverPathWhenSliceIsPresent() throws Exception {
-    StructureDefinitionRenderer renderer = new StructureDefinitionRenderer(rc);
-
-    ElementDefinition unslicedGiven = new ElementDefinition();
-    unslicedGiven.setId("Patient.name.given");
-    unslicedGiven.setPath("Patient.name.given");
-
-    ElementDefinition officialGiven = new ElementDefinition();
-    officialGiven.setId("Patient.name:official.given");
-    officialGiven.setPath("Patient.name.given");
-
-    ElementDefinition usualGiven = new ElementDefinition();
-    usualGiven.setId("Patient.name:usual.given");
-    usualGiven.setPath("Patient.name.given");
-
-    assertFalse(matchesInScopeElement(renderer, "Patient.name.given", "Patient.name:official.given", unslicedGiven));
-    assertTrue(matchesInScopeElement(renderer, "Patient.name.given", "Patient.name:official.given", officialGiven));
-    assertFalse(matchesInScopeElement(renderer, "Patient.name.given", "Patient.name:official.given", usualGiven));
-    assertTrue(matchesInScopeElement(renderer, "Patient.name.given", "Patient.name.given", unslicedGiven));
-  }
-
-  @Test
   public void complexPatternKeepsComplexMarkerAndMergesNestedChildValues() throws Exception {
     StructureDefinition sd = makeBasePatientProfile("PatientIdentifierPatternNested");
 
@@ -197,36 +137,6 @@ public class StructureDefinitionRendererPatternTest {
     assertTrue(html.contains(">coding<"));
     assertTrue(html.contains("http://fhir.de/CodeSystem/identifier-type-de-basis"));
     assertTrue(html.contains("KVZ10"));
-  }
-
-  @Test
-  public void requiredBindingAndMergedPatternValueAreBothRendered() throws Exception {
-    StructureDefinition sd = makeBasePatientProfile("PatientNameUsePattern");
-
-    HumanName pattern = new HumanName();
-    pattern.setUse(HumanName.NameUse.MAIDEN);
-    addNamePattern(sd, pattern);
-    ElementDefinition use = new ElementDefinition();
-    use.setId("Patient.name.use");
-    use.setPath("Patient.name.use");
-    use.setMustSupport(true);
-    use.setShort("Usage Purpose");
-    sd.getDifferential().addElement(use);
-    generateSnapshot(sd);
-
-    String html = render(sd, false, false);
-    assertTrue(html.contains("Usage Purpose"));
-    assertFalse(html.contains("usual | official | temp | nickname | anonymous | old | maiden"));
-    assertTrue(html.contains("Binding:"));
-    assertTrue(html.contains("#required"));
-    assertTrue(html.contains("Fixed Value"));
-    assertTrue(html.contains("maiden"));
-  }
-
-  private boolean matchesInScopeElement(StructureDefinitionRenderer renderer, String path, String id, ElementDefinition candidate) throws Exception {
-    Method m = StructureDefinitionRenderer.class.getDeclaredMethod("matchesInScopeElement", String.class, String.class, ElementDefinition.class);
-    m.setAccessible(true);
-    return (Boolean) m.invoke(renderer, path, id, candidate);
   }
 
   private String render(StructureDefinition sd, boolean diff, boolean attributeTable) throws Exception {

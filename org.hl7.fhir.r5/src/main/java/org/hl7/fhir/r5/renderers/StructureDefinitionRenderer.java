@@ -1985,8 +1985,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
           binding = makeUnifiedBinding(valueDefn.getBinding(), valueDefn);
         else if (definition.hasBinding())
           binding = makeUnifiedBinding(definition.getBinding(), definition);
-        else if (fallback != null && fallback.hasBinding())
-          binding = makeUnifiedBinding(fallback.getBinding(), fallback);
         if (binding != null && !binding.isEmpty()) {
           if (!c.getPieces().isEmpty())
             c.addPiece(gen.new Piece("binding", "br"));
@@ -2932,7 +2930,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return mergedPatternValues.getOrDefault(definition, Collections.emptyList());
   }
 
-  private String formatMergedPatternValue(Base b) throws IOException {
+  private String formatMergedPatternValue(Base b) {
     if (b == null) {
       return "";
     }
@@ -2940,10 +2938,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       return b.primitiveValue();
     }
     if (b instanceof DataType) {
-      if (!b.isPrimitive()) {
-        return context.formatPhrase(RenderingContext.STRUC_DEF_COMPLEXBRACK);
-      }
-      return buildJson((DataType) b);
+      return context.formatPhrase(RenderingContext.STRUC_DEF_COMPLEXBRACK);
     }
     return b.toString();
   }
