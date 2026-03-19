@@ -565,7 +565,9 @@ public interface IWorkerContext {
    * @param rules - additional rules that apply when resolving the version to use
    * @param version the version. Don't provide both a version and a |version suffix
    * @param sourceOfReference where the reference was found (if the reference is in a resource)
+   * @param checkForImplicits
    */
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference, boolean checkForImplicits);
   public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference);
   @Deprecated(since="2026-03-10") default public CodeSystem fetchCodeSystem(String system, String version, Resource sourceOfReference) {
     return fetchCodeSystem(system, VersionResolutionRules.defaultRule(), version, sourceOfReference);
