@@ -1617,12 +1617,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
         c.addPiece(piece);
       }
-      if (shouldRenderFallbackShortForMergedPattern(definition, fallback)) {
-        if (!c.getPieces().isEmpty()) {
-          c.addPiece(gen.new Piece("br"));
-        }
-        c.addPiece(gen.new Piece(null, gt(fallback.getShortElement()), null));
-      }
       if (url != null) {
         if (!c.getPieces().isEmpty())
           c.addPiece(gen.new Piece("br"));
@@ -2920,18 +2914,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       }
     }
     return false;
-  }
-
-  private boolean shouldRenderFallbackShortForMergedPattern(ElementDefinition definition, ElementDefinition fallback) {
-    if (definition == null || fallback == null || !definition.hasShort() || !fallback.hasShort() || !hasMergedPatternValues(definition)) {
-      return false;
-    }
-    String fallbackShort = gt(fallback.getShortElement());
-    if (Utilities.noString(fallbackShort) || !fallbackShort.contains("|")) {
-      return false;
-    }
-    String definitionShort = gt(definition.getShortElement());
-    return !fallbackShort.equals(definitionShort);
   }
 
   private boolean hasFixedPatternOrMergedValues(ElementDefinition definition) {

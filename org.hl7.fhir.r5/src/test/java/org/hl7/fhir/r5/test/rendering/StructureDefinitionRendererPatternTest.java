@@ -206,11 +206,17 @@ public class StructureDefinitionRendererPatternTest {
     HumanName pattern = new HumanName();
     pattern.setUse(HumanName.NameUse.MAIDEN);
     addNamePattern(sd, pattern);
-    addMustSupportElement(sd, "Patient.name.use", "Patient.name.use");
+    ElementDefinition use = new ElementDefinition();
+    use.setId("Patient.name.use");
+    use.setPath("Patient.name.use");
+    use.setMustSupport(true);
+    use.setShort("Usage Purpose");
+    sd.getDifferential().addElement(use);
     generateSnapshot(sd);
 
     String html = render(sd, false, false);
-    assertTrue(html.contains("usual | official | temp | nickname | anonymous | old | maiden"));
+    assertTrue(html.contains("Usage Purpose"));
+    assertFalse(html.contains("usual | official | temp | nickname | anonymous | old | maiden"));
     assertTrue(html.contains("Binding:"));
     assertTrue(html.contains("#required"));
     assertTrue(html.contains("Fixed Value"));
