@@ -1006,9 +1006,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } else { 
         row.setIcon("icon_resource.png", context.formatPhrase(RenderingContext.GENERAL_RESOURCE)); 
       }
-      if (hasFixedPatternOrMergedValues(element)) {
-        setFixedPatternIcon(row, element);
-      }
+      applyPatternIcon(row, element);
       if (element.hasUserData(UserDataNames.render_opaque)) { 
         row.setOpacity("0.5"); 
       } 
@@ -2093,28 +2091,23 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.addPiece(gen.new Piece("br"));
           }
           c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_FIXED_VALUE)) + " ", null).addStyle("font-weight:bold"));
+          List<DataType> complexValues = new ArrayList<>();
           boolean first = true;
-          boolean hasComplexMergedValue = false;
           for (Base b : getMergedPatternValues(definition)) {
             if (!first) {
               c.addPiece(gen.new Piece(null, ", ", null));
             }
             String s = formatMergedPatternValue(b);
-            String link = null;
-            if (Utilities.isAbsoluteUrl(s) && context.getPkp() != null) {
-              link = context.getPkp().getLinkForUrl(corePath, s);
-            }
+            String link = Utilities.isAbsoluteUrl(s) && context.getPkp() != null ? context.getPkp().getLinkForUrl(corePath, s) : null;
             c.getPieces().add(gen.new Piece(link, s, null).addStyle("color: darkgreen"));
             if (b instanceof DataType && !b.isPrimitive()) {
-              hasComplexMergedValue = true;
+              complexValues.add((DataType) b);
             }
             first = false;
           }
-          if (useTableForFixedValues && allowSubRows && hasComplexMergedValue) {
-            for (Base b : getMergedPatternValues(definition)) {
-              if (b instanceof DataType && !b.isPrimitive()) {
-                genFixedValue(gen, row, (DataType) b, snapshot, true, corePath, mustSupportOnly, definition.getPath(), definition.getId(), inScopeElements);
-              }
+          if (useTableForFixedValues && allowSubRows && !complexValues.isEmpty()) {
+            for (DataType b : complexValues) {
+              genFixedValue(gen, row, b, snapshot, true, corePath, mustSupportOnly, definition.getPath(), definition.getId(), inScopeElements);
             }
           }
         } else if (definition.hasExample()) {
@@ -2902,27 +2895,22 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   } 
 
   private boolean hasMergedPatternValues(ElementDefinition definition) {
+    // mergePatternValuesIntoScope only adds renderable values, so non-empty == has renderable values.
     List<Base> values = mergedPatternValues.get(definition);
-    if (values == null || values.isEmpty()) {
-      return false;
-    }
-    for (Base value : values) {
-      if (isRenderableMergedPatternValue(value)) {
-        return true;
-      }
-    }
-    return false;
+    return values != null && !values.isEmpty();
   }
 
-  private boolean hasFixedPatternOrMergedValues(ElementDefinition definition) {
-    return definition != null && (definition.hasFixed() || definition.hasPattern() || hasMergedPatternValues(definition));
-  }
-
-  private void setFixedPatternIcon(Row row, ElementDefinition definition) {
-    if (definition.hasPattern() && !definition.hasFixed()) {
-      row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingContext.STRUC_DEF_REQ_PATT));
-    } else {
+  /** Sets icon_fixed.gif on the row when the element carries a fixed value, a pattern, or merged pattern values
+   *  from a parent's complex pattern. Pattern and merged-pattern cases get the "Required Pattern" tooltip;
+   *  only a plain fixed[x] gets "Fixed Value". */
+  private void applyPatternIcon(Row row, ElementDefinition definition) {
+    if (definition == null) {
+      return;
+    }
+    if (definition.hasFixed()) {
       row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingContext.STRUC_DEF_FIXED_VALUE));
+    } else if (definition.hasPattern() || hasMergedPatternValues(definition)) {
+      row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingContext.STRUC_DEF_REQ_PATT));
     }
   }
 
@@ -2937,10 +2925,11 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (b.isPrimitive()) {
       return b.primitiveValue();
     }
+    // All FHIR R5 property values are either PrimitiveType or DataType subclasses.
     if (b instanceof DataType) {
       return context.formatPhrase(RenderingContext.STRUC_DEF_COMPLEXBRACK);
     }
-    return b.toString();
+    throw new IllegalStateException("Unexpected Base type in merged pattern value: " + b.getClass().getName());
   }
 
   private void mergePatternValuesIntoScope(String childPath, String childId, List<Base> values, List<ElementDefinition> inScopeElements) {
@@ -3045,8 +3034,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     }
     return candidate.endsWith("[x]") && path.startsWith(candidate.substring(0, candidate.length()-3));
   }
- 
- 
+
+
   private ElementDefinition findElementDefinition(StructureDefinition sd, String name) { 
     String path = sd.getTypeName()+"."+name; 
     for (ElementDefinition ed : sd.getSnapshot().getElement()) { 
