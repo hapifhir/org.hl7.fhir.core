@@ -303,7 +303,7 @@ public class PackageReGenerator {
             } else {
               e.valueSet.setExpansion(null);
               e.error = exp.getError();
-              log.warn(exp.getError());
+              log.warn("Expanding "+e.valueSet.getVersionedUrl()+": "+exp.getError());
             }
           } catch (Exception ex) {
             log.warn("Error= "+ex.getMessage());
@@ -583,9 +583,12 @@ public class PackageReGenerator {
       ConceptSetComponent cs = (ConceptSetComponent) b;
       if (!cs.hasVersion()) {
         Resource res = context.fetchResource(Resource.class, cs.getSystem(), ExtensionUtilities.getVersionResolutionRules(cs), null, src);
-        if (res != null && res instanceof CanonicalResource) {
-          CanonicalResource cr = (CanonicalResource) res;
-          cs.setVersion(cr.getVersion());
+        if (res != null && res instanceof CodeSystem) {
+          CodeSystem cst = (CodeSystem) res;
+          // ignore not real code systems
+          if (cst.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cst.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT) {
+            cs.setVersion(cst.getVersion());
+          }
         }
       }
     }

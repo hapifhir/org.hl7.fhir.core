@@ -1268,7 +1268,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
         return "https://en.wikipedia.org/wiki/ISO_3166-2"; 
       } 
     } else { 
-      CodeSystem cs = context.getWorker().fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule(), version, source);
+      CodeSystem cs = context.getWorker().fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule(), version, source, code != null);
       if (cs != null && cs.hasWebPath()) { 
         if (!Utilities.noString(code)) { 
           return cs.getWebPath()+"#"+cs.getId()+"-"+Utilities.nmtokenize(code); 

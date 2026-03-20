@@ -5665,6 +5665,9 @@
     "uri" : "urn:ietf:bcp:47"
   },
   {
+    "uri" : "urn:ietf:rfc:3986"
+  },
+  {
     "uri" : "urn:iso-astm:E1762-95:2013"
   },
   {

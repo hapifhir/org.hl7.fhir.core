@@ -254,7 +254,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#133 (\"pneumococcal conjugate vaccine, 13 valent\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#133\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"133\" found in http://hl7.org/fhir/sid/cvx|20250715",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#133 (\"pneumococcal conjugate vaccine, 13 valent\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#133\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"133\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -386,7 +386,6 @@ v: {
 v: {
   "code" : "209",
   "system" : "http://hl7.org/fhir/sid/cvx",
-  "version" : "20250715",
   "severity" : "error",
   "error" : "The provided code 'http://hl7.org/fhir/sid/cvx#209' was not found in the value set 'http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2'; Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20250715'",
   "class" : "UNKNOWN",

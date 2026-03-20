@@ -210,7 +210,6 @@ public class ExtensionDefinitions {
   public static final String EXT_CONCEPT_DOMAIN = "http://hl7.org/fhir/StructureDefinition/binding-conceptDomain";
   public static final String EXT_NARRATIVE_SOURCE_CONTROL = "http://hl7.org/fhir/StructureDefinition/narrative-source-control";
   public static final String EXT_NARRATIVE_LANGUAGE_CONTROL = "http://hl7.org/fhir/StructureDefinition/narrative-language-control";
-  public static final String EXT_SD_CS_URL = "todo";
   public static final String EXT_DISPLAY_NAME = "http://hl7.org/fhir/StructureDefinition/display"; // Display Name
   public static final String EXT_CSDECLARED_PROFILE = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-declared-profile"; // CapabilityStatement Declared Profile
   public static final String EXT_CSSEARCH_PARAMETER_COMBINATION = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-search-parameter-combination"; // CapabilityStatement Search Parameter Combination

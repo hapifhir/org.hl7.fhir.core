@@ -1121,7 +1121,6 @@ v: {
 v: {
   "code" : "fmm[Hg]",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.2",
   "severity" : "error",
   "error" : "Unknown code 'fmm[Hg]' in the CodeSystem 'http://unitsofmeasure.org' version '2.2'",
   "class" : "UNKNOWN",
@@ -1238,7 +1237,6 @@ v: {
 v: {
   "code" : "fmm[Hg]",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.2",
   "severity" : "error",
   "error" : "The provided code 'http://unitsofmeasure.org#fmm[Hg]' was not found in the value set 'http://hl7.org/fhir/ValueSet/ucum-vitals-common|4.0.1'; Unknown code 'fmm[Hg]' in the CodeSystem 'http://unitsofmeasure.org' version '2.2'",
   "class" : "UNKNOWN",

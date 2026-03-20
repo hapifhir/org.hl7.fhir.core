@@ -1,0 +1,262 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2054-5",
+  "display" : "Black or African American"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Black or African American",
+  "code" : "2054-5",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.3",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2054-5 (\"Black or African American\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2054-5\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2054-5\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2106-3",
+  "display" : "White"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "White",
+  "code" : "2106-3",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.3",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2106-3 (\"White\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2106-3\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2106-3\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "1002-5",
+  "display" : "American Indian or Alaska Native"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "American Indian or Alaska Native",
+  "code" : "1002-5",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.3",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#1002-5 (\"American Indian or Alaska Native\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#1002-5\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"1002-5\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2028-9",
+  "display" : "Asian"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Asian",
+  "code" : "2028-9",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.3",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2028-9 (\"Asian\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2028-9\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2028-9\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "1586-7",
+  "display" : "Shoshone"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Shoshone",
+  "code" : "1586-7",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.3",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#1586-7 (\"Shoshone\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#1586-7\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"1586-7\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2036-2",
+  "display" : "Filipino"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Filipino",
+  "code" : "2036-2",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.3",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2036-2 (\"Filipino\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2036-2\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2036-2\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2135-2",
+  "display" : "Hispanic or Latino"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Hispanic or Latino",
+  "code" : "2135-2",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.3",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2135-2 (\"Hispanic or Latino\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2135-2\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2135-2\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2184-0",
+  "display" : "Dominican"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Dominican",
+  "code" : "2184-0",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.3",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2184-0 (\"Dominican\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2184-0\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2184-0\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "code" : "2148-5",
+  "display" : "Mexican"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Mexican",
+  "code" : "2148-5",
+  "system" : "urn:oid:2.16.840.1.113883.6.238",
+  "version" : "1.3",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2148-5 (\"Mexican\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2148-5\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2148-5\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
