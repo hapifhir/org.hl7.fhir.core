@@ -2484,10 +2484,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (vr.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || vr.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED_VERSION) {
               boolean warned = false;
               for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
-                warned = warned || "UNKNOWN_CODESYSTEM".equals(iss.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID));
+                warned = warned || Utilities.existsInList(iss.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID), "UNKNOWN_CODESYSTEM", "CODESYSTEM_UNSUPPORTED_VERSION");
               }
               if (!warned) {
-                txWarning(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path+".system", false, I18nConstants.UNKNOWN_CODESYSTEM, theSystem);
+                String theVersion = determineVersion(theSystem, c.getVersion());
+                if (theVersion != null) {
+                  txWarning(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path + ".system", false, I18nConstants.UNKNOWN_CODESYSTEM_VERSION_UNK, theSystem, theVersion);
+                } else {
+                  txWarning(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path + ".system", false, I18nConstants.UNKNOWN_CODESYSTEM, theSystem);
+                }
               }
             } else {
               ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(vsRef.primitiveValue(), valueset, bc, usageNote), vr.getMessage(), theSystem + "#" + theCode) && ok;
@@ -2524,6 +2529,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
+  }
+
+  private String determineVersion(String theSystem, String version) {
+    if (version != null) {
+      return version;
+    }
+    Parameters expParameters = context.getExpansionParameters();
+    if (expParameters != null) {
+      for (Parameters.ParametersParameterComponent pp : expParameters.getParameter()) {
+        if (Utilities.existsInList(pp.getName(), "system-version", "force-system-version") && pp.hasValue() && pp.getValue().primitiveValue() != null && pp.getValue().primitiveValue().startsWith(theSystem+"|")) {
+          return pp.getValue().primitiveValue().substring(pp.getValue().primitiveValue().indexOf("|"+1));
+        }
+      }
+    }
+    return null;
   }
 
   private boolean isValueSet(String url) {
