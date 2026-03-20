@@ -302,12 +302,12 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
   }
 
-  public void register(CanonicalResourceProxy canonicalResourceProxy, PackageInformation packageInfo) {
+  public boolean register(CanonicalResourceProxy canonicalResourceProxy, PackageInformation packageInfo) {
     if (!canonicalResourceProxy.hasId()) {
       throw new FHIRException("An id is required for a deferred load resource");
     }
     CanonicalResourceManager<T>.CachedCanonicalResource<T> cachedCanonicalResource = new CachedCanonicalResource<T>(canonicalResourceProxy, packageInfo);
-    see(cachedCanonicalResource);
+    return see(cachedCanonicalResource);
   }
 
   public void see(T r, PackageInformation packgeInfo) {
@@ -320,18 +320,18 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
   }
 
-  public void see(CachedCanonicalResource<T> cr) {
+  public boolean see(CachedCanonicalResource<T> cr) {
     // -- 1. exit conditions -----------------------------------------------------------------------------
 
-    // ignore UTG NUCC erroneous code system
+    // ignore erroneous code systems found in THO
     if (cr.getPackageInfo() != null
       && cr.getPackageInfo().getId() != null
       && cr.getPackageInfo().getId().startsWith("hl7.terminology")
       && Arrays.stream(INVALID_TERMINOLOGY_URLS).anyMatch((it)->it.equals(cr.getUrl()))) {
-      return;
+      return false;
     }
     if (indexedResources.get(cr.getUrl()) != null && (cr.getPackageInfo() != null && cr.getPackageInfo().isExamplesPackage())) {
-      return;
+      return false;
     }
 
     // -- 2. preparation -----------------------------------------------------------------------------
@@ -407,7 +407,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       } else {
         for (int i = set.size() - 1; i > ndx; i--) {
           if (mmp.equals(VersionUtilities.getMajMinPatch(set.get(i).getVersion()))) {
-            return;
+            return true;
           }
           addToMap(cr.getUrl()+"|"+mmp, cr);
         }
@@ -424,13 +424,14 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       } else {
         for (int i = set.size() - 1; i > ndx; i--) {
           if (mm.equals(VersionUtilities.getMajMin(set.get(i).getVersion()))) {
-            return;
+            return true;
           }
           addToMap(cr.getUrl()+"|"+mm, cr);
         }
       }
     }
     cr.setLoadingOrder(++loadCount);
+    return true;
   }
 
   private int compareResources (CachedCanonicalResource<T> c1, CachedCanonicalResource<T> c2) {
