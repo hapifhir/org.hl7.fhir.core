@@ -1254,5 +1254,10 @@ public class RenderingContext extends RenderingI18nContext {
     return getRules() == GenerationRules.IG_PUBLISHER;
   }
 
+  public RenderingContext setPackageInformation(PackageInformation packageInfo) {
+    this.pi = packageInfo;
+    return this;
+  }
+
 
 }
