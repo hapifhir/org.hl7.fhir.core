@@ -54,12 +54,6 @@
     "candidates" : ["https://tx-dev.fhir.org/r5"]
   },
   {
-    "system" : "http://loinc.org|3.1.0",
-    "url" : "http://loinc.org|3.1.0",
-    "authoritative" : [],
-    "candidates" : ["https://tx-dev.fhir.org/r5"]
-  },
-  {
     "system" : "http://snomed.info/sct",
     "url" : "http://snomed.info/sct",
     "authoritative" : [],

@@ -4,7 +4,10 @@
   "urn:ietf:bcp:13" : null,
   "http://mydomain.org/fhir/cs/mydomain" : null,
   "http://acme.org" : null,
-  "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode" : null,
+  "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode" : {
+    "server" : "http://tx-dev.fhir.org/r3",
+    "filename" : "cs-a980fb03-f76b-418f-9c05-5b799cdb1b85.json"
+  },
   "http://acme.org/not-snomed" : null,
   "http://myownsystem.info/sct" : null,
   "urn:oid:1.2.840.10008.2.16.4" : null,

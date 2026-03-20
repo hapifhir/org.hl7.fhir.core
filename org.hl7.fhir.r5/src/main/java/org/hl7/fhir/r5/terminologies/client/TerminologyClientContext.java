@@ -266,11 +266,7 @@ public class TerminologyClientContext {
   }
 
   public boolean supportsSystem(String system) throws IOException {
-    try {
-      new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).compose(new FileOutputStream("/Users/grahamegrieve/temp/txcaps.json"), txcaps);
-    } catch (IOException e) {
 
-    }
     for (TerminologyCapabilitiesCodeSystemComponent tccs : txcaps.getCodeSystem()) {
       if (system.equals(tccs.getUri()) || (tccs.hasVersion() && system.equals(CanonicalType.urlWithVersion(tccs.getUri(), tccs.getVersionFirstRep().getCode())))) {
         return true;

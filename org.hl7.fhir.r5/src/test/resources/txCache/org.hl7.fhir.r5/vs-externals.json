@@ -4,6 +4,8 @@
   "http://example.org/fhir/example1" : null,
   "http://hl7.org/fhir/ValueSet/concept-properties" : null,
   "http://somewhere/something-else" : null,
+  "https://termgit.elga.gv.at/ValueSet/eimpf-zusatzklassifikation-impfprogramm" : null,
   "http://hl7.org/fhir/us/vrdr/ValueSet/vrdr-PlaceOfDeath" : null,
+  "https://termgit.elga.gv.at/ValueSet/eimpf-impfstoffe" : null,
   "http://somewhere/something" : null
 }
