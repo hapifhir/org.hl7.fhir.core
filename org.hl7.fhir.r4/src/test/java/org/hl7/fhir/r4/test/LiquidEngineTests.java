@@ -19,7 +19,9 @@ import org.hl7.fhir.r4.utils.LiquidEngine.ILiquidEngineIcludeResolver;
 import org.hl7.fhir.r4.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,6 +41,16 @@ public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
 
   private JsonObject test;
   private LiquidEngine engine;
+
+  @BeforeAll
+  static void beforeAll() {
+    LiquidEngine.setAllowLiquidEvaluation(true);
+  }
+
+  @AfterAll
+  static void afterAll() {
+    LiquidEngine.setAllowLiquidEvaluation(false);
+  }
 
   @BeforeEach
   public void setUp() {

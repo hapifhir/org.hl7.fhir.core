@@ -36,6 +36,8 @@ import java.util.Map;
   
  */
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4b.context.IWorkerContext;
@@ -59,6 +61,14 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
 public class LiquidEngine implements IHostApplicationServices {
+
+  /**
+    * IMPORTANT: LiquidEngine evaluation is permitted to access all resource elements, including sensitive information and
+    * authorization tokens. This should only be set to true if this code is being executed in a trusted environment with
+    * trusted Liquid templates.
+    */
+  @Getter @Setter
+  private static boolean allowLiquidEvaluation = false;
 
   public interface ILiquidRenderingSupport {
     String renderForLiquid(Object appContext, Base i) throws FHIRException;
@@ -128,6 +138,9 @@ public class LiquidEngine implements IHostApplicationServices {
   }
 
   public String evaluate(LiquidDocument document, Base resource, Object appContext) throws FHIRException {
+    if (!allowLiquidEvaluation) {
+      throw new FHIRException("Liquid document evaluation is disabled as a security measure - see org.hl7.fhir.r4b.utils.LiquidEngine#allowLiquidEvaluation");
+    }
     StringBuilder b = new StringBuilder();
     LiquidEngineContext ctxt = new LiquidEngineContext(appContext);
     for (LiquidNode n : document.body) {
