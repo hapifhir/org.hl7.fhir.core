@@ -347,6 +347,7 @@ public class RenderingContext extends RenderingI18nContext {
   private boolean testing;
   private PackageInformation pi;
   @Getter @Setter boolean showStandardsStatus;
+  private boolean inferResourceConformance;
 
   /**
    * 
@@ -438,6 +439,7 @@ public class RenderingContext extends RenderingI18nContext {
     res.typeMap = typeMap;
     res.trackNarrativeSource = trackNarrativeSource;
     res.crossLinkKeyGen = crossLinkKeyGen;
+    res.inferResourceConformance = inferResourceConformance;
     
     res.getActorWhiteList().addAll(actorWhiteList);
 
@@ -1257,6 +1259,14 @@ public class RenderingContext extends RenderingI18nContext {
   public RenderingContext setPackageInformation(PackageInformation packageInfo) {
     this.pi = packageInfo;
     return this;
+  }
+
+  public boolean isInferResourceConformance() {
+    return inferResourceConformance;
+  }
+
+  public void setInferResourceConformance(boolean inferResourceConformance) {
+    this.inferResourceConformance = inferResourceConformance;
   }
 
 
