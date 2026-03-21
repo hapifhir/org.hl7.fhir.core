@@ -53,6 +53,7 @@ import org.hl7.fhir.r4.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r4.context.IWorkerContext;
 import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r4.elementmodel.Element;
+import org.hl7.fhir.r4.elementmodel.ObjectConverter;
 import org.hl7.fhir.r4.elementmodel.Property;
 import org.hl7.fhir.r4.fhirpath.ExpressionNode;
 import org.hl7.fhir.r4.fhirpath.FHIRLexer;
@@ -1717,30 +1718,46 @@ public class StructureMapUtilities {
       return res;
     }
 
+    Set<String> visitedMapUrls = new HashSet<String>();
+    visitedMapUrls.add(getMapVisitKey(map));
+    resolveGroupReferenceInImports(map, name, res, visitedMapUrls);
+    if (res.target == null)
+      throw new FHIRException("No matches found for rule '" + name + "'. Reference found in " + map.getUrl());
+    source.setUserData(kn, res);
+    return res;
+  }
+
+  private void resolveGroupReferenceInImports(StructureMap map, String name, ResolvedGroup res, Set<String> visitedMapUrls)
+      throws FHIRException {
     for (UriType imp : map.getImport()) {
       List<StructureMap> impMapList = findMatchingMaps(imp.getValue());
       if (impMapList.size() == 0)
         throw new FHIRException("Unable to find map(s) for " + imp.getValue());
       for (StructureMap impMap : impMapList) {
-        if (!impMap.getUrl().equals(map.getUrl())) {
-          for (StructureMapGroupComponent grp : impMap.getGroup()) {
-            if (grp.getName().equals(name)) {
-              if (res.targetMap == null) {
-                res.targetMap = impMap;
-                res.target = grp;
-              } else
-                throw new FHIRException(
-                    "Multiple possible matches for rule group '" + name + "' in " + res.targetMap.getUrl() + "#"
-                        + res.target.getName() + " and " + impMap.getUrl() + "#" + grp.getName());
-            }
+        String visitKey = getMapVisitKey(impMap);
+        if (visitedMapUrls.contains(visitKey))
+          continue;
+
+        visitedMapUrls.add(visitKey);
+        for (StructureMapGroupComponent grp : impMap.getGroup()) {
+          if (grp.getName().equals(name)) {
+            if (res.targetMap == null) {
+              res.targetMap = impMap;
+              res.target = grp;
+            } else
+              throw new FHIRException(
+                  "Multiple possible matches for rule group '" + name + "' in " + res.targetMap.getUrl() + "#"
+                      + res.target.getName() + " and " + impMap.getUrl() + "#" + grp.getName());
           }
         }
+
+        resolveGroupReferenceInImports(impMap, name, res, visitedMapUrls);
       }
     }
-    if (res.target == null)
-      throw new FHIRException("No matches found for rule '" + name + "'. Reference found in " + map.getUrl());
-    source.setUserData(kn, res);
-    return res;
+  }
+
+  private String getMapVisitKey(StructureMap map) {
+    return map.getUrl() == null ? Integer.toHexString(System.identityHashCode(map)) : map.getUrl();
   }
 
   private List<Variables> processSource(String ruleId, TransformContext context, Variables vars,
@@ -1886,10 +1903,18 @@ public class StructureMapUtilities {
     Base v = null;
     if (tgt.hasTransform()) {
       v = runTransform(ruleId, context, map, group, tgt, vars, dest, tgt.getElement(), srcVar, atRoot);
-      if (v != null && dest != null)
+      if (v != null && dest != null) {
+        if (dest instanceof Element && v instanceof Type && !v.isPrimitive() && !(v instanceof Element)) {
+          Type typedValue = (Type) v;
+          Property childProperty = resolveTargetChildProperty((Element) dest, tgt.getElement());
+          if (childProperty != null) {
+            v = normalizeConvertedTypeValue(childProperty, typedValue, new ObjectConverter(worker).convert(childProperty, typedValue));
+          }
+        }
         v = dest.setProperty(tgt.getElement().hashCode(), tgt.getElement(), v); // reset v because some implementations
                                                                                 // may have to rewrite v when setting
                                                                                 // the value
+      }
     } else if (dest != null) {
       if (tgt.hasListMode(StructureMapTargetListMode.SHARE)) {
         v = sharedVars.get(VariableMode.SHARED, tgt.getListRuleId());
@@ -1903,6 +1928,38 @@ public class StructureMapUtilities {
     }
     if (tgt.hasVariable() && v != null)
       vars.add(VariableMode.OUTPUT, tgt.getVariable(), v);
+  }
+
+  private Property resolveTargetChildProperty(Element theDestination, String theChildName) throws FHIRException {
+    if (theDestination.getProperty() == null) {
+      return null;
+    }
+    Property child = theDestination.getProperty().getChild(theDestination.getType(), theChildName);
+    if (child == null) {
+      child = theDestination.getProperty().getChildSimpleName(theDestination.getType(), theChildName);
+    }
+    if (child == null) {
+      child = theDestination.getProperty().getChild(theChildName);
+    }
+    return child;
+  }
+
+  private Element normalizeConvertedTypeValue(Property theChildProperty, Type theSourceValue, Element theConvertedValue) {
+    if (theConvertedValue == null) {
+      return null;
+    }
+    String actualType = theSourceValue.fhirType();
+    if (Utilities.noString(actualType)) {
+      return theConvertedValue;
+    }
+    Element normalized = new Element(theConvertedValue.getName(), theChildProperty, actualType, theConvertedValue.getValue());
+    if (theConvertedValue.hasChildren()) {
+      normalized.getChildren().addAll(theConvertedValue.getChildren());
+    }
+    if (theConvertedValue.hasComments()) {
+      normalized.getComments().addAll(theConvertedValue.getComments());
+    }
+    return normalized;
   }
 
   private Base runTransform(String ruleId, TransformContext context, StructureMap map, StructureMapGroupComponent group,
