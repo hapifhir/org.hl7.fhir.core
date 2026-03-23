@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* Exempt canonical references fixed to latest from pinning checks 
+* Exempt canonical references fixed to latest from pinning checks
 * Use the right version when validating cross-version extensions
 * Upgrade to version 0.1.0 for cross-version packages
 

@@ -19,12 +19,14 @@ public class PackageServerHTTPAuthProvider implements IHTTPAuthenticationProvide
 
   @Override
   public boolean canProvideHeaders(URL url) {
-    return this.url.getProtocol().equals(url.getProtocol())
-      && this.url.getHost().equals(url.getHost());
+    return ManagedWebAccessUtils.urlMatchesOrigin( url, this.url);
   }
 
   @Override
   public Map<String, String> getHeaders(URL url) {
+    if (!ManagedWebAccessUtils.urlMatchesOrigin( url, this.url)) {
+      throw new SecurityException("Requested authorization headers for " + this.url + " for unmatched URL: " + url);
+    }
     Map<String, String> headers = new HashMap<>();
     switch (server.getAuthenticationMode()) {
       case TOKEN -> {
