@@ -1164,7 +1164,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     x.tx(" "); 
     x.tx(ew.primitiveValue("operator")); 
     x.tx(" "); 
-    x.tx(displayDataType(ew.child("Answer"))); 
+    x.tx(displayDataType(ew.child("answer"))); 
   } 
 
   private XhtmlNode defn(XhtmlNode tbl, String name) { 
