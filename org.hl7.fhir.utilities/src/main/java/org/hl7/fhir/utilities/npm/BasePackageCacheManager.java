@@ -10,6 +10,8 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -21,6 +23,8 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   protected final List<PackageServer> myPackageServers;
   private Function<PackageServer, PackageClient> myClientFactory = server -> new PackageClient(server);
+
+  @Getter @Setter protected PackageLoadController loadControl;
 
   /**
    * Constructor
