@@ -99,6 +99,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
 import ca.uhn.fhir.parser.DataFormatException;
+import org.hl7.fhir.utilities.npm.PackageLoadController;
 
 /*
  * This is a stand alone implementation of worker context for use inside a tool.
@@ -197,13 +198,16 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private boolean allowLazyLoading = true;
   private IPackageCacheManager packageCacheManager;
   @Getter @Setter private ILoaderFactory loaderFactory;
+  @Getter PackageLoadController packageLoadController;
 
   private SimpleWorkerContext() throws IOException, FHIRException {
     super();
+    packageLoadController = new PackageLoadController();
   }
 
   private SimpleWorkerContext(Locale locale) throws IOException, FHIRException {
     super(locale);
+    packageLoadController = new PackageLoadController();
   }
 
   public SimpleWorkerContext(SimpleWorkerContext other) throws IOException, FHIRException {
@@ -231,8 +235,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     questionnaire = other.questionnaire;
     packageCacheManager = other.packageCacheManager;
     loaderFactory = other.loaderFactory;
+    packageLoadController = other.packageLoadController.copy();
   }
-
 
   public List<String> getLoadedPackages() {
     return loadedPackages;
@@ -927,7 +931,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       String v = idAndver.substring(idAndver.lastIndexOf("#")+1);
       for (String s : loadedPackages) {
         String v2 = s.substring(s.lastIndexOf("#")+1);
-        if (s.startsWith("hl7.fhir.uv.extensions.") && VersionUtilities.versionMatches(v, v2)) {
+        if (s.startsWith("hl7.fhir.uv.extensions.") && VersionUtilities.isSemVerWithWildcards(v) && VersionUtilities.isSemVer(v2,true) && VersionUtilities.versionMatches(v, v2)) {
           return true;
         }
       }

@@ -315,8 +315,23 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       if (!r.hasId()) {
         r.setId(UUID.randomUUID().toString());
       }
-      CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = new CachedCanonicalResource<T>(r, packgeInfo);
-      see(cr);
+      if (packgeInfo != null) {
+        CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = indexedResources.get(packgeInfo.getVID()+":"+ r.getUrl() + "|" + r.getVersion());
+        if (cr != null && cr.getPackageInfo() == null) {
+          cr.resource = r;
+        } else {
+          cr = new CachedCanonicalResource<T>(r, packgeInfo);
+          see(cr);
+        }
+      } else {
+        CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = indexedResources.get(r.getUrl() + "|" + r.getVersion());
+        if (cr != null && cr.getPackageInfo() == null) {
+          cr.resource = r;
+        } else {
+          cr = new CachedCanonicalResource<T>(r, packgeInfo);
+          see(cr);
+        }
+      }
     }
   }
 
