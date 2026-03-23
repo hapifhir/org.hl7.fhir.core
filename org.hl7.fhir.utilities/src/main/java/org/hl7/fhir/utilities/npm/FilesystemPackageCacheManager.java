@@ -691,7 +691,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       try {
         version = getLatestVersion(statedId, false);
       } catch (Exception e) {
-        version = null;
+        // version = null; we just don't know the version
       }
     }
 
@@ -747,11 +747,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
    *   * return null, in which case the package is not loaded
    *   * return a version, in which case the specified version is loaded.
    *
-   * Normal behaviour is simply to return the verision passed in
+   * Normal behaviour is simply to return the version passed in
    *
    * @param id - proposed package id
    * @param version - proposed package version
-   * @return vresion to load. Or null, to ignore the package. Or throw an exception
+   * @return version to load. Or null, to ignore the package. Or throw an exception
    */
   private String checkOKToLoadPackage(String id, String version) {
     if ("fhir.base.template".equals(id)) {
