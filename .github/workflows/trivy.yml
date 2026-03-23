@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Run static analysis
-        uses: aquasecurity/trivy-action@77137e9dc3ab1b329b7c8a38c2eb7475850a14e8 # master
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
         env:
           # Workaround for rate limiting on ghcr. Use these two entries for ghcr related TOOMANYREQUESTS errors.
           TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
