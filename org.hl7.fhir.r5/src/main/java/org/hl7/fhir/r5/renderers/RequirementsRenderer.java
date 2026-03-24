@@ -85,6 +85,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     }
     XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
 
+    CodeSystem cs = context.getWorker().fetchCodeSystem("http://hl7.org/fhir/conformance-expectation", IWorkerContext.VersionResolutionRules.defaultRule());
     for (ResourceWrapper stmt : req.children("statement")) {
       XhtmlNode tr = tbl.tr();
       String lbl = stmt.has("label") ? stmt.primitiveValue("label") : stmt.primitiveValue("key");
@@ -93,13 +94,19 @@ public class RequirementsRenderer extends ResourceRenderer {
       td.tx(lbl);
       td = tr.td();
       boolean first = true;
-      CodeSystem cs = context.getWorker().fetchCodeSystem("http://hl7.org/fhir/conformance-expectation", IWorkerContext.VersionResolutionRules.defaultRule());
-      for (ResourceWrapper t : stmt.children("conformance")) {
-        if (first) first = false; else td.tx(", ");
-        if (cs != null) {
-          td.ah(context.prefixLocalHref(cs.getWebPath()+"#conformance-expectation-"+t.primitiveValue())).tx(t.primitiveValue().toUpperCase());          
-        } else {
-          td.tx(t.primitiveValue().toUpperCase());
+      List<ResourceWrapper> confs = stmt.children("conformance");
+      if (confs.isEmpty()) {
+        boolean shallNot = stmt.extensionValue("http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot").primitiveValue().equals("true");
+        if (shallNot)
+          td.tx(context.formatPhrase(RenderingContext.CONF_SHALLNOT));
+      } else {
+        for (ResourceWrapper t : stmt.children("conformance")) {
+          if (first) first = false; else td.tx(", ");
+          if (cs != null) {
+            td.ah(context.prefixLocalHref(cs.getWebPath()+"#conformance-expectation-"+t.primitiveValue())).tx(t.primitiveValue().toUpperCase());          
+          } else {
+            td.tx(t.primitiveValue().toUpperCase());
+          }
         }
       }
       td = tr.td();
