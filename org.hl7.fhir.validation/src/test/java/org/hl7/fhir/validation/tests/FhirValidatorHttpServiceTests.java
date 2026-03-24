@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -51,7 +50,7 @@ class FhirValidatorHttpServiceTest {
   }
 
   @Test
-  void testNetowkrAccessibleConfiguredCorrectly() throws IOException {
+  void testNetworkAccessibleConfiguredCorrectly() throws IOException {
     ValidationEngine validationEngine = mock(ValidationEngine.class);
     int port = 18080;
     FhirValidatorHttpService service = new FhirValidatorHttpService(validationEngine, false, port);
