@@ -644,6 +644,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setAssumeValidRestReferences(parameters.isAssumeValidRestReferences());
     setSecurityChecks(parameters.isSecurityChecks());
     setCrumbTrails(parameters.isCrumbTrails());
+    setEnforceAggregationOutsideBundles(parameters.getEnforceAggregationOutsideBundles());
 
     setForPublication(parameters.isForPublication());
     setAllowExamples(parameters.isAllowExampleUrls());
@@ -738,6 +739,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setAssumeValidRestReferences(boolean value) {
     settings.setAssumeValidRestReferences(value);
+  }
+
+  public Boolean getEnforceAggregationOutsideBundles() {
+    return settings.getEnforceAggregationOutsideBundles();
+  }
+
+  public void setEnforceAggregationOutsideBundles(Boolean value) {
+    settings.setEnforceAggregationOutsideBundles(value);
   }
 
   public boolean isAllowComments() {
@@ -5042,12 +5051,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
           for (Enumeration<AggregationMode> mode : type.getAggregation()) {
             b.append(mode.getCode());
-            if (mode.getValue().equals(AggregationMode.CONTAINED) && refType == ReferenceDestinationType.CONTAINED)
+            if (mode.getValue().equals(AggregationMode.CONTAINED) && refType == ReferenceDestinationType.CONTAINED) {
               modeOk = true;
-            else if (mode.getValue().equals(AggregationMode.BUNDLED) && refType == ReferenceDestinationType.INTERNAL)
+            } else if (mode.getValue().equals(AggregationMode.BUNDLED)) {
+              // are we enforcing bundle references?
+              boolean inBundle = stack.isInBundle();
+              boolean enforceBundleAggregation = inBundle || ( settings.getEnforceAggregationOutsideBundles() != null ? settings.getEnforceAggregationOutsideBundles() : !VersionUtilities.isR5Plus(context.getVersion()));
+              if (!enforceBundleAggregation || refType == ReferenceDestinationType.INTERNAL) {
+                modeOk = true;
+              }
+            } else if (mode.getValue().equals(AggregationMode.REFERENCED) && (refType != ReferenceDestinationType.CONTAINED)) {
               modeOk = true;
-            else if (mode.getValue().equals(AggregationMode.REFERENCED) && (refType != ReferenceDestinationType.CONTAINED))
-              modeOk = true;
+            }
           }
           ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, modeOk,
             I18nConstants.REFERENCE_REF_AGGREGATION, refType.toCode(), b.toString()) && ok;

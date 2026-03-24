@@ -3,6 +3,7 @@ package org.hl7.fhir.validation;
 import java.util.*;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
@@ -28,6 +29,7 @@ public class ValidatorSettings extends ValidationOptions {
   private String minVersion;
   private String maxVersion;
   private boolean useNewXVersionPackages;
+  @Getter @Setter private Boolean enforceAggregationOutsideBundles;
 
   @Getter private Set<String> jwtHeaderList = buildJadesHeaders();
 
