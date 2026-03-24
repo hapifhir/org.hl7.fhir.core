@@ -42,10 +42,14 @@ public class LiquidJsonTest extends BaseHostServices {
     LiquidEngine liquid = new LiquidEngine(context, this);
     LiquidDocument template = liquid.parse(TestingUtilities.loadTestResource("r5", "liquid-json", "history.liquid"), null);
     BaseJsonWrapper base = new BaseJsonWrapper(json);
-    String s = liquid.evaluate(template, base, this).trim();
-    String expected = TestingUtilities.loadTestResource("r5", "liquid-json", "history.html").trim();
+    String s = fixEoln(liquid.evaluate(template, base, this)).trim();
+    String expected = fixEoln(TestingUtilities.loadTestResource("r5", "liquid-json", "history.html")).trim();
     System.out.println(s);
     Assertions.assertEquals(expected, s);
+  }
+
+  private String fixEoln(String text) {
+    return text.replace("\r\n", "\n");
   }
   
   @Test
@@ -56,8 +60,8 @@ public class LiquidJsonTest extends BaseHostServices {
     LiquidEngine liquid = new LiquidEngine(context, this);
     LiquidDocument template = liquid.parse(TestingUtilities.loadTestResource("r5", "liquid-json", "test-cases.liquid"), null);
     BaseJsonWrapper base = new BaseJsonWrapper(json);
-    String s = liquid.evaluate(template, base, this).trim();
-    String expected = TestingUtilities.loadTestResource("r5", "liquid-json", "test-cases.html").trim();
+    String s = fixEoln(liquid.evaluate(template, base, this).trim());
+    String expected = fixEoln(TestingUtilities.loadTestResource("r5", "liquid-json", "test-cases.html").trim());
     System.out.println(s);
     Assertions.assertEquals(expected, s);
   }

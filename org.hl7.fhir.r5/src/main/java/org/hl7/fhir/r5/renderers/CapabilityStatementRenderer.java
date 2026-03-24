@@ -1637,6 +1637,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   private String getResourceExpectation(CapabilityStatementRestResourceComponent r) {
     String capExpectation = expectationForDisplay(r,EXPECTATION);
     if (!Utilities.noString(capExpectation)) return capExpectation;
+    if (!context.isInferResourceConformance())
+      return "unspecified";
     boolean shalls = false;
     boolean shoulds = false;
     boolean mays = false;
