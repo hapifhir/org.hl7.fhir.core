@@ -66,6 +66,12 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
   )
   private int port;
 
+  @CommandLine.Option(
+    names = {"-allowNetworkAccess"},
+    description = "Setting this to true allows this server to be accessed outside the local machine. WARNING: Setting this to true you assume responsibility for securing access to this application."
+  )
+  private boolean allowNetworkAccess;
+
   // The remaining parameters are processed as sources
   @CommandLine.Parameters(
     description = "Source file(s) to transform",
@@ -97,6 +103,7 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
 
       FhirValidatorHttpService service = new FhirValidatorHttpService(
         validationEngine,
+        !allowNetworkAccess,
         port
       );
       service.startServer();
