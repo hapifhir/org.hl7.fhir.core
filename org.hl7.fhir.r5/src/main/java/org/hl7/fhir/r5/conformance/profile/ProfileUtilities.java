@@ -128,33 +128,28 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
 public class ProfileUtilities {
 
   private static final Set<String> BASE_FILENAMES = Set.of(
-    "ansi", "async", "ballot-intro", "best-practices", "bindings-list", "biologically-derived-product-module", "broken-link", "cda-intro",
-    "change", "clinicalreasoning-cds-on-fhir", "clinicalreasoning-evidence-and-statistics", "clinicalreasoning-knowledge-artifact-distribution",
-    "clinicalreasoning-knowledge-artifact-representation", "clinicalreasoning-module", "clinicalreasoning-quality-reporting",
-    "clinicalreasoning-topics-definitional-resources", "clinicalreasoning-topics-supporting-documentation", "clinicalreasoning-topics-template",
-    "clinicalreasoning-topics-using-expressions", "clinicalsummary-module", "communicationrequest-post.svg", "communicationrequest-task.svg", "comparison-cda",
-    "comparison-other", "comparison-v2", "comparison-v3", "comparison", "conformance-module", "conformance-rules",
-    "credits", "datatypes-definitions", "datatypes-examples", "datatypes-mappings", "datatypes-profiles", "datatypes", "defining-extensions",
-    "device-module", "diagnostics-module", "diff-r4", "diff-r4b", "diff-r5", "diff", "documentation", "documents", "dosage-definitions", "dosage-examples",
-    "dosage-mappings", "dosage-profiles", "dosage", "downloads", "ehr-fm", "elementdefinition-definitions", "elementdefinition-examples", "elementdefinition-mappings",
-    "elementdefinition-profiles", "elementdefinition", "exchange-module", "exchanging-messaging", "exchanging-operation", "exchanging-polling", "exchanging-request",
-    "exchanging-rest", "exchanging-search", "exchanging-subscription", "exchanging", "extensibility-definitions", "extensibility-examples", "extensibility",
-    "fhir-exchanges.svg", "fhir-xquery", "fhirpatch", "fhirpath", "financial-module", "fmg", "formats", "foundation-module", "genomics", "glossary", "graphql",
-    "help", "history", "http", "identifier-registry", "implsupport-module", "index", "integrated-examples", "json", "languages", "license", "lifecycle", "logical",
-    "managing", "mapping-language", "mapping-tutorial", "mappings", "marketingstatus-definitions", "marketingstatus-examples", "marketingstatus-mappings",
-    "marketingstatus-profiles", "marketingstatus", "medication-definition-module", "medications-module", "message-async.svg", "message-sync.svg",
-    "messaging", "metadatatypes-definitions", "metadatatypes-examples", "metadatatypes-mappings", "metadatatypes-profiles", "metadatatypes", "modules-fragment", "modules-list",
-    "modules", "narrative-definitions", "narrative-examples", "narrative-version-maps", "narrative", "nd-json", "ns", "nutrition-module", "obligations", "oids",
-    "op-example-request", "operations-for-large-resources", "operations", "operationslist", "overview-arch", "overview-clinical", "overview-dev", "overview-patient",
-    "overview", "packages", "page", "patterns", "polling-query.svg", "polling-read.svg", "population-profiles", "productshelflife-definitions", "productshelflife-examples",
-    "productshelflife-mappings", "productshelflife-profiles", "productshelflife", "profilelist", "profiling-examples", "profiling", "pushpull", "qa", "r2maps", "r3maps",
-    "r4maps", "rdf", "redirect", "references-definitions", "references-profiles", "references", "resource-formats", "resourceguide", "resourcelist-examples", "resourcelist",
-    "resources-definitions", "resources-examples", "rest-async.svg", "rest-read.svg", "rest-sync.svg", "rest.svg", "safety", "sc", "search_filter", "search-build",
-    "search-sync.svg", "search", "searchparameter-registry", "secpriv-module", "security-labels", "security", "services", "sid-icd-9", "sid-icd-10", "sid-us-ssn",
-    "signatures", "snomedct-usage", "storage", "subscription-pull.svg", "subscription-push.svg", "subscriptions", "summary", "task.svg", "terminologies-binding-examples",
-    "terminologies-conceptmaps", "terminologies-systems", "terminologies-valuesets", "terminologies", "terminology-module", "terminology-service", "toc",
-    "types-definitions", "types-mappings", "types-profiles", "types", "uml", "updates", "usecases", "validation", "versioning", "versions", "w5",
-    "wglist", "workflow-ad-hoc", "workflow-communications", "workflow-examples", "workflow-management", "workflow-module", "workflow", "xml", "patient-operation-match"
+    "async", "ballot-intro", "best-practices", "bindings-list", "biologically-derived-product-module", "broken-link", "cda-intro", "change", "clinicalreasoning-cds-on-fhir",
+    "clinicalreasoning-evidence-and-statistics", "clinicalreasoning-knowledge-artifact-distribution", "clinicalreasoning-knowledge-artifact-representation", "clinicalreasoning-module",
+    "clinicalreasoning-quality-reporting", "clinicalreasoning-topics-definitional-resources", "clinicalreasoning-topics-supporting-documentation", "clinicalreasoning-topics-template",
+    "clinicalreasoning-topics-using-expressions", "clinicalsummary-module", "codesystem", "comparison", "comparison-cda", "comparison-other", "comparison-v2", "comparison-v3", "conformance-module",
+    "conformance-rules", "credits", "datatypes", "datatypes-definitions", "datatypes-examples", "datatypes-mappings", "datatypes-profiles", "defining-extensions", "device-module", "diagnostics-module",
+    "diff", "diff-r4", "diff-r4b", "diff-r5", "documentation", "documents", "dosage", "dosage-definitions", "dosage-examples", "dosage-mappings", "dosage-profiles", "downloads", "ehr-fm",
+    "element-definitions", "elementdefinition", "elementdefinition-definitions", "elementdefinition-examples", "elementdefinition-mappings", "elementdefinition-profiles", "exchange-module",
+    "exchanging", "exchanging-messaging", "exchanging-operation", "exchanging-polling", "exchanging-request", "exchanging-rest", "exchanging-search", "exchanging-subscription", "extensibility",
+    "extensibility-definitions", "extensibility-examples", "fhir-xquery", "fhirpatch", "fhirpath", "financial-module", "fmg", "formats", "foundation-module", "genomics", "glossary", "graphql",
+    "help", "history", "http", "identifier-registry", "implsupport-module", "index", "integrated-examples", "json", "languages", "license", "lifecycle", "logical", "loinc", "managing",
+    "mapping-language", "mapping-tutorial", "mappings", "marketingstatus", "marketingstatus-definitions", "marketingstatus-examples", "marketingstatus-mappings", "marketingstatus-profiles",
+    "medication-definition-module", "medications-module", "messaging", "metadatatypes", "metadatatypes-definitions", "metadatatypes-examples", "metadatatypes-mappings", "metadatatypes-profiles",
+    "modules", "modules-fragment", "modules-list", "narrative", "narrative-definitions", "narrative-examples", "narrative-version-maps", "nd-json", "ns", "nutrition-module", "obligations",
+    "observation", "oids", "op-example-request", "operations", "operations-for-large-resources", "operationslist", "overview", "overview-arch", "overview-clinical", "overview-dev", "overview-patient",
+    "packages", "page", "patient-operation-match", "patterns", "population-profiles", "productshelflife", "productshelflife-definitions", "productshelflife-examples", "productshelflife-mappings",
+    "productshelflife-profiles", "profilelist", "profiling", "profiling-examples", "pushpull", "qa", "r2maps", "r3maps", "r4maps", "rdf", "redirect", "references", "references-definitions",
+    "references-profiles", "resource", "resource-definitions", "ansi", "resource-formats", "resourceguide", "resourcelist", "resourcelist-examples", "resources-definitions",
+    "resources-examples", "safety", "sc", "search", "search-build", "search_filter", "searchparameter-registry", "secpriv-module", "security", "security-labels", "services", "sid-icd-10",
+    "sid-icd-9", "sid-us-ssn", "signatures", "snomedct", "snomedct-usage", "storage", "subscriptions", "summary", "terminologies", "terminologies-binding-examples", "terminologies-conceptmaps",
+    "terminologies-systems", "terminologies-valuesets", "terminology-module", "terminology-service", "toc", "types", "types-definitions", "types-mappings", "types-profiles", "uml",
+    "updates", "usecases", "validation", "versioning", "versions", "w5", "wglist", "workflow", "workflow-ad-hoc", "workflow-communications", "workflow-examples", "workflow-management",
+    "workflow-module", "xml"
   );
   private static boolean suppressIgnorableExceptions;
 
@@ -2304,7 +2299,7 @@ public class ProfileUtilities {
     }
     if (url.contains(".html")) {
       String base = url.substring(0, url.indexOf(".html"));
-      return BASE_FILENAMES.contains(base);
+      return BASE_FILENAMES.contains(base) || (url.startsWith("extension-"));
     } else {
       return false;
     }
