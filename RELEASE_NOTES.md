@@ -13,7 +13,7 @@
 * Rendering: Correct language in experimental warning per FHIR-I discussion
 * Fix rendering errors generating extensions IG
 * Added support to render SHALL NOT extension in Requirements narrative
-* Ensure that conformance is only inferred for rendering CapabilityStatements if a flag is set 
+* Ensure that conformance is only inferred for rendering CapabilityStatements if a flag is set
 * Fix end-of-line test case issues
 * Fix broken link in dtr when rendering profiles
 * Suppress fatal error building extensions IG
