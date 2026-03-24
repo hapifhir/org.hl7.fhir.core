@@ -6,6 +6,7 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.instance.ResourcePercentageLogger;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.*;
 
@@ -17,18 +18,31 @@ public class FhirValidatorHttpService {
 
   private final ValidationEngine validationEngine;
   private HttpServer server;
+  private final boolean loopbackOnly;
   private final int port;
+
   private Map<String, TxTestHTTPHandler.ServerTxTester> txTesters = new HashMap<>();
 
-  public FhirValidatorHttpService(ValidationEngine validationEngine, int port) {
+  public FhirValidatorHttpService(ValidationEngine validationEngine, boolean loopBackOnly, int port) {
     this.validationEngine = validationEngine;
+    this.loopbackOnly = loopBackOnly;
     this.port = port;
     ResourcePercentageLogger.setLoggingSuppressed(true);
   }
 
   public void startServer() throws IOException {
+    InetSocketAddress inetSocketAddress;
     // Create HTTP server
-    server = HttpServer.create(new InetSocketAddress(port), 0);
+    if (loopbackOnly) {
+      // Uses 127.0.0.1 or ::1, which inherently restricts access to the local machine
+      inetSocketAddress = new InetSocketAddress(InetAddress.getLoopbackAddress(), port);
+    }
+    else {
+      // Uses 0.0.0.0 or ::0, which can be accessed outside the local machine (see java.net.InetAddress.anyLocalAddress)
+      inetSocketAddress = new InetSocketAddress(port);
+      log.warn("Server has been configured to be available on all available network interfaces (loopbackOnly=false). By running in this mode you are assuming responsibility for securing access to this application.");
+    }
+    server = HttpServer.create(inetSocketAddress, 0);
 
     server.createContext("/validateResource", new ValidateResourceHTTPHandler(this));
     server.createContext("/fhirpath", new FhirPathHTTPHandler(this));
@@ -51,7 +65,7 @@ public class FhirValidatorHttpService {
     server.setExecutor(null); // Use default executor
     server.start();
 
-    log.info("FHIR Validator HTTP Service started on port " + port);
+    log.info("FHIR Validator HTTP Service started on  " + inetSocketAddress.getAddress() + ":" + inetSocketAddress.getPort());
   }
 
   /**
@@ -70,5 +84,9 @@ public class FhirValidatorHttpService {
 
   public Map<String, TxTestHTTPHandler.ServerTxTester> getTxTesters() {
     return txTesters;
+  }
+
+  public InetSocketAddress getInetAddress() {
+    return server.getAddress();
   }
 }
