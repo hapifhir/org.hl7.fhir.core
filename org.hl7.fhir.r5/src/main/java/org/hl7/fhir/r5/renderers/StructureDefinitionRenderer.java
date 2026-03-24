@@ -595,14 +595,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                                  boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx) throws IOException, FHIRException {
     assert(diff != snapshot);// check it's ok to get rid of one of these 
     anchors.clear();
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
-
-    TableModel model = generateTableInner(status, defFile, profile, diff, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, mustSupport, rc, anchorPrefix, res, idSfx, gen);
-    if (model == null) return null;
     try {
+      HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
+      TableModel model = generateTableInner(status, defFile, profile, diff, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, mustSupport, rc, anchorPrefix, res, idSfx, gen);
+      if (model == null) return null;
       return gen.generate(model, imagePath, 0, outputTracker);
     } catch (org.hl7.fhir.exceptions.FHIRException e) {
-      throw new FHIRException(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()), e);
+      XhtmlNode xhtml = new XhtmlNode(NodeType.Element, "p");
+      xhtml.span("color: maroon").tx(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()));
+      return xhtml;
     }
   }
 

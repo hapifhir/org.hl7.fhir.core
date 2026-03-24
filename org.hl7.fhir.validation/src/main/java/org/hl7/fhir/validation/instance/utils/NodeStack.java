@@ -267,4 +267,13 @@ public class NodeStack {
     return element.col();
   }
 
+  public boolean isInBundle() {
+    if ("Bundle".equals(this.element.getProperty().getDefinition().getBase().getPath())) {
+      return true;
+    } else if (parent == null) {
+      return false;
+    } else {
+      return parent.isInBundle();
+    }
+  }
 }
