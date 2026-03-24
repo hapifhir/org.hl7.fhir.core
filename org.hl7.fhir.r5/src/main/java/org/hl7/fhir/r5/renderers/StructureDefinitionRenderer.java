@@ -4,8 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -426,6 +428,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private JsonObject resourceGroupings; 
   private MapStructureMode mappingsMode;
   private List<StructureDefinition> mappingTargets = new ArrayList<>();
+  // Render-local store for pattern values merged into existing in-scope rows.
+  private final Map<ElementDefinition, List<Base>> mergedPatternValues = new IdentityHashMap<>();
  
   public static class UnusedTracker { 
     private boolean used; 
@@ -591,14 +595,15 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                                  boolean logicalModel, boolean allInvariants, Set<String> outputTracker, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx) throws IOException, FHIRException {
     assert(diff != snapshot);// check it's ok to get rid of one of these 
     anchors.clear();
-    HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
-
-    TableModel model = generateTableInner(status, defFile, profile, diff, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, mustSupport, rc, anchorPrefix, res, idSfx, gen);
-    if (model == null) return null;
     try {
+      HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context, imageFolder, inlineGraphics, true, defFile, rc.getUniqueLocalPrefix());
+      TableModel model = generateTableInner(status, defFile, profile, diff, profileBaseFileName, snapshot, corePath, imagePath, logicalModel, allInvariants, mustSupport, rc, anchorPrefix, res, idSfx, gen);
+      if (model == null) return null;
       return gen.generate(model, imagePath, 0, outputTracker);
     } catch (org.hl7.fhir.exceptions.FHIRException e) {
-      throw new FHIRException(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()), e);
+      XhtmlNode xhtml = new XhtmlNode(NodeType.Element, "p");
+      xhtml.span("color: maroon").tx(context.getWorker().formatMessage(I18nConstants.ERROR_GENERATING_TABLE_FOR_PROFILE__, profile.getUrl(), e.getMessage()));
+      return xhtml;
     }
   }
 
@@ -620,6 +625,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private TableModel generateTableInner(RenderingStatus status, String defFile, StructureDefinition profile, boolean diff, String profileBaseFileName, boolean snapshot, String corePath, String imagePath, boolean logicalModel, boolean allInvariants, boolean mustSupport, RenderingContext rc, String anchorPrefix, ResourceWrapper res, String idSfx, HierarchicalTableGenerator gen) throws IOException {
+    mergedPatternValues.clear();
     List<ElementDefinition> list;
     if (diff) {
       list = new SnapshotGenerationPreProcessor(context.getProfileUtilities()).supplementMissingDiffElements(profile);
@@ -1000,7 +1006,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         row.setIcon("icon_element.gif", context.formatPhrase(RenderingContext.TEXT_ICON_ELEMENT)); 
       } else { 
         row.setIcon("icon_resource.png", context.formatPhrase(RenderingContext.GENERAL_RESOURCE)); 
-      } 
+      }
       if (element.hasUserData(UserDataNames.render_opaque)) { 
         row.setOpacity("0.5"); 
       } 
@@ -2062,7 +2068,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).addStyle("color: darkgreen")));
           } else {
             c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_AS_SHOWN), null).addStyle("color: darkgreen")));
-            genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath, false);
+            genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath, false, null, null, null);
           }
           if (isCoded(definition.getFixed()) && !hasDescription(definition.getFixed())) {
             Piece p = describeCoded(gen, definition.getFixed());
@@ -2078,7 +2084,31 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen")));
           else {
             c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_LEAST_FOLLOW), null).addStyle("color: darkgreen")));
-            genFixedValue(gen, row, definition.getPattern(), snapshot, true, corePath, mustSupportOnly);
+            genFixedValue(gen, row, definition.getPattern(), snapshot, true, corePath, mustSupportOnly, definition.getPath(), definition.getId(), inScopeElements);
+          }
+        } else if (hasMergedPatternValues(definition)) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.getPieces().add(gen.new Piece(null, (context.formatPhrase(RenderingContext.STRUC_DEF_FIXED_VALUE)) + " ", null).addStyle("font-weight:bold"));
+          List<DataType> complexValues = new ArrayList<>();
+          boolean first = true;
+          for (Base b : getMergedPatternValues(definition)) {
+            if (!first) {
+              c.addPiece(gen.new Piece(null, ", ", null));
+            }
+            String s = formatMergedPatternValue(b);
+            String link = Utilities.isAbsoluteUrl(s) && context.getPkp() != null ? context.getPkp().getLinkForUrl(corePath, s) : null;
+            c.getPieces().add(gen.new Piece(link, s, null).addStyle("color: darkgreen"));
+            if (b instanceof DataType && !b.isPrimitive()) {
+              complexValues.add((DataType) b);
+            }
+            first = false;
+          }
+          if (useTableForFixedValues && allowSubRows && !complexValues.isEmpty()) {
+            for (DataType b : complexValues) {
+              genFixedValue(gen, row, b, snapshot, true, corePath, mustSupportOnly, definition.getPath(), definition.getId(), inScopeElements);
+            }
           }
         } else if (definition.hasExample()) {
           for (ElementDefinitionExampleComponent ex : definition.getExample()) {
@@ -2725,7 +2755,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     return b; 
   } 
  
-  private void genFixedValue(HierarchicalTableGenerator gen, Row erow, DataType value, boolean snapshot, boolean pattern, String corePath, boolean skipnoValue) { 
+  private void genFixedValue(HierarchicalTableGenerator gen, Row erow, DataType value, boolean snapshot, boolean pattern, String corePath, boolean skipnoValue, String path, String id, List<ElementDefinition> inScopeElements) { 
     String ref = context.getPkp().getLinkFor(corePath, value.fhirType()); 
     if (ref != null && ref.contains(".html")) { 
       ref = ref.substring(0, ref.indexOf(".html"))+"-definitions.html#"; 
@@ -2733,10 +2763,24 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       ref = "?gen-fv?"; 
     } 
     StructureDefinition sd = context.getWorker().fetchTypeDefinition(value.fhirType()); 
- 
     for (org.hl7.fhir.r5.model.Property t : value.children()) { 
       ElementDefinition ed = findElementDefinitionOrNull(sd, t.getName()); 
       if (ed != null) { // might be null because of added properties across versions 
+        String childPath = path == null ? null : path+"."+t.getName();
+        String childId = id == null ? null : id+"."+t.getName();
+        if (pattern && childPath != null && inScopeElements != null) {
+          if (hasPathInScope(childPath, childId, inScopeElements)) {
+            mergePatternValuesIntoScope(childPath, childId, t.getValues(), inScopeElements);
+            continue;
+          } else if (hasDescendantPathInScope(childPath, childId, inScopeElements)) {
+            for (Base mergedValue : t.getValues()) {
+              if (mergedValue instanceof DataType && !mergedValue.isPrimitive()) {
+                genFixedValue(gen, erow, (DataType) mergedValue, snapshot, true, corePath, skipnoValue, childPath, childId, inScopeElements);
+              }
+            }
+            continue;
+          }
+        }
         if (t.getValues().size() > 0 || snapshot) { 
           if (t.getValues().size() == 0 || (t.getValues().size() == 1 && t.getValues().get(0).isEmpty())) { 
             if (!skipnoValue) { 
@@ -2841,7 +2885,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 c.addPiece(gen.new Piece("br")); 
                 c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_FIXED_VALUE)+" ", null).addStyle("font-weight: bold")); 
                 c.getPieces().add(gen.new Piece(null, context.formatPhrase(RenderingContext.STRUC_DEF_COMPLEXBRACK), null).addStyle("color: darkgreen")); 
-                genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath, skipnoValue); 
+                genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath, skipnoValue, childPath, childId, inScopeElements); 
               } 
             } 
           } 
@@ -2849,8 +2893,135 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
     } 
   } 
- 
- 
+
+  private boolean hasMergedPatternValues(ElementDefinition definition) {
+    // mergePatternValuesIntoScope only adds renderable values, so non-empty == has renderable values.
+    List<Base> values = mergedPatternValues.get(definition);
+    return values != null && !values.isEmpty();
+  }
+
+  private List<Base> getMergedPatternValues(ElementDefinition definition) {
+    return mergedPatternValues.getOrDefault(definition, Collections.emptyList());
+  }
+
+  private String formatMergedPatternValue(Base b) {
+    if (b == null) {
+      return "";
+    }
+    if (b.isPrimitive()) {
+      return b.primitiveValue();
+    }
+    // All FHIR R5 property values are either PrimitiveType or DataType subclasses.
+    if (b instanceof DataType) {
+      return context.formatPhrase(RenderingContext.STRUC_DEF_COMPLEXBRACK);
+    }
+    throw new IllegalStateException("Unexpected Base type in merged pattern value: " + b.getClass().getName());
+  }
+
+  private void mergePatternValuesIntoScope(String childPath, String childId, List<Base> values, List<ElementDefinition> inScopeElements) {
+    if (Utilities.noString(childPath) || values == null || values.isEmpty() || inScopeElements == null) {
+      return;
+    }
+    for (ElementDefinition ed : inScopeElements) {
+      if (!matchesInScopeElement(childPath, childId, ed)) {
+        continue;
+      }
+      List<Base> merged = mergedPatternValues.computeIfAbsent(ed, k -> new ArrayList<>());
+      for (Base value : values) {
+        if (isRenderableMergedPatternValue(value) && !containsMergedValue(merged, value)) {
+          merged.add(value.copy());
+        }
+      }
+    }
+  }
+
+  private boolean isRenderableMergedPatternValue(Base value) {
+    if (value == null) {
+      return false;
+    }
+    if (value.isPrimitive()) {
+      return !Utilities.noString(value.primitiveValue());
+    }
+    return !value.isEmpty();
+  }
+
+  private boolean containsMergedValue(List<Base> merged, Base value) {
+    for (Base b : merged) {
+      if (b != null && b.equalsDeep(value)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean hasPathInScope(String path, String id, List<ElementDefinition> inScopeElements) {
+    if (path == null || inScopeElements == null) {
+      return false;
+    }
+    for (ElementDefinition ed : inScopeElements) {
+      if (matchesInScopeElement(path, id, ed)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean hasDescendantPathInScope(String path, String id, List<ElementDefinition> inScopeElements) {
+    if (path == null || inScopeElements == null) {
+      return false;
+    }
+    for (ElementDefinition ed : inScopeElements) {
+      if (ed == null || !ed.hasPath()) {
+        continue;
+      }
+      if (isPathDescendant(path, ed.getPath())) {
+        if (Utilities.noString(id) || !id.contains(":")) {
+          return true;
+        }
+        if (ed.hasId() && ed.getId().startsWith(id + ".")) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean isPathDescendant(String basePath, String candidatePath) {
+    if (candidatePath == null || candidatePath.equals(basePath)) {
+      return false;
+    }
+    if (candidatePath.startsWith(basePath + ".")) {
+      return true;
+    }
+    if (basePath.endsWith("[x]")) {
+      String prefix = basePath.substring(0, basePath.length() - 3);
+      int dot = candidatePath.indexOf('.', prefix.length());
+      return candidatePath.startsWith(prefix) && dot > -1;
+    }
+    return false;
+  }
+
+  private boolean matchesInScopeElement(String path, String id, ElementDefinition candidate) {
+    if (candidate == null || !candidate.hasPath() || !matchesInScopePath(path, candidate.getPath())) {
+      return false;
+    }
+    if (Utilities.noString(id) || !id.contains(":")) {
+      return true;
+    }
+    if (!candidate.hasId()) {
+      return false;
+    }
+    return matchesInScopePath(id, candidate.getId());
+  }
+
+  private boolean matchesInScopePath(String path, String candidate) {
+    if (path.equals(candidate)) {
+      return true;
+    }
+    return candidate.endsWith("[x]") && path.startsWith(candidate.substring(0, candidate.length()-3));
+  }
+
+
   private ElementDefinition findElementDefinition(StructureDefinition sd, String name) { 
     String path = sd.getTypeName()+"."+name; 
     for (ElementDefinition ed : sd.getSnapshot().getElement()) { 
@@ -5604,7 +5775,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private String chooseIcon(StructureDefinition profile, ElementDefinition element, TypeRefComponent tr) {
-
     if (tail(element.getPath()).equals("extension") && isExtension(element)) { 
       if (element.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue(), profile))
         return "icon_extension_complex.png"; 

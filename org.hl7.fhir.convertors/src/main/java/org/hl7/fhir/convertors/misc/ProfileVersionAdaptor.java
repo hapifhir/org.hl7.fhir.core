@@ -133,10 +133,16 @@ public class ProfileVersionAdaptor {
             ed.getType().clear();
             ed.setMin(0);
             ed.setMax("0");
+            if (lastExt == null) {
+              // this happens when the extension directly has an unsupported type
+              lastExt = new ElementDefinition().setPath("Extension.extension");
+              sd.getDifferential().getElement().add(1, lastExt);
+            }
             lastExt.setDefinition(ed.getDefinition());
             lastExt.setShort(ed.getShort());
             lastExt.setMax("*");
             lastExt.getSlicing().setRules(SlicingRules.OPEN).setOrdered(false).addDiscriminator().setType(DiscriminatorType.VALUE).setPath("url");
+
             StructureDefinition type = sCtxt.fetchTypeDefinition(tr.getCode());
             if (type == null) {
               throw new DefinitionException("unable to find definition for " + tr.getCode());

@@ -417,6 +417,9 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     if (content.has("new-xver-mode")) {
       XVerExtensionManagerFactory.setNewLoader(true);
     }
+    if (content.has("enforceAggregationOutsideBundles")) {
+      val.setEnforceAggregationOutsideBundles(content.get("enforceAggregationOutsideBundles").getAsBoolean());
+    }
 
     XVerExtensionManager xv = XVerExtensionManagerFactory.createExtensionManager(val.getContext());
     ((SimpleWorkerContext) val.getContext()).setXVerManager(xv);
