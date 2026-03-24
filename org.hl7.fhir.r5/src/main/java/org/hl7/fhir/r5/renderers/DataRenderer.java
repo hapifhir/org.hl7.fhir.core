@@ -173,8 +173,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
       } 
       x.addChildNodes(m.getChildNodes()); 
     } 
-  } 
-
+  }
 
   // -- 3. General Purpose Terminology Support ----------------------------------------- 
 
