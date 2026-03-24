@@ -19,12 +19,15 @@ public class PackageServerHTTPAuthProvider implements IHTTPAuthenticationProvide
 
   @Override
   public boolean canProvideHeaders(URL url) {
-    return this.url.getProtocol().equals(url.getProtocol())
-      && this.url.getHost().equals(url.getHost());
+    return ManagedWebAccessUtils.urlMatchesOrigin( url, this.url);
   }
 
   @Override
   public Map<String, String> getHeaders(URL url) {
+    if (!ManagedWebAccessUtils.urlMatchesOrigin( url, this.url)) {
+      // We should not get here unless there is an error in the client using this provider
+      throw new IllegalArgumentException(("Unexpected request for access headers for " + this.url + " with a request for " + url));
+    }
     Map<String, String> headers = new HashMap<>();
     switch (server.getAuthenticationMode()) {
       case TOKEN -> {
@@ -38,6 +41,9 @@ public class PackageServerHTTPAuthProvider implements IHTTPAuthenticationProvide
       case APIKEY -> {
         String providedAPIKey = server.getApiKey();
         headers.put("Api-Key", providedAPIKey);
+      }
+      default -> {
+        // DO NOTHING. No headers to add.
       }
     }
     return headers;
