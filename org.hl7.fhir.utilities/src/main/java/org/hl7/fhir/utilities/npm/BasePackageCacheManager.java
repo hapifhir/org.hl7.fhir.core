@@ -22,7 +22,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   protected final List<PackageServer> myPackageServers;
-  private Function<PackageServer, PackageClient> myClientFactory = server -> new PackageClient(server);
+  private Function<PackageServer, PackageClient> myClientFactory = PackageClient::new;
 
   @Getter @Setter protected PackageLoadController loadControl;
 

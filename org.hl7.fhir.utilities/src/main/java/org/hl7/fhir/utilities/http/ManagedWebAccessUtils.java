@@ -46,8 +46,22 @@ public class ManagedWebAccessUtils {
   public static boolean urlMatchesOrigin(URL requestUrl, URL serverUrl) {
     return requestUrl.getProtocol().equals(serverUrl.getProtocol())
       && requestUrl.getHost().equals(serverUrl.getHost())
-      && requestUrl.getPort() == serverUrl.getPort()
+      && getExplicitOrInferredPort(requestUrl) == getExplicitOrInferredPort(serverUrl)
       && requestUrl.getPath().startsWith(serverUrl.getPath());
+  }
+
+  private static int getExplicitOrInferredPort(URL url) {
+    int port = url.getPort();
+    if (port != -1) {
+      return port;
+    }
+    if (url.getProtocol().equals("https")) {
+      return 443;
+    }
+    if (url.getProtocol().equals("http")) {
+      return 80;
+    }
+    return port;
   }
 
   private static boolean typesMatch(String criteria, String value) {
