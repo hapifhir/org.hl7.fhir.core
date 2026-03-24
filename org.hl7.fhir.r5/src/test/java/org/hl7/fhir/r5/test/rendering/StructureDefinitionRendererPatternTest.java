@@ -72,13 +72,11 @@ public class StructureDefinitionRendererPatternTest {
     assertNoSyntheticPatternRowWithGiven(snapshotTable);
     assertPatternVisible(snapshotTable);
     assertMergedPatternValueVisible(snapshotTable);
-    assertHasLockIcon(snapshotTable);
 
     String differentialTable = render(sd, true, false);
     assertNoSyntheticPatternRowWithGiven(differentialTable);
     assertPatternVisible(differentialTable);
     assertMergedPatternValueVisible(differentialTable);
-    assertHasLockIcon(differentialTable);
 
     String snapshotAttributeTable = render(sd, false, true);
     assertNoSyntheticPatternRow(snapshotAttributeTable);
@@ -166,12 +164,6 @@ public class StructureDefinitionRendererPatternTest {
 
   private void assertMergedPatternValueVisible(String html) {
     assertTrue(html.contains("Simone"));
-  }
-
-  private void assertHasLockIcon(String html) {
-    assertTrue(
-      html.contains("icon_fixed.gif") || html.contains("title=\"Required Pattern\"") || html.contains("title=\"Fixed Value\"")
-    );
   }
 
   private StructureDefinition makeBasePatientProfile(String id) {

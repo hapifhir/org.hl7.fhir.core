@@ -1006,7 +1006,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } else { 
         row.setIcon("icon_resource.png", context.formatPhrase(RenderingContext.GENERAL_RESOURCE)); 
       }
-      applyPatternIcon(row, element);
       if (element.hasUserData(UserDataNames.render_opaque)) { 
         row.setOpacity("0.5"); 
       } 
@@ -2898,20 +2897,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     // mergePatternValuesIntoScope only adds renderable values, so non-empty == has renderable values.
     List<Base> values = mergedPatternValues.get(definition);
     return values != null && !values.isEmpty();
-  }
-
-  /** Sets icon_fixed.gif on the row when the element carries a fixed value, a pattern, or merged pattern values
-   *  from a parent's complex pattern. Pattern and merged-pattern cases get the "Required Pattern" tooltip;
-   *  only a plain fixed[x] gets "Fixed Value". */
-  private void applyPatternIcon(Row row, ElementDefinition definition) {
-    if (definition == null) {
-      return;
-    }
-    if (definition.hasFixed()) {
-      row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingContext.STRUC_DEF_FIXED_VALUE));
-    } else if (definition.hasPattern() || hasMergedPatternValues(definition)) {
-      row.setIcon("icon_fixed.gif", context.formatPhrase(RenderingContext.STRUC_DEF_REQ_PATT));
-    }
   }
 
   private List<Base> getMergedPatternValues(ElementDefinition definition) {
@@ -5789,10 +5774,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   }
 
   private String chooseIcon(StructureDefinition profile, ElementDefinition element, TypeRefComponent tr) {
-    if (element.hasFixedOrPattern()) {
-      return "icon_fixed.gif";
-    }
-
     if (tail(element.getPath()).equals("extension") && isExtension(element)) { 
       if (element.hasType() && element.getType().get(0).hasProfile() && extensionIsComplex(element.getType().get(0).getProfile().get(0).getValue(), profile))
         return "icon_extension_complex.png"; 
