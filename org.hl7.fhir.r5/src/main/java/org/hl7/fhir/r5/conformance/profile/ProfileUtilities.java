@@ -154,7 +154,7 @@ public class ProfileUtilities {
     "signatures", "snomedct-usage", "storage", "subscription-pull.svg", "subscription-push.svg", "subscriptions", "summary", "task.svg", "terminologies-binding-examples",
     "terminologies-conceptmaps", "terminologies-systems", "terminologies-valuesets", "terminologies", "terminology-module", "terminology-service", "toc",
     "types-definitions", "types-mappings", "types-profiles", "types", "uml", "updates", "usecases", "validation", "versioning", "versions", "w5",
-    "wglist", "workflow-ad-hoc", "workflow-communications", "workflow-examples", "workflow-management", "workflow-module", "workflow", "xml"
+    "wglist", "workflow-ad-hoc", "workflow-communications", "workflow-examples", "workflow-management", "workflow-module", "workflow", "xml", "patient-operation-match"
   );
   private static boolean suppressIgnorableExceptions;
 
