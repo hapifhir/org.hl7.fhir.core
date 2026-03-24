@@ -26,7 +26,7 @@ public class PackageServerHTTPAuthProvider implements IHTTPAuthenticationProvide
   public Map<String, String> getHeaders(URL url) {
     if (!ManagedWebAccessUtils.urlMatchesOrigin( url, this.url)) {
       // We should not get here unless there is an error in the client using this provider
-      throw new IllegalArgumentException(("Calling code is attempting to access headers for " + this.url + " with a request to " + url));
+      throw new IllegalArgumentException(("Unexpected request for access headers for " + this.url + " with a request for " + url));
     }
     Map<String, String> headers = new HashMap<>();
     switch (server.getAuthenticationMode()) {
