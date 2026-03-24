@@ -88,7 +88,7 @@ class PackageServerHTTPAuthProviderTests {
     } else {
       assertThat(provider.canProvideHeaders(requestUrl)).isFalse();
       assertThatThrownBy(() -> provider.getHeaders(requestUrl))
-        .isInstanceOf(SecurityException.class);
+        .isInstanceOf(IllegalArgumentException.class);
     }
   }
 }
