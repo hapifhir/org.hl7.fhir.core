@@ -2480,9 +2480,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (vr.isNoService())
           txHint(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER, theSystem+"#"+theCode);
         else if (vr.getErrorClass() != null && !vr.getErrorClass().isInfrastructure()) {
-          if (strength == BindingStrength.REQUIRED)
-            ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(vsRef.primitiveValue(), valueset, bc, usageNote), vr.getMessage(), theSystem+"#"+theCode) && ok;
-          else if (strength == BindingStrength.EXTENSIBLE) {
+          if (strength == BindingStrength.REQUIRED) {
+            if (vr.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || vr.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED_VERSION) {
+              boolean warned = false;
+              for (OperationOutcomeIssueComponent iss : vr.getIssues()) {
+                warned = warned || Utilities.existsInList(iss.getExtensionString(ExtensionDefinitions.EXT_ISSUE_MSG_ID), "UNKNOWN_CODESYSTEM", "CODESYSTEM_UNSUPPORTED_VERSION");
+              }
+              if (!warned) {
+                String theVersion = determineVersion(theSystem, c.getVersion());
+                if (theVersion != null) {
+                  txWarning(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path + ".system", false, I18nConstants.UNKNOWN_CODESYSTEM_VERSION_UNK, theSystem, theVersion);
+                } else {
+                  txWarning(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path + ".system", false, I18nConstants.UNKNOWN_CODESYSTEM, theSystem);
+                }
+              }
+            } else {
+              ok = txRule(errors, NO_RULE_DATE, vr.getTxLink(), vr.getDiagnostics(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(vsRef.primitiveValue(), valueset, bc, usageNote), vr.getMessage(), theSystem + "#" + theCode) && ok;
+            }
+          } else if (strength == BindingStrength.EXTENSIBLE) {
             if (vsMax != null)
               checkMaxValueSet(errors, path, element, profile, ExtensionUtilities.readStringFromExtension(vsMax), c, stack);
             else if (!noExtensibleWarnings)
@@ -2514,6 +2529,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return ok;
+  }
+
+  private String determineVersion(String theSystem, String version) {
+    if (version != null) {
+      return version;
+    }
+    Parameters expParameters = context.getExpansionParameters();
+    if (expParameters != null) {
+      for (Parameters.ParametersParameterComponent pp : expParameters.getParameter()) {
+        if (Utilities.existsInList(pp.getName(), "system-version", "force-system-version") && pp.hasValue() && pp.getValue().primitiveValue() != null && pp.getValue().primitiveValue().startsWith(theSystem+"|")) {
+          return pp.getValue().primitiveValue().substring(pp.getValue().primitiveValue().indexOf("|"+1));
+        }
+      }
+    }
+    return null;
   }
 
   private boolean isValueSet(String url) {
@@ -2680,7 +2710,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean checkExtensionContext(Object appContext, List<ValidationMessage> errors, Element resource, Element container, StructureDefinition definition, NodeStack stack, ValidationContext valContext, boolean modifier) {
-    String extUrl = definition.getUrl();
+    String applicableVersion = resource.getProperty().getStructure().getFhirVersionElement().primitiveValue();
+    String extensionUrl = definition.getUrl();
+    String extensionUrlVersioned = definition.getUrl()+(definition.hasVersion() ? " v"+definition.getVersion() : "");
     boolean ok = false;
     Set<String> pset = new HashSet<>();
     CommaSeparatedStringBuilder contexts = new CommaSeparatedStringBuilder();
@@ -2694,23 +2726,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       pset.add(p);
     }
     List<String> plist = Utilities.sorted(pset);// logical paths are a set, but we want a predictable order for error messages
+
     if (definition.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE)) {
       Extension ext = definition.getExtensionByUrl(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE);
       if (ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START)) {
         String v = ExtensionUtilities.readStringExtension(ext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START);
         ok = rule(errors, "2025-01-07", IssueType.BUSINESSRULE, container.line(), container.col(), stack.getLiteralPath(), 
-            VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) >= 0,
-            I18nConstants.EXTENSION_FHIR_VERSION_EARLIEST, extUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(context.getVersion()), context.getVersion()) && ok;
+            VersionUtilities.compareVersions(VersionUtilities.getMajMin(applicableVersion), v) >= 0,
+            I18nConstants.EXTENSION_FHIR_VERSION_EARLIEST, extensionUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(applicableVersion), applicableVersion) && ok;
       }
       if (ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END)) {
         String v = ExtensionUtilities.readStringExtension(ext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END);
         ok = rule(errors, "2025-01-07", IssueType.BUSINESSRULE, container.line(), container.col(), stack.getLiteralPath(), 
-            VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) <= 0,
-            I18nConstants.EXTENSION_FHIR_VERSION_LATEST, extUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(context.getVersion()), context.getVersion()) && ok;
+            VersionUtilities.compareVersions(VersionUtilities.getMajMin(applicableVersion), v) <= 0,
+            I18nConstants.EXTENSION_FHIR_VERSION_LATEST, extensionUrl, VersionUtilities.getNameForVersion(v), v, VersionUtilities.getNameForVersion(applicableVersion), applicableVersion) && ok;
       }
     }
     boolean vv = false;
-    for (StructureDefinitionContextComponent ctxt : fixContexts(extUrl, definition.getContext())) {
+    for (StructureDefinitionContextComponent ctxt : fixContexts(extensionUrl, definition.getContext())) {
       if (ok) {
         break;
       }
@@ -2720,11 +2753,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         vv = true;
         if (ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START)) {
           String v = ExtensionUtilities.readStringExtension(ext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_START);
-          cok = VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) >= 0 && cok;
+          cok = VersionUtilities.compareVersions(VersionUtilities.getMajMin(applicableVersion), v) >= 0 && cok;
         }
         if (ext.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END)) {
           String v = ExtensionUtilities.readStringExtension(ext, ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE_END);
-          cok = VersionUtilities.compareVersions(VersionUtilities.getMajMin(context.getVersion()), v) <= 0 && cok;
+          cok = VersionUtilities.compareVersions(VersionUtilities.getMajMin(applicableVersion), v) <= 0 && cok;
         }
       }
       if (cok) {
@@ -2745,7 +2778,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               ok = true;
             } else if (en.equals("Resource") && container.isResource()) {
               ok = true;
-            } else if (en.equals("CanonicalResource") && containsAny(VersionUtilities.getExtendedCanonicalResourceNames(context.getVersion()), plist)) {
+            } else if (en.equals("CanonicalResource") && containsAny(VersionUtilities.getExtendedCanonicalResourceNames(applicableVersion), plist)) {
               ok = true;
             } else if (hasElementName(plist, en) && pu == null) {
               ok = true;
@@ -2753,7 +2786,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
 
           if (!ok) {
-            if (checkConformsToProfile(appContext, errors, resource, container, stack, extUrl, ctxt.getExpression(), pu, definition)) {
+            if (checkConformsToProfile(appContext, errors, resource, container, stack, extensionUrl, ctxt.getExpression(), pu, definition)) {
               for (String p : plist) {
                 if (ok) {
                   break;
@@ -2814,13 +2847,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (!ok) {
       if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
         warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
-            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_XVER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_XVER, extUrl, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER));
+            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_XVER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_XVER, extensionUrlVersioned, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER));
       } else if (vv) {
         rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
-            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_VER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_VER, extUrl, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER), context.getVersion());        
+            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_VER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_VER, extensionUrlVersioned, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER), applicableVersion);
       } else {
         rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
-            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG, extUrl, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER));        
+            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG, extensionUrlVersioned, contexts.toString(), plist.toString(), definition.getUserString(XVerExtensionManager.XVER_VER_MARKER));
       }
       return false;
     } else {
@@ -2828,10 +2861,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         for (StringType s : definition.getContextInvariant()) {
           if (!fpe.evaluateToBoolean(valContext, resource, valContext.getRootResource(), container, fpe.parse(s.getValue()))) {
             if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
-              warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extUrl, s.getValue());              
+              warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extensionUrlVersioned, s.getValue());
               return true;
             } else {
-              rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extUrl, s.getValue());
+              rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.PROFILE_EXT_NOT_HERE, extensionUrlVersioned, s.getValue());
               return false;
             }
           }
@@ -3790,7 +3823,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 // we resolved one, but if there's no version, check if the reference is potentially ambiguous
                 if (!url.contains("|") && r instanceof CanonicalResource) {
 
-                  if (!Utilities.existsInList(context.getBase().getPath(), "ImplementationGuide.dependsOn.uri", "ConceptMap.group.source", "ConceptMap.group.target")) {
+                  if (!Utilities.existsInList(context.getBase().getPath(), "ImplementationGuide.dependsOn.uri", "ConceptMap.group.source", "ConceptMap.group.target") &&
+                    ExtensionUtilities.getVersionResolutionRules(e) != IWorkerContext.VersionResolutionRules.LATEST) {
                     // ImplementationGuide.dependsOn.version is mandatory, and ConceptMap is checked in the ConceptMap validator
                     Set<IValidatorResourceFetcher.ResourceVersionInformation> possibleVersions = fetcher.fetchCanonicalResourceVersions(this, valContext.getAppContext(), url);
                     warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS, 

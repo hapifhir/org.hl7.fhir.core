@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.QuestionnaireRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
@@ -52,7 +53,8 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper q) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    renderResourceTechDetails(q, x);
+    if (!context.getQuestionnaireMode().equals(QuestionnaireRendererMode.LINKS))
+      renderResourceTechDetails(q, x);
     genSummaryTable(status, x, (CanonicalResource) q.getResourceNative());
     switch (context.getQuestionnaireMode()) { 
     case FORM:
@@ -950,11 +952,11 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   } 
 
   private void renderLinks(RenderingStatus status, XhtmlNode x, ResourceWrapper q) { 
-    x.para().tx(context.formatPhrase(RenderingContext.QUEST_TRY)); 
-    XhtmlNode ul = x.ul();
     String canonical = q.primitiveValue("url");
     PackageInformation pi = context.getPackageInformation();
     if (canonical != null && pi!=null) {
+      x.para().tx(context.formatPhrase(RenderingContext.QUEST_TRY)); 
+      XhtmlNode ul = x.ul();
       String qUrl = Utilities.URLEncode(canonical);
       ul.li().ah("http://hl7.me/lhcformviewer/?lfv=latest&s=default&qCanonical=" +canonical + "&pID=" + pi.getId() + "&pVersion=" + pi.getVersion()).tx(context.formatPhrase(RenderingContext.QUEST_NLM));
     }
@@ -1162,7 +1164,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     x.tx(" "); 
     x.tx(ew.primitiveValue("operator")); 
     x.tx(" "); 
-    x.tx(displayDataType(ew.child("Answer"))); 
+    x.tx(displayDataType(ew.child("answer"))); 
   } 
 
   private XhtmlNode defn(XhtmlNode tbl, String name) { 

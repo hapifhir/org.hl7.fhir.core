@@ -375,7 +375,7 @@ public class ValueSetValidator extends BaseValidator {
       if (version == null) {
         CodeSystem cs = context.fetchCodeSystem(system, ExtensionUtilities.getVersionResolutionRules(include));
 
-        if (cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(system) && fetcher != null) {
+        if (cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(system) && fetcher != null && ExtensionUtilities.getVersionResolutionRules(include) != IWorkerContext.VersionResolutionRules.LATEST) {
           Set<IValidatorResourceFetcher.ResourceVersionInformation> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), system);
           warning(errors, NO_RULE_DATE, IssueType.INVALID,  stack.getLiteralPath()+".system", possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS,
               system, cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(IValidatorResourceFetcher.ResourceVersionInformation.toStrings(possibleVersions))));
@@ -465,7 +465,7 @@ public class ValueSetValidator extends BaseValidator {
           } else {
             var si = context.getTxSupportInfo(system, version);
             if (concepts.size() > 1 && !si.isSupported()) {
-              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_CS_NO_SUPPORT, si.getServer());
+              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_CS_NO_SUPPORT, si.getServer(), system);
             } else if (concepts.size() > 1 && (si.getTestVersion() == null || !VersionUtilities.isThisOrLater("1.7.8", si.getTestVersion(), VersionUtilities.VersionPrecision.PATCH))) {
               hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_BATCH_ON_SERVER, si.getServer());
             } else {

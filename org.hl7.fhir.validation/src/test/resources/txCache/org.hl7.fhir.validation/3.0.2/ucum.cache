@@ -43,7 +43,6 @@ v: {
 v: {
   "code" : "21612-7",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.2",
   "severity" : "error",
   "error" : "Unknown code '21612-7' in the CodeSystem 'http://unitsofmeasure.org' version '2.2'",
   "class" : "UNKNOWN",
@@ -108,7 +107,6 @@ v: {
 v: {
   "code" : "tbl",
   "system" : "http://unitsofmeasure.org",
-  "version" : "2.2",
   "severity" : "error",
   "error" : "Unknown code 'tbl' in the CodeSystem 'http://unitsofmeasure.org' version '2.2'",
   "class" : "UNKNOWN",

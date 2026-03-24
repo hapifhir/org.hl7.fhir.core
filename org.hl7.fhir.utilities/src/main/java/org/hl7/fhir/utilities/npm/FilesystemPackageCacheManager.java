@@ -630,6 +630,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         }
         npmPackage = loadPackageInfo(packageRoot);
 
+        log.info(" loaded @ "+packageRoot);
       } catch (Exception e) {
         try {
           // don't leave a half extracted package behind
@@ -681,67 +682,86 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   @Override
   public NpmPackage loadPackage(String statedId, String version) throws FHIRException, IOException {
-    checkNotBlacklisted(statedId);
-
-    String id = stripAlias(statedId);
-    //ok, try to resolve locally
-    if (!Utilities.noString(version) && version.startsWith("file:")) {
-      return loadPackageFromFile(id, version.substring(5));
-    }
-
-    if (version == null && id.contains("#")) {
-      version = id.substring(id.indexOf("#") + 1);
-      id = id.substring(0, id.indexOf("#"));
+    if (version == null && statedId.contains("#")) {
+      version = statedId.substring(statedId.indexOf("#") + 1);
+      statedId = statedId.substring(0, statedId.indexOf("#"));
     }
 
     if (version == null) {
       try {
-        version = getLatestVersion(id, false);
+        version = getLatestVersion(statedId, false);
       } catch (Exception e) {
-        version = null;
+        // version = null; we just don't know the version
       }
     }
-    NpmPackage p = loadPackageFromCacheOnly(id, version);
+
+    String actualVersion = checkOKToLoadPackage(statedId, version);
+
+    String id = stripAlias(statedId);
+    //ok, try to resolve locally
+    if (!Utilities.noString(version) && actualVersion.startsWith("file:")) {
+      return loadPackageFromFile(id, actualVersion.substring(5));
+    }
+
+    NpmPackage p = loadPackageFromCacheOnly(id, actualVersion);
     if (p != null) {
-      if ("current".equals(version)) {
+      if ("current".equals(actualVersion)) {
         p = nullIfNotCurrentPackage(id, p);
       }
       if (p != null)
         return p;
     }
 
-    if ("dev".equals(version)) {
+    if ("dev".equals(actualVersion)) {
       p = loadPackageFromCacheOnly(id, "current");
       p = nullIfNotCurrentPackage(id, p);
       if (p != null)
         return p;
-      version = "current";
+      actualVersion = "current";
     }
 
-    log.info("Installing " + id + "#" + (version == null ? "?" : version) + " to the package cache");
+    log.info("Installing " + id + "#" + (actualVersion == null ? "?" : actualVersion) + " to the package cache");
     log.info("  Fetching:");
 
     // nup, don't have it locally (or it's expired)
     FilesystemPackageCacheManager.InputStreamWithSrc source;
-    if (false && packageProvider != null && packageProvider.handlesPackage(id, version)) {
-      source = packageProvider.provide(id, version);
-    } else if (Utilities.isAbsoluteUrl(version)) {
-      source = fetchSourceFromUrlSpecific(version);
-    } else if ("current".equals(version) || (version != null && version.startsWith("current$"))) {
+    if (false && packageProvider != null && packageProvider.handlesPackage(id, actualVersion)) {
+      source = packageProvider.provide(id, actualVersion);
+    } else if (Utilities.isAbsoluteUrl(actualVersion)) {
+      source = fetchSourceFromUrlSpecific(actualVersion);
+    } else if ("current".equals(actualVersion) || (actualVersion != null && actualVersion.startsWith("current$"))) {
       // special case - fetch from ci-build server
-      source = ciBuildClient.loadFromCIBuild(id, version.startsWith("current$") ? version.substring(8) : null);
+      source = ciBuildClient.loadFromCIBuild(id, actualVersion.startsWith("current$") ? version.substring(8) : null);
     } else {
-      source = loadFromPackageServer(id, version);
+      source = loadFromPackageServer(id, actualVersion);
     }
     if (source == null) {
-      throw new FHIRException("Unable to find package " + id + "#" + version);
+      throw new FHIRException("Unable to find package " + id + "#" + actualVersion);
     }
     return addPackageToCache(id, source.version, source.stream, source.url);
   }
 
-  private void checkNotBlacklisted(String id) {
+  /**
+   * This is called before loading any package. It can
+   *   * raise an exception, in which case the program terminates
+   *   * return null, in which case the package is not loaded
+   *   * return a version, in which case the specified version is loaded.
+   *
+   * Normal behaviour is simply to return the version passed in
+   *
+   * @param id - proposed package id
+   * @param version - proposed package version
+   * @return version to load. Or null, to ignore the package. Or throw an exception
+   */
+  private String checkOKToLoadPackage(String id, String version) {
     if ("fhir.base.template".equals(id)) {
-      log.warn("This content depends on fhir.base.template which is no longer considered secure to use. See notification on chat.fhir.org (tbd)");
+      log.warn("This content depends on fhir.base.template which is no longer considered secure to use");
+      log.warn("See Security notification at https://www.fhir.org/guides/security-notices/2026-03-npm-dependencies.html");
+    }
+    if (loadControl != null) {
+      return loadControl.checkOKToLoadPackage(id, version);
+    } else {
+      return version;
     }
   }
 

@@ -897,7 +897,7 @@ public class CanonicalResourceManagerTests {
     CodeSystem css1 = new CodeSystem();
     css1.setId("s2345");
     css1.setUrl("https://url/CodeSystem/s234");
-    css1.setVersion("4.0.1");
+    css1.setVersion("4.0.2");
     css1.setName("s1");
     css1.setSupplements("https://url/CodeSystem/234");
     mrm.see(css1, new PackageInformation("pid.one", "1.0.0", "4.0.1", new Date()));

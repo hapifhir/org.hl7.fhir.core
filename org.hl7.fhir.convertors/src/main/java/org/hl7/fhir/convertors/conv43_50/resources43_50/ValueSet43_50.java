@@ -512,9 +512,9 @@ public class ValueSet43_50 {
       tgt.addDesignation(convertConceptReferenceDesignationComponent(t));
     for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent t : src.getProperty()) {
       org.hl7.fhir.r4b.model.Extension ext = tgt.addExtension().setUrl(VersionConvertorConstants.EXT_EXP_VS_CONT_PROP);
-      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(t, ext, "code", "value[x]");
+      ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().copyElement(t, ext, "code", "value");
       ext.addExtension().setUrl("code").setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getCodeElement()));
-      ext.addExtension().setUrl("value[x]").setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getValue()));
+      ext.addExtension().setUrl("value").setValue(ConversionContext43_50.INSTANCE.getVersionConvertor_43_50().convertType(t.getValue()));
     }
     for (org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent t : src.getContains())
       tgt.addContains(convertValueSetExpansionContainsComponent(t));

@@ -50,6 +50,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -160,7 +161,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
   }
-  
+
   public class BytesFromFileProvider implements IByteProvider {
 
     private String name;
@@ -175,17 +176,18 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
   }
-  
+
   class OIDSource {
     private String folder;
     private Connection db;
     private String pid;
+
     protected OIDSource(String folder, String pid) {
       super();
       this.folder = folder;
       this.pid = pid;
     }
-    
+
   }
 
   private static final boolean QA_CHECK_REFERENCE_SOURCE = false; // see comments below
@@ -198,29 +200,30 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       super();
       this.resource = resource;
     }
+
     public ResourceProxy(CanonicalResourceProxy proxy) {
       super();
       this.proxy = proxy;
     }
-    
+
     public Resource getResource() {
       return resource != null ? resource : proxy.getResource();
     }
-      
+
     public CanonicalResourceProxy getProxy() {
       return proxy;
     }
-    
+
     public String getUrl() {
       if (resource == null) {
         return proxy.getUrl();
       } else if (resource instanceof CanonicalResource) {
-        return ((CanonicalResource) resource).getUrl(); 
+        return ((CanonicalResource) resource).getUrl();
       } else {
         return null;
       }
     }
-    
+
   }
 
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
@@ -260,7 +263,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private Map<String, Map<String, ResourceProxy>> allResourcesById = new HashMap<String, Map<String, ResourceProxy>>();
   private Map<String, List<ResourceProxy>> allResourcesByUrl = new HashMap<String, List<ResourceProxy>>();
-  
+
   // all maps are to the full URI
   private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<CodeSystem>(false, minimalMemory);
   private final HashMap<String, SystemSupportInformation> supportedCodeSystems = new HashMap<>();
@@ -283,13 +286,13 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private final CanonicalResourceManager<NamingSystem> systems = new CanonicalResourceManager<NamingSystem>(false, minimalMemory);
 
   private LanguageSubtagRegistry registry;
-  
+
   private UcumService ucumService;
   protected Map<String, IByteProvider> binaries = new HashMap<String, IByteProvider>();
   protected Map<String, Set<IOIDServices.OIDDefinition>> oidCacheManual = new HashMap<>();
   protected List<OIDSource> oidSources = new ArrayList<>();
 
-  protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String,ValidationResult>>();
+  protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String, ValidationResult>>();
   protected String name;
   @Setter
   @Getter
@@ -329,7 +332,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected BaseWorkerContext(CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles,
-      CanonicalResourceManager<ImplementationGuide> guides) throws FileNotFoundException, IOException, FHIRException {
+                              CanonicalResourceManager<ImplementationGuide> guides) throws FileNotFoundException, IOException, FHIRException {
     this();
     this.codeSystems = codeSystems;
     this.valueSets = valueSets;
@@ -403,12 +406,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       cutils.setSuppressedMappings(other.suppressedMappings);
     }
   }
-  
-  
+
+
   public void cacheResource(Resource r) throws FHIRException {
-    cacheResourceFromPackage(r, null);  
+    cacheResourceFromPackage(r, null);
   }
-  
+
   public void registerResourceFromPackage(CanonicalResourceProxy r, PackageInformation packageInfo) throws FHIRException {
     PackageHackerR5.fixLoadedResource(r, packageInfo);
 
@@ -416,24 +419,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       definitionsChanged();
       if (packageInfo != null) {
         packages.put(packageInfo.getVID(), packageInfo);
-      }
-      if (r.getId() != null) {
-        Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
-        if (map == null) {
-          map = new HashMap<String, ResourceProxy>();
-          allResourcesById.put(r.getType(), map);
-        }
-        if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
-          map.put(r.getId(), new ResourceProxy(r));
-        }
-      }
-      if (r.getUrl() != null) {
-        List<ResourceProxy> list = allResourcesByUrl.get(r.getUrl());
-        if (list == null) {
-          list = new ArrayList<>();
-          allResourcesByUrl.put(r.getUrl(), list);
-        }
-        list.add(new ResourceProxy(r));
       }
 
       String url = r.getUrl();
@@ -444,68 +429,83 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
         CanonicalResource ex = fetchResourceWithException(r.getType(), url, VersionResolutionRules.defaultRule());
         throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url, r.getVersion(), ex.getVersion(),
-            ex.fhirType()));
+          ex.fhirType()));
       }
-      switch(r.getType()) {
+      boolean added = registerResource(r, packageInfo);
+      if (added) {
+        registerInAllResourceIndex(r, packageInfo);
+      }
+    }
+  }
+
+  private void registerInAllResourceIndex(CanonicalResourceProxy r, PackageInformation packageInfo) {
+    if (r.getId() != null) {
+      Map<String, ResourceProxy> map = allResourcesById.get(r.getType());
+      if (map == null) {
+        map = new HashMap<String, ResourceProxy>();
+        allResourcesById.put(r.getType(), map);
+      }
+      if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
+        map.put(r.getId(), new ResourceProxy(r));
+      }
+    }
+    if (r.getUrl() != null) {
+      List<ResourceProxy> list = allResourcesByUrl.get(r.getUrl());
+      if (list == null) {
+        list = new ArrayList<>();
+        allResourcesByUrl.put(r.getUrl(), list);
+      }
+      list.add(new ResourceProxy(r));
+    }
+  }
+
+  private boolean registerResource(CanonicalResourceProxy r, PackageInformation packageInfo) {
+    switch (r.getType()) {
       case "StructureDefinition":
         if ("1.4.0".equals(version)) {
           StructureDefinition sd = (StructureDefinition) r.getResource();
           fixOldSD(sd);
         }
-        structures.register(r, packageInfo);
-        typeManager.see(r);
-        break;
+        boolean added = structures.register(r, packageInfo);
+        if (added) {
+          typeManager.see(r);
+        }
+        return added;
       case "ValueSet":
-        valueSets.register(r, packageInfo);
-        break;
-      case "CodeSystem":        
-        codeSystems.register(r, packageInfo);
-        break;
+        return valueSets.register(r, packageInfo);
+      case "CodeSystem":
+        return codeSystems.register(r, packageInfo);
       case "ImplementationGuide":
-        guides.register(r, packageInfo);
-        break;
+        return guides.register(r, packageInfo);
       case "CapabilityStatement":
-        capstmts.register(r, packageInfo);
-        break;
+        return capstmts.register(r, packageInfo);
       case "Measure":
-        measures.register(r, packageInfo);
-        break;
+        return measures.register(r, packageInfo);
       case "Library":
-        libraries.register(r, packageInfo);
-        break;
+        return libraries.register(r, packageInfo);
       case "SearchParameter":
-        searchParameters.register(r, packageInfo);
-        break;
+        return searchParameters.register(r, packageInfo);
       case "PlanDefinition":
-        plans.register(r, packageInfo);
-        break;
+        return plans.register(r, packageInfo);
       case "OperationDefinition":
-        operations.register(r, packageInfo);
-        break;
+        return operations.register(r, packageInfo);
       case "Questionnaire":
-        questionnaires.register(r, packageInfo);
-        break;
+        return questionnaires.register(r, packageInfo);
       case "ConceptMap":
-        maps.register(r, packageInfo);
-        break;
+        return maps.register(r, packageInfo);
       case "StructureMap":
-        transforms.register(r, packageInfo);
-        break;
+        return transforms.register(r, packageInfo);
       case "NamingSystem":
-        systems.register(r, packageInfo);
-        break;
+        return systems.register(r, packageInfo);
       case "Requirements":
-        requirements.register(r, packageInfo);
-        break;
+        return requirements.register(r, packageInfo);
       case "ActorDefinition":
-        actors.register(r, packageInfo);
-        break;
-      }
+        return actors.register(r, packageInfo);
     }
+    return false;
   }
 
   public void cacheResourceFromPackage(Resource r, PackageInformation packageInfo) throws FHIRException {
-
     synchronized (lock) {
       definitionsChanged();
       if (packageInfo != null) {
@@ -521,7 +521,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if ((packageInfo == null || !packageInfo.isExamplesPackage()) || !map.containsKey(r.getId())) {
           map.put(r.getId(), new ResourceProxy(r));
         } else {
-          logger.logDebugMessage(LogCategory.PROGRESS,"Ignore "+r.fhirType()+"/"+r.getId()+" from package "+packageInfo.toString());
+          logger.logDebugMessage(LogCategory.PROGRESS, "Ignore " + r.fhirType() + "/" + r.getId() + " from package " + packageInfo.toString());
         }
       }
       if (r instanceof CanonicalResource) {
@@ -544,7 +544,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           url = cs.getUrl();
           for (Identifier id : cs.getIdentifier()) {
             if (id.hasValue() && id.getValue().startsWith("urn:oid:")) {
-              oids.add(id.getValue().substring(8));           
+              oids.add(id.getValue().substring(8));
             }
           }
         }
@@ -581,7 +581,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           }
           CanonicalResource ex = (CanonicalResource) fetchResourceWithException(r.getClass(), url, VersionResolutionRules.defaultRule());
           throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url, ((CanonicalResource) r).getVersion(), ex.getVersion(),
-              ex.fhirType()));
+            ex.fhirType()));
         }
         if (r instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) m;
@@ -602,7 +602,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         } else if (r instanceof Measure) {
           measures.see((Measure) m, packageInfo);
         } else if (r instanceof Library) {
-          libraries.see((Library) m, packageInfo);        
+          libraries.see((Library) m, packageInfo);
         } else if (r instanceof SearchParameter) {
           searchParameters.see((SearchParameter) m, packageInfo);
         } else if (r instanceof PlanDefinition) {
@@ -631,7 +631,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       sd.setSnapshot(null);
     }
     for (ElementDefinition ed : sd.getDifferential().getElement()) {
-      if (ed.getPath().equals("Extension.url") || ed.getPath().endsWith(".extension.url") ) {
+      if (ed.getPath().equals("Extension.url") || ed.getPath().endsWith(".extension.url")) {
         ed.setMin(1);
         if (ed.hasBase()) {
           ed.getBase().setMin(1);
@@ -671,7 +671,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return newVersion.compareTo(oldVersion) > 0;
     }
   }
-  
+
   /*
    * Returns true if both strings include the delimiter and have the same number of occurrences of it
    */
@@ -690,7 +690,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // This should never happen
     throw new Error(formatMessage(I18nConstants.DELIMITED_VERSIONS_HAVE_EXACT_MATCH_FOR_DELIMITER____VS_, delimiter, newParts, oldParts));
   }
-  
+
   protected <T extends CanonicalResource> void seeMetadataResource(T r, Map<String, T> map, List<T> list, boolean addId) throws FHIRException {
 //    if (addId)
     //      map.put(r.getId(), r); // todo: why?
@@ -698,7 +698,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (r.hasUrl()) {
       // first, this is the correct reosurce for this version (if it has a version)
       if (r.hasVersion()) {
-        map.put(r.getUrl()+"|"+r.getVersion(), r);
+        map.put(r.getUrl() + "|" + r.getVersion(), r);
       }
       // if we haven't get anything for this url, it's the correct version
       if (!map.containsKey(r.getUrl())) {
@@ -711,7 +711,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           }
         }
         Collections.sort(rl, new MetadataResourceVersionComparator<T>(list));
-        map.put(r.getUrl(), rl.get(rl.size()-1));
+        map.put(r.getUrl(), rl.get(rl.size() - 1));
         T latest = null;
         for (T t : rl) {
           if (VersionUtilities.versionMatches(t.getVersion(), r.getVersion())) {
@@ -719,11 +719,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           }
         }
         if (latest != null) { // might be null if it's not using semver
-          map.put(r.getUrl()+"|"+VersionUtilities.getMajMin(latest.getVersion()), rl.get(rl.size()-1));
+          map.put(r.getUrl() + "|" + VersionUtilities.getMajMin(latest.getVersion()), rl.get(rl.size() - 1));
         }
       }
     }
-  }  
+  }
 
   @Override
   public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules) {
@@ -736,14 +736,18 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference) {
+    return fetchCodeSystem(system, rules, version, sourceOfReference, true);
+  }
+
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference, boolean checkForImplicits) {
     CodeSystem cs = (CodeSystem) fetchResource(CodeSystem.class, system, rules, version, sourceOfReference);
     if (cs == null && locator != null) {
-      locator.findResource(this, system+(version != null ? "|"+version : ""), rules);
+      locator.findResource(this, system + (version != null ? "|" + version : ""), rules);
       cs = (CodeSystem) fetchResource(CodeSystem.class, system, rules, version, sourceOfReference);
     }
 
     // try implicit code systems
-    if (cs == null) {
+    if (cs == null && checkForImplicits) {
       Resource resource = fetchResource(Resource.class, system, rules, version);
       if (resource != null) {
         switch (resource.fhirType()) {
@@ -756,7 +760,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           case "Measure":
             return ImplicitCodeSystemSupport.convertMeasure((Measure) resource);
           default:
-            log.warn("The resource type "+resource.fhirType()+" cannot be treated as a CodeSystem");
+            log.warn("The resource type " + resource.fhirType() + " cannot be treated as a CodeSystem");
             return null;
         }
       }
@@ -801,43 +805,49 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public SystemSupportInformation getTxSupportInfo(String system, String version) throws TerminologyServiceException {
     synchronized (lock) {
-      String vurl = CanonicalType.urlWithVersion(system, version);
-      if (codeSystems.has(vurl) && codeSystems.get(vurl).getContent() != CodeSystemContentMode.NOTPRESENT) {
+      String urlWithVersion = CanonicalType.urlWithVersion(system, version);
+      if (codeSystems.has(urlWithVersion) && codeSystems.get(urlWithVersion).getContent() != CodeSystemContentMode.NOTPRESENT) {
         return new SystemSupportInformation(true, "internal", TerminologyClientContext.LATEST_VERSION, null);
-      } else if (supportedCodeSystems.containsKey(vurl)) {
-        return supportedCodeSystems.get(vurl);
-      } else if (system.startsWith("http://example.org") || system.startsWith("http://acme.com") || system.startsWith("http://hl7.org/fhir/valueset-") || system.startsWith("urn:oid:")) {
-        return new SystemSupportInformation(false);
+      } else if (supportedCodeSystems.containsKey(urlWithVersion)) {
+        return supportedCodeSystems.get(urlWithVersion);
       } else {
-        if (noTerminologyServer) {
-          return new SystemSupportInformation(false);
+        Resource res = fetchCodeSystem(system, VersionResolutionRules.defaultRule(), version);
+        if (res != null) {
+          return new SystemSupportInformation(true, "internal", TerminologyClientContext.LATEST_VERSION, null);
         }
-        if (terminologyClientManager != null) {
-          try {
-            TerminologyClientContext client = terminologyClientManager.chooseServer(null, Set.of(vurl), false);
-            supportedCodeSystems.put(vurl, new SystemSupportInformation(client.supportsSystem(vurl), client.getAddress(), client.getTxTestVersion(), client.supportsSystem(vurl) ? null : "The server does not support this code system"));
-          } catch (Exception e) {
-            if (canRunWithoutTerminology) {
-              noTerminologyServer = true;
-              logger.logMessage("==============!! Running without terminology server !! ==============");
-              if (terminologyClientManager.getMasterClient() != null) {
-                logger.logMessage("txServer = "+ terminologyClientManager.getMasterClient().getId());
-                logger.logMessage("Error = "+e.getMessage()+"");
-              }
-              logger.logMessage("=====================================================================");
-              return new SystemSupportInformation(false);
-            } else {
-              e.printStackTrace();
-              throw new TerminologyServiceException(e);
-            }
+        if (system.startsWith("http://example.org") || system.startsWith("http://acme.com") || system.startsWith("http://hl7.org/fhir/valueset-") || system.startsWith("urn:oid:")) {
+          return new SystemSupportInformation(false);
+        } else {
+          if (noTerminologyServer) {
+            return new SystemSupportInformation(false);
           }
-          if (supportedCodeSystems.containsKey(vurl)) {
-            return supportedCodeSystems.get(vurl);
+          if (terminologyClientManager != null) {
+            try {
+              TerminologyClientContext client = terminologyClientManager.chooseServer(null, Set.of(urlWithVersion), false);
+              supportedCodeSystems.put(urlWithVersion, new SystemSupportInformation(client.supportsSystem(urlWithVersion), client.getAddress(), client.getTxTestVersion(), client.supportsSystem(urlWithVersion) ? null : "The server does not support this code system"));
+            } catch (Exception e) {
+              if (canRunWithoutTerminology) {
+                noTerminologyServer = true;
+                logger.logMessage("==============!! Running without terminology server !! ==============");
+                if (terminologyClientManager.getMasterClient() != null) {
+                  logger.logMessage("txServer = " + terminologyClientManager.getMasterClient().getId());
+                  logger.logMessage("Error = " + e.getMessage() + "");
+                }
+                logger.logMessage("=====================================================================");
+                return new SystemSupportInformation(false);
+              } else {
+                e.printStackTrace();
+                throw new TerminologyServiceException(e);
+              }
+            }
+            if (supportedCodeSystems.containsKey(urlWithVersion)) {
+              return supportedCodeSystems.get(urlWithVersion);
+            }
           }
         }
       }
-      return new SystemSupportInformation(false);
     }
+    return new SystemSupportInformation(false);
   }
 
   protected void txLog(String msg) {

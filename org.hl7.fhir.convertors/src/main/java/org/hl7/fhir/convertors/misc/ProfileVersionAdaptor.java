@@ -449,13 +449,18 @@ public class ProfileVersionAdaptor {
       if (ctxt.getType() != null) {
         switch (ctxt.getType()) {
         case ELEMENT:
-          String newPath = adaptPath(ctxt.getExpression());
-          if (newPath == null) {
-            log.add(new ConversionMessage("Remove the extension context "+ctxt.getExpression(), ConversionMessageStatus.WARNING));
-            toRemove.add(ctxt);
-          } else if (!newPath.equals(ctxt.getExpression())) {
-            log.add(new ConversionMessage("Adjust the extension context "+ctxt.getExpression()+" to "+newPath, ConversionMessageStatus.WARNING));
-            ctxt.setExpression(newPath);
+          // what happens here depends on whether there's version specific mappings.
+          // if they're version specific, we leave everything, but if it's not, we
+          // try guessing.
+          if (!ctxt.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE)) {
+            String newPath = adaptPath(ctxt.getExpression());
+            if (newPath == null) {
+              log.add(new ConversionMessage("Remove the extension context " + ctxt.getExpression(), ConversionMessageStatus.WARNING));
+              toRemove.add(ctxt);
+            } else if (!newPath.equals(ctxt.getExpression())) {
+              log.add(new ConversionMessage("Adjust the extension context " + ctxt.getExpression() + " to " + newPath, ConversionMessageStatus.WARNING));
+              ctxt.setExpression(newPath);
+            }
           }
           break;
         case EXTENSION:

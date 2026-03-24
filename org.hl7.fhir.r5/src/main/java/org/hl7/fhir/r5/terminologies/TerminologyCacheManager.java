@@ -152,7 +152,7 @@ public class TerminologyCacheManager {
     zipDirectory(bs);
 
     // post it to
-    String url = "https://tx-dev.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip";
+    String url = "https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip";
     log.info("Sending tx-cache to "+url+" ("+Utilities.describeSize(bs.toByteArray().length)+")");
     HTTPResult res = ManagedWebAccess.accessor(Arrays.asList("web"), new TerminologyCacheManagerAuthenticationProvider(token))
         .put(url, bs.toByteArray(), null, "application/zip");
@@ -174,7 +174,7 @@ public class TerminologyCacheManager {
 
     @Override
     public boolean canProvideHeaders(URL url) {
-      return url.getHost().equals("tx-dev.fhir.org");
+      return url.getHost().equals("tx.fhir.org");
     }
 
     @Override

@@ -46,7 +46,7 @@
           "valueCode" : "itemWeight"
         },
           {
-            "url" : "value[x]",
+            "url" : "value",
             "valueDecimal" : 0
           }],
         "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property"
@@ -61,7 +61,7 @@
           "valueCode" : "itemWeight"
         },
           {
-            "url" : "value[x]",
+            "url" : "value",
             "valueDecimal" : 1
           }],
         "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property"
@@ -76,7 +76,7 @@
           "valueCode" : "itemWeight"
         },
           {
-            "url" : "value[x]",
+            "url" : "value",
             "valueDecimal" : 2
           }],
         "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property"
@@ -91,7 +91,7 @@
           "valueCode" : "itemWeight"
         },
           {
-            "url" : "value[x]",
+            "url" : "value",
             "valueDecimal" : 4
           }],
         "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.expansion.contains.property"
