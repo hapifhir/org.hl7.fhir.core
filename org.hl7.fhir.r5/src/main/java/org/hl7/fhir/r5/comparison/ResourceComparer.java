@@ -21,7 +21,9 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
 public class ResourceComparer {
- 
+
+  static int counter = 0;
+
   public static class MessageCounts {
     private int errors;
     private int warnings;
@@ -57,7 +59,7 @@ public class ResourceComparer {
       super();
       this.leftId = leftId;
       this.rightId = rightId;
-      id = abbreviation()+"-"+leftId + "-" + rightId;
+      id = abbreviation()+"+"+(++counter)+"-"+leftId + "-" + rightId;
     }
 
     protected String refCell(CanonicalResource cr) {
