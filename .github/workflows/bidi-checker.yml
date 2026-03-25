@@ -33,7 +33,7 @@ jobs:
       # Run the check for bidi characters.
       - name: Check for bidi characters
         id: bidi_check
-        uses: HL7/bidi-checker-action@5fd155f49252be4654020b6e7e168008834f4058 # v2
+        uses: HL7/bidi-checker-action@02112ffc62b81938f58a5dd7c69ef537e3a4b999 # v1.9
         env:
           IGNORE: i18n-coverage-table\.png$|dummy-package\.tgz$|dummy-package-no-index\.tgz|dummy-package-no-index-scoped\.tgz$
       - name: Get the output time
