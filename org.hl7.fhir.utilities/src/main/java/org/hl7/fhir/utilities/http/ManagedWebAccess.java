@@ -211,7 +211,8 @@ public class ManagedWebAccess {
         for (ServerDetailsPOJO server : serverDetailsList) {
           if (server.getAllowHttp() != null && server.getAllowHttp() && server.getUrl() != null && !server.getUrl().isEmpty()) {
             // Match if the URL starts with the configured server URL
-            if (url.startsWith(server.getUrl())) {
+
+            if (ManagedWebAccessUtils.urlMatchesOrigin(url, server.getUrl())) {
               return true;
             }
           }
