@@ -7,6 +7,3 @@
 
 * Fix bug rendering masked contacts
 * Add missed page to relative URL processing (workflow-extensions)
-
-
-
