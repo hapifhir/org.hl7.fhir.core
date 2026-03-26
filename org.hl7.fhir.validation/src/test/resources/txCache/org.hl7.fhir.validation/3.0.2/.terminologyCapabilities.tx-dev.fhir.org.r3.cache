@@ -1183,6 +1183,9 @@
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/assemble-expectation"
   },
   {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/AustralianStateCodes"
+  },
+  {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/chf-codes"
   },
   {
@@ -1205,6 +1208,9 @@
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/questionnaire-answer-constraint"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/questionnaire-behavior-condition"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/temp"
