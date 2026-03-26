@@ -2,7 +2,6 @@ package org.hl7.fhir.validation.special;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,7 +94,7 @@ public class PackageReGenerator {
   private FHIRPathEngine pathEngine;
   private List<CanonicalResource> includeList = new ArrayList<>();
   @Getter @Setter private boolean verbose = true;
-  private int counter = 0;
+  private int fileUniquenessCounter = 0;
 
   public PackageReGenerator() {
     super();
@@ -603,7 +602,7 @@ public class PackageReGenerator {
       name = cr.fhirType() + "-" + cr.getIdBase() + (cr.hasVersion() ? "-" + tokenise(cr.getVersion()) : "") + (json ? ".json" : ".xml");
     }
     if (name.length() > 90) {
-      name = name.substring(0, 84)+(++counter)+ (json ? ".json" : ".xml");
+      name = name.substring(0, 84)+(++fileUniquenessCounter)+ (json ? ".json" : ".xml");
     }
     return name;
   }
