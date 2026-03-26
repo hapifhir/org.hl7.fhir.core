@@ -317,7 +317,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       }
       if (packgeInfo != null) {
         CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = indexedResources.get(packgeInfo.getVID()+":"+ r.getUrl() + "|" + r.getVersion());
-        if (cr != null && cr.getPackageInfo() == null) {
+        if (cr != null && cr.getPackageInfo() != null && cr.getPackageInfo().getVID().equals(packgeInfo.getVID())) {
           cr.resource = r;
         } else {
           cr = new CachedCanonicalResource<T>(r, packgeInfo);

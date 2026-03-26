@@ -2,7 +2,6 @@ package org.hl7.fhir.validation.special;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,6 +94,7 @@ public class PackageReGenerator {
   private FHIRPathEngine pathEngine;
   private List<CanonicalResource> includeList = new ArrayList<>();
   @Getter @Setter private boolean verbose = true;
+  private int fileUniquenessCounter = 0;
 
   public PackageReGenerator() {
     super();
@@ -595,11 +595,16 @@ public class PackageReGenerator {
   }
 
   private String resourceFileName(CanonicalResource cr) {
+    String name;
     if (cr instanceof ValueSet) {
-      return "ValueSet-" + cr.getIdBase() + (json ? ".json" : ".xml");
+      name = "ValueSet-" + cr.getIdBase() + (json ? ".json" : ".xml");
     } else {
-      return cr.fhirType() + "-" + cr.getIdBase() + (cr.hasVersion() ? "-" + tokenise(cr.getVersion()) : "") + (json ? ".json" : ".xml");
+      name = cr.fhirType() + "-" + cr.getIdBase() + (cr.hasVersion() ? "-" + tokenise(cr.getVersion()) : "") + (json ? ".json" : ".xml");
     }
+    if (name.length() > 90) {
+      name = name.substring(0, 84)+(++fileUniquenessCounter)+ (json ? ".json" : ".xml");
+    }
+    return name;
   }
 
   private void produceZip() throws IOException {
