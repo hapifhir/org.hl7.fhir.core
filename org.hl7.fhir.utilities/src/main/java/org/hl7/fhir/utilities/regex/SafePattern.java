@@ -8,6 +8,11 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class SafePattern {
+
+  private SafePattern() {
+    /* This utility class should not be instantiated */
+  }
+
   /**
    * Compiles a regex pattern <b>without</b> checking for catastrophic backtracking constructs.
    *
