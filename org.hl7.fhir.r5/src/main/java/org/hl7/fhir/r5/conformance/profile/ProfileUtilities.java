@@ -149,7 +149,7 @@ public class ProfileUtilities {
     "sid-icd-9", "sid-us-ssn", "signatures", "snomedct", "snomedct-usage", "storage", "subscriptions", "summary", "terminologies", "terminologies-binding-examples", "terminologies-conceptmaps",
     "terminologies-systems", "terminologies-valuesets", "terminology-module", "terminology-service", "toc", "types", "types-definitions", "types-mappings", "types-profiles", "uml",
     "updates", "usecases", "validation", "versioning", "versions", "w5", "wglist", "workflow", "workflow-ad-hoc", "workflow-communications", "workflow-examples", "workflow-management",
-    "workflow-module", "xml"
+    "workflow-module", "workflow-extensions", "xml"
   );
   private static boolean suppressIgnorableExceptions;
 

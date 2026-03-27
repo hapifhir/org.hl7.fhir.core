@@ -8,7 +8,7 @@
   "http://hl7.org/fhir/animal-species" : null,
   "http://dicom.nema.org/resources/ontology/DCM" : {
     "server" : "http://tx-dev.fhir.org/r5",
-    "filename" : "cs-d282a7f8-508d-41a7-b2cf-cfb21d539678.json"
+    "filename" : "cs-e737352b-4a88-4bd8-a7b4-66eb62c8bc36.json"
   },
   "#cs1" : null,
   "http://test.org" : null,
@@ -21,12 +21,10 @@
   "http://foo" : null,
   "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode" : {
     "server" : "http://tx-dev.fhir.org/r5",
-    "filename" : "cs-33e55990-7e73-4ce3-91b8-c7ea37d31c84.json"
+    "filename" : "cs-dc95557c-26a0-45cd-ae1c-b840c603cbd8.json"
   },
   "http://snomed.info/sct/32506021000036107/version/20170403" : null,
   "http://build.fhir.org/assert-response-code-types" : null,
   "http://snomed.info/sct" : null,
-  "http://acme.com/config/fhir/codesystems/internal" : null,
-  "http://terminology.hl7.org/CodeSystem/v2-0360|2.7" : null,
   "http://hl7.org/fhir/uv/phd/CodeSystem/PhdObservationCategories" : null
 }

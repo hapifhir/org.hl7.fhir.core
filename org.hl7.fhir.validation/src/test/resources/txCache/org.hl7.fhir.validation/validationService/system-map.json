@@ -1,8 +1,0 @@
-{
-  "systems" : [{
-    "system" : "http://covidcare.au/app/alert",
-    "url" : "http://covidcare.au/app/alert",
-    "authoritative" : [],
-    "candidates" : []
-  }]
-}

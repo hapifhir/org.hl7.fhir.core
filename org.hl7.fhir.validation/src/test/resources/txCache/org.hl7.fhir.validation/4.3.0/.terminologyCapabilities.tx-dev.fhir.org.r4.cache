@@ -2,11 +2,11 @@
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
   "url" : "https://tx-dev.fhir.org/r4/TerminologyCapabilities/tx",
-  "version" : "0.7.6-SNAPSHOT",
+  "version" : "0.7.6",
   "name" : "FHIRTerminologyServer",
   "title" : "FHIR Terminology Server",
   "status" : "active",
-  "date" : "2026-03-20T03:16:38.358Z",
+  "date" : "2026-03-26T12:18:24.486Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -2795,7 +2795,17 @@
     }],
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/assemble-expectation",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/AustralianStateCodes",
+    "version" : [{
+      "code" : "4.0.0"
     }]
   },
   {
@@ -2805,7 +2815,7 @@
     }],
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/chf-codes",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }]
   },
   {
@@ -2815,7 +2825,7 @@
     }],
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/collapsible",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }]
   },
   {
@@ -2825,7 +2835,7 @@
     }],
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }]
   },
   {
@@ -2835,7 +2845,7 @@
     }],
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/entryMode",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }]
   },
   {
@@ -2845,7 +2855,7 @@
     }],
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/keyboardType",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }]
   },
   {
@@ -2855,7 +2865,7 @@
     }],
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/launchContext",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }]
   },
   {
@@ -2865,7 +2875,7 @@
     }],
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/observation-extract-relationship",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }]
   },
   {
@@ -2875,7 +2885,17 @@
     }],
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/questionnaire-answer-constraint",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/questionnaire-behavior-condition",
+    "version" : [{
+      "code" : "4.0.0"
     }]
   },
   {
@@ -2885,7 +2905,7 @@
     }],
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/temp",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }]
   },
   {

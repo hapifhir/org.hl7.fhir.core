@@ -2,11 +2,11 @@
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
   "url" : "https://tx-dev.fhir.org/r5/TerminologyCapabilities/tx",
-  "version" : "0.7.2-SNAPSHOT",
+  "version" : "0.7.6",
   "name" : "FHIRTerminologyServer",
   "title" : "FHIR Terminology Server",
   "status" : "active",
-  "date" : "2026-03-19T04:42:25.874Z",
+  "date" : "2026-03-26T10:42:11.164Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -3168,70 +3168,84 @@
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/assemble-expectation",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/AustralianStateCodes",
+    "version" : [{
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/chf-codes",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/collapsible",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/CSPHQ9",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/entryMode",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/keyboardType",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/launchContext",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/observation-extract-relationship",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/questionnaire-answer-constraint",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/questionnaire-behavior-condition",
+    "version" : [{
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/temp",
     "version" : [{
-      "code" : "4.0.0-ballot"
+      "code" : "4.0.0"
     }],
     "content" : "complete"
   },
@@ -3301,7 +3315,7 @@
   {
     "uri" : "http://ihe.net/fhir/ihe.formatcode.fhir/CodeSystem/formatcode",
     "version" : [{
-      "code" : "1.4.0"
+      "code" : "1.5.0"
     }],
     "content" : "complete"
   },
@@ -9804,6 +9818,10 @@
     "content" : "complete"
   },
   {
+    "uri" : "urn:ietf:rfc:3986",
+    "content" : "complete"
+  },
+  {
     "uri" : "urn:iso-astm:E1762-95:2013",
     "version" : [{
       "code" : "5.0.0"
@@ -9820,9 +9838,6 @@
   {
     "uri" : "urn:iso:std:iso:3166",
     "version" : [{
-      "code" : "20210120"
-    },
-    {
       "code" : "2018"
     }],
     "content" : "complete"

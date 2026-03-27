@@ -919,7 +919,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     }    
   }
 
-  private void renderContactDetail(RenderingStatus status, XhtmlNode x, ResourceWrapper cd) {
+  private void renderContactDetail(RenderingStatus status, XhtmlNode x, ResourceWrapper cd) throws IOException {
     if (cd.has("name")) {
       x.tx(cd.primitiveValue("name")+": ");
     }
@@ -1748,42 +1748,47 @@ public class DataRenderer extends Renderer implements CodeResolver {
   } 
 
 
-  protected void renderContactPoint(RenderingStatus status, XhtmlNode x, ResourceWrapper contact) { 
+  protected void renderContactPoint(RenderingStatus status, XhtmlNode x, ResourceWrapper contact) throws IOException {
     if (contact != null) { 
       if (!contact.has("system")) { 
         x.addText(displayContactPoint(contact));         
-      } else { 
+      } else {
         String v = contact.primitiveValue("value");
-        switch (contact.primitiveValue("system")) { 
-        case "email": 
-          x.ah("mailto:"+v).tx(v); 
-          break; 
-        case "fax": 
-          x.addText(displayContactPoint(contact)); 
-          break; 
-        case "other": 
-          x.addText(displayContactPoint(contact)); 
-          break; 
-        case "pager": 
-          x.addText(displayContactPoint(contact)); 
-          break; 
-        case "phone": 
-          if (contact.has("value") && v != null && v.startsWith("+")) { 
-            x.ah("tel:"+v.replace(" ", "")).tx(v); 
-          } else { 
-            x.addText(displayContactPoint(contact)); 
-          } 
-          break; 
-        case "sms": 
-          x.addText(displayContactPoint(contact)); 
-          break; 
-        case "url": 
-          x.ah(context.prefixLocalHref(v)).tx(v); 
-          break; 
-        default: 
-          break;       
-        } 
-      } 
+        String system = contact.primitiveValue("system");
+        if (system == null) {
+          renderPrimitiveWithNoValue(status, x, contact.child("system"));
+        } else {
+          switch (system) {
+            case "email":
+              x.ah("mailto:" + v).tx(v);
+              break;
+            case "fax":
+              x.addText(displayContactPoint(contact));
+              break;
+            case "other":
+              x.addText(displayContactPoint(contact));
+              break;
+            case "pager":
+              x.addText(displayContactPoint(contact));
+              break;
+            case "phone":
+              if (contact.has("value") && v != null && v.startsWith("+")) {
+                x.ah("tel:" + v.replace(" ", "")).tx(v);
+              } else {
+                x.addText(displayContactPoint(contact));
+              }
+              break;
+            case "sms":
+              x.addText(displayContactPoint(contact));
+              break;
+            case "url":
+              x.ah(context.prefixLocalHref(v)).tx(v);
+              break;
+            default:
+              break;
+          }
+        }
+      }
     } 
   } 
 
