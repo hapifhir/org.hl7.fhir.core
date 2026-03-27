@@ -55,6 +55,8 @@ package org.hl7.fhir.utilities;
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 
+import org.hl7.fhir.utilities.regex.SafePattern;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -87,7 +89,7 @@ public class Inflector {
                         String replacement ) {
             this.expression = expression;
             this.replacement = replacement != null ? replacement : "";
-            this.expressionPattern = Pattern.compile(this.expression, Pattern.CASE_INSENSITIVE);
+            this.expressionPattern = SafePattern.compile(this.expression, Pattern.CASE_INSENSITIVE);
         }
 
         /**
@@ -534,7 +536,7 @@ public class Inflector {
     protected static String replaceAllWithUppercase( String input,
                                                      String regex,
                                                      int groupNumberToUppercase ) {
-        Pattern underscoreAndDotPattern = Pattern.compile(regex);
+        Pattern underscoreAndDotPattern = SafePattern.compile(regex);
         Matcher matcher = underscoreAndDotPattern.matcher(input);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {

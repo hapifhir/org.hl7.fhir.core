@@ -1975,17 +1975,6 @@ public class Utilities {
     return false;
   }
 
-  public static String extractByRegex(String input, String regex) {
-    Pattern pattern = Pattern.compile(regex);
-    Matcher matcher = pattern.matcher(input);
-
-    StringBuilder result = new StringBuilder();
-    while (matcher.find()) {
-      result.append(matcher.group(1)); 
-    }
-    return result.length() == 0 ? null : result.toString(); 
-  }
-
   public static String getDirectoryForURL(String url) {
     return url.contains("/") && url.lastIndexOf("/") > 10 ? url.substring(0, url.lastIndexOf("/")) : url;
   }

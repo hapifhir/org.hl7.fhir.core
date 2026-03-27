@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.*;
@@ -404,7 +403,7 @@ public class FilesystemPackageManagerTests {
     }
     }
 
-    private @NonNull String getRunnableName() {
+    private @Nonnull String getRunnableName() {
       return "Test " + originatingTest + " Thread #" + index + " " + getOperationName();
     }
 

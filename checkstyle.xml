@@ -13,8 +13,7 @@
         <!--
         <module name="TodoComment">-->
         <!-- The (?i) below means Case Insensitive -->
-        <!--<property name="format" value="(?i)FIXME"/>
--->
+        <!--<property name="format" value="(?i)FIXME"/>-->
         <module name="RegexpSinglelineJava">
             <!-- No hamcrest usage in this project -->
             <property name="id" value="NoHamcrestAssert"/>
@@ -23,25 +22,25 @@
                       value="Incorrect matcher import used: The &quot;org.assertj.core.api.Assertions.assertThat&quot; import should be used for tests"/>
         </module>
         <module name="RegexpSinglelineJava">
-            <!-- No direct usage of java.util.regex -->
-            <property name="id" value="regex"/>
-            <property name="format" value="java\.util\.regex"/>
-        </module>
-        <module name="RegexpSinglelineJava">
             <!-- No JetBrains annotations -->
             <property name="format" value="org\.jetbrains\.annotations\.NotNull"/>
+            <property name="message"
+                      value="Don't use JetBrains NotNull use javax.annotation.Notnull."/>
         </module>
         <module name="RegexpSinglelineJava">
             <!-- No JetBrains annotations -->
             <property name="format" value="org\.jetbrains\.annotations\.Nullable"/>
+            <property name="message"
+                      value="Don't use JetBrains Nullable use javax.annotation.Nullable."/>
         </module>
         <module name="RegexpSinglelineJava">
             <!-- No JetBrains annotations -->
             <property name="format" value="org\.jetbrains\.annotations\.\*"/>
+            <property name="message"
+                      value="Don't use JetBrains annotations use javax.annotation."/>
         </module>
         <module name="RegexpSinglelineJava">
             <!-- No direct usage of System.out or System.err -->
-            <property name="description" value=" "/>
             <property name="id" value="systemout"/>
             <property name="format" value="^.*System\.(out|err).*$"/>
             <property name="message"
@@ -52,11 +51,47 @@
     <module name="SuppressWarningsFilter"/>
     <module name="RegexpMultiline">
         <!-- No direct usage of XML constructors -->
+        <property name="id" value="patternCompile"/>
+        <property name="matchAcrossLines" value="true"/>
+        <property name="format" value="(?&lt;!Safe)Pattern\.compile\("/>
+        <property name="message"
+                  value="Usage of Pattern.compile(...) is only allowed in SafePattern."
+        />
+    </module>
+    <module name="RegexpMultiline">
+        <!-- No direct usage of XML constructors -->
+        <property name="id" value="patternMatches"/>
+        <property name="matchAcrossLines" value="true"/>
+        <property name="format" value="(?&lt;!Safe)Pattern\.matches\("/>
+        <property name="message"
+                  value="Usage of Pattern.matches(...) is only allowed in SafePattern."
+        />
+    </module>
+    <module name="RegexpMultiline">
+        <!-- No direct usage of XML constructors -->
+        <property name="id" value="compileKnownSafePattern"/>
+        <property name="matchAcrossLines" value="true"/>
+        <property name="format" value="SafePattern\.compileKnownSafePattern\("/>
+        <property name="message"
+                  value="Usage of SafePattern.compileKnownSafePattern(...) is not allowed."
+        />
+    </module>
+    <module name="RegexpMultiline">
+        <!-- No direct usage of XML constructors -->
+        <property name="id" value="matchesKnownSafePattern"/>
+        <property name="matchAcrossLines" value="true"/>
+        <property name="format" value="SafePattern\.matchesKnownSafePattern\("/>
+        <property name="message"
+                  value="Usage of SafePattern.matchesKnownSafePattern(...) is not allowed."
+        />
+    </module>
+    <module name="RegexpMultiline">
+        <!-- No direct usage of XML constructors -->
         <property name="id" value="transformerFactoryNewInstance"/>
         <property name="matchAcrossLines" value="true"/>
         <property name="format" value="TransformerFactory\.newInstance\("/>
         <property name="message"
-                  value="Usage of TransformerFactory.newInstance() is only allowed in XMLUtil.newXXEProtectedTransformerFactory(). If the location of this call in XMLUtil has changed, please modify the expected line number in org.hl7.fhir.utilities/checkstyle_suppressions.xml"
+                  value="Usage of TransformerFactory.newInstance() is only allowed in XMLUtil.newXXEProtectedTransformerFactory()."
         />
     </module>
     <module name="RegexpMultiline">

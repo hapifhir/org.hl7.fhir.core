@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.hl7.fhir.utilities.regex.SafePattern;
 import org.hl7.fhir.utilities.tests.execution.CliTestSummary;
 import org.hl7.fhir.utilities.tests.execution.ModuleTestExecutor;
 import org.junit.runner.Description;
@@ -61,7 +62,7 @@ public class JUnit4TestExecutor extends ModuleTestExecutor {
 
     junit.addListener(new JUnit4RunListener(log));
 
-    Pattern pattern = classNameFilter != null ? Pattern.compile(classNameFilter) : null;
+    Pattern pattern = classNameFilter != null ? SafePattern.compile(classNameFilter) : null;
 
     List<Class<?>> classes = classNames.stream()
       .filter(className -> pattern == null ? true : pattern.matcher(className).matches())
