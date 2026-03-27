@@ -48,6 +48,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.model.ResourceType;
+import org.hl7.fhir.utilities.regex.SafePattern;
 
 //Make resources address subclass of URI
 
@@ -231,7 +232,7 @@ public class ResourceAddress {
 	 * Generalize later: http://hl7connect.healthintersections.com.au/svc/fhir/318/_history/1
 	 */
 	public static ResourceVersionedIdentifier parseCreateLocation(String locationResponseHeader) {
-		Pattern pattern = Pattern.compile(REGEX_ID_WITH_HISTORY);
+		Pattern pattern = SafePattern.compile(REGEX_ID_WITH_HISTORY);
 		Matcher matcher = pattern.matcher(locationResponseHeader);
 		ResourceVersionedIdentifier parsedHeader = null;
 		if(matcher.matches()){
