@@ -9,27 +9,39 @@
     <property name="charset" value="UTF-8"/>
     <property name="fileExtensions" value="java, properties, xml, js, json"/>
     <module name="TreeWalker">
-        <module name="SuppressWarningsHolder" />
+        <module name="SuppressWarningsHolder"/>
         <!--
         <module name="TodoComment">-->
         <!-- The (?i) below means Case Insensitive -->
         <!--<property name="format" value="(?i)FIXME"/>
 -->
         <module name="RegexpSinglelineJava">
+            <!-- No hamcrest usage in this project -->
             <property name="id" value="NoHamcrestAssert"/>
             <property name="format" value="org\.hamcrest\."/>
-            <property name="message" value="Incorrect matcher import used: The &quot;org.assertj.core.api.Assertions.assertThat&quot; import should be used for tests"/>
+            <property name="message"
+                      value="Incorrect matcher import used: The &quot;org.assertj.core.api.Assertions.assertThat&quot; import should be used for tests"/>
         </module>
         <module name="RegexpSinglelineJava">
+            <!-- No direct usage of java.util.regex -->
+            <property name="id" value="regex"/>
+            <property name="format" value="java\.util\.regex"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <!-- No JetBrains annotations -->
             <property name="format" value="org\.jetbrains\.annotations\.NotNull"/>
         </module>
         <module name="RegexpSinglelineJava">
+            <!-- No JetBrains annotations -->
             <property name="format" value="org\.jetbrains\.annotations\.Nullable"/>
         </module>
         <module name="RegexpSinglelineJava">
+            <!-- No JetBrains annotations -->
             <property name="format" value="org\.jetbrains\.annotations\.\*"/>
         </module>
         <module name="RegexpSinglelineJava">
+            <!-- No direct usage of System.out or System.err -->
+            <property name="description" value=" "/>
             <property name="id" value="systemout"/>
             <property name="format" value="^.*System\.(out|err).*$"/>
             <property name="message"
@@ -37,8 +49,9 @@
         </module>
 
     </module>
-    <module name="SuppressWarningsFilter" />
+    <module name="SuppressWarningsFilter"/>
     <module name="RegexpMultiline">
+        <!-- No direct usage of XML constructors -->
         <property name="id" value="transformerFactoryNewInstance"/>
         <property name="matchAcrossLines" value="true"/>
         <property name="format" value="TransformerFactory\.newInstance\("/>
@@ -47,6 +60,7 @@
         />
     </module>
     <module name="RegexpMultiline">
+        <!-- No direct usage of XML constructors -->
         <property name="id" value="documentBuilderFactoryNewInstance"/>
         <property name="matchAcrossLines" value="true"/>
         <property name="format" value="DocumentBuilderFactory\.newInstance\("/>
@@ -55,6 +69,7 @@
         />
     </module>
     <module name="RegexpMultiline">
+        <!-- No direct usage of XML constructors -->
         <property name="id" value="saxParserFactoryNewInstance"/>
         <property name="matchAcrossLines" value="true"/>
         <property name="format" value="SAXParserFactory\.newInstance\("/>
@@ -63,6 +78,7 @@
         />
     </module>
     <module name="RegexpMultiline">
+        <!-- No direct usage of XML constructors -->
         <property name="id" value="getXMLReader"/>
         <property name="matchAcrossLines" value="true"/>
         <property name="format" value="\.getXMLReader\("/>
