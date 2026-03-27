@@ -41,6 +41,7 @@ import org.hl7.fhir.utilities.i18n.LanguageFileProducer.LanguageProducerLanguage
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TextUnit;
 import org.hl7.fhir.utilities.i18n.LanguageFileProducer.TranslationUnit;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
+import org.hl7.fhir.utilities.regex.SafePattern;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -698,7 +699,7 @@ public class LanguageUtils {
     String elementPath = e.getProperty().getDefinition().getBase().getPath();
     if (e.getName().equals("extension")) {
       String url = e.getChildValue("url");
-      Matcher m = Pattern.compile(INTERVERSION_PATTERN).matcher(url);
+      Matcher m = SafePattern.compile(INTERVERSION_PATTERN).matcher(url);
       if (m.matches()) {
         elementPath = m.group(1);
       }

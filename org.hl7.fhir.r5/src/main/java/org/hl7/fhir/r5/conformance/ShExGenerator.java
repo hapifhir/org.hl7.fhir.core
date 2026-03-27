@@ -47,6 +47,7 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.regex.SafePattern;
 import org.stringtemplate.v4.ST;
 
 @MarkedToMoveToAdjunctPackage
@@ -1455,7 +1456,7 @@ public class ShExGenerator {
   //          (!imports.contains(importType)))
   //            imports.add(importType);
   //    }
-        Pattern p = Pattern.compile("<([^\\s>/]+)");
+        Pattern p = SafePattern.compile("<([^\\s>/]+)");
         Matcher m = p.matcher(typeDefn);
         while (m.find()) {
           String tag = m.group(1);
