@@ -7,6 +7,14 @@ import ch.qos.logback.core.pattern.color.ForegroundCompositeConverterBase;
 
 public class LogColorConverter  extends ForegroundCompositeConverterBase<ILoggingEvent> {
   @Override
+  public String convert(ILoggingEvent event) {
+    if (System.console() == null) {
+      return event.getFormattedMessage();
+    }
+    return super.convert(event);
+  }
+
+  @Override
   protected String getForegroundColorCode(ILoggingEvent event) {
       Level level = event.getLevel();
       switch (level.toInt()) {
