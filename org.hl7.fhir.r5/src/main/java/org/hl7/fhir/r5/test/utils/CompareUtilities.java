@@ -570,6 +570,10 @@ public class CompareUtilities extends BaseTestingUtilities {
       return modes == null || !modes.contains(token.substring(1));
     } else if (token.startsWith("warning:")) {
       return true;
+    } else if (token.startsWith("version:")) {
+      String v = variables.get("version");
+      String t = token.substring(8);
+      return v != null && v.startsWith(t);
     } else {
       return modes != null && modes.contains(token);
     }
