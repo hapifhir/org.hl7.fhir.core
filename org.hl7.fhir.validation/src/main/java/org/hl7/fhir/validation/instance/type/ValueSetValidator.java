@@ -852,7 +852,7 @@ public class ValueSetValidator extends BaseValidator {
     if (total != null && offset != null && Utilities.isInteger(total) && Utilities.isInteger(offset)) {
       int t = Integer.parseInt(total);
       int o = Integer.parseInt(offset);
-      warning(errors, "2026-03-27", IssueType.INVALID, stack, false, I18nConstants.VALUESET_EXPANSION_PARAMETER_COUNT_WRONG, total, count, offset);
+      warning(errors, "2026-03-27", IssueType.INVALID, stack, o+count.total() <= t, I18nConstants.VALUESET_EXPANSION_PARAMETER_COUNT_WRONG, total, count.total(), offset);
     }
 
     Set<String> usedSystems = scanForUsedCodeSystems(parameters);
