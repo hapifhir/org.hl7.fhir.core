@@ -35,6 +35,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.regex.SafePattern;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
@@ -683,7 +684,7 @@ public class ValueSetValidator extends BaseValidator {
             } else if ("regex".equals(op)) {
               String err = null;
               try {
-                Pattern.compile(value);
+                SafePattern.compile(value);
               } catch (PatternSyntaxException e) {
                 err = e.getMessage();
               }            
