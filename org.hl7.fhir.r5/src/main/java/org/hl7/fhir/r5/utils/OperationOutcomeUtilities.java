@@ -42,6 +42,7 @@ import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -276,4 +277,21 @@ public class OperationOutcomeUtilities {
     return res;
   }
 
+    public static TerminologyServiceErrorClass getTerminologyErrorClass(OperationOutcome serverError) {
+      for (OperationOutcomeIssueComponent issue : serverError.getIssue()) {
+        TerminologyServiceErrorClass clss = getTerminologyErrorClass(issue);
+        if (clss != TerminologyServiceErrorClass.UNKNOWN) {
+          return clss;
+        }
+      }
+      return TerminologyServiceErrorClass.UNKNOWN;
+    }
+
+  public static TerminologyServiceErrorClass getTerminologyErrorClass(OperationOutcomeIssueComponent issue) {
+    if (issue.getCode() == IssueType.TOOCOSTLY) {
+      return TerminologyServiceErrorClass.TOO_COSTLY;
+    } else {
+      return TerminologyServiceErrorClass.UNKNOWN;
+    }
+  }
 }

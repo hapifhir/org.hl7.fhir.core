@@ -802,7 +802,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } catch (UnknownValueSetException e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.VALUESET_UNKNOWN, allErrors, false);
     } catch (VSCheckerException e) {
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e.getIssues());      
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e.getIssues());
+    } catch (TerminologyServiceException e) {
+      if (e.getOutcome() != null) {
+        return (ValueSetExpansionOutcome) e.getOutcome();
+      } else {
+        return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, true);
+      }
     } catch (Exception e) {
       if (debug) {
         e.printStackTrace();
@@ -1544,7 +1550,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     
     ValueSetExpansionOutcome vso = context.expandVS(new TerminologyOperationDetails(requiredSupplements), inc, heirarchical, noInactive);
     if (vso.getError() != null) {
-      throw failTSE("Unable to expand imported value set: " + vso.getError());
+      throw failTSE("Unable to expand imported value set: " + vso.getError(), vso);
     }
     ValueSet vs = vso.getValueset();
     if (vs.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
