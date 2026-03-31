@@ -58,7 +58,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return result;
   }
 
-  public class IntHolder {
+  public static class IntHolder {
 
     private int count;
     
