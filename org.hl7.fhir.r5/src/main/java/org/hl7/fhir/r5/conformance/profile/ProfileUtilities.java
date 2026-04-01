@@ -845,12 +845,16 @@ public class ProfileUtilities {
             if (!e.hasUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT) && e.getPath().contains(".")) {
               ElementDefinition existing = getElementInCurrentContext(e.getPath(), derived.getSnapshot().getElement());
               if (existing != null) {
-                updateFromDefinition(existing, e, profileName, false, url, base, derived, "StructureDefinition.differential.element["+i+"]", mappingDetails, false);
+                // this shouldn't arise - there is a match, but it's not tracked.
+                throw new Error("There is a bug in the code. Please report this as a GitHub issue, along with enough information to reproduce the problem (7cd78da1-8707-4be9-9bd1-9bfbea2cff2c)");
+                // the old code that was here is wrong somehow - exactly how depends on why we would end up here.
+                // updateFromDefinition(existing, e, profileName, false, url, base, derived, "StructureDefinition.differential.element["+i+"]", mappingDetails, false);
               } else {
+                int insertionPoint = findLastChildForParent(e.getPath(), derived.getSnapshot().getElement());
                 ElementDefinition outcome = updateURLs(url, webUrl, e.copy(), true);
                 e.setUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT, outcome);
                 markExtensions(outcome, true, derived);
-                derived.getSnapshot().addElement(outcome);
+                derived.getSnapshot().getElement().add(insertionPoint, outcome);
                 if (walksInto(diff.getElement(), e)) {
                   if (e.getType().size() > 1) {
                     throw new DefinitionException("Unsupported scenario: specialization walks into multiple types at "+e.getId()); 
@@ -1092,6 +1096,27 @@ public class ProfileUtilities {
     derived.setGeneratedSnapshot(true);
     //derived.setUserData(UserDataNames.SNAPSHOT_GENERATED, true); // used by the publisher
     derived.setUserData(UserDataNames.SNAPSHOT_GENERATED_MESSAGES, messages); // used by the publisher
+  }
+
+  private int findLastChildForParent(String path, List<ElementDefinition> element) {
+    String parentPath = path.substring(0, path.lastIndexOf('.'));
+    int index = getPathForElement(parentPath, element);
+    if (index == -1) {
+      throw new FHIRException("Unable to find parent path "+parentPath+" for element "+path+" (internal code error)");
+    }
+    while (index < element.size() && element.get(index).getPath().startsWith(parentPath)) {
+      index++;
+    }
+    return index;
+  }
+
+  private int getPathForElement(String parentPath, List<ElementDefinition> element) {
+    for (int i = 0; i < element.size(); i++) {
+      if (element.get(i).getPath().equals(parentPath)) {
+        return i;
+      }
+    }
+    return -1;
   }
 
 
