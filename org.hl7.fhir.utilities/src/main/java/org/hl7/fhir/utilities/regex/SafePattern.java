@@ -55,7 +55,7 @@ public class SafePattern {
     if (regex.matches(".*\\(.+[+*]\\)[+*].*")) {
       throw new FHIRException("Regex pattern rejected: potential catastrophic backtracking");
     }
-    return Pattern.compile("(?s)" + regex, flags);
+    return Pattern.compile(regex, flags);
   }
 
   /**
