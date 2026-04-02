@@ -812,8 +812,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else if (supportedCodeSystems.containsKey(urlWithVersion)) {
         return supportedCodeSystems.get(urlWithVersion);
       } else {
-        Resource res = fetchCodeSystem(system, VersionResolutionRules.defaultRule(), version);
-        if (res != null) {
+        CodeSystem res = fetchCodeSystem(system, VersionResolutionRules.defaultRule(), version);
+        if (res != null && (res.getContent() == CodeSystemContentMode.COMPLETE || res.getContent() == CodeSystemContentMode.FRAGMENT)) {
           return new SystemSupportInformation(true, "internal", TerminologyClientContext.LATEST_VERSION, null);
         }
         if (system.startsWith("http://example.org") || system.startsWith("http://acme.com") || system.startsWith("http://hl7.org/fhir/valueset-") || system.startsWith("urn:oid:")) {
@@ -3516,6 +3516,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (txCache.hasCodeSystem(canonical)) {
         scs = txCache.getCodeSystem(canonical);
       } else {
+
         scs = terminologyClientManager.findCodeSystemOnServer(canonical);
         txCache.cacheCodeSystem(canonical, scs);
       }
@@ -3533,6 +3534,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         cacheResource(scs.getCs());
         return (T) scs.getCs();
       }
+    } else if (class_ == Resource.class) {
+      Resource res = findTxResource(CodeSystem.class, canonical, rules);
+      if (res == null) {
+        res = findTxResource(ValueSet.class, canonical, rules);
+      }
+      return (T) res;
     } else {
       throw new Error("Not supported: doFindTxResource with type of "+class_.getName());
     }
