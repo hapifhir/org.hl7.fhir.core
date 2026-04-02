@@ -852,13 +852,14 @@ public class TerminologyCache {
     JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(resultString);
     String error = loadJS(o.get("error"));
     if (e == 'e') {
+      TerminologyServiceErrorClass errorClass = o.has("class") ? TerminologyServiceErrorClass.valueOf(o.get("class").getAsString()) : TerminologyServiceErrorClass.UNKNOWN;
       if (o.has("valueSet")) {
-        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, o.has("class") ? TerminologyServiceErrorClass.valueOf(o.get("class").getAsString()) : TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
+        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, errorClass, o.has("from-server"));
         if (o.has("source")) {
           ce.e.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, o.get("source").getAsString());
         }
       } else {
-        ce.e = new ValueSetExpansionOutcome(error, o.has("class") ? TerminologyServiceErrorClass.valueOf(o.get("class").getAsString()) : TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
+        ce.e = new ValueSetExpansionOutcome(error, errorClass, o.has("from-server"));
       }
     } else if (e == 's') {
       ce.s = new SubsumesResult(o.get("result").getAsBoolean());

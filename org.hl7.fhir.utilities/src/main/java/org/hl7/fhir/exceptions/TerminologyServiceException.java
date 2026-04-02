@@ -31,11 +31,13 @@ package org.hl7.fhir.exceptions;
 
 
 import ca.uhn.fhir.context.support.IValidationSupport;
+import lombok.Getter;
 
 public class TerminologyServiceException extends FHIRException {
 
   public static final String NO_SERVICE_CODE = "No_Service";
-  private Object outcome;
+
+  @Getter private Object outcome;
 
   public TerminologyServiceException() {
 		super();
@@ -52,10 +54,6 @@ public class TerminologyServiceException extends FHIRException {
 	public TerminologyServiceException(Throwable cause) {
 		super(cause);
 	}
-
-  public Object getOutcome() {
-    return outcome;
-  }
 
   public TerminologyServiceException setOutcome(Object outcome) {
     this.outcome = outcome;

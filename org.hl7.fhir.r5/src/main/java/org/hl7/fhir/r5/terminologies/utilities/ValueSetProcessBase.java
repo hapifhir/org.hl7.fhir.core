@@ -352,12 +352,12 @@ public class ValueSetProcessBase {
     return new OperationIsTooCostly(msg);
   }
 
-  protected TerminologyServiceException failTSE(String msg) {
+  protected TerminologyServiceException createTerminologyServiceException(String msg) {
     allErrors.add(msg);
     return new TerminologyServiceException(msg);
   }
 
-  protected TerminologyServiceException failTSE(String msg, ValueSetExpansionOutcome outcome) {
+  protected TerminologyServiceException createTerminologyServiceException(String msg, ValueSetExpansionOutcome outcome) {
     allErrors.add(msg);
     return new TerminologyServiceException(msg).setOutcome(outcome);
   }
