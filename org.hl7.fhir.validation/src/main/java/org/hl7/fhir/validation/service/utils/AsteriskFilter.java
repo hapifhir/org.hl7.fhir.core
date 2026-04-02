@@ -8,6 +8,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class AsteriskFilter implements FilenameFilter {
 
+  //FIXME This should only be used in evaluating directories supplied by the user. It should not be in use otherwise.
   public static final String EXPRESSION_REGEX = "(.+(?>\\\\|/))*(.*)";
   
   public static final String DIR_REGEX = EXPRESSION_REGEX + "\\*(.*)";

@@ -392,7 +392,7 @@ public class MatchetypeValidator {
         case "$uuid$": return actualJsonString.matches("urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
         case "$string$": return actualJsonString.equals(actualJsonString.trim());
         case "$id$": return actualJsonString.matches("[A-Za-z0-9\\-\\.]{1,64}");
-        case "$url$": return actualJsonString.matches("(https?://|www\\.)[-a-zA-Z0-9+&@#/%?=~_|!:.;]*[-a-zA-Z0-9+&@#/%=~_|]");
+        case "$url$": return actualJsonString.matches("(https?://|www\\.)[-a-zA-Z0-9+&@#/%?=~_|!:.;]*[-a-zA-Z0-9+&@#/%=~_|]"); //FIXME replace with safe URL matching regex
         case "$token$": return actualJsonString.matches("[0-9a-zA-Z_][0-9a-zA-Z_\\.\\-]*");
         case "$semver$": return actualJsonString.matches("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$");
         case "$version$": return matchesVariable(actualJsonString, "version");

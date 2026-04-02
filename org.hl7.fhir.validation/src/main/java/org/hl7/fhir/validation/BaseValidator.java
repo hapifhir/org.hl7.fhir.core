@@ -102,7 +102,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * [paramName]=[paramValue]&[paramName]=[paramValue]
    * etc..
    */
-  private static final Pattern SEARCH_URL_PARAMS = Pattern.compile("[_a-zA-Z][_a-zA-Z0-9.:-]*=[^=&]*(&([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*))*");
+  //FIXME change to SafeCompile and simplify once SonarQube clears this regex
+  //FIXME some more: rework the logic to just decompose using a URL object and check the params (maybe against the simplified regex for search param names)
+  @SuppressWarnings("checkstyle:patternCompile")
+  private static final Pattern SEARCH_URL_PARAMS = Pattern.compile("[_a-zA-Z][_a-zA-Z0-9.:-]*+=[^=&]*+(&([_a-zA-Z][_a-zA-Z0-9.:-]*+=[^=&]*+))*+");
   public static final boolean ALLOW_TRANSIENT_BASE_REFERENCES = false;
 
   public static class BooleanHolder {
