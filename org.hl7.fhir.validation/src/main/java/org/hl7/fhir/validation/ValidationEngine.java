@@ -626,9 +626,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return (OperationOutcome) validate(l, new InstanceValidatorParameters().setProfiles(profiles), refs, null, loader, all, 0, true);
   }
 
-  //FIXME
-  // from CLI (direct)
-  // from MatchboxService
   public Resource validate(List<String> sources, InstanceValidatorParameters instanceValidatorParameters, List<SourceFile> refs, List<ValidationRecord> record, IValidationEngineLoader loader, boolean all, int delay, boolean first) throws FHIRException, IOException, InterruptedException {
     boolean asBundle = ValidatorUtils.parseSources(sources, refs, context);
     Bundle results = new Bundle();
@@ -689,10 +686,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       return results.getEntryFirstRep().getResource();
   }
 
-  // FIXME from validator-wrapper (indirect)
   public ValidatedFragments validateAsFragments(byte[] source, FhirFormat cntType, InstanceValidatorParameters instanceValidatorParameters, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
-    //FIXME set instance validator options
+
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(instanceValidatorParameters.getProfiles()));
     return new ValidatedFragments(validator.validatedContent,
       ValidationTime.fromTimeTracker(validator.timeTracker));
@@ -709,14 +705,13 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
-  //FIXME from CLI (indirect)
   public OperationOutcome validate(String location, ByteProvider source, FhirFormat cntType, InstanceValidatorParameters instanceValidatorParameters, List<ValidationRecord> record) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
       SchemaValidator.validateSchema(location, cntType, messages);
     }
     InstanceValidator validator = getValidator(cntType, instanceValidatorParameters);
-    //FIXME set instance validator options
+
     Element res = validator.validate(null, messages, new ByteArrayInputStream(source.getBytes()), cntType, asSdList(instanceValidatorParameters.getProfiles()));
     boolean first = true;
     for (String fn : matchetypes) {
