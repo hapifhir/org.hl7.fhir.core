@@ -1316,7 +1316,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (cs == null) {
             hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path+".system", done, I18nConstants.UNKNOWN_CODESYSTEM, system);
           } else {
-            if (hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, cs.getContent() != CodeSystemContentMode.NOTPRESENT, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOT_USABLE, system)) {
+            if (hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path,
+                cs.getContent() != CodeSystemContentMode.NOTPRESENT, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOT_USABLE, system, cs.getSourcePackage() == null ? "non-package source" : cs.getSourcePackage().getVID())) {
               ok = rule(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, false, "Unexpected internal condition - unsupported code system could be supported? (url = {0})", cs.getVersionedUrl()) && ok;
             }
           }
@@ -3337,9 +3338,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           String cc = url.substring(8);
           if ("canonical".equals(type) && cc.contains("|")) {
             cc = cc.substring(0, cc.indexOf("|"));
-          }
-          if (cc.contains("2.16.840.1.113883.6.238")) {
-            DebugUtilities.breakpoint();
           }
           boolean oidOk = OIDUtilities.isValidOID(cc) && ((cc.lastIndexOf('.') >= 4 || cc.startsWith("1.3")));
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,

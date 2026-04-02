@@ -91,7 +91,7 @@ public class ParametersValidator extends BaseValidator {
         break;
       case "code":
         if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code", "string"),3,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code, string, Coding");
+          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code", "string", "Coding"),3,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code, string, Coding");
         }
         break;
       case "codeA":
