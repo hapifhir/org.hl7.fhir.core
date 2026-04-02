@@ -20,7 +20,7 @@ v: {
   "system" : "urn:oid:2.16.840.1.113883.6.238",
   "version" : "1.3",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2054-5 (\"Black or African American\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2054-5\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2054-5\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2054-5 (\"Black or African American\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2054-5\"\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2054-5\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -49,7 +49,7 @@ v: {
   "system" : "urn:oid:2.16.840.1.113883.6.238",
   "version" : "1.3",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2106-3 (\"White\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2106-3\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2106-3\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2106-3 (\"White\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2106-3\"\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2106-3\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -107,7 +107,7 @@ v: {
   "system" : "urn:oid:2.16.840.1.113883.6.238",
   "version" : "1.3",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2028-9 (\"Asian\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2028-9\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2028-9\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2028-9 (\"Asian\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2028-9\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2028-9\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -194,7 +194,7 @@ v: {
   "system" : "urn:oid:2.16.840.1.113883.6.238",
   "version" : "1.3",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2135-2 (\"Hispanic or Latino\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2135-2\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2135-2\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2135-2 (\"Hispanic or Latino\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2135-2\"\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2135-2\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -223,7 +223,7 @@ v: {
   "system" : "urn:oid:2.16.840.1.113883.6.238",
   "version" : "1.3",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2184-0 (\"Dominican\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2184-0\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2184-0\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
+  "diagnostics" : "0ms tx-op\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Validate \"[urn:oid:2.16.840.1.113883.6.238#2184-0 (\"Dominican\")]\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Check \"urn:oid:2.16.840.1.113883.6.238#2184-0\"\n1ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: CodeSystem found: urn:oid:2.16.840.1.113883.6.238|1.3 for urn:oid:2.16.840.1.113883.6.238|1.3\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: check code in (urn:oid:2.16.840.1.113883.6.238) at Coding\n2ms urn:oid:2.16.840.1.113883.6.238/vs|1.3: Code \"2184-0\" found in urn:oid:2.16.840.1.113883.6.238|1.3",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
