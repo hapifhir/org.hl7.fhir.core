@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.instance.type;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -9,6 +10,7 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
 import java.util.List;
+import java.util.Map;
 
 public class ParametersValidator extends BaseValidator {
 
@@ -28,766 +30,195 @@ public class ParametersValidator extends BaseValidator {
     return ok;
   }
 
+  private enum ParamKind { VALUE, RESOURCE, MIXED, ANY_VALUE }
+
+  private record ParamRule(ParamKind kind, String... types) {}
+
+  private static final Map<String, ParamRule> PARAM_RULES = Map.ofEntries(
+    Map.entry("_count", new ParamRule(ParamKind.VALUE, "integer")),
+    Map.entry("_since", new ParamRule(ParamKind.VALUE, "instant")),
+    Map.entry("_type", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("abstract", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("account", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("activeOnly", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("activityDefinition", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("additions", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("async", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("chargeItem", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("check-system-version", new ParamRule(ParamKind.VALUE, "canonical")),
+    Map.entry("client", new ParamRule(ParamKind.VALUE, "canonical")),
+    Map.entry("code", new ParamRule(ParamKind.VALUE, "code", "string", "Coding")),
+    Map.entry("codeA", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("codeableConcept", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
+    Map.entry("codeB", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("codeSystem", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("coding", new ParamRule(ParamKind.VALUE, "Coding")),
+    Map.entry("codingA", new ParamRule(ParamKind.VALUE, "Coding")),
+    Map.entry("codingB", new ParamRule(ParamKind.VALUE, "Coding")),
+    Map.entry("collector", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("compositional", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("concept", new ParamRule(ParamKind.VALUE, "Coding")),
+    Map.entry("conceptMap", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("conceptMapVersion", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("content", new ParamRule(ParamKind.MIXED, "code")),
+    Map.entry("context", new ParamRule(ParamKind.VALUE, "uri")),
+    Map.entry("contextDirection", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("count", new ParamRule(ParamKind.VALUE, "integer")),
+    Map.entry("date", new ParamRule(ParamKind.VALUE, "dateTime")),
+    Map.entry("default", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("definition", new ParamRule(ParamKind.MIXED, "string")),
+    Map.entry("designation", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("display", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("displayLanguage", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("duration", new ParamRule(ParamKind.VALUE, "decimal")),
+    Map.entry("encounter", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("end", new ParamRule(ParamKind.VALUE, "date", "dateTime")),
+    Map.entry("eventsSinceNumber", new ParamRule(ParamKind.VALUE, "integer64")),
+    Map.entry("eventsUntilNumber", new ParamRule(ParamKind.VALUE, "integer64")),
+    Map.entry("exact", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("exclude-system", new ParamRule(ParamKind.VALUE, "canonical")),
+    Map.entry("excludeNested", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("excludeNotForUI", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("excludePostCoordinated", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("expiration", new ParamRule(ParamKind.VALUE, "dateTime")),
+    Map.entry("filter", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("force-system-version", new ParamRule(ParamKind.VALUE, "canonical")),
+    Map.entry("graph", new ParamRule(ParamKind.VALUE, "uri")),
+    Map.entry("id", new ParamRule(ParamKind.VALUE, "id", "string")),
+    Map.entry("identifier", new ParamRule(ParamKind.VALUE, "Identifier")),
+    Map.entry("include", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("includeDefinition", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("includeDesignations", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("intersection", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("issues", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("lastReceivedOn", new ParamRule(ParamKind.VALUE, "dateTime")),
+    Map.entry("left", new ParamRule(ParamKind.VALUE, "canonical")),
+    Map.entry("limit", new ParamRule(ParamKind.VALUE, "positiveInt")),
+    Map.entry("local", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("location", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("max", new ParamRule(ParamKind.VALUE, "positiveInt")),
+    Map.entry("measure", new ParamRule(ParamKind.MIXED, "string")),
+    Map.entry("measureReport", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("message", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("meta", new ParamRule(ParamKind.VALUE, "Meta")),
+    Map.entry("mode", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("name", new ParamRule(ParamKind.VALUE, "code", "string")),
+    Map.entry("offset", new ParamRule(ParamKind.VALUE, "integer")),
+    Map.entry("on-demand", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("onlyCertainMatches", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("organization", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("outcome", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("parameters", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("patient", new ParamRule(ParamKind.VALUE, "id")),
+    Map.entry("period", new ParamRule(ParamKind.VALUE, "Period")),
+    Map.entry("periodEnd", new ParamRule(ParamKind.VALUE, "date")),
+    Map.entry("periodStart", new ParamRule(ParamKind.VALUE, "date")),
+    Map.entry("persist", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("planDefinition", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("practitioner", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("preferredOnly", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("preview", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("probes", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("profile", new ParamRule(ParamKind.MIXED, "canonical")),
+    Map.entry("property", new ParamRule(ParamKind.VALUE, "code", "string")),
+    Map.entry("provider", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("query", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("removals", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("reportType", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("resource", new ParamRule(ParamKind.MIXED, "code")),
+    Map.entry("response-url", new ParamRule(ParamKind.VALUE, "url")),
+    Map.entry("result", new ParamRule(ParamKind.MIXED, "boolean", "string")),
+    Map.entry("result-patient", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("return", new ParamRule(ParamKind.MIXED, "Meta")),
+    Map.entry("right", new ParamRule(ParamKind.VALUE, "canonical")),
+    Map.entry("server", new ParamRule(ParamKind.VALUE, "canonical", "uri")),
+    Map.entry("setting", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
+    Map.entry("settingContext", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
+    Map.entry("source", new ParamRule(ParamKind.MIXED, "uri")),
+    Map.entry("source-patient", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("source-patient-identifier", new ParamRule(ParamKind.VALUE, "Identifier")),
+    Map.entry("sourceCode", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("sourceCodeableConcept", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
+    Map.entry("sourceCoding", new ParamRule(ParamKind.VALUE, "Coding")),
+    Map.entry("sourceMap", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("sourceScope", new ParamRule(ParamKind.VALUE, "uri")),
+    Map.entry("sourceType", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("specimenDefinition", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("srcMap", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("start", new ParamRule(ParamKind.VALUE, "date", "dateTime")),
+    Map.entry("statistic", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("statistics", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("status", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("subject", new ParamRule(ParamKind.MIXED, "string", "uri")),
+    Map.entry("subscription", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("supportedOnly", new ParamRule(ParamKind.VALUE, "boolean")),
+    Map.entry("supportingMap", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("system", new ParamRule(ParamKind.VALUE, "uri")),
+    Map.entry("system-version", new ParamRule(ParamKind.VALUE, "canonical")),
+    Map.entry("systemVersion", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("target", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("target-patient", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("target-patient-identifier", new ParamRule(ParamKind.VALUE, "Identifier")),
+    Map.entry("targetCode", new ParamRule(ParamKind.VALUE, "uri")),
+    Map.entry("targetCodeableConcept", new ParamRule(ParamKind.VALUE, "uri")),
+    Map.entry("targetCoding", new ParamRule(ParamKind.VALUE, "uri")),
+    Map.entry("targetIdentifier", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("targetScope", new ParamRule(ParamKind.VALUE, "uri")),
+    Map.entry("targetSystem", new ParamRule(ParamKind.VALUE, "uri")),
+    Map.entry("targetType", new ParamRule(ParamKind.VALUE, "code")),
+    Map.entry("token", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("topic", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("type", new ParamRule(ParamKind.VALUE, "CodeableConcept", "code")),
+    Map.entry("union", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("url", new ParamRule(ParamKind.VALUE, "canonical", "string", "uri")),
+    Map.entry("usageContext", new ParamRule(ParamKind.VALUE, "UsageContext")),
+    Map.entry("userLanguage", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
+    Map.entry("userTaskContext", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
+    Map.entry("userType", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
+    Map.entry("useSupplement", new ParamRule(ParamKind.VALUE, "canonical")),
+    Map.entry("valueSet", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("valueSetVersion", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("version", new ParamRule(ParamKind.VALUE, "code", "string")),
+    Map.entry("ward", new ParamRule(ParamKind.VALUE, "string")),
+    Map.entry("websocket-url", new ParamRule(ParamKind.VALUE, "url"))
+  );
+
   private boolean validateParameter(ValidationContext valContext, List<ValidationMessage> errors, Element parameter, NodeStack stack) {
     String name = parameter.getNamedChildValue("name");
     String type = parameter.hasChild("value") ? parameter.getNamedChild("value").fhirType() : null;
     boolean res = parameter.hasChild("resource");
-    switch (name) {
-      case "default-canonical-version":
-      case "system-version":
+
+    ParamRule rule = PARAM_RULES.get(name);
+    if (rule == null) {
+      return true; // unknown parameter, nothing to validate
+    }
+
+    switch (rule.kind) {
+      case VALUE:
         if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "canonical"), 1, I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "canonical");
+          String typeList = CommaSeparatedStringBuilder.join2(", ", "or", rule.types);
+          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
+            Utilities.existsInList(type, rule.types), rule.types.length,
+            I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, typeList);
         }
         break;
-      case "_count":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "integer"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "integer");
-        }
-        break;
-      case "_since":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "instant"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "instant");
-        }
-        break;
-      case "_type":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "abstract":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "account":
+      case RESOURCE:
         warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
         break;
-      case "activeOnly":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "activityDefinition":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "additions":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "async":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "chargeItem":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "check-system-version":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "canonical"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "canonical");
-        }
-        break;
-      case "client":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "canonical"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "canonical");
-        }
-        break;
-      case "code":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code", "string", "Coding"),3,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code, string, Coding");
-        }
-        break;
-      case "codeA":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "codeableConcept":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "CodeableConcept"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "CodeableConcept");
-        }
-        break;
-      case "codeB":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "codeSystem":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "coding":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Coding"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Coding");
-        }
-        break;
-      case "codingA":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Coding"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Coding");
-        }
-        break;
-      case "codingB":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Coding"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Coding");
-        }
-        break;
-      case "collector":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "compositional":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "concept":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Coding"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Coding");
-        }
-        break;
-      case "conceptMap":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "conceptMapVersion":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "content":
+      case MIXED:
         if (type != null) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
+          String typeList = CommaSeparatedStringBuilder.join2(", ", "or", rule.types);
+          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
+            Utilities.existsInList(type, rule.types), rule.types.length,
+            I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, typeList);
         } else {
           warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
         }
         break;
-      case "context":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
+      case ANY_VALUE:
+        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name);
         break;
-      case "contextDirection":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "count":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "integer"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "integer");
-        }
-        break;
-      case "date":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "dateTime"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "dateTime");
-        }
-        break;
-      case "default":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "definition":
-        if (type != null) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        } else {
-          warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        }
-        break;
-      case "attribute":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
-        break;
-      case "value":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-        }
-        break;
-      case "designation":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "additionalUse":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Coding"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Coding");
-        }
-        break;
-      case "language":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "use":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Coding"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Coding");
-        }
-        break;
-      case "display":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "displayLanguage":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "duration":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "decimal"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "decimal");
-        }
-        break;
-      case "encounter":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "end":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "date", "dateTime"),3,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "date, dateTime");
-        }
-        break;
-      case "eventsSinceNumber":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "integer64"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "integer64");
-        }
-        break;
-      case "eventsUntilNumber":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "integer64"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "integer64");
-        }
-        break;
-      case "exact":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "exclude-system":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "canonical"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type,  "canonical");
-        }
-        break;
-      case "excludeNested":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "excludeNotForUI":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "excludePostCoordinated":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "expiration":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "dateTime"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "dateTime");
-        }
-        break;
-      case "filter":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "force-system-version":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "canonical"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "canonical");
-        }
-        break;
-      case "graph":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
-        break;
-      case "id":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "id", "string"),2,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "id", "string");
-        }
-        break;
-      case "identifier":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Identifier"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Identifier");
-        }
-        break;
-      case "include":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "includeDefinition":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "includeDesignations":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "intersection":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "issues":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "lastReceivedOn":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "dateTime"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "dateTime");
-        }
-        break;
-      case "left":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "canonical"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "canonical");
-        }
-        break;
-      case "limit":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "positiveInt"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "positiveInt");
-        }
-        break;
-      case "local":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "location":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "comment":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "originMap":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
-        break;
-      case "uri":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
-        break;
-      case "relationship":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "max":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "positiveInt"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "positiveInt");
-        }
-        break;
-      case "measure":
-        if (type != null) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        } else {
-          warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        }
-        break;
-      case "measureReport":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "message":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "meta":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Meta"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Meta");
-        }
-        break;
-      case "mode":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "name":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code", "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "offset":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "integer"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "integer");
-        }
-        break;
-      case "on-demand":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "onlyCertainMatches":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "organization":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "outcome":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "parameters":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "patient":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "id"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "id");
-        }
-        break;
-      case "period":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Period"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Period");
-        }
-        break;
-      case "periodEnd":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "date"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "date");
-        }
-        break;
-      case "periodStart":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "date"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "date");
-        }
-        break;
-      case "persist":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "planDefinition":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "practitioner":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "preferredOnly":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "preview":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "probes":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "profile":
-        if (type != null) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "canonical"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "canonical");
-        } else {
-          warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        }
-        break;
-      case "property":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code", "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code, string");
-        }
-        break;
-      case "description":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "source":
-        if (type != null) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri", "canonical"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri, canonical");
-        } else {
-          warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        }
-        break;
-      case "provider":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "query":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "removals":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "reportType":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "resource":
-        if (type != null) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        } else {
-          warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        }
-        break;
-      case "response-url":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "url"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "url");
-        }
-        break;
-      case "result":
-        if (type != null) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean", "string"),2,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean, string");
-        } else {
-          warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        }
-        break;
-      case "result-patient":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "return":
-        if (type != null) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Meta"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Meta");
-        } else {
-          warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        }
-        break;
-      case "right":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "canonical"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "canonical");
-        }
-        break;
-      case "server":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "canonical", "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "canonical");
-        }
-        break;
-      case "setting":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "CodeableConcept"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "CodeableConcept");
-        }
-        break;
-      case "settingContext":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "CodeableConcept"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "CodeableConcept");
-        }
-        break;
-      case "source-patient":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "source-patient-identifier":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Identifier"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Identifier");
-        }
-        break;
-      case "sourceCode":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "sourceCodeableConcept":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "CodeableConcept"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "CodeableConcept");
-        }
-        break;
-      case "sourceCoding":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Coding"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Coding");
-        }
-        break;
-      case "sourceMap":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "sourceScope":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
-        break;
-      case "sourceType":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "specimenDefinition":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "srcMap":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "start":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "date", "dateTime"),2,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "date, dateTime");
-        }
-        break;
-      case "statistic":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "statistics":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "status":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "subject":
-        if (type != null) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string", "uri"),2,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string, uri");
-        } else {
-          warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        }
-        break;
-      case "subscription":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "supportedOnly":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "supportingMap":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "system":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
-        break;
-      case "systemVersion":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "target":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "target-patient":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "target-patient-identifier":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "Identifier"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "Identifier");
-        }
-        break;
-      case "targetCode":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
-        break;
-      case "targetCodeableConcept":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
-        break;
-      case "targetCoding":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
-        break;
-      case "targetIdentifer.preferred":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "boolean"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "boolean");
-        }
-        break;
-      case "targetIdentifier":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "targetScope":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
-        break;
-      case "targetSystem":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "uri"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "uri");
-        }
-        break;
-      case "targetType":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code");
-        }
-        break;
-      case "token":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "topic":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "type":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "CodeableConcept", "code"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "CodeableConcept");
-        }
-        break;
-      case "union":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "url":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "canonical", "string", "uri"),3,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "canonical, string, uri");
-        }
-        break;
-      case "usageContext":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "UsageContext"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "UsageContext");
-        }
-        break;
-      case "userLanguage":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "CodeableConcept"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "CodeableConcept");
-        }
-        break;
-      case "userTaskContext":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "CodeableConcept"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "CodeableConcept");
-        }
-        break;
-      case "userType":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "CodeableConcept"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "CodeableConcept");
-        }
-        break;
-      case "useSupplement":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "canonical"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "canonical");
-        }
-        break;
-      case "valueSet":
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
-        break;
-      case "valueSetVersion":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "version":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "code", "string"),2,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "code, string");
-        }
-        break;
-      case "ward":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "string"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "string");
-        }
-        break;
-      case "websocket-url":
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, Utilities.existsInList(type, "url"),1,  I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, "url");
-        }
-        break;
+
     }
     return true;
   }
