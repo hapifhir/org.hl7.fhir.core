@@ -278,7 +278,7 @@ public class OperationOutcomeUtilities {
   }
 
   // first non-unknown past the gate wins at this time. Due to the nature of the errors, there's only going to be one
-  // too-costly error. If there next routine gets more complicated, this logic will need to be revisited
+  // too-costly error. If the next routine gets more complicated, this logic will need to be revisited
     public static TerminologyServiceErrorClass getTerminologyErrorClass(OperationOutcome serverError) {
       for (OperationOutcomeIssueComponent issue : serverError.getIssue()) {
         TerminologyServiceErrorClass errorClass = getTerminologyErrorClass(issue);
