@@ -5644,6 +5644,9 @@
     "uri" : "https://fhir-terminology.ohdsi.org"
   },
   {
+    "uri" : "https://terminology.dhp.uz/fhir/CodeSystem/loinc-supplement-uz"
+  },
+  {
     "uri" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/cdcnhsn.html"
   },
   {

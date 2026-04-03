@@ -42,6 +42,7 @@ import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -276,4 +277,23 @@ public class OperationOutcomeUtilities {
     return res;
   }
 
+  // first non-unknown past the gate wins at this time. Due to the nature of the errors, there's only going to be one
+  // too-costly error. If there next routine gets more complicated, this logic will need to be revisited
+    public static TerminologyServiceErrorClass getTerminologyErrorClass(OperationOutcome serverError) {
+      for (OperationOutcomeIssueComponent issue : serverError.getIssue()) {
+        TerminologyServiceErrorClass errorClass = getTerminologyErrorClass(issue);
+        if (errorClass != TerminologyServiceErrorClass.UNKNOWN) {
+          return errorClass;
+        }
+      }
+      return TerminologyServiceErrorClass.UNKNOWN;
+    }
+
+  public static TerminologyServiceErrorClass getTerminologyErrorClass(OperationOutcomeIssueComponent issue) {
+    if (issue.getCode() == IssueType.TOOCOSTLY) {
+      return TerminologyServiceErrorClass.TOO_COSTLY;
+    } else {
+      return TerminologyServiceErrorClass.UNKNOWN;
+    }
+  }
 }

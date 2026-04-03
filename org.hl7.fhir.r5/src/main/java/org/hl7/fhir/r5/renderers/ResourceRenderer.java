@@ -235,9 +235,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   public <T extends Resource> void renderCanonical(RenderingStatus status, XhtmlNode x, Class<T> class_, ResourceWrapper canonical) throws UnsupportedEncodingException, IOException {
     if (!renderPrimitiveWithNoValue(status, x, canonical)) {
       CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(canonical.getBase()), null, canonical.getResourceNative());
+      if (target == null) {
+        target = (CanonicalResource) context.getWorker().findTxResource(class_, canonical.primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(canonical.getBase()), null, canonical.getResourceNative());
+      }
       if (target != null && target.hasWebPath()) {
         if (canonical.primitiveValue().contains("|")) {
-          x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +target.getVersion()+")");
+          x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present());
+          x.tx(" "+context.formatPhrase(RenderingContext.RES_REND_VER, target.getVersion()));
         } else {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present());
         }

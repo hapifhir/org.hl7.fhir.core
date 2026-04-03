@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 
 import org.hl7.fhir.r5.terminologies.expansion.OperationIsTooCostly;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -351,9 +352,14 @@ public class ValueSetProcessBase {
     return new OperationIsTooCostly(msg);
   }
 
-  protected TerminologyServiceException failTSE(String msg) {
+  protected TerminologyServiceException createTerminologyServiceException(String msg) {
     allErrors.add(msg);
     return new TerminologyServiceException(msg);
+  }
+
+  protected TerminologyServiceException createTerminologyServiceException(String msg, ValueSetExpansionOutcome outcome) {
+    allErrors.add(msg);
+    return new TerminologyServiceException(msg).setOutcome(outcome);
   }
 
   public Collection<? extends String> getAllErrors() {
