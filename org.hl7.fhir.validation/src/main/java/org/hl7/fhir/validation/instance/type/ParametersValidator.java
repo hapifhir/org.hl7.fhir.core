@@ -39,34 +39,34 @@ public class ParametersValidator extends BaseValidator {
     Map.entry("_since", new ParamRule(ParamKind.VALUE, "instant")),
     Map.entry("_type", new ParamRule(ParamKind.VALUE, "code")),
     Map.entry("abstract", new ParamRule(ParamKind.VALUE, "boolean")),
-    Map.entry("account", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("account", new ParamRule(ParamKind.RESOURCE, "Reference")),
     Map.entry("activeOnly", new ParamRule(ParamKind.VALUE, "boolean")),
-    Map.entry("activityDefinition", new ParamRule(ParamKind.RESOURCE)),
-    Map.entry("additions", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("activityDefinition", new ParamRule(ParamKind.RESOURCE, "ActivityDefinition")),
+    Map.entry("additions", new ParamRule(ParamKind.RESOURCE, "Resource")),
     Map.entry("async", new ParamRule(ParamKind.VALUE, "boolean")),
-    Map.entry("chargeItem", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("chargeItem", new ParamRule(ParamKind.RESOURCE, "Reference")),
     Map.entry("check-system-version", new ParamRule(ParamKind.VALUE, "canonical")),
     Map.entry("client", new ParamRule(ParamKind.VALUE, "canonical")),
     Map.entry("code", new ParamRule(ParamKind.VALUE, "code", "string", "Coding")),
     Map.entry("codeA", new ParamRule(ParamKind.VALUE, "code")),
     Map.entry("codeableConcept", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
     Map.entry("codeB", new ParamRule(ParamKind.VALUE, "code")),
-    Map.entry("codeSystem", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("codeSystem", new ParamRule(ParamKind.RESOURCE, "CodeSystem")),
     Map.entry("coding", new ParamRule(ParamKind.VALUE, "Coding")),
     Map.entry("codingA", new ParamRule(ParamKind.VALUE, "Coding")),
     Map.entry("codingB", new ParamRule(ParamKind.VALUE, "Coding")),
     Map.entry("collector", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("compositional", new ParamRule(ParamKind.VALUE, "boolean")),
     Map.entry("concept", new ParamRule(ParamKind.VALUE, "Coding")),
-    Map.entry("conceptMap", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("conceptMap", new ParamRule(ParamKind.RESOURCE, "ConceptMap")),
     Map.entry("conceptMapVersion", new ParamRule(ParamKind.VALUE, "string")),
-    Map.entry("content", new ParamRule(ParamKind.MIXED, "code")),
+    Map.entry("content", new ParamRule(ParamKind.MIXED, "code", "Bundle", "Resource")),
     Map.entry("context", new ParamRule(ParamKind.VALUE, "uri")),
     Map.entry("contextDirection", new ParamRule(ParamKind.VALUE, "code")),
     Map.entry("count", new ParamRule(ParamKind.VALUE, "integer")),
     Map.entry("date", new ParamRule(ParamKind.VALUE, "dateTime")),
     Map.entry("default", new ParamRule(ParamKind.VALUE, "code")),
-    Map.entry("definition", new ParamRule(ParamKind.MIXED, "string")),
+    Map.entry("definition", new ParamRule(ParamKind.MIXED, "string", "StructureDefinition")),
     Map.entry("designation", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("display", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("displayLanguage", new ParamRule(ParamKind.VALUE, "code")),
@@ -89,16 +89,16 @@ public class ParametersValidator extends BaseValidator {
     Map.entry("include", new ParamRule(ParamKind.VALUE, "boolean")),
     Map.entry("includeDefinition", new ParamRule(ParamKind.VALUE, "boolean")),
     Map.entry("includeDesignations", new ParamRule(ParamKind.VALUE, "boolean")),
-    Map.entry("intersection", new ParamRule(ParamKind.RESOURCE)),
-    Map.entry("issues", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("intersection", new ParamRule(ParamKind.RESOURCE, "CapabilityStatement")),
+    Map.entry("issues", new ParamRule(ParamKind.RESOURCE, "OperationOutcome")),
     Map.entry("lastReceivedOn", new ParamRule(ParamKind.VALUE, "dateTime")),
     Map.entry("left", new ParamRule(ParamKind.VALUE, "canonical")),
     Map.entry("limit", new ParamRule(ParamKind.VALUE, "positiveInt")),
-    Map.entry("local", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("local", new ParamRule(ParamKind.RESOURCE, "Reference")),
     Map.entry("location", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("max", new ParamRule(ParamKind.VALUE, "positiveInt")),
-    Map.entry("measure", new ParamRule(ParamKind.MIXED, "string")),
-    Map.entry("measureReport", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("measure", new ParamRule(ParamKind.MIXED, "string", "Measure")),
+    Map.entry("measureReport", new ParamRule(ParamKind.RESOURCE, "MeasureReport")),
     Map.entry("message", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("meta", new ParamRule(ParamKind.VALUE, "Meta")),
     Map.entry("mode", new ParamRule(ParamKind.VALUE, "code")),
@@ -108,56 +108,56 @@ public class ParametersValidator extends BaseValidator {
     Map.entry("onlyCertainMatches", new ParamRule(ParamKind.VALUE, "boolean")),
     Map.entry("organization", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("outcome", new ParamRule(ParamKind.VALUE, "code")),
-    Map.entry("parameters", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("parameters", new ParamRule(ParamKind.RESOURCE, "Parameters")),
     Map.entry("patient", new ParamRule(ParamKind.VALUE, "id")),
     Map.entry("period", new ParamRule(ParamKind.VALUE, "Period")),
     Map.entry("periodEnd", new ParamRule(ParamKind.VALUE, "date")),
     Map.entry("periodStart", new ParamRule(ParamKind.VALUE, "date")),
     Map.entry("persist", new ParamRule(ParamKind.VALUE, "boolean")),
-    Map.entry("planDefinition", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("planDefinition", new ParamRule(ParamKind.RESOURCE, "PlanDefinition")),
     Map.entry("practitioner", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("preferredOnly", new ParamRule(ParamKind.VALUE, "boolean")),
     Map.entry("preview", new ParamRule(ParamKind.VALUE, "boolean")),
-    Map.entry("probes", new ParamRule(ParamKind.RESOURCE)),
-    Map.entry("profile", new ParamRule(ParamKind.MIXED, "canonical")),
+    Map.entry("probes", new ParamRule(ParamKind.RESOURCE, "Resource")),
+    Map.entry("profile", new ParamRule(ParamKind.MIXED, "canonical", "StructureDefinition")),
     Map.entry("property", new ParamRule(ParamKind.VALUE, "code", "string")),
     Map.entry("provider", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("query", new ParamRule(ParamKind.VALUE, "string")),
-    Map.entry("removals", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("removals", new ParamRule(ParamKind.RESOURCE, "Resource")),
     Map.entry("reportType", new ParamRule(ParamKind.VALUE, "code")),
-    Map.entry("resource", new ParamRule(ParamKind.MIXED, "code")),
+    Map.entry("resource", new ParamRule(ParamKind.MIXED, "code", "CapabilityStatement", "Resource")),
     Map.entry("response-url", new ParamRule(ParamKind.VALUE, "url")),
-    Map.entry("result", new ParamRule(ParamKind.MIXED, "boolean", "string")),
-    Map.entry("result-patient", new ParamRule(ParamKind.RESOURCE)),
-    Map.entry("return", new ParamRule(ParamKind.MIXED, "Meta")),
+    Map.entry("result", new ParamRule(ParamKind.MIXED, "boolean", "string", "Binary", "Bundle", "CanonicalResource")),
+    Map.entry("result-patient", new ParamRule(ParamKind.RESOURCE, "Patient")),
+    Map.entry("return", new ParamRule(ParamKind.MIXED, "Meta", "Bundle", "CapabilityStatement", "ConceptMap", "Library", "OperationOutcome", "Parameters", "Questionnaire", "QuestionnaireResponse", "Resource", "Specimen", "StructureDefinition", "ValueSet")),
     Map.entry("right", new ParamRule(ParamKind.VALUE, "canonical")),
     Map.entry("server", new ParamRule(ParamKind.VALUE, "canonical", "uri")),
     Map.entry("setting", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
     Map.entry("settingContext", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
-    Map.entry("source", new ParamRule(ParamKind.MIXED, "uri")),
-    Map.entry("source-patient", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("source", new ParamRule(ParamKind.MIXED, "uri", "Observation")),
+    Map.entry("source-patient", new ParamRule(ParamKind.RESOURCE, "Reference")),
     Map.entry("source-patient-identifier", new ParamRule(ParamKind.VALUE, "Identifier")),
     Map.entry("sourceCode", new ParamRule(ParamKind.VALUE, "code")),
     Map.entry("sourceCodeableConcept", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
     Map.entry("sourceCoding", new ParamRule(ParamKind.VALUE, "Coding")),
-    Map.entry("sourceMap", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("sourceMap", new ParamRule(ParamKind.RESOURCE, "StructureMap")),
     Map.entry("sourceScope", new ParamRule(ParamKind.VALUE, "uri")),
     Map.entry("sourceType", new ParamRule(ParamKind.VALUE, "code")),
-    Map.entry("specimenDefinition", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("specimenDefinition", new ParamRule(ParamKind.RESOURCE, "SpecimenDefinition")),
     Map.entry("srcMap", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("start", new ParamRule(ParamKind.VALUE, "date", "dateTime")),
     Map.entry("statistic", new ParamRule(ParamKind.VALUE, "code")),
-    Map.entry("statistics", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("statistics", new ParamRule(ParamKind.RESOURCE, "Observation")),
     Map.entry("status", new ParamRule(ParamKind.VALUE, "code")),
-    Map.entry("subject", new ParamRule(ParamKind.MIXED, "string", "uri")),
+    Map.entry("subject", new ParamRule(ParamKind.MIXED, "string", "uri", "Reference")),
     Map.entry("subscription", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("supportedOnly", new ParamRule(ParamKind.VALUE, "boolean")),
-    Map.entry("supportingMap", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("supportingMap", new ParamRule(ParamKind.RESOURCE, "StructureMap")),
     Map.entry("system", new ParamRule(ParamKind.VALUE, "uri")),
     Map.entry("system-version", new ParamRule(ParamKind.VALUE, "canonical")),
     Map.entry("systemVersion", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("target", new ParamRule(ParamKind.VALUE, "string")),
-    Map.entry("target-patient", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("target-patient", new ParamRule(ParamKind.RESOURCE, "Reference")),
     Map.entry("target-patient-identifier", new ParamRule(ParamKind.VALUE, "Identifier")),
     Map.entry("targetCode", new ParamRule(ParamKind.VALUE, "uri")),
     Map.entry("targetCodeableConcept", new ParamRule(ParamKind.VALUE, "uri")),
@@ -169,14 +169,14 @@ public class ParametersValidator extends BaseValidator {
     Map.entry("token", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("topic", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("type", new ParamRule(ParamKind.VALUE, "CodeableConcept", "code")),
-    Map.entry("union", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("union", new ParamRule(ParamKind.RESOURCE, "CapabilityStatement")),
     Map.entry("url", new ParamRule(ParamKind.VALUE, "canonical", "string", "uri")),
     Map.entry("usageContext", new ParamRule(ParamKind.VALUE, "UsageContext")),
     Map.entry("userLanguage", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
     Map.entry("userTaskContext", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
     Map.entry("userType", new ParamRule(ParamKind.VALUE, "CodeableConcept")),
     Map.entry("useSupplement", new ParamRule(ParamKind.VALUE, "canonical")),
-    Map.entry("valueSet", new ParamRule(ParamKind.RESOURCE)),
+    Map.entry("valueSet", new ParamRule(ParamKind.RESOURCE, "ValueSet")),
     Map.entry("valueSetVersion", new ParamRule(ParamKind.VALUE, "string")),
     Map.entry("version", new ParamRule(ParamKind.VALUE, "code", "string")),
     Map.entry("ward", new ParamRule(ParamKind.VALUE, "string")),
@@ -186,7 +186,7 @@ public class ParametersValidator extends BaseValidator {
   private boolean validateParameter(ValidationContext valContext, List<ValidationMessage> errors, Element parameter, NodeStack stack) {
     String name = parameter.getNamedChildValue("name");
     String type = parameter.hasChild("value") ? parameter.getNamedChild("value").fhirType() : null;
-    boolean res = parameter.hasChild("resource");
+    String rType = parameter.hasChild("resource") ? parameter.getNamedChild("resource").fhirType() : null;
 
     ParamRule rule = PARAM_RULES.get(name);
     if (rule == null) {
@@ -196,23 +196,36 @@ public class ParametersValidator extends BaseValidator {
     switch (rule.kind) {
       case VALUE:
         if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
-          String typeList = CommaSeparatedStringBuilder.join2(", ", "or", rule.types);
+          String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
           warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
             Utilities.existsInList(type, rule.types), rule.types.length,
             I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, typeList);
         }
         break;
       case RESOURCE:
-        warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
+        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, rType != null, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name)) {
+          String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
+          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
+            Utilities.existsInList(type, rule.types), rule.types.length,
+            I18nConstants.PARAMETERS_STD_RES_WRONG_TYPE, name, rType, typeList);
+        }
         break;
       case MIXED:
         if (type != null) {
-          String typeList = CommaSeparatedStringBuilder.join2(", ", "or", rule.types);
+          String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
           warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
             Utilities.existsInList(type, rule.types), rule.types.length,
             I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, typeList);
+        } else if (rType != null && ( rType.equals("Resource") || rType.equals("Parameters"))) {
+          String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
+          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
+            Utilities.existsInList(type, rule.types), rule.types.length,
+            I18nConstants.PARAMETERS_STD_RES_WRONG_TYPE_MIXED, name, rType, typeList);
         } else {
-          warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, res, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name);
+          String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
+          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
+            Utilities.existsInList(type, rule.types), rule.types.length,
+            I18nConstants.PARAMETERS_STD_RES_WRONG_TYPE_MIXED, name, rType, typeList);
         }
         break;
       case ANY_VALUE:
