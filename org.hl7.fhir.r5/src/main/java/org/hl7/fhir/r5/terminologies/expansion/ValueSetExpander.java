@@ -708,7 +708,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         sources.add(valueset.getUserString(UserDataNames.VS_EXPANSION_SOURCE));
       }
       if (valueset == null)
-        throw failTSE("Error Expanding ValueSet: " + vse.getError());
+        throw createTerminologyServiceException("Error Expanding ValueSet: " + vse.getError());
       excludeCodes(wc, valueset.getExpansion());
       return;
     }
@@ -802,7 +802,13 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } catch (UnknownValueSetException e) {
       return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.VALUESET_UNKNOWN, allErrors, false);
     } catch (VSCheckerException e) {
-      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e.getIssues());      
+      return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, e.getIssues());
+    } catch (TerminologyServiceException e) {
+      if (e.getOutcome() != null) {
+        return (ValueSetExpansionOutcome) e.getOutcome();
+      } else {
+        return new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors, true);
+      }
     } catch (Exception e) {
       if (debug) {
         e.printStackTrace();
@@ -1544,7 +1550,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     
     ValueSetExpansionOutcome vso = context.expandVS(new TerminologyOperationDetails(requiredSupplements), inc, heirarchical, noInactive);
     if (vso.getError() != null) {
-      throw failTSE("Unable to expand imported value set: " + vso.getError());
+      throw createTerminologyServiceException("Unable to expand imported value set: " + vso.getError(), vso);
     }
     ValueSet vs = vso.getValueset();
     if (vs.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
@@ -1594,14 +1600,14 @@ public class ValueSetExpander extends ValueSetProcessBase {
     opContext.deadCheck("doInternalIncludeCodes");
     if (cs == null) {
       if (context.isNoTerminologyServer())
-        throw failTSE("Unable to find code system " + inc.getSystem().toString());
+        throw createTerminologyServiceException("Unable to find code system " + inc.getSystem().toString());
       else
-        throw failTSE("Unable to find code system " + inc.getSystem().toString());
+        throw createTerminologyServiceException("Unable to find code system " + inc.getSystem().toString());
     }
     checkCanonical(exp, cs, focus);
     cs.checkNoModifiers("Code System", "expanding");
     if (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)
-      throw failTSE("Code system " + inc.getSystem().toString() + " is incomplete");
+      throw createTerminologyServiceException("Code system " + inc.getSystem().toString() + " is incomplete");
     if (cs.hasVersion() || REPORT_VERSION_ANYWAY) {
       UriType u = new UriType(cs.getUrl() + (cs.hasVersion() ? "|"+cs.getVersion() : ""));
       if (!existsInParams(exp.getParameter(), "used-codesystem", u))
@@ -1643,7 +1649,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
               addExampleWarning(exp, cs);
             } else {
               if (checkCodesWhenExpanding) {
-                throw failTSE("Unable to find code '" + c.getCode() + "' in code system " + cs.getUrl());
+                throw createTerminologyServiceException("Unable to find code '" + c.getCode() + "' in code system " + cs.getUrl());
               }
             }
           } else {
@@ -1692,7 +1698,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       // special: all codes in the target code system under the value
       ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), fc.getValue());
       if (def == null)
-        throw failTSE("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
+        throw createTerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
       if (exclude) {
         excludeCodeAndDescendents(wc, cs, inc.getSystem(), inc.getVersion(), def, null, imports, null, new AllConceptsFilter(allErrors), filters, exp);
       } else {
@@ -1702,7 +1708,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       // special: all codes in the target code system that are not under the value
       ConceptDefinitionComponent defEx = getConceptForCode(cs.getConcept(), fc.getValue());
       if (defEx == null)
-        throw failTSE("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
+        throw createTerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
       for (ConceptDefinitionComponent def : cs.getConcept()) {
         if (exclude) {
           excludeCodeAndDescendents(wc, cs, inc.getSystem(), inc.getVersion(), def, null, imports, defEx, new AllConceptsFilter(allErrors), filters, exp);
@@ -1714,7 +1720,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
       // special: all codes in the target code system under the value
       ConceptDefinitionComponent def = getConceptForCode(cs.getConcept(), fc.getValue());
       if (def == null)
-        throw failTSE("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
+        throw createTerminologyServiceException("Code '" + fc.getValue() + "' not found in system '" + inc.getSystem() + "'");
       for (ConceptDefinitionComponent c : def.getConcept())
         if (exclude) {
           excludeCodeAndDescendents(wc, cs, inc.getSystem(), inc.getVersion(), c, null, imports, null, new AllConceptsFilter(allErrors), filters, exp);

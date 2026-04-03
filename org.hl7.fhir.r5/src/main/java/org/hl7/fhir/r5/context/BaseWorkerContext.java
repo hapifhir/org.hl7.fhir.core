@@ -98,6 +98,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
+import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
 
@@ -811,11 +812,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } else if (supportedCodeSystems.containsKey(urlWithVersion)) {
         return supportedCodeSystems.get(urlWithVersion);
       } else {
-        Resource res = fetchCodeSystem(system, VersionResolutionRules.defaultRule(), version);
-        if (res != null) {
+        CodeSystem res = fetchCodeSystem(system, VersionResolutionRules.defaultRule(), version);
+        if (res != null && (res.getContent() == CodeSystemContentMode.COMPLETE || res.getContent() == CodeSystemContentMode.FRAGMENT)) {
           return new SystemSupportInformation(true, "internal", TerminologyClientContext.LATEST_VERSION, null);
         }
-        if (system.startsWith("http://example.org") || system.startsWith("http://acme.com") || system.startsWith("http://hl7.org/fhir/valueset-") || system.startsWith("urn:oid:")) {
+        if (system.startsWith("http://example.org") || system.startsWith("http://acme.com") || system.startsWith("http://hl7.org/fhir/valueset-")) {
           return new SystemSupportInformation(false);
         } else {
           if (noTerminologyServer) {
@@ -918,7 +919,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, tc.getHost());
       }
     } catch (Exception e) {
-      res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, true);
+      TerminologyServiceErrorClass errorClass = TerminologyServiceErrorClass.UNKNOWN;
+      if (e instanceof EFhirClientException) {
+        EFhirClientException fhirClientException = (EFhirClientException) e;
+        if (fhirClientException.hasServerError()) {
+          errorClass = OperationOutcomeUtilities.getTerminologyErrorClass(((EFhirClientException) e).getServerError());
+        }
+      }
+      res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), errorClass, true);
       if (txLog != null) {
         res.setTxLink(txLog == null ? null : txLog.getLastId());
       }
@@ -1089,13 +1097,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     res = null;
     try {
       res = vse.expand(vs, p);
-      if (res != null && res.getValueset() != null) { 
+      if (res != null && res.getValueset() != null) {
         res.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, vse.getSource());
       }
     } catch (Exception e) {
       allErrors.addAll(vse.getAllErrors());
       e.printStackTrace();
       res = new ValueSetExpansionOutcome(e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, e instanceof EFhirClientException);
+      if (res.isFromServer()) {
+        return res;
+      }
     }
     allErrors.addAll(vse.getAllErrors());
     if (res.getValueset() != null) {
@@ -1105,7 +1116,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       txCache.cacheExpansion(cacheToken, res, TerminologyCache.TRANSIENT);
       return res;
     }
-    if (res.getErrorClass() == TerminologyServiceErrorClass.INTERNAL_ERROR || isNoTerminologyServer() || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNKNOWN) { // this class is created specifically to say: don't consult the server
+    if (res.getErrorClass() == TerminologyServiceErrorClass.INTERNAL_ERROR
+       || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNKNOWN
+       || isNoTerminologyServer()
+       || res.isFromServer()) { // no point consulting the server again if the server is already the source
       return res;
     }
 
@@ -1137,7 +1151,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (res != null && !res.isFromServer()) {
         res = new ValueSetExpansionOutcome(res.getError()+" (and "+e.getMessage()+")", res.getErrorClass(), false);
       } else {
-        res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), TerminologyServiceErrorClass.UNKNOWN, allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
+        res = new ValueSetExpansionOutcome((e.getMessage() == null ? e.getClass().getName() : e.getMessage()), res.getErrorClass(), allErrors, true).setTxLink(txLog == null ? null : txLog.getLastId());
       }
     }
     if (res != null && res.getValueset() != null) {
@@ -3505,6 +3519,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (txCache.hasCodeSystem(canonical)) {
         scs = txCache.getCodeSystem(canonical);
       } else {
+
         scs = terminologyClientManager.findCodeSystemOnServer(canonical);
         txCache.cacheCodeSystem(canonical, scs);
       }
@@ -3522,8 +3537,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         cacheResource(scs.getCs());
         return (T) scs.getCs();
       }
+    } else if (class_ == Resource.class) {
+      Resource res = findTxResource(CodeSystem.class, canonical, rules);
+      if (res == null) {
+        res = findTxResource(ValueSet.class, canonical, rules);
+      }
+      return (T) res;
     } else {
-      throw new Error("Not supported: doFindTxResource with type of "+class_.getName());
+      return null;
     }
   }
 

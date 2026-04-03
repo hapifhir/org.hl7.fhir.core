@@ -42,6 +42,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.fhir.ucum.Term;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -709,8 +710,12 @@ public class TerminologyCache {
         sw.write(BREAK+"\r\n");
         if (ce.e != null) {
           sw.write("e: {\r\n");
-          if (ce.e.isFromServer())
+          if (ce.e.isFromServer()) {
             sw.write("  \"from-server\" : true,\r\n");
+          }
+          if (ce.e.getErrorClass() != null) {
+            sw.write("  \"class\" : \""+ce.e.getErrorClass().toString()+"\",\r\n");
+          }
           if (ce.e.getValueset() != null) {
             if (ce.e.getValueset().hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
               sw.write("  \"source\" : "+Utilities.escapeJson(ce.e.getValueset().getUserString(UserDataNames.VS_EXPANSION_SOURCE)).trim()+",\r\n");              
@@ -847,13 +852,14 @@ public class TerminologyCache {
     JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(resultString);
     String error = loadJS(o.get("error"));
     if (e == 'e') {
+      TerminologyServiceErrorClass errorClass = o.has("class") ? TerminologyServiceErrorClass.valueOf(o.get("class").getAsString()) : TerminologyServiceErrorClass.UNKNOWN;
       if (o.has("valueSet")) {
-        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
+        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, errorClass, o.has("from-server"));
         if (o.has("source")) {
           ce.e.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, o.get("source").getAsString());
         }
       } else {
-        ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN, o.has("from-server"));
+        ce.e = new ValueSetExpansionOutcome(error, errorClass, o.has("from-server"));
       }
     } else if (e == 's') {
       ce.s = new SubsumesResult(o.get("result").getAsBoolean());

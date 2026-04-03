@@ -163,6 +163,7 @@ import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.ai.CodeAndTextValidationRequest;
 import org.hl7.fhir.validation.ai.CodeAndTextValidationResult;
 import org.hl7.fhir.validation.ai.CodeAndTextValidator;
+import org.hl7.fhir.validation.instance.type.*;
 import org.hl7.fhir.validation.instance.utils.Base64Util;
 import org.hl7.fhir.validation.instance.utils.BoundedSizeList;
 import org.hl7.fhir.validation.instance.utils.CanonicalResourceLookupResult;
@@ -181,22 +182,8 @@ import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.codesystem.CodingsObserver;
-import org.hl7.fhir.validation.instance.type.BundleValidator;
-import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
-import org.hl7.fhir.validation.instance.type.ConceptMapValidator;
-import org.hl7.fhir.validation.instance.type.ImplementationGuideValidator;
-import org.hl7.fhir.validation.instance.type.MeasureValidator;
-import org.hl7.fhir.validation.instance.type.ObservationValidator;
-import org.hl7.fhir.validation.instance.type.OperationDefinitionValidator;
-import org.hl7.fhir.validation.instance.type.QuestionnaireValidator;
-import org.hl7.fhir.validation.instance.type.SearchParameterValidator;
-import org.hl7.fhir.validation.instance.type.StructureDefinitionValidator;
-import org.hl7.fhir.validation.instance.type.StructureMapValidator;
 import org.hl7.fhir.validation.instance.type.StructureMapValidator.VariableDefn;
 import org.hl7.fhir.validation.instance.type.StructureMapValidator.VariableSet;
-import org.hl7.fhir.validation.instance.type.ValueSetValidator;
-import org.hl7.fhir.validation.instance.type.ViewDefinitionValidator;
-import org.hl7.fhir.validation.instance.type.XhtmlValidator;
 import org.slf4j.Logger;
 import org.w3c.dom.Document;
 
@@ -1329,7 +1316,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (cs == null) {
             hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path+".system", done, I18nConstants.UNKNOWN_CODESYSTEM, system);
           } else {
-            if (hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, cs.getContent() != CodeSystemContentMode.NOTPRESENT, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOT_USABLE, system)) {
+            if (hint(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path,
+                cs.getContent() != CodeSystemContentMode.NOTPRESENT, I18nConstants.TERMINOLOGY_TX_SYSTEM_NOT_USABLE, system, cs.getSourcePackage() == null ? "non-package source" : cs.getSourcePackage().getVID())) {
               ok = rule(errors, NO_RULE_DATE, IssueType.UNKNOWN, element.line(), element.col(), path, false, "Unexpected internal condition - unsupported code system could be supported? (url = {0})", cs.getVersionedUrl()) && ok;
             }
           }
@@ -3347,11 +3335,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, UUIDUtilities.isValidUUID(s), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VALID, s) && ok;
         }
         if (url != null && url.startsWith("urn:oid:")) {
-          String cc = url.substring(8);
-          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, 
+          String oidPortion = url.substring(8);
+          if ("canonical".equals(type) && oidPortion.contains("|")) {
+            oidPortion = oidPortion.substring(0, oidPortion.indexOf("|"));
+          }
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
               // OIDs roots shorter than 4 chars are almost never valid for namespaces except for 1.3.x
-              OIDUtilities.isValidOID(cc) && ((cc.lastIndexOf('.') >= 4 || cc.startsWith("1.3"))),
-              I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID, cc) && ok;
+            OIDUtilities.isValidOID(oidPortion) && ((oidPortion.lastIndexOf('.') >= 4 || oidPortion.startsWith("1.3"))),
+              I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID, oidPortion) && ok;
         }
 
         if (isCanonicalURLElement(e, node)) {
@@ -6800,6 +6791,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return new ValueSetValidator(this).validateValueSet(valContext, errors, element, stack) && ok;
       } else if (element.getType().equals("ViewDefinition")) {
         return new ViewDefinitionValidator(this).validateViewDefinition(valContext, errors, element, stack) && ok;
+      } else if (element.getType().equals("Parameters")) {
+        return new ParametersValidator(this).validateParameters(valContext, errors, element, stack) && ok;
       } else if (element.getType().equals("ImplementationGuide")) {
         return new ImplementationGuideValidator(this).validateImplementationGuide(valContext, errors, element, stack) && ok;
       } else if ("http://hl7.org/fhir/uv/sql-on-fhir/StructureDefinition/ViewDefinition".equals(element.getProperty().getStructure().getUrl())) {
