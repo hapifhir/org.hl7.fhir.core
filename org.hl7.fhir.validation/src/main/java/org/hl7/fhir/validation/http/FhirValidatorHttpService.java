@@ -61,6 +61,13 @@ public class FhirValidatorHttpService {
     server.createContext("/txTest", new TxTestHTTPHandler(this));
     server.createContext("/stop", new StopHTTPHandler(this));
 
+    // GITB-compatible REST processing service endpoints
+    server.createContext("/api/fhirpath", new GitbFhirPathHandler(this));
+    server.createContext("/api/validator", new GitbValidatorHandler(this));
+    server.createContext("/api/matchetype", new GitbMatchetypeHandler(this));
+    server.createContext("/api/testdata", new GitbTestDataHandler(this));
+    server.createContext("/api/validation-results", new GitbValidationResultsHandler(this));
+
     // Start the server
     server.setExecutor(null); // Use default executor
     server.start();

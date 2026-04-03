@@ -130,6 +130,21 @@ public class BaseHTTPHandler {
     }
   }
 
+  protected void addCorsHeaders(HttpExchange exchange) {
+    exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+    exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Accept");
+  }
+
+  protected boolean handleCorsPreFlight(HttpExchange exchange) throws IOException {
+    if ("OPTIONS".equals(exchange.getRequestMethod())) {
+      addCorsHeaders(exchange);
+      exchange.sendResponseHeaders(204, -1);
+      return true;
+    }
+    return false;
+  }
+
   protected void sendResponse(HttpExchange exchange, int statusCode, String response, String contentType) throws IOException {
     byte[] responseBytes = response.getBytes(StandardCharsets.UTF_8);
     exchange.getResponseHeaders().set("Content-Type", contentType);
