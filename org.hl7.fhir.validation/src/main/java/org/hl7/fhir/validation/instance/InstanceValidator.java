@@ -200,6 +200,8 @@ import org.w3c.dom.Document;
 @Slf4j
 public class InstanceValidator extends BaseValidator implements IResourceValidator {
 
+  public static final String NON_WHITESPACE_REGEX = "\\S+";
+
   private Map<Element, Map<String, List<String>>> xhtmlElementMap = new HashMap<>();
 
   public enum MatchetypeStatus {
@@ -4831,10 +4833,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // special known URLs that can't be validated but are known to be valid
       return true;
     } else {
-      ok = rule(errors, "2025-05-07", IssueType.INVALID, element.line(), element.col(), path, ref.matches("\\S+"), I18nConstants.REFERENCE_REF_INVALID_REF, ref) && ok;
+      ok = rule(errors, "2025-05-07", IssueType.INVALID, element.line(), element.col(), path, ref.matches(NON_WHITESPACE_REGEX), I18nConstants.REFERENCE_REF_INVALID_REF, ref) && ok;
     }
 
-    if (ref.matches("\\S+")) {
+    if (ref.matches(NON_WHITESPACE_REGEX)) {
       warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, !isSuspiciousReference(ref), I18nConstants.REFERENCE_REF_SUSPICIOUS, ref);
     }
 
