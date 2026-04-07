@@ -51,16 +51,21 @@ public class Turtle {
 
 	public static final String GOOD_IRI_CHAR = "a-zA-Z0-9\\x{00A0}-\\x{10FFFF}";
 
-  public static final String IRI_URL = "(([a-z])+:)*((%[0-9a-fA-F]{2})|[&'\\(\\)*+,;:@_~?!$\\/\\-\\#.\\="+GOOD_IRI_CHAR+"])+"; 
-  public static final String LANG_REGEX = "[a-z]{2}(\\-[a-zA-Z]{2})?";
+  // Created by claude-sonnet-4-6
+  // Matches one or more IRI characters. Each character is either:
+  //   %XX          a percent-encoded octet (two hex digits)
+  //   [...]        a literal IRI character: ASCII unreserved (alphanumeric, -._~),
+  //                sub-delimiters (!$&'()*+,;=), gen-delimiters (:@/?#),
+  //                slash (/), and non-ASCII Unicode (U+00A0–U+10FFFF)
+  public static final String IRI_URL = "(?:%[0-9a-fA-F]{2}|[&'()*+,;:@_~?!$/\\-#.="+GOOD_IRI_CHAR+"])+";
+  public static final String LANG_REGEX = "[a-z]{2}(-[a-zA-Z]{2})?";
 
 	// Object model
-	public abstract class Triple {
-		private String uri;
+	public abstract static class Triple {
 	}
 
-	public class StringType extends Triple {
-		private String value;
+	public static class StringType extends Triple {
+		private final String value;
 
 		public StringType(String value) {
 			super();
@@ -347,11 +352,11 @@ public class Turtle {
 	}
 
 	protected StringType literal(String s) {
-		return new StringType("\""+escape(s, true)+"\"");
+		return new StringType("\"" + escape(s, true) + "\"");
 	}
 
   protected StringType literalTyped(String s, String t) {
-    return new StringType("\""+escape(s, true)+"\"^^xs:"+t);
+    return new StringType("\"" + escape(s, true) + "\"^^xs:" + t);
   }
 
 	public static String escape(String s, boolean string) {
