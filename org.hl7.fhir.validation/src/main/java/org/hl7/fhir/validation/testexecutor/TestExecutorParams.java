@@ -1,5 +1,7 @@
 package org.hl7.fhir.validation.testexecutor;
 
+import org.hl7.fhir.utilities.regex.SafePattern;
+
 import static org.hl7.fhir.validation.testexecutor.TestModules.JUNIT5_MODULE_NAMES;
 
 import java.util.Arrays;
@@ -32,7 +34,7 @@ public class TestExecutorParams {
     public static boolean isValidClassnameFilterParam(String param) {
       if (param == null) return true;
       try {
-        Pattern.compile(param);
+        SafePattern.compile(param);
         return true;
       } catch (PatternSyntaxException e) {
         return false;

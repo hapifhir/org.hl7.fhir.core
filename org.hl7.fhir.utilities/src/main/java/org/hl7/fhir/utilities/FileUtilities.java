@@ -24,6 +24,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FileNotifier.FileNotifier2;
 import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.regex.SafePattern;
 
 
 public class FileUtilities {
@@ -135,23 +136,26 @@ public class FileUtilities {
     return Files.readAllBytes(Path.of(srcFile));
   }
 
-  public static List<String> fileToLines(String file) throws FileNotFoundException, IOException {
-    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
-    List<String> res = new ArrayList<String>();
-    for (String s : LINE_SEP_PATTERN.split(fileToString(file))) {
+  public static List<String> fileToLines(String file) throws IOException {
+    @SuppressWarnings("checkstyle:compileKnownSafePattern")
+    Pattern lineSepPattern = SafePattern.compileKnownSafePattern("\\R");
+    List<String> res = new ArrayList<>();
+    for (String s : lineSepPattern.split(fileToString(file))) {
       res.add(s);
     }
     return res;
   }
 
-  public static String[] fileToLines(File file) throws FileNotFoundException, IOException {
-    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
-    return LINE_SEP_PATTERN.split(fileToString(file));
+  public static String[] fileToLines(File file) throws IOException {
+    @SuppressWarnings("checkstyle:compileKnownSafePattern")
+    Pattern lineSepPattern = SafePattern.compileKnownSafePattern("\\R");
+    return lineSepPattern.split(fileToString(file));
   }
 
-  public static String[] streamToLines(InputStream stream) throws FileNotFoundException, IOException {
-    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
-    return LINE_SEP_PATTERN.split(streamToString(stream));
+  public static String[] streamToLines(InputStream stream) throws IOException {
+    @SuppressWarnings("checkstyle:compileKnownSafePattern")
+    Pattern lineSepPattern = SafePattern.compileKnownSafePattern("\\R");
+    return lineSepPattern.split(streamToString(stream));
   }
 
   public static String streamToString(final InputStream input) throws IOException  {

@@ -68,6 +68,7 @@ import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.regex.SafePattern;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -5674,7 +5675,7 @@ public class FHIRPathEngine {
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
-          Pattern p = Pattern.compile("(?s)" + sw);
+          Pattern p = SafePattern.compile("(?s)" + sw);
           Matcher m = p.matcher(st);
           boolean ok = m.find();
           result.add(new BooleanType(ok).noExtensions());
@@ -5696,7 +5697,7 @@ public class FHIRPathEngine {
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
-          Pattern p = Pattern.compile("(?s)" + sw);
+          Pattern p = SafePattern.compile("(?s)" + sw);
           Matcher m = p.matcher(st);
           boolean ok = m.matches();
           result.add(new BooleanType(ok).noExtensions());

@@ -5,6 +5,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,6 +46,8 @@ import javax.annotation.Nonnull;
  */
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -97,12 +100,20 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 public class BaseValidator implements IValidationContextResourceLoader, IMessagingServices {
 
   /**
-   * This regex tests FHIR search parameters. It expects the formats:
+   * These regexs test FHIR search parameters. It expects the formats:
    * [paramName]=[paramValue]
    * [paramName]=[paramValue]&[paramName]=[paramValue]
    * etc..
    */
-  private static final Pattern SEARCH_URL_PARAMS = Pattern.compile("[_a-zA-Z][_a-zA-Z0-9.:-]*=[^=&]*(&([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*))*");
+  // FIXME use the correct @SuppressWarnings here
+  // First char: underscore or letter. Subsequent chars: underscore, letter, digit, ., :, or -.
+  @SuppressWarnings("checkstyle:patternCompile")
+  private static final Pattern SEARCH_URL_PARAM_NAME = Pattern.compile("[_a-zA-Z][_a-zA-Z0-9.:-]*+");
+  // Any character except = and &, zero or more times.
+  @SuppressWarnings("checkstyle:patternCompile")
+  private static final Pattern SEARCH_URL_PARAM_VALUE = Pattern.compile("[^=&]*+");
+
+
   public static final boolean ALLOW_TRANSIENT_BASE_REFERENCES = false;
 
   public static class BooleanHolder {
@@ -714,8 +725,6 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
   
   /**
-   * @param thePass Set this parameter to <code>false</code> if the validation does not pass
-   * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected ValidationMessage buildValidationMessage(String txLink, String diagnostics, int line, int col, String path, OperationOutcomeIssueComponent issue) {
     if (issue.hasExpression() && issue.getExpression().get(0).getValue().contains(".")) {
@@ -1485,10 +1494,6 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * [resourceType]?[paramName]=[paramValue]&[paramName]=[paramValue]&....
    */
   public static boolean isSearchUrl(IWorkerContext context, String ref) {
-    if (Utilities.noString(ref)) {
-      return false;
-    }
-
     int questionMarkIndex = ref.indexOf("?");
     if (questionMarkIndex == -1) {
       return false;
@@ -1498,9 +1503,22 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     String query = ref.substring(questionMarkIndex + 1);
     if (!context.getResourceNamesAsSet().contains(resourceType)) {
       return false;
-    } else {
-      return SEARCH_URL_PARAMS.matcher(query).matches();
     }
+
+    List<NameValuePair> nameValuePairs = URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
+    if (nameValuePairs.isEmpty()) {
+      return false;
+    }
+
+    for (NameValuePair nameValuePair : nameValuePairs) {
+      if (nameValuePair.getName() == null || !SEARCH_URL_PARAM_NAME.matcher(nameValuePair.getName()).matches()) {
+        return false;
+      }
+      if (nameValuePair.getValue() == null || !SEARCH_URL_PARAM_VALUE.matcher(nameValuePair.getValue()).matches()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public Map<String, ValidationControl> getValidationControl() {

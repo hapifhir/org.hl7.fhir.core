@@ -35,6 +35,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.hl7.fhir.utilities.DateTimeUtil;
+import org.hl7.fhir.utilities.regex.SafePattern;
 
 import javax.annotation.Nullable;
 import java.text.ParseException;
@@ -53,12 +54,15 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    */
   private static final List<FastDateFormat> ourFormatters;
 
-  private static final Pattern ourYearDashMonthDashDayPattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
-  private static final Pattern ourYearDashMonthPattern = Pattern.compile("[0-9]{4}-[0-9]{2}");
+  @SuppressWarnings("checkstyle:compileKnownSafePattern")
+  private static final Pattern ourYearDashMonthDashDayPattern = SafePattern.compileKnownSafePattern("[0-9]{4}-[0-9]{2}-[0-9]{2}");
+  @SuppressWarnings("checkstyle:compileKnownSafePattern")
+  private static final Pattern ourYearDashMonthPattern = SafePattern.compileKnownSafePattern("[0-9]{4}-[0-9]{2}");
   private static final FastDateFormat ourYearFormat = FastDateFormat.getInstance("yyyy");
   private static final FastDateFormat ourYearMonthDayFormat = FastDateFormat.getInstance("yyyy-MM-dd");
   private static final FastDateFormat ourYearMonthDayNoDashesFormat = FastDateFormat.getInstance("yyyyMMdd");
-  private static final Pattern ourYearMonthDayPattern = Pattern.compile("[0-9]{4}[0-9]{2}[0-9]{2}");
+  @SuppressWarnings("checkstyle:compileKnownSafePattern")
+  private static final Pattern ourYearMonthDayPattern = SafePattern.compileKnownSafePattern("[0-9]{4}[0-9]{2}[0-9]{2}");
   private static final FastDateFormat ourYearMonthDayTimeFormat = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
   private static final FastDateFormat ourYearMonthDayTimeMilliFormat = FastDateFormat
       .getInstance("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -72,8 +76,10 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
       .getInstance("yyyy-MM-dd'T'HH:mm:ssZZ");
   private static final FastDateFormat ourYearMonthFormat = FastDateFormat.getInstance("yyyy-MM");
   private static final FastDateFormat ourYearMonthNoDashesFormat = FastDateFormat.getInstance("yyyyMM");
-  private static final Pattern ourYearMonthPattern = Pattern.compile("[0-9]{4}[0-9]{2}");
-  private static final Pattern ourYearPattern = Pattern.compile("[0-9]{4}");
+  @SuppressWarnings("checkstyle:compileKnownSafePattern")
+  private static final Pattern ourYearMonthPattern = SafePattern.compileKnownSafePattern("[0-9]{4}[0-9]{2}");
+  @SuppressWarnings("checkstyle:compileKnownSafePattern")
+  private static final Pattern ourYearPattern = SafePattern.compileKnownSafePattern("[0-9]{4}");
   private static final FastDateFormat ourYearMonthDayTimeMinsFormat = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm");
   private static final FastDateFormat ourYearMonthDayTimeMinsUTCZFormat = FastDateFormat
       .getInstance("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"));

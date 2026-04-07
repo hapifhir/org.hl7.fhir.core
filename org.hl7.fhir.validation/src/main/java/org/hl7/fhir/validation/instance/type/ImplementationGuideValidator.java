@@ -79,6 +79,7 @@ public class ImplementationGuideValidator extends BaseValidator {
     try {
       ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, uri, ExtensionUtilities.getVersionResolutionRules(dependency.getNamedChild("uri")));
       warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), fetchedIgDependency != null, I18nConstants.IG_DEPENDENCY_INVALID_URL, uri);
+
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
       if (uri != null && packageId != null && (fetchedIgDependency == null || !fetchedIgDependency.hasUserData(UserDataNames.IG_FAKE))) {
         String pid = pcm.getPackageId(uri);

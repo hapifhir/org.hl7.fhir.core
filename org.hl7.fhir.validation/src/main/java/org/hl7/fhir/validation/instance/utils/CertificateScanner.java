@@ -12,6 +12,7 @@ import com.nimbusds.jose.jwk.*;
 import com.nimbusds.jose.util.X509CertUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.utilities.regex.SafePattern;
 
 @Slf4j
 public class CertificateScanner {
@@ -283,7 +284,7 @@ public class CertificateScanner {
      */
     private List<X509Certificate> extractCertificatesFromPEM(String pemContent) {
         // Pattern to match certificate blocks
-        Pattern certPattern = Pattern.compile(
+        Pattern certPattern = SafePattern.compile(
             "-----BEGIN CERTIFICATE-----\\s*([A-Za-z0-9+/\\s=]+)\\s*-----END CERTIFICATE-----",
             Pattern.MULTILINE | Pattern.DOTALL
         );
@@ -530,7 +531,7 @@ public class CertificateScanner {
      * Extract Common Name from Distinguished Name
      */
     private String extractCN(String dn) {
-        Pattern cnPattern = Pattern.compile("CN=([^,]+)");
+        Pattern cnPattern = SafePattern.compile("CN=([^,]+)");
         Matcher matcher = cnPattern.matcher(dn);
         if (matcher.find()) {
             return matcher.group(1).trim();

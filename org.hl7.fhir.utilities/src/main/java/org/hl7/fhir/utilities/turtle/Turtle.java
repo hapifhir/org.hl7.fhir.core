@@ -49,6 +49,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class Turtle {
 
+  //FIXME this is definitely a vulnerability. This could use a better regex.
 	public static final String GOOD_IRI_CHAR = "a-zA-Z0-9\\x{00A0}-\\x{10FFFF}";
 
   public static final String IRI_URL = "(([a-z])+:)*((%[0-9a-fA-F]{2})|[&'\\(\\)*+,;:@_~?!$\\/\\-\\#.\\="+GOOD_IRI_CHAR+"])+"; 

@@ -45,6 +45,7 @@ import org.commonmark.renderer.text.TextContentRenderer;
 
 import com.github.rjeschke.txtmark.Configuration;
 import com.github.rjeschke.txtmark.Processor;
+import org.hl7.fhir.utilities.regex.SafePattern;
 
 public class MarkDownProcessor {
 
@@ -169,7 +170,7 @@ public class MarkDownProcessor {
     // Detect autolinks, which should start with a scheme, followed by a colon, followed by some content. Whitespace
     // is not allowed and for practical purposes, the scheme is considered to consist of lowercase ASCII characters
     // only.
-    Pattern autolinkPattern = Pattern.compile("<[a-z]+:[^\\s]+>");
+    Pattern autolinkPattern = SafePattern.compile("<[a-z]+:[^\\s]+>");
     Matcher autolinkMatcher = autolinkPattern.matcher(s);
     return autolinkMatcher.find();
   }
