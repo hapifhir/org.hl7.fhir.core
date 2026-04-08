@@ -49,22 +49,14 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class Turtle {
 
-	public static final String GOOD_IRI_CHAR = "a-zA-Z0-9\\x{00A0}-\\x{10FFFF}";
-
-  // Created by claude-sonnet-4-6
-  // Matches one or more IRI characters. Each character is either:
-  //   %XX          a percent-encoded octet (two hex digits)
-  //   [...]        a literal IRI character: ASCII unreserved (alphanumeric, -._~),
-  //                sub-delimiters (!$&'()*+,;=), gen-delimiters (:@/?#),
-  //                slash (/), and non-ASCII Unicode (U+00A0–U+10FFFF)
-  public static final String IRI_URL = "(?:%[0-9a-fA-F]{2}|[&'()*+,;:@_~?!$/\\-#.="+GOOD_IRI_CHAR+"])+";
   public static final String LANG_REGEX = "[a-z]{2}(-[a-zA-Z]{2})?";
 
+
 	// Object model
-	public abstract static class Triple {
+	public interface Triple {
 	}
 
-	public static class StringType extends Triple {
+	public static class StringType implements Triple {
 		private final String value;
 
 		public StringType(String value) {
@@ -73,8 +65,8 @@ public class Turtle {
 		}
 	}
 
-	public class Complex extends Triple {
-		protected List<Predicate> predicates = new ArrayList<Predicate>();
+	public class Complex implements Triple {
+		protected List<Predicate> predicates = new ArrayList<>();
 
 		public Complex predicate(String predicate, String object) {
 			return predicate(predicate, object, false);
@@ -170,10 +162,10 @@ public class Turtle {
 		}
 	}
 
-	private class Predicate {
+	protected static class Predicate {
 		protected String predicate;
 		protected String link;
-    protected List<Triple> objects = new ArrayList<Turtle.Triple>();
+    protected List<Triple> objects = new ArrayList<>();
 		protected String comment;
 		protected boolean asList = false;
 
@@ -507,10 +499,11 @@ public class Turtle {
             writer.write(((StringType) o).value);
 				else {
 					writer.write("[");
-            if (write((Complex) o, writer, 4))
-						writer.write("\r\n  ]");
-					else
-						writer.write("]");
+            if (write((Complex) o, writer, 4)) {
+              writer.write("\r\n  ]");
+            } else {
+              writer.write("]");
+            }
 				}
         }
 				String comment = p.comment == null? "" : " # "+formatMultilineComment(p.comment);
@@ -659,10 +652,11 @@ public class Turtle {
           b.append(Utilities.escapeXml(((StringType) o).value));
       else {
           b.append("[");
-          if (write((Complex) o, b, indent+2))
-          b.append(left+" ]");
-        else
-          b.append(" ]");
+          if (write((Complex) o, b, indent+2)) {
+            b.append(left).append(" ]");
+          } else {
+            b.append(" ]");
+          }
       }
       }
       if (po.asList) b.append(" )");
@@ -728,7 +722,7 @@ public class Turtle {
 		}
 
     public void setUri(String uri) throws FHIRFormatError {
-			if (!uri.matches(IRI_URL))
+			if (!TurtleIRIUtil.isValidIRI(uri))
         throw new FHIRFormatError("Illegal URI "+uri);
 			this.uri = uri;
 		}
@@ -897,11 +891,13 @@ public class Turtle {
 						break;
 					}
 					b.append(ch);
-          if (ch == '"')
-					if (b.toString().equals("\"\"\""))
-						end = "\"\"\"";
-            else if (!b.toString().equals("\"\"") && b.toString().endsWith(end) && !b.toString().endsWith("\\"+end))
-						break;
+          if (ch == '"') {
+            if (b.toString().equals("\"\"\"")) {
+              end = "\"\"\"";
+            } else if (!b.toString().equals("\"\"") && b.toString().endsWith(end) && !b.toString().endsWith("\\" + end)) {
+              break;
+            }
+          }
 				}
 				type = LexerTokenType.LITERAL;
 				token = unescape(b.toString().substring(end.length(), b.length()-end.length()), false);
@@ -929,15 +925,14 @@ public class Turtle {
 					b.append(ch);
 					while (cursor < source.length()) {
 						ch = grab();
-            //						if (!Utilities.charInRange(ch, '0', '9') && !Utilities.charInRange(ch, 'a', 'z') && !Utilities.charInRange(ch, 'A', 'Z') && !Utilities.charInSet(ch, '_', '-', '+', '.', '\\', '#'))
-            if (Character.isWhitespace(ch) || Utilities.charInSet(ch, ';', ']', ')', '~') || (( ch == ':') && !postColon))
-							break;
+            if (Character.isWhitespace(ch) || Utilities.charInSet(ch, ';', ']', ')', '~') || (( ch == ':') && !postColon)) {
+              break;
+            }
 						b.append(ch);
 					}
 					type = LexerTokenType.WORD;
 					token = b.toString();
 					cursor--;
-					return;        
 				} else
 					throw error("unexpected lexer char "+ch);
 			}
@@ -1139,12 +1134,13 @@ public class Turtle {
         String url = lexer.next(LexerTokenType.URI, false);
 				if (!sparqlStyle)
 					lexer.token(".");
-        if (!base)
-				prefix(prefix, url);
-        else if (this.base == null)
+        if (!base) {
+          prefix(prefix, url);
+        } else if (this.base == null) {
           this.base = url;
-        else
-          throw new FHIRFormatError("Duplicate @base");  
+        } else {
+          throw new FHIRFormatError("Duplicate @base");
+        }
 			} else if (lexer.peekType() == LexerTokenType.URI) {
 				doPrefixes = false;
 				TTLURL uri = new TTLURL(lexer.startLine, lexer.startCol);
@@ -1213,7 +1209,7 @@ public class Turtle {
 					if (!prefixes.containsKey(t))
             throw new FHIRFormatError("unknown prefix "+t);
 					uri = prefixes.get(t)+lexer.word();
-				} else if (t.equals("a"))
+				} else if (t != null && t.equals("a"))
 					uri = prefixes.get("rdfs")+"type";
 				else
 					throw lexer.error("unexpected token");
@@ -1294,8 +1290,9 @@ public class Turtle {
 				lexer.token(")");
 
 			if (lexer.peek(LexerTokenType.TOKEN, ";")) {
-        while ((lexer.peek(LexerTokenType.TOKEN, ";")))
-				lexer.token(";");
+        while ((lexer.peek(LexerTokenType.TOKEN, ";"))) {
+          lexer.token(";");
+        }
         done = lexer.peek(LexerTokenType.TOKEN, ".") || lexer.peek(LexerTokenType.TOKEN, "]");
 			} else {
 				done = true;
@@ -1315,75 +1312,5 @@ public class Turtle {
     }
     return null;
   }
-
-	//	public void parseFragment(Lexer lexer) throws Exception {
-	//		lexer.next(); // read [
-	//		Complex obj = new Complex();
-	//		while (!lexer.peek().equals("]")) {
-	//			String predicate = lexer.next();
-	//			if (lexer.peekType() == LexerTokenType.TOKEN || lexer.peekType() == LexerTokenType.LITERAL) {
-	//				obj.predicate(predicate, lexer.next());
-	//			} else if (lexer.peek().equals("[")) {
-	//				obj.predicate(predicate, importComplex(lexer));
-	//			} else
-	//				throw new Exception("Not done yet");
-	//			if (lexer.peek().equals(";")) 
-	//				lexer.next();
-	//		}
-	//		lexer.next(); // read ]
-	//		//return obj;
-	//	}
-	//
-	//	public void importTtl(Section sct, String ttl) throws Exception {
-	//		if (!Utilities.noString(ttl)) {
-  //			Lexer lexer = new Lexer(ttl);
-	//			String subject = null;
-	//			String predicate = null;
-	//			while (!lexer.done()) {
-	//				if (subject == null)
-	//					subject = lexer.next();
-	//				if (predicate == null)
-	//					predicate = lexer.next();
-	//				if (lexer.peekType() == null) {
-	//					throw new Error("Unexpected end of input parsing turtle");
-	//				} if (lexer.peekType() == LexerTokenType.TOKEN) {
-	//					sct.triple(subject, predicate, lexer.next());
-	//				} else if (lexer.peek() == null) {
-	//					throw new Error("Unexected - turtle lexer found no token");
-	//				} else if (lexer.peek().equals("[")) {
-	//					sct.triple(subject, predicate, importComplex(lexer));
-	//				} else
-	//					throw new Exception("Not done yet");
-	//				String n = lexer.next();
-	//				if (Utilities.noString(n))
-	//					break;
-	//				if (n.equals(".")) {
-	//					subject = null;
-	//					predicate = null;
-	//				} else if (n.equals(";")) {
-	//					predicate = null;
-	//				} else if (!n.equals(","))
-	//					throw new Exception("Unexpected token "+n);          
-	//			}
-	//		}
-	//}
-
-	//	private Complex importComplex(Lexer lexer) throws Exception {
-	//		lexer.next(); // read [
-	//		Complex obj = new Complex();
-	//		while (!lexer.peek().equals("]")) {
-	//			String predicate = lexer.next();
-	//			if (lexer.peekType() == LexerTokenType.TOKEN || lexer.peekType() == LexerTokenType.LITERAL) {
-	//				obj.predicate(predicate, lexer.next());
-	//			} else if (lexer.peek().equals("[")) {
-	//				obj.predicate(predicate, importComplex(lexer));
-	//			} else
-	//				throw new Exception("Not done yet");
-	//			if (lexer.peek().equals(";")) 
-	//				lexer.next();
-	//		}
-	//		lexer.next(); // read ]
-	//		return obj;
-	//	}
 
 }

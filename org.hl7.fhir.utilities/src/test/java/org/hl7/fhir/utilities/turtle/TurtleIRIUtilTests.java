@@ -7,8 +7,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-//Good URIs extracted from TurtleTests
-class TurtleIRITests {
+
+class TurtleIRIUtilTests {
+  //Good URIs extracted from TurtleTests
   static Stream<String> goodUris() {
     return Stream.of(
       "#y",
@@ -177,6 +178,6 @@ class TurtleIRITests {
   @ParameterizedTest
   @MethodSource("goodUris")
   void testGoodIriMatchesIriUrl(String uri) {
-    assertTrue(uri.matches(Turtle.IRI_URL), "Expected URI to match IRI_URL: " + uri);
+    assertTrue(TurtleIRIUtil.isValidIRI(uri), "Expected URI to match IRI_URL: " + uri);
   }
 }
