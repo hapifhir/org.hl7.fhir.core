@@ -1,5 +1,11 @@
 package org.hl7.fhir.utilities.regex;
 
+/**
+ * This class contains regular expressions that are used throughout the codebase.
+ * </p>
+ * Any regexes here should be evaluated for possible catastrophic backtracking (as much as is possible) and verified to
+ * be safe.
+ */
 public class RegexConstants {
   private RegexConstants() {
     throw new UnsupportedOperationException("This utility class should not be instantiated");
