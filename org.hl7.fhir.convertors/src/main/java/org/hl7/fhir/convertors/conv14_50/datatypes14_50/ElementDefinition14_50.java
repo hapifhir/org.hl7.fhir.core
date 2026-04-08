@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.context.ConversionContext14_50;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Expression14_40;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.Coding14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Boolean14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Code14_50;
@@ -608,31 +609,11 @@ public class ElementDefinition14_50 {
   }
 
   public static String convertToR4Expression(String oldExpression) {
-    String pass1 = oldExpression.replaceAll("\\$context", "%context").replaceAll("\\$resource", "%resource").replaceAll("code\\+profile", "code&profile").replaceAll("path\\+'\\.'", "path&'.'").replaceAll("fullUrl\\+resource", "fullUrl&resource");
-    String pass2 = pass1;
-    if (pass1.endsWith(".distinct()")) pass2 = pass1.substring(0, pass2.length() - 11) + ".isDistinct()";
-    String pass3 = pass2;
-    if (pass2.endsWith(".empty() or (type.count() = 1)"))
-      pass3 = pass2.substring(0, pass2.length() - 30) + ".empty() or (type.count() <= 1)";
-    String pass4 = pass3;
-    if (pass3.equals("duration >= 0")) pass4 = "duration.exists() implies duration >= 0";
-    else if (pass3.equals("period >= 0")) pass4 = "period.exists() implies period >= 0";
-    else if (pass3.equals("fullUrl.empty() xor resource")) pass4 = "fullUrl.empty() xor resource.exists()";
-    return pass4;
+    return Expression14_40.convertToR4Expression(oldExpression);
   }
 
   public static String convertTo2016MayExpression(String newExpression) {
-    String pass1 = newExpression.replaceAll("%context", "\\$context").replaceAll("%resource", "\\$resource").replaceAll("code&profile", "code+profile").replaceAll("path&'\\.'", "path+'.'").replaceAll("fullUrl%resource", "fullUrl+resource");
-    String pass2 = pass1;
-    if (pass1.endsWith(".isDistinct()")) pass2 = pass1.substring(0, pass1.length() - 13) + ".distinct()";
-    String pass3 = pass2;
-    if (pass2.endsWith(".empty() or (type.count() <= 1)"))
-      pass3 = pass2.substring(0, pass2.length() - 31) + ".empty() or (type.count() = 1)";
-    String pass4 = pass3;
-    if (pass3.equals("duration.exists() implies duration >= 0")) pass4 = "duration >= 0";
-    else if (pass3.equals("period.exists() implies period >= 0")) pass4 = "period >= 0";
-    else if (pass3.equals("fullUrl.empty() xor resource.exists()")) pass4 = "fullUrl.empty() xor resource";
-    return pass4;
+    return Expression14_40.convertTo2016MayExpression(newExpression);
   }
 
   public static org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent convertElementDefinitionMappingComponent(ElementDefinition.ElementDefinitionMappingComponent src) throws FHIRException {
