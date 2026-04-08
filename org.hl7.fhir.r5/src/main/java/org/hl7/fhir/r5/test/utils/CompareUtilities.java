@@ -3,13 +3,9 @@ package org.hl7.fhir.r5.test.utils;
 import lombok.Getter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.regex.RegexConstants;
-import org.hl7.fhir.utilities.filesystem.CSFile;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonNull;
@@ -629,7 +625,7 @@ public class CompareUtilities extends BaseTestingUtilities {
         case "$id$": return actualJsonString.matches(RegexConstants.ID_REGEX);
         case "$url$": return actualJsonString.matches(RegexConstants.URL_REGEX);
         case "$token$": return actualJsonString.matches(RegexConstants.TOKEN_REGEX);
-        case "$semver$": return actualJsonString.matches(RegexConstants.SEMVER_REGEX);
+        case "$semver$": return VersionUtilities.isSemVer(actualJsonString, false);
         case "$version$": return matchesVariable(actualJsonString, "version");
         default: 
           throw new Error("Unhandled template: "+expectedJsonString);
