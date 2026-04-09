@@ -22,6 +22,7 @@ public class HTMLUtilities {
     return false;
   }
 
+  // Created by claude-sonnet-4-6
   // Returns true if tagContent is a tag name with optional attributes
   private static boolean looksLikeHtmlTag(String tagContent) {
     if (tagContent.isEmpty() || !Character.isLetter(tagContent.charAt(0))) {
