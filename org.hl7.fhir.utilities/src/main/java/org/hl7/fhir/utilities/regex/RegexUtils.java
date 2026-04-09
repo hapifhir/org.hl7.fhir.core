@@ -9,7 +9,12 @@ public class RegexUtils {
 
 
   /**
+   * <p>
    * A utility to simplify the verification of strings expected to be split into multiple entries (OIDs, NPM package names, etc.)
+   * </p>
+   *
+   * @apiNote This method accepts caller provided regular expressions, and its usage should be restricted to known or
+   * evaluated safe regular expressions.
    *
    * @param string A string to split into entries and match against a regex
    * @param splitRegex The regex to split the string by
