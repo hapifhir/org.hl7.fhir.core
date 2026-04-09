@@ -1882,6 +1882,10 @@ public class Utilities {
     return url.contains("/") ? url.substring(url.lastIndexOf("/")+1) : url;
   }
 
+  public static String pathTail(String path) {
+    return path.substring(path.lastIndexOf('.') + 1);
+  }
+
   public static String escapeSql(String s) {
     return s.replace("'", "''");
   }
