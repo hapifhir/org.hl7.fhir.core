@@ -27,7 +27,7 @@ public class RegexConstants {
       "urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
 
   public static final String URL_REGEX =
-      "(https?://|www\\.)[-a-zA-Z0-9+&@#/%?=~_|!:.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+      "^(((https?)://)(%[0-9A-Fa-f]{2}|[-()_.!~*';/?:@&=+$,A-Za-z0-9])+)([).!';/?:,][[:blank:|:blank:]])?$";
 
   public static final String TOKEN_REGEX =
       "[0-9a-zA-Z_][0-9a-zA-Z_\\.\\-]*";

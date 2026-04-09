@@ -2,11 +2,11 @@
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
   "url" : "https://tx-dev.fhir.org/r5/TerminologyCapabilities/tx",
-  "version" : "0.7.6",
+  "version" : "0.8.6",
   "name" : "FHIRTerminologyServer",
   "title" : "FHIR Terminology Server",
   "status" : "active",
-  "date" : "2026-03-26T10:42:11.164Z",
+  "date" : "2026-04-08T18:42:38.509Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -2728,7 +2728,7 @@
   {
     "uri" : "http://hl7.org/fhir/sid/icd-10-cm",
     "version" : [{
-      "code" : "2024"
+      "code" : "2026-04-01"
     }],
     "content" : "complete"
   },
@@ -2737,7 +2737,7 @@
     "version" : [{
       "code" : "2015"
     }],
-    "content" : "fragment"
+    "content" : "complete"
   },
   {
     "uri" : "http://hl7.org/fhir/sid/icf",
@@ -3322,7 +3322,7 @@
   {
     "uri" : "http://loinc.org",
     "version" : [{
-      "code" : "2.81"
+      "code" : "2.82"
     },
     {
       "code" : "2.77"
@@ -9738,7 +9738,7 @@
   {
     "uri" : "http://www.nlm.nih.gov/research/umls/rxnorm",
     "version" : [{
-      "code" : "02032025"
+      "code" : "03022026"
     }],
     "content" : "complete"
   },
@@ -9762,6 +9762,13 @@
       "code" : "20240716"
     }],
     "content" : "complete"
+  },
+  {
+    "uri" : "https://terminology.dhp.uz/fhir/CodeSystem/loinc-supplement-uz",
+    "version" : [{
+      "code" : "2.80"
+    }],
+    "content" : "supplement"
   },
   {
     "uri" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/cdcnhsn.html",

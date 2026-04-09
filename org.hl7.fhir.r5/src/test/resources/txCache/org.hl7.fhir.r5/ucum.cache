@@ -12,10 +12,4455 @@ v: {
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[http://unitsofmeasure.org#a (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org#a\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n1ms http://unitsofmeasure.org/vs|2.2: check code in (http://unitsofmeasure.org) at Coding\n1ms http://unitsofmeasure.org/vs|2.2: Code \"a\" found in http://unitsofmeasure.org|2.2",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
 
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://unitsofmeasure.org",
+      "concept" : [{
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+          "valueString" : "second"
+        }],
+        "code" : "s",
+        "display" : "second",
+        "designation" : [{
+          "language" : "zh",
+          "value" : "秒"
+        }]
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+          "valueString" : "minute"
+        }],
+        "code" : "min",
+        "display" : "minute",
+        "designation" : [{
+          "language" : "zh",
+          "value" : "分钟"
+        }]
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+          "valueString" : "hour"
+        }],
+        "code" : "h",
+        "display" : "hour",
+        "designation" : [{
+          "language" : "zh",
+          "value" : "小时"
+        }]
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+          "valueString" : "day"
+        }],
+        "code" : "d",
+        "display" : "day",
+        "designation" : [{
+          "language" : "zh",
+          "value" : "天"
+        }]
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+          "valueString" : "week"
+        }],
+        "code" : "wk",
+        "display" : "week",
+        "designation" : [{
+          "language" : "zh",
+          "value" : "星期"
+        }]
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+          "valueString" : "month - Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence."
+        }],
+        "code" : "mo",
+        "display" : "month",
+        "designation" : [{
+          "language" : "zh",
+          "value" : "月"
+        }]
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+          "valueString" : "year"
+        }],
+        "code" : "a",
+        "display" : "year",
+        "designation" : [{
+          "language" : "zh",
+          "value" : "年"
+        }]
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:4c1d375d-5d96-4cc2-9e95-d0b678b671da",
+    "timestamp" : "2026-04-08T18:44:01.548Z",
+    "total" : 7,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://unitsofmeasure.org|2.2"
+    }],
+    "contains" : [{
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+        "valueString" : "second"
+      }],
+      "system" : "http://unitsofmeasure.org",
+      "code" : "s",
+      "display" : "s"
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+        "valueString" : "minute"
+      }],
+      "system" : "http://unitsofmeasure.org",
+      "code" : "min",
+      "display" : "min"
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+        "valueString" : "hour"
+      }],
+      "system" : "http://unitsofmeasure.org",
+      "code" : "h",
+      "display" : "h"
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+        "valueString" : "day"
+      }],
+      "system" : "http://unitsofmeasure.org",
+      "code" : "d",
+      "display" : "d"
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+        "valueString" : "week"
+      }],
+      "system" : "http://unitsofmeasure.org",
+      "code" : "wk",
+      "display" : "wk"
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+        "valueString" : "month - Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence."
+      }],
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mo",
+      "display" : "mo"
+    },
+    {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
+        "valueString" : "year"
+      }],
+      "system" : "http://unitsofmeasure.org",
+      "code" : "a",
+      "display" : "a"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://unitsofmeasure.org"
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
+      "valueBoolean" : true
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason",
+      "valueString" : "The code System \"http://unitsofmeasure.org has a grammar and so has infinite members. This extension is based on http://hl7.org/fhir/ValueSet/ucum-common"
+    }],
+    "identifier" : "urn:uuid:847d5129-29e3-4761-8ee6-48369f56ebea",
+    "timestamp" : "2026-04-08T18:44:02.200Z",
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://unitsofmeasure.org|2.2"
+    },
+    {
+      "name" : "warning-experimental",
+      "valueUri" : "http://hl7.org/fhir/ValueSet/ucum-common|5.0.0"
+    }],
+    "contains" : [{
+      "system" : "http://unitsofmeasure.org",
+      "code" : "%",
+      "display" : "%"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "%/100",
+      "display" : "%/100"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "%[slope]",
+      "display" : "%[slope]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/(12.h)",
+      "display" : "/(12.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/(2.h)",
+      "display" : "/(2.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/10*10",
+      "display" : "/10*10"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/10*12",
+      "display" : "/10*12"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/10*3",
+      "display" : "/10*3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/10*4",
+      "display" : "/10*4"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/10*6",
+      "display" : "/10*6"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/10*9",
+      "display" : "/10*9"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/100",
+      "display" : "/100"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/100.g",
+      "display" : "/100.g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/L",
+      "display" : "/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/U",
+      "display" : "/U"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/[HPF]",
+      "display" : "/[HPF]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/[IU]",
+      "display" : "/[IU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/[LPF]",
+      "display" : "/[LPF]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/[arb'U]",
+      "display" : "/[arb'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/[iU]",
+      "display" : "/[iU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/a",
+      "display" : "/a"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/cm[H2O]",
+      "display" : "/cm[H2O]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/d",
+      "display" : "/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/dL",
+      "display" : "/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/g",
+      "display" : "/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/h",
+      "display" : "/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/kg",
+      "display" : "/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/m2",
+      "display" : "/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/m3",
+      "display" : "/m3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/mL",
+      "display" : "/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/mg",
+      "display" : "/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/min",
+      "display" : "/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/min/10*3",
+      "display" : "/min/10*3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/mm",
+      "display" : "/mm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/mm3",
+      "display" : "/mm3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/mmol",
+      "display" : "/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/mo",
+      "display" : "/mo"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/s",
+      "display" : "/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/uL",
+      "display" : "/uL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/ug",
+      "display" : "/ug"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "/wk",
+      "display" : "/wk"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "1",
+      "display" : "1"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "1/d",
+      "display" : "1/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "1/min",
+      "display" : "1/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*",
+      "display" : "10*"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*-3",
+      "display" : "10*-3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*-6",
+      "display" : "10*-6"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*12/L",
+      "display" : "10*12/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*3",
+      "display" : "10*3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*3.U",
+      "display" : "10*3.U"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*3/L",
+      "display" : "10*3/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*3/mL",
+      "display" : "10*3/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*3/uL",
+      "display" : "10*3/uL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*4/uL",
+      "display" : "10*4/uL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*5",
+      "display" : "10*5"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6",
+      "display" : "10*6"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6.U",
+      "display" : "10*6.U"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6.[CFU]/L",
+      "display" : "10*6.[CFU]/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6.[IU]",
+      "display" : "10*6.[IU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6.[iU]",
+      "display" : "10*6.[iU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6.eq/mL",
+      "display" : "10*6.eq/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6/(24.h)",
+      "display" : "10*6/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6/L",
+      "display" : "10*6/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6/kg",
+      "display" : "10*6/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6/mL",
+      "display" : "10*6/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6/mm3",
+      "display" : "10*6/mm3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*6/uL",
+      "display" : "10*6/uL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*8",
+      "display" : "10*8"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*9/L",
+      "display" : "10*9/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*9/mL",
+      "display" : "10*9/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10*9/uL",
+      "display" : "10*9/uL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10.L/(min.m2)",
+      "display" : "10.L/(min.m2)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10.L/min",
+      "display" : "10.L/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10.uN.s/(cm.m2)",
+      "display" : "10.uN.s/(cm.m2)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10.uN.s/(cm5.m2)",
+      "display" : "10.uN.s/(cm5.m2)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10.uN.s/cm",
+      "display" : "10.uN.s/cm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10.uN.s/cm2",
+      "display" : "10.uN.s/cm2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "10^",
+      "display" : "10^"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "24.h",
+      "display" : "24.h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "A",
+      "display" : "A"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "A/m",
+      "display" : "A/m"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "AU",
+      "display" : "AU"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Ao",
+      "display" : "Ao"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "B",
+      "display" : "B"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "B[SPL]",
+      "display" : "B[SPL]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "B[V]",
+      "display" : "B[V]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "B[W]",
+      "display" : "B[W]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "B[kW]",
+      "display" : "B[kW]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "B[mV]",
+      "display" : "B[mV]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "B[uV]",
+      "display" : "B[uV]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Bd",
+      "display" : "Bd"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Bi",
+      "display" : "Bi"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Bq",
+      "display" : "Bq"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "By",
+      "display" : "By"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "C",
+      "display" : "C"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Cel",
+      "display" : "Cel"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Ci",
+      "display" : "Ci"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "F",
+      "display" : "F"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "G",
+      "display" : "G"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "GBq",
+      "display" : "GBq"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Gal",
+      "display" : "Gal"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Gb",
+      "display" : "Gb"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Gy",
+      "display" : "Gy"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "H",
+      "display" : "H"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Hz",
+      "display" : "Hz"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "J",
+      "display" : "J"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "J/L",
+      "display" : "J/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "K",
+      "display" : "K"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "K/W",
+      "display" : "K/W"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Ky",
+      "display" : "Ky"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L",
+      "display" : "L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L.s2/s",
+      "display" : "L.s2/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L/(24.h)",
+      "display" : "L/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L/(8.h)",
+      "display" : "L/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L/(min.m2)",
+      "display" : "L/(min.m2)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L/L",
+      "display" : "L/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L/d",
+      "display" : "L/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L/h",
+      "display" : "L/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L/kg",
+      "display" : "L/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L/min",
+      "display" : "L/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L/s",
+      "display" : "L/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "L/s/s2",
+      "display" : "L/s/s2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Lmb",
+      "display" : "Lmb"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "MBq",
+      "display" : "MBq"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Ms",
+      "display" : "Ms"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Mx",
+      "display" : "Mx"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "N",
+      "display" : "N"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "N.cm",
+      "display" : "N.cm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "N.s",
+      "display" : "N.s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Np",
+      "display" : "Np"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Oe",
+      "display" : "Oe"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Ohm",
+      "display" : "Ohm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Ohm.m",
+      "display" : "Ohm.m"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "P",
+      "display" : "P"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Pa",
+      "display" : "Pa"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "R",
+      "display" : "R"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "RAD",
+      "display" : "RAD"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "REM",
+      "display" : "REM"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "S",
+      "display" : "S"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "St",
+      "display" : "St"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Sv",
+      "display" : "Sv"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "T",
+      "display" : "T"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U",
+      "display" : "U"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/(1.h)",
+      "display" : "U/(1.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/(10.g)",
+      "display" : "U/(10.g)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/(12.h)",
+      "display" : "U/(12.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/(18.h)",
+      "display" : "U/(18.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/(2.h)",
+      "display" : "U/(2.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/(24.h)",
+      "display" : "U/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/10",
+      "display" : "U/10"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/10*10",
+      "display" : "U/10*10"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/10*12",
+      "display" : "U/10*12"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/10*6",
+      "display" : "U/10*6"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/10*9",
+      "display" : "U/10*9"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/L",
+      "display" : "U/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/d",
+      "display" : "U/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/dL",
+      "display" : "U/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/g",
+      "display" : "U/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/h",
+      "display" : "U/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/kg",
+      "display" : "U/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/kg/h",
+      "display" : "U/kg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/mL",
+      "display" : "U/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/min",
+      "display" : "U/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/mmol",
+      "display" : "U/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/mol",
+      "display" : "U/mol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/s",
+      "display" : "U/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "U/umol",
+      "display" : "U/umol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "V",
+      "display" : "V"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "W",
+      "display" : "W"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "Wb",
+      "display" : "Wb"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[APL'U]",
+      "display" : "[APL'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[APL'U]/mL",
+      "display" : "[APL'U]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[AU]",
+      "display" : "[AU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[Amb'a'1'U]",
+      "display" : "[Amb'a'1'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[BAU]",
+      "display" : "[BAU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[Btu]",
+      "display" : "[Btu]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[Btu_39]",
+      "display" : "[Btu_39]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[Btu_59]",
+      "display" : "[Btu_59]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[Btu_60]",
+      "display" : "[Btu_60]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[Btu_IT]",
+      "display" : "[Btu_IT]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[Btu_m]",
+      "display" : "[Btu_m]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[Btu_th]",
+      "display" : "[Btu_th]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[CCID_50]",
+      "display" : "[CCID_50]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[CFU]",
+      "display" : "[CFU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[CFU]/L",
+      "display" : "[CFU]/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[CFU]/mL",
+      "display" : "[CFU]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[Cal]",
+      "display" : "[Cal]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[Ch]",
+      "display" : "[Ch]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[D'ag'U]",
+      "display" : "[D'ag'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[FFU]",
+      "display" : "[FFU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[GPL'U]",
+      "display" : "[GPL'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[GPL'U]/mL",
+      "display" : "[GPL'U]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[G]",
+      "display" : "[G]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[HPF]",
+      "display" : "[HPF]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[HP]",
+      "display" : "[HP]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]",
+      "display" : "[IU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/(2.h)",
+      "display" : "[IU]/(2.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/(24.h)",
+      "display" : "[IU]/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/10*9",
+      "display" : "[IU]/10*9"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/L",
+      "display" : "[IU]/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/d",
+      "display" : "[IU]/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/dL",
+      "display" : "[IU]/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/g",
+      "display" : "[IU]/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/h",
+      "display" : "[IU]/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/kg",
+      "display" : "[IU]/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/kg/d",
+      "display" : "[IU]/kg/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/mL",
+      "display" : "[IU]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[IU]/min",
+      "display" : "[IU]/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[LPF]",
+      "display" : "[LPF]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[Lf]",
+      "display" : "[Lf]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[MET]",
+      "display" : "[MET]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[MPL'U]",
+      "display" : "[MPL'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[MPL'U]/mL",
+      "display" : "[MPL'U]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[PFU]",
+      "display" : "[PFU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[PNU]",
+      "display" : "[PNU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[PRU]",
+      "display" : "[PRU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[S]",
+      "display" : "[S]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[TCID_50]",
+      "display" : "[TCID_50]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[USP'U]",
+      "display" : "[USP'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[acr_br]",
+      "display" : "[acr_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[acr_us]",
+      "display" : "[acr_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[arb'U]",
+      "display" : "[arb'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[arb'U]/L",
+      "display" : "[arb'U]/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[arb'U]/mL",
+      "display" : "[arb'U]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[bbl_us]",
+      "display" : "[bbl_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[bdsk'U]",
+      "display" : "[bdsk'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[beth'U]",
+      "display" : "[beth'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[bf_i]",
+      "display" : "[bf_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[bu_br]",
+      "display" : "[bu_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[bu_us]",
+      "display" : "[bu_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[c]",
+      "display" : "[c]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[car_Au]",
+      "display" : "[car_Au]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[car_m]",
+      "display" : "[car_m]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[cft_i]",
+      "display" : "[cft_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ch_br]",
+      "display" : "[ch_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ch_us]",
+      "display" : "[ch_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[cicero]",
+      "display" : "[cicero]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[cin_i]",
+      "display" : "[cin_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[cml_i]",
+      "display" : "[cml_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[cr_i]",
+      "display" : "[cr_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[crd_us]",
+      "display" : "[crd_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[cup_us]",
+      "display" : "[cup_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[cyd_i]",
+      "display" : "[cyd_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[degF]",
+      "display" : "[degF]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[didot]",
+      "display" : "[didot]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[diop]",
+      "display" : "[diop]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[dpt_us]",
+      "display" : "[dpt_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[dqt_us]",
+      "display" : "[dqt_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[dr_ap]",
+      "display" : "[dr_ap]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[dr_av]",
+      "display" : "[dr_av]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[drp]",
+      "display" : "[drp]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[drp]/[HPF]",
+      "display" : "[drp]/[HPF]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[drp]/h",
+      "display" : "[drp]/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[drp]/mL",
+      "display" : "[drp]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[drp]/min",
+      "display" : "[drp]/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[drp]/s",
+      "display" : "[drp]/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[dye'U]",
+      "display" : "[dye'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[e]",
+      "display" : "[e]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[eps_0]",
+      "display" : "[eps_0]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[fdr_br]",
+      "display" : "[fdr_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[fdr_us]",
+      "display" : "[fdr_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[foz_br]",
+      "display" : "[foz_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[foz_us]",
+      "display" : "[foz_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ft_br]",
+      "display" : "[ft_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ft_i]",
+      "display" : "[ft_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ft_us]",
+      "display" : "[ft_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[fth_br]",
+      "display" : "[fth_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[fth_i]",
+      "display" : "[fth_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[fth_us]",
+      "display" : "[fth_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[fur_us]",
+      "display" : "[fur_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[gal_br]",
+      "display" : "[gal_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[gal_us]",
+      "display" : "[gal_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[gal_wi]",
+      "display" : "[gal_wi]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[gil_br]",
+      "display" : "[gil_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[gil_us]",
+      "display" : "[gil_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[gr]",
+      "display" : "[gr]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[h]",
+      "display" : "[h]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[hd_i]",
+      "display" : "[hd_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[hnsf'U]",
+      "display" : "[hnsf'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[hp_C]",
+      "display" : "[hp_C]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[hp_M]",
+      "display" : "[hp_M]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[hp_Q]",
+      "display" : "[hp_Q]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[hp_X]",
+      "display" : "[hp_X]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[iU]",
+      "display" : "[iU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[iU]/L",
+      "display" : "[iU]/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[iU]/dL",
+      "display" : "[iU]/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[iU]/g",
+      "display" : "[iU]/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[iU]/kg",
+      "display" : "[iU]/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[iU]/mL",
+      "display" : "[iU]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[in_br]",
+      "display" : "[in_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[in_i'H2O]",
+      "display" : "[in_i'H2O]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[in_i'Hg]",
+      "display" : "[in_i'Hg]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[in_i]",
+      "display" : "[in_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[in_us]",
+      "display" : "[in_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[k]",
+      "display" : "[k]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ka'U]",
+      "display" : "[ka'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[kn_br]",
+      "display" : "[kn_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[kn_i]",
+      "display" : "[kn_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[knk'U]",
+      "display" : "[knk'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[kp_C]",
+      "display" : "[kp_C]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[lb_ap]",
+      "display" : "[lb_ap]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[lb_av]",
+      "display" : "[lb_av]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[lb_tr]",
+      "display" : "[lb_tr]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[lbf_av]",
+      "display" : "[lbf_av]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[lcwt_av]",
+      "display" : "[lcwt_av]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ligne]",
+      "display" : "[ligne]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[lk_br]",
+      "display" : "[lk_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[lk_us]",
+      "display" : "[lk_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[lne]",
+      "display" : "[lne]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[lton_av]",
+      "display" : "[lton_av]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ly]",
+      "display" : "[ly]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[m_e]",
+      "display" : "[m_e]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[m_p]",
+      "display" : "[m_p]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[mclg'U]",
+      "display" : "[mclg'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[mesh_i]",
+      "display" : "[mesh_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[mi_br]",
+      "display" : "[mi_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[mi_i]",
+      "display" : "[mi_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[mi_us]",
+      "display" : "[mi_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[mil_i]",
+      "display" : "[mil_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[mil_us]",
+      "display" : "[mil_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[min_br]",
+      "display" : "[min_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[min_us]",
+      "display" : "[min_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[mu_0]",
+      "display" : "[mu_0]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[nmi_br]",
+      "display" : "[nmi_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[nmi_i]",
+      "display" : "[nmi_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[oz_ap]",
+      "display" : "[oz_ap]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[oz_av]",
+      "display" : "[oz_av]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[oz_tr]",
+      "display" : "[oz_tr]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[p'diop]",
+      "display" : "[p'diop]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pH]",
+      "display" : "[pH]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pc_br]",
+      "display" : "[pc_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pca]",
+      "display" : "[pca]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pca_pr]",
+      "display" : "[pca_pr]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pi]",
+      "display" : "[pi]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pi].rad/min",
+      "display" : "[pi].rad/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pied]",
+      "display" : "[pied]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pk_br]",
+      "display" : "[pk_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pk_us]",
+      "display" : "[pk_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pnt]",
+      "display" : "[pnt]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pnt_pr]",
+      "display" : "[pnt_pr]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pouce]",
+      "display" : "[pouce]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ppb]",
+      "display" : "[ppb]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ppm]",
+      "display" : "[ppm]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ppth]",
+      "display" : "[ppth]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pptr]",
+      "display" : "[pptr]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[psi]",
+      "display" : "[psi]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pt_br]",
+      "display" : "[pt_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pt_us]",
+      "display" : "[pt_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[pwt_tr]",
+      "display" : "[pwt_tr]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[qt_br]",
+      "display" : "[qt_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[qt_us]",
+      "display" : "[qt_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[rch_us]",
+      "display" : "[rch_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[rd_br]",
+      "display" : "[rd_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[rd_us]",
+      "display" : "[rd_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[rlk_us]",
+      "display" : "[rlk_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[sc_ap]",
+      "display" : "[sc_ap]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[sct]",
+      "display" : "[sct]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[scwt_av]",
+      "display" : "[scwt_av]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[sft_i]",
+      "display" : "[sft_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[sin_i]",
+      "display" : "[sin_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[smgy'U]",
+      "display" : "[smgy'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[smi_us]",
+      "display" : "[smi_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[smoot]",
+      "display" : "[smoot]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[srd_us]",
+      "display" : "[srd_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[ston_av]",
+      "display" : "[ston_av]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[stone_av]",
+      "display" : "[stone_av]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[syd_i]",
+      "display" : "[syd_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[tb'U]",
+      "display" : "[tb'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[tbs_us]",
+      "display" : "[tbs_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[todd'U]",
+      "display" : "[todd'U]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[tsp_us]",
+      "display" : "[tsp_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[twp]",
+      "display" : "[twp]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[yd_br]",
+      "display" : "[yd_br]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[yd_i]",
+      "display" : "[yd_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "[yd_us]",
+      "display" : "[yd_us]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "a",
+      "display" : "a"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "a_g",
+      "display" : "a_g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "a_j",
+      "display" : "a_j"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "a_t",
+      "display" : "a_t"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ag",
+      "display" : "ag"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ar",
+      "display" : "ar"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "atm",
+      "display" : "atm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "att",
+      "display" : "att"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "b",
+      "display" : "b"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "bar",
+      "display" : "bar"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "bit",
+      "display" : "bit"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "bit_s",
+      "display" : "bit_s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cL",
+      "display" : "cL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cP",
+      "display" : "cP"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cSt",
+      "display" : "cSt"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cal",
+      "display" : "cal"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cal_IT",
+      "display" : "cal_IT"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cal_[15]",
+      "display" : "cal_[15]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cal_[20]",
+      "display" : "cal_[20]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cal_m",
+      "display" : "cal_m"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cal_th",
+      "display" : "cal_th"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cd",
+      "display" : "cd"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cg",
+      "display" : "cg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "circ",
+      "display" : "circ"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cm",
+      "display" : "cm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cm2",
+      "display" : "cm2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cm2/s",
+      "display" : "cm2/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cm3",
+      "display" : "cm3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cm[H2O]",
+      "display" : "cm[H2O]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cm[H2O]/(s.m)",
+      "display" : "cm[H2O]/(s.m)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cm[H2O]/L/s",
+      "display" : "cm[H2O]/L/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cm[H2O]/s/m",
+      "display" : "cm[H2O]/s/m"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "cm[Hg]",
+      "display" : "cm[Hg]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "d",
+      "display" : "d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "dB",
+      "display" : "dB"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "dL",
+      "display" : "dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "daL/min",
+      "display" : "daL/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "daL/min/m2",
+      "display" : "daL/min/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "deg",
+      "display" : "deg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "deg/s",
+      "display" : "deg/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "dg",
+      "display" : "dg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "dm",
+      "display" : "dm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "dm2/s2",
+      "display" : "dm2/s2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "dyn",
+      "display" : "dyn"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "dyn.s/(cm.m2)",
+      "display" : "dyn.s/(cm.m2)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "dyn.s/cm",
+      "display" : "dyn.s/cm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "eV",
+      "display" : "eV"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "eq",
+      "display" : "eq"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "eq/L",
+      "display" : "eq/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "eq/mL",
+      "display" : "eq/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "eq/mmol",
+      "display" : "eq/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "eq/umol",
+      "display" : "eq/umol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "erg",
+      "display" : "erg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "fL",
+      "display" : "fL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "fL/nL",
+      "display" : "fL/nL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "fg",
+      "display" : "fg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "fm",
+      "display" : "fm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "fmol",
+      "display" : "fmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "fmol/L",
+      "display" : "fmol/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "fmol/g",
+      "display" : "fmol/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "fmol/mL",
+      "display" : "fmol/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "fmol/mg",
+      "display" : "fmol/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g",
+      "display" : "g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g%",
+      "display" : "g%"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g.m",
+      "display" : "g.m"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(100.g)",
+      "display" : "g/(100.g)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(12.h)",
+      "display" : "g/(12.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(24.h)",
+      "display" : "g/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(3.d)",
+      "display" : "g/(3.d)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(4.h)",
+      "display" : "g/(4.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(48.h)",
+      "display" : "g/(48.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(5.h)",
+      "display" : "g/(5.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(6.h)",
+      "display" : "g/(6.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(72.h)",
+      "display" : "g/(72.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(8.h)",
+      "display" : "g/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(8.kg.h)",
+      "display" : "g/(8.kg.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(kg.h)",
+      "display" : "g/(kg.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/(kg.min)",
+      "display" : "g/(kg.min)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/L",
+      "display" : "g/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/cm3",
+      "display" : "g/cm3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/d",
+      "display" : "g/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/dL",
+      "display" : "g/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/g",
+      "display" : "g/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/h",
+      "display" : "g/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/h/m2",
+      "display" : "g/h/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/kg",
+      "display" : "g/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/kg/(8.h)",
+      "display" : "g/kg/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/kg/d",
+      "display" : "g/kg/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/kg/h",
+      "display" : "g/kg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/kg/min",
+      "display" : "g/kg/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/m2",
+      "display" : "g/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/mL",
+      "display" : "g/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/mg",
+      "display" : "g/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/min",
+      "display" : "g/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/mmol",
+      "display" : "g/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "g/mol",
+      "display" : "g/mol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "gf",
+      "display" : "gf"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "gon",
+      "display" : "gon"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "h",
+      "display" : "h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "hL",
+      "display" : "hL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kBq",
+      "display" : "kBq"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kL",
+      "display" : "kL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kPa",
+      "display" : "kPa"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kU",
+      "display" : "kU"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kU/L",
+      "display" : "kU/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kU/g",
+      "display" : "kU/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kU/h",
+      "display" : "kU/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kU/mL",
+      "display" : "kU/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "k[IU]/L",
+      "display" : "k[IU]/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "k[IU]/mL",
+      "display" : "k[IU]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "k[iU]/mL",
+      "display" : "k[iU]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kat",
+      "display" : "kat"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kat/L",
+      "display" : "kat/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kat/kg",
+      "display" : "kat/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kcal",
+      "display" : "kcal"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kcal/(8.h)",
+      "display" : "kcal/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kcal/[oz_av]",
+      "display" : "kcal/[oz_av]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kcal/d",
+      "display" : "kcal/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kcal/h",
+      "display" : "kcal/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kcal/kg/(24.h)",
+      "display" : "kcal/kg/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kg",
+      "display" : "kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kg.m/s",
+      "display" : "kg.m/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kg/(s.m2)",
+      "display" : "kg/(s.m2)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kg/L",
+      "display" : "kg/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kg/h",
+      "display" : "kg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kg/m2",
+      "display" : "kg/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kg/m3",
+      "display" : "kg/m3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kg/min",
+      "display" : "kg/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kg/mol",
+      "display" : "kg/mol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "kg/s",
+      "display" : "kg/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "km",
+      "display" : "km"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ks",
+      "display" : "ks"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "lm",
+      "display" : "lm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "lm.m2",
+      "display" : "lm.m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "lm/m2",
+      "display" : "lm/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "lx",
+      "display" : "lx"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "m",
+      "display" : "m"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "m/s",
+      "display" : "m/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "m/s2",
+      "display" : "m/s2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "m2",
+      "display" : "m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "m2/s",
+      "display" : "m2/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "m3/s",
+      "display" : "m3/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mA",
+      "display" : "mA"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mCi",
+      "display" : "mCi"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL",
+      "display" : "mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/(10.h)",
+      "display" : "mL/(10.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/(12.h)",
+      "display" : "mL/(12.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/(2.h)",
+      "display" : "mL/(2.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/(24.h)",
+      "display" : "mL/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/(4.h)",
+      "display" : "mL/(4.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/(5.h)",
+      "display" : "mL/(5.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/(6.h)",
+      "display" : "mL/(6.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/(72.h)",
+      "display" : "mL/(72.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/(8.h)",
+      "display" : "mL/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/(kg.min)",
+      "display" : "mL/(kg.min)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/L",
+      "display" : "mL/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/[sin_i]",
+      "display" : "mL/[sin_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/cm[H2O]",
+      "display" : "mL/cm[H2O]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/d",
+      "display" : "mL/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/dL",
+      "display" : "mL/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/h",
+      "display" : "mL/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/kg",
+      "display" : "mL/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/kg/(8.h)",
+      "display" : "mL/kg/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/kg/d",
+      "display" : "mL/kg/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/kg/h",
+      "display" : "mL/kg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/kg/min",
+      "display" : "mL/kg/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/m2",
+      "display" : "mL/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/mbar",
+      "display" : "mL/mbar"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/min",
+      "display" : "mL/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/min/(173.10*-2.m2)",
+      "display" : "mL/min/(173.10*-2.m2)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/min/1.73.m2",
+      "display" : "mL/min/1.73.m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/min/m2",
+      "display" : "mL/min/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/mm",
+      "display" : "mL/mm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mL/s",
+      "display" : "mL/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mPa",
+      "display" : "mPa"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mPa.s",
+      "display" : "mPa.s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mU",
+      "display" : "mU"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mU/L",
+      "display" : "mU/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mU/g",
+      "display" : "mU/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mU/mL",
+      "display" : "mU/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mU/mL/min",
+      "display" : "mU/mL/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mU/mg",
+      "display" : "mU/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mU/min",
+      "display" : "mU/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mU/mmol",
+      "display" : "mU/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mV",
+      "display" : "mV"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "m[H2O]",
+      "display" : "m[H2O]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "m[Hg]",
+      "display" : "m[Hg]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "m[IU]/L",
+      "display" : "m[IU]/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "m[IU]/mL",
+      "display" : "m[IU]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "m[iU]",
+      "display" : "m[iU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mbar",
+      "display" : "mbar"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mbar.s/L",
+      "display" : "mbar.s/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mbar/L/s",
+      "display" : "mbar/L/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq",
+      "display" : "meq"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/(12.h)",
+      "display" : "meq/(12.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/(2.h)",
+      "display" : "meq/(2.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/(24.h)",
+      "display" : "meq/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/(8.h)",
+      "display" : "meq/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/(8.h.kg)",
+      "display" : "meq/(8.h.kg)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/(kg.d)",
+      "display" : "meq/(kg.d)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/L",
+      "display" : "meq/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/d",
+      "display" : "meq/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/dL",
+      "display" : "meq/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/g",
+      "display" : "meq/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/h",
+      "display" : "meq/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/kg",
+      "display" : "meq/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/kg/h",
+      "display" : "meq/kg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/kg/min",
+      "display" : "meq/kg/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/m2",
+      "display" : "meq/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/mL",
+      "display" : "meq/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "meq/min",
+      "display" : "meq/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg",
+      "display" : "mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/(10.h)",
+      "display" : "mg/(10.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/(12.h)",
+      "display" : "mg/(12.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/(18.h)",
+      "display" : "mg/(18.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/(2.h)",
+      "display" : "mg/(2.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/(24.h)",
+      "display" : "mg/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/(6.h)",
+      "display" : "mg/(6.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/(72.h)",
+      "display" : "mg/(72.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/(8.h)",
+      "display" : "mg/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/(8.h.kg)",
+      "display" : "mg/(8.h.kg)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/(kg.h)",
+      "display" : "mg/(kg.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/L",
+      "display" : "mg/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/d",
+      "display" : "mg/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/d/(173.10*-2.m2)",
+      "display" : "mg/d/(173.10*-2.m2)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/d/1.73.m2",
+      "display" : "mg/d/1.73.m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/dL",
+      "display" : "mg/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/g",
+      "display" : "mg/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/h",
+      "display" : "mg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/kg",
+      "display" : "mg/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/kg/(24.h)",
+      "display" : "mg/kg/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/kg/(8.h)",
+      "display" : "mg/kg/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/kg/d",
+      "display" : "mg/kg/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/kg/h",
+      "display" : "mg/kg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/kg/min",
+      "display" : "mg/kg/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/m2",
+      "display" : "mg/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/m3",
+      "display" : "mg/m3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/mL",
+      "display" : "mg/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/mg",
+      "display" : "mg/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/min",
+      "display" : "mg/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/mmol",
+      "display" : "mg/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mg/wk",
+      "display" : "mg/wk"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mho",
+      "display" : "mho"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "min",
+      "display" : "min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mm",
+      "display" : "mm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mm/h",
+      "display" : "mm/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mm/min",
+      "display" : "mm/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mm2",
+      "display" : "mm2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mm3",
+      "display" : "mm3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mm[H2O]",
+      "display" : "mm[H2O]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mm[Hg]",
+      "display" : "mm[Hg]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol",
+      "display" : "mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/(12.h)",
+      "display" : "mmol/(12.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/(18.h)",
+      "display" : "mmol/(18.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/(2.h)",
+      "display" : "mmol/(2.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/(24.h)",
+      "display" : "mmol/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/(5.h)",
+      "display" : "mmol/(5.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/(6.h)",
+      "display" : "mmol/(6.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/(8.h)",
+      "display" : "mmol/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/(8.h.kg)",
+      "display" : "mmol/(8.h.kg)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/L",
+      "display" : "mmol/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/L/s",
+      "display" : "mmol/L/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/d",
+      "display" : "mmol/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/dL",
+      "display" : "mmol/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/g",
+      "display" : "mmol/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/h",
+      "display" : "mmol/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/h/mg",
+      "display" : "mmol/h/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/kg",
+      "display" : "mmol/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/kg/(8.h)",
+      "display" : "mmol/kg/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/kg/d",
+      "display" : "mmol/kg/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/kg/h",
+      "display" : "mmol/kg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/kg/min",
+      "display" : "mmol/kg/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/m",
+      "display" : "mmol/m"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/m2",
+      "display" : "mmol/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/min",
+      "display" : "mmol/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/mmol",
+      "display" : "mmol/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/mol",
+      "display" : "mmol/mol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mmol/s/L",
+      "display" : "mmol/s/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mo",
+      "display" : "mo"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mo_g",
+      "display" : "mo_g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mo_j",
+      "display" : "mo_j"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mo_s",
+      "display" : "mo_s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mol",
+      "display" : "mol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mol/L",
+      "display" : "mol/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mol/d",
+      "display" : "mol/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mol/kg",
+      "display" : "mol/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mol/kg/s",
+      "display" : "mol/kg/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mol/m3",
+      "display" : "mol/m3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mol/mL",
+      "display" : "mol/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mol/mol",
+      "display" : "mol/mol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mol/s",
+      "display" : "mol/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mosm",
+      "display" : "mosm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mosm/L",
+      "display" : "mosm/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "mosm/kg",
+      "display" : "mosm/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ms",
+      "display" : "ms"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nCi",
+      "display" : "nCi"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nL",
+      "display" : "nL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nU/mL",
+      "display" : "nU/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nU",
+      "display" : "nU"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng",
+      "display" : "ng"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/(24.h)",
+      "display" : "ng/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/(8.h)",
+      "display" : "ng/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/(8.h.kg)",
+      "display" : "ng/(8.h.kg)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/(kg.d)",
+      "display" : "ng/(kg.d)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/(kg.h)",
+      "display" : "ng/(kg.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/(kg.min)",
+      "display" : "ng/(kg.min)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/10*6",
+      "display" : "ng/10*6"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/L",
+      "display" : "ng/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/U",
+      "display" : "ng/U"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/d",
+      "display" : "ng/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/dL",
+      "display" : "ng/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/dL/h",
+      "display" : "ng/dL/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/g",
+      "display" : "ng/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/h",
+      "display" : "ng/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/kg",
+      "display" : "ng/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/kg/(8.h)",
+      "display" : "ng/kg/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/kg/h",
+      "display" : "ng/kg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/kg/min",
+      "display" : "ng/kg/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/m2",
+      "display" : "ng/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/mL",
+      "display" : "ng/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/mL/h",
+      "display" : "ng/mL/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/mg",
+      "display" : "ng/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/mg/h",
+      "display" : "ng/mg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/min",
+      "display" : "ng/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ng/s",
+      "display" : "ng/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nkat",
+      "display" : "nkat"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nm",
+      "display" : "nm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nm/s/L",
+      "display" : "nm/s/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol",
+      "display" : "nmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/(24.h)",
+      "display" : "nmol/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/L",
+      "display" : "nmol/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/L/mmol",
+      "display" : "nmol/L/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/L/s",
+      "display" : "nmol/L/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/d",
+      "display" : "nmol/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/dL",
+      "display" : "nmol/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/g",
+      "display" : "nmol/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/h/L",
+      "display" : "nmol/h/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/h/mL",
+      "display" : "nmol/h/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/h/mg",
+      "display" : "nmol/h/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/m/mg",
+      "display" : "nmol/m/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/mL",
+      "display" : "nmol/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/mL/h",
+      "display" : "nmol/mL/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/mL/min",
+      "display" : "nmol/mL/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/mg",
+      "display" : "nmol/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/mg/h",
+      "display" : "nmol/mg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/min",
+      "display" : "nmol/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/min/10*6",
+      "display" : "nmol/min/10*6"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/min/mL",
+      "display" : "nmol/min/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/min/mg",
+      "display" : "nmol/min/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/mmol",
+      "display" : "nmol/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/mol",
+      "display" : "nmol/mol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/nmol",
+      "display" : "nmol/nmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/s",
+      "display" : "nmol/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "nmol/s/L",
+      "display" : "nmol/s/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ns",
+      "display" : "ns"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "osm",
+      "display" : "osm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "osm/L",
+      "display" : "osm/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "osm/kg",
+      "display" : "osm/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pA",
+      "display" : "pA"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pL",
+      "display" : "pL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pT",
+      "display" : "pT"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pc",
+      "display" : "pc"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pg",
+      "display" : "pg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pg/L",
+      "display" : "pg/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pg/dL",
+      "display" : "pg/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pg/mL",
+      "display" : "pg/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pg/mg",
+      "display" : "pg/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pg/mm",
+      "display" : "pg/mm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ph",
+      "display" : "ph"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pkat",
+      "display" : "pkat"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pm",
+      "display" : "pm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol",
+      "display" : "pmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/(24.h)",
+      "display" : "pmol/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/L",
+      "display" : "pmol/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/d",
+      "display" : "pmol/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/dL",
+      "display" : "pmol/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/g",
+      "display" : "pmol/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/h/mL",
+      "display" : "pmol/h/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/h/mg",
+      "display" : "pmol/h/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/mL",
+      "display" : "pmol/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/mg",
+      "display" : "pmol/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/min",
+      "display" : "pmol/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/min/mg",
+      "display" : "pmol/min/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/mmol",
+      "display" : "pmol/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/mol",
+      "display" : "pmol/mol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "pmol/umol",
+      "display" : "pmol/umol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ps",
+      "display" : "ps"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "rad",
+      "display" : "rad"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "s",
+      "display" : "s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "sb",
+      "display" : "sb"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "sph",
+      "display" : "sph"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "sr",
+      "display" : "sr"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "st",
+      "display" : "st"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "t",
+      "display" : "t"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "u",
+      "display" : "u"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "uCi",
+      "display" : "uCi"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "uL",
+      "display" : "uL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "uL/(2.h)",
+      "display" : "uL/(2.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "uL/h",
+      "display" : "uL/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "uOhm",
+      "display" : "uOhm"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "uU",
+      "display" : "uU"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "uU/L",
+      "display" : "uU/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "uU/g",
+      "display" : "uU/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "uU/mL",
+      "display" : "uU/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "uV",
+      "display" : "uV"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "u[IU]",
+      "display" : "u[IU]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "u[IU]/L",
+      "display" : "u[IU]/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "u[IU]/mL",
+      "display" : "u[IU]/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ueq",
+      "display" : "ueq"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ueq/L",
+      "display" : "ueq/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ueq/mL",
+      "display" : "ueq/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug",
+      "display" : "ug"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/(100.g)",
+      "display" : "ug/(100.g)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/(24.h)",
+      "display" : "ug/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/(8.h)",
+      "display" : "ug/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/(kg.d)",
+      "display" : "ug/(kg.d)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/(kg.h)",
+      "display" : "ug/(kg.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/L",
+      "display" : "ug/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/L/(24.h)",
+      "display" : "ug/L/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/[sft_i]",
+      "display" : "ug/[sft_i]"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/d",
+      "display" : "ug/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/dL",
+      "display" : "ug/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/g",
+      "display" : "ug/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/h",
+      "display" : "ug/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/kg",
+      "display" : "ug/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/kg/(8.h)",
+      "display" : "ug/kg/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/kg/d",
+      "display" : "ug/kg/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/kg/h",
+      "display" : "ug/kg/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/kg/min",
+      "display" : "ug/kg/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/m2",
+      "display" : "ug/m2"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/m3",
+      "display" : "ug/m3"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/mL",
+      "display" : "ug/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/mg",
+      "display" : "ug/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/min",
+      "display" : "ug/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/mmol",
+      "display" : "ug/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ug/ng",
+      "display" : "ug/ng"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "ukat",
+      "display" : "ukat"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "um",
+      "display" : "um"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "um/s",
+      "display" : "um/s"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol",
+      "display" : "umol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/(2.h)",
+      "display" : "umol/(2.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/(24.h)",
+      "display" : "umol/(24.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/(8.h)",
+      "display" : "umol/(8.h)"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/L",
+      "display" : "umol/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/L/h",
+      "display" : "umol/L/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/d",
+      "display" : "umol/d"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/dL",
+      "display" : "umol/dL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/g",
+      "display" : "umol/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/h",
+      "display" : "umol/h"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/h/L",
+      "display" : "umol/h/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/h/g",
+      "display" : "umol/h/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/h/mg",
+      "display" : "umol/h/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/kg",
+      "display" : "umol/kg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/m",
+      "display" : "umol/m"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/mL",
+      "display" : "umol/mL"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/mL/min",
+      "display" : "umol/mL/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/mg",
+      "display" : "umol/mg"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/min",
+      "display" : "umol/min"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/min/L",
+      "display" : "umol/min/L"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/min/g",
+      "display" : "umol/min/g"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/mmol",
+      "display" : "umol/mmol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/mol",
+      "display" : "umol/mol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "umol/umol",
+      "display" : "umol/umol"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "us",
+      "display" : "us"
+    },
+    {
+      "system" : "http://unitsofmeasure.org",
+      "code" : "wk",
+      "display" : "wk"
+    }]
+  }
+},
+  "error" : ""
 }
 -------------------------------------------------------------------------------------
