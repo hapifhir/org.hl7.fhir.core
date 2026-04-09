@@ -625,7 +625,7 @@ public class CompareUtilities extends BaseTestingUtilities {
         case "$id$": return actualJsonString.matches(RegexConstants.ID_REGEX);
         case "$url$": return actualJsonString.matches(RegexConstants.URL_REGEX);
         case "$token$": return actualJsonString.matches(RegexConstants.TOKEN_REGEX);
-        case "$semver$": return actualJsonString.matches(RegexConstants.SEMVER_REGEX);
+        case "$semver$": return VersionUtilities.isSemVer(actualJsonString, false);
         case "$version$": return matchesVariable(actualJsonString, "version");
         default: 
           throw new Error("Unhandled template: "+expectedJsonString);

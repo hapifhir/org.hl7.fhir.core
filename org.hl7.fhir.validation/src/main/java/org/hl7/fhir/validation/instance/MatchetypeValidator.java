@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -393,7 +394,7 @@ public class MatchetypeValidator {
         case "$id$": return actualJsonString.matches(RegexConstants.ID_REGEX);
         case "$url$": return actualJsonString.matches(RegexConstants.URL_REGEX);
         case "$token$": return actualJsonString.matches(RegexConstants.TOKEN_REGEX);
-        case "$semver$": return actualJsonString.matches(RegexConstants.SEMVER_REGEX);
+        case "$semver$": return VersionUtilities.isSemVer(actualJsonString, false);
         case "$version$": return matchesVariable(actualJsonString, "version");
         default: 
           throw new Error("Unhandled template: "+expectedJsonString);
