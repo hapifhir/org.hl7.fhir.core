@@ -93,6 +93,8 @@ public class OIDUtilities {
             // Skip header line
             isHeaderProcessed = true;
           } else {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character split
             String[] parts = line.split(",");
             if (parts.length >= 4) {
               OIDInfo info = new OIDInfo();

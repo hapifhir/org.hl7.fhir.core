@@ -177,6 +177,8 @@ public class AcceptLanguageHeader {
     return b.toString();
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   public boolean matches(String dispLang) {
     for (LanguagePreference lp : langs) {
       if (lp.matches(dispLang)) {

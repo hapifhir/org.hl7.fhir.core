@@ -203,9 +203,12 @@ public class HierarchicalTableGenerator {
       if (attributes == null) {
         return null;
       } else {
-        for (String s : attributes.get("class").split("\\ ")) {
-          if (KNOWN_ROLES.contains(s)) {
-            return s;
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] classes = attributes.get("class").split("\\ ");
+        for (String clazz : classes) {
+          if (KNOWN_ROLES.contains(clazz)) {
+            return clazz;
           }
         }
         return null;
@@ -414,16 +417,6 @@ public class HierarchicalTableGenerator {
            myPieces.add(x);            
           }
         }
-//        String[] paragraphs = html.replace("<p>", "").split("<\\/p>|<br  \\/>");
-//        for (int i=0;i<paragraphs.length;i++) {
-//          if (!paragraphs[i].isEmpty()) {
-//            if (i!=0) {
-//              myPieces.add(new Piece("br"));
-//              myPieces.add(new Piece("br"));
-//            }
-//            myPieces.addAll(htmlFormattingToPieces(paragraphs[i]));
-//          }
-//        }
       } catch (Exception e) {
         throw new FHIRException("Exception parsing html: "+e.getMessage()+" for "+html, e);
       }

@@ -1067,7 +1067,11 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (!hasAttribute("class"))
       return false;
     String classValue = getAttribute("class");
-    return Arrays.asList(classValue.split(" ")).contains(name);
+
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] classNames = classValue.split(" ");
+    return Arrays.asList(classNames).contains(name);
   }
 
   public XhtmlNode clss(String name) {
