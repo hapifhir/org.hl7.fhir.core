@@ -214,9 +214,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private static final String EXECUTED_CONSTRAINT_LIST = "validator.executed.invariant.list";
   private static final String EXECUTION_ID = "validator.execution.id";
-  private static final String HTML_FRAGMENT_REGEX = "[a-zA-Z]\\w*(((\\s+)(\\S)*)*)";
   private static final boolean STACK_TRACE = false;
-  private static final boolean DEBUG_ELEMENT = false;
   private static final boolean SAVE_INTERMEDIARIES = false; // set this to true to get the intermediary formats while we are waiting for a UI around this z(SHC/SHL)
   
   private static final HashSet<String> NO_TX_SYSTEM_EXEMPT = new HashSet<>(Arrays.asList("http://loinc.org", "http://unitsofmeasure.org", "http://hl7.org/fhir/sid/icd-9-cm", "http://snomed.info/sct", "http://www.nlm.nih.gov/research/umls/rxnorm"));
@@ -3294,9 +3292,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
       if (!"xhtml".equals(type)) {
         if (securityChecks) {
-          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_ERROR) && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_ERROR) && ok;
         } else if (!"markdown".equals(type)){
-          hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
+          hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
         }
       }
 
@@ -4073,22 +4071,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return
       Utilities.existsInList(p[0], "CanonicalResource", "MetadataResource") ||
       VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains((p[0]));
-  }
-
-  private boolean containsHtmlTags(String cnt) {
-    int i = cnt.indexOf("<");
-    while (i > -1) {
-      cnt = cnt.substring(i+1);
-      i = cnt.indexOf("<");
-      int e = cnt.indexOf(">");
-      if (e > -1 && e < i) {
-        String s = cnt.substring(0, e);
-        if (s.matches(HTML_FRAGMENT_REGEX)) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 
   private boolean isDefinitionURL(String url) {
