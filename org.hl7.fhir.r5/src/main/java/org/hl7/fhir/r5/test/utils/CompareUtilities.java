@@ -3,12 +3,9 @@ package org.hl7.fhir.r5.test.utils;
 import lombok.Getter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.utilities.*;
-import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonNull;
@@ -621,14 +618,14 @@ public class CompareUtilities extends BaseTestingUtilities {
       } else {
         switch (expectedJsonString) {
         case "$$" : return true;
-        case "$instant$": return actualJsonString.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]{1,9})?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))");
-        case "$date$": return actualJsonString.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]{1,9})?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?");
-        case "$uuid$": return actualJsonString.matches("urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+        case "$instant$": return actualJsonString.matches(RegexConstants.INSTANT_REGEX);
+        case "$date$": return actualJsonString.matches(RegexConstants.DATE_REGEX);
+        case "$uuid$": return actualJsonString.matches(RegexConstants.URN_UUID_REGEX);
         case "$string$": return actualJsonString.equals(actualJsonString.trim());
-        case "$id$": return actualJsonString.matches("[A-Za-z0-9\\-\\.]{1,64}");
-        case "$url$": return actualJsonString.matches("(https?://|www\\.)[-a-zA-Z0-9+&@#/%?=~_|!:.;]*[-a-zA-Z0-9+&@#/%=~_|]");
-        case "$token$": return actualJsonString.matches("[0-9a-zA-Z_][0-9a-zA-Z_\\.\\-]*");
-        case "$semver$": return actualJsonString.matches("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$");
+        case "$id$": return actualJsonString.matches(RegexConstants.ID_REGEX);
+        case "$url$": return actualJsonString.matches(RegexConstants.URL_REGEX);
+        case "$token$": return actualJsonString.matches(RegexConstants.TOKEN_REGEX);
+        case "$semver$": return VersionUtilities.isSemVer(actualJsonString, false);
         case "$version$": return matchesVariable(actualJsonString, "version");
         default: 
           throw new Error("Unhandled template: "+expectedJsonString);

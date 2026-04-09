@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
