@@ -1181,7 +1181,6 @@ v: {
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
   "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#LP43571-6 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.82: Check \"http://loinc.org#LP43571-6\"\n5ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n5ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at Coding\n5ms http://loinc.org/vs|2.82: Code \"LP43571-6\" not found in http://loinc.org|2.82: undefined",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1223,6 +1222,7 @@ v: {
   }
 }}####
 e: {
+  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
@@ -1255,5 +1255,56 @@ e: {
   }
 },
   "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "5792-7"
+}, "valueSet" :{
+  "resourceType" : "ValueSet"
+}, "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"true", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "5792-7",
+  "system" : "http://loinc.org",
+  "severity" : "error",
+  "error" : "The provided code 'http://loinc.org#5792-7' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/vs-marital2'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n0ms http://hl7.org/fhir/test/ValueSet/vs-marital2: Analysing http://hl7.org/fhir/test/ValueSet/vs-marital2 for validation purposes\n0ms http://hl7.org/fhir/test/ValueSet/vs-marital2: Parameters: disp-lang=en-US, generate-narrative, membership-only, default-to-latest\n1ms http://hl7.org/fhir/test/ValueSet/vs-marital2: Validate \"[http://loinc.org#5792-7 (\"undefined\")]\"\n3ms http://hl7.org/fhir/test/ValueSet/vs-marital2: Check \"http://loinc.org#5792-7\"",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://loinc.org#5792-7' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/vs-marital2'"
+    },
+    "expression" : ["Coding.code"]
+  }]
+}
+
 }
 -------------------------------------------------------------------------------------
