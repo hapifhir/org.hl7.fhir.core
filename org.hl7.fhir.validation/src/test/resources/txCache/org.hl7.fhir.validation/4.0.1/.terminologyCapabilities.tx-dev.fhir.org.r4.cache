@@ -2,11 +2,11 @@
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
   "url" : "https://tx-dev.fhir.org/r4/TerminologyCapabilities/tx",
-  "version" : "0.8.5",
+  "version" : "0.8.6",
   "name" : "FHIRTerminologyServer",
   "title" : "FHIR Terminology Server",
   "status" : "active",
-  "date" : "2026-04-02T12:43:16.028Z",
+  "date" : "2026-04-09T10:31:58.660Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -70,6 +70,16 @@
     "uri" : "http://fdasis.nlm.nih.gov",
     "version" : [{
       "code" : "2024-06-22"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
+    "uri" : "http://fhir.org/packages/fhir.tx.support/CodeSystem/designation-usage",
+    "version" : [{
+      "code" : "0.1.0"
     }]
   },
   {
@@ -3021,19 +3031,7 @@
       "code" : "http://snomed.info/sct/900000000000207008/version/20240201"
     },
     {
-      "code" : "http://snomed.info/sct/45991000052106/version/20231130"
-    },
-    {
-      "code" : "http://snomed.info/sct/32506021000036107/version/20230731"
-    },
-    {
-      "code" : "http://snomed.info/sct/11000172109/version/20231115"
-    },
-    {
       "code" : "http://snomed.info/sct/2011000195101/version/20230607"
-    },
-    {
-      "code" : "http://snomed.info/sct/554471000005108/version/20250930"
     },
     {
       "code" : "http://snomed.info/sct/827022005/version/20241216"
@@ -14767,6 +14765,10 @@
     }]
   },
   {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
     "uri" : "http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets",
     "version" : [{
       "code" : "2025-01"
