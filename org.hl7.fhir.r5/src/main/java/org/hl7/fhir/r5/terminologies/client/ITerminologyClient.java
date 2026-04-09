@@ -38,6 +38,7 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Map;
 import org.hl7.fhir.utilities.ITerminologyRequestIdProvider;
@@ -59,6 +60,7 @@ public interface ITerminologyClient {
   Parameters batchValidateCS(Parameters pin) throws FHIRException;
   Parameters batchValidateVS(Parameters pin) throws FHIRException;
   Parameters subsumes(Parameters pin) throws FHIRException;
+  Parameters getValueSetRelationship(ValueSet vsThis, ValueSet vsOther) throws FHIRException, IOException;
   ITerminologyClient setTimeoutFactor(int i) throws FHIRException;
   ToolingClientLogger getLogger();
   ITerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
