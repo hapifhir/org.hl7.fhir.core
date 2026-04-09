@@ -171,6 +171,8 @@ public class OIDUtilities {
     return id.substring(0, id.indexOf("."));
   }
 
+  @SuppressWarnings("checkstyle:regexUtilsUsage")
+  //non-overlapping alternation, safe
   public static boolean isValidOID(String oid) {
     // First arc must be a single digit 0, 1, or 2 per OID spec
     if (oid.length() < 2 || oid.charAt(0) < '0' || oid.charAt(0) > '2' || oid.charAt(1) != '.') {

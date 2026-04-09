@@ -287,6 +287,8 @@ public class POGenerator {
     for (String line : FileUtilities.fileToLines(path)) {
       if (line.contains("public static final String") && !line.trim().startsWith("//")) {
         int i = line.indexOf("public static final String") + "public static final String".length();
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] p = line.substring(i).split("\\=");
         if (p.length == 2) {
           String n = p[0].trim();
@@ -449,7 +451,11 @@ public class POGenerator {
 
   private void savePropertiesFile(String tgt, List<POObject> objects) throws IOException {
     String nameLine = FileUtilities.fileToLines(tgt).get(0);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] parts = nameLine.substring(1).trim().split("\\=");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] names = parts[1].split("\\,");
     
     StringBuilder b = new StringBuilder();

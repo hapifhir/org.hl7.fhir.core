@@ -13,6 +13,8 @@ public class UUIDUtilities {
     return "urn:uuid:" + UUID.randomUUID().toString().toLowerCase();
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //fixed-width hex groups, safe
   public static boolean isValidUUID(String uuid) {
     return uuid.matches(UUID_REGEX);
   }
