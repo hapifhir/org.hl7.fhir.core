@@ -44,6 +44,8 @@ public class MimeType {
 
   public MimeType(String s) {
     source = s;
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     for (String ss : s.split("\\;")) {
       String p = ss.trim();
       if (base == null)
@@ -95,6 +97,8 @@ public class MimeType {
 
   public static List<MimeType> parseList(String s) {
     List<MimeType> result = new ArrayList<MimeType>();
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     for (String e : s.split("\\,"))
         result.add(new MimeType(e));
     return result;

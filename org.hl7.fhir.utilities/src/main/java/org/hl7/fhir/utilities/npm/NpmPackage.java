@@ -1560,6 +1560,8 @@ public class NpmPackage {
 
   public InputStream load(PackageResourceInformation p) throws IOException {
     if (p.filename.startsWith("@")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pl = p.filename.substring(1).split("\\/");
       return new ByteArrayInputStream(folders.get(pl[0]).content.get(pl[1]));
     } else {

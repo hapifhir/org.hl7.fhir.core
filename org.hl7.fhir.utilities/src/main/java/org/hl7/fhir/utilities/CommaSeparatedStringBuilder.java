@@ -195,6 +195,8 @@ public class CommaSeparatedStringBuilder {
     }
     Set<String> res = new HashSet<>();
     if (!Utilities.noString(source)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       for (String s : source.split("\\,")) {
         res.add(s.trim());
       }

@@ -169,7 +169,9 @@ public class MarkDownProcessor {
     // Detect autolinks, which should start with a scheme, followed by a colon, followed by some content. Whitespace
     // is not allowed and for practical purposes, the scheme is considered to consist of lowercase ASCII characters
     // only.
-    Pattern autolinkPattern = Pattern.compile("<[a-z]+:[^\\s]+>");
+    @SuppressWarnings("checkstyle:patternUsage")
+    // Pattern <[a-z]+:\S+> is safe for use
+    Pattern autolinkPattern = Pattern.compile("<[a-z]+:\\S+>");
     Matcher autolinkMatcher = autolinkPattern.matcher(s);
     return autolinkMatcher.find();
   }

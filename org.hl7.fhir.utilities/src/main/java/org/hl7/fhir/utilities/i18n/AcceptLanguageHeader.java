@@ -93,6 +93,8 @@ public class AcceptLanguageHeader {
     boolean wildcard = false;
     int offset = langs.size();
     if (!Utilities.noString(src)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = src.split("\\,");
       for (int i = 0; i < parts.length; i++) {
         String lang = parts[i].trim();

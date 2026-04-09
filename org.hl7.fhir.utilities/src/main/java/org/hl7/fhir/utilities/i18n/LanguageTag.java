@@ -25,6 +25,8 @@ public class LanguageTag {
     this.code = code;
 
     if (!Utilities.noString(code)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = code.split("\\-");
       int c = 0;
       int t = parts.length;

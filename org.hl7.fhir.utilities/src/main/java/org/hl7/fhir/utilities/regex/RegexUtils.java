@@ -2,7 +2,7 @@ package org.hl7.fhir.utilities.regex;
 
 import java.util.regex.Pattern;
 
-public class RegexUtils {
+public final class RegexUtils {
   private RegexUtils() {
     throw new UnsupportedOperationException("This utility class should not be instantiated");
   }
@@ -23,6 +23,8 @@ public class RegexUtils {
    * @param maxEntries The maximum expected number of entries, or -1 to not check
    * @return true if the regex matches all entries
    */
+  @SuppressWarnings({"checkstyle:patternUsage", "checkstyle:regexUtilsUsage"})
+  // See apiNote
   public static boolean splitRegexMatch(final String string, final String splitRegex, String entryRegex, int minEntries, int maxEntries) {
     final String[] entries = string.split(splitRegex);
     if (minEntries >= 0 && entries.length < minEntries) {
