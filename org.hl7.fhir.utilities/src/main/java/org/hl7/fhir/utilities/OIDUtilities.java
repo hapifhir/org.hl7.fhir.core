@@ -1,13 +1,13 @@
 package org.hl7.fhir.utilities;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.regex.RegexUtils;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -71,7 +71,7 @@ public class OIDUtilities {
     }
   }
 
-  private static final String OID_REGEX = "[0-2](\\.(0|[1-9][0-9]*))+";
+
   private final Map<String, OIDInfo> oidMap = new HashMap<>();
 
 
@@ -170,7 +170,11 @@ public class OIDUtilities {
   }
 
   public static boolean isValidOID(String oid) {
-    return oid.matches(OID_REGEX);
+    // First arc must be a single digit 0, 1, or 2 per OID spec
+    if (oid.length() < 2 || oid.charAt(0) < '0' || oid.charAt(0) > '2' || oid.charAt(1) != '.') {
+      return false;
+    }
+    return RegexUtils.splitRegexMatch(oid, "\\.", "(0|[1-9][0-9]*)", 2, -1);
   }
 
   public boolean isKnownOID(String url) {
