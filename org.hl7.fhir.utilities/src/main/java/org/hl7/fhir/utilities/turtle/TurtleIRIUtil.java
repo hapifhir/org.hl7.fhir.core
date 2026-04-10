@@ -16,10 +16,14 @@ public class TurtleIRIUtil {
   //                slash (/), and non-ASCII Unicode (U+00A0–U+10FFFF)
   private static final Pattern IRI_CHAR  = Pattern.compile("[&'()*+,;:@_~?!$/\\-#.=a-zA-Z0-9\\x{00A0}-\\x{10FFFF}]");
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   private static boolean isHexDigit(String twoChars) {
     return HEX_PAIR.matcher(twoChars).matches();
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   private static boolean isIriChar(int cp) {
     return IRI_CHAR.matcher(new String(Character.toChars(cp))).matches();
   }

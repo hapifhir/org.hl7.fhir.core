@@ -97,6 +97,8 @@ public class Inflector {
          * @param input the input string
          * @return the modified string if this rule applied, or null if the input was not modified by this rule
          */
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.replaceAll
         protected String apply( String input ) {
             Matcher matcher = this.expressionPattern.matcher(input);
             if (!matcher.find()) return null;
@@ -353,6 +355,8 @@ public class Inflector {
      * @param delimiterChars optional characters that are used to delimit word boundaries (beyond capitalization)
      * @return a lower-cased version of the input, with separate words delimited by the underscore character.
      */
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //non-overlapping character classes, safe
     public String underscore( String camelCaseWord,
                               char... delimiterChars ) {
         if (camelCaseWord == null) return null;
@@ -407,14 +411,23 @@ public class Inflector {
         String result = lowerCaseAndUnderscoredWords.trim();
         if (result.length() == 0) return "";
         // Remove a trailing "_id" token
-        result = result.replaceAll("_id$", "");
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, safe
+        String withoutId = result.replaceAll("_id$", "");
+        result = withoutId;
         // Remove all of the tokens that should be removed
         if (removableTokens != null) {
             for (String removableToken : removableTokens) {
-                result = result.replaceAll(removableToken, "");
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //Regexes sourced from humanize callers; no external callers pass tokens
+                String withoutToken = result.replaceAll(removableToken, "");
+                result = withoutToken;
             }
         }
-        result = result.replaceAll("_+", " "); // replace all adjacent underscores with a single space
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //simple pattern, safe
+        String spaced = result.replaceAll("_+", " "); // replace all adjacent underscores with a single space
+        result = spaced;
         return capitalize(result);
     }
 
@@ -435,7 +448,10 @@ public class Inflector {
      * @param words the input to be turned into title case
      * @param removableTokens optional array of tokens that are to be removed
      * @return the title-case version of the supplied words
+     *
+     * @deprecated No longer in use in this project, kindling, or fhir-ig-publisher
      */
+    @Deprecated(since="2026-04-09")
     public String titleCase( String words,
                              String... removableTokens ) {
         String result = humanize(words, removableTokens);

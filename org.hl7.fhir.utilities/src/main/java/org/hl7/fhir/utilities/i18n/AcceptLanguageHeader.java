@@ -61,7 +61,10 @@ public class AcceptLanguageHeader {
       if (value == 1) {
         return lang;
       } else {
-        return lang+"; q="+(String.format("%.6f", value).replaceAll("(\\.\\d+?)0*$", "$1")); //Double.toString(value);
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, safe
+        String formattedValue = String.format("%.6f", value).replaceAll("(\\.\\d+?)0*$", "$1");
+        return lang+"; q="+formattedValue; //Double.toString(value);
       }
     }
     public boolean matches(String dispLang) {

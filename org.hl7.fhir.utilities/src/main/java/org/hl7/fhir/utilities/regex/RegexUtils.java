@@ -23,7 +23,7 @@ public final class RegexUtils {
    * @param maxEntries The maximum expected number of entries, or -1 to not check
    * @return true if the regex matches all entries
    */
-  @SuppressWarnings({"checkstyle:patternUsage", "checkstyle:regexUtilsUsage"})
+  @SuppressWarnings({"checkstyle:patternUsage", "checkstyle:regexUtilsUsage", "checkstyle:stringImplicitPatternUsage"})
   // See apiNote
   public static boolean splitRegexMatch(final String string, final String splitRegex, String entryRegex, int minEntries, int maxEntries) {
     final String[] entries = string.split(splitRegex);
@@ -36,7 +36,10 @@ public final class RegexUtils {
     Pattern pattern = Pattern.compile(entryRegex);
 
     for (String entry : entries) {
-      if (!pattern.matcher(entry).matches()) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean entryMatches = pattern.matcher(entry).matches();
+      if (!entryMatches) {
         return false;
       }
     }

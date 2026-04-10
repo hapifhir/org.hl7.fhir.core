@@ -143,18 +143,27 @@ public class FileUtilities {
 
   public static List<String> fileToLines(String file) throws FileNotFoundException, IOException {
     List<String> res = new ArrayList<String>();
-    for (String s : LINE_SEP_PATTERN.split(fileToString(file))) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: not using String.split
+    String[] splitLines = LINE_SEP_PATTERN.split(fileToString(file));
+    for (String s : splitLines) {
       res.add(s);
     }
     return res;
   }
 
   public static String[] fileToLines(File file) throws IOException {
-    return LINE_SEP_PATTERN.split(fileToString(file));
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: not using String.split
+    String[] lines = LINE_SEP_PATTERN.split(fileToString(file));
+    return lines;
   }
 
   public static String[] streamToLines(InputStream stream) throws IOException {
-    return LINE_SEP_PATTERN.split(streamToString(stream));
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: not using String.split
+    String[] lines = LINE_SEP_PATTERN.split(streamToString(stream));
+    return lines;
   }
 
   public static String streamToString(final InputStream input) throws IOException  {
