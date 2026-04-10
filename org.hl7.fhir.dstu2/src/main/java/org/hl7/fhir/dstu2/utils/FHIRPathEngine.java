@@ -2216,7 +2216,10 @@ public class FHIRPathEngine {
     String repl = convertToString(execute(context, focus, exp.getParameters().get(1), true));
 
     if (focus.size() == 1 && !Utilities.noString(regex)) {
-      result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)));
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //Regex from FHIRPath caller
+      String replaced = convertToString(focus.get(0)).replaceAll(regex, repl);
+      result.add(new StringType(replaced));
     } else {
       result.add(new StringType(convertToString(focus.get(0))));
     }
@@ -2448,9 +2451,12 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
 
-    if (focus.size() == 1 && !Utilities.noString(sw))
-      result.add(new BooleanType(convertToString(focus.get(0)).matches(sw)));
-    else
+    if (focus.size() == 1 && !Utilities.noString(sw)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //Regex from FHIRPath caller
+      boolean matchResult = convertToString(focus.get(0)).matches(sw);
+      result.add(new BooleanType(matchResult));
+    } else
       result.add(new BooleanType(false));
     return result;
   }

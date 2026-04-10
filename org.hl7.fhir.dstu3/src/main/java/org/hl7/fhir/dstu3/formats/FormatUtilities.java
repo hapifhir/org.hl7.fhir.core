@@ -98,7 +98,10 @@ public abstract class FormatUtilities {
   }
   
 	public static boolean isValidId(String tail) {
-	  return tail.matches(RegexConstants.ID_REGEX);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //bounded character class, safe
+    boolean isValid = tail.matches(RegexConstants.ID_REGEX);
+    return isValid;
   }
 
   public static String makeId(String candidate) {
