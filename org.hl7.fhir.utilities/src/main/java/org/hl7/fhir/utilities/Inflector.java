@@ -83,6 +83,8 @@ public class Inflector {
         protected final Pattern expressionPattern;
         protected final String replacement;
 
+        @SuppressWarnings("checkstyle:patternUsage")
+        //Regexes sourced from known expression; reviewed in initialize()
         protected Rule( String expression,
                         String replacement ) {
             this.expression = expression;
@@ -550,6 +552,8 @@ public class Inflector {
     protected static String replaceAllWithUppercase( String input,
                                                      String regex,
                                                      int groupNumberToUppercase ) {
+        @SuppressWarnings("checkstyle:patternUsage")
+        //Regexes sourced from known callers; reviewed in camelCase, titleCase
         Pattern underscoreAndDotPattern = Pattern.compile(regex);
         Matcher matcher = underscoreAndDotPattern.matcher(input);
         StringBuffer sb = new StringBuffer();

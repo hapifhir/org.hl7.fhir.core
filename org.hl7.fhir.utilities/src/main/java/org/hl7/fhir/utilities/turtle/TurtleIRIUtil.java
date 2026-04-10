@@ -10,10 +10,14 @@ public class TurtleIRIUtil {
   }
 
   //   %XX          a percent-encoded octet (two hex digits)
+  @SuppressWarnings("checkstyle:patternUsage")
+  //fixed-width hex pair, safe
   private static final Pattern HEX_PAIR = Pattern.compile("[0-9a-fA-F]{2}");
   //   [...]        a literal IRI character: ASCII unreserved (alphanumeric, -._~),
   //                sub-delimiters (!$&'()*+,;=), gen-delimiters (:@/?#),
   //                slash (/), and non-ASCII Unicode (U+00A0–U+10FFFF)
+  @SuppressWarnings("checkstyle:patternUsage")
+  //fixed-width IRI character class, safe
   private static final Pattern IRI_CHAR  = Pattern.compile("[&'()*+,;:@_~?!$/\\-#.=a-zA-Z0-9\\x{00A0}-\\x{10FFFF}]");
 
   @SuppressWarnings("checkstyle:stringImplicitPatternUsage")

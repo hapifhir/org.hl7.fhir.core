@@ -32,6 +32,8 @@ public class FileUtilities {
     throw new UnsupportedOperationException("This utility class should not be instantiated");
   }
 
+  @SuppressWarnings("checkstyle:patternUsage")
+  //fixed-width, line separator character class, safe
   static final Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
 
   public static String bytesToString(final byte[] bs) throws IOException {

@@ -61,6 +61,9 @@ public class JUnit4TestExecutor extends ModuleTestExecutor {
 
     junit.addListener(new JUnit4RunListener(log));
 
+    @SuppressWarnings("checkstyle:patternUsage")
+    //caller-provided test class name filter
+    //TODO this is limited to CLI execution on a local machine, but we should also limit runtime of any regex matching here.
     Pattern pattern = classNameFilter != null ? Pattern.compile(classNameFilter) : null;
 
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
