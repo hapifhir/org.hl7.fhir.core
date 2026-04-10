@@ -298,9 +298,9 @@ public class ValueSet40_50 {
       if (src == null || src.isEmpty())
           return null;
       Enumeration<Enumerations.FilterOperator> tgt = new Enumeration<>(new Enumerations.FilterOperatorEnumFactory());
-      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt, "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.filter.op");
-      if (src.hasExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.filter.op")) {
-        tgt.setValue(Enumerations.FilterOperator.fromCode(src.getExtensionString("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.filter.op")));
+      ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt, VersionConvertorConstants.EXT_VALUESET_FILTER_OP);
+      if (src.hasExtension(VersionConvertorConstants.EXT_VALUESET_FILTER_OP)) {
+        tgt.setValue(Enumerations.FilterOperator.fromCode(src.getExtensionString(VersionConvertorConstants.EXT_VALUESET_FILTER_OP)));
       } else if (src.getValue() == null) {
           tgt.setValue(null);
       } else {
@@ -374,10 +374,10 @@ public class ValueSet40_50 {
                   tgt.setValue(ValueSet.FilterOperator.GENERALIZES);
                   break;
               case CHILDOF:
-                tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.filter.op", new org.hl7.fhir.r4.model.CodeType("child-of"));
+                tgt.addExtension(VersionConvertorConstants.EXT_VALUESET_FILTER_OP, new org.hl7.fhir.r4.model.CodeType("child-of"));
                 break;
               case DESCENDENTLEAF:
-                tgt.addExtension("http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.filter.op", new org.hl7.fhir.r4.model.CodeType(" descendent-leaf"));
+                tgt.addExtension(VersionConvertorConstants.EXT_VALUESET_FILTER_OP, new org.hl7.fhir.r4.model.CodeType("descendent-leaf"));
                 break;
               case EXISTS:
                   tgt.setValue(ValueSet.FilterOperator.EXISTS);

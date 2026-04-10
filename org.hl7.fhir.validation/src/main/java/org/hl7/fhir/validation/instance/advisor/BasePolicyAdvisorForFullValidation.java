@@ -109,7 +109,12 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
     }
     return profiles;
   }
-    
+
+  @Override
+  public String relativeDatePlaceHolder() {
+    return null;
+  }
+
 
   private void getImpliedProfilesForObservation(List<StructureDefinition> profiles, IMessagingServices msgServices, List<ValidationMessage> messages, IWorkerContext context, String stackPath, Element resource) {
     Element code = resource.getNamedChild("code", false);

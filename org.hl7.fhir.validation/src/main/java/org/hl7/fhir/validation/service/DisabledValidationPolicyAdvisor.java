@@ -70,6 +70,11 @@ public class DisabledValidationPolicyAdvisor implements IValidationPolicyAdvisor
     return policyAdvisor.getImpliedProfilesForResource(validator, appContext, stackPath, definition, structure, resource, valid, msgServices, messages);
   }
 
+  @Override
+  public String relativeDatePlaceHolder() {
+    return null;
+  }
+
   public IValidationPolicyAdvisor getPolicyAdvisor() {
     return policyAdvisor;
   }

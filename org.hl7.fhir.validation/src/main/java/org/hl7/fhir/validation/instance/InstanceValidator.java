@@ -3390,7 +3390,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !hasTime(e.primitiveValue()) || hasTimeZone(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_TZ) && dok;
         }
         if (dok) {
-          dok = checkMinMaxValueDateTime(errors, path, context, e, node, dok);
+          dok = checkMinMaxValueDateTime(errors, path, context, e, node) && dok;
         }
         dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
         if (dok) {
@@ -3431,7 +3431,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.primitiveValue().matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1]))?)?"),
           I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATE_VALID, e.primitiveValue());
         if (dok) {
-          dok = checkMinMaxValueDate(errors, path, context, e, node, dok);
+          dok = checkMinMaxValueDate(errors, path, context, e, node) && dok;
         }
         dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength()) && dok;
         if (dok) {
@@ -3532,7 +3532,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         boolean dok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path,
             e.primitiveValue().matches("-?[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_DATETIME_REGEX,  e.primitiveValue());
         if (dok) {
-          dok = checkMinMaxValueDateTime(errors, path, context, e, node, dok);
+          dok = checkMinMaxValueDateTime(errors, path, context, e, node) && dok;
         }
 
         if (dok) {
@@ -3638,7 +3638,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return null;
   }
 
-  private boolean checkMinMaxValueDate(List<ValidationMessage> errors, String path, ElementDefinition context, Element e, NodeStack node, boolean dok) {
+  private boolean checkMinMaxValueDate(List<ValidationMessage> errors, String path, ElementDefinition context, Element e, NodeStack node) {
+    boolean dok = true;
     try {
       DateTimeType v = new ObjectConverter(getContext()).readAsDateTime(e);
       if (context.hasMaxValue()) {
@@ -3652,7 +3653,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               rule(errors, "2026-04-09", IssueType.INVALID, node, qty.isExactTime(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE, qtyString)) {
             DateTimeType limit = new DateTimeType(new Date());
             limit.add(qty);
-            dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX, v.getValueAsString(TemporalPrecisionEnum.DAY), qtyString, settings.isJunit() ? "XXX" : limit.getValueAsString(TemporalPrecisionEnum.DAY)) && dok;
+            dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX, v.getValueAsString(TemporalPrecisionEnum.DAY), qtyString,
+              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(TemporalPrecisionEnum.DAY)) && dok;
           } else {
             dok = false;
           }
@@ -3672,7 +3674,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rule(errors, "2026-04-09", IssueType.INVALID, node, qty.isExactTime(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE, qtyString)) {
             DateTimeType limit = new DateTimeType(new Date());
             limit.subtract(qty);
-            dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN, v.toString(), qtyString, settings.isJunit() ? "XXX" : limit.getValueAsString(TemporalPrecisionEnum.DAY)) && dok;
+            dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN, v.toString(), qtyString,
+              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(TemporalPrecisionEnum.DAY)) && dok;
           } else {
             dok = false;
           }
@@ -3687,7 +3690,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return dok;
   }
 
-  private boolean checkMinMaxValueDateTime(List<ValidationMessage> errors, String path, ElementDefinition context, Element e, NodeStack node, boolean dok) {
+  private boolean checkMinMaxValueDateTime(List<ValidationMessage> errors, String path, ElementDefinition context, Element e, NodeStack node) {
+    boolean dok = true;
     try {
       DateTimeType v = new ObjectConverter(getContext()).readAsDateTime(e);
       if (context.hasMaxValue()) {
@@ -3708,7 +3712,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             DateTimeType limit = new DateTimeType(new Date());
             limit.add(qty);
             dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.before(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX, v.getValueAsString(TemporalPrecisionEnum.DAY), qtyString,
-              settings.isJunit() ? "XXX" : limit.getValueAsString(TemporalPrecisionEnum.MILLI)) && dok;
+              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(TemporalPrecisionEnum.MILLI)) && dok;
           } else {
             dok = false;
           }
@@ -3734,7 +3738,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rule(errors, "2026-04-09", IssueType.INVALID, node, qty.isExactTime(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE, qtyString)) {
             DateTimeType limit = new DateTimeType(new Date());
             limit.subtract(qty);
-            dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN, v.toString(), qtyString, settings.isJunit() ? "XXX" : limit.getValueAsString(TemporalPrecisionEnum.MILLI)) && dok;
+            dok = rule(errors, "2026-04-09", IssueType.INVALID, e.line(), e.col(), path, !limit.after(v), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN, v.toString(), qtyString,
+              policyAdvisor.relativeDatePlaceHolder() != null ? policyAdvisor.relativeDatePlaceHolder() : limit.getValueAsString(TemporalPrecisionEnum.MILLI)) && dok;
           } else {
             dok = false;
           }

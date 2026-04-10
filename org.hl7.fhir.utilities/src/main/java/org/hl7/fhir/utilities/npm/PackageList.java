@@ -411,7 +411,7 @@ public class PackageList {
   }
 
   public void setWasPublishedAs(String url) {
-    json.set("", url);
+    json.set("was-published-as", url);
   }
 
   public String introduction() {

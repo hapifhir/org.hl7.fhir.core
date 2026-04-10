@@ -1119,6 +1119,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_INTRP_CH_NO_VS = "SDR_INTRP_CH_NO_VS";
   public static final String SDR_INTRP_CH_DET_VS = "SDR_INTRP_CH_DET_VS";
   public static final String VSR_LOGICAL = "VSR_LOGICAL";
+  public static final String VSR_RULES_TEXT = "VSR_RULES_TEXT";
   public static final String VSR_TRIGGER = "VSR_TRIGGER";
   public static final String VSR_NO_DEF = "VSR_NO_DEF";
   public static final String SDR_CONCEPT_DOMAIN = "SDR_CONCEPT_DOMAIN";

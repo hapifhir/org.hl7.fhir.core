@@ -305,7 +305,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
   protected org.hl7.fhir.r5.context.ILoggingService logger = new Slf4JLoggingService(log);
-  protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), UUID.randomUUID().toString(), logger);
+  @Getter protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), UUID.randomUUID().toString(), logger);
   protected AtomicReference<Parameters> expansionParameters = new AtomicReference<>(null);
   private Map<String, PackageInformation> packages = new HashMap<>();
 
@@ -3840,11 +3840,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     synchronized (lock) {
       return analyses.get(className.getName());
     }
-  }
-
-  @Override
-  public TerminologyClientManager getTerminologyClientManager() {
-    return terminologyClientManager;
   }
 
 }

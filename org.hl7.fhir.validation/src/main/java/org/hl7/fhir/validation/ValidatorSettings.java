@@ -20,7 +20,6 @@ public class ValidatorSettings extends ValidationOptions {
   private boolean allowExamples; // @configuration
   private boolean forPublication; // @configuration
   private boolean debug; // @configuration
-  @Getter @Setter private boolean junit; // only used to sanitise error messages for testing purposes
   private boolean warnOnDraftOrExperimental; // @configuration 
   private BestPracticeWarningLevel bpWarnings = BestPracticeWarningLevel.Warning; // @configuration
   private List<UsageContext> usageContexts = new ArrayList<UsageContext>(); // @configuration

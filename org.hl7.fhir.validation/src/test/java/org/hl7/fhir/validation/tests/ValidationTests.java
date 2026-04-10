@@ -247,7 +247,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     val.getContext().setClientRetryCount(4);
     val.setBestPracticeWarningLevel(BestPracticeWarningLevel.Ignore);
     val.getSettings().setDebug(false);
-    val.getSettings().setJunit(true);
     if (!VersionUtilities.isR5Plus(val.getContext().getVersion())) {
       val.getSettings().setUseValueSetDisplays(true);
     }
@@ -1054,6 +1053,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
                                                                  IMessagingServices msgServices, List<ValidationMessage> messages) {
     return new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.CHECK_VALID, null).getImpliedProfilesForResource(validator, appContext, stackPath,
       definition, structure, resource, valid, msgServices, messages);
+  }
+
+  @Override
+  public String relativeDatePlaceHolder() {
+    return "XXX";
   }
 
   @Override
