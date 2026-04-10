@@ -52,6 +52,13 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://fhir.org/packages/fhir.tx.support/CodeSystem/designation-usage",
+    "version" : [{
+      "code" : "0.1.0"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://healthit.gov/nhin/purposeofuse",
     "version" : [{
       "code" : "2.0"
@@ -3356,19 +3363,7 @@
       "code" : "http://snomed.info/sct/900000000000207008/version/20240201"
     },
     {
-      "code" : "http://snomed.info/sct/45991000052106/version/20231130"
-    },
-    {
-      "code" : "http://snomed.info/sct/32506021000036107/version/20230731"
-    },
-    {
-      "code" : "http://snomed.info/sct/11000172109/version/20231115"
-    },
-    {
       "code" : "http://snomed.info/sct/2011000195101/version/20230607"
-    },
-    {
-      "code" : "http://snomed.info/sct/554471000005108/version/20250930"
     },
     {
       "code" : "http://snomed.info/sct/827022005/version/20241216"
@@ -9726,7 +9721,8 @@
     "uri" : "http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets",
     "version" : [{
       "code" : "2025-01"
-    }]
+    }],
+    "content" : "complete"
   },
   {
     "uri" : "http://www.cms.gov/Medicare/Coding/ICD10",
