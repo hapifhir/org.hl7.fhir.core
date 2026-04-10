@@ -3196,8 +3196,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_NOTEMPTY) && ok;
       else if (Utilities.isAllWhitespace(e.primitiveValue()))
         warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS);
-      if (context.hasBinding()) {
-        ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, e.line(), e.col(), path, context.getBinding().getStrength() != BindingStrength.REQUIRED, I18nConstants.Terminology_TX_Code_ValueSet_MISSING) && ok;
+      if (context.hasBinding() && context.getBinding().getStrength() == BindingStrength.REQUIRED) {
+        // if there's a x-version extension, what we say is different
+        // todo: should this be a setting?
+        Element ex = getCrossVersionExtensionWithCode(e);
+        if (ex != null) {
+          warning(errors, NO_RULE_DATE, IssueType.CODEINVALID, e.line(), e.col(), path, false , I18nConstants.Terminology_TX_Code_ValueSet_XVER_SOURCE, ex.getNamedChildValue("value"), ex.getNamedChildValue("url"));
+        } else {
+          ok = rule(errors, NO_RULE_DATE, IssueType.CODEINVALID, e.line(), e.col(), path, false, I18nConstants.Terminology_TX_Code_ValueSet_MISSING) && ok;
+        }
       }
       ok = rule(errors, "2023-06-18", IssueType.INVALID, e.line(), e.col(), path, !context.getMustHaveValue(), I18nConstants.PRIMITIVE_MUSTHAVEVALUE_MESSAGE, context.getId(), profile.getVersionedUrl()) && ok;
       if (context.hasValueAlternatives()) {
@@ -3622,6 +3629,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     // for nothing to check
     return ok;
+  }
+
+  private Element getCrossVersionExtensionWithCode(Element e) {
+    for (Element child : e.getChildren()) {
+      if (child.getName().equals("extension") && xverManager.matchingUrl(child.getNamedChildValue("url"))) {
+        return child;
+      }
+    }
+    return null;
   }
 
   private boolean checkMinMaxValueDate(List<ValidationMessage> errors, String path, ElementDefinition context, Element e, NodeStack node, boolean dok) {
