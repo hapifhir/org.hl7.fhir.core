@@ -73,7 +73,7 @@
         <!-- No direct usage of XML constructors -->
         <property name="id" value="patternUsage"/>
         <property name="matchAcrossLines" value="true"/>
-        <property name="format" value="^.*Pattern\.(compile|matches)\("/>
+        <property name="format" value="Pattern\.(compile|matches)\("/>
         <property name="message"
                   value="Usage of Pattern.compile(...) and Pattern.matches(...) is only allowed for reviewed regular expressions or known inputs."
         />
@@ -81,7 +81,7 @@
     <module name="RegexpMultiline">
         <property name="id" value="patternStaticImport"/>
         <property name="matchAcrossLines" value="true"/>
-        <property name="format" value="import static.*Pattern\.(compile|matches)"/>
+        <property name="format" value="import static java\.util\.regex\.Pattern\.(compile|matches)"/>
         <property name="message"
                   value="Static imports of Pattern.compile and Pattern.matches are only allowed for reviewed regular expressions or known inputs."
         />
