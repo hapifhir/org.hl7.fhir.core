@@ -72,6 +72,10 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 public class RenderingContext extends RenderingI18nContext {
 
 
+  public String getOpacity() {
+    return wcagConformant ? "font-style: italics" : "opacity: 0.5";
+  }
+
   public enum DesignationMode {
     ALL,
     LANGUAGES,
@@ -348,6 +352,15 @@ public class RenderingContext extends RenderingI18nContext {
   private PackageInformation pi;
   @Getter @Setter boolean showStandardsStatus;
   private boolean inferResourceConformance;
+
+  /**
+   * if this is true, then the rendering will be more WCAG conformant, though this is a step back for most users.
+   *
+   * specifically:
+   *   - fainter alternating background
+   *   - italics instead of opaque
+   */
+  @Getter @Setter private boolean wcagConformant;
 
   /**
    * 
