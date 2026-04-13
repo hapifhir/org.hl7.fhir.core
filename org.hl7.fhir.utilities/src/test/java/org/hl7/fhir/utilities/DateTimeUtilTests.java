@@ -51,9 +51,9 @@ public class DateTimeUtilTests {
       Arguments.of(TemporalPrecisionEnum.YEAR, new Date("2002/02/04"), "dummyValueAsString"),
       Arguments.of(TemporalPrecisionEnum.MONTH, new Date("2002/02/04"), "dummyValueAsString"),
       Arguments.of(TemporalPrecisionEnum.DAY, new Date("2002/02/04"), "dummyValueAsString"),
-      Arguments.of(TemporalPrecisionEnum.MILLI, new Date("2002/02/04"), "04-Feb-2002 00:00:00"),
-      Arguments.of(TemporalPrecisionEnum.SECOND, new Date("2002/02/04"), "04-Feb-2002 00:00:00"),
-      Arguments.of(TemporalPrecisionEnum.MINUTE, new Date("2002/02/04"), "04-Feb-2002 00:00:00")
+      Arguments.of(TemporalPrecisionEnum.MILLI, new Date("2002/02/04"), "4 Feb 2002, 00:00:00"),
+      Arguments.of(TemporalPrecisionEnum.SECOND, new Date("2002/02/04"), "4 Feb 2002, 00:00:00"),
+      Arguments.of(TemporalPrecisionEnum.MINUTE, new Date("2002/02/04"), "4 Feb 2002, 00:00:00")
 
     );
   }
