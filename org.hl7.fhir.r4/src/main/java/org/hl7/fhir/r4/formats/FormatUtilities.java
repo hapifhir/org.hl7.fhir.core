@@ -104,6 +104,8 @@ public abstract class FormatUtilities {
     return new String(encodeBase64);
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //anchored, bounded, safe
   public static boolean isValidId(String tail) {
     return tail.matches(RegexConstants.ID_REGEX);
   }

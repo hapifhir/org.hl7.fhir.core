@@ -1677,6 +1677,8 @@ public class FHIRPathEngine {
     } else if (!value.contains("T")) {
       date = value;
     } else {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = value.split("T");
       date = p[0];
       if (p.length > 1) {
@@ -1904,6 +1906,8 @@ public class FHIRPathEngine {
         return false;
       }
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] t = tn.split("\\.");
     if (t.length != 2) {
       return false;
@@ -4043,6 +4047,8 @@ public class FHIRPathEngine {
       boolean found = false;
       for (Identifier id : sd.getIdentifier()) {
         if (id.getValue().startsWith("urn:hl7ii:")) {   
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] p = id.getValue().split("\\:");
           if (p.length == 4) {
             found = found || hasTemplateId(focus.get(0), p[2], p[3]);
@@ -4861,7 +4867,10 @@ public class FHIRPathEngine {
       //
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-        result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //User-supplied FHIRPath replaceMatches regex
+        String replaced = convertToString(focus.get(0)).replaceAll(regex, repl);
+        result.add(new StringType(replaced).noExtensions());
       }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
@@ -5674,6 +5683,8 @@ public class FHIRPathEngine {
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
+          @SuppressWarnings("checkstyle:patternUsage")
+          //User-supplied FHIRPath matches regex
           Pattern p = Pattern.compile("(?s)" + sw);
           Matcher m = p.matcher(st);
           boolean ok = m.find();
@@ -5696,8 +5707,12 @@ public class FHIRPathEngine {
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
+          @SuppressWarnings("checkstyle:patternUsage")
+          //User-supplied FHIRPath matches regex
           Pattern p = Pattern.compile("(?s)" + sw);
           Matcher m = p.matcher(st);
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: Matcher.matches() on p, not String.matches()
           boolean ok = m.matches();
           result.add(new BooleanType(ok).noExtensions());
         }

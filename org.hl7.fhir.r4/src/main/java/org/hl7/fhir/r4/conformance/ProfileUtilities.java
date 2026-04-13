@@ -2590,6 +2590,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         String ref;
         ref = pkp.getLinkForProfile(profile, t.getProfile().get(0).getValue());
         if (ref != null) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] parts = ref.split("\\|");
           if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) {
 //            c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], "<" + parts[1] + ">", t.getCode()))); Lloyd
@@ -3152,6 +3154,8 @@ public class ProfileUtilities extends TranslatingUtilities {
             .add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement())));
       if (element.hasSliceName()) {
         left.getPieces().add(gen.new Piece("br"));
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String indent = StringUtils.repeat('\u00A0', 1 + 2 * (element.getPath().split("\\.").length));
         left.getPieces().add(gen.new Piece(null, indent + "(" + element.getSliceName() + ")", null));
       }
@@ -3985,6 +3989,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       profile = source;
       code = url.substring(1);
     } else if (context != null) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = url.split("\\#");
       profile = context.fetchResource(StructureDefinition.class, parts[0]);
       code = parts.length == 1 ? null : parts[1];
@@ -4143,6 +4149,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     ElementDefinitionHolder edh = null;
     int i = 0;
     if (diffList.get(0).getPath().contains(".")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String newPath = diffList.get(0).getPath().split("\\.")[0];
       ElementDefinition e = new ElementDefinition(new StringType(newPath));
       edh = new ElementDefinitionHolder(e, true);
@@ -4185,6 +4193,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     final String prefix = path + ".";
     while (i < list.size() && list.get(i).getPath().startsWith(prefix)) {
       if (list.get(i).getPath().substring(prefix.length() + 1).contains(".")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String newPath = prefix + list.get(i).getPath().substring(prefix.length()).split("\\.")[0];
         ElementDefinition e = new ElementDefinition(new StringType(newPath));
         ElementDefinitionHolder child = new ElementDefinitionHolder(e, true);
@@ -4563,6 +4573,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new DefinitionException(
             "No path on element Definition " + Integer.toString(list.indexOf(ed)) + " in " + name);
       sliceInfo.seeElement(ed);
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pl = ed.getPath().split("\\.");
       for (int i = paths.size(); i < pl.length; i++) // -1 because the last path is in focus
         paths.add(pl[i]);

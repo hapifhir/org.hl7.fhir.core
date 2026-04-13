@@ -1701,8 +1701,12 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (defn != null) {
       String displayHint = ToolingExtensions.getDisplayHint(defn);
       if (!Utilities.noString(displayHint)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] list = displayHint.split(";");
         for (String item : list) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] parts = item.split(":");
           if (parts.length != 2)
             throw new DefinitionException("error reading display hint: '" + displayHint + "'");
@@ -3094,6 +3098,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
     boolean firstVersion = true;
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2)
           versions.put(parts[0], parts[1]);
@@ -3118,11 +3124,13 @@ public class NarrativeGenerator implements INarrativeGenerator {
             if (!s.equals("http://snomed.info/sct"))
               b.append(describeSystem(s) + " version " + versions.get(s));
             else {
-              parts = versions.get(s).split("\\/");
-              if (parts.length >= 5) {
-                String m = describeModule(parts[4]);
-                if (parts.length == 7)
-                  b.append("SNOMED CT " + m + " edition " + formatSCTDate(parts[6]));
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //single literal character split
+              String[] sctParts = versions.get(s).split("\\/");
+              if (sctParts.length >= 5) {
+                String m = describeModule(sctParts[4]);
+                if (sctParts.length == 7)
+                  b.append("SNOMED CT " + m + " edition " + formatSCTDate(sctParts[6]));
                 else
                   b.append("SNOMED CT " + m + " edition");
               } else
@@ -3322,6 +3330,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
     if (text == null)
       return;
 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] lines = text.split("\\r\\n");
     for (int i = 0; i < lines.length; i++) {
       if (i > 0)
@@ -4340,6 +4350,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
         String link = text.substring(text.indexOf("[[[") + 3, text.indexOf("]]]"));
         String right = text.substring(text.indexOf("]]]") + 3);
         String url = link;
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] parts = link.split("\\#");
         StructureDefinition p = context.fetchResource(StructureDefinition.class, parts[0]);
         if (p == null)

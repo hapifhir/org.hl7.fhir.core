@@ -65,6 +65,8 @@ public class CmdLineApp {
     do {
       System.out.print("> ");
       String cmd = reader.readLine();
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //simple character class split; safe
       String[] p = cmd.split("\\s+");
       try {
         if (p.length == 1 && p[0].equals("x")) {

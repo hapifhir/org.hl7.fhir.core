@@ -247,10 +247,15 @@ public class ResourceAddress {
    * http://hl7connect.healthintersections.com.au/svc/fhir/318/_history/1
    */
   public static ResourceVersionedIdentifier parseCreateLocation(String locationResponseHeader) {
+    @SuppressWarnings("checkstyle:patternUsage")
+    //anchored segments, safe
     Pattern pattern = Pattern.compile(REGEX_ID_WITH_HISTORY);
     Matcher matcher = pattern.matcher(locationResponseHeader);
     ResourceVersionedIdentifier parsedHeader = null;
-    if (matcher.matches()) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: Matcher.matches() on pattern which has been independently reviewed
+    boolean matched = matcher.matches();
+    if (matched) {
       String serviceRoot = matcher.group(1);
       String resourceType = matcher.group(3);
       String id = matcher.group(5);
