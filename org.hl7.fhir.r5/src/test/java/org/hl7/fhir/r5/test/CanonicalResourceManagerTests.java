@@ -1368,6 +1368,7 @@ public class CanonicalResourceManagerTests {
   // This timeout value was evaluated based on an observed time of 1400 ms for a single run, with a tolerance of 20%.
   @Timeout(value = 4000, unit = TimeUnit.MILLISECONDS)
   void testCachedCanonicalResourceGetWithMultiThread() {
+    long testStart = System.currentTimeMillis();
     //Create a single resource and then try to get it with multiple threads.
     CanonicalResourceManager<ValueSet> resourceManager = new CanonicalResourceManager<>(true, false);
     ValueSet vs = new ValueSet();
@@ -1399,6 +1400,7 @@ public class CanonicalResourceManagerTests {
 
     //Check that loadResource, which can be an expensive operation, is only called once
     verify(testResource, times(1)).loadResource();
+    System.out.println("Total test time: " + (System.currentTimeMillis() - testStart));
   }
 
 
