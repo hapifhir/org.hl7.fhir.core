@@ -450,6 +450,7 @@
                         -->
                         <argLine>@{argLine} -Xmx3500m -XX:MaxRAMPercentage=50.0 ${surefire.native.access.arg}</argLine>
                         <systemPropertyVariables>
+                            <java.locale.providers>COMPAT</java.locale.providers>
                             <!--    For JUnit4 use TestUtilities.runningAsSurefire() or
                                     TestingUtilities.runningAsSurefire() to exclude a test from surefire executions-->
                             <runningAsSurefire>true</runningAsSurefire>
