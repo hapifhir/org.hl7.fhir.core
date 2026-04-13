@@ -77,6 +77,10 @@ parameters:
           image: macos-latest
           jdk: 1.21
           javaToolOptions:
+        - name: ubuntu_java_25
+          image: ubuntu-latest
+          jdk: 1.25
+          javaToolOptions:
   - name: jdksToTest
     displayName: JDKs to Test Against
     type: object
