@@ -24,14 +24,14 @@ import org.hl7.fhir.utilities.*;
 @MarkedToMoveToAdjunctPackage
 public class CanonicalResourceManager<T extends CanonicalResource> {
 
-  private final String[] INVALID_TERMINOLOGY_URLS = {
+  private static final String[] INVALID_TERMINOLOGY_URLS = {
     "http://snomed.info/sct",
     "http://dicom.nema.org/resources/ontology/DCM",
     "http://nucc.org/provider-taxonomy"
   };
   private int loadCount = 0;
 
-  public static abstract class CanonicalResourceProxy {
+  public abstract static class CanonicalResourceProxy {
     private String type;
     private String id;
     private String url;
