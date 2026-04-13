@@ -598,9 +598,6 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if (vstatus == null) {
       vstatus = def.getExtensionString(ExtensionDefinitions.EXT_STANDARDS_STATUS);
     }
-    if (Utilities.existsInList(vstatus, "retired")) {
-      return null;
-    }
     return vstatus;
   }
 
@@ -1808,11 +1805,16 @@ public class ValueSetExpander extends ValueSetProcessBase {
   private void addFragmentWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
     String url = cs.getVersionedUrl();
     for (ValueSetExpansionParameterComponent p : exp.getParameter()) {
-      if ("fragment".equals(p.getName()) && p.hasValueUriType() && url.equals(p.getValue().primitiveValue())) { 
+      if ("used-fragment".equals(p.getName()) && p.hasValueUriType() && url.equals(p.getValue().primitiveValue())) {
         return;
       }     
     }
-    exp.addParameter().setName("fragment").setValue(new CanonicalType(url));
+    exp.addParameter().setName("used-fragment").setValue(new UriType(url));
+    if (!exp.hasExtension(ExtensionDefinitions.EXT_UNCLOSED)) {
+      exp.addExtension(ExtensionDefinitions.EXT_UNCLOSED, new BooleanType(true));
+      exp.addExtension(ExtensionDefinitions.EXT_UNCLOSED_REASON, new StringType("This extension is based on a fragment of the code system "+cs.getUrl()));
+
+    }
   }
 
   private void addExampleWarning(ValueSetExpansionComponent exp, CodeSystem cs) {
@@ -1822,7 +1824,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         return;
       }     
     }
-    exp.addParameter().setName("example").setValue(new CanonicalType(url));
+    exp.addParameter().setName("example").setValue(new UriType(url));
   }
   
   private List<ConceptDefinitionDesignationComponent> convertDesignations(List<ConceptReferenceDesignationComponent> list) {

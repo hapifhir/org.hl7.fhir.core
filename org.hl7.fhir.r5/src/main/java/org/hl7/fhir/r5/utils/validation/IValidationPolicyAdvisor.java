@@ -269,4 +269,10 @@ public interface IValidationPolicyAdvisor {
       List<ValidationMessage> messages);
 
 
+  /**
+   * A few validator messages include date/time values that are relative to the current date/time. This method controls whether these values are shown
+   * or replaced by some arbitrary placeholder (e.g. "XXX") to allow for automated tested frameworks
+   * @return a value to use, or null to use the real value
+   */
+  String relativeDatePlaceHolder();
 }

@@ -23,7 +23,12 @@
         {
           "code" : "Nearly every day",
           "display" : "Nearly every day"
-        }]
+        }],
+      "filter" : [{
+        "property" : "code",
+        "op" : "child-of",
+        "value" : "42"
+      }]
     }]
   },
   "expansion" : {

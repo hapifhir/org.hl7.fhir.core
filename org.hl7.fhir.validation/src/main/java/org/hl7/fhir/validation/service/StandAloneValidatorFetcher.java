@@ -442,6 +442,11 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
     return policyAdvisor.getImpliedProfilesForResource(validator, appContext, stackPath, definition, structure, resource, valid, msgServices, messages);
   }
 
+  @Override
+  public String relativeDatePlaceHolder() {
+    return policyAdvisor.relativeDatePlaceHolder();
+  }
+
 
   public Set<String> getCheckReferencesTo() {
     return policyAdvisor.getCheckReferencesTo();
