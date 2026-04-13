@@ -22,10 +22,22 @@ import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class LiquidJsonTest extends BaseHostServices {
+
+  @BeforeAll
+  public static void beforeAll() {
+    LiquidEngine.setAllowLiquidEvaluation(true);
+  }
+
+  @AfterAll
+  public static void afterAll() {
+    LiquidEngine.setAllowLiquidEvaluation(false);
+  }
 
   private ContextUtilities cu;
   private ProfileUtilities pu;

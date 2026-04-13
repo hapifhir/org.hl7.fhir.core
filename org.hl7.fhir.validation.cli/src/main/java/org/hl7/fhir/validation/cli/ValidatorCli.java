@@ -86,6 +86,7 @@ public class ValidatorCli {
 
   public static void main(String[] args) {
     System.setProperty("slf4j.internal.verbosity", "WARN");
+    org.hl7.fhir.r5.liquid.LiquidEngine.setAllowLiquidEvaluation(true);
     CLI cli = new CLI(new ValidationService());
     try {
       int exitCode = cli.parseArgsAndExecuteCommand(args);

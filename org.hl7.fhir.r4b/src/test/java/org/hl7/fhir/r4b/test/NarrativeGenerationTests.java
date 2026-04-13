@@ -31,12 +31,14 @@ import org.hl7.fhir.r4b.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r4b.test.utils.TestingUtilities;
 
+import org.hl7.fhir.r4b.utils.LiquidEngine;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,6 +49,16 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class NarrativeGenerationTests {
+
+  @BeforeAll
+  static void beforeAll() {
+    LiquidEngine.setAllowLiquidEvaluation(true);
+  }
+
+  @AfterAll
+  static void afterAll() {
+    LiquidEngine.setAllowLiquidEvaluation(false);
+  }
 
   public class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
 
