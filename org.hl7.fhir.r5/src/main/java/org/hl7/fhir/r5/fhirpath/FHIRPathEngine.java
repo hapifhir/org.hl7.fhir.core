@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
@@ -177,6 +179,8 @@ public class FHIRPathEngine {
   private boolean allowDoubleQuotes;
   private List<IssueMessage> typeWarnings = new ArrayList<>();
   private boolean emitSQLonFHIRWarning;
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
   public interface IDebugTracer {
 
@@ -5928,7 +5932,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         } else {
           boolean ok;
           try {
-            ok = RegexTimeout.find(st, "(?s)" + sw);
+            ok = RegexTimeout.find(st, "(?s)" + sw, regexTimeoutMillis);
           } catch (TimeoutException e) {
             throw new FHIRException("Timeout evaluating regex: " + sw, e);
           }
@@ -5953,7 +5957,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         } else {
           boolean ok;
           try {
-            ok = RegexTimeout.matches(st, "(?s)" + sw);
+            ok = RegexTimeout.matches(st, "(?s)" + sw, regexTimeoutMillis);
           } catch (TimeoutException e) {
             throw new FHIRException("Timeout evaluating regex: " + sw, e);
           }

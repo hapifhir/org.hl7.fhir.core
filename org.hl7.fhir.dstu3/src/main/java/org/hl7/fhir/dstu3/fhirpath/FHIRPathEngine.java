@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
@@ -81,6 +83,8 @@ public class FHIRPathEngine {
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
 
   /**
@@ -2138,7 +2142,7 @@ public class FHIRPathEngine {
 
     if (focus.size() == 1 && !Utilities.noString(regex)) {
       try {
-        result.add(new StringType(RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl)));
+        result.add(new StringType(RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl, regexTimeoutMillis)));
       } catch (TimeoutException e) {
         throw new FHIRException("Timeout evaluating regex: " + regex, e);
       }
@@ -2440,7 +2444,7 @@ public class FHIRPathEngine {
         result.add(new BooleanType(false));
       else {
         try {
-          result.add(new BooleanType(RegexTimeout.matches(st, sw)));
+          result.add(new BooleanType(RegexTimeout.matches(st, sw, regexTimeoutMillis)));
         } catch (TimeoutException e) {
           throw new FHIRException("Timeout evaluating regex: " + sw, e);
         }
