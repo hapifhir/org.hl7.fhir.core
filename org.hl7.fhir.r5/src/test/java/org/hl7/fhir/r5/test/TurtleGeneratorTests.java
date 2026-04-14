@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.test;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.nio.file.DirectoryStream;
 import java.util.ArrayList;
@@ -33,20 +34,25 @@ import org.junit.jupiter.api.Assumptions;
 public class TurtleGeneratorTests {
   private static TurtleGeneratorTestUtils.ParserContext parsers;
 
-  // These should be overwritten with a local.properties file (org.hl7.fhir.r5/src/test/resources/local.properties)
-  private static Path inputXmlDirectory = FileSystems.getDefault().getPath(System.getProperty("user.dir"), "src", "test", "resources", "testUtilities", "xml", "examples");
-  private static Path inputJsonDirectory = FileSystems.getDefault().getPath(System.getProperty("user.dir"), "src", "test", "resources", "testUtilities", "json", "examples");
-  private static Path outputTurtleDirectory = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"));
-  private static Path expectedTurtleDirectory = FileSystems.getDefault().getPath(System.getProperty("user.dir"), "src", "test", "resources", "testUtilities", "ttl", "expected");
+  private static final Path ROOT_TEST_PATH = Paths.get("testUtilities");
+  private static final Path DEFAULT_INPUT_XML_DIR = ROOT_TEST_PATH.resolve("xml/examples");
+  private static final Path DEFAULT_INPUT_JSON_DIR = ROOT_TEST_PATH.resolve("json/examples");
+  private static final Path DEFAULT_OUTPUT_TURTLE_DIR = Paths.get(System.getProperty("java.io.tmpdir"));
+  private static final Path DEFAULT_EXPECTED_TTL_DIR = ROOT_TEST_PATH.resolve("ttl/expected");
+    // These can be overwritten with a local.properties file (org.hl7.fhir.r5/src/test/resources/local.properties)
+  private static Path inputXmlDirectory;
+  private static Path inputJsonDirectory;
+  private static Path outputTurtleDirectory;
+  private static Path expectedTurtleDirectory;
 
   @BeforeAll
   public static void setup() throws IOException {
     var props = TurtleGeneratorTestUtils.loadLocalProperties();
-    inputXmlDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputXmlDirectory", inputXmlDirectory);
-    inputJsonDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputJsonDirectory", inputJsonDirectory);
-    outputTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "outputTtlDirectory", outputTurtleDirectory);
+    inputXmlDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputXmlDirectory", DEFAULT_INPUT_XML_DIR);
+    inputJsonDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputJsonDirectory", DEFAULT_INPUT_JSON_DIR);
+    outputTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "outputTtlDirectory", DEFAULT_OUTPUT_TURTLE_DIR);
     Files.createDirectories(outputTurtleDirectory);
-    expectedTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "expectedTtlDirectory", expectedTurtleDirectory);
+    expectedTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "expectedTtlDirectory", DEFAULT_EXPECTED_TTL_DIR);
 
     initializeParsers(TestingUtilities.getSharedWorkerContext());
   }
