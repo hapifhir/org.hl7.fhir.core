@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
@@ -71,6 +72,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 
 /**
  * 
@@ -2414,9 +2416,13 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>();
     String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
 
-    if (focus.size() == 1 && !Utilities.noString(sw))
-      result.add(new BooleanType(convertToString(focus.get(0)).matches(sw)));
-    else
+    if (focus.size() == 1 && !Utilities.noString(sw)) {
+      try {
+        result.add(new BooleanType(RegexTimeout.matches(convertToString(focus.get(0)), sw)));
+      } catch (TimeoutException e) {
+        throw new FHIRException("Timeout evaluating regex: " + sw, e);
+      }
+    } else
       result.add(new BooleanType(false));
     return result;
   }
