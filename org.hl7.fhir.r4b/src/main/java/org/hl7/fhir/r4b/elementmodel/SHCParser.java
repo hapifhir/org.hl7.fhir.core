@@ -302,6 +302,8 @@ public class SHCParser extends ParserBase {
   }
 
   static String[] splitToken(String token) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] parts = token.split("\\.");
     if (parts.length == 2 && token.endsWith(".")) {
       // Tokens with alg='none' have empty String as Signature.

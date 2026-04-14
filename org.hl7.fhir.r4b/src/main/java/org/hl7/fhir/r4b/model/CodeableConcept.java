@@ -400,6 +400,8 @@ public class CodeableConcept extends DataType implements ICompositeType {
     return null;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   public static CodeableConcept merge(CodeableConcept l, CodeableConcept r) {
     CodeableConcept res = new CodeableConcept();
     List<Coding> handled = new ArrayList<>();
@@ -430,6 +432,8 @@ public class CodeableConcept extends DataType implements ICompositeType {
     return res;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   public static CodeableConcept intersect(CodeableConcept l, CodeableConcept r) {
     CodeableConcept res = new CodeableConcept();
     for (Coding c : l.getCoding()) {

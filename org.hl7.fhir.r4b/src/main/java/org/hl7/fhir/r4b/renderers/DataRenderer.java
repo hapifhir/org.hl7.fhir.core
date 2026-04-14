@@ -126,6 +126,8 @@ public class DataRenderer extends Renderer {
         String link = text.substring(text.indexOf("[[[") + 3, text.indexOf("]]]"));
         String right = text.substring(text.indexOf("]]]") + 3);
         String url = link;
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] parts = link.split("\\#");
         StructureDefinition p = getContext().getWorker().fetchResource(StructureDefinition.class, parts[0]);
         if (p == null)
@@ -159,6 +161,8 @@ public class DataRenderer extends Renderer {
     if (text == null)
       return;
 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //fixed-width, safe
     String[] lines = text.split("\\r\\n");
     for (int i = 0; i < lines.length; i++) {
       if (i > 0)
@@ -203,6 +207,8 @@ public class DataRenderer extends Renderer {
 
   public static String describeVersion(String version) {
     if (version.startsWith("http://snomed.info/sct")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = version.split("\\/");
       String ed = null;
       String dt = "";

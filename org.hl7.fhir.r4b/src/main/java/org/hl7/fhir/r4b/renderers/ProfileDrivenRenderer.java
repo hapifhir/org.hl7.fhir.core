@@ -997,8 +997,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (defn != null) {
       String displayHint = ToolingExtensions.getDisplayHint(defn);
       if (!Utilities.noString(displayHint)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] list = displayHint.split(";");
         for (String item : list) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] parts = item.split(":");
           if (parts.length == 1) {
             hints.put("value", parts[0].trim());

@@ -277,6 +277,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
     Multimap<String, String> versions = HashMultimap.create();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals(mode)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2)
           versions.put(parts[0], parts[1]);
@@ -386,6 +388,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
     Multimap<String, String> versions = HashMultimap.create();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2)
           versions.put(parts[0], parts[1]);
@@ -422,6 +426,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private void expRef(XhtmlNode x, String u, String v) {
     // TODO Auto-generated method stub
     if (u.equals("http://snomed.info/sct")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = v.split("\\/");
       if (parts.length >= 5) {
         String m = describeModule(parts[4]);
