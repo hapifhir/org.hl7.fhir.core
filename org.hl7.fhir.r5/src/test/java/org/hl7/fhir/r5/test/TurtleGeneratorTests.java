@@ -34,8 +34,8 @@ public class TurtleGeneratorTests {
   private static TurtleGeneratorTestUtils.ParserContext parsers;
 
   // These should be overwritten with a local.properties file (org.hl7.fhir.r5/src/test/resources/local.properties)
-  private static Path inputXmlDirectory = FileSystems.getDefault().getPath(System.getProperty("user.dir"), "src", "test", "resources", "testUtilities", "json", "examples");
-  private static Path inputJsonDirectory = FileSystems.getDefault().getPath(System.getProperty("user.dir"), "src", "test", "resources", "testUtilities", "xml", "examples");
+  private static Path inputXmlDirectory = FileSystems.getDefault().getPath(System.getProperty("user.dir"), "src", "test", "resources", "testUtilities", "xml", "examples");
+  private static Path inputJsonDirectory = FileSystems.getDefault().getPath(System.getProperty("user.dir"), "src", "test", "resources", "testUtilities", "json", "examples");
   private static Path outputTurtleDirectory = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"));
   private static Path expectedTurtleDirectory = FileSystems.getDefault().getPath(System.getProperty("user.dir"), "src", "test", "resources", "testUtilities", "ttl", "expected");
 
