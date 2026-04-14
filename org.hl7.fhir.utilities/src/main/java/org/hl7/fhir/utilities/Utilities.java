@@ -33,6 +33,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 public class Utilities {
@@ -138,7 +139,7 @@ public class Utilities {
   }
 
   public static boolean isValidId(String id) {
-    return id.matches("[A-Za-z0-9\\-\\.]{1,64}");
+    return id.matches(RegexConstants.ID_REGEX);
   }
 
   public static String[] concatStringArray(String[] array1, String[] array2) {
@@ -1879,6 +1880,10 @@ public class Utilities {
       return null;
     }
     return url.contains("/") ? url.substring(url.lastIndexOf("/")+1) : url;
+  }
+
+  public static String pathTail(String path) {
+    return path.substring(path.lastIndexOf('.') + 1);
   }
 
   public static String escapeSql(String s) {

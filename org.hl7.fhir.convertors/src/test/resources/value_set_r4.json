@@ -23,7 +23,17 @@
         {
           "code" : "Nearly every day",
           "display" : "Nearly every day"
-        }]
+        }],
+      "filter" : [{
+        "property" : "code",
+        "_op" : {
+          "extension" : [{
+            "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.filter.op",
+            "valueCode" : "child-of"
+          }]
+        },
+        "value" : "42"
+      }]
     }]
   },
   "expansion" : {

@@ -63,7 +63,9 @@ public class TxTesterScrubbers {
           "http://hl7.org/fhir/StructureDefinition/alternate-code-use",
           "http://hl7.org/fhir/StructureDefinition/alternate-code-status",
           "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-          "http://hl7.org/fhir/test/ValueSet/simple-filter-isa");
+          "http://hl7.org/fhir/test/ValueSet/simple-filter-isa",
+          "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
+          "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason");
     }
     
     @Override

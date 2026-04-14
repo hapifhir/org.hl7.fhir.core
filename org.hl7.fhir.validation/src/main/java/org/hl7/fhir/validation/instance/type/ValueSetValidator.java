@@ -625,7 +625,7 @@ public class ValueSetValidator extends BaseValidator {
         PropertyValidationRules rules = csChecker.rulesForFilter(property, EnumSet.noneOf(PropertyOperation.class));
         if (rules != null) {
           if (!rules.getOps().isEmpty()) {
-            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, opInSet(op, rules.getOps()), I18nConstants.VALUESET_BAD_FILTER_OP, op, property, CommaSeparatedStringBuilder.join(",", rules.getOps()), system) && ok;
+            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack,op == null || opInSet(op, rules.getOps()), I18nConstants.VALUESET_BAD_FILTER_OP, op, property, CommaSeparatedStringBuilder.join(",", rules.getOps()), system) && ok;
           }
 
           if (value == null) {

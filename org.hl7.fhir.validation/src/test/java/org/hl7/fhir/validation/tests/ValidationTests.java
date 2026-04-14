@@ -1056,6 +1056,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   }
 
   @Override
+  public String relativeDatePlaceHolder() {
+    return "XXX";
+  }
+
+  @Override
   public InputStream fetchByPackage(String src) throws IOException {
     if (packageMap.containsKey(src)) {
       return TestingUtilities.loadTestResourceStream("validator", packageMap.get(src));

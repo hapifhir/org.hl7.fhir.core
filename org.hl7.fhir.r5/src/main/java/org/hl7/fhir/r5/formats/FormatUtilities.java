@@ -73,9 +73,9 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 
 public abstract class FormatUtilities {
-  public static final String ID_REGEX = "[A-Za-z0-9\\-\\.]{1,64}";
   public static final String FHIR_NS = "http://hl7.org/fhir";
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
   public static final String NS_XSI = "http://www.w3.org/2001/XMLSchema-instance";
@@ -107,7 +107,7 @@ public abstract class FormatUtilities {
   }
   
 	public static boolean isValidId(String tail) {
-	  return tail == null ? false : tail.matches(ID_REGEX);
+	  return tail == null ? false : tail.matches(RegexConstants.ID_REGEX);
   }
 
   public static String makeId(String candidate) {

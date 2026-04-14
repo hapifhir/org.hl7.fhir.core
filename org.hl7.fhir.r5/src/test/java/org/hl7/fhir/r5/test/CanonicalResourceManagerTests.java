@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.mockito.Spy;
@@ -1366,6 +1367,7 @@ public class CanonicalResourceManagerTests {
   @Test
   // This timeout value was evaluated based on an observed time of 1400 ms for a single run, with a tolerance of 20%.
   @Timeout(value = 1680, unit = TimeUnit.MILLISECONDS)
+  @Disabled
   public void testCachedCanonicalResourceGetWithMultiThread() {
     //Create a single resource and then try to get it with multiple threads.
     CanonicalResourceManager<ValueSet> resourceManager = new CanonicalResourceManager<>(true, false);

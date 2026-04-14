@@ -291,7 +291,7 @@ public class SqlOnFhirRunnerTests {
 
       List<String> expected = new ArrayList<>();
       for (JsonElement col : expectedColumns) {
-        expected.add(col.toString().replaceAll("\"", ""));
+        expected.add(col.toString().replace("\"", ""));
       }
 
       if (!actualColumns.equals(expected)) {

@@ -16,6 +16,9 @@
     "uri" : "http://fdasis.nlm.nih.gov"
   },
   {
+    "uri" : "http://fhir.org/packages/fhir.tx.support/CodeSystem/designation-usage"
+  },
+  {
     "uri" : "http://healthit.gov/nhin/purposeofuse"
   },
   {
