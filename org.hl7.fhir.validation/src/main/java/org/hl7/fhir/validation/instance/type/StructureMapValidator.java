@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.model.Coding;
@@ -392,7 +393,7 @@ public class StructureMapValidator extends BaseValidator {
   private boolean validateImport(List<ValidationMessage> errors, Element src, Element import_, NodeStack stack) {
     String url = import_.primitiveValue();
     boolean ok = false;
-    StructureMap map = context.fetchResource(StructureMap.class, url);
+    StructureMap map = context.fetchResource(StructureMap.class, url, ExtensionUtilities.getVersionResolutionRules(import_));
     if (map != null) {
       imports.add(map);
       ok = true;
@@ -519,7 +520,7 @@ public class StructureMapValidator extends BaseValidator {
           if (structure != null) {
             smode = structure.getChildValue("mode");
             String url = structure.getChildValue("url");
-            sd = context.fetchResource(StructureDefinition.class, url);
+            sd = context.fetchResource(StructureDefinition.class, url, ExtensionUtilities.getVersionResolutionRules(structure.getNamedChild("url")));
             if (sd == null) {
               try {
                 sd = (StructureDefinition) fetcher.fetchCanonicalResource((IResourceValidator) parent, valContext.getAppContext(), url);
@@ -697,7 +698,7 @@ public class StructureMapValidator extends BaseValidator {
         if (sd != null && sdt.getType().equals(sd.getType())) {
           return true;
         }
-        sdt = context.fetchResource(StructureDefinition.class, sdt.getBaseDefinition());
+        sdt = context.fetchResource(StructureDefinition.class, sdt.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sdt.getBaseDefinitionElement()));
       }
     }
     return false;
@@ -925,7 +926,7 @@ public class StructureMapValidator extends BaseValidator {
                     ok = rule(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), srcE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, ref) && ok;                          
                   } else {
                     // todo: look in Bundle?
-                    cm = this.context.fetchResource(ConceptMap.class, ref);
+                    cm = this.context.fetchResource(ConceptMap.class, ref, ExtensionUtilities.getVersionResolutionRules(mapE));
                     warning(errors, "2023-03-01", IssueType.NOTFOUND, target.line(), target.col(), stack.getLiteralPath(), srcE != null, I18nConstants.SM_TARGET_TRANSFORM_TRANSLATE_CM_NOT_FOUND, ref);                          
                   }
                   if (cm != null && (v != null && v.hasTypeInfo() || (sv != null && sv.hasTypeInfo()))) {
@@ -1008,7 +1009,7 @@ public class StructureMapValidator extends BaseValidator {
     ValueSet srcVS = null;
     if (srcED != null) {
       if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcED.getBinding().hasValueSet() && srcED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_SOURCE)) {
-        srcVS = context.findTxResource(ValueSet.class, srcED.getBinding().getValueSet());
+        srcVS = context.findTxResource(ValueSet.class, srcED.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(srcED.getBinding().getValueSetElement()));
         if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, srcVS != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_SOURCE, srcED.getBinding().getValueSet())) {
           ValueSetExpansionOutcome vse = context.expandVS(srcVS, true, false);
           if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vse.isOk(), I18nConstants.SM_TARGET_TRANSLATE_BINDING_VSE_SOURCE, vse.getError())) {
@@ -1027,7 +1028,7 @@ public class StructureMapValidator extends BaseValidator {
     }
     if (srcED != null) {
       if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, tgtED.getBinding().hasValueSet() && tgtED.getBinding().getStrength() == BindingStrength.REQUIRED, I18nConstants.SM_TARGET_TRANSLATE_BINDING_TARGET)) {
-        ValueSet vs = context.findTxResource(ValueSet.class, tgtED.getBinding().getValueSet());
+        ValueSet vs = context.findTxResource(ValueSet.class, tgtED.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(tgtED.getBinding().getValueSetElement()));
         if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vs != null, I18nConstants.SM_TARGET_TRANSLATE_BINDING_VS_TARGET, tgtED.getBinding().getValueSet())) {
           ValueSetExpansionOutcome vse = context.expandVS(vs, true, false);
           if (warning(errors, "2023-03-01", IssueType.INVALID, line, col, literalPath, vse.isOk(), I18nConstants.SM_TARGET_TRANSLATE_BINDING_VSE_TARGET, vse.getError())) {
@@ -1174,7 +1175,8 @@ public class StructureMapValidator extends BaseValidator {
           if (t.hasContentReference()) {
             String url = t.getContentReference().substring(0, t.getContentReference().indexOf("#"));
             String path = t.getContentReference().substring(t.getContentReference().indexOf("#")+1);
-            StructureDefinition sdt = "".equals(url) || url.equals(sd.getUrl()) ? sd : context.fetchResource(StructureDefinition.class, url);
+            StructureDefinition sdt = "".equals(url) || url.equals(sd.getUrl()) ? sd : context.fetchResource(StructureDefinition.class, url,
+              ExtensionUtilities.getVersionResolutionRules(t.getContentReferenceElement()));
             if (sdt == null) {
               throw new Error("Unable to resolve "+url);
             } else {
@@ -1231,7 +1233,7 @@ public class StructureMapValidator extends BaseValidator {
       if (t == sdt) {
         return true;
       }
-      t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
+      t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(t.getBaseDefinitionElement()));
     }
     return false;
   }

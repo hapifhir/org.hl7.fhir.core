@@ -532,6 +532,7 @@ public class I18nConstants {
   public static final String NO_VALID_DISPLAY_FOUND = "NO_VALID_DISPLAY_FOUND";
   public static final String NO_VALID_DISPLAY_FOUND_LANG_NONE = "NO_VALID_DISPLAY_FOUND_LANG_NONE";
   public static final String NO_VALID_DISPLAY_FOUND_LANG_SOME = "NO_VALID_DISPLAY_FOUND_LANG_SOME";
+  public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK";
   public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR";
   public static final String NO_VALUE_SET_IN_URL = "no_value_set";
   public static final String NULL_MIN = "null_min";
@@ -888,6 +889,7 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_SYSTEM_UNKNOWN = "Terminology_TX_System_Unknown";
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET = "Terminology_TX_System_ValueSet";
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET2 = "Terminology_TX_System_ValueSet2";
+  public static final String TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE = "TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE";
   public static final String TERMINOLOGY_TX_SYSTEM_WRONG_BUILD = "TERMINOLOGY_TX_SYSTEM_WRONG_BUILD";
   public static final String TERMINOLOGY_TX_SYSTEM_WRONG_HTML = "TERMINOLOGY_TX_SYSTEM_WRONG_HTML";
   public static final String TERMINOLOGY_TX_UNKNOWN_OID = "TERMINOLOGY_TX_UNKNOWN_OID";
@@ -958,6 +960,8 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT0 = "Type_Specific_Checks_DT_Integer_LT0";
   public static final String TYPE_SPECIFIC_CHECKS_DT_INTEGER_LT1 = "Type_Specific_Checks_DT_Integer_LT1";
   public static final String TYPE_SPECIFIC_CHECKS_DT_INTEGER_VALID = "Type_Specific_Checks_DT_Integer_Valid";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_DT_GT = "TYPE_SPECIFIC_CHECKS_DT_DT_GT";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_DT_LT = "TYPE_SPECIFIC_CHECKS_DT_DT_LT";
   public static final String TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML = "TYPE_SPECIFIC_CHECKS_DT_MARKDOWN_HTML";
   public static final String TYPE_SPECIFIC_CHECKS_DT_OID_START = "Type_Specific_Checks_DT_OID_Start";
   public static final String TYPE_SPECIFIC_CHECKS_DT_OID_VALID = "Type_Specific_Checks_DT_OID_Valid";
@@ -1022,6 +1026,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIER_NM_ABSTRACT_TYPE = "TYPE_SPECIFIER_NM_ABSTRACT_TYPE";
   public static final String TYPE_SPECIFIER_NM_ILLEGAL_TYPE = "TYPE_SPECIFIER_NM_ILLEGAL_TYPE";
   public static final String Terminology_TX_Code_ValueSet_MISSING = "Terminology_TX_Code_ValueSet_MISSING";
+  public static final String Terminology_TX_Code_ValueSet_XVER_SOURCE = "Terminology_TX_Code_ValueSet_XVER_SOURCE";
   public static final String UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_";
   public static final String UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_CS = "UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_CS";
   public static final String UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS = "UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS";
@@ -1075,10 +1080,12 @@ public class I18nConstants {
   public static final String UNICODE_XML_BAD_CHARS = "UNICODE_XML_BAD_CHARS";
   public static final String UNKNOWN_CODESYSTEM = "UNKNOWN_CODESYSTEM";
   public static final String UNKNOWN_CODESYSTEM_VERSION = "UNKNOWN_CODESYSTEM_VERSION";
+  public static final String UNKNOWN_CODESYSTEM_VERSION_UNK = "UNKNOWN_CODESYSTEM_VERSION_UNK";
   public static final String UNKNOWN_CODESYSTEM_VERSION_NONE = "UNKNOWN_CODESYSTEM_VERSION_NONE";
   public static final String UNKNOWN_CODE_IN = "Unknown_Code_in";
   public static final String UNKNOWN_CODE_IN_FRAGMENT = "UNKNOWN_CODE_IN_FRAGMENT";
   public static final String UNKNOWN_CODE_IN_VERSION = "Unknown_Code_in_Version";
+  public static final String UNKNOWN_CODE_IN_VERSION_SCT = "Unknown_Code_in_Version_SCT";
   public static final String UNKNOWN_DATA_FORMAT_ = "Unknown_Data_format_";
   public static final String UNKNOWN_DATE_FORMAT_ = "Unknown_Date_format_";
   public static final String UNKNOWN_PROPERTY = "UNKNOWN_PROPERTY";
@@ -1466,4 +1473,34 @@ public class I18nConstants {
   public static final String CONFORMANCE_STATEMENT_WORD = "CONFORMANCE_STATEMENT_WORD";
   public static final String VALUESET_CODE_CONCEPT_HINT = "VALUESET_CODE_CONCEPT_HINT";
   public static final String VALUESET_CODE_CONCEPT_HINT_VER = "VALUESET_CODE_CONCEPT_HINT_VER";
+  public static final String TERMINOLOGY_TX_SYSTEM_UNSUPPORTED = "TERMINOLOGY_TX_SYSTEM_UNSUPPORTED";
+  public static final String CONFORMANCE_STATEMENT_DUPHOME = "CONFORMANCE_STATEMENT_DUPHOME";
+  public static final String CONFORMANCE_STATEMENT_DUP = "CONFORMANCE_STATEMENT_DUP";
+  public static final String CONFORMANCE_STATEMENT_NOCONFWORD = "CONFORMANCE_STATEMENT_NOCONFWORD";
+  public static final String CONFORMANCE_STATEMENT_NOSUMMARY = "CONFORMANCE_STATEMENT_NOSUMMARY";
+  public static final String OPDEF_CIRCULAR_DEFINITION = "OPDEF_CIRCULAR_DEFINITION";
+  public static final String SD_CIRCULAR_DEFINITION = "SD_CIRCULAR_DEFINITION";
+  public static final String PROFILE_COMPLIES_WITH_SLICING_NO_EXPAND = "PROFILE_COMPLIES_WITH_SLICING_NO_EXPAND";
+  public static final String PROFILE_COMPLIES_WITH_SLICING_NO_VALUE = "PROFILE_COMPLIES_WITH_SLICING_NO_VALUE";
+  public static final String VALIDATION_MAX_MESSAGES_EXCEEDED = "VALIDATION_MAX_MESSAGES_EXCEEDED";
+  public static final String VALIDATION_TIMEOUT_EXCEEDED = "VALIDATION_TIMEOUT_EXCEEDED";
+  public static final String ABSTRACT_CODE_NOT_ALLOWED = "ABSTRACT_CODE_NOT_ALLOWED";
+  public static final String VALUESET_EXPANSION_PARAMETER_SYSTEM_NEEDED = "VALUESET_EXPANSION_PARAMETER_SYSTEM_NEEDED";
+  public static final String VALUESET_EXPANSION_PARAMETER_SYSTEM_MULTIPLE = "VALUESET_EXPANSION_PARAMETER_SYSTEM_MULTIPLE";
+  public static final String VALUESET_EXPANSION_PARAMETER_NOT_FOUND = "VALUESET_EXPANSION_PARAMETER_NOT_FOUND";
+  public static final String VALUESET_EXPANSION_NO_IDENTIFIER = "VALUESET_EXPANSION_NO_IDENTIFIER";
+  public static final String VALUESET_EXPANSION_PARAMETER_COUNT_WRONG = "VALUESET_EXPANSION_PARAMETER_COUNT_WRONG";
+  public static final String VALUESET_EXPANSION_PROPERTY_NO_DEFN = "VALUESET_EXPANSION_PROPERTY_NO_DEFN";
+  public static final String VALUESET_EXPANSION_MISSING = "VALUESET_EXPANSION_MISSING";
+  public static final String VALUESET_EXPANSION_EXTRA = "VALUESET_EXPANSION_EXTRA";
+  public static final String PARAMETERS_STD_NO_VALUE = "PARAMETERS_STD_NO_VALUE";
+  public static final String PARAMETERS_STD_NO_RESOURCE = "PARAMETERS_STD_NO_RESOURCE";
+  public static final String PARAMETERS_STD_WRONG_TYPE = "PARAMETERS_STD_WRONG_TYPE";
+  public static final String PARAMETERS_STD_RES_WRONG_TYPE = "PARAMETERS_STD_RES_WRONG_TYPE";
+  public static final String PARAMETERS_STD_RES_WRONG_TYPE_MIXED = "PARAMETERS_STD_RES_WRONG_TYPE_MIXED";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_COMP = "TYPE_SPECIFIC_CHECKS_DT_QTY_COMP";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE = "TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN = "TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX = "TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX";
+
 }

@@ -59,7 +59,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     XhtmlNode h2 = x.h2();
     h2.addText(spd.getName());
     StandardsStatus ss = ExtensionUtilities.getStandardsStatus(spd);
-    if (ss != context.getDefaultStandardsStatus()) {
+    if (context.isShowStandardsStatus() && ss != context.getDefaultStandardsStatus()) {
       genStandardsStatus(h2, ss);
     }
     XhtmlNode p =  x.para();
@@ -168,7 +168,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
       tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
-        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), null, spd);
+        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), ExtensionUtilities.getVersionResolutionRules(t.getDefinitionElement()), null, spd);
         if (tsp != null && tsp.hasWebPath()) {
           tr.td().ah(context.prefixLocalHref(tsp.getWebPath())).tx(tsp.present());          
         } else {

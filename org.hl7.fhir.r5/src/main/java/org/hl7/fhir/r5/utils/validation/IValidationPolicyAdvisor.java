@@ -1,8 +1,11 @@
 package org.hl7.fhir.r5.utils.validation;
 
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import lombok.Getter;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -51,6 +54,12 @@ public interface IValidationPolicyAdvisor {
    * @return
    */
   ReferenceValidationPolicy getReferencePolicy();
+
+  /**
+   * a list of servers for which the ReferenceValidationPolicy will be CHECK_VALID.
+   * if the reference is to a server not in this list, getReferencePolicy() applies
+   */
+  Set<String> getCheckReferencesTo();
 
   /**
    * Return true if the validation message for this message id should not be reported 
@@ -260,4 +269,10 @@ public interface IValidationPolicyAdvisor {
       List<ValidationMessage> messages);
 
 
+  /**
+   * A few validator messages include date/time values that are relative to the current date/time. This method controls whether these values are shown
+   * or replaced by some arbitrary placeholder (e.g. "XXX") to allow for automated tested frameworks
+   * @return a value to use, or null to use the real value
+   */
+  String relativeDatePlaceHolder();
 }

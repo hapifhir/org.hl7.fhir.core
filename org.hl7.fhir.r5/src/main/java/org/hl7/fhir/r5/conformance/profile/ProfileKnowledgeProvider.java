@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.conformance.profile;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -15,7 +16,7 @@ public interface ProfileKnowledgeProvider {
   String getLinkFor(String corePath, String typeSimple);
   BindingResolution resolveBinding(StructureDefinition def,
     ElementDefinitionBindingComponent binding, String path) throws FHIRException;
-  BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException;
+  BindingResolution resolveBinding(StructureDefinition def, String url, String path, Element ctxt) throws FHIRException;
   String getLinkForProfile(StructureDefinition profile, String url);
   boolean prependLinks();
   String getLinkForUrl(String corePath, String s);

@@ -1218,10 +1218,10 @@ public class FHIRPathEngine {
 
   private ExpressionNode organisePrecedence(FHIRLexer lexer, ExpressionNode node) {
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Times, Operation.DivideBy, Operation.Div, Operation.Mod)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Union)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.LessThan, Operation.Greater, Operation.LessOrEqual, Operation.GreaterOrEqual));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Is, Operation.As));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Union));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.LessThan, Operation.Greater, Operation.LessOrEqual, Operation.GreaterOrEqual));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Equals, Operation.Equivalent, Operation.NotEquals, Operation.NotEquivalent));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.In, Operation.Contains, Operation.MemberOf));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.And));
@@ -5381,29 +5381,42 @@ public class FHIRPathEngine {
     return result;
   }
 
+  public static Identifier makeIdentifier(Base base) {
+    if (base == null) {
+      return null;
+    }
+    if (base instanceof Identifier) {
+      return (Identifier) base;
+    }
+    return null;
+  }
 
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    Base refContext = null;
     for (Base item : focus) {
-      String s = convertToString(item);
+      Base refContext = item;
+      String url = null;
+      Identifier id = null;
+
       if (item.fhirType().equals("Reference")) {
         refContext = item;
         Property p = item.getChildByName("reference");
         if (p != null && p.hasValues()) {
-          s = convertToString(p.getValues().get(0));
-        } else {
-          s = null; // a reference without any valid actual reference (just identifier or display, but we can't resolve it)
+          url = convertToString(p.getValues().get(0));
         }
-      }
-      if (item.fhirType().equals("canonical")) {
-        s = item.primitiveValue();
+        p = item.getChildByName("identifier");
+        if (p != null && p.hasValues()) {
+          id = makeIdentifier(p.getValues().get(0));
+        }
+      } else if (item.isPrimitive()) {
+        url = item.primitiveValue();
         refContext = item;
       }
-      if (s != null) {
+
+      if (url != null || id != null) {
         Base res = null;
-        if (s.startsWith("#")) {
-          String t = s.substring(1);
+        if (url != null && url.startsWith("#")) {
+          String t = url.substring(1);
           Property p = context.rootResource.getChildByName("contained");
           if (p != null) {
             for (Base c : p.getValues()) {
@@ -5415,7 +5428,7 @@ public class FHIRPathEngine {
           }
         } else if (hostServices != null) {
           try {
-            res = hostServices.resolveReference(this, context.appInfo, s, refContext);
+            res = hostServices.resolveReference(this, context.appInfo, url, id, refContext);
           } catch (Exception e) {
             res = null;
           }

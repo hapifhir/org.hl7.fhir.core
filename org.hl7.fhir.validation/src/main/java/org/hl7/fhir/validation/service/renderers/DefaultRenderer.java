@@ -4,8 +4,10 @@ import java.io.File;
 
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -66,8 +68,8 @@ public class DefaultRenderer extends ValidationOutputRenderer {
       int line = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_LINE, -1);
       int col = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_COL, -1);
       loc = " @ "+issue.getExpression().get(0).asStringValue() + (line >= 0 && col >= 0 ? " (line " + Integer.toString(line) + ", col" + Integer.toString(col) + ")" : "");
-    } else if (issue.hasExpressionOrLocation()) {
-      loc = " @ "+issue.getExpressionOrLocation().get(0).asStringValue();
+    } else if (issue.hasExpression()) {
+      loc = " @ "+issue.getExpression().get(0).asStringValue();
     } else {
       int line = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_LINE, -1);
       int col = ExtensionUtilities.readIntegerExtension(issue, ExtensionDefinitions.EXT_ISSUE_COL, -1);
@@ -77,7 +79,28 @@ public class DefaultRenderer extends ValidationOutputRenderer {
         loc = " @ "+"line " + Integer.toString(line) + ", col" + Integer.toString(col);
       }
     }
-    return "  " + issue.getSeverity().getDisplay() + loc + ": " + issue.getDetails().getText();
+    String ctxt = renderContext(issue);
+    return "  " + issue.getSeverity().getDisplay() + loc + ": " + issue.getDetails().getText() + ctxt;
+  }
+
+  private String renderContext(OperationOutcome.OperationOutcomeIssueComponent issue) {
+    if (issue.hasExtension(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT)) {
+      String u = issue.getExtensionString(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT);
+      if (u != null) {
+        if (u.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+          return ", validating against Base FHIR Standard";
+        } else {
+          CanonicalResource res = context == null ? null : (CanonicalResource) context.fetchResource(Resource.class, u);
+          if (res != null && res.hasSourcePackage()) {
+            return ", validating against "+res.getSourcePackage().getName()+" v"+res.getSourcePackage().getVersion();
+          } else {
+            return ", validating against "+u;
+          }
+        }
+      }
+    }
+    return "";
+
   }
 
 

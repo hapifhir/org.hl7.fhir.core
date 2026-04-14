@@ -9,6 +9,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -232,7 +233,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
     if (t == null) {
       return null;
     }
-    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, "http://openehr.org/fhir/StructureDefinition/"+t);
+    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, "http://openehr.org/fhir/StructureDefinition/"+t, IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd == null) {
       sd = context.getContext().fetchTypeDefinition(t);
     }

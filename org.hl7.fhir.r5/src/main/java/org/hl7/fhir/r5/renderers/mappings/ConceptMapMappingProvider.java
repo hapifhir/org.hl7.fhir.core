@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.renderers.mappings;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
@@ -26,9 +27,9 @@ public class ConceptMapMappingProvider extends ModelMappingProvider {
     this.map = map;
     this.grp = grp;
 
-    CodeSystem cs = context.getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship");
+    CodeSystem cs = context.getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship", IWorkerContext.VersionResolutionRules.defaultRule());
     if (cs == null)
-      cs = context.getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence");
+      cs = context.getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence", IWorkerContext.VersionResolutionRules.defaultRule());
     eqpath = cs == null ? null : cs.getWebPath();
   }
 

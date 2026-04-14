@@ -357,7 +357,7 @@ public class Inflector {
                               char... delimiterChars ) {
         if (camelCaseWord == null) return null;
         String result = camelCaseWord.trim();
-        if (result.length() == 0) return "";
+        if (result.isEmpty()) return "";
         result = result.replaceAll("([A-Z]+)([A-Z][a-z])", "$1_$2");
         result = result.replaceAll("([a-z\\d])([A-Z])", "$1_$2");
         result = result.replace('-', '_');

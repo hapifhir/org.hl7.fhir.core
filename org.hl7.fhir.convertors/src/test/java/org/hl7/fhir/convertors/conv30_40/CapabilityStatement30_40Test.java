@@ -18,8 +18,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CapabilityStatement30_40Test {
@@ -85,17 +84,17 @@ public class CapabilityStatement30_40Test {
     assertEquals(org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus.ACTIVE, result.getStatus());
     assertEquals(date, result.getDate());
     assertEquals(input.getPublisher(), result.getPublisher());
-    assertThat(result.getContact(), hasSize(1));
+    assertThat(result.getContact()).hasSize(1);
     assertEquals(input.getContact().get(0).getName(), result.getContact().get(0).getName());
     assertEquals(input.getDescription(), result.getDescription());
-    assertThat(result.getUseContext(), hasSize(1));
+    assertThat(result.getUseContext()).hasSize(1);
     assertTrue(result.getUseContext().get(0).getCode().equalsDeep(new org.hl7.fhir.dstu3.model.Coding("system", "useContext", "display")));
-    assertThat(result.getJurisdiction(), hasSize(1));
+    assertThat(result.getJurisdiction()).hasSize(1);
     assertTrue(result.getJurisdiction().get(0).getCodingFirstRep().equalsDeep(new org.hl7.fhir.dstu3.model.Coding("system", "jurisdiction", "display")));
     assertEquals(input.getPurpose(), result.getPurpose());
     assertEquals(input.getCopyright(), result.getCopyright());
     assertEquals(org.hl7.fhir.dstu3.model.CapabilityStatement.CapabilityStatementKind.CAPABILITY, result.getKind());
-    assertThat(input.getInstantiates(), hasSize(1));
+    assertThat(input.getInstantiates()).hasSize(1);
     assertEquals(input.getInstantiates().get(0).getValue(), result.getInstantiates().get(0).getValue());
     assertEquals(input.getSoftware().getName(), result.getSoftware().getName());
     assertEquals(input.getImplementation().getDescription(), result.getImplementation().getDescription());
@@ -104,15 +103,15 @@ public class CapabilityStatement30_40Test {
     assertEquals(CapabilityStatement.UnknownContentCode.ELEMENTS, result.getAcceptUnknown());
     assertFalse(result.hasExtension(VersionConvertorConstants.EXT_ACCEPT_UNKNOWN_EXTENSION_URL));
 
-    assertThat(result.getFormat(), hasSize(1));
+    assertThat(result.getFormat()).hasSize(1);
     assertEquals(input.getFormat().get(0).getValue(), result.getFormat().get(0).getValue());
-    assertThat(result.getPatchFormat(), hasSize(1));
+    assertThat(result.getPatchFormat()).hasSize(1);
     assertEquals(input.getPatchFormat().get(0).getValue(), result.getPatchFormat().get(0).getValue());
-    assertThat(result.getImplementationGuide(), hasSize(1));
+    assertThat(result.getImplementationGuide()).hasSize(1);
     assertEquals(input.getImplementationGuide().get(0).getValue(), result.getImplementationGuide().get(0).getValue());
-    assertThat(result.getRest(), hasSize(1));
+    assertThat(result.getRest()).hasSize(1);
 
-    assertThat(result.getProfile(), hasSize(2));
+    assertThat(result.getProfile()).hasSize(2);
     assertTrue(result.getProfile().get(0).equalsDeep(new org.hl7.fhir.dstu3.model.Reference("SupportedProfile")));
     assertTrue(result.getProfile().get(1).equalsDeep(new org.hl7.fhir.dstu3.model.Reference("profile")));
     assertFalse(result.hasExtension(VersionConvertorConstants.EXT_CS_PROFILE));

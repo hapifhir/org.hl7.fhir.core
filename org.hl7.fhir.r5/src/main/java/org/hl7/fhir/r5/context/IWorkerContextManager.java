@@ -8,8 +8,8 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.PackageLoadController;
 
-import javax.annotation.Nonnull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Locale;
@@ -22,12 +22,14 @@ public interface IWorkerContextManager {
   }
 
   interface ICanonicalResourceLocator {
-    void findResource(Object caller, String url); // if it can be found, put it in the context
+    void findResource(Object caller, String url, IWorkerContext.VersionResolutionRules rules); // if it can be found, put it in the context
   }
 
   public IPackageCacheManager packageManager();
 
   public void setPackageManager(IPackageCacheManager manager);
+
+  public PackageLoadController getPackageLoadController();
 
   /**
    * Get the expansion parameters passed through the terminology server when txServer calls are made

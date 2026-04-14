@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "L/min"
-}, "valueSet" :null, "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -19,6 +19,7 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://unitsofmeasure.org/vs|2.2: Validate \"[http://unitsofmeasure.org#L/min (\"undefined\")]\"\n1ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org#L/min\"\n2ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n2ms http://unitsofmeasure.org/vs|2.2: check code in (http://unitsofmeasure.org) at Coding\n2ms http://unitsofmeasure.org/vs|2.2: Code \"L/min\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -28,7 +29,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "21612-7"
-}, "valueSet" :null, "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"fi", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -46,6 +47,7 @@ v: {
   "error" : "Unknown code '21612-7' in the CodeSystem 'http://unitsofmeasure.org' version '2.2'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://unitsofmeasure.org/vs|2.2: Validate \"[http://unitsofmeasure.org#21612-7 (\"undefined\")]\"\n1ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org#21612-7\"\n1ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n2ms http://unitsofmeasure.org/vs|2.2: check code in (http://unitsofmeasure.org) at Coding\n2ms http://unitsofmeasure.org/vs|2.2: Code \"21612-7\" not found in http://unitsofmeasure.org|2.2: undefined",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -66,7 +68,6 @@ v: {
       }],
       "text" : "Unknown code '21612-7' in the CodeSystem 'http://unitsofmeasure.org' version '2.2'"
     },
-    "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
   },
   {
@@ -81,9 +82,8 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Error processing Unit: '21612-7': Expected \"/\" or \".\" at character 6"
+      "text" : "Error processing unit '21612-7': Expected '/' or '.' at character 6"
     },
-    "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
   }]
 }
@@ -93,7 +93,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "tbl"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -111,6 +111,7 @@ v: {
   "error" : "Unknown code 'tbl' in the CodeSystem 'http://unitsofmeasure.org' version '2.2'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://unitsofmeasure.org/vs|2.2: Validate \"[http://unitsofmeasure.org#tbl (\"undefined\")]\"\n1ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org#tbl\"\n2ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n2ms http://unitsofmeasure.org/vs|2.2: check code in (http://unitsofmeasure.org) at Coding\n2ms http://unitsofmeasure.org/vs|2.2: Code \"tbl\" not found in http://unitsofmeasure.org|2.2: undefined",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -131,7 +132,6 @@ v: {
       }],
       "text" : "Unknown code 'tbl' in the CodeSystem 'http://unitsofmeasure.org' version '2.2'"
     },
-    "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
   },
   {
@@ -146,9 +146,8 @@ v: {
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "invalid-code"
       }],
-      "text" : "Error processing Unit: 'tbl': The unit \"tbl\" is unknown at character 1"
+      "text" : "Error processing unit 'tbl': The unit 'tbl' is unknown at character 1"
     },
-    "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
   }]
 }
@@ -158,7 +157,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "mmol/L"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -175,6 +174,7 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://unitsofmeasure.org/vs|2.2: Validate \"[http://unitsofmeasure.org#mmol/L (\"undefined\")]\"\n1ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org#mmol/L\"\n2ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n2ms http://unitsofmeasure.org/vs|2.2: check code in (http://unitsofmeasure.org) at Coding\n2ms http://unitsofmeasure.org/vs|2.2: Code \"mmol/L\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -184,7 +184,7 @@ v: {
 {"code" : {
   "system" : "http://unitsofmeasure.org",
   "code" : "[lb_av]"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -201,6 +201,7 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://unitsofmeasure.org/vs|2.2: Validate \"[http://unitsofmeasure.org#[lb_av] (\"undefined\")]\"\n1ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org#[lb_av]\"\n2ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n2ms http://unitsofmeasure.org/vs|2.2: check code in (http://unitsofmeasure.org) at Coding\n2ms http://unitsofmeasure.org/vs|2.2: Code \"[lb_av]\" found in http://unitsofmeasure.org|2.2",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

@@ -54,6 +54,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.SearchParamType;
@@ -260,7 +261,7 @@ public class GraphQLSchemaGenerator {
   }
 
   public void generateConnectionAccessQuery(Writer writer, List<SearchParameter> parameters, String name) throws IOException {
-    writer.write(name + "Conection(");
+    writer.write(name + "Connection(");
     param(writer, "_filter", "String", false, false);
     for (SearchParameter sp : parameters)
       param(writer, sp.getName().replace("-", "_"), getGqlname(requireNonNull(sp.getType().toCode())), true, true);
@@ -354,7 +355,7 @@ public class GraphQLSchemaGenerator {
     StructureDefinition baseSd = theParentSd;
     boolean first = true;
     while (baseSd != null && baseSd.getBaseDefinition() != null) {
-      baseSd = context.fetchResource(StructureDefinition.class, baseSd.getBaseDefinition());
+      baseSd = context.fetchResource(StructureDefinition.class, baseSd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(baseSd.getUrlElement()));
       if (baseSd != null) {
         if (first) {
           theBuilder.append(" implements ");

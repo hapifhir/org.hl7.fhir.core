@@ -26,6 +26,7 @@ public abstract class I18nBase {
   private PluralRules pluralRules = null;
   private boolean warnAboutMissingMessages = true;
   private static Set<String> warnedLocales;
+  private static boolean useMessageIdsDirectly;
 
 
   public Locale getLocale() {
@@ -159,6 +160,9 @@ public abstract class I18nBase {
     return null;
   }
   private String formatMessageForLocale(String theMessage, Object... theMessageArguments) {
+    if (useMessageIdsDirectly) {
+      return theMessage;
+    }
     String message = theMessage;
     if (messageExistsForLocale(theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
@@ -185,7 +189,9 @@ public abstract class I18nBase {
    * @return The formatted, internationalized, {@link String}
    */
   public String formatMessagePlural(Integer plural, String theMessage, Object... theMessageArguments) {
-
+    if (useMessageIdsDirectly) {
+      return theMessage;
+    }
     Object[] args = new Object[theMessageArguments.length+1];
     args[0] = plural;
     for (int i = 0; i < theMessageArguments.length; i++) {
@@ -225,6 +231,12 @@ public abstract class I18nBase {
   public void setWarnAboutMissingMessages(boolean warnAboutMissingMessages) {
     this.warnAboutMissingMessages = warnAboutMissingMessages;
   }
-  
-  
+
+  public static boolean isUseMessageIdsDirectly() {
+    return useMessageIdsDirectly;
+  }
+
+  public static void setUseMessageIdsDirectly(boolean useMessageIdsDirectly) {
+    I18nBase.useMessageIdsDirectly = useMessageIdsDirectly;
+  }
 }

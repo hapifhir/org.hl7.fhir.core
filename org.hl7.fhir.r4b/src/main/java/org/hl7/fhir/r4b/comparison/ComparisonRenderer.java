@@ -28,10 +28,7 @@ import org.hl7.fhir.r4b.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r4b.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.formats.IParser.OutputStyle;
-import org.hl7.fhir.r4b.model.Base;
-import org.hl7.fhir.r4b.model.StringType;
-import org.hl7.fhir.r4b.model.Tuple;
-import org.hl7.fhir.r4b.model.ValueSet;
+import org.hl7.fhir.r4b.model.*;
 import org.hl7.fhir.r4b.utils.LiquidEngine;
 import org.hl7.fhir.r4b.utils.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -276,7 +273,7 @@ public class ComparisonRenderer implements IHostApplicationServices {
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
     return null;
   }
 

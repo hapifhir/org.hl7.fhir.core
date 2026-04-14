@@ -56,6 +56,7 @@ msgstr "Все повторы"
 
 # ADD_BIND_ANY
 #: ADD_BIND_ANY
+msgctxt "ADD_BIND_ANY"
 msgid "Any"
 msgstr "Любые"
 
@@ -642,27 +643,27 @@ msgstr "Концепции"
 # CODESYSTEM_CONTENT_COMPLETE
 #: CODESYSTEM_CONTENT_COMPLETE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!Данная система кодов <param name=\\\"cs\\\"/> <param name=\\\"cased\\\"/> определяет следующи<if test=\\\"code-count != 1\\\">е коды</if><if test=\\\"code-count = 1\\\">й код</if><param name=\\\"h\\\"/>:"
+msgstr "!!Данная система кодов <param name=\"cs\"/> <param name=\"cased\"/> определяет следующи<if test=\"code-count != 1\">е коды</if><if test=\"code-count = 1\">й код</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr "!!Данная система кодов <param name=\\\"cs\\\"/> предоставляет некоторые коды<if test=\\\"code-count != 1\\\">ы</if><param name=\\\"h\\\"/> <b>которые являются только примерами</b>:"
+msgstr "!!Данная система кодов <param name=\"cs\"/> предоставляет некоторые коды<if test=\"code-count != 1\">ы</if><param name=\"h\"/> <b>которые являются только примерами</b>:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!Данная система кодирования <param name=\\\"cs\\\"/> с учетом регистра <param name=\\\"cased\\\"/> предоставляет <b>фрагмент</b>, который включает следующий код<if test=\\\"code-count != 1\\\">ы</if><param name=\\\"h\\\"/>:"
+msgstr "!!Данная система кодирования <param name=\"cs\"/> с учетом регистра <param name=\"cased\"/> предоставляет <b>фрагмент</b>, который включает следующий код<if test=\"code-count != 1\">ы</if><param name=\"h\"/>:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "!!Данная система кодов <param name=\\\"cs\\\"/> с учетом регистра <param name=\\\"cased\\\"/> определяет коды<param name=\\\"h\\\"/>, но здесь коды не представлены"
+msgstr "!!Данная система кодов <param name=\"cs\"/> с учетом регистра <param name=\"cased\"/> определяет коды<param name=\"h\"/>, но здесь коды не представлены"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "!!Эта кодовая система дополняет <param name=\\\"cs\\\"/> определяет {0} по следующему коду<if test=\\\"code-count != 1\\\">с</if>:"
+msgstr "!!Эта кодовая система дополняет <param name=\"cs\"/> определяет {0} по следующему коду<if test=\"code-count != 1\">с</if>:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -857,6 +858,238 @@ msgstr "Подробности Целевого Концепции"
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
+msgstr ""
+
+# CONF_MAY
+#: CONF_MAY
+msgctxt "CONF_MAY"
+msgid "MAY"
+msgstr ""
+
+# CONF_MAY_PLURAL
+#: CONF_MAY_PLURAL
+msgctxt "CONF_MAY_PLURAL"
+msgid "MAY"
+msgstr ""
+
+# CONF_SHALL
+#: CONF_SHALL
+msgctxt "CONF_SHALL"
+msgid "SHALL"
+msgstr ""
+
+# CONF_SHALLNOT
+#: CONF_SHALLNOT
+msgctxt "CONF_SHALLNOT"
+msgid "SHALL NOT"
+msgstr ""
+
+# CONF_SHALLNOT_PLURAL
+#: CONF_SHALLNOT_PLURAL
+msgctxt "CONF_SHALLNOT_PLURAL"
+msgid "SHALL NOT"
+msgstr ""
+
+# CONF_SHALL_PLURAL
+#: CONF_SHALL_PLURAL
+msgctxt "CONF_SHALL_PLURAL"
+msgid "SHALL"
+msgstr ""
+
+# CONF_SHOULD
+#: CONF_SHOULD
+msgctxt "CONF_SHOULD"
+msgid "SHOULD"
+msgstr ""
+
+# CONF_SHOULDNOT
+#: CONF_SHOULDNOT
+msgctxt "CONF_SHOULDNOT"
+msgid "SHOULD NOT"
+msgstr ""
+
+# CONF_SHOULDNOT_PLURAL
+#: CONF_SHOULDNOT_PLURAL
+msgctxt "CONF_SHOULDNOT_PLURAL"
+msgid "SHOULD NOT"
+msgstr ""
+
+# CONF_SHOULD_PLURAL
+#: CONF_SHOULD_PLURAL
+msgctxt "CONF_SHOULD_PLURAL"
+msgid "SHOULD"
+msgstr ""
+
+# CONSENT_CATEGORY
+#: CONSENT_CATEGORY
+msgid "Category"
+msgid_plural "Categories"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+# CONSENT_DATE
+#: CONSENT_DATE
+msgid "Agreement Date"
+msgstr ""
+
+# CONSENT_PART_TBL_CONTROLLER
+#: CONSENT_PART_TBL_CONTROLLER
+msgid "Controller"
+msgstr ""
+
+# CONSENT_PART_TBL_DETAILS
+#: CONSENT_PART_TBL_DETAILS
+msgctxt "CONSENT_PART_TBL_DETAILS"
+msgid "Details"
+msgstr ""
+
+# CONSENT_PART_TBL_GRANTEE
+#: CONSENT_PART_TBL_GRANTEE
+msgid "Grantee"
+msgstr ""
+
+# CONSENT_PART_TBL_GRANTOR
+#: CONSENT_PART_TBL_GRANTOR
+msgid "Grantor"
+msgstr ""
+
+# CONSENT_PART_TBL_MANAGER
+#: CONSENT_PART_TBL_MANAGER
+msgid "Manager"
+msgstr ""
+
+# CONSENT_PART_TBL_PARTY
+#: CONSENT_PART_TBL_PARTY
+msgid "Party"
+msgstr ""
+
+# CONSENT_PART_TBL_PATIENT
+#: CONSENT_PART_TBL_PATIENT
+msgid "Patient"
+msgstr ""
+
+# CONSENT_PART_TBL_ROLE
+#: CONSENT_PART_TBL_ROLE
+msgctxt "CONSENT_PART_TBL_ROLE"
+msgid "Role"
+msgstr ""
+
+# CONSENT_PERIOD
+#: CONSENT_PERIOD
+msgid "Applicable Period"
+msgstr ""
+
+# CONSENT_SCOPE
+#: CONSENT_SCOPE
+msgctxt "CONSENT_SCOPE"
+msgid "Scope"
+msgid_plural "Scopes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+# CSREQ_DESC
+#: CSREQ_DESC
+msgid "Conformance statements found throughout the narrative of the IG consolidated into this computable resource for traceability purposes"
+msgstr ""
+
+# CSREQ_TITLE
+#: CSREQ_TITLE
+msgid "Narrative Conformance Statements"
+msgstr ""
+
+# CSTABLE_CLEAR_FILTERS
+#: CSTABLE_CLEAR_FILTERS
+msgid "Clear Filters"
+msgstr ""
+
+# CSTABLE_COND_ANY
+#: CSTABLE_COND_ANY
+msgctxt "CSTABLE_COND_ANY"
+msgid "Any"
+msgstr ""
+
+# CSTABLE_COND_NO
+#: CSTABLE_COND_NO
+msgid "No"
+msgstr ""
+
+# CSTABLE_COND_YES
+#: CSTABLE_COND_YES
+msgid "Yes"
+msgstr ""
+
+# CSTABLE_HEAD_ACTOR
+#: CSTABLE_HEAD_ACTOR
+msgid "Actor{1}"
+msgid_plural "Actors{1}"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+# CSTABLE_HEAD_CAT
+#: CSTABLE_HEAD_CAT
+msgid "Category{1}"
+msgid_plural "Categories{1}"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+# CSTABLE_HEAD_COND
+#: CSTABLE_HEAD_COND
+msgid "Conditional?"
+msgstr ""
+
+# CSTABLE_HEAD_EXPECT
+#: CSTABLE_HEAD_EXPECT
+msgid "Expectation"
+msgstr ""
+
+# CSTABLE_HEAD_ID
+#: CSTABLE_HEAD_ID
+msgctxt "CSTABLE_HEAD_ID"
+msgid "Id"
+msgstr ""
+
+# CSTABLE_HEAD_RULE
+#: CSTABLE_HEAD_RULE
+msgid "Rule"
+msgstr ""
+
+# CSTABLE_TITLE_ACTOR
+#: CSTABLE_TITLE_ACTOR
+msgid "Filter to only statements that apply to the specified actor(s)"
+msgstr ""
+
+# CSTABLE_TITLE_CAT
+#: CSTABLE_TITLE_CAT
+msgid "Filter to only statements that apply to the specified category(ies)"
+msgstr ""
+
+# CSTABLE_TITLE_CLEAR
+#: CSTABLE_TITLE_CLEAR
+msgid "Clear the Filter"
+msgstr ""
+
+# CSTABLE_TITLE_COND
+#: CSTABLE_TITLE_COND
+msgid "Filter to only statements that are conditional, not conditional, or no constraint"
+msgstr ""
+
+# CSTABLE_TITLE_EXPECT
+#: CSTABLE_TITLE_EXPECT
+msgid "Filter to only statements with one of the selected expectation type(s)"
+msgstr ""
+
+# CSTABLE_TITLE_ID
+#: CSTABLE_TITLE_ID
+msgid "Filter to only statements with ids that contain the specified text"
+msgstr ""
+
+# CSTABLE_TITLE_RULE
+#: CSTABLE_TITLE_RULE
+msgid "Filter to only statements that contain the specified text"
 msgstr ""
 
 # CS_VERSION_NOTHING_TEXT
@@ -1277,6 +1510,7 @@ msgstr "для"
 
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
+msgctxt "DIAG_REP_REND_IDENTIFIER"
 msgid "Identifier"
 msgstr "Identifier"
 
@@ -1339,7 +1573,7 @@ msgstr "Неуказанная тема"
 # DOCUMENT_SUMMARY
 #: DOCUMENT_SUMMARY
 msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
-msgstr "!!<param name=\\\"status\\\"/> Document at <param name=\\\"date\\\"/> by <param name=\\\"author\\\"/> for <param name=\\\"subject\\\"/> <if test=\\\"has-encounter = true\\\"> in encounter <param name=\\\"encounter\\\"/></if>"
+msgstr "!!<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
 
 # EXAMPLE_SCEN_STEP_SCEN
 #: EXAMPLE_SCEN_STEP_SCEN
@@ -1434,7 +1668,7 @@ msgstr "Не удалось найти ссылающегося актера {0}
 # FMM_TABLE
 #: FMM_TABLE
 msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
-msgstr "!!!!<table class=\\\"cols\\\"><tbody><tr><td><a href=\\\"http://hl7.org/fhir/versions.html#maturity\\\">Уровень зрелости</a>: {0}</td><td>&nbsp;<a href=\\\"{1}versions.html#std-process\\\" title=\\\"Standard Status\\\">{2}</a></td></tr></tbody></table>"
+msgstr "!!<table class=\"cols\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Уровень зрелости</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
 
 # GENERAL_ADDITIONAL_BINDING
 #: GENERAL_ADDITIONAL_BINDING
@@ -1582,6 +1816,7 @@ msgstr "Описание и ограничения"
 
 # GENERAL_DETAILS
 #: GENERAL_DETAILS
+msgctxt "GENERAL_DETAILS"
 msgid "Details"
 msgstr "Детали"
 
@@ -1615,6 +1850,15 @@ msgstr "Фиксированное значение: {0}"
 #: GENERAL_FLAGS
 msgid "Flags"
 msgstr "Флаги"
+
+# GENERAL_IDENTIFIER
+#: GENERAL_IDENTIFIER
+msgctxt "GENERAL_IDENTIFIER"
+msgid "Identifier"
+msgid_plural "Identifiers"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 # GENERAL_LOCATION
 #: GENERAL_LOCATION
@@ -2095,6 +2339,7 @@ msgstr "Профиль выходных параметров:"
 
 # OP_DEF_SCO
 #: OP_DEF_SCO
+msgctxt "OP_DEF_SCO"
 msgid "Scope"
 msgstr "Сфера действия"
 
@@ -2441,8 +2686,14 @@ msgstr "Провенанс для:"
 msgid "Recorded"
 msgstr "Записано"
 
+# PROV_REFERENCE
+#: PROV_REFERENCE
+msgid "This {0} is referenced from the following provenance resources:"
+msgstr ""
+
 # PROV_ROLE
 #: PROV_ROLE
+msgctxt "PROV_ROLE"
 msgid "Role"
 msgstr "Роль"
 
@@ -2810,7 +3061,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -2947,7 +3198,7 @@ msgstr "Ошибка визуализации: {0}"
 # RES_REND_INFO_SOURCE
 #: RES_REND_INFO_SOURCE
 msgid "Information Source: <param name=\"source\"/>"
-msgstr "!!Источник информации: <param name=\\\"source\\\"/>"
+msgstr "!!Источник информации: <param name=\"source\"/>"
 
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
@@ -3207,7 +3458,7 @@ msgstr "От {0}"
 # SDR_FROM_ELEM
 #: SDR_FROM_ELEM
 msgid "// from Element: <a href=\"{0}\">extension</a>"
-msgstr "!!// от элемента: <a href=\\\"{0}\\\">extension</a>"
+msgstr "!!// от элемента: <a href=\"{0}\">extension</a>"
 
 # SDR_GUIDANCE_HERE
 #: SDR_GUIDANCE_HERE
@@ -3223,7 +3474,7 @@ msgstr "Рекомендации по толкованию содержимог�
 #: SDR_GUIDANCE_SFX
 msgctxt "SDR_GUIDANCE_SFX"
 msgid "-- no content: do not translate #92 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #97 --"
+msgstr "!!-- no content: do not translate #97 --"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -3380,7 +3631,7 @@ msgstr "Для версии {0}"
 #: SDR_VER_FROM_PFX
 msgctxt "SDR_VER_FROM_PFX"
 msgid "FHIR versions"
-msgstr "!!\\\"Версии FHIR"
+msgstr "!!\"Версии FHIR"
 
 # SDR_VER_FROM_SFX
 #: SDR_VER_FROM_SFX
@@ -3413,7 +3664,7 @@ msgstr "Версии FHIR"
 #: SDR_VER_RANGE_SFX
 msgctxt "SDR_VER_RANGE_SFX"
 msgid "-- no content: do not translate #93 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #98 --"
+msgstr "!!-- no content: do not translate #98 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -3424,7 +3675,7 @@ msgstr "Версии FHIR до"
 #: SDR_VER_TO_SFX
 msgctxt "SDR_VER_TO_SFX"
 msgid "-- no content: do not translate #94 --"
-msgstr "!!!!!!!!!!!!!!!!!!!!!!-- no content: do not translate #99 --"
+msgstr "!!-- no content: do not translate #99 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
@@ -4018,7 +4269,7 @@ msgstr "Текущее"
 # STRUC_DEF_CURR_RULE
 #: STRUC_DEF_CURR_RULE
 msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
-msgstr "Новые записи необходимы для использования этого набора значений, но старые записи могут использовать другие коды. Определение \\\"новой записи\\\" является сложным, поскольку системы часто создают новые записи, основанные на уже имеющихся данных. Обычно привязки ''текущее'' разрешены внешним органом, который четко определяет эти правила"
+msgstr "Новые записи необходимы для использования этого набора значений, но старые записи могут использовать другие коды. Определение \"новой записи\" является сложным, поскольку системы часто создают новые записи, основанные на уже имеющихся данных. Обычно привязки ''текущее'' разрешены внешним органом, который четко определяет эти правила"
 
 # STRUC_DEF_DATE
 #: STRUC_DEF_DATE
@@ -4203,6 +4454,7 @@ msgstr "Градация"
 
 # STRUC_DEF_ID
 #: STRUC_DEF_ID
+msgctxt "STRUC_DEF_ID"
 msgid "Id"
 msgstr "Id"
 
@@ -5655,17 +5907,17 @@ msgstr ""
 
 # VS_VERSION_FOUND
 #: VS_VERSION_FOUND
-msgid "Version is not explicity stated. When building this specification, the most recent version {0} has been used"
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
 msgstr ""
 
 # VS_VERSION_NONE
 #: VS_VERSION_NONE
-msgid "Version is not explicity stated, and the target {0} has no stated version either"
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
 msgstr ""
 
 # VS_VERSION_NOTHING
 #: VS_VERSION_NOTHING
-msgid "Version is not explicity stated. No matching {0} found"
+msgid "Version is not explicitly stated. No matching {0} found"
 msgstr ""
 
 # VS_VERSION_NOTHING_TEXT

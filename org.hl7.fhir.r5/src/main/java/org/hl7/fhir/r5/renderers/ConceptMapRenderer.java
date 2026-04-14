@@ -13,24 +13,17 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode;
 import org.hl7.fhir.r5.model.ConceptMap.MappingPropertyComponent;
 import org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
-import org.hl7.fhir.r5.model.ContactDetail;
-import org.hl7.fhir.r5.model.ContactPoint;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
@@ -54,7 +47,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     if (r.isDirect()) {
       renderResourceTechDetails(r, x);
       genSummaryTable(status, x, (ConceptMap) r.getBase());
-      render(status, r, x, (ConceptMap) r.getBase(), false);      
+      render(status, r, x, (ConceptMap) r.getBase(), false);
     } else {
       // the intention is to change this in the future
       x.para().tx("ConceptMapRenderer only renders native resources directly");
@@ -342,27 +335,26 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     XhtmlNode p = x.para();
     p.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
     if (cm.hasSourceScope())
-      AddVsRef(cm.getSourceScope().primitiveValue(), p, cm);
+      AddVsRef(cm.getSourceScope().primitiveValue(), cm.getSourceScope(), p, cm);
     else
       p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NOT_SPEC));
     p.tx(" "+ (context.formatPhrase(RenderingContext.CONC_MAP_TO) + " "));
     if (cm.hasTargetScope())
-      AddVsRef(cm.getTargetScope().primitiveValue(), p, cm);
+      AddVsRef(cm.getTargetScope().primitiveValue(), cm.getTargetScope(), p, cm);
     else 
       p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NOT_SPEC));
 
     x.br();
     int gc = 0;
 
-    CodeSystem cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship");
+    CodeSystem cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-relationship", IWorkerContext.VersionResolutionRules.defaultRule());
     if (cs == null)
-      cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence");
+      cs = getContext().getWorker().fetchCodeSystem("http://hl7.org/fhir/concept-map-equivalence", IWorkerContext.VersionResolutionRules.defaultRule());
     String eqpath = cs == null ? null : cs.getWebPath();
 
     for (ConceptMapGroupComponent grp : cm.getGroup()) {
       boolean hasComment = false;
-      boolean hasProperties = false;
-      boolean ok = true;
+      boolean isSimple = true;
       Map<String, HashSet<String>> props = new HashMap<String, HashSet<String>>();
       Map<String, HashSet<String>> sources = new HashMap<String, HashSet<String>>();
       Map<String, HashSet<String>> targets = new HashMap<String, HashSet<String>>();
@@ -371,7 +363,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       sources.get("code").add(grp.getSource());
       targets.get("code").add(grp.getTarget());
       for (SourceElementComponent ccl : grp.getElement()) {
-        ok = ok && (ccl.getNoMap() || (ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty()));
+        isSimple = isSimple && (ccl.getNoMap() || (ccl.getTarget().size() == 1 && ccl.getTarget().get(0).getDependsOn().isEmpty() && ccl.getTarget().get(0).getProduct().isEmpty()));
         if (ccl.hasExtension(ExtensionDefinitions.EXT_CM_NOMAP_COMMENT)) {
           hasComment = true;
         }
@@ -391,46 +383,33 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           }
         }
       }
-      if (props.size() > 0) {
-        hasProperties = true;
-      }
+
       gc++;
       if (gc > 1) {
         x.hr();
       }
-      StructureDefinition sdSrc = findSourceStructure(grp.getSource());
-      StructureDefinition sdTgt = findSourceStructure(grp.getTarget());
+      StructureDefinition sdSrc = findSourceStructure(grp.getSource(), grp.getSourceElement());
+      StructureDefinition sdTgt = findSourceStructure(grp.getTarget(), grp.getTargetElement());
       if (sdSrc != null && sdTgt != null) {
-        renderModelMap(sdSrc, sdTgt, status, res, x, gc, eqpath, grp, hasComment, hasProperties, ok, props, sources, targets);
+        renderModelMap(sdSrc, sdTgt, status, res, x, gc, eqpath, grp, hasComment, isSimple, props, sources, targets);
       } else {
-        renderCodeSystemMap(status, res, x, gc, eqpath, grp, hasComment, hasProperties, ok, props, sources, targets);
+        renderCodeSystemMap(status, res, x, gc, eqpath, grp, hasComment, isSimple, props, sources, targets);
       }
     }
   }
 
-  private StructureDefinition findSourceStructure(String source) {
+  private StructureDefinition findSourceStructure(String source, Element ctxt) {
     if (source == null) {
       return null;
     }
-    String url = ProfileUtilities.getUrlFromCSUrl(source);
-    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
-    if (sd != null) {
-      return sd;
-    }
-    for (StructureDefinition t : context.getContextUtilities().allStructures()) {
-      String u = ProfileUtilities.getCSUrl(t);
-      if (source.equals(u)) {
-        return t;
-      }
-    }
-    return null;
+    StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, source, ExtensionUtilities.getVersionResolutionRules(ctxt));
+    return sd;
   }
 
   private void renderModelMap(StructureDefinition sdSrc, StructureDefinition sdTgt, RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,
-      ConceptMapGroupComponent grp, boolean hasComment, boolean hasProperties, boolean ok,
+      ConceptMapGroupComponent grp, boolean hasComment, boolean ok,
       Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets)
       throws UnsupportedEncodingException, IOException {
-    
     XhtmlNode pp = x.para();
     pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
     pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
@@ -476,7 +455,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             first = false;
           } else {
             tr = tbl.tr();
-            tr.td().colspan(3).style("opacity: 0.5").addText("\"");
+            tr.td().colspan(3).style(context.getOpacity()).addText("\"");
           }
           if (!ccm.hasRelationship()) {
             tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
@@ -505,9 +484,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   }
   
   private void renderCodeSystemMap(RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,
-      ConceptMapGroupComponent grp, boolean hasComment, boolean hasProperties, boolean ok,
+      ConceptMapGroupComponent grp, boolean hasComment, boolean isSimple,
       Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets)
       throws UnsupportedEncodingException, IOException {
+
     XhtmlNode pp = x.para();
     pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
     pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
@@ -524,7 +504,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     }
 
     String display;
-    if (ok) {
+    if (isSimple) {
       // simple
       XhtmlNode tbl = x.table( "grid", false);
       XhtmlNode tr = tbl.tr();
@@ -533,6 +513,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       tr.td().b().tx(context.formatPhrase(RenderingContext.CONC_MAP_TRGT));
       if (hasComment)
         tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
+      renderPropHeaders(props, tr);
       for (SourceElementComponent ccl : grp.getElement()) {
         tr = tbl.tr();
         XhtmlNode td = tr.td();
@@ -556,7 +537,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               first = false;
             } else {
               tr = tbl.tr();
-              tr.td().style("opacity: 0.5").tx("\"");
+              tr.td().style(context.getOpacity()).tx("\"");
             }
             if (!ccm.hasRelationship())
               tr.td().tx(":"+"("+ConceptMapRelationship.EQUIVALENT.toCode()+")");
@@ -575,6 +556,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
               td.tx(" ("+display+")");
             if (hasComment)
               tr.td().addText(ccm.getComment());
+            renderPropValues(props, ccm, tr);
           }
         }
         addUnmapped(tbl, grp);
@@ -602,7 +584,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       if (hasComment) {
         tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMMENT));
       }
-      if (hasProperties) {
+      if (!props.isEmpty()) {
         tr.td().colspan(Integer.toString(1+targets.size())).b().tx(context.formatPhrase(RenderingContext.GENERAL_PROPS));
       }
       tr = tbl.tr();
@@ -640,17 +622,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       if (hasComment) {
         tr.td();
       }
-      if (hasProperties) {
-        for (String s : props.keySet()) {
-          if (s != null) {
-            if (props.get(s).size() == 1) {
-              String url = props.get(s).iterator().next();
-              renderCSDetailsLink(tr.td(), url, false);           
-            } else
-              tr.td().b().addText(getDescForConcept(s));
-          }
-        }
-      }
+      renderPropHeaders(props, tr);
 
       for (int si = 0; si < grp.getElement().size(); si++) {
         SourceElementComponent ccl = grp.getElement().get(si);
@@ -747,16 +719,36 @@ public class ConceptMapRenderer extends TerminologyRenderer {
             }
             if (hasComment)
               tr.td().addText(ccm.getComment());
-
-            for (String s : props.keySet()) {
-              if (s != null) {
-                td = tr.td();
-                td.addText(getValue(ccm.getProperty(), s));
-              }
-            }
+            renderPropValues(props, ccm, tr);
           }
         }
         addUnmapped(tbl, grp);
+      }
+    }
+  }
+
+  private void renderPropValues(Map<String, HashSet<String>> props, TargetElementComponent ccm, XhtmlNode tr) {
+    XhtmlNode td;
+    if (!props.isEmpty()) {
+      for (String s : props.keySet()) {
+        if (s != null) {
+          td = tr.td();
+          td.addText(getValue(ccm.getProperty(), s));
+        }
+      }
+    }
+  }
+
+  private void renderPropHeaders(Map<String, HashSet<String>> props, XhtmlNode tr) {
+    if (!props.isEmpty()) {
+      for (String s : props.keySet()) {
+        if (s != null) {
+          if (props.get(s).size() == 1) {
+            String url = props.get(s).iterator().next();
+            renderCSDetailsLink(tr.td(), url, false);
+          } else
+            tr.td().b().addText(getDescForConcept(s));
+        }
       }
     }
   }
@@ -821,7 +813,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   public void renderCSDetailsLink(XhtmlNode tr, String url, boolean span2) {
     CodeSystem cs;
     XhtmlNode td;
-    cs = getContext().getWorker().fetchCodeSystem(url);
+    cs = getContext().getWorker().fetchCodeSystem(url, IWorkerContext.VersionResolutionRules.defaultRule());
     td = tr.td();
     if (span2) {
       td.colspan("2");

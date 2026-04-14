@@ -44,14 +44,11 @@ import java.util.UUID;
 
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.turtle.TurtleIRIUtil;
 
 @Deprecated
 public class Turtle {
 
-  public static final String GOOD_IRI_CHAR = "a-zA-Z0-9\u00A0-\uFFFE";
-
-  public static final String IRI_URL = "(([a-z])+:)*((%[0-9a-fA-F]{2})|[&'\\(\\)*+,;:@_~?!$\\/\\-\\#.\\="
-      + GOOD_IRI_CHAR + "])+";
   public static final String LANG_REGEX = "[a-z]{2}(\\-[a-zA-Z]{2})?";
 
   // Object model
@@ -667,7 +664,7 @@ public class Turtle {
     }
 
     public void setUri(String uri) throws FHIRFormatError {
-      if (!uri.matches(IRI_URL))
+      if (!TurtleIRIUtil.isValidIRI(uri))
         throw new FHIRFormatError("Illegal URI " + uri);
       this.uri = uri;
     }

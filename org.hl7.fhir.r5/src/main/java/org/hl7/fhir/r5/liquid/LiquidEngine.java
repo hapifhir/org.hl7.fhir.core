@@ -47,13 +47,7 @@ import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.IdType;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.Tuple;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.KeyIssuer;
 import org.hl7.fhir.utilities.MarkDownProcessor;
@@ -68,7 +62,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 @MarkedToMoveToAdjunctPackage
 public class LiquidEngine implements IHostApplicationServices {
 
-  public static class LiquidForLoopObject extends Base {
+  public static class LiquidforloopObject extends Base {
 
     private static final long serialVersionUID = 6951452522873320076L;
     private boolean first;
@@ -78,10 +72,10 @@ public class LiquidEngine implements IHostApplicationServices {
     private int rindex0;
     private boolean last;
     private int length;
-    private LiquidForLoopObject parentLoop;
+    private LiquidforloopObject parentLoop;
     
     
-    public LiquidForLoopObject(int size, int i, int offset, int limit, LiquidForLoopObject parentLoop) {
+    public LiquidforloopObject(int size, int i, int offset, int limit, LiquidforloopObject parentLoop) {
       super();
       this.parentLoop = parentLoop;
       if (offset == -1) {
@@ -108,12 +102,12 @@ public class LiquidEngine implements IHostApplicationServices {
 
     @Override
     public void setIdBase(String value) {
-      throw new Error("forLoop is read only");
+      throw new Error("forloop is read only");
     }
 
     @Override
     public Base copy() {
-      throw new Error("forLoop is read only");
+      throw new Error("forloop is read only");
     }
 
     @Override
@@ -145,13 +139,13 @@ public class LiquidEngine implements IHostApplicationServices {
 
     @Override
     public String toString() {
-      return "forLoop";
+      return "forloop";
     }
 
 
     @Override
     public String fhirType() {
-      return "ForLoop";
+      return "forloop";
     }
     
   }
@@ -509,7 +503,7 @@ public class LiquidEngine implements IHostApplicationServices {
           Collections.reverse(list);
         }
         int i = 0;
-        LiquidForLoopObject parentLoop = (LiquidForLoopObject) lctxt.globalVars.get("forLoop");
+        LiquidforloopObject parentLoop = (LiquidforloopObject) lctxt.globalVars.get("forloop");
         for (Base o : list) {
           if (offset >= 0 && i < offset) {
             i++;
@@ -518,8 +512,8 @@ public class LiquidEngine implements IHostApplicationServices {
           if (limit >= 0 && i == limit) {
             break;
           }          
-          LiquidForLoopObject forloop = new LiquidForLoopObject(list.size(), i, offset, limit, parentLoop);
-          lctxt.globalVars.put("forLoop", forloop);
+          LiquidforloopObject forloop = new LiquidforloopObject(list.size(), i, offset, limit, parentLoop);
+          lctxt.globalVars.put("forloop", forloop);
           if (lctxt.globalVars.containsKey(varName)) {
             throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_VARIABLE_ALREADY_ASSIGNED, varName));
           }
@@ -540,7 +534,7 @@ public class LiquidEngine implements IHostApplicationServices {
           }
           i++;
         }
-        lctxt.globalVars.put("forLoop", parentLoop);
+        lctxt.globalVars.put("forloop", parentLoop);
       }
     }
 
@@ -978,11 +972,11 @@ public class LiquidEngine implements IHostApplicationServices {
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return resolveReference(engine, ctxt.externalContext, url, refContext);
+    return resolveReference(engine, ctxt.externalContext, url, identifier, refContext);
   }
 
   @Override
@@ -999,7 +993,7 @@ public class LiquidEngine implements IHostApplicationServices {
     if (externalHostServices != null)
       return externalHostServices.resolveValueSet(engine, ctxt.externalContext, url);
     else
-      return engine.getWorker().fetchResource(ValueSet.class, url);
+      return engine.getWorker().fetchResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
   }
 
   /**
@@ -1048,6 +1042,9 @@ public class LiquidEngine implements IHostApplicationServices {
   public FHIRPathEngine getEngine() {
     return engine;
   }
-  
-  
+
+
+  public Base findContainingResource(Object appContext, Base item) {
+    return null;
+  }
 }

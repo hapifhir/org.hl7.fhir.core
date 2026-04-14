@@ -120,7 +120,7 @@ public class NodeStack {
   }
 
   private NodeStack pushInternal(Element element, int count, ElementDefinition definition, ElementDefinition type, String sep) {
-    if (definition == null & element.getProperty() != null) {
+    if (definition == null && element.getProperty() != null) {
       definition = element.getProperty().getDefinition();
     }
     NodeStack res = new NodeStack(context);
@@ -267,4 +267,13 @@ public class NodeStack {
     return element.col();
   }
 
+  public boolean isInBundle() {
+    if ("Bundle".equals(this.element.getProperty().getDefinition().getBase().getPath())) {
+      return true;
+    } else if (parent == null) {
+      return false;
+    } else {
+      return parent.isInBundle();
+    }
+  }
 }

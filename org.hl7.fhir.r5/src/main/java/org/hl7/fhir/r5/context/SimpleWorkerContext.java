@@ -99,6 +99,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
 import ca.uhn.fhir.parser.DataFormatException;
+import org.hl7.fhir.utilities.npm.PackageLoadController;
 
 /*
  * This is a stand alone implementation of worker context for use inside a tool.
@@ -197,13 +198,16 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private boolean allowLazyLoading = true;
   private IPackageCacheManager packageCacheManager;
   @Getter @Setter private ILoaderFactory loaderFactory;
+  @Getter PackageLoadController packageLoadController;
 
   private SimpleWorkerContext() throws IOException, FHIRException {
     super();
+    packageLoadController = new PackageLoadController();
   }
 
   private SimpleWorkerContext(Locale locale) throws IOException, FHIRException {
     super(locale);
+    packageLoadController = new PackageLoadController();
   }
 
   public SimpleWorkerContext(SimpleWorkerContext other) throws IOException, FHIRException {
@@ -231,8 +235,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     questionnaire = other.questionnaire;
     packageCacheManager = other.packageCacheManager;
     loaderFactory = other.loaderFactory;
+    packageLoadController = other.packageLoadController.copy();
   }
-
 
   public List<String> getLoadedPackages() {
     return loadedPackages;
@@ -652,7 +656,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       try {
         registerResourceFromPackage(makeIgResource(pi), pii);
       } catch (Exception e) {
-        log.error("Problem constructing IG for "+pi.vid()+": "+e.getMessage());
+        // GDG 26-Jan 2026 this is not useful for anyone; just distracts people.
+        // log.warn("Problem constructing IG for "+pi.vid()+": "+e.getMessage());
       }
     }
 	  for (String s : pi.list("other")) {
@@ -745,16 +750,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	  return validatorFactory.makeValidator(this, xverManager, null).setJurisdiction(JurisdictionUtilities.getJurisdictionCodingFromLocale(Locale.getDefault().getCountry()));
 	}
 
-  @Override
-  public List<String> getResourceNames() {
-    Set<String> result = new HashSet<String>();
-    for (StructureDefinition sd : listStructures()) {
-      if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.hasUserData(UserDataNames.loader_urls_patched))
-        result.add(sd.getName());
-    }
-    return Utilities.sorted(result);
-  }
-
  
   public Questionnaire getQuestionnaire() {
     return questionnaire;
@@ -837,8 +832,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   @Override
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
-    T r = super.fetchResource(class_, uri);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules) {
+    T r = super.fetchResource(class_, uri, rules);
     if (r instanceof StructureDefinition) {
       StructureDefinition p = (StructureDefinition)r;
       try {
@@ -853,23 +848,20 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   @Override
-  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
-    T r = super.fetchResource(class_, uri);
+  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules) {
+    T r = super.fetchResource(class_, uri, rules);
     return r;
   }
 
   @Override
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource source) {
-    T resource = super.fetchResource(class_, uri, version, source);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource source) {
+    T resource = super.fetchResource(class_, uri, rules, version, source);
     if (resource instanceof StructureDefinition) {
       StructureDefinition structureDefinition = (StructureDefinition)resource;
       generateSnapshot(structureDefinition, "4");
     }
     return resource;
   }
-
-
-
 
   public String listMapUrls() {
     return Utilities.listCanonicalUrls(transforms.keys());
@@ -939,7 +931,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       String v = idAndver.substring(idAndver.lastIndexOf("#")+1);
       for (String s : loadedPackages) {
         String v2 = s.substring(s.lastIndexOf("#")+1);
-        if (s.startsWith("hl7.fhir.uv.extensions.") && VersionUtilities.versionMatches(v, v2)) {
+        if (s.startsWith("hl7.fhir.uv.extensions.") && VersionUtilities.isSemVerWithWildcards(v) && VersionUtilities.isSemVer(v2,true) && VersionUtilities.versionMatches(v, v2)) {
           return true;
         }
       }

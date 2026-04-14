@@ -4848,7 +4848,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               used.used, profile == null ? "" : profile.getUrl(), eurl, profile, corePath, imagePath, root,
               logicalModel, allInvariants, snapshot, mustSupport, allowSubRows, rc));
         } else {
-          String name = element.hasSliceName() ? element.getSliceName() : urltail(eurl);
+          String name = element.hasSliceName() ? element.getSliceName() : urlFragmentOrTail(eurl);
           nameCell.getPieces().get(0).setText(name);
           // left.getPieces().get(0).setReference((String)
           // extDefn.getExtensionStructure().getTag("filename"));
@@ -5191,7 +5191,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       return null;
   }
 
-  private String urltail(String path) {
+  private String urlFragmentOrTail(String path) {
     if (path.contains("#"))
       return path.substring(path.lastIndexOf('#') + 1);
     if (path.contains("/"))
@@ -6393,8 +6393,8 @@ public class ProfileUtilities extends TranslatingUtilities {
           child.getSelf().getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name,
           profile.present());
     } else if (ed.getPath().endsWith("[x]") && !child.getSelf().getPath().endsWith("[x]")) {
-      String edLastNode = ed.getPath().replaceAll("(.*\\.)*(.*)", "$2");
-      String childLastNode = child.getSelf().getPath().replaceAll("(.*\\.)*(.*)", "$2");
+      String edLastNode = Utilities.pathTail(ed.getPath());
+      String childLastNode = Utilities.pathTail(child.getSelf().getPath());
       String p = childLastNode.substring(edLastNode.length() - 3);
       if (isPrimitive(Utilities.uncapitalize(p)))
         p = Utilities.uncapitalize(p);

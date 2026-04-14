@@ -4,8 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -16,21 +15,18 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.ExpansionOptions;
+import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
-import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -62,14 +58,16 @@ private static TxTestData testData;
 
   @Parameters(name = "{index}: id {0}")
   public static Iterable<Object[]> data() throws IOException {
-    testData = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev");
+    Set<String> omissions = new HashSet<>();
+    omissions.add("search");
+    testData = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#dev", omissions);
     return testData.getTestData();
   }
 
   private final TxTestSetup setup;
   private final String version;
   private final String name;
-
+  private List<String> warnings = new ArrayList<>();
 
   private static ValidationEngine baseEngine;
 
@@ -79,7 +77,6 @@ private static TxTestData testData;
     version = "5.0.0";
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void test() throws Exception {
     if (setup.getSuite().asBoolean("disabled") || setup.getTest().asBoolean("disabled")) {
@@ -126,7 +123,7 @@ private static TxTestData testData;
       assertNull(diff, diff);
     } else if (Utilities.existsInList(setup.getTest().asString("operation"), "lookup", "translate", "metadata", "term-caps")) {
       Assertions.assertTrue(true); // we don't test these for the internal server
-    } else if (!Utilities.existsInList(setup.getTest().asString("operation"), "batch-validate")) { // the internal terminologgy server doesn't implement this method
+    } else if (!Utilities.existsInList(setup.getTest().asString("operation"), "batch-validate")) { // the internal terminology server doesn't implement this method
       Assertions.fail("Unknown Operation "+ setup.getTest().asString("operation"));
     }
   }
@@ -151,11 +148,23 @@ private static TxTestData testData;
 
   private void expand(String id, ValidationEngine engine, Resource req, String resp, String lang, String fp, JsonObject ext) throws IOException {
     org.hl7.fhir.r5.model.Parameters p = ( org.hl7.fhir.r5.model.Parameters) req;
-    ValueSet vs;
+    ValueSet vs = null;
     if (p.hasParameter("valueSetVersion")) {      
-      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue());
-    } else {
-      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule(), p.getParameterValue("valueSetVersion").primitiveValue());
+    } else if (p.hasParameter("url")) {
+      vs = engine.getContext().fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule());
+    }
+    if (vs == null) {
+      for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent pp : p.getParameter()) {
+        if (pp.getName().equals("valueSet")) {
+          vs = (ValueSet) pp.getResource();
+          break;
+        }
+        if (pp.getName().equals("tx-resource") && pp.hasResource() && pp.getResource() instanceof ValueSet && ((ValueSet) pp.getResource()).getUrl().equals(p.getParameterValue("url").primitiveValue())) {
+          vs = (ValueSet) pp.getResource();
+          break;
+        }
+      }
     }
     boolean hierarchical = p.hasParameter("excludeNested") ? p.getParameterBool("excludeNested") == false : true;
     Assertions.assertNotNull(vs);
@@ -171,19 +180,23 @@ private static TxTestData testData;
           removeParameter(vse.getValueset(), "excludeNested");
         }
         TxTesterSorters.sortValueSet(vse.getValueset());
-        TxTesterScrubbers.scrubVS(vse.getValueset(), false);
+        TxTesterScrubbers.scrubValueSet(vse.getValueset(), false);
         String vsj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vse.getValueset());
-        String diff = new CompareUtilities(modes(), ext).checkJsonSrcIsSame(id, resp, vsj);
+        CompareUtilities c = new CompareUtilities(modes(), ext, vars());
+        String diff = c.checkJsonSrcIsSame(id, resp, vsj);
         if (diff != null) {
           FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
           FileUtilities.stringToFile(vsj, fp);        
         }
-        Assertions.assertTrue(diff == null, diff);
+        warnings.addAll(c.getWarnings());
+        Assertions.assertNull(diff);
       }
     } else {
       OperationOutcome oo = new OperationOutcome();
       if (vse.getIssues() != null) {
         oo.getIssue().addAll(vse.getIssues());
+      } else if (vse.getErrorClass() == null) {
+        Assertions.fail("Expected an error, but none received");
       } else {
         OperationOutcomeIssueComponent e = new OperationOutcomeIssueComponent();
         e.setSeverity(IssueSeverity.ERROR);
@@ -223,19 +236,25 @@ private static TxTestData testData;
           e.setCode(IssueType.NOTSUPPORTED);
           break;
         }
+        if (vse.getMsgId() != null) {
+          e.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(vse.getMsgId()));
+        }
+        if (vse.getCode() != null) {
+          e.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", vse.getCode().toCode(), null);
+        }
         e.getDetails().setText(vse.getError());
         oo.addIssue(e);
       }
       TxTesterSorters.sortOperationOutcome(oo);
-      TxTesterScrubbers.scrubOO(oo, false);
+      TxTesterScrubbers.scrubOperationOutcome(oo, false);
 
       String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
-      String diff = new CompareUtilities(modes(), ext).checkJsonSrcIsSame(id, resp, ooj);
+      String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp, ooj);
       if (diff != null) {
         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(ooj, fp);        
       }
-      Assertions.assertTrue(diff == null, diff);
+      Assertions.assertNull(diff);
     }
   }
 
@@ -294,4 +313,10 @@ private static TxTestData testData;
 
   }
 
+  private Map<String, String> vars() {
+    Map<String, String> vars = new HashMap<String, String>();
+    vars.put("version", "5.0.0");
+    return vars;
+
+  }
 }

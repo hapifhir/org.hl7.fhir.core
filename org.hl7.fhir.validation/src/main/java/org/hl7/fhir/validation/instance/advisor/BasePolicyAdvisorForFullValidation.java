@@ -1,12 +1,12 @@
 package org.hl7.fhir.validation.instance.advisor;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
+import lombok.Getter;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -26,6 +26,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvisor {
   
   private ReferenceValidationPolicy refpol = ReferenceValidationPolicy.CHECK_VALID;
+  @Getter private Set<String> checkReferencesTo = new HashSet<>();
 
   public IValidationPolicyAdvisor getPolicyAdvisor() {
     return null;
@@ -35,9 +36,12 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
     throw new Error("This policy advisor is the end of the chain");
   }
   
-  public BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy refpol) {
+  public BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy refpol, Set<String> referencesTo) {
     super();
     this.refpol = refpol;
+    if (referencesTo != null) {
+      this.checkReferencesTo.addAll(referencesTo);
+    }
   }
 
   public ReferenceValidationPolicy getRefpol() {
@@ -51,7 +55,15 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
   @Override
   public ReferenceValidationPolicy policyForReference(IResourceValidator validator, Object appContext, String path, String url,
       ReferenceDestinationType destinationType) {
-    return refpol;
+    boolean inList = false;
+    String urls = url.replace("https://", "http://");
+    for (String u : checkReferencesTo) {
+      if (urls.startsWith(u)) {
+        inList = true;
+        break;
+      }
+    }
+    return inList ? ReferenceValidationPolicy.CHECK_VALID : refpol;
   }
 
   @Override
@@ -97,7 +109,12 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
     }
     return profiles;
   }
-    
+
+  @Override
+  public String relativeDatePlaceHolder() {
+    return null;
+  }
+
 
   private void getImpliedProfilesForObservation(List<StructureDefinition> profiles, IMessagingServices msgServices, List<ValidationMessage> messages, IWorkerContext context, String stackPath, Element resource) {
     Element code = resource.getNamedChild("code", false);
@@ -149,7 +166,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
 
   private void addProfile(List<StructureDefinition> profiles, IMessagingServices msgServices, List<ValidationMessage> messages, IWorkerContext context, String stackPath, Element resource, String url, String name, String systemName, List<String> codes) {
     resource.addMessage(msgServices.signpost(messages, null, IssueType.INFORMATIONAL, resource.line(), resource.col(), stackPath, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_OBS, url, name, systemName, codes.get(0)));
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd != null) {
       profiles.add(sd);
     } else {

@@ -85,6 +85,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
+import org.hl7.fhir.utilities.regex.RegexUtils;
 
 /**
  * info and loader for a package 
@@ -209,11 +210,28 @@ public class NpmPackage {
   }
   
   public static boolean isValidName(String pid) {
-    return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9\\-]*)+$");
+    return RegexUtils.splitRegexMatch(pid, "\\.", "[a-z][a-zA-Z0-9\\-]*", 2, -1);
   }
 
   public static boolean isValidVersion(String ver) {
     return ver.matches("^[0-9]+\\.[0-9]+\\.[0-9]+$");
+  }
+
+  public static boolean isValidNameWithVersion(String name, boolean optionalVersion) {
+    if (name == null || name.isEmpty()) {
+      return false;
+    }
+    if (name.contains("#")) {
+      String n = name.substring(0, name.indexOf("#"));
+      String v = name.substring(name.indexOf("#") + 1);
+      if (v == null || v.isEmpty()) {
+        return isValidName(n) && optionalVersion;
+      } else {
+        return isValidName(n) && (isValidVersion(v) || Utilities.existsInList(v, "current", "dev"));
+      }
+    } else {
+      return isValidName(name) && optionalVersion;
+    }
   }
 
   public class NpmPackageFolder {
@@ -616,7 +634,7 @@ public class NpmPackage {
       TarArchiveEntry entry;
 
       NpmPackageReadLogger readLogger = new NpmPackageReadLogger(progress);
-      while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
+      while ((entry = tarIn.getNextEntry()) != null) {
         String entryName = entry.getName();
         if (entryName.contains("..")) {
           throw new RuntimeException("Entry with an illegal name: " + entryName);
@@ -684,8 +702,7 @@ public class NpmPackage {
 
   public boolean isIndexed() throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
-      JsonObject index = folder.index();
-      if (folder.index() == null || index.forceArray("files").size() == 0) {
+      if (folder.index() == null) {
         return false;
       }
     }
@@ -696,12 +713,17 @@ public class NpmPackage {
   public void checkIndexed(String path) throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
       JsonObject index = folder.index();
-      if (index == null || index.forceArray("files").size() == 0) {
+      if (index == null) {
         indexFolder(path, folder);
       }  
     }
   }
 
+  public void buildIndexes(String path) throws IOException {
+    for (NpmPackageFolder folder : folders.values()) {
+      indexFolder(path, folder);
+    }
+  }
 
   /**
    * Create a package .index.json file for a package folder.
@@ -714,7 +736,7 @@ public class NpmPackage {
    * @throws FileNotFoundException
    * @throws IOException
    */
-  public void indexFolder(String path, NpmPackageFolder folder) throws FileNotFoundException, IOException {
+  public void indexFolder(String path, NpmPackageFolder folder) throws IOException {
     List<String> remove = new ArrayList<>();
     NpmPackageIndexBuilder indexer = new NpmPackageIndexBuilder();
     indexer.start(folder.folder != null ? Utilities.path(folder.folder.getAbsolutePath(), ".index.db") : null);
@@ -807,7 +829,7 @@ public class NpmPackage {
     return listResources(Utilities.stringSet(types));
   }
   
-  public List<String> listResourcesinFolder(String folder, String... types) throws IOException {
+  public List<String>listResourcesInFolder(String folder, String... types) throws IOException {
     return listResourcesInFolder(folder, Utilities.stringSet(types));
   }
   
@@ -818,7 +840,7 @@ public class NpmPackage {
   public List<String> listResourcesInFolder(String folderName, Set<String> types) throws IOException {
     List<String> res = new ArrayList<String>();
     NpmPackageFolder folder = folders.get(folderName);
-    if (types.size() == 0) {
+    if (types.isEmpty()) {
       for (String s : folder.types.keySet()) {
         if (folder.types.containsKey(s)) {
           res.addAll(folder.types.get(s));
@@ -862,10 +884,10 @@ public class NpmPackage {
     return res;
   }
 
-  public List<PackagedResourceFile> listAllResources() throws IOException {
+  public List<PackagedResourceFile> listAllResources() {
     List<PackagedResourceFile> res = new ArrayList<PackagedResourceFile>();
     for (NpmPackageFolder folder : folders.values()) {
-      if (!folder.getFolderName().startsWith("tests")) {
+      if (!folder.getFolderName().startsWith("tests") && !folder.getFolderName().startsWith("data")) {
         for (String s : folder.types.keySet()) {
           if (folder.types.containsKey(s)) {
             for (String n : folder.types.get(s)) {
@@ -1423,13 +1445,6 @@ public class NpmPackage {
           FileUtilities.bytesToFile(folder.fetchFile(s), fn);
       }      
     }
-  }
-
-  private List<String> sorted(Set<String> keys) {
-    List<String> res = new ArrayList<String>();
-    res.addAll(keys);
-    Collections.sort(res);
-    return res ;
   }
 
   public void clearFolder(String folderName) {

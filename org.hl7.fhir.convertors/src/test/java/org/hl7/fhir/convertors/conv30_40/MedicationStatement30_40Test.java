@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.stream.Stream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class MedicationStatement30_40Test {
 
@@ -129,7 +129,7 @@ public class MedicationStatement30_40Test {
   }
 
   @Test
-  public void testTakenConversionWithoutStatusExtensions40To30() {
+  void testTakenConversionWithoutStatusExtensions40To30() {
     org.hl7.fhir.r4.model.MedicationStatement r4Actual = new org.hl7.fhir.r4.model.MedicationStatement();
     r4Actual.addExtension(new org.hl7.fhir.r4.model.Extension(VersionConvertorConstants.EXT_MED_STAT_TAKEN,
       new org.hl7.fhir.r4.model.StringType(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementTaken.UNK.toCode())));
@@ -149,8 +149,8 @@ public class MedicationStatement30_40Test {
 
     org.hl7.fhir.dstu3.model.MedicationStatement dstu3Converted = (org.hl7.fhir.dstu3.model.MedicationStatement) VersionConvertorFactory_30_40.convertResource(r4Actual);
     Assertions.assertNull(dstu3Converted.getTaken());
-    assertThat(dstu3Converted.getReasonNotTaken(), is(empty()));
-    assertThat(dstu3Converted.getReasonCode(), hasSize(1));
+    assertThat(dstu3Converted.getReasonNotTaken()).isEmpty();
+    assertThat(dstu3Converted.getReasonCode()).hasSize(1);
   }
 
   @Test
@@ -161,8 +161,8 @@ public class MedicationStatement30_40Test {
 
     org.hl7.fhir.dstu3.model.MedicationStatement dstu3Converted = (org.hl7.fhir.dstu3.model.MedicationStatement) VersionConvertorFactory_30_40.convertResource(r4Actual);
     Assertions.assertEquals(org.hl7.fhir.dstu3.model.MedicationStatement.MedicationStatementTaken.N, dstu3Converted.getTaken());
-    assertThat(dstu3Converted.getReasonNotTaken(), hasSize(1));
-    assertThat(dstu3Converted.getReasonCode(), is(empty()));
+    assertThat(dstu3Converted.getReasonNotTaken()).hasSize(1);
+    assertThat(dstu3Converted.getReasonCode()).isEmpty();
   }
 
 

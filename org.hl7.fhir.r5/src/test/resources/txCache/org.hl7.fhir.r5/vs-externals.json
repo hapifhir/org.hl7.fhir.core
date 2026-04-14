@@ -1,12 +1,13 @@
 {
-  "http://ontariohealth.ca/fhir/questionnaire/ValueSet/on-questionnaire-question-item-type" : null,
   "http://example.org/fhir/example2" : null,
+  "http://ontariohealth.ca/fhir/questionnaire/ValueSet/on-questionnaire-question-item-type" : null,
   "http://example.org/fhir/example1" : null,
+  "urn:oid:2.16.840.1.113883.3.464.1003.111.12.1006" : null,
+  "http://hl7.org/fhir/Library/library-quick-model-definition" : null,
+  "http://hl7.org/fhir/ValueSet/concept-properties" : null,
   "http://somewhere/something-else" : null,
-  "http://hl7.org/fhir/ValueSet/concept-properties" : {
-    "server" : "https://tx-dev.fhir.org/r5",
-    "filename" : "vs-f7b91afc-bebb-42a4-abd6-0128200c6a94.json"
-  },
+  "https://termgit.elga.gv.at/ValueSet/eimpf-zusatzklassifikation-impfprogramm" : null,
   "http://hl7.org/fhir/us/vrdr/ValueSet/vrdr-PlaceOfDeath" : null,
+  "https://termgit.elga.gv.at/ValueSet/eimpf-impfstoffe" : null,
   "http://somewhere/something" : null
 }

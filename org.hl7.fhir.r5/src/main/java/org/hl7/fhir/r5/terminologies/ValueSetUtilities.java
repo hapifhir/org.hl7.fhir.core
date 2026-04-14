@@ -96,7 +96,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
         return -1; // this order is deliberate
       } else if (v2 == null) {
         return 1;
-      } else if (VersionUtilities.isSemVer(v1) && VersionUtilities.isSemVer(v2)) {
+      } else if (VersionUtilities.isSemVer(v1, true) && VersionUtilities.isSemVer(v2, true)) {
         return VersionUtilities.compareVersions(v1, v2);
       } else if (Utilities.isInteger(v1) && Utilities.isInteger(v2)) {
         return Integer.compare(Integer.parseInt(v1), Integer.parseInt(v2));
@@ -143,28 +143,21 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static ValueSet makeShareable(ValueSet vs) {
+  public static ValueSet makeShareable(ValueSet vs, boolean extension) {
     if (!vs.hasExperimental()) {
       vs.setExperimental(false);
     }
-    if (!vs.hasMeta())
-      vs.setMeta(new Meta());
-    for (UriType t : vs.getMeta().getProfile()) 
-      if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablevalueset"))
-        return vs;
-    vs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablevalueset"));
+    if (extension) {
+      if (!vs.hasMeta())
+        vs.setMeta(new Meta());
+      for (UriType t : vs.getMeta().getProfile())
+        if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablevalueset"))
+          return vs;
+      vs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablevalueset"));
+    }
     return vs;
   }
 
-  public static boolean makeVSShareable(ValueSet vs) {
-    if (!vs.hasMeta())
-      vs.setMeta(new Meta());
-    for (UriType t : vs.getMeta().getProfile()) 
-      if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablevalueset"))
-        return false;
-    vs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablevalueset"));
-    return true;
-  }
 
   public static void checkShareable(ValueSet vs) {
     if (!vs.hasMeta())
@@ -200,7 +193,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     vs.addIdentifier().setSystem("urn:ietf:rfc:3986").setValue(oid);
   }
 
-  public static void markStatus(ValueSet vs, String wg, StandardsStatus status, String pckage, String fmm, IWorkerContext context, String normativeVersion) throws FHIRException {
+  public static void markStatus(ValueSet vs, String wg, StandardsStatus status, String fmm, IWorkerContext context, String normativeVersion) throws FHIRException {
     if (vs.hasUserData(UserDataNames.render_external_link))
       return;
     
@@ -214,13 +207,6 @@ public class ValueSetUtilities extends TerminologyUtilities {
       StandardsStatus ss = ExtensionUtilities.getStandardsStatus(vs);
       if (ss == null || ss.isLowerThan(status)) 
         ExtensionUtilities.setStandardsStatus(vs, status, normativeVersion);
-      if (pckage != null) {
-        if (!vs.hasUserData(UserDataNames.kindling_ballot_package))        
-          vs.setUserData(UserDataNames.kindling_ballot_package, pckage);
-        else if (!pckage.equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
-          if (!"infrastructure".equals(vs.getUserString(UserDataNames.kindling_ballot_package)))
-          log.warn("Value Set "+vs.getUrl()+": ownership clash "+pckage+" vs "+vs.getUserString(UserDataNames.kindling_ballot_package));
-      }
       if (status == StandardsStatus.NORMATIVE) {
         vs.setStatus(PublicationStatus.ACTIVE);
       }
@@ -232,13 +218,13 @@ public class ValueSetUtilities extends TerminologyUtilities {
       }
     }
     if (vs.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM))
-      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM), wg, status, pckage, fmm, normativeVersion);
+      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM), wg, status, fmm, normativeVersion);
     else if (status == StandardsStatus.NORMATIVE && context != null) {
       for (ConceptSetComponent csc : vs.getCompose().getInclude()) {
         if (csc.hasSystem()) {
-          CodeSystem cs = context.fetchCodeSystem(csc.getSystem());
+          CodeSystem cs = context.fetchCodeSystem(csc.getSystem(), ExtensionUtilities.getVersionResolutionRules(csc.getSystemElement()));
           if (cs != null) {
-            CodeSystemUtilities.markStatus(cs, wg, status, pckage, fmm, normativeVersion);
+            CodeSystemUtilities.markStatus(cs, wg, status, fmm, normativeVersion);
           }
         }
       }
@@ -414,7 +400,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     Set<String> systems = new HashSet<>();
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       for (CanonicalType ct : inc.getValueSet()) {
-        ValueSet vsr = ctxt.findTxResource(ValueSet.class, ct.asStringValue(), null, vs);
+        ValueSet vsr = ctxt.findTxResource(ValueSet.class, ct.asStringValue(), ExtensionUtilities.getVersionResolutionRules(ct), null, vs);
         if (vsr != null) {
           systems.addAll(listSystems(ctxt, vsr));
         }
@@ -552,5 +538,31 @@ public class ValueSetUtilities extends TerminologyUtilities {
     return null;
   }
 
+  public static boolean expansionsOverlap(ValueSet vs1, ValueSet vs2) {
+    for (ValueSetExpansionContainsComponent c1 : vs1.getExpansion().getContains()) {
+      for (ValueSetExpansionContainsComponent c2 : vs2.getExpansion().getContains()) {
+        if (matches(c1, c2)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private static boolean matches(ValueSetExpansionContainsComponent c1, ValueSetExpansionContainsComponent c2) {
+    return stringsMatch(c1.getSystem(), c2.getSystem(), false) && stringsMatch(c1.getVersion(), c2.getVersion(), true) && stringsMatch(c1.getCode(), c2.getCode(), false);
+  }
+
+  private static boolean stringsMatch(String s1, String s2, boolean defForNull) {
+    if (s1 == null || s2 == null) {
+      if (s1 == s2) {
+        return defForNull;
+      } else {
+        return false;
+      }
+    } else {
+      return s1.equals(s2);
+    }
+  }
 
 }

@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
@@ -30,18 +31,12 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionSnapshotComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
@@ -59,6 +54,12 @@ import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
 
+/**
+ * todo:
+ *
+ * Update the publisher so that if it sees must-support on an repeating element, it will hint the author that this should be clarified in the must-support documentation, and if it sees a mix of must-support values on slicer and slices, this will become warning. Same for obligations that don't make clear whether they apply to the set or the individual elements. Make an IG parameter so authors can advise the validator that they do, in fact, document this for must-support
+ * from FHIR-50391
+ */
 public class StructureDefinitionValidator extends BaseValidator {
 
   public class SourcedInvariant {
@@ -103,6 +104,23 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   public boolean validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
     boolean ok = true;
+
+    if (src.hasChild("baseDefinition")) {
+      String url = src.getNamedChildValue("url");
+      String base = src.getNamedChildValue("baseDefinition");
+      String last = url;
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, base, IWorkerContext.VersionResolutionRules.defaultRule());
+      while (sd != null) {
+        if (url.equals(sd.getUrl())) {
+          ok = false;
+          rule(errors, "2026-01-26", IssueType.UNKNOWN, stack, false, I18nConstants.SD_CIRCULAR_DEFINITION, url, last);
+          break;
+        }
+        last = base;
+        base = sd.getBaseDefinition();
+        sd = context.fetchResource(StructureDefinition.class, base, ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
+      }
+    }
     StructureDefinition sd = null;
     StructureDefinition base = null;
     String typeName = null;
@@ -118,7 +136,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       sd.setSnapshot(null);
       typeName = sd.getTypeName();
       experimental = "true".equals(src.getNamedChildValue("experimental", false));
-      base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
       if (warning(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), base != null, I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), "StructureDefinition, so can't check the differential")) {
         ok = rule(errors, "2025-07-15", IssueType.BUSINESSRULE, stack.getLiteralPath(), !base.hasUserData(UserDataNames.RESOURCE_INTERNAL_USE_ONLY), I18nConstants.RESOURCE_INTERNAL_USE_ONLY, "Structure", base.getSourcePackage() != null ? base.getSourcePackage().getVID() : "??") && ok;
         if (rule(errors, NO_RULE_DATE, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasDerivation(), I18nConstants.SD_MUST_HAVE_DERIVATION, sd.getUrl())) {
@@ -257,7 +275,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (sd.hasExtension(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE)) {
           for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_COMPLIES_WITH_PROFILE)) {
             String curl = ext.getValue().primitiveValue();
-            StructureDefinition auth = context.fetchResource(StructureDefinition.class, curl, null, sd);
+            StructureDefinition auth = context.fetchResource(StructureDefinition.class, curl, ExtensionUtilities.getVersionResolutionRules(ext.getValue()), null, sd);
             if (auth == null) {
               ok = rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, I18nConstants.SD_EXTENSION_COMPLIES_WITH_UNKNOWN, curl) && ok;
             } else {
@@ -267,9 +285,19 @@ public class StructureDefinitionValidator extends BaseValidator {
                 level = IssueSeverity.max(level, vm.getLevel());
               }
               if (level == IssueSeverity.ERROR) {
-                rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_ERROR, curl);
+                List<String> msgs = new ArrayList<>();
+                for (ValidationMessage vm : messages.stream().filter(vm -> vm.getLevel() == IssueSeverity.ERROR).collect(Collectors.toList())) {
+                  msgs.add(vm.getMessage());
+                }
+                rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_ERROR, curl,
+                  CommaSeparatedStringBuilder.join2(", ", " and ", msgs));
               } else if (level == IssueSeverity.WARNING) {
-                warning(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_WARNING, curl);              
+                List<String> msgs = new ArrayList<>();
+                for (ValidationMessage vm : messages.stream().filter(vm -> vm.getLevel() == IssueSeverity.WARNING).collect(Collectors.toList())) {
+                  msgs.add(vm.getMessage());
+                }
+                warning(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_WARNING, curl,
+                  CommaSeparatedStringBuilder.join2(", ", " and ", msgs));
               }            
             }
           }
@@ -298,7 +326,7 @@ public class StructureDefinitionValidator extends BaseValidator {
             rule(errors, "2024-05-29", IssueType.INVALID, stack.getLiteralPath(), dsd != null, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, derived.getVersionedUrl(), dt)) {
           StructureDefinition t = dsd;
           while (t != bsd && t != null) {
-            t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
+            t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(t.getBaseDefinitionElement()));
           }
           return rule(errors, "2024-05-29", IssueType.INVALID, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID, base.getVersionedUrl(), bt, derived.getVersionedUrl(), dt);
         }
@@ -324,7 +352,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     String tgt = extension.getNamedChildValue("value", false);
     if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), tgt != null, 
         I18nConstants.SD_OBGLIGATION_INHERITS_PROFILE_NO_TARGET)) {
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, tgt);
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, tgt, ExtensionUtilities.getVersionResolutionRules(extension.getNamedChild("value")));
       if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), src != null, 
           I18nConstants.SD_OBGLIGATION_INHERITS_PROFILE_TARGET_NOT_FOUND, tgt))  {
         if (rule(errors, "2023-05-27", IssueType.INVALID, stack.getLiteralPath(), ExtensionUtilities.readBoolExtension(sd, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD),
@@ -539,16 +567,16 @@ public class StructureDefinitionValidator extends BaseValidator {
         String[] p = pp.split("\\.");
         String url = path.contains("#") ? path.substring(0, path.indexOf("#")) : "http://hl7.org/fhir/StructureDefinition/" + p[0];
 
-        StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url);
+        StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
         if (sd == null && url.equals("http://hl7.org/fhir/StructureDefinition/CanonicalResource")) {
           // this is a hack for the fact that CanonicalResource wasn't properly defined in R3-R5
-          sd = ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/CodeSystem");
+          sd = ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/CodeSystem", IWorkerContext.VersionResolutionRules.defaultRule());
           pp = pp.replace("CanonicalResource", "CodeSystem");
           p = pp.split("\\.");
         }
         if (sd == null && url.equals("http://hl7.org/fhir/StructureDefinition/MetadataResource")) {
           // this is a hack for the fact that MetadataResource wasn't properly defined in R3-R5
-          sd = ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/PlanDefinition");
+          sd = ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/PlanDefinition", IWorkerContext.VersionResolutionRules.defaultRule());
           pp = pp.replace("MetadataResource", "PlanDefinition");
           p = pp.split("\\.");
         }
@@ -950,9 +978,9 @@ public class StructureDefinitionValidator extends BaseValidator {
                   if (rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), esd != null, I18nConstants.SD_TYPE_PARAMETER_UNKNOWN, tc, etype)) {
                     StructureDefinition t = esd;
                     while (t != null && t != psd) {
-                      t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition());
+                      t = context.fetchResource(StructureDefinition.class, t.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(t.getBaseDefinitionElement()));
                     }
-                    ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID_REF, tc, etype, tsd.getVersionedUrl(), name, type) & ok;
+                    ok = rule(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_INVALID_REF, tc, etype, tsd.getVersionedUrl(), name, type) && ok;
                     if (t != null) {
                       if (!sd.getAbstract() && esd.getAbstract()) {
                         warning(errors, "2024-05-29", IssueType.BUSINESSRULE, stack.getLiteralPath(), t != null, I18nConstants.SD_TYPE_PARAMETER_ABSTRACT_WARNING, tc, etype, tsd.getVersionedUrl(), name, type);
@@ -1350,7 +1378,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (Utilities.existsInList(sd.getType(), "string", "uri", "CodeableConcept", "Quantity", "CodeableReference")) {
           return tc;
         }
-        sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
       }
     }
     return null;
@@ -1370,7 +1398,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       Element valueSet = binding.getNamedChild("valueSet", false);
       String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference", false);
       if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
-        Resource vs = context.fetchResource(Resource.class, ref);
+        Resource vs = context.fetchResource(Resource.class, ref, ExtensionUtilities.getVersionResolutionRules(valueSet));
 
         // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
 
@@ -1419,7 +1447,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       Element valueSet = binding.getNamedChild("valueSet", false);
       String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference", false);
       if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
-        Resource vs = context.fetchResource(Resource.class, ref);
+        Resource vs = context.fetchResource(Resource.class, ref, ExtensionUtilities.getVersionResolutionRules(valueSet));
 
         // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
 
@@ -1453,7 +1481,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       Element vv = valueSet.getNamedChild("value");
       String ref = vv.hasPrimitiveValue() ? vv.primitiveValue() : vv.getNamedChildValue("reference", false);
       if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
-        Resource vs = context.fetchResource(Resource.class, ref);
+        Resource vs = context.fetchResource(Resource.class, ref, ExtensionUtilities.getVersionResolutionRules(vv));
 
         // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
 
@@ -1557,7 +1585,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   private boolean validateProfileTypeOrTarget(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path) {
     boolean ok = true;
     String p = profile.primitiveValue();
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p, ExtensionUtilities.getVersionResolutionRules(profile));
     BooleanHolder errored = new BooleanHolder();
     if (code.equals("Reference")) {
       if (warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
@@ -1624,7 +1652,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   private boolean validateTypeProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path, StructureDefinition source) {
     boolean ok = true;
     String p = profile.primitiveValue();
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p, ExtensionUtilities.getVersionResolutionRules(profile));
     BooleanHolder errored = new BooleanHolder();
     if (sd == null ) {
       sd = getXverExt(errors, stack.getLiteralPath(), profile, p, errored);
@@ -1660,7 +1688,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   private boolean validateTargetProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack, String path, boolean logical) {
     boolean ok = true;
     String p = profile.primitiveValue();
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p, ExtensionUtilities.getVersionResolutionRules(profile));
     if (code.equals("Reference") || code.equals("CodeableReference")) {
       if (warning(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
         StructureDefinition t = determineBaseType(sd);
@@ -1678,13 +1706,30 @@ public class StructureDefinitionValidator extends BaseValidator {
         } else if (!VersionUtilities.isR5Plus(context.getVersion())) {
           ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()) || "Resource".equals(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         } else {
-          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), Utilities.existsInList(t.getType(), "Resource", "CanonicalResource") || VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
+          ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), Utilities.existsInList(t.getType(), "Resource", "CanonicalResource") || isCanonicalResource(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource") && ok;
         }  
       }
     } else {
       ok = rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_NO_TARGET_PROFILE, code) && ok;
     }
     return ok;
+  }
+
+  private boolean isCanonicalResource(String type) {
+    if (VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(type)) {
+      return true;
+    }
+    StructureDefinition sd = context.fetchTypeDefinition(type);
+    while (sd != null) {
+      if ("CanonicalResource".equals(sd.getType())) {
+        return true;
+      }
+      if ("http://hl7.org/fhir/StructureDefinition/CanonicalResource".equals(ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS))) {
+        return true;
+      }
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
+    }
+    return false;
   }
 
   private boolean isReferenceableTarget(StructureDefinition t) {
@@ -1710,7 +1755,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       if (sd.getUrl().equals(code)) {
         return true;
       }
-      sd = sd.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()) : null;
+      sd = sd.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement())) : null;
       if (!(VersionUtilities.isR2Ver(context.getVersion()) || VersionUtilities.isR2BVer(context.getVersion())) && sd != null && !sd.getAbstract() && sd.getKind() != StructureDefinitionKind.LOGICAL) {
         sd = null;
       }
@@ -1721,7 +1766,7 @@ public class StructureDefinitionValidator extends BaseValidator {
 
   private StructureDefinition determineBaseType(StructureDefinition sd) {
     while (sd != null && sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
-      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
     }
     return sd;
   }

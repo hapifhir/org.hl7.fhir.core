@@ -13,6 +13,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class LogbackUtilities {
+  private LogbackUtilities() {
+    throw new IllegalStateException("Utility class. This should never be instantiated");
+  }
+
 
   public static void setLogLevel(ch.qos.logback.classic.Level level)
   {

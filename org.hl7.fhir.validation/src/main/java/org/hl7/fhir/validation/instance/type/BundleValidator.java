@@ -30,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -215,7 +216,7 @@ public class BundleValidator extends BaseValidator {
         NodeStack rstack = estack.push(res, -1, null, null);
         for (BundleValidationRule bvr : validator().getBundleValidationRules()) {
           if (meetsRule(bvr, rtype, rcount, count)) {
-            StructureDefinition defn = context.fetchResource(StructureDefinition.class, bvr.getProfile());
+            StructureDefinition defn = context.fetchResource(StructureDefinition.class, bvr.getProfile(), IWorkerContext.VersionResolutionRules.defaultRule());
             if (defn == null) {
               throw new Error(context.formatMessage(I18nConstants.BUNDLE_RULE_PROFILE_UNKNOWN, bvr.getRule(), bvr.getProfile()));
             } else {
@@ -992,7 +993,7 @@ public class BundleValidator extends BaseValidator {
             d = new String(data);
           }
           JsonObject j = JsonParser.parseObject(d);
-          if (j.has("alg")) {
+          if (j.has(DigitalSignatureSupport.JWT_HEADER_ALG)) {
             sigFormat = "application/jose";
           }
           hint(errors, "2025-06-13", IssueType.NOTSUPPORTED, stack, !signature.hasChild("data"), 
@@ -1072,13 +1073,13 @@ public class BundleValidator extends BaseValidator {
       
       // 1. Signature time
       Element when = signature.getNamedChild("when");
-      String sigT = header.asString("sigT"); // JAdes signature time
+      String sigT = header.asString(DigitalSignatureSupport.JWT_HEADER_SIGT); // JAdes signature time
       if (sigT != null && Utilities.isInteger(sigT)) {
         warning(errors, "2025-06-13", IssueType.INVALID, stack, false, I18nConstants.BUNDLE_SIGNATURE_HEADER_SIG_TIME_WRONG_FORMAT, sigT); 
         sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(sigT)));
       }
-      if (sigT == null && header.has("iat")) {
-        sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(header.asString("iat"))));
+      if (sigT == null && header.has(DigitalSignatureSupport.JWT_HEADER_IAT)) {
+        sigT = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(Long.valueOf(header.asString(DigitalSignatureSupport.JWT_HEADER_IAT))));
       }
       if (sigT == null) {
         warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_HEADER_NO_SIG_TIME); 
@@ -1155,9 +1156,9 @@ public class BundleValidator extends BaseValidator {
       // first, we try to extract the certificate from the signature 
       X509Certificate cert = null;
       JWK jwk = null;
-      if (header.has("x5c")) {
+      if (header.has(DigitalSignatureSupport.JWT_HEADER_X5C)) {
         try {
-          String c = header.getJsonArray("x5c").get(0).asString();
+          String c = header.getJsonArray(DigitalSignatureSupport.JWT_HEADER_X5C).get(0).asString();
           byte[] b = Base64.decodeBase64(c);// der format
           CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
           cert = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(b));
@@ -1275,7 +1276,7 @@ public class BundleValidator extends BaseValidator {
                   }
                 } else {
                   String b64 = Base64URL.encode(toSign).toString();
-                  ok = rule(errors, "2025-06-13", IssueType.VALUE, stack, parts[1].equals(b64), I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF) & ok;
+                  ok = rule(errors, "2025-06-13", IssueType.VALUE, stack, parts[1].equals(b64), I18nConstants.BUNDLE_SIGNATURE_PAYLOAD_BASE64_DIFF) && ok;
                 }
               } 
             }
@@ -1324,22 +1325,22 @@ public class BundleValidator extends BaseValidator {
 }
   
   private String getPurpose(JsonObject header) {
-    if (header.has("srCms")) {
-      JsonArray srCms = header.getJsonArray("srCms");
+    if (header.has(DigitalSignatureSupport.JWT_HEADER_SRCMS)) {
+      JsonArray srCms = header.getJsonArray(DigitalSignatureSupport.JWT_HEADER_SRCMS);
       if (srCms.size() > 0 && srCms.get(0).isJsonObject()) {
-        JsonObject commId = srCms.get(0).asJsonObject().getJsonObject("commId");
-        return commId.asString("id");
+        JsonObject commId = srCms.get(0).asJsonObject().getJsonObject(DigitalSignatureSupport.JWT_HEADER_COMM_ID);
+        return commId.asString(DigitalSignatureSupport.JWT_HEADER_ID);
       }
     }
     return null;
   }
 
   private String getPurposeDesc(JsonObject header) {
-    if (header.has("srCms")) {
-      JsonArray srCms = header.getJsonArray("srCms");
+    if (header.has(DigitalSignatureSupport.JWT_HEADER_SRCMS)) {
+      JsonArray srCms = header.getJsonArray(DigitalSignatureSupport.JWT_HEADER_SRCMS);
       if (srCms.size() > 0 && srCms.get(0).isJsonObject()) {
-        JsonObject commId = srCms.get(0).asJsonObject().getJsonObject("commId");
-        return commId.asString("desc");
+        JsonObject commId = srCms.get(0).asJsonObject().getJsonObject(DigitalSignatureSupport.JWT_HEADER_COMM_ID);
+        return commId.asString(DigitalSignatureSupport.JWT_HEADER_DESC);
       }
     }
     return null;
@@ -1389,10 +1390,10 @@ public class BundleValidator extends BaseValidator {
 
     switch (keyType) {
     case "RSA":
-      verifier = new RSASSAVerifier(key.toRSAKey());
+      verifier = new RSASSAVerifier(key.toRSAKey().toRSAPublicKey(), settings.getJwtHeaderList());
       break;
     case "EC":
-      verifier = new ECDSAVerifier(key.toECKey());
+      verifier = new ECDSAVerifier(key.toECKey().toECPublicKey(), settings.getJwtHeaderList());
       break;
     case "oct":
       verifier = new MACVerifier(key.toOctetSequenceKey());

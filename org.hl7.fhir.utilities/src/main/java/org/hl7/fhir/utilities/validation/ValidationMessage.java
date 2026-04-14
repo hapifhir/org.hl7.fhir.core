@@ -558,6 +558,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private String comment;
   private List<ValidationMessage> sliceInfo;
   private int count;
+  private String validationContext;
 
   @Getter private String diagnostics;
 
@@ -723,6 +724,16 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
   public String getLocation() {
     return location;
+  }
+
+  public String getStrippedLocation() {
+    String loc = location;
+    while (loc.contains("/*")) {
+      int b = loc.indexOf("/*");
+      int e = loc.indexOf("*/");
+      loc = loc.substring(0, b) + loc.substring(e + 2);
+    }
+    return loc;
   }
   public ValidationMessage setLocation(String location) {
     this.location = location;
@@ -1030,11 +1041,6 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       return false;
     }
 
-    // Compare location
-    if (!Objects.equals(this.location, other.location)) {
-      return false;
-    }
-
     // Compare message
     if (!Objects.equals(this.message, other.message)) {
       return false;
@@ -1067,6 +1073,11 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
     // Compare txLink
     if (!Objects.equals(this.txLink, other.txLink)) {
+      return false;
+    }
+
+    // Compare location
+    if (!Objects.equals(this.getStrippedLocation(), other.getStrippedLocation())) {
       return false;
     }
 
@@ -1122,6 +1133,15 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
 
     return true;
+  }
+
+  public String getValidationContext() {
+    return validationContext;
+  }
+
+  public ValidationMessage setValidationContext(String validationContext) {
+    this.validationContext = validationContext;
+    return this;
   }
 
   public ValidationMessage setDiagnostics(String diagnostics) {

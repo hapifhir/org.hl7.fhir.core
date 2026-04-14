@@ -390,7 +390,7 @@ public class VersionUtilities {
     if (version == null) {
       return null;
     }
-    if (!isSemVer(version)) {
+    if (!isSemVerWithWildcards(version)) {
       return null;
     }
     return getMajMinPriv(version);
@@ -413,7 +413,7 @@ public class VersionUtilities {
     if (version == null) {
       return null;
     }
-    if (!isSemVer(version)) {
+    if (!isSemVer(version, true)) {
       return null;
     }
     String[] p = version.split("\\.");
@@ -439,11 +439,11 @@ public class VersionUtilities {
   /**
    * returns true if this is a valid semver.
    *
-   * Note that we accept major.minor without a patch (but maybe with labels).
+   * Note that we might accept major.minor without a patch (but maybe with labels).
    *
    * This routine does not accept the codes such as RX
    */
-  public static boolean isSemVer(@Nullable String version) {
+  public static boolean isSemVer(@Nullable String version, boolean patchOptional) {
     if (Utilities.noString(version)) {
       return false;
     }
@@ -453,7 +453,7 @@ public class VersionUtilities {
       return false;
     }
     return Utilities.isInteger(pr.getMajor()) && Utilities.isInteger(pr.getMinor())
-      && (pr.getPatch() == null || Utilities.isInteger(pr.getPatch()));
+      && ((patchOptional && pr.getPatch() == null) || Utilities.isInteger(pr.getPatch()));
   }
 
   /**
@@ -791,7 +791,7 @@ public class VersionUtilities {
       res.add("ValueSet");
     }
 
-    if (isR5Ver(version) || isR6Ver(version)) {
+    if (isR5Ver(version)) {
       res.add("ActorDefinition");
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
@@ -826,6 +826,41 @@ public class VersionUtilities {
       res.add("TerminologyCapabilities");
       res.add("TestPlan");
       res.add("TestScript");
+      res.add("ValueSet");
+    }
+    if (isR6Ver(version)) {
+      res.add("ActorDefinition");
+      res.add("ActivityDefinition");
+      res.add("CapabilityStatement");
+      res.add("ChargeItemDefinition");
+      res.add("Citation");
+      res.add("ClinicalUseDefinition");
+      res.add("CodeSystem");
+      res.add("CompartmentDefinition");
+      res.add("ConceptMap");
+      res.add("ConditionDefinition");
+      res.add("DeviceDefinition");
+      res.add("EventDefinition");
+      res.add("Evidence");
+      res.add("EvidenceVariable");
+      res.add("ExampleScenario");
+      res.add("Group");
+      res.add("ImplementationGuide");
+      res.add("Library");
+      res.add("Measure");
+      res.add("MessageDefinition");
+      res.add("NamingSystem");
+      res.add("ObservationDefinition");
+      res.add("OperationDefinition");
+      res.add("PlanDefinition");
+      res.add("Questionnaire");
+      res.add("Requirements");
+      res.add("SearchParameter");
+      res.add("SpecimenDefinition");
+      res.add("StructureDefinition");
+      res.add("StructureMap");
+      res.add("SubscriptionTopic");
+      res.add("TerminologyCapabilities");
       res.add("ValueSet");
     }
     return res;
@@ -890,6 +925,9 @@ public class VersionUtilities {
     }
     SemverParser.ParseResult parsedCriteria = SemverParser.parseSemver(criteria, true, false);
     if (!parsedCriteria.isSuccess()) {
+      if (Utilities.existsInList(criteria, "current", "dev")) {
+        return false;
+      }
       throw new FHIRException("Invalid criteria: " + criteria+": ("+parsedCriteria.getError()+")");
     }
     SemverParser.ParseResult parsedCandidate = SemverParser.parseSemver(candidate, false, false);
@@ -1160,7 +1198,7 @@ public class VersionUtilities {
   private static String checkVersionNotNullAndValid(String s) {
     if (s == null) {
       throw new FHIRException("Invalid version: null");
-    } else if (!isSemVer(s)) {
+    } else if (!isSemVer(s, true)) {
       throw new FHIRException("Invalid version: '" + s + '"');
     } else {
       return s;
@@ -1170,7 +1208,7 @@ public class VersionUtilities {
   public static String checkVersionNotNullAndValid(String s, String label) {
     if (s == null) {
       throw new FHIRException("Invalid " + label + " version: null");
-    } else if (!isSemVer(s)) {
+    } else if (!isSemVer(s, true)) {
       throw new FHIRException("Invalid " + label + " version: '" + s + "'");
     } else {
       return s;
@@ -1201,7 +1239,7 @@ public class VersionUtilities {
   private static String checkVersionValid(String s) {
     if (s == null) {
       return null;
-    } else if (!isSemVer(s)) {
+    } else if (!isSemVer(s, true)) {
       throw new FHIRException("Invalid version: '" + s + '"');
     } else {
       return s;
@@ -1221,7 +1259,7 @@ public class VersionUtilities {
   private static String checkVersionValid(String s, String label) {
     if (s == null) {
       return null;
-    } else if (!isSemVer(s)) {
+    } else if (!isSemVer(s, true)) {
       throw new FHIRException("Invalid " + label + " version: '" + s + '"');
     } else {
       return s;
@@ -1279,4 +1317,78 @@ public class VersionUtilities {
     }
   }
 
+  public static boolean isAnInteger(String version) {
+    return version != null && version.matches("^\\d+$");
+  }
+
+  public static boolean appearsToBeDate(String version) {
+    if (version == null || version.isEmpty()) return false;
+    String datePart = version.split("T")[0];
+    return datePart.matches("^\\d{4}-?\\d{2}(-?\\d{2})?$");
+  }
+
+  public static String guessVersionAlgorithmFromVersion(String version) {
+    if (isSemVer(version, true)) {
+      return "semver";
+    }
+    if (appearsToBeDate(version)) {
+      return "date";
+    }
+    if (isAnInteger(version)) {
+      return "integer";
+    }
+    return "alpha";
+  }
+
+  public static boolean dateIsMoreRecent(String date, String date2) {
+    return normaliseDateString(date).compareTo(normaliseDateString(date2)) > 0;
+  }
+
+  public static String normaliseDateString(String date) {
+    return date.split("T")[0].replace("-", "");
+  }
+
+  public static int compareVersionsGeneral(String version1, String version2) {
+    if (version1 != null && !version1.isEmpty() && version2 != null && !version2.isEmpty()) {
+      if (version1.equals(version2)) {
+        return 0;
+      }
+      String fmt1 = guessVersionAlgorithmFromVersion(version1);
+      String fmt2 = guessVersionAlgorithmFromVersion(version2);
+      if (!fmt1.equals(fmt2)) {
+        return version1.compareTo(version2);
+      }
+      switch (fmt1) {
+        case "semver":
+          boolean b1 = isThisOrLater(version1, version2, VersionPrecision.PATCH);
+          boolean b2 = isThisOrLater(version2, version1, VersionPrecision.PATCH);
+          if (b1 && b2) {
+            return 0;
+          } else if (b2) {
+            return 1;
+          } else {
+            return -1;
+          }
+        case "date":
+          if (dateIsMoreRecent(version1, version2)) {
+            return 1;
+          } else if (dateIsMoreRecent(version2, version1)) {
+            return -1;
+          } else {
+            return 0;
+          }
+        case "integer":
+          return Integer.compare(Integer.parseInt(version1), Integer.parseInt(version2));
+        case "alpha":
+        default:
+          return version1.compareTo(version2);
+      }
+    } else if (version1 != null && !version1.isEmpty()) {
+      return 1;
+    } else if (version2 != null && !version2.isEmpty()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
 }

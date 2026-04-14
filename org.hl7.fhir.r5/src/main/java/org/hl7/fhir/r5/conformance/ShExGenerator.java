@@ -53,6 +53,8 @@ import org.stringtemplate.v4.ST;
 @Slf4j
 public class ShExGenerator {
 
+  public static final String CALLER = "CALLER";
+
   public static class ShExComparator implements Comparator<String> {
     @Override
     public int compare(String o1, String o2) {
@@ -800,7 +802,7 @@ public class ShExGenerator {
 
         ExpressionNode expr = fpe.parse(ce);
         String shexConstraint = processExpressionNode(sd, ed, expr, false, 0);
-        shexConstraint = shexConstraint.replaceAll("CALLER", "");
+        shexConstraint = shexConstraint.replace(CALLER, "");
         log.debug("        Parsed to ShEx Constraint:" + shexConstraint);
         if (!shexConstraint.isEmpty())
           translated += "\n" + shexConstraint;
@@ -1069,10 +1071,10 @@ public class ShExGenerator {
     String pre = "";
     String token = "NNNNN";
     String temp = text;
-    if ((text != null)&&(text.indexOf("SHEX_") != -1)) {
+    if ((text != null)&&(text.contains("SHEX_"))) {
       pre = "\n# This constraint does not have mapping to a ShEx construct yet.";
-      temp = text.replaceAll("\n", token);
-      while (temp.indexOf("SHEX_") != -1) {
+      temp = text.replace("\n", token);
+      while (temp.contains("SHEX_")) {
         pre += "\n# Unmapped construct found: " + StringUtils.substringBetween(temp, "SHEX_", "_SHEX");
         temp = temp.replaceFirst("SHEX_", " ").replaceFirst("_SHEX", " ");
       }
@@ -1080,12 +1082,12 @@ public class ShExGenerator {
       pre += "\n# ";
     }
 
-    if (temp.indexOf(token) != -1) {
+    if (temp!= null && temp.contains(token)) {
       temp = "#" + temp;
-      temp = temp.replaceAll(token, "\n#");
-      temp = temp.replaceAll("##", "#");
-      temp = temp.replaceAll("# #", "#");
-      temp = temp.replaceAll("# #", "#");
+      temp = temp.replace(token, "\n#");
+      temp = temp.replace("##", "#");
+      temp = temp.replace("# #", "#");
+      temp = temp.replace("# #", "#");
       temp += "\n{}";
     }
 
@@ -1108,19 +1110,16 @@ public class ShExGenerator {
   }
 
   private String positionParts(String funCall, String mainTxt, String nextText, int depth, boolean complete){
-    if (funCall.indexOf("CALLER") != -1) {
+    if (funCall.contains(CALLER)) {
       if (depth == 0) {
-        String toReturn = funCall.replaceFirst("CALLER", mainTxt);
-        if (complete)
-          toReturn =  toReturn ;
-
+        String toReturn = funCall.replaceFirst(CALLER, mainTxt);
         toReturn = postProcessing(toReturn, nextText);
-        return toReturn.replaceAll("CALLER", "");
+        return toReturn.replace(CALLER, "");
       }
       else{
         String mT = (mainTxt != null) ? mainTxt.trim() : "";
         String dR = (mT.startsWith(".") || mT.startsWith("{") || mT.startsWith("[")) ? "" : ".";
-        return  postProcessing(funCall.replaceFirst("CALLER", Matcher.quoteReplacement("CALLER" + dR + mT )), nextText) ;
+        return  postProcessing(funCall.replaceFirst(CALLER, Matcher.quoteReplacement(CALLER + dR + mT )), nextText) ;
       }
     }
 
@@ -1240,7 +1239,7 @@ public class ShExGenerator {
       for (String dt : new HashSet<String>(datatypes)) {
         if (!emittedDatatypes.contains(dt)) {
           StructureDefinition sd = context.fetchResource(StructureDefinition.class,
-            ProfileUtilities.sdNs(dt, null));
+            ProfileUtilities.sdNs(dt, null), IWorkerContext.VersionResolutionRules.defaultRule());
           // TODO: Figure out why the line below doesn't work
           // if (sd != null && !uniq_structures.contains(sd))
           if(sd != null && !uniq_structure_urls.contains(sd.getUrl()))
@@ -1432,7 +1431,7 @@ public class ShExGenerator {
     } else {
       if (!refChoices.isEmpty()) {
         defn += " AND {fhir:l \n\t\t\t@<" +
-          refChoices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> ? }";
+          refChoices.replace("_OR_", "> OR \n\t\t\t@<") + "> ? }";
       }
     }
 
@@ -1737,16 +1736,16 @@ public class ShExGenerator {
     String oomType = oneOrMoreType;
     String origType = oneOrMoreType;
     String restriction = "";
-    if (oneOrMoreType.indexOf(ONE_OR_MORE_CHOICES) != -1) {
-      oomType = oneOrMoreType.replaceAll(ONE_OR_MORE_CHOICES, "_");
+    if (oneOrMoreType.contains(ONE_OR_MORE_CHOICES)) {
+      oomType = oneOrMoreType.replace(ONE_OR_MORE_CHOICES, "_");
       origType = oneOrMoreType.split(ONE_OR_MORE_CHOICES)[0];
       restriction = "AND {fhir:l \n\t\t\t@<";
 
       String choices = oneOrMoreType.split(ONE_OR_MORE_CHOICES)[1];
-      restriction += choices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> }";
+      restriction += choices.replace("_OR_", "> OR \n\t\t\t@<") + "> }";
     }
 
-    origType = origType.replaceAll(ONE_OR_MORE_PREFIX, "");
+    origType = origType.replace(ONE_OR_MORE_PREFIX, "");
 
     one_or_more_type.add("oomType", TurtleParser.getClassName(oomType));
     one_or_more_type.add("origType", TurtleParser.getClassName(origType));
@@ -1884,7 +1883,7 @@ public class ShExGenerator {
   // TODO: find a utility that implements this
   private ValueSet resolveBindingReference(DomainResource ctxt, String reference) {
     try {
-      return context.fetchResource(ValueSet.class, reference);
+      return context.fetchResource(ValueSet.class, reference, IWorkerContext.VersionResolutionRules.defaultRule());
     } catch (Throwable e) {
       return null;
     }

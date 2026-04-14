@@ -40,5 +40,11 @@ public class ServerDetailsPOJO {
 
     String apikey;
 
+    /**
+     * When true, allows HTTP connections to this server without upgrading to HTTPS.
+     * Use this for internal servers (e.g. Docker service names) that don't support HTTPS.
+     */
+    Boolean allowHttp;
+
     Map<String, String> headers;
 }

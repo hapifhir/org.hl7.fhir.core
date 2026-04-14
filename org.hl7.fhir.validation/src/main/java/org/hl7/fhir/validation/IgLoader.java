@@ -41,6 +41,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.turtle.Turtle;
 import org.hl7.fhir.validation.ValidationEngine.IValidationEngineLoader;
@@ -67,7 +68,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
   private static final String[] EXEMPT_FILES = {"spec.internals", "version.info", "schematron.zip", "package.json"};
   private static final int SCAN_HEADER_SIZE = 2048;
 
-  @Getter private final FilesystemPackageCacheManager packageCacheManager;
+  @Getter private final IPackageCacheManager packageCacheManager;
   @Getter private final SimpleWorkerContext context;
   @Getter private final String version;
   @Getter private final boolean isDebug;
@@ -79,7 +80,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       this(packageCacheManager, context, theVersion, false);
   }
 
-  public IgLoader(FilesystemPackageCacheManager packageCacheManager,
+  public IgLoader(IPackageCacheManager packageCacheManager,
                   SimpleWorkerContext context,
                   String theVersion,
                   boolean isDebug) {
@@ -357,7 +358,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
           int j = find(s, i+1, '"');
           if (j > 0) {
             String v = s.substring(i+1, j);
-            if (VersionUtilities.isSemVer(v)) {
+            if (VersionUtilities.isSemVer(v, true)) {
               versions.see(VersionUtilities.getMajMin(v), "fhirVersion in " + ref);
               return;
             }
@@ -371,7 +372,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
           int j = find(s, i+1, '\'');
           if (j > 0) {
             String v = s.substring(i, j);
-            if (VersionUtilities.isSemVer(v)) {
+            if (VersionUtilities.isSemVer(v, true)) {
               versions.see(VersionUtilities.getMajMin(v), "fhirVersion in " + ref);
               return;
             }

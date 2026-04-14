@@ -11,10 +11,12 @@ import java.util.List;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.JsonParser;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
@@ -54,7 +56,7 @@ public class MeasureValidator extends BaseValidator {
     for (Element lib : libs) {
       String ref = lib.isPrimitive() ? lib.primitiveValue() : lib.getChildValue("reference");
       if (!Utilities.noString(ref)) {
-        Library l = context.fetchResource(Library.class, ref);
+        Library l = context.fetchResource(Library.class, ref, ExtensionUtilities.getVersionResolutionRules(lib));
         if (hint(errors, NO_RULE_DATE, IssueType.NOTFOUND, lib.line(), lib.col(), stack.getLiteralPath(), l != null, I18nConstants.MEASURE_M_LIB_UNKNOWN, ref)) {
           mctxt.seeLibrary(l);
         }
@@ -229,7 +231,7 @@ public class MeasureValidator extends BaseValidator {
     }
     if (hint(errors, NO_RULE_DATE, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), measure != null, I18nConstants.MEASURE_MR_M_NONE)) {
       long t = System.nanoTime();
-      Measure msrc = measure.startsWith("#") ? loadMeasure(element, measure.substring(1)) : context.fetchResource(Measure.class, measure);
+      Measure msrc = measure.startsWith("#") ? loadMeasure(element, measure.substring(1)) : context.fetchResource(Measure.class, measure, IWorkerContext.VersionResolutionRules.defaultRule());
       timeTracker.sd(t);
       if (warning(errors, NO_RULE_DATE, IssueType.REQUIRED, m.line(), m.col(), stack.getLiteralPath(), msrc != null, I18nConstants.MEASURE_MR_M_NOTFOUND, measure)) {
         boolean inComplete = !"complete".equals(element.getNamedChildValue("status", false));

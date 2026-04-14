@@ -205,7 +205,7 @@ public class DateTimeType extends BaseDateTimeType {
     r = stripChar(r, 10, 'T');
     r = stripChar(r, 7, '-');
     r = stripChar(r, 4, '-');
-    r = r.replaceAll(":", ""); // might be in the timezone
+    r = r.replace(":", ""); // might be in the timezone
     return r;
   }
 

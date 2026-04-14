@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
@@ -39,11 +40,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.StandardsStatus;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -56,6 +53,9 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class ClassDiagramRenderer {
+  private String defnFile;
+  private StructureDefinition defnSD;
+
   public class LinkInfo {
 
     private boolean use;
@@ -107,7 +107,7 @@ public class ClassDiagramRenderer {
   private int nc = 0;
   private List<Link> links = new ArrayList<Link>();
   private List<String> classNames = new ArrayList<String>();  
-  String lang;
+  private String lang;
 
   /**
    * 
@@ -116,8 +116,7 @@ public class ClassDiagramRenderer {
    * @param diagramId - the id of the diagram (goes in the filenames and the diagram itself)
    * @param prefix - a prefix to put on all ids to ensure anchor names don't clash. 
    * @param rc - rendering context
-   * @param lang 
-   * @param json - json control file with diagram details
+   * @param lang
    * 
    * @throws IOException
    */
@@ -186,7 +185,10 @@ public class ClassDiagramRenderer {
     return s; 
   }
 
-  public String buildClassDiagram(StructureDefinition sd) throws FHIRException, IOException {
+  public String buildClassDiagram(StructureDefinition sd, String defnFile) throws FHIRException, IOException {
+    this.defnFile = defnFile;
+    this.defnSD = sd;
+
     File f = new File(Utilities.path(sourceFolder, diagramId+".svg"));
     if (f.exists()) {
       parseSvgFile(f, f.getAbsolutePath());
@@ -559,7 +561,7 @@ public class ClassDiagramRenderer {
     double y = item.bottom()+MARGIN_Y;
     if (classNames != null) {
       for (String cn : classNames) {
-        StructureDefinition sd = context.fetchResource(StructureDefinition.class, cn);
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, cn, IWorkerContext.VersionResolutionRules.defaultRule());
         if (sd == null) {
           sd = cutils.fetchStructureByName(cn);
         }
@@ -567,7 +569,7 @@ public class ClassDiagramRenderer {
           throw new FHIRException("Unable to find class '"+cn+"'");
         }
         ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
-        StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+        StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), IWorkerContext.VersionResolutionRules.defaultRule());
         p = determineMetrics(sd, ed, item, ed.getName(), null, base, ClassItemMode.NORMAL);
         x = Math.max(x, p.x+MARGIN_X);
         y = Math.max(y, p.y+MARGIN_Y);
@@ -590,7 +592,7 @@ public class ClassDiagramRenderer {
     double x = item.right()+MARGIN_X;
     double y = item.bottom()+MARGIN_Y;
     ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
-    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), IWorkerContext.VersionResolutionRules.defaultRule());
     p = determineMetrics(sd, ed, item, ed.getName(), null, base, ClassItemMode.NORMAL);
     x = Math.max(x, p.x+MARGIN_X);
     y = Math.max(y, p.y+MARGIN_Y);
@@ -832,7 +834,7 @@ public class ClassDiagramRenderer {
       div.style("text-decoration: line-through");
     }
 
-    var a = div.ah(baseUrl(sd, path)+path+"."+e.getName().replace("[", "_").replace("]", "_")).style("text-decoration: none;");
+    var a = div.ah(urlForAttribute(sd, e, path)).style("text-decoration: none;");
     a.attributeNN("title", getEnhancedDefinition(e));
     a.tx(ls.see(e.getName()));
 
@@ -888,7 +890,7 @@ public class ClassDiagramRenderer {
         }
         flag(div, ls, e.hasMaxLength(), "<L", "black", "#95fc9c", rc.formatPhrase(RenderingContext.GENERAL_MAX_LENGTH, e.getMaxLength()), null);
         if (e.hasBinding()) {
-          ValueSet vs = context.fetchResource(ValueSet.class, path);
+          ValueSet vs = context.fetchResource(ValueSet.class, path, IWorkerContext.VersionResolutionRules.defaultRule());
           if (e.getBinding().getStrength() == BindingStrength.REQUIRED) {
             flag(div, ls, true, "B!", "black", "#fad570", rc.formatPhrase(RenderingContext.GENERAL_REQUIRED_BINDING, describeVS(e.getBinding().getValueSet(), vs)), vsLink(e.getBinding().getValueSet(), vs));            
           } else if (e.getBinding().getStrength() == BindingStrength.EXTENSIBLE) {
@@ -910,7 +912,7 @@ public class ClassDiagramRenderer {
                   first = false;
                 else 
                   div.tx(ls.see(" | "));
-                StructureDefinition sdt = context.fetchResource(StructureDefinition.class, p.asStringValue(), null, sd);
+                StructureDefinition sdt = context.fetchResource(StructureDefinition.class, p.asStringValue(), ExtensionUtilities.getVersionResolutionRules(p), null, sd);
                 String s = sdt == null ? tail(p.asStringValue()) : sdt.getName();
                 ls.check(html, div, left, top, s.length(), null);
                 encodeType(div, ls, s);
@@ -933,7 +935,7 @@ public class ClassDiagramRenderer {
           }
           if (hasBinding) {
             ElementDefinitionBindingComponent b = e.getBinding();
-            ValueSet vs = context.fetchResource(ValueSet.class, b.getValueSet()); 
+            ValueSet vs = context.fetchResource(ValueSet.class, b.getValueSet(), ExtensionUtilities.getVersionResolutionRules(b.getValueSetElement()));
             String name = vs != null ? vs.getName() : tail(b.getValueSet());
             if (name.toLowerCase().endsWith(" codes"))
               name = name.substring(0, name.length()-5);
@@ -950,6 +952,18 @@ public class ClassDiagramRenderer {
       }
     }
     return ls.line;
+  }
+
+  private String urlForAttribute(StructureDefinition sd, ElementDefinition ed, String path) {
+    String fullPath = path+"."+ed.getName(); //.replace("[", "_").replace("]", "_");
+    if (!ed.getPath().equals(ed.getBase().getPath()) || (ed.getBase().hasPath() && sd.getDerivation() == StructureDefinition.TypeDerivationRule.CONSTRAINT)) {
+      StructureDefinition sdt = context.fetchTypeDefinition(head(ed.getBase().getPath()));
+      if (sdt != null && !ExtensionUtilities.hasExtension(sdt, ExtensionDefinitions.EXT_RESOURCE_INTERFACE)) {
+        sd = sdt;
+        fullPath = ed.getBase().getPath();
+      }
+    }
+    return (sd == defnSD && defnFile != null ? defnFile : sd.getWebPath())+"#"+fullPath;
   }
 
   private String getBindingSuffix(ElementDefinitionBindingComponent b) {
@@ -1145,9 +1159,19 @@ public class ClassDiagramRenderer {
     return ed.getTranslation(lang);
   }
 
-  private String baseUrl(StructureDefinition sd, String path) throws FHIRException, IOException {
+  private String baseUrl(StructureDefinition sd, ElementDefinition ed, String path) throws FHIRException, IOException {
+    if (!ed.getPath().equals(ed.getBase().getPath())) {
+      StructureDefinition sdt = context.fetchTypeDefinition(head(ed.getBase().getPath()));
+      if (sdt != null) {
+        sd = sdt;
+      }
+    }
     return sd.getWebPath()+"#";
-  } 
+  }
+
+  private String head(String path) {
+    return path.contains(".") ? path.substring(0, path.indexOf(".")) : path;
+  }
 
   private String[] textForAttribute(StructureDefinition sd, ElementDefinition e) throws FHIRException, IOException {
     LineStatus ls = new LineStatus();
@@ -1210,13 +1234,13 @@ public class ClassDiagramRenderer {
   private ClassItem drawElement(XhtmlNode svg, List<String> classNames) throws Exception {
     if (classNames != null) {
       for (String cn : classNames) {
-        StructureDefinition sd = context.fetchResource(StructureDefinition.class, cn);
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, cn, IWorkerContext.VersionResolutionRules.defaultRule());
         if (sd == null) {
           sd = cutils.fetchStructureByName(cn);
         }
         ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
 
-        StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());       
+        StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
         ClassItem parent = base == null ? null : classes.get(base.getName());
         if (parent == null) {
           drawClass(svg, sd, ed, cn, sd.getStandardsStatus(), base);
@@ -1232,7 +1256,7 @@ public class ClassDiagramRenderer {
   private ClassItem drawClassElement(XhtmlNode svg, StructureDefinition sd) throws FHIRException, IOException {
     ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
 
-    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());       
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
     ClassItem parent = base == null ? null : classes.get(base.getName());
     if (parent == null) {
       drawClass(svg, sd, ed, ed.getName(), sd.getStandardsStatus(), base);
@@ -1339,15 +1363,15 @@ public class ClassDiagramRenderer {
             if (c.hasContentReference()) {
               String cr = c.getContentReference();
               ClassItem target = classes.get(cr.substring(cr.indexOf("#")+1));
-              links.add(new Link(item, target, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, baseUrl(sd, path)+path+"."+c.getName(), getEnhancedDefinition(c)));                                    
+              links.add(new Link(item, target, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, baseUrl(sd, c, path)+path+"."+c.getName(), getEnhancedDefinition(c)));
             } else { 
               ClassItem cc = drawClass(svg, sd, c, path+"."+c.getName(), status, null);
-              links.add(new Link(item, cc, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, baseUrl(sd, path)+path+"."+c.getName(), getEnhancedDefinition(c)));
+              links.add(new Link(item, cc, LinkType.COMPOSITION, c.getName(), describeCardinality(c), PointKind.unknown, baseUrl(sd, c, path)+path+"."+c.getName(), getEnhancedDefinition(c)));
               if (c.hasSlicing()) {
                 List<ElementDefinition> slices = getSlices(children, c);
                 for (ElementDefinition s : slices) {
                   ClassItem cc1 = drawClass(svg, sd, s, path+"."+c.getName()+":"+s.getSliceName(), status, null);
-                  links.add(new Link(cc, cc1, LinkType.SLICE, "", describeCardinality(s), PointKind.unknown, baseUrl(sd, path)+path+"."+c.getName()+":"+s.getSliceName(), getEnhancedDefinition(c)));
+                  links.add(new Link(cc, cc1, LinkType.SLICE, "", describeCardinality(s), PointKind.unknown, baseUrl(sd, s, path)+path+"."+c.getName()+":"+s.getSliceName(), getEnhancedDefinition(c)));
                 }
               }
             }
@@ -1644,7 +1668,9 @@ public class ClassDiagramRenderer {
     }
   }
 
-  public String buildConstraintDiagram(StructureDefinition profile) throws FHIRException, IOException {
+  public String buildConstraintDiagram(StructureDefinition profile, String defnFile) throws FHIRException, IOException {
+    this.defnFile = defnFile;
+    this.defnSD = profile;
     File f = new File(Utilities.path(sourceFolder, diagramId+".svg"));
     if (f.exists()) {
       parseSvgFile(f, f.getAbsolutePath());
@@ -1689,7 +1715,7 @@ public class ClassDiagramRenderer {
 
     ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
 
-    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());       
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
     drawClass(svg, sd, ed, ed.getPath(), sd.getStandardsStatus(), base);
   }
 
@@ -1708,7 +1734,7 @@ public class ClassDiagramRenderer {
     double x = item.right()+MARGIN_X;
     double y = item.bottom()+MARGIN_Y;
     ElementDefinition ed = sd.getSnapshot().getElementFirstRep();
-    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
     p = determineMetrics(sd, ed, item, ed.getName(), null, base, ClassItemMode.NORMAL);
     x = Math.max(x, p.x+MARGIN_X);
     y = Math.max(y, p.y+MARGIN_Y);

@@ -209,7 +209,7 @@ public class JsonParser extends ParserBase {
         if (!rd.isJsonString()) {
           logError(errors, "2022-11-26", line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.RESOURCEDEFINITION_PROPERTY_WRONG_TYPE, rd.type().toName()), IssueSeverity.ERROR);
         } else {
-          sd = context.fetchResource(StructureDefinition.class, rd.asString());
+          sd = context.fetchResource(StructureDefinition.class, rd.asString(), IWorkerContext.VersionResolutionRules.defaultRule());
           if (sd == null) {
             logError(errors, "2022-11-26", line(object), col(object), "$", IssueType.INVALID, context.formatMessage(I18nConstants.RESOURCEDEFINITION_PROPERTY_UNKNOWN, rd.asString()), IssueSeverity.ERROR);
           }
@@ -567,7 +567,7 @@ public class JsonParser extends ParserBase {
         }
       }
       if (type != null) {
-        StructureDefinition sd = context.fetchResource(StructureDefinition.class, type);
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, type, IWorkerContext.VersionResolutionRules.defaultRule());
         if (sd == null) {
           logError(errors, ValidationMessage.NO_RULE_DATE, line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.TYPE_SPECIFIER_ILLEGAL_TYPE, type, cond), IssueSeverity.ERROR);
         } else {
@@ -752,7 +752,7 @@ public class JsonParser extends ParserBase {
       logError(errors, "2022-11-26", line(res), col(res), npath, IssueType.INVALID, context.formatMessage(I18nConstants.RESOURCETYPE_PROPERTY_WRONG_TYPE, rt.type().toName()), IssueSeverity.FATAL);
     } else {
       String name = rt.asString();
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null), IWorkerContext.VersionResolutionRules.defaultRule());
       if (sd == null) {
         logError(errors, ValidationMessage.NO_RULE_DATE, line(res), col(res), npath, IssueType.INVALID, context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name), IssueSeverity.FATAL);			    
       } else {
@@ -823,7 +823,7 @@ public class JsonParser extends ParserBase {
     }
     checkComposeComments(e);
     json.beginObject();
-    if (!isSuppressResourceType(e.getProperty())) {
+    if (!isSuppressResourceType(e.getProperty(), e.getType())) {
       prop("resourceType", e.getType(), null);
     }
     if (ExtensionUtilities.readBoolExtension(e.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
@@ -838,13 +838,19 @@ public class JsonParser extends ParserBase {
     osw.flush();
   }
 
-  private boolean isSuppressResourceType(Property property) {
+  private boolean isSuppressResourceType(Property property, String type) {
     StructureDefinition sd = property.getStructure();
     if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE)) {
       return ExtensionUtilities.readBoolExtension(sd, ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE);
-    } else {
-      return false;
     }
+    sd = context.fetchTypeDefinition(type);
+    if (sd != null && (sd.getKind() == StructureDefinition.StructureDefinitionKind.COMPLEXTYPE || sd.getKind() == StructureDefinition.StructureDefinitionKind.PRIMITIVETYPE)) {
+      return true;
+    }
+    if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE)) {
+      return ExtensionUtilities.readBoolExtension(sd, ExtensionDefinitions.EXT_SUPPRESS_RESOURCE_TYPE);
+    }
+    return false;
   }
 
   private void checkComposeComments(Element e) {
@@ -862,7 +868,7 @@ public class JsonParser extends ParserBase {
     checkComposeComments(e);
     json.beginObject();
 
-    if (!isSuppressResourceType(e.getProperty())) {
+    if (!isSuppressResourceType(e.getProperty(), e.getType())) {
       prop("resourceType", e.getType(), linkResolver == null ? null : linkResolver.resolveProperty(e.getProperty()));
     }
     if (ExtensionUtilities.readBoolExtension(e.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
@@ -985,7 +991,7 @@ public class JsonParser extends ParserBase {
           json.elide();
         else if (item.hasChildren()) {
           open(null,null);
-          if (item.getProperty().isResource() && !isSuppressResourceType(item.getProperty())) {
+          if (item.getProperty().isResource() && !isSuppressResourceType(item.getProperty(), item.getType())) {
             prop("resourceType", item.getType(), linkResolver == null ? null : linkResolver.resolveType(item.getType()));
           }
           if (linkResolver != null && item.getProperty().isReference()) {
@@ -1043,7 +1049,7 @@ public class JsonParser extends ParserBase {
     }
     if (element.hasChildren()) {
       open(name, linkResolver == null ? null : linkResolver.resolveProperty(element.getProperty()));
-      if (element.getProperty().isResource() && !isSuppressResourceType(element.getProperty())) {
+      if (element.getProperty().isResource() && !isSuppressResourceType(element.getProperty(), element.getType())) {
         prop("resourceType", element.getType(), linkResolver == null ? null : linkResolver.resolveType(element.getType()));
       }
       if (linkResolver != null && element.getProperty().isReference()) {

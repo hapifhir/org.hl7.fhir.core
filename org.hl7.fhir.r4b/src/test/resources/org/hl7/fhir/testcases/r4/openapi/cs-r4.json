@@ -1,0 +1,46 @@
+{
+  "resourceType": "CapabilityStatement",
+  "id": "r4-openapi-test",
+  "url": "http://example.org/fhir/CapabilityStatement/r4-openapi-test",
+  "version": "1.0.0",
+  "name": "R4OpenApiTest",
+  "status": "active",
+  "date": "2024-01-01",
+  "publisher": "Example Publisher",
+  "kind": "instance",
+  "fhirVersion": "4.0.1",
+  "format": [
+    "application/fhir+json",
+    "application/fhir+xml"
+  ],
+  "rest": [
+    {
+      "mode": "server",
+      "resource": [
+        {
+          "type": "Patient",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type"
+            }
+          ],
+          "operation": [
+            {
+              "name": "example-patient-op",
+              "definition": "http://example.org/fhir/OperationDefinition/patient-example"
+            }
+          ]
+        }
+      ],
+      "operation": [
+        {
+          "name": "system-example",
+          "definition": "http://example.org/fhir/OperationDefinition/system-example"
+        }
+      ]
+    }
+  ]
+}

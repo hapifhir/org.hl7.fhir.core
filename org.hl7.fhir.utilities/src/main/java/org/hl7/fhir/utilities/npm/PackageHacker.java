@@ -295,6 +295,9 @@ public class PackageHacker {
     if (webref.equals("http://hl7.org/fhir/us/core/v311")) {
       return "https://hl7.org/fhir/us/core/STU3.1.1";
     }
+    if (webref.contains("hl7.org/fhir/uv/hl7.fhir.uv.xver")) {
+      webref = webref.replace("hl7.org/fhir/uv/hl7.fhir.uv.xver", "hl7.org/fhir/uv/xver");
+    }
     if (isUseSecureReferences()) {
       return webref.replace("http://hl7.org/fhir", "https://hl7.org/fhir").replace("http://build.fhir.org", "https://build.fhir.org");
     } else {

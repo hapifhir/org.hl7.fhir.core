@@ -127,6 +127,30 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
 @Slf4j
 public class ProfileUtilities {
 
+  private static final Set<String> BASE_FILENAMES = Set.of(
+    "async", "ballot-intro", "best-practices", "bindings-list", "biologically-derived-product-module", "broken-link", "cda-intro", "change", "clinicalreasoning-cds-on-fhir",
+    "clinicalreasoning-evidence-and-statistics", "clinicalreasoning-knowledge-artifact-distribution", "clinicalreasoning-knowledge-artifact-representation", "clinicalreasoning-module",
+    "clinicalreasoning-quality-reporting", "clinicalreasoning-topics-definitional-resources", "clinicalreasoning-topics-supporting-documentation", "clinicalreasoning-topics-template",
+    "clinicalreasoning-topics-using-expressions", "clinicalsummary-module", "codesystem", "comparison", "comparison-cda", "comparison-other", "comparison-v2", "comparison-v3", "conformance-module",
+    "conformance-rules", "credits", "datatypes", "datatypes-definitions", "datatypes-examples", "datatypes-mappings", "datatypes-profiles", "defining-extensions", "device-module", "diagnostics-module",
+    "diff", "diff-r4", "diff-r4b", "diff-r5", "documentation", "documents", "dosage", "dosage-definitions", "dosage-examples", "dosage-mappings", "dosage-profiles", "downloads", "ehr-fm",
+    "element-definitions", "elementdefinition", "elementdefinition-definitions", "elementdefinition-examples", "elementdefinition-mappings", "elementdefinition-profiles", "exchange-module",
+    "exchanging", "exchanging-messaging", "exchanging-operation", "exchanging-polling", "exchanging-request", "exchanging-rest", "exchanging-search", "exchanging-subscription", "extensibility",
+    "extensibility-definitions", "extensibility-examples", "fhir-xquery", "fhirpatch", "fhirpath", "financial-module", "fmg", "formats", "foundation-module", "genomics", "glossary", "graphql",
+    "help", "history", "http", "identifier-registry", "implsupport-module", "index", "integrated-examples", "json", "languages", "license", "lifecycle", "logical", "loinc", "managing",
+    "mapping-language", "mapping-tutorial", "mappings", "marketingstatus", "marketingstatus-definitions", "marketingstatus-examples", "marketingstatus-mappings", "marketingstatus-profiles",
+    "medication-definition-module", "medications-module", "messaging", "metadatatypes", "metadatatypes-definitions", "metadatatypes-examples", "metadatatypes-mappings", "metadatatypes-profiles",
+    "modules", "modules-fragment", "modules-list", "narrative", "narrative-definitions", "narrative-examples", "narrative-version-maps", "nd-json", "ns", "nutrition-module", "obligations",
+    "observation", "oids", "op-example-request", "operations", "operations-for-large-resources", "operationslist", "overview", "overview-arch", "overview-clinical", "overview-dev", "overview-patient",
+    "packages", "page", "patient-operation-match", "patterns", "population-profiles", "productshelflife", "productshelflife-definitions", "productshelflife-examples", "productshelflife-mappings",
+    "productshelflife-profiles", "profilelist", "profiling", "profiling-examples", "pushpull", "qa", "r2maps", "r3maps", "r4maps", "rdf", "redirect", "references", "references-definitions",
+    "references-profiles", "resource", "resource-definitions", "ansi", "resource-formats", "resourceguide", "resourcelist", "resourcelist-examples", "resources-definitions",
+    "resources-examples", "safety", "sc", "search", "search-build", "search_filter", "searchparameter-registry", "secpriv-module", "security", "security-labels", "services", "sid-icd-10",
+    "sid-icd-9", "sid-us-ssn", "signatures", "snomedct", "snomedct-usage", "storage", "subscriptions", "summary", "terminologies", "terminologies-binding-examples", "terminologies-conceptmaps",
+    "terminologies-systems", "terminologies-valuesets", "terminology-module", "terminology-service", "toc", "types", "types-definitions", "types-mappings", "types-profiles", "uml",
+    "updates", "usecases", "validation", "versioning", "versions", "w5", "wglist", "workflow", "workflow-ad-hoc", "workflow-communications", "workflow-examples", "workflow-management",
+    "workflow-module", "workflow-extensions", "xml"
+  );
   private static boolean suppressIgnorableExceptions;
 
   
@@ -506,7 +530,7 @@ public class ProfileUtilities {
       } else if (element.getContentReference().contains("#")) {
         // external reference
         String ref = element.getContentReference();
-        StructureDefinition sd = findProfile(ref.substring(0, ref.indexOf("#")), profile);
+        StructureDefinition sd = findProfile(element.getContentReferenceElement(), profile);
         if (sd == null) {
           throw new DefinitionException("unable to process contentReference '"+element.getContentReference()+"' on element '"+element.getId()+"'");
         }
@@ -557,7 +581,7 @@ public class ProfileUtilities {
         } else if (element.getType().get(0).getProfile().size() > 1) {
           throw new DefinitionException("No defined children and multiple possible type profiles '"+element.typeSummary()+"' on element '"+element.getId()+"'");
         } else if (element.getType().get(0).hasProfile()) {
-          src = findProfile(element.getType().get(0).getProfile().get(0).getValue(), profile);
+          src = findProfile(element.getType().get(0).getProfile().get(0), profile);
           if (src == null) {
             throw new DefinitionException("No defined children and unknown type profile '"+element.typeSummary()+"' on element '"+element.getId()+"'");
           }
@@ -658,7 +682,7 @@ public class ProfileUtilities {
             return getChildList(profile, e.getContentReference().substring(1), null, diff);            
           } else if (e.getContentReference().contains("#")) {
             String url = e.getContentReference().substring(0, e.getContentReference().indexOf("#"));
-            StructureDefinition sd = findProfile(url, profile);
+            StructureDefinition sd = findProfile(e.getContentReferenceElement(), profile);
             if (sd == null) {
               throw new DefinitionException("Unable to find Structure "+url);
             }
@@ -736,7 +760,7 @@ public class ProfileUtilities {
       throw new DefinitionException(context.formatMessage(I18nConstants.BASE__DERIVED_PROFILES_HAVE_DIFFERENT_TYPES____VS___, base.getUrl(), base.getType(), derived.getUrl(), derived.getType()));
     }
     if (!base.hasSnapshot()) {
-      StructureDefinition sdb = findProfile(base.getBaseDefinition(), base);
+      StructureDefinition sdb = findProfile(base.getBaseDefinitionElement(), base);
       if (sdb == null)
         throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, base.getBaseDefinition(), base.getUrl()));
       checkNotGenerating(sdb, "an extension base");
@@ -821,12 +845,14 @@ public class ProfileUtilities {
             if (!e.hasUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT) && e.getPath().contains(".")) {
               ElementDefinition existing = getElementInCurrentContext(e.getPath(), derived.getSnapshot().getElement());
               if (existing != null) {
+                e.setUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT, existing);
                 updateFromDefinition(existing, e, profileName, false, url, base, derived, "StructureDefinition.differential.element["+i+"]", mappingDetails, false);
               } else {
+                int insertionPoint = findLastChildForParent(e.getPath(), derived.getSnapshot().getElement());
                 ElementDefinition outcome = updateURLs(url, webUrl, e.copy(), true);
                 e.setUserData(UserDataNames.SNAPSHOT_GENERATED_IN_SNAPSHOT, outcome);
                 markExtensions(outcome, true, derived);
-                derived.getSnapshot().addElement(outcome);
+                derived.getSnapshot().getElement().add(insertionPoint, outcome);
                 if (walksInto(diff.getElement(), e)) {
                   if (e.getType().size() > 1) {
                     throw new DefinitionException("Unsupported scenario: specialization walks into multiple types at "+e.getId()); 
@@ -1014,7 +1040,7 @@ public class ProfileUtilities {
         for (ElementDefinition ed : derived.getSnapshot().getElement()) {
           for (TypeRefComponent t : ed.getType()) {
             for (UriType u : t.getProfile()) {
-              StructureDefinition sd = findProfile(u.getValue(), derived);
+              StructureDefinition sd = findProfile(u, derived);
               if (sd == null) {
                 if (makeXVer().matchingUrl(u.getValue()) && xver.status(u.getValue()) == XVerExtensionStatus.Valid) {
                   sd = xver.getDefinition(u.getValue());
@@ -1068,6 +1094,27 @@ public class ProfileUtilities {
     derived.setGeneratedSnapshot(true);
     //derived.setUserData(UserDataNames.SNAPSHOT_GENERATED, true); // used by the publisher
     derived.setUserData(UserDataNames.SNAPSHOT_GENERATED_MESSAGES, messages); // used by the publisher
+  }
+
+  private int findLastChildForParent(String path, List<ElementDefinition> element) {
+    String parentPath = path.substring(0, path.lastIndexOf('.'));
+    int index = getPathForElement(parentPath, element);
+    if (index == -1) {
+      throw new FHIRException("Unable to find parent path "+parentPath+" for element "+path+" (internal code error)");
+    }
+    while (index < element.size() && element.get(index).getPath().startsWith(parentPath)) {
+      index++;
+    }
+    return index;
+  }
+
+  private int getPathForElement(String parentPath, List<ElementDefinition> element) {
+    for (int i = 0; i < element.size(); i++) {
+      if (element.get(i).getPath().equals(parentPath)) {
+        return i;
+      }
+    }
+    return -1;
   }
 
 
@@ -1125,7 +1172,7 @@ public class ProfileUtilities {
     }
     StructureDefinition t = dsd;
     while (t != bsd && t != null) {
-      t = findProfile(t.getBaseDefinition(), t);
+      t = findProfile(t.getBaseDefinitionElement(), t);
     }
     if (t == null) {
       throw new DefinitionException(context.formatMessage(I18nConstants.SD_TYPE_PARAMETER_INVALID, base.getVersionedUrl(), bt, derived.getVersionedUrl(), dt));
@@ -1158,7 +1205,7 @@ public class ProfileUtilities {
   private void findInheritedObligationProfiles(StructureDefinition derived) {
     List<Extension> list = derived.getExtensionsByUrl(ExtensionDefinitions.EXT_OBLIGATION_INHERITS_NEW, ExtensionDefinitions.EXT_OBLIGATION_INHERITS_OLD);
     for (Extension ext : list) {
-      StructureDefinition op = findProfile(ext.getValueCanonicalType().primitiveValue(), derived);
+      StructureDefinition op = findProfile(ext.getValueCanonicalType(), derived);
       if (op != null && ExtensionUtilities.readBoolExtension(op, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_NEW, ExtensionDefinitions.EXT_OBLIGATION_PROFILE_FLAG_OLD)) {
         if (derived.getBaseDefinitionNoVersion().equals(op.getBaseDefinitionNoVersion())) {
           obligationProfiles.add(op);
@@ -1206,7 +1253,7 @@ public class ProfileUtilities {
   }
 
   private String getExtensionAction(String url) {
-    StructureDefinition sd = context.fetchResourceRaw(StructureDefinition.class, url);
+    StructureDefinition sd = context.fetchResourceRaw(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd != null && sd.hasExtension(ExtensionDefinitions.EXT_SNAPSHOT_BEHAVIOR)) {
       return ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_SNAPSHOT_BEHAVIOR);
     }
@@ -1269,7 +1316,7 @@ public class ProfileUtilities {
    */
   private void checkDifferentialBaseType(StructureDefinition derived) throws Error {
     if (derived.hasDifferential() && !derived.getDifferential().getElementFirstRep().getPath().contains(".") && !derived.getDifferential().getElementFirstRep().getType().isEmpty()) {
-      if (wantFixDifferentialFirstElementType && typeMatchesAncestor(derived.getDifferential().getElementFirstRep().getType(), derived.getBaseDefinitionNoVersion(), derived)) {
+      if (wantFixDifferentialFirstElementType && typeMatchesAncestor(derived.getDifferential().getElementFirstRep().getType(), derived.getBaseDefinitionElement(), derived)) {
         derived.getDifferential().getElementFirstRep().getType().clear();
       } else if (derived.getKind() != StructureDefinitionKind.LOGICAL) {
         throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT));
@@ -1277,7 +1324,7 @@ public class ProfileUtilities {
     }
   }
 
-  private boolean typeMatchesAncestor(List<TypeRefComponent> type, String baseDefinition, StructureDefinition src) {
+  private boolean typeMatchesAncestor(List<TypeRefComponent> type, UriType baseDefinition, StructureDefinition src) {
     StructureDefinition sd = findProfile(baseDefinition, src);
     return sd != null && type.size() == 1 && sd.getType().equals(type.get(0).getCode()); 
   }
@@ -1425,7 +1472,7 @@ public class ProfileUtilities {
       if (sd.getUrl().equals(sdb.getUrl())) {
         return true;
       }
-      sd = findProfile(sd.getBaseDefinition(), sd);
+      sd = findProfile(sd.getBaseDefinitionElement(), sd);
     }
     return false;
   }
@@ -1607,7 +1654,7 @@ public class ProfileUtilities {
           }
         }
       }
-      tsd = findProfile(tsd.getBaseDefinition(), tsd);
+      tsd = findProfile(tsd.getBaseDefinitionElement(), tsd);
     }
     return false;
   }
@@ -2018,7 +2065,7 @@ public class ProfileUtilities {
   protected StructureDefinition getProfileForDataType(TypeRefComponent type, String webUrl, StructureDefinition src)  {
     StructureDefinition sd = null;
     if (type.hasProfile()) {
-      sd = findProfile(type.getProfile().get(0).getValue(), src);
+      sd = findProfile(type.getProfile().get(0), src);
       if (sd == null) {
         if (makeXVer().matchingUrl(type.getProfile().get(0).getValue()) && xver.status(type.getProfile().get(0).getValue()) == XVerExtensionStatus.Valid) {
           sd = xver.getDefinition(type.getProfile().get(0).getValue());
@@ -2273,29 +2320,12 @@ public class ProfileUtilities {
         }
       }
     }
-    return 
-        url.startsWith("extensibility.html") || 
-        url.startsWith("terminologies.html") || 
-        url.startsWith("observation.html") || 
-        url.startsWith("codesystem.html") || 
-        url.startsWith("fhirpath.html") || 
-        url.startsWith("datatypes.html") || 
-        url.startsWith("operations.html") || 
-        url.startsWith("resource.html") || 
-        url.startsWith("elementdefinition.html") ||
-        url.startsWith("element-definitions.html") ||
-        url.startsWith("snomedct.html") ||
-        url.startsWith("loinc.html") ||
-        url.startsWith("http.html") ||
-        url.startsWith("references") ||
-        url.startsWith("license.html") ||
-        url.startsWith("narrative.html") || 
-        url.startsWith("search.html") ||
-        url.startsWith("security.html") ||
-        url.startsWith("versions.html") ||
-        url.startsWith("patient-operation-match.html") ||
-        (url.startsWith("extension-") && url.contains(".html")) || 
-        url.startsWith("resource-definitions.html");
+    if (url.contains(".html")) {
+      String base = url.substring(0, url.indexOf(".html"));
+      return BASE_FILENAMES.contains(base) || (url.startsWith("extension-"));
+    } else {
+      return false;
+    }
   }
 
   protected List<ElementDefinition> getSiblings(List<ElementDefinition> list, ElementDefinition current) {
@@ -2577,11 +2607,11 @@ public class ProfileUtilities {
     StructureDefinition profile = null;
     boolean msg = true;
     if (base.hasSliceName()) {
-      profile = base.getType().size() == 1 && base.getTypeFirstRep().hasProfile() ? findProfile(base.getTypeFirstRep().getProfile().get(0).getValue(), srcSD) : null;
+      profile = base.getType().size() == 1 && base.getTypeFirstRep().hasProfile() ? findProfile(base.getTypeFirstRep().getProfile().get(0), srcSD) : null;
     }
     if (profile == null && source.getTypeFirstRep().hasProfile()) {
       String pu = source.getTypeFirstRep().getProfile().get(0).getValue();
-      profile = findProfile(pu, derivedSrc);
+      profile = findProfile(source.getTypeFirstRep().getProfile().get(0), derivedSrc);
       if (profile == null) {
         if (makeXVer().matchingUrl(pu)) {
           switch (xver.status(pu)) {
@@ -2916,8 +2946,8 @@ public class ProfileUtilities {
             addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "illegal attempt to change the binding on "+derived.getPath()+" from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode(), ValidationMessage.IssueSeverity.ERROR));
 //            throw new DefinitionException("StructureDefinition "+pn+" at "+derived.getPath()+": illegal attempt to change a binding from "+base.getBinding().getStrength().toCode()+" to "+derived.getBinding().getStrength().toCode());
           else if (base.hasBinding() && derived.hasBinding() && base.getBinding().getStrength() == BindingStrength.REQUIRED && base.getBinding().hasValueSet() && derived.getBinding().hasValueSet()) {
-            ValueSet baseVs = context.findTxResource(ValueSet.class, base.getBinding().getValueSet(), null, srcSD);
-            ValueSet contextVs = context.findTxResource(ValueSet.class, derived.getBinding().getValueSet(), null, derivedSrc);
+            ValueSet baseVs = context.findTxResource(ValueSet.class, base.getBinding().getValueSet(), getVersionResolutionRules(base.getBinding().getValueSetElement()), null, srcSD);
+            ValueSet contextVs = context.findTxResource(ValueSet.class, derived.getBinding().getValueSet(), getVersionResolutionRules(derived.getBinding().getValueSetElement()), null, derivedSrc);
             if (baseVs == null) {
               addMessage(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+base.getPath(), "Binding "+base.getBinding().getValueSet()+" could not be located", ValidationMessage.IssueSeverity.WARNING));
             } else if (contextVs == null) {
@@ -2972,7 +3002,7 @@ public class ProfileUtilities {
             nb.setDescription(d.getDescription());
           }
           if (d.hasValueSet()) {
-            nb.setValueSet(d.getValueSet());
+            nb.setValueSetElement(d.getValueSetElement());
           }
           for (ElementDefinitionBindingAdditionalComponent ab : d.getAdditional()) {
             ElementDefinitionBindingAdditionalComponent eab = getMatchingAdditionalBinding(nb, ab);
@@ -3083,6 +3113,10 @@ public class ProfileUtilities {
       checkTypeOk(dest, dest.getPattern().fhirType(), srcSD, "pattern");
     }
     //updateURLs(url, webUrl, dest);
+  }
+
+  private IWorkerContext.VersionResolutionRules getVersionResolutionRules(Element element) {
+    return ExtensionUtilities.getVersionResolutionRules(element);
   }
 
   private MarkdownType mergeMarkdown(MarkdownType dest, MarkdownType source) {
@@ -3228,7 +3262,7 @@ public class ProfileUtilities {
           StructureDefinition sdb = context.fetchTypeDefinition(t);
           while (sdb != null && !matchType) {
             matchType = sdb.getType().equals(sdt.getType());
-            sdb = findProfile(sdb.getBaseDefinition(), sdb);
+            sdb = findProfile(sdb.getBaseDefinitionElement(), sdb);
           }
         }
       }
@@ -3240,12 +3274,13 @@ public class ProfileUtilities {
 //        matchType = true;
 //      }
       if (matchType) {
-        ts.copyExtensions(td, "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support", "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern", "http://hl7.org/fhir/StructureDefinition/obligation", "http://hl7.org/fhir/tools/StructureDefinition/obligation");
+        ts.copyNewExtensions(td, "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support");
+        ts.copyExtensions(td, "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern", "http://hl7.org/fhir/StructureDefinition/obligation", "http://hl7.org/fhir/tools/StructureDefinition/obligation");
         if (ts.hasTargetProfile()) {
           // check that any derived target has a reference chain back to one of the base target profiles
           for (UriType u : ts.getTargetProfile()) {
             String url = u.getValue();
-            boolean tgtOk = !td.hasTargetProfile() || sdConformsToTargets(path, derived.getPath(), url, td);            
+            boolean tgtOk = !td.hasTargetProfile() || sdConformsToTargets(path, derived.getPath(), url, ExtensionUtilities.getVersionResolutionRules(u), td);
             if (tgtOk) {
               ok = true;
             } else if (specialising) {
@@ -3265,23 +3300,23 @@ public class ProfileUtilities {
   }
 
 
-  private boolean sdConformsToTargets(String path, String dPath, String url, TypeRefComponent td) {
+  private boolean sdConformsToTargets(String path, String dPath, String url, IWorkerContext.VersionResolutionRules rules, TypeRefComponent td) {
     if (td.hasTargetProfile(url)) {
       return true;
     }
     if (url != null && url.contains("|") && td.hasTargetProfile(url.substring(0, url.indexOf("|")))) {
       return true;
     }
-    StructureDefinition sd = context.fetchResourceRaw(StructureDefinition.class, url);
+    StructureDefinition sd = context.fetchResourceRaw(StructureDefinition.class, url, rules);
     if (sd == null) {
       addMessage(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, path, "Cannot check whether the target profile " + url + " on "+dPath+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
       return true;
     } else {
-      if (sd.hasBaseDefinition() && sdConformsToTargets(path, dPath, sd.getBaseDefinition(), td)) {
+      if (sd.hasBaseDefinition() && sdConformsToTargets(path, dPath, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()), td)) {
         return true;
       }
       for (Extension ext : sd.getExtensionsByUrl(ExtensionDefinitions.EXT_SD_IMPOSE_PROFILE)) {
-        if (sdConformsToTargets(path, dPath, ext.getValueCanonicalType().asStringValue(), td)) {
+        if (sdConformsToTargets(path, dPath, ext.getValueCanonicalType().asStringValue(), ExtensionUtilities.getVersionResolutionRules(ext.getValueCanonicalType()), td)) {
           return true;
         }
       }
@@ -3471,12 +3506,13 @@ public class ProfileUtilities {
 
 
 
-  protected ElementDefinitionResolution getElementById(StructureDefinition source, List<ElementDefinition> elements, String contentReference) {
+  protected ElementDefinitionResolution getElementById(StructureDefinition source, List<ElementDefinition> elements, UriType contentRefElement) {
+    String contentReference = contentRefElement.getValue();
     if (!contentReference.startsWith("#") && contentReference.contains("#")) {
       String url = contentReference.substring(0, contentReference.indexOf("#"));
       contentReference = contentReference.substring(contentReference.indexOf("#"));
       if (!url.equals(source.getUrl())){
-        source = findProfile(url, source);
+        source = findProfile(contentRefElement, source);
         if (source == null) {
           return null;
         }
@@ -3588,7 +3624,11 @@ public class ProfileUtilities {
 //  }
 
 
-  public StructureDefinition getProfile(StructureDefinition source, String url) {
+  public StructureDefinition getProfile(StructureDefinition source, UriType ref) {
+    if (ref == null) {
+      return null;
+    }
+    String url = ref.primitiveValue();
   	StructureDefinition profile = null;
   	String code = null;
   	if (url.startsWith("#")) {
@@ -3596,7 +3636,7 @@ public class ProfileUtilities {
   		code = url.substring(1);
   	} else if (context != null) {
   		String[] parts = url.split("\\#");
-  		profile = findProfile(parts[0], source);
+  		profile = findProfile(ref, source);
       code = parts.length == 1 ? null : parts[1];
   	}  	  
   	if (profile == null)
@@ -3875,9 +3915,9 @@ public class ProfileUtilities {
         if (child.getSelf().getType().get(0).getProfile().size() > 1) {
           throw new FHIRException(context.formatMessage(I18nConstants.UNHANDLED_SITUATION_RESOURCE_IS_PROFILED_TO_MORE_THAN_ONE_OPTION__CANNOT_SORT_PROFILE));
         }
-        StructureDefinition profile = findProfile(child.getSelf().getType().get(0).getProfile().get(0).getValue(), cmp.src);
+        StructureDefinition profile = findProfile(child.getSelf().getType().get(0).getProfile().get(0), cmp.src);
         while (profile != null && profile.getDerivation() == TypeDerivationRule.CONSTRAINT) {
-          profile = findProfile(profile.getBaseDefinition(), profile);
+          profile = findProfile(profile.getBaseDefinitionElement(), profile);
         }
         if (profile==null) {
           ccmp = null; // this might happen before everything is loaded. And we don't so much care about sot order in this case
@@ -3888,28 +3928,28 @@ public class ProfileUtilities {
         ccmp = new ElementDefinitionComparer(true, cmp.src, cmp.snapshot, cmp.base, cmp.prefixLength, cmp.name, cmp.name);
       }
     } else if (ed.getType().get(0).getWorkingCode().equals("Extension") && child.getSelf().getType().size() == 1 && child.getSelf().getType().get(0).hasProfile()) {
-      StructureDefinition profile = findProfile(child.getSelf().getType().get(0).getProfile().get(0).getValue(), cmp.src);
+      StructureDefinition profile = findProfile(child.getSelf().getType().get(0).getProfile().get(0), cmp.src);
       if (profile==null)
         ccmp = null; // this might happen before everything is loaded. And we don't so much care about sot order in this case
       else
         ccmp = new ElementDefinitionComparer(true, profile, profile.getSnapshot().getElement(), resolveType(ed.getType().get(0).getWorkingCode(), cmp.src), child.getSelf().getPath().length(), cmp.name, profile.present());
     } else if (ed.getType().size() == 1 && !ed.getType().get(0).getWorkingCode().equals("*")) {
-      StructureDefinition profile = findProfile(sdNs(ed.getType().get(0).getWorkingCode()), cmp.src);
+      StructureDefinition profile = findProfile(new UriType(sdNs(ed.getType().get(0).getWorkingCode())), cmp.src);
       if (profile==null)
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE__IN_ELEMENT_, sdNs(ed.getType().get(0).getWorkingCode()), ed.getPath()));
       ccmp = new ElementDefinitionComparer(false, profile, profile.getSnapshot().getElement(), resolveType(ed.getType().get(0).getWorkingCode(), cmp.src), child.getSelf().getPath().length(), cmp.name, profile.present());
     } else if (child.getSelf().getType().size() == 1) {
-      StructureDefinition profile = findProfile(sdNs(child.getSelf().getType().get(0).getWorkingCode()), cmp.src);
+      StructureDefinition profile = findProfile(new UriType(sdNs(child.getSelf().getType().get(0).getWorkingCode())), cmp.src);
       if (profile==null)
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE__IN_ELEMENT_, sdNs(ed.getType().get(0).getWorkingCode()), ed.getPath()));
       ccmp = new ElementDefinitionComparer(false, profile, profile.getSnapshot().getElement(), child.getSelf().getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name, profile.present());
     } else if (ed.getPath().endsWith("[x]") && !child.getSelf().getPath().endsWith("[x]")) {
-      String edLastNode = ed.getPath().replaceAll("(.*\\.)*(.*)", "$2");
-      String childLastNode = child.getSelf().getPath().replaceAll("(.*\\.)*(.*)", "$2");
+      String edLastNode = Utilities.pathTail(ed.getPath());
+      String childLastNode = Utilities.pathTail(child.getSelf().getPath());
       String p = childLastNode.substring(edLastNode.length()-3);
       if (isPrimitive(Utilities.uncapitalize(p)))
         p = Utilities.uncapitalize(p);
-      StructureDefinition sd = findProfile(sdNs(p), cmp.src);
+      StructureDefinition sd = findProfile(new UriType(sdNs(p)), cmp.src);
       if (sd == null)
         throw new Error(context.formatMessage(I18nConstants.UNABLE_TO_FIND_PROFILE__AT_, p, ed.getId()));
       ccmp = new ElementDefinitionComparer(false, sd, sd.getSnapshot().getElement(), p, child.getSelf().getPath().length(), cmp.name, sd.present());
@@ -3919,7 +3959,7 @@ public class ProfileUtilities {
           throw new Error(context.formatMessage(I18nConstants.CANT_HAVE_CHILDREN_ON_AN_ELEMENT_WITH_A_POLYMORPHIC_TYPE__YOU_MUST_SLICE_AND_CONSTRAIN_THE_TYPES_FIRST_SORTELEMENTS_, ed.getPath(), typeCode(ed.getType())));
         }
       }
-      StructureDefinition profile = findProfile(sdNs(ed.getType().get(0).getWorkingCode()), cmp.src);
+      StructureDefinition profile = findProfile(new UriType(sdNs(ed.getType().get(0).getWorkingCode())), cmp.src);
       ccmp = new ElementDefinitionComparer(false, profile, profile.getSnapshot().getElement(), ed.getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name, profile.present());
     } else if (!child.getSelf().hasType() && ed.getType().get(0).getWorkingCode().equals("Reference")) {
       for (TypeRefComponent t: ed.getType()) {
@@ -3927,11 +3967,11 @@ public class ProfileUtilities {
           throw new Error(context.formatMessage(I18nConstants.NOT_HANDLED_YET_SORTELEMENTS_, ed.getPath(), typeCode(ed.getType())));
         }
       }
-      StructureDefinition profile = findProfile(sdNs(ed.getType().get(0).getWorkingCode()), cmp.src);
+      StructureDefinition profile = findProfile(new UriType(sdNs(ed.getType().get(0).getWorkingCode())), cmp.src);
       ccmp = new ElementDefinitionComparer(false, profile, profile.getSnapshot().getElement(), ed.getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name, profile.present());
     } else {
       // this is allowed if we only profile the extensions
-      StructureDefinition profile = findProfile(sdNs("Element"), cmp.src);
+      StructureDefinition profile = findProfile(new UriType(sdNs("Element")), cmp.src);
       if (profile==null)
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE__IN_ELEMENT_, sdNs(ed.getType().get(0).getWorkingCode()), ed.getPath()));
       ccmp = new ElementDefinitionComparer(false, profile, profile.getSnapshot().getElement(), "Element", child.getSelf().getPath().length(), cmp.name, profile.present());
@@ -3942,7 +3982,7 @@ public class ProfileUtilities {
 
   private String resolveType(String code, StructureDefinition src) {
     if (Utilities.isAbsoluteUrl(code)) {
-      StructureDefinition sd = findProfile(code, src);
+      StructureDefinition sd = findProfile(new UriType(code), src);
       if (sd != null) {
         return sd.getType();
       }
@@ -4016,7 +4056,7 @@ public class ProfileUtilities {
     if (!structure.hasSnapshot())
       throw new DefinitionException(context.formatMessage(I18nConstants.NEEDS_A_SNAPSHOT));
 
-  	StructureDefinition base = findProfile(structure.getBaseDefinition(), structure);
+  	StructureDefinition base = findProfile(structure.getBaseDefinitionElement(), structure);
 
   	if (base != null) {
   	  SchematronWriter sch = new SchematronWriter(dest, SchematronType.PROFILE, base.getName());
@@ -4027,9 +4067,17 @@ public class ProfileUtilities {
   	}
   }
 
-  public StructureDefinition findProfile(String url, Resource source) {
+  public StructureDefinition findProfileStr(String ref, Resource source) {
+    return findProfile(new UriType(ref), source);
+  }
+
+  public StructureDefinition findProfile(UriType ref, Resource source) {
+    String url = ref.getValue();
     if (url == null) {
       return null;
+    }
+    if (url.contains("#")) {
+      url = url.substring(0, url.indexOf("#"));
     }
     String u = url;
     String v = null;
@@ -4072,7 +4120,7 @@ public class ProfileUtilities {
     if (source != null && source.getSourcePackage() != null && source.getSourcePackage().isCore()) {
       source = null;
     }
-    return context.fetchResource(StructureDefinition.class, u, v, source);
+    return context.fetchResource(StructureDefinition.class, u, ExtensionUtilities.getVersionResolutionRules(ref), v, source);
   }
 
   // generate a CSV representation of the structure definition
@@ -4288,11 +4336,7 @@ public class ProfileUtilities {
     if (ed.hasContentReference() && ed.getContentReference().startsWith("#")) {
       String s = ed.getContentReference();
       String typeURL = getUrlForSource(type, srcSD);
-      if (replacedIds.containsKey(s.substring(1))) {
-        ed.setContentReference(typeURL+"#"+ replacedIds.get(s.substring(1)));
-      } else {
-        ed.setContentReference(typeURL+s);
-      }
+      ed.setContentReference(typeURL+s);
     }
   }
 
@@ -4480,7 +4524,7 @@ public class ProfileUtilities {
     sd.getSnapshot().getElement().add(sd.getDifferential().getElementFirstRep().copy());
     
     if (sd.hasBaseDefinition()) {
-    StructureDefinition base = findProfile(sd.getBaseDefinition(), sd);
+    StructureDefinition base = findProfile(sd.getBaseDefinitionElement(), sd);
     if (base == null)
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_BASE_DEFINITION_FOR_LOGICAL_MODEL__FROM_, sd.getBaseDefinition(), sd.getUrl()));
     copyElements(sd, base.getSnapshot().getElement());
@@ -4630,7 +4674,7 @@ public class ProfileUtilities {
     if ("Element".equals(ed.typeSummary()) || "BackboneElement".equals(ed.typeSummary())) {
       return null;
     } else {
-      StructureDefinition template = context.fetchResource(StructureDefinition.class, "http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities");
+      StructureDefinition template = context.fetchResource(StructureDefinition.class, "http://fhir-registry.smarthealthit.org/StructureDefinition/capabilities", IWorkerContext.VersionResolutionRules.defaultRule());
       StructureDefinition ext = template.copy();
       ext.setUrl(url);
       ext.setId("extension-"+epath);
@@ -4975,25 +5019,6 @@ public class ProfileUtilities {
 
   public void setSuppressedMappings(List<String> suppressedMappings) {
     this.suppressedMappings = suppressedMappings;
-  }
-  
-  public static String getCSUrl(StructureDefinition profile) {
-    if (profile.hasExtension(ExtensionDefinitions.EXT_SD_CS_URL)) {
-      return ExtensionUtilities.readStringExtension(profile, ExtensionDefinitions.EXT_SD_CS_URL);
-    } else {
-      return profile.getUrl()+"?codesystem";
-    }    
-  }
-
-  public static String getUrlFromCSUrl(String url) {
-    if (url == null) {
-      return null;
-    }
-    if (url.endsWith("?codesystem")) {
-      return url.replace("?codesystem", "");
-    } else {
-      return null;
-    }
   }
 
   public FHIRPathEngine getFpe() {

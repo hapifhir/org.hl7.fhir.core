@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.context;
 
+import com.sun.jdi.ClassType;
 import lombok.Getter;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -9,6 +10,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -71,6 +73,41 @@ public interface IWorkerContext {
    * @return the version of the base definitions loaded in context
    */
   public String getVersion();
+
+  /**
+   * The context increments this anytime any definitions change. (that is, any
+   * resources are made available through the fetch*() methods, or removed
+   * from being available)
+   * <p/>
+   * Consumers can track this and reload any cached analysis if the value changes
+   * Consumers of the IWorkerContext in the core library do this, and it makes a
+   * significant difference to performance
+   * <p/>
+   * Contexts that aren't in a good position to track the content can just return a
+   * serially incrementing number, but then the performance benefits of caching will
+   * be lost
+   *
+   * @return a number that changes each time the content that the context represents changes
+   */
+  public long getDefinitionsVersion();
+
+  /**
+   * as an alternative to tracking, the context can store analysis for consumers of the context,
+   * and return them if the loaded set hasn't changed
+   *
+   * @param className - the class name asking for analysis to be stored
+   * @param analysis the object to store if there's been a change
+   */
+  public void storeAnalysis(Class className, Object analysis);
+
+  /**
+   * as an alternative to tracking, the context can store analysis for consumers of the context,
+   * and return them if the loaded set hasn't changed
+   *
+   * @param className - the class name asking for analysis to be stored
+   * @return the object previously stored, if there's been no change
+   */
+  public Object retrieveAnalysis(Class className);
 
   /**
    * @return The URL that points to the specification for the version loaded
@@ -307,9 +344,13 @@ public interface IWorkerContext {
    *
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use            
    * @return the resource if known (or null)
    */
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
+    return fetchResource(class_, uri, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -328,33 +369,15 @@ public interface IWorkerContext {
    *
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
-   * @param version the version. Don't provide both a version and a |version suffix
-   * @return if the resource is known
-   */
- // public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
-
-  /**
-   * Fetch (load if necessary) an identified resource. The most common use of this is to access the
-   * standard conformance resources that are part of the standard - structure
-   * definitions, value sets, concept maps, etc.
-   **
-   * The URI can have one of 3 formats:
-   *  - a full URL e.g. http://acme.org/fhir/ValueSet/[id]
-   *  - a relative URL e.g. ValueSet/[id]
-   *  - a logical id e.g. [id]
-   *
-   * It's an error if the second form doesn't agree with class_. It's an
-   * error if class_ is null for the last form
-   *
-   * class can be Resource, DomainResource or CanonicalResource, which means resource of all kinds
-   *
-   * @param class_ the type of resource
-   * @param uri the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    * @param version the version. Don't provide both a version and a |version suffix
    * @param sourceOfReference where the reference was found (if the reference is in a resource)
    * @return if the resource is known
    */
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource sourceOfReference);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource sourceOfReference) {
+    return fetchResource(class_, uri, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  };
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -373,9 +396,13 @@ public interface IWorkerContext {
    *
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    * @return the resource if known (or an exception will be thrown)
    */
-  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, VersionResolutionRules rules) throws FHIRException;
+  @Deprecated(since="2026-03-10")  default public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
+    return fetchResourceWithException(class_, uri, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -394,11 +421,15 @@ public interface IWorkerContext {
    *
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    * @param version the version. Don't provide both a version and a |version suffix
    * @param sourceOfReference where the reference was found (if the reference is in a resource)
    * @return if the resource is known. Will throw an exception if the resource is not known
    */
-  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, Resource sourceOfReference) throws FHIRException;
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource sourceOfReference) throws FHIRException;
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, Resource sourceOfReference) throws FHIRException {
+    return fetchResourceWithException(class_, uri, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  }
 
   /**
    * Find an identified resource, but do not do any processing on it.
@@ -419,9 +450,13 @@ public interface IWorkerContext {
    *
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    * @return the resource if known (or an exception will be thrown)
    */
-  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri);
+  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+    return fetchResourceRaw(class_, uri, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -473,13 +508,28 @@ public interface IWorkerContext {
   /**
    * this first does a fetch resource, and if nothing is found, looks in the
    * terminology eco-system for a matching definition for the resource
+   * @param class_ the type of resource
+   * @param canonical the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    */
-  public <T extends Resource> T findTxResource(Class<T> class_, String canonical);
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, VersionResolutionRules rules);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T findTxResource(Class<T> class_, String canonical) {
+    return findTxResource(class_, canonical, VersionResolutionRules.defaultRule());
+  }
+
   /**
    * this first does a fetch resource, and if nothing is found, looks in the
    * terminology eco-system for a matching definition for the resource
+   * @param class_ the type of resource
+   * @param canonical the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
+   * @param version the version. Don't provide both a version and a |version suffix
+   * @param sourceOfReference where the reference was found (if the reference is in a resource)
    */
-  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version, Resource sourceOfReference);
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, VersionResolutionRules rules, String version, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version, Resource sourceOfReference) {
+    return findTxResource(class_, canonical, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  }
 
   /**
    * Get a copy of the expansion parameters to be passed through the terminology server when txServer calls are made
@@ -496,11 +546,15 @@ public interface IWorkerContext {
    * supportsSystem)
    * 
    * This is a short cut for fetchResource(CodeSystem.class, system)
-   * 
-   * @param system
+   *
+   * @param system the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    * @return
    */
-  public CodeSystem fetchCodeSystem(String system);
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchCodeSystem(String system) {
+    return fetchCodeSystem(system, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Find the code system definition for the nominated system uri.
@@ -508,20 +562,48 @@ public interface IWorkerContext {
    * supportsSystem)
    *
    * This is a short cut for fetchResource(CodeSystem.class, system, version, sourceOfReference)
+   * @param system the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
+   * @param version the version. Don't provide both a version and a |version suffix
+   * @param sourceOfReference where the reference was found (if the reference is in a resource)
+   * @param checkForImplicits whether to look for resources that define implicit code systems (see R6 CodeSystem documentation).
+   *
+   * In general, checkForImplicits should be true, but there's cases where you definitely don't want implicits for various reasons.
+   *
    */
-  public CodeSystem fetchCodeSystem(String system, String version, Resource sourceOfReference);
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference, boolean checkForImplicits);
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchCodeSystem(String system, String version, Resource sourceOfReference) {
+    return fetchCodeSystem(system, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  }
 
   /**
    * Like fetchCodeSystem, except that the context will find any CodeSysetm supplements and merge them into the
    * definition that's returned
+   * @param system the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    */
-  public CodeSystem fetchSupplementedCodeSystem(String system);
+  public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchSupplementedCodeSystem(String system) {
+    return fetchSupplementedCodeSystem(system, VersionResolutionRules.defaultRule());
+  }
 
   /**
-   * Like fetchCodeSystem, except that the context will find any CodeSysetm supplements and merge them into the
+   * Like fetchCodeSystem, except that the context will find any appropriate CodeSystem supplements and merge them into the
    * definition that's returned
+   *
+   * appropriate means:
+   *  - found in specified supplements, which should be built from parameters and value set extensions
+   *  - marked as a langpack in the supplement
+   * @param system the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
+   * @param version the version. Don't provide both a version and a |version suffix
+   * @param sourceOfReference where the reference was found (if the reference is in a resource)
    */
-  public CodeSystem fetchSupplementedCodeSystem(String system, String version, Resource sourceOfReference);
+  public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules, String version, List<String> specifiedSupplements, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchSupplementedCodeSystem(String system, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
+    return fetchSupplementedCodeSystem(system, VersionResolutionRules.defaultRule(), version, specifiedSupplements, sourceOfReference);
+  }
 
   /**
    * ValueSet Expansion - see $expand
@@ -699,10 +781,34 @@ public interface IWorkerContext {
    */
   public Boolean subsumes(ValidationOptions options, Coding parent, Coding child);
 
+  public enum VersionResolutionRules { PACKAGE, LATEST, MANIFEST;
+
+    public static VersionResolutionRules defaultRule() {
+      return null;
+    }
+
+    public static VersionResolutionRules fromCode(String rule) {
+      if (rule == null) {
+        return null;
+      } else {
+        switch (rule) {
+          case "package": return PACKAGE;
+          case "latest": return LATEST;
+          case "manifest": return MANIFEST;
+          default:
+            throw new IllegalArgumentException("Unknown VersionResolutionRules code: "+rule);
+        }
+      }
+    }
+  }
+
   class SystemSupportInformation {
-    // whether the ssytem(/version) is supported
+    // whether the system(/version) is supported
     @Getter
     private boolean supported;
+
+    // the reason it's not supported (if known)
+    private String reason;
 
     // the server that supports the system(/version)
     // may be null for some systems where we never consult any server
@@ -714,14 +820,19 @@ public interface IWorkerContext {
     private String testVersion;
 
     public boolean isServerSide() { return server != null; }
-    public SystemSupportInformation(boolean supported, String server, String testVersion) {
+    public SystemSupportInformation(boolean supported, String server, String testVersion, String reason) {
       this.supported = supported;
       this.server = server;
       this.testVersion = testVersion;
+      this.reason = reason;
     }
 
     public SystemSupportInformation(boolean supported) {
       this.supported = supported;
+    }
+
+    public String reason() {
+      return reason;
     }
   }
   /**
@@ -771,8 +882,7 @@ public interface IWorkerContext {
 
 
   // todo: figure these out
-  @Deprecated
-  public Map<String, NamingSystem> getNSUrlMap();
+  TerminologyClientManager getTerminologyClientManager();
 
   @Deprecated
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();
@@ -789,5 +899,6 @@ public interface IWorkerContext {
   public boolean isForPublication();
   @Deprecated
   public void setForPublication(boolean value);
+
 
 }

@@ -18,6 +18,7 @@ import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.PackageLoadController;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,7 +61,7 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+    public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules) {
       return null;
     }
 
@@ -72,6 +73,11 @@ public class BaseWorkerContextTests {
     @Override
     public void setPackageManager(IPackageCacheManager manager) {
 
+    }
+
+    @Override
+    public PackageLoadController getPackageLoadController() {
+      return null;
     }
 
     @Override
@@ -270,7 +276,7 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+      public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules) {
         return null;
       }
 
@@ -282,6 +288,11 @@ public class BaseWorkerContextTests {
       @Override
       public void setPackageManager(IPackageCacheManager manager) {
 
+      }
+
+      @Override
+      public PackageLoadController getPackageLoadController() {
+        return null;
       }
 
       @Override

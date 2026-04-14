@@ -1,10 +1,9 @@
 package org.hl7.fhir.r5.extensions;
 
-import java.util.List;
-
 public class ExtensionDefinitions {
 
   public static final String EXT_ISSUE_MSG_ID = "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id";
+  public static final String EXT_ISSUE_ISSUE_CTXT = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-context";
   public static final String EXT_ISSUE_LINE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line";
   public static final String EXT_ISSUE_COL = "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col";
   public static final String EXT_OO_FILE = "http://hl7.org/fhir/StructureDefinition/operationoutcome-file";
@@ -103,6 +102,7 @@ public class ExtensionDefinitions {
   public static final String EXT_TRANSLATABLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable";
   public static final String EXT_TRANSLATION = "http://hl7.org/fhir/StructureDefinition/translation";
   public static final String EXT_UNCLOSED = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed";
+  public static final String EXT_UNCLOSED_REASON = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason";
   public static final String EXT_VALUESET_SYSTEM = "http://hl7.org/fhir/StructureDefinition/valueset-system";
   public static final String EXT_VS_COMMENT = "http://hl7.org/fhir/StructureDefinition/valueset-concept-comments";
   public static final String EXT_VS_KEYWORD = "http://hl7.org/fhir/StructureDefinition/valueset-keyWord";
@@ -211,7 +211,6 @@ public class ExtensionDefinitions {
   public static final String EXT_CONCEPT_DOMAIN = "http://hl7.org/fhir/StructureDefinition/binding-conceptDomain";
   public static final String EXT_NARRATIVE_SOURCE_CONTROL = "http://hl7.org/fhir/StructureDefinition/narrative-source-control";
   public static final String EXT_NARRATIVE_LANGUAGE_CONTROL = "http://hl7.org/fhir/StructureDefinition/narrative-language-control";
-  public static final String EXT_SD_CS_URL = "todo";
   public static final String EXT_DISPLAY_NAME = "http://hl7.org/fhir/StructureDefinition/display"; // Display Name
   public static final String EXT_CSDECLARED_PROFILE = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-declared-profile"; // CapabilityStatement Declared Profile
   public static final String EXT_CSSEARCH_PARAMETER_COMBINATION = "http://hl7.org/fhir/StructureDefinition/capabilitystatement-search-parameter-combination"; // CapabilityStatement Search Parameter Combination
@@ -222,4 +221,7 @@ public class ExtensionDefinitions {
   public static final String EXT_ADDITIONAL_REFERENCE = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource-reference";
   public static final String EXT_ADDITIONAL_RESOURCE = "http://hl7.org/fhir/tools/StructureDefinition/additional-resource";
   public static final String EXT_IG_EXPANSION_PARAMETERS = "http://hl7.org/fhir/tools/StructureDefinition/expansion-parameters";
+  public static final String EXT_SUPPL_TYPE = "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-type";
+  public static final String CANONICAL_RESOLUTION_METHOD = "http://hl7.org/fhir/StructureDefinition/version-resolution-method";
+  public static final String EXT_VALUESET_RULES_TEXT = "http://hl7.org/fhir/StructureDefinition/valueset-rules-text";
 }

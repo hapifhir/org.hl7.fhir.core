@@ -6,6 +6,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
@@ -69,6 +71,10 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 @MarkedToMoveToAdjunctPackage
 public class RenderingContext extends RenderingI18nContext {
 
+
+  public String getOpacity() {
+    return wcagConformant ? "font-style: italics" : "opacity: 0.5";
+  }
 
   public enum DesignationMode {
     ALL,
@@ -344,7 +350,18 @@ public class RenderingContext extends RenderingI18nContext {
   private int randomTracker;
   private boolean testing;
   private PackageInformation pi;
-  
+  @Getter @Setter boolean showStandardsStatus;
+  private boolean inferResourceConformance;
+
+  /**
+   * if this is true, then the rendering will be more WCAG conformant, though this is a step back for most users.
+   *
+   * specifically:
+   *   - fainter alternating background
+   *   - italics instead of opaque
+   */
+  @Getter @Setter private boolean wcagConformant;
+
   /**
    * 
    * @param workerContext - access to all related resources that might be needed
@@ -435,6 +452,7 @@ public class RenderingContext extends RenderingI18nContext {
     res.typeMap = typeMap;
     res.trackNarrativeSource = trackNarrativeSource;
     res.crossLinkKeyGen = crossLinkKeyGen;
+    res.inferResourceConformance = inferResourceConformance;
     
     res.getActorWhiteList().addAll(actorWhiteList);
 
@@ -1251,5 +1269,17 @@ public class RenderingContext extends RenderingI18nContext {
     return getRules() == GenerationRules.IG_PUBLISHER;
   }
 
+  public RenderingContext setPackageInformation(PackageInformation packageInfo) {
+    this.pi = packageInfo;
+    return this;
+  }
+  
+  public boolean isInferResourceConformance() {
+    return inferResourceConformance;
+  }
+
+  public void setInferResourceConformance(boolean inferResourceConformance) {
+    this.inferResourceConformance = inferResourceConformance;
+  }
 
 }

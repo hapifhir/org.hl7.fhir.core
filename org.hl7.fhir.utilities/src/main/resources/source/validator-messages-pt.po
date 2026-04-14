@@ -898,13 +898,13 @@ msgstr "Os sistemas de códigos NÃO DEVEM ter um valor declarado para o element
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_MISSING
 #, fuzzy
 msgid "CodeSystem Supplements with a content value of ''supplement'' SHALL have a supplements element that specifies which code system is being supplemented"
-msgstr "Os suplementos ao sistema de códigos com um valor de conteúdo \\\"suplemento\\\" DEVERÃO ter um elemento \\\"suplementos\\\" que especifique qual o sistema de códigos que está a ser suplementado"
+msgstr "Os suplementos ao sistema de códigos com um valor de conteúdo \"suplemento\" DEVERÃO ter um elemento \"suplementos\" que especifique qual o sistema de códigos que está a ser suplementado"
 
 # CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 #: CODESYSTEM_CS_HL7_PRESENT_ELEMENT_SUPPL_WRONG
 #, fuzzy
 msgid "CodeSystem Supplements SHALL have a content value of ''supplement''"
-msgstr "Os suplementos do CodeSystem DEVERÃO ter um valor de conteúdo \\\"suplemento"
+msgstr "Os suplementos do CodeSystem DEVERÃO ter um valor de conteúdo \"suplemento"
 
 # CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
 #: CODESYSTEM_CS_NONHL7_MISSING_ELEMENT
@@ -922,19 +922,19 @@ msgstr "CodeSystem {0} é um suplemento, pelo que não pode ser utilizado como u
 #: CODESYSTEM_CS_NO_VS_NOTCOMPLETE
 #, fuzzy
 msgid "Review the All Codes Value Set - incomplete CodeSystems generally should not have an all codes value set specified"
-msgstr "Rever o conjunto de valores \\\"Todos os códigos\\\" - os CodeSystems incompletos geralmente não devem ter um conjunto de valores \\\"Todos os códigos\\\" especificado"
+msgstr "Rever o conjunto de valores \"Todos os códigos\" - os CodeSystems incompletos geralmente não devem ter um conjunto de valores \"Todos os códigos\" especificado"
 
 # CODESYSTEM_CS_NO_VS_SUPPLEMENT1
 #: CODESYSTEM_CS_NO_VS_SUPPLEMENT1
 #, fuzzy
 msgid "CodeSystems supplements should not have an all codes value set specified, and if they do, it must match the base code system"
-msgstr "Os suplementos CodeSystems não devem ter um conjunto de valores \\\"todos os códigos\\\" especificado e, se o tiverem, este deve corresponder ao sistema de códigos de base"
+msgstr "Os suplementos CodeSystems não devem ter um conjunto de valores \"todos os códigos\" especificado e, se o tiverem, este deve corresponder ao sistema de códigos de base"
 
 # CODESYSTEM_CS_NO_VS_SUPPLEMENT2
 #: CODESYSTEM_CS_NO_VS_SUPPLEMENT2
 #, fuzzy
 msgid "CodeSystems supplements should not have an all codes value set specified, and if they do, it must match the base code system, and this one does not (''{0}'')"
-msgstr "Os suplementos CodeSystems não devem ter um conjunto de valores \\\"todos os códigos\\\" especificado e, se o tiverem, deve corresponder ao sistema de códigos de base, o que não acontece neste caso (''{0}'')"
+msgstr "Os suplementos CodeSystems não devem ter um conjunto de valores \"todos os códigos\" especificado e, se o tiverem, deve corresponder ao sistema de códigos de base, o que não acontece neste caso (''{0}'')"
 
 # CODESYSTEM_CS_SUPP_CANT_CHECK
 #: CODESYSTEM_CS_SUPP_CANT_CHECK
@@ -970,13 +970,13 @@ msgstr "O código fornecido ({2}) não se encontra na expansão do conjunto de v
 #: CODESYSTEM_CS_VS_EXP_MISMATCH
 #, fuzzy
 msgid "CodeSystem {0} has an ''all system'' value set of {1}, but it is an expansion with the wrong number of concepts (found {2}, expected {3})"
-msgstr "O CodeSystem {0} tem um conjunto de valores de \\\"todo o sistema\\\" {1}, mas é uma expansão com o número errado de conceitos (encontrado {2}, esperado {3})"
+msgstr "O CodeSystem {0} tem um conjunto de valores de \"todo o sistema\" {1}, mas é uma expansão com o número errado de conceitos (encontrado {2}, esperado {3})"
 
 # CODESYSTEM_DESIGNATION_DISP_CLASH_LANG
 #: CODESYSTEM_DESIGNATION_DISP_CLASH_LANG
 #, fuzzy
 msgid "The designation ''{0}'' has no use and is in the same language (''{2}''), so is not differentiated from the base display (''{1}'')"
-msgstr "A designação \\\"{0}\\\" não tem qualquer utilidade e está na mesma língua (\\\"{2}\\\"), pelo que não se diferencia da visualização de base (\\\"{1}\\\")"
+msgstr "A designação \"{0}\" não tem qualquer utilidade e está na mesma língua (\"{2}\"), pelo que não se diferencia da visualização de base (\"{1}\")"
 
 # CODESYSTEM_DESIGNATION_DISP_CLASH_NO_LANG
 #: CODESYSTEM_DESIGNATION_DISP_CLASH_NO_LANG
@@ -1036,7 +1036,7 @@ msgstr "Tipo incorreto ''{2}'': O código ''{0}'' identifica uma propriedade que
 #: CODESYSTEM_PROPERTY_CODE_WARNING
 #, fuzzy
 msgid "If the type is ''code'', then the valueSet property should be provided to clarify what kind of code will be found in the element"
-msgstr "Se o tipo for \\\"código\\\", então a propriedade valueSet deve ser fornecida para esclarecer que tipo de código será encontrado no elemento"
+msgstr "Se o tipo for \"código\", então a propriedade valueSet deve ser fornecida para esclarecer que tipo de código será encontrado no elemento"
 
 # CODESYSTEM_PROPERTY_DUPLICATE_CODE
 #: CODESYSTEM_PROPERTY_DUPLICATE_CODE
@@ -1156,7 +1156,7 @@ msgstr "Os sistemas de códigos publicados pelo HL7 DEVERÃO estar em conformida
 #: CODESYSTEM_SUPP_NO_DISPLAY
 #, fuzzy
 msgid "This display (''{0}'') differs from that defined by the base code system (''{1}''). Both displays claim to be the ''primary designation'' for the same language (''{2}''), and the correct interpretation of this is undefined"
-msgstr "Esta indicação (''{0}'') é diferente da definida pelo sistema de códigos de base (''{1}''). Ambas as visualizações afirmam ser a \\\"designação primária\\\" para a mesma língua (\\\"{2}\\\"), e a interpretação correta desta afirmação é indefinida"
+msgstr "Esta indicação (''{0}'') é diferente da definida pelo sistema de códigos de base (''{1}''). Ambas as visualizações afirmam ser a \"designação primária\" para a mesma língua (\"{2}\"), e a interpretação correta desta afirmação é indefinida"
 
 # CODESYSTEM_THO_CHECK
 #: CODESYSTEM_THO_CHECK
@@ -1367,9 +1367,29 @@ msgstr "O mapa concetual tem demasiados códigos para validar ({0})"
 msgid "The presence of the concept ''{1}'' in the system ''{0}'' in the value set {3} is marked with a status of {2} and its use should be reviewed"
 msgstr ""
 
+# CONFORMANCE_STATEMENT_DUP
+#: CONFORMANCE_STATEMENT_DUP
+msgid "There are multiple conformance statements for the language {0} with the same id: {1}"
+msgstr ""
+
+# CONFORMANCE_STATEMENT_DUPHOME
+#: CONFORMANCE_STATEMENT_DUPHOME
+msgid "There are multiple conformance statement table stubs for language {0}.  Locations include {1} and {2}."
+msgstr ""
+
+# CONFORMANCE_STATEMENT_NOCONFWORD
+#: CONFORMANCE_STATEMENT_NOCONFWORD
+msgid "Unable to find a conformance word for the language {0} in the text \"{1}\", so conformance statement not extracted."
+msgstr ""
+
+# CONFORMANCE_STATEMENT_NOSUMMARY
+#: CONFORMANCE_STATEMENT_NOSUMMARY
+msgid "No summary provided for conformance statement {0} for language {1}."
+msgstr ""
+
 # CONFORMANCE_STATEMENT_WORD
 #: CONFORMANCE_STATEMENT_WORD
-msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause"
+msgid "The html source contains the word ''{0}'' but it is not in a text phrase marked as a conformance clause: ''{1}''"
 msgstr ""
 
 # CONTAINED_ORPHAN_DOM3
@@ -1412,19 +1432,19 @@ msgstr "Referências de instantâneos circulares detectadas; não é possível g
 #: CodeSystem_CS_VS_IncludeDetails
 #, fuzzy
 msgid "CodeSystem {0} has an ''all system'' value set of {1}, but the include has extra details"
-msgstr "O CodeSystem {0} tem um conjunto de valores \\\"todos os sistemas\\\" de {1}, mas o include tem pormenores adicionais"
+msgstr "O CodeSystem {0} tem um conjunto de valores \"todos os sistemas\" de {1}, mas o include tem pormenores adicionais"
 
 # CodeSystem_CS_VS_Invalid
 #: CodeSystem_CS_VS_Invalid
 #, fuzzy
 msgid "CodeSystem {0} has an ''all system'' value set of {1}, but the value set doesn''t have a single include"
-msgstr "CodeSystem {0} tem um conjunto de valores \\\"todos os sistemas\\\" de {1}, mas o conjunto de valores não tem um único include"
+msgstr "CodeSystem {0} tem um conjunto de valores \"todos os sistemas\" de {1}, mas o conjunto de valores não tem um único include"
 
 # CodeSystem_CS_VS_WrongSystem
 #: CodeSystem_CS_VS_WrongSystem
 #, fuzzy
 msgid "CodeSystem {0} has an ''all system'' value set of {1}, but the value set doesn''t have a matching system ({2})"
-msgstr "O CodeSystem {0} tem um conjunto de valores \\\"todos os sistemas\\\" de {1}, mas o conjunto de valores não tem um sistema correspondente ({2})"
+msgstr "O CodeSystem {0} tem um conjunto de valores \"todos os sistemas\" de {1}, mas o conjunto de valores não tem um sistema correspondente ({2})"
 
 # Code_found_in_expansion_however_
 #: Code_found_in_expansion_however_
@@ -2449,8 +2469,8 @@ msgstr "LOINC"
 # HTA_LOINC_MESSAGE
 #: HTA_LOINC_MESSAGE
 #, fuzzy
-msgid "This material contains content from <a href=\\"http://loinc.org\\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\\"http://loinc.org/license\\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
-msgstr "!!!!Este material contém conteúdo do <a href=\\\"http://loinc.org\\\">LOINC</a>. LOINC é copyright &copy; 1995-2020, Regenstrief Institute, Inc. e o Logical Observation Identifiers Names and Codes (LOINC) Committee e está disponível sem custo sob a <a href=\\\"http://loinc.org/license\\\">licença</a>. LOINC&reg; é uma marca registada dos Estados Unidos da América do Regenstrief Institute, Inc."
+msgid "This material contains content from <a href=\"http://loinc.org\">LOINC</a>. LOINC is copyright &copy; 1995-2020, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the <a href=\"http://loinc.org/license\">license</a>. LOINC&reg; is a registered United States trademark of Regenstrief Institute, Inc."
+msgstr "!!Este material contém conteúdo do <a href=\"http://loinc.org\">LOINC</a>. LOINC é copyright &copy; 1995-2020, Regenstrief Institute, Inc. e o Logical Observation Identifiers Names and Codes (LOINC) Committee e está disponível sem custo sob a <a href=\"http://loinc.org/license\">licença</a>. LOINC&reg; é uma marca registada dos Estados Unidos da América do Regenstrief Institute, Inc."
 
 # HTA_SCT_DESC
 #: HTA_SCT_DESC
@@ -2461,8 +2481,8 @@ msgstr "Termos clínicos SNOMED&reg; (SNOMED CT&reg;)"
 # HTA_SCT_MESSAGE
 #: HTA_SCT_MESSAGE
 #, fuzzy
-msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\\"https://www.snomed.org/get-snomed\\">https://www.snomed.org/get-snomed</a> or <a href=\\"mailto:info@snomed.org\\">info@snomed.org</a>."
-msgstr "!!!!Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\\\"https://www.snomed.org/get-snomed\\\">https://www.snomed.org/get-snomed</a> ou <a href=\\\"mailto:info@snomed.org\\\">info@snomed.org</a>."
+msgid "This material contains content that is copyright of SNOMED International. Implementers of these specifications must have the appropriate SNOMED CT Affiliate license - for more information contact <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> or <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
+msgstr "!!Este material contém conteúdo que é copyright da SNOMED International. Os implementadores destas especificações devem ter a licença apropriada de afiliado da SNOMED CT - para mais informações contacte <a href=\"https://www.snomed.org/get-snomed\">https://www.snomed.org/get-snomed</a> ou <a href=\"mailto:info@snomed.org\">info@snomed.org</a>."
 
 # IG_DEPENDENCY_CAN_VERSION_ALONE
 #: IG_DEPENDENCY_CAN_VERSION_ALONE
@@ -2617,14 +2637,14 @@ msgstr "DisplayLanguage inválido: ''{0}''"
 # INV_FAILED
 #: INV_FAILED
 #, fuzzy
-msgid "Constraint failed: {0}"
-msgstr "A restrição falhou: {0}"
+msgid "Constraint failed: {0}: ''{1}''"
+msgstr "!!A restrição falhou: {0}"
 
 # INV_FAILED_SOURCE
 #: INV_FAILED_SOURCE
 #, fuzzy
-msgid "Constraint failed: {0} (defined in {1})"
-msgstr "A restrição falhou: {0} (definido em {1})"
+msgid "Constraint failed: {0}: ''{1}'' (defined in {2})"
+msgstr "!!A restrição falhou: {0} (definido em {1})"
 
 # Illegal_path__in_differential_in__illegal_character_
 #: Illegal_path__in_differential_in__illegal_character_
@@ -2960,13 +2980,13 @@ msgstr "O grupo deve ter um código ou linkId que corresponda à definição da 
 #: MEASURE_MR_GRP_POP_NO_COUNT
 #, fuzzy
 msgid "Count should be present for reports where type is not ''subject-list''"
-msgstr "A contagem deve estar presente nos relatórios cujo tipo não seja \\\"lista de assuntos"
+msgstr "A contagem deve estar presente nos relatórios cujo tipo não seja \"lista de assuntos\""
 
 # MEASURE_MR_GRP_POP_NO_SUBJECTS
 #: MEASURE_MR_GRP_POP_NO_SUBJECTS
 #, fuzzy
 msgid "Reports where type is not ''subject-list'' don''t have subjects listed"
-msgstr "Os relatórios em que o tipo não é \\\"lista de assuntos\\\" não têm assuntos listados"
+msgstr "Os relatórios em que o tipo não é \"lista de assuntos\" não têm assuntos listados"
 
 # MEASURE_MR_GRP_POP_UNK_CODE
 #: MEASURE_MR_GRP_POP_UNK_CODE
@@ -3056,13 +3076,13 @@ msgstr "Este valor é fixado pela Medida em ''{0}''"
 #: MEASURE_MR_SCORE_PROHIBITED_MS
 #, fuzzy
 msgid "No measureScore when the scoring of the message is ''cohort''"
-msgstr "Não há measureScore quando a pontuação da mensagem é \\\"coorte"
+msgstr "Não há measureScore quando a pontuação da mensagem é \"coorte\""
 
 # MEASURE_MR_SCORE_PROHIBITED_RT
 #: MEASURE_MR_SCORE_PROHIBITED_RT
 #, fuzzy
 msgid "No measureScore when the type of the report is ''data-collection''"
-msgstr "Não há measureScore quando o tipo de relatório é \\\"recolha de dados"
+msgstr "Não há measureScore quando o tipo de relatório é \"recolha de dados\""
 
 # MEASURE_MR_SCORE_REQUIRED
 #: MEASURE_MR_SCORE_REQUIRED
@@ -3352,7 +3372,7 @@ msgstr "Duplicação da etiqueta de segurança {0}"
 #: MustSupport_VAL_MustSupport
 #, fuzzy
 msgid "The element {0} is not marked as ''mustSupport'' in the profile {1}. Consider not using the element, or marking the element as must-Support in the profile"
-msgstr "O elemento {0} não está marcado como ''mustSupport'' no perfil {1}. Considerar não utilizar o elemento ou marcar o elemento como \\\"must-Support\\\" no perfil"
+msgstr "O elemento {0} não está marcado como ''mustSupport'' no perfil {1}. Considerar não utilizar o elemento ou marcar o elemento como \"must-Support\" no perfil"
 
 # NARRATIVE_NOT_TRANSLATED
 #: NARRATIVE_NOT_TRANSLATED
@@ -3378,8 +3398,8 @@ msgstr ""
 # NO_VALID_DISPLAY_AT_ALL
 #: NO_VALID_DISPLAY_AT_ALL
 #, fuzzy
-msgid "Cannot validate display Name ''{0}'' for {1}#{2}: No displays are known"
-msgstr "Não é possível validar o nome de ecrã ''{0}'' para {1}#{2}: Não são conhecidos ecrãs"
+msgid "Cannot validate display ''{0}'' for {1}#{2} in language {3}: No displays are known"
+msgstr "!!Não é possível validar o nome de ecrã ''{0}'' para {1}#{2}: Não são conhecidos ecrãs"
 
 # NO_VALID_DISPLAY_FOUND
 #: NO_VALID_DISPLAY_FOUND
@@ -3411,8 +3431,8 @@ msgstr "Nome de apresentação errado ''{0}'' para {1}#{2}. Não foram encontrad
 # NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
 #: NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
 #, fuzzy
-msgid "There are no valid display names found for the code {1}#{2} for language(s) ''{3}''. The display is ''{4}'' the default language display"
-msgstr "Não foram encontrados nomes de apresentação válidos para o código {1}#{2} para a(s) língua(s) ''{3}''. O ecrã é ''{4}'', o ecrã da língua predefinida"
+msgid "There are no valid display names found for the code {1}#{2} for language(s) ''{3}''. The display is ''{4}'' which is the default language display"
+msgstr "!!Não foram encontrados nomes de apresentação válidos para o código {1}#{2} para a(s) língua(s) ''{3}''. O ecrã é ''{4}'', o ecrã da língua predefinida"
 
 # Named_items_are_out_of_order_in_the_slice
 #: Named_items_are_out_of_order_in_the_slice
@@ -3558,6 +3578,11 @@ msgstr "Este objeto é definido como uma matriz com chave em Json, mas a defini�
 #, fuzzy
 msgid "This object is defined as a keyed Array in Json but the key property named in the definitions is not a primitive type (children = {0}, type = {1})"
 msgstr "Este objeto é definido como uma matriz com chave em Json, mas a propriedade chave nomeada nas definições não é um tipo primitivo (children = {0}, type = {1})"
+
+# OPDEF_CIRCULAR_DEFINITION
+#: OPDEF_CIRCULAR_DEFINITION
+msgid "The definition of the Operation is circular - it depends on itself (url = ''{0}'', from ''{1}'')"
+msgstr ""
 
 # OPDEF_PROFILE_NOT_FOUND
 #: OPDEF_PROFILE_NOT_FOUND
@@ -3722,11 +3747,21 @@ msgstr "Incompatibilidade nas regras de corte em {0}: o discriminador ''{0}:{1}'
 msgid "Mismatch in slicing at {0}: extra slice ''{1}'' not found in the claimed profile"
 msgstr "Incompatibilidade no fatiamento em {0}: fatia extra ''{1}'' não encontrada no perfil reclamado"
 
+# PROFILE_COMPLIES_WITH_SLICING_NO_EXPAND
+#: PROFILE_COMPLIES_WITH_SLICING_NO_EXPAND
+msgid "The ValueSet ''{0}'' cannot be expanded so the claim cannot be checked (''{1}'')"
+msgstr ""
+
 # PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
 #: PROFILE_COMPLIES_WITH_SLICING_NO_SLICE
 #, fuzzy
 msgid "Mismatch in slicing at {0}: no slice found for the discriminator {1} with the values {2}"
 msgstr "!!Incompatibilidade no fatiamento em {0}: não foi encontrada nenhuma fatia para os discriminadores {1} com os valores {2}"
+
+# PROFILE_COMPLIES_WITH_SLICING_NO_VALUE
+#: PROFILE_COMPLIES_WITH_SLICING_NO_VALUE
+msgid "No fixed or pattern value or required binding was found, so the claim cannot be checked"
+msgstr ""
 
 # PROFILE_COMPLIES_WITH_SLICING_ORDER
 #: PROFILE_COMPLIES_WITH_SLICING_ORDER
@@ -4716,6 +4751,11 @@ msgstr "Não foi possível encontrar um perfil de tipo que esteja em conformidad
 msgid "The definition builds on ''{0}'' which is experimental, but this definition is not labeled as experimental"
 msgstr "A definição baseia-se em ''{0}'' que é experimental, mas esta definição não é rotulada como experimental"
 
+# SD_CIRCULAR_DEFINITION
+#: SD_CIRCULAR_DEFINITION
+msgid "The definition of the Structure is circular - it depends on itself (url = ''{0}'', from ''{1}'')"
+msgstr ""
+
 # SD_CONSTRAINED_KIND_NO_MATCH
 #: SD_CONSTRAINED_KIND_NO_MATCH
 #, fuzzy
@@ -4748,7 +4788,7 @@ msgstr "Rever o tipo de extensão para {1}: as extensões não devem ter um cont
 #: SD_CONTEXT_SHOULD_NOT_BE_FHIRPATH
 #, fuzzy
 msgid "Review the extension type for {1}: the context of {0} appears to be a simple element, so the context type should be ''element'' not ''fhirpath''"
-msgstr "Rever o tipo de extensão para {1}: o contexto de {0} parece ser um elemento simples, pelo que o tipo de contexto deve ser \\\"element\\\" e não \\\"fhirpath"
+msgstr "Rever o tipo de extensão para {1}: o contexto de {0} parece ser um elemento simples, pelo que o tipo de contexto deve ser \"element\" e não \"fhirpath\""
 
 # SD_DERIVATION_KIND_MISMATCH
 #: SD_DERIVATION_KIND_MISMATCH
@@ -4823,7 +4863,7 @@ msgstr "A referência valueSet {1} no elemento {0} não pôde ser resolvida"
 #: SD_ED_EXPERIMENTAL_BINDING
 #, fuzzy
 msgid "The definition for the element ''{0}'' binds to the value set ''{1}'' which is experimental, but this structure is not labeled as experimental"
-msgstr "A definição do elemento \\\"{0}\\\" está ligada ao conjunto de valores \\\"{1}\\\", que é experimental, mas esta estrutura não está identificada como experimental"
+msgstr "A definição do elemento \"{0}\" está ligada ao conjunto de valores \"{1}\", que é experimental, mas esta estrutura não está identificada como experimental"
 
 # SD_ED_SHOULD_BIND
 #: SD_ED_SHOULD_BIND
@@ -4876,8 +4916,8 @@ msgstr "O perfil {0} é do tipo {1}, mas o elemento {3} tem o tipo {2}"
 # SD_ED_TYPE_PROFILE_WRONG_TARGET
 #: SD_ED_TYPE_PROFILE_WRONG_TARGET
 #, fuzzy
-msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has type {2})"
-msgstr "O perfil {0} é para o tipo {1}, que não é um {4} (o que é necessário porque o elemento {3} tem o tipo {2})"
+msgid "Profile {0} is for type {1}, which is not a {4} (which is required because the {3} element has the type {2})"
+msgstr "!!O perfil {0} é para o tipo {1}, que não é um {4} (o que é necessário porque o elemento {3} tem o tipo {2})"
 
 # SD_ED_TYPE_PROFILE_WRONG_TYPE
 #: SD_ED_TYPE_PROFILE_WRONG_TYPE
@@ -4890,7 +4930,7 @@ msgstr[1] ""
 #: SD_ELEMENT_FIXED_WRONG_TYPE
 #, fuzzy
 msgid "The base element has a fixed type of ''{0}'', so this element must have a fixed value of the same type, not ''{1}''"
-msgstr "O elemento base tem um tipo fixo de \\\"{0}\\\", pelo que este elemento deve ter um valor fixo do mesmo tipo, e não \\\"{1}"
+msgstr "O elemento base tem um tipo fixo de \"{0}\", pelo que este elemento deve ter um valor fixo do mesmo tipo, e não \"{1}\""
 
 # SD_ELEMENT_NOT_IN_CONSTRAINT
 #: SD_ELEMENT_NOT_IN_CONSTRAINT
@@ -4968,7 +5008,7 @@ msgstr "O elemento {0} tem tipos/perfis/destinos que estão marcados como must-s
 #: SD_NESTED_MUST_SUPPORT_SNAPSHOT
 #, fuzzy
 msgid "The element {0} has types/profiles/targets that are marked as must support, but the element itself is not marked as must-support"
-msgstr "O elemento {0} tem tipos/perfis/destinos que estão marcados como \\\"must support\\\", mas o elemento em si não está marcado como \\\"must support"
+msgstr "O elemento {0} tem tipos/perfis/destinos que estão marcados como \"must support\", mas o elemento em si não está marcado como \"must support\""
 
 # SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION
 #: SD_NO_CONTEXT_INV_WHEN_NOT_EXTENSION
@@ -5040,7 +5080,7 @@ msgstr "O elemento ''{0}'' tem uma propriedade ''{1}'' que não é permitida nos
 #: SD_OBGLIGATION_PROFILE_ILLEGAL_BINDING
 #, fuzzy
 msgid "The element ''{0}'' has a binding when the base element does not, and this is not allowed in Obligation profiles"
-msgstr "O elemento \\\"{0}\\\" tem uma ligação quando o elemento de base não tem, e isto não é permitido nos perfis de Obrigação"
+msgstr "O elemento \"{0}\" tem uma ligação quando o elemento de base não tem, e isto não é permitido nos perfis de Obrigação"
 
 # SD_OBGLIGATION_PROFILE_ILLEGAL_ON_BINDING
 #: SD_OBGLIGATION_PROFILE_ILLEGAL_ON_BINDING
@@ -5070,7 +5110,7 @@ msgstr "O valor do caminho do elemento ''{0}'' de ''{1}'' não corresponde ao ca
 #: SD_OBGLIGATION_PROFILE_UKNOWN
 #, fuzzy
 msgid "The profile is marked as an obligation profile, but its correctness cannot be checked since the base profile ''{0}'' is not known"
-msgstr "!!O perfil é marcado como um perfil obrigatório, mas a sua correção não pode ser verificada porque o perfil de base \\\"{0}\\\" não é conhecido"
+msgstr "!!O perfil é marcado como um perfil obrigatório, mas a sua correção não pode ser verificada porque o perfil de base \"{0}\" não é conhecido"
 
 # SD_OBGLIGATION_PROFILE_UNMATCHED
 #: SD_OBGLIGATION_PROFILE_UNMATCHED
@@ -5256,7 +5296,7 @@ msgstr "A expressão ''{2}'' não é compatível com a expressão ''{1}'' no par
 #: SEARCHPARAMETER_MISSING_COMPONENTS
 #, fuzzy
 msgid "When the SearchParameter has a type of ''composite'', then the SearchParameter must define two or more components"
-msgstr "Quando o SearchParameter tem um tipo de \\\"composto\\\", então o SearchParameter deve definir dois ou mais componentes"
+msgstr "Quando o SearchParameter tem um tipo de \"composto\", então o SearchParameter deve definir dois ou mais componentes"
 
 # SEARCHPARAMETER_NOTFOUND
 #: SEARCHPARAMETER_NOTFOUND
@@ -5370,7 +5410,7 @@ msgstr "Não foram encontrados mapas que correspondam a {0} - a validação pode
 #: SM_LIST_RULE_ID_ONLY_WHEN_SHARE
 #, fuzzy
 msgid "A ruleId should only be provided when the rule mode is ''share''"
-msgstr "Um ruleId só deve ser fornecido quando o modo de regra é \\\"partilhar"
+msgstr "Um ruleId só deve ser fornecido quando o modo de regra é \"partilhar\""
 
 # SM_MATCHING_RULEGROUP_NOT_FOUND
 #: SM_MATCHING_RULEGROUP_NOT_FOUND
@@ -5740,6 +5780,11 @@ msgstr "A definição do sistema de códigos com o URI ''{0}'' não fornece quai
 #, fuzzy
 msgid "A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
 msgstr "Um código sem sistema não tem um significado definido e não pode ser validado. Deve ser fornecido um sistema"
+
+# TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
+#: TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
+msgid "The code cannot be checked because codeSystem ''{0}'' version ''{1}'' is not supported ({2})"
+msgstr ""
 
 # TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
 #: TERMINOLOGY_TX_SYSTEM_WRONG_BUILD
@@ -6611,7 +6656,7 @@ msgstr "O valor ''{0}'' não é um valor Base64 válido"
 #: Type_Specific_Checks_DT_Boolean_Value
 #, fuzzy
 msgid "Boolean values must be ''true'' or ''false''"
-msgstr "Os valores booleanos devem ser \\\"true\\\" ou \\\"false"
+msgstr "Os valores booleanos devem ser \"true\" ou \"false\""
 
 # Type_Specific_Checks_DT_Code_WS
 #: Type_Specific_Checks_DT_Code_WS
@@ -6857,13 +6902,13 @@ msgstr "Não é possível verificar se o código está no conjunto de valores ''
 #: UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_CS
 #, fuzzy
 msgid "Unable to check whether the code is in the value set ''{0}'' because the code system {1} was not found"
-msgstr "Não foi possível verificar se o código está no conjunto de valores \\\"{0}\\\" porque o sistema de códigos {1} não foi encontrado"
+msgstr "Não foi possível verificar se o código está no conjunto de valores \"{0}\" porque o sistema de códigos {1} não foi encontrado"
 
 # UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS
 #: UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_VS
 #, fuzzy
 msgid "Unable to check whether the code is in the value set ''{0}'' because the value set {1} was not found"
-msgstr "Não é possível verificar se o código está no conjunto de valores \\\"{0}\\\" porque o conjunto de valores {1} não foi encontrado"
+msgstr "Não é possível verificar se o código está no conjunto de valores \"{0}\" porque o conjunto de valores {1} não foi encontrado"
 
 # UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV
 #: UNABLE_TO_DETERMINE_TYPE_CONTEXT_INV
@@ -6961,8 +7006,8 @@ msgstr "Código desconhecido ''{0}'' no CodeSystem ''{1}'' versão ''{2}'' - not
 # UNKNOWN_PROPERTY
 #: UNKNOWN_PROPERTY
 #, fuzzy
-msgid "Unknown property name {0} in path {1}2"
-msgstr "Nome de propriedade desconhecido {0} no caminho {1}2"
+msgid "Unknown property name {0} in path {1}"
+msgstr "!!Nome de propriedade desconhecido {0} no caminho {1}2"
 
 # UNRECOGNISED_PROPERTY_TYPE
 #: UNRECOGNISED_PROPERTY_TYPE
@@ -7240,6 +7285,11 @@ msgstr "Código desconhecido ''{0}'' no CodeSystem ''{1}''"
 msgid "Unknown code ''{0}'' in the CodeSystem ''{1}'' version ''{2}''"
 msgstr "Código desconhecido ''{0}'' no CodeSystem ''{1}'' versão ''{2}''"
 
+# Unknown_Code_in_Version_SCT
+#: Unknown_Code_in_Version_SCT
+msgid "Unknown code ''{0}'' in the CodeSystem ''{1}'' version ''{2}'' ({3})"
+msgstr ""
+
 # Unknown_Data_format_
 #: Unknown_Data_format_
 #, fuzzy
@@ -7432,7 +7482,7 @@ msgstr "Não são permitidos conteúdos experimentais neste contexto"
 #: VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN
 #, fuzzy
 msgid "Global Profile reference ''{0}'' from IG {1} could not be resolved, so has not been checked"
-msgstr "A referência do perfil global \\\"{0}\\\" do IG {1} não pôde ser resolvida, pelo que não foi verificada"
+msgstr "A referência do perfil global \"{0}\" do IG {1} não pôde ser resolvida, pelo que não foi verificada"
 
 # VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT
 #: VALIDATION_VAL_ILLEGAL_TYPE_CONSTRAINT
@@ -7564,7 +7614,7 @@ msgstr "O estatuto do recurso ''{0}'' e o estatuto das normas ''{1}'' não são 
 #: VALIDATION_VAL_STATUS_INCONSISTENT_HINT
 #, fuzzy
 msgid "The resource status ''{0}'' and the standards status ''{1}'' may not be consistent and should be reviewed"
-msgstr "O estatuto do recurso \\\"{0}\\\" e o estatuto das normas \\\"{1}\\\" podem não ser coerentes e devem ser revistos"
+msgstr "O estatuto do recurso \"{0}\" e o estatuto das normas \"{1}\" podem não ser coerentes e devem ser revistos"
 
 # VALIDATION_VAL_VERSION_NOHASH
 #: VALIDATION_VAL_VERSION_NOHASH
@@ -7708,12 +7758,14 @@ msgstr "Encontrada uma circularidade que aponta para o processamento de {0} Valu
 
 # VALUESET_CODE_CONCEPT_HINT
 #: VALUESET_CODE_CONCEPT_HINT
-msgid "The display ''{0}'' is not valid in the Code system ''{0}''. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgctxt "VALUESET_CODE_CONCEPT_HINT"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
 msgstr ""
 
 # VALUESET_CODE_CONCEPT_HINT_VER
 #: VALUESET_CODE_CONCEPT_HINT_VER
-msgid "The display ''{0}'' is not valid in the Code system ''{0}'' version ''{2}''. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
+msgctxt "VALUESET_CODE_CONCEPT_HINT_VER"
+msgid "{3}. Note that the display in the ValueSet does not have to match; this check exists to help check that it''s not accidentally the wrong code"
 msgstr ""
 
 # VALUESET_CONCEPT_DISPLAY_PRESENCE_MIXED
@@ -7845,7 +7897,7 @@ msgstr "O sistema ''{0}'' é de facto um conjunto de valores"
 #: VALUESET_INCLUDE_WRONG_VS_HINT
 #, fuzzy
 msgid "The system ''{0}'' is actually a value set, which itself refers to the system ''{1}'' so that may be what is intended here"
-msgstr "O sistema \\\"{0}\\\" é, de facto, um conjunto de valores, que se refere ao sistema \\\"{1}\\\", pelo que pode ser isso que se pretende aqui"
+msgstr "O sistema \"{0}\" é, de facto, um conjunto de valores, que se refere ao sistema \"{1}\", pelo que pode ser isso que se pretende aqui"
 
 # VALUESET_INCLUDE_WRONG_VS_MANY
 #: VALUESET_INCLUDE_WRONG_VS_MANY

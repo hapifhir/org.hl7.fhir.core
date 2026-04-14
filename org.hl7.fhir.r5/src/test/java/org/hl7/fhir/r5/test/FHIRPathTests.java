@@ -75,8 +75,13 @@ public class FHIRPathTests {
     }
 
     @Override
-    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveReference)");
+    }
+
+    @Override
+    public Base findContainingResource(Object appContext, Base item) {
+      return null;
     }
 
     @Override
@@ -91,7 +96,7 @@ public class FHIRPathTests {
 
     @Override
     public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-      return context.fetchResource(ValueSet.class, url);
+      return context.fetchResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     }
 
     @Override

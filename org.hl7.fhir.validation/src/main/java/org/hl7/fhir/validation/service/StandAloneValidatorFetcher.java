@@ -19,6 +19,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import lombok.Getter;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -71,13 +72,12 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   private IValidationPolicyAdvisor policyAdvisor;
   private String resolutionContext;
   private Map<String, String> knownFiles = new HashMap<>();
-  
-  
+
   public StandAloneValidatorFetcher(FilesystemPackageCacheManager pcm, IWorkerContext context, IPackageInstaller installer) {
     this.pcm = pcm;
     this.context = context;
     this.installer = installer;
-    this.policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.IGNORE);
+    this.policyAdvisor = new BasePolicyAdvisorForFullValidation(ReferenceValidationPolicy.IGNORE, null);
   }
 
   @Override
@@ -185,7 +185,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
   
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical, List<CanonicalType> targets) throws IOException, FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, IWorkerContext.VersionResolutionRules rules, String type, boolean canonical, List<CanonicalType> targets) throws IOException, FHIRException {
     if (!Utilities.isAbsoluteUrl(url)) {
       return false;
     }
@@ -262,7 +262,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       }
       if (pi != null) {
         context.getManager().loadFromPackage(pi, null);
-        return pi.hasCanonical(url) ||  context.fetchResource(Resource.class, url) != null;
+        return pi.hasCanonical(url) ||  context.fetchResource(Resource.class, url, IWorkerContext.VersionResolutionRules.defaultRule()) != null;
       }
     }
 
@@ -392,15 +392,15 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   @Override
-  public void findResource(Object validator, String url) {
+  public void findResource(Object validator, String url, IWorkerContext.VersionResolutionRules rules) {
     try {
-      resolveURL((IResourceValidator) validator, null, null, url, null, false, null);
+      resolveURL((IResourceValidator) validator, null, null, url, rules,null, false, null);
     } catch (Exception e) {
     }
   }
 
   @Override
-  public Set<String> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
+  public Set<ResourceVersionInformation> fetchCanonicalResourceVersions(IResourceValidator validator, Object appContext, String url) {
     return new HashSet<>();
   }
 
@@ -441,6 +441,17 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       IMessagingServices msgServices, List<ValidationMessage> messages) {
     return policyAdvisor.getImpliedProfilesForResource(validator, appContext, stackPath, definition, structure, resource, valid, msgServices, messages);
   }
+
+  @Override
+  public String relativeDatePlaceHolder() {
+    return policyAdvisor.relativeDatePlaceHolder();
+  }
+
+
+  public Set<String> getCheckReferencesTo() {
+    return policyAdvisor.getCheckReferencesTo();
+  }
+
 
   @Override
   public ReferenceValidationPolicy getReferencePolicy() {

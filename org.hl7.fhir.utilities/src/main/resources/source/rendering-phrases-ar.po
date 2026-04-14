@@ -52,6 +52,7 @@ msgstr "جميع التكرارات"
 # ADD_BIND_ANY
 #: ADD_BIND_ANY
 #, fuzzy
+msgctxt "ADD_BIND_ANY"
 msgid "Any"
 msgstr "أي"
 
@@ -1011,6 +1012,250 @@ msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
 msgstr "النوع"
 
+# CONF_MAY
+#: CONF_MAY
+msgctxt "CONF_MAY"
+msgid "MAY"
+msgstr ""
+
+# CONF_MAY_PLURAL
+#: CONF_MAY_PLURAL
+msgctxt "CONF_MAY_PLURAL"
+msgid "MAY"
+msgstr ""
+
+# CONF_SHALL
+#: CONF_SHALL
+msgctxt "CONF_SHALL"
+msgid "SHALL"
+msgstr ""
+
+# CONF_SHALLNOT
+#: CONF_SHALLNOT
+msgctxt "CONF_SHALLNOT"
+msgid "SHALL NOT"
+msgstr ""
+
+# CONF_SHALLNOT_PLURAL
+#: CONF_SHALLNOT_PLURAL
+msgctxt "CONF_SHALLNOT_PLURAL"
+msgid "SHALL NOT"
+msgstr ""
+
+# CONF_SHALL_PLURAL
+#: CONF_SHALL_PLURAL
+msgctxt "CONF_SHALL_PLURAL"
+msgid "SHALL"
+msgstr ""
+
+# CONF_SHOULD
+#: CONF_SHOULD
+msgctxt "CONF_SHOULD"
+msgid "SHOULD"
+msgstr ""
+
+# CONF_SHOULDNOT
+#: CONF_SHOULDNOT
+msgctxt "CONF_SHOULDNOT"
+msgid "SHOULD NOT"
+msgstr ""
+
+# CONF_SHOULDNOT_PLURAL
+#: CONF_SHOULDNOT_PLURAL
+msgctxt "CONF_SHOULDNOT_PLURAL"
+msgid "SHOULD NOT"
+msgstr ""
+
+# CONF_SHOULD_PLURAL
+#: CONF_SHOULD_PLURAL
+msgctxt "CONF_SHOULD_PLURAL"
+msgid "SHOULD"
+msgstr ""
+
+# CONSENT_CATEGORY
+#: CONSENT_CATEGORY
+msgid "Category"
+msgid_plural "Categories"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# CONSENT_DATE
+#: CONSENT_DATE
+msgid "Agreement Date"
+msgstr ""
+
+# CONSENT_PART_TBL_CONTROLLER
+#: CONSENT_PART_TBL_CONTROLLER
+msgid "Controller"
+msgstr ""
+
+# CONSENT_PART_TBL_DETAILS
+#: CONSENT_PART_TBL_DETAILS
+msgctxt "CONSENT_PART_TBL_DETAILS"
+msgid "Details"
+msgstr ""
+
+# CONSENT_PART_TBL_GRANTEE
+#: CONSENT_PART_TBL_GRANTEE
+msgid "Grantee"
+msgstr ""
+
+# CONSENT_PART_TBL_GRANTOR
+#: CONSENT_PART_TBL_GRANTOR
+msgid "Grantor"
+msgstr ""
+
+# CONSENT_PART_TBL_MANAGER
+#: CONSENT_PART_TBL_MANAGER
+msgid "Manager"
+msgstr ""
+
+# CONSENT_PART_TBL_PARTY
+#: CONSENT_PART_TBL_PARTY
+msgid "Party"
+msgstr ""
+
+# CONSENT_PART_TBL_PATIENT
+#: CONSENT_PART_TBL_PATIENT
+msgid "Patient"
+msgstr ""
+
+# CONSENT_PART_TBL_ROLE
+#: CONSENT_PART_TBL_ROLE
+msgctxt "CONSENT_PART_TBL_ROLE"
+msgid "Role"
+msgstr ""
+
+# CONSENT_PERIOD
+#: CONSENT_PERIOD
+msgid "Applicable Period"
+msgstr ""
+
+# CONSENT_SCOPE
+#: CONSENT_SCOPE
+msgctxt "CONSENT_SCOPE"
+msgid "Scope"
+msgid_plural "Scopes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# CSREQ_DESC
+#: CSREQ_DESC
+msgid "Conformance statements found throughout the narrative of the IG consolidated into this computable resource for traceability purposes"
+msgstr ""
+
+# CSREQ_TITLE
+#: CSREQ_TITLE
+msgid "Narrative Conformance Statements"
+msgstr ""
+
+# CSTABLE_CLEAR_FILTERS
+#: CSTABLE_CLEAR_FILTERS
+msgid "Clear Filters"
+msgstr ""
+
+# CSTABLE_COND_ANY
+#: CSTABLE_COND_ANY
+msgctxt "CSTABLE_COND_ANY"
+msgid "Any"
+msgstr ""
+
+# CSTABLE_COND_NO
+#: CSTABLE_COND_NO
+msgid "No"
+msgstr ""
+
+# CSTABLE_COND_YES
+#: CSTABLE_COND_YES
+msgid "Yes"
+msgstr ""
+
+# CSTABLE_HEAD_ACTOR
+#: CSTABLE_HEAD_ACTOR
+msgid "Actor{1}"
+msgid_plural "Actors{1}"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# CSTABLE_HEAD_CAT
+#: CSTABLE_HEAD_CAT
+msgid "Category{1}"
+msgid_plural "Categories{1}"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+# CSTABLE_HEAD_COND
+#: CSTABLE_HEAD_COND
+msgid "Conditional?"
+msgstr ""
+
+# CSTABLE_HEAD_EXPECT
+#: CSTABLE_HEAD_EXPECT
+msgid "Expectation"
+msgstr ""
+
+# CSTABLE_HEAD_ID
+#: CSTABLE_HEAD_ID
+msgctxt "CSTABLE_HEAD_ID"
+msgid "Id"
+msgstr ""
+
+# CSTABLE_HEAD_RULE
+#: CSTABLE_HEAD_RULE
+msgid "Rule"
+msgstr ""
+
+# CSTABLE_TITLE_ACTOR
+#: CSTABLE_TITLE_ACTOR
+msgid "Filter to only statements that apply to the specified actor(s)"
+msgstr ""
+
+# CSTABLE_TITLE_CAT
+#: CSTABLE_TITLE_CAT
+msgid "Filter to only statements that apply to the specified category(ies)"
+msgstr ""
+
+# CSTABLE_TITLE_CLEAR
+#: CSTABLE_TITLE_CLEAR
+msgid "Clear the Filter"
+msgstr ""
+
+# CSTABLE_TITLE_COND
+#: CSTABLE_TITLE_COND
+msgid "Filter to only statements that are conditional, not conditional, or no constraint"
+msgstr ""
+
+# CSTABLE_TITLE_EXPECT
+#: CSTABLE_TITLE_EXPECT
+msgid "Filter to only statements with one of the selected expectation type(s)"
+msgstr ""
+
+# CSTABLE_TITLE_ID
+#: CSTABLE_TITLE_ID
+msgid "Filter to only statements with ids that contain the specified text"
+msgstr ""
+
+# CSTABLE_TITLE_RULE
+#: CSTABLE_TITLE_RULE
+msgid "Filter to only statements that contain the specified text"
+msgstr ""
+
 # CS_VERSION_NOTHING_TEXT
 #: CS_VERSION_NOTHING_TEXT
 msgid "Not Stated (use latest from terminology server)"
@@ -1512,6 +1757,7 @@ msgstr "لـ"
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
 #, fuzzy
+msgctxt "DIAG_REP_REND_IDENTIFIER"
 msgid "Identifier"
 msgstr "تحديد"
 
@@ -1876,6 +2122,7 @@ msgstr "الوصف والقيود"
 # GENERAL_DETAILS
 #: GENERAL_DETAILS
 #, fuzzy
+msgctxt "GENERAL_DETAILS"
 msgid "Details"
 msgstr "التفاصيل"
 
@@ -1915,6 +2162,18 @@ msgstr "القيمة الثابتة: {0}"
 #, fuzzy
 msgid "Flags"
 msgstr "الأعلام"
+
+# GENERAL_IDENTIFIER
+#: GENERAL_IDENTIFIER
+msgctxt "GENERAL_IDENTIFIER"
+msgid "Identifier"
+msgid_plural "Identifiers"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 # GENERAL_LOCATION
 #: GENERAL_LOCATION
@@ -2489,6 +2748,7 @@ msgstr "ملف تعريف معلمات الإخراج:"
 # OP_DEF_SCO
 #: OP_DEF_SCO
 #, fuzzy
+msgctxt "OP_DEF_SCO"
 msgid "Scope"
 msgstr "النطاق"
 
@@ -2909,9 +3169,15 @@ msgstr "المصدر لـ"
 msgid "Recorded"
 msgstr "مسجل"
 
+# PROV_REFERENCE
+#: PROV_REFERENCE
+msgid "This {0} is referenced from the following provenance resources:"
+msgstr ""
+
 # PROV_ROLE
 #: PROV_ROLE
 #, fuzzy
+msgctxt "PROV_ROLE"
 msgid "Role"
 msgstr "الدور"
 
@@ -3352,8 +3618,8 @@ msgstr "الموارد التالية موجودة في إصدار {0} فقط ف
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
 #, fuzzy
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
-msgstr "!!تتوفر حزم لكل من <a href=\"{0}\">R4 ({1}.r4)</a> و <a href=\"{2} \\\">R4B ({3}.r4b)</a>."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
+msgstr "!!تتوفر حزم لكل من <a href=\"{0}\">R4 ({1}.r4)</a> و <a href=\"{2}\">R4B ({3}.r4b)</a>."
 
 # R44B_PROBLEMS
 #: R44B_PROBLEMS
@@ -3843,7 +4109,7 @@ msgstr "يمكن الاطلاع على إرشادات حول كيفية تفسي
 #, fuzzy
 msgctxt "SDR_GUIDANCE_SFX"
 msgid "-- no content: do not translate #118 --"
-msgstr "!!!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #121 ---"
+msgstr "!!-- لا يوجد محتوى: لا تترجم #121 ---"
 
 # SDR_IMPOSE
 #: SDR_IMPOSE
@@ -4070,7 +4336,7 @@ msgstr "إصدارات FHIR"
 #, fuzzy
 msgctxt "SDR_VER_RANGE_SFX"
 msgid "-- no content: do not translate #119 --"
-msgstr "!!!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #122 --"
+msgstr "!!-- لا يوجد محتوى: لا تترجم #122 --"
 
 # SDR_VER_TO_PFX
 #: SDR_VER_TO_PFX
@@ -4083,7 +4349,7 @@ msgstr "إصدارات FHIR حتى"
 #, fuzzy
 msgctxt "SDR_VER_TO_SFX"
 msgid "-- no content: do not translate #120 --"
-msgstr "!!!!!!!!!!!!-- لا يوجد محتوى: لا تترجم #123 --"
+msgstr "!!-- لا يوجد محتوى: لا تترجم #123 --"
 
 # SDR_VER_UNK
 #: SDR_VER_UNK
@@ -5015,6 +5281,7 @@ msgstr "الصف"
 # STRUC_DEF_ID
 #: STRUC_DEF_ID
 #, fuzzy
+msgctxt "STRUC_DEF_ID"
 msgid "Id"
 msgstr "المعرف"
 
@@ -6756,17 +7023,17 @@ msgstr ""
 
 # VS_VERSION_FOUND
 #: VS_VERSION_FOUND
-msgid "Version is not explicity stated. When building this specification, the most recent version {0} has been used"
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
 msgstr ""
 
 # VS_VERSION_NONE
 #: VS_VERSION_NONE
-msgid "Version is not explicity stated, and the target {0} has no stated version either"
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
 msgstr ""
 
 # VS_VERSION_NOTHING
 #: VS_VERSION_NOTHING
-msgid "Version is not explicity stated. No matching {0} found"
+msgid "Version is not explicitly stated. No matching {0} found"
 msgstr ""
 
 # VS_VERSION_NOTHING_TEXT
