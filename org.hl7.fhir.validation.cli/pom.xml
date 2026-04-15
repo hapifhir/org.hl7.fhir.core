@@ -359,6 +359,9 @@
                             <classpathLayoutType>repository</classpathLayoutType>
                             <mainClass>org.hl7.fhir.validation.cli.ValidatorCli</mainClass>
                         </manifest>
+                        <manifestEntries>
+                            <Enable-Native-Access>ALL-UNNAMED</Enable-Native-Access>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>

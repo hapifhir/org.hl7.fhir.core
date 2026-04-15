@@ -34,7 +34,8 @@
         <okhttp.version>5.3.2</okhttp.version>
         <jacoco_version>0.8.12</jacoco_version>
         <lombok_version>1.18.38</lombok_version>
-        <byte_buddy_version>1.14.8</byte_buddy_version>
+        <mockito_version>5.23.0</mockito_version>
+        <byte_buddy_version>1.18.8</byte_buddy_version>
         <apache_poi_version>5.4.1</apache_poi_version>
         <saxon_he_version>11.6</saxon_he_version>
         <maven.compiler.release>17</maven.compiler.release>
@@ -51,6 +52,7 @@
         <log4jVersion>2.25.3</log4jVersion>
         <okio.version>3.16.4</okio.version>
         <jackson_annotations_version>2.21</jackson_annotations_version>
+        <surefire.native.access.arg/>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -447,9 +449,9 @@
                         <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
                          Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
                         -->
-                        <argLine>@{argLine} -Xmx3500m -XX:MaxRAMPercentage=50.0</argLine>
+                        <argLine>@{argLine} -Xmx3500m -XX:MaxRAMPercentage=50.0 ${surefire.native.access.arg}</argLine>
                         <systemPropertyVariables>
-                            <java.locale.providers>COMPAT</java.locale.providers>
+                            <java.locale.providers>COMPAT,CLDR,SPI</java.locale.providers>
                             <!--    For JUnit4 use TestUtilities.runningAsSurefire() or
                                     TestingUtilities.runningAsSurefire() to exclude a test from surefire executions-->
                             <runningAsSurefire>true</runningAsSurefire>
@@ -700,20 +702,14 @@
             </build>
         </profile>
     <profile>
-        <id>surefire-java-9-plus</id>
+        <id>surefire-java-22-plus</id>
         <activation>
-            <jdk>[9,)</jdk>
+            <jdk>[22,)</jdk>
         </activation>
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                </plugin>
-
-                </plugins>
-            </build>
-        </profile>
+        <properties>
+            <surefire.native.access.arg>--enable-native-access=ALL-UNNAMED</surefire.native.access.arg>
+         </properties>
+    </profile>
         <profile>
             <id>github-repo</id>
             <activation>
