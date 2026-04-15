@@ -79,11 +79,17 @@ public class MappingSheetParser {
     }
 
     public int getCardinalityMin() {
-      return Integer.parseInt(cardinality.split("\\.")[0]);
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] cardinalityParts = cardinality.split("\\.");
+      return Integer.parseInt(cardinalityParts[0]);
     }
 
     public String getCardinalityMax() {
-      return cardinality.split("\\.")[2];
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] cardinalityParts = cardinality.split("\\.");
+      return cardinalityParts[2];
     }
 
     public String getCondition() {
@@ -180,6 +186,8 @@ public class MappingSheetParser {
     mr.vocabMapping = csv.value(11);
     mr.derived = csv.value(12);
     if (!Utilities.noString(mr.derived)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] s = mr.derived.split("\\=");
       mr.derived = s[0].trim();
       mr.derivedMapping = s[1].trim();

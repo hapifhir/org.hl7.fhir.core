@@ -1022,6 +1022,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         // Element names SHALL NOT contain the characters ,:;'"/|?!@#$%^&*()[]{}
         // Element names SHOULD not contain non-ASCII characters
         // Element names SHALL NOT exceed 64 characters in length
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] pl = p.split("\\.");
         for (String pp : pl) {
           if (pp.length() < 1) {
@@ -1087,6 +1089,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     return diff;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Regex sourced from base.getType(); FHIR type names are always literal string matches, safe
   private StructureDefinitionSnapshotComponent cloneSnapshot(StructureDefinitionSnapshotComponent source,
       String baseType, String derivedType) {
     StructureDefinitionSnapshotComponent diff = new StructureDefinitionSnapshotComponent();
@@ -3143,9 +3147,13 @@ public class ProfileUtilities extends TranslatingUtilities {
   private List<ElementDefinition> getDiffMatches(StructureDefinitionDifferentialComponent context, String path,
       int start, int end, String profileName) throws DefinitionException {
     List<ElementDefinition> result = new ArrayList<ElementDefinition>();
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = path.split("\\.");
     for (int i = start; i <= end; i++) {
       String statedPath = context.getElement().get(i).getPath();
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] sp = statedPath.split("\\.");
       boolean ok = sp.length == p.length;
       for (int j = 0; j < p.length; j++) {
@@ -4141,6 +4149,8 @@ public class ProfileUtilities extends TranslatingUtilities {
 
               ref = pkp == null ? null : pkp.getLinkForProfile(profile, p.getValue());
               if (ref != null) {
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
                 String[] parts = ref.split("\\|");
                 if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) {
                   // c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], "<" + parts[1] + ">",
@@ -4481,7 +4491,11 @@ public class ProfileUtilities extends TranslatingUtilities {
   private void insertMissingSparseElements(List<ElementDefinition> list) {
     int i = 1;
     while (i < list.size()) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pathCurrent = list.get(i).getPath().split("\\.");
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pathLast = list.get(i - 1).getPath().split("\\.");
       int firstDiff = 0; // the first entry must be a match
       while (firstDiff < pathCurrent.length && firstDiff < pathLast.length
@@ -5094,6 +5108,8 @@ public class ProfileUtilities extends TranslatingUtilities {
             .add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement())));
       if (element.hasSliceName()) {
         left.getPieces().add(gen.new Piece("br"));
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String indent = StringUtils.repeat('\u00A0', 1 + 2 * (element.getPath().split("\\.").length));
         left.getPieces().add(gen.new Piece(null, indent + "(" + element.getSliceName() + ")", null));
       }
@@ -5606,6 +5622,8 @@ public class ProfileUtilities extends TranslatingUtilities {
               String tn = tc.substring(0, tc.indexOf("("));
               c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, tn), tn, null));
               c.addPiece(gen.new Piece(null, "(", null));
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //single literal character split
               String[] p = tc.substring(tc.indexOf("(") + 1, tc.indexOf(")")).split("\\|");
               for (String s : p) {
                 c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, s), s, null));
@@ -5651,6 +5669,8 @@ public class ProfileUtilities extends TranslatingUtilities {
               String tn = tc.substring(0, tc.indexOf("("));
               c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, tn), tn, null));
               c.addPiece(gen.new Piece(null, "(", null));
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //single literal character split
               String[] p = tc.substring(tc.indexOf("(") + 1, tc.indexOf(")")).split("\\|");
               for (String s : p) {
                 c.addPiece(gen.new Piece(pkp.getLinkFor(corePath, s), s, null));
@@ -6060,6 +6080,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       profile = source;
       code = url.substring(1);
     } else if (context != null) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = url.split("\\#");
       profile = context.fetchResource(StructureDefinition.class, parts[0]);
       code = parts.length == 1 ? null : parts[1];
@@ -6235,6 +6257,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     ElementDefinitionHolder edh = null;
     int i = 0;
     if (diffList.get(0).getPath().contains(".")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String newPath = diffList.get(0).getPath().split("\\.")[0];
       ElementDefinition e = new ElementDefinition(newPath);
       edh = new ElementDefinitionHolder(e, true);
@@ -6298,6 +6322,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     final String prefix = path + ".";
     while (i < list.size() && list.get(i).getPath().startsWith(prefix)) {
       if (list.get(i).getPath().substring(prefix.length() + 1).contains(".")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String newPath = prefix + list.get(i).getPath().substring(prefix.length()).split("\\.")[0];
         ElementDefinition e = new ElementDefinition(newPath);
         ElementDefinitionHolder child = new ElementDefinitionHolder(e, true);
@@ -6699,6 +6725,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new DefinitionException(context.formatMessage(I18nConstants.NO_PATH_ON_ELEMENT_DEFINITION__IN_,
             Integer.toString(list.indexOf(ed)), name));
       sliceInfo.seeElement(ed);
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pl = ed.getPath().split("\\.");
       for (int i = paths.size(); i < pl.length; i++) // -1 because the last path is in focus
         paths.add(pl[i]);

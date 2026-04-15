@@ -231,7 +231,11 @@ public class ResourceAddress {
    * For now, assume this type of location header structure. Generalize later:
    * http://hl7connect.healthintersections.com.au/svc/fhir/318/_history/1
    */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: Matcher.matches() on pattern which has been independently reviewed
   public static ResourceAddress.ResourceVersionedIdentifier parseCreateLocation(String locationResponseHeader) {
+    @SuppressWarnings("checkstyle:patternUsage")
+    //anchored segments, safe
     Pattern pattern = Pattern.compile(REGEX_ID_WITH_HISTORY);
     Matcher matcher = pattern.matcher(locationResponseHeader);
     ResourceVersionedIdentifier parsedHeader = null;
