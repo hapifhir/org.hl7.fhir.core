@@ -995,10 +995,10 @@ public class TerminologyCache {
   }
 
   public String hashJson(String s) {
-    return String.valueOf(s
-      .trim()
-      .replaceAll("\\r\\n?", "\n")
-      .hashCode());
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //normalize line endings; bounded match, safe
+    String normalized = s.trim().replaceAll("\\r\\n?", "\n");
+    return String.valueOf(normalized.hashCode());
   }
 
   // management

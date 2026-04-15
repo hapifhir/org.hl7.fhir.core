@@ -20,6 +20,8 @@ public class TerminologyServerDetails {
   private Map<FHIRVersion, String> endpoints = new HashMap<>();
   private List<String> codeSystems = new ArrayList<>();
   
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Regex sourced from codeSystems list; user-supplied at runtime
   public boolean handlesSystem(String uri, String version) {
     for (String s : codeSystems) {
       if (s.contains("|")) {
