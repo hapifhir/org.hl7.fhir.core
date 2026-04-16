@@ -2,10 +2,11 @@ package org.hl7.fhir.r5.test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
@@ -200,6 +201,19 @@ public final class TurtleGeneratorTestUtils {
     String override = System.getProperty(propertyName);
     return (override != null && !override.isEmpty()) ? FileSystems.getDefault().getPath(override) : fallback;
   }
+
+  public static Path getResourcePath(Path resourcePath) throws IOException {
+    String resourceName = resourcePath.toString().replace('\\', '/');
+    URL resourceUrl = TurtleGeneratorTestUtils.class.getClassLoader().getResource(resourceName);
+    if (resourceUrl == null) {
+      throw new IOException("Missing test resource path: " + resourceName);
+    }
+    try {
+      return Path.of(resourceUrl.toURI());
+    } catch (URISyntaxException e) {
+      throw new IOException("Invalid test resource URI for " + resourceName, e);
+    }
+  }
   
   /**
   * Loads local.properties from src/test/resources/. Add overrides there (already in .gitignore).
@@ -207,9 +221,10 @@ public final class TurtleGeneratorTestUtils {
   */
   public static Properties loadLocalProperties() {
     Properties properties = new Properties();
-    String localPropertiesPath = FileSystems.getDefault().getPath(
-      System.getProperty("user.dir"), "src", "test", "resources", "local.properties").toString();
-      try (FileInputStream input = ManagedFileAccess.inStream(localPropertiesPath)) {
+      try (InputStream input = TurtleGeneratorTestUtils.class.getClassLoader().getResourceAsStream("local.properties")) {
+        if (input == null) {
+          return properties;
+        }
         properties.load(input);
       } catch (IOException e) {
         // local.properties is optional; use defaults if not present
