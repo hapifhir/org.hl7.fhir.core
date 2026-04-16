@@ -10,24 +10,28 @@
 <http://hl7.org/fhir/Patient/f201> a fhir:Patient ;
   fhir:nodeRole fhir:treeRoot ;
   fhir:id [ fhir:v "f201"] ; # 
+  fhir:text [
+     fhir:status [ fhir:v "generated" ] ;
+     fhir:div [ fhir:v "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p style=\"border: 1px #661aff solid; background-color: #e6e6ff; padding: 10px;\"><b> Roel(OFFICIAL)</b>  male, DoB: 1960-03-13 ( BSN: 123456789 (use: OFFICIAL))</p> <hr/>  <table class=\"grid\"><tr> <td style=\"background-color: #f3f5da\" title=\"Record is active\">Active:</td> <td> true</td> <td style=\"background-color: #f3f5da\" title=\"Known status of Patient\">Deceased:</td> <td> false</td> </tr> <tr> <td style=\"background-color: #f3f5da\" title=\"Known Marital status of Patient\">Marital Status:</td> <td> <span title=\"Codes: {http://snomed.info/sct 36629006}, {http://terminology.hl7.org/CodeSystem/v3-MaritalSt             atus M}\">Legally married</span> </td> <td style=\"background-color: #f3f5da\" title=\"Known multipleBirth status of Patient\">Multiple Birth:</td> <td colspan=\"3\">false</td> </tr> <tr> <td style=\"background-color: #f3f5da\" title=\"Other Ids (see the one above)\">Other Id:</td> <td colspan=\"3\">BSN: 123456789 (use: OFFICIAL)</td> </tr> <tr> <td style=\"background-color: #f3f5da\" title=\"Ways to contact the Patient\">Contact Details:</td> <td colspan=\"3\"><ul> <li> <a href=\"tel:+31612345678\">+31612345678</a> </li> <li> <a href=\"tel:+31201234567\">+31201234567</a> </li> <li> Bos en Lommerplein 280 Amsterdam 1055RW NLD (HOME)</li> </ul> </td> </tr> <tr> <td style=\"background-color: #f3f5da\" title=\"Languages spoken\">Language:</td> <td colspan=\"3\"><span title=\"Codes: {urn:ietf:bcp:47 nl-NL}\">Dutch</span>  (preferred)</td> </tr> <tr> <td style=\"background-color: #f3f5da\" title=\"Nominated Contact: Wife\">Wife:</td> <td colspan=\"3\"><ul> <li> Ariadne Bor-Jansma</li> <li> <a href=\"tel:+31201234567\">+31201234567</a> </li> </ul> </td> </tr> <tr> <td style=\"background-color: #f3f5da\" title=\"Patient Links\">Links:</td> <td colspan=\"3\"><ul> <li> Managing Organization: <a href=\"organization-example-f201-aumc.html\">Organization/f201: AUMC</a>  \"Artis University Medical Center (AUMC)\"</li> </ul> </td> </tr> </table> </div>"^^rdf:XMLLiteral ]
+  ] ; # 
   fhir:identifier ( [
-     fhir:use [ fhir:v "official" ] ; #   The identifier for the person as this patient (fictive)  
+     fhir:use [ fhir:v "official" ] ; #     The identifier for the person as this patient (fictive)    
      fhir:type [
        fhir:text [ fhir:v "BSN" ]
      ] ;
      fhir:system [ fhir:v "urn:oid:2.16.840.1.113883.2.4.6.3"^^xsd:anyURI ] ;
      fhir:value [ fhir:v "123456789" ]
   ] [
-     fhir:use [ fhir:v "official" ] ; #   The identifier for this individual  
+     fhir:use [ fhir:v "official" ] ; #     The identifier for this individual    
      fhir:type [
        fhir:text [ fhir:v "BSN" ]
      ] ;
      fhir:system [ fhir:v "urn:oid:2.16.840.1.113883.2.4.6.3"^^xsd:anyURI ] ;
      fhir:value [ fhir:v "123456789" ]
   ] ) ; # 
-  fhir:active [ fhir:v true] ; #   Indicates that the patient is not part of a multiple birth   
+  fhir:active [ fhir:v true] ; #     Indicates that the patient is not part of a multiple birth     
   fhir:name ( [
-     fhir:use [ fhir:v "official" ] ; #   The name associated with the individual (fictive)  
+     fhir:use [ fhir:v "official" ] ; #     The name associated with the individual (fictive)    
      fhir:text [ fhir:v "Roel" ] ;
      fhir:family [ fhir:v "Bor" ] ;
      fhir:given ( [ fhir:v "Roelof Olaf" ] ) ;
@@ -35,11 +39,11 @@
      fhir:suffix ( [ fhir:v "PDEng." ] )
   ] ) ; # 
   fhir:telecom ( [
-     fhir:system [ fhir:v "phone" ] ; #   The mobile contact detail for the individual  
+     fhir:system [ fhir:v "phone" ] ; #     The mobile contact detail for the individual    
      fhir:value [ fhir:v "+31612345678" ] ;
      fhir:use [ fhir:v "mobile" ]
   ] [
-     fhir:system [ fhir:v "phone" ] ; #   The home contact detail for the individual  
+     fhir:system [ fhir:v "phone" ] ; #     The home contact detail for the individual    
      fhir:value [ fhir:v "+31201234567" ] ;
      fhir:use [ fhir:v "home" ]
   ] ) ; # 
@@ -48,14 +52,14 @@
   fhir:deceased [
      a fhir:Boolean ;
      fhir:v false
-  ] ; #   The date and time of birth for the individual   
+  ] ; #     The date and time of birth for the individual     
   fhir:address ( [
-     fhir:use [ fhir:v "home" ] ; #   Home address for the individual  
+     fhir:use [ fhir:v "home" ] ; #     Home address for the individual    
      fhir:line ( [ fhir:v "Bos en Lommerplein 280" ] ) ;
      fhir:city [ fhir:v "Amsterdam" ] ;
      fhir:postalCode [ fhir:v "1055RW" ] ;
      fhir:country [ fhir:v "NLD" ]
-  ] ) ; #   Indicates that the individual is not deceased  ,   ISO 3166 3 letter code  
+  ] ) ; #     Indicates that the individual is not deceased    ,     ISO 3166 3 letter code    
   fhir:maritalStatus [
      fhir:coding ( [
        a sct:36629006 ;
@@ -65,7 +69,7 @@
      ] [
        fhir:system [ fhir:v "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"^^xsd:anyURI ] ;
        fhir:code [ fhir:v "M" ]
-     ] ) #   Marital status of the person  
+     ] ) #     Marital status of the person    
   ] ; # 
   fhir:multipleBirth [
      a fhir:Boolean ;
@@ -88,14 +92,14 @@
        ] [
          fhir:system [ fhir:v "http://terminology.hl7.org/CodeSystem/v3-RoleCode"^^xsd:anyURI ] ;
          fhir:code [ fhir:v "WIFE" ]
-       ] ) #   Indicates that the contact is the patient's wife  
-     ] ) ; #   Contact of the patient  
+       ] ) #     Indicates that the contact is the patient's wife    
+     ] ) ; #     Contact of the patient    
      fhir:name [
-       fhir:use [ fhir:v "usual" ] ; #   The name of the contact  
+       fhir:use [ fhir:v "usual" ] ; #     The name of the contact    
        fhir:text [ fhir:v "Ariadne Bor-Jansma" ]
      ] ;
      fhir:telecom ( [
-       fhir:system [ fhir:v "phone" ] ; #   The home contact detail  
+       fhir:system [ fhir:v "phone" ] ; #     The home contact detail    
        fhir:value [ fhir:v "+31201234567" ] ;
        fhir:use [ fhir:v "home" ]
      ] )
@@ -105,7 +109,7 @@
        fhir:coding ( [
          fhir:system [ fhir:v "urn:ietf:bcp:47"^^xsd:anyURI ] ;
          fhir:code [ fhir:v "nl-NL" ] ;
-         fhir:display [ fhir:v "Dutch (Netherlands)" ]
+         fhir:display [ fhir:v "Dutch" ]
        ] )
      ] ;
      fhir:preferred [ fhir:v true ]

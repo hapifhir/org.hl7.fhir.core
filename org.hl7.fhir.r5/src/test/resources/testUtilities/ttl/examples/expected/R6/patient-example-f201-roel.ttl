@@ -11,7 +11,7 @@
   fhir:nodeRole fhir:treeRoot ;
   fhir:id [ fhir:v "f201"] ; # 
   fhir:identifier ( [
-     fhir:use [ fhir:v "official" ] ; #   The identifier for the person as this patient (fictive)  
+     fhir:use [ fhir:v "official" ] ; #  The identifier for the person as this patient (fictive) 
      fhir:type [
        fhir:text [ fhir:v "BSN" ]
      ] ;
@@ -21,7 +21,7 @@
      ] ;
      fhir:value [ fhir:v "123456789" ]
   ] [
-     fhir:use [ fhir:v "official" ] ; #   The identifier for this individual  
+     fhir:use [ fhir:v "official" ] ; #  The identifier for this individual 
      fhir:type [
        fhir:text [ fhir:v "BSN" ]
      ] ;
@@ -31,9 +31,9 @@
      ] ;
      fhir:value [ fhir:v "123456789" ]
   ] ) ; # 
-  fhir:active [ fhir:v true] ; #   Indicates that the patient is not part of a multiple birth   
+  fhir:active [ fhir:v true] ; #  Indicates that the patient is not part of a multiple birth  
   fhir:name ( [
-     fhir:use [ fhir:v "official" ] ; #   The name associated with the individual (fictive)  
+     fhir:use [ fhir:v "official" ] ; #  The name associated with the individual (fictive) 
      fhir:text [ fhir:v "Roel" ] ;
      fhir:family [ fhir:v "Bor" ] ;
      fhir:given ( [ fhir:v "Roelof Olaf" ] ) ;
@@ -41,11 +41,11 @@
      fhir:suffix ( [ fhir:v "PDEng." ] )
   ] ) ; # 
   fhir:telecom ( [
-     fhir:system [ fhir:v "phone" ] ; #   The mobile contact detail for the individual  
+     fhir:system [ fhir:v "phone" ] ; #  The mobile contact detail for the individual 
      fhir:value [ fhir:v "+31612345678" ] ;
      fhir:use [ fhir:v "mobile" ]
   ] [
-     fhir:system [ fhir:v "phone" ] ; #   The home contact detail for the individual  
+     fhir:system [ fhir:v "phone" ] ; #  The home contact detail for the individual 
      fhir:value [ fhir:v "+31201234567" ] ;
      fhir:use [ fhir:v "home" ]
   ] ) ; # 
@@ -54,14 +54,14 @@
   fhir:deceased [
      a fhir:Boolean ;
      fhir:v false
-  ] ; #   The date and time of birth for the individual   
+  ] ; #  The date and time of birth for the individual  
   fhir:address ( [
-     fhir:use [ fhir:v "home" ] ; #   Home address for the individual  
+     fhir:use [ fhir:v "home" ] ; #  Home address for the individual 
      fhir:line ( [ fhir:v "Bos en Lommerplein 280" ] ) ;
      fhir:city [ fhir:v "Amsterdam" ] ;
      fhir:postalCode [ fhir:v "1055RW" ] ;
      fhir:country [ fhir:v "NLD" ]
-  ] ) ; #   Indicates that the individual is not deceased  ,   ISO 3166 3 letter code  
+  ] ) ; #  Indicates that the individual is not deceased ,  ISO 3166 3 letter code 
   fhir:maritalStatus [
      fhir:coding ( [
        a sct:36629006 ;
@@ -77,7 +77,7 @@
          fhir:l <http://terminology.hl7.org/CodeSystem/v3-MaritalStatus>
        ] ;
        fhir:code [ fhir:v "M" ]
-     ] ) #   Marital status of the person  
+     ] ) #  Marital status of the person 
   ] ; # 
   fhir:multipleBirth [
      a fhir:Boolean ;
@@ -112,14 +112,14 @@
            fhir:l <http://terminology.hl7.org/CodeSystem/v3-RoleCode>
          ] ;
          fhir:code [ fhir:v "WIFE" ]
-       ] ) #   Indicates that the contact is the patient's wife  
-     ] ) ; #   Contact of the patient  
+       ] ) #  Indicates that the contact is the patient's wife 
+     ] ) ; #  Contact of the patient 
      fhir:name [
-       fhir:use [ fhir:v "usual" ] ; #   The name of the contact  
+       fhir:use [ fhir:v "usual" ] ; #  The name of the contact 
        fhir:text [ fhir:v "Ariadne Bor-Jansma" ]
      ] ;
      fhir:telecom ( [
-       fhir:system [ fhir:v "phone" ] ; #   The home contact detail  
+       fhir:system [ fhir:v "phone" ] ; #  The home contact detail 
        fhir:value [ fhir:v "+31201234567" ] ;
        fhir:use [ fhir:v "home" ]
      ] )

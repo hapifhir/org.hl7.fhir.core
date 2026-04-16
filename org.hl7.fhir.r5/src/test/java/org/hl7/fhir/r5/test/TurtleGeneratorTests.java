@@ -1,21 +1,16 @@
 package org.hl7.fhir.r5.test;
 
 import java.io.IOException;
-import java.nio.file.FileSystems;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.nio.file.DirectoryStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -35,24 +30,21 @@ public class TurtleGeneratorTests {
   private static TurtleGeneratorTestUtils.ParserContext parsers;
 
   private static final Path ROOT_TEST_PATH = Paths.get("testUtilities");
-  private static final Path DEFAULT_INPUT_XML_DIR = ROOT_TEST_PATH.resolve("xml/examples");
-  private static final Path DEFAULT_INPUT_JSON_DIR = ROOT_TEST_PATH.resolve("json/examples");
+  private static final Path DEFAULT_EXPECTED_XML_DIR = ROOT_TEST_PATH.resolve("xml/examples/expected");
   private static final Path DEFAULT_OUTPUT_TURTLE_DIR = Paths.get(System.getProperty("java.io.tmpdir"));
-  private static final Path DEFAULT_EXPECTED_TTL_DIR = ROOT_TEST_PATH.resolve("ttl/expected");
+  private static final Path DEFAULT_EXPECTED_TTL_DIR = ROOT_TEST_PATH.resolve("ttl/examples/expected");
     // These can be overwritten with a local.properties file (org.hl7.fhir.r5/src/test/resources/local.properties)
   private static Path inputXmlDirectory;
-  private static Path inputJsonDirectory;
   private static Path outputTurtleDirectory;
   private static Path expectedTurtleDirectory;
 
   @BeforeAll
   public static void setup() throws IOException {
     var props = TurtleGeneratorTestUtils.loadLocalProperties();
-    inputXmlDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputXmlDirectory", DEFAULT_INPUT_XML_DIR);
-    inputJsonDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputJsonDirectory", DEFAULT_INPUT_JSON_DIR);
+    inputXmlDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputXmlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_XML_DIR));
     outputTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "outputTtlDirectory", DEFAULT_OUTPUT_TURTLE_DIR);
     Files.createDirectories(outputTurtleDirectory);
-    expectedTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "expectedTtlDirectory", DEFAULT_EXPECTED_TTL_DIR);
+    expectedTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "expectedTtlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_TTL_DIR));
 
     initializeParsers(TestingUtilities.getSharedWorkerContext());
   }
@@ -68,7 +60,7 @@ public class TurtleGeneratorTests {
   @Test
   public void testExamples() throws IOException, UcumException {
     // As used in R5 serialization
-    testExpectedExamples(expectedTurtleDirectory.resolve("R5"));
+    testExpectedExamples(expectedTurtleDirectory.resolve("R5"), outputTurtleDirectory);
   }
 
   @Test
@@ -76,7 +68,7 @@ public class TurtleGeneratorTests {
     // Re-initialize context of current FHIR build
     var r6context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("6.0.0");
     initializeParsers(r6context);
-    testExpectedExamples(expectedTurtleDirectory.resolve("R6"));
+    testExpectedExamples(expectedTurtleDirectory.resolve("R6"), outputTurtleDirectory);
   }
 
   @Disabled("TODO this doesn't pass due to some FHIR URLs containing vertical bars |, which are allowed in XSD 1.1 but not XSD 1.0")
@@ -131,7 +123,7 @@ public class TurtleGeneratorTests {
   /**
    * Examples should (1) parse without errors and (2) match the corresponding expected TTL
    */
-  private void testExpectedExamples(Path expectedDirectory) throws IOException, UcumException {
+  private void testExpectedExamples(Path expectedDirectory, Path outputDirectory) throws IOException, UcumException {
     List<Path> expectedTurtlePaths;
     try (var paths = Files.list(expectedDirectory)) {
       expectedTurtlePaths = paths
@@ -145,10 +137,10 @@ public class TurtleGeneratorTests {
 
     for (Path expectedTurtlePath : expectedTurtlePaths) {
       Path xmlResourcePath = getXmlExamplePathForExpectedTurtle(expectedTurtlePath);
-      Assertions.assertTrue(Files.exists(xmlResourcePath), "Missing XML example for " + expectedTurtlePath.getFileName());
+      Assertions.assertTrue(Files.exists(xmlResourcePath), "Missing XML example for " + expectedTurtlePath.getFileName() + " at path: " + xmlResourcePath);
       Assertions.assertEquals(
           parsers.parseGeneratedTurtle(expectedTurtlePath.toString()),
-          parsers.parseGeneratedTurtle(parsers.generateTurtleFromXmlResourcePath(xmlResourcePath, outputTurtleDirectory)),
+          parsers.parseGeneratedTurtle(parsers.generateTurtleFromXmlResourcePath(xmlResourcePath, outputDirectory)),
           "Generated Turtle did not match expected output for " + expectedTurtlePath.getFileName());
     }
   }
@@ -166,6 +158,17 @@ public class TurtleGeneratorTests {
   private Path getXmlExamplePathForExpectedTurtle(Path expectedTurtlePath) {
     String turtleFileName = expectedTurtlePath.getFileName().toString();
     String baseName = turtleFileName.endsWith(".ttl") ? turtleFileName.substring(0, turtleFileName.length() - 4) : turtleFileName;
-    return inputXmlDirectory.resolve(baseName + ".xml");
+    Path xmlFileName = Paths.get(baseName + ".xml");
+    Path expectedParent = expectedTurtlePath.getParent();
+
+    if (expectedParent != null) {
+      Path relativeParent = expectedTurtleDirectory.relativize(expectedParent);
+      Path versionedXmlPath = inputXmlDirectory.resolve(relativeParent).resolve(xmlFileName);
+      if (Files.exists(versionedXmlPath)) {
+        return versionedXmlPath;
+      }
+    }
+
+    return inputXmlDirectory.resolve(xmlFileName);
   }
 }
