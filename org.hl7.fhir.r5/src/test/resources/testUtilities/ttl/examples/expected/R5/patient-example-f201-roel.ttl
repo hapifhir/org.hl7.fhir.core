@@ -50,7 +50,7 @@
   fhir:gender [ fhir:v "male"] ; # 
   fhir:birthDate [ fhir:v "1960-03-13"^^xsd:date] ; # 
   fhir:deceased [
-     a fhir:Boolean ;
+     a fhir:boolean ;
      fhir:v false
   ] ; #     The date and time of birth for the individual     
   fhir:address ( [
@@ -72,7 +72,7 @@
      ] ) #     Marital status of the person    
   ] ; # 
   fhir:multipleBirth [
-     a fhir:Boolean ;
+     a fhir:boolean ;
      fhir:v false
   ] ; # 
   fhir:photo ( [

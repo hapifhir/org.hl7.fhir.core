@@ -530,8 +530,7 @@ public class TurtleParser extends ParserBase {
   }
 
   public static String getClassName(String element) {
-    // Uppercase first letter
-    return element.substring(0, 1).toUpperCase() + element.substring(1);
+    return element;
   }
 
   static public String ttlLiteral(String value, String type) {
