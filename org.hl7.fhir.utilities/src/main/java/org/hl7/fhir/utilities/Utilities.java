@@ -166,7 +166,7 @@ public class Utilities {
 
   // work around bad practices in past binary handling
   public static boolean isProhibitedBinaryFile(String k) {
-    return !EXCLUDED_FILES.contains(k);
+    return EXCLUDED_FILES.contains(k);
   }
 
   public static String insertBreakingSpaces(String text, Set<Character> breakingChars) {
