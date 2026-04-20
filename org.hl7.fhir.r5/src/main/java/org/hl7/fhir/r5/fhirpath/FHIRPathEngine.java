@@ -55,6 +55,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.util.ElementUtil;
@@ -4809,9 +4810,20 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   private List<Base> funcHtmlChecks1(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     // todo: actually check the HTML
     if (focus.size() != 1) {
-      return makeBoolean(false);          
+      return new ArrayList<Base>();
     }
-    XhtmlNode x = focus.get(0).getXhtml();
+    Base n = focus.get(0);
+    XhtmlNode x;
+    if (n instanceof XhtmlType)
+      x = n.getXhtml();
+    else if (n instanceof StringType) {
+      try {
+        x = new XhtmlParser().parseFragment("<div xmlns=\"http://www.w3.org/1999/xhtml\">"+n.primitiveValue()+"</div>");
+      } catch (Exception e) {
+        return makeBoolean(false);  
+      }
+    } else
+      return new ArrayList<Base>();
     if (x == null) {
       return makeBoolean(false);                
     }
