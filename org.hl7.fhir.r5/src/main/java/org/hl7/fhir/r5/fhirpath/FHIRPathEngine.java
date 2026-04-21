@@ -4818,7 +4818,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     }
     Base n = focus.get(0);
     XhtmlNode x;
-    if (n instanceof XhtmlType)
+    if (n.getXhtml() != null)
       x = n.getXhtml();
     else if (n instanceof StringType) {
       try {
