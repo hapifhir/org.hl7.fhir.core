@@ -1502,5 +1502,5 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE = "TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN = "TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN";
   public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX = "TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX";
-
+  public static final String REGEX_MATCH_TIMED_OUT = "REGEX_MATCH_TIMED_OUT";
 }

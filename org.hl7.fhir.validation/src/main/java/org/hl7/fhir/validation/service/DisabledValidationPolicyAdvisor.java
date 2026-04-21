@@ -33,8 +33,8 @@ public class DisabledValidationPolicyAdvisor implements IValidationPolicyAdvisor
   }
 
   @Override
-  public boolean isSuppressMessageId(String path, String messageId) {
-    return policyAdvisor.isSuppressMessageId(path, messageId);
+  public boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
+    return policyAdvisor.isSuppressMessageId(path, messageId, theMessageArguments);
   }
 
   @Override
