@@ -4815,7 +4815,6 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcHtmlChecks1(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    // todo: actually check the HTML
     if (focus.size() != 1) {
       return new ArrayList<Base>();
     }
