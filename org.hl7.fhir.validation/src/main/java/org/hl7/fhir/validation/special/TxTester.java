@@ -512,7 +512,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         counter.count();
         if (test.has("header")) {
           JsonObject hdr = test.getJsonObject("header");
-          if (hdr.has("mode") && modes.contains(hdr.asString("mode"))) {
+          if (!hdr.has("mode") || modes.contains(hdr.asString("mode"))) {
             header = new HTTPHeader(hdr.asString("name"), hdr.asString("value"));
             terminologyClient.setClientHeaders(new ClientHeaders(List.of(header)));
           }

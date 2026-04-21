@@ -360,7 +360,7 @@ public class CompareUtilities extends BaseTestingUtilities {
           String s = compareNodes(id, path + '.' + n, expectedJsonObject.get(n), en.getValue(), countOnlys.contains(n), n, actualJsonObject);
           if (!Utilities.noString(s))
             return s;
-        } else if (!patternMode) {
+        } else if (!patternMode && !optionals.contains(n)) {
           return "properties differ at " + path + ": unexpected property " + n;
         }
       }

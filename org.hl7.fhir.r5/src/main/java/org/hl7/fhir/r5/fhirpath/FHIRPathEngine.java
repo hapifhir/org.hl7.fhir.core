@@ -169,6 +169,7 @@ public class FHIRPathEngine {
   private boolean doNotEnforceAsCaseSensitive;
   private FHIRPathAnalysis analysis;
   private ProfileUtilities profileUtilities;
+  @Getter @Setter private boolean allowUknownFunctions;
 
   /*
    * The FHIRPath engine consults with the HostApplicationServices when an element fails to
@@ -1208,8 +1209,8 @@ public class FHIRPathEngine {
           if (hostServices != null) {
             details = hostServices.resolveFunction(this, result.getName());
           }
-          if (details == null) {
-            throw lexer.error("The name "+result.getName()+" is not a valid function name");
+          if (details == null && !allowUknownFunctions) {
+            throw lexer.error("The name "+result.getName()+" is not a known function name");
           }
           f = Function.Custom;
         }
@@ -1510,9 +1511,11 @@ public class FHIRPathEngine {
     case LowBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case Precision: return checkParamCount(lexer, location, exp, 0);
-      case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
-      case Debug: return checkParamCount(lexer, location, exp, 0, 1);
-    case Custom: return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
+    case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
+    case Debug: return checkParamCount(lexer, location, exp, 0, 1);
+    case Custom: if (details != null) {
+        return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
+      }
     }
     return false;
   }
@@ -4812,7 +4815,6 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcHtmlChecks1(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    // todo: actually check the HTML
     if (focus.size() != 1) {
       return new ArrayList<Base>();
     }

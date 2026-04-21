@@ -201,7 +201,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
   }
 
   @Override
-  public boolean isSuppressMessageId(String path, String messageId) {
+  public boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
     return false;
   }
 

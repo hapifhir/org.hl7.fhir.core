@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.*;
 
 import org.apache.commons.io.IOUtils;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -28,6 +29,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -99,7 +101,9 @@ private static TxTestData testData;
     String reqFile = setup.getTest().asString("request");
     Resource req = reqFile == null ? null : loadResource(reqFile);
     String fn = setup.getTest().has("response:tx.fhir.org") ? setup.getTest().asString("response:tx.fhir.org") : setup.getTest().asString("response");
+    String fn2 = setup.getTest().has("response2") ? setup.getTest().asString("response2") : null; // alternative allowed response for servers unable to implement a feature
     String resp = testData.load(fn);
+    String resp2 = fn2 == null ? null : testData.load(fn2);
     String fp = Utilities.path("[tmp]", "tx", fn);
     JsonObject ext = testData.getExternals() == null ? null : testData.getExternals().getJsonObject(fn);
     File fo = ManagedFileAccess.file(fp);
@@ -114,12 +118,12 @@ private static TxTestData testData;
     }
     engine.getContext().setNoTerminologyServer(true);
     if (setup.getTest().asString("operation").equals("expand")) {
-      expand(setup.getTest().str("name"), engine, req, resp, setup.getTest().asString("Accept-Language"), fp, ext);
+      expand(setup.getTest().str("name"), engine, req, resp, resp2, setup.getTest().asString("Accept-Language"), fp, ext);
     } else if (setup.getTest().asString("operation").equals("validate-code")) {
-      String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, setup.getTest().asString("Accept-Language"), fp, ext, false, modes());
+      String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, resp2, setup.getTest().asString("Accept-Language"), fp, ext, false, modes());
       assertNull(diff, diff);
     } else if (setup.getTest().asString("operation").equals("cs-validate-code")) {
-      String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, setup.getTest().asString("Accept-Language"), fp, ext, true, modes());
+      String diff = TxServiceTestHelper.getDiffForValidation(setup.getTest().str("name"), engine.getContext(), setup.getTest().asString("name"), req, resp, resp2, setup.getTest().asString("Accept-Language"), fp, ext, true, modes());
       assertNull(diff, diff);
     } else if (Utilities.existsInList(setup.getTest().asString("operation"), "lookup", "translate", "metadata", "term-caps")) {
       Assertions.assertTrue(true); // we don't test these for the internal server
@@ -146,7 +150,7 @@ private static TxTestData testData;
 
   }
 
-  private void expand(String id, ValidationEngine engine, Resource req, String resp, String lang, String fp, JsonObject ext) throws IOException {
+  private void expand(String id, ValidationEngine engine, Resource req, String resp, String resp2, String lang, String fp, JsonObject ext) throws IOException {
     org.hl7.fhir.r5.model.Parameters p = ( org.hl7.fhir.r5.model.Parameters) req;
     ValueSet vs = null;
     if (p.hasParameter("valueSetVersion")) {      
@@ -166,6 +170,11 @@ private static TxTestData testData;
         }
       }
     }
+    boolean clearUrl = false;
+    if (!vs.hasUrl()) {
+      vs.setUrl(UUIDUtilities.makeUuidUrn());
+      clearUrl = true;
+    }
     boolean hierarchical = p.hasParameter("excludeNested") ? p.getParameterBool("excludeNested") == false : true;
     Assertions.assertNotNull(vs);
     if (lang != null && !p.hasParameter("displayLanguage")) {
@@ -174,8 +183,23 @@ private static TxTestData testData;
     ValueSetExpansionOutcome vse = engine.getContext().expandVS(new ExpansionOptions( false, hierarchical, 0, false, null), vs,p, true);
     if (resp.contains("\"ValueSet\"")) {
       if (vse.getValueset() == null) {
-        Assertions.fail(vse.getError());
+        if (resp2 != null) {
+          OperationOutcome oo = makeOperationOutcome(vse);
+
+          String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
+          String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp2, ooj);
+          if (diff != null) {
+            FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
+            FileUtilities.stringToFile(ooj, fp);
+          }
+          Assertions.assertNull(diff);
+        } else {
+          Assertions.fail(vse.getError());
+        }
       } else {
+        if (clearUrl) {
+          vse.getValueset().setUrl(null);
+        }
         if (!p.hasParameter("excludeNested")) {
           removeParameter(vse.getValueset(), "excludeNested");
         }
@@ -192,61 +216,7 @@ private static TxTestData testData;
         Assertions.assertNull(diff);
       }
     } else {
-      OperationOutcome oo = new OperationOutcome();
-      if (vse.getIssues() != null) {
-        oo.getIssue().addAll(vse.getIssues());
-      } else if (vse.getErrorClass() == null) {
-        Assertions.fail("Expected an error, but none received");
-      } else {
-        OperationOutcomeIssueComponent e = new OperationOutcomeIssueComponent();
-        e.setSeverity(IssueSeverity.ERROR);
-        switch (vse.getErrorClass()) {
-        case BLOCKED_BY_OPTIONS:
-          e.setCode(IssueType.FORBIDDEN);
-          break;
-        case BUSINESS_RULE:
-          e.setCode(IssueType.BUSINESSRULE);
-          break;
-        case CODESYSTEM_UNSUPPORTED:
-          e.setCode(IssueType.CODEINVALID);
-          break;
-        case INTERNAL_ERROR:
-          e.setCode(IssueType.EXCEPTION);
-          break;
-        case NOSERVICE:
-          e.setCode(IssueType.CONFLICT);
-          break;
-        case SERVER_ERROR:
-          e.setCode(IssueType.EXCEPTION);
-          break;
-        case TOO_COSTLY:
-          e.setCode(IssueType.TOOCOSTLY);
-          break;
-        case PROCESSING:
-          e.setCode(IssueType.PROCESSING);
-          break;
-        case UNKNOWN:
-          e.setCode(IssueType.UNKNOWN);
-          break;
-        case VALUESET_UNKNOWN:
-          e.setCode(IssueType.NOTFOUND);
-          e.getDetails().addCoding().setSystem("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type").setCode("not-found");
-          break;
-        case VALUESET_UNSUPPORTED:
-          e.setCode(IssueType.NOTSUPPORTED);
-          break;
-        }
-        if (vse.getMsgId() != null) {
-          e.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(vse.getMsgId()));
-        }
-        if (vse.getCode() != null) {
-          e.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", vse.getCode().toCode(), null);
-        }
-        e.getDetails().setText(vse.getError());
-        oo.addIssue(e);
-      }
-      TxTesterSorters.sortOperationOutcome(oo);
-      TxTesterScrubbers.scrubOperationOutcome(oo, false);
+      OperationOutcome oo = makeOperationOutcome(vse);
 
       String ooj = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
       String diff = new CompareUtilities(modes(), ext, vars()).checkJsonSrcIsSame(id, resp, ooj);
@@ -256,6 +226,65 @@ private static TxTestData testData;
       }
       Assertions.assertNull(diff);
     }
+  }
+
+  private static @NonNull OperationOutcome makeOperationOutcome(ValueSetExpansionOutcome vse) {
+    OperationOutcome oo = new OperationOutcome();
+    if (vse.getIssues() != null) {
+      oo.getIssue().addAll(vse.getIssues());
+    } else if (vse.getErrorClass() == null) {
+      Assertions.fail("Expected an error, but none received");
+    } else {
+      OperationOutcomeIssueComponent e = new OperationOutcomeIssueComponent();
+      e.setSeverity(IssueSeverity.ERROR);
+      switch (vse.getErrorClass()) {
+      case BLOCKED_BY_OPTIONS:
+        e.setCode(IssueType.FORBIDDEN);
+        break;
+      case BUSINESS_RULE:
+        e.setCode(IssueType.BUSINESSRULE);
+        break;
+      case CODESYSTEM_UNSUPPORTED:
+        e.setCode(IssueType.CODEINVALID);
+        break;
+      case INTERNAL_ERROR:
+        e.setCode(IssueType.EXCEPTION);
+        break;
+      case NOSERVICE:
+        e.setCode(IssueType.CONFLICT);
+        break;
+      case SERVER_ERROR:
+        e.setCode(IssueType.EXCEPTION);
+        break;
+      case TOO_COSTLY:
+        e.setCode(IssueType.TOOCOSTLY);
+        break;
+      case PROCESSING:
+        e.setCode(IssueType.PROCESSING);
+        break;
+      case UNKNOWN:
+        e.setCode(IssueType.UNKNOWN);
+        break;
+      case VALUESET_UNKNOWN:
+        e.setCode(IssueType.NOTFOUND);
+        e.getDetails().addCoding().setSystem("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type").setCode("not-found");
+        break;
+      case VALUESET_UNSUPPORTED:
+        e.setCode(IssueType.NOTSUPPORTED);
+        break;
+      }
+      if (vse.getMsgId() != null) {
+        e.addExtension(ExtensionDefinitions.EXT_ISSUE_MSG_ID, new StringType(vse.getMsgId()));
+      }
+      if (vse.getCode() != null) {
+        e.getDetails().addCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", vse.getCode().toCode(), null);
+      }
+      e.getDetails().setText(vse.getError());
+      oo.addIssue(e);
+    }
+    TxTesterSorters.sortOperationOutcome(oo);
+    TxTesterScrubbers.scrubOperationOutcome(oo, false);
+    return oo;
   }
 
   private Set<String> modes() {

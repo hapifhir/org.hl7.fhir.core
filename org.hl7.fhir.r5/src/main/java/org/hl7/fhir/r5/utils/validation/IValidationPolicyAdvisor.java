@@ -72,7 +72,7 @@ public interface IValidationPolicyAdvisor {
    * @param messageId - the message id (from messages.properties)
    * @return true if the validator should ignore the message
    */
-  boolean isSuppressMessageId(String path, String messageId);
+  boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments);
 
   /**
    * Whether to try validating a reference, and if so, how much validation to apply

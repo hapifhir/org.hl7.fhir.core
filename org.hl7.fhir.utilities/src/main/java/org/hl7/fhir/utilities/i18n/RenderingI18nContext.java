@@ -1196,13 +1196,14 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONSENT_PROVISION = "CONSENT_PROVISION";
   public static final String CONSENT_HT_PERIOD = "CONSENT_HT_PERIOD";
   public static final String CONSENT_HT_DATA_PERIOD = "CONSENT_HT_DATA_PERIOD";
-public static final String CONSENT_HT_SEC_LABEL = "CONSENT_HT_SEC_LABEL";
+  public static final String CONSENT_HT_SEC_LABEL = "CONSENT_HT_SEC_LABEL";
   public static final String CONSENT_HT_ACTION = "CONSENT_HT_ACTION";
   public static final String CONSENT_HT_PURPOSE = "CONSENT_HT_PURPOSE";
   public static final String CONSENT_HT_CLASS = "CONSENT_HT_CLASS";
   public static final String CONSENT_HT_RESOURCE_TYPE = "CONSENT_HT_RESOURCE_TYPE";
   public static final String CONSENT_HT_DOC_TYPE = "CONSENT_HT_DOC_TYPE";
   public static final String CONSENT_HT_CODE = "CONSENT_HT_CODE";
+  public static final String STRUC_DEF_TYPE_CHARACTERISTICS = "STRUC_DEF_TYPE_CHARACTERISTICS";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
