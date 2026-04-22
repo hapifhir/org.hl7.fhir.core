@@ -5,6 +5,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,6 +46,8 @@ import javax.annotation.Nonnull;
  */
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -97,12 +100,17 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 public class BaseValidator implements IValidationContextResourceLoader, IMessagingServices {
 
   /**
-   * This regex tests FHIR search parameters. It expects the formats:
+   * These regexs test FHIR search parameters. They expect the formats:
    * [paramName]=[paramValue]
    * [paramName]=[paramValue]&[paramName]=[paramValue]
-   * etc..
+   * etc...
    */
-  private static final Pattern SEARCH_URL_PARAMS = Pattern.compile("[_a-zA-Z][_a-zA-Z0-9.:-]*=[^=&]*(&([_a-zA-Z][_a-zA-Z0-9.:]*=[^=&]*))*");
+  // First char: underscore or letter. Subsequent chars: underscore, letter, digit, ., :, or -.
+  private static final Pattern SEARCH_URL_PARAM_NAME = Pattern.compile("[_a-zA-Z][_a-zA-Z0-9.:-]*+");
+  // Any character except = and &, zero or more times.
+  private static final Pattern SEARCH_URL_PARAM_VALUE = Pattern.compile("[^=&]*+");
+
+
   public static final boolean ALLOW_TRANSIENT_BASE_REFERENCES = false;
 
   public static class BooleanHolder {
@@ -278,16 +286,16 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
 
   protected String urlRegex;
 
-  protected boolean isSuppressedValidationMessage(String path, String theMessage) {
+  protected boolean isSuppressedValidationMessage(String path, String theMessage, Object... theMessageArguments) {
     if (policyAdvisor == null) {
       return false;
     } else {
-      return policyAdvisor.isSuppressMessageId(path, theMessage);
+      return policyAdvisor.isSuppressMessageId(path, theMessage, theMessageArguments);
     }
   }
 
   protected boolean fail(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage)) {
+    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String msg = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, line, col, path, msg, IssueSeverity.FATAL, theMessage);
     }
@@ -371,7 +379,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected boolean hintPlural(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
-    if (!thePass && doingHints() && !isSuppressedValidationMessage(path, theMessage)) {
+    if (!thePass && doingHints() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String message = context.formatMessagePlural(num, theMessage, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage);
     }
@@ -384,7 +392,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected boolean txHint(List<ValidationMessage> errors, String ruleDate, String txLink, String diagnostics, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass && doingHints() && !isSuppressedValidationMessage(path, theMessage)) {
+    if (!thePass && doingHints() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.INFORMATION, Source.TerminologyEngine, theMessage).setTxLink(txLink).setDiagnostics(diagnostics);
     }
@@ -415,7 +423,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean hint(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass && doingHints() && !isSuppressedValidationMessage(path, theMessage)) {
+    if (!thePass && doingHints() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.INFORMATION, theMessage);
     }
@@ -430,7 +438,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean rule(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage)) {
+    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.ERROR, theMessage);
     }
@@ -438,7 +446,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected boolean ruleInv(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String theMessage, String invId, String msgId, Object... theMessageArguments) {
-    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage)) {
+    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.ERROR, invId).setInvId(invId).setMessageId(msgId);
     }
@@ -458,7 +466,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
   
   protected boolean rulePlural(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
-    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage)) {
+    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String message = context.formatMessagePlural(num, theMessage, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, line, col, path, message, IssueSeverity.ERROR, theMessage);
     }
@@ -466,7 +474,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected boolean txRule(List<ValidationMessage> errors, String ruleDate, String txLink, String diagnostics, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage)) {
+    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       ValidationMessage vm = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, message, IssueSeverity.ERROR).setMessageId(idForMessage(theMessage, message));
       vm.setRuleDate(ruleDate);
@@ -523,7 +531,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
 
 
   protected boolean rule(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
-    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage)) {
+    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
     }
@@ -531,7 +539,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected boolean rulePlural(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, int num, String theMessage, Object... theMessageArguments) {
-    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage)) {
+    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String message = context.formatMessagePlural(num, theMessage, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage);
     }
@@ -546,7 +554,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected boolean rule(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, List<ValidationMessage> details, String theMessage, Object... theMessageArguments) {
-    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage)) {
+    if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String message = context.formatMessage(theMessage, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.ERROR, theMessage).setSliceInfo(details);
     }
@@ -605,7 +613,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       IssueSeverity severity = IssueSeverity.WARNING;
       addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, severity, msg);
@@ -615,7 +623,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
   
   protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, String id, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       IssueSeverity severity = IssueSeverity.WARNING;
       addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, severity, id);
@@ -625,7 +633,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
   
   protected boolean warningInv(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, String invId, String msgId, Object... theMessageArguments) {
-    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, invId)) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, invId, theMessageArguments)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       IssueSeverity severity = IssueSeverity.WARNING;
       String id = idForMessage(msg, nmsg);
@@ -638,13 +646,17 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, boolean thePass, String msg, Object... theMessageArguments) {
     return warning(errors, ruleDate, type, stack, null, thePass, msg, theMessageArguments);
   }
-  
+
   protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, String id, boolean thePass, String msg, Object... theMessageArguments) {
     return warning(errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(), id, thePass, msg, theMessageArguments);
   }
 
+  protected boolean warningPlural(List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, boolean thePass, int num, String msg, Object... theMessageArguments) {
+    return warningPlural(errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(), thePass, num, msg, theMessageArguments);
+  }
+
   protected boolean warningPlural(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, int num, String msg, Object... theMessageArguments) {
-    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String nmsg = context.formatMessagePlural(num, msg, theMessageArguments);
       IssueSeverity severity = IssueSeverity.WARNING;
       addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, severity, msg);
@@ -696,7 +708,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean txWarning(List<ValidationMessage> errors, String ruleDate, String txLink, String diagnostics, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(idForMessage(msg, nmsg)).setDiagnostics(diagnostics);
       vmsg.setRuleDate(ruleDate);
@@ -710,8 +722,6 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
   
   /**
-   * @param thePass Set this parameter to <code>false</code> if the validation does not pass
-   * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected ValidationMessage buildValidationMessage(String txLink, String diagnostics, int line, int col, String path, OperationOutcomeIssueComponent issue) {
     if (issue.hasExpression() && issue.getExpression().get(0).getValue().contains(".")) {
@@ -747,7 +757,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean txWarningForLaterRemoval(Object location, List<ValidationMessage> errors, String ruleDate, String txLink, String diagnostics, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setDiagnostics(diagnostics).setMessageId(msg);
       vmsg.setRuleDate(ruleDate);
@@ -777,7 +787,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
   
   protected boolean warningOrError(boolean isError, List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       IssueSeverity lvl = isError ? IssueSeverity.ERROR : IssueSeverity.WARNING;
       if (doingLevel(lvl)) {
@@ -793,7 +803,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
   
   protected boolean hintOrError(boolean isError, List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       IssueSeverity lvl = isError ? IssueSeverity.ERROR : IssueSeverity.INFORMATION;
       if (doingLevel(lvl)) {
@@ -828,7 +838,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String message = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.WARNING, msg);
     }
@@ -836,7 +846,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
   }
 
   protected boolean warning(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, List<ValidationMessage> details, String msg, Object... theMessageArguments) {
-    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String message = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, -1, -1, path, message, IssueSeverity.WARNING, msg).setSliceInfo(details);
     }
@@ -851,7 +861,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean warningOrHint(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, boolean warning, String msg, Object... theMessageArguments) {
-    if (!thePass && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String message = context.formatMessage(msg, theMessageArguments);
       IssueSeverity lvl = warning ? IssueSeverity.WARNING : IssueSeverity.INFORMATION;
       if  (doingLevel(lvl)) {
@@ -883,7 +893,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean warningHtml(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
-    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, path, nmsg, html, IssueSeverity.WARNING, msg);
     }
@@ -899,7 +909,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean suppressedwarning(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
-    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, line, col, path, nmsg, IssueSeverity.INFORMATION, msg);
     }
@@ -977,7 +987,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   protected boolean suppressedwarning(List<ValidationMessage> errors, String ruleDate, IssueType type, String path, boolean thePass, String msg, String html, Object... theMessageArguments) {
-    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg)) {
+    if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, ruleDate, type, path, nmsg, html, IssueSeverity.INFORMATION, msg);
     }
@@ -1481,10 +1491,6 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
    * [resourceType]?[paramName]=[paramValue]&[paramName]=[paramValue]&....
    */
   public static boolean isSearchUrl(IWorkerContext context, String ref) {
-    if (Utilities.noString(ref)) {
-      return false;
-    }
-
     int questionMarkIndex = ref.indexOf("?");
     if (questionMarkIndex == -1) {
       return false;
@@ -1494,9 +1500,22 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     String query = ref.substring(questionMarkIndex + 1);
     if (!context.getResourceNamesAsSet().contains(resourceType)) {
       return false;
-    } else {
-      return SEARCH_URL_PARAMS.matcher(query).matches();
     }
+
+    List<NameValuePair> nameValuePairs = URLEncodedUtils.parse(query, StandardCharsets.UTF_8);
+    if (nameValuePairs.isEmpty()) {
+      return false;
+    }
+
+    for (NameValuePair nameValuePair : nameValuePairs) {
+      if (nameValuePair.getName() == null || !SEARCH_URL_PARAM_NAME.matcher(nameValuePair.getName()).matches()) {
+        return false;
+      }
+      if (nameValuePair.getValue() == null || !SEARCH_URL_PARAM_VALUE.matcher(nameValuePair.getValue()).matches()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public Map<String, ValidationControl> getValidationControl() {

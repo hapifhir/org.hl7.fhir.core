@@ -2,11 +2,11 @@
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
   "url" : "https://tx-dev.fhir.org/r4/TerminologyCapabilities/tx",
-  "version" : "0.7.6",
+  "version" : "0.9.3",
   "name" : "FHIRTerminologyServer",
   "title" : "FHIR Terminology Server",
   "status" : "active",
-  "date" : "2026-03-26T12:18:24.486Z",
+  "date" : "2026-04-20T21:22:46.999Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -70,6 +70,16 @@
     "uri" : "http://fdasis.nlm.nih.gov",
     "version" : [{
       "code" : "2024-06-22"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
+    "uri" : "http://fhir.org/packages/fhir.tx.support/CodeSystem/designation-usage",
+    "version" : [{
+      "code" : "0.1.0"
     }]
   },
   {
@@ -2509,13 +2519,13 @@
     }],
     "uri" : "http://hl7.org/fhir/sid/icd-10-cm",
     "version" : [{
-      "code" : "2024"
+      "code" : "2026-04-01"
     }]
   },
   {
     "extension" : [{
       "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
-      "valueCode" : "fragment"
+      "valueCode" : "complete"
     }],
     "uri" : "http://hl7.org/fhir/sid/icd-9-cm",
     "version" : [{
@@ -2975,7 +2985,7 @@
     }],
     "uri" : "http://loinc.org",
     "version" : [{
-      "code" : "2.81"
+      "code" : "2.82"
     },
     {
       "code" : "2.77"
@@ -3021,19 +3031,7 @@
       "code" : "http://snomed.info/sct/900000000000207008/version/20240201"
     },
     {
-      "code" : "http://snomed.info/sct/45991000052106/version/20231130"
-    },
-    {
-      "code" : "http://snomed.info/sct/32506021000036107/version/20230731"
-    },
-    {
-      "code" : "http://snomed.info/sct/11000172109/version/20231115"
-    },
-    {
       "code" : "http://snomed.info/sct/2011000195101/version/20230607"
-    },
-    {
-      "code" : "http://snomed.info/sct/554471000005108/version/20250930"
     },
     {
       "code" : "http://snomed.info/sct/827022005/version/20241216"
@@ -14767,6 +14765,10 @@
     }]
   },
   {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "complete"
+    }],
     "uri" : "http://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets",
     "version" : [{
       "code" : "2025-01"
@@ -14789,7 +14791,7 @@
     }],
     "uri" : "http://www.nlm.nih.gov/research/umls/rxnorm",
     "version" : [{
-      "code" : "02032025"
+      "code" : "03022026"
     }]
   },
   {
@@ -14820,6 +14822,16 @@
     "uri" : "https://fhir-terminology.ohdsi.org",
     "version" : [{
       "code" : "20240716"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/5.0/StructureDefinition/extension-TerminologyCapabilities.codeSystem.content",
+      "valueCode" : "supplement"
+    }],
+    "uri" : "https://terminology.dhp.uz/fhir/CodeSystem/loinc-supplement-uz",
+    "version" : [{
+      "code" : "2.80"
     }]
   },
   {

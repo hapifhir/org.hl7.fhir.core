@@ -1,18 +1,18 @@
 package org.hl7.fhir.r5.renderers.mappings;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Function;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.Column;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -38,7 +38,7 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
   }
 
   @Override
-  public void render(ElementDefinition element, XhtmlNode div) {
+  public void render(ElementDefinition element, XhtmlNode div) throws IOException {
     if (reverse) {
       List<ElementDefinition> sources = new ArrayList<>();
       for (ElementDefinition ed : dest.getSnapshot().getElement()) {
@@ -114,9 +114,27 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
     div.ah(ref()+"#"+ed.getId()).tx(ed.getPath());
   }
 
-  private void renderMap(XhtmlNode x, String s) {
+  private void renderMap(XhtmlNode x, String s) throws IOException {
     // the approved syntax is id: fhirPath, or it's just rendered directly
-    if (s.contains(":")) {
+    if ("n/a".equals(s)) {
+      x.tx(s);
+    } else if (s.startsWith("http:") || s.startsWith("https:")) {
+      Resource res = context.getContext().fetchResource(Resource.class, s, IWorkerContext.VersionResolutionRules.PACKAGE);
+      if (res == null) {
+        res = context.getResolveLinkResolver().findLinkableResource(Resource.class, s);
+      }
+      if (res != null) {
+        if (res instanceof CanonicalResource) {
+          x.ah(res.getWebPath() != null ? res.getWebPath() : s).tx(((CanonicalResource) res).present());
+        } else {
+          var a = x.ah(s);
+          a.tx(s);
+          a.tx("("+res.fhirType()+")");
+        }
+      } else {
+        x.ah(s).tx(s);
+      }
+    } else if (s.contains(":")) {
       String l = s.substring(0, s.indexOf(":"));
       String r = s.substring(s.indexOf(":")+1);
       if (dest != null && dest.getSnapshot().getElementById(l) != null) {

@@ -5,12 +5,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
@@ -238,6 +233,11 @@ public class TerminologyClientManager {
       String uri = sys.contains("|") ? sys.substring(0, sys.indexOf("|")) : sys;
       // this list is the list of code systems that have special handling on tx.fhir.org, and might not be resolved above.
       // we don't want them to go to secondary servers (e.g. VSAC) by accident (they might go deliberately above)
+      if (Utilities.existsInList(uri, "http://snomed.info/sct") && systems.size() > 1) {
+        Set<String> sct = new HashSet<>();
+        sct.add("http://snomed.info/sct");
+        return chooseServer(vs, sct, expand);
+      }
       if (Utilities.existsInList(uri, "http://unitsofmeasure.org", "http://loinc.org", "http://snomed.info/sct",
         "http://www.nlm.nih.gov/research/umls/rxnorm", "http://hl7.org/fhir/sid/cvx", "urn:ietf:bcp:13", "urn:ietf:bcp:47",
         "urn:ietf:rfc:3986", "http://www.ama-assn.org/go/cpt", "urn:oid:1.2.36.1.2001.1005.17", "urn:iso:std:iso:3166",

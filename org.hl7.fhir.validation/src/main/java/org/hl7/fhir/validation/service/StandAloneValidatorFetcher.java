@@ -405,8 +405,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   @Override
-  public boolean isSuppressMessageId(String path, String messageId) {
-    return policyAdvisor.isSuppressMessageId(path, messageId);
+  public boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
+    return policyAdvisor.isSuppressMessageId(path, messageId, theMessageArguments);
   }
 
   @Override
@@ -440,6 +440,11 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
       IMessagingServices msgServices, List<ValidationMessage> messages) {
     return policyAdvisor.getImpliedProfilesForResource(validator, appContext, stackPath, definition, structure, resource, valid, msgServices, messages);
+  }
+
+  @Override
+  public String relativeDatePlaceHolder() {
+    return policyAdvisor.relativeDatePlaceHolder();
   }
 
 

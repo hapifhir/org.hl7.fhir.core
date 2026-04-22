@@ -16,6 +16,9 @@
     "uri" : "http://fdasis.nlm.nih.gov"
   },
   {
+    "uri" : "http://fhir.org/packages/fhir.tx.support/CodeSystem/designation-usage"
+  },
+  {
     "uri" : "http://healthit.gov/nhin/purposeofuse"
   },
   {
@@ -5642,6 +5645,9 @@
   },
   {
     "uri" : "https://fhir-terminology.ohdsi.org"
+  },
+  {
+    "uri" : "https://terminology.dhp.uz/fhir/CodeSystem/loinc-supplement-uz"
   },
   {
     "uri" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/cdcnhsn.html"

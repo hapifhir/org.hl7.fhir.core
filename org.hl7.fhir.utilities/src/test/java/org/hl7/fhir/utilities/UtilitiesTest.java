@@ -399,7 +399,7 @@ class UtilitiesTest {
   }
 
   @Test
-  void testSimpleSplit() throws IOException {
+  void testSimpleSplit() {
     checkEquals(new String[] {}, Utilities.simpleSplit(null, ","));
     checkEquals(new String[] {""}, Utilities.simpleSplit("", ","));
     checkEquals(new String[] {"", ""}, Utilities.simpleSplit(",", ","));
@@ -424,6 +424,22 @@ class UtilitiesTest {
     assertThat(actual).hasSize(1);
     assertThat(actual.get(0).getName()).isEqualTo(key);
     assertThat(actual.get(0).getValue()).isEqualTo(value);
+  }
+
+  static Stream<Arguments> pathTailArguments() {
+    return Stream.of(
+      Arguments.of("Patient.name.given", "given"),
+      Arguments.of("Patient.name", "name"),
+      Arguments.of("Patient", "Patient"),
+      Arguments.of("value[x]", "value[x]"),
+      Arguments.of("Patient.value[x]", "value[x]")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("pathTailArguments")
+  void testPathTail(String input, String expected) {
+    assertEquals(expected, Utilities.pathTail(input));
   }
 
   @Test

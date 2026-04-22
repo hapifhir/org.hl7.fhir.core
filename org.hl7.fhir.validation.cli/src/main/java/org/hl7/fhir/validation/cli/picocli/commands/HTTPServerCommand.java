@@ -50,7 +50,7 @@ import java.util.concurrent.Callable;
     The server runs until terminated with Ctrl-C.
 
     Example:
-      java -jar validator_cli.jar server -port 8080 -version 4.0 \\
+      java -jar validator_cli.jar server 8080 -version 4.0 \\
         -ig hl7.fhir.us.carin-bb#1.1.0
     """,
   hidden = false

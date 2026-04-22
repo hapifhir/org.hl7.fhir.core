@@ -40,13 +40,7 @@ import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.support.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.dstu3.support.utils.client.EFhirClientException;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
@@ -292,6 +286,15 @@ public class TerminologyClientR3 implements ITerminologyClient {
     org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(pin);
     p2 = client.operateType(org.hl7.fhir.dstu3.model.CodeSystem.class, "subsumes", p2);
     return (Parameters) VersionConvertorFactory_30_50.convertResource(p2);
+  }
+
+  public Parameters getValueSetRelationship(ValueSet vsThis, ValueSet vsOther) {
+    Parameters pIn = new Parameters();
+    pIn.addParameter().setName("thisValueSet").setResource(vsThis);
+    pIn.addParameter().setName("otherValueSet").setResource(vsOther);
+    pIn.addParameter().setName("diagnostics").setValue(new BooleanType(true));
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(pIn);
+    return (org.hl7.fhir.r5.model.Parameters) VersionConvertorFactory_30_50.convertResource(client.operateType(org.hl7.fhir.dstu3.model.ValueSet.class, "related", p2));
   }
 
   @Override

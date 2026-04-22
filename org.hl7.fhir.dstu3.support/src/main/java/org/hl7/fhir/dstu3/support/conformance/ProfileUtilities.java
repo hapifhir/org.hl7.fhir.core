@@ -2894,8 +2894,8 @@ public class ProfileUtilities extends TranslatingUtilities {
             throw new FHIRException("Unable to resolve profile " + "http://hl7.org/fhir/StructureDefinition/"+ed.getType().get(0).getCode() + " in element " + ed.getPath());
           ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), child.getSelf().getType().get(0).getCode(), child.getSelf().getPath().length(), cmp.name);
         } else if (ed.getPath().endsWith("[x]") && !child.getSelf().getPath().endsWith("[x]")) {
-          String edLastNode = ed.getPath().replaceAll("(.*\\.)*(.*)", "$2");
-          String childLastNode = child.getSelf().getPath().replaceAll("(.*\\.)*(.*)", "$2");
+          String edLastNode = Utilities.pathTail(ed.getPath());
+          String childLastNode = Utilities.pathTail(child.getSelf().getPath());
           String p = childLastNode.substring(edLastNode.length()-3);
           StructureDefinition sd = context.fetchTypeDefinition(p);
           if (sd == null)

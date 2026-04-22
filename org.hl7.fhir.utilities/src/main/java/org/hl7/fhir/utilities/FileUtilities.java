@@ -28,6 +28,12 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class FileUtilities {
 
+  private FileUtilities() {
+    throw new UnsupportedOperationException("This utility class should not be instantiated");
+  }
+
+  static final Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
+
   public static String bytesToString(final byte[] bs) throws IOException {
     return new String(bs, StandardCharsets.UTF_8);
   }
@@ -136,7 +142,6 @@ public class FileUtilities {
   }
 
   public static List<String> fileToLines(String file) throws FileNotFoundException, IOException {
-    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
     List<String> res = new ArrayList<String>();
     for (String s : LINE_SEP_PATTERN.split(fileToString(file))) {
       res.add(s);
@@ -144,13 +149,11 @@ public class FileUtilities {
     return res;
   }
 
-  public static String[] fileToLines(File file) throws FileNotFoundException, IOException {
-    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
+  public static String[] fileToLines(File file) throws IOException {
     return LINE_SEP_PATTERN.split(fileToString(file));
   }
 
-  public static String[] streamToLines(InputStream stream) throws FileNotFoundException, IOException {
-    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
+  public static String[] streamToLines(InputStream stream) throws IOException {
     return LINE_SEP_PATTERN.split(streamToString(stream));
   }
 

@@ -102,6 +102,7 @@ public class ExtensionDefinitions {
   public static final String EXT_TRANSLATABLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable";
   public static final String EXT_TRANSLATION = "http://hl7.org/fhir/StructureDefinition/translation";
   public static final String EXT_UNCLOSED = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed";
+  public static final String EXT_UNCLOSED_REASON = "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason";
   public static final String EXT_VALUESET_SYSTEM = "http://hl7.org/fhir/StructureDefinition/valueset-system";
   public static final String EXT_VS_COMMENT = "http://hl7.org/fhir/StructureDefinition/valueset-concept-comments";
   public static final String EXT_VS_KEYWORD = "http://hl7.org/fhir/StructureDefinition/valueset-keyWord";
@@ -222,4 +223,5 @@ public class ExtensionDefinitions {
   public static final String EXT_IG_EXPANSION_PARAMETERS = "http://hl7.org/fhir/tools/StructureDefinition/expansion-parameters";
   public static final String EXT_SUPPL_TYPE = "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-type";
   public static final String CANONICAL_RESOLUTION_METHOD = "http://hl7.org/fhir/StructureDefinition/version-resolution-method";
+  public static final String EXT_VALUESET_RULES_TEXT = "http://hl7.org/fhir/StructureDefinition/valueset-rules-text";
 }

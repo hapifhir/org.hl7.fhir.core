@@ -442,16 +442,18 @@ public class PackageReGenerator {
           processResource((CanonicalResource) context.fetchResource(Resource.class, c.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(c)));
         }
       }
-      if(includeConformsTo) {
+      if (includeConformsTo) {
         for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
+          pathEngine.setAllowUknownFunctions(true);
           if (inv.hasExpression()) {
             try {
               ExpressionNode node = pathEngine.parse(inv.getExpression());
               processExpression(node);
             } catch (Exception e) {
-              log.error("Error in FHIRPath expression: "+inv.getExpression());
+              log.error("Error in FHIRPath expression: "+inv.getExpression()+" ("+e.getMessage()+")");
             }
           }
+          pathEngine.setAllowUknownFunctions(false);
         }
       }
     }

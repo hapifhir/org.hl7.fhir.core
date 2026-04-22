@@ -109,7 +109,12 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
     }
     return profiles;
   }
-    
+
+  @Override
+  public String relativeDatePlaceHolder() {
+    return null;
+  }
+
 
   private void getImpliedProfilesForObservation(List<StructureDefinition> profiles, IMessagingServices msgServices, List<ValidationMessage> messages, IWorkerContext context, String stackPath, Element resource) {
     Element code = resource.getNamedChild("code", false);
@@ -196,7 +201,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
   }
 
   @Override
-  public boolean isSuppressMessageId(String path, String messageId) {
+  public boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
     return false;
   }
 

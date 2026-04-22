@@ -2,7 +2,11 @@ package org.hl7.fhir.convertors.conv14_40.datatypes14_40;
 
 public class Expression14_40 {
   public static String convertToR4Expression(String oldExpression) {
-    String pass1 = oldExpression.replaceAll("\\$context", "%context").replaceAll("\\$resource", "%resource").replaceAll("code\\+profile", "code&profile").replaceAll("path\\+'\\.'", "path&'.'").replaceAll("fullUrl\\+resource", "fullUrl&resource");
+    String pass1 = oldExpression.replace("$context", "%context")
+      .replace("$resource", "%resource")
+      .replace("code+profile", "code&profile")
+      .replace("path+'.'", "path&'.'")
+      .replace("fullUrl+resource", "fullUrl&resource");
     String pass2 = pass1;
     if (pass1.endsWith(".distinct()")) pass2 = pass1.substring(0, pass2.length() - 11) + ".isDistinct()";
     String pass3 = pass2;
@@ -16,7 +20,12 @@ public class Expression14_40 {
   }
 
   public static String convertTo2016MayExpression(String newExpression) {
-    String pass1 = newExpression.replaceAll("%context", "\\$context").replaceAll("%resource", "\\$resource").replaceAll("code&profile", "code+profile").replaceAll("path&'\\.'", "path+'.'").replaceAll("fullUrl%resource", "fullUrl+resource");
+    String pass1 = newExpression
+      .replace("%context", "$context")
+      .replace("%resource", "$resource")
+      .replace("code&profile", "code+profile")
+      .replace("path&'.'", "path+'.'")
+      .replace("fullUrl&resource", "fullUrl+resource");
     String pass2 = pass1;
     if (pass1.endsWith(".isDistinct()")) pass2 = pass1.substring(0, pass1.length() - 13) + ".distinct()";
     String pass3 = pass2;

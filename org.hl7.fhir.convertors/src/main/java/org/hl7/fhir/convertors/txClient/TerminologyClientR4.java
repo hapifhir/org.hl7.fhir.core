@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
 
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Resource;
@@ -11,13 +12,7 @@ import org.hl7.fhir.r4.utils.client.EFhirClientException;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
@@ -177,6 +172,15 @@ public class TerminologyClientR4 implements ITerminologyClient {
     } catch (IOException e) {
       throw new FHIRException(e);
     }
+  }
+
+  public Parameters getValueSetRelationship(ValueSet vsThis, ValueSet vsOther) throws IOException {
+    Parameters pIn = new Parameters();
+    pIn.addParameter().setName("thisValueSet").setResource(vsThis);
+    pIn.addParameter().setName("otherValueSet").setResource(vsOther);
+    pIn.addParameter().setName("diagnostics").setValue(new BooleanType(true));
+    org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(pIn);
+    return (org.hl7.fhir.r5.model.Parameters) VersionConvertorFactory_40_50.convertResource(client.operateType(org.hl7.fhir.r4.model.ValueSet.class, "related", p2));
   }
 
   @Override

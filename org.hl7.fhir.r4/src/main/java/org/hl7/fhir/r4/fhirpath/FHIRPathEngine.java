@@ -15,9 +15,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
 import org.fhir.ucum.UcumException;
@@ -69,6 +70,7 @@ import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -178,6 +180,8 @@ public class FHIRPathEngine {
   private boolean allowDoubleQuotes;
   private List<IssueMessage> typeWarnings = new ArrayList<>();
   private boolean emitSQLonFHIRWarning;
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
   /**
    * @param worker - used when validating paths (@check), and used doing value set membership when executing tests (once that's defined)
@@ -5674,9 +5678,12 @@ public class FHIRPathEngine {
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
-          Pattern p = Pattern.compile("(?s)" + sw);
-          Matcher m = p.matcher(st);
-          boolean ok = m.find();
+          boolean ok;
+          try {
+            ok = RegexTimeout.find(st, "(?s)" + sw, regexTimeoutMillis);
+          } catch (TimeoutException e) {
+            throw new FHIRException("Timeout evaluating regex: " + sw, e);
+          }
           result.add(new BooleanType(ok).noExtensions());
         }
       }
@@ -5696,9 +5703,12 @@ public class FHIRPathEngine {
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
-          Pattern p = Pattern.compile("(?s)" + sw);
-          Matcher m = p.matcher(st);
-          boolean ok = m.matches();
+          boolean ok;
+          try {
+            ok = RegexTimeout.matches(st, "(?s)" + sw, regexTimeoutMillis);
+          } catch (TimeoutException e) {
+            throw new FHIRException("Timeout evaluating regex: " + sw, e);
+          }
           result.add(new BooleanType(ok).noExtensions());
         }
       }

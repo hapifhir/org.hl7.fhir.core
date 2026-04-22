@@ -1,0 +1,98 @@
+{
+  "systems" : [{
+    "system" : "http://acme.com/config/fhir/codesystems/internal",
+    "url" : "http://acme.com/config/fhir/codesystems/internal",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://acme.org/devices/clinical-codes",
+    "url" : "http://acme.org/devices/clinical-codes",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://acme.ped/apgarcolor",
+    "url" : "http://acme.ped/apgarcolor",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://acme.ped/apgarheartrate",
+    "url" : "http://acme.ped/apgarheartrate",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://acme.ped/apgarmuscletone",
+    "url" : "http://acme.ped/apgarmuscletone",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://acme.ped/apgarreflexirritability",
+    "url" : "http://acme.ped/apgarreflexirritability",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://acme.ped/apgarrespiratoryeffort",
+    "url" : "http://acme.ped/apgarrespiratoryeffort",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://hl7.org/fhir/sid/ndc",
+    "url" : "http://hl7.org/fhir/sid/ndc",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://loinc.org",
+    "url" : "http://loinc.org",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://loinc.org|3.1.0",
+    "url" : "http://loinc.org|3.1.0",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://snomed.info/sct",
+    "url" : "http://snomed.info/sct",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://terminology.hl7.org/CodeSystem/condition-category",
+    "url" : "http://terminology.hl7.org/CodeSystem/condition-category",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0136",
+    "url" : "http://terminology.hl7.org/CodeSystem/v2-0136",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0360|2.7",
+    "url" : "http://terminology.hl7.org/CodeSystem/v2-0360|2.7",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "http://unitsofmeasure.org",
+    "url" : "http://unitsofmeasure.org",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  },
+  {
+    "system" : "urn:ietf:bcp:47",
+    "url" : "urn:ietf:bcp:47",
+    "authoritative" : [],
+    "candidates" : ["https://tx-dev.fhir.org/r5"]
+  }]
+}

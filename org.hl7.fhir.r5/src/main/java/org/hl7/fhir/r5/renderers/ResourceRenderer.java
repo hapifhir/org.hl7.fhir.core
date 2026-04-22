@@ -235,9 +235,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   public <T extends Resource> void renderCanonical(RenderingStatus status, XhtmlNode x, Class<T> class_, ResourceWrapper canonical) throws UnsupportedEncodingException, IOException {
     if (!renderPrimitiveWithNoValue(status, x, canonical)) {
       CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(canonical.getBase()), null, canonical.getResourceNative());
+      if (target == null) {
+        target = (CanonicalResource) context.getWorker().findTxResource(class_, canonical.primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(canonical.getBase()), null, canonical.getResourceNative());
+      }
       if (target != null && target.hasWebPath()) {
         if (canonical.primitiveValue().contains("|")) {
-          x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +target.getVersion()+")");
+          x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present());
+          x.tx(" "+context.formatPhrase(RenderingContext.RES_REND_VER, target.getVersion()));
         } else {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present());
         }
@@ -1593,7 +1597,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("\uD83D\uDE80");
       x.tx(" Latest");
       XhtmlNode span = x.span();
-      span.style("opacity: 0.5");
+      span.style(context.getOpacity());
       span.tx(" ("+actualVersion+")");
     } else if (statedVersion != null && actualVersion != null && !statedVersion.equals(actualVersion) && fromPackages) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_WILDCARD_BY_PACKAGE, statedVersion, actualVersion));
@@ -1606,7 +1610,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("\uD83D\uDCCD");
       x.tx(actualVersion);
       XhtmlNode span = x.span();
-      span.style("opacity: 0.5");
+      span.style(context.getOpacity());
       span.tx(" → ");
       span.tx(statedVersion);
     } else if (statedVersion != null) {
@@ -1623,7 +1627,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx(actualVersion);
     } else if (actualVersion != null) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_FOUND, actualVersion));
-      x.style("opacity: 0.5");
+      x.style(context.getOpacity());
       x.tx("\u23FF");
       x.tx(actualVersion);
     } else if (tgt != null) {

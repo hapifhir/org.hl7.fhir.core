@@ -84,39 +84,6 @@ class InstanceValidatorTests {
     verify(mockLogger, times(1)).debug("dummyName" + System.lineSeparator());
   }
 
-  @ParameterizedTest
-  @CsvSource({
-    // Good URLs
-    "Patient?name=simpson                              , true",
-    "Patient?name:exact=simpson                        , true",
-    "Patient?name.chain=simpson                        , true",
-    "Patient?family=simpson&given=homer                , true",
-    "Patient?family=                                   , true",
-    "Patient?param-name=param-value                    , true",
-    "Patient?param=param+value                         , true",
-    "Patient?param=param%20value                       , true",
-    "Patient?family=&given=                            , true",
-    // Bad URLs
-    "?                                                 , false",
-    "name=simpson                                      , false",
-    "?name=simpson                                     , false",
-    "Hello?name=simpson                                , false",
-    "Patient?                                          , false",
-    "Patient?=simpson                                  , false",
-    "Patient?==simpson                                 , false",
-    "Patient?==                                        , false",
-    "Patient?family==simpson                           , false",
-    "Patient?f&mily=simpson                            , false",
-  })
-  void testIsSearchUrl(String theInput, boolean theExpected) {
-    if (theInput.contains("?")) {
-      when(context.getResourceNamesAsSet()).thenReturn(Set.of("Patient"));
-    }
-
-    boolean actual = BaseValidator.isSearchUrl(context, trim(theInput));
-    assertEquals(theExpected, actual);
-  }
-
   @Test
   void testTimeoutParameter() {
     when(context.getVersion()).thenReturn("5.0.1");

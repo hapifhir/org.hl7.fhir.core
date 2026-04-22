@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
@@ -284,9 +285,19 @@ public class StructureDefinitionValidator extends BaseValidator {
                 level = IssueSeverity.max(level, vm.getLevel());
               }
               if (level == IssueSeverity.ERROR) {
-                rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_ERROR, curl);
+                List<String> msgs = new ArrayList<>();
+                for (ValidationMessage vm : messages.stream().filter(vm -> vm.getLevel() == IssueSeverity.ERROR).collect(Collectors.toList())) {
+                  msgs.add(vm.getMessage());
+                }
+                rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_ERROR, curl,
+                  CommaSeparatedStringBuilder.join2(", ", " and ", msgs));
               } else if (level == IssueSeverity.WARNING) {
-                warning(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_WARNING, curl);              
+                List<String> msgs = new ArrayList<>();
+                for (ValidationMessage vm : messages.stream().filter(vm -> vm.getLevel() == IssueSeverity.WARNING).collect(Collectors.toList())) {
+                  msgs.add(vm.getMessage());
+                }
+                warning(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_WARNING, curl,
+                  CommaSeparatedStringBuilder.join2(", ", " and ", msgs));
               }            
             }
           }

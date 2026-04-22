@@ -10,6 +10,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -881,6 +882,7 @@ public interface IWorkerContext {
 
 
   // todo: figure these out
+  TerminologyClientManager getTerminologyClientManager();
 
   @Deprecated
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();

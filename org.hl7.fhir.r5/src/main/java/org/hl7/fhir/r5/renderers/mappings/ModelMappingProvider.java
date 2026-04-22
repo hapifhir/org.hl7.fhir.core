@@ -8,6 +8,8 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 
+import java.io.IOException;
+
 public abstract class ModelMappingProvider {
   protected RenderingContext context;
   protected StructureDefinition dest;
@@ -22,7 +24,7 @@ public abstract class ModelMappingProvider {
 
   public abstract Column makeColumn(String id);
 
-  public abstract void render(ElementDefinition element, XhtmlNode div);
+  public abstract void render(ElementDefinition element, XhtmlNode div) throws IOException;
 
 
   protected String ref() {

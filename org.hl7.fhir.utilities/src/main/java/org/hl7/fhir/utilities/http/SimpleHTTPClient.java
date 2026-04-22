@@ -46,7 +46,7 @@ public class SimpleHTTPClient {
 
   private final List<HTTPHeader> headers = new ArrayList<>();
 
-  @Getter @Setter
+  @Getter
   private final IHTTPAuthenticationProvider authProvider;
 
   public SimpleHTTPClient() {

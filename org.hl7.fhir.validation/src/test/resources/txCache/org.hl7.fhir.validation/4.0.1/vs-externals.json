@@ -13,14 +13,14 @@
   "#c1" : null,
   "#options-1" : null,
   "http://something/something" : null,
-  "http://loinc.org" : null,
   "https://sqlonfhir-dstu2.azurewebsites.net/fhir/ValueSet/administrative-gender" : null,
   "http://hl7.org/fhir/smart-app-launch/ValueSet/user-access-category" : null,
   "https://healthterminologies.gov.au/fhir/ValueSet/australian-immunisation-register-vaccine-1" : {
     "server" : "https://tx.hl7.org.au/fhir",
-    "filename" : "vs-a373dbfa-b7a9-4b2f-8a7e-67ba314711f3.json"
+    "filename" : "vs-a21786a4-619b-4724-bc04-0df03753ce04.json"
   },
   "http://hl7.org/fhir/CodeSystem/c1" : null,
   "https://sqlonfhir-ci2.azurewebsites.net/fhir/ValueSet/hcxdir-locality" : null,
+  "http://snomed.info/sct" : null,
   "#f3b2bd36-199b-4591-b4db-f49db0912b6" : null
 }
