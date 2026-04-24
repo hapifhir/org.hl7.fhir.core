@@ -40,11 +40,13 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlDocument;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ExampleScenarioRenderer extends TerminologyRenderer {
 
   private Set<String> stepPrefixes = new HashSet<>();
@@ -106,6 +108,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     
     try {
       String plantUml = toPlantUml(prefixes, status, res, scen);
+      log.debug("PlantUML for " + scen.getUrl() + ":" + plantUml);
       SourceStringReader reader = new SourceStringReader(plantUml);
       final ByteArrayOutputStream os = new ByteArrayOutputStream();
       reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
