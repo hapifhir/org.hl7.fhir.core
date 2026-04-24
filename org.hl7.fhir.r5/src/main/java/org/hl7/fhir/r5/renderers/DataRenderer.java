@@ -1367,11 +1367,21 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (Utilities.noString(s)) 
       s = c.primitiveValue("code"); 
 
+    CodeSystem cs = context.getContext().findTxResource(CodeSystem.class, c.primitiveValue("system"), IWorkerContext.VersionResolutionRules.PACKAGE,
+      c.primitiveValue("version"), null);
+    String url = cs == null ? null : cs.getWebPath();
+    if (url == null) {
+      url = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"), null);
+    }
     if (context.isTechnicalMode() && details) {
       String d = c.primitiveValue("display") == null ? lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")): c.primitiveValue("display");
-      d = context.formatPhrase(d == null || d.equals(c.primitiveValue("code")) ? RenderingContext.DATA_REND_DETAILS_STATED_ND :  RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.primitiveValue("system")), c.primitiveValue("code"), d); 
-      x.addText(s+" "+d);
-    } else { 
+      d = context.formatPhrase(d == null || d.equals(c.primitiveValue("code")) ? RenderingContext.DATA_REND_DETAILS_STATED_ND :  RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.primitiveValue("system")), c.primitiveValue("code"), d);
+      if (url != null) {
+        x.ah(url).addText(s + " " + d);
+      }
+    } else if (url != null) {
+      x.ah(url, "{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}").addText(s);
+    } else {
       x.span(null, "{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}").addText(s);
     }
   } 
