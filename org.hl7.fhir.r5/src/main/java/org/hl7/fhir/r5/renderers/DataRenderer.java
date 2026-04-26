@@ -357,11 +357,19 @@ public class DataRenderer extends Renderer implements CodeResolver {
         for (ConceptReferenceDesignationComponent cd : l.getDesignation()) { 
           if (cd.getLanguage().equals(lang)) 
             nativelang = cd.getValue(); 
-        } 
-        if (nativelang == null) 
-          return en+" ("+lang+")"; 
-        else 
-          return nativelang+" ("+en+", "+lang+")"; 
+        }
+        if (lang != null) {
+          if (nativelang == null)
+            return en + " (" + lang + ")";
+          else
+            return nativelang + " (" + en + ", " + lang + ")";
+        } else {
+          if (nativelang == null)
+            return en;
+          else
+            return nativelang + " (" + en +")";
+
+        }
       } 
     } 
     return lang; 
