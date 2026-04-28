@@ -407,6 +407,11 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.1.4</version>
+                </plugin>
+                <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco_version}</version>
@@ -448,12 +453,13 @@
                         <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
                          Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
                         -->
-                        <argLine>@{argLine} -Xmx3500m -XX:MaxRAMPercentage=50.0 ${surefire.native.access.arg}</argLine>
+                        <argLine>@{argLine} -Xmx3500m -XX:MaxRAMPercentage=50.0 ${surefire.native.access.arg} -Dfile.encoding=${project.build.sourceEncoding}</argLine>
                         <systemPropertyVariables>
                             <java.locale.providers>COMPAT,CLDR,SPI</java.locale.providers>
                             <!--    For JUnit4 use TestUtilities.runningAsSurefire() or
                                     TestingUtilities.runningAsSurefire() to exclude a test from surefire executions-->
                             <runningAsSurefire>true</runningAsSurefire>
+                            <file.encoding>${project.build.sourceEncoding}</file.encoding>
                         </systemPropertyVariables>
                         <redirectTestOutputToFile>false</redirectTestOutputToFile>
                         <!-- For JUnit5 use an excludedInSurefire tag to exclude a test from surefire executions -->
