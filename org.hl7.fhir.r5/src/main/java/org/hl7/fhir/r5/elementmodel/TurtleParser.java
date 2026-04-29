@@ -574,6 +574,8 @@ public class TurtleParser extends ParserBase {
 	if (type.equals("canonical") || type.equals("oid") || type.equals("uri") || type.equals("url") || type.equals("uuid")) {
 	  String versioned = value;
 	  if (versioned.contains("|")) {
+		  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+		  //single literal character split
 		  String[] parts = versioned.split("\\|", 2);
 		  String url = parts[0];
 		  String version = parts[1];

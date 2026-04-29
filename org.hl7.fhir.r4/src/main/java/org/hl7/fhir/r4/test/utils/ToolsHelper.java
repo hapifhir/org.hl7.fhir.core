@@ -124,7 +124,7 @@ public class ToolsHelper {
       System.out.println("tools.jar snapshot-maker [source] -defn [definitions]");
       System.out.println("");
       System.out.println(
-          "Generates a snapshot from a differential. The nominated profile must have a single struture that has a differential");
+          "Generates a snapshot from a differential. The nominated profile must have a single structure that has a differential");
       System.out.println("");
       System.out.println(
           "source - the profile to generate the snapshot for. Maybe a file name, or a URL reference to a server running FHIR RESTful API");

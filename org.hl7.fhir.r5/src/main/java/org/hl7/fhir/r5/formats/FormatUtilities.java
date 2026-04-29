@@ -107,7 +107,13 @@ public abstract class FormatUtilities {
   }
   
 	public static boolean isValidId(String tail) {
-	  return tail == null ? false : tail.matches(RegexConstants.ID_REGEX);
+	  if (tail == null) {
+	    return false;
+	  }
+	  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+	  //anchored, bounded character class, safe
+	  boolean valid = tail.matches(RegexConstants.ID_REGEX);
+	  return valid;
   }
 
   public static String makeId(String candidate) {
