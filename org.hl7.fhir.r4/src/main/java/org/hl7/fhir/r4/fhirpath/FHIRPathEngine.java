@@ -5714,7 +5714,10 @@ public class FHIRPathEngine {
         } else {
           boolean ok;
           try {
-            ok = RegexTimeout.matches(st, "(?s)" + sw, regexTimeoutMillis);
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+            boolean matched = RegexTimeout.matches(st, "(?s)" + sw, regexTimeoutMillis);
+            ok = matched;
           } catch (TimeoutException e) {
             throw new FHIRException("Timeout evaluating regex: " + sw, e);
           }

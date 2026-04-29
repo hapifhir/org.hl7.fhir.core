@@ -2223,7 +2223,10 @@ public class FHIRPathEngine {
 
     if (focus.size() == 1 && !Utilities.noString(regex)) {
       try {
-        result.add(new StringType(RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl, regexTimeoutMillis)));
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.replaceAll is safe for user-supplied regular expressions
+        String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl, regexTimeoutMillis);
+        result.add(new StringType(replaced));
       } catch (TimeoutException e) {
         throw new PathEngineException("Timeout evaluating regex: " + regex, e);
       }
