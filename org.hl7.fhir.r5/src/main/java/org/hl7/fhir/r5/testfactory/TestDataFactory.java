@@ -400,7 +400,7 @@ public class TestDataFactory {
         JsonObject tablesJ = details.getJsonObject("tables");
         for (String n : tablesJ.getNames()) {
           DataTable v = loadData(Utilities.path(rootFolder, tablesJ.asString(n)));
-          liquid.getVars().put(n, v);
+          liquid.getVars().put(n, List.of(v));
           tables.put(n, v);
         } 
       }
