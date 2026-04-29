@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.instance.type;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -837,7 +838,7 @@ public class ValueSetValidator extends BaseValidator {
     hint(errors, "2026-03-27", IssueType.BUSINESSRULE, stack, expansion.hasChild("identifier"), I18nConstants.VALUESET_EXPANSION_NO_IDENTIFIER);
     // if there's a date, it should be the same or after the vs date
 
-    TxTester.IntHolder count = new TxTester.IntHolder();
+    AtomicInteger count = new AtomicInteger();
     List<Element> containsList = expansion.getChildrenByName("contains");
     int cc = 0;
     for (Element contains : containsList) {
@@ -852,7 +853,7 @@ public class ValueSetValidator extends BaseValidator {
     if (total != null && offset != null && Utilities.isInteger(total) && Utilities.isInteger(offset)) {
       int t = Integer.parseInt(total);
       int o = Integer.parseInt(offset);
-      warning(errors, "2026-03-27", IssueType.INVALID, stack, o+count.total() <= t, I18nConstants.VALUESET_EXPANSION_PARAMETER_COUNT_WRONG, total, count.total(), offset);
+      warning(errors, "2026-03-27", IssueType.INVALID, stack, o+count.intValue() <= t, I18nConstants.VALUESET_EXPANSION_PARAMETER_COUNT_WRONG, total, count.intValue(), offset);
     }
 
     Set<String> usedSystems = scanForUsedCodeSystems(parameters);
@@ -969,9 +970,9 @@ public class ValueSetValidator extends BaseValidator {
   }
 
   private boolean validateValueSetExpansionContains(ValidationContext valContext, List<ValidationMessage> errors, Element contains, NodeStack stack,
-                                                    Set<String> versionedSystems, Set<String> unversionedSystems, Map<String, Set<String>> properties, Set<String> keys, TxTester.IntHolder count) {
+                                                    Set<String> versionedSystems, Set<String> unversionedSystems, Map<String, Set<String>> properties, Set<String> keys, AtomicInteger count) {
     boolean ok = true;
-    count.count();
+    count.getAndAdd(1);
     String system = contains.getNamedChildValue("system");
     String version = contains.getNamedChildValue("version");
     String code = contains.getNamedChildValue("code");

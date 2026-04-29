@@ -7,6 +7,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -48,28 +50,26 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 @Slf4j
 public class TxTester implements ITerminologyRequestIdProvider {
 
-  private final String version;
-  private String nextRequestId;
 
   @Override
   public String getRequestId() {
-    String result = nextRequestId;
-    nextRequestId = null;
+    String result = nextRequestId.get();
+    nextRequestId.remove();
     return result;
   }
 
-  public static class IntHolder {
+  public static class ResultInformation {
+    private boolean result;
+    private String message;
 
-    private int count;
-    
-    public void count() {
-      count++;
+    public ResultInformation(boolean result) {
+      this.result = result;
     }
 
-    public int total() {
-      return count;
+    public ResultInformation(String message) {
+      this.message = message;
+      this.result = false;
     }
-
   }
 
   public interface ITxTesterLoader {
@@ -81,48 +81,67 @@ public class TxTester implements ITerminologyRequestIdProvider {
     public String version() throws JsonException, IOException;
     public String testFileName();
   }
-  
+
   private class TxTesterConversionLogger implements ITerminologyConversionLogger {
 
-    public String suiteName;
-    public String testName;
+    // Per-thread so concurrent tests don't write each other's conversion
+    // artefacts into the wrong suite/test directory.
+    public final ThreadLocal<String> suiteName = new ThreadLocal<>();
+    public final ThreadLocal<String> testName = new ThreadLocal<>();
 
     @Override
     public void log(String name, String resourceType, String version, byte[] cnt) {
       if (!"expandValueset.response".equals(name)) {
         return;
       }
-       
+
       String base;
       try {
         base = Utilities.path(outputDir, "conversions");
         if (ManagedFileAccess.file(base).exists()) {
-          String dir = Utilities.path(base, version, suiteName);
+          String dir = Utilities.path(base, version, suiteName.get());
           FileUtilities.createDirectory(dir);
-          String filename = Utilities.path(dir, testName+"."+resourceType+".json");
+          String filename = Utilities.path(dir, testName.get()+"."+resourceType+".json");
           FileUtilities.bytesToFile(cnt, filename);
-        }      
+        }
       } catch (IOException e) {
         // TODO Auto-generated catch block
         log.error(e.getMessage(), e);
       }
     }
   }
-  
+
+  private final String version;
+  // Per-thread so concurrent executeTest calls don't step on each other's
+  // request-correlation IDs. Consumed (remove()) by the HTTP client's single
+  // getRequestId() call on the same thread that set it.
+  private final ThreadLocal<String> nextRequestId = new ThreadLocal<>();
   private String server;
   private List<ITxTesterLoader> loaders = new ArrayList<>();
-  private String error;
   private String outputDir;
-  private ITerminologyClient terminologyClient;
+  // Per-thread ITerminologyClient. Every operation mutates client state
+  // (setAcceptLanguage, setClientHeaders) before dispatch; giving each worker
+  // its own client makes those mutations private to that worker and removes
+  // the need for cross-thread synchronisation around the dispatch itself.
+  // Lazily created on first use per thread via client(); the one-time
+  // capability-statement fetch runs against the main-thread bootstrap client
+  // inside initialise().
+  private final ThreadLocal<ITerminologyClient> terminologyClient = new ThreadLocal<>();
+  // Modes passed to the first initialise() call, cached so worker threads can
+  // lazily construct their own clients with the same connection config.
+  private volatile Set<String> clientModes;
   private boolean tight;
   private JsonObject externals;
   private String software;
-  private List<String> fails = new ArrayList<>();
+  // CopyOnWriteArrayList: concurrent-safe writes, snapshot iteration. Writes
+  // are infrequent (once per failed test / once per operation), so the O(n)
+  // copy cost on each add is negligible.
+  private final List<String> fails = new CopyOnWriteArrayList<>();
 
   @Getter
-  private List<String> warnings = new ArrayList<>();
-  private CapabilityStatement cstmt;
-  private TerminologyCapabilities tc;
+  private final List<String> warnings = new CopyOnWriteArrayList<>();
+  private CapabilityStatement capabilityStatement;
+  private TerminologyCapabilities terminologyCapabilities;
   private TxTesterConversionLogger conversionLogger;
   private TestReport testReport;
 
@@ -140,16 +159,16 @@ public class TxTester implements ITerminologyRequestIdProvider {
   public static void main(String[] args) throws Exception {
     new TxTester(new InternalTxLoader(args[0]), args[1], "true".equals(args[2]), args.length == 5 ? JsonParser.parseObjectFromFile(args[4]) : null, null).execute(new HashSet<>(), args[3]);
   }
-  
+
   public void addLoader(ITxTesterLoader loader) {
-    this.loaders.add(loader);    
+    this.loaders.add(loader);
   }
-  
+
   public boolean execute(Set<String> modes, String filter) throws IOException, URISyntaxException {
     if (outputDir == null) {
       outputDir = Utilities.path("[tmp]", serverId());
     }
-    
+
     log.info("Run terminology service Tests");
     log.info("  Source for tests: "+loaders.get(0).describe());
     for (ITxTesterLoader loader : loaders) {
@@ -175,14 +194,17 @@ public class TxTester implements ITerminologyRequestIdProvider {
       log.info("  Filter Parameter: "+filter);
     }
 
-    IntHolder counter = new IntHolder();
-    IntHolder errCount = new IntHolder();
+    AtomicInteger counter = new AtomicInteger();
+    AtomicInteger errCount = new AtomicInteger();
     JsonObject json = new JsonObject();
     List<StringPair> versions = new ArrayList<StringPair>();
     json.add("date", new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone());
     try {
-      terminologyClient = connectToServer(modes);
-      boolean ok = checkClient();
+      // execute() is the legacy standalone entry point. Use initialise() so
+      // both the client and the per-thread ThreadLocal entry get populated
+      // on this (main) thread.
+      initialise(modes);
+      boolean ok = true;
       for (ITxTesterLoader loader : loaders) {
         JsonObject tests = loadTests(loader);
         readTests(tests, loader.version());
@@ -199,23 +221,23 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
       FileUtilities.stringToFile(JsonParser.compose(json, true), Utilities.path(outputDir, "test-results.json"));
 
-      int c = counter.total() * 100;
-      int e = errCount.total() * 100;
-      double s = counter.total() == 0 ? 0 : (c - e) / counter.total();
-      
+      int c = counter.intValue() * 100;
+      int e = errCount.intValue() * 100;
+      double s = counter.intValue() == 0 ? 0 : (c - e) / counter.intValue();
+
       testReport.setScore(s / 100);
-      testReport.setResult(errCount.total() == 0 ? TestReportResult.PASS : TestReportResult.FAIL);
-      
+      testReport.setResult(errCount.intValue() == 0 ? TestReportResult.PASS : TestReportResult.FAIL);
+
       if (filter == null) {
         String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join("+", modes);
         if (ok) {
-          log.info(software+" passed all "+counter.total()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
+          log.info(software+" passed all "+counter.intValue()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
           return true;
         } else {
-          log.info(software+" failed "+errCount.total()+" of "+counter.total()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
+          log.info(software+" failed "+errCount.intValue()+" of "+counter.intValue()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
           log.info("Failed Tests: "+ CommaSeparatedStringBuilder.join(",", fails ));
           return false;
-        }    
+        }
       } else {
         log.info(software+" "+(ok ? "Passed the tests" : "did not pass the tests")+" '"+filter+"'");
         return ok;
@@ -225,7 +247,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       return false;
     }
   }
-  
+
 //
 //  private TestCasesSuiteComponent getSuite(JsonObject suite) {
 //    for (TestCasesSuiteComponent t : testCases.getSuite()) {
@@ -254,7 +276,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
 //    TestCasesSuiteTestComponent t = tcs.addTest();
 //    t.setName(test.asString("name"));
 //    if (test.has("explanation")) {
-//      t.setDescription(test.asString("explanation"));      
+//      t.setDescription(test.asString("explanation"));
 //    } else {
 //      t.setDescription(test.asString("description"));
 //    }
@@ -270,7 +292,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
 //    }
 //    for (JsonProperty p : test.getProperties()) {
 //      if (p.getName().startsWith("request:")) {
-//        t.addInput().setName("request").setMode(p.getName().substring(8)).setFile(p.getValue().asString());        
+//        t.addInput().setName("request").setMode(p.getName().substring(8)).setFile(p.getValue().asString());
 //      }
 //      if (p.getName().startsWith("response:")) {
 //        t.addInput().setName("response").setMode(p.getName().substring(9)).setFile(p.getValue().asString());
@@ -286,12 +308,12 @@ public class TxTester implements ITerminologyRequestIdProvider {
 //      t.addParameter().setName("profile").setValue(new StringType(test.asString("profile")));
 //    }
 //    if (test.has("header")) {
-//      JsonObject hdr = test.getJsonObject("header"); 
+//      JsonObject hdr = test.getJsonObject("header");
 //      t.addParameter().setMode(hdr.asString("mode")).setName("header").setValue(new StringType(hdr.asString("name")+": "+hdr.asString("value")));
 //    }
 //    return t;
 //  }
-  
+
   private void readTests(JsonObject tests, String version) {
 //    testCases.setIdBase("tx-ecosystem-test-cases");
 //    testCases.setUrl("http://hl7.org/fhir/uv/tx-ecosystem/TestCases/tx-ecosystem-test-cases");
@@ -303,9 +325,15 @@ public class TxTester implements ITerminologyRequestIdProvider {
     testReport.setTester("HL7 Ecosystem Test Runner v"+VersionUtil.getBaseVersion());
     testReport.setStatus(TestReportStatus.COMPLETED);
   }
-  
+
   private TestReportTestComponent getTestReportTest(JsonObject suite, JsonObject test) {
-    TestReportTestComponent t = testReport.addTest();
+    // Synchronise the mutation on the top-level TestReport resource. Each
+    // returned TestReportTestComponent is only touched by its owning thread
+    // after this point, so no further locking is required.
+    final TestReportTestComponent t;
+    synchronized (testReport) {
+      t = testReport.addTest();
+    }
     t.setName(suite.asString("name")+"/"+test.asString("name"));
     t.getActionFirstRep().getOperation().setResult(TestReportActionResult.SKIP);
     return t;
@@ -340,15 +368,15 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return offset;
   }
 
-  private boolean checkClient() {
-    conversionLogger.suiteName = "connect";
-    conversionLogger.testName = "checkClient";
-    cstmt = terminologyClient.getCapabilitiesStatement();
-    if (cstmt.hasSoftware()) {
-      software = cstmt.getSoftware().getName()+" v"+cstmt.getSoftware().getVersion();
+  private boolean checkClient() throws URISyntaxException, IOException {
+    conversionLogger.suiteName.set("connect");
+    conversionLogger.testName.set("checkClient");
+    capabilityStatement = client().getCapabilitiesStatement();
+    if (capabilityStatement.hasSoftware()) {
+      software = capabilityStatement.getSoftware().getName()+" v"+ capabilityStatement.getSoftware().getVersion();
       testReport.getParticipantFirstRep().setDisplay(software);
     }
-    tc = terminologyClient.getTerminologyCapabilities();
+    terminologyCapabilities = client().getTerminologyCapabilities();
     return true;
   }
 
@@ -366,11 +394,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
   private ITerminologyClient connectToServer(Set<String> modes) throws URISyntaxException, IOException {
     log.info("Connect to "+server);
     software = server;
-    
+
     if (outputDir == null) {
       outputDir = Utilities.path("[tmp]", serverId());
     }
-    
+
     String fhirVersion = null;
     try {
       String actFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "actual", "$versions.json") : Utilities.path(this.outputDir, "actual", "$versions.json");
@@ -408,43 +436,76 @@ public class TxTester implements ITerminologyRequestIdProvider {
         fhirVersion = "4.0";
       }
     }
-    
+
     ITerminologyClient client = null;
-    
+
     if (VersionUtilities.isR5Plus(fhirVersion)) {
-      client = new TerminologyClientFactory(FhirPublication.R5).makeClient("Test-Server", server, "Tools/Java", null);      
+      client = new TerminologyClientFactory(FhirPublication.R5).makeClient("Test-Server", server, "Tools/Java", null);
     } else if (VersionUtilities.isR4Plus(fhirVersion)) {
       FileUtilities.createDirectory(Utilities.path(outputDir, "conversions", "r4"));
-      FileUtilities.createDirectory(Utilities.path(outputDir, "conversions", "r5"));    
+      FileUtilities.createDirectory(Utilities.path(outputDir, "conversions", "r5"));
       client = new TerminologyClientFactory(FhirPublication.R4).makeClient("Test-Server", server, "Tools/Java", null);
-      client.setConversionLogger(conversionLogger); 
+      client.setConversionLogger(conversionLogger);
     } else {
       throw new FHIRException("unsupported FHIR Version for terminology tests: "+fhirVersion);
     }
     client.setFormat(ResourceFormat.RESOURCE_JSON);
     client.setRequestIdProvider(this);
-    return client;  
+    return client;
   }
 
 
+  /**
+   * Eagerly perform the one-shot, not-thread-safe setup: connect to the server
+   * from the calling thread, fetch the CapabilityStatement and
+   * TerminologyCapabilities, and stash the modes so worker threads can
+   * lazily construct their own clients on first dispatch. Call this once on
+   * the main thread before issuing any concurrent executeTest calls.
+   * Idempotent — subsequent calls only refresh the stored modes.
+   */
+  public void initialise(Set<String> modes) throws URISyntaxException, IOException {
+    this.clientModes = modes;
+    if (capabilityStatement == null) {
+      // Bootstrap client on the calling thread — also becomes this thread's
+      // ThreadLocal entry, so checkClient() and any later executeTest on the
+      // main thread reuse it.
+      terminologyClient.set(connectToServer(modes));
+      checkClient();
+    }
+  }
+
+  /**
+   * Return the calling thread's ITerminologyClient, constructing it on first
+   * access. Each worker gets its own client, so setAcceptLanguage /
+   * setClientHeaders mutations never cross thread boundaries.
+   */
+  private ITerminologyClient client() throws URISyntaxException, IOException {
+    ITerminologyClient c = terminologyClient.get();
+    if (c == null) {
+      Set<String> modes = clientModes;
+      if (modes == null) {
+        throw new IllegalStateException("TxTester not initialised — call initialise(modes) before executeTest()");
+      }
+      c = connectToServer(modes);
+      terminologyClient.set(c);
+    }
+    return c;
+  }
+
   public String executeTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, Set<String> modes) throws URISyntaxException, FHIRFormatError, FileNotFoundException, IOException {
-    error = null;
     if (!passesModes(suite, modes) || !passesModes(test, modes)) {
       return "n/a";
     }
 
-      if (terminologyClient == null) {
-      terminologyClient = connectToServer(modes);
-      checkClient();
-    }
+    // Idempotent: populates clientModes and (on the main thread, first call)
+    // fetches the capability statement. Worker threads construct their own
+    // client lazily via client() inside the operation helpers.
+    initialise(modes);
     List<Resource> setup = loadSetupResources(loader, suite);
     TestReportTestComponent tr = getTestReportTest(suite, test);
 
-    if (runTest(loader, suite, test, setup, modes, "*", null, new IntHolder(), tr)) {
-      return null;      
-    } else {
-      return error;
-    }
+    ResultInformation ri = runTest(loader, suite, test, setup, modes, "*", null, new AtomicInteger(), tr);
+    return ri.message;
   }
 
   private boolean passesModes(JsonObject obj, Set<String> modes) {
@@ -461,7 +522,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return true;
   }
 
-  private boolean runSuite(ITxTesterLoader loader, JsonObject suite, Set<String> modes, String filter, JsonArray output, IntHolder counter, IntHolder errCount) throws FHIRFormatError, FileNotFoundException, IOException {
+  private boolean runSuite(ITxTesterLoader loader, JsonObject suite, Set<String> modes, String filter, JsonArray output, AtomicInteger counter, AtomicInteger errCount) throws FHIRFormatError, FileNotFoundException, IOException {
     log.info("Group "+suite.asString("name"));
     JsonObject outputS = new JsonObject();
     if (output != null) {
@@ -476,11 +537,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
         if (test.asBoolean("disabled")) {
           ok = true;
         } else {
-          boolean tok = runTest(loader, suite, test, setup, modes, filter, outputS.forceArray("tests"), counter, tr);
-          if (!tok) {
-            errCount.count();
+          ResultInformation tok = runTest(loader, suite, test, setup, modes, filter, outputS.forceArray("tests"), counter, tr);
+          if (!tok.result) {
+            errCount.getAndAdd(1);
           }
-          ok = tok && ok;
+          ok = tok.result && ok;
         }
       }
     }
@@ -495,8 +556,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
     }
   }
 
-  private boolean runTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, List<Resource> setup, Set<String> modes, String filter, 
-      JsonArray output, IntHolder counter, TestReportTestComponent tr) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException { 
+  private ResultInformation runTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, List<Resource> setup, Set<String> modes, String filter,
+                                    JsonArray output, AtomicInteger counter, TestReportTestComponent tr) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException {
     JsonObject outputT = new JsonObject();
     if (output != null) {
       output.add(outputT);
@@ -508,17 +569,20 @@ public class TxTester implements ITerminologyRequestIdProvider {
     if (Utilities.noString(filter) || filter.equals("*") || testName.contains(filter)) {
       log.info("  Testing "+ testName +": ");
       HTTPHeader header = null;
-      try {
-        counter.count();
-        if (test.has("header")) {
-          JsonObject hdr = test.getJsonObject("header");
-          if (hdr.has("mode") && modes.contains(hdr.asString("mode"))) {
-            header = new HTTPHeader(hdr.asString("name"), hdr.asString("value"));
-            terminologyClient.setClientHeaders(new ClientHeaders(List.of(header)));
-          }
+      if (test.has("header")) {
+        JsonObject hdr = test.getJsonObject("header");
+        if (!hdr.has("mode") || modes.contains(hdr.asString("mode"))) {
+          header = new HTTPHeader(hdr.asString("name"), hdr.asString("value"));
         }
-        conversionLogger.suiteName = suite.asString("name");
-        conversionLogger.testName = testName;
+      }
+      try {
+        counter.getAndAdd( 1);
+        if (header != null) {
+          // Header is set on this thread's client only — no cross-thread race.
+          client().setClientHeaders(new ClientHeaders(List.of(header)));
+        }
+        conversionLogger.suiteName.set(suite.asString("name"));
+        conversionLogger.testName.set(testName);
         String reqFile = chooseParam(test, "request", modes);
         Resource req = reqFile == null ? null : loader.loadResource(reqFile);
 
@@ -537,7 +601,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
 
         JsonObject ext = externals == null ? null : externals.getJsonObject(fn);
 
-        nextRequestId = "txTests:"+suite.asString("name")+"/"+test.asString("name");
+        nextRequestId.set("txTests:"+suite.asString("name")+"/"+test.asString("name"));
         String lang = test.asString("Accept-Language");
         String msg = null;
         if (test.asString("operation").equals("metadata")) {
@@ -564,42 +628,45 @@ public class TxTester implements ITerminologyRequestIdProvider {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
 
-       log.info("   -- "+ testName +": " + (msg == null ? "Pass" : "Fail") + " ("+Utilities.describeDuration(System.currentTimeMillis() - start)+")");
+        log.info("   -- "+ testName +": " + (msg == null ? "Pass" : "Fail") + " ("+Utilities.describeDuration(System.currentTimeMillis() - start)+")");
         if (msg != null) {
           log.error("    "+msg);
-          error = msg;
           fails.add(suite.asString("name")+"/"+ testName);
-        }  
+        }
         outputT.add("status", msg == null ? "pass" : "fail");
         if (msg != null) {
           outputT.add("message", msg);
         }
-        if (header != null) {
-          terminologyClient.setClientHeaders(new ClientHeaders());
-        }
         tr.getActionFirstRep().getOperation().setResult(msg == null ? TestReportActionResult.PASS : TestReportActionResult.FAIL).setMessage(msg);
-        return msg == null;
+        return new ResultInformation(msg);
       } catch (Exception e) {
         log.error("  Tested "+ testName +": "+ "  ... Exception: "+e.getMessage());
 
         fails.add(suite.asString("name")+"/"+ testName);
-        error = e.getMessage();
         log.error(e.getMessage(), e);
-        if (header != null) {
-          terminologyClient.setClientHeaders(new ClientHeaders());
-        }
         tr.getActionFirstRep().getOperation().setResult(TestReportActionResult.ERROR).setMessage(e.getMessage());
-        return false;
+        return new ResultInformation(e.getMessage());
+      } finally {
+        // Reset headers on this thread's client so the next test run on the
+        // same worker starts with a clean slate. This only matters if this
+        // test set any; a plain client has no headers to clear.
+        if (header != null) {
+          try {
+            client().setClientHeaders(new ClientHeaders());
+          } catch (Exception ignored) {
+            // Nothing useful we can do if a header-reset fails at this point.
+          }
+        }
       }
     } else {
       outputT.add("status", "ignored");
       tr.getActionFirstRep().getOperation().setResult(TestReportActionResult.SKIP);
-      return true;
+      return new ResultInformation(true);
     }
   }
 
-  private String metadata(String id, List<Resource> setup, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException {
-    CapabilityStatement cs = cstmt.copy();
+  private String metadata(String id, List<Resource> setup, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException, URISyntaxException {
+    CapabilityStatement cs = capabilityStatement.copy();
     TxTesterScrubbers.scrubCapStmt(cs, tight);
     TxTesterSorters.sortCapStmt(cs);
     String csj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(cs);
@@ -616,8 +683,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return diff;
   }
 
-  private String termcaps(String id, List<Resource> setup, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException {
-    TerminologyCapabilities cs = tc.copy();
+  private String termcaps(String id, List<Resource> setup, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, Set<String> modes) throws IOException, URISyntaxException {
+    TerminologyCapabilities cs = terminologyCapabilities.copy();
     TxTesterScrubbers.scrubTermCaps(cs, tight);
     TxTesterSorters.sortTermCaps(cs);
     String csj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(cs);
@@ -651,7 +718,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
   }
 
   private Parameters loadProfile(ITxTesterLoader loader, JsonObject test) throws FHIRFormatError, DefinitionException, FileNotFoundException, FHIRException, IOException {
-    if (test.has("profile")) {        
+    if (test.has("profile")) {
       return (Parameters) loader.loadResource(test.asString("profile"));
     } else {
       return (Parameters) loader.loadResource("parameters-default.json");
@@ -662,23 +729,23 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return new URI(server).getHost();
   }
 
-  private String lookup(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String lookup(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    terminologyClient.setAcceptLanguage(lang);
+    client().setAcceptLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     int code = 0;
     String pj;
     try {
-      Parameters po = terminologyClient.lookupCode(p);
+      Parameters po = client().lookupCode(p);
       TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
-      OperationOutcome oo = e.getServerError(); 
+      OperationOutcome oo = e.getServerError();
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
@@ -697,23 +764,23 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return diff;
   }
 
-  private String translate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String translate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    terminologyClient.setAcceptLanguage(lang);
+    client().setAcceptLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     int code = 0;
     String pj;
     try {
-      Parameters po = terminologyClient.translate(p);
+      Parameters po = client().translate(p);
       TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
-      OperationOutcome oo = e.getServerError(); 
+      OperationOutcome oo = e.getServerError();
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
@@ -732,7 +799,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return diff;
   }
 
-  private String expand(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String expand(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -741,12 +808,12 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw new Error("Wrong param type");
       }
     }
-    terminologyClient.setAcceptLanguage(lang);
+    client().setAcceptLanguage(lang);
     p.getParameter().addAll(profile.getParameter());
     int code = 0;
     String vsj;
     try {
-      ValueSet vs = terminologyClient.expandValueset(null, p);
+      ValueSet vs = client().expandValueset(null, p);
       TxTesterScrubbers.scrubValueSet(vs, tight);
       TxTesterSorters.sortValueSet(vs);
       vsj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(vs);
@@ -778,25 +845,25 @@ public class TxTester implements ITerminologyRequestIdProvider {
 
   private boolean httpCodeOk(String tcode, int code) {
     switch (tcode) {
-    case "2xx" : return code >= 200 && code < 300;
-    case "3xx" : return code >= 300 && code < 400;
-    case "4xx" : return code >= 400 && code < 500;
-    case "5xx" : return code >= 500 && code < 600;
-    default:
-      throw new Error("unknown code string "+tcode);
+      case "2xx" : return code >= 200 && code < 300;
+      case "3xx" : return code >= 300 && code < 400;
+      case "4xx" : return code >= 400 && code < 500;
+      case "5xx" : return code >= 500 && code < 600;
+      default:
+        throw new Error("unknown code string "+tcode);
     }
   }
 
-  private String batchValidate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String batchValidate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
-    terminologyClient.setAcceptLanguage(lang);
+    client().setAcceptLanguage(lang);
     int code = 0;
     String pj;
     try {
-      Parameters po = terminologyClient.batchValidateVS(p);
+      Parameters po = client().batchValidateVS(p);
       TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
@@ -823,16 +890,16 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return diff;
   }
 
-  private String validate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String validate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
-    terminologyClient.setAcceptLanguage(lang);
+    client().setAcceptLanguage(lang);
     int code = 0;
     String pj;
     try {
-      Parameters po = terminologyClient.validateVS(p);
+      Parameters po = client().validateVS(p);
       TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
@@ -878,24 +945,24 @@ public class TxTester implements ITerminologyRequestIdProvider {
     }
     return diff;
   }
-  
-  private String validateCS(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+
+  private String validateCS(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
-    terminologyClient.setAcceptLanguage(lang);
+    client().setAcceptLanguage(lang);
     int code = 0;
     String pj;
     try {
-      Parameters po = terminologyClient.validateCS(p);
+      Parameters po = client().validateCS(p);
       TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
-      OperationOutcome oo = e.getServerError(); 
+      OperationOutcome oo = e.getServerError();
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
@@ -914,16 +981,16 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return diff;
   }
 
-  private String related(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String related(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
     p.getParameter().addAll(profile.getParameter());
-    terminologyClient.setAcceptLanguage(lang);
+    client().setAcceptLanguage(lang);
     int code = 0;
     String pj;
     try {
-      Parameters po = terminologyClient.doRelated(p);
+      Parameters po = client().doRelated(p);
       TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
@@ -954,19 +1021,19 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return diff;
   }
 
-  private String batch(String id, List<Resource> setup, Bundle bnd, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException {
+  private String batch(String id, List<Resource> setup, Bundle bnd, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       Parameters p = (Parameters) bnd.getEntryFirstRep().getResource();
       p.addParameter().setName("tx-resource").setResource(r);
     }
-    terminologyClient.setAcceptLanguage(lang);
+    client().setAcceptLanguage(lang);
     for (BundleEntryComponent be : bnd.getEntry()) {
       ((Parameters) be.getResource()).getParameter().addAll(profile.getParameter());
     }
     int code = 0;
     String bj;
     try {
-      Bundle bo = terminologyClient.batch(bnd);
+      Bundle bo = client().batch(bnd);
       for (BundleEntryComponent be : bo.getEntry()) {
         if (be.getResource() instanceof Parameters) {
           Parameters po = ((Parameters) be.getResource());
@@ -982,7 +1049,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       code = 200;
     } catch (EFhirClientException e) {
       code = e.getCode();
-      OperationOutcome oo = e.getServerError(); 
+      OperationOutcome oo = e.getServerError();
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       bj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
@@ -1002,11 +1069,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
   }
 
 
-  private Map<String, String> vars() {
+  private Map<String, String> vars() throws URISyntaxException, IOException {
     Map<String, String> vars = new HashMap<String, String>();
-    vars.put("version", terminologyClient.getActualVersion().toCode());
+    vars.put("version", client().getActualVersion().toCode());
     return vars;
-    
+
   }
 
   private List<Resource> loadSetupResources(ITxTesterLoader loader, JsonObject suite) throws FHIRFormatError, FileNotFoundException, IOException {
@@ -1016,7 +1083,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     }
     return res;
   }
-  
+
   public String getOutput() {
     return outputDir;
   }
@@ -1027,10 +1094,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
   }
 
   public static class InternalTxLoader implements ITxTesterLoader {
-    
+
     private TxTestData txtests;
     private boolean additional;
-    
+
     public InternalTxLoader(String version) throws IOException {
       File f = ManagedFileAccess.file(version);
       if (f.exists() && f.isDirectory()) {
@@ -1051,7 +1118,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         load(source);
       }
     }
-    
+
     private void load(String version) throws IOException {
       txtests = TxTestData.loadTestDataFromPackage("hl7.fhir.uv.tx-ecosystem#"+version);
     }
@@ -1070,7 +1137,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
 //        new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(p), r4);
 //      } catch (Exception e) {
 //        // nothing...
-//      }      
+//      }
       return res;
     }
 

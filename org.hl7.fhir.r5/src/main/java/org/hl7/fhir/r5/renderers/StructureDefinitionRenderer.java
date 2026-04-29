@@ -1696,6 +1696,18 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
             }
           }
         }
+        if (profile.hasExtension(ExtensionDefinitions.EXT_TYPE_CHARACTERISTICS) && profile.getKind() == StructureDefinitionKind.RESOURCE) {
+          if (!c.getPieces().isEmpty()) {
+            c.addPiece(gen.new Piece("br"));
+          }
+          c.addPiece(gen.new Piece("https://hl7.org/fhir/extensions/ValueSet-type-characteristics-code.html#expansion", context.formatPhrase(RenderingContext.STRUC_DEF_TYPE_CHARACTERISTICS), null));
+          c.addPiece(gen.new Piece(null,  ": ", null));
+          boolean first = true;
+          for (Extension tc : profile.getExtensionsByUrl(ExtensionDefinitions.EXT_TYPE_CHARACTERISTICS)) {
+            if (first) first = false; else c.addPiece(gen.new Piece(null, ", ", null));
+            c.addPiece(gen.new Piece(null, tc.getValueCodeType().getCode(), null));
+          }
+        }
       }
 
       if (definition.hasSlicing()) {

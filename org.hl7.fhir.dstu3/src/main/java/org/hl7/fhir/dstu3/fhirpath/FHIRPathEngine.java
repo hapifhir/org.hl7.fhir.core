@@ -9,7 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
@@ -67,6 +70,7 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import ca.uhn.fhir.util.ElementUtil;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 
 /**
  *
@@ -79,6 +83,8 @@ public class FHIRPathEngine {
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
 
   /**
@@ -2135,10 +2141,11 @@ public class FHIRPathEngine {
     String repl = convertToString(execute(context, focus, exp.getParameters().get(1), true));
 
     if (focus.size() == 1 && !Utilities.noString(regex)) {
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //Regex from FHIRPath caller
-      String replaced = convertToString(focus.get(0)).replaceAll(regex, repl);
-      result.add(new StringType(replaced));
+      try {
+        result.add(new StringType(RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl, regexTimeoutMillis)));
+      } catch (TimeoutException e) {
+        throw new FHIRException("Timeout evaluating regex: " + regex, e);
+      }
     } else {
       result.add(new StringType(convertToString(focus.get(0))));
     }
@@ -2436,10 +2443,11 @@ public class FHIRPathEngine {
       if (Utilities.noString(st))
         result.add(new BooleanType(false));
       else {
-        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //Regex from FHIRPath caller
-        boolean matchResult = st.matches(sw);
-        result.add(new BooleanType(matchResult));
+        try {
+          result.add(new BooleanType(RegexTimeout.matches(st, sw, regexTimeoutMillis)));
+        } catch (TimeoutException e) {
+          throw new FHIRException("Timeout evaluating regex: " + sw, e);
+        }
       }
     } else
       result.add(new BooleanType(false));

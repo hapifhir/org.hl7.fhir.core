@@ -38,7 +38,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.dstu2016may.model.Base;
@@ -71,6 +74,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 
 /**
  * 
@@ -83,6 +87,8 @@ public class FHIRPathEngine {
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
   /**
    * @param worker - used when validating paths (@check), and used doing value set
@@ -2415,10 +2421,11 @@ public class FHIRPathEngine {
     String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
 
     if (focus.size() == 1 && !Utilities.noString(sw)) {
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //Regex from FHIRPath caller
-      boolean matchResult = convertToString(focus.get(0)).matches(sw);
-      result.add(new BooleanType(matchResult));
+      try {
+        result.add(new BooleanType(RegexTimeout.matches(convertToString(focus.get(0)), sw, regexTimeoutMillis)));
+      } catch (TimeoutException e) {
+        throw new FHIRException("Timeout evaluating regex: " + sw, e);
+      }
     } else
       result.add(new BooleanType(false));
     return result;

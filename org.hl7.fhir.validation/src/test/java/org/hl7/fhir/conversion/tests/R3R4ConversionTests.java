@@ -377,7 +377,6 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
       } catch (FHIRException e) {
         System.out.println("Unable to load " + Utilities.path(dir, s) + ": " + e.getMessage());
         loadErrors.put(s, e);
-        // e.printStackTrace();
       }
     }
   }
