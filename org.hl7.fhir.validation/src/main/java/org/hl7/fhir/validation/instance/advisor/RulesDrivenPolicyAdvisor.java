@@ -144,7 +144,10 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
     //single literal character split
     String[] p = path.split("\\.");
     for (SuppressMessageRule rule : suppressMessageRules) {
-      if (rule.matches(messageId, path, p, theMessageArguments)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean isMatch = rule.matches(messageId, path, p, theMessageArguments);
+      if (isMatch) {
         log.debug("Suppressed: " + messageId + " at path " + path + " with rule-path: " + rule.path);
         return true;
       }
