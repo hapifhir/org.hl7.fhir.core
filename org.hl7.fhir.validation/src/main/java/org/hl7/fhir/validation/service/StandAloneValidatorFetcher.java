@@ -121,6 +121,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       if (tgt.exists()) {
         return see(tgt, loadFile(tgt));
       }
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = url.split("\\/");
       if (p.length != 2) {
         throw new FHIRException("The URL '" + url + "' was not understood - expecting type/id");                
@@ -330,6 +332,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   private String findBaseUrl(String url) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = url.split("\\/");
     for (int i = 1; i < p.length; i++) {
       if (Utilities.existsInList(p[i], context.getResourceNames())) {
@@ -361,8 +365,10 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
     if (url.contains("|")) {
       url = url.substring(0, url.indexOf("|"));
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = url.split("\\/");
-  
+
     String root = getRoot(p, url);
     if (root != null) {
       ITerminologyClient terminologyClient = getTerminologyClient(root);
