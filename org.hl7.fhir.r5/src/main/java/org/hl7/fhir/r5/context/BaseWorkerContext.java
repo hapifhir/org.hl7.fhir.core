@@ -677,11 +677,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * Returns true if both strings include the delimiter and have the same number of occurrences of it
    */
   private boolean hasDelimiter(String s1, String s2, String delimiter) {
-    return s1.contains(delimiter) && s2.contains(delimiter) && s1.split(delimiter).length == s2.split(delimiter).length;
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split; all callers pass single literal character delimiters
+    int len1 = s1.split(delimiter).length;
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split; all callers pass single literal character delimiters
+    int len2 = s2.split(delimiter).length;
+    return s1.contains(delimiter) && s2.contains(delimiter) && len1 == len2;
   }
 
   private boolean laterDelimitedVersion(String newVersion, String oldVersion, String delimiter) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split; all callers pass single literal character delimiters
     String[] newParts = newVersion.split(delimiter);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split; all callers pass single literal character delimiters
     String[] oldParts = oldVersion.split(delimiter);
     for (int i = 0; i < newParts.length; i++) {
       if (!newParts[i].equals(oldParts[i])) {
@@ -2467,7 +2477,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             }
           }
         }
-        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //Regex sourced from known Constants.URI_REGEX; anchored segments, safe
+        boolean uriMatchesKnown = uri.matches(Constants.URI_REGEX);
+        if (uriMatchesKnown && !uri.contains("ValueSet")) {
           return null;
         }
 
@@ -2737,7 +2750,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         return (T) questionnaires.get(uri, version);
       }
       if (cls == null) {
-        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //Regex sourced from known Constants.URI_REGEX; anchored segments, safe
+        boolean uriMatchesKnown = uri.matches(Constants.URI_REGEX);
+        if (uriMatchesKnown && !uri.contains("ValueSet")) {
           return null;
         }
 
@@ -2906,6 +2922,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public Resource fetchResourceById(String type, String uri) {
     synchronized (lock) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = uri.split("\\/");
       if (!Utilities.noString(type) && parts.length == 1) {
         if (allResourcesById.containsKey(type)) {

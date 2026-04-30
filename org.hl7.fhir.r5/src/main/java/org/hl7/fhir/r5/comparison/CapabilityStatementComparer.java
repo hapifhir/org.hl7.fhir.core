@@ -223,7 +223,10 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     for (Coding lc : l.getCoding()) {
       boolean m = false;
       for (Coding rc : r.getCoding()) {
-        if (lc.matches(rc)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean codingMatches = lc.matches(rc);
+        if (codingMatches) {
           matches.add(rc);
           m = true;
         }
@@ -241,7 +244,10 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
 
   private CodeableConcept findInList(List<CodeableConcept> list, CodeableConcept item) {
     for (CodeableConcept t : list) {
-      if (t.matches(item)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean conceptMatches = t.matches(item);
+      if (conceptMatches) {
         return t;
       }
     }
@@ -344,7 +350,10 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     for (CodeableConcept cd : src) {
       boolean add = true;
       for (CodeableConcept t : tgt) {
-        if (t.matches(cd)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean conceptMatches = t.matches(cd);
+        if (conceptMatches) {
           add = false;
         }
       }
@@ -378,7 +387,10 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     for (CodeableConcept cd : src) {
       boolean remove = false;
       for (CodeableConcept t : tgt) {
-        if (t.matches(cd)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean conceptMatches = t.matches(cd);
+        if (conceptMatches) {
           remove = true;
         }
       }

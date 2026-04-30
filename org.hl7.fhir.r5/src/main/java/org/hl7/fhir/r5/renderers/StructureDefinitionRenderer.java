@@ -233,7 +233,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
       boolean found = false; 
       for (T t : this) { 
-        if (t.matches(item)) { 
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean tMatchesItem = t.matches(item);
+        if (tMatchesItem) {
           found = true; 
           t.status = ListItemStatus.Unchanged; 
         } 
@@ -2459,7 +2462,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
               ref = context.getPkp() == null ? null : context.getPkp().getLinkForProfile(profile, p.getValue()); 
               if (ref != null) { 
-                String[] parts = ref.split("\\|"); 
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
+                String[] parts = ref.split("\\|");
                 if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) { 
                   if (p.hasExtension(ExtensionDefinitions.EXT_PROFILE_ELEMENT)) { 
                     String pp = p.getExtensionString(ExtensionDefinitions.EXT_PROFILE_ELEMENT); 
@@ -2645,7 +2650,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         left.getPieces().add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement()))); 
       if (element.hasSliceName()) { 
         left.getPieces().add(gen.new Piece("br")); 
-        String indent = StringUtils.repeat('\u00A0', 1+2*(element.getPath().split("\\.").length)); 
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String indent = StringUtils.repeat('\u00A0', 1+2*(element.getPath().split("\\.").length));
         left.getPieces().add(gen.new Piece(null, indent + "("+element.getSliceName() + ")", null)); 
       } 
       row.getCells().add(left); 
@@ -2831,7 +2838,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 String tn = tc.substring(0, tc.indexOf("(")); 
                 c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null)); 
                 c.addPiece(gen.new Piece(null, "(", null)); 
-                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|"); 
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
+                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
                 for (String s : p) { 
                   c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null)); 
                 } 
@@ -2872,7 +2881,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 String tn = tc.substring(0, tc.indexOf("(")); 
                 c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null)); 
                 c.addPiece(gen.new Piece(null, "(", null)); 
-                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|"); 
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
+                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
                 for (String s : p) { 
                   c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null)); 
                 } 
@@ -5382,7 +5393,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       parser.setOutputStyle(OutputStyle.PRETTY); 
       parser.compose(bs, value, null); 
     } 
-    String[] lines = bs.toString().split("\\r?\\n"); 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
+    String[] lines = bs.toString().split("\\r?\\n");
     StringBuilder b = new StringBuilder(); 
     for (String s : lines) { 
       if (!Utilities.noString(s) && !s.startsWith("<?")) { // eliminate the xml header if it's xml 

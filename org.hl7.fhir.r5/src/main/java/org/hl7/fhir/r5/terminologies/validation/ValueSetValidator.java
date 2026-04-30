@@ -584,7 +584,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     if (cs != null) {
       if (cs.hasUserData("supplements.installed")) {
-        for (String s : cs.getUserString("supplements.installed").split("\\,")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] installedSupplements = cs.getUserString("supplements.installed").split("\\,");
+        for (String s : installedSupplements) {
           seeUsedSupplement(s);
         }
       }
@@ -2099,6 +2102,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (f.getValue() == null) {
         return false;
       }
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] values = f.getValue().split("\\,");
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       if (d != null) {
@@ -2114,7 +2119,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (f.getValue() == null) {
         return true;
       }
-      values = f.getValue().split("\\,");
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] splitValues = f.getValue().split("\\,");
+      values = splitValues;
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       if (d != null) {
         String v = d.primitiveValue();
@@ -2159,7 +2167,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
   private boolean regexMatchSafe(String value, String regex) {
     try {
-      return RegexTimeout.matches(value, regex);
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+      boolean matched = RegexTimeout.matches(value, regex);
+      return matched;
     } catch (TimeoutException e) {
       throw new FHIRException(context.formatMessage(I18nConstants.REGEX_MATCH_TIMED_OUT, regex));
     }
