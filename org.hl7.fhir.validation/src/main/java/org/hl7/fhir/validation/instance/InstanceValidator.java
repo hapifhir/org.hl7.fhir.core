@@ -142,6 +142,7 @@ import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.HL7WorkGroups.HL7WorkGroup;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
@@ -1005,7 +1006,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   @Override
   public void validate(Object appContext, List<ValidationMessage> errors, String path, Element element, List<StructureDefinition> profiles) throws FHIRException {
-    // this is the main entry point; all the other public entry points end up here coming here...
+    // this is the main entry point; all the other public entry points end up coming here...
     // so the first thing to do is to clear the internal state
     clearInternalState(element, profiles);
 
@@ -3313,8 +3314,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           //False positive: RegexTimeout.matches is the approved timeout wrapper
           boolean matches = RegexTimeout.matches(e.primitiveValue(), regex);
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, matches, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX, e.primitiveValue(), regex) && ok;
-        } catch (TimeoutException e) {
-          ok = rule(errors, "2026-04-30", IssueType.EXCEPTION, vns, false, I18nConstants.REGEX_MATCH_TIMED_OUT, regex) && ok;
+        } catch (java.util.concurrent.TimeoutException te) {
+          ok = rule(errors, "2026-04-30", IssueType.EXCEPTION, e.line(), e.col(), path, false, I18nConstants.REGEX_MATCH_TIMED_OUT, regex) && ok;
         }
       }
 
@@ -3649,8 +3650,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, matches, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT, pt, ptFmt, e.fhirType(), regext) && ok;
                 }
               }
-            } catch (TimeoutException e) {
-              ok = rule(errors, "2026-04-30", IssueType.EXCEPTION, vns, false, I18nConstants.REGEX_MATCH_TIMED_OUT, regex) && ok;
+            } catch (TimeoutException te) {
+              ok = rule(errors, "2026-04-30", IssueType.EXCEPTION, e.line(), e.col(), path, false, I18nConstants.REGEX_MATCH_TIMED_OUT, regex) && ok;
             }
           } catch (Throwable ex) {
             ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_EXCEPTION, regext, e.fhirType(), ex.getMessage()) && ok;          
