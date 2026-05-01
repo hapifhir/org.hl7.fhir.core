@@ -183,7 +183,10 @@ public class ScoringEngine {
         } else if (rule.startsWith("regex:")) {
           String regex = rule.substring(6);
           try {
-            return RegexTimeout.matches(element.primitiveValue(),regex);
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //False positive: RegexTimeout.matches is the approved timeout wrapper
+            boolean result = RegexTimeout.matches(element.primitiveValue(),regex);
+            return result;
           } catch (TimeoutException e) {
             reasons.add(context.formatMessage(I18nConstants.REGEX_MATCH_TIMED_OUT, regex));
             return false;
@@ -413,6 +416,8 @@ public class ScoringEngine {
     }
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Regexes sourced from Constants.URI_REGEX/LOCAL_REF_REGEX; non-overlapping resource name alternation, safe
   private boolean checkReferenceRule(String path, Element element, String rule, List<String> reasons) {
     String ref = element.getNamedChildValue("reference");
     switch (rule) {
