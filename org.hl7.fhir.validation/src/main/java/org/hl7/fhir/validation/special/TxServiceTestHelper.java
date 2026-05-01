@@ -28,12 +28,15 @@ import java.util.Set;
 
 @Slf4j
 public class TxServiceTestHelper {
-  public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem, Set<String> modes) throws JsonSyntaxException, FileNotFoundException, IOException {
+  public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String expectedResponse2, String lang, String fp, JsonObject externals, boolean isCodeSystem, Set<String> modes) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) requestParameters;
     ValueSet valueSet = null;
     String valueSetUrl = null;
     if (!isCodeSystem) {
-      if (p.hasParameter("valueSetVersion")) {
+      if (p.hasParameter("valueSet")) {
+        valueSet = (ValueSet) p.getParameter("valueSet").getResource();
+        valueSetUrl = valueSet.getVUrl();
+      } else if (p.hasParameter("valueSetVersion")) {
         valueSetUrl = p.getParameterValue("url").primitiveValue()+"|"+p.getParameterValue("valueSetVersion").primitiveValue();
         valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule(), p.getParameterValue("valueSetVersion").primitiveValue(), null);
       } else {
@@ -127,10 +130,17 @@ public class TxServiceTestHelper {
       String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(operationOutcome);
 
 
-
-      writeDiffToFileSystem( name, expectedResponse, actualResponse);
-
+      boolean option2 = false;
       String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      if (diff != null && expectedResponse2 != null) {
+        diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse2, actualResponse);
+        if (diff == null) {
+          option2 = true;
+        }
+      }
+
+      writeDiffToFileSystem( name, option2 ? expectedResponse2 : expectedResponse, actualResponse);
+
       if (diff != null) {
         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
@@ -195,9 +205,17 @@ public class TxServiceTestHelper {
 
       String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(parameters);
 
-      writeDiffToFileSystem(name, expectedResponse, actualResponse);
-
+      boolean option2 = false;
       String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      if (diff != null && expectedResponse2 != null) {
+        diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse2, actualResponse);
+        if (diff == null) {
+          option2 = true;
+        }
+      }
+
+      writeDiffToFileSystem(name, option2 ? expectedResponse2 : expectedResponse, actualResponse);
+
       if (diff != null) {
          FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);

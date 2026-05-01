@@ -4809,12 +4809,15 @@ public class ProfileUtilities {
     if (!c.hasExpression()) {
       return null;
     }
+    fpe.setAllowUknownFunctions(true);
     ExpressionNode expr = null;
     try {
       expr = fpe.parse(c.getExpression());
     } catch (Exception e) {
+      fpe.setAllowUknownFunctions(false);
       return null;
     }
+    fpe.setAllowUknownFunctions(false);
     if (expr.getKind() != Kind.Group || expr.getOpNext() == null || !(expr.getOperation() == Operation.Equals || expr.getOperation() == Operation.LessOrEqual)) {
       return null;      
     }

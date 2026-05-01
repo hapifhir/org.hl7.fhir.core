@@ -10,6 +10,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
@@ -31,16 +35,56 @@ import org.hl7.fhir.validation.special.TxTestData;
 import org.hl7.fhir.validation.special.TxTester;
 import org.hl7.fhir.validation.special.TxTester.ITxTesterLoader;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.junit.runners.model.RunnerScheduler;
 
 import com.google.common.base.Charsets;
 
-@RunWith(Parameterized.class)
+@RunWith(ExternalTerminologyServiceTests.ParallelParameterized.class)
 public class ExternalTerminologyServiceTests implements ITxTesterLoader {
+
+  private static final int THREAD_COUNT = 16;
+
+  /**
+   * Runs the parameterized children concurrently across a fixed-size thread pool
+   * so the external run, which is almost entirely network latency, completes in
+   * wall-clock time proportional to the slowest batch rather than the sum of all
+   * requests. @BeforeClass / @AfterClass still fire serially on the main thread,
+   * so the eager TxTester initialisation remains single-threaded.
+   */
+  public static class ParallelParameterized extends Parameterized {
+    public ParallelParameterized(Class<?> klass) throws Throwable {
+      super(klass);
+      setScheduler(new RunnerScheduler() {
+        private final ExecutorService pool = Executors.newFixedThreadPool(THREAD_COUNT, r -> {
+          Thread t = new Thread(r, "tx-tester-worker");
+          t.setDaemon(true);
+          return t;
+        });
+
+        @Override
+        public void schedule(Runnable child) {
+          pool.submit(child);
+        }
+
+        @Override
+        public void finished() {
+          pool.shutdown();
+          try {
+            pool.awaitTermination(1, TimeUnit.MINUTES);
+          } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+          }
+        }
+      });
+    }
+  }
 
   public static class JsonObjectPair {
     public JsonObjectPair(JsonObject suite, JsonObject test) {
@@ -51,7 +95,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     private JsonObject test;
   }
 
-  private static final String SERVER = FhirSettings.getTxFhirDevelopment()+"/r5";
+  private static final String SERVER = FhirSettings.getTxFhirDevelopment() + "/r5";
 
 
   @Parameters(name = "{index}: id {0}")
@@ -84,7 +128,9 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     for (String id : names) {
       objects.add(new Object[]{id, examples.get(id)});
     }
-    objects.add(new Object[]{"final", null});
+    // The previous "final" sentinel that piggy-backed on the Parameterized run
+    // to print the summary has been removed — with parallel execution there is
+    // no meaningful "last test", so the summary is emitted from @AfterClass.
     return objects;
   }
 
@@ -94,10 +140,52 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   private String version = "5.0.0";
   private static TxTester tester;
   private Set<String> modes = new HashSet<>();
-  private static int error = 0;
-  private static int skipped = 0;
-  private static int count = 0;
+  private static final AtomicInteger error = new AtomicInteger();
+  private static final AtomicInteger skipped = new AtomicInteger();
+  private static final AtomicInteger count = new AtomicInteger();
   private static TxTestData txtests;
+
+  /**
+   * Eagerly constructs the shared TxTester and forces its one-shot network
+   * initialisation (connect, capability statement, terminology capabilities)
+   * on the main thread before any parameterized test is scheduled. After this
+   * returns, TxTester's remaining per-test state is thread-safe for concurrent
+   * executeTest calls.
+   */
+  @BeforeClass
+  public static void setUpTester() throws Exception {
+    if (SERVER == null) {
+      return;
+    }
+    Set<String> initModes = new HashSet<>();
+    initModes.add("tx.fhir.org");
+    initModes.add("omop");
+    initModes.add("general");
+    initModes.add("snomed");
+    // Loader only uses the static txtests field, so a throwaway instance is fine.
+    tester = new TxTester(new ExternalTerminologyServiceTests("init", null), SERVER, true, externals, "5.0.0");
+    tester.initialise(initModes);
+  }
+
+  /**
+   * Emits the run summary once all parameterized children have finished. Runs
+   * on the main thread after the parallel scheduler's pool has drained.
+   */
+  @AfterClass
+  public static void reportSummary() throws Exception {
+    int err = error.get();
+    int ran = count.get() - skipped.get();
+    if (err == 0) {
+      System.out.println("tx.fhir.org passed all " + ran
+        + " HL7 terminology service tests (mode 'tx.fhir.org', tests v" + txtests.loadVersion()
+        + ", runner v" + VersionUtil.getBaseVersion() + ")");
+    } else {
+      System.out.println("tx.fhir.org failed " + err + " of " + ran
+        + " HL7 terminology service tests (mode 'tx.fhir.org', tests v" + txtests.loadVersion()
+        + ", runner v" + VersionUtil.getBaseVersion() + ")");
+    }
+//    Assertions.assertTrue(err == 0);
+  }
 
   public ExternalTerminologyServiceTests(String name, JsonObjectPair setup) {
     this.setup = setup;
@@ -121,41 +209,25 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
       return;
     }
 
-    if (setup == null) {
-      if (error == 0) {
-        System.out.println("tx.fhir.org passed all "+(count - skipped)+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
-      } else {
-        System.out.println("tx.fhir.org failed "+error+" of "+(count - skipped)+" HL7 terminology service tests (mode 'tx.fhir.org', tests v"+loadVersion()+", runner v"+VersionUtil.getBaseVersion()+")");
-      }
-      Assertions.assertTrue(error == 0);
-    } else {
-      count++;
-      if (SERVER != null) {
-        if (tester == null) {
-          tester = new TxTester(this, SERVER, true, externals, "5.0.0");
-        }
+    count.incrementAndGet();
+    if (SERVER == null) {
+      Assertions.assertTrue(true);
+      return;
+    }
 
-        if (setup.suite.asBoolean("disabled") || setup.test.asBoolean("disabled")) {
-          return;
-        }
-        String err = tester.executeTest(this, setup.suite, setup.test, modes);
-        if (err != null) {
-          if ("n/a".equals(err)) {
-            skipped++;
-            err = null;
-          } else {
-            error++;
-          }
-        }
-        Assertions.assertTrue(err == null, err);
+    if (setup.suite.asBoolean("disabled") || setup.test.asBoolean("disabled")) {
+      return;
+    }
+    String err = tester.executeTest(this, setup.suite, setup.test, modes);
+    if (err != null) {
+      if ("n/a".equals(err)) {
+        skipped.incrementAndGet();
+        err = null;
       } else {
-        Assertions.assertTrue(true);
+        error.incrementAndGet();
       }
     }
-  }
-
-  private String loadVersion() throws JsonException, IOException {
-    return txtests.loadVersion();
+    Assertions.assertTrue(err == null, err);
   }
 
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {

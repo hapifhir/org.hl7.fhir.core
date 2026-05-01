@@ -1313,7 +1313,7 @@ public class HierarchicalTableGenerator {
       //      files.put(filename, b.toString());
       return b.toString();
     } else {
-      return corePrefix+filename;
+      return Utilities.pathURL(corePrefix, filename);
     }
   }
 
