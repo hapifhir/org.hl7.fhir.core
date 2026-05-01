@@ -81,20 +81,6 @@ public final class TurtleGeneratorTestUtils {
       return turtle.replaceAll("\\r\\n?", "\n").trim();
     }
 
-    public Element parseGeneratedTurtleElement(String turtleFilePath) throws IOException {
-      try (InputStream stream = ManagedFileAccess.inStream(turtleFilePath)) {
-        List<ValidatedFragment> fragments = turtleParser.parse(stream);
-        if (fragments.size() != 1) {
-          throw new IOException("Expected a single Turtle fragment for " + turtleFilePath + " but found " + fragments.size());
-        }
-        Element element = fragments.get(0).getElement();
-        if (element == null) {
-          throw new IOException("Turtle parser returned no element for " + turtleFilePath);
-        }
-        return element;
-      }
-    }
-
     // ---------------------------------------------------------------------------
     // TTL generators
     // ---------------------------------------------------------------------------
@@ -237,7 +223,7 @@ public final class TurtleGeneratorTestUtils {
   */
   public static IWorkerContext getVersionOverrideWorkerContext(String version) {
     try {
-      var sourceVersion = TestingUtilities.DEFAULT_CONTEXT_VERSION;
+      String sourceVersion = TestingUtilities.DEFAULT_CONTEXT_VERSION;
       return new VersionOverrideWorkerContext(TestingUtilities.getSharedWorkerContext(sourceVersion)).overrideVersion(version);
     } catch (Exception e) {
       e.printStackTrace();
