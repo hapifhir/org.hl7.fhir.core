@@ -1,9 +1,12 @@
 package org.hl7.fhir.r5.test;
 
+import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -13,15 +16,20 @@ import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.conformance.ShExGenerator;
-import org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy;
-
+import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
-
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -32,131 +40,272 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @Slf4j
 public class ShexGeneratorTests {
+  private static final Path ROOT_TEST_PATH = Paths.get("testUtilities");
+  private static final Path DEFAULT_EXPECTED_SHEX_DIR = ROOT_TEST_PATH.resolve("shex/expected");
+  private static final Path DEFAULT_EXPECTED_PROFILE_DIR = ROOT_TEST_PATH.resolve("xml/examples/expected");
+
   public ShExGenerator shexGenerator;
+  private static Path expectedShexDirectory;
+  private static Path expectedProfileDirectory;
+  private static IWorkerContext r5WorkerContext;
+  private static IWorkerContext r6WorkerContext;
 
   @BeforeAll
-  public static void setup() {
+  public static void setup() throws IOException {
+    expectedShexDirectory = TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_SHEX_DIR);
+    expectedProfileDirectory = TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_PROFILE_DIR);
+    r5WorkerContext = TestingUtilities.getSharedWorkerContext();
+    r6WorkerContext = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("6.0.0");
   }
 
-  private void doTest(String name, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat) throws FileNotFoundException, IOException, FHIRException, UcumException {
-    // ------- Comment following for debugging/testing
-    StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
-    if (sd == null) {
-      throw new FHIRException("StructuredDefinition for " + name + "was null");
-    }
-    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
-    FileUtilities.stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
-
-    // For Testing Schema Processing and Constraint Mapping related Development
-    // If you un-comment the following lines, please comment all other lines in this method.
-    // Test with processing constraints flag
-    // ----------------- Uncomment following to testing/Debugging -----
-    //    boolean processConstraints = false;
-    //    this.doTestSingleSD(name.toLowerCase(), cat, name,
-    //      false, ShExGenerator.ConstraintTranslationPolicy.ALL,
-    //      true, true, false, processConstraints);
-  }
-
+  /** Generate complete ShEx schema from default org.hl7.fhir.r5 context of StructureDefinitions */
   @Test
-  void testCompleteModel() {
+  public void testCompleteModelR5() {
     assertDoesNotThrow(() -> {
-      var workerContext = TestingUtilities.getSharedWorkerContext();
-      ShExGenerator shgen = new ShExGenerator(workerContext);
-      shgen.completeModel = true;
-      shgen.withComments = false;
-      Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), "fhir.shex");
-      List<StructureDefinition> list = new ArrayList<StructureDefinition>();
-      for (StructureDefinition sd : new ContextUtilities(workerContext).allStructures()) {
-        if (sd.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL)
-          // Skip logical models
-          continue;
-        // Include <Base> which has no derivation
-        if (sd.getDerivation() == null || sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
-          list.add(sd);
-      }
-      System.out.println("Generating Complete FHIR ShEx to " + outPath.toString());
-      FileUtilities.stringToFile(shgen.generate(HTMLLinkPolicy.NONE, list), outPath.toString());
+      Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), "fhir-r5.shex");
+      generateCompleteModel(r5WorkerContext, outPath);
     });
   }
 
+  /** Generate complete ShEx schema from directory of StructureDefinition XML files. This is what Kindling does to produce the published spec. */
+  @Disabled("Run manually with provided directory of StructureDefinition XML files")
+  @Test
+  public void testGenerateShexFromProfileDirectory() throws FHIRException, IOException, UcumException {
+    String profileDirectoryPath = "./fhir-spec-r5/site";
+    String fhirVersion = "5.0.0";
+    generateShexFromProfileDirectory(profileDirectoryPath, fhirVersion);
+  }
+
+  /** Generate individual ShEx schemas */
   @Test
   public void testId() throws FHIRException, IOException, UcumException {
-    doTest("id", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("id", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testUri() throws FHIRException, IOException, UcumException {
-    doTest("uri", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("uri", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testPatient() throws FHIRException, IOException, UcumException {
-    doTest("Patient", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Patient", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+  }
+
+  @Test
+  public void testPatientR6() throws FHIRException, IOException, UcumException {
+    doTestR6("Patient", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+  }
+
+  @Test
+  public void testPatientProfileFromFile() throws IOException, UcumException {
+    doTestFromFileR5(Paths.get("R5", "patient.profile.xml").toString());
+  }
+  
+  @Test
+  public void testPatientProfileFromFileR6() throws IOException, UcumException {
+    doTestFromFileR6(Paths.get("R6", "patient.profile.xml").toString());
   }
 
   @Test
   public void testObservation() throws FHIRException, IOException, UcumException {
-    doTest("Observation", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Observation", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testRef() throws FHIRException, IOException, UcumException {
-    doTest("Reference", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Reference", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testAccount() throws FHIRException, IOException, UcumException {
-    doTest("Account", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Account", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testAppointment() throws FHIRException, IOException, UcumException {
-    doTest("Appointment", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Appointment", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testBundle() throws FHIRException, IOException, UcumException {
-    doTest("Bundle", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Bundle", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testAge() throws FHIRException, IOException, UcumException {
-    doTest("Age", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Age", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testMedicationRequest() throws FHIRException, IOException, UcumException {
-    doTest("MedicationRequest", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("MedicationRequest", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testAllergyIntolerance() throws FHIRException, IOException, UcumException {
-    doTest("AllergyIntolerance", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("AllergyIntolerance", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testCoding() throws FHIRException, IOException, UcumException {
-    doTest("Coding", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Coding", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testTiming() throws FHIRException, IOException, UcumException {
-    doTest("Timing", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Timing", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testSignature() throws FHIRException, IOException, UcumException {
-    doTest("Signature", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Signature", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testCapabilityStatement() throws FHIRException, IOException, UcumException {
-    doTest("CapabilityStatement", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("CapabilityStatement", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
   }
 
   @Test
   public void testElement() throws FHIRException, IOException, UcumException {
-    doTest("Element", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Element", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+  }
+
+  @ParameterizedTest(name = "ShExComparator: {0} compareTo {1} = {2}")
+  @MethodSource("stringsToCompare")
+  public void testShExComparator(String o1, String o2, int aCompareBExpected) {
+    ShExGenerator.ShExComparator comparator = new ShExGenerator.ShExComparator();
+    int aCompareB = comparator.compare(o1, o2);
+    int bCompareA = comparator.compare(o2, o1);
+    assertThat(aCompareB).isEqualTo(aCompareBExpected);
+    assertThat(aCompareB).isEqualTo(-bCompareA);
+  }
+
+
+  // ---------------------------------------------------------------------------
+  // Test helpers
+  // ---------------------------------------------------------------------------
+
+  private void doTestR5(String name, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat) throws FileNotFoundException, IOException, FHIRException, UcumException {
+    doTest(name, cat, r5WorkerContext, expectedShexDirectory.resolve("R5"));
+  }
+
+  private void doTestR6(String name, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat) throws FileNotFoundException, IOException, FHIRException, UcumException {
+    doTest(name, cat, r6WorkerContext, expectedShexDirectory.resolve("R6"));
+  }
+
+  private void doTest(String name, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat, IWorkerContext context, Path expectedDirectory) throws FileNotFoundException, IOException, FHIRException, UcumException {
+    // Load StructureDefinition from context. This StructureDefinition is not necessarily stable for the purpose of comparison with generated ShEx. See doTestFromFile()
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
+    if (sd == null) throw new FHIRException("StructuredDefinition for " + name + "was null");
+    generateShex(name.toLowerCase(), sd, context);
+  }
+
+
+  private void doTestFromFileR5(String relativeProfilePath) throws IOException, UcumException {
+    doTestFromFile(relativeProfilePath, expectedShexDirectory.resolve("R5"));
+  }
+
+  private void doTestFromFileR6(String relativeProfilePath) throws IOException, UcumException {
+    doTestFromFile(relativeProfilePath, expectedShexDirectory.resolve("R6"));
+  }
+
+  private void doTestFromFile(String relativeProfilePath, Path expectedDirectory) throws IOException, UcumException {
+    // Load StructureDefinition from XML file
+    Path profilePath = expectedProfileDirectory.resolve(relativeProfilePath);
+    StructureDefinition sd = loadFromXmlFile(profilePath.toString());
+
+    String shexFileName = getExpectedShexBaseName(profilePath);
+    Path generatedShexPath = generateShex(shexFileName, sd, getWorkerContextForProfile(sd));
+
+    // Compare with corresponding expected ShEx file if available
+    Path expectedShexPath =  expectedDirectory.resolve(shexFileName.toLowerCase() + ".shex"); 
+    compareShex(expectedShexPath, generatedShexPath);
+  }
+
+  private Path generateShex(String outputName, StructureDefinition sd, IWorkerContext context) throws IOException, UcumException {
+    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), outputName + ".shex");
+    System.out.println("Generated ShEx to " + outPath.toString());
+    FileUtilities.stringToFile(new ShExGenerator(context).generate(org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy.NONE, sd), outPath.toString());
+    return outPath;
+  }
+
+  private void compareShex(Path actualShexPath, Path expectedShexPath) throws IOException {
+    if (Files.exists(expectedShexPath)) {
+      System.out.println("Comparing with expected ShEx: " + expectedShexPath.toString());
+      assertThat(normalize(Files.readString(actualShexPath))).isEqualTo(normalize(Files.readString(expectedShexPath)));
+    }
+  }
+
+  private String getExpectedShexBaseName(Path profilePath) {
+    String fileName = profilePath.getFileName().toString().toLowerCase();
+    if (fileName.endsWith(".profile.xml")) {
+      return fileName.substring(0, fileName.length() - ".profile.xml".length());
+    }
+    if (fileName.endsWith(".xml")) {
+      return fileName.substring(0, fileName.length() - ".xml".length());
+    }
+    return fileName;
+  }
+
+  private static String normalize(String content) {
+    // Normalize for string comparison: Remove any UTF-8 BOM, convert all line endings to \n, and trim leading and trailing whitespace
+    return content.replace("\uFEFF", "").replaceAll("\\r\\n?", "\n").trim();
+  }
+
+  private static StructureDefinition loadFromXmlFile(String filePath) throws IOException {
+      XmlParser parser = new XmlParser();
+      try (InputStream is = ManagedFileAccess.inStream(filePath)) {
+        Resource resource = parser.parse(is);
+          if (resource instanceof StructureDefinition) {
+              return (StructureDefinition) resource;
+          } else if (resource instanceof Bundle) {
+              Bundle bundle = (Bundle) resource;
+              for (Bundle.BundleEntryComponent entry : bundle.getEntry()) {
+                  if (entry.hasResource() && entry.getResource() instanceof StructureDefinition) {
+                      return (StructureDefinition) entry.getResource();
+                  }
+              }
+          }
+          throw new IllegalArgumentException("File does not contain a StructureDefinition: " + filePath);
+      }
+  }
+
+  private void generateShexFromProfileDirectory(String profileDirectoryPath, String fhirVersion) throws FHIRException, IOException, UcumException {
+      // Read and parse all the StructureDefinition resources from the specified directory
+      SimpleWorkerContext testContext = TestingUtilities.getWorkerContext(fhirVersion);
+      testContext.loadFromFolder(profileDirectoryPath);
+
+      Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), "fhir.shex");
+      generateCompleteModel(testContext, outPath);
+  }
+
+  private void generateCompleteModel(IWorkerContext workerContext, Path outPath) throws IOException {
+    // Context should already be loaded with StructureDefinitions
+
+    ShExGenerator shgen = new ShExGenerator(workerContext);
+    shgen.completeModel = true;
+    shgen.withComments = false;
+
+    List<StructureDefinition> list = new ArrayList<StructureDefinition>();
+    for (StructureDefinition sd : new ContextUtilities(workerContext).allStructures()) {
+      if (sd.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL)
+        // Skip logical models
+        continue;
+      // Include <Base> which has no derivation
+      if (sd.getDerivation() == null || sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
+        list.add(sd);
+    }
+    System.out.println("Generating Complete FHIR ShEx to " + outPath.toString());
+    FileUtilities.stringToFile(shgen.generate(org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy.NONE, list), outPath.toString());
+  }
+
+  private IWorkerContext getWorkerContextForProfile(StructureDefinition sd) {
+    if (sd.getFhirVersion() == null) {
+      return r5WorkerContext;
+    }
+    return VersionUtilities.isR6Ver(sd.getFhirVersion().toCode()) ? r6WorkerContext : r5WorkerContext;
   }
 
   final static String SHEX_STRING_A ="""
@@ -189,15 +338,4 @@ public class ShexGeneratorTests {
       Arguments.of(SHEX_STRING_A, SHEX_STRING_MISSING, 3)
       );
   }
-
-  @ParameterizedTest(name = "ShExComparator: {0} compareTo {1} = {2}")
-  @MethodSource("stringsToCompare")
-  public void testShExComparator(String o1, String o2, int aCompareBExpected) {
-    ShExGenerator.ShExComparator comparator = new ShExGenerator.ShExComparator();
-    int aCompareB = comparator.compare(o1, o2);
-    int bCompareA = comparator.compare(o2, o1);
-    assertThat(aCompareB).isEqualTo(aCompareBExpected);
-    assertThat(aCompareB).isEqualTo(-bCompareA);
-  }
-
 }

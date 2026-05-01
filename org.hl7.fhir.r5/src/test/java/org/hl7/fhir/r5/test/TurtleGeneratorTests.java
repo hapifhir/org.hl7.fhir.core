@@ -40,6 +40,7 @@ public class TurtleGeneratorTests {
 
   @BeforeAll
   public static void setup() throws IOException {
+    // Override configured directories in org.hl7.fhir.r5/src/test/resources/local.properties
     var props = TurtleGeneratorTestUtils.loadLocalProperties();
     inputXmlDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputXmlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_XML_DIR));
     outputTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "outputTtlDirectory", DEFAULT_OUTPUT_TURTLE_DIR);
