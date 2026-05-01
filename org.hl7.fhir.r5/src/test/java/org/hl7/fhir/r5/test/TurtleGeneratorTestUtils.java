@@ -224,7 +224,8 @@ public final class TurtleGeneratorTestUtils {
   public static IWorkerContext getVersionOverrideWorkerContext(String version) {
     try {
       String sourceVersion = TestingUtilities.DEFAULT_CONTEXT_VERSION;
-      return new VersionOverrideWorkerContext(TestingUtilities.getSharedWorkerContext(sourceVersion)).overrideVersion(version);
+      // Use a fresh base context so finishLoading() can't pin versions onto the singleton shared test resources used by later tests.
+      return new VersionOverrideWorkerContext(TestingUtilities.getWorkerContext(sourceVersion)).overrideVersion(version);
     } catch (Exception e) {
       e.printStackTrace();
       throw new Error(e);
