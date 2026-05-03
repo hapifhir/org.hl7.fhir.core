@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.elementmodel.TurtleParserR6;
 import org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
@@ -1399,8 +1400,7 @@ public class ShExGeneratorR6 {
         if (ed.getType().get(0).hasTargetProfile()) {
 
           ed.getType().get(0).getTargetProfile().forEach((CanonicalType tps) -> {
-            String els[] = tps.getValue().split("/");
-            String shapeName = els[els.length - 1];
+            String shapeName = getCanonicalShapeName(tps.getValue());
             refValues.add(TurtleParserR6.getClassName(shapeName));
           });
         }
@@ -1518,6 +1518,12 @@ public class ShExGeneratorR6 {
     if(uri.startsWith(FHIR_VS))
       return "fhirvs:" + uri.replace(FHIR_VS, "");
     return "<" + uri + ">";
+  }
+
+  private String getCanonicalShapeName(String canonical) {
+    // Remove | version suffix -- not relevant/specified for ShEx
+    String[] elements = canonical.split("/");
+    return elements[elements.length - 1].split("\\|")[0];
   }
 
   /**
@@ -1687,8 +1693,7 @@ public class ShExGeneratorR6 {
       refValues.clear();
       if (typ.hasTargetProfile()) {
         typ.getTargetProfile().forEach((CanonicalType tps) -> {
-          String els[] = tps.getValue().split("/");
-          refValues.add("@<" + els[els.length - 1] + ">");
+          refValues.add("@<" + getCanonicalShapeName(tps.getValue()) + ">");
         });
       }
 
@@ -1845,11 +1850,9 @@ public class ShExGeneratorR6 {
   private String getTypeName(ElementDefinition.TypeRefComponent typ) {
     // TODO: This is brittle. There has to be a utility to do this...
     if (typ.hasTargetProfile()) {
-      String[] els = typ.getTargetProfile().get(0).getValue().split("/");
-      return els[els.length - 1];
+      return getCanonicalShapeName(typ.getTargetProfile().get(0).getValue());
     } else if (typ.hasProfile()) {
-      String[] els = typ.getProfile().get(0).getValue().split("/");
-      return els[els.length - 1];
+      return getCanonicalShapeName(typ.getProfile().get(0).getValue());
     } else {
       return typ.getWorkingCode();
     }

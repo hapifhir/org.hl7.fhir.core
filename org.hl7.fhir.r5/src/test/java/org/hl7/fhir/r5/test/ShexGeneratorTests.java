@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.conformance.ShExGeneratorR6;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -65,6 +66,37 @@ public class ShexGeneratorTests {
       Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), "fhir-r5.shex");
       generateCompleteModel(r5WorkerContext, outPath);
     });
+  }
+
+  @Test
+  public void testCompleteModelR6() {
+    assertDoesNotThrow(() -> {
+      Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), "fhir-r6.shex");
+      generateCompleteModel(r6WorkerContext, outPath);
+    });
+  }
+
+  @Test
+  public void testCompleteModelR6CopiesConfigurationToDelegate() throws IOException {
+    List<StructureDefinition> list = getCompleteModelStructures(r6WorkerContext);
+
+    ShExGenerator generator = new ShExGenerator(r6WorkerContext);
+    generator.completeModel = true;
+    generator.withComments = false;
+
+    String delegated = generator.generate(ShExGenerator.HTMLLinkPolicy.NONE, list);
+
+    ShExGeneratorR6 direct = new ShExGeneratorR6(r6WorkerContext);
+    direct.completeModel = true;
+    direct.withComments = false;
+    String expected = direct.generate(ShExGenerator.HTMLLinkPolicy.NONE, new ArrayList<>(list));
+
+    ShExGeneratorR6 defaults = new ShExGeneratorR6(r6WorkerContext);
+    String unconfigured = defaults.generate(ShExGenerator.HTMLLinkPolicy.NONE, new ArrayList<>(list));
+
+    assertThat(delegated).isEqualTo(expected);
+    assertThat(delegated).contains("start=@<All>");
+    assertThat(unconfigured).doesNotContain("start=@<All>");
   }
 
   /** Generate complete ShEx schema from directory of StructureDefinition XML files. This is what Kindling does to produce the published spec. */
@@ -288,6 +320,12 @@ public class ShexGeneratorTests {
     shgen.completeModel = true;
     shgen.withComments = false;
 
+    List<StructureDefinition> list = getCompleteModelStructures(workerContext);
+    System.out.println("Generating Complete FHIR ShEx to " + outPath.toString());
+    FileUtilities.stringToFile(shgen.generate(org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy.NONE, list), outPath.toString());
+  }
+
+  private List<StructureDefinition> getCompleteModelStructures(IWorkerContext workerContext) {
     List<StructureDefinition> list = new ArrayList<StructureDefinition>();
     for (StructureDefinition sd : new ContextUtilities(workerContext).allStructures()) {
       if (sd.getKind() == StructureDefinition.StructureDefinitionKind.LOGICAL)
@@ -297,8 +335,7 @@ public class ShexGeneratorTests {
       if (sd.getDerivation() == null || sd.getDerivation() == TypeDerivationRule.SPECIALIZATION)
         list.add(sd);
     }
-    System.out.println("Generating Complete FHIR ShEx to " + outPath.toString());
-    FileUtilities.stringToFile(shgen.generate(org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy.NONE, list), outPath.toString());
+    return list;
   }
 
   private IWorkerContext getWorkerContextForProfile(StructureDefinition sd) {
