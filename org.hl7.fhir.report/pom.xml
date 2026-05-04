@@ -12,7 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>org.hl7.fhir.report</artifactId>
-    <packaging>bundle</packaging>
+    <packaging>pom</packaging>
 
     <name>HL7 Core Artifact - Report</name>
 
