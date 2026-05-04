@@ -560,7 +560,6 @@
                     <checkRuntimeClasspath>false</checkRuntimeClasspath>
                     <checkTestClasspath>false</checkTestClasspath>
                     <skip>false</skip>
-                    <quiet>false</quiet>
                     <preferLocal>true</preferLocal>
                     <useResultFile>true</useResultFile>
                     <resultFileMinClasspathCount>2</resultFileMinClasspathCount>
