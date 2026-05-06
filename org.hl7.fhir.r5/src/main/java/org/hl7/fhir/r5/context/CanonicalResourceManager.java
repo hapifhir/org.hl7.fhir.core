@@ -771,9 +771,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public T getByPackage(String system, String version, List<String> pvlist) {
-    if ("http://hl7.org/fhir/ValueSet/encounter-status".equals(system)) {
-      DebugUtilities.breakpoint();
-    }
+
     if (version == null) {
       return getByPackage(system, pvlist);
     } else {
