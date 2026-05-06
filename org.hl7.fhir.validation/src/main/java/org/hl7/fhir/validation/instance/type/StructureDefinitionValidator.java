@@ -1398,7 +1398,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       Element valueSet = binding.getNamedChild("valueSet", false);
       String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference", false);
       if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
-        Resource vs = context.fetchResource(Resource.class, ref, ExtensionUtilities.getVersionResolutionRules(valueSet));
+        Resource vs = context.findTxResource(Resource.class, ref, ExtensionUtilities.getVersionResolutionRules(valueSet));
 
         // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
 

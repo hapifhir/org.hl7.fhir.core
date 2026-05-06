@@ -195,17 +195,17 @@ public class ParametersValidator extends BaseValidator {
 
     switch (rule.kind) {
       case VALUE:
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
+        if (hint(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, type != null, I18nConstants.PARAMETERS_STD_NO_VALUE, name)) {
           String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
+          hintPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
             Utilities.existsInList(type, rule.types), rule.types.length,
             I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, typeList);
         }
         break;
       case RESOURCE:
-        if (warning(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, rType != null, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name)) {
+        if (hint(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, rType != null, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name)) {
           String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
+          hintPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
             Utilities.existsInList(type, rule.types), rule.types.length,
             I18nConstants.PARAMETERS_STD_RES_WRONG_TYPE, name, rType, typeList);
         }
@@ -213,17 +213,17 @@ public class ParametersValidator extends BaseValidator {
       case MIXED:
         if (type != null) {
           String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
+          hintPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
             Utilities.existsInList(type, rule.types), rule.types.length,
             I18nConstants.PARAMETERS_STD_WRONG_TYPE, name, type, typeList);
         } else if (rType != null && ( rType.equals("Resource") || rType.equals("Parameters"))) {
           String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
+          hintPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
             Utilities.existsInList(type, rule.types), rule.types.length,
             I18nConstants.PARAMETERS_STD_RES_WRONG_TYPE_MIXED, name, rType, typeList);
         } else {
           String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
-          warningPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
+          hintPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
             Utilities.existsInList(type, rule.types), rule.types.length,
             I18nConstants.PARAMETERS_STD_RES_WRONG_TYPE_MIXED, name, rType, typeList);
         }
