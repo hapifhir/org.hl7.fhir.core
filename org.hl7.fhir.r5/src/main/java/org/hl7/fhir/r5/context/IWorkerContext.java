@@ -880,8 +880,10 @@ public interface IWorkerContext {
 
   //endregion
 
-
-  // todo: figure these out
+  /**
+  * Note: This currently returns an implementation, not an interface, and will likely be changed at a later time.
+  * @return null if you do not want to use TerminologyClientManager (recommended)
+  */
   TerminologyClientManager getTerminologyClientManager();
 
   @Deprecated
