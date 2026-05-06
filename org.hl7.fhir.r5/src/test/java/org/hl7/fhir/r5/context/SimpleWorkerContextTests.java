@@ -1,6 +1,8 @@
 package org.hl7.fhir.r5.context;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
 
 import static org.mockito.Mockito.*;
@@ -16,6 +18,7 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -125,4 +128,6 @@ public class SimpleWorkerContextTests {
     String testFileContent = new String(simpleWorkerContext.getBinaryForKey(testPath), StandardCharsets.UTF_8);
     assertEquals("dummy file content", testFileContent);
   }
+
+
 }

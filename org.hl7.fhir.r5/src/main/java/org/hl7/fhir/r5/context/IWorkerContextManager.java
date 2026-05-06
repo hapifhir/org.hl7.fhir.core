@@ -12,6 +12,7 @@ import org.hl7.fhir.utilities.npm.PackageLoadController;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 @MarkedToMoveToAdjunctPackage
@@ -95,9 +96,13 @@ public interface IWorkerContextManager {
    *
    * @param pi - the package to load
    * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
+   * @param isMaster - marks that the package being loaded is the very first package loaded, the master definitions
    * @return the number of resources loaded
    */
-  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException;
+  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException;
+  default int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+    return loadFromPackage(pi, loader, false);
+  }
 
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
@@ -105,9 +110,13 @@ public interface IWorkerContextManager {
    * note that the package system may use lazy loading; the loader will be called later when the classes that use the context need the relevant resource
    *
    * @param pi - the package to load
+   * @param isMaster - marks that the package being loaded is the very first package loaded, the master definitions
    * @return the number of resources loaded
    */
-  int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException;
+  int loadPackage(NpmPackage pi, boolean isMaster) throws FileNotFoundException, IOException, FHIRException;
+  default int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+    return loadPackage(pi, false);
+  }
 
   /**
    * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
@@ -115,9 +124,13 @@ public interface IWorkerContextManager {
    * note that the package system may use lazy loading; the loader will be called later when the classes that use the context need the relevant resource
    *
    * @param idAndVer - the package to load
+   * @param isMaster - marks that the package being loaded is the very first package loaded, the master definitions
    * @return the number of resources loaded
    */
-  int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException;
+  int loadPackage(String idAndVer, boolean isMaster) throws FileNotFoundException, IOException, FHIRException;
+  default int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
+    return loadPackage(idAndVer, false);
+  }
 
 
   /**
@@ -133,5 +146,7 @@ public interface IWorkerContextManager {
    * @return the number of resources loaded
    */
   int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
+
+  List<String> getloadedPackages();
 
 }
