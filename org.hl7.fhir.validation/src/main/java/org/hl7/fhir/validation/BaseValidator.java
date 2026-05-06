@@ -655,6 +655,10 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     return warningPlural(errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(), thePass, num, msg, theMessageArguments);
   }
 
+  protected boolean hintPlural(List<ValidationMessage> errors, String ruleDate, IssueType type, NodeStack stack, boolean thePass, int num, String msg, Object... theMessageArguments) {
+    return hintPlural(errors, ruleDate, type, stack.line(), stack.col(), stack.getLiteralPath(), thePass, num, msg, theMessageArguments);
+  }
+
   protected boolean warningPlural(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, int num, String msg, Object... theMessageArguments) {
     if (!thePass && doingWarnings() && !isSuppressedValidationMessage(path, msg, theMessageArguments)) {
       String nmsg = context.formatMessagePlural(num, msg, theMessageArguments);
