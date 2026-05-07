@@ -21,6 +21,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
  * <p>Each resource block in the output is preceded by a header line giving the
  * filename, so the result is easy to diff and easy to navigate.
  */
+@SuppressWarnings("checkstyle:systemout")
 public class NpmPackageDumper {
 
   /** Separator written before each resource. */
