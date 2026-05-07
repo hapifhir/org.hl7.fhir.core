@@ -20,7 +20,7 @@ import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.terminologies.TerminologyUtilities;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
-import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TranslatorXml;
@@ -484,8 +484,9 @@ public class CompliesWithChecker {
           if (sameValueSets(cVS, aVS)) {
             // no message
           } else {
-            ITerminologyClient client = context.getTerminologyClientManager().getMasterClient();
-            if (TerminologyUtilities.supportsOperation(client.getCapabilitiesStatement(), "ValueSet", "$related")) {
+            TerminologyClientManager terminologyClientManager = context.getTerminologyClientManager();
+            ITerminologyClient client = terminologyClientManager != null ? terminologyClientManager.getMasterClient() : null;
+            if (client != null && TerminologyUtilities.supportsOperation(client.getCapabilitiesStatement(), "ValueSet", "$related")) {
               Parameters params = client.getValueSetRelationship(cVS, aVS);
               throw new Error("not done yet");
             } else {
