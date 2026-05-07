@@ -456,7 +456,7 @@ public class LiquidEngine implements IHostApplicationServices {
         try {
           compiled.add(new LiquidExpressionNode(null, engine.parse(lexer)));
         } catch (Exception e) {
-          lexer.error(engine.getWorker().formatMessage(I18nConstants.LIQUID_STATEMENT_ERROR, statement, e.getMessage()));
+          throw lexer.error(engine.getWorker().formatMessage(I18nConstants.LIQUID_STATEMENT_ERROR, statement, e.getMessage()));
         }
         while (!lexer.done()) {
           if (lexer.getCurrent().equals("||")) {
@@ -464,7 +464,7 @@ public class LiquidEngine implements IHostApplicationServices {
             String f = lexer.getCurrent();
             LiquidFilter filter = LiquidFilter.fromCode(f);
             if (filter == null) {
-              lexer.error(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_FILTER, f));
+              throw lexer.error(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_FILTER, f));
             }
             lexer.next();
             if (!lexer.done() && lexer.getCurrent().equals(":")) {
@@ -483,7 +483,7 @@ public class LiquidEngine implements IHostApplicationServices {
               compiled.add(new LiquidExpressionNode(filter, null));
             }
           } else {
-            lexer.error(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_SYNTAX)); 
+            throw lexer.error(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_SYNTAX));
           }
         }
       }

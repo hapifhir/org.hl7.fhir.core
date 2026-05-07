@@ -55,12 +55,17 @@ public class LiquidEngineTests implements ILiquidEngineIncludeResolver {
   @MethodSource("data")
   public void test(JsonObject test) throws Exception {
     this.test = test;
-    LiquidDocument doc = engine.parse(test.get("template").getAsString(), "test-script");
+    String source = test.get("template").getAsString();
+
     boolean expectError = test.has("error") && test.get("error").getAsBoolean();
     if (expectError) {
-      Assertions.assertThrows(Exception.class, () -> engine.evaluate(doc, loadResource(), null));
+      Assertions.assertThrows(Exception.class, () -> {
+        LiquidDocument doc = engine.parse(source, "test-script");
+        engine.evaluate(doc, loadResource(), null);
+      });
       return;
     }
+    LiquidDocument doc = engine.parse(source, "test-script");
     String output = engine.evaluate(doc, loadResource(), null);
     if (test.has("outputRegex")) {
       String regex = test.get("outputRegex").getAsString();
