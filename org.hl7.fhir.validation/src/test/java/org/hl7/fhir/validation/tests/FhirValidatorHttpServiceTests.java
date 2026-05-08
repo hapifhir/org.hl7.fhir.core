@@ -1004,6 +1004,133 @@ class FhirValidatorHttpServiceTest {
       assertEquals(405, response.statusCode());
     }
 
+    @Test
+    @DisplayName("ITB Transform - ICVP claim → IPS Bundle (real StructureMap, real engine)")
+    void testItbTransformIcvpClaimToIps() throws Exception {
+      // Boot a real engine + load the WHO ICVP IG (this brings in the StructureMap
+      // and its imports). If the package can't be resolved (offline / mirror down),
+      // skip rather than fail — this test is gated on network access to packages.fhir.org.
+      ValidationEngine engine = getValidationEngine();
+      engine.getContext().setAllowLoadingDuplicates(true);
+      try {
+        engine.getIgLoader().loadIg(engine.getIgs(), engine.getBinaries(), "smart.who.int.icvp", false);
+      } catch (Exception e) {
+        org.junit.jupiter.api.Assumptions.assumeTrue(false,
+          "Skipping: cannot load smart.who.int.icvp package (" + e.getMessage() + ")");
+        return;
+      }
+      setUpService(engine);
+
+      // The ICVP claim payload (compact field names per the ICVPMin logical model).
+      String claim = "{"
+        + "\"dob\":\"1994-10-13\","
+        + "\"gn\":\"Parent/Antonio Rojas\","
+        + "\"n\":\"Cristina Rodriguez\","
+        + "\"ndt\":\"NI\",\"nid\":\"126008-7\",\"ntl\":\"CHL\",\"s\":\"male\","
+        + "\"v\":{"
+        +   "\"bo\":\"A1234\",\"cn\":\"Juan Castro\",\"dt\":\"2020-11-15\",\"is\":\"MINSALUD\","
+        +   "\"vle\":\"2025-11-15\",\"vls\":\"2020-11-15\","
+        +   "\"vp\":\"YellowFeverProductd2c75a15ed309658b3968519ddb31690\"}"
+        + "}";
+
+      org.hl7.fhir.utilities.json.model.JsonObject body = new org.hl7.fhir.utilities.json.model.JsonObject();
+      body.add("operation", "transform");
+      org.hl7.fhir.utilities.json.model.JsonArray input = new org.hl7.fhir.utilities.json.model.JsonArray();
+      input.add(anyContent("content", claim));
+      input.add(anyContent("map", "http://smart.who.int/icvp/StructureMap/ICVPClaimtoIPS"));
+      input.add(anyContent("contentType", "application/fhir+json"));
+      input.add(anyContent("targetFormat", "json"));
+      body.add("input", input);
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/itb/transform/process"))
+        .POST(HttpRequest.BodyPublishers.ofString(org.hl7.fhir.utilities.json.parser.JsonParser.compose(body)))
+        .header("Content-Type", "application/json")
+        .build();
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(),
+        "expected 200; body was: " + response.body());
+
+      org.hl7.fhir.utilities.json.model.JsonObject envelope =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
+      org.hl7.fhir.utilities.json.model.JsonArray output = envelope.getJsonArray("output");
+      assertEquals(2, output.size(), "output should have [result, targetMime]");
+
+      String resultJson = null;
+      String targetMime = null;
+      for (org.hl7.fhir.utilities.json.model.JsonElement el : output) {
+        org.hl7.fhir.utilities.json.model.JsonObject ac = el.asJsonObject();
+        if ("result".equals(ac.asString("name")))     resultJson = ac.asString("value");
+        if ("targetMime".equals(ac.asString("name"))) targetMime = ac.asString("value");
+      }
+      assertEquals("application/fhir+json", targetMime);
+      assertTrue(resultJson != null && !resultJson.isEmpty(), "result must be a non-empty JSON string");
+
+      org.hl7.fhir.utilities.json.model.JsonObject bundle =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(resultJson);
+      assertEquals("Bundle", bundle.asString("resourceType"));
+      assertEquals("document", bundle.asString("type"));
+      org.hl7.fhir.utilities.json.model.JsonArray entries = bundle.getJsonArray("entry");
+      assertTrue(entries.size() >= 3,
+        "expected at least Composition + Immunization + Patient entries; got " + entries.size());
+
+      // Walk the entries, locate the resources we care about, and assert the
+      // invariant fields (UUIDs and ids vary every run and aren't asserted).
+      org.hl7.fhir.utilities.json.model.JsonObject composition  = null;
+      org.hl7.fhir.utilities.json.model.JsonObject immunization = null;
+      org.hl7.fhir.utilities.json.model.JsonObject patient      = null;
+      for (org.hl7.fhir.utilities.json.model.JsonElement el : entries) {
+        org.hl7.fhir.utilities.json.model.JsonObject res = el.asJsonObject().getJsonObject("resource");
+        switch (res.asString("resourceType")) {
+          case "Composition":  composition  = res; break;
+          case "Immunization": immunization = res; break;
+          case "Patient":      patient      = res; break;
+          default: /* ignore others */
+        }
+      }
+      assertTrue(composition  != null, "Bundle must contain a Composition");
+      assertTrue(immunization != null, "Bundle must contain an Immunization");
+      assertTrue(patient      != null, "Bundle must contain a Patient");
+
+      // Patient — invariant fields driven by claim values
+      org.hl7.fhir.utilities.json.model.JsonArray names = patient.getJsonArray("name");
+      assertEquals("Cristina Rodriguez", names.get(0).asJsonObject().asString("text"));
+      assertEquals("male",       patient.asString("gender"));
+      assertEquals("1994-10-13", patient.asString("birthDate"));
+      org.hl7.fhir.utilities.json.model.JsonArray contacts = patient.getJsonArray("contact");
+      assertTrue(contacts.size() > 0, "Patient.contact should have the parent name");
+      assertEquals("Parent/Antonio Rojas",
+        contacts.get(0).asJsonObject().getJsonObject("name").asString("text"));
+
+      // Immunization — vaccine code, lot, occurrence, ProductID extension
+      assertEquals("completed", immunization.asString("status"));
+      assertEquals("A1234", immunization.asString("lotNumber"));
+      String occ = immunization.has("occurrenceString") ? immunization.asString("occurrenceString")
+                                                        : immunization.asString("occurrenceDateTime");
+      assertTrue(occ != null && occ.startsWith("2020-11-15"),
+        "Immunization occurrence should start with 2020-11-15; got " + occ);
+      org.hl7.fhir.utilities.json.model.JsonObject vaccineCoding =
+        immunization.getJsonObject("vaccineCode").getJsonArray("coding").get(0).asJsonObject();
+      assertEquals("YellowFever", vaccineCoding.asString("code"));
+
+      // Composition — IPS document type code
+      assertEquals("final", composition.asString("status"));
+      org.hl7.fhir.utilities.json.model.JsonObject typeCoding =
+        composition.getJsonObject("type").getJsonArray("coding").get(0).asJsonObject();
+      assertEquals("http://loinc.org", typeCoding.asString("system"));
+      assertEquals("60591-5",          typeCoding.asString("code"));
+    }
+
+    /** Build a single GITB AnyContent item with embeddingMethod=STRING. */
+    private static org.hl7.fhir.utilities.json.model.JsonObject anyContent(String name, String value) {
+      org.hl7.fhir.utilities.json.model.JsonObject ac = new org.hl7.fhir.utilities.json.model.JsonObject();
+      ac.add("name", name);
+      ac.add("value", value);
+      ac.add("embeddingMethod", "STRING");
+      return ac;
+    }
+
     // ─── Compile endpoint tests ───
 
     @Test

@@ -72,6 +72,7 @@ public class FhirValidatorHttpService {
     server.createContext("/itb/testdata",          new GitbTestDataHandler(this));           // PS
     server.createContext("/itb/validationResults", new GitbValidationResultsHandler(this));  // PS
     server.createContext("/itb/igManager",         new GitbIgManagerHandler(this));          // PS
+    server.createContext("/itb/transform",         new GitbTransformHandler(this));          // PS
 
     // Start the server
     server.setExecutor(null); // Use default executor

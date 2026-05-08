@@ -19,7 +19,8 @@
     { "name": "FHIRPathProcessor",        "description": "Processing service — evaluates a FHIRPath expression and returns the value." },
     { "name": "TestDataGenerator",        "description": "Processing service — synthesises FHIR resources from a profile + optional mappings/data." },
     { "name": "ValidationResultsProcessor", "description": "Processing service — summarises and filters a FHIR OperationOutcome (no engine call)." },
-    { "name": "IGManager",                "description": "Processing service — loads FHIR Implementation Guide packages into the engine." }
+    { "name": "IGManager",                "description": "Processing service — loads FHIR Implementation Guide packages into the engine." },
+    { "name": "FHIRTransformer",          "description": "Processing service — applies a FHIR StructureMap (Mapping Language) to a source resource." }
   ],
 
   "paths": {
@@ -162,7 +163,28 @@
       }
     },
     "/igManager/beginTransaction": { "post": { "tags": ["IGManager"], "summary": "Begin a (no-op) transaction", "operationId": "igManagerBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
-    "/igManager/endTransaction":   { "post": { "tags": ["IGManager"], "summary": "End a (no-op) transaction",   "operationId": "igManagerEnd",   "responses": { "204": { "description": "No content" } } } }
+    "/igManager/endTransaction":   { "post": { "tags": ["IGManager"], "summary": "End a (no-op) transaction",   "operationId": "igManagerEnd",   "responses": { "204": { "description": "No content" } } } },
+
+    "/transform/getModuleDefinition": {
+      "get": {
+        "tags": ["FHIRTransformer"],
+        "summary": "FHIRTransformer service definition",
+        "operationId": "transformGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/transform/process": {
+      "post": {
+        "tags": ["FHIRTransformer"],
+        "summary": "Apply a FHIR StructureMap to a source resource",
+        "operationId": "transformProcess",
+        "description": "Operation: `transform`. Inputs (in `input[]`): `content` (source resource as JSON or XML), `map` (canonical URL of the StructureMap), `contentType` (optional, default `application/fhir+json`), `targetFormat` (`json` default, or `xml`). Outputs: `result` (transformed resource), `targetMime` (`application/fhir+json` or `application/fhir+xml`). The StructureMap must be in the validator's context — load the IG that contains it via `/igManager/process` first.",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessRequest" } } } },
+        "responses": { "200": { "description": "Result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessResponse" } } } } }
+      }
+    },
+    "/transform/beginTransaction": { "post": { "tags": ["FHIRTransformer"], "summary": "Begin a (no-op) transaction", "operationId": "transformBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
+    "/transform/endTransaction":   { "post": { "tags": ["FHIRTransformer"], "summary": "End a (no-op) transaction",   "operationId": "transformEnd",   "responses": { "204": { "description": "No content" } } } }
   },
 
   "components": {

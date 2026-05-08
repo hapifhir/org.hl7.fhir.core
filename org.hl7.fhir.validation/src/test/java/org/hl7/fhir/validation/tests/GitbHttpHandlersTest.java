@@ -60,7 +60,7 @@ class GitbHttpHandlersTest {
   // ------------------------------------------------------------------
 
   @ParameterizedTest
-  @ValueSource(strings = {"fhir", "matchetype", "fhirPathAssertion", "fhirPath", "testdata", "validationResults", "igManager"})
+  @ValueSource(strings = {"fhir", "matchetype", "fhirPathAssertion", "fhirPath", "testdata", "validationResults", "igManager", "transform"})
   void getModuleDefinitionReturnsModule(String svc) throws Exception {
     HttpResponse<String> response = get("/itb/" + svc + "/getModuleDefinition");
     assertEquals(200, response.statusCode(), "for /itb/" + svc + "/getModuleDefinition");
@@ -105,6 +105,52 @@ class GitbHttpHandlersTest {
     JsonObject module = body.getJsonObject("module");
     assertEquals("ValidationResultsProcessor", module.asString("id"));
     assertOperations(module, "summarize", "filterBySeverity", "filterByText");
+  }
+
+  @Test
+  void transformModuleHasTransformOperationWithRequiredContentAndMap() throws Exception {
+    JsonObject body = JsonParser.parseObject(get("/itb/transform/getModuleDefinition").body());
+    JsonObject module = body.getJsonObject("module");
+    assertEquals("FHIRTransformer", module.asString("id"));
+    assertOperations(module, "transform");
+
+    JsonArray ops = module.getJsonArray("operation");
+    JsonObject transform = null;
+    for (JsonElement el : ops) {
+      JsonObject o = el.asJsonObject();
+      if ("transform".equals(o.asString("name"))) { transform = o; break; }
+    }
+    assertTrue(transform != null, "transform operation must be present in module definition");
+    JsonArray inputs = transform.getJsonObject("inputs").getJsonArray("param");
+    java.util.Set<String> required = new java.util.HashSet<>();
+    java.util.Set<String> optional = new java.util.HashSet<>();
+    for (JsonElement el : inputs) {
+      JsonObject p = el.asJsonObject();
+      ("R".equals(p.asString("use")) ? required : optional).add(p.asString("name"));
+    }
+    assertTrue(required.contains("content"),     "transform.content must be required");
+    assertTrue(required.contains("map"),         "transform.map must be required");
+    assertTrue(optional.contains("contentType"), "transform.contentType must be optional");
+    assertTrue(optional.contains("targetFormat"),"transform.targetFormat must be optional");
+  }
+
+  @Test
+  void transformProcessReturns400WhenMapInputIsMissing() throws Exception {
+    JsonObject body = processRequestBody("transform",
+      anyContent("content", "{\"resourceType\":\"Patient\"}"));
+    HttpResponse<String> response = post("/itb/transform/process", JsonParser.compose(body));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("Missing required input");
+  }
+
+  @Test
+  void transformProcessReturns400ForUnknownOperation() throws Exception {
+    JsonObject body = processRequestBody("flubber",
+      anyContent("content", "{}"),
+      anyContent("map", "http://example.org/StructureMap/x"));
+    HttpResponse<String> response = post("/itb/transform/process", JsonParser.compose(body));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("Unknown operation");
   }
 
   @Test

@@ -9,7 +9,7 @@
 
 ## 1. TL;DR
 
-The validator exposes **seven GITB REST services** under `/itb/`:
+The validator exposes **eight GITB REST services** under `/itb/`:
 
 | Service | Kind | Path prefix | Operations |
 |---|---|---|---|
@@ -17,9 +17,10 @@ The validator exposes **seven GITB REST services** under `/itb/`:
 | `MatchetypeValidator`     | Validation | `/itb/matchetype`        | `validate` |
 | `FHIRPathAssertion`       | Validation | `/itb/fhirPathAssertion` | `validate` |
 | `FHIRPathProcessor`       | Processing | `/itb/fhirPath`          | `evaluate` |
-| `TestDataGenerator`       | Processing | `/itb/testdata`          | `generate`, `generateBundle` |
+| `TestDataGenerator`       | Processing | `/itb/testdata`          | `generate`, `generateBundle`, `modify` |
 | `ValidationResultsProcessor` | Processing | `/itb/validationResults` | `summarize`, `filterBySeverity`, `filterByText` |
 | `IGManager`               | Processing | `/itb/igManager`         | `loadIG` |
+| `FHIRTransformer`         | Processing | `/itb/transform`         | `transform` |
 
 Per the GITB contract, each kind has a fixed sub-path scheme — the **handler URI is the service root**, and ITB knows the operation names from the contract:
 
@@ -238,6 +239,14 @@ Result mapping:
 | Non-Boolean singleton | `FAILURE` |
 | Parse / engine error | `UNDEFINED` |
 
+> **FHIRPath authoring tips (common pitfalls).**
+>
+> - **Filtering by resource type — don't use `resourceType`.** `resourceType` is a JSON serialisation marker, not a FHIR model property. FHIRPath operates on the typed model, so `.where(resourceType = 'Patient')` always returns empty. Use one of the type-filter operators instead:
+>   - `Bundle.entry.resource.ofType(Patient).name`
+>   - `Bundle.entry.resource.where($this is Patient).name`
+> - **`=` over collections is element-wise.** `Patient.name.text = 'Cristina'` is `true` only when there's exactly one name with that text. With multiple names it returns empty (which the assertion treats as `FAILURE`). Anchor with `.first()` or `.contains(...)` when the path may be multi-valued: `Patient.name.text.first() = 'Cristina'` or `Patient.name.text.contains('Cristina')`.
+> - **An empty result is `FAILURE`, not an error.** If a path returns nothing because the data isn't there, you'll see `"Expression returned empty result"` in the TAR — same outcome as `false`. Use `.exists()` to convert presence into an explicit Boolean when that's what you mean.
+
 ---
 
 ## 4. Processing services
@@ -289,15 +298,29 @@ For pass/fail assertions, use `FHIRPathAssertion` (§3.3).
 
 ### 4.2 `TestDataGenerator`
 
-**Path**: `/itb/testdata` — Operations: `generate`, `generateBundle`.
+**Path**: `/itb/testdata` — Operations: `generate`, `generateBundle`, `modify`.
+
+`generate` / `generateBundle` synthesise a fresh resource from a profile.
 
 | Input | Required | Notes |
 |---|---|---|
 | `profile` | yes | Canonical URL of the StructureDefinition. |
 | `mappings` | no | Stringified JSON array of mapping objects. |
 | `data` | no | Stringified JSON array of data rows. |
+| `requiredOnly` | no | When `"true"`, only required elements (min > 0) are populated. |
 
 Output: `resource` (the generated FHIR resource as JSON). `generateBundle` wraps it in a Bundle.
+
+`modify` mutates an existing resource by applying a sequence of `set` / `add` / `remove` operations.
+
+| Input | Required | Notes |
+|---|---|---|
+| `resource` | yes | Existing FHIR resource (stringified JSON) to modify. |
+| `operations` | yes | Stringified JSON array of `{op, path, value\|parts}` entries. `op` is `set`, `add`, or `remove`. |
+| `profile` | no | Canonical URL to validate the result against (used when `enforce=true`). |
+| `enforce` | no | When `"true"` (default), the modified resource is validated and the OperationOutcome returned as `output[1]`. When `"false"`, validation is skipped entirely. |
+
+Output: `resource` (the modified resource as JSON), and — iff `enforce=true` — `outcome` (post-modification OperationOutcome).
 
 ### 4.3 `ValidationResultsProcessor`
 
@@ -322,6 +345,21 @@ Pure JSON utility — does not call the validation engine.
 Output: `loaded` (the resolved `package#version`).
 
 A future `listIGs` operation (returning a nested AnyContent list of `{package, version, resources, loadedAt}` per loaded IG) is planned but not implemented.
+
+### 4.5 `FHIRTransformer`
+
+**Path**: `/itb/transform` — Operation: `transform`.
+
+Applies a FHIR `StructureMap` (Mapping Language) to a source resource and returns the transformed result. Same engine path as the legacy native `POST /transform?map=<uri>` handler, exposed in GITB shape so ITB can drive it.
+
+| Input | Required | Notes |
+|---|---|---|
+| `content` | yes | Source resource (stringified JSON or XML). May be a logical model instance when the StructureMap declares one as its source. |
+| `map` | yes | Canonical URL of the `StructureMap` to apply. Must already be in the validator's context — load the IG containing the map via `IGManager.loadIG` first. |
+| `contentType` | no | MIME of `content`. Defaults to `application/fhir+json`; use `application/fhir+xml` for XML. |
+| `targetFormat` | no | `json` (default) or `xml`. Controls the format of the result. |
+
+Outputs: `result` (the transformed resource as a string) and `targetMime` (`application/fhir+json` or `application/fhir+xml`).
 
 ---
 
