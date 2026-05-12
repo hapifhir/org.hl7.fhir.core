@@ -58,12 +58,15 @@ public class TurtleParser extends TurtleParserBase {
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
     // Redirect cross-version parsing
     String fhirVersion = context.getVersion();
-    if ( VersionUtilities.isR4Ver(fhirVersion) ) {
-        throw new FHIRException("Turtle parsing for R4 is not supported in this build. Use the R4 module.");
-    } else if ( VersionUtilities.isR6Ver(fhirVersion) ) {
-       return r6Parser.parse(inStream);
+    if ( VersionUtilities.isR6Ver(fhirVersion) ) {
+      return r6Parser.parse(inStream); 
     }
-    return super.parse(inStream);
+
+    if (VersionUtilities.isR5Ver(fhirVersion)) {
+      return super.parse(inStream);
+    }
+
+    throw new FHIRException("Turtle parsing for versions under R5 is not supported in this module. Use the appropriate module. (R4, DSTU3, etc)");
   }
 
   @Override
