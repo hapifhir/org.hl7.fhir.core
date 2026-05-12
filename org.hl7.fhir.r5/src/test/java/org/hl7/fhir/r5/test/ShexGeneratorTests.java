@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.conformance.ShExGeneratorBase;
 import org.hl7.fhir.r5.conformance.ShExGeneratorConfig;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ShExGeneratorR6;
@@ -79,7 +80,7 @@ public class ShexGeneratorTests {
   @Test
   public void testCompleteModelCopiesConfigurationToR6Config() throws IOException {
     ShExGeneratorConfig config = new ShExGeneratorConfig(false, false, true, false, false,
-      ShExGeneratorConfig.ConstraintTranslationPolicy.ALL);
+      ShExGeneratorBase.ConstraintTranslationPolicy.ALL);
 
     assertCompleteModelR6MatchesDirectGenerator(
       new ShExGenerator(r6WorkerContext, config),
@@ -117,97 +118,97 @@ public class ShexGeneratorTests {
   /** Generate individual ShEx schemas */
   @Test
   public void testId() throws FHIRException, IOException, UcumException {
-    doTestR5("id", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("id");
   }
 
   @Test
   public void testUri() throws FHIRException, IOException, UcumException {
-    doTestR5("uri", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("uri");
   }
 
   @Test
   public void testPatient() throws FHIRException, IOException, UcumException {
-    doTestR5("Patient", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Patient");
   }
 
   @Test
   public void testPatientR6() throws FHIRException, IOException, UcumException {
-    doTestR6("Patient", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR6("Patient");
   }
 
   @Test
-  public void testPatientProfileFromFile() throws IOException, UcumException {
-    doTestFromFileR5(Paths.get("R5", "patient.profile.xml").toString());
+  public void testMatchPatientProfileFromFile() throws IOException, UcumException {
+    doTestMatchFromFileR5(Paths.get("R5", "patient.profile.xml").toString());
   }
   
   @Test
-  public void testPatientProfileFromFileR6() throws IOException, UcumException {
-    doTestFromFileR6(Paths.get("R6", "patient.profile.xml").toString());
+  public void testMatchPatientProfileFromFileR6() throws IOException, UcumException {
+    doTestMatchFromFileR6(Paths.get("R6", "patient.profile.xml").toString());
   }
 
   @Test
   public void testObservation() throws FHIRException, IOException, UcumException {
-    doTestR5("Observation", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Observation");
   }
 
   @Test
   public void testRef() throws FHIRException, IOException, UcumException {
-    doTestR5("Reference", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Reference");
   }
 
   @Test
   public void testAccount() throws FHIRException, IOException, UcumException {
-    doTestR5("Account", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Account");
   }
 
   @Test
   public void testAppointment() throws FHIRException, IOException, UcumException {
-    doTestR5("Appointment", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Appointment");
   }
 
   @Test
   public void testBundle() throws FHIRException, IOException, UcumException {
-    doTestR5("Bundle", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Bundle");
   }
 
   @Test
   public void testAge() throws FHIRException, IOException, UcumException {
-    doTestR5("Age", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Age");
   }
 
   @Test
   public void testMedicationRequest() throws FHIRException, IOException, UcumException {
-    doTestR5("MedicationRequest", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("MedicationRequest");
   }
 
   @Test
   public void testAllergyIntolerance() throws FHIRException, IOException, UcumException {
-    doTestR5("AllergyIntolerance", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("AllergyIntolerance");
   }
 
   @Test
   public void testCoding() throws FHIRException, IOException, UcumException {
-    doTestR5("Coding", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Coding");
   }
 
   @Test
   public void testTiming() throws FHIRException, IOException, UcumException {
-    doTestR5("Timing", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Timing");
   }
 
   @Test
   public void testSignature() throws FHIRException, IOException, UcumException {
-    doTestR5("Signature", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Signature");
   }
 
   @Test
   public void testCapabilityStatement() throws FHIRException, IOException, UcumException {
-    doTestR5("CapabilityStatement", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("CapabilityStatement");
   }
 
   @Test
   public void testElement() throws FHIRException, IOException, UcumException {
-    doTestR5("Element", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("Element");
   }
 
   @ParameterizedTest(name = "ShExComparator: {0} compareTo {1} = {2}")
@@ -225,31 +226,33 @@ public class ShexGeneratorTests {
   // Test helpers
   // ---------------------------------------------------------------------------
 
-  private void doTestR5(String name, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat) throws FileNotFoundException, IOException, FHIRException, UcumException {
-    doTest(name, cat, r5WorkerContext, expectedShexDirectory.resolve("R5"));
+  private void doTestR5(String name) throws FileNotFoundException, IOException, FHIRException, UcumException {
+    doTest(name, r5WorkerContext);
   }
 
-  private void doTestR6(String name, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat) throws FileNotFoundException, IOException, FHIRException, UcumException {
-    doTest(name, cat, r6WorkerContext, expectedShexDirectory.resolve("R6"));
+  private void doTestR6(String name) throws FileNotFoundException, IOException, FHIRException, UcumException {
+    doTest(name, r6WorkerContext);
   }
 
-  private void doTest(String name, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat, IWorkerContext context, Path expectedDirectory) throws FileNotFoundException, IOException, FHIRException, UcumException {
-    // Load StructureDefinition from context. This StructureDefinition is not necessarily stable for the purpose of comparison with generated ShEx. See doTestFromFile()
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
-    if (sd == null) throw new FHIRException("StructuredDefinition for " + name + "was null");
-    generateShex(name.toLowerCase(), sd, context);
+  private void doTest(String name, IWorkerContext context) throws FileNotFoundException, IOException, FHIRException, UcumException {
+    assertDoesNotThrow(() -> {
+      // Load StructureDefinition from context. This StructureDefinition is not necessarily stable for the purpose of comparison with generated ShEx. See doTestFromFile()
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
+      if (sd == null) throw new FHIRException("StructuredDefinition for " + name + "was null");
+      generateShex(name.toLowerCase(), sd, context);
+    });
   }
 
 
-  private void doTestFromFileR5(String relativeProfilePath) throws IOException, UcumException {
-    doTestFromFile(relativeProfilePath, expectedShexDirectory.resolve("R5"));
+  private void doTestMatchFromFileR5(String relativeProfilePath) throws IOException, UcumException {
+    doTestMatchFromFile(relativeProfilePath, expectedShexDirectory.resolve("R5"));
   }
 
-  private void doTestFromFileR6(String relativeProfilePath) throws IOException, UcumException {
-    doTestFromFile(relativeProfilePath, expectedShexDirectory.resolve("R6"));
+  private void doTestMatchFromFileR6(String relativeProfilePath) throws IOException, UcumException {
+    doTestMatchFromFile(relativeProfilePath, expectedShexDirectory.resolve("R6"));
   }
 
-  private void doTestFromFile(String relativeProfilePath, Path expectedDirectory) throws IOException, UcumException {
+  private void doTestMatchFromFile(String relativeProfilePath, Path expectedDirectory) throws IOException, UcumException {
     // Load StructureDefinition from XML file
     Path profilePath = expectedProfileDirectory.resolve(relativeProfilePath);
     StructureDefinition sd = loadFromXmlFile(profilePath.toString());
@@ -265,7 +268,7 @@ public class ShexGeneratorTests {
   private Path generateShex(String outputName, StructureDefinition sd, IWorkerContext context) throws IOException, UcumException {
     Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), outputName + ".shex");
     System.out.println("Generated ShEx to " + outPath.toString());
-    FileUtilities.stringToFile(new ShExGenerator(context).generate(org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy.NONE, sd), outPath.toString());
+    FileUtilities.stringToFile(new ShExGenerator(context).generate(ShExGeneratorBase.HTMLLinkPolicy.NONE, sd), outPath.toString());
     return outPath;
   }
 
@@ -323,11 +326,11 @@ public class ShexGeneratorTests {
     // Context should already be loaded with StructureDefinitions
 
     ShExGenerator shgen = new ShExGenerator(workerContext,
-      new ShExGeneratorConfig(false, false, true, false, false, ShExGeneratorConfig.ConstraintTranslationPolicy.ALL));
+      new ShExGeneratorConfig(false, false, true, false, false, ShExGeneratorBase.ConstraintTranslationPolicy.ALL));
 
     List<StructureDefinition> list = getCompleteModelStructures(workerContext);
     System.out.println("Generating Complete FHIR ShEx to " + outPath.toString());
-    FileUtilities.stringToFile(shgen.generate(org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy.NONE, list), outPath.toString());
+    FileUtilities.stringToFile(shgen.generate(ShExGeneratorBase.HTMLLinkPolicy.NONE, list), outPath.toString());
   }
 
   private List<StructureDefinition> getCompleteModelStructures(IWorkerContext workerContext) {
@@ -381,6 +384,13 @@ public class ShexGeneratorTests {
       );
   }
 
+  public static Stream<Arguments> patientProfilePaths() {
+    return Stream.of(
+      Arguments.of(Paths.get("R5", "patient.profile.xml").toString()),
+      Arguments.of(Paths.get("R6", "patient.profile.xml").toString())
+    );
+  }
+
   @SuppressWarnings("deprecation")
   private void assertCompleteModelR6MatchesDirectGenerator(ShExGenerator generator, ShExGeneratorR6 direct) throws IOException {
     List<StructureDefinition> list = getCompleteModelStructures(r6WorkerContext);
@@ -395,11 +405,11 @@ public class ShexGeneratorTests {
     assertThat(generator.withComments).isFalse();
     assertThat(generator.completeModel).isTrue();
 
-    String delegated = generator.generate(ShExGenerator.HTMLLinkPolicy.NONE, list);
-    String expected = direct.generate(ShExGenerator.HTMLLinkPolicy.NONE, new ArrayList<>(list));
+    String delegated = generator.generate(ShExGeneratorBase.HTMLLinkPolicy.NONE, list);
+    String expected = direct.generate(ShExGeneratorBase.HTMLLinkPolicy.NONE, new ArrayList<>(list));
 
     ShExGeneratorR6 defaults = new ShExGeneratorR6(r6WorkerContext);
-    String unconfigured = defaults.generate(ShExGenerator.HTMLLinkPolicy.NONE, new ArrayList<>(list));
+    String unconfigured = defaults.generate(ShExGeneratorBase.HTMLLinkPolicy.NONE, new ArrayList<>(list));
 
     assertThat(delegated).isEqualTo(expected);
     assertThat(delegated).contains("start=@<All>");
