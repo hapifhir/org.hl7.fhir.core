@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.conformance.ShExGeneratorConfig;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ShExGeneratorR6;
 import org.hl7.fhir.r5.context.ContextUtilities;
@@ -59,6 +60,33 @@ public class ShexGeneratorTests {
     r6WorkerContext = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("6.0.0");
   }
 
+  /** Calling R5 ShExGenerator with R6 context should preserve the variable settings when redirected to ShExGeneratorR6 */
+  @SuppressWarnings("deprecation")
+  @Test
+  public void testCompleteModelCopiesConfigurationToR6Deprecated() throws IOException {
+    ShExGenerator generator = new ShExGenerator(r6WorkerContext);
+    generator.completeModel = true;
+    generator.withComments = false;
+
+    ShExGeneratorR6 direct = new ShExGeneratorR6(r6WorkerContext);
+    direct.completeModel = true;
+    direct.withComments = false;
+
+    assertCompleteModelR6MatchesDirectGenerator(generator, direct);
+  }
+
+  /** Calling R5 ShExGenerator with R6 context should preserve the config settings when redirected to ShExGeneratorR6 */
+  @Test
+  public void testCompleteModelCopiesConfigurationToR6Config() throws IOException {
+    ShExGeneratorConfig config = new ShExGeneratorConfig(false, false, true, false, false,
+      ShExGeneratorConfig.ConstraintTranslationPolicy.ALL);
+
+    assertCompleteModelR6MatchesDirectGenerator(
+      new ShExGenerator(r6WorkerContext, config),
+      new ShExGeneratorR6(r6WorkerContext, config)
+    );
+  }
+
   /** Generate complete ShEx schema from default org.hl7.fhir.r5 context of StructureDefinitions */
   @Test
   public void testCompleteModelR5() {
@@ -68,35 +96,13 @@ public class ShexGeneratorTests {
     });
   }
 
+  @Disabled("Run manually - R6 complete model tested elsewhere")
   @Test
   public void testCompleteModelR6() {
     assertDoesNotThrow(() -> {
       Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), "fhir-r6.shex");
       generateCompleteModel(r6WorkerContext, outPath);
     });
-  }
-
-  @Test
-  public void testCompleteModelR6CopiesConfigurationToDelegate() throws IOException {
-    List<StructureDefinition> list = getCompleteModelStructures(r6WorkerContext);
-
-    ShExGenerator generator = new ShExGenerator(r6WorkerContext);
-    generator.completeModel = true;
-    generator.withComments = false;
-
-    String delegated = generator.generate(ShExGenerator.HTMLLinkPolicy.NONE, list);
-
-    ShExGeneratorR6 direct = new ShExGeneratorR6(r6WorkerContext);
-    direct.completeModel = true;
-    direct.withComments = false;
-    String expected = direct.generate(ShExGenerator.HTMLLinkPolicy.NONE, new ArrayList<>(list));
-
-    ShExGeneratorR6 defaults = new ShExGeneratorR6(r6WorkerContext);
-    String unconfigured = defaults.generate(ShExGenerator.HTMLLinkPolicy.NONE, new ArrayList<>(list));
-
-    assertThat(delegated).isEqualTo(expected);
-    assertThat(delegated).contains("start=@<All>");
-    assertThat(unconfigured).doesNotContain("start=@<All>");
   }
 
   /** Generate complete ShEx schema from directory of StructureDefinition XML files. This is what Kindling does to produce the published spec. */
@@ -316,9 +322,8 @@ public class ShexGeneratorTests {
   private void generateCompleteModel(IWorkerContext workerContext, Path outPath) throws IOException {
     // Context should already be loaded with StructureDefinitions
 
-    ShExGenerator shgen = new ShExGenerator(workerContext);
-    shgen.completeModel = true;
-    shgen.withComments = false;
+    ShExGenerator shgen = new ShExGenerator(workerContext,
+      new ShExGeneratorConfig(false, false, true, false, false, ShExGeneratorConfig.ConstraintTranslationPolicy.ALL));
 
     List<StructureDefinition> list = getCompleteModelStructures(workerContext);
     System.out.println("Generating Complete FHIR ShEx to " + outPath.toString());
@@ -375,4 +380,30 @@ public class ShexGeneratorTests {
       Arguments.of(SHEX_STRING_A, SHEX_STRING_MISSING, 3)
       );
   }
+
+  @SuppressWarnings("deprecation")
+  private void assertCompleteModelR6MatchesDirectGenerator(ShExGenerator generator, ShExGeneratorR6 direct) throws IOException {
+    List<StructureDefinition> list = getCompleteModelStructures(r6WorkerContext);
+
+    assertThat(generator.doDatatypes).isEqualTo(direct.doDatatypes);
+    assertThat(generator.withComments).isEqualTo(direct.withComments);
+    assertThat(generator.completeModel).isEqualTo(direct.completeModel);
+    assertThat(generator.debugMode).isEqualTo(direct.debugMode);
+    assertThat(generator.processConstraints).isEqualTo(direct.processConstraints);
+    assertThat(generator.constraintPolicy.name()).isEqualTo(direct.constraintPolicy.name());
+
+    assertThat(generator.withComments).isFalse();
+    assertThat(generator.completeModel).isTrue();
+
+    String delegated = generator.generate(ShExGenerator.HTMLLinkPolicy.NONE, list);
+    String expected = direct.generate(ShExGenerator.HTMLLinkPolicy.NONE, new ArrayList<>(list));
+
+    ShExGeneratorR6 defaults = new ShExGeneratorR6(r6WorkerContext);
+    String unconfigured = defaults.generate(ShExGenerator.HTMLLinkPolicy.NONE, new ArrayList<>(list));
+
+    assertThat(delegated).isEqualTo(expected);
+    assertThat(delegated).contains("start=@<All>");
+    assertThat(unconfigured).doesNotContain("start=@<All>");
+  }
+
 }

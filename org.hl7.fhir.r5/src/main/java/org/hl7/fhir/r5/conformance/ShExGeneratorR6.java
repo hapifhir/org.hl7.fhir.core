@@ -28,10 +28,8 @@ package org.hl7.fhir.r5.conformance;
   POSSIBILITY OF SUCH DAMAGE.
 
  */
-
-
-
 import java.util.*;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,15 +72,40 @@ public class ShExGeneratorR6 {
     CONTEXT_OF_USE_ONLY  // Translate only Extensions with context-of-use
   }
 
+  /**
+   * @deprecated Supply generator settings with {@link ShExGeneratorConfig} and
+   * {@link #ShExGeneratorR6(IWorkerContext, ShExGeneratorConfig)} instead of mutating fields after construction.
+   */
+  @Deprecated
   public boolean doDatatypes = false;                 // add data types
+  /**
+   * @deprecated Supply generator settings with {@link ShExGeneratorConfig} and
+   * {@link #ShExGeneratorR6(IWorkerContext, ShExGeneratorConfig)} instead of mutating fields after construction.
+   */
+  @Deprecated
   public boolean withComments = true;                // include comments
+  /**
+   * @deprecated Supply generator settings with {@link ShExGeneratorConfig} and
+   * {@link #ShExGeneratorR6(IWorkerContext, ShExGeneratorConfig)} instead of mutating fields after construction.
+   */
+  @Deprecated
   public boolean completeModel = false;              // doing complete build (fhir.shex)
 
   @Deprecated
   public boolean debugMode = false;     // Used for Debugging and testing the code
 
+  /**
+   * @deprecated Supply generator settings with {@link ShExGeneratorConfig} and
+   * {@link #ShExGeneratorR6(IWorkerContext, ShExGeneratorConfig)} instead of mutating fields after construction.
+   */
+  @Deprecated
   public boolean processConstraints = false;   // set to false - to skip processing constraints
 
+  /**
+   * @deprecated Supply generator settings with {@link ShExGeneratorConfig} and
+   * {@link #ShExGeneratorR6(IWorkerContext, ShExGeneratorConfig)} instead of mutating fields after construction.
+   */
+  @Deprecated
   public ConstraintTranslationPolicy constraintPolicy = ConstraintTranslationPolicy.ALL;
 
   private static String SHEX_VERSION = "2.2";
@@ -296,9 +319,18 @@ public class ShExGeneratorR6 {
   private List<String> imports;
   private FHIRPathEngine fpe;
 
+  /**
+   * @deprecated Use {@link #ShExGeneratorR6(IWorkerContext, ShExGeneratorConfig)} to supply generator settings during construction.
+   */
+  @Deprecated
   public ShExGeneratorR6(IWorkerContext context) {
+    this(context, ShExGeneratorConfig.defaultConfig());
+  }
+
+  public ShExGeneratorR6(IWorkerContext context, ShExGeneratorConfig config) {
     super();
     this.context = context;
+    applyConfiguration(Objects.requireNonNull(config, "config"));
     profileUtilities = new ProfileUtilities(context, null, null);
     innerTypes = new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>();
     oneOrMoreTypes = new ArrayList<String>();
@@ -316,6 +348,15 @@ public class ShExGeneratorR6 {
     imports = new ArrayList<String>();
 
     fpe = new FHIRPathEngine(context);
+  }
+
+  private void applyConfiguration(ShExGeneratorConfig config) {
+    doDatatypes = config.isDoDatatypes();
+    withComments = config.isWithComments();
+    completeModel = config.isCompleteModel();
+    debugMode = config.isDebugMode();
+    processConstraints = config.isProcessConstraints();
+    constraintPolicy = ConstraintTranslationPolicy.valueOf(config.getConstraintPolicy().name());
   }
 
   public String generate(HTMLLinkPolicy links, StructureDefinition structure) {
