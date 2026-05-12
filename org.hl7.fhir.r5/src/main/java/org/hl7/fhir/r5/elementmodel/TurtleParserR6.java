@@ -31,12 +31,8 @@ package org.hl7.fhir.r5.elementmodel;
 
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -53,10 +49,6 @@ public class TurtleParserR6 extends TurtleParserBase {
     super(context);
   }
 
-  @Override
-  public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
-    return super.parse(inStream);
-  }
   protected String getReferenceURI(String ref) {
     if (ref != null && (ref.startsWith("http://") || ref.startsWith("https://") || ref.startsWith("urn:") || ref.startsWith("#")))
       return "<" + ref + ">";
@@ -92,6 +84,9 @@ public class TurtleParserR6 extends TurtleParserBase {
   }
 
   public static String getClassName(String element) {
+    if (element == null || element.isEmpty()) {
+      return element;
+    }
     // Uppercase first letter
     return element.substring(0, 1).toUpperCase() + element.substring(1);
   }

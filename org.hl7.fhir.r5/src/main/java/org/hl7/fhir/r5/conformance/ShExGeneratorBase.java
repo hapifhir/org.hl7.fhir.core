@@ -29,7 +29,6 @@ package org.hl7.fhir.r5.conformance;
 
  */
 import java.util.*;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -341,10 +340,12 @@ public abstract class ShExGeneratorBase {
     constraintPolicy = config.getConstraintPolicy();
   }
 
+  /** Get current values of deprecated global settings fields */
   protected final ShExGeneratorConfig currentConfiguration() {
     return new ShExGeneratorConfig(doDatatypes, withComments, completeModel, debugMode, processConstraints, constraintPolicy);
   }
 
+  /** Created for copying config when constructing ShExGenerator with deprecated mutable configuration (deprecated global settings fields) */
   protected final void copyConfigurationTo(ShExGeneratorBase other) {
     other.applyConfiguration(currentConfiguration());
   }

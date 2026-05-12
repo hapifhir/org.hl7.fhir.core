@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.TurtleParserR6;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -71,6 +74,13 @@ public class TurtleGeneratorTests {
     initializeParsers(r6context);
     testExpectedExamples(expectedTurtleDirectory.resolve("R6"), outputTurtleDirectory);
   }
+
+  @Test
+  public void testR6ClassNameHandlesEmptyInput() {
+    assertThat(TurtleParserR6.getClassName(null)).isNull();
+    assertThat(TurtleParserR6.getClassName("")).isEmpty();
+  }
+
 
   @Disabled("TODO this doesn't pass due to some FHIR URLs containing vertical bars |, which are allowed in XSD 1.1 but not XSD 1.0")
   @Test

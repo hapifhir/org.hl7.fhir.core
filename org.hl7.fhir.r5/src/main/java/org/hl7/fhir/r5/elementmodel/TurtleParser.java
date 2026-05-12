@@ -47,11 +47,18 @@ import org.hl7.fhir.utilities.VersionUtilities;
 public class TurtleParser extends TurtleParserBase {
 
   // Cross-version usage
-  private final TurtleParserR6 r6Parser;
+  private TurtleParserR6 r6Parser;
 
+  /** R5 Turtle Parser with optional redirect to TurtleParserR6 */
   public TurtleParser(IWorkerContext context) {
     super(context);
-    this.r6Parser = new TurtleParserR6(context);
+  }
+
+  private TurtleParserR6 r6Parser() {
+    if (r6Parser == null) {
+      r6Parser = new TurtleParserR6(context);
+    }
+    return r6Parser;
   }
 
   @Override
@@ -59,7 +66,7 @@ public class TurtleParser extends TurtleParserBase {
     // Redirect cross-version parsing
     String fhirVersion = context.getVersion();
     if ( VersionUtilities.isR6Ver(fhirVersion) ) {
-      return r6Parser.parse(inStream); 
+      return r6Parser().parse(inStream); 
     }
 
     if (VersionUtilities.isR5Ver(fhirVersion)) {
@@ -76,7 +83,7 @@ public class TurtleParser extends TurtleParserBase {
     if ( VersionUtilities.isR4Ver(fhirVersion) ) {
         throw new FHIRException("Turtle serialization for R4 is not supported in this build. Use the R4 module.");
     } else if ( VersionUtilities.isR6Ver(fhirVersion) ) {
-        r6Parser.compose(e, stream, style, base);
+        r6Parser().compose(e, stream, style, base);
         return;
     }
     super.compose(e, stream, style, base);
@@ -87,7 +94,7 @@ public class TurtleParser extends TurtleParserBase {
     return getClassName(element);
   }
 
-  public static String getClassName(String element) {
-    return element;
+  public static String getClassName(String name) {
+    return name; // R5 ShEx type names are not transformed
   }
 }

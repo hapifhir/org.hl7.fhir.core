@@ -48,4 +48,26 @@ public class ShExGeneratorConfig {
   public ShExGeneratorBase.ConstraintTranslationPolicy getConstraintPolicy() {
     return constraintPolicy;
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof ShExGeneratorConfig)) {
+      return false;
+    }
+    ShExGeneratorConfig other = (ShExGeneratorConfig) obj;
+    return doDatatypes == other.doDatatypes
+      && withComments == other.withComments
+      && completeModel == other.completeModel
+      && debugMode == other.debugMode
+      && processConstraints == other.processConstraints
+      && constraintPolicy == other.constraintPolicy;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(doDatatypes, withComments, completeModel, debugMode, processConstraints, constraintPolicy);
+  }
 }

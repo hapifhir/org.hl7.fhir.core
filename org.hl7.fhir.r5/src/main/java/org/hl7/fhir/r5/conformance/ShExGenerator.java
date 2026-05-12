@@ -42,7 +42,9 @@ public class ShExGenerator extends ShExGeneratorBase {
   public static class ShExComparator extends BaseShExComparator {
   }
 
-  private final ShExGeneratorR6 r6Generator;
+  // `volatile` makes lazy-init state visible across threads without stale cached reads
+  private volatile ShExGeneratorR6 r6Generator;
+  private volatile ShExGeneratorConfig syncedR6Configuration;
 
   /**
    * @deprecated Use {@link #ShExGenerator(IWorkerContext, ShExGeneratorConfig)} to supply generator settings during construction.
@@ -54,7 +56,6 @@ public class ShExGenerator extends ShExGeneratorBase {
 
   public ShExGenerator(IWorkerContext context, ShExGeneratorConfig config) {
     super(context, config);
-    r6Generator = new ShExGeneratorR6(context, config);
   }
 
   @Override
@@ -70,8 +71,7 @@ public class ShExGenerator extends ShExGeneratorBase {
   @Override
   public String generate(HTMLLinkPolicy links, StructureDefinition structure) {
     if (VersionUtilities.isR6Ver(context.getVersion())) {
-      syncR6GeneratorState();
-      return r6Generator.generate(links, structure);
+      return getR6Generator().generate(links, structure);
     }
     return super.generate(links, structure);
   }
@@ -79,8 +79,7 @@ public class ShExGenerator extends ShExGeneratorBase {
   @Override
   public List<String> getExcludedStructureDefinitionUrls() {
     if (VersionUtilities.isR6Ver(context.getVersion())) {
-      syncR6GeneratorState();
-      return r6Generator.getExcludedStructureDefinitionUrls();
+      return getR6Generator().getExcludedStructureDefinitionUrls();
     }
     return super.getExcludedStructureDefinitionUrls();
   }
@@ -88,8 +87,7 @@ public class ShExGenerator extends ShExGeneratorBase {
   @Override
   public void setExcludedStructureDefinitionUrls(List<String> excludedSDs) {
     if (VersionUtilities.isR6Ver(context.getVersion())) {
-      syncR6GeneratorState();
-      r6Generator.setExcludedStructureDefinitionUrls(excludedSDs);
+      getR6Generator().setExcludedStructureDefinitionUrls(excludedSDs);
       return;
     }
     super.setExcludedStructureDefinitionUrls(excludedSDs);
@@ -98,8 +96,7 @@ public class ShExGenerator extends ShExGeneratorBase {
   @Override
   public List<StructureDefinition> getSelectedExtensions() {
     if (VersionUtilities.isR6Ver(context.getVersion())) {
-      syncR6GeneratorState();
-      return r6Generator.getSelectedExtensions();
+      return getR6Generator().getSelectedExtensions();
     }
     return super.getSelectedExtensions();
   }
@@ -107,8 +104,7 @@ public class ShExGenerator extends ShExGeneratorBase {
   @Override
   public void setSelectedExtension(List<StructureDefinition> selectedExtensions) {
     if (VersionUtilities.isR6Ver(context.getVersion())) {
-      syncR6GeneratorState();
-      r6Generator.setSelectedExtension(selectedExtensions);
+      getR6Generator().setSelectedExtension(selectedExtensions);
       return;
     }
     super.setSelectedExtension(selectedExtensions);
@@ -117,8 +113,7 @@ public class ShExGenerator extends ShExGeneratorBase {
   @Override
   public String generate(HTMLLinkPolicy links, List<StructureDefinition> structures, List<String> excludedSDUrls) {
     if (VersionUtilities.isR6Ver(context.getVersion())) {
-      syncR6GeneratorState();
-      return r6Generator.generate(links, structures, excludedSDUrls);
+      return getR6Generator().generate(links, structures, excludedSDUrls);
     }
     return super.generate(links, structures, excludedSDUrls);
   }
@@ -126,13 +121,39 @@ public class ShExGenerator extends ShExGeneratorBase {
   @Override
   public String generate(HTMLLinkPolicy links, List<StructureDefinition> structures) {
     if (VersionUtilities.isR6Ver(context.getVersion())) {
-      syncR6GeneratorState();
-      return r6Generator.generate(links, structures);
+      return getR6Generator().generate(links, structures);
     }
     return super.generate(links, structures);
   }
 
-  private void syncR6GeneratorState() {
-    copyConfigurationTo(r6Generator);
+  /** Redirect to R6 ShExGenerator and ensure it uses the same configuration */
+  private ShExGeneratorR6 getR6Generator() {
+    ShExGeneratorConfig currentConfig = currentConfiguration();
+    ShExGeneratorR6 generator = r6Generator;
+    if (generator == null) {
+      // `synchronized` ensures only one thread creates the delegate and publishes it safely
+      synchronized (this) {
+        generator = r6Generator;
+        if (generator == null) {
+          generator = new ShExGeneratorR6(context, currentConfig);
+          r6Generator = generator;
+          syncedR6Configuration = currentConfig;
+          return generator;
+        }
+      }
+    }
+
+    // If the deprecated config/settings changed, we need to get their current values
+    if (!currentConfig.equals(syncedR6Configuration)) {
+      // `synchronized` ensures config resync is applied atomically when deprecated mutable fields change
+      synchronized (this) {
+        if (!currentConfig.equals(syncedR6Configuration)) {
+          copyConfigurationTo(r6Generator);
+          syncedR6Configuration = currentConfig;
+        }
+        generator = r6Generator;
+      }
+    }
+    return generator;
   }
 }
