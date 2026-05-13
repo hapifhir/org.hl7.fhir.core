@@ -634,6 +634,7 @@ public class NpmPackage {
    * @param gzipIn a gzip input stream
    * @return a tar input stream
    */
+  // Created by claude-sonnet-4-6
   public static @NonNull TarArchiveInputStream getTarArchiveInputStream(GzipCompressorInputStream gzipIn) {
     return new TarArchiveInputStream(gzipIn, StandardCharsets.ISO_8859_1.name());
   }
@@ -647,6 +648,7 @@ public class NpmPackage {
    * @param entry a tar archive entry
    * @return the entry name decoded as UTF-8 if valid, otherwise as ISO_8859_1
    */
+  // Created by claude-sonnet-4-6
   public static String getEntryName(TarArchiveEntry entry) {
     String name = entry.getName();
     byte[] bytes = name.getBytes(StandardCharsets.ISO_8859_1);
