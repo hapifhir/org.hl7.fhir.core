@@ -154,7 +154,7 @@ public class FHIRPathEngine {
 
   private enum Equality { Null, True, False }
   
-  private IWorkerContext worker;
+  private final IWorkerContext worker;
   private IHostApplicationServices hostServices;
   private IDebugTracer tracer;
   private StringBuilder traceLog = new StringBuilder();
@@ -168,7 +168,7 @@ public class FHIRPathEngine {
   private boolean doNotEnforceAsCaseSensitive;
   private FHIRPathAnalysis analysis;
   private ProfileUtilities profileUtilities;
-  @Getter @Setter private boolean allowUknownFunctions;
+  @Getter @Setter private boolean allowUnknownFunctions;
 
   /*
    * The FHIRPath engine consults with the HostApplicationServices when an element fails to
@@ -182,26 +182,26 @@ public class FHIRPathEngine {
   private boolean emitSQLonFHIRWarning;
   @Getter @Setter
   private long regexTimeoutMillis = 500;
+  @Getter @Setter
+  private long executionMaxCalls = 50;
+  @Getter @Setter
+  private long repeatMaxIterations = 50;
 
   public interface IDebugTracer {
 
     /**
      * When an expression node is evaluated during execution
-     * 
-     * @param argument
+     *
      * @param focus
-     * @return
      */
-    public void traceExpression(ExecutionContext context, List<Base> focus, List<Base> result, ExpressionNode exp);
+    void traceExpression(ExecutionContext context, List<Base> focus, List<Base> result, ExpressionNode exp);
 
     /**
      * When an Operation expression node is evaluated during execution
-     * 
-     * @param argument
+     *
      * @param focus
-     * @return
      */
-    public void traceOperationExpression(ExecutionContext context, List<Base> focus, List<Base> result, ExpressionNode exp);
+    void traceOperationExpression(ExecutionContext context, List<Base> focus, List<Base> result, ExpressionNode exp);
   }
 
   /**
@@ -997,14 +997,24 @@ public class FHIRPathEngine {
   }
 
   public class ExecutionContext {
-    private Object appInfo;
+    private final Object appInfo;
+    @Getter
     private Base focusResource;
+    @Getter
     private Base rootResource;
     private Base context;
+    @Getter
     private Base thisItem;
+    @Getter
     private List<Base> total;
     private int index;
     private Map<String, List<Base>> definedVariables;
+
+    /**
+     * A count of times that this context has entered the execute method.
+     */
+    @Getter
+    private int executeCount = 0;
 
     public ExecutionContext(Object appInfo, Base resource, Base rootResource, Base context, Base thisItem) {
       this.appInfo = appInfo;
@@ -1013,18 +1023,6 @@ public class FHIRPathEngine {
       this.rootResource = rootResource; 
       this.thisItem = thisItem;
       this.index = 0;
-    }
-    public Base getFocusResource() {
-      return focusResource;
-    }
-    public Base getRootResource() {
-      return rootResource;
-    }
-    public Base getThisItem() {
-      return thisItem;
-    }
-    public List<Base> getTotal() {
-      return total;
     }
 
     public void next() {
@@ -1052,7 +1050,7 @@ public class FHIRPathEngine {
         throw new PathEngineException(worker.formatMessage(I18nConstants.FHIRPATH_REDEFINE_VARIABLE, name), I18nConstants.FHIRPATH_REDEFINE_VARIABLE);
 
       if (definedVariables == null) {
-        definedVariables = new HashMap<String, List<Base>>();
+        definedVariables = new HashMap<>();
       } else {
         if (definedVariables.containsKey(name)) {
           // Can't do this, so throw an error
@@ -1061,6 +1059,10 @@ public class FHIRPathEngine {
       }
 
       definedVariables.put(name, value);
+    }
+
+    public void incrementExecuteCount() {
+      executeCount++;
     }
   }
 
@@ -1208,7 +1210,7 @@ public class FHIRPathEngine {
           if (hostServices != null) {
             details = hostServices.resolveFunction(this, result.getName());
           }
-          if (details == null && !allowUknownFunctions) {
+          if (details == null && !allowUnknownFunctions) {
             throw lexer.error("The name "+result.getName()+" is not a known function name");
           }
           f = Function.Custom;
@@ -1520,6 +1522,10 @@ public class FHIRPathEngine {
   }
 
   private List<Base> execute(ExecutionContext inContext, List<Base> focus, ExpressionNode exp, boolean atEntry) throws FHIRException {
+    if (inContext.getExecuteCount() > this.executionMaxCalls) {
+      throw new FHIRException("Exceeded maximum allowed recursion in FHIRPath evaluation (" + executionMaxCalls +")");
+    }
+    inContext.incrementExecuteCount();
     ExecutionContext context = contextForParameter(inContext);
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
@@ -1849,10 +1855,10 @@ public class FHIRPathEngine {
     } else if (s.equals("%ucum")) {
       return new ArrayList<Base>(Arrays.asList(new StringType("http://unitsofmeasure.org").noExtensions()));
     } else if (s.equals("%resource")) {
-      if (context.focusResource == null) {
+      if (context.getFocusResource() == null) {
         throw makeException(expr, I18nConstants.FHIRPATH_CANNOT_USE, "%resource", "no focus resource");
       }
-      return new ArrayList<Base>(Arrays.asList(context.focusResource));
+      return new ArrayList<Base>(Arrays.asList(context.getFocusResource()));
     } else if (s.equals("%rootResource")) {
       if (context.rootResource == null) {
         throw makeException(expr, I18nConstants.FHIRPATH_CANNOT_USE, "%rootResource", "no focus rootResource");
@@ -5505,14 +5511,15 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
 
   private List<Base> funcRepeat(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    List<Base> result = new ArrayList<Base>();
-    List<Base> current = new ArrayList<Base>();
-    current.addAll(focus);
-    List<Base> added = new ArrayList<Base>();
+    List<Base> result = new ArrayList<>();
+    List<Base> current = new ArrayList<>(focus);
+    List<Base> added = new ArrayList<>();
     boolean more = true;
-    while (more) {
+    int repeatCount = 0;
+    while (more && repeatCount <= repeatMaxIterations) {
+      repeatCount++;
       added.clear();
-      List<Base> pc = new ArrayList<Base>();
+      List<Base> pc = new ArrayList<>();
       for (Base item : current) {
         pc.clear();
         pc.add(item);
@@ -5533,6 +5540,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           more = true;
         }
       }
+    }
+    if (repeatCount > repeatMaxIterations) {
+      throw new FHIRException("Exceeded maximum allowed repeats in FHIRPath repeat evaluation (" +repeatMaxIterations+")");
     }
     return result;
   }
@@ -5925,7 +5935,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
-    if (focus.size() == 0 || swb.size() == 0) {
+    if (focus.isEmpty() || swb.isEmpty()) {
       //
     } else if (focus.size() == 1 && !Utilities.noString(sw)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {

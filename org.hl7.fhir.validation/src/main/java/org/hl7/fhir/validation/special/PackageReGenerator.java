@@ -444,7 +444,7 @@ public class PackageReGenerator {
       }
       if (includeConformsTo) {
         for (ElementDefinition.ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
-          pathEngine.setAllowUknownFunctions(true);
+          pathEngine.setAllowUnknownFunctions(true);
           if (inv.hasExpression()) {
             try {
               ExpressionNode node = pathEngine.parse(inv.getExpression());
@@ -453,7 +453,7 @@ public class PackageReGenerator {
               log.error("Error in FHIRPath expression: "+inv.getExpression()+" ("+e.getMessage()+")");
             }
           }
-          pathEngine.setAllowUknownFunctions(false);
+          pathEngine.setAllowUnknownFunctions(false);
         }
       }
     }
