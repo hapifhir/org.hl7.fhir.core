@@ -25,7 +25,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FhirPathTests {
+class FhirPathTests {
 
   @Mock
   IWorkerContext iWorkerContext;
@@ -40,7 +40,7 @@ public class FhirPathTests {
   Base base;
 
   @Test
-  public void testFuncReplaceParamSize() {
+  void testFuncReplaceParamSize() {
     FHIRPathEngine engine = Mockito.spy(new FHIRPathEngine(iWorkerContext));
 
     ExpressionNode expressionNode = new ExpressionNode(0);
