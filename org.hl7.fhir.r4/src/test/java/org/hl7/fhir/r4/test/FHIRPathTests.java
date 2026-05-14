@@ -36,6 +36,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -352,5 +353,48 @@ public class FHIRPathTests {
     List<Base> results = fp.evaluate(input, "Patient.id");
     assertEquals(1, results.size());
     assertEquals("123", results.get(0).toString());
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "1, true",
+    "2, true",
+    "3, false",
+    "4, false"})
+  void testExecutionLimitExceededThrowsException(int maxCalls, boolean shouldThrow) {
+    Patient input = new Patient();
+    input.addName().setFamily("Smith").addGiven("John");
+    fp.setExecutionMaxCalls(maxCalls);
+    try {
+      if (shouldThrow) {
+        Assertions.assertThrows(FHIRException.class, () -> fp.evaluate(input, "Patient.name.family"));
+      } else {
+        Assertions.assertDoesNotThrow(() -> fp.evaluate(input, "Patient.name.family"));
+      }
+    } finally {
+      fp.setExecutionMaxCalls(FHIRPathEngine.DEFAULT_EXECUTION_MAX_CALLS);
+    }
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "1, true",
+    "2, true",
+    "3, false",
+    "4, false"})
+  void testRepeatMaxIterationsExceededThrowsException(int maxIterations, boolean shouldThrow) {
+    Questionnaire input = new Questionnaire();
+    input.addItem().setLinkId("item1").addItem().setLinkId("subitem1");
+    input.addItem().setLinkId("item2").addItem().setLinkId("subitem2");
+    fp.setRepeatMaxIterations(maxIterations);
+    try {
+      if (shouldThrow) {
+        Assertions.assertThrows(FHIRException.class, () -> fp.evaluate(input, "Questionnaire.repeat(item)"));
+      } else {
+        Assertions.assertDoesNotThrow(() -> fp.evaluate(input, "Questionnaire.repeat(item)"));
+      }
+    } finally {
+      fp.setRepeatMaxIterations(FHIRPathEngine.DEFAULT_REPEAT_MAX_ITERATIONS);
+    }
   }
 }
