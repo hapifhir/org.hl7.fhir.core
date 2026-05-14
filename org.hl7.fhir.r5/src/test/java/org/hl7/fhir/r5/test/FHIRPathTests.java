@@ -378,4 +378,26 @@ public class FHIRPathTests {
       fp.setExecutionMaxCalls(FHIRPathEngine.DEFAULT_EXECUTION_MAX_CALLS);
     }
   }
+
+  @ParameterizedTest
+  @CsvSource({
+    "1, true",
+    "2, true",
+    "3, false",
+    "4, false"})
+  void testRepeatMaxIterationsExceededThrowsException(int maxIterations, boolean shouldThrow) {
+    Questionnaire input = new Questionnaire();
+    input.addItem().setLinkId("item1").addItem().setLinkId("subitem1");
+    input.addItem().setLinkId("item2").addItem().setLinkId("subitem2");
+    fp.setRepeatMaxIterations(maxIterations);
+    try {
+      if (shouldThrow) {
+        Assertions.assertThrows(FHIRException.class, () -> fp.evaluate(input, "Questionnaire.repeat(item)"));
+      } else {
+        Assertions.assertDoesNotThrow(() -> fp.evaluate(input, "Questionnaire.repeat(item)"));
+      }
+    } finally {
+      fp.setRepeatMaxIterations(FHIRPathEngine.DEFAULT_REPEAT_MAX_ITERATIONS);
+    }
+  }
 }
