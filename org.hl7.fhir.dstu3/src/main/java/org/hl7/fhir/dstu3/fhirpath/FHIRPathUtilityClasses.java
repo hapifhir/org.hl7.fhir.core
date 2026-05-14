@@ -18,11 +18,16 @@ public class FHIRPathUtilityClasses {
     private Map<String, Base> aliases;
 
     public ExecutionContext(Object appInfo, Base resource, Base context, Map<String, Base> aliases, Base thisItem) {
+      this(appInfo, resource, context, aliases, thisItem, 0);
+    }
+
+    public ExecutionContext(Object appInfo, Base resource, Base context, Map<String, Base> aliases, Base thisItem, int executeCount) {
       this.appInfo = appInfo;
       this.context = context;
       this.resource = resource;
       this.aliases = aliases;
       this.thisItem = thisItem;
+      this.executeCount = executeCount;
     }
     public Base getResource() {
       return resource;
@@ -51,7 +56,16 @@ public class FHIRPathUtilityClasses {
     public Map<String, Base> getAliases() {
       return aliases;
     }
-    
+
+    private int executeCount;
+
+    public int getExecuteCount() {
+      return executeCount;
+    }
+
+    public void incrementExecuteCount() {
+      executeCount++;
+    }
   }
 
   public static class ExecutionTypeContext {
