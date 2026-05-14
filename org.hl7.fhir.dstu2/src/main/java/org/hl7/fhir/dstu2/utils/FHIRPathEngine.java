@@ -87,6 +87,14 @@ public class FHIRPathEngine {
   @Getter @Setter
   private long regexTimeoutMillis = 500;
 
+  public static final int DEFAULT_EXECUTION_MAX_CALLS = 50;
+  @Getter @Setter
+  private int executionMaxCalls = DEFAULT_EXECUTION_MAX_CALLS;
+
+  public static final int DEFAULT_REPEAT_MAX_ITERATIONS = 50;
+  @Getter @Setter
+  private int repeatMaxIterations = DEFAULT_REPEAT_MAX_ITERATIONS;
+
   /**
    * @param worker - used when validating paths (@check), and used doing value set
    *               membership when executing tests (once that's defined)
@@ -431,12 +439,18 @@ public class FHIRPathEngine {
     private Base resource;
     private Base context;
     private Base thisItem;
+    private int executeCount;
 
     public ExecutionContext(Object appInfo, Base resource, Base context, Base thisItem) {
+      this(appInfo, resource, context, thisItem, 0);
+    }
+
+    public ExecutionContext(Object appInfo, Base resource, Base context, Base thisItem, int executeCount) {
       this.appInfo = appInfo;
       this.resource = resource;
       this.context = context;
       this.thisItem = thisItem;
+      this.executeCount = executeCount;
     }
 
     public Base getResource() {
@@ -445,6 +459,14 @@ public class FHIRPathEngine {
 
     public Base getThisItem() {
       return thisItem;
+    }
+
+    public int getExecuteCount() {
+      return executeCount;
+    }
+
+    public void incrementExecuteCount() {
+      executeCount++;
     }
   }
 
@@ -806,6 +828,10 @@ public class FHIRPathEngine {
 
   private List<Base> execute(ExecutionContext context, List<Base> focus, ExpressionNode exp, boolean atEntry)
       throws PathEngineException {
+    context.incrementExecuteCount();
+    if (context.getExecuteCount() > executionMaxCalls) {
+      throw new PathEngineException("Exceeded maximum allowed recursion in FHIRPath evaluation (" + executionMaxCalls + ")");
+    }
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
     case Name:
@@ -2162,7 +2188,7 @@ public class FHIRPathEngine {
   }
 
   private ExecutionContext changeThis(ExecutionContext context, Base newThis) {
-    return new ExecutionContext(context.appInfo, context.resource, context.context, newThis);
+    return new ExecutionContext(context.appInfo, context.resource, context.context, newThis, context.getExecuteCount());
   }
 
   private ExecutionTypeContext changeThis(ExecutionTypeContext context, TypeDetails newThis) {
@@ -2317,7 +2343,9 @@ public class FHIRPathEngine {
     current.addAll(focus);
     List<Base> added = new ArrayList<Base>();
     boolean more = true;
-    while (more) {
+    int repeatCount = 0;
+    while (more && repeatCount <= repeatMaxIterations) {
+      repeatCount++;
       added.clear();
       List<Base> pc = new ArrayList<Base>();
       for (Base item : current) {
@@ -2329,6 +2357,9 @@ public class FHIRPathEngine {
       result.addAll(added);
       current.clear();
       current.addAll(added);
+    }
+    if (repeatCount > repeatMaxIterations) {
+      throw new PathEngineException("Exceeded maximum allowed repeats in FHIRPath repeat evaluation (" + repeatMaxIterations + ")");
     }
     return result;
   }
