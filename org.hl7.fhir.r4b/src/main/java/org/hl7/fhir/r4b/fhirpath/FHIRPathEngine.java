@@ -116,6 +116,14 @@ public class FHIRPathEngine {
   @Getter @Setter
   private long regexTimeoutMillis = 500;
 
+  public static final int DEFAULT_EXECUTION_MAX_CALLS = 50;
+  @Getter @Setter
+  private int executionMaxCalls = DEFAULT_EXECUTION_MAX_CALLS;
+
+  public static final int DEFAULT_REPEAT_MAX_ITERATIONS = 50;
+  @Getter @Setter
+  private int repeatMaxIterations = DEFAULT_REPEAT_MAX_ITERATIONS;
+
   /**
    * @param worker - used when validating paths (@check), and used doing value set
    *               membership when executing tests (once that's defined)
@@ -818,6 +826,16 @@ public class FHIRPathEngine {
 
       definedVariables.put(name, value);
     }
+
+    private int executeCount = 0;
+
+    public int getExecuteCount() {
+      return executeCount;
+    }
+
+    public void incrementExecuteCount() {
+      executeCount++;
+    }
   }
 
   private class ExecutionTypeContext {
@@ -1377,6 +1395,10 @@ public class FHIRPathEngine {
 
   private List<Base> execute(ExecutionContext inContext, List<Base> focus, ExpressionNode exp, boolean atEntry)
       throws FHIRException {
+    inContext.incrementExecuteCount();
+    if (inContext.getExecuteCount() > executionMaxCalls) {
+      throw new FHIRException("Exceeded maximum allowed recursion in FHIRPath evaluation (" + executionMaxCalls + ")");
+    }
     ExecutionContext context = contextForParameter(inContext);
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
@@ -4554,6 +4576,7 @@ public class FHIRPathEngine {
 
   private ExecutionContext contextForParameter(ExecutionContext context) {
     ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, context.thisItem);
+    newContext.executeCount = context.executeCount;
     newContext.total = context.total;
     newContext.index = context.index;
     // append all of the defined variables from the context into the new context
@@ -5057,7 +5080,9 @@ public class FHIRPathEngine {
     current.addAll(focus);
     List<Base> added = new ArrayList<Base>();
     boolean more = true;
-    while (more) {
+    int repeatCount = 0;
+    while (more && repeatCount <= repeatMaxIterations) {
+      repeatCount++;
       added.clear();
       List<Base> pc = new ArrayList<Base>();
       for (Base item : current) {
@@ -5080,6 +5105,9 @@ public class FHIRPathEngine {
           more = true;
         }
       }
+    }
+    if (repeatCount > repeatMaxIterations) {
+      throw new FHIRException("Exceeded maximum allowed repeats in FHIRPath repeat evaluation (" + repeatMaxIterations + ")");
     }
     return result;
   }
