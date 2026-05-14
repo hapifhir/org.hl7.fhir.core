@@ -36,6 +36,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -110,7 +111,7 @@ public class FHIRPathTests {
   private static SimpleWorkerContext context;
 
   @BeforeAll
-  public static void setUp() throws FileNotFoundException, FHIRException, IOException {
+  static void setUp() throws FHIRException, IOException {
     context = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     if (!context.hasPackage("hl7.cda.us.ccda", null)) {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
@@ -166,12 +167,12 @@ public class FHIRPathTests {
   @SuppressWarnings("deprecation")
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
-  public void test(String name, Element test) throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
+  void test(String name, Element test) throws IOException, org.hl7.fhir.exceptions.FHIRException, UcumException {
     // Setting timezone for this test. Grahame is in UTC+11, Travis is in GMT, and I'm here in Toronto, Canada with
     // all my time based tests failing locally...
     TimeZone.setDefault(TimeZone.getTimeZone("UTC+1100"));
 
-    fp.setHostServices(new FHIRPathTestEvaluationServices(this.context));
+    fp.setHostServices(new FHIRPathTestEvaluationServices(context));
     String input = test.getAttribute("inputfile");
     String expression = XMLUtil.getNamedChild(test, "expression").getTextContent();
     TestResultType fail = TestResultType.OK;
@@ -181,7 +182,7 @@ public class FHIRPathTests {
       fail = TestResultType.SEMANTICS;      
     } else if ("execution".equals(XMLUtil.getNamedChild(test, "expression").getAttribute("invalid"))) {
       fail = TestResultType.EXECUTION;      
-    };
+    }
     fp.setAllowPolymorphicNames("lenient/polymorphics".equals(test.getAttribute("mode")));
     boolean skipStaticCheck = false;
     if ("true".equals(test.getAttribute("skipStaticCheck")))
@@ -198,7 +199,7 @@ public class FHIRPathTests {
       Assertions.assertTrue(fail != TestResultType.SYNTAX, String.format("Expected exception didn't occur parsing %s", expression));
     } catch (Exception e) {
       System.out.println("Parsing Error: "+e.getMessage());
-      Assertions.assertTrue(fail == TestResultType.SYNTAX, String.format("Unexpected exception parsing %s: " + e.getMessage(), expression));
+      Assertions.assertSame(TestResultType.SYNTAX, fail, String.format("Unexpected exception parsing %s: %s", expression, e.getMessage()));
     }
     
     if (node != null) {
@@ -223,10 +224,10 @@ public class FHIRPathTests {
           } else {
             fp.check(res, res.fhirType(), res.fhirType(), res.fhirType(), node);
           }
-          Assertions.assertTrue(fail != TestResultType.SEMANTICS, String.format("Expected exception didn't occur checking %s", expression));
+          Assertions.assertNotSame(TestResultType.SEMANTICS, fail, String.format("Expected exception didn't occur checking %s", expression));
         } catch (Exception e) {
           System.out.println("Checking Error: "+e.getMessage());
-          Assertions.assertTrue(fail == TestResultType.SEMANTICS, "Unexpected exception checking '"+expression+"': " + e.getMessage());
+          Assertions.assertSame(TestResultType.SEMANTICS, fail, "Unexpected exception checking '" + expression + "': " + e.getMessage());
           node = null;
         }
       }
@@ -308,7 +309,7 @@ public class FHIRPathTests {
 
   @Test
   @DisplayName("resolveConstant returns a list of Base")
-  public void resolveConstantReturnsList() throws IOException {
+  void resolveConstantReturnsList() throws IOException {
     final String DUMMY_CONSTANT_1 = "dummyConstant1";
     final String DUMMY_CONSTANT_2 = "dummyConstant2";
     fp.setHostServices(new FHIRPathTestEvaluationServices(context) {
@@ -330,7 +331,7 @@ public class FHIRPathTests {
   }
 
   @Test
-  public void testEvaluate_Id() {
+  void testEvaluate_Id() {
     Patient input = new Patient();
     input.setId(new IdType("http://base/Patient/123/_history/222"));
     List<Base> results = fp.evaluate(input, "Patient.id");
@@ -355,5 +356,26 @@ public class FHIRPathTests {
     input.setBirthDateElement(dtv);
     List<Base> results = fp.evaluate(input, "Patient.birthDate.toString()");
     assertEquals(0, results.size());
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "1, true",
+    "2, true",
+    "3, false",
+    "4, false"})
+  void testExecutionLimitExceededThrowsException(int maxCalls, boolean shouldThrow) {
+    Patient input = new Patient();
+    input.addName().setFamily("Smith").addGiven("John");
+    fp.setExecutionMaxCalls(maxCalls);
+    try {
+      if (shouldThrow) {
+        Assertions.assertThrows(FHIRException.class, () -> fp.evaluate(input, "Patient.name.family"));
+      } else {
+        Assertions.assertDoesNotThrow(() -> fp.evaluate(input, "Patient.name.family"));
+      }
+    } finally {
+      fp.setExecutionMaxCalls(FHIRPathEngine.DEFAULT_EXECUTION_MAX_CALLS);
+    }
   }
 }

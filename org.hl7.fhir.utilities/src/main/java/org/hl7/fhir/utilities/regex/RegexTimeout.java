@@ -13,7 +13,7 @@ public final class RegexTimeout {
     throw new UnsupportedOperationException("This utility class should not be instantiated");
   }
 
-  static final long DEFAULT_TIMEOUT = 500;
+  public static final long DEFAULT_TIMEOUT = 500;
 
   private static <T> T executeWithTimeout(Callable<T> callable, long timeoutMillis) throws TimeoutException {
     ExecutorService executor = Executors.newSingleThreadExecutor();

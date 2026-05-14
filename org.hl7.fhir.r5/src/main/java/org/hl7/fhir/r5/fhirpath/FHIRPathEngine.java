@@ -178,14 +178,18 @@ public class FHIRPathEngine {
    */
   private boolean checkWithHostServicesBeforeHand;
   private boolean allowDoubleQuotes;
-  private List<IssueMessage> typeWarnings = new ArrayList<>();
+  private final List<IssueMessage> typeWarnings = new ArrayList<>();
   private boolean emitSQLonFHIRWarning;
   @Getter @Setter
-  private long regexTimeoutMillis = 500;
+  private long regexTimeoutMillis = RegexTimeout.DEFAULT_TIMEOUT;
+
+  public static final int DEFAULT_EXECUTION_MAX_CALLS = 50;
   @Getter @Setter
-  private long executionMaxCalls = 50;
+  private int executionMaxCalls = DEFAULT_EXECUTION_MAX_CALLS;
+
+  public static final int DEFAULT_REPEAT_MAX_ITERATIONS = 50;
   @Getter @Setter
-  private long repeatMaxIterations = 50;
+  private int repeatMaxIterations = 50;
 
   public interface IDebugTracer {
 
@@ -514,7 +518,7 @@ public class FHIRPathEngine {
    * 
    * returns a list of the possible types that might be returned by executing the ExpressionNode against a particular context
    * 
-   * @param context - the logical type against which this path is applied
+   the logical type against which this path is applied
    * @throws DefinitionException
    * @throws PathEngineException 
    * @if the path is not valid
@@ -1522,10 +1526,11 @@ public class FHIRPathEngine {
   }
 
   private List<Base> execute(ExecutionContext inContext, List<Base> focus, ExpressionNode exp, boolean atEntry) throws FHIRException {
+    inContext.incrementExecuteCount();
     if (inContext.getExecuteCount() > this.executionMaxCalls) {
       throw new FHIRException("Exceeded maximum allowed recursion in FHIRPath evaluation (" + executionMaxCalls +")");
     }
-    inContext.incrementExecuteCount();
+
     ExecutionContext context = contextForParameter(inContext);
     List<Base> work = new ArrayList<Base>();
     switch (exp.getKind()) {
@@ -4993,6 +4998,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private ExecutionContext contextForParameter(ExecutionContext context) {
     ExecutionContext newContext = new ExecutionContext(context.appInfo, context.focusResource, context.rootResource, context.context, context.thisItem);
+    newContext.executeCount = context.executeCount;
     newContext.total = context.total;
     newContext.index = context.index;
     // append all of the defined variables from the context into the new context
