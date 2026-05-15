@@ -39,6 +39,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.SearchParameter.SearchParameterComponentComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
@@ -151,9 +152,21 @@ public class ResourceDependencyWalker {
       walkSP((SearchParameter) res);
     } else if (res instanceof Questionnaire) {
       walkQ((Questionnaire) res);
+    } else if (res instanceof StructureMap) {
+      walkSM((StructureMap) res);
     } else {
       throw new Error("Resource "+res.fhirType()+" not Processed yet");
     }
+  }
+
+  private void walkSM(StructureMap sm) {
+    walkCR(sm);
+    // The source/target StructureDefinitions referenced by `structure[].url`.
+    for (StructureMap.StructureMapStructureComponent s : sm.getStructure()) {
+      walkIntoLink(s.getUrl(), sm);
+    }
+    // Other StructureMaps pulled in via `import`.
+    walkCT(sm.getImport(), sm);
   }
   
 
