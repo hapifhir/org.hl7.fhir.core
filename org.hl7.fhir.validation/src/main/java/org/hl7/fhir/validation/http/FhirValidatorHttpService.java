@@ -49,6 +49,7 @@ public class FhirValidatorHttpService {
     server.createContext("/matchetype", new MatchetypeHTTPHandler(this));
     server.createContext("/testdata", new TestDataHTTPHandler(this));
     server.createContext("/loadIg", new LoadIGHTTPHandler(this));
+    server.createContext("/loadResource", new LoadResourceHTTPHandler(this));
     server.createContext("/convert", new ConvertHTTPHandler(this));
     server.createContext("/snapshot", new SnapshotHTTPHandler(this));
     server.createContext("/questionnaire", new QuestionnaireHTTPHandler(this));
@@ -75,6 +76,7 @@ public class FhirValidatorHttpService {
     server.createContext("/itb/testdata",          new GitbTestDataHandler(this));           // PS
     server.createContext("/itb/validationResults", new GitbValidationResultsHandler(this));  // PS
     server.createContext("/itb/igManager",         new GitbIgManagerHandler(this));          // PS
+    server.createContext("/itb/loadResource",      new GitbLoadResourceHandler(this));       // PS
     server.createContext("/itb/transform",         new GitbTransformHandler(this));          // PS
     server.createContext("/itb/questionnaire",     new GitbQuestionnaireHandler(this));      // PS
     server.createContext("/itb/package",           new GitbPackageHandler(this));            // PS

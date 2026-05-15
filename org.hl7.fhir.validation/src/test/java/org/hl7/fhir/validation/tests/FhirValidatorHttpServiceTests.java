@@ -1437,6 +1437,175 @@ class FhirValidatorHttpServiceTest {
       assertEquals("60591-5",          typeCoding.asString("code"));
     }
 
+    // ─── Ad-hoc resource loading (/loadResource) tests ───
+
+    /** Two CodeSystems in a `collection` Bundle — used to verify Bundle-iteration semantics. */
+    private static final String SAMPLE_COLLECTION_BUNDLE =
+        "{\"resourceType\":\"Bundle\",\"type\":\"collection\",\"entry\":["
+      + "{\"resource\":{\"resourceType\":\"CodeSystem\",\"id\":\"lr-cs1\","
+      + "\"url\":\"http://example.org/CodeSystem/lr-cs1\",\"version\":\"1.0.0\","
+      + "\"status\":\"active\",\"content\":\"complete\","
+      + "\"concept\":[{\"code\":\"x\",\"display\":\"X\"}]}},"
+      + "{\"resource\":{\"resourceType\":\"CodeSystem\",\"id\":\"lr-cs2\","
+      + "\"url\":\"http://example.org/CodeSystem/lr-cs2\","
+      + "\"status\":\"active\",\"content\":\"complete\","
+      + "\"concept\":[{\"code\":\"y\",\"display\":\"Y\"}]}}"
+      + "]}";
+
+    @Test
+    @DisplayName("LoadResource - parse FML then register the resulting StructureMap on the server")
+    void testLoadResourceEndToEnd() throws Exception {
+      setUpService(getValidationEngine());
+
+      // 1. parse FML to a StructureMap JSON
+      HttpResponse<String> parseResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/fml?name=IdentityTest"))
+          .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_FML))
+          .header("Content-Type", "text/plain")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, parseResp.statusCode(), "parse: " + parseResp.body());
+      String smJson = parseResp.body();
+
+      // 2. register the parsed SM on the running validator
+      HttpResponse<String> loadResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/loadResource"))
+          .POST(HttpRequest.BodyPublishers.ofString(smJson))
+          .header("Content-Type", "application/fhir+json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, loadResp.statusCode(), "load: " + loadResp.body());
+      org.hl7.fhir.utilities.json.model.JsonObject loadBody =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(loadResp.body());
+      assertEquals(1, loadBody.asInteger("loaded"));
+      org.hl7.fhir.utilities.json.model.JsonArray loadedRes = loadBody.getJsonArray("resources");
+      assertEquals(1, loadedRes.size());
+      assertTrue(loadedRes.get(0).asString().contains("StructureMap"));
+      assertTrue(loadedRes.get(0).asString().contains("http://example.org/StructureMap/IdentityTest"));
+
+      // 3. confirm the validator can now resolve the registered SM by its canonical URL.
+      // We hit /transform with the SM URL — the SM must be found in context. Whether the
+      // engine successfully completes the actual transformation is a separate concern
+      // (it depends on snapshot infrastructure not relevant here); the failure mode we
+      // explicitly do NOT want is "Unable to find map ..." which signals registration didn't take.
+      String patient = "{\"resourceType\":\"Patient\",\"id\":\"abc\"}";
+      String mapParam = java.net.URLEncoder.encode("http://example.org/StructureMap/IdentityTest", "UTF-8");
+      HttpResponse<String> xfmResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/transform?map=" + mapParam))
+          .POST(HttpRequest.BodyPublishers.ofString(patient))
+          .header("Content-Type", "application/fhir+json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertFalse(xfmResp.body().contains("Unable to find map"),
+        "After /loadResource the validator must be able to resolve the SM by canonical URL: " + xfmResp.body());
+    }
+
+    @Test
+    @DisplayName("LoadResource - registers every entry of a `collection` Bundle")
+    void testLoadResourceBundle() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpResponse<String> resp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/loadResource"))
+          .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_COLLECTION_BUNDLE))
+          .header("Content-Type", "application/fhir+json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, resp.statusCode(), "body: " + resp.body());
+      org.hl7.fhir.utilities.json.model.JsonObject body =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(resp.body());
+      assertEquals(2, body.asInteger("loaded"), "Both entries must be registered");
+      org.hl7.fhir.utilities.json.model.JsonArray arr = body.getJsonArray("resources");
+      assertEquals(2, arr.size());
+      assertTrue(arr.get(0).asString().contains("CodeSystem"));
+      assertTrue(arr.get(1).asString().contains("CodeSystem"));
+    }
+
+    @Test
+    @DisplayName("LoadResource - missing body returns 400")
+    void testLoadResourceMissingBody() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpResponse<String> resp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/loadResource"))
+          .POST(HttpRequest.BodyPublishers.ofString(""))
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(400, resp.statusCode());
+      assertTrue(resp.body().contains("Missing request body"));
+    }
+
+    @Test
+    @DisplayName("LoadResource - GET method not allowed")
+    void testLoadResourceGetNotAllowed() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpResponse<String> resp = httpClient.send(
+        HttpRequest.newBuilder().uri(URI.create(BASE_URL + "/loadResource")).GET().build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(405, resp.statusCode());
+    }
+
+    @Test
+    @DisplayName("ITB LoadResource - register a StructureMap via the GITB endpoint")
+    void testItbLoadResource() throws Exception {
+      setUpService(getValidationEngine());
+
+      // 1. parse FML via the GITB transform-parse op
+      org.hl7.fhir.utilities.json.model.JsonObject parseBody = new org.hl7.fhir.utilities.json.model.JsonObject();
+      parseBody.add("operation", "parse");
+      org.hl7.fhir.utilities.json.model.JsonArray pin = new org.hl7.fhir.utilities.json.model.JsonArray();
+      pin.add(anyContent("content", SAMPLE_FML));
+      parseBody.add("input", pin);
+      HttpResponse<String> parseResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/itb/transform/process"))
+          .POST(HttpRequest.BodyPublishers.ofString(org.hl7.fhir.utilities.json.parser.JsonParser.compose(parseBody)))
+          .header("Content-Type", "application/json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, parseResp.statusCode(), "parse: " + parseResp.body());
+      String smJson = null;
+      for (org.hl7.fhir.utilities.json.model.JsonElement el :
+           org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(parseResp.body()).getJsonArray("output")) {
+        org.hl7.fhir.utilities.json.model.JsonObject ac = el.asJsonObject();
+        if ("structureMap".equals(ac.asString("name"))) smJson = ac.asString("value");
+      }
+      assertTrue(smJson != null && !smJson.isEmpty());
+
+      // 2. register via the GITB loadResource op
+      org.hl7.fhir.utilities.json.model.JsonObject loadBody = new org.hl7.fhir.utilities.json.model.JsonObject();
+      loadBody.add("operation", "loadResource");
+      org.hl7.fhir.utilities.json.model.JsonArray lin = new org.hl7.fhir.utilities.json.model.JsonArray();
+      lin.add(anyContent("content", smJson));
+      loadBody.add("input", lin);
+      HttpResponse<String> loadResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/itb/loadResource/process"))
+          .POST(HttpRequest.BodyPublishers.ofString(org.hl7.fhir.utilities.json.parser.JsonParser.compose(loadBody)))
+          .header("Content-Type", "application/json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, loadResp.statusCode(), "load: " + loadResp.body());
+      String loadedCount = null;
+      String loadedRes = null;
+      for (org.hl7.fhir.utilities.json.model.JsonElement el :
+           org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(loadResp.body()).getJsonArray("output")) {
+        org.hl7.fhir.utilities.json.model.JsonObject ac = el.asJsonObject();
+        if ("loaded".equals(ac.asString("name")))    loadedCount = ac.asString("value");
+        if ("resources".equals(ac.asString("name"))) loadedRes   = ac.asString("value");
+      }
+      assertEquals("1", loadedCount, "GITB output 'loaded' must be 1");
+      assertTrue(loadedRes != null && loadedRes.contains("StructureMap"),
+        "GITB output 'resources' must reference the registered StructureMap: " + loadedRes);
+    }
+
     /** Build a single GITB AnyContent item with embeddingMethod=STRING. */
     private static org.hl7.fhir.utilities.json.model.JsonObject anyContent(String name, String value) {
       org.hl7.fhir.utilities.json.model.JsonObject ac = new org.hl7.fhir.utilities.json.model.JsonObject();

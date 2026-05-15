@@ -60,7 +60,7 @@ class GitbHttpHandlersTest {
   // ------------------------------------------------------------------
 
   @ParameterizedTest
-  @ValueSource(strings = {"fhir", "matchetype", "fhirPathAssertion", "fhirPath", "testdata", "validationResults", "igManager", "transform", "questionnaire", "package"})
+  @ValueSource(strings = {"fhir", "matchetype", "fhirPathAssertion", "fhirPath", "testdata", "validationResults", "igManager", "transform", "questionnaire", "package", "loadResource"})
   void getModuleDefinitionReturnsModule(String svc) throws Exception {
     HttpResponse<String> response = get("/itb/" + svc + "/getModuleDefinition");
     assertEquals(200, response.statusCode(), "for /itb/" + svc + "/getModuleDefinition");
@@ -256,6 +256,48 @@ class GitbHttpHandlersTest {
     JsonObject body = processRequestBody("flubber",
       anyContent("resource", "http://example.org/ImplementationGuide/x"));
     HttpResponse<String> response = post("/itb/package/process", JsonParser.compose(body));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("Unknown operation");
+  }
+
+  @Test
+  void loadResourceModuleHasLoadResourceOperationWithRequiredContent() throws Exception {
+    JsonObject body = JsonParser.parseObject(get("/itb/loadResource/getModuleDefinition").body());
+    JsonObject module = body.getJsonObject("module");
+    assertEquals("ResourceLoader", module.asString("id"));
+    assertOperations(module, "loadResource");
+
+    JsonArray ops = module.getJsonArray("operation");
+    JsonObject load = null;
+    for (JsonElement el : ops) {
+      JsonObject o = el.asJsonObject();
+      if ("loadResource".equals(o.asString("name"))) { load = o; break; }
+    }
+    assertTrue(load != null, "loadResource operation must be present in module definition");
+    JsonArray inputs = load.getJsonObject("inputs").getJsonArray("param");
+    java.util.Set<String> required = new java.util.HashSet<>();
+    java.util.Set<String> optional = new java.util.HashSet<>();
+    for (JsonElement el : inputs) {
+      JsonObject p = el.asJsonObject();
+      ("R".equals(p.asString("use")) ? required : optional).add(p.asString("name"));
+    }
+    assertTrue(required.contains("content"), "loadResource.content must be required");
+    assertTrue(optional.contains("format"),  "loadResource.format must be optional");
+  }
+
+  @Test
+  void loadResourceProcessReturns400WhenContentInputIsMissing() throws Exception {
+    JsonObject body = processRequestBody("loadResource"); // no input — content is required
+    HttpResponse<String> response = post("/itb/loadResource/process", JsonParser.compose(body));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("Missing required input");
+  }
+
+  @Test
+  void loadResourceProcessReturns400ForUnknownOperation() throws Exception {
+    JsonObject body = processRequestBody("flubber",
+      anyContent("content", "{\"resourceType\":\"Patient\"}"));
+    HttpResponse<String> response = post("/itb/loadResource/process", JsonParser.compose(body));
     assertEquals(400, response.statusCode());
     assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("Unknown operation");
   }

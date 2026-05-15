@@ -906,6 +906,50 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return false;
   }
 
+  /**
+   * Parse a FHIR resource from bytes and register it (or every entry of a Bundle of type
+   * {@code collection}/{@code batch}/{@code transaction}) in the validator's context so it can
+   * later be resolved by canonical URL — same effect as having loaded it from a package.
+   *
+   * @param content      serialised FHIR resource (JSON or XML)
+   * @param inputFormat  format of {@code content} (JSON or XML)
+   * @return list of {@code "ResourceType/id"} descriptors for each resource registered
+   */
+  public List<String> loadResourceFromBytes(byte[] content, FhirFormat inputFormat) throws FHIRException, IOException {
+    String fakeName = "upload." + (inputFormat == FhirFormat.XML ? "xml" : "json");
+    // Prefer the engine's configured version; fall back to the context's, since the
+    // ValidationEngineBuilder.fromSource(...) path doesn't propagate version onto the engine.
+    String effectiveVersion = version != null ? version : (context != null ? context.getVersion() : null);
+    if (effectiveVersion == null) {
+      throw new FHIRException("ValidationEngine has no FHIR version configured; cannot parse resource bytes");
+    }
+    Resource parsed = igLoader.loadResourceByVersion(effectiveVersion, content, fakeName);
+    List<String> loaded = new ArrayList<>();
+    if (parsed instanceof Bundle) {
+      Bundle b = (Bundle) parsed;
+      for (BundleEntryComponent e : b.getEntry()) {
+        Resource r = e.getResource();
+        if (r != null) {
+          seeResource(r);
+          loaded.add(describeLoaded(r));
+        }
+      }
+    } else if (parsed != null) {
+      seeResource(parsed);
+      loaded.add(describeLoaded(parsed));
+    }
+    return loaded;
+  }
+
+  private static String describeLoaded(Resource r) {
+    if (r instanceof CanonicalResource && ((CanonicalResource) r).hasUrl()) {
+      CanonicalResource cr = (CanonicalResource) r;
+      return cr.fhirType() + "/" + (cr.hasId() ? cr.getIdPart() : "?") + " (" + cr.getUrl()
+          + (cr.hasVersion() ? "|" + cr.getVersion() : "") + ")";
+    }
+    return r.fhirType() + "/" + (r.hasId() ? r.getIdPart() : "?");
+  }
+
   public org.hl7.fhir.r5.elementmodel.Element transform(ByteProvider source, FhirFormat cntType, String mapUri) throws FHIRException, IOException {
     List<Base> outputs = new ArrayList<>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
