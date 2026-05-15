@@ -30,12 +30,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -224,11 +219,11 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
         pidList.put(base, pid);
       }
     }
-    ver = url.contains("|") ? url.substring(url.indexOf("|") + 1) : null;
     if (pid == null && Utilities.startsWithInList(url, "http://hl7.org/fhir", "http://terminology.hl7.org")) {
       urlList.put(url, false);
       return false;
     }
+    ver = url.contains("|") ? url.substring(url.indexOf("|") + 1) : null;
 
     if (url.startsWith("http://hl7.org/fhir")) {
       // first possibility: it's a reference to a version specific URL http://hl7.org/fhir/X.X/...
@@ -238,6 +233,14 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
         boolean res = pi.hasCanonical(vu.getUrl());
         urlList.put(url, res);
         return res;
+      }
+    }
+
+    // maybe it's a package we've already loaded. if it is, we'll give up
+    for (String s : context.getManager().getloadedPackages()) {
+      if ((s.startsWith(pid+"#") && ver == null) || s.equals(pid+"#"+ver) ) {
+        urlList.put(url, false);
+        return false;
       }
     }
 

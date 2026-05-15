@@ -68,7 +68,7 @@ public class TerminologyClientManager {
 
     @Override
     public String toString() {
-      return "auth = " + CommaSeparatedStringBuilder.join("|", authoritative)+ ", candidates=" + CommaSeparatedStringBuilder.join("|", candidates);
+      return "["+url+ "]: auth = " + CommaSeparatedStringBuilder.join("|", authoritative)+ ", candidates=" + CommaSeparatedStringBuilder.join("|", candidates);
     }    
     
   }
