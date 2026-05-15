@@ -91,23 +91,28 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+    public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
     @Override
-    public int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+    public int loadPackage(NpmPackage pi, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
     @Override
-    public int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
+    public int loadPackage(String idAndVer, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
     @Override
     public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
       return 0;
+    }
+
+    @Override
+    public List<String> getloadedPackages() {
+      return List.of();
     }
 
     @Override
@@ -306,23 +311,28 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+      public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 
       @Override
-      public int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+      public int loadPackage(NpmPackage pi, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 
       @Override
-      public int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
+      public int loadPackage(String idAndVer, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 
       @Override
       public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
         return 0;
+      }
+
+      @Override
+      public List<String> getloadedPackages() {
+        return List.of();
       }
 
       @Override

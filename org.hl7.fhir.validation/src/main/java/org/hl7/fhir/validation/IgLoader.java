@@ -144,7 +144,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       }
       IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
       loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
-      int count = getContext().loadFromPackage(npm, loader);
+      int count = getContext().loadFromPackage(npm, loader, false);
       log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
     } else {
       StringBuilder packageLoadLine = new StringBuilder();

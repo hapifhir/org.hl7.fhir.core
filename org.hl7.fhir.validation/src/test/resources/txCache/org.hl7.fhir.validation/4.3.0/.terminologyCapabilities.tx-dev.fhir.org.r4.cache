@@ -2,11 +2,11 @@
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
   "url" : "https://tx-dev.fhir.org/r4/TerminologyCapabilities/tx",
-  "version" : "0.9.3",
+  "version" : "0.9.4",
   "name" : "FHIRTerminologyServer",
   "title" : "FHIR Terminology Server",
   "status" : "active",
-  "date" : "2026-04-20T21:22:46.999Z",
+  "date" : "2026-05-15T07:00:27.385Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -3032,6 +3032,9 @@
     },
     {
       "code" : "http://snomed.info/sct/2011000195101/version/20230607"
+    },
+    {
+      "code" : "http://snomed.info/sct/554471000005108/version/20260331"
     },
     {
       "code" : "http://snomed.info/sct/827022005/version/20241216"
