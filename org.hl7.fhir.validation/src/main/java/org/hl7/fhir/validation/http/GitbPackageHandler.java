@@ -32,9 +32,10 @@ class GitbPackageHandler extends GitbProcessingServiceHandler {
   @Override
   protected JsonObject buildProcessingModule() {
     JsonObject inputs = typedParameters(
-      new TypedParam("resource",        "string",  true,  "Canonical URL of the root artifact to package."),
-      new TypedParam("expandValueSets", "boolean", false, "When true, ValueSet entries are replaced by their expansion. Default false."),
-      new TypedParam("targetFormat",    "string",  false, "Output format: json (default) or xml.")
+      new TypedParam("resource",              "string",  true,  "Canonical URL of the root artifact to package."),
+      new TypedParam("expandValueSets",       "boolean", false, "When true, ValueSet entries are replaced by their expansion. Default false."),
+      new TypedParam("includeRuleReferences", "boolean", false, "When true, also follow canonical URLs that appear inside StructureMap rules (notably ConceptMap URLs used by `translate(...)`). Default false."),
+      new TypedParam("targetFormat",          "string",  false, "Output format: json (default) or xml.")
     );
     JsonObject outputs = typedParameters(
       new TypedParam("bundle",     "binary", true,  "Collection Bundle of the artifact and its transitive dependencies."),
@@ -55,13 +56,14 @@ class GitbPackageHandler extends GitbProcessingServiceHandler {
     }
     String rootUrl = requireInput(input, "resource");
     boolean expandValueSets = optionalBooleanInput(input, "expandValueSets", false);
+    boolean includeRuleReferences = optionalBooleanInput(input, "includeRuleReferences", false);
     String targetFormatStr = optionalInput(input, "targetFormat", "json");
     FhirFormat outputFormat = "xml".equalsIgnoreCase(targetFormatStr) ? FhirFormat.XML : FhirFormat.JSON;
 
     ValidationEngine engine = service.getValidationEngine();
     byte[] result;
     try {
-      result = engine.packageResource(rootUrl, expandValueSets, outputFormat);
+      result = engine.packageResource(rootUrl, expandValueSets, includeRuleReferences, outputFormat);
     } catch (Throwable t) {
       log.warn("GITB package failed", t);
       throw new RuntimeException("Package failed: " + t.getMessage(), t);

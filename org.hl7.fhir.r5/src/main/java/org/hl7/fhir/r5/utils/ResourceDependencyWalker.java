@@ -76,6 +76,10 @@ public class ResourceDependencyWalker {
   private IWorkerContext context;
   private Set<String> processedLinks = new HashSet<>();
   private Set<Resource> processedResources = new HashSet<>();
+  // Off by default: walking into StructureMap rule expressions catches ConceptMaps
+  // referenced via `translate(<canonical>, ...)` and similar in-rule URLs, but
+  // surfaces a lot of churn that callers don't always want.
+  private boolean includeRuleReferences = false;
   
   public ResourceDependencyWalker(IWorkerContext context, IResourceDependencyNotifier notifier) {
     super();
@@ -86,6 +90,16 @@ public class ResourceDependencyWalker {
   public ResourceDependencyWalker(IWorkerContext context) {
     super();
     this.context = context;
+  }
+
+  /**
+   * When true, the walker also follows ConceptMap and similar canonical URLs
+   * that appear as parameters of rule-level transforms inside a {@link StructureMap}
+   * (notably {@code translate(<concept-map>, code, ...)}). Default: false.
+   */
+  public ResourceDependencyWalker setIncludeRuleReferences(boolean includeRuleReferences) {
+    this.includeRuleReferences = includeRuleReferences;
+    return this;
   }
   
   private void notify(Resource resource, String prefix) {
@@ -167,6 +181,30 @@ public class ResourceDependencyWalker {
     }
     // Other StructureMaps pulled in via `import`.
     walkCT(sm.getImport(), sm);
+    // Rule-level references — only when opted in (see setIncludeRuleReferences).
+    if (includeRuleReferences) {
+      for (StructureMap.StructureMapGroupComponent g : sm.getGroup()) {
+        for (StructureMap.StructureMapGroupRuleComponent r : g.getRule()) {
+          walkSMRule(r, sm);
+        }
+      }
+    }
+  }
+
+  private void walkSMRule(StructureMap.StructureMapGroupRuleComponent rule, StructureMap sm) {
+    for (StructureMap.StructureMapGroupRuleTargetComponent target : rule.getTarget()) {
+      // `translate(<concept-map>, code, "code")` — the first parameter is a ConceptMap canonical.
+      if (target.getTransform() == StructureMap.StructureMapTransform.TRANSLATE
+          && !target.getParameter().isEmpty()) {
+        org.hl7.fhir.r5.model.DataType v = target.getParameter().get(0).getValue();
+        if (v != null && v.hasPrimitiveValue()) {
+          walkIntoLink(v.primitiveValue(), sm);
+        }
+      }
+    }
+    for (StructureMap.StructureMapGroupRuleComponent nested : rule.getRule()) {
+      walkSMRule(nested, sm);
+    }
   }
   
 

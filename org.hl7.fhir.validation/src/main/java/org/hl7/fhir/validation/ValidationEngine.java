@@ -821,6 +821,18 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
    */
   public byte[] packageResource(String rootUrl, boolean expandValueSets, FhirFormat outputFormat)
       throws FHIRException, IOException {
+    return packageResource(rootUrl, expandValueSets, false, outputFormat);
+  }
+
+  /**
+   * Same as {@link #packageResource(String, boolean, FhirFormat)} but with the option to
+   * also follow rule-level canonical references inside {@link org.hl7.fhir.r5.model.StructureMap}
+   * resources — notably ConceptMap URLs used by {@code translate(...)} transforms. Defaults
+   * to {@code false} on the 3-arg overload because rule-walking can pull in a long tail of
+   * additional artifacts that some callers don't want.
+   */
+  public byte[] packageResource(String rootUrl, boolean expandValueSets, boolean includeRuleReferences, FhirFormat outputFormat)
+      throws FHIRException, IOException {
     Resource root = context.fetchResource(Resource.class, rootUrl);
     if (root == null) {
       throw new FHIRException("Resource not found: " + rootUrl);
@@ -839,6 +851,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
             brokenLinks.add(link);
           }
         });
+    walker.setIncludeRuleReferences(includeRuleReferences);
     walker.walk(root);
 
     Bundle bundle = new Bundle();
@@ -929,16 +942,40 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       Bundle b = (Bundle) parsed;
       for (BundleEntryComponent e : b.getEntry()) {
         Resource r = e.getResource();
-        if (r != null) {
-          seeResource(r);
-          loaded.add(describeLoaded(r));
+        if (r != null && registerIfNew(r, loaded)) {
+          // already accounted for in loaded
         }
       }
     } else if (parsed != null) {
-      seeResource(parsed);
-      loaded.add(describeLoaded(parsed));
+      registerIfNew(parsed, loaded);
     }
     return loaded;
+  }
+
+  /**
+   * Register {@code r} on the context if it isn't already there (compared by canonical URL).
+   * Returns true if the resource was registered, false if it was skipped as a duplicate.
+   * The {@code loaded} list is appended either way — duplicates are reported with a
+   * "(skipped, already in context)" suffix so a caller can tell what happened.
+   */
+  private boolean registerIfNew(Resource r, List<String> loaded) throws FHIRException {
+    if (r instanceof CanonicalResource && ((CanonicalResource) r).hasUrl()) {
+      String url = ((CanonicalResource) r).getUrl();
+      boolean alreadyHere;
+      try {
+        alreadyHere = context.fetchResource(Resource.class, url) != null;
+      } catch (Throwable t) {
+        // Ambiguous lookup or other resolution error — skip to avoid making it worse.
+        alreadyHere = true;
+      }
+      if (alreadyHere) {
+        loaded.add(describeLoaded(r) + " (skipped, already in context)");
+        return false;
+      }
+    }
+    seeResource(r);
+    loaded.add(describeLoaded(r));
+    return true;
   }
 
   private static String describeLoaded(Resource r) {

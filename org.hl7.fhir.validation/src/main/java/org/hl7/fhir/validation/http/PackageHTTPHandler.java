@@ -42,11 +42,12 @@ class PackageHTTPHandler extends BaseHTTPHandler implements HttpHandler {
       }
 
       boolean expandValueSets = "true".equalsIgnoreCase(params.get("expand"));
+      boolean includeRuleReferences = "true".equalsIgnoreCase(params.get("includeRules"));
       String format = params.get("format");
       FhirFormat outputFormat = "xml".equalsIgnoreCase(format) ? FhirFormat.XML : FhirFormat.JSON;
 
       byte[] result = fhirValidatorHttpService.getValidationEngine()
-        .packageResource(url.trim(), expandValueSets, outputFormat);
+        .packageResource(url.trim(), expandValueSets, includeRuleReferences, outputFormat);
 
       String outContentType = outputFormat == FhirFormat.XML ? "application/fhir+xml" : "application/fhir+json";
       exchange.getResponseHeaders().set("Content-Type", outContentType);
