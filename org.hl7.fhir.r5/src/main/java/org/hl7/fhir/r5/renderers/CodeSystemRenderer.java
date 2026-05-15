@@ -436,7 +436,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
 
 
-  private void addDefineRowToTable(RenderingStatus status, XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean hasDefinitions, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, List<String> langs, boolean isSupplement) throws FHIRFormatError, DefinitionException, IOException {
+  private void  addDefineRowToTable(RenderingStatus status, XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean hasDefinitions, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, List<String> langs, boolean isSupplement) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     XhtmlNode tr = t.tr();
     boolean notCurrent = CodeSystemUtilities.isNotCurrent(cs, c);
@@ -589,8 +589,9 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         for (ConceptPropertyComponent pcv : pcvl) {
           if (pcv.hasValue()) {
             if (first) first = false; else td.addText(", ");
-            if (pcv.hasValueCoding()) { 
-              td.addText(pcv.getValueCoding().getCode());
+            if (pcv.hasValueCoding()) {
+              ResourceWrapper cc = ResourceWrapper.forType(context.getContextUtilities(), pcv.getValueCoding());
+              renderCoding(status, td, cc, false);
             } else {
               String pv = pcv.getValue().primitiveValue();
               if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pv)) {
