@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -21,6 +20,8 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
  * <p>Each resource block in the output is preceded by a header line giving the
  * filename, so the result is easy to diff and easy to navigate.
  */
+@SuppressWarnings("checkstyle:systemout")
+//This is a standalone executable class; it is omitted from CLI logging requirements (SLF4J)
 public class NpmPackageDumper {
 
   /** Separator written before each resource. */
