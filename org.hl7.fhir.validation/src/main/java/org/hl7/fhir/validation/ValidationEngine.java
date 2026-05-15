@@ -75,6 +75,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.r5.utils.ResourceDependencyWalker;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.r5.utils.validation.BundleValidationRule;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
@@ -780,6 +781,131 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return map;
   }
 
+  /**
+   * Parse FHIR Mapping Language (FML) text into a {@link StructureMap} resource.
+   *
+   * @param fml          the FML map source text
+   * @param srcName      a name for the source (used in parse error messages); defaults to {@code "map"}
+   * @param outputFormat format of the returned bytes (JSON or XML)
+   */
+  public byte[] parseStructureMap(String fml, String srcName, FhirFormat outputFormat) throws FHIRException, IOException {
+    StructureMapUtilities scu = new StructureMapUtilities(context);
+    StructureMap map = scu.parse(fml, (srcName == null || srcName.trim().isEmpty()) ? "map" : srcName.trim());
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (outputFormat == FhirFormat.XML) {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+    } else {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, map);
+    }
+    return baos.toByteArray();
+  }
+
+  /**
+   * CRMI {@code $package}-style operation: given a root canonical artifact, build a
+   * {@code collection} Bundle containing that artifact plus every artifact it transitively
+   * references — profiles, extensions, ValueSets, CodeSystems, Library, ActivityDefinition,
+   * PlanDefinition, ConceptMap, NamingSystem, etc. Core FHIR resources
+   * ({@code hl7.fhir.r5.core}) are not included.
+   *
+   * <p>Dependency discovery uses {@link ResourceDependencyWalker}. When
+   * {@code expandValueSets} is true, each ValueSet entry is replaced by its expansion
+   * (best effort — an unexpandable ValueSet is included unexpanded).</p>
+   *
+   * <p>Not implemented (a subset of the full CRMI {@code $package} parameter surface):
+   * paging ({@code count}/{@code offset}), {@code contentEndpoint}/{@code terminologyEndpoint},
+   * {@code packageOnly}, {@code manifest}, and capability-based filtering.</p>
+   *
+   * @param rootUrl         canonical URL of the root artifact to package
+   * @param expandValueSets when true, ValueSet entries are expanded
+   * @param outputFormat    format of the returned bytes (JSON or XML)
+   */
+  public byte[] packageResource(String rootUrl, boolean expandValueSets, FhirFormat outputFormat)
+      throws FHIRException, IOException {
+    Resource root = context.fetchResource(Resource.class, rootUrl);
+    if (root == null) {
+      throw new FHIRException("Resource not found: " + rootUrl);
+    }
+
+    final java.util.LinkedHashSet<Resource> collected = new java.util.LinkedHashSet<>();
+    final List<String> brokenLinks = new ArrayList<>();
+    ResourceDependencyWalker walker = new ResourceDependencyWalker(context,
+        new ResourceDependencyWalker.IResourceDependencyNotifier() {
+          @Override
+          public void seeResource(Resource resource, String summaryId) {
+            collected.add(resource);
+          }
+          @Override
+          public void brokenLink(String link) {
+            brokenLinks.add(link);
+          }
+        });
+    walker.walk(root);
+
+    Bundle bundle = new Bundle();
+    bundle.setType(Bundle.BundleType.COLLECTION);
+    bundle.getMeta().setLastUpdated(new Date());
+    for (Resource r : collected) {
+      Resource toAdd = r;
+      if (expandValueSets && r instanceof ValueSet) {
+        try {
+          org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome outcome =
+              context.expandVS((ValueSet) r, true, false);
+          if (outcome.isOk() && outcome.getValueset() != null) {
+            toAdd = outcome.getValueset();
+          }
+        } catch (Exception e) {
+          // best effort: keep the unexpanded ValueSet if expansion fails
+        }
+      }
+      BundleEntryComponent entry = bundle.addEntry();
+      entry.setResource(toAdd);
+      if (toAdd instanceof CanonicalResource && ((CanonicalResource) toAdd).hasUrl()) {
+        entry.setFullUrl(((CanonicalResource) toAdd).getUrl());
+      } else if (toAdd.hasId()) {
+        entry.setFullUrl(toAdd.fhirType() + "/" + toAdd.getIdPart());
+      }
+    }
+    for (String broken : brokenLinks) {
+      if (isLikelyNonCanonical(broken)) {
+        log.debug("$package: ignoring non-canonical reference " + broken);
+        continue;
+      }
+      log.warn("$package: could not resolve dependency " + broken);
+    }
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (outputFormat == FhirFormat.XML) {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+    } else {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+    }
+    return baos.toByteArray();
+  }
+
+  /**
+   * URLs the dependency walker sometimes hands us that aren't FHIR canonicals — terminology
+   * concept identifiers, OIDs, UUIDs, etc. These can show up inside e.g. {@code useContext.valueReference}
+   * and trigger spurious "broken link" warnings. Drop them quietly.
+   *
+   * <p>Walker reports the URL as {@code "<url> from <pkg.id>#<version>"}; we strip the suffix
+   * before testing.</p>
+   */
+  private static boolean isLikelyNonCanonical(String brokenLinkKey) {
+    if (brokenLinkKey == null) return true;
+    String url = brokenLinkKey;
+    int idx = url.indexOf(" from ");
+    if (idx > 0) url = url.substring(0, idx);
+    if (url.startsWith("urn:oid:")) return true;
+    if (url.startsWith("urn:uuid:")) return true;
+    if (url.startsWith("urn:ietf:")) return true;
+    if (url.startsWith("mailto:")) return true;
+    if (url.startsWith("tel:")) return true;
+    if (url.startsWith("http://snomed.info/id/")) return true;          // SNOMED concept IRI
+    if (url.startsWith("http://snomed.info/sct/") && url.length() > 22  // SNOMED edition / module URI (numeric)
+        && Character.isDigit(url.charAt(22))) return true;
+    return false;
+  }
+
   public org.hl7.fhir.r5.elementmodel.Element transform(ByteProvider source, FhirFormat cntType, String mapUri) throws FHIRException, IOException {
     List<Base> outputs = new ArrayList<>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
@@ -1104,6 +1230,171 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     Manager.compose(context, result, baos, outputFormat, OutputStyle.PRETTY, null);
     return baos.toByteArray();
+  }
+
+  /**
+   * Build a FHIR Questionnaire from a StructureDefinition profile, covering the
+   * whole profile. Equivalent to
+   * {@link #generateQuestionnaire(String, FhirFormat, List)} with no selection.
+   */
+  public byte[] generateQuestionnaire(String profileUrl, FhirFormat outputFormat) throws FHIRException, IOException {
+    return generateQuestionnaire(profileUrl, outputFormat, null);
+  }
+
+  /**
+   * Build a FHIR Questionnaire from a StructureDefinition profile. The Questionnaire
+   * is always built from the profile's <b>snapshot</b> (one is generated on the fly if
+   * absent). Coded elements have their ValueSets expanded and attached as answer options.
+   * The profile must already be resolvable in the engine context (load the containing
+   * IG first).
+   *
+   * <p>When {@code selectExpressions} is non-empty, the full Questionnaire is built and
+   * then <b>pruned</b>: each FHIRPath expression is evaluated against every
+   * {@code ElementDefinition} of the snapshot, and an element is "selected" if <i>any</i>
+   * expression evaluates to {@code true} for it. A Questionnaire item is kept when its
+   * element path is selected, is an ancestor of a selected path, or is a descendant of a
+   * selected path — so the item tree stays connected. MustSupport filtering is not a
+   * special case: pass {@code "mustSupport = true"} as one of the expressions.</p>
+   *
+   * <p>When {@code selectExpressions} is null/empty the whole Questionnaire is returned.</p>
+   *
+   * @param profileUrl        canonical URL of the StructureDefinition profile
+   * @param outputFormat      format of the returned bytes (JSON or XML)
+   * @param selectExpressions FHIRPath expressions evaluated per ElementDefinition;
+   *                          null/empty = keep everything
+   */
+  public byte[] generateQuestionnaire(String profileUrl, FhirFormat outputFormat,
+      List<String> selectExpressions) throws FHIRException, IOException {
+    StructureDefinition profile = context.fetchResource(StructureDefinition.class, profileUrl);
+    if (profile == null) {
+      throw new FHIRException("Profile not found: " + profileUrl);
+    }
+    if (!profile.hasSnapshot()) {
+      new ProfileUtilities(context, null, null).setAutoFixSliceNames(true)
+          .generateSnapshot(context.fetchResource(StructureDefinition.class, profile.getBaseDefinition()),
+              profile, profile.getUrl(), null, profile.getName());
+    }
+
+    org.hl7.fhir.r5.utils.QuestionnaireBuilder builder =
+        new org.hl7.fhir.r5.utils.QuestionnaireBuilder(context, profile.getUrl());
+    builder.setProfile(profile);
+    builder.build();
+    org.hl7.fhir.r5.model.Questionnaire questionnaire = builder.getQuestionnaire();
+
+    if (selectExpressions != null && !selectExpressions.isEmpty()) {
+      java.util.Set<String> selectedPaths = selectElementPaths(profile, selectExpressions);
+      if (selectedPaths.isEmpty()) {
+        throw new FHIRException("None of the select expressions matched any element in profile " + profileUrl);
+      }
+      pruneQuestionnaireItems(questionnaire.getItem(), selectedPaths);
+      if (questionnaire.getItem().isEmpty()) {
+        throw new FHIRException("Element selection pruned the entire Questionnaire for profile " + profileUrl);
+      }
+    }
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    if (outputFormat == FhirFormat.XML) {
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, questionnaire);
+    } else {
+      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, questionnaire);
+    }
+    return baos.toByteArray();
+  }
+
+  /**
+   * Evaluate each FHIRPath expression against every {@code ElementDefinition} in the
+   * profile's snapshot; collect the {@code path} of every element for which at least
+   * one expression evaluates to a singleton {@code true}.
+   */
+  private java.util.Set<String> selectElementPaths(StructureDefinition profile, List<String> expressions) {
+    FHIRPathEngine fpe = new FHIRPathEngine(context);
+    List<ExpressionNode> compiled = new ArrayList<>();
+    for (String e : expressions) {
+      if (e != null && !e.trim().isEmpty()) {
+        compiled.add(fpe.parse(e.trim()));
+      }
+    }
+    java.util.Set<String> selected = new java.util.HashSet<>();
+    for (ElementDefinition ed : profile.getSnapshot().getElement()) {
+      for (ExpressionNode node : compiled) {
+        boolean matched;
+        try {
+          List<Base> outcome = fpe.evaluate(ed, node);
+          matched = outcome.size() == 1 && outcome.get(0).isPrimitive()
+              && "true".equals(outcome.get(0).primitiveValue());
+        } catch (Exception ex) {
+          matched = false; // an expression that doesn't apply to this element is just a non-match
+        }
+        if (matched) {
+          selected.add(ed.getPath());
+          break;
+        }
+      }
+    }
+    return selected;
+  }
+
+  /**
+   * Recursively prune a Questionnaire item list to the selected element paths.
+   * An item is kept when its element path (derived from its {@code linkId}) is
+   * selected, is an ancestor of a selected path, or is a descendant of one — or
+   * when it still has kept children. Returns true if the list is non-empty after pruning.
+   */
+  private static boolean pruneQuestionnaireItems(
+      List<org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent> items,
+      java.util.Set<String> selectedPaths) {
+    items.removeIf(item -> {
+      boolean keptChildren = pruneQuestionnaireItems(item.getItem(), selectedPaths);
+      String itemPath = elementPathOfLinkId(item.getLinkId());
+      boolean relevant = relatesToSelection(itemPath, selectedPaths);
+      return !relevant && !keptChildren;
+    });
+    return !items.isEmpty();
+  }
+
+  /**
+   * Derive the element path a Questionnaire item corresponds to from its {@code linkId}.
+   * The QuestionnaireBuilder sets linkIds to the element path, sometimes with a
+   * {@code -grp} / {@code -display} / {@code -flyover} suffix or a {@code ._type}-style
+   * tail; slice names ({@code :sliceName}) are stripped so sliced and unsliced map alike.
+   */
+  private static String elementPathOfLinkId(String linkId) {
+    if (linkId == null) {
+      return "";
+    }
+    String s = linkId;
+    for (String suffix : new String[] {"-grp", "-display", "-flyover"}) {
+      if (s.endsWith(suffix)) {
+        s = s.substring(0, s.length() - suffix.length());
+      }
+    }
+    int us = s.indexOf("._"); // type sub-items, e.g. Patient.deceased._boolean
+    if (us >= 0) {
+      s = s.substring(0, us);
+    }
+    StringBuilder b = new StringBuilder();
+    for (String seg : s.split("\\.", -1)) {
+      int colon = seg.indexOf(':');
+      if (b.length() > 0) {
+        b.append('.');
+      }
+      b.append(colon >= 0 ? seg.substring(0, colon) : seg);
+    }
+    return b.toString();
+  }
+
+  private static boolean relatesToSelection(String itemPath, java.util.Set<String> selectedPaths) {
+    if (itemPath == null || itemPath.isEmpty()) {
+      return false;
+    }
+    for (String sel : selectedPaths) {
+      if (itemPath.equals(sel)                       // the item is itself selected
+          || sel.startsWith(itemPath + ".")          // the item is an ancestor of a selection
+          || itemPath.startsWith(sel + ".")) {       // the item is a descendant of a selection
+        return true;
+      }
+    }
+    return false;
   }
 
   public byte[] convertVersion(byte[] resource, FhirFormat format, String targetVer) throws Exception {

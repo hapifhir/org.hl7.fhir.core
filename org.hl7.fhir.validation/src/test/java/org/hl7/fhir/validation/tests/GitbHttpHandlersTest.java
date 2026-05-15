@@ -60,7 +60,7 @@ class GitbHttpHandlersTest {
   // ------------------------------------------------------------------
 
   @ParameterizedTest
-  @ValueSource(strings = {"fhir", "matchetype", "fhirPathAssertion", "fhirPath", "testdata", "validationResults", "igManager", "transform"})
+  @ValueSource(strings = {"fhir", "matchetype", "fhirPathAssertion", "fhirPath", "testdata", "validationResults", "igManager", "transform", "questionnaire", "package"})
   void getModuleDefinitionReturnsModule(String svc) throws Exception {
     HttpResponse<String> response = get("/itb/" + svc + "/getModuleDefinition");
     assertEquals(200, response.statusCode(), "for /itb/" + svc + "/getModuleDefinition");
@@ -108,30 +108,43 @@ class GitbHttpHandlersTest {
   }
 
   @Test
-  void transformModuleHasTransformOperationWithRequiredContentAndMap() throws Exception {
+  void transformModuleHasTransformAndParseOperations() throws Exception {
     JsonObject body = JsonParser.parseObject(get("/itb/transform/getModuleDefinition").body());
     JsonObject module = body.getJsonObject("module");
     assertEquals("FHIRTransformer", module.asString("id"));
-    assertOperations(module, "transform");
+    assertOperations(module, "transform", "parse");
 
     JsonArray ops = module.getJsonArray("operation");
     JsonObject transform = null;
+    JsonObject parse = null;
     for (JsonElement el : ops) {
       JsonObject o = el.asJsonObject();
-      if ("transform".equals(o.asString("name"))) { transform = o; break; }
+      if ("transform".equals(o.asString("name"))) transform = o;
+      if ("parse".equals(o.asString("name")))     parse = o;
     }
     assertTrue(transform != null, "transform operation must be present in module definition");
-    JsonArray inputs = transform.getJsonObject("inputs").getJsonArray("param");
-    java.util.Set<String> required = new java.util.HashSet<>();
-    java.util.Set<String> optional = new java.util.HashSet<>();
-    for (JsonElement el : inputs) {
+    assertTrue(parse != null,     "parse operation must be present in module definition");
+
+    java.util.Set<String> tReq = new java.util.HashSet<>();
+    java.util.Set<String> tOpt = new java.util.HashSet<>();
+    for (JsonElement el : transform.getJsonObject("inputs").getJsonArray("param")) {
       JsonObject p = el.asJsonObject();
-      ("R".equals(p.asString("use")) ? required : optional).add(p.asString("name"));
+      ("R".equals(p.asString("use")) ? tReq : tOpt).add(p.asString("name"));
     }
-    assertTrue(required.contains("content"),     "transform.content must be required");
-    assertTrue(required.contains("map"),         "transform.map must be required");
-    assertTrue(optional.contains("contentType"), "transform.contentType must be optional");
-    assertTrue(optional.contains("targetFormat"),"transform.targetFormat must be optional");
+    assertTrue(tReq.contains("content"),     "transform.content must be required");
+    assertTrue(tReq.contains("map"),         "transform.map must be required");
+    assertTrue(tOpt.contains("contentType"), "transform.contentType must be optional");
+    assertTrue(tOpt.contains("targetFormat"),"transform.targetFormat must be optional");
+
+    java.util.Set<String> pReq = new java.util.HashSet<>();
+    java.util.Set<String> pOpt = new java.util.HashSet<>();
+    for (JsonElement el : parse.getJsonObject("inputs").getJsonArray("param")) {
+      JsonObject p = el.asJsonObject();
+      ("R".equals(p.asString("use")) ? pReq : pOpt).add(p.asString("name"));
+    }
+    assertTrue(pReq.contains("content"),      "parse.content must be required");
+    assertTrue(pOpt.contains("name"),         "parse.name must be optional");
+    assertTrue(pOpt.contains("targetFormat"), "parse.targetFormat must be optional");
   }
 
   @Test
@@ -144,11 +157,105 @@ class GitbHttpHandlersTest {
   }
 
   @Test
+  void transformParseReturns400WhenContentInputIsMissing() throws Exception {
+    JsonObject body = processRequestBody("parse"); // no input — content is required
+    HttpResponse<String> response = post("/itb/transform/process", JsonParser.compose(body));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("Missing required input");
+  }
+
+  @Test
   void transformProcessReturns400ForUnknownOperation() throws Exception {
     JsonObject body = processRequestBody("flubber",
       anyContent("content", "{}"),
       anyContent("map", "http://example.org/StructureMap/x"));
     HttpResponse<String> response = post("/itb/transform/process", JsonParser.compose(body));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("Unknown operation");
+  }
+
+  @Test
+  void questionnaireModuleHasGenerateOperationWithRequiredProfile() throws Exception {
+    JsonObject body = JsonParser.parseObject(get("/itb/questionnaire/getModuleDefinition").body());
+    JsonObject module = body.getJsonObject("module");
+    assertEquals("QuestionnaireGenerator", module.asString("id"));
+    assertOperations(module, "generate");
+
+    JsonArray ops = module.getJsonArray("operation");
+    JsonObject generate = null;
+    for (JsonElement el : ops) {
+      JsonObject o = el.asJsonObject();
+      if ("generate".equals(o.asString("name"))) { generate = o; break; }
+    }
+    assertTrue(generate != null, "generate operation must be present in module definition");
+    JsonArray inputs = generate.getJsonObject("inputs").getJsonArray("param");
+    java.util.Set<String> required = new java.util.HashSet<>();
+    java.util.Set<String> optional = new java.util.HashSet<>();
+    for (JsonElement el : inputs) {
+      JsonObject p = el.asJsonObject();
+      ("R".equals(p.asString("use")) ? required : optional).add(p.asString("name"));
+    }
+    assertTrue(required.contains("profile"),      "questionnaire.profile must be required");
+    assertTrue(optional.contains("targetFormat"), "questionnaire.targetFormat must be optional");
+    assertTrue(optional.contains("select"),       "questionnaire.select must be optional");
+  }
+
+  @Test
+  void questionnaireProcessReturns400WhenProfileInputIsMissing() throws Exception {
+    JsonObject body = processRequestBody("generate"); // no input array — profile is required
+    HttpResponse<String> response = post("/itb/questionnaire/process", JsonParser.compose(body));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("Missing required input");
+  }
+
+  @Test
+  void questionnaireProcessReturns400ForUnknownOperation() throws Exception {
+    JsonObject body = processRequestBody("flubber",
+      anyContent("profile", "http://hl7.org/fhir/StructureDefinition/Patient"));
+    HttpResponse<String> response = post("/itb/questionnaire/process", JsonParser.compose(body));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("Unknown operation");
+  }
+
+  @Test
+  void packageModuleHasPackageOperationWithRequiredResource() throws Exception {
+    JsonObject body = JsonParser.parseObject(get("/itb/package/getModuleDefinition").body());
+    JsonObject module = body.getJsonObject("module");
+    assertEquals("PackageGenerator", module.asString("id"));
+    assertOperations(module, "package");
+
+    JsonArray ops = module.getJsonArray("operation");
+    JsonObject pkg = null;
+    for (JsonElement el : ops) {
+      JsonObject o = el.asJsonObject();
+      if ("package".equals(o.asString("name"))) { pkg = o; break; }
+    }
+    assertTrue(pkg != null, "package operation must be present in module definition");
+    JsonArray inputs = pkg.getJsonObject("inputs").getJsonArray("param");
+    java.util.Set<String> required = new java.util.HashSet<>();
+    java.util.Set<String> optional = new java.util.HashSet<>();
+    for (JsonElement el : inputs) {
+      JsonObject p = el.asJsonObject();
+      ("R".equals(p.asString("use")) ? required : optional).add(p.asString("name"));
+    }
+    assertTrue(required.contains("resource"),        "package.resource must be required");
+    assertTrue(optional.contains("expandValueSets"), "package.expandValueSets must be optional");
+    assertTrue(optional.contains("targetFormat"),    "package.targetFormat must be optional");
+  }
+
+  @Test
+  void packageProcessReturns400WhenResourceInputIsMissing() throws Exception {
+    JsonObject body = processRequestBody("package"); // no input — resource is required
+    HttpResponse<String> response = post("/itb/package/process", JsonParser.compose(body));
+    assertEquals(400, response.statusCode());
+    assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("Missing required input");
+  }
+
+  @Test
+  void packageProcessReturns400ForUnknownOperation() throws Exception {
+    JsonObject body = processRequestBody("flubber",
+      anyContent("resource", "http://example.org/ImplementationGuide/x"));
+    HttpResponse<String> response = post("/itb/package/process", JsonParser.compose(body));
     assertEquals(400, response.statusCode());
     assertThat(JsonParser.parseObject(response.body()).asString("error")).contains("Unknown operation");
   }

@@ -9,7 +9,7 @@
 
 ## 1. TL;DR
 
-The validator exposes **eight GITB REST services** under `/itb/`:
+The validator exposes **ten GITB REST services** under `/itb/`:
 
 | Service | Kind | Path prefix | Operations |
 |---|---|---|---|
@@ -20,7 +20,9 @@ The validator exposes **eight GITB REST services** under `/itb/`:
 | `TestDataGenerator`       | Processing | `/itb/testdata`          | `generate`, `generateBundle`, `modify` |
 | `ValidationResultsProcessor` | Processing | `/itb/validationResults` | `summarize`, `filterBySeverity`, `filterByText` |
 | `IGManager`               | Processing | `/itb/igManager`         | `loadIG` |
-| `FHIRTransformer`         | Processing | `/itb/transform`         | `transform` |
+| `FHIRTransformer`         | Processing | `/itb/transform`         | `transform`, `parse` |
+| `QuestionnaireGenerator`  | Processing | `/itb/questionnaire`     | `generate` |
+| `PackageGenerator`        | Processing | `/itb/package`           | `package` |
 
 Per the GITB contract, each kind has a fixed sub-path scheme — the **handler URI is the service root**, and ITB knows the operation names from the contract:
 
@@ -348,7 +350,9 @@ A future `listIGs` operation (returning a nested AnyContent list of `{package, v
 
 ### 4.5 `FHIRTransformer`
 
-**Path**: `/itb/transform` — Operation: `transform`.
+**Path**: `/itb/transform` — Operations: `transform`, `parse`.
+
+#### `transform`
 
 Applies a FHIR `StructureMap` (Mapping Language) to a source resource and returns the transformed result. Same engine path as the legacy native `POST /transform?map=<uri>` handler, exposed in GITB shape so ITB can drive it.
 
@@ -360,6 +364,65 @@ Applies a FHIR `StructureMap` (Mapping Language) to a source resource and return
 | `targetFormat` | no | `json` (default) or `xml`. Controls the format of the result. |
 
 Outputs: `result` (the transformed resource as a string) and `targetMime` (`application/fhir+json` or `application/fhir+xml`).
+
+#### `parse`
+
+Parses FHIR Mapping Language (FML) text into a `StructureMap` resource — the inverse-direction companion to `transform` (which *applies* a StructureMap). Same engine path as the legacy native `POST /fml` handler.
+
+| Input | Required | Notes |
+|---|---|---|
+| `content` | yes | The FML map source text. |
+| `name` | no | A name for the source, used in parse error messages. Defaults to `map`. |
+| `targetFormat` | no | `json` (default) or `xml`. Controls the format of the result. |
+
+Outputs: `structureMap` (the parsed `StructureMap` as a string) and `targetMime` (`application/fhir+json` or `application/fhir+xml`).
+
+> The legacy native handler: `POST /fml?name=<name>&format=json|xml` with the FML source as the request body.
+
+### 4.6 `QuestionnaireGenerator`
+
+**Path**: `/itb/questionnaire` — Operation: `generate`.
+
+Builds a FHIR `Questionnaire` from a `StructureDefinition` profile. The Questionnaire is always built from the profile's **snapshot** (one is generated on the fly if the profile only carries a differential). Coded elements have their ValueSets expanded and attached as answer options. Same engine path as the legacy native `GET /questionnaire?profile=<url>` handler, exposed in GITB shape.
+
+| Input | Required | Notes |
+|---|---|---|
+| `profile` | yes | Canonical URL of the `StructureDefinition` profile. Must already be in the validator's context — load the containing IG via `IGManager.loadIG` first. |
+| `targetFormat` | no | `json` (default) or `xml`. Controls the format of the result. |
+| `select` | no | Stringified JSON array of FHIRPath expressions. Each is evaluated against every `ElementDefinition` of the profile snapshot; an element is *selected* if **any** expression evaluates to a singleton `true`. The full Questionnaire is built, then pruned to items whose element path is selected, is an ancestor of a selection, or is a descendant of one (so the item tree stays connected). Omit for the whole profile. |
+
+Element selection — `select` recipes (the expression operates on an `ElementDefinition`):
+
+| Intent | Expression |
+|---|---|
+| MustSupport elements only | `["mustSupport = true"]` |
+| Specific elements | `["path = 'Patient.name'", "path = 'Patient.birthDate'"]` |
+| A whole subtree | `["path = 'Patient.contact' or path.startsWith('Patient.contact.')"]` |
+| Required elements | `["min > 0"]` |
+| Everything | *(omit `select`)* |
+
+Outputs: `questionnaire` (the generated `Questionnaire` as a string) and `targetMime` (`application/fhir+json` or `application/fhir+xml`).
+
+> The legacy native handler exposes the same control as a query parameter:
+> `GET /questionnaire?profile=<url>&format=json|xml&select=<url-encoded JSON array>`.
+
+### 4.7 `PackageGenerator`
+
+**Path**: `/itb/package` — Operation: `package`.
+
+CRMI `$package`-style operation: given a root canonical artifact, returns a `collection` Bundle containing that artifact plus every artifact it transitively references — profiles, extensions, ValueSets, CodeSystems, `Library`, `ActivityDefinition`, `PlanDefinition`, `ConceptMap`, `NamingSystem`, etc. Core FHIR resources are not included. Dependency discovery uses the engine's `ResourceDependencyWalker`. Same engine path as the legacy native `GET /package?url=<uri>` handler.
+
+| Input | Required | Notes |
+|---|---|---|
+| `resource` | yes | Canonical URL of the root artifact to package. It and its dependencies must be in the validator's context — load the IG(s) via `IGManager.loadIG` first. |
+| `expandValueSets` | no | When `"true"`, each ValueSet entry is replaced by its expansion (best effort — an unexpandable ValueSet is included unexpanded). Default `false`. |
+| `targetFormat` | no | `json` (default) or `xml`. Controls the format of the result. |
+
+Outputs: `bundle` (the `collection` Bundle as a string) and `targetMime` (`application/fhir+json` or `application/fhir+xml`).
+
+> **Scope.** This implements the core of CRMI `$package` — root + transitive dependency closure, with optional ValueSet expansion. The following `$package` parameters are **not** implemented: paging (`count`/`offset`), `contentEndpoint`/`terminologyEndpoint`, `packageOnly`, `manifest`, and capability-based filtering.
+>
+> The legacy native handler: `GET /package?url=<url>&expand=true|false&format=json|xml`.
 
 ---
 

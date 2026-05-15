@@ -1004,6 +1004,321 @@ class FhirValidatorHttpServiceTest {
       assertEquals(405, response.statusCode());
     }
 
+    // ─── FML parsing tests ───
+
+    private static final String SAMPLE_FML =
+        "map \"http://example.org/StructureMap/IdentityTest\" = \"IdentityTest\"\n" +
+        "\n" +
+        "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientSrc as source\n" +
+        "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientTgt as target\n" +
+        "\n" +
+        "group IdentityTest(source src : PatientSrc, target tgt : PatientTgt) {\n" +
+        "  src.id -> tgt.id;\n" +
+        "}\n";
+
+    @Test
+    @DisplayName("FML - parse FML text to a StructureMap (legacy POST /fml)")
+    void testFmlParseLegacy() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fml?name=IdentityTest"))
+        .POST(HttpRequest.BodyPublishers.ofString(SAMPLE_FML))
+        .header("Content-Type", "text/plain")
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+      org.hl7.fhir.utilities.json.model.JsonObject sm =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
+      assertEquals("StructureMap", sm.asString("resourceType"));
+      assertEquals("http://example.org/StructureMap/IdentityTest", sm.asString("url"));
+      assertTrue(sm.has("group"), "parsed StructureMap should have a group");
+    }
+
+    @Test
+    @DisplayName("FML - Missing body returns 400")
+    void testFmlParseMissingBody() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fml"))
+        .POST(HttpRequest.BodyPublishers.ofString(""))
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("Missing request body"));
+    }
+
+    @Test
+    @DisplayName("FML - GET method not allowed")
+    void testFmlGetNotAllowed() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/fml"))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(405, response.statusCode());
+    }
+
+    // ─── CRMI $package tests ───
+
+    @Test
+    @DisplayName("Package - bundle a canonical artifact and its dependencies (legacy GET /package)")
+    void testPackageLegacy() throws Exception {
+      setUpService(getValidationEngine());
+
+      // A base CodeSystem — minimal canonical dependencies, fast + predictable.
+      String url = java.net.URLEncoder.encode("http://hl7.org/fhir/administrative-gender", "UTF-8");
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/package?url=" + url))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+      org.hl7.fhir.utilities.json.model.JsonObject bundle =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
+      assertEquals("Bundle", bundle.asString("resourceType"));
+      assertEquals("collection", bundle.asString("type"));
+      org.hl7.fhir.utilities.json.model.JsonArray entries = bundle.getJsonArray("entry");
+      assertTrue(entries != null && entries.size() >= 1,
+        "package Bundle should contain at least the root artifact");
+    }
+
+    @Test
+    @DisplayName("Package - Missing url parameter returns 400")
+    void testPackageMissingUrl() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/package"))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("Missing required query parameter: url"));
+    }
+
+    @Test
+    @DisplayName("Package - POST method not allowed")
+    void testPackagePostNotAllowed() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/package?url=x"))
+        .POST(HttpRequest.BodyPublishers.ofString(""))
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(405, response.statusCode());
+    }
+
+    @Test
+    @DisplayName("ITB Package - bundle a canonical artifact (GITB endpoint, real engine)")
+    void testItbPackage() throws Exception {
+      setUpService(getValidationEngine());
+
+      org.hl7.fhir.utilities.json.model.JsonObject body = new org.hl7.fhir.utilities.json.model.JsonObject();
+      body.add("operation", "package");
+      org.hl7.fhir.utilities.json.model.JsonArray input = new org.hl7.fhir.utilities.json.model.JsonArray();
+      input.add(anyContent("resource", "http://hl7.org/fhir/administrative-gender"));
+      input.add(anyContent("targetFormat", "json"));
+      body.add("input", input);
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/itb/package/process"))
+        .POST(HttpRequest.BodyPublishers.ofString(org.hl7.fhir.utilities.json.parser.JsonParser.compose(body)))
+        .header("Content-Type", "application/json")
+        .build();
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+
+      org.hl7.fhir.utilities.json.model.JsonObject envelope =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
+      org.hl7.fhir.utilities.json.model.JsonArray output = envelope.getJsonArray("output");
+      String bundleJson = null;
+      for (org.hl7.fhir.utilities.json.model.JsonElement el : output) {
+        org.hl7.fhir.utilities.json.model.JsonObject ac = el.asJsonObject();
+        if ("bundle".equals(ac.asString("name"))) bundleJson = ac.asString("value");
+      }
+      assertTrue(bundleJson != null && !bundleJson.isEmpty(), "package output must include a non-empty bundle");
+      org.hl7.fhir.utilities.json.model.JsonObject bundle =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(bundleJson);
+      assertEquals("Bundle", bundle.asString("resourceType"));
+      assertEquals("collection", bundle.asString("type"));
+    }
+
+    @Test
+    @DisplayName("ITB Transform - parse FML to StructureMap (GITB endpoint, real engine)")
+    void testItbTransformParseFml() throws Exception {
+      setUpService(getValidationEngine());
+
+      org.hl7.fhir.utilities.json.model.JsonObject body = new org.hl7.fhir.utilities.json.model.JsonObject();
+      body.add("operation", "parse");
+      org.hl7.fhir.utilities.json.model.JsonArray input = new org.hl7.fhir.utilities.json.model.JsonArray();
+      input.add(anyContent("content", SAMPLE_FML));
+      input.add(anyContent("name", "IdentityTest"));
+      input.add(anyContent("targetFormat", "json"));
+      body.add("input", input);
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/itb/transform/process"))
+        .POST(HttpRequest.BodyPublishers.ofString(org.hl7.fhir.utilities.json.parser.JsonParser.compose(body)))
+        .header("Content-Type", "application/json")
+        .build();
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+
+      org.hl7.fhir.utilities.json.model.JsonObject envelope =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
+      org.hl7.fhir.utilities.json.model.JsonArray output = envelope.getJsonArray("output");
+      String structureMap = null;
+      for (org.hl7.fhir.utilities.json.model.JsonElement el : output) {
+        org.hl7.fhir.utilities.json.model.JsonObject ac = el.asJsonObject();
+        if ("structureMap".equals(ac.asString("name"))) structureMap = ac.asString("value");
+      }
+      assertTrue(structureMap != null && !structureMap.isEmpty(),
+        "parse output must include a non-empty structureMap");
+      org.hl7.fhir.utilities.json.model.JsonObject sm =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(structureMap);
+      assertEquals("StructureMap", sm.asString("resourceType"));
+      assertEquals("http://example.org/StructureMap/IdentityTest", sm.asString("url"));
+    }
+
+    // ─── Questionnaire endpoint tests ───
+
+    @Test
+    @DisplayName("Questionnaire - Generate from base Patient profile (legacy GET endpoint)")
+    void testQuestionnaireGenerateLegacy() throws Exception {
+      setUpService(getValidationEngine());
+
+      String profile = java.net.URLEncoder.encode(
+        "http://hl7.org/fhir/StructureDefinition/Patient", "UTF-8");
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/questionnaire?profile=" + profile))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+      assertTrue(response.body().contains("\"resourceType\""));
+      assertTrue(response.body().contains("Questionnaire"),
+        "response should be a Questionnaire resource");
+    }
+
+    @Test
+    @DisplayName("Questionnaire - select filter (FHIRPath expressions) still yields a valid Questionnaire")
+    void testQuestionnaireSelectFilter() throws Exception {
+      setUpService(getValidationEngine());
+
+      String profile = java.net.URLEncoder.encode(
+        "http://hl7.org/fhir/StructureDefinition/Patient", "UTF-8");
+      // select = ["path = 'Patient.name'", "path = 'Patient.birthDate'"]
+      String select = java.net.URLEncoder.encode(
+        "[\"path = 'Patient.name'\",\"path = 'Patient.birthDate'\"]", "UTF-8");
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/questionnaire?profile=" + profile + "&select=" + select))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+      org.hl7.fhir.utilities.json.model.JsonObject q =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
+      assertEquals("Questionnaire", q.asString("resourceType"));
+      assertTrue(q.has("item"), "selected Questionnaire should still have items");
+    }
+
+    @Test
+    @DisplayName("Questionnaire - Missing profile parameter returns 400")
+    void testQuestionnaireMissingProfile() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/questionnaire"))
+        .GET()
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(400, response.statusCode());
+      assertTrue(response.body().contains("Missing required query parameter: profile"));
+    }
+
+    @Test
+    @DisplayName("Questionnaire - POST method not allowed")
+    void testQuestionnairePostNotAllowed() throws Exception {
+      setUpService(getValidationEngine());
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/questionnaire?profile=x"))
+        .POST(HttpRequest.BodyPublishers.ofString(""))
+        .build();
+
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(405, response.statusCode());
+    }
+
+    @Test
+    @DisplayName("ITB Questionnaire - generate from base Patient profile (GITB endpoint, real engine)")
+    void testItbQuestionnaireGenerate() throws Exception {
+      setUpService(getValidationEngine());
+
+      org.hl7.fhir.utilities.json.model.JsonObject body = new org.hl7.fhir.utilities.json.model.JsonObject();
+      body.add("operation", "generate");
+      org.hl7.fhir.utilities.json.model.JsonArray input = new org.hl7.fhir.utilities.json.model.JsonArray();
+      input.add(anyContent("profile", "http://hl7.org/fhir/StructureDefinition/Patient"));
+      input.add(anyContent("targetFormat", "json"));
+      body.add("input", input);
+
+      HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(BASE_URL + "/itb/questionnaire/process"))
+        .POST(HttpRequest.BodyPublishers.ofString(org.hl7.fhir.utilities.json.parser.JsonParser.compose(body)))
+        .header("Content-Type", "application/json")
+        .build();
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+      assertEquals(200, response.statusCode(), "expected 200; body: " + response.body());
+
+      org.hl7.fhir.utilities.json.model.JsonObject envelope =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(response.body());
+      org.hl7.fhir.utilities.json.model.JsonArray output = envelope.getJsonArray("output");
+      assertEquals(2, output.size(), "output should have [questionnaire, targetMime]");
+
+      String questionnaireJson = null;
+      String targetMime = null;
+      for (org.hl7.fhir.utilities.json.model.JsonElement el : output) {
+        org.hl7.fhir.utilities.json.model.JsonObject ac = el.asJsonObject();
+        if ("questionnaire".equals(ac.asString("name"))) questionnaireJson = ac.asString("value");
+        if ("targetMime".equals(ac.asString("name")))    targetMime = ac.asString("value");
+      }
+      assertEquals("application/fhir+json", targetMime);
+      assertTrue(questionnaireJson != null && !questionnaireJson.isEmpty(),
+        "questionnaire output must be a non-empty JSON string");
+
+      org.hl7.fhir.utilities.json.model.JsonObject questionnaire =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(questionnaireJson);
+      assertEquals("Questionnaire", questionnaire.asString("resourceType"));
+      assertTrue(questionnaire.has("item"), "generated Questionnaire should have items");
+    }
+
     @Test
     @DisplayName("ITB Transform - ICVP claim → IPS Bundle (real StructureMap, real engine)")
     void testItbTransformIcvpClaimToIps() throws Exception {

@@ -20,7 +20,9 @@
     { "name": "TestDataGenerator",        "description": "Processing service — synthesises FHIR resources from a profile + optional mappings/data." },
     { "name": "ValidationResultsProcessor", "description": "Processing service — summarises and filters a FHIR OperationOutcome (no engine call)." },
     { "name": "IGManager",                "description": "Processing service — loads FHIR Implementation Guide packages into the engine." },
-    { "name": "FHIRTransformer",          "description": "Processing service — applies a FHIR StructureMap (Mapping Language) to a source resource." }
+    { "name": "FHIRTransformer",          "description": "Processing service — applies a FHIR StructureMap to a resource (transform) and parses FHIR Mapping Language into a StructureMap (parse)." },
+    { "name": "QuestionnaireGenerator",   "description": "Processing service — generates a FHIR Questionnaire from a StructureDefinition profile." },
+    { "name": "PackageGenerator",         "description": "Processing service — CRMI $package: bundles a canonical artifact with all its transitive dependencies." }
   ],
 
   "paths": {
@@ -176,15 +178,57 @@
     "/transform/process": {
       "post": {
         "tags": ["FHIRTransformer"],
-        "summary": "Apply a FHIR StructureMap to a source resource",
+        "summary": "Apply a FHIR StructureMap to a resource, or parse FML into a StructureMap",
         "operationId": "transformProcess",
-        "description": "Operation: `transform`. Inputs (in `input[]`): `content` (source resource as JSON or XML), `map` (canonical URL of the StructureMap), `contentType` (optional, default `application/fhir+json`), `targetFormat` (`json` default, or `xml`). Outputs: `result` (transformed resource), `targetMime` (`application/fhir+json` or `application/fhir+xml`). The StructureMap must be in the validator's context — load the IG that contains it via `/igManager/process` first.",
+        "description": "Operations: `transform` and `parse`.\n\n`transform` — inputs (in `input[]`): `content` (source resource as JSON or XML), `map` (canonical URL of the StructureMap), `contentType` (optional, default `application/fhir+json`), `targetFormat` (`json` default, or `xml`). Outputs: `result` (transformed resource), `targetMime`. The StructureMap must be in the validator's context — load the IG that contains it via `/igManager/process` first.\n\n`parse` — inputs: `content` (FHIR Mapping Language source text), `name` (optional source name for error messages, default `map`), `targetFormat` (`json` default, or `xml`). Outputs: `structureMap` (the parsed StructureMap), `targetMime`.",
         "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessRequest" } } } },
         "responses": { "200": { "description": "Result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessResponse" } } } } }
       }
     },
     "/transform/beginTransaction": { "post": { "tags": ["FHIRTransformer"], "summary": "Begin a (no-op) transaction", "operationId": "transformBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
-    "/transform/endTransaction":   { "post": { "tags": ["FHIRTransformer"], "summary": "End a (no-op) transaction",   "operationId": "transformEnd",   "responses": { "204": { "description": "No content" } } } }
+    "/transform/endTransaction":   { "post": { "tags": ["FHIRTransformer"], "summary": "End a (no-op) transaction",   "operationId": "transformEnd",   "responses": { "204": { "description": "No content" } } } },
+
+    "/questionnaire/getModuleDefinition": {
+      "get": {
+        "tags": ["QuestionnaireGenerator"],
+        "summary": "QuestionnaireGenerator service definition",
+        "operationId": "questionnaireGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/questionnaire/process": {
+      "post": {
+        "tags": ["QuestionnaireGenerator"],
+        "summary": "Generate a FHIR Questionnaire from a StructureDefinition profile",
+        "operationId": "questionnaireProcess",
+        "description": "Operation: `generate`. Inputs (in `input[]`): `profile` (canonical URL of the StructureDefinition), `targetFormat` (`json` default, or `xml`), `select` (optional stringified JSON array of FHIRPath expressions evaluated per ElementDefinition — the Questionnaire is built in full then pruned to elements any expression matches, plus their ancestors/descendants; e.g. `[\"mustSupport = true\"]` or `[\"path = 'Patient.name'\"]`). Outputs: `questionnaire` (the generated Questionnaire), `targetMime` (`application/fhir+json` or `application/fhir+xml`). The Questionnaire is built from the profile's snapshot; coded elements have their ValueSets expanded as answer options. The profile must be in the validator's context — load the IG that contains it via `/igManager/process` first.",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessRequest" } } } },
+        "responses": { "200": { "description": "Result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessResponse" } } } } }
+      }
+    },
+    "/questionnaire/beginTransaction": { "post": { "tags": ["QuestionnaireGenerator"], "summary": "Begin a (no-op) transaction", "operationId": "questionnaireBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
+    "/questionnaire/endTransaction":   { "post": { "tags": ["QuestionnaireGenerator"], "summary": "End a (no-op) transaction",   "operationId": "questionnaireEnd",   "responses": { "204": { "description": "No content" } } } },
+
+    "/package/getModuleDefinition": {
+      "get": {
+        "tags": ["PackageGenerator"],
+        "summary": "PackageGenerator service definition",
+        "operationId": "packageGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/package/process": {
+      "post": {
+        "tags": ["PackageGenerator"],
+        "summary": "Bundle a canonical artifact with its transitive dependencies (CRMI $package)",
+        "operationId": "packageProcess",
+        "description": "Operation: `package`. Inputs (in `input[]`): `resource` (canonical URL of the root artifact), `expandValueSets` (when `true`, ValueSet entries are replaced by their expansion; default false), `targetFormat` (`json` default, or `xml`). Outputs: `bundle` (a `collection` Bundle of the artifact plus its transitive dependency closure — profiles, extensions, ValueSets, CodeSystems, Library, ActivityDefinition, PlanDefinition, etc.; core FHIR resources excluded), `targetMime`. The artifact and its dependencies must be in the validator's context — load the IG(s) via `/igManager/process` first. Not implemented: paging, content/terminology endpoints, packageOnly, manifest, capability filtering.",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessRequest" } } } },
+        "responses": { "200": { "description": "Result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessResponse" } } } } }
+      }
+    },
+    "/package/beginTransaction": { "post": { "tags": ["PackageGenerator"], "summary": "Begin a (no-op) transaction", "operationId": "packageBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
+    "/package/endTransaction":   { "post": { "tags": ["PackageGenerator"], "summary": "End a (no-op) transaction",   "operationId": "packageEnd",   "responses": { "204": { "description": "No content" } } } }
   },
 
   "components": {

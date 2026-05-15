@@ -60,8 +60,14 @@ GET {{baseUrl}}/itb/validationResults/getModuleDefinition
 ### IGManager (processing)
 GET {{baseUrl}}/itb/igManager/getModuleDefinition
 
-### FHIRTransformer (processing) — applies a StructureMap to a resource
+### FHIRTransformer (processing) — applies a StructureMap; also parses FML
 GET {{baseUrl}}/itb/transform/getModuleDefinition
+
+### QuestionnaireGenerator (processing) — builds a Questionnaire from a profile
+GET {{baseUrl}}/itb/questionnaire/getModuleDefinition
+
+### PackageGenerator (processing) — CRMI $package: artifact + transitive deps
+GET {{baseUrl}}/itb/package/getModuleDefinition
 
 
 ###############################################################################
@@ -350,6 +356,119 @@ Content-Type: application/json
 #                 contact.name.text="Parent/Antonio Rojas" }
 #    ]
 #   }
+
+### Parse FHIR Mapping Language (FML) text into a StructureMap resource
+#
+# The `parse` operation is the inverse-direction companion to `transform`:
+# transform APPLIES a StructureMap; parse turns FML source text INTO one.
+# Inputs: content (FML text), name (optional), targetFormat (json|xml).
+# Output: structureMap (the parsed StructureMap as a string) + targetMime.
+POST {{baseUrl}}/itb/transform/process
+Content-Type: application/json
+
+{
+  "operation": "parse",
+  "input": [
+    { "name": "content",      "value": "map \"http://example.org/StructureMap/IdentityTest\" = \"IdentityTest\"\n\nuses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientSrc as source\nuses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientTgt as target\n\ngroup IdentityTest(source src : PatientSrc, target tgt : PatientTgt) {\n  src.id -> tgt.id;\n}\n", "embeddingMethod": "STRING" },
+    { "name": "name",         "value": "IdentityTest", "embeddingMethod": "STRING" },
+    { "name": "targetFormat", "value": "json",         "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 7c. Questionnaire generation  (questionnaire: generate)
+#
+# Builds a FHIR Questionnaire from a StructureDefinition profile. Coded elements
+# get their ValueSets expanded and attached as answer options. Same engine path
+# as the legacy native `GET /questionnaire?profile=<url>` handler.
+#
+# Inputs:
+#   - profile:      canonical URL of the StructureDefinition profile
+#   - targetFormat: "json" (default) or "xml"
+#
+# Output:
+#   - questionnaire: the generated Questionnaire (string)
+#   - targetMime:    application/fhir+json or application/fhir+xml
+#
+# The profile must be in the validator's context — load the IG that contains
+# it via `/itb/igManager` `loadIG` first (base FHIR profiles are always there).
+###############################################################################
+
+### Generate a Questionnaire from the base Patient profile (whole profile)
+POST {{baseUrl}}/itb/questionnaire/process
+Content-Type: application/json
+
+{
+  "operation": "generate",
+  "input": [
+    { "name": "profile",      "value": "http://hl7.org/fhir/StructureDefinition/Patient", "embeddingMethod": "STRING" },
+    { "name": "targetFormat", "value": "json",                                            "embeddingMethod": "STRING" }
+  ]
+}
+
+### Generate a Questionnaire pruned to selected elements (select = JSON array of FHIRPath exprs)
+# select recipes:  ["mustSupport = true"]  |  ["min > 0"]  |  ["path = 'Patient.name'"]
+POST {{baseUrl}}/itb/questionnaire/process
+Content-Type: application/json
+
+{
+  "operation": "generate",
+  "input": [
+    { "name": "profile",      "value": "http://hl7.org/fhir/StructureDefinition/Patient", "embeddingMethod": "STRING" },
+    { "name": "targetFormat", "value": "json",                                            "embeddingMethod": "STRING" },
+    { "name": "select",       "value": "[\"path = 'Patient.name'\",\"path = 'Patient.birthDate'\"]", "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 7d. Packaging  (package: package — CRMI $package)
+#
+# Given a root canonical artifact, returns a `collection` Bundle of that artifact
+# plus every artifact it transitively references — profiles, extensions, ValueSets,
+# CodeSystems, Library, ActivityDefinition, PlanDefinition, ConceptMap, etc. Core
+# FHIR resources are not included.
+#
+# Inputs:
+#   - resource:        canonical URL of the root artifact
+#   - expandValueSets: "true" to replace ValueSet entries with their expansion (default false)
+#   - targetFormat:    "json" (default) or "xml"
+#
+# Output:
+#   - bundle:     the collection Bundle (string)
+#   - targetMime: application/fhir+json or application/fhir+xml
+#
+# The artifact + its dependencies must be in the validator's context — load the
+# IG(s) via `/itb/igManager` `loadIG` first (base FHIR artifacts are always there).
+###############################################################################
+
+### Package a base CodeSystem (minimal deps — fast sanity check)
+POST {{baseUrl}}/itb/package/process
+Content-Type: application/json
+
+{
+  "operation": "package",
+  "input": [
+    { "name": "resource",        "value": "http://hl7.org/fhir/administrative-gender", "embeddingMethod": "STRING" },
+    { "name": "expandValueSets", "value": "false",                                     "embeddingMethod": "STRING" },
+    { "name": "targetFormat",    "value": "json",                                      "embeddingMethod": "STRING" }
+  ]
+}
+
+### Package an IG-specific profile with its dependency closure + expanded ValueSets
+# (requires the relevant IG loaded via §2 first — replace the URL with one of yours)
+POST {{baseUrl}}/itb/package/process
+Content-Type: application/json
+
+{
+  "operation": "package",
+  "input": [
+    { "name": "resource",        "value": "https://www.ehealth.fgov.be/standards/fhir/allergy/StructureDefinition/be-allergyintolerance", "embeddingMethod": "STRING" },
+    { "name": "expandValueSets", "value": "true",  "embeddingMethod": "STRING" },
+    { "name": "targetFormat",    "value": "json",  "embeddingMethod": "STRING" }
+  ]
+}
 
 
 ###############################################################################

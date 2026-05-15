@@ -51,8 +51,11 @@ public class FhirValidatorHttpService {
     server.createContext("/loadIg", new LoadIGHTTPHandler(this));
     server.createContext("/convert", new ConvertHTTPHandler(this));
     server.createContext("/snapshot", new SnapshotHTTPHandler(this));
+    server.createContext("/questionnaire", new QuestionnaireHTTPHandler(this));
     server.createContext("/narrative", new NarrativeHTTPHandler(this));
     server.createContext("/transform", new TransformHTTPHandler(this));
+    server.createContext("/fml", new FmlHTTPHandler(this));
+    server.createContext("/package", new PackageHTTPHandler(this));
     server.createContext("/version", new VersionHTTPHandler(this));
     server.createContext("/compile", new CompileHTTPHandler(this));
     server.createContext("/openapi.json", new OpenApiHTTPHandler());
@@ -73,6 +76,8 @@ public class FhirValidatorHttpService {
     server.createContext("/itb/validationResults", new GitbValidationResultsHandler(this));  // PS
     server.createContext("/itb/igManager",         new GitbIgManagerHandler(this));          // PS
     server.createContext("/itb/transform",         new GitbTransformHandler(this));          // PS
+    server.createContext("/itb/questionnaire",     new GitbQuestionnaireHandler(this));      // PS
+    server.createContext("/itb/package",           new GitbPackageHandler(this));            // PS
 
     // Start the server
     server.setExecutor(null); // Use default executor
