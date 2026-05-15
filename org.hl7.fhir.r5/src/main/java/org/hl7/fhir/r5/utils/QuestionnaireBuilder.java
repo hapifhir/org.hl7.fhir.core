@@ -333,8 +333,12 @@ public class QuestionnaireBuilder {
   private boolean isExempt(ElementDefinition element, ElementDefinition child) {
     String n = tail(child.getPath());
     String t = "";
-    if (!element.getType().isEmpty())
-      t =  element.getType().get(0).getWorkingCode();
+    if (!element.getType().isEmpty()) {
+      String workingCode = element.getType().get(0).getWorkingCode();
+      if (workingCode != null) {
+        t = workingCode;
+      }
+    }
 
     // we don't generate questions for the base stuff in every element
     if (t.equals("Resource")  && (n.equals("text") || n.equals("language") || n.equals("contained")))
@@ -876,12 +880,15 @@ public class QuestionnaireBuilder {
   // Complex Types ---------------------------------------------------------------
 
   private QuestionnaireAnswerConstraint constraintTypeForBinding(ElementDefinitionBindingComponent binding) {
-    if (binding == null) 
+    if (binding == null)
       return null;
-    else if (binding.getStrength() != BindingStrength.REQUIRED) 
+    // Per FHIR: required bindings MUST come from the value set, so the
+    // answer constraint is OPTIONSONLY. Any other strength (extensible,
+    // preferred, example) is non-strict, so OPTIONSORTYPE is appropriate.
+    else if (binding.getStrength() == BindingStrength.REQUIRED)
       return QuestionnaireAnswerConstraint.OPTIONSONLY;
     else
-      return QuestionnaireAnswerConstraint.OPTIONSORTYPE; 
+      return QuestionnaireAnswerConstraint.OPTIONSORTYPE;
   }
 
   private void addCodingQuestions(QuestionnaireItemComponent group, ElementDefinition element, String path, List<QuestionnaireResponse.QuestionnaireResponseItemComponent> answerGroups) throws FHIRException {
