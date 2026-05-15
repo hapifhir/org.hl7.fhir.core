@@ -1,0 +1,5934 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: orghl7fhircore\n"
+"X-Crowdin-Project-ID: 792848\n"
+"X-Crowdin-Language: sv\n"
+"X-Crowdin-File: rendering-phrases.po\n"
+"Project-Id-Version: orghl7fhircore\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: Swedish\n"
+"Language: sv_SE\n"
+
+# ACTOR_DEF_ACT
+#: ACTOR_DEF_ACT
+msgid "Actor: {0}"
+msgstr "Aktör: {0}"
+
+# ACTOR_DEF_CAP
+#: ACTOR_DEF_CAP
+msgid "Capabilities:"
+msgstr "Förmågor:"
+
+# ACTOR_DEF_DER
+#: ACTOR_DEF_DER
+msgid "Derived from:"
+msgstr "Härledd från:"
+
+# ACTOR_DEF_TYP
+#: ACTOR_DEF_TYP
+msgid "Type: {0}"
+msgstr "Typ: {0}"
+
+# ACTOR_DERIVED_FROM
+#: ACTOR_DERIVED_FROM
+msgctxt "ACTOR_DERIVED_FROM"
+msgid "Derived From"
+msgstr "Härledd från"
+
+# ACTOR_DERIVED_FROM_NONE
+#: ACTOR_DERIVED_FROM_NONE
+msgctxt "ACTOR_DERIVED_FROM_NONE"
+msgid "(none)"
+msgstr "(ingen)"
+
+# ADD_BIND_ADD_BIND
+#: ADD_BIND_ADD_BIND
+msgid "Additional Bindings"
+msgstr "Ytterligare bindningar"
+
+# ADD_BIND_ALL_REP
+#: ADD_BIND_ALL_REP
+msgid "All repeats"
+msgstr "Alla upprepningar"
+
+# ADD_BIND_ANY
+#: ADD_BIND_ANY
+msgctxt "ADD_BIND_ANY"
+msgid "Any"
+msgstr "Valfri"
+
+# ADD_BIND_ANY_REP
+#: ADD_BIND_ANY_REP
+msgid "any repeat"
+msgstr "valfri upprepning"
+
+# ADD_BIND_CURR_BIND
+#: ADD_BIND_CURR_BIND
+msgctxt "ADD_BIND_CURR_BIND"
+msgid "Current"
+msgstr "Aktuell"
+
+# ADD_BIND_DESIG_SYS
+#: ADD_BIND_DESIG_SYS
+msgid "This value set is a good set of codes to start with when designing your system"
+msgstr "Denna värdemängd är en lämplig uppsättning koder att börja med när du utformar ditt system"
+
+# ADD_BIND_EXT_PREF
+#: ADD_BIND_EXT_PREF
+msgid "A required binding, for use when the binding strength is ''extensible'' or ''preferred''"
+msgstr "En obligatorisk bindning, för användning när bindningsstyrkan är ''utbyggbar'' eller ''föredragen''"
+
+# ADD_BIND_EX_BIND
+#: ADD_BIND_EX_BIND
+msgctxt "ADD_BIND_EX_BIND"
+msgid "Extensible"
+msgstr "Utbyggbar"
+
+# ADD_BIND_GIVEN_CONT
+#: ADD_BIND_GIVEN_CONT
+msgid "This value set is provided to user look up in a given context"
+msgstr "Denna värdemängd tillhandahålls för användaruppslag i ett visst sammanhang"
+
+# ADD_BIND_MAX
+#: ADD_BIND_MAX
+msgid "Max Binding"
+msgstr "Maxbindning"
+
+# ADD_BIND_MIN
+#: ADD_BIND_MIN
+msgid "Min Binding"
+msgstr "Minbindning"
+
+# ADD_BIND_NEW_REC
+#: ADD_BIND_NEW_REC
+msgid "New records are required to use this value set, but legacy records may use other codes"
+msgstr "Nya poster måste använda denna värdemängd, men äldre poster kan använda andra koder"
+
+# ADD_BIND_PREF_BIND
+#: ADD_BIND_PREF_BIND
+msgctxt "ADD_BIND_PREF_BIND"
+msgid "Preferred"
+msgstr "Föredragen"
+
+# ADD_BIND_RECOM_VALUE_SET
+#: ADD_BIND_RECOM_VALUE_SET
+msgid "This is the value set that is recommended (documentation should explain why)"
+msgstr "Detta är den värdemängd som rekommenderas (dokumentationen bör förklara varför)"
+
+# ADD_BIND_REQ_BIND
+#: ADD_BIND_REQ_BIND
+msgctxt "ADD_BIND_REQ_BIND"
+msgid "Required"
+msgstr "Obligatorisk"
+
+# ADD_BIND_UI
+#: ADD_BIND_UI
+msgctxt "ADD_BIND_UI"
+msgid "UI"
+msgstr "UI"
+
+# ADD_BIND_UI_BIND
+#: ADD_BIND_UI_BIND
+msgid "UI Binding"
+msgstr "UI-bindning"
+
+# ADD_BIND_UNKNOWN_PUR
+#: ADD_BIND_UNKNOWN_PUR
+msgid "Unknown code for purpose"
+msgstr "Okänd kod för syfte"
+
+# ADD_BIND_VALID_EXT
+#: ADD_BIND_VALID_EXT
+msgid "Validators will check this binding (strength = extensible)"
+msgstr "Validerare kommer att kontrollera denna bindning (styrka = utbyggbar)"
+
+# ADD_BIND_VALID_REQ
+#: ADD_BIND_VALID_REQ
+msgid "Validators will check this binding (strength = required)"
+msgstr "Validerare kommer att kontrollera denna bindning (styrka = obligatorisk)"
+
+# ADD_BIND_VALUE_COMP
+#: ADD_BIND_VALUE_COMP
+msgid "This value set is a component of the base value set"
+msgstr "Denna värdemängd är en komponent i basvärdemängden"
+
+# BUNDLE_DOCUMENT_CONTENT
+#: BUNDLE_DOCUMENT_CONTENT
+msgid "Document Content"
+msgstr "Dokumentinnehåll"
+
+# BUNDLE_DOCUMENT_DETAILS
+#: BUNDLE_DOCUMENT_DETAILS
+msgid "Document Details"
+msgstr "Dokumentdetaljer"
+
+# BUNDLE_ETAG
+#: BUNDLE_ETAG
+msgid "ETag = {0}"
+msgstr "ETag = {0}"
+
+# BUNDLE_HEADER_DOCUMENT_CONTENTS
+#: BUNDLE_HEADER_DOCUMENT_CONTENTS
+msgid "Additional Resources Included in Document"
+msgstr "Ytterligare resurser inkluderade i dokumentet"
+
+# BUNDLE_HEADER_ENTRY
+#: BUNDLE_HEADER_ENTRY
+msgid "Entry {0}"
+msgstr "Post {0}"
+
+# BUNDLE_HEADER_ENTRY_URL
+#: BUNDLE_HEADER_ENTRY_URL
+msgid "Entry {0} - fullUrl = {1}"
+msgstr "Post {0} - fullUrl = {1}"
+
+# BUNDLE_HEADER_ROOT
+#: BUNDLE_HEADER_ROOT
+msgid "Bundle {0} of type {1}"
+msgstr "Bundle {0} av typ {1}"
+
+# BUNDLE_IF_MATCH
+#: BUNDLE_IF_MATCH
+msgid "If-Match = {0}"
+msgstr "If-Match = {0}"
+
+# BUNDLE_IF_MOD
+#: BUNDLE_IF_MOD
+msgid "If-Modified-Since = {0}"
+msgstr "If-Modified-Since = {0}"
+
+# BUNDLE_IF_NONE
+#: BUNDLE_IF_NONE
+msgid "If-None-Exist = {0}"
+msgstr "If-None-Exist = {0}"
+
+# BUNDLE_IF_NON_MATCH
+#: BUNDLE_IF_NON_MATCH
+msgid "If-None-Match = {0}"
+msgstr "If-None-Match = {0}"
+
+# BUNDLE_LAST_MOD
+#: BUNDLE_LAST_MOD
+msgid "LastModified = {0}"
+msgstr "LastModified = {0}"
+
+# BUNDLE_LOCATION
+#: BUNDLE_LOCATION
+msgid "Location = {0}"
+msgstr "Plats = {0}"
+
+# BUNDLE_REQUEST
+#: BUNDLE_REQUEST
+msgid "Request:"
+msgstr "Begäran:"
+
+# BUNDLE_RESOURCE
+#: BUNDLE_RESOURCE
+msgid "Resource {0}:"
+msgstr "Resurs {0}:"
+
+# BUNDLE_RESPONSE
+#: BUNDLE_RESPONSE
+msgid "Response:"
+msgstr "Svar:"
+
+# BUNDLE_REV_EXCP
+#: BUNDLE_REV_EXCP
+msgid "Exception generating narrative: {0}"
+msgstr "Undantag vid generering av berättande text: {0}"
+
+# BUNDLE_SEARCH
+#: BUNDLE_SEARCH
+msgid "Search:"
+msgstr "Sök:"
+
+# BUNDLE_SEARCH_MODE
+#: BUNDLE_SEARCH_MODE
+msgid "Mode = {0}"
+msgstr "Läge = {0}"
+
+# BUNDLE_SEARCH_SCORE
+#: BUNDLE_SEARCH_SCORE
+msgid "Score = {0}"
+msgstr "Poäng = {0}"
+
+# BUNDLE_SUMMARY
+#: BUNDLE_SUMMARY
+msgid "{0} Bundle, {1} Entries"
+msgstr "{0} Bundle, {1} poster"
+
+# BUND_REND_INVALID_DOC
+#: BUND_REND_INVALID_DOC
+msgid "Invalid document ''{0}'' - first entry is not a Composition ({0})"
+msgstr "Ogiltigt dokument ''{0}'' - första posten är inte en Composition ({0})"
+
+# CANON_REND_COMMITTEE
+#: CANON_REND_COMMITTEE
+msgid "Committee"
+msgstr "Kommitté"
+
+# CANON_REND_JSON
+#: CANON_REND_JSON
+msgid "JSON"
+msgstr "JSON"
+
+# CANON_REND_MATURITY
+#: CANON_REND_MATURITY
+msgid "Maturity"
+msgstr "Mognadsnivå"
+
+# CANON_REND_PUBLISHER
+#: CANON_REND_PUBLISHER
+msgid "Publisher"
+msgstr "Utgivare"
+
+# CANON_REND_SOURCE_RES
+#: CANON_REND_SOURCE_RES
+msgid "Source Resource"
+msgstr "Källresurs"
+
+# CANON_REND_TURTLE
+#: CANON_REND_TURTLE
+msgid "Turtle"
+msgstr "Turtle"
+
+# CAPABILITY_ADD_SUPP_PROF
+#: CAPABILITY_ADD_SUPP_PROF
+msgid "Additional supported profiles:"
+msgstr "Ytterligare stödda profiler:"
+
+# CAPABILITY_BASE_SYS
+#: CAPABILITY_BASE_SYS
+msgid "Base System Profile"
+msgstr "Bassystemprofil"
+
+# CAPABILITY_COMB_SEARCH_PAR
+#: CAPABILITY_COMB_SEARCH_PAR
+msgid "Combined Search Parameters"
+msgstr "Kombinerade sökparametrar"
+
+# CAPABILITY_CORS_NO
+#: CAPABILITY_CORS_NO
+msgid "Enable CORS: no"
+msgstr "Aktivera CORS: nej"
+
+# CAPABILITY_CORS_YES
+#: CAPABILITY_CORS_YES
+msgid "Enable CORS: yes"
+msgstr "Aktivera CORS: ja"
+
+# CAPABILITY_CREATE_INT
+#: CAPABILITY_CREATE_INT
+msgid "POST a new resource (create interaction)"
+msgstr "POST en ny resurs (skapa-interaktion)"
+
+# CAPABILITY_DELETE_INT
+#: CAPABILITY_DELETE_INT
+msgid "DELETE a resource (delete interaction)"
+msgstr "DELETE en resurs (radera-interaktion)"
+
+# CAPABILITY_DOCUMENT_CAPS
+#: CAPABILITY_DOCUMENT_CAPS
+msgid "FHIR Document Capabilities"
+msgstr "FHIR-dokumentförmågor"
+
+# CAPABILITY_ENDPOINTS
+#: CAPABILITY_ENDPOINTS
+msgid "Endpoint(s)"
+msgstr "Slutpunkt(er)"
+
+# CAPABILITY_ERR_DET
+#: CAPABILITY_ERR_DET
+msgid "Error detected"
+msgstr "Fel upptäckt"
+
+# CAPABILITY_EXT_OP
+#: CAPABILITY_EXT_OP
+msgid "Extended Operations"
+msgstr "Utökade operationer"
+
+# CAPABILITY_FHIR
+#: CAPABILITY_FHIR
+msgid "Core FHIR Resource"
+msgstr "FHIR-kärnresurs"
+
+# CAPABILITY_FHIR_VER
+#: CAPABILITY_FHIR_VER
+msgid "FHIR Version: {0}"
+msgstr "FHIR-version: {0}"
+
+# CAPABILITY_HISTORY_INT
+#: CAPABILITY_HISTORY_INT
+msgid "GET changes to a resource (history interaction on instance)"
+msgstr "GET ändringar för en resurs (historik-interaktion på instans)"
+
+# CAPABILITY_HISTORY_TYPE
+#: CAPABILITY_HISTORY_TYPE
+msgid "GET changes for all resources of the type (history interaction on type)"
+msgstr "GET ändringar för alla resurser av typen (historik-interaktion på typ)"
+
+# CAPABILITY_IMP_VER
+#: CAPABILITY_IMP_VER
+msgid "Implementation Guide Version: {0}"
+msgstr "Implementationsguidens version: {0}"
+
+# CAPABILITY_INT
+#: CAPABILITY_INT
+msgid "interaction."
+msgstr "interaktion."
+
+# CAPABILITY_INTER_SUPP
+#: CAPABILITY_INTER_SUPP
+msgid "The interactions supported by each resource ("
+msgstr "Interaktionerna som stöds av varje resurs ("
+
+# CAPABILITY_INT_DESC
+#: CAPABILITY_INT_DESC
+msgid "interaction described as follows:"
+msgstr "interaktion beskrivs enligt följande:"
+
+# CAPABILITY_INT_SUMM
+#: CAPABILITY_INT_SUMM
+msgid "Interaction summary"
+msgstr "Interaktionssammanfattning"
+
+# CAPABILITY_MAY_SUPP
+#: CAPABILITY_MAY_SUPP
+msgid "MAY Support the Following Implementation Guides"
+msgstr "FÅR stödja följande implementationsguider"
+
+# CAPABILITY_MESSAGING_CAP
+#: CAPABILITY_MESSAGING_CAP
+msgid "Messaging Capability"
+msgstr "Meddelandeförmåga"
+
+# CAPABILITY_MESSAGING_CAPS
+#: CAPABILITY_MESSAGING_CAPS
+msgid "FHIR Messaging Capabilities"
+msgstr "FHIR-meddelandeförmågor"
+
+# CAPABILITY_MULT_EXT
+#: CAPABILITY_MULT_EXT
+msgid "this mark indicates that there are more than one expectation extensions present"
+msgstr "detta märke anger att det finns fler än en förväntan-extension närvarande"
+
+# CAPABILITY_NOTE_CAP
+#: CAPABILITY_NOTE_CAP
+msgid "Note to Implementers: FHIR Capabilities"
+msgstr "Notera till implementörer: FHIR-förmågor"
+
+# CAPABILITY_OP
+#: CAPABILITY_OP
+msgid "Operations"
+msgstr "Operationer"
+
+# CAPABILITY_OPER
+#: CAPABILITY_OPER
+msgid "Operation"
+msgstr "Operation"
+
+# CAPABILITY_OTH_RES_ENB
+#: CAPABILITY_OTH_RES_ENB
+msgid "The other resources enabled for"
+msgstr "De övriga resurserna aktiverade för"
+
+# CAPABILITY_PATCH_INT
+#: CAPABILITY_PATCH_INT
+msgid "PATCH a new resource version (patch interaction)"
+msgstr "PATCH en ny resursversion (patch-interaktion)"
+
+# CAPABILITY_PROF_CONF
+#: CAPABILITY_PROF_CONF
+msgid "Profile Conformance"
+msgstr "Profilkonformans"
+
+# CAPABILITY_PROF_MAP
+#: CAPABILITY_PROF_MAP
+msgid "Profile Mapping"
+msgstr "Profilmappning"
+
+# CAPABILITY_PROF_RES_DOC
+#: CAPABILITY_PROF_RES_DOC
+msgid "Document Resource Profile"
+msgstr "Dokumentresursprofil"
+
+# CAPABILITY_PUB_BY
+#: CAPABILITY_PUB_BY
+msgid "Published by: {0}"
+msgstr "Publicerad av: {0}"
+
+# CAPABILITY_PUB_ON
+#: CAPABILITY_PUB_ON
+msgid "Published on: {0}"
+msgstr "Publicerad: {0}"
+
+# CAPABILITY_READ_INT
+#: CAPABILITY_READ_INT
+msgid "GET a resource (read interaction)"
+msgstr "GET en resurs (läs-interaktion)"
+
+# CAPABILITY_REF_PROF
+#: CAPABILITY_REF_PROF
+msgid "Reference Policy"
+msgstr "Referenspolicy"
+
+# CAPABILITY_REQ_RECOM
+#: CAPABILITY_REQ_RECOM
+msgid "Required and recommended search parameters"
+msgstr "Obligatoriska och rekommenderade sökparametrar"
+
+# CAPABILITY_REST_CAPS
+#: CAPABILITY_REST_CAPS
+msgid "FHIR RESTful Capabilities"
+msgstr "FHIR RESTful-förmågor"
+
+# CAPABILITY_REST_CONFIG
+#: CAPABILITY_REST_CONFIG
+msgid "REST Configuration: {0}"
+msgstr "REST-konfiguration: {0}"
+
+# CAPABILITY_RES_CONF
+#: CAPABILITY_RES_CONF
+msgid "Resource Conformance: {0}"
+msgstr "Resurskonformans: {0}"
+
+# CAPABILITY_RES_ENB
+#: CAPABILITY_RES_ENB
+msgid "The linked resources enabled for"
+msgstr "De länkade resurserna aktiverade för"
+
+# CAPABILITY_RES_OPER
+#: CAPABILITY_RES_OPER
+msgid "The operations on the resource (if any)"
+msgstr "Operationerna på resursen (om några)"
+
+# CAPABILITY_RES_PRO
+#: CAPABILITY_RES_PRO
+msgid "Capabilities by Resource/Profile"
+msgstr "Förmågor per resurs/profil"
+
+# CAPABILITY_RES_TYP
+#: CAPABILITY_RES_TYP
+msgid "Resource Type"
+msgstr "Resurstyp"
+
+# CAPABILITY_REV_PROF
+#: CAPABILITY_REV_PROF
+msgid "The relevant profiles (if any)"
+msgstr "De relevanta profilerna (om några)"
+
+# CAPABILITY_SEARCHES
+#: CAPABILITY_SEARCHES
+msgid "Searches"
+msgstr "Sökningar"
+
+# CAPABILITY_SEARCH_INT
+#: CAPABILITY_SEARCH_INT
+msgid "GET all set of resources of the type (search interaction)"
+msgstr "GET alla resurser av typen (sök-interaktion)"
+
+# CAPABILITY_SEARCH_PAR
+#: CAPABILITY_SEARCH_PAR
+msgid "The required, recommended, and some optional search parameters (if any)."
+msgstr "De obligatoriska, rekommenderade och vissa valfria sökparametrarna (om några)."
+
+# CAPABILITY_SEARCH_PARS
+#: CAPABILITY_SEARCH_PARS
+msgid "Search Parameters"
+msgstr "Sökparametrar"
+
+# CAPABILITY_SHOULD_SUPP
+#: CAPABILITY_SHOULD_SUPP
+msgid "SHOULD Support the Following Implementation Guides"
+msgstr "BÖR stödja följande implementationsguider"
+
+# CAPABILITY_SUMM_RES
+#: CAPABILITY_SUMM_RES
+msgid "The summary table lists the resources that are part of this configuration, and for each resource it lists:"
+msgstr "Sammanfattningstabellen listar resurserna som ingår i denna konfiguration, och för varje resurs listar den:"
+
+# CAPABILITY_SUMM_SYS_INT
+#: CAPABILITY_SUMM_SYS_INT
+msgid "Summary of System-wide Interactions"
+msgstr "Sammanfattning av systemövergripande interaktioner"
+
+# CAPABILITY_SUMM_SYS_OP
+#: CAPABILITY_SUMM_SYS_OP
+msgid "Summary of System-wide Operations"
+msgstr "Sammanfattning av systemövergripande operationer"
+
+# CAPABILITY_SUMM_SYS_SP
+#: CAPABILITY_SUMM_SYS_SP
+msgid "Summary of System-wide Search Parameters"
+msgstr "Sammanfattning av systemövergripande sökparametrar"
+
+# CAPABILITY_SUPP
+#: CAPABILITY_SUPP
+msgid "support"
+msgstr "stöd"
+
+# CAPABILITY_SUPPS
+#: CAPABILITY_SUPPS
+msgid "Supports"
+msgstr "Stöder"
+
+# CAPABILITY_SUPPS_THE
+#: CAPABILITY_SUPPS_THE
+msgid "Supports the"
+msgstr "Stöder"
+
+# CAPABILITY_SUPP_FORM
+#: CAPABILITY_SUPP_FORM
+msgid "Supported Formats:"
+msgstr "Format som stöds:"
+
+# CAPABILITY_SUPP_MSGS
+#: CAPABILITY_SUPP_MSGS
+msgid "Supported Message(s)"
+msgstr "Meddelande(n) som stöds"
+
+# CAPABILITY_SUPP_PATCH_FORM
+#: CAPABILITY_SUPP_PATCH_FORM
+msgid "Supported Patch Formats:"
+msgstr "Patch-format som stöds:"
+
+# CAPABILITY_SUPP_PROFS
+#: CAPABILITY_SUPP_PROFS
+msgid "Supported Profiles"
+msgstr "Profiler som stöds"
+
+# CAPABILITY_SUPP_THE
+#: CAPABILITY_SUPP_THE
+msgid "support the"
+msgstr "stöd"
+
+# CAPABILITY_TYPS
+#: CAPABILITY_TYPS
+msgid "Types"
+msgstr "Typer"
+
+# CAPABILITY_TYP_PRES
+#: CAPABILITY_TYP_PRES
+msgid "ype are only present if at least one of the resources has support for them."
+msgstr "yp är endast närvarande om minst en av resurserna har stöd för dem."
+
+# CAPABILITY_UPDATE_INT
+#: CAPABILITY_UPDATE_INT
+msgid "PUT a new resource version (update interaction)"
+msgstr "PUT en ny resursversion (uppdatera-interaktion)"
+
+# CAPABILITY_VREAD_INT
+#: CAPABILITY_VREAD_INT
+msgid "GET past versions of resources (vread interaction)"
+msgstr "GET tidigare versioner av resurser (vread-interaktion)"
+
+# CAPABILTY_ALLOW_CAP
+#: CAPABILTY_ALLOW_CAP
+msgid "Any FHIR capability may be ''allowed'' by the system unless explicitly marked as ''SHALL NOT''. A few items are marked as MAY in the Implementation Guide to highlight their potential relevance to the use case."
+msgstr "Vilken FHIR-förmåga som helst kan vara ''tillåten'' av systemet om den inte uttryckligen är markerad som ''SHALL NOT''. Några objekt är markerade som MAY i implementationsguiden för att belysa deras potentiella relevans för användningsfallet."
+
+# CAPABILTY_SHALL_SUPP
+#: CAPABILTY_SHALL_SUPP
+msgid "SHALL Support the Following Implementation Guides"
+msgstr "SKA stödja följande implementationsguider"
+
+# CODESYSTEM_CONCEPTS
+#: CODESYSTEM_CONCEPTS
+msgid "Concepts"
+msgstr "Begrepp"
+
+# CODESYSTEM_CONTENT_COMPLETE
+#: CODESYSTEM_CONTENT_COMPLETE
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines the following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "Detta <param name=\"cased\"/> kodsystem <param name=\"cs\"/> definierar följande kod<if test=\"code-count != 1\">er</if><param name=\"h\"/>:"
+
+# CODESYSTEM_CONTENT_EXAMPLE
+#: CODESYSTEM_CONTENT_EXAMPLE
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
+msgstr "Detta <param name=\"cased\"/> kodsystem <param name=\"cs\"/> tillhandahåller några kod<if test=\"code-count != 1\">er</if><param name=\"h\"/> <b>som endast är exempel</b>:"
+
+# CODESYSTEM_CONTENT_FRAGMENT
+#: CODESYSTEM_CONTENT_FRAGMENT
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
+msgstr "Detta <param name=\"cased\"/> kodsystem <param name=\"cs\"/> tillhandahåller <b>ett fragment</b> som inkluderar följande kod<if test=\"code-count != 1\">er</if><param name=\"h\"/>:"
+
+# CODESYSTEM_CONTENT_NOTPRESENT
+#: CODESYSTEM_CONTENT_NOTPRESENT
+msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
+msgstr "Detta <param name=\"cased\"/> kodsystem <param name=\"cs\"/> definierar koder<param name=\"h\"/>, men inga koder visas här"
+
+# CODESYSTEM_CONTENT_SUPPLEMENT
+#: CODESYSTEM_CONTENT_SUPPLEMENT
+msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
+msgstr "Detta kodsystemstillägg <param name=\"cs\"/> definierar {0} på följande kod<if test=\"code-count != 1\">er</if>:"
+
+# CODESYSTEM_DEPRECATED
+#: CODESYSTEM_DEPRECATED
+msgid "Deprecated"
+msgstr "Föråldrad"
+
+# CODESYSTEM_FILTERS
+#: CODESYSTEM_FILTERS
+msgid "Filters"
+msgstr "Filter"
+
+# CODESYSTEM_FILTER_OP
+#: CODESYSTEM_FILTER_OP
+msgid "Op"
+msgstr "Op"
+
+# CODESYSTEM_PROPS_DESC
+#: CODESYSTEM_PROPS_DESC
+msgid "This code system defines the following properties for its concepts"
+msgstr "Detta kodsystem definierar följande egenskaper för sina begrepp"
+
+# CODE_SYS_CODE_NOT_HERE
+#: CODE_SYS_CODE_NOT_HERE
+msgid "This CodeSystem is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr "Detta CodeSystem används inte här; det kan användas på andra ställen (t.ex. specifikationer och/eller implementationer som använder detta innehåll)"
+
+# CODE_SYS_COMPLETE
+#: CODE_SYS_COMPLETE
+msgid "All the concepts defined by the code system are included in the code system resource"
+msgstr "Alla begrepp som definieras av kodsystemet ingår i kodsystemsresursen"
+
+# CODE_SYS_COPY
+#: CODE_SYS_COPY
+msgid "Copy"
+msgstr "Kopiera"
+
+# CODE_SYS_DISP
+#: CODE_SYS_DISP
+msgid "displays"
+msgstr "visningar"
+
+# CODE_SYS_DISP_PROP
+#: CODE_SYS_DISP_PROP
+msgid "displays and properties"
+msgstr "visningar och egenskaper"
+
+# CODE_SYS_EXAMPLE
+#: CODE_SYS_EXAMPLE
+msgid "A few representative concepts are included in the code system resource"
+msgstr "Några representativa begrepp ingår i kodsystemsresursen"
+
+# CODE_SYS_FEAT
+#: CODE_SYS_FEAT
+msgid "features"
+msgstr "funktioner"
+
+# CODE_SYS_FOR_OID
+#: CODE_SYS_FOR_OID
+msgid "{0} (for OID based terminology systems)"
+msgstr "{0} (för OID-baserade terminologisystem)"
+
+# CODE_SYS_FRAGMENT
+#: CODE_SYS_FRAGMENT
+msgid "A subset of the code system concepts are included in the code system resource"
+msgstr "En delmängd av kodsystemets begrepp ingår i kodsystemsresursen"
+
+# CODE_SYS_IN_A_HIERARCHY
+#: CODE_SYS_IN_A_HIERARCHY
+msgid "in a {0} hierarchy"
+msgstr "i en {0} hierarki"
+
+# CODE_SYS_NOTPRESENT
+#: CODE_SYS_NOTPRESENT
+msgid "None of the concepts defined by the code system are included in the code system resource"
+msgstr "Inga av begreppen som definieras av kodsystemet ingår i kodsystemsresursen"
+
+# CODE_SYS_PROP
+#: CODE_SYS_PROP
+msgid "properties"
+msgstr "egenskaper"
+
+# CODE_SYS_REPLACED_BY
+#: CODE_SYS_REPLACED_BY
+msgid "(replaced by"
+msgstr "(ersatt av"
+
+# CODE_SYS_SUPPLEMENT
+#: CODE_SYS_SUPPLEMENT
+msgid "This code system resource is a supplement to"
+msgstr "Denna kodsystemsresurs är ett tillägg till"
+
+# CODE_SYS_SUPP_CODE_NOT_HERE
+#: CODE_SYS_SUPP_CODE_NOT_HERE
+msgid "This CodeSystem Supplement is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr "Detta CodeSystem-tillägg används inte här; det kan användas på andra ställen (t.ex. specifikationer och/eller implementationer som använder detta innehåll)"
+
+# CODE_SYS_THE_VALUE_SET
+#: CODE_SYS_THE_VALUE_SET
+msgid "{0} is the value set for all codes in this code system"
+msgstr "{0} är värdemängden för alla koder i detta kodsystem"
+
+# CODE_SYS_UNDEF_HIER
+#: CODE_SYS_UNDEF_HIER
+msgid "in an undefined hierarchy"
+msgstr "i en odefinierad hierarki"
+
+# CODE_SYS_UNKN_MODE
+#: CODE_SYS_UNKN_MODE
+msgid "Unknown CodeSystemContentMode mode"
+msgstr "Okänt CodeSystemContentMode-läge"
+
+# CONC_MAP_CODES
+#: CONC_MAP_CODES
+msgid "Codes"
+msgstr "Koder"
+
+# CONC_MAP_CODE_SYS_UNSPEC
+#: CONC_MAP_CODE_SYS_UNSPEC
+msgid "unspecified code system"
+msgstr "ospecificerat kodsystem"
+
+# CONC_MAP_FRM
+#: CONC_MAP_FRM
+msgid "from"
+msgstr "från"
+
+# CONC_MAP_FROM
+#: CONC_MAP_FROM
+msgid "Mapping from"
+msgstr "Mappning från"
+
+# CONC_MAP_GRP
+#: CONC_MAP_GRP
+msgid "Group {0}"
+msgstr "Grupp {0}"
+
+# CONC_MAP_NOT_SPEC
+#: CONC_MAP_NOT_SPEC
+msgid "(not specified)"
+msgstr "(ej specificerad)"
+
+# CONC_MAP_REL
+#: CONC_MAP_REL
+msgid "Relationship"
+msgstr "Relation"
+
+# CONC_MAP_SOURCE
+#: CONC_MAP_SOURCE
+msgid "Source Code"
+msgstr "Källkod"
+
+# CONC_MAP_SOURCE_CARD
+#: CONC_MAP_SOURCE_CARD
+msgctxt "CONC_MAP_SOURCE_CARD"
+msgid "Card."
+msgstr "Kard."
+
+# CONC_MAP_SOURCE_TYPE
+#: CONC_MAP_SOURCE_TYPE
+msgctxt "CONC_MAP_SOURCE_TYPE"
+msgid "Type"
+msgstr "Typ"
+
+# CONC_MAP_SRC_DET
+#: CONC_MAP_SRC_DET
+msgid "Source Concept Details"
+msgstr "Källbegreppsdetaljer"
+
+# CONC_MAP_TO
+#: CONC_MAP_TO
+msgctxt "CONC_MAP_TO"
+msgid "to"
+msgstr "till"
+
+# CONC_MAP_TRGT
+#: CONC_MAP_TRGT
+msgid "Target Code"
+msgstr "Målkod"
+
+# CONC_MAP_TRGT_CARD
+#: CONC_MAP_TRGT_CARD
+msgctxt "CONC_MAP_TRGT_CARD"
+msgid "Card."
+msgstr "Kard."
+
+# CONC_MAP_TRGT_DET
+#: CONC_MAP_TRGT_DET
+msgid "Target Concept Details"
+msgstr "Målbegreppsdetaljer"
+
+# CONC_MAP_TRGT_TYPE
+#: CONC_MAP_TRGT_TYPE
+msgctxt "CONC_MAP_TRGT_TYPE"
+msgid "Type"
+msgstr "Typ"
+
+# CONF_MAY
+#: CONF_MAY
+msgctxt "CONF_MAY"
+msgid "MAY"
+msgstr "MAY"
+
+# CONF_MAY_PLURAL
+#: CONF_MAY_PLURAL
+msgctxt "CONF_MAY_PLURAL"
+msgid "MAY"
+msgstr "MAY"
+
+# CONF_SHALL
+#: CONF_SHALL
+msgctxt "CONF_SHALL"
+msgid "SHALL"
+msgstr "SHALL"
+
+# CONF_SHALLNOT
+#: CONF_SHALLNOT
+msgctxt "CONF_SHALLNOT"
+msgid "SHALL NOT"
+msgstr "SHALL NOT"
+
+# CONF_SHALLNOT_PLURAL
+#: CONF_SHALLNOT_PLURAL
+msgctxt "CONF_SHALLNOT_PLURAL"
+msgid "SHALL NOT"
+msgstr "SHALL NOT"
+
+# CONF_SHALL_PLURAL
+#: CONF_SHALL_PLURAL
+msgctxt "CONF_SHALL_PLURAL"
+msgid "SHALL"
+msgstr "SHALL"
+
+# CONF_SHOULD
+#: CONF_SHOULD
+msgctxt "CONF_SHOULD"
+msgid "SHOULD"
+msgstr "SHOULD"
+
+# CONF_SHOULDNOT
+#: CONF_SHOULDNOT
+msgctxt "CONF_SHOULDNOT"
+msgid "SHOULD NOT"
+msgstr "SHOULD NOT"
+
+# CONF_SHOULDNOT_PLURAL
+#: CONF_SHOULDNOT_PLURAL
+msgctxt "CONF_SHOULDNOT_PLURAL"
+msgid "SHOULD NOT"
+msgstr "SHOULD NOT"
+
+# CONF_SHOULD_PLURAL
+#: CONF_SHOULD_PLURAL
+msgctxt "CONF_SHOULD_PLURAL"
+msgid "SHOULD"
+msgstr "SHOULD"
+
+# CONSENT_CATEGORY
+#: CONSENT_CATEGORY
+msgid "Category"
+msgid_plural "Categories"
+msgstr[0] "Kategori"
+msgstr[1] "Kategorier"
+
+# CONSENT_DATE
+#: CONSENT_DATE
+msgid "Agreement Date"
+msgstr "Avtalsdatum"
+
+# CONSENT_PART_TBL_CONTROLLER
+#: CONSENT_PART_TBL_CONTROLLER
+msgid "Controller"
+msgstr "Personuppgiftsansvarig"
+
+# CONSENT_PART_TBL_DETAILS
+#: CONSENT_PART_TBL_DETAILS
+msgctxt "CONSENT_PART_TBL_DETAILS"
+msgid "Details"
+msgstr "Detaljer"
+
+# CONSENT_PART_TBL_GRANTEE
+#: CONSENT_PART_TBL_GRANTEE
+msgid "Grantee"
+msgstr "Mottagare"
+
+# CONSENT_PART_TBL_GRANTOR
+#: CONSENT_PART_TBL_GRANTOR
+msgid "Grantor"
+msgstr "Beviljare"
+
+# CONSENT_PART_TBL_MANAGER
+#: CONSENT_PART_TBL_MANAGER
+msgid "Manager"
+msgstr "Förvaltare"
+
+# CONSENT_PART_TBL_PARTY
+#: CONSENT_PART_TBL_PARTY
+msgid "Party"
+msgstr "Part"
+
+# CONSENT_PART_TBL_PATIENT
+#: CONSENT_PART_TBL_PATIENT
+msgid "Patient"
+msgstr "Patient"
+
+# CONSENT_PART_TBL_ROLE
+#: CONSENT_PART_TBL_ROLE
+msgctxt "CONSENT_PART_TBL_ROLE"
+msgid "Role"
+msgstr "Roll"
+
+# CONSENT_PERIOD
+#: CONSENT_PERIOD
+msgid "Applicable Period"
+msgstr "Tillämplig period"
+
+# CONSENT_SCOPE
+#: CONSENT_SCOPE
+msgctxt "CONSENT_SCOPE"
+msgid "Scope"
+msgid_plural "Scopes"
+msgstr[0] "Omfattning"
+msgstr[1] "Omfattningar"
+
+# CSREQ_DESC
+#: CSREQ_DESC
+msgid "Conformance statements found throughout the narrative of the IG consolidated into this computable resource for traceability purposes"
+msgstr "Konformansuttalanden som hittas genom hela IG-berättelsen konsoliderade till denna beräkningsbara resurs för spårbarhetsändamål"
+
+# CSREQ_TITLE
+#: CSREQ_TITLE
+msgid "Narrative Conformance Statements"
+msgstr "Berättande konformansuttalanden"
+
+# CSTABLE_CLEAR_FILTERS
+#: CSTABLE_CLEAR_FILTERS
+msgid "Clear Filters"
+msgstr "Rensa filter"
+
+# CSTABLE_COND_ANY
+#: CSTABLE_COND_ANY
+msgctxt "CSTABLE_COND_ANY"
+msgid "Any"
+msgstr "Alla"
+
+# CSTABLE_COND_NO
+#: CSTABLE_COND_NO
+msgid "No"
+msgstr "Nej"
+
+# CSTABLE_COND_YES
+#: CSTABLE_COND_YES
+msgid "Yes"
+msgstr "Ja"
+
+# CSTABLE_HEAD_ACTOR
+#: CSTABLE_HEAD_ACTOR
+msgid "Actor{1}"
+msgid_plural "Actors{1}"
+msgstr[0] "Aktör{1}"
+msgstr[1] "Aktörer{1}"
+
+# CSTABLE_HEAD_CAT
+#: CSTABLE_HEAD_CAT
+msgid "Category{1}"
+msgid_plural "Categories{1}"
+msgstr[0] "Kategori{1}"
+msgstr[1] "Kategorier{1}"
+
+# CSTABLE_HEAD_COND
+#: CSTABLE_HEAD_COND
+msgid "Conditional?"
+msgstr "Villkorlig?"
+
+# CSTABLE_HEAD_EXPECT
+#: CSTABLE_HEAD_EXPECT
+msgid "Expectation"
+msgstr "Förväntan"
+
+# CSTABLE_HEAD_ID
+#: CSTABLE_HEAD_ID
+msgctxt "CSTABLE_HEAD_ID"
+msgid "Id"
+msgstr "Id"
+
+# CSTABLE_HEAD_RULE
+#: CSTABLE_HEAD_RULE
+msgid "Rule"
+msgstr "Regel"
+
+# CSTABLE_TITLE_ACTOR
+#: CSTABLE_TITLE_ACTOR
+msgid "Filter to only statements that apply to the specified actor(s)"
+msgstr "Filtrera till endast utlåtanden som gäller den angivna aktören/aktörerna"
+
+# CSTABLE_TITLE_CAT
+#: CSTABLE_TITLE_CAT
+msgid "Filter to only statements that apply to the specified category(ies)"
+msgstr "Filtrera till endast utlåtanden som gäller den angivna kategorin/kategorierna"
+
+# CSTABLE_TITLE_CLEAR
+#: CSTABLE_TITLE_CLEAR
+msgid "Clear the Filter"
+msgstr "Rensa filtret"
+
+# CSTABLE_TITLE_COND
+#: CSTABLE_TITLE_COND
+msgid "Filter to only statements that are conditional, not conditional, or no constraint"
+msgstr "Filtrera till endast utlåtanden som är villkorliga, icke-villkorliga eller utan begränsning"
+
+# CSTABLE_TITLE_EXPECT
+#: CSTABLE_TITLE_EXPECT
+msgid "Filter to only statements with one of the selected expectation type(s)"
+msgstr "Filtrera till endast utlåtanden med en av de valda förväntan-typerna"
+
+# CSTABLE_TITLE_ID
+#: CSTABLE_TITLE_ID
+msgid "Filter to only statements with ids that contain the specified text"
+msgstr "Filtrera till endast utlåtanden med id:n som innehåller den angivna texten"
+
+# CSTABLE_TITLE_RULE
+#: CSTABLE_TITLE_RULE
+msgid "Filter to only statements that contain the specified text"
+msgstr "Filtrera till endast utlåtanden som innehåller den angivna texten"
+
+# CS_VERSION_NOTHING_TEXT
+#: CS_VERSION_NOTHING_TEXT
+msgid "Not Stated (use latest from terminology server)"
+msgstr "Ej angiven (använd senaste från terminologiserver)"
+
+# DATA_REND_AFTERNOON
+#: DATA_REND_AFTERNOON
+msgid "Afternoon"
+msgstr "Eftermiddag"
+
+# DATA_REND_AFTERNOON_EARLY
+#: DATA_REND_AFTERNOON_EARLY
+msgid "Early Afternoon"
+msgstr "Tidig eftermiddag"
+
+# DATA_REND_AFTERNOON_LATE
+#: DATA_REND_AFTERNOON_LATE
+msgid "Late Afternoon"
+msgstr "Sen eftermiddag"
+
+# DATA_REND_AFTER_SLEEP
+#: DATA_REND_AFTER_SLEEP
+msgid "After Sleep"
+msgstr "Efter sömn"
+
+# DATA_REND_AFTRBKFST
+#: DATA_REND_AFTRBKFST
+msgid "after breakfast"
+msgstr "efter frukost"
+
+# DATA_REND_AFTRDINR
+#: DATA_REND_AFTRDINR
+msgid "after dinner"
+msgstr "efter middag"
+
+# DATA_REND_AFTRLUNCH
+#: DATA_REND_AFTRLUNCH
+msgid "after lunch"
+msgstr "efter lunch"
+
+# DATA_REND_AFTRMEALS
+#: DATA_REND_AFTRMEALS
+msgid "after meals"
+msgstr "efter måltider"
+
+# DATA_REND_AFTRWKNG
+#: DATA_REND_AFTRWKNG
+msgid "after waking"
+msgstr "efter uppvaknande"
+
+# DATA_REND_ATBKFST
+#: DATA_REND_ATBKFST
+msgid "at breakfast"
+msgstr "vid frukost"
+
+# DATA_REND_ATDINR
+#: DATA_REND_ATDINR
+msgid "at dinner"
+msgstr "vid middag"
+
+# DATA_REND_ATLUNCH
+#: DATA_REND_ATLUNCH
+msgid "at lunch"
+msgstr "vid lunch"
+
+# DATA_REND_ATT_DATA
+#: DATA_REND_ATT_DATA
+msgctxt "DATA_REND_ATT_DATA"
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+# DATA_REND_ATT_URL
+#: DATA_REND_ATT_URL
+msgid "{0} @ {1}"
+msgstr "{0} @ {1}"
+
+# DATA_REND_BASE64
+#: DATA_REND_BASE64
+msgid "(base64 data - {0} base64 chars)"
+msgstr "(base64-data - {0} base64-tecken)"
+
+# DATA_REND_BFBKFST
+#: DATA_REND_BFBKFST
+msgid "before breakfast"
+msgstr "före frukost"
+
+# DATA_REND_BFDINR
+#: DATA_REND_BFDINR
+msgid "before dinner"
+msgstr "före middag"
+
+# DATA_REND_BFLUNCH
+#: DATA_REND_BFLUNCH
+msgid "before lunch"
+msgstr "före lunch"
+
+# DATA_REND_BFMEALS
+#: DATA_REND_BFMEALS
+msgid "before meals"
+msgstr "före måltider"
+
+# DATA_REND_BFSLEEP
+#: DATA_REND_BFSLEEP
+msgid "before sleeping"
+msgstr "före sömn"
+
+# DATA_REND_BY
+#: DATA_REND_BY
+msgid "By"
+msgstr "Av"
+
+# DATA_REND_CODES
+#: DATA_REND_CODES
+msgid "Codes:"
+msgstr "Koder:"
+
+# DATA_REND_COND
+#: DATA_REND_COND
+msgid "Condition"
+msgstr "Tillstånd"
+
+# DATA_REND_COUNT
+#: DATA_REND_COUNT
+msgid "Count {0}"
+msgstr "Antal {0}"
+
+# DATA_REND_CURRENCY
+#: DATA_REND_CURRENCY
+msgid "{1} {0}"
+msgstr "{1} {0}"
+
+# DATA_REND_DATA
+#: DATA_REND_DATA
+msgid "Data: {0}"
+msgstr "Data: {0}"
+
+# DATA_REND_DETAILS
+#: DATA_REND_DETAILS
+msgid "(Details: {0}  code"
+msgstr "(Detaljer: {0}  kod"
+
+# DATA_REND_DETAILS_STATED
+#: DATA_REND_DETAILS_STATED
+msgid "(Details: {0} code {1} = ''{2}'')"
+msgstr "(Detaljer: {0} kod {1} = ''{2}'')"
+
+# DATA_REND_DETAILS_STATED_ND
+#: DATA_REND_DETAILS_STATED_ND
+msgid "(Details: {0} code {1})"
+msgstr "(Detaljer: {0} kod {1})"
+
+# DATA_REND_DICOM
+#: DATA_REND_DICOM
+msgid "DICOM"
+msgstr "DICOM"
+
+# DATA_REND_DIM
+#: DATA_REND_DIM
+msgid "Dimensions: {0}"
+msgstr "Dimensioner: {0}"
+
+# DATA_REND_DURATION
+#: DATA_REND_DURATION
+msgid "Duration {0}"
+msgstr "Varaktighet {0}"
+
+# DATA_REND_ERROR
+#: DATA_REND_ERROR
+msgid "Error: {0}"
+msgstr "Fel: {0}"
+
+# DATA_REND_EVENING
+#: DATA_REND_EVENING
+msgid "Evening"
+msgstr "Kväll"
+
+# DATA_REND_EVENING_EARLY
+#: DATA_REND_EVENING_EARLY
+msgid "Early Evening"
+msgstr "Tidig kväll"
+
+# DATA_REND_EVENING_LATE
+#: DATA_REND_EVENING_LATE
+msgid "Late Evening"
+msgstr "Sen kväll"
+
+# DATA_REND_EVENTS
+#: DATA_REND_EVENTS
+msgid "Events: {0}"
+msgstr "Händelser: {0}"
+
+# DATA_REND_EXCEPTION
+#: DATA_REND_EXCEPTION
+msgid "Exception"
+msgstr "Undantag"
+
+# DATA_REND_FACT
+#: DATA_REND_FACT
+msgid "Factor: {0}"
+msgstr "Faktor: {0}"
+
+# DATA_REND_FAX
+#: DATA_REND_FAX
+msgid "Fax: {0}"
+msgstr "Fax: {0}"
+
+# DATA_REND_GLN
+#: DATA_REND_GLN
+msgid "Global Location Number"
+msgstr "Global Location Number"
+
+# DATA_REND_ICD
+#: DATA_REND_ICD
+msgid "ICD-9"
+msgstr "ICD-9"
+
+# DATA_REND_IMMEDIATE
+#: DATA_REND_IMMEDIATE
+msgid "Immediate"
+msgstr "Omedelbar"
+
+# DATA_REND_INT
+#: DATA_REND_INT
+msgid "Interval: {0}"
+msgstr "Intervall: {0}"
+
+# DATA_REND_LIMIT
+#: DATA_REND_LIMIT
+msgid "Limit"
+msgstr "Gräns"
+
+# DATA_REND_LOINC
+#: DATA_REND_LOINC
+msgid "LOINC"
+msgstr "LOINC"
+
+# DATA_REND_LOWER
+#: DATA_REND_LOWER
+msgid "Lower: {0}"
+msgstr "Nedre: {0}"
+
+# DATA_REND_MEALS
+#: DATA_REND_MEALS
+msgid "at meals"
+msgstr "vid måltider"
+
+# DATA_REND_MKDWN_LNK
+#: DATA_REND_MKDWN_LNK
+msgid "Unable to resolve markdown link ''{0}''"
+msgstr "Kan inte lösa markdown-länk ''{0}''"
+
+# DATA_REND_MORNING
+#: DATA_REND_MORNING
+msgid "Morning"
+msgstr "Morgon"
+
+# DATA_REND_MORNING_EARLY
+#: DATA_REND_MORNING_EARLY
+msgid "Early Morning"
+msgstr "Tidig morgon"
+
+# DATA_REND_MORNING_LATE
+#: DATA_REND_MORNING_LATE
+msgid "Late Morning"
+msgstr "Sen morgon"
+
+# DATA_REND_NIGHT
+#: DATA_REND_NIGHT
+msgid "Night"
+msgstr "Natt"
+
+# DATA_REND_NOON
+#: DATA_REND_NOON
+msgid "Noon"
+msgstr "Middag"
+
+# DATA_REND_NOT_STAT
+#: DATA_REND_NOT_STAT
+msgid "[not stated]"
+msgstr "[ej angivet]"
+
+# DATA_REND_NO_DISP
+#: DATA_REND_NO_DISP
+msgid "No display for {0}"
+msgstr "Ingen visning för {0}"
+
+# DATA_REND_ONCE
+#: DATA_REND_ONCE
+msgid "Once"
+msgstr "En gång"
+
+# DATA_REND_ONGOING
+#: DATA_REND_ONGOING
+msgid "(ongoing)"
+msgstr "(pågående)"
+
+# DATA_REND_ORIGIN
+#: DATA_REND_ORIGIN
+msgid "Origin: {0}"
+msgstr "Ursprung: {0}"
+
+# DATA_REND_PER
+#: DATA_REND_PER
+msgid "per"
+msgstr "per"
+
+# DATA_REND_PERIOD
+#: DATA_REND_PERIOD
+msgid "period:"
+msgstr "period:"
+
+# DATA_REND_PHONE
+#: DATA_REND_PHONE
+msgid "Phone: {0}"
+msgstr "Telefon: {0}"
+
+# DATA_REND_RXNORM
+#: DATA_REND_RXNORM
+msgid "RxNorm"
+msgstr "RxNorm"
+
+# DATA_REND_SEARCH
+#: DATA_REND_SEARCH
+msgid "Search on: {0}"
+msgstr "Sök på: {0}"
+
+# DATA_REND_SNOMED
+#: DATA_REND_SNOMED
+msgid "SNOMED CT"
+msgstr "SNOMED CT"
+
+# DATA_REND_SORT
+#: DATA_REND_SORT
+msgid "Sort"
+msgstr "Sortera"
+
+# DATA_REND_SOURCE
+#: DATA_REND_SOURCE
+msgid "source"
+msgstr "källa"
+
+# DATA_REND_STARTING
+#: DATA_REND_STARTING
+msgid "Starting {0}"
+msgstr "Börjar {0}"
+
+# DATA_REND_THESE_CODES
+#: DATA_REND_THESE_CODES
+msgid "One of these codes:"
+msgstr "En av dessa koder:"
+
+# DATA_REND_TIMING
+#: DATA_REND_TIMING
+msgid "Timing"
+msgstr "Tidsangivelse"
+
+# DATA_REND_TO_DO
+#: DATA_REND_TO_DO
+msgid "to do: {0}"
+msgstr "att göra: {0}"
+
+# DATA_REND_UNKNWN
+#: DATA_REND_UNKNWN
+msgid "unknown"
+msgstr "okänd"
+
+# DATA_REND_UNRD_EX
+#: DATA_REND_UNRD_EX
+msgid "WARNING: Unrenderable Modifier Extension!"
+msgstr "VARNING: Icke-renderbar modifierande extension!"
+
+# DATA_REND_UNTIL
+#: DATA_REND_UNTIL
+msgid "Until {0}"
+msgstr "Till {0}"
+
+# DATA_REND_UP
+#: DATA_REND_UP
+msgid "Upper: {0}"
+msgstr "Övre: {0}"
+
+# DATA_REND_USE
+#: DATA_REND_USE
+msgid "use:"
+msgstr "användning:"
+
+# DATA_REND_VALUESET
+#: DATA_REND_VALUESET
+msgid "In ValueSet"
+msgstr "I ValueSet"
+
+# DATA_REND_VERSION
+#: DATA_REND_VERSION
+msgid "(version = {0} {1}"
+msgstr "(version = {0} {1}"
+
+# DIAG_REP_REND_AGE
+#: DIAG_REP_REND_AGE
+msgid "Age"
+msgstr "Ålder"
+
+# DIAG_REP_REND_CODECON
+#: DIAG_REP_REND_CODECON
+msgid "Coded Conclusions:"
+msgstr "Kodade slutsatser:"
+
+# DIAG_REP_REND_ERR
+#: DIAG_REP_REND_ERR
+msgid "Error:"
+msgstr "Fel:"
+
+# DIAG_REP_REND_FOR
+#: DIAG_REP_REND_FOR
+msgid "for"
+msgstr "för"
+
+# DIAG_REP_REND_IDENTIFIER
+#: DIAG_REP_REND_IDENTIFIER
+msgctxt "DIAG_REP_REND_IDENTIFIER"
+msgid "Identifier"
+msgstr "Identifierare"
+
+# DIAG_REP_REND_NOTRES
+#: DIAG_REP_REND_NOTRES
+msgid "The observation ''{0}'' could not be resolved"
+msgstr "Observationen ''{0}'' kunde inte lösas"
+
+# DIAG_REP_REND_OBS
+#: DIAG_REP_REND_OBS
+msgid "Observation"
+msgstr "Observation"
+
+# DIAG_REP_REND_PER
+#: DIAG_REP_REND_PER
+msgid "Performer"
+msgstr "Utförare"
+
+# DIAG_REP_REND_REFRAN
+#: DIAG_REP_REND_REFRAN
+msgid "Reference Range"
+msgstr "Referensintervall"
+
+# DIAG_REP_REND_REP
+#: DIAG_REP_REND_REP
+msgid "Reported"
+msgstr "Rapporterad"
+
+# DIAG_REP_REND_REPDET
+#: DIAG_REP_REND_REPDET
+msgid "Report Details"
+msgstr "Rapportdetaljer"
+
+# DIAG_REP_REND_UNABLE
+#: DIAG_REP_REND_UNABLE
+msgid "Unable to get Patient Details"
+msgstr "Kan inte hämta patientuppgifter"
+
+# DIAG_REP_REND_WHEN
+#: DIAG_REP_REND_WHEN
+msgid "When For"
+msgstr "När för"
+
+# DIAG_REP_SUMMARY
+#: DIAG_REP_SUMMARY
+msgid "Diagnostic Report for ''{0}'' for ''{1}''"
+msgstr "Diagnostikrapport för ''{0}'' för ''{1}''"
+
+# DIAG_REP_UNSPECIFIED_CODE
+#: DIAG_REP_UNSPECIFIED_CODE
+msgid "Unspecified Report Type"
+msgstr "Ospecificerad rapporttyp"
+
+# DIAG_REP_UNSPECIFIED_SUBJECT
+#: DIAG_REP_UNSPECIFIED_SUBJECT
+msgctxt "DIAG_REP_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
+msgstr "Ospecificerat subjekt"
+
+# DOCUMENT_SUMMARY
+#: DOCUMENT_SUMMARY
+msgid "<param name=\"status\"/> Document at <param name=\"date\"/> by <param name=\"author\"/> for <param name=\"subject\"/> <if test=\"has-encounter = true\"> in encounter <param name=\"encounter\"/></if>"
+msgstr "<param name=\"status\"/> Dokument vid <param name=\"date\"/> av <param name=\"author\"/> för <param name=\"subject\"/> <if test=\"has-encounter = true\"> i vårdmöte <param name=\"encounter\"/></if>"
+
+# EXAMPLE_SCEN_STEP_SCEN
+#: EXAMPLE_SCEN_STEP_SCEN
+msgid "Step {0}  - See scenario {1}"
+msgstr "Steg {0}  - Se scenario {1}"
+
+# EX_SCEN_ALT
+#: EX_SCEN_ALT
+msgid "Alternative {0}"
+msgstr "Alternativ {0}"
+
+# EX_SCEN_BEL
+#: EX_SCEN_BEL
+msgid "below"
+msgstr "nedan"
+
+# EX_SCEN_CONTA
+#: EX_SCEN_CONTA
+msgid "Contains:"
+msgstr "Innehåller:"
+
+# EX_SCEN_ERR_REN
+#: EX_SCEN_ERR_REN
+msgid "Error rendering ExampleScenario {0}"
+msgstr "Fel vid rendering av ExampleScenario {0}"
+
+# EX_SCEN_FVER
+#: EX_SCEN_FVER
+msgid "FHIR version"
+msgstr "FHIR-version"
+
+# EX_SCEN_IN
+#: EX_SCEN_IN
+msgid "Initiator"
+msgstr "Initierare"
+
+# EX_SCEN_OTH
+#: EX_SCEN_OTH
+msgid "See other scenario"
+msgstr "Se annat scenario"
+
+# EX_SCEN_POSTCON
+#: EX_SCEN_POSTCON
+msgid "Post-conditions:"
+msgstr "Slutvillkor:"
+
+# EX_SCEN_PRECON
+#: EX_SCEN_PRECON
+msgid "Pre-conditions:"
+msgstr "Förutsättningar:"
+
+# EX_SCEN_PROC
+#: EX_SCEN_PROC
+msgid "Process: {0}"
+msgstr "Process: {0}"
+
+# EX_SCEN_REC
+#: EX_SCEN_REC
+msgid "Receiver"
+msgstr "Mottagare"
+
+# EX_SCEN_RES
+#: EX_SCEN_RES
+msgid "Response"
+msgstr "Svar"
+
+# EX_SCEN_SEE
+#: EX_SCEN_SEE
+msgid "See subprocess"
+msgstr "Se delprocess"
+
+# EX_SCEN_STEP
+#: EX_SCEN_STEP
+msgid "Step"
+msgstr "Steg"
+
+# EX_SCEN_TIME
+#: EX_SCEN_TIME
+msgid "... time passes ..."
+msgstr "... tid förflyter ..."
+
+# EX_SCEN_UN
+#: EX_SCEN_UN
+msgid "Unknown ExampleScenario Renderer Mode {0}"
+msgstr "Okänt ExampleScenario-renderingsläge {0}"
+
+# EX_SCEN_UN_ACT
+#: EX_SCEN_UN_ACT
+msgid "Unable to find referenced actor {0}"
+msgstr "Kan inte hitta refererad aktör {0}"
+
+# FMM_TABLE
+#: FMM_TABLE
+msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
+msgstr "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Mognadsnivå</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standardstatus\">{2}</a></td></tr></tbody></table>"
+
+# GENERAL_ADDITIONAL_BINDING
+#: GENERAL_ADDITIONAL_BINDING
+msgid "This element has additional bindings"
+msgstr "Detta element har ytterligare bindningar"
+
+# GENERAL_ADD_LANG
+#: GENERAL_ADD_LANG
+msgid "Additional Language Displays"
+msgstr "Ytterligare språkvisningar"
+
+# GENERAL_BINDING
+#: GENERAL_BINDING
+msgid "Binding"
+msgstr "Bindning"
+
+# GENERAL_BINDINGS
+#: GENERAL_BINDINGS
+msgid "Bindings"
+msgstr "Bindningar"
+
+# GENERAL_BINDING_NO_DESC
+#: GENERAL_BINDING_NO_DESC
+msgid "No description provided"
+msgstr "Ingen beskrivning angiven"
+
+# GENERAL_BINDING_NO_VS_1
+#: GENERAL_BINDING_NO_VS_1
+msgid "Binding Description"
+msgstr "Bindningsbeskrivning"
+
+# GENERAL_BINDING_NO_VS_2
+#: GENERAL_BINDING_NO_VS_2
+msgid "This binding doesn''t define a testable ValueSet"
+msgstr "Denna bindning definierar inte en testbar ValueSet"
+
+# GENERAL_BIND_MIN_ALLOW
+#: GENERAL_BIND_MIN_ALLOW
+msgid "The minimum allowable value set - any conformant system SHALL support all these codes"
+msgstr "Den minsta tillåtna värdemängden - varje konformt system SKA stödja alla dessa koder"
+
+# GENERAL_CARD
+#: GENERAL_CARD
+msgctxt "GENERAL_CARD"
+msgid "Card."
+msgstr "Kard."
+
+# GENERAL_CARDINALITY
+#: GENERAL_CARDINALITY
+msgid "Cardinality"
+msgstr "Kardinalitet"
+
+# GENERAL_CODE
+#: GENERAL_CODE
+msgid "Code"
+msgstr "Kod"
+
+# GENERAL_CODESYSTEM
+#: GENERAL_CODESYSTEM
+msgid "Code System"
+msgstr "Kodsystem"
+
+# GENERAL_COMMENT
+#: GENERAL_COMMENT
+msgid "Comment"
+msgstr "Kommentar"
+
+# GENERAL_COMMENTS
+#: GENERAL_COMMENTS
+msgid "Comments"
+msgstr "Kommentarer"
+
+# GENERAL_COMPARATORS
+#: GENERAL_COMPARATORS
+msgid "Comparators"
+msgstr "Komparatorer"
+
+# GENERAL_COMPONENT
+#: GENERAL_COMPONENT
+msgid "Component"
+msgstr "Komponent"
+
+# GENERAL_CONFORMANCE
+#: GENERAL_CONFORMANCE
+msgid "Conformance"
+msgstr "Konformans"
+
+# GENERAL_CONSTRAINTS
+#: GENERAL_CONSTRAINTS
+msgctxt "GENERAL_CONSTRAINTS"
+msgid "Constraints"
+msgstr "Begränsningar"
+
+# GENERAL_CONTACT
+#: GENERAL_CONTACT
+msgid "Contact:"
+msgstr "Kontakt:"
+
+# GENERAL_CONTENT
+#: GENERAL_CONTENT
+msgid "Content"
+msgstr "Innehåll"
+
+# GENERAL_COPYRIGHT
+#: GENERAL_COPYRIGHT
+msgid "Copyright"
+msgstr "Upphovsrätt"
+
+# GENERAL_CRIT
+#: GENERAL_CRIT
+msgid "Criteria"
+msgstr "Kriterier"
+
+# GENERAL_DATA_DISPLAY_PROPERTY
+#: GENERAL_DATA_DISPLAY_PROPERTY
+msgctxt "GENERAL_DATA_DISPLAY_PROPERTY"
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+# GENERAL_DEFINING_URL
+#: GENERAL_DEFINING_URL
+msgid "Defining URL"
+msgstr "Definierande URL"
+
+# GENERAL_DEFINITION
+#: GENERAL_DEFINITION
+msgctxt "GENERAL_DEFINITION"
+msgid "Definition"
+msgstr "Definition"
+
+# GENERAL_DEFINITION_COLON
+#: GENERAL_DEFINITION_COLON
+msgid "Definition:"
+msgstr "Definition:"
+
+# GENERAL_DESC
+#: GENERAL_DESC
+msgid "Description"
+msgstr "Beskrivning"
+
+# GENERAL_DESC_CONST
+#: GENERAL_DESC_CONST
+msgid "Description & Constraints"
+msgstr "Beskrivning & begränsningar"
+
+# GENERAL_DETAILS
+#: GENERAL_DETAILS
+msgctxt "GENERAL_DETAILS"
+msgid "Details"
+msgstr "Detaljer"
+
+# GENERAL_DOCUMENTATION
+#: GENERAL_DOCUMENTATION
+msgid "Documentation"
+msgstr "Dokumentation"
+
+# GENERAL_EXAMPLE
+#: GENERAL_EXAMPLE
+msgid "Example"
+msgstr "Exempel"
+
+# GENERAL_EXPER
+#: GENERAL_EXPER
+msgid "Experimental"
+msgstr "Experimentell"
+
+# GENERAL_FILTER
+#: GENERAL_FILTER
+msgid "Filter"
+msgstr "Filter"
+
+# GENERAL_FIXED_VALUE
+#: GENERAL_FIXED_VALUE
+msgctxt "GENERAL_FIXED_VALUE"
+msgid "Fixed Value: {0}"
+msgstr "Fast värde: {0}"
+
+# GENERAL_FLAGS
+#: GENERAL_FLAGS
+msgid "Flags"
+msgstr "Flaggor"
+
+# GENERAL_IDENTIFIER
+#: GENERAL_IDENTIFIER
+msgctxt "GENERAL_IDENTIFIER"
+msgid "Identifier"
+msgid_plural "Identifiers"
+msgstr[0] "Identifierare"
+msgstr[1] "Identifierare"
+
+# GENERAL_LOCATION
+#: GENERAL_LOCATION
+msgid "Location"
+msgstr "Plats"
+
+# GENERAL_LOGICAL_NAME
+#: GENERAL_LOGICAL_NAME
+msgid "The logical name of the element"
+msgstr "Elementets logiska namn"
+
+# GENERAL_MAX_LENGTH
+#: GENERAL_MAX_LENGTH
+msgid "Max Length:"
+msgstr "Maxlängd:"
+
+# GENERAL_MIN_LENGTH
+#: GENERAL_MIN_LENGTH
+msgid "Min Length:"
+msgstr "Minlängd:"
+
+# GENERAL_MODIFIERS
+#: GENERAL_MODIFIERS
+msgid "Modifiers"
+msgstr "Modifierare"
+
+# GENERAL_NAME
+#: GENERAL_NAME
+msgid "Name"
+msgstr "Namn"
+
+# GENERAL_NCI_THES
+#: GENERAL_NCI_THES
+msgid "NCI Thesaurus"
+msgstr "NCI Thesaurus"
+
+# GENERAL_NOTE
+#: GENERAL_NOTE
+msgid "Note"
+msgstr "Notera"
+
+# GENERAL_OBLIG
+#: GENERAL_OBLIG
+msgctxt "GENERAL_OBLIG"
+msgid "Obligations"
+msgstr "Skyldigheter"
+
+# GENERAL_OBLIGATIONS
+#: GENERAL_OBLIGATIONS
+msgctxt "GENERAL_OBLIGATIONS"
+msgid "Obligations"
+msgstr "Skyldigheter"
+
+# GENERAL_OID
+#: GENERAL_OID
+msgid "OID"
+msgstr "OID"
+
+# GENERAL_PAR
+#: GENERAL_PAR
+msgid "Parameter"
+msgstr "Parameter"
+
+# GENERAL_PARS
+#: GENERAL_PARS
+msgid "Parameters"
+msgstr "Parametrar"
+
+# GENERAL_PATTERN_VALUE
+#: GENERAL_PATTERN_VALUE
+msgctxt "GENERAL_PATTERN_VALUE"
+msgid "Pattern Value: {0}"
+msgstr "Mönstervärde: {0}"
+
+# GENERAL_PREFERRED
+#: GENERAL_PREFERRED
+msgctxt "GENERAL_PREFERRED"
+msgid "Preferred"
+msgstr "Föredragen"
+
+# GENERAL_PROF
+#: GENERAL_PROF
+msgctxt "GENERAL_PROF"
+msgid "Profile"
+msgstr "Profil"
+
+# GENERAL_PROPS
+#: GENERAL_PROPS
+msgid "Properties"
+msgstr "Egenskaper"
+
+# GENERAL_PURPOSE
+#: GENERAL_PURPOSE
+msgid "Purpose"
+msgstr "Syfte"
+
+# GENERAL_REFS
+#: GENERAL_REFS
+msgid "References:"
+msgstr "Referenser:"
+
+# GENERAL_REMOVED_SINCE
+#: GENERAL_REMOVED_SINCE
+msgid "This content has been removed since {0}"
+msgstr "Detta innehåll har tagits bort sedan {0}"
+
+# GENERAL_REQUEST
+#: GENERAL_REQUEST
+msgid "Request"
+msgstr "Begäran"
+
+# GENERAL_REQUIRED
+#: GENERAL_REQUIRED
+msgctxt "GENERAL_REQUIRED"
+msgid "Required"
+msgstr "Obligatorisk"
+
+# GENERAL_REQUIRED_BINDING
+#: GENERAL_REQUIRED_BINDING
+msgid "Required Binding to ValueSet {0}"
+msgstr "Obligatorisk bindning till ValueSet {0}"
+
+# GENERAL_RESOURCE
+#: GENERAL_RESOURCE
+msgctxt "GENERAL_RESOURCE"
+msgid "Resource"
+msgstr "Resurs"
+
+# GENERAL_SECURITY_LABEL
+#: GENERAL_SECURITY_LABEL
+msgid "Security Label"
+msgstr "Säkerhetsetikett"
+
+# GENERAL_SOURCE
+#: GENERAL_SOURCE
+msgctxt "GENERAL_SOURCE"
+msgid "Source"
+msgstr "Källa"
+
+# GENERAL_SRC
+#: GENERAL_SRC
+msgid "Source:"
+msgstr "Källa:"
+
+# GENERAL_STARTER
+#: GENERAL_STARTER
+msgid "Starter"
+msgstr "Startare"
+
+# GENERAL_STATUS
+#: GENERAL_STATUS
+msgctxt "GENERAL_STATUS"
+msgid "Status"
+msgstr "Status"
+
+# GENERAL_SUBJ
+#: GENERAL_SUBJ
+msgid "Subject"
+msgstr "Subjekt"
+
+# GENERAL_SUMM
+#: GENERAL_SUMM
+msgid "Summary"
+msgstr "Sammanfattning"
+
+# GENERAL_TITLE
+#: GENERAL_TITLE
+msgid "Title"
+msgstr "Titel"
+
+# GENERAL_TODO
+#: GENERAL_TODO
+msgid "Not done yet"
+msgstr "Inte klart än"
+
+# GENERAL_TYPE
+#: GENERAL_TYPE
+msgctxt "GENERAL_TYPE"
+msgid "Type"
+msgstr "Typ"
+
+# GENERAL_TYPE_PROFILE
+#: GENERAL_TYPE_PROFILE
+msgid "This element has profiles on it's type: {0}"
+msgstr "Detta element har profiler på sin typ: {0}"
+
+# GENERAL_TYPE_TARGET_PROFILE
+#: GENERAL_TYPE_TARGET_PROFILE
+msgid "This element has restrictions/profiles on it's targets: {0}"
+msgstr "Detta element har restriktioner/profiler på sina mål: {0}"
+
+# GENERAL_UCUM
+#: GENERAL_UCUM
+msgid "UCUM"
+msgstr "UCUM"
+
+# GENERAL_URI
+#: GENERAL_URI
+msgid "URI"
+msgstr "URI"
+
+# GENERAL_URL
+#: GENERAL_URL
+msgid "URL"
+msgstr "URL"
+
+# GENERAL_USAGE
+#: GENERAL_USAGE
+msgid "Usage"
+msgstr "Användning"
+
+# GENERAL_VALUE
+#: GENERAL_VALUE
+msgid "Value"
+msgstr "Värde"
+
+# GENERAL_VALUESET
+#: GENERAL_VALUESET
+msgid "Value Set"
+msgstr "Värdemängd"
+
+# GENERAL_VALUE_BOUNDED
+#: GENERAL_VALUE_BOUNDED
+msgid "The value must be between {0} and {1} (or equal)"
+msgstr "Värdet måste vara mellan {0} och {1} (eller lika)"
+
+# GENERAL_VALUE_MAX
+#: GENERAL_VALUE_MAX
+msgid "The value must be less or equal to {0}"
+msgstr "Värdet måste vara mindre än eller lika med {0}"
+
+# GENERAL_VALUE_MIN
+#: GENERAL_VALUE_MIN
+msgid "The value must be greater or equal to {0}"
+msgstr "Värdet måste vara större än eller lika med {0}"
+
+# GENERAL_VER
+#: GENERAL_VER
+msgid "Version"
+msgstr "Version"
+
+# GENERAL_VER_LOW
+#: GENERAL_VER_LOW
+msgid "version"
+msgstr "version"
+
+# GENERAL_XML
+#: GENERAL_XML
+msgid "XML"
+msgstr "XML"
+
+# IMP_GUIDE_URL
+#: IMP_GUIDE_URL
+msgid "The official URL for this implementation guide is:"
+msgstr "Den officiella URL:en för denna implementationsguide är:"
+
+# IP_INTRO
+#: IP_INTRO
+msgid "This {0} includes IP covered under the following statements."
+msgstr "Denna {0} inkluderar IP som omfattas av följande uttalanden."
+
+# IP_NONE
+#: IP_NONE
+msgid "No use of external IP"
+msgstr "Ingen användning av extern IP"
+
+# IP_NONE_EXT
+#: IP_NONE_EXT
+msgid "No use of external IP (other than from the FHIR specification)"
+msgstr "Ingen användning av extern IP (annan än från FHIR-specifikationen)"
+
+# KIND_EXTENSION
+#: KIND_EXTENSION
+msgid "extension"
+msgstr "extension"
+
+# KIND_LOGICAL
+#: KIND_LOGICAL
+msgid "logical model"
+msgstr "logisk modell"
+
+# KIND_PROFILE
+#: KIND_PROFILE
+msgid "profile"
+msgstr "profil"
+
+# LIB_REND_ART
+#: LIB_REND_ART
+msgid "Related Artifacts"
+msgstr "Relaterade artefakter"
+
+# LIB_REND_AUT
+#: LIB_REND_AUT
+msgid "Author"
+msgstr "Författare"
+
+# LIB_REND_CONT
+#: LIB_REND_CONT
+msgid "Contents"
+msgstr "Innehåll"
+
+# LIB_REND_ED
+#: LIB_REND_ED
+msgid "Editor"
+msgstr "Redaktör"
+
+# LIB_REND_END
+#: LIB_REND_END
+msgid "Endorser"
+msgstr "Stödjare"
+
+# LIB_REND_NOCONT
+#: LIB_REND_NOCONT
+msgid "No Content"
+msgstr "Inget innehåll"
+
+# LIB_REND_PAR
+#: LIB_REND_PAR
+msgid "Participants"
+msgstr "Deltagare"
+
+# LIB_REND_REQ
+#: LIB_REND_REQ
+msgid "Data Requirements"
+msgstr "Datakrav"
+
+# LIB_REND_REV
+#: LIB_REND_REV
+msgid "Reviewer"
+msgstr "Granskare"
+
+# LIB_REND_SHOW
+#: LIB_REND_SHOW
+msgid "Content not shown - ("
+msgstr "Innehåll visas inte - ("
+
+# LIB_REND_SIZE
+#: LIB_REND_SIZE
+msgid ", size = {0}"
+msgstr ", storlek = {0}"
+
+# LIST_REND_CODE
+#: LIST_REND_CODE
+msgid "Code: {0}"
+msgstr "Kod: {0}"
+
+# LIST_REND_DAT
+#: LIST_REND_DAT
+msgid "Date"
+msgstr "Datum"
+
+# LIST_REND_DATE
+#: LIST_REND_DATE
+msgid "Date: {0}"
+msgstr "Datum: {0}"
+
+# LIST_REND_DEL
+#: LIST_REND_DEL
+msgid "Deleted"
+msgstr "Borttagen"
+
+# LIST_REND_ENC
+#: LIST_REND_ENC
+msgid "Encounter:"
+msgstr "Vårdmöte:"
+
+# LIST_REND_FLAG
+#: LIST_REND_FLAG
+msgid "Flag"
+msgstr "Flagga"
+
+# LIST_REND_ITEM
+#: LIST_REND_ITEM
+msgid "Items"
+msgstr "Poster"
+
+# LIST_REND_MODE
+#: LIST_REND_MODE
+msgid "Mode: {0}"
+msgstr "Läge: {0}"
+
+# LIST_REND_ORD
+#: LIST_REND_ORD
+msgid "Order: {0}"
+msgstr "Ordning: {0}"
+
+# LIST_REND_STAT
+#: LIST_REND_STAT
+msgid "Status: {0}"
+msgstr "Status: {0}"
+
+# LIST_REND_SUB
+#: LIST_REND_SUB
+msgid "Subject:"
+msgstr "Subjekt:"
+
+# LIST_SUMMARY
+#: LIST_SUMMARY
+msgid "List for ''{0}'' for ''{1}''"
+msgstr "Lista för ''{0}'' för ''{1}''"
+
+# LIST_UNSPECIFIED_CODE
+#: LIST_UNSPECIFIED_CODE
+msgid "Unspecified List Type"
+msgstr "Ospecificerad listtyp"
+
+# LIST_UNSPECIFIED_SUBJECT
+#: LIST_UNSPECIFIED_SUBJECT
+msgctxt "LIST_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
+msgstr "Ospecificerat subjekt"
+
+# MAP_DEFAULT_COMMENT
+#: MAP_DEFAULT_COMMENT
+msgid "This element was not defined prior to R5"
+msgstr "Detta element var inte definierat före R5"
+
+# MATURITY_MATURITY
+#: MATURITY_MATURITY
+msgid "Maturity Level: {0}"
+msgstr "Mognadsnivå: {0}"
+
+# MATURITY_PUBLISHER
+#: MATURITY_PUBLISHER
+msgid "Publisher: {0}"
+msgstr "Utgivare: {0}"
+
+# MATURITY_STATUS
+#: MATURITY_STATUS
+msgctxt "MATURITY_STATUS"
+msgid "Status"
+msgstr "Status"
+
+# MATURITY_STDS_STATUS
+#: MATURITY_STDS_STATUS
+msgid "Standards Status: {0}"
+msgstr "Standardstatus: {0}"
+
+# NAME_SYS_IDEN
+#: NAME_SYS_IDEN
+msgid "Identifiers"
+msgstr "Identifierare"
+
+# NAME_SYS_PER
+#: NAME_SYS_PER
+msgid "Period"
+msgstr "Period"
+
+# OBLIGATION_SOURCE
+#: OBLIGATION_SOURCE
+msgid "This obligation is defined in the profile {0}"
+msgstr "Denna skyldighet definieras i profilen {0}"
+
+# OBLIG_ACT
+#: OBLIG_ACT
+msgid "Actor"
+msgstr "Aktör"
+
+# OBLIG_ELE
+#: OBLIG_ELE
+msgid "Elements"
+msgstr "Element"
+
+# OP_DEF_INPAR
+#: OP_DEF_INPAR
+msgid "Input parameters Profile:"
+msgstr "Profil för indataparametrar:"
+
+# OP_DEF_OFFIC
+#: OP_DEF_OFFIC
+msgid "The official URL for this operation definition is:"
+msgstr "Den officiella URL:en för denna operationsdefinition är:"
+
+# OP_DEF_OUTPAR
+#: OP_DEF_OUTPAR
+msgid "Output parameters Profile:"
+msgstr "Profil för utdataparametrar:"
+
+# OP_DEF_SCO
+#: OP_DEF_SCO
+msgctxt "OP_DEF_SCO"
+msgid "Scope"
+msgstr "Omfattning"
+
+# OP_DEF_URL
+#: OP_DEF_URL
+msgid "URL: [base]/{0}"
+msgstr "URL: [base]/{0}"
+
+# OP_DEF_USE
+#: OP_DEF_USE
+msgid "Use"
+msgstr "Användning"
+
+# OP_OUT_DIAG
+#: OP_OUT_DIAG
+msgid "Diagnostics"
+msgstr "Diagnostik"
+
+# OP_OUT_OK
+#: OP_OUT_OK
+msgid "All OK"
+msgstr "Allt OK"
+
+# OP_OUT_SEV
+#: OP_OUT_SEV
+msgid "Severity"
+msgstr "Allvarlighetsgrad"
+
+# OP_OUT_SRC
+#: OP_OUT_SRC
+msgctxt "OP_OUT_SRC"
+msgid "Source"
+msgstr "Källa"
+
+# OP_OUT_SUMM
+#: OP_OUT_SUMM
+msgid "OperationOutcome ({0} Error(s), {1} Warning(s), {2} Hint(s))"
+msgstr "OperationOutcome ({0} fel, {1} varningar, {2} tips)"
+
+# OP_OUT_SUMM_ALL_OK
+#: OP_OUT_SUMM_ALL_OK
+msgid "OperationOutcome (ALL OK)"
+msgstr "OperationOutcome (ALLT OK)"
+
+# OP_OUT_SUMM_NOHINT
+#: OP_OUT_SUMM_NOHINT
+msgid "OperationOutcome ({0} Error(s), {1} Warning(s))"
+msgstr "OperationOutcome ({0} fel, {1} varningar)"
+
+# PARS_SUMMARY_LIST
+#: PARS_SUMMARY_LIST
+msgid "Parameters: {0}"
+msgstr "Parametrar: {0}"
+
+# PARS_SUMMARY_SIZE
+#: PARS_SUMMARY_SIZE
+msgid "Parameters ({0} parameters)"
+msgstr "Parametrar ({0} parametrar)"
+
+# PAT_ACTIVE
+#: PAT_ACTIVE
+msgid "Active:"
+msgstr "Aktiv:"
+
+# PAT_ACTIVE_HINT
+#: PAT_ACTIVE_HINT
+msgid "Record is active"
+msgstr "Posten är aktiv"
+
+# PAT_ALT_NAME
+#: PAT_ALT_NAME
+msgid "Alt. Name:"
+msgstr "Alt. namn:"
+
+# PAT_ALT_NAME_HINT
+#: PAT_ALT_NAME_HINT
+msgid "Alternate names (see the one above)"
+msgstr "Alternativa namn (se det ovan)"
+
+# PAT_CONTACT
+#: PAT_CONTACT
+msgid "Contact Detail"
+msgstr "Kontaktuppgift"
+
+# PAT_CONTACT_HINT
+#: PAT_CONTACT_HINT
+msgid "Ways to contact the Patient"
+msgstr "Sätt att kontakta patienten"
+
+# PAT_CONTAINED
+#: PAT_CONTAINED
+msgid "Contained Resource"
+msgid_plural "Contained Resources"
+msgstr[0] "Innehållen resurs"
+msgstr[1] "Innehållna resurser"
+
+# PAT_DECEASED
+#: PAT_DECEASED
+msgid "Deceased:"
+msgstr "Avliden:"
+
+# PAT_DECEASED_HINT
+#: PAT_DECEASED_HINT
+msgid "Known status of Patient"
+msgstr "Känd status för patienten"
+
+# PAT_DOB
+#: PAT_DOB
+msgid "DoB: {0}"
+msgstr "Födelsedatum: {0}"
+
+# PAT_GENDER
+#: PAT_GENDER
+msgid "Gender: {0}"
+msgstr "Kön: {0}"
+
+# PAT_GP
+#: PAT_GP
+msgid "General Practitioner"
+msgstr "Allmänläkare"
+
+# PAT_LANG
+#: PAT_LANG
+msgid "Language:"
+msgid_plural "Languages:"
+msgstr[0] "Språk:"
+msgstr[1] "Språk:"
+
+# PAT_LANG_HINT
+#: PAT_LANG_HINT
+msgid "Language spoken"
+msgid_plural "Languages spoken"
+msgstr[0] "Talat språk"
+msgstr[1] "Talade språk"
+
+# PAT_LANG_PREFERRED
+#: PAT_LANG_PREFERRED
+msgid "(preferred)"
+msgstr "(föredraget)"
+
+# PAT_LINKS
+#: PAT_LINKS
+msgctxt "PAT_LINKS"
+msgid "Links:"
+msgstr "Länkar:"
+
+# PAT_LINKS_HINT
+#: PAT_LINKS_HINT
+msgid "Patient Links"
+msgstr "Patientlänkar"
+
+# PAT_LINK_REFER
+#: PAT_LINK_REFER
+msgid "Please refer to"
+msgstr "Se istället"
+
+# PAT_LINK_REPL
+#: PAT_LINK_REPL
+msgid "This record replaces"
+msgstr "Denna post ersätter"
+
+# PAT_LINK_REPLBY
+#: PAT_LINK_REPLBY
+msgid "This record replaced by"
+msgstr "Denna post ersatt av"
+
+# PAT_LINK_SEE
+#: PAT_LINK_SEE
+msgid "Also see"
+msgstr "Se även"
+
+# PAT_MARITAL
+#: PAT_MARITAL
+msgid "Marital Status:"
+msgstr "Civilstånd:"
+
+# PAT_MARITAL_HINT
+#: PAT_MARITAL_HINT
+msgid "Known Marital status of Patient"
+msgstr "Känt civilstånd för patienten"
+
+# PAT_MO
+#: PAT_MO
+msgid "Managing Organization"
+msgstr "Förvaltande organisation"
+
+# PAT_MUL_BIRTH
+#: PAT_MUL_BIRTH
+msgid "Multiple Birth:"
+msgstr "Flerbörd:"
+
+# PAT_MUL_BIRTH_HINT
+#: PAT_MUL_BIRTH_HINT
+msgid "Known multipleBirth status of Patient"
+msgstr "Känd flerbördsstatus för patienten"
+
+# PAT_NOK_CONTACT_HINT
+#: PAT_NOK_CONTACT_HINT
+msgid "Patient contact"
+msgstr "Patientkontakt"
+
+# PAT_NOM_CONTACT
+#: PAT_NOM_CONTACT
+msgid "Nominated Contact:"
+msgstr "Utsedd kontakt:"
+
+# PAT_NO_DOB
+#: PAT_NO_DOB
+msgid "DoB Unknown"
+msgstr "Födelsedatum okänt"
+
+# PAT_NO_GENDER
+#: PAT_NO_GENDER
+msgid "(no stated gender)"
+msgstr "(inget angivet kön)"
+
+# PAT_NO_NAME
+#: PAT_NO_NAME
+msgid "Anonymous Patient"
+msgstr "Anonym patient"
+
+# PAT_ORG
+#: PAT_ORG
+msgid "Organization:"
+msgstr "Organisation:"
+
+# PAT_OTHER_ID
+#: PAT_OTHER_ID
+msgid "Other Id:"
+msgid_plural "Other Ids:"
+msgstr[0] "Annat id:"
+msgstr[1] "Andra id:n:"
+
+# PAT_OTHER_ID_HINT
+#: PAT_OTHER_ID_HINT
+msgid "Other Id (see the one above)"
+msgid_plural "Other Ids (see the one above)"
+msgstr[0] "Annat id (se det ovan)"
+msgstr[1] "Andra id:n (se det ovan)"
+
+# PAT_PERIOD
+#: PAT_PERIOD
+msgid "Valid Period:"
+msgstr "Giltig period:"
+
+# PAT_PHOTO
+#: PAT_PHOTO
+msgid "Patient Photo"
+msgstr "Patientfoto"
+
+# PAT_RELN
+#: PAT_RELN
+msgid "Relationships:"
+msgstr "Relationer:"
+
+# PROF_DRIV_ERR_GEN_NARR
+#: PROF_DRIV_ERR_GEN_NARR
+msgid "Error Generating Narrative for"
+msgstr "Fel vid generering av berättande text för"
+
+# PROF_DRIV_EXCP
+#: PROF_DRIV_EXCP
+msgid "Exception Generating Narrative: {0}"
+msgstr "Undantag vid generering av berättande text: {0}"
+
+# PROF_DRIV_FEXCP
+#: PROF_DRIV_FEXCP
+msgid "Cannot find definition for {0}"
+msgstr "Kan inte hitta definition för {0}"
+
+# PROF_DRIV_GEN_NARR
+#: PROF_DRIV_GEN_NARR
+msgid "{0} {1}"
+msgstr "{0} {1}"
+
+# PROF_DRIV_GEN_NARR_TECH
+#: PROF_DRIV_GEN_NARR_TECH
+msgid "Generated Narrative: {0} {1}"
+msgstr "Genererad berättande text: {0} {1}"
+
+# PROF_DRIV_SUMM
+#: PROF_DRIV_SUMM
+msgctxt "PROF_DRIV_SUMM"
+msgid "{0}: {1}"
+msgstr "{0}: {1}"
+
+# PROF_DRIV_SUMM_PROP
+#: PROF_DRIV_SUMM_PROP
+msgid "{0} = {1}"
+msgstr "{0} = {1}"
+
+# PROV_ACT
+#: PROV_ACT
+msgid "Activity"
+msgstr "Aktivitet"
+
+# PROV_AGE
+#: PROV_AGE
+msgid "Agents"
+msgstr "Agenter"
+
+# PROV_BEHALF
+#: PROV_BEHALF
+msgid "On Behalf Of"
+msgstr "På uppdrag av"
+
+# PROV_FOR
+#: PROV_FOR
+msgid "Provenance for {0}"
+msgstr "Härkomst för {0}"
+
+# PROV_OCC
+#: PROV_OCC
+msgid "Occurrence"
+msgstr "Förekomst"
+
+# PROV_POL
+#: PROV_POL
+msgid "Policy"
+msgstr "Policy"
+
+# PROV_PROV
+#: PROV_PROV
+msgid "Provenance for"
+msgstr "Härkomst för"
+
+# PROV_PROVE
+#: PROV_PROVE
+msgid "Provenance for:"
+msgstr "Härkomst för:"
+
+# PROV_REC
+#: PROV_REC
+msgid "Recorded"
+msgstr "Registrerad"
+
+# PROV_REFERENCE
+#: PROV_REFERENCE
+msgid "This {0} is referenced from the following provenance resources:"
+msgstr "Denna {0} refereras från följande härkomstresurser:"
+
+# PROV_ROLE
+#: PROV_ROLE
+msgctxt "PROV_ROLE"
+msgid "Role"
+msgstr "Roll"
+
+# PROV_WHO
+#: PROV_WHO
+msgid "who"
+msgstr "vem"
+
+# QUEST_ADD_INFO
+#: QUEST_ADD_INFO
+msgid "Additional information about the item"
+msgstr "Ytterligare information om objektet"
+
+# QUEST_ALLOWED
+#: QUEST_ALLOWED
+msgid "Allowed Answers"
+msgstr "Tillåtna svar"
+
+# QUEST_ANSW
+#: QUEST_ANSW
+msgid "Answer options for {0}"
+msgstr "Svarsalternativ för {0}"
+
+# QUEST_ANSWER
+#: QUEST_ANSWER
+msgid "Answer"
+msgstr "Svar"
+
+# QUEST_ANSWERS
+#: QUEST_ANSWERS
+msgid "Answers"
+msgstr "Svar"
+
+# QUEST_APP
+#: QUEST_APP
+msgid "Approval Date"
+msgstr "Godkännandedatum"
+
+# QUEST_ARE_TRUE
+#: QUEST_ARE_TRUE
+msgid "?? are true:"
+msgstr "?? är sanna:"
+
+# QUEST_ATTRIBUTES
+#: QUEST_ATTRIBUTES
+msgid "Other attributes of the item"
+msgstr "Andra attribut för objektet"
+
+# QUEST_CALC
+#: QUEST_CALC
+msgid "Calculated Value"
+msgstr "Beräknat värde"
+
+# QUEST_CAND
+#: QUEST_CAND
+msgid "Candidates"
+msgstr "Kandidater"
+
+# QUEST_CAT
+#: QUEST_CAT
+msgid "Category: {0}"
+msgstr "Kategori: {0}"
+
+# QUEST_CONT
+#: QUEST_CONT
+msgid "Context"
+msgstr "Kontext"
+
+# QUEST_DERIVED
+#: QUEST_DERIVED
+msgctxt "QUEST_DERIVED"
+msgid "Derived From"
+msgstr "Härledd från"
+
+# QUEST_DISPLAY
+#: QUEST_DISPLAY
+msgid "Is optional to display"
+msgstr "Valfri att visa"
+
+# QUEST_DISPLAY_CAT
+#: QUEST_DISPLAY_CAT
+msgid "Display Category"
+msgstr "Visningskategori"
+
+# QUEST_EFF_PERIOD
+#: QUEST_EFF_PERIOD
+msgid "Effective Period"
+msgstr "Giltig period"
+
+# QUEST_EN
+#: QUEST_EN
+msgid "Enable When"
+msgstr "Aktivera när"
+
+# QUEST_ENABLE
+#: QUEST_ENABLE
+msgid "Enable When:"
+msgstr "Aktivera när:"
+
+# QUEST_EXP
+#: QUEST_EXP
+msgid "Expressions:"
+msgstr "Uttryck:"
+
+# QUEST_GROUP
+#: QUEST_GROUP
+msgid "Group"
+msgstr "Grupp"
+
+# QUEST_HIDDEN
+#: QUEST_HIDDEN
+msgid "Is a hidden item"
+msgstr "Är ett dolt objekt"
+
+# QUEST_HIDDEN_ITEM
+#: QUEST_HIDDEN_ITEM
+msgid "Hidden Item"
+msgstr "Dolt objekt"
+
+# QUEST_ID
+#: QUEST_ID
+msgid "Link Id"
+msgstr "Länk-id"
+
+# QUEST_INITIAL
+#: QUEST_INITIAL
+msgid "Initial Value:"
+msgstr "Ursprungsvärde:"
+
+# QUEST_INITIALLY
+#: QUEST_INITIALLY
+msgid "(initially selected)"
+msgstr "(initialt valt)"
+
+# QUEST_INITIAL_ANSWER
+#: QUEST_INITIAL_ANSWER
+msgid "Initial Answer"
+msgstr "Ursprungssvar"
+
+# QUEST_INT
+#: QUEST_INT
+msgid "Initial Values"
+msgstr "Ursprungsvärden"
+
+# QUEST_ITEM
+#: QUEST_ITEM
+msgid "Item"
+msgstr "Objekt"
+
+# QUEST_ITEM_CONT
+#: QUEST_ITEM_CONT
+msgid "Item Context"
+msgstr "Objektkontext"
+
+# QUEST_LINK
+#: QUEST_LINK
+msgid "The linkID for the item"
+msgstr "LinkID för objektet"
+
+# QUEST_LINKED
+#: QUEST_LINKED
+msgid "Is linked to an observation"
+msgstr "Är länkad till en observation"
+
+# QUEST_LINKID
+#: QUEST_LINKID
+msgid "LinkID"
+msgstr "LinkID"
+
+# QUEST_MAND
+#: QUEST_MAND
+msgid "Mandatory"
+msgstr "Obligatorisk"
+
+# QUEST_MAX_LENGTH
+#: QUEST_MAX_LENGTH
+msgid "Max Length"
+msgstr "Maxlängd"
+
+# QUEST_NLM
+#: QUEST_NLM
+msgid "NLM Forms Library"
+msgstr "NLM Forms Library"
+
+# QUEST_NONE_SPEC
+#: QUEST_NONE_SPEC
+msgid "None specified"
+msgstr "Inget angivet"
+
+# QUEST_OBSERVATION
+#: QUEST_OBSERVATION
+msgid "Observation Link Period"
+msgstr "Observationslänkperiod"
+
+# QUEST_OPT
+#: QUEST_OPT
+msgid "Options Sets"
+msgstr "Alternativuppsättningar"
+
+# QUEST_OPTIONS
+#: QUEST_OPTIONS
+msgid "Options:"
+msgstr "Alternativ:"
+
+# QUEST_ORIENTATION
+#: QUEST_ORIENTATION
+msgid "Orientation: {0}"
+msgstr "Orientering: {0}"
+
+# QUEST_PREFIX
+#: QUEST_PREFIX
+msgid "Prefix"
+msgstr "Prefix"
+
+# QUEST_PUB
+#: QUEST_PUB
+msgid "Publication Date"
+msgstr "Publiceringsdatum"
+
+# QUEST_QUEST
+#: QUEST_QUEST
+msgid "Questionnaire"
+msgstr "Frågeformulär"
+
+# QUEST_QUESTION
+#: QUEST_QUESTION
+msgid "Questionnaire:"
+msgstr "Frågeformulär:"
+
+# QUEST_READONLY
+#: QUEST_READONLY
+msgid "Is Read Only"
+msgstr "Är skrivskyddad"
+
+# QUEST_READ_ONLY
+#: QUEST_READ_ONLY
+msgid "Read Only"
+msgstr "Skrivskyddad"
+
+# QUEST_REP
+#: QUEST_REP
+msgid "Repeats"
+msgstr "Upprepningar"
+
+# QUEST_RESP_ROOT
+#: QUEST_RESP_ROOT
+msgid "QuestionnaireResponseRoot"
+msgstr "QuestionnaireResponseRoot"
+
+# QUEST_REV_DATE
+#: QUEST_REV_DATE
+msgid "Last Review Date"
+msgstr "Senaste granskningsdatum"
+
+# QUEST_ROOT
+#: QUEST_ROOT
+msgid "QuestionnaireRoot"
+msgstr "QuestionnaireRoot"
+
+# QUEST_STRUCT
+#: QUEST_STRUCT
+msgid "Structure"
+msgstr "Struktur"
+
+# QUEST_SUBJECT
+#: QUEST_SUBJECT
+msgid "Can change the subject of the questionnaire"
+msgstr "Kan ändra ämnet för frågeformuläret"
+
+# QUEST_SUB_TYPE
+#: QUEST_SUB_TYPE
+msgid "Subject Type"
+msgstr "Subjekttyp"
+
+# QUEST_SUMMARY
+#: QUEST_SUMMARY
+msgid "Response to Questionnaire ''{0}'' about ''{1}''"
+msgstr "Svar på frågeformulär ''{0}'' om ''{1}''"
+
+# QUEST_TEXT
+#: QUEST_TEXT
+msgid "Text"
+msgstr "Text"
+
+# QUEST_TEXTFOR
+#: QUEST_TEXTFOR
+msgid "Text for the item"
+msgstr "Text för objektet"
+
+# QUEST_TIMES
+#: QUEST_TIMES
+msgid "Minimum and Maximum # of times the item can appear in the instance"
+msgstr "Lägsta och högsta antal gånger objektet kan förekomma i instansen"
+
+# QUEST_TRUE
+#: QUEST_TRUE
+msgid "are true:"
+msgstr "är sanna:"
+
+# QUEST_TRY
+#: QUEST_TRY
+msgid "Try this questionnaire out:"
+msgstr "Prova detta frågeformulär:"
+
+# QUEST_TRY_QUEST
+#: QUEST_TRY_QUEST
+msgid "Try this QuestionnaireResponse out:"
+msgstr "Prova denna QuestionnaireResponse:"
+
+# QUEST_TYPE_ITEM
+#: QUEST_TYPE_ITEM
+msgid "The type of the item"
+msgstr "Typen av objektet"
+
+# QUEST_UNKNOWN_MODE
+#: QUEST_UNKNOWN_MODE
+msgid "Unknown QuestionnaireResponse Renderer Mode"
+msgstr "Okänt QuestionnaireResponse-renderingsläge"
+
+# QUEST_UNSPECIFIED_QUESTIONNAIRE
+#: QUEST_UNSPECIFIED_QUESTIONNAIRE
+msgid "Unspecified Questionnaire"
+msgstr "Ospecificerat frågeformulär"
+
+# QUEST_UNSPECIFIED_SUBJECT
+#: QUEST_UNSPECIFIED_SUBJECT
+msgctxt "QUEST_UNSPECIFIED_SUBJECT"
+msgid "Unspecified Subject"
+msgstr "Ospecificerat subjekt"
+
+# QUEST_VALUE
+#: QUEST_VALUE
+msgid "Value Set:"
+msgstr "Värdemängd:"
+
+# R44B_DERIVES_FROM
+#: R44B_DERIVES_FROM
+msgid "derives from"
+msgstr "härleder från"
+
+# R44B_HAS_TARGET
+#: R44B_HAS_TARGET
+msgid "has target"
+msgstr "har mål"
+
+# R44B_HAS_TYPE
+#: R44B_HAS_TYPE
+msgid "has type"
+msgstr "har typ"
+
+# R44B_NOT_COMP
+#: R44B_NOT_COMP
+msgid "This is an {0} IG that is not compatible with {1}\" because"
+msgstr "Detta är en {0} IG som inte är kompatibel med {1}\" eftersom"
+
+# R44B_NOT_IN
+#: R44B_NOT_IN
+msgid "The following resources are not in the {0} version"
+msgstr "Följande resurser finns inte i {0}-versionen"
+
+# R44B_ONLY_IN
+#: R44B_ONLY_IN
+msgid "The following resources are only in the {0} version"
+msgstr "Följande resurser finns endast i {0}-versionen"
+
+# R44B_PACKAGE_REF
+#: R44B_PACKAGE_REF
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
+msgstr "Paket för både <a href=\"{0}\">R4 ({1}.r4)</a> och <a href=\"{2}\">R4B ({3}.r4b)</a> är tillgängliga."
+
+# R44B_PROBLEMS
+#: R44B_PROBLEMS
+msgid "While checking for {0} compatibility, the following {1} problems were found"
+msgstr "Vid kontroll av {0}-kompatibilitet hittades följande {1} problem"
+
+# R44B_REFERS_TO
+#: R44B_REFERS_TO
+msgid "<a href=\"{0}\">{1}}</a> refers to the canonical type at {2}"
+msgstr "<a href=\"{0}\">{1}}</a> refererar till den kanoniska typen vid {2}"
+
+# R44B_USE_OK
+#: R44B_USE_OK
+msgid "This is an {0} IG. None of the features it uses are changed in {1}, so it can be used as is with {1} systems."
+msgstr "Detta är en {0} IG. Inga av funktionerna den använder har ändrats i {1}, så den kan användas som den är med {1}-system."
+
+# R44B_WRONG_MSG
+#: R44B_WRONG_MSG
+msgid "Something went wrong with the cross-version analysis because"
+msgstr "Något gick fel med korsversionsanalysen eftersom"
+
+# REND_ADDED
+#: REND_ADDED
+msgid "Added:"
+msgstr "Tillagt:"
+
+# REND_CHANGED
+#: REND_CHANGED
+msgid "Changed:"
+msgstr "Ändrat:"
+
+# REND_REMOVED
+#: REND_REMOVED
+msgid "Removed:"
+msgstr "Borttaget:"
+
+# REND_ROW_CHANGED_SINCE_WAS
+#: REND_ROW_CHANGED_SINCE_WAS
+msgid "This row of content has been changed since {0} (was ''{1}'')"
+msgstr "Denna rad innehåll har ändrats sedan {0} (var ''{1}'')"
+
+# REND_ROW_SINCE
+#: REND_ROW_SINCE
+msgid "This row of content has been added since {0}"
+msgstr "Denna rad innehåll har lagts till sedan {0}"
+
+# REND_SINCE_ADDED
+#: REND_SINCE_ADDED
+msgid "This content has been added since {0}"
+msgstr "Detta innehåll har lagts till sedan {0}"
+
+# REND_SINCE_CHANGED
+#: REND_SINCE_CHANGED
+msgid "This content has been changed since {0}"
+msgstr "Detta innehåll har ändrats sedan {0}"
+
+# REND_SINCE_CHANGED_WAS
+#: REND_SINCE_CHANGED_WAS
+msgid "This content has been changed since {0} (was ''{1}'')"
+msgstr "Detta innehåll har ändrats sedan {0} (var ''{1}'')"
+
+# REND_STANDARDS
+#: REND_STANDARDS
+msgid "Standards Status = {0}"
+msgstr "Standardstatus = {0}"
+
+# REQ_ACTOR
+#: REQ_ACTOR
+msgid "These requirements apply to the actor"
+msgstr "Dessa krav gäller aktören"
+
+# REQ_DERIVE
+#: REQ_DERIVE
+msgid "These requirements derive from"
+msgstr "Dessa krav härleds från"
+
+# REQ_DERIVED
+#: REQ_DERIVED
+msgid "Derived From:"
+msgstr "Härledd från:"
+
+# REQ_FOLLOWING_ACTOR
+#: REQ_FOLLOWING_ACTOR
+msgid "These requirements apply to the following actors:"
+msgstr "Dessa krav gäller följande aktörer:"
+
+# REQ_FOLLOWING_REQ
+#: REQ_FOLLOWING_REQ
+msgid "These requirements are derived from the following requirements:"
+msgstr "Dessa krav härleds från följande krav:"
+
+# REQ_LINKS
+#: REQ_LINKS
+msgctxt "REQ_LINKS"
+msgid "Links:"
+msgstr "Länkar:"
+
+# REQ_SATISFIED
+#: REQ_SATISFIED
+msgid "Satisfied By:"
+msgstr "Uppfylld av:"
+
+# RESOURCE_COPYRIGHT
+#: RESOURCE_COPYRIGHT
+msgid "Copyright Statement:"
+msgstr "Upphovsrättsuttalande:"
+
+# RES_REND_ACT
+#: RES_REND_ACT
+msgid "Active"
+msgstr "Aktiv"
+
+# RES_REND_COND_REF
+#: RES_REND_COND_REF
+msgid "Conditional Reference:"
+msgstr "Villkorlig referens:"
+
+# RES_REND_DESC
+#: RES_REND_DESC
+msgid ". Description: (todo)"
+msgstr ". Beskrivning: (att göra)"
+
+# RES_REND_DRAFT
+#: RES_REND_DRAFT
+msgid "draft"
+msgstr "utkast"
+
+# RES_REND_ERROR
+#: RES_REND_ERROR
+msgid "Error rendering: {0}"
+msgstr "Fel vid rendering: {0}"
+
+# RES_REND_INFO_SOURCE
+#: RES_REND_INFO_SOURCE
+msgid "Information Source: <param name=\"source\"/>"
+msgstr "Informationskälla: <param name=\"source\"/>"
+
+# RES_REND_LANGUAGE
+#: RES_REND_LANGUAGE
+msgid "Language: {0}"
+msgstr "Språk: {0}"
+
+# RES_REND_RET
+#: RES_REND_RET
+msgid "retired"
+msgstr "avvecklad"
+
+# RES_REND_SEE_ON_THIS_PAGE
+#: RES_REND_SEE_ON_THIS_PAGE
+msgid "See on this page:"
+msgstr "Se på denna sida:"
+
+# RES_REND_SPEC_RULES
+#: RES_REND_SPEC_RULES
+msgid "Special rules apply: {0}!"
+msgstr "Särskilda regler gäller: {0}!"
+
+# RES_REND_TAG
+#: RES_REND_TAG
+msgid "Tag"
+msgstr "Tagg"
+
+# RES_REND_TEMPLATE_ID
+#: RES_REND_TEMPLATE_ID
+msgid "templateId: {0}"
+msgstr "templateId: {0}"
+
+# RES_REND_UNKNOWN
+#: RES_REND_UNKNOWN
+msgid "Unknown"
+msgstr "Okänd"
+
+# RES_REND_UPDATED
+#: RES_REND_UPDATED
+msgid "Last updated: {0}"
+msgstr "Senast uppdaterad: {0}"
+
+# RES_REND_VER
+#: RES_REND_VER
+msgid "version: {0}"
+msgstr "version: {0}"
+
+# SDR_ALL_ELEM
+#: SDR_ALL_ELEM
+msgid "**ALL** elements"
+msgstr "**ALLA** element"
+
+# SDR_ALL_EXT
+#: SDR_ALL_EXT
+msgid "**ALL** extensions"
+msgstr "**ALLA** extensions"
+
+# SDR_ANY_ORDER
+#: SDR_ANY_ORDER
+msgid "// sliced by {0} in any order"
+msgstr "// uppdelad efter {0} i valfri ordning"
+
+# SDR_BP
+#: SDR_BP
+msgid "best practice"
+msgstr "bästa praxis"
+
+# SDR_CAPSTMT
+#: SDR_CAPSTMT
+msgid "CapabilityStatements using this {0}"
+msgstr "CapabilityStatements som använder denna {0}"
+
+# SDR_CH_DET
+#: SDR_CH_DET
+msgid "New Content"
+msgstr "Nytt innehåll"
+
+# SDR_CH_NO
+#: SDR_CH_NO
+msgid "No changes"
+msgstr "Inga ändringar"
+
+# SDR_CLICK_COPY
+#: SDR_CLICK_COPY
+msgid "Click to copy URL"
+msgstr "Klicka för att kopiera URL"
+
+# SDR_CODE_FROM
+#: SDR_CODE_FROM
+msgid "(a valid code from {0})"
+msgstr "(en giltig kod från {0})"
+
+# SDR_COMPLY
+#: SDR_COMPLY
+msgid "Comply with this profile {0}"
+msgstr "Följ denna profil {0}"
+
+# SDR_CONCEPT_DOMAIN
+#: SDR_CONCEPT_DOMAIN
+msgid "Concept Domain"
+msgstr "Begreppsdomän"
+
+# SDR_CONT_CH_DET_CS
+#: SDR_CONT_CH_DET_CS
+msgid "The list of codes defined by the code system has changed"
+msgstr "Listan över koder som definieras av kodsystemet har ändrats"
+
+# SDR_CONT_CH_DET_SD
+#: SDR_CONT_CH_DET_SD
+msgid "The data elements list has changed"
+msgstr "Listan över dataelement har ändrats"
+
+# SDR_CONT_CH_DET_VS
+#: SDR_CONT_CH_DET_VS
+msgid "The logical definition of the value set has changed"
+msgstr "Den logiska definitionen av värdemängden har ändrats"
+
+# SDR_CONT_CH_NO
+#: SDR_CONT_CH_NO
+msgid "Unable to evaluate changes to content"
+msgstr "Kan inte utvärdera ändringar av innehåll"
+
+# SDR_DEFN_CH_DET_CS
+#: SDR_DEFN_CH_DET_CS
+msgctxt "SDR_DEFN_CH_DET_CS"
+msgid "One or more text definitions/displays have changed"
+msgstr "En eller flera textdefinitioner/visningar har ändrats"
+
+# SDR_DEFN_CH_DET_SD
+#: SDR_DEFN_CH_DET_SD
+msgid "One or more text definitions, invariants or bindings have changed"
+msgstr "En eller flera textdefinitioner, invarianter eller bindningar har ändrats"
+
+# SDR_DEFN_CH_DET_VS
+#: SDR_DEFN_CH_DET_VS
+msgctxt "SDR_DEFN_CH_DET_VS"
+msgid "One or more text definitions/displays have changed"
+msgstr "En eller flera textdefinitioner/visningar har ändrats"
+
+# SDR_DEFN_CH_NO
+#: SDR_DEFN_CH_NO
+msgid "Unable to evaluate changes to definitions"
+msgstr "Kan inte utvärdera ändringar av definitioner"
+
+# SDR_DERIVED
+#: SDR_DERIVED
+msgid "Derived from this {0}"
+msgstr "Härledd från denna {0}"
+
+# SDR_DRAFT
+#: SDR_DRAFT
+msgid "This is an draft extension definition; the committee is seeking implementation feedback, and the definition or contents of the extension may change in future versions"
+msgstr "Detta är ett utkast till extension-definition; kommittén söker implementationsfeedback, och definitionen eller innehållet i extensionen kan komma att ändras i framtida versioner"
+
+# SDR_DRAW_IN
+#: SDR_DRAW_IN
+msgid "Draw in Obligations & Additional Bindings from this {0}"
+msgstr "Dra in skyldigheter & ytterligare bindningar från denna {0}"
+
+# SDR_EXAMPLE
+#: SDR_EXAMPLE
+msgid "Examples for this {0}"
+msgstr "Exempel för denna {0}"
+
+# SDR_EXPERIMENTAL
+#: SDR_EXPERIMENTAL
+msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
+msgstr "Detta är en experimentell extension-definition; definitionen är avsedd för teständamål, utbildning eller utvärdering, och definitionen förväntas inte mogna till en punkt där den är avsedd för verklig användning."
+
+# SDR_EXTENSION_SUMMARY
+#: SDR_EXTENSION_SUMMARY
+msgid "Simple Extension with the type {0}: {1}"
+msgstr "Enkel extension med typen {0}: {1}"
+
+# SDR_EXTENSION_SUMMARY_MODIFIER
+#: SDR_EXTENSION_SUMMARY_MODIFIER
+msgid "Simple <b>Modifier</b> Extension with the type {0}: {1}"
+msgstr "Enkel <b>modifierande</b> extension med typen {0}: {1}"
+
+# SDR_EXT_ANY
+#: SDR_EXT_ANY
+msgid "This extension does not specify which elements it should be used on"
+msgstr "Denna extension specificerar inte på vilka element den ska användas"
+
+# SDR_EXT_CHANGED
+#: SDR_EXT_CHANGED
+msgid "The extension is represented a little differently in {0}"
+msgstr "Extensionen representeras lite annorlunda i {0}"
+
+# SDR_EXT_CTXT_PATH
+#: SDR_EXT_CTXT_PATH
+msgid "In addition, the extension can only be used when this FHIRPath expression is true"
+msgstr "Dessutom kan extensionen endast användas när detta FHIRPath-uttryck är sant"
+
+# SDR_EXT_CTXT_PATHS
+#: SDR_EXT_CTXT_PATHS
+msgid "In addition, the extension can only be used when these FHIRPath expressions are true"
+msgstr "Dessutom kan extensionen endast användas när dessa FHIRPath-uttryck är sanna"
+
+# SDR_EXT_DEPR
+#: SDR_EXT_DEPR
+msgid "This extension is deprecated and should no longer be used"
+msgstr "Denna extension är föråldrad och bör inte längre användas"
+
+# SDR_EXT_ELEM
+#: SDR_EXT_ELEM
+msgid "This extension may be used on the following element(s)"
+msgstr "Denna extension kan användas på följande element"
+
+# SDR_EXT_ELEM_ID
+#: SDR_EXT_ELEM_ID
+msgid "Element ID"
+msgstr "Element-ID"
+
+# SDR_EXT_EXT
+#: SDR_EXT_EXT
+msgctxt "SDR_EXT_EXT"
+msgid "Extension"
+msgstr "Extension"
+
+# SDR_EXT_MOD
+#: SDR_EXT_MOD
+msgid "This extension is a modifier extension."
+msgstr "Denna extension är en modifierande extension."
+
+# SDR_EXT_PATH
+#: SDR_EXT_PATH
+msgctxt "SDR_EXT_PATH"
+msgid "Path"
+msgstr "Sökväg"
+
+# SDR_EXT_UNCHANGED
+#: SDR_EXT_UNCHANGED
+msgid "The extension is unchanged in {0}"
+msgstr "Extensionen är oförändrad i {0}"
+
+# SDR_EXT_VER_PFX
+#: SDR_EXT_VER_PFX
+msgid "This extension is allowed for use with"
+msgstr "Denna extension är tillåten att använda med"
+
+# SDR_EXT_VER_SFX
+#: SDR_EXT_VER_SFX
+msgid "."
+msgstr "."
+
+# SDR_FIXED_VALUE
+#: SDR_FIXED_VALUE
+msgctxt "SDR_FIXED_VALUE"
+msgid "Fixed Value: {0}"
+msgstr "Fast värde: {0}"
+
+# SDR_FROM
+#: SDR_FROM
+msgid "From {0}"
+msgstr "Från {0}"
+
+# SDR_FROM_ELEM
+#: SDR_FROM_ELEM
+msgid "// from Element: <a href=\"{0}\">extension</a>"
+msgstr "// från element: <a href=\"{0}\">extension</a>"
+
+# SDR_GUIDANCE_HERE
+#: SDR_GUIDANCE_HERE
+msgid "here"
+msgstr "här"
+
+# SDR_GUIDANCE_PFX
+#: SDR_GUIDANCE_PFX
+msgid "Guidance on how to interpret the contents of this table can be found"
+msgstr "Vägledning om hur innehållet i denna tabell ska tolkas finns"
+
+# SDR_GUIDANCE_SFX
+#: SDR_GUIDANCE_SFX
+msgctxt "SDR_GUIDANCE_SFX"
+msgid "-- no content: do not translate #1 --"
+msgstr "-- no content: do not translate #1 --"
+
+# SDR_IMPOSE
+#: SDR_IMPOSE
+msgid "Impose this profile {0}"
+msgstr "Påtvinga denna profil {0}"
+
+# SDR_INTRP_CH_DET_VS
+#: SDR_INTRP_CH_DET_VS
+msgid "The expansion has changed"
+msgstr "Expansionen har ändrats"
+
+# SDR_INTRP_CH_NO_VS
+#: SDR_INTRP_CH_NO_VS
+msgid "Unable to evaluate changes to the expansion"
+msgstr "Kan inte utvärdera ändringar av expansionen"
+
+# SDR_LIMITED_ONE
+#: SDR_LIMITED_ONE
+msgid "This element is an array in the base standard, but the profile only allows one element"
+msgstr "Detta element är en array i basstandarden, men profilen tillåter endast ett element"
+
+# SDR_META_CH_DET
+#: SDR_META_CH_DET
+msgid "The resource metadata has changed ({0})"
+msgstr "Resursens metadata har ändrats ({0})"
+
+# SDR_META_CH_NO
+#: SDR_META_CH_NO
+msgid "Unable to evaluate changes to metadata"
+msgstr "Kan inte utvärdera ändringar av metadata"
+
+# SDR_MOD
+#: SDR_MOD
+msgid "(this element modifies the meaning of other elements)"
+msgstr "(detta element modifierar betydelsen av andra element)"
+
+# SDR_MOD_SUPP
+#: SDR_MOD_SUPP
+msgid "(this element modifies the meaning of other elements, and must be supported)"
+msgstr "(detta element modifierar betydelsen av andra element, och måste stödjas)"
+
+# SDR_MULTIPLE_PROFILES
+#: SDR_MULTIPLE_PROFILES
+msgid "Multiple profiles are not supported at this time"
+msgstr "Flera profiler stöds inte för närvarande"
+
+# SDR_NOT_DONE_CC
+#: SDR_NOT_DONE_CC
+msgid "Error describing concept - not done yet (no codings, no text)"
+msgstr "Fel vid beskrivning av begrepp - inte klart än (inga kodningar, ingen text)"
+
+# SDR_NOT_GEN
+#: SDR_NOT_GEN
+msgid "Generating text summary of fixed value not yet done for type {0}"
+msgstr "Generering av textsammanfattning av fast värde är ännu inte klar för typ {0}"
+
+# SDR_NOT_HANDLED_EXT
+#: SDR_NOT_HANDLED_EXT
+msgid "Not handled yet: complex extension ''{0}''"
+msgstr "Ännu inte hanterad: komplex extension ''{0}''"
+
+# SDR_NOT_USED
+#: SDR_NOT_USED
+msgid "This {0} is not used by any profiles in this Implementation Guide"
+msgstr "Denna {0} används inte av några profiler i denna implementationsguide"
+
+# SDR_OFF_URL
+#: SDR_OFF_URL
+msgid "The official URL for this profile is"
+msgstr "Den officiella URL:en för denna profil är"
+
+# SDR_ONE_OF
+#: SDR_ONE_OF
+msgid "One of these {0}"
+msgstr "En av dessa {0}"
+
+# SDR_ONLY_ONE
+#: SDR_ONLY_ONE
+msgid "Only One!"
+msgstr "Endast en!"
+
+# SDR_PATTERN_VALUE
+#: SDR_PATTERN_VALUE
+msgctxt "SDR_PATTERN_VALUE"
+msgid "Pattern Value: {0}"
+msgstr "Mönstervärde: {0}"
+
+# SDR_PRIM_VALUE
+#: SDR_PRIM_VALUE
+msgid "Primitive Value {0}"
+msgstr "Primitivt värde {0}"
+
+# SDR_REFER
+#: SDR_REFER
+msgid "Refer to this {0}"
+msgstr "Referera till denna {0}"
+
+# SDR_REQUIRED
+#: SDR_REQUIRED
+msgid "This element is required"
+msgstr "Detta element är obligatoriskt"
+
+# SDR_SEARCH
+#: SDR_SEARCH
+msgid "Search Parameters using this {0}"
+msgstr "Sökparametrar som använder denna {0}"
+
+# SDR_SORTED
+#: SDR_SORTED
+msgid "// sliced by {0} in the specified order {1}"
+msgstr "// uppdelad efter {0} i den angivna ordningen {1}"
+
+# SDR_SRC_FHIR
+#: SDR_SRC_FHIR
+msgid "FHIR Std."
+msgstr "FHIR-std."
+
+# SDR_SRC_IG
+#: SDR_SRC_IG
+msgid "This IG"
+msgstr "Denna IG"
+
+# SDR_SUPP
+#: SDR_SUPP
+msgid "(this element must be supported)"
+msgstr "(detta element måste stödjas)"
+
+# SDR_UNK_EXT
+#: SDR_UNK_EXT
+msgid "Not handled yet: unknown extension ''{0}''"
+msgstr "Ännu inte hanterad: okänd extension ''{0}''"
+
+# SDR_USAGE
+#: SDR_USAGE
+msgid "Usages"
+msgstr "Användningar"
+
+# SDR_USE
+#: SDR_USE
+msgid "Use this {0}"
+msgstr "Använd denna {0}"
+
+# SDR_VER_BEF
+#: SDR_VER_BEF
+msgid "For versions until {0}"
+msgstr "För versioner fram till {0}"
+
+# SDR_VER_FOR
+#: SDR_VER_FOR
+msgid "For version {0}"
+msgstr "För version {0}"
+
+# SDR_VER_FROM_PFX
+#: SDR_VER_FROM_PFX
+msgctxt "SDR_VER_FROM_PFX"
+msgid "FHIR versions"
+msgstr "FHIR-versioner"
+
+# SDR_VER_FROM_SFX
+#: SDR_VER_FROM_SFX
+msgid "and after"
+msgstr "och senare"
+
+# SDR_VER_ON
+#: SDR_VER_ON
+msgid "For versions {0} onwards"
+msgstr "För versioner {0} och framåt"
+
+# SDR_VER_RANGE
+#: SDR_VER_RANGE
+msgid "For versions {0} to {1}"
+msgstr "För versioner {0} till {1}"
+
+# SDR_VER_RANGE_MID
+#: SDR_VER_RANGE_MID
+msgctxt "SDR_VER_RANGE_MID"
+msgid "to"
+msgstr "till"
+
+# SDR_VER_RANGE_PFX
+#: SDR_VER_RANGE_PFX
+msgctxt "SDR_VER_RANGE_PFX"
+msgid "FHIR versions"
+msgstr "FHIR-versioner"
+
+# SDR_VER_RANGE_SFX
+#: SDR_VER_RANGE_SFX
+msgctxt "SDR_VER_RANGE_SFX"
+msgid "-- no content: do not translate #2 --"
+msgstr "-- no content: do not translate #2 --"
+
+# SDR_VER_TO_PFX
+#: SDR_VER_TO_PFX
+msgid "FHIR versions up to"
+msgstr "FHIR-versioner upp till"
+
+# SDR_VER_TO_SFX
+#: SDR_VER_TO_SFX
+msgctxt "SDR_VER_TO_SFX"
+msgid "-- no content: do not translate #3 --"
+msgstr "-- no content: do not translate #3 --"
+
+# SDR_VER_UNK
+#: SDR_VER_UNK
+msgid "For unknown versions"
+msgstr "För okända versioner"
+
+# SDT_DEF
+#: SDT_DEF
+msgctxt "SDT_DEF"
+msgid "Definition"
+msgstr "Definition"
+
+# SDT_DT
+#: SDT_DT
+msgid "DataType"
+msgstr "DataType"
+
+# SDT_DT_PROF
+#: SDT_DT_PROF
+msgid "DataType Profile"
+msgstr "DataType-profil"
+
+# SDT_EXTENSION
+#: SDT_EXTENSION
+msgctxt "SDT_EXTENSION"
+msgid "Extension"
+msgstr "Extension"
+
+# SDT_LM
+#: SDT_LM
+msgctxt "SDT_LM"
+msgid "Logical Model"
+msgstr "Logisk modell"
+
+# SDT_LM_PROF
+#: SDT_LM_PROF
+msgid "Logical Model Profile"
+msgstr "Logisk modell-profil"
+
+# SDT_OBLIGATION_PROFILE
+#: SDT_OBLIGATION_PROFILE
+msgid "Obligation Profile"
+msgstr "Skyldighetsprofil"
+
+# SDT_ORIGINAL_SOURCE
+#: SDT_ORIGINAL_SOURCE
+msgid "Original Source"
+msgstr "Ursprunglig källa"
+
+# SDT_PT
+#: SDT_PT
+msgid "Primitive Type"
+msgstr "Primitiv typ"
+
+# SDT_PT_PROF
+#: SDT_PT_PROF
+msgid "Primitive Type Profile"
+msgstr "Profil för primitiv typ"
+
+# SDT_RES
+#: SDT_RES
+msgctxt "SDT_RES"
+msgid "Resource"
+msgstr "Resurs"
+
+# SDT_RES_PROF
+#: SDT_RES_PROF
+msgctxt "SDT_RES_PROF"
+msgid "Profile"
+msgstr "Profil"
+
+# SD_COMP_HEAD_CARD_L
+#: SD_COMP_HEAD_CARD_L
+msgid "L Card."
+msgstr "V Kard."
+
+# SD_COMP_HEAD_CARD_L_DESC
+#: SD_COMP_HEAD_CARD_L_DESC
+msgid "Minimum and Maximum # of times the element can appear in the instance - Left Structure"
+msgstr "Lägsta och högsta antal gånger elementet kan förekomma i instansen - Vänster struktur"
+
+# SD_COMP_HEAD_CARD_R
+#: SD_COMP_HEAD_CARD_R
+msgid "R Card."
+msgstr "H Kard."
+
+# SD_COMP_HEAD_CARD_R_DESC
+#: SD_COMP_HEAD_CARD_R_DESC
+msgid "Minimum and Maximum # of times the element can appear in the instance - Right Structure"
+msgstr "Lägsta och högsta antal gånger elementet kan förekomma i instansen - Höger struktur"
+
+# SD_COMP_HEAD_COMP_DESC
+#: SD_COMP_HEAD_COMP_DESC
+msgid "Comments about the comparison"
+msgstr "Kommentarer om jämförelsen"
+
+# SD_COMP_HEAD_DESC_L
+#: SD_COMP_HEAD_DESC_L
+msgid "L Description & Constraints"
+msgstr "V beskrivning & begränsningar"
+
+# SD_COMP_HEAD_DESC_L_DESC
+#: SD_COMP_HEAD_DESC_L_DESC
+msgid "Additional information about the element - Left Structure"
+msgstr "Ytterligare information om elementet - Vänster struktur"
+
+# SD_COMP_HEAD_DESC_R
+#: SD_COMP_HEAD_DESC_R
+msgid "R Description & Constraints"
+msgstr "H beskrivning & begränsningar"
+
+# SD_COMP_HEAD_DESC_R_DESC
+#: SD_COMP_HEAD_DESC_R_DESC
+msgid "Additional information about the element - Right Structure"
+msgstr "Ytterligare information om elementet - Höger struktur"
+
+# SD_COMP_HEAD_FLAGS_L
+#: SD_COMP_HEAD_FLAGS_L
+msgid "L Flags"
+msgstr "V flaggor"
+
+# SD_COMP_HEAD_FLAGS_L_DESC
+#: SD_COMP_HEAD_FLAGS_L_DESC
+msgid "Information about the use of the element - Left Structure"
+msgstr "Information om användningen av elementet - Vänster struktur"
+
+# SD_COMP_HEAD_FLAGS_R
+#: SD_COMP_HEAD_FLAGS_R
+msgid "R Flags"
+msgstr "H flaggor"
+
+# SD_COMP_HEAD_FLAGS_R_DESC
+#: SD_COMP_HEAD_FLAGS_R_DESC
+msgid "Information about the use of the element - Right Structure"
+msgstr "Information om användningen av elementet - Höger struktur"
+
+# SD_COMP_HEAD_TYPE_L
+#: SD_COMP_HEAD_TYPE_L
+msgid "L Type"
+msgstr "V typ"
+
+# SD_COMP_HEAD_TYPE_L_DESC
+#: SD_COMP_HEAD_TYPE_L_DESC
+msgid "Reference to the type of the element - Left Structure"
+msgstr "Referens till elementets typ - Vänster struktur"
+
+# SD_COMP_HEAD_TYPE_R
+#: SD_COMP_HEAD_TYPE_R
+msgid "R Type"
+msgstr "H typ"
+
+# SD_COMP_HEAD_TYPE_R_DESC
+#: SD_COMP_HEAD_TYPE_R_DESC
+msgid "Reference to the type of the element - Right Structure"
+msgstr "Referens till elementets typ - Höger struktur"
+
+# SD_DOCO
+#: SD_DOCO
+msgid "Documentation for this format"
+msgstr "Dokumentation för detta format"
+
+# SD_GRID_HEAD_CARD_DESC
+#: SD_GRID_HEAD_CARD_DESC
+msgid "Minimum and Maximum # of times the element can appear in the instance. Super-scripts indicate additional constraints on appearance"
+msgstr "Lägsta och högsta antal gånger elementet kan förekomma i instansen. Upphöjda tecken anger ytterligare begränsningar för förekomst"
+
+# SD_GRID_HEAD_DESC
+#: SD_GRID_HEAD_DESC
+msgid "Constraints and Usage"
+msgstr "Begränsningar och användning"
+
+# SD_GRID_HEAD_DESC_DESC
+#: SD_GRID_HEAD_DESC_DESC
+msgid "Fixed values, length limits, vocabulary bindings and other usage notes"
+msgstr "Fasta värden, längdgränser, vokabulärbindningar och andra användningsnoteringar"
+
+# SD_GRID_HEAD_NAME_DESC
+#: SD_GRID_HEAD_NAME_DESC
+msgid "The name of the element (Slice name in brackets).  Mouse-over provides definition"
+msgstr "Elementets namn (skivnamn inom hakparenteser).  Mouse-over ger definition"
+
+# SD_GRID_HEAD_TYPE_DESC
+#: SD_GRID_HEAD_TYPE_DESC
+msgid "Reference to the type of the element"
+msgstr "Referens till elementets typ"
+
+# SD_HEAD_CARD_DESC
+#: SD_HEAD_CARD_DESC
+msgctxt "SD_HEAD_CARD_DESC"
+msgid "Minimum and Maximum # of times the element can appear in the instance"
+msgstr "Lägsta och högsta antal gånger elementet kan förekomma i instansen"
+
+# SD_HEAD_DESC_DESC
+#: SD_HEAD_DESC_DESC
+msgid "Additional information about the element"
+msgstr "Ytterligare information om elementet"
+
+# SD_HEAD_FLAGS_DESC
+#: SD_HEAD_FLAGS_DESC
+msgid "Information about the use of the element"
+msgstr "Information om användningen av elementet"
+
+# SD_LEGEND
+#: SD_LEGEND
+msgid "Legend for this format"
+msgstr "Förklaring för detta format"
+
+# SD_SLICING_INFO
+#: SD_SLICING_INFO
+msgid "{0}, {1} by {2}"
+msgstr "{0}, {1} av {2}"
+
+# SD_SUMMARY_FIXED
+#: SD_SUMMARY_FIXED
+msgid "Fixed: {0} {1}"
+msgstr "Fast: {0} {1}"
+
+# SD_SUMMARY_MANDATORY
+#: SD_SUMMARY_MANDATORY
+msgid "Mandatory: {0} {1}"
+msgstr "Obligatorisk: {0} {1}"
+
+# SD_SUMMARY_MISSING_EXTENSION
+#: SD_SUMMARY_MISSING_EXTENSION
+msgid "Unable to summarise extension {0} (no extension found)"
+msgstr "Kan inte sammanfatta extension {0} (ingen extension hittades)"
+
+# SD_SUMMARY_MISSING_PROFILE
+#: SD_SUMMARY_MISSING_PROFILE
+msgid "Unable to summarise profile {0} (no profile found)"
+msgstr "Kan inte sammanfatta profil {0} (ingen profil hittades)"
+
+# SD_SUMMARY_MUST_SUPPORT
+#: SD_SUMMARY_MUST_SUPPORT
+msgid "Must-Support: {0} {1}"
+msgstr "Måste stödjas: {0} {1}"
+
+# SD_SUMMARY_NESTED_MANDATORY
+#: SD_SUMMARY_NESTED_MANDATORY
+msgid "({0} nested mandatory {1})"
+msgstr "({0} nästlade obligatoriska {1})"
+
+# SD_SUMMARY_PROHIBITED
+#: SD_SUMMARY_PROHIBITED
+msgid "Prohibited: {0} {1}"
+msgstr "Förbjuden: {0} {1}"
+
+# SD_SUMMARY_PUBLICATION
+#: SD_SUMMARY_PUBLICATION
+msgid "This profile was published on {0} as a {1} by {2}"
+msgstr "Denna profil publicerades {0} som en {1} av {2}"
+
+# SD_SUMMARY_SLICE
+#: SD_SUMMARY_SLICE
+msgid "The element {0} is sliced based on the value of {1}"
+msgid_plural "The element {0} is sliced based on the values of {1}"
+msgstr[0] "Elementet {0} är uppdelat baserat på värdet av {1}"
+msgstr[1] "Elementet {0} är uppdelat baserat på värdena av {1}"
+
+# SD_SUMMARY_SLICES
+#: SD_SUMMARY_SLICES
+msgid "This structure defines the following {0}Slices{1}"
+msgstr "Denna struktur definierar följande {0}skivor{1}"
+
+# SD_SUMMARY_SLICE_NONE
+#: SD_SUMMARY_SLICE_NONE
+msgid "There is a slice with no discriminator at {0}"
+msgstr "Det finns en skiva utan diskriminator vid {0}"
+
+# SD_XIG_LINK
+#: SD_XIG_LINK
+msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
+msgstr "<p>Du kan också kontrollera <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">användningar i FHIR IG-statistiken</a></p>"
+
+# SEARCH_PAR_ALLOWED
+#: SEARCH_PAR_ALLOWED
+msgid "Allowed:"
+msgstr "Tillåten:"
+
+# SEARCH_PAR_CHAIN
+#: SEARCH_PAR_CHAIN
+msgid "Chains"
+msgstr "Kedjor"
+
+# SEARCH_PAR_EXP
+#: SEARCH_PAR_EXP
+msgid "Expression"
+msgstr "Uttryck"
+
+# SEARCH_PAR_MULTIPLES
+#: SEARCH_PAR_MULTIPLES
+msgid "Multiples"
+msgstr "Multipler"
+
+# SEARCH_PAR_MULTIPLE_AND_APPEAR
+#: SEARCH_PAR_MULTIPLE_AND_APPEAR
+msgid "multipleAnd: The parameter may only appear once"
+msgstr "multipleAnd: Parametern får endast förekomma en gång"
+
+# SEARCH_PAR_MULTIPLE_AND_REPEAT
+#: SEARCH_PAR_MULTIPLE_AND_REPEAT
+msgid "multipleAnd: The parameter may repeat in order to specify multiple values that must all be true"
+msgstr "multipleAnd: Parametern får upprepas för att ange flera värden som alla måste vara sanna"
+
+# SEARCH_PAR_MULTIPLE_AND_SERVER
+#: SEARCH_PAR_MULTIPLE_AND_SERVER
+msgid "multipleAnd: It''s up to the server whether the parameter may repeat in order to specify multiple values that must all be true"
+msgstr "multipleAnd: Det är upp till servern om parametern får upprepas för att ange flera värden som alla måste vara sanna"
+
+# SEARCH_PAR_MULTIPLE_OR_MULTIPLE
+#: SEARCH_PAR_MULTIPLE_OR_MULTIPLE
+msgid "multipleOr: The parameter may have multiple values (separated by comma) where at least one must be true"
+msgstr "multipleOr: Parametern kan ha flera värden (separerade med kommatecken) där minst ett måste vara sant"
+
+# SEARCH_PAR_MULTIPLE_OR_ONE
+#: SEARCH_PAR_MULTIPLE_OR_ONE
+msgid "multipleOr: The parameter may only have one value (no comma separators)"
+msgstr "multipleOr: Parametern får endast ha ett värde (inga kommatecken)"
+
+# SEARCH_PAR_MULTIPLE_OR_SERVER
+#: SEARCH_PAR_MULTIPLE_OR_SERVER
+msgid "multipleOr: It''s up to the server whether the parameter can have multiple values (separated by comma) where at least one must be true"
+msgstr "multipleOr: Det är upp till servern om parametern kan ha flera värden (separerade med kommatecken) där minst ett måste vara sant"
+
+# SEARCH_PAR_NONE
+#: SEARCH_PAR_NONE
+msgctxt "SEARCH_PAR_NONE"
+msgid "(none)"
+msgstr "(ingen)"
+
+# SEARCH_PAR_PROC
+#: SEARCH_PAR_PROC
+msgid "Processing Mode"
+msgstr "Bearbetningsläge"
+
+# SEARCH_PAR_REND_TARGET
+#: SEARCH_PAR_REND_TARGET
+msgid "Target Resources"
+msgstr "Målresurser"
+
+# SEARCH_PAR_RES
+#: SEARCH_PAR_RES
+msgid "All Resources"
+msgstr "Alla resurser"
+
+# STATUS_MSG_AUTOBUILD
+#: STATUS_MSG_AUTOBUILD
+msgid "{0}, published by {1}. This guide is not an authorized publication; it is the continuous build for version {2}  built by the FHIR (HL7&reg; FHIR&reg; Standard) CI Build. This version is based on the current content of <a href=''{3}''>{3}</a> and changes regularly. See the <a href=''{4}/history.html''>Directory of published versions</a>"
+msgstr "{0}, publicerad av {1}. Denna guide är inte en auktoriserad publikation; det är den kontinuerliga byggnaden för version {2}  byggd av FHIR (HL7&reg; FHIR&reg; Standard) CI Build. Denna version baseras på det aktuella innehållet i <a href=''{3}''>{3}</a> och ändras regelbundet. Se <a href=''{4}/history.html''>katalogen över publicerade versioner</a>"
+
+# STATUS_MSG_LOCAL_BUILD
+#: STATUS_MSG_LOCAL_BUILD
+msgid "{0} - Local Development build (v{1}) built by the FHIR (HL7® FHIR® Standard) Build Tools. See the <a href=''{2}/history.html''>Directory of published versions</a>"
+msgstr "{0} - Lokal utvecklingsbygge (v{1}) byggt av FHIR (HL7® FHIR® Standard) Build Tools. Se <a href=''{2}/history.html''>katalogen över publicerade versioner</a>"
+
+# STATUS_MSG_PUBLICATION_HOLDER
+#: STATUS_MSG_PUBLICATION_HOLDER
+msgid "Publication Build: This will be filled in by the publication tooling"
+msgstr "Publikationsbygge: Detta kommer att fyllas i av publikationsverktygen"
+
+# STRUC_DEF_ABSTRACT
+#: STRUC_DEF_ABSTRACT
+msgid "This is an abstract"
+msgstr "Detta är en abstrakt"
+
+# STRUC_DEF_ACT
+#: STRUC_DEF_ACT
+msgid "Obligations that apply to the actor {0}"
+msgstr "Skyldigheter som gäller aktören {0}"
+
+# STRUC_DEF_AFFECT_CONSTRAINTS
+#: STRUC_DEF_AFFECT_CONSTRAINTS
+msgid "This element has or is affected by constraints ("
+msgstr "Detta element har eller påverkas av begränsningar ("
+
+# STRUC_DEF_ALLOWED
+#: STRUC_DEF_ALLOWED
+msgid "Allowed Units"
+msgstr "Tillåtna enheter"
+
+# STRUC_DEF_ALL_ACTORS
+#: STRUC_DEF_ALL_ACTORS
+msgid "All Actors"
+msgstr "Alla aktörer"
+
+# STRUC_DEF_ALL_SLICES
+#: STRUC_DEF_ALL_SLICES
+msgid ":All Slices"
+msgstr ":Alla skivor"
+
+# STRUC_DEF_ALL_TYPES
+#: STRUC_DEF_ALL_TYPES
+msgid "All Types"
+msgstr "Alla typer"
+
+# STRUC_DEF_ALT_NAME
+#: STRUC_DEF_ALT_NAME
+msgid "Alternate Names"
+msgstr "Alternativa namn"
+
+# STRUC_DEF_AND
+#: STRUC_DEF_AND
+msgctxt "STRUC_DEF_AND"
+msgid "and"
+msgstr "och"
+
+# STRUC_DEF_APPROP_CON
+#: STRUC_DEF_APPROP_CON
+msgid "Concepts must come from this value set if appropriate concept is in this value set"
+msgstr "Begrepp måste komma från denna värdemängd om lämpligt begrepp finns i denna värdemängd"
+
+# STRUC_DEF_AS_SHOWN
+#: STRUC_DEF_AS_SHOWN
+msgid "As shown"
+msgstr "Som visat"
+
+# STRUC_DEF_BECAUSE
+#: STRUC_DEF_BECAUSE
+msgid "because"
+msgstr "eftersom"
+
+# STRUC_DEF_BINDINGS
+#: STRUC_DEF_BINDINGS
+msgid "Binding:"
+msgstr "Bindning:"
+
+# STRUC_DEF_BINDING_STYLE
+#: STRUC_DEF_BINDING_STYLE
+msgid "binding style"
+msgstr "bindningsstil"
+
+# STRUC_DEF_BLACK
+#: STRUC_DEF_BLACK
+msgid "black"
+msgstr "svart"
+
+# STRUC_DEF_BUSINESS_ID
+#: STRUC_DEF_BUSINESS_ID
+msgid "This is a business identifier, not a resource identifier (see"
+msgstr "Detta är en verksamhetsidentifierare, inte en resursidentifierare (se"
+
+# STRUC_DEF_BUSINESS_VERID
+#: STRUC_DEF_BUSINESS_VERID
+msgid "This is a business version Id, not a resource version Id (see"
+msgstr "Detta är ett verksamhetsversions-id, inte ett resursversions-id (se"
+
+# STRUC_DEF_CAND
+#: STRUC_DEF_CAND
+msgid "Candidate"
+msgstr "Kandidat"
+
+# STRUC_DEF_CAND_SUB
+#: STRUC_DEF_CAND_SUB
+msgid "This value set is a candidate to substitute for the overall conformance value set in some situations; usually these are defined in the documentation"
+msgstr "Denna värdemängd är en kandidat att ersätta den övergripande konformansvärdemängden i vissa situationer; vanligtvis definieras dessa i dokumentationen"
+
+# STRUC_DEF_CANNOT_TARGET
+#: STRUC_DEF_CANNOT_TARGET
+msgid "Instances of this logical model cannot be the target of a Reference"
+msgstr "Instanser av denna logiska modell kan inte vara mål för en Reference"
+
+# STRUC_DEF_CANT_FIND
+#: STRUC_DEF_CANT_FIND
+msgid "getElementByName: can''t find {0} in {1} from {2}"
+msgstr "getElementByName: kan inte hitta {0} i {1} från {2}"
+
+# STRUC_DEF_CAN_TARGET
+#: STRUC_DEF_CAN_TARGET
+msgid "Instances of this logical model can be the target of a Reference"
+msgstr "Instanser av denna logiska modell kan vara mål för en Reference"
+
+# STRUC_DEF_CAP
+#: STRUC_DEF_CAP
+msgid "CAP Code"
+msgstr "CAP-kod"
+
+# STRUC_DEF_CDA
+#: STRUC_DEF_CDA
+msgid "This property is represented as CDA Text in the XML."
+msgstr "Denna egenskap representeras som CDA-text i XML."
+
+# STRUC_DEF_CHILD
+#: STRUC_DEF_CHILD
+msgid "Child"
+msgstr "Barn"
+
+# STRUC_DEF_CHOICE
+#: STRUC_DEF_CHOICE
+msgid "(Choice of one)"
+msgstr "(Val av en)"
+
+# STRUC_DEF_CHOICE_DATA_TYPE
+#: STRUC_DEF_CHOICE_DATA_TYPE
+msgid "Choice of Data Types"
+msgstr "Val av datatyper"
+
+# STRUC_DEF_CHOICE_GRP
+#: STRUC_DEF_CHOICE_GRP
+msgid "Choice Group"
+msgstr "Valgrupp"
+
+# STRUC_DEF_CHOICE_OF
+#: STRUC_DEF_CHOICE_OF
+msgid "Choice of:"
+msgstr "Val av:"
+
+# STRUC_DEF_CLOSED
+#: STRUC_DEF_CLOSED
+msgid "Closed"
+msgstr "Sluten"
+
+# STRUC_DEF_COMMENT
+#: STRUC_DEF_COMMENT
+msgid "Comments:"
+msgstr "Kommentarer:"
+
+# STRUC_DEF_COMPLEX
+#: STRUC_DEF_COMPLEX
+msgid "Complex"
+msgstr "Komplex"
+
+# STRUC_DEF_COMPLEXBRACK
+#: STRUC_DEF_COMPLEXBRACK
+msgid "(Complex)"
+msgstr "(Komplex)"
+
+# STRUC_DEF_COMP_DOC
+#: STRUC_DEF_COMP_DOC
+msgid "This value set is a component of the base value set. Usually this is called out so that documentation can be written about a portion of the value set"
+msgstr "Denna värdemängd är en komponent i basvärdemängden. Vanligtvis lyfts detta fram så att dokumentation kan skrivas om en del av värdemängden"
+
+# STRUC_DEF_COMP_EX
+#: STRUC_DEF_COMP_EX
+msgid "(Complex Extension)"
+msgstr "(Komplex extension)"
+
+# STRUC_DEF_COMP_PROF
+#: STRUC_DEF_COMP_PROF
+msgid "Complies with Profile"
+msgstr "Följer profil"
+
+# STRUC_DEF_CONC_SET
+#: STRUC_DEF_CONC_SET
+msgid "Concepts must come from this value set"
+msgstr "Begrepp måste komma från denna värdemängd"
+
+# STRUC_DEF_CONSTRAINING
+#: STRUC_DEF_CONSTRAINING
+msgid "Slice Constraining"
+msgstr "Skivbegränsning"
+
+# STRUC_DEF_CONSTRAINTS
+#: STRUC_DEF_CONSTRAINTS
+msgctxt "STRUC_DEF_CONSTRAINTS"
+msgid "Constraints"
+msgstr "Begränsningar"
+
+# STRUC_DEF_CONTROL
+#: STRUC_DEF_CONTROL
+msgid "Control"
+msgstr "Kontroll"
+
+# STRUC_DEF_CONT_RULE
+#: STRUC_DEF_CONT_RULE
+msgid "Content/Rules for all slices"
+msgstr "Innehåll/regler för alla skivor"
+
+# STRUC_DEF_CONT_TYPE
+#: STRUC_DEF_CONT_TYPE
+msgid "Content/Rules for all Types"
+msgstr "Innehåll/regler för alla typer"
+
+# STRUC_DEF_COPY_CODING
+#: STRUC_DEF_COPY_CODING
+msgid "Click to Copy as Coding"
+msgstr "Klicka för att kopiera som Coding"
+
+# STRUC_DEF_COPY_URL
+#: STRUC_DEF_COPY_URL
+msgid "Click to Copy URL"
+msgstr "Klicka för att kopiera URL"
+
+# STRUC_DEF_CURR
+#: STRUC_DEF_CURR
+msgctxt "STRUC_DEF_CURR"
+msgid "Current"
+msgstr "Aktuell"
+
+# STRUC_DEF_CURR_RULE
+#: STRUC_DEF_CURR_RULE
+msgid "New records are required to use this value set, but legacy records may use other codes. The definition of ''new record'' is difficult, since systems often create new records based on pre-existing data. Usually ''current'' bindings are mandated by an external authority that makes clear rules around this"
+msgstr "Nya poster måste använda denna värdemängd, men äldre poster kan använda andra koder. Definitionen av ''ny post'' är svår, eftersom system ofta skapar nya poster baserat på befintliga data. Vanligtvis föreskrivs ''aktuella'' bindningar av en extern myndighet som gör tydliga regler kring detta"
+
+# STRUC_DEF_DATE
+#: STRUC_DEF_DATE
+msgid "Date Format: {0}"
+msgstr "Datumformat: {0}"
+
+# STRUC_DEF_DATE_FORM
+#: STRUC_DEF_DATE_FORM
+msgid "Date Format"
+msgstr "Datumformat"
+
+# STRUC_DEF_DEFAULT_TYPE
+#: STRUC_DEF_DEFAULT_TYPE
+msgid "Default Type"
+msgstr "Standardtyp"
+
+# STRUC_DEF_DEFAULT_VALUE
+#: STRUC_DEF_DEFAULT_VALUE
+msgid "Default Value"
+msgstr "Standardvärde"
+
+# STRUC_DEF_DEF_CODES
+#: STRUC_DEF_DEF_CODES
+msgid "Definitional Codes"
+msgstr "Definitionskoder"
+
+# STRUC_DEF_DERIVED_PROFILE
+#: STRUC_DEF_DERIVED_PROFILE
+msgid "In this IG, the following structures are derived from this profile:"
+msgstr "I denna IG härleds följande strukturer från denna profil:"
+
+# STRUC_DEF_DESCRIM
+#: STRUC_DEF_DESCRIM
+msgid ", and can be differentiated using the following discriminators:"
+msgstr ", och kan särskiljas med hjälp av följande diskriminatorer:"
+
+# STRUC_DEF_DESC_PROF
+#: STRUC_DEF_DESC_PROF
+msgid "Description of the profile"
+msgstr "Beskrivning av profilen"
+
+# STRUC_DEF_DISCUSSION
+#: STRUC_DEF_DISCUSSION
+msgid "discussion"
+msgstr "diskussion"
+
+# STRUC_DEF_ELE
+#: STRUC_DEF_ELE
+msgid "This primitive element must have a value"
+msgstr "Detta primitiva element måste ha ett värde"
+
+# STRUC_DEF_ELEMENT
+#: STRUC_DEF_ELEMENT
+msgid "element"
+msgstr "element"
+
+# STRUC_DEF_ELEMENTS
+#: STRUC_DEF_ELEMENTS
+msgid "Elements defined in Ancestors:"
+msgstr "Element definierade i föregångare:"
+
+# STRUC_DEF_ELE_AFFECTED
+#: STRUC_DEF_ELE_AFFECTED
+msgid "This element has or is affected by constraints ( {0} {1}"
+msgstr "Detta element har eller påverkas av begränsningar ( {0} {1}"
+
+# STRUC_DEF_ELE_INCLUDED
+#: STRUC_DEF_ELE_INCLUDED
+msgid "This element is included in summaries"
+msgstr "Detta element ingår i sammanfattningar"
+
+# STRUC_DEF_ELE_MUST_SUPP
+#: STRUC_DEF_ELE_MUST_SUPP
+msgid "This element must be supported"
+msgstr "Detta element måste stödjas"
+
+# STRUC_DEF_ELE_READ
+#: STRUC_DEF_ELE_READ
+msgid "When this element is read"
+msgstr "När detta element läses"
+
+# STRUC_DEF_ERROR
+#: STRUC_DEF_ERROR
+msgid "Unknown structure mode"
+msgstr "Okänt strukturläge"
+
+# STRUC_DEF_ERR_DESC
+#: STRUC_DEF_ERR_DESC
+msgid "Error describing concept- not done yet (no codings, no text)"
+msgstr "Fel vid beskrivning av begrepp - inte klart än (inga kodningar, ingen text)"
+
+# STRUC_DEF_EXAM
+#: STRUC_DEF_EXAM
+msgid "example"
+msgstr "exempel"
+
+# STRUC_DEF_EXT
+#: STRUC_DEF_EXT
+msgctxt "STRUC_DEF_EXT"
+msgid "Extensible"
+msgstr "Utbyggbar"
+
+# STRUC_DEF_EXTENSIBLE
+#: STRUC_DEF_EXTENSIBLE
+msgid "extensible"
+msgstr "utbyggbar"
+
+# STRUC_DEF_EXTENSIONS
+#: STRUC_DEF_EXTENSIONS
+msgid "Extensions"
+msgstr "Extensions"
+
+# STRUC_DEF_EXT_JSON
+#: STRUC_DEF_EXT_JSON
+msgid "This element can be extended by named JSON elements"
+msgstr "Detta element kan utökas med namngivna JSON-element"
+
+# STRUC_DEF_EXT_STYLE
+#: STRUC_DEF_EXT_STYLE
+msgid "Extension Style"
+msgstr "Extensionsstil"
+
+# STRUC_DEF_EX_CODE
+#: STRUC_DEF_EX_CODE
+msgid "For example codes, see"
+msgstr "För exempelkoder, se"
+
+# STRUC_DEF_EX_DESC
+#: STRUC_DEF_EX_DESC
+msgid "Instances are not expected or even encouraged to draw from the specified value set. The value set merely provides examples of the types of concepts intended to be included."
+msgstr "Instanser förväntas inte eller uppmuntras ens att hämta från den angivna värdemängden. Värdemängden ger endast exempel på de typer av begrepp som är avsedda att inkluderas."
+
+# STRUC_DEF_EX_TYPE
+#: STRUC_DEF_EX_TYPE
+msgid "(Extension Type:"
+msgstr "(Extensionstyp:"
+
+# STRUC_DEF_EX_URL
+#: STRUC_DEF_EX_URL
+msgid "Extension URL = {0}"
+msgstr "Extension-URL = {0}"
+
+# STRUC_DEF_FHIR
+#: STRUC_DEF_FHIR
+msgid "Base FHIR {0}"
+msgstr "Bas-FHIR {0}"
+
+# STRUC_DEF_FHIR_EXCEP
+#: STRUC_DEF_FHIR_EXCEP
+msgid "Unable to retrieve StructureDefinition with URL {0}"
+msgstr "Kan inte hämta StructureDefinition med URL {0}"
+
+# STRUC_DEF_FII
+#: STRUC_DEF_FII
+msgid "Formal Invariant Identifier"
+msgstr "Formell invariantidentifierare"
+
+# STRUC_DEF_FIXED
+#: STRUC_DEF_FIXED
+msgid "Fixed Value"
+msgstr "Fast värde"
+
+# STRUC_DEF_FIXED_VALUE
+#: STRUC_DEF_FIXED_VALUE
+msgid "Fixed Value:"
+msgstr "Fast värde:"
+
+# STRUC_DEF_FOR_CODE
+#: STRUC_DEF_FOR_CODE
+msgid "For codes, see"
+msgstr "För koder, se"
+
+# STRUC_DEF_FURTHER_INFO
+#: STRUC_DEF_FURTHER_INFO
+msgid "for further information about how to use [x]"
+msgstr "för mer information om hur [x] används"
+
+# STRUC_DEF_GRADE
+#: STRUC_DEF_GRADE
+msgid "Grade"
+msgstr "Grad"
+
+# STRUC_DEF_ID
+#: STRUC_DEF_ID
+msgctxt "STRUC_DEF_ID"
+msgid "Id"
+msgstr "Id"
+
+# STRUC_DEF_ID_EXPECT
+#: STRUC_DEF_ID_EXPECT
+msgid "ID Expectation"
+msgstr "ID-förväntan"
+
+# STRUC_DEF_ID_IS
+#: STRUC_DEF_ID_IS
+msgid "Id may or not be present (this is the default for elements but not resources)"
+msgstr "Id kan vara närvarande eller inte (detta är standard för element men inte resurser)"
+
+# STRUC_DEF_ID_MAY
+#: STRUC_DEF_ID_MAY
+msgid "Id is required to be present (this is the default for resources but not elements)"
+msgstr "Id måste vara närvarande (detta är standard för resurser men inte element)"
+
+# STRUC_DEF_ID_NOT_ALLOW
+#: STRUC_DEF_ID_NOT_ALLOW
+msgid "An id is not allowed in this context"
+msgstr "Ett id är inte tillåtet i denna kontext"
+
+# STRUC_DEF_IF
+#: STRUC_DEF_IF
+msgid "If"
+msgstr "Om"
+
+# STRUC_DEF_IMPLEMENTS
+#: STRUC_DEF_IMPLEMENTS
+msgid "Interfaces Implemented"
+msgstr "Gränssnitt som implementeras"
+
+# STRUC_DEF_IMPOSE_PROFILE
+#: STRUC_DEF_IMPOSE_PROFILE
+msgid "Impose Profile"
+msgstr "Påtvinga profil"
+
+# STRUC_DEF_INFERRED_JSON
+#: STRUC_DEF_INFERRED_JSON
+msgid "The type of this element is inferred from the JSON type in the instance"
+msgstr "Typen för detta element härleds från JSON-typen i instansen"
+
+# STRUC_DEF_INVAR
+#: STRUC_DEF_INVAR
+msgid "Invariants"
+msgstr "Invarianter"
+
+# STRUC_DEF_INVARIANT
+#: STRUC_DEF_INVARIANT
+msgid "This element is affected by the following invariants:"
+msgstr "Detta element påverkas av följande invarianter:"
+
+# STRUC_DEF_JSON_ARRAY
+#: STRUC_DEF_JSON_ARRAY
+msgid "JSON: This element may be present as a JSON Array even when there are no items in the instance"
+msgstr "JSON: Detta element kan vara närvarande som en JSON-array även när det inte finns några objekt i instansen"
+
+# STRUC_DEF_JSON_CAN_NAME
+#: STRUC_DEF_JSON_CAN_NAME
+msgid "This type can appear in JSON with the property name"
+msgstr "Denna typ kan förekomma i JSON med egenskapsnamnet"
+
+# STRUC_DEF_JSON_CHILD
+#: STRUC_DEF_JSON_CHILD
+msgid "child"
+msgstr "barn"
+
+# STRUC_DEF_JSON_EXT
+#: STRUC_DEF_JSON_EXT
+msgid "(in elements using named extensions)"
+msgstr "(i element som använder namngivna extensions)"
+
+# STRUC_DEF_JSON_FORM
+#: STRUC_DEF_JSON_FORM
+msgid "JSON Format"
+msgstr "JSON-format"
+
+# STRUC_DEF_JSON_IF
+#: STRUC_DEF_JSON_IF
+msgid "JSON: If"
+msgstr "JSON: Om"
+
+# STRUC_DEF_JSON_INFERRED
+#: STRUC_DEF_JSON_INFERRED
+msgid "JSON: The type of this element is inferred from the JSON type in the instance"
+msgstr "JSON: Typen för detta element härleds från JSON-typen i instansen"
+
+# STRUC_DEF_JSON_IS
+#: STRUC_DEF_JSON_IS
+msgid "This element is present as a JSON Array even when there are no items in the instance"
+msgstr "Detta element är närvarande som en JSON-array även när det inte finns några objekt i instansen"
+
+# STRUC_DEF_JSON_MAY
+#: STRUC_DEF_JSON_MAY
+msgid "This element may be present as a JSON Array even when there are no items in the instance"
+msgstr "Detta element kan vara närvarande som en JSON-array även när det inte finns några objekt i instansen"
+
+# STRUC_DEF_JSON_MAY_PRESENT
+#: STRUC_DEF_JSON_MAY_PRESENT
+msgid "The JSON Array for this property may be present even when there are no items in the instance (e.g. may be present as an empty array)"
+msgstr "JSON-arrayen för denna egenskap kan vara närvarande även när det inte finns några objekt i instansen (t.ex. kan vara närvarande som en tom array)"
+
+# STRUC_DEF_JSON_NAME
+#: STRUC_DEF_JSON_NAME
+msgid "JSON Property Name"
+msgstr "JSON-egenskapsnamn"
+
+# STRUC_DEF_JSON_NOT_PRESENT
+#: STRUC_DEF_JSON_NOT_PRESENT
+msgid "The JSON Array for this property is not present when there are no items in the instance (e.g. never as an empty array)"
+msgstr "JSON-arrayen för denna egenskap är inte närvarande när det inte finns några objekt i instansen (t.ex. aldrig som en tom array)"
+
+# STRUC_DEF_JSON_NULL
+#: STRUC_DEF_JSON_NULL
+msgid "JSON: This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
+msgstr "JSON: Detta objekt kan representeras som null i JSON-strukturen (vilket räknas som ''närvarande'' för kardinalitetsändamål)"
+
+# STRUC_DEF_JSON_PRESENT
+#: STRUC_DEF_JSON_PRESENT
+msgid "The JSON Array for this property is present even when there are no items in the instance (e.g. as an empty array)"
+msgstr "JSON-arrayen för denna egenskap är närvarande även när det inte finns några objekt i instansen (t.ex. som en tom array)"
+
+# STRUC_DEF_JSON_PROPERTY_NAME
+#: STRUC_DEF_JSON_PROPERTY_NAME
+msgid "This property appears in JSON with the property name"
+msgstr "Denna egenskap förekommer i JSON med egenskapsnamnet"
+
+# STRUC_DEF_JSON_SINGLE
+#: STRUC_DEF_JSON_SINGLE
+msgid "This repeating object is represented as a single JSON object with named properties. The name of the property (key) is the value of the"
+msgstr "Detta upprepande objekt representeras som ett enda JSON-objekt med namngivna egenskaper. Egenskapens namn (nyckel) är värdet av"
+
+# STRUC_DEF_JSON_TYPE
+#: STRUC_DEF_JSON_TYPE
+msgid "JSON Property Name for Type"
+msgstr "JSON-egenskapsnamn för typ"
+
+# STRUC_DEF_LABEL
+#: STRUC_DEF_LABEL
+msgid "Label"
+msgstr "Etikett"
+
+# STRUC_DEF_LEAST_FOLLOW
+#: STRUC_DEF_LEAST_FOLLOW
+msgid "At least the following"
+msgstr "Minst följande"
+
+# STRUC_DEF_LOGICAL
+#: STRUC_DEF_LOGICAL
+msgctxt "STRUC_DEF_LOGICAL"
+msgid "Logical Model"
+msgstr "Logisk modell"
+
+# STRUC_DEF_LOGICAL_CONT
+#: STRUC_DEF_LOGICAL_CONT
+msgid "Logical Container"
+msgstr "Logisk container"
+
+# STRUC_DEF_LOINC
+#: STRUC_DEF_LOINC
+msgid "LOINC Code"
+msgstr "LOINC-kod"
+
+# STRUC_DEF_LOINC_CODE
+#: STRUC_DEF_LOINC_CODE
+msgid "LOINC code"
+msgstr "LOINC-kod"
+
+# STRUC_DEF_MAX
+#: STRUC_DEF_MAX
+msgid "Maximum"
+msgstr "Maximum"
+
+# STRUC_DEF_MAX_MIN
+#: STRUC_DEF_MAX_MIN
+msgctxt "STRUC_DEF_MAX_MIN"
+msgid "Minimum and Maximum # of times the element can appear in the instance"
+msgstr "Lägsta och högsta antal gånger elementet kan förekomma i instansen"
+
+# STRUC_DEF_MAX_VALUE
+#: STRUC_DEF_MAX_VALUE
+msgid "Max Value"
+msgstr "Maxvärde"
+
+# STRUC_DEF_MEAN_MISS
+#: STRUC_DEF_MEAN_MISS
+msgid "Meaning if Missing"
+msgstr "Betydelse om saknas"
+
+# STRUC_DEF_MIN
+#: STRUC_DEF_MIN
+msgid "Minimum"
+msgstr "Minimum"
+
+# STRUC_DEF_MIN_VALUE
+#: STRUC_DEF_MIN_VALUE
+msgid "Min Value"
+msgstr "Minvärde"
+
+# STRUC_DEF_MISSING_LINK
+#: STRUC_DEF_MISSING_LINK
+msgid "missing link"
+msgstr "saknad länk"
+
+# STRUC_DEF_MOD
+#: STRUC_DEF_MOD
+msgid "This element is a modifier element"
+msgstr "Detta element är ett modifierande element"
+
+# STRUC_DEF_MODIF
+#: STRUC_DEF_MODIF
+msgid "Modifier"
+msgstr "Modifierare"
+
+# STRUC_DEF_MODIFIER
+#: STRUC_DEF_MODIFIER
+msgid "Is Modifier"
+msgstr "Är modifierare"
+
+# STRUC_DEF_MODIFIER_EXT
+#: STRUC_DEF_MODIFIER_EXT
+msgid "This is a modifier extension"
+msgstr "Detta är en modifierande extension"
+
+# STRUC_DEF_MUST_SUPPORT
+#: STRUC_DEF_MUST_SUPPORT
+msgid "Must Support"
+msgstr "Måste stödjas"
+
+# STRUC_DEF_MUST_SUPPORT_TYPES
+#: STRUC_DEF_MUST_SUPPORT_TYPES
+msgid "Must Support Types"
+msgstr "Måste stödja typer"
+
+# STRUC_DEF_NAMESPACE
+#: STRUC_DEF_NAMESPACE
+msgid "In the XML format, this property has the namespace"
+msgstr "I XML-formatet har denna egenskap namnrymden"
+
+# STRUC_DEF_NOTE_X
+#: STRUC_DEF_NOTE_X
+msgid "[x] Note"
+msgstr "[x] Notera"
+
+# STRUC_DEF_NOT_MARK
+#: STRUC_DEF_NOT_MARK
+msgid "Instances of this logical model are not marked to be the target of a Reference"
+msgstr "Instanser av denna logiska modell är inte markerade att vara mål för en Reference"
+
+# STRUC_DEF_NO_DESCRIM
+#: STRUC_DEF_NO_DESCRIM
+msgid ", and defines no disciminators to differentiate the slices"
+msgstr ", och definierar inga diskriminatorer för att särskilja skivorna"
+
+# STRUC_DEF_NO_MAPPINGS
+#: STRUC_DEF_NO_MAPPINGS
+msgid "No Mappings"
+msgstr "Inga mappningar"
+
+# STRUC_DEF_NO_MUST_SUPPORT
+#: STRUC_DEF_NO_MUST_SUPPORT
+msgid "No must-support rules about the choice of types/profiles"
+msgstr "Inga måste-stödjas-regler om valet av typer/profiler"
+
+# STRUC_DEF_NO_SUMMARY
+#: STRUC_DEF_NO_SUMMARY
+msgid "No Summary, as this profile has no differential"
+msgstr "Ingen sammanfattning, eftersom denna profil saknar differential"
+
+# STRUC_DEF_NULL_JSON
+#: STRUC_DEF_NULL_JSON
+msgid "This object can be represented as null in the JSON structure (which counts as ''present'' for cardinality purposes)"
+msgstr "Detta objekt kan representeras som null i JSON-strukturen (vilket räknas som ''närvarande'' för kardinalitetsändamål)"
+
+# STRUC_DEF_OBLIG
+#: STRUC_DEF_OBLIG
+msgid "This element has obligations"
+msgstr "Detta element har skyldigheter"
+
+# STRUC_DEF_OBLIG_ADD
+#: STRUC_DEF_OBLIG_ADD
+msgid "This is an obligation profile that only contains obligations and additional bindings"
+msgstr "Detta är en skyldighetsprofil som endast innehåller skyldigheter och ytterligare bindningar"
+
+# STRUC_DEF_OBLIG_ALL
+#: STRUC_DEF_OBLIG_ALL
+msgid "Obligations that apply to all actors"
+msgstr "Skyldigheter som gäller alla aktörer"
+
+# STRUC_DEF_OBLIG_FROM
+#: STRUC_DEF_OBLIG_FROM
+msgid "This profile picks up obligations and additional bindings from"
+msgstr "Denna profil hämtar skyldigheter och ytterligare bindningar från"
+
+# STRUC_DEF_OBLIG_SUPP
+#: STRUC_DEF_OBLIG_SUPP
+msgid "This element has obligations and must be supported"
+msgstr "Detta element har skyldigheter och måste stödjas"
+
+# STRUC_DEF_ONE_OF
+#: STRUC_DEF_ONE_OF
+msgid "One of:"
+msgstr "En av:"
+
+# STRUC_DEF_OPEN
+#: STRUC_DEF_OPEN
+msgid "Open"
+msgstr "Öppen"
+
+# STRUC_DEF_OPEN_END
+#: STRUC_DEF_OPEN_END
+msgid "Open At End"
+msgstr "Öppen i slutet"
+
+# STRUC_DEF_ORDERED
+#: STRUC_DEF_ORDERED
+msgid "Ordered"
+msgstr "Ordnad"
+
+# STRUC_DEF_PATH
+#: STRUC_DEF_PATH
+msgctxt "STRUC_DEF_PATH"
+msgid "Path"
+msgstr "Sökväg"
+
+# STRUC_DEF_PATHS
+#: STRUC_DEF_PATHS
+msgid "Path(s)"
+msgstr "Sökväg(ar)"
+
+# STRUC_DEF_PATT_VALUE
+#: STRUC_DEF_PATT_VALUE
+msgid "Pattern Value"
+msgstr "Mönstervärde"
+
+# STRUC_DEF_PREFERRED
+#: STRUC_DEF_PREFERRED
+msgid "preferred"
+msgstr "föredragen"
+
+# STRUC_DEF_PREFIXED
+#: STRUC_DEF_PREFIXED
+msgid "is prefixed to the value before validation"
+msgstr "läggs till som prefix på värdet före validering"
+
+# STRUC_DEF_PREF_CONT
+#: STRUC_DEF_PREF_CONT
+msgid "This is the value set that is preferred in a given context (documentation should explain why)"
+msgstr "Detta är den värdemängd som föredras i ett visst sammanhang (dokumentationen bör förklara varför)"
+
+# STRUC_DEF_PRIMITIVE
+#: STRUC_DEF_PRIMITIVE
+msgid "Primitive Value"
+msgstr "Primitivt värde"
+
+# STRUC_DEF_PRIM_ELE
+#: STRUC_DEF_PRIM_ELE
+msgid "This primitive element may be present, or absent, or replaced by an extension"
+msgstr "Detta primitiva element kan vara närvarande, frånvarande eller ersättas av en extension"
+
+# STRUC_DEF_PRIM_TYPE_PRESENT
+#: STRUC_DEF_PRIM_TYPE_PRESENT
+msgid "This primitive type may be present, or absent if replaced by one of the following extensions:"
+msgstr "Denna primitiva typ kan vara närvarande, eller frånvarande om den ersätts av en av följande extensions:"
+
+# STRUC_DEF_PRIM_TYPE_VALUE
+#: STRUC_DEF_PRIM_TYPE_VALUE
+msgid "This primitive type must have a value (the value must be present, and cannot be replaced by an extension)"
+msgstr "Denna primitiva typ måste ha ett värde (värdet måste vara närvarande, och kan inte ersättas av en extension)"
+
+# STRUC_DEF_PROFILED
+#: STRUC_DEF_PROFILED
+msgid "profiled by"
+msgstr "profilerad av"
+
+# STRUC_DEF_PROFILE_BUILDS
+#: STRUC_DEF_PROFILE_BUILDS
+msgid "This profile builds on"
+msgstr "Denna profil bygger på"
+
+# STRUC_DEF_PROF_COMP
+#: STRUC_DEF_PROF_COMP
+msgid "This profile complies with the profile"
+msgstr "Denna profil följer profilen"
+
+# STRUC_DEF_PROF_REQ
+#: STRUC_DEF_PROF_REQ
+msgid "This profile also requires that the instance also conform this additional profile:"
+msgstr "Denna profil kräver också att instansen även följer denna ytterligare profil:"
+
+# STRUC_DEF_PROF_RES
+#: STRUC_DEF_PROF_RES
+msgid "A profiled resource"
+msgstr "En profilerad resurs"
+
+# STRUC_DEF_PROF_SUPP
+#: STRUC_DEF_PROF_SUPP
+msgid "This profile must be supported"
+msgstr "Denna profil måste stödjas"
+
+# STRUC_DEF_PROPERTY
+#: STRUC_DEF_PROPERTY
+msgid "Property"
+msgstr "Egenskap"
+
+# STRUC_DEF_REFERS_EXT
+#: STRUC_DEF_REFERS_EXT
+msgid "This structure refers to these extensions"
+msgstr "Denna struktur refererar till dessa extensions"
+
+# STRUC_DEF_REFER_PROFILE
+#: STRUC_DEF_REFER_PROFILE
+msgid "In this IG, the following structures refer to this profile:"
+msgstr "I denna IG refererar följande strukturer till denna profil:"
+
+# STRUC_DEF_REND_UNABLE_RES
+#: STRUC_DEF_REND_UNABLE_RES
+msgid "Unable to resolve StructureDefinition {0} resolving content reference {1}"
+msgstr "Kan inte lösa StructureDefinition {0} vid lösning av innehållsreferens {1}"
+
+# STRUC_DEF_REPEAT
+#: STRUC_DEF_REPEAT
+msgid "This is a repeating choice group that does not appear directly in the instance"
+msgstr "Detta är en upprepande valgrupp som inte förekommer direkt i instansen"
+
+# STRUC_DEF_REPEAT_ELE
+#: STRUC_DEF_REPEAT_ELE
+msgid "This repeating element order: {0}"
+msgstr "Denna upprepande elements ordning: {0}"
+
+# STRUC_DEF_REQUIRED
+#: STRUC_DEF_REQUIRED
+msgid "required"
+msgstr "obligatorisk"
+
+# STRUC_DEF_REQUIRED_PATT
+#: STRUC_DEF_REQUIRED_PATT
+msgid "Required Pattern:"
+msgstr "Obligatoriskt mönster:"
+
+# STRUC_DEF_REQUIREMENTS
+#: STRUC_DEF_REQUIREMENTS
+msgid "Requirements"
+msgstr "Krav"
+
+# STRUC_DEF_REQ_BIND
+#: STRUC_DEF_REQ_BIND
+msgid "A required binding for additional codes, for us when the binding strength is ''extensible'' or ''preferred''"
+msgstr "En obligatorisk bindning för ytterligare koder, för oss när bindningsstyrkan är ''utbyggbar'' eller ''föredragen''"
+
+# STRUC_DEF_REQ_PATT
+#: STRUC_DEF_REQ_PATT
+msgid "Required Pattern"
+msgstr "Obligatoriskt mönster"
+
+# STRUC_DEF_ROOT
+#: STRUC_DEF_ROOT
+msgid "The root class that contains instances of this class"
+msgstr "Rotklassen som innehåller instanser av denna klass"
+
+# STRUC_DEF_SEE
+#: STRUC_DEF_SEE
+msgid "See"
+msgstr "Se"
+
+# STRUC_DEF_SET_ARE
+#: STRUC_DEF_SET_ARE
+msgid ". The slices are"
+msgstr ". Skivorna är"
+
+# STRUC_DEF_SET_SLICES
+#: STRUC_DEF_SET_SLICES
+msgid "This element introduces a set of slices on"
+msgstr "Detta element introducerar en uppsättning skivor på"
+
+# STRUC_DEF_SHALL_CODE
+#: STRUC_DEF_SHALL_CODE
+msgid "The codes SHALL be taken from"
+msgstr "Koderna SKA tas från"
+
+# STRUC_DEF_SHORT
+#: STRUC_DEF_SHORT
+msgid "Short"
+msgstr "Kort"
+
+# STRUC_DEF_SHOULD_CODE
+#: STRUC_DEF_SHOULD_CODE
+msgid "The codes SHOULD be taken from"
+msgstr "Koderna BÖR tas från"
+
+# STRUC_DEF_SINGLE_JSON_OBJECTS
+#: STRUC_DEF_SINGLE_JSON_OBJECTS
+msgid "JSON: Represented as a single JSON Object with named properties using the value of the {0} child as the key"
+msgstr "JSON: Representeras som ett enda JSON-objekt med namngivna egenskaper med värdet av {0}-barnet som nyckel"
+
+# STRUC_DEF_SLIC
+#: STRUC_DEF_SLIC
+msgid "Slices"
+msgstr "Skivor"
+
+# STRUC_DEF_SLICE
+#: STRUC_DEF_SLICE
+msgid "Slice"
+msgstr "Skiva"
+
+# STRUC_DEF_SLICES
+#: STRUC_DEF_SLICES
+msgid "Slice:"
+msgstr "Skiva:"
+
+# STRUC_DEF_SLICE_FOR
+#: STRUC_DEF_SLICE_FOR
+msgid "Slices for {0}"
+msgstr "Skivor för {0}"
+
+# STRUC_DEF_SLICE_NAME
+#: STRUC_DEF_SLICE_NAME
+msgid "Slice Name"
+msgstr "Skivnamn"
+
+# STRUC_DEF_SLICE_PAR
+#: STRUC_DEF_SLICE_PAR
+msgid "Slice {0}"
+msgstr "Skiva {0}"
+
+# STRUC_DEF_SNOMED
+#: STRUC_DEF_SNOMED
+msgid "SNOMED-CT"
+msgstr "SNOMED-CT"
+
+# STRUC_DEF_SNOMED_CODE
+#: STRUC_DEF_SNOMED_CODE
+msgid "SNOMED-CT Code"
+msgstr "SNOMED-CT-kod"
+
+# STRUC_DEF_STAND_STAT
+#: STRUC_DEF_STAND_STAT
+msgid "Standard Status"
+msgstr "Standardstatus"
+
+# STRUC_DEF_STAND_STATUS
+#: STRUC_DEF_STAND_STATUS
+msgid "Standards Status ="
+msgstr "Standardstatus ="
+
+# STRUC_DEF_STRING_FORM
+#: STRUC_DEF_STRING_FORM
+msgid "String Format"
+msgstr "Strängformat"
+
+# STRUC_DEF_STRUCTURES
+#: STRUC_DEF_STRUCTURES
+msgid "Structures"
+msgstr "Strukturer"
+
+# STRUC_DEF_SUIT_SHALL_CODE
+#: STRUC_DEF_SUIT_SHALL_CODE
+msgid "Unless not suitable, these codes SHALL be taken from"
+msgstr "Om inte olämpligt SKA dessa koder tas från"
+
+# STRUC_DEF_TARG_SUPP
+#: STRUC_DEF_TARG_SUPP
+msgid "This target must be supported"
+msgstr "Detta mål måste stödjas"
+
+# STRUC_DEF_TEMPLATEID
+#: STRUC_DEF_TEMPLATEID
+msgid "Instance of this type are validated by templateId"
+msgstr "Instanser av denna typ valideras av templateId"
+
+# STRUC_DEF_TERM_BIND
+#: STRUC_DEF_TERM_BIND
+msgid "Terminology Bindings (Differential)"
+msgstr "Terminologibindningar (differential)"
+
+# STRUC_DEF_TERM_BINDS
+#: STRUC_DEF_TERM_BINDS
+msgid "Terminology Bindings"
+msgstr "Terminologibindningar"
+
+# STRUC_DEF_THEN_TYPE
+#: STRUC_DEF_THEN_TYPE
+msgid "then the type is"
+msgstr "då är typen"
+
+# STRUC_DEF_THIS_REFERS
+#: STRUC_DEF_THIS_REFERS
+msgid "This structure refers to these other structures"
+msgstr "Denna struktur refererar till dessa andra strukturer"
+
+# STRUC_DEF_TYPE_BOUND
+#: STRUC_DEF_TYPE_BOUND
+msgid "This type can be bound to a value set using the {0}"
+msgstr "Denna typ kan bindas till en värdemängd med hjälp av {0}"
+
+# STRUC_DEF_TYPE_PARAMETER
+#: STRUC_DEF_TYPE_PARAMETER
+msgid "Type Parameter"
+msgstr "Typparameter"
+
+# STRUC_DEF_TYPE_SET
+#: STRUC_DEF_TYPE_SET
+msgid "This type can be bound to a value set using the"
+msgstr "Denna typ kan bindas till en värdemängd med hjälp av"
+
+# STRUC_DEF_TYPE_SPEC
+#: STRUC_DEF_TYPE_SPEC
+msgid "Type Specifier"
+msgstr "Typspecificerare"
+
+# STRUC_DEF_TYPE_SUPP
+#: STRUC_DEF_TYPE_SUPP
+msgid "This type must be supported"
+msgstr "Denna typ måste stödjas"
+
+# STRUC_DEF_UI
+#: STRUC_DEF_UI
+msgctxt "STRUC_DEF_UI"
+msgid "UI"
+msgstr "UI"
+
+# STRUC_DEF_UI_CONT
+#: STRUC_DEF_UI_CONT
+msgid "This value set is provided for user look up in a given context. Typically, these valuesets only include a subset of codes relevant for input in a context"
+msgstr "Denna värdemängd tillhandahålls för användaruppslag i ett visst sammanhang. Vanligtvis innehåller dessa värdemängder endast en delmängd av koder som är relevanta för inmatning i ett sammanhang"
+
+# STRUC_DEF_UNADORNED
+#: STRUC_DEF_UNADORNED
+msgid "In the XML format, this property is represented as unadorned text."
+msgstr "I XML-formatet representeras denna egenskap som oprydd text."
+
+# STRUC_DEF_UNDEF_ACT
+#: STRUC_DEF_UNDEF_ACT
+msgid "Obligations that apply to the undefined actor {0}"
+msgstr "Skyldigheter som gäller den odefinierade aktören {0}"
+
+# STRUC_DEF_UNKNOWN_APPROACH
+#: STRUC_DEF_UNKNOWN_APPROACH
+msgid "Instances of this type are validated using an unknown approach: {0}"
+msgstr "Instanser av denna typ valideras med en okänd metod: {0}"
+
+# STRUC_DEF_UNKNOWN_REF
+#: STRUC_DEF_UNKNOWN_REF
+msgid "Unknown reference to {0}"
+msgstr "Okänd referens till {0}"
+
+# STRUC_DEF_UNORDERED
+#: STRUC_DEF_UNORDERED
+msgid "Unordered"
+msgstr "Oordnad"
+
+# STRUC_DEF_UNSPECIFIED
+#: STRUC_DEF_UNSPECIFIED
+msgid "Unspecified"
+msgstr "Ospecificerad"
+
+# STRUC_DEF_URLS
+#: STRUC_DEF_URLS
+msgid "URL:"
+msgstr "URL:"
+
+# STRUC_DEF_VALID
+#: STRUC_DEF_VALID
+msgid "Validation"
+msgstr "Validering"
+
+# STRUC_DEF_VALUESET
+#: STRUC_DEF_VALUESET
+msgid "ValueSet"
+msgstr "ValueSet"
+
+# STRUC_DEF_VALUESET_CODE
+#: STRUC_DEF_VALUESET_CODE
+msgid "ValueSet / Code"
+msgstr "ValueSet / kod"
+
+# STRUC_DEF_VALUE_ALT
+#: STRUC_DEF_VALUE_ALT
+msgid "Value Alternatives"
+msgstr "Värdealternativ"
+
+# STRUC_DEF_VALUE_REQ
+#: STRUC_DEF_VALUE_REQ
+msgid "Value Required"
+msgstr "Värde krävs"
+
+# STRUC_DEF_WHAT
+#: STRUC_DEF_WHAT
+msgid "What goes here"
+msgstr "Vad som ska vara här"
+
+# STRUC_DEF_XHTML
+#: STRUC_DEF_XHTML
+msgid "This property is represented as XHTML Text in the XML."
+msgstr "Denna egenskap representeras som XHTML-text i XML."
+
+# STRUC_DEF_XML_ACTUAL
+#: STRUC_DEF_XML_ACTUAL
+msgid "In the XML format, this property has the actual name"
+msgstr "I XML-formatet har denna egenskap det faktiska namnet"
+
+# STRUC_DEF_XML_ATTRIBUTE
+#: STRUC_DEF_XML_ATTRIBUTE
+msgid "In the XML format, this property is represented as an attribute."
+msgstr "I XML-formatet representeras denna egenskap som ett attribut."
+
+# STRUC_DEF_XML_ELE
+#: STRUC_DEF_XML_ELE
+msgid "XML Element Name"
+msgstr "XML-elementnamn"
+
+# STRUC_DEF_XML_FORM
+#: STRUC_DEF_XML_FORM
+msgid "XML Format"
+msgstr "XML-format"
+
+# STRUC_DEF_XML_NAME
+#: STRUC_DEF_XML_NAME
+msgid "XML Namespace"
+msgstr "XML-namnrymd"
+
+# STRUC_DEF_XSI
+#: STRUC_DEF_XSI
+msgid "The type of this property is determined using the"
+msgstr "Typen för denna egenskap bestäms med hjälp av"
+
+# SUB_TOPIC_CREATE
+#: SUB_TOPIC_CREATE
+msgid "* create result = {0}"
+msgstr "* skapa-resultat = {0}"
+
+# SUB_TOPIC_CURR
+#: SUB_TOPIC_CURR
+msgid "* current = {0}"
+msgstr "* aktuell = {0}"
+
+# SUB_TOPIC_DELETE
+#: SUB_TOPIC_DELETE
+msgid "* delete result = {0}"
+msgstr "* radera-resultat = {0}"
+
+# SUB_TOPIC_EVENT
+#: SUB_TOPIC_EVENT
+msgid "Event"
+msgstr "Händelse"
+
+# SUB_TOPIC_FHIR_PATH
+#: SUB_TOPIC_FHIR_PATH
+msgid "FHIR Path"
+msgstr "FHIR Path"
+
+# SUB_TOPIC_FILT_DEF
+#: SUB_TOPIC_FILT_DEF
+msgid "Filter Definition"
+msgstr "Filterdefinition"
+
+# SUB_TOPIC_FILT_PAR
+#: SUB_TOPIC_FILT_PAR
+msgid "Filter Parameter"
+msgstr "Filterparameter"
+
+# SUB_TOPIC_INCL
+#: SUB_TOPIC_INCL
+msgid "Includes"
+msgstr "Inkluderar"
+
+# SUB_TOPIC_INT
+#: SUB_TOPIC_INT
+msgid "Interactions"
+msgstr "Interaktioner"
+
+# SUB_TOPIC_PREV
+#: SUB_TOPIC_PREV
+msgid "* previous = {0}"
+msgstr "* föregående = {0}"
+
+# SUB_TOPIC_REQ
+#: SUB_TOPIC_REQ
+msgid "* require both = {0}"
+msgstr "* kräver båda = {0}"
+
+# SUB_TOPIC_RES_TRIG
+#: SUB_TOPIC_RES_TRIG
+msgid "Resource Triggers"
+msgstr "Resurstriggers"
+
+# SUB_TOPIC_REV_INCL
+#: SUB_TOPIC_REV_INCL
+msgid "Reverse Includes"
+msgstr "Omvända inkluderingar"
+
+# TERMINOLOGY_LVL
+#: TERMINOLOGY_LVL
+msgid "Lvl"
+msgstr "Nivå"
+
+# TERM_REND_COPY
+#: TERM_REND_COPY
+msgid "Copy {0} Format to clipboard"
+msgstr "Kopiera {0}-format till urklipp"
+
+# TEST_PLAN_ASS
+#: TEST_PLAN_ASS
+msgid "Assertion"
+msgstr "Påstående"
+
+# TEST_PLAN_ASSERTION
+#: TEST_PLAN_ASSERTION
+msgid "Assertion {0}"
+msgstr "Påstående {0}"
+
+# TEST_PLAN_CASE
+#: TEST_PLAN_CASE
+msgid "Test Case"
+msgstr "Testfall"
+
+# TEST_PLAN_CASE_SEQ
+#: TEST_PLAN_CASE_SEQ
+msgid "Test Case - Sequence {0}"
+msgstr "Testfall - sekvens {0}"
+
+# TEST_PLAN_CATEGORY
+#: TEST_PLAN_CATEGORY
+msgid "Category:"
+msgstr "Kategori:"
+
+# TEST_PLAN_DATA
+#: TEST_PLAN_DATA
+msgid "Test Data"
+msgstr "Testdata"
+
+# TEST_PLAN_DEP
+#: TEST_PLAN_DEP
+msgid "Test Plan Dependency:"
+msgstr "Testplansberoende:"
+
+# TEST_PLAN_DEPEN
+#: TEST_PLAN_DEPEN
+msgid "Test Plan Dependencies:"
+msgstr "Testplansberoenden:"
+
+# TEST_PLAN_DESC
+#: TEST_PLAN_DESC
+msgid "Dependency - no description"
+msgstr "Beroende - ingen beskrivning"
+
+# TEST_PLAN_LANG
+#: TEST_PLAN_LANG
+msgid "Language"
+msgstr "Språk"
+
+# TEST_PLAN_RESULT
+#: TEST_PLAN_RESULT
+msgid "Result"
+msgstr "Resultat"
+
+# TEST_PLAN_RUN
+#: TEST_PLAN_RUN
+msgid "Test Run"
+msgstr "Testkörning"
+
+# TEST_PLAN_SCOPE
+#: TEST_PLAN_SCOPE
+msgid "Test Plan Scope:"
+msgstr "Testplansomfattning:"
+
+# TEST_PLAN_SCOPES
+#: TEST_PLAN_SCOPES
+msgid "Test Plan Scopes:"
+msgstr "Testplansomfattningar:"
+
+# TEST_PLAN_SOURCE
+#: TEST_PLAN_SOURCE
+msgid "Source[x]"
+msgstr "Source[x]"
+
+# TEST_PLAN_TEST_DATA
+#: TEST_PLAN_TEST_DATA
+msgid "Test Data {0}"
+msgstr "Testdata {0}"
+
+# TEST_PLAN_TEST_RUN
+#: TEST_PLAN_TEST_RUN
+msgid "Test Run {0}"
+msgstr "Testkörning {0}"
+
+# TEXT_ICON_CHOICE
+#: TEXT_ICON_CHOICE
+msgid "Choice of Types"
+msgstr "Val av typer"
+
+# TEXT_ICON_DATATYPE
+#: TEXT_ICON_DATATYPE
+msgid "Data Type"
+msgstr "Datatyp"
+
+# TEXT_ICON_ELEMENT
+#: TEXT_ICON_ELEMENT
+msgid "Element"
+msgstr "Element"
+
+# TEXT_ICON_EXTENSION_COMPLEX
+#: TEXT_ICON_EXTENSION_COMPLEX
+msgid "Complex Extension"
+msgstr "Komplex extension"
+
+# TEXT_ICON_EXTENSION_SIMPLE
+#: TEXT_ICON_EXTENSION_SIMPLE
+msgid "Simple Extension"
+msgstr "Enkel extension"
+
+# TEXT_ICON_KEY
+#: TEXT_ICON_KEY
+msgid "JSON Key Value"
+msgstr "JSON-nyckelvärde"
+
+# TEXT_ICON_OBJECT_BOX
+#: TEXT_ICON_OBJECT_BOX
+msgid "Object"
+msgstr "Objekt"
+
+# TEXT_ICON_PRIMITIVE
+#: TEXT_ICON_PRIMITIVE
+msgid "Primitive Data Type"
+msgstr "Primitiv datatyp"
+
+# TEXT_ICON_REFERENCE
+#: TEXT_ICON_REFERENCE
+msgid "Reference to another Resource"
+msgstr "Referens till en annan resurs"
+
+# TEXT_ICON_REUSE
+#: TEXT_ICON_REUSE
+msgid "Reference to another Element"
+msgstr "Referens till ett annat element"
+
+# TEXT_ICON_SLICE
+#: TEXT_ICON_SLICE
+msgid "Slice Definition"
+msgstr "Skivdefinition"
+
+# TEXT_ICON_SLICE_ITEM
+#: TEXT_ICON_SLICE_ITEM
+msgid "Slice Item"
+msgstr "Skivobjekt"
+
+# TX_DISPLAY
+#: TX_DISPLAY
+msgid "Display"
+msgstr "Visning"
+
+# TX_DISPLAY_LANG
+#: TX_DISPLAY_LANG
+msgid "Display ({0})"
+msgstr "Visning ({0})"
+
+# VALUE_ES_ES
+#: VALUE_ES_ES
+msgid "Spanish National Edition"
+msgstr "Spansk nationell utgåva"
+
+# VALUE_SET_ADD_DESIG
+#: VALUE_SET_ADD_DESIG
+msgid "Additional Designations and Language Displays"
+msgstr "Ytterligare beteckningar och språkvisningar"
+
+# VALUE_SET_ALL_CODE
+#: VALUE_SET_ALL_CODE
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains all the codes, and also this structure:"
+msgstr "Denna inkludering specificerar en hierarki för när värdemängder genereras för användning i ett användargränssnitt. Expansionen innehåller alla koder och även denna struktur:"
+
+# VALUE_SET_ALL_CODES_DEF
+#: VALUE_SET_ALL_CODES_DEF
+msgid "all codes defined in"
+msgstr "alla koder som definieras i"
+
+# VALUE_SET_AND
+#: VALUE_SET_AND
+msgctxt "VALUE_SET_AND"
+msgid "and"
+msgstr "och"
+
+# VALUE_SET_AR
+#: VALUE_SET_AR
+msgid "Argentinian Edition"
+msgstr "Argentinsk utgåva"
+
+# VALUE_SET_AT
+#: VALUE_SET_AT
+msgid "Austrian Edition"
+msgstr "Österrikisk utgåva"
+
+# VALUE_SET_AUS
+#: VALUE_SET_AUS
+msgid "Australian Edition"
+msgstr "Australisk utgåva"
+
+# VALUE_SET_BE
+#: VALUE_SET_BE
+msgid "Belgian Edition"
+msgstr "Belgisk utgåva"
+
+# VALUE_SET_CA
+#: VALUE_SET_CA
+msgid "Canadian Edition"
+msgstr "Kanadensisk utgåva"
+
+# VALUE_SET_CA_EN
+#: VALUE_SET_CA_EN
+msgid "Canadian English Edition"
+msgstr "Kanadensisk engelsk utgåva"
+
+# VALUE_SET_CH
+#: VALUE_SET_CH
+msgid "Swiss Edition"
+msgstr "Schweizisk utgåva"
+
+# VALUE_SET_CODES_FROM
+#: VALUE_SET_CODES_FROM
+msgid "codes from"
+msgstr "koder från"
+
+# VALUE_SET_CODE_ITEM
+#: VALUE_SET_CODE_ITEM
+msgid "The code for the item"
+msgstr "Koden för objektet"
+
+# VALUE_SET_CODE_SELEC
+#: VALUE_SET_CODE_SELEC
+msgid "This value set cannot be fully expanded, but a selection ({0} codes) of the whole set of codes is shown here."
+msgstr "Denna värdemängd kan inte expanderas fullständigt, men ett urval ({0} koder) av hela uppsättningen koder visas här."
+
+# VALUE_SET_COMMA
+#: VALUE_SET_COMMA
+msgid ","
+msgstr ","
+
+# VALUE_SET_CONT
+#: VALUE_SET_CONT
+msgid "Value Set Contents"
+msgstr "Värdemängdens innehåll"
+
+# VALUE_SET_CONTAINS
+#: VALUE_SET_CONTAINS
+msgid "This value set contains {0} concepts"
+msgstr "Denna värdemängd innehåller {0} begrepp"
+
+# VALUE_SET_CONTAINS_AT_LEAST
+#: VALUE_SET_CONTAINS_AT_LEAST
+msgid "This value set contains at least {0} concepts"
+msgstr "Denna värdemängd innehåller minst {0} begrepp"
+
+# VALUE_SET_CONT_STRUC
+#: VALUE_SET_CONT_STRUC
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure:"
+msgstr "Denna inkludering specificerar en hierarki för när värdemängder genereras för användning i ett användargränssnitt. Expansionen innehåller denna struktur:"
+
+# VALUE_SET_DANISH
+#: VALUE_SET_DANISH
+msgid "Danish"
+msgstr "Danska"
+
+# VALUE_SET_DE
+#: VALUE_SET_DE
+msgid "German Edition"
+msgstr "Tysk utgåva"
+
+# VALUE_SET_DESCENDENTOF
+#: VALUE_SET_DESCENDENTOF
+msgid "descends from"
+msgstr "härstammar från"
+
+# VALUE_SET_DESIG
+#: VALUE_SET_DESIG
+msgid "Additional Designations"
+msgstr "Ytterligare beteckningar"
+
+# VALUE_SET_DISPLAY_ITEM
+#: VALUE_SET_DISPLAY_ITEM
+msgid "The display for the item"
+msgstr "Visningen för objektet"
+
+# VALUE_SET_DOESNT_EXIST
+#: VALUE_SET_DOESNT_EXIST
+msgid "doesn''t exist"
+msgstr "finns inte"
+
+# VALUE_SET_DUTCH
+#: VALUE_SET_DUTCH
+msgid "Dutch"
+msgstr "Nederländska"
+
+# VALUE_SET_EE
+#: VALUE_SET_EE
+msgid "Estonian Edition"
+msgstr "Estnisk utgåva"
+
+# VALUE_SET_EQUAL
+#: VALUE_SET_EQUAL
+msgid "="
+msgstr "="
+
+# VALUE_SET_ERROR
+#: VALUE_SET_ERROR
+msgid "Error Expanding ValueSet: {0}"
+msgstr "Fel vid expansion av ValueSet: {0}"
+
+# VALUE_SET_EXCL
+#: VALUE_SET_EXCL
+msgid "Exclude"
+msgstr "Exkludera"
+
+# VALUE_SET_EXCLUDED_FROM
+#: VALUE_SET_EXCLUDED_FROM
+msgid "Excluded from"
+msgstr "Exkluderad från"
+
+# VALUE_SET_EXISTS
+#: VALUE_SET_EXISTS
+msgid "exists"
+msgstr "finns"
+
+# VALUE_SET_EXP
+#: VALUE_SET_EXP
+msgid "Expansion based on example code system"
+msgstr "Expansion baserad på exempel-kodsystem"
+
+# VALUE_SET_EXPANSION
+#: VALUE_SET_EXPANSION
+msgid "Expansion based on"
+msgstr "Expansion baserad på"
+
+# VALUE_SET_EXPANSIONS
+#: VALUE_SET_EXPANSIONS
+msgid "Expansion based on:"
+msgstr "Expansion baserad på:"
+
+# VALUE_SET_EXPANSIONS_INTERNAL
+#: VALUE_SET_EXPANSIONS_INTERNAL
+msgid "Expansion performed internally based on:"
+msgstr "Expansion utförd internt baserad på:"
+
+# VALUE_SET_EXPANSIONS_SRVR
+#: VALUE_SET_EXPANSIONS_SRVR
+msgid "Expansion from {0} based on:"
+msgstr "Expansion från {0} baserad på:"
+
+# VALUE_SET_EXPANSION_INTERNAL
+#: VALUE_SET_EXPANSION_INTERNAL
+msgid "Expansion performed internally based on"
+msgstr "Expansion utförd internt baserad på"
+
+# VALUE_SET_EXPANSION_SRVR
+#: VALUE_SET_EXPANSION_SRVR
+msgid "Expansion from {0} based on"
+msgstr "Expansion från {0} baserad på"
+
+# VALUE_SET_EXP_FRAG
+#: VALUE_SET_EXP_FRAG
+msgid "Expansion based on code system fragment"
+msgstr "Expansion baserad på kodsystemsfragment"
+
+# VALUE_SET_FI
+#: VALUE_SET_FI
+msgid "Finnish Edition"
+msgstr "Finsk utgåva"
+
+# VALUE_SET_GENERALIZES
+#: VALUE_SET_GENERALIZES
+msgid "generalizes"
+msgstr "generaliserar"
+
+# VALUE_SET_HAS
+#: VALUE_SET_HAS
+msgid "This value set has {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
+msgstr "Denna värdemängd har {0} koder. För att hålla publikationsstorleken hanterbar visas endast ett urval ({1} koder) av hela uppsättningen koder."
+
+# VALUE_SET_HAS_AT_LEAST
+#: VALUE_SET_HAS_AT_LEAST
+msgid "This value set has at least {0} codes in it. In order to keep the publication size manageable, only a selection ({1} codes) of the whole set of codes is shown."
+msgstr "Denna värdemängd har minst {0} koder. För att hålla publikationsstorleken hanterbar visas endast ett urval ({1} koder) av hela uppsättningen koder."
+
+# VALUE_SET_IE
+#: VALUE_SET_IE
+msgid "Irish Edition"
+msgstr "Irländsk utgåva"
+
+# VALUE_SET_IMPORT
+#: VALUE_SET_IMPORT
+msgid "Import all the codes that are contained in"
+msgid_plural "Import all the codes that are contained in the intersection of"
+msgstr[0] "Importera alla koder som finns i"
+msgstr[1] "Importera alla koder som finns i skärningspunkten av"
+
+# VALUE_SET_IN
+#: VALUE_SET_IN
+msgid "in"
+msgstr "i"
+
+# VALUE_SET_INACT
+#: VALUE_SET_INACT
+msgid "inactive"
+msgstr "inaktiv"
+
+# VALUE_SET_INACTIVE
+#: VALUE_SET_INACTIVE
+msgid "Inactive"
+msgstr "Inaktiv"
+
+# VALUE_SET_INC
+#: VALUE_SET_INC
+msgid "Include"
+msgstr "Inkludera"
+
+# VALUE_SET_INCLUDED_INTO
+#: VALUE_SET_INCLUDED_INTO
+msgid "Included into"
+msgstr "Inkluderad i"
+
+# VALUE_SET_INT
+#: VALUE_SET_INT
+msgid "International"
+msgstr "Internationell"
+
+# VALUE_SET_ISA
+#: VALUE_SET_ISA
+msgid "is-a"
+msgstr "är-en"
+
+# VALUE_SET_ISNOTA
+#: VALUE_SET_ISNOTA
+msgid "is-not-a"
+msgstr "är-inte-en"
+
+# VALUE_SET_KR
+#: VALUE_SET_KR
+msgid "Republic of Korea Edition (South Korea)"
+msgstr "Republiken Korea-utgåva (Sydkorea)"
+
+# VALUE_SET_LEVEL
+#: VALUE_SET_LEVEL
+msgid "Level"
+msgstr "Nivå"
+
+# VALUE_SET_LOINCV
+#: VALUE_SET_LOINCV
+msgid "Loinc v"
+msgstr "Loinc v"
+
+# VALUE_SET_NEEDS_SUPPL
+#: VALUE_SET_NEEDS_SUPPL
+msgid "This ValueSet requires the Code system Supplement"
+msgid_plural "This ValueSet requires the Code system Supplements"
+msgstr[0] "Denna ValueSet kräver kodsystemstillägget"
+msgstr[1] "Denna ValueSet kräver kodsystemstilläggen"
+
+# VALUE_SET_NO
+#: VALUE_SET_NO
+msgid "Norwegian Edition"
+msgstr "Norsk utgåva"
+
+# VALUE_SET_NOTE
+#: VALUE_SET_NOTE
+msgid "Note: {0}"
+msgstr "Notera: {0}"
+
+# VALUE_SET_NOTIN
+#: VALUE_SET_NOTIN
+msgid "not in"
+msgstr "inte i"
+
+# VALUE_SET_NOT_DEF
+#: VALUE_SET_NOT_DEF
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface, but the rules are not properly defined"
+msgstr "Denna inkludering specificerar en hierarki för när värdemängder genereras för användning i ett användargränssnitt, men reglerna är inte korrekt definierade"
+
+# VALUE_SET_NOT_FOUND
+#: VALUE_SET_NOT_FOUND
+msgid "This include specifies a hierarchy for when value sets are generated for use in a User Interface. The expansion contains this structure, and any codes not found in the structure:"
+msgstr "Denna inkludering specificerar en hierarki för när värdemängder genereras för användning i ett användargränssnitt. Expansionen innehåller denna struktur, och eventuella koder som inte finns i strukturen:"
+
+# VALUE_SET_NO_VER
+#: VALUE_SET_NO_VER
+msgid "(no version)"
+msgstr "(ingen version)"
+
+# VALUE_SET_NO_VERSION
+#: VALUE_SET_NO_VERSION
+msgid "(no version) ("
+msgstr "(ingen version) ("
+
+# VALUE_SET_NULL
+#: VALUE_SET_NULL
+msgid "null"
+msgstr "null"
+
+# VALUE_SET_NULLS
+#: VALUE_SET_NULLS
+msgid "?ngen-13?"
+msgstr "?ngen-13?"
+
+# VALUE_SET_NUMBER_CONCEPTS
+#: VALUE_SET_NUMBER_CONCEPTS
+msgid "This value set expansion contains {0} concepts."
+msgstr "Denna värdemängdsexpansion innehåller {0} begrepp."
+
+# VALUE_SET_NZ
+#: VALUE_SET_NZ
+msgid "New Zealand Edition"
+msgstr "Nya Zeeland-utgåva"
+
+# VALUE_SET_OTHER_DISPLAY
+#: VALUE_SET_OTHER_DISPLAY
+msgid "Other Display ({0})"
+msgstr "Annan visning ({0})"
+
+# VALUE_SET_REGEX
+#: VALUE_SET_REGEX
+msgid "matches (by regex)"
+msgstr "matchar (via regex)"
+
+# VALUE_SET_RULES_EXC
+#: VALUE_SET_RULES_EXC
+msgid "This value set excludes codes based on the following rules:"
+msgstr "Denna värdemängd exkluderar koder baserat på följande regler:"
+
+# VALUE_SET_RULES_INC
+#: VALUE_SET_RULES_INC
+msgid "This value set includes codes based on the following rules:"
+msgstr "Denna värdemängd inkluderar koder baserat på följande regler:"
+
+# VALUE_SET_SEL
+#: VALUE_SET_SEL
+msgid "This value set has >1000 codes in it. In order to keep the publication size manageable, only a selection (1000 codes) of the whole set of codes is shown"
+msgstr "Denna värdemängd har >1000 koder. För att hålla publikationsstorleken hanterbar visas endast ett urval (1000 koder) av hela uppsättningen koder"
+
+# VALUE_SET_SNOMED
+#: VALUE_SET_SNOMED
+msgid "SNOMED CT {0} edition"
+msgstr "SNOMED CT {0}-utgåva"
+
+# VALUE_SET_SNOMED_ADD
+#: VALUE_SET_SNOMED_ADD
+msgid "SNOMED CT {0} edition {1}"
+msgstr "SNOMED CT {0}-utgåva {1}"
+
+# VALUE_SET_SPAN
+#: VALUE_SET_SPAN
+msgid "Spanish"
+msgstr "Spanska"
+
+# VALUE_SET_SPEC_NAME
+#: VALUE_SET_SPEC_NAME
+msgid "Fully specified name"
+msgstr "Fullständigt specificerat namn"
+
+# VALUE_SET_SWEDISH
+#: VALUE_SET_SWEDISH
+msgid "Swedish"
+msgstr "Svenska"
+
+# VALUE_SET_SYNONYM
+#: VALUE_SET_SYNONYM
+msgid "Synonym"
+msgstr "Synonym"
+
+# VALUE_SET_SYSTEM
+#: VALUE_SET_SYSTEM
+msgid "System"
+msgstr "System"
+
+# VALUE_SET_THESE_CODES_DEF
+#: VALUE_SET_THESE_CODES_DEF
+msgid "these codes as defined in"
+msgstr "dessa koder enligt definitionen i"
+
+# VALUE_SET_TOO_COSTLY
+#: VALUE_SET_TOO_COSTLY
+msgid "This value set cannot be expanded because the terminology server(s) deemed it too costly to do so"
+msgstr "Denna värdemängd kan inte expanderas eftersom terminologiservern/-servrarna bedömde det som för kostsamt"
+
+# VALUE_SET_UK
+#: VALUE_SET_UK
+msgid "United Kingdom"
+msgstr "Storbritannien"
+
+# VALUE_SET_UK_CLIN
+#: VALUE_SET_UK_CLIN
+msgid "UK Clinical Edition"
+msgstr "UK klinisk utgåva"
+
+# VALUE_SET_US
+#: VALUE_SET_US
+msgid "United States"
+msgstr "USA"
+
+# VALUE_SET_USED_ELSEWHERE
+#: VALUE_SET_USED_ELSEWHERE
+msgid "This value set is not used here; it may be used elsewhere (e.g. specifications and/or implementations that use this content)"
+msgstr "Denna värdemängd används inte här; den kan användas på andra ställen (t.ex. specifikationer och/eller implementationer som använder detta innehåll)"
+
+# VALUE_SET_US_ICD10CM
+#: VALUE_SET_US_ICD10CM
+msgid "US Edition (with ICD-10-CM maps)"
+msgstr "US-utgåva (med ICD-10-CM-mappningar)"
+
+# VALUE_SET_UY
+#: VALUE_SET_UY
+msgid "Uruguay Edition"
+msgstr "Uruguay-utgåva"
+
+# VALUE_SET_WHERE
+#: VALUE_SET_WHERE
+msgid "where"
+msgstr "där"
+
+# VALUE_SET_WHERE_CODES
+#: VALUE_SET_WHERE_CODES
+msgid ", where the codes are contained in"
+msgstr ", där koderna finns i"
+
+# VSR_LOGICAL
+#: VSR_LOGICAL
+msgid "Logical Definition (CLD)"
+msgstr "Logisk definition (CLD)"
+
+# VSR_NO_DEF
+#: VSR_NO_DEF
+msgid "No formal definition provided for this value set"
+msgstr "Ingen formell definition tillhandahållen för denna värdemängd"
+
+# VSR_TRIGGER
+#: VSR_TRIGGER
+msgid "Used as a trigger criteria in"
+msgstr "Används som triggerkriterium i"
+
+# VS_ABSTRACT_CODE_HINT
+#: VS_ABSTRACT_CODE_HINT
+msgid "This code is not selectable (''Abstract'')"
+msgstr "Denna kod är inte valbar (''Abstrakt'')"
+
+# VS_VERSION_BY_PACKAGE
+#: VS_VERSION_BY_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to {0}, the version found through the package references"
+msgstr "Versionen är inte uttryckligen angiven, vilket innebär att den är fast till {0}, versionen som hittas via paketreferenserna"
+
+# VS_VERSION_FOUND
+#: VS_VERSION_FOUND
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
+msgstr "Versionen är inte uttryckligen angiven. Vid byggandet av denna specifikation har den senaste versionen {0} använts"
+
+# VS_VERSION_NONE
+#: VS_VERSION_NONE
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
+msgstr "Versionen är inte uttryckligen angiven, och målet {0} har inte heller någon angiven version"
+
+# VS_VERSION_NOTHING
+#: VS_VERSION_NOTHING
+msgid "Version is not explicitly stated. No matching {0} found"
+msgstr "Versionen är inte uttryckligen angiven. Ingen matchande {0} hittades"
+
+# VS_VERSION_NOTHING_TEXT
+#: VS_VERSION_NOTHING_TEXT
+msgid "Not State"
+msgstr "Ej angiven"
+
+# VS_VERSION_STATED
+#: VS_VERSION_STATED
+msgid "Version is explicitly stated to be {0}"
+msgstr "Versionen anges uttryckligen vara {0}"
+
+# VS_VERSION_THIS_PACKAGE
+#: VS_VERSION_THIS_PACKAGE
+msgid "Version is not explicitly stated, which means it is fixed to the version provided in this specification"
+msgstr "Versionen är inte uttryckligen angiven, vilket innebär att den är fast till den version som tillhandahålls i denna specifikation"
+
+# VS_VERSION_WILDCARD
+#: VS_VERSION_WILDCARD
+msgid "Version is stated to be {0}. When building this specification, the most recent matching version {1} has been used"
+msgstr "Versionen anges vara {0}. Vid byggandet av denna specifikation har den senaste matchande versionen {1} använts"
+
+# VS_VERSION_WILDCARD_BY_PACKAGE
+#: VS_VERSION_WILDCARD_BY_PACKAGE
+msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
+msgstr "Versionen anges vara {0}, vilket innebär att den är fast till {1}, versionen som hittas via paketreferenserna"
+
+# _NA
+#: _NA
+msgid "n/a"
+msgstr "ej tillämplig"
+
+
+
+
+

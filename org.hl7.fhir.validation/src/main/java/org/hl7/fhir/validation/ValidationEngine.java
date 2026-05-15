@@ -949,10 +949,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     File baseDataFile = new File(baseDataPath);
     if (!baseDataFile.exists()) {
       try {
-        org.hl7.fhir.utilities.json.model.JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl("http://fhir.org/downloads/test-data-versions.json");
+        org.hl7.fhir.utilities.json.model.JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl("https://www.fhir.org/downloads/test-data-versions.json");
         org.hl7.fhir.utilities.json.model.JsonObject current = json.forceArray("versions").get(0).asJsonObject();
         String filename = current.asString("filename");
-        org.hl7.fhir.utilities.http.HTTPResult result = org.hl7.fhir.utilities.http.ManagedWebAccess.get(Utilities.strings("general"), "http://fhir.org/downloads/" + filename);
+        org.hl7.fhir.utilities.http.HTTPResult result = org.hl7.fhir.utilities.http.ManagedWebAccess.get(Utilities.strings("general"), "https://www.fhir.org/downloads/" + filename);
         FileUtilities.bytesToFile(result.getContent(), baseDataFile);
       } catch (Exception e) {
         throw new FHIRException("Unable to download FHIR base test data (fhir-test-data.db). " +
