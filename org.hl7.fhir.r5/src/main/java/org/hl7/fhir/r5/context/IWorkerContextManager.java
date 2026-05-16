@@ -10,7 +10,6 @@ import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageLoadController;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -49,14 +48,11 @@ public interface IWorkerContextManager {
   @Deprecated
   void setLocale(Locale locale);
 
-//  @Deprecated
-//  void setValidationMessageLanguage(Locale locale);
-
   /**
    * cache a resource for later retrieval using fetchResource.
    *
    * Note that various context implementations will have their own ways of loading
-   * rseources, and not all need implement cacheResource.
+   * resources, and not all need implement cacheResource.
    *
    * If the resource is loaded out of a package, call cacheResourceFromPackage instead
    * @param res
@@ -69,10 +65,10 @@ public interface IWorkerContextManager {
    * cache a resource for later retrieval using fetchResource.
    *
    * The package information is used to help manage the cache internally, and to
-   * help with reference resolution. Packages should be define using cachePackage (but don't have to be)
+   * help with reference resolution. Packages should be defined using cachePackage (but don't have to be)
    *
    * Note that various context implementations will have their own ways of loading
-   * rseources, and not all need implement cacheResource
+   * resources, and not all need implement cacheResource
    *
    * @param res
    * @throws FHIRException
@@ -127,8 +123,8 @@ public interface IWorkerContextManager {
    * @param isMaster - marks that the package being loaded is the very first package loaded, the master definitions
    * @return the number of resources loaded
    */
-  int loadPackage(String idAndVer, boolean isMaster) throws FileNotFoundException, IOException, FHIRException;
-  default int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
+  int loadPackage(String idAndVer, boolean isMaster) throws IOException, FHIRException;
+  default int loadPackage(String idAndVer) throws IOException, FHIRException {
     return loadPackage(idAndVer, false);
   }
 
@@ -147,6 +143,6 @@ public interface IWorkerContextManager {
    */
   int loadFromPackageAndDependencies(NpmPackage npmPackage, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
 
-  List<String> getloadedPackages();
+  List<String> getLoadedPackages();
 
 }
