@@ -205,8 +205,15 @@ public class ParametersValidator extends BaseValidator {
       case RESOURCE:
         if (hint(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack, rType != null, I18nConstants.PARAMETERS_STD_NO_RESOURCE, name)) {
           String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
+          boolean bok = false;
+          for (String t : rule.types) {
+            if (matchesType(t, type) || matchesType(t, rType)) {
+              bok = true;
+              break;
+            }
+          }
           hintPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
-            Utilities.existsInList(type, rule.types), rule.types.length,
+            bok, rule.types.length,
             I18nConstants.PARAMETERS_STD_RES_WRONG_TYPE, name, rType, typeList);
         }
         break;
@@ -223,8 +230,16 @@ public class ParametersValidator extends BaseValidator {
             I18nConstants.PARAMETERS_STD_RES_WRONG_TYPE_MIXED, name, rType, typeList);
         } else {
           String typeList = CommaSeparatedStringBuilder.join2(", ", " or ", rule.types);
+          boolean bok = false;
+          for (String t : rule.types) {
+            if (matchesType(t, type) || matchesType(t, rType)) {
+              bok = true;
+              break;
+            }
+          }
+
           hintPlural(errors, "2025-03-22", ValidationMessage.IssueType.BUSINESSRULE, stack,
-            Utilities.existsInList(type, rule.types), rule.types.length,
+            bok, rule.types.length,
             I18nConstants.PARAMETERS_STD_RES_WRONG_TYPE_MIXED, name, rType, typeList);
         }
         break;
@@ -234,6 +249,16 @@ public class ParametersValidator extends BaseValidator {
 
     }
     return true;
+  }
+
+  private boolean matchesType(String t, String type) {
+    if (t.equals(type)) {
+      return true;
+    }
+    if (t.equals("Resource")) {
+      return context.getResourceNamesAsSet().contains(type);
+    }
+    return false;
   }
 
 
