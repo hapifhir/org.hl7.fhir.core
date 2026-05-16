@@ -5516,7 +5516,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       for (Base item : current) {
         pc.clear();
         pc.add(item);
-        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), false));
+        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), true));
       }
       more = false;
       current.clear();
