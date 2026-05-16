@@ -94,14 +94,14 @@ public interface IWorkerContextManager {
    *
    * note that the package system may use lazy loading; the loader will be called later when the classes that use the context need the relevant resource
    *
-   * @param pi - the package to load
+   * @param npmPackage - the package to load
    * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
    * @param isMaster - marks that the package being loaded is the very first package loaded, the master definitions
    * @return the number of resources loaded
    */
-  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException;
-  default int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
-    return loadFromPackage(pi, loader, false);
+  int loadFromPackage(NpmPackage npmPackage, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException;
+  default int loadFromPackage(NpmPackage npmPackage, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+    return loadFromPackage(npmPackage, loader, false);
   }
 
   /**
@@ -114,8 +114,8 @@ public interface IWorkerContextManager {
    * @return the number of resources loaded
    */
   int loadPackage(NpmPackage pi, boolean isMaster) throws FileNotFoundException, IOException, FHIRException;
-  default int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
-    return loadPackage(pi, false);
+  default int loadPackage(NpmPackage npmPackage) throws FileNotFoundException, IOException, FHIRException {
+    return loadPackage(npmPackage, false);
   }
 
   /**
@@ -140,12 +140,12 @@ public interface IWorkerContextManager {
    *
    * This method also loads all the packages that the package depends on (recursively)
    *
-   * @param pi - the package to load
+   * @param npmPackage - the package to load
    * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
    * @param pcm - used to find and load additional dependencies
    * @return the number of resources loaded
    */
-  int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
+  int loadFromPackageAndDependencies(NpmPackage npmPackage, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
 
   List<String> getloadedPackages();
 

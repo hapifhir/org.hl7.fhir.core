@@ -609,8 +609,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       types = loader.getTypes();
     }
     boolean hasIG = false;
-    PackageInformation pii = new PackageInformation(pi);
-    pii.setMaster(isMaster);
+    PackageInformation pii = new PackageInformation(pi, isMaster);
     if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad() || !allowLazyLoading) {
       // can't lazy load R2 because of valueset/codesystem implementation
       if (types == null || types.size() == 0) {
