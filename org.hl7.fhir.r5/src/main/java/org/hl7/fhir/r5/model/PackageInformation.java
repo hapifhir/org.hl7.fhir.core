@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
 public class PackageInformation {
@@ -17,6 +19,13 @@ public class PackageInformation {
 
   private List<String> dependencies = new ArrayList<>();
   private String fhirVersion;
+
+  /**
+   * this marks the package as the very first package loaded, the master definitions
+   * these are the ones that provide type definitions, and if there's a version-less request
+   * for any of these, the master ones override any other version.
+   */
+  @Getter @Setter private boolean isMaster;
 
   public PackageInformation(String id, String version, String fhirVersion, Date date, String name, String canonical, String web) {
     super();
