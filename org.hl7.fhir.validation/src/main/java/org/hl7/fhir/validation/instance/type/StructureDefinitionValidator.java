@@ -280,23 +280,26 @@ public class StructureDefinitionValidator extends BaseValidator {
               ok = rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, I18nConstants.SD_EXTENSION_COMPLIES_WITH_UNKNOWN, curl) && ok;
             } else {
               List<ValidationMessage> messages = new CompliesWithChecker(context).checkCompliesWith(sd, auth);
+              List<ValidationMessage> filteredMessages = messages.stream()
+                .filter(vm -> !isSuppressedCompliesWithReason(curl, vm.getLocation()))
+                .collect(Collectors.toList());
               IssueSeverity level = IssueSeverity.INFORMATION;
-              for (ValidationMessage vm : messages) {
+              for (ValidationMessage vm : filteredMessages) {
                 level = IssueSeverity.max(level, vm.getLevel());
               }
               if (level == IssueSeverity.ERROR) {
                 List<String> msgs = new ArrayList<>();
-                for (ValidationMessage vm : messages.stream().filter(vm -> vm.getLevel() == IssueSeverity.ERROR).collect(Collectors.toList())) {
+                for (ValidationMessage vm : filteredMessages.stream().filter(vm -> vm.getLevel() == IssueSeverity.ERROR).collect(Collectors.toList())) {
                   msgs.add(vm.getMessage());
                 }
-                rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_ERROR, curl,
+                rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, filteredMessages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_ERROR, curl,
                   CommaSeparatedStringBuilder.join2(", ", " and ", msgs));
               } else if (level == IssueSeverity.WARNING) {
                 List<String> msgs = new ArrayList<>();
-                for (ValidationMessage vm : messages.stream().filter(vm -> vm.getLevel() == IssueSeverity.WARNING).collect(Collectors.toList())) {
+                for (ValidationMessage vm : filteredMessages.stream().filter(vm -> vm.getLevel() == IssueSeverity.WARNING).collect(Collectors.toList())) {
                   msgs.add(vm.getMessage());
                 }
-                warning(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, messages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_WARNING, curl,
+                warning(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, filteredMessages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_WARNING, curl,
                   CommaSeparatedStringBuilder.join2(", ", " and ", msgs));
               }            
             }

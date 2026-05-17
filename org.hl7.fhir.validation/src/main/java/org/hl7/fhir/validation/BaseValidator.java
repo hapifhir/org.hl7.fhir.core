@@ -294,6 +294,14 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
     }
   }
 
+  protected boolean isSuppressedCompliesWithReason(String claimedProfileUrl, String elementPath) {
+    if (policyAdvisor == null) {
+      return false;
+    } else {
+      return policyAdvisor.isSuppressCompliesWithReason(claimedProfileUrl, elementPath);
+    }
+  }
+
   protected boolean fail(List<ValidationMessage> errors, String ruleDate, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass && doingErrors() && !isSuppressedValidationMessage(path, theMessage, theMessageArguments)) {
       String msg = context.formatMessage(theMessage, theMessageArguments);
