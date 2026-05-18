@@ -280,28 +280,7 @@ public class StructureDefinitionValidator extends BaseValidator {
               ok = rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, I18nConstants.SD_EXTENSION_COMPLIES_WITH_UNKNOWN, curl) && ok;
             } else {
               List<ValidationMessage> messages = new CompliesWithChecker(context).checkCompliesWith(sd, auth);
-              List<ValidationMessage> filteredMessages = messages.stream()
-                .filter(vm -> !isSuppressedCompliesWithReason(curl, vm.getLocation()))
-                .collect(Collectors.toList());
-              IssueSeverity level = IssueSeverity.INFORMATION;
-              for (ValidationMessage vm : filteredMessages) {
-                level = IssueSeverity.max(level, vm.getLevel());
-              }
-              if (level == IssueSeverity.ERROR) {
-                List<String> msgs = new ArrayList<>();
-                for (ValidationMessage vm : filteredMessages.stream().filter(vm -> vm.getLevel() == IssueSeverity.ERROR).collect(Collectors.toList())) {
-                  msgs.add(vm.getMessage());
-                }
-                rule(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, filteredMessages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_ERROR, curl,
-                  CommaSeparatedStringBuilder.join2(", ", " and ", msgs));
-              } else if (level == IssueSeverity.WARNING) {
-                List<String> msgs = new ArrayList<>();
-                for (ValidationMessage vm : filteredMessages.stream().filter(vm -> vm.getLevel() == IssueSeverity.WARNING).collect(Collectors.toList())) {
-                  msgs.add(vm.getMessage());
-                }
-                warning(errors, "2025-03-30", IssueType.INVALID, stack.getLiteralPath(), false, filteredMessages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_WARNING, curl,
-                  CommaSeparatedStringBuilder.join2(", ", " and ", msgs));
-              }            
+              reportCompliesWithMessages(errors, stack.getLiteralPath(), curl, messages);
             }
           }
         }
@@ -314,6 +293,40 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
     }
     return ok;
+  }
+
+  void reportCompliesWithMessages(List<ValidationMessage> errors, String path, String claimedProfileUrl, List<ValidationMessage> messages) {
+    List<ValidationMessage> filteredMessages = messages.stream()
+      .filter(vm -> !isSuppressedCompliesWithReason(claimedProfileUrl, vm.getLocation()))
+      .collect(Collectors.toList());
+    IssueSeverity level = IssueSeverity.INFORMATION;
+    for (ValidationMessage vm : filteredMessages) {
+      level = IssueSeverity.max(level, vm.getLevel());
+    }
+    if (level == IssueSeverity.ERROR) {
+      List<String> msgs = new ArrayList<>();
+      for (ValidationMessage vm : filteredMessages.stream().filter(vm -> vm.getLevel() == IssueSeverity.ERROR).collect(Collectors.toList())) {
+        msgs.add(messageWithLocation(vm));
+      }
+      rule(errors, "2025-03-30", IssueType.INVALID, path, false, filteredMessages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_ERROR, claimedProfileUrl,
+        CommaSeparatedStringBuilder.join2(", ", " and ", msgs));
+    } else if (level == IssueSeverity.WARNING) {
+      List<String> msgs = new ArrayList<>();
+      for (ValidationMessage vm : filteredMessages.stream().filter(vm -> vm.getLevel() == IssueSeverity.WARNING).collect(Collectors.toList())) {
+        msgs.add(messageWithLocation(vm));
+      }
+      warning(errors, "2025-03-30", IssueType.INVALID, path, false, filteredMessages, I18nConstants.SD_EXTENSION_COMPLIES_WITH_WARNING, claimedProfileUrl,
+        CommaSeparatedStringBuilder.join2(", ", " and ", msgs));
+    }
+  }
+
+  private String messageWithLocation(ValidationMessage vm) {
+    String loc = vm.getLocation();
+    String msg = vm.getMessage();
+    if (loc != null && !msg.contains(loc)) {
+      return "at " + loc + ": " + msg;
+    }
+    return msg;
   }
 
   private boolean checkTypeParameters(List<ValidationMessage> errors, NodeStack stack, StructureDefinition base, StructureDefinition derived) {
