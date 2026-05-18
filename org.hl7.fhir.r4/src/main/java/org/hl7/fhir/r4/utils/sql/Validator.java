@@ -88,7 +88,7 @@ public class Validator {
 
 
   public void checkViewDefinition(String path, JsonObject viewDefinition) {    
-    checkProperties(viewDefinition, path, "resourceType", "url", "identifier", "name", "version", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "copyright", "resource", "constant", "select", "where");
+    checkProperties(viewDefinition, path, "resourceType", "id", "meta", "implicitRules", "language", "text", "contained", "modifierExtension", "url", "identifier", "version", "versionAlgorithmString", "versionAlgorithmCoding", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "resource", "profile", "fhirVersion", "constant", "select", "where");
     
     JsonElement nameJ = viewDefinition.get("name");
     if (nameJ == null) {
@@ -155,7 +155,7 @@ public class Validator {
   private List<Column> checkSelect(JsonObject vd, String path, JsonObject select, TypeDetails t) {
     List<Column> columns = new ArrayList<>();
     select.setUserData("columns", columns);
-    checkProperties(select, path, "column", "select", "forEach", "forEachOrNull", "unionAll");
+    checkProperties(select, path, "id", "modifierExtension", "column", "select", "forEach", "forEachOrNull", "repeat", "unionAll");
 
     if (select.has("forEach")) {
       t = checkForEach(vd, path, select, select.get("forEach"), t);
@@ -276,7 +276,7 @@ public class Validator {
   }
 
   private Column checkColumn(JsonObject vd, String path, JsonObject column, TypeDetails t) {
-    checkProperties(column, path, "path", "name", "description", "collection", "type", "tag");
+    checkProperties(column, path, "id", "modifierExtension", "path", "name", "description", "collection", "type", "tag");
 
     if (!column.has("path")) {
       error(path, column, "no path found", IssueType.INVALID);      
@@ -514,7 +514,7 @@ public class Validator {
   }
 
   private void checkConstant(String path, JsonObject constant) {
-    checkProperties(constant, path, "name", "valueBase64Binary", "valueBoolean", "valueCanonical", "valueCode", "valueDate", "valueDateTime", "valueDecimal", "valueId", "valueInstant", "valueInteger", "valueInteger64", "valueOid", "valueString", "valuePositiveInt", "valueTime", "valueUnsignedInt", "valueUri", "valueUrl", "valueUuid");
+    checkProperties(constant, path, "id", "modifierExtension", "name", "valueBase64Binary", "valueBoolean", "valueCanonical", "valueCode", "valueDate", "valueDateTime", "valueDecimal", "valueId", "valueInstant", "valueInteger", "valueInteger64", "valueOid", "valueString", "valuePositiveInt", "valueTime", "valueUnsignedInt", "valueUri", "valueUrl", "valueUuid");
     JsonElement nameJ = constant.get("name");
     if (nameJ == null) {
       error(path, constant, "No name provided", IssueType.REQUIRED);      
@@ -598,7 +598,7 @@ public class Validator {
   }
   
   private void checkWhere(JsonObject vd, String path, JsonObject where) {
-    checkProperties(where, path, "path", "description");
+    checkProperties(where, path, "id", "modifierExtension", "path", "description");
 
     String expr = where.asString("path");
     if (expr == null) {
