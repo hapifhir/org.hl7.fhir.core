@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -350,10 +351,12 @@ public class Runner implements IHostApplicationServices {
       if (b instanceof BaseDateTimeType) {
         BaseDateTimeType d = (BaseDateTimeType) b;
         return Value.makeDate(d.primitiveValue(), d.getValue());
-      } else if (b.isPrimitive() && b.isDateTime()) { // ElementModel
-        return Value.makeDate(b.primitiveValue(), b.dateTimeValue().getValue());
+      } else if (b.isPrimitive() && Utilities.existsInList(b.fhirType(), "date", "dateTime", "instant")) {
+        // ElementModel does not override isDateTime() / dateTimeValue(); reconstruct via the model class.
+        DateTimeType d = new DateTimeType(b.primitiveValue());
+        return Value.makeDate(d.primitiveValue(), d.getValue());
       } else {
-        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to an integer column for column "+column.getName());
+        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to a dateTime column for column "+column.getName());
       }
     case Decimal:
       if (b instanceof DecimalType) {
@@ -362,7 +365,7 @@ public class Runner implements IHostApplicationServices {
       } else if (b.isPrimitive()) { // ElementModel
         return Value.makeDecimal(b.primitiveValue(), new BigDecimal(b.primitiveValue()));
       } else {
-        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to an integer column for column "+column.getName());
+        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to a decimal column for column "+column.getName());
       }
     case Integer:
       if (b instanceof IntegerType) {
