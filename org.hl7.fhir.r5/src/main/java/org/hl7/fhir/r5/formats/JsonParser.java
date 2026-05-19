@@ -14466,8 +14466,18 @@ public class JsonParser extends JsonParserBase {
         res.getVariableDefinition().add(parseEvidenceVariableDefinitionComponent(getJsonObjectFromArray(array, i)));
       }
     };
-    if (json.has("synthesisType"))
-      res.setSynthesisType(parseCodeableConcept(getJObject(json, "synthesisType")));
+    if (json.has("synthesisType")) {
+      // R6 ballot4 changed synthesisType from 0..1 to 0..*; accept array shape by taking first.
+      com.google.gson.JsonElement st = json.get("synthesisType");
+      if (st.isJsonArray()) {
+        JsonArray arr = st.getAsJsonArray();
+        if (arr.size() > 0 && arr.get(0).isJsonObject()) {
+          res.setSynthesisType(parseCodeableConcept(arr.get(0).getAsJsonObject()));
+        }
+      } else if (st.isJsonObject()) {
+        res.setSynthesisType(parseCodeableConcept(getJObject(json, "synthesisType")));
+      }
+    }
     if (json.has("studyDesign")) {
       JsonArray array = getJArray(json, "studyDesign");
       for (int i = 0; i < array.size(); i++) {
