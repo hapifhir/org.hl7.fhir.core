@@ -217,15 +217,25 @@ public class SqlOnFhirRunnerTests {
       return;
     }
 
-    // Deep comparison of JSON results.
+    // Multiset comparison: row order is not significant in SQL on FHIR,
+    // but duplicate rows must still match in count. For each expected row,
+    // find an unconsumed actual row that matches; mark it consumed so the
+    // same actual row cannot satisfy two expected rows.
+    boolean[] consumed = new boolean[actual.size()];
     for (int i = 0; i < expected.size(); i++) {
       JsonElement expectedRow = expected.get(i);
-      JsonElement actualRow = actual.get(i);
-
-      if (!compareJsonElements(expectedRow, actualRow)) {
+      boolean found = false;
+      for (int j = 0; j < actual.size(); j++) {
+        if (!consumed[j] && compareJsonElements(expectedRow, actual.get(j))) {
+          consumed[j] = true;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
         result.passed = false;
-        result.error = String.format("Row %d mismatch: expected %s, got %s",
-                                     i, expectedRow, actualRow);
+        result.error = String.format("No matching actual row for expected row %d: %s",
+                                     i, expectedRow);
         return;
       }
     }

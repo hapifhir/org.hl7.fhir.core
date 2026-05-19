@@ -198,7 +198,7 @@ public class Runner implements IHostApplicationServices {
       focus.addAll(executeForEach(vd, select, b));
     } else if (select.has("forEachOrNull")) {
 
-      focus.addAll(executeForEachOrNull(vd, select, b));  
+      focus.addAll(executeForEachOrNull(vd, select, b));
       if (focus.isEmpty()) {
         List<Column> columns = (List<Column>) select.getUserData(UserDataNames.db_columns);
         for (List<Cell> row : rows) {
@@ -211,6 +211,8 @@ public class Runner implements IHostApplicationServices {
         }
         return;
       }
+    } else if (select.has("repeat")) {
+      focus.addAll(executeRepeat(vd, select, b));
     } else {
       focus.add(b);
     }
@@ -282,7 +284,26 @@ public class Runner implements IHostApplicationServices {
     ExpressionNode n = (ExpressionNode) focus.getUserData(UserDataNames.db_forEachOrNull);
     List<Base> result = new ArrayList<>();
     result.addAll(fpe.evaluate(vd, b, n));
-    return result;  
+    return result;
+  }
+
+  @SuppressWarnings("unchecked")
+  private List<Base> executeRepeat(JsonObject vd, JsonObject focus, Base b) {
+    List<ExpressionNode> nodes = (List<ExpressionNode>) focus.getUserData(UserDataNames.db_repeat);
+    List<Base> result = new ArrayList<>();
+    if (nodes != null && b != null) {
+      expandRepeat(vd, b, nodes, result);
+    }
+    return result;
+  }
+
+  private void expandRepeat(JsonObject vd, Base b, List<ExpressionNode> nodes, List<Base> result) {
+    for (ExpressionNode node : nodes) {
+      for (Base child : fpe.evaluate(vd, b, node)) {
+        result.add(child);
+        expandRepeat(vd, child, nodes, result);
+      }
+    }
   }
 
   private void executeColumn(JsonObject vd, JsonObject column, Base b, List<List<Cell>> rows) {
