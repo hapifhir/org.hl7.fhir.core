@@ -1,0 +1,76 @@
+name: Sync with upstream (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      UPSTREAM_REPO: hapifhir/org.hl7.fhir.core
+      UPSTREAM_BRANCH: master
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream https://github.com/${UPSTREAM_REPO}.git
+          git fetch upstream ${UPSTREAM_BRANCH}
+
+      - name: Diff status
+        id: check
+        run: |
+          BEHIND=$(git rev-list --count HEAD..upstream/${UPSTREAM_BRANCH})
+          AHEAD=$(git rev-list --count upstream/${UPSTREAM_BRANCH}..HEAD)
+          echo "behind=$BEHIND" >> $GITHUB_OUTPUT
+          echo "ahead=$AHEAD" >> $GITHUB_OUTPUT
+          echo "Behind upstream by $BEHIND, ahead by $AHEAD (our ballot4 patches)."
+
+      - name: Open sync PR (if behind)
+        if: steps.check.outputs.behind != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          BRANCH="sync/upstream-${DATE}"
+          git checkout -b "$BRANCH"
+          if git merge --no-edit upstream/${UPSTREAM_BRANCH}; then
+            STATUS=clean
+          else
+            STATUS=conflict
+            git diff --name-only --diff-filter=U > /tmp/conflicts.txt || true
+            git merge --abort || true
+          fi
+          git push origin "$BRANCH"
+          BODY=$(printf '%s\n' \
+            "Automated upstream sync." \
+            "" \
+            "- Upstream: \`${UPSTREAM_REPO}@${UPSTREAM_BRANCH}\`" \
+            "- Behind by: ${{ steps.check.outputs.behind }} commits" \
+            "- Our patches ahead: ${{ steps.check.outputs.ahead }} commits" \
+            "- Merge status: **${STATUS}**" \
+            "")
+          if [ "$STATUS" = "conflict" ] && [ -s /tmp/conflicts.txt ]; then
+            BODY="$BODY
+
+          Conflicting files (resolve manually, then verify with \`mvn install -pl org.hl7.fhir.r5 -am -Dmaven.test.skip=true\`):
+          \`\`\`
+          $(cat /tmp/conflicts.txt)
+          \`\`\`"
+          fi
+          gh pr create --base master --head "$BRANCH" \
+            --title "Sync upstream ($DATE, ${{ steps.check.outputs.behind }} commits, $STATUS)" \
+            --body "$BODY" || echo "PR may already exist"

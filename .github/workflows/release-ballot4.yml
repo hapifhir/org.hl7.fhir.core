@@ -1,0 +1,104 @@
+name: Release ballot4 core jars
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'org.hl7.fhir.r5/**'
+      - 'org.hl7.fhir.r4/**'
+      - 'org.hl7.fhir.r4b/**'
+      - 'org.hl7.fhir.utilities/**'
+      - 'org.hl7.fhir.convertors/**'
+      - 'org.hl7.fhir.validation/**'
+      - '.github/workflows/release-ballot4.yml'
+      - 'pom.xml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build & install core modules used by IG Publisher
+        run: |
+          set -e
+          for m in org.hl7.fhir.utilities org.hl7.fhir.r4 org.hl7.fhir.r4b org.hl7.fhir.r5 org.hl7.fhir.convertors org.hl7.fhir.validation; do
+            echo "::group::Building $m"
+            mvn install -pl "$m" -am -Dmaven.test.skip=true -Dmaven.javadoc.skip=true --no-transfer-progress
+            echo "::endgroup::"
+          done
+
+      - name: Read project version
+        id: ver
+        run: |
+          V=$(mvn -q -Dexpression=project.version -DforceStdout help:evaluate)
+          echo "version=$V" >> $GITHUB_OUTPUT
+          echo "Core project version: $V"
+
+      - name: Build release tag
+        id: tag
+        run: |
+          STAMP=$(date -u +%Y%m%d-%H%M%S)
+          TAG="r5-ballot4-${STAMP}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "stamp=$STAMP" >> $GITHUB_OUTPUT
+          echo "Tag: $TAG"
+
+      - name: Collect artifact jars
+        run: |
+          mkdir -p artifacts
+          for m in org.hl7.fhir.utilities org.hl7.fhir.r4 org.hl7.fhir.r4b org.hl7.fhir.r5 org.hl7.fhir.convertors org.hl7.fhir.validation; do
+            cp "$m/target/$m-${{ steps.ver.outputs.version }}.jar" artifacts/
+          done
+          ls -la artifacts/
+
+      - name: Write release notes
+        run: |
+          cat > /tmp/notes.md <<EOF
+          # R5 core jars with R6 ballot4 compatibility patches
+
+          Built from \`${{ github.ref_name }}\` @ \`${{ github.sha }}\`
+          Project version: \`${{ steps.ver.outputs.version }}\`
+
+          ## What's in here
+          R5 core jars patched to parse and validate R6 ballot4 IGs (via the existing
+          \`R6ToR5Loader\` mechanism in upstream IG Publisher). See commit log for the
+          full list of ballot4 spec deltas handled.
+
+          ## Consuming
+          Download the jars and install to a local Maven repo, then build any project
+          that depends on \`ca.uhn.hapi.fhir:org.hl7.fhir.*:${{ steps.ver.outputs.version }}\`:
+
+          \`\`\`bash
+          for j in *.jar; do
+            mvn install:install-file -Dfile="\$j" -DpomFile=... \\
+              -DgroupId=ca.uhn.hapi.fhir -DartifactId=\$(basename \$j .jar | sed 's/-${{ steps.ver.outputs.version }}//') \\
+              -Dversion=${{ steps.ver.outputs.version }} -Dpackaging=jar
+          done
+          \`\`\`
+
+          The companion \`glichtner/fhir-ig-publisher\` release builds the IG Publisher
+          CLI against these jars automatically.
+          EOF
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: R5 core ballot4 ${{ steps.tag.outputs.stamp }}
+          body_path: /tmp/notes.md
+          files: artifacts/*.jar
+          draft: false
+          prerelease: false
