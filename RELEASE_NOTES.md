@@ -1,9 +1,8 @@
 ## Validator Changes
 
-* Fix bug processing long paths when producing combined package
-* Fix bug processing resources for CanonicalResource cache
+* Time limitations on regex processing in ValueSetValidator
 
 ## Other code changes
 
-* Fix bug rendering masked contacts
-* Add missed page to relative URL processing (workflow-extensions)
+* Time limitations on regex processing in FHIRPathEngine implementations
+
