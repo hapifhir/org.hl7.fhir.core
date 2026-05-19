@@ -176,10 +176,15 @@ public final class RegexTimeout {
   }
 
   /**
+   * <p>
    * CharSequence that noticed thread interrupts -- as might be necessary
    * to recover from a loose regex on unexpected challenging input.
-   *
+   * </p>
+   * <p>
+   * This solution is sourced from <a href="https://stackoverflow.com/a/910798">this StackOverflow answer</a>
+   * </p>
    * @author gojomo
+   *
    */
   static class InterruptibleCharSequence implements CharSequence {
       CharSequence inner;
