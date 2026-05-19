@@ -144,12 +144,22 @@ public class ViewDefinitionValidator extends BaseValidator {
     boolean ok = true;
 
     if (select.hasChild("forEach")) {
+      if (select.hasChild("forEachOrNull") || select.hasChild("repeat")) {
+        rule(errors, "2024-11-14", IssueType.INVALID, stack, false, I18nConstants.VIEWDEFINITION_ITERATION_CONFLICT);
+        ok = false;
+      }
       Element e = select.getNamedChild("forEach");
       t = checkForEach(hostContext, errors, vd, select, stack.push(e, -1, null, null), e, resourceName, t, vec, vdesc, first);
     } else if (select.hasChild("forEachOrNull")) {
+      if (select.hasChild("repeat")) {
+        rule(errors, "2024-11-14", IssueType.INVALID, stack, false, I18nConstants.VIEWDEFINITION_ITERATION_CONFLICT);
+        ok = false;
+      }
       Element e = select.getNamedChild("forEachOrNull");
       t = checkForEachOrNull(hostContext, errors, vd, select, stack.push(e, -1, null, null), e, resourceName, t, vec, vdesc, first);
-    } 
+    } else if (select.hasChild("repeat")) {
+      t = checkRepeat(hostContext, errors, vd, select, stack, resourceName, t, vec, vdesc, first);
+    }
 
     if (t == null) {
       ok = false;
@@ -439,7 +449,7 @@ public class ViewDefinitionValidator extends BaseValidator {
 
   }
 
-  private TypeDetails checkForEachOrNull(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, Element parent, NodeStack stack, 
+  private TypeDetails checkForEachOrNull(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, Element parent, NodeStack stack,
       Element  expression, String resourceName,  TypeDetails t, VersionEvaluationContext vec, String vdesc, boolean first) {
     String expr = expression.primitiveValue();
     if (expr != null) {
@@ -449,12 +459,12 @@ public class ViewDefinitionValidator extends BaseValidator {
         TypeDetails td = null;
         try {
           td = vec.fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
-        } catch (Exception e) {     
+        } catch (Exception e) {
           rule(errors, "2024-11-14", IssueType.EXCEPTION, stack, false, I18nConstants.VIEWDEFINITION_PATH_ERROR, e.getMessage(), vdesc);
           return null;
         }
         if (td != null) {
-          for (IssueMessage s : warnings) {        
+          for (IssueMessage s : warnings) {
             warning(errors, "2024-11-14", IssueType.BUSINESSRULE, stack, false, I18nConstants.VIEWDEFINITION_PATH_WARNING, s.getMessage(), vdesc);
           }
         }
@@ -462,6 +472,50 @@ public class ViewDefinitionValidator extends BaseValidator {
       }
     }
     return null;
+  }
+
+  private TypeDetails checkRepeat(ValidationContext hostContext, List<ValidationMessage> errors, Element vd, Element parent, NodeStack stack,
+      String resourceName, TypeDetails t, VersionEvaluationContext vec, String vdesc, boolean first) {
+    List<Element> repeats = parent.getChildren("repeat");
+    List<ExpressionNode> nodes = new ArrayList<>();
+    TypeDetails result = new TypeDetails(null);
+    int i = 0;
+    for (Element repeat : repeats) {
+      String expr = repeat.primitiveValue();
+      if (expr != null) {
+        NodeStack repeatStack = stack.push(repeat, i, null, null);
+        ExpressionNode n = getParsedExpression(repeat, vec.fpe, expr, errors, repeatStack, UserDataNames.db_repeat);
+        if (n != null) {
+          nodes.add(n);
+          // Repeat paths are applied recursively to the focus and all yielded
+          // descendants, so a path may be invalid on the starting type but
+          // valid on a descendant yielded by another sibling path. Type-check
+          // errors are recorded as warnings rather than rejected outright.
+          List<IssueMessage> warnings = new ArrayList<>();
+          TypeDetails td = null;
+          try {
+            td = vec.fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
+          } catch (Exception e) {
+            warning(errors, "2024-11-14", IssueType.BUSINESSRULE, repeatStack, false, I18nConstants.VIEWDEFINITION_PATH_WARNING, e.getMessage(), vdesc);
+          }
+          if (td != null) {
+            result.update(td);
+          }
+          for (IssueMessage s : warnings) {
+            warning(errors, "2024-11-14", IssueType.BUSINESSRULE, repeatStack, false, I18nConstants.VIEWDEFINITION_PATH_WARNING, s.getMessage(), vdesc);
+          }
+        }
+      }
+      i++;
+    }
+    parent.setUserData(UserDataNames.db_repeat, nodes);
+    // If no path yielded any types, the runtime will produce no rows. Signal
+    // downstream validation to skip type-based checks so they do not fail
+    // against an empty type set.
+    if (result.hasNoTypes()) {
+      return null;
+    }
+    return result;
   }
 
   private boolean checkConstant(ValidationContext hostContext, List<ValidationMessage> errors, NodeStack stack, Element constant) {
