@@ -54,7 +54,7 @@ jobs:
             git diff --name-only --diff-filter=U > /tmp/conflicts.txt || true
             git merge --abort || true
           fi
-          git push origin "$BRANCH"
+          git push --force origin "$BRANCH"
           BODY=$(printf '%s\n' \
             "Automated upstream sync." \
             "" \
