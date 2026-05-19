@@ -514,8 +514,9 @@ public class Group extends DomainResource {
         /**
          * @param value {@link #value} (The value of the trait that holds (or does not hold - see 'exclude') for members of the group.)
          */
-        public GroupCharacteristicComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof CodeableConcept || value instanceof BooleanType || value instanceof Quantity || value instanceof Range || value instanceof Reference))
+        public GroupCharacteristicComponent setValue(DataType value) {
+          // R6 ballot4 added uri and Expression as allowed types for value[x]
+          if (value != null && !(value instanceof CodeableConcept || value instanceof BooleanType || value instanceof Quantity || value instanceof Range || value instanceof Reference || value instanceof UriType || value instanceof Expression))
             throw new FHIRException("Not the right type for Group.characteristic.value[x]: "+value.fhirType());
           this.value = value;
           return this;

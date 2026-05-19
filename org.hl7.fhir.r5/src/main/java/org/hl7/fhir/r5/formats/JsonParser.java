@@ -6189,8 +6189,18 @@ public class JsonParser extends JsonParserBase {
 
   protected void parseCitationClassificationComponentProperties(JsonObject json, Citation.CitationClassificationComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    if (json.has("type"))
-      res.setType(parseCodeableConcept(getJObject(json, "type")));
+    if (json.has("type")) {
+      // R6 ballot4 changed Citation.classification.type from 0..1 to 0..*; accept array by taking first.
+      com.google.gson.JsonElement t = json.get("type");
+      if (t.isJsonArray()) {
+        com.google.gson.JsonArray arr = t.getAsJsonArray();
+        if (arr.size() > 0 && arr.get(0).isJsonObject()) {
+          res.setType(parseCodeableConcept(arr.get(0).getAsJsonObject()));
+        }
+      } else if (t.isJsonObject()) {
+        res.setType(parseCodeableConcept(getJObject(json, "type")));
+      }
+    }
     if (json.has("classifier")) {
       JsonArray array = getJArray(json, "classifier");
       for (int i = 0; i < array.size(); i++) {
