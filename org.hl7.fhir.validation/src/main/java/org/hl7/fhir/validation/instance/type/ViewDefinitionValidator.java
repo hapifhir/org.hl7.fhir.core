@@ -432,7 +432,7 @@ public class ViewDefinitionValidator extends BaseValidator {
             warning(errors, "2024-11-14", IssueType.BUSINESSRULE, stack, false, I18nConstants.VIEWDEFINITION_PATH_WARNING, s.getMessage(), vdesc);
           }
         }
-        return td;
+        return td == null ? null : td.toSingleton();
       }
     }
     return null;
@@ -454,11 +454,11 @@ public class ViewDefinitionValidator extends BaseValidator {
           return null;
         }
         if (td != null) {
-          for (IssueMessage s : warnings) {        
+          for (IssueMessage s : warnings) {
             warning(errors, "2024-11-14", IssueType.BUSINESSRULE, stack, false, I18nConstants.VIEWDEFINITION_PATH_WARNING, s.getMessage(), vdesc);
           }
         }
-        return td;
+        return td == null ? null : td.toSingleton();
       }
     }
     return null;
