@@ -39,7 +39,7 @@ import org.hl7.fhir.validation.special.TxTesterScrubbers;
 import org.hl7.fhir.validation.special.TxTesterSorters;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
-import org.junit.Test;
+import org.junit.Ignore;import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -49,7 +49,7 @@ import com.google.common.base.Charsets;
 
 import static org.junit.Assert.assertNull;
 
-
+@Ignore("Terminology server and expected logic has changed considerably since 6.4.1's release")
 @RunWith(Parameterized.class)
 public class TerminologyServiceTests {
 
