@@ -486,7 +486,7 @@ public class Validator {
           warning(path+".forEach", expression, s.getMessage());
         }
       }
-      return td;
+      return td == null ? null : td.toSingleton();
     }
   }
 
@@ -511,7 +511,7 @@ public class Validator {
           warning(path+".forEachOrNull", expression, s.getMessage());
         }
       }
-      return td;
+      return td == null ? null : td.toSingleton();
     }
   }
 
