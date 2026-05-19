@@ -14506,8 +14506,15 @@ public class JsonParser extends JsonParserBase {
         res.getNote().add(parseAnnotation(getJsonObjectFromArray(array, i)));
       }
     };
-    if (json.has("variableRole"))
-      res.setVariableRole(parseCodeableConcept(getJObject(json, "variableRole")));
+    if (json.has("variableRole")) {
+      // R6 ballot4 changed variableRole from CodeableConcept to code; accept either shape
+      com.google.gson.JsonElement vr = json.get("variableRole");
+      if (vr.isJsonPrimitive()) {
+        res.setVariableRole(new CodeableConcept().addCoding(new Coding().setSystem("http://hl7.org/fhir/variable-role").setCode(vr.getAsString())));
+      } else {
+        res.setVariableRole(parseCodeableConcept(getJObject(json, "variableRole")));
+      }
+    }
     if (json.has("observed"))
       res.setObserved(parseReference(getJObject(json, "observed")));
     if (json.has("intended"))

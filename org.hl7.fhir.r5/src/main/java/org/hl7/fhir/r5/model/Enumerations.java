@@ -7877,43 +7877,28 @@ public class Enumerations {
     }
 
     public enum EvidenceVariableHandling {
-        /**
-         * A continuous variable is one for which, within the limits the variable ranges, any value is possible (from STATO http://purl.obolibrary.org/obo/STATO_0000251).
-         */
-        CONTINUOUS, 
-        /**
-         * A dichotomous variable is a categorical variable which is defined to have only 2 categories or possible values (from STATO http://purl.obolibrary.org/obo/STATO_0000090).
-         */
-        DICHOTOMOUS, 
-        /**
-         * An ordinal variable is a categorical variable where the discrete possible values are ordered or correspond to an implicit ranking (from STATO http://purl.obolibrary.org/obo/STATO_0000228).
-         */
-        ORDINAL, 
-        /**
-         * A polychotomous variable is a categorical variable which is defined to have minimally 2 categories or possible values. (from STATO  http://purl.obolibrary.org/obo/STATO_0000087).  Suggestion to limit code use to situations when neither dichotomous nor ordinal variables apply.
-         */
-        POLYCHOTOMOUS, 
-        /**
-         * added to help the parsers
-         */
+        CONTINUOUS,
+        DICHOTOMOUS,
+        ORDINAL,
+        POLYCHOTOMOUS,
+        /** R6 ballot4: boolean variable handling */
+        BOOLEAN,
+        /** R6 ballot4: extension-defined variable handling */
+        EXTENSION,
         NULL;
         public static EvidenceVariableHandling fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("continuous".equals(codeString))
-          return CONTINUOUS;
-        if ("dichotomous".equals(codeString))
-          return DICHOTOMOUS;
-        if ("ordinal".equals(codeString))
-          return ORDINAL;
-        if ("polychotomous".equals(codeString))
-          return POLYCHOTOMOUS;
-        throw new FHIRException("Unknown EvidenceVariableHandling code '"+codeString+"'");
+            if (codeString == null || "".equals(codeString)) return null;
+            if ("continuous".equals(codeString)) return CONTINUOUS;
+            if ("dichotomous".equals(codeString)) return DICHOTOMOUS;
+            if ("ordinal".equals(codeString)) return ORDINAL;
+            if ("polychotomous".equals(codeString)) return POLYCHOTOMOUS;
+            if ("boolean".equals(codeString)) return BOOLEAN;
+            if ("extension".equals(codeString)) return EXTENSION;
+            throw new FHIRException("Unknown EvidenceVariableHandling code '"+codeString+"'");
         }
         public static boolean isValidCode(String codeString) {
-            if (codeString == null || "".equals(codeString))
-                return false;
-          return Utilities.existsInList(codeString, "continuous", "dichotomous", "ordinal", "polychotomous");
+            if (codeString == null || "".equals(codeString)) return false;
+            return Utilities.existsInList(codeString, "continuous", "dichotomous", "ordinal", "polychotomous", "boolean", "extension");
         }
         public String toCode() {
           switch (this) {
@@ -7921,19 +7906,14 @@ public class Enumerations {
             case DICHOTOMOUS: return "dichotomous";
             case ORDINAL: return "ordinal";
             case POLYCHOTOMOUS: return "polychotomous";
+            case BOOLEAN: return "boolean";
+            case EXTENSION: return "extension";
             case NULL: return null;
             default: return "?";
           }
         }
         public String getSystem() {
-          switch (this) {
-            case CONTINUOUS: return "http://hl7.org/fhir/variable-handling";
-            case DICHOTOMOUS: return "http://hl7.org/fhir/variable-handling";
-            case ORDINAL: return "http://hl7.org/fhir/variable-handling";
-            case POLYCHOTOMOUS: return "http://hl7.org/fhir/variable-handling";
-            case NULL: return null;
-            default: return "?";
-          }
+          return this == NULL ? null : "http://hl7.org/fhir/variable-handling";
         }
         public String getDefinition() {
           switch (this) {
@@ -7941,6 +7921,8 @@ public class Enumerations {
             case DICHOTOMOUS: return "A dichotomous variable is a categorical variable which is defined to have only 2 categories or possible values (from STATO http://purl.obolibrary.org/obo/STATO_0000090).";
             case ORDINAL: return "An ordinal variable is a categorical variable where the discrete possible values are ordered or correspond to an implicit ranking (from STATO http://purl.obolibrary.org/obo/STATO_0000228).";
             case POLYCHOTOMOUS: return "A polychotomous variable is a categorical variable which is defined to have minimally 2 categories or possible values. (from STATO  http://purl.obolibrary.org/obo/STATO_0000087).  Suggestion to limit code use to situations when neither dichotomous nor ordinal variables apply.";
+            case BOOLEAN: return "Boolean variable handling (R6 ballot4).";
+            case EXTENSION: return "Extension-defined variable handling (R6 ballot4).";
             case NULL: return null;
             default: return "?";
           }
@@ -7951,6 +7933,8 @@ public class Enumerations {
             case DICHOTOMOUS: return "dichotomous variable";
             case ORDINAL: return "ordinal variable";
             case POLYCHOTOMOUS: return "polychotomous variable";
+            case BOOLEAN: return "boolean variable";
+            case EXTENSION: return "extension-defined";
             case NULL: return null;
             default: return "?";
           }
@@ -7959,55 +7943,37 @@ public class Enumerations {
 
   public static class EvidenceVariableHandlingEnumFactory implements EnumFactory<EvidenceVariableHandling> {
     public EvidenceVariableHandling fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("continuous".equals(codeString))
-          return EvidenceVariableHandling.CONTINUOUS;
-        if ("dichotomous".equals(codeString))
-          return EvidenceVariableHandling.DICHOTOMOUS;
-        if ("ordinal".equals(codeString))
-          return EvidenceVariableHandling.ORDINAL;
-        if ("polychotomous".equals(codeString))
-          return EvidenceVariableHandling.POLYCHOTOMOUS;
+        if (codeString == null || "".equals(codeString)) return null;
+        if ("continuous".equals(codeString)) return EvidenceVariableHandling.CONTINUOUS;
+        if ("dichotomous".equals(codeString)) return EvidenceVariableHandling.DICHOTOMOUS;
+        if ("ordinal".equals(codeString)) return EvidenceVariableHandling.ORDINAL;
+        if ("polychotomous".equals(codeString)) return EvidenceVariableHandling.POLYCHOTOMOUS;
+        if ("boolean".equals(codeString)) return EvidenceVariableHandling.BOOLEAN;
+        if ("extension".equals(codeString)) return EvidenceVariableHandling.EXTENSION;
         throw new IllegalArgumentException("Unknown EvidenceVariableHandling code '"+codeString+"'");
-        }
-
-        public Enumeration<EvidenceVariableHandling> fromType(PrimitiveType<?> code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.NULL, code);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.NULL, code);
-        if ("continuous".equals(codeString))
-          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.CONTINUOUS, code);
-        if ("dichotomous".equals(codeString))
-          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.DICHOTOMOUS, code);
-        if ("ordinal".equals(codeString))
-          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.ORDINAL, code);
-        if ("polychotomous".equals(codeString))
-          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.POLYCHOTOMOUS, code);
-        throw new FHIRException("Unknown EvidenceVariableHandling code '"+codeString+"'");
-        }
-    public String toCode(EvidenceVariableHandling code) {
-       if (code == EvidenceVariableHandling.NULL)
-           return null;
-       if (code == EvidenceVariableHandling.CONTINUOUS)
-        return "continuous";
-      if (code == EvidenceVariableHandling.DICHOTOMOUS)
-        return "dichotomous";
-      if (code == EvidenceVariableHandling.ORDINAL)
-        return "ordinal";
-      if (code == EvidenceVariableHandling.POLYCHOTOMOUS)
-        return "polychotomous";
-      return "?";
-   }
-    public String toSystem(EvidenceVariableHandling code) {
-      return code.getSystem();
-      }
     }
+
+    public Enumeration<EvidenceVariableHandling> fromType(PrimitiveType<?> code) throws FHIRException {
+        if (code == null) return null;
+        if (code.isEmpty()) return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.NULL, code);
+        String codeString = ((PrimitiveType) code).asStringValue();
+        if (codeString == null || "".equals(codeString)) return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.NULL, code);
+        if ("continuous".equals(codeString)) return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.CONTINUOUS, code);
+        if ("dichotomous".equals(codeString)) return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.DICHOTOMOUS, code);
+        if ("ordinal".equals(codeString)) return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.ORDINAL, code);
+        if ("polychotomous".equals(codeString)) return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.POLYCHOTOMOUS, code);
+        if ("boolean".equals(codeString)) return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.BOOLEAN, code);
+        if ("extension".equals(codeString)) return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.EXTENSION, code);
+        throw new FHIRException("Unknown EvidenceVariableHandling code '"+codeString+"'");
+    }
+    public String toCode(EvidenceVariableHandling code) {
+        if (code == null) return null;
+        return code.toCode();
+    }
+    public String toSystem(EvidenceVariableHandling code) {
+        return code.getSystem();
+    }
+  }
 
     public enum ExampleScenarioActorType {
         /**

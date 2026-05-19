@@ -2767,8 +2767,9 @@ public class EvidenceVariable extends MetadataResource {
         /**
          * @param value {@link #value} (Definition of the grouping.)
          */
-        public EvidenceVariableCategoryComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range))
+        public EvidenceVariableCategoryComponent setValue(DataType value) {
+          // R6 ballot4: added Reference as allowed type for value[x]
+          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range || value instanceof Reference))
             throw new FHIRException("Not the right type for EvidenceVariable.category.value[x]: "+value.fhirType());
           this.value = value;
           return this;

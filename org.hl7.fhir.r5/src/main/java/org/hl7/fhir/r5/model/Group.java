@@ -54,50 +54,36 @@ import ca.uhn.fhir.model.api.annotation.Block;
 public class Group extends DomainResource {
 
     public enum GroupMembershipBasis {
-        /**
-         * The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.
-         */
-        DEFINITIONAL, 
-        /**
-         * The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.
-         */
-        ENUMERATED, 
-        /**
-         * added to help the parsers with the generic types
-         */
+        DEFINITIONAL,
+        /** R6 ballot4: conceptual group (definitional, not bound to FHIR types) */
+        CONCEPTUAL,
+        ENUMERATED,
         NULL;
         public static GroupMembershipBasis fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("definitional".equals(codeString))
-          return DEFINITIONAL;
-        if ("enumerated".equals(codeString))
-          return ENUMERATED;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown GroupMembershipBasis code '"+codeString+"'");
+            if (codeString == null || "".equals(codeString)) return null;
+            if ("definitional".equals(codeString)) return DEFINITIONAL;
+            if ("conceptual".equals(codeString)) return CONCEPTUAL;
+            if ("enumerated".equals(codeString)) return ENUMERATED;
+            if (Configuration.isAcceptInvalidEnums()) return null;
+            throw new FHIRException("Unknown GroupMembershipBasis code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
             case DEFINITIONAL: return "definitional";
+            case CONCEPTUAL: return "conceptual";
             case ENUMERATED: return "enumerated";
             case NULL: return null;
             default: return "?";
           }
         }
         public String getSystem() {
-          switch (this) {
-            case DEFINITIONAL: return "http://hl7.org/fhir/group-membership-basis";
-            case ENUMERATED: return "http://hl7.org/fhir/group-membership-basis";
-            case NULL: return null;
-            default: return "?";
-          }
+          return this == NULL ? null : "http://hl7.org/fhir/group-membership-basis";
         }
         public String getDefinition() {
           switch (this) {
-            case DEFINITIONAL: return "The Group.characteristics specified are both necessary and sufficient to determine membership. All entities that meet the criteria are considered to be members of the group, whether referenced by the group or not. If members are present, they are individuals that happen to be known as meeting the Group.characteristics. The list cannot be presumed to be complete.";
-            case ENUMERATED: return "The Group.characteristics are necessary but not sufficient to determine membership. Membership is determined by being listed as one of the Group.member.";
+            case DEFINITIONAL: return "The Group.characteristics specified are both necessary and sufficient to determine membership.";
+            case CONCEPTUAL: return "The Group.characteristics specified are both necessary and sufficient to determine membership; not bound to FHIR types (R6 ballot4).";
+            case ENUMERATED: return "The Group.characteristics are necessary but not sufficient to determine membership; membership is determined by being listed as one of the Group.member.";
             case NULL: return null;
             default: return "?";
           }
@@ -105,6 +91,7 @@ public class Group extends DomainResource {
         public String getDisplay() {
           switch (this) {
             case DEFINITIONAL: return "Definitional";
+            case CONCEPTUAL: return "Conceptual";
             case ENUMERATED: return "Enumerated";
             case NULL: return null;
             default: return "?";
@@ -114,42 +101,30 @@ public class Group extends DomainResource {
 
   public static class GroupMembershipBasisEnumFactory implements EnumFactory<GroupMembershipBasis> {
     public GroupMembershipBasis fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("definitional".equals(codeString))
-          return GroupMembershipBasis.DEFINITIONAL;
-        if ("enumerated".equals(codeString))
-          return GroupMembershipBasis.ENUMERATED;
+        if (codeString == null || "".equals(codeString)) return null;
+        if ("definitional".equals(codeString)) return GroupMembershipBasis.DEFINITIONAL;
+        if ("conceptual".equals(codeString)) return GroupMembershipBasis.CONCEPTUAL;
+        if ("enumerated".equals(codeString)) return GroupMembershipBasis.ENUMERATED;
         throw new IllegalArgumentException("Unknown GroupMembershipBasis code '"+codeString+"'");
-        }
-        public Enumeration<GroupMembershipBasis> fromType(PrimitiveType<?> code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.NULL, code);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.NULL, code);
-        if ("definitional".equals(codeString))
-          return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.DEFINITIONAL, code);
-        if ("enumerated".equals(codeString))
-          return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.ENUMERATED, code);
-        throw new FHIRException("Unknown GroupMembershipBasis code '"+codeString+"'");
-        }
-    public String toCode(GroupMembershipBasis code) {
-       if (code == GroupMembershipBasis.NULL)
-           return null;
-       if (code == GroupMembershipBasis.DEFINITIONAL)
-        return "definitional";
-      if (code == GroupMembershipBasis.ENUMERATED)
-        return "enumerated";
-      return "?";
-   }
-    public String toSystem(GroupMembershipBasis code) {
-      return code.getSystem();
-      }
     }
+    public Enumeration<GroupMembershipBasis> fromType(PrimitiveType<?> code) throws FHIRException {
+        if (code == null) return null;
+        if (code.isEmpty()) return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.NULL, code);
+        String codeString = ((PrimitiveType) code).asStringValue();
+        if (codeString == null || "".equals(codeString)) return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.NULL, code);
+        if ("definitional".equals(codeString)) return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.DEFINITIONAL, code);
+        if ("conceptual".equals(codeString)) return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.CONCEPTUAL, code);
+        if ("enumerated".equals(codeString)) return new Enumeration<GroupMembershipBasis>(this, GroupMembershipBasis.ENUMERATED, code);
+        throw new FHIRException("Unknown GroupMembershipBasis code '"+codeString+"'");
+    }
+    public String toCode(GroupMembershipBasis code) {
+        if (code == null) return null;
+        return code.toCode();
+    }
+    public String toSystem(GroupMembershipBasis code) {
+        return code.getSystem();
+    }
+  }
 
     public enum GroupType {
         /**
