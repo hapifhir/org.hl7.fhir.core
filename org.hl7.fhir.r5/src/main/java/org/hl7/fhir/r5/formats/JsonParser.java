@@ -14731,8 +14731,18 @@ public class JsonParser extends JsonParserBase {
       res.setType(parseCodeableConcept(getJObject(json, "type")));
     if (json.has("rating"))
       res.setRating(parseCodeableConcept(getJObject(json, "rating")));
-    if (json.has("rater"))
-      res.setRaterElement(parseString(json.get("rater").getAsString()));
+    if (json.has("rater")) {
+      // R6 ballot4 changed Evidence.certainty.rater from 0..1 to 0..*; accept array by taking first.
+      com.google.gson.JsonElement r = json.get("rater");
+      if (r.isJsonArray()) {
+        com.google.gson.JsonArray arr = r.getAsJsonArray();
+        if (arr.size() > 0 && arr.get(0).isJsonPrimitive()) {
+          res.setRaterElement(parseString(arr.get(0).getAsString()));
+        }
+      } else if (r.isJsonPrimitive()) {
+        res.setRaterElement(parseString(r.getAsString()));
+      }
+    }
     if (json.has("_rater"))
       parseElementProperties(getJObject(json, "_rater"), res.getRaterElement());
     if (json.has("subcomponent")) {
