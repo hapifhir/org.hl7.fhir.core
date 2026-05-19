@@ -4,7 +4,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;import java.util.Set;import java.util.concurrent.TimeoutException;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,8 +36,8 @@ class RegexTimeoutTests {
 
       @AfterAll
       static void afterAll() throws InterruptedException {
-        // We need a tiny amount of delay here, the interruption is intruduced as regexs process chars, which is fast,
-        // but not instantaneous.
+        // We need a tiny amount of delay here. Interruption is introduced as regexs process chars, which is fast, but
+        // not instantaneous.
         Thread.sleep(10);
         Set<Thread> threadsAfter = Thread.getAllStackTraces().keySet();
         if (threadsAfter.size() != threadsBefore.size())
