@@ -39,7 +39,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Charsets;
 
-@Ignore("Terminology server and expected logic has changed considerably since 6.4.1's release")
+@Ignore("Terminology server and expected logic has changed considerably since 6.9.4's release")
 @RunWith(Parameterized.class)
 public class ExternalTerminologyServiceTests implements ITxTesterLoader {
 
