@@ -1484,4 +1484,5 @@ public class I18nConstants {
   public static final String VALIDATION_MAX_MESSAGES_EXCEEDED = "VALIDATION_MAX_MESSAGES_EXCEEDED";
   public static final String VALIDATION_TIMEOUT_EXCEEDED = "VALIDATION_TIMEOUT_EXCEEDED";
   public static final String ABSTRACT_CODE_NOT_ALLOWED = "ABSTRACT_CODE_NOT_ALLOWED";
+  public static final String REGEX_MATCH_TIMED_OUT = "REGEX_MATCH_TIMED_OUT";
 }

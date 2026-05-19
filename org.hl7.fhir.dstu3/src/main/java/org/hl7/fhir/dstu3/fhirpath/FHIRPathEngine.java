@@ -9,7 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
@@ -67,7 +70,7 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import ca.uhn.fhir.util.ElementUtil;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
-
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 /**
  *
  * @author Grahame Grieve
@@ -79,6 +82,8 @@ public class FHIRPathEngine {
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
 
   /**
@@ -1928,10 +1933,6 @@ public class FHIRPathEngine {
     return new TypeDetails(status, allTypes.keySet());
   }
 
-  //	private boolean isPrimitiveType(String s) {
-  //		return s.equals("boolean") || s.equals("integer") || s.equals("decimal") || s.equals("base64Binary") || s.equals("instant") || s.equals("string") || s.equals("uri") || s.equals("date") || s.equals("dateTime") || s.equals("time") || s.equals("code") || s.equals("oid") || s.equals("id") || s.equals("unsignedInt") || s.equals("positiveInt") || s.equals("markdown");
-  //	}
-
 	private List<Base> evaluateFunction(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     switch (exp.getFunction()) {
     case Empty : return funcEmpty(context, focus, exp);
@@ -2135,7 +2136,11 @@ public class FHIRPathEngine {
     String repl = convertToString(execute(context, focus, exp.getParameters().get(1), true));
 
     if (focus.size() == 1 && !Utilities.noString(regex)) {
-      result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)));
+      try {
+        result.add(new StringType(RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl, regexTimeoutMillis)));
+      } catch (TimeoutException e) {
+        throw new FHIRException("Timeout evaluating regex: " + regex, e);
+      }
     } else {
       result.add(new StringType(convertToString(focus.get(0))));
     }
@@ -2432,8 +2437,13 @@ public class FHIRPathEngine {
       String st = convertToString(focus.get(0));
       if (Utilities.noString(st))
         result.add(new BooleanType(false));
-      else
-        result.add(new BooleanType(st.matches(sw)));
+      else {
+        try {
+          result.add(new BooleanType(RegexTimeout.matches(st, sw, regexTimeoutMillis)));
+        } catch (TimeoutException e) {
+          throw new FHIRException("Timeout evaluating regex: " + sw, e);
+        }
+      }
     } else
       result.add(new BooleanType(false));
     return result;

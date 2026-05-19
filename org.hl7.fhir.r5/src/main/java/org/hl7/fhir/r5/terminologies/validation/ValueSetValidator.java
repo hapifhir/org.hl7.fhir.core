@@ -32,6 +32,7 @@ import java.io.IOException;
  */
 
 import java.util.*;
+import java.util.concurrent.TimeoutException;
 
 
 import lombok.Getter;
@@ -80,6 +81,8 @@ import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
 import org.hl7.fhir.utilities.i18n.subtag.LanguageSubtagRegistry;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.i18n.LanguageTag;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
+
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
@@ -2080,7 +2083,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (d instanceof Coding) {
         return CodingUtilities.filterMatches((Coding) d, f.getValue());
       } else {
-        return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
+        return d != null && d.primitiveValue() != null && regexMatchSafe(d.primitiveValue(), f.getValue());
       }
     case IN:
       if (f.getValue() == null) {
@@ -2134,7 +2137,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         return false;
       }
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
-      return d != null && d.primitiveValue() != null && d.primitiveValue().matches(f.getValue());
+      return d != null && d.primitiveValue() != null && regexMatchSafe(d.primitiveValue(), f.getValue());
     default:
       log.error("todo: handle known property filters with op = "+f.getOp());
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__PROPERTY_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
@@ -2142,7 +2145,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private boolean codeInRegexFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {
-    return code.matches(f.getValue());
+    return regexMatchSafe(code, f.getValue());
+  }
+  private boolean regexMatchSafe(String value, String regex) {
+    try {
+      return RegexTimeout.matches(value, regex);
+    } catch (TimeoutException e) {
+      throw new FHIRException(context.formatMessage(I18nConstants.REGEX_MATCH_TIMED_OUT, regex));
+    }
   }
 
   private boolean codeInConceptFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) throws FHIRException {
