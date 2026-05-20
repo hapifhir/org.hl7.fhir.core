@@ -74,7 +74,7 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
     }
 
     public boolean matches(String url, String path) {
-      return stringMatches(profileUrl, url) && stringMatches(elementPath, path);
+      return stringMatches(profileUrl, url) && compliesWithPathMatches(elementPath, path);
     }
   }
   
@@ -109,6 +109,43 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
     } else {      
       return specifier.equals(actual);
     }
+  }
+
+  boolean compliesWithPathMatches(String specifier, String actual) {
+    if (specifier == null) {
+      return true;
+    } else if (actual == null) {
+      return false;
+    }
+    String[] expected = specifier.split("\\.");
+    String[] found = actual.split("\\.");
+    if (expected.length > found.length) {
+      return false;
+    }
+    for (int i = 0; i < expected.length; i++) {
+      if (!compliesWithPathSegmentMatches(expected[i], found[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean compliesWithPathSegmentMatches(String specifier, String actual) {
+    if ("*".equals(specifier)) {
+      return true;
+    }
+    return normalizeCompliesWithPathSegment(specifier).equals(normalizeCompliesWithPathSegment(actual));
+  }
+
+  private String normalizeCompliesWithPathSegment(String segment) {
+    String normalized = segment;
+    if (normalized.contains(":")) {
+      normalized = normalized.substring(0, normalized.indexOf(":"));
+    }
+    if (normalized.contains("[")) {
+      normalized = normalized.substring(0, normalized.indexOf("["));
+    }
+    return normalized;
   }
 
   boolean stringMatches(String specifier, String actual) {

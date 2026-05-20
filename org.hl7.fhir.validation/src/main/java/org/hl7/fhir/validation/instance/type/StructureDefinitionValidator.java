@@ -324,7 +324,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     String loc = vm.getLocation();
     String msg = vm.getMessage();
     if (loc != null && !msg.contains(loc)) {
-      return "at " + loc + ": " + msg;
+      return loc + ": " + msg;
     }
     return msg;
   }

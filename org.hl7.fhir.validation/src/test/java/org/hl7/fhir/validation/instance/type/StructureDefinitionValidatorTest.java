@@ -34,7 +34,7 @@ class StructureDefinitionValidatorTest {
     List<ValidationMessage> errors = new ArrayList<>();
 
     validator.reportCompliesWithMessages(errors, "StructureDefinition", CLAIMED_PROFILE, List.of(
-      reason("Patient.name", "suppressed reason", IssueSeverity.ERROR),
+      reason("Patient.name:official.given", "suppressed reason", IssueSeverity.ERROR),
       reason("Patient.birthDate", "reported reason", IssueSeverity.ERROR)));
 
     assertEquals(1, errors.size());
@@ -72,6 +72,19 @@ class StructureDefinitionValidatorTest {
     assertEquals(I18nConstants.SD_EXTENSION_COMPLIES_WITH_WARNING, errors.get(0).getMessageId());
     assertTrue(errors.get(0).getMessage().contains("remaining warning"), errors.get(0).getMessage());
     assertFalse(errors.get(0).getMessage().contains("suppressed error"), errors.get(0).getMessage());
+  }
+
+  @Test
+  void includesLocationWithoutHardcodedEnglishPrefix() throws Exception {
+    StructureDefinitionValidator validator = validatorWithAdvisor("");
+    List<ValidationMessage> errors = new ArrayList<>();
+
+    validator.reportCompliesWithMessages(errors, "StructureDefinition", CLAIMED_PROFILE, List.of(
+      reason("Patient.birthDate", "reported reason", IssueSeverity.ERROR)));
+
+    assertEquals(1, errors.size());
+    assertTrue(errors.get(0).getMessage().contains("Patient.birthDate: reported reason"), errors.get(0).getMessage());
+    assertFalse(errors.get(0).getMessage().contains("at Patient.birthDate"), errors.get(0).getMessage());
   }
 
   private static TestStructureDefinitionValidator validatorWithAdvisor(String advisorSource) throws Exception {

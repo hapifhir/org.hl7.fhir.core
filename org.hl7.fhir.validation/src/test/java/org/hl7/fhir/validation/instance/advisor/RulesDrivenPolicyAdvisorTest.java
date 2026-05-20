@@ -41,6 +41,7 @@ class RulesDrivenPolicyAdvisorTest {
 
     assertTrue(advisor.isSuppressMessageId("Patient", "SOME_MESSAGE"));
     assertTrue(advisor.isSuppressCompliesWithReason("http://example.org/Profile", "Patient.name"));
+    assertTrue(advisor.isSuppressCompliesWithReason("http://example.org/Profile", "Patient.name:official.given"));
     assertTrue(advisor.isSuppressCompliesWithReason("http://example.org/Other", "Observation.code"));
     assertFalse(advisor.isSuppressCompliesWithReason("http://example.org/Profile", "Patient.birthDate"));
   }
