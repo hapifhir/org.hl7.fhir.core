@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.utils.sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -23,10 +24,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /**
- * Tests that the SQL on FHIR Validator's property allow-lists accept the fields declared on the
- * ViewDefinition logical model in the spec (including inherited Resource/DomainResource/
- * CanonicalResource fields and backbone Element fields), while still rejecting genuinely unknown
- * properties.
+ * Tests for the SQL on FHIR {@link Validator}. Covers two concerns:
+ * <ul>
+ *   <li>Property allow-lists accept the fields declared on the ViewDefinition logical model
+ *       (including inherited Resource/DomainResource/CanonicalResource fields and backbone
+ *       Element fields), while still rejecting genuinely unknown properties.</li>
+ *   <li>Collection-status handling under {@code forEach} and {@code forEachOrNull} - a
+ *       singleton column path under a forEach iteration must not warn about returning
+ *       multiple values, while genuinely multi-valued paths still must.</li>
+ * </ul>
  *
  * @author John Grimes
  */
@@ -39,6 +45,7 @@ class ValidatorTests {
   static void setUpAll() {
     context = TestingUtilities.getSharedWorkerContext();
     fpe = new FHIRPathEngine(context);
+    fpe.setEmitSQLonFHIRWarning(true);
   }
 
   /**
@@ -96,6 +103,25 @@ class ValidatorTests {
           .collect(Collectors.joining("\n  "));
       fail("Expected no 'Unknown JSON property' issues but got:\n  " + detail);
     }
+  }
+
+  private static void assertNoIssueContains(Validator v, String substring) {
+    for (ValidationMessage m : v.getIssues()) {
+      assertFalse(m.getMessage() != null && m.getMessage().contains(substring),
+          "Expected no issue containing '" + substring + "' but found: " + m.getMessage());
+    }
+  }
+
+  private static void assertIssueContains(Validator v, String substring) {
+    boolean found = false;
+    for (ValidationMessage m : v.getIssues()) {
+      if (m.getMessage() != null && m.getMessage().contains(substring)) {
+        found = true;
+        break;
+      }
+    }
+    assertTrue(found, "Expected an issue containing '" + substring + "' but found none. All issues: "
+        + v.getIssues());
   }
 
   // ViewDefinition logical-model fields and inherited Resource fields that SUSHI emits on
@@ -206,5 +232,145 @@ class ValidatorTests {
     assertEquals(1, unknown.size(), "expected exactly one unknown-property issue");
     assertTrue(unknown.get(0).getMessage().contains("foo"),
         "expected the unknown-property issue to name 'foo' but was: " + unknown.get(0).getMessage());
+  }
+
+  // A 0..1 column under forEach over a 0..* collection must not warn that the column
+  // path "might return multiple values" - each iteration sees a single element.
+  @Test
+  void forEachWithSingletonColumnDoesNotWarn() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t1\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEach\": \"address\",\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"use\",  \"path\": \"use\",  \"type\": \"code\" },\n"
+        + "      { \"name\": \"city\", \"path\": \"city\", \"type\": \"string\" }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertNoIssueContains(v, "might return multiple values");
+  }
+
+  // Same as above but with forEachOrNull.
+  @Test
+  void forEachOrNullWithSingletonColumnDoesNotWarn() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t2\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEachOrNull\": \"address\",\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"use\", \"path\": \"use\", \"type\": \"code\" }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertNoIssueContains(v, "might return multiple values");
+  }
+
+  // A nested select underneath a forEach should also see a singleton starting type.
+  @Test
+  void nestedSelectUnderForEachDoesNotWarn() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t3\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEach\": \"address\",\n"
+        + "    \"select\": [{\n"
+        + "      \"column\": [\n"
+        + "        { \"name\": \"use\", \"path\": \"use\", \"type\": \"code\" }\n"
+        + "      ]\n"
+        + "    }]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertNoIssueContains(v, "might return multiple values");
+  }
+
+  // A genuinely collection-valued column path (line is 0..* on Address) must still warn
+  // when not marked collection: true. Regression guard.
+  @Test
+  void collectionColumnPathUnderForEachStillWarnsWhenNotMarked() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t4\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEach\": \"address\",\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"line\", \"path\": \"line\", \"type\": \"string\" }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertIssueContains(v, "might return multiple values");
+  }
+
+  // Same as above but with collection: true - no warning should fire.
+  @Test
+  void collectionColumnPathUnderForEachIsQuietWhenMarked() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t5\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEach\": \"address\",\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"line\", \"path\": \"line\", \"type\": \"string\", \"collection\": true }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertNoIssueContains(v, "might return multiple values");
+    assertNoIssueContains(v, "collection-is-true-but-path-is-singleton");
+  }
+
+  // A top-level multi-valued column path (no forEach) must still warn.
+  @Test
+  void topLevelMultiValuedColumnStillWarns() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t6\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"g\", \"path\": \"name.given\", \"type\": \"string\" }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertIssueContains(v, "might return multiple values");
+  }
+
+  // A column path expression that is a union literal returns a collection regardless of
+  // the starting type. The warning must still fire - proves the downgrade only changes
+  // the starting type, not the column-path's own returned collection status.
+  @Test
+  void columnPathUnionLiteralUnderForEachStillWarns() throws Exception {
+    String vd = "{\n"
+        + "  \"resourceType\": \"ViewDefinition\",\n"
+        + "  \"name\": \"t7\",\n"
+        + "  \"resource\": \"Patient\",\n"
+        + "  \"select\": [{\n"
+        + "    \"forEach\": \"name.given\",\n"
+        + "    \"column\": [\n"
+        + "      { \"name\": \"u\", \"path\": \"1 | 2 | 3\", \"type\": \"integer\" }\n"
+        + "    ]\n"
+        + "  }]\n"
+        + "}";
+    Validator v = newValidator();
+    v.checkViewDefinition("ViewDefinition", JsonParser.parseObject(vd));
+    assertIssueContains(v, "might return multiple values");
   }
 }
