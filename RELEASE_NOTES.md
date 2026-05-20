@@ -1,8 +1,7 @@
 ## Validator Changes
 
-* Time limitations on regex processing in ValueSetValidator
+* no changes
 
 ## Other code changes
 
-* Time limitations on regex processing in FHIRPathEngine implementations
-
+* no changes
