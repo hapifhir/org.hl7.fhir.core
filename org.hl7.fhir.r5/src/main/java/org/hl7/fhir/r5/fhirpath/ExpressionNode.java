@@ -777,10 +777,11 @@ public class ExpressionNode {
   }
 
   public ExpressionNode getInnerFunction(String name) {
-    if (inner != null) {
-      if (inner.getKind() == Kind.Function && name.equals(inner.getName())) {
-        return inner;
-      }
+    if (inner == null) {
+      return null;
+    }
+    if (inner.getKind() == Kind.Function && name.equals(inner.getName())) {
+      return inner;
     }
     return null;
   }

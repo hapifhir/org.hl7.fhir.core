@@ -5920,7 +5920,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private StructureDefinition findMatchingEntryProfile(ElementWithInvariant inv, String criteria) {
     StructureDefinition sd = context.getContext().fetchTypeDefinition(criteria);
     if (sd == null) {
-      sd = context.getContext().fetchResource(StructureDefinition.class, criteria);
+      sd = context.getContext().fetchResource(StructureDefinition.class, criteria, IWorkerContext.VersionResolutionRules.PACKAGE);
     }
     if (sd != null) {
       return sd;

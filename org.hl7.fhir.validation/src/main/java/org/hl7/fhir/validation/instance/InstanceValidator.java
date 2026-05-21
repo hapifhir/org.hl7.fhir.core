@@ -2720,7 +2720,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     ElementDefinition ed = stack.getDefinition();
     if (ed != null && "Resource.id".equals(ed.getBase().getPath())) {
-      rule(errors, "2026-05-20", IssueType.BUSINESSRULE, stack, false, I18nConstants.EXTENSION_FHIR_NOT_RESOURCE_ID, extensionUrl);
+      rule(errors, "2026-05-20", IssueType.BUSINESSRULE, stack, false, I18nConstants.FHIR_RESOURCE_ID_CANT_BE_EXTENDED, extensionUrl);
       return false;
     }
     boolean ok = false;
