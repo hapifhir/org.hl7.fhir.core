@@ -36,8 +36,8 @@ public class TranslationOverrideOptions {
 
   @CommandLine.Option(
       names = {"-po"},
-      description = "Load translations from a .po file at runtime (overrides the shipped properties for that bundle+locale). Repeatable. Filename must follow the project convention, e.g. validator-messages-de.po or rendering-phrases-pt_BR.po.",
-      scope = CommandLine.ScopeType.INHERIT)
+      description = "Load translations from a .po file at runtime (overrides the shipped properties for that bundle+locale). Repeatable. Filename must follow the project convention, e.g. validator-messages-de.po or rendering-phrases-pt_BR.po."
+      )
   public void setPoFiles(File[] files) {
     if (files != null) {
       poFiles.addAll(Arrays.asList(files));
@@ -47,8 +47,8 @@ public class TranslationOverrideOptions {
 
   @CommandLine.Option(
       names = {"-po-dir"},
-      description = "Load every .po file under the given directory at runtime. Same naming convention as -po.",
-      scope = CommandLine.ScopeType.INHERIT)
+      description = "Load every .po file under the given directory at runtime. Same naming convention as -po."
+      )
   public void setPoDirectory(File dir) {
     if (dir == null) return;
     try {
@@ -66,8 +66,8 @@ public class TranslationOverrideOptions {
                     "include (default, matches the maintainer's import): keep them. " +
                     "exclude: drop them so English is shown. " +
                     "warn: keep them and log the affected keys.",
-      converter = StaleHandlingConverter.class,
-      scope = CommandLine.ScopeType.INHERIT)
+      converter = StaleHandlingConverter.class
+      )
   public void setStaleHandling(POGenerator.StaleHandling handling) {
     if (handling != null) {
       staleHandling = handling;
