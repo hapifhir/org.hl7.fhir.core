@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.conformance.profile;
+package org.hl7.fhir.validation.instance.type;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +23,6 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TranslatorXml;
 import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -672,7 +671,7 @@ public class CompliesWithChecker {
     return true;
   }
 
-  private class DiscriminatorData {
+  private static class DiscriminatorData {
     private ValueSet vs;
     private DataType value;
 
