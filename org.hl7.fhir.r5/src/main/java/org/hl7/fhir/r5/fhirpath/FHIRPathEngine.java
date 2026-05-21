@@ -4677,10 +4677,12 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcSection(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    // TODO: this method needs to be written yet
     return null;
   }
 
   private List<Base> funcEntry(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    // TODO: this method needs to be written yet
     return null;
   }
 
