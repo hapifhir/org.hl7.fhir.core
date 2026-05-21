@@ -10,7 +10,6 @@ import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageLoadController;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -19,25 +18,25 @@ import java.util.Locale;
 public interface IWorkerContextManager {
 
   interface IPackageLoadingTracker {
-    public void packageLoaded(String pid, String version);
+    void packageLoaded(String pid, String version);
   }
 
   interface ICanonicalResourceLocator {
     void findResource(Object caller, String url, IWorkerContext.VersionResolutionRules rules); // if it can be found, put it in the context
   }
 
-  public IPackageCacheManager packageManager();
+  IPackageCacheManager packageManager();
 
-  public void setPackageManager(IPackageCacheManager manager);
+  void setPackageManager(IPackageCacheManager manager);
 
-  public PackageLoadController getPackageLoadController();
+  PackageLoadController getPackageLoadController();
 
   /**
    * Get the expansion parameters passed through the terminology server when txServer calls are made
    *
    * Note that the Validation Options override these when they are specified on validateCode
    */
-  public void setExpansionParameters(Parameters expParameters);
+  void setExpansionParameters(Parameters expParameters);
 
   /**
    * Sets the locale for this worker context.
@@ -96,8 +95,8 @@ public interface IWorkerContextManager {
    * @param isMaster - marks that the package being loaded is the very first package loaded, the master definitions
    * @return the number of resources loaded
    */
-  int loadFromPackage(NpmPackage npmPackage, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException;
-  default int loadFromPackage(NpmPackage npmPackage, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+  int loadFromPackage(NpmPackage npmPackage, IContextResourceLoader loader, boolean isMaster) throws  IOException, FHIRException;
+  default int loadFromPackage(NpmPackage npmPackage, IContextResourceLoader loader) throws IOException, FHIRException {
     return loadFromPackage(npmPackage, loader, false);
   }
 
@@ -110,8 +109,8 @@ public interface IWorkerContextManager {
    * @param isMaster - marks that the package being loaded is the very first package loaded, the master definitions
    * @return the number of resources loaded
    */
-  int loadPackage(NpmPackage pi, boolean isMaster) throws FileNotFoundException, IOException, FHIRException;
-  default int loadPackage(NpmPackage npmPackage) throws FileNotFoundException, IOException, FHIRException {
+  int loadPackage(NpmPackage pi, boolean isMaster) throws IOException, FHIRException;
+  default int loadPackage(NpmPackage npmPackage) throws IOException, FHIRException {
     return loadPackage(npmPackage, false);
   }
 
@@ -142,7 +141,7 @@ public interface IWorkerContextManager {
    * @param pcm - used to find and load additional dependencies
    * @return the number of resources loaded
    */
-  int loadFromPackageAndDependencies(NpmPackage npmPackage, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
+  int loadFromPackageAndDependencies(NpmPackage npmPackage, IContextResourceLoader loader, BasePackageCacheManager pcm) throws IOException, FHIRException;
 
   List<String> getLoadedPackages();
 
