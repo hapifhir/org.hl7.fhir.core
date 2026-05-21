@@ -25,7 +25,7 @@ public class PackageInformation {
    * these are the ones that provide type definitions, and if there's a version-less request
    * for any of these, the master ones override any other version.
    */
-  @Getter @Setter private boolean isMaster;
+  @Getter private boolean isMaster;
 
   public PackageInformation(String id, String version, String fhirVersion, Date date, String name, String canonical, String web) {
     super();
@@ -54,6 +54,19 @@ public class PackageInformation {
     this.canonical = pi.canonical();
     this.web = pi.getWebLocation();
     this.fhirVersion = pi.fhirVersion();
+    dependencies.addAll(pi.dependencies());
+  }
+
+  public PackageInformation(NpmPackage pi, boolean isMaster) {
+    super();
+    this.id = pi.name();
+    this.version = pi.version();
+    this.date = pi.dateAsDate();
+    this.name = pi.title();
+    this.canonical = pi.canonical();
+    this.web = pi.getWebLocation();
+    this.fhirVersion = pi.fhirVersion();
+    this.isMaster = isMaster;
     dependencies.addAll(pi.dependencies());
   }
 

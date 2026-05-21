@@ -192,6 +192,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private String date;
   private IValidatorFactory validatorFactory;
   private boolean progress;
+
   @Getter private final List<String> loadedPackages = new ArrayList<>();
   private boolean canNoTS;
   private XVerExtensionManager xverManager;
@@ -236,10 +237,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     packageCacheManager = other.packageCacheManager;
     loaderFactory = other.loaderFactory;
     packageLoadController = other.packageLoadController.copy();
-  }
-
-  public List<String> getLoadedPackages() {
-    return loadedPackages;
   }
 
   // -- Initializations
@@ -564,11 +561,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return loadFromPackageAndDependenciesInt(pi, loader, pcm, pi.name()+"#"+pi.version());
   }
 
-  @Override
-  public List<String> getloadedPackages() {
-    return loadedPackages;
-  }
-
   public int loadFromPackageAndDependenciesInt(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm, String path) throws IOException, FHIRException {
     int t = 0;
 
@@ -584,7 +576,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     t = t + loadFromPackageInt(pi, loader, loader.getTypes(), false);
     return t;
   }
-
 
   public int loadFromPackageInt(NpmPackage pi, IContextResourceLoader loader, Set<String> types, boolean isMaster) throws IOException, FHIRException {
     int t = 0;
@@ -609,8 +600,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       types = loader.getTypes();
     }
     boolean hasIG = false;
-    PackageInformation pii = new PackageInformation(pi);
-    pii.setMaster(isMaster);
+    PackageInformation pii = new PackageInformation(pi, isMaster);
     if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad() || !allowLazyLoading) {
       // can't lazy load R2 because of valueset/codesystem implementation
       if (types == null || types.size() == 0) {
