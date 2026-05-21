@@ -1511,7 +1511,9 @@ public class FHIRPathEngine {
     case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case Precision: return checkParamCount(lexer, location, exp, 0);
     case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
-    case Debug: return checkParamCount(lexer, location, exp, 0, 1);
+      case Debug: return checkParamCount(lexer, location, exp, 0, 1);
+      case Section: return checkParamCount(lexer, location, exp, 1, 1);
+      case Entry: return checkParamCount(lexer, location, exp, 1, 1);
     case Custom: if (details != null) {
         return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
       }
@@ -3928,6 +3930,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       case Debug: {
         return focus;
       }
+      case Section: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, "Composition.section");
+      }
+      case Entry: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, "Resource");
+      }
     case Custom : {
       return hostServices.checkFunction(this, context.appInfo,exp.getName(), focus, paramTypes);
     }
@@ -4210,7 +4220,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     case HighBoundary : return funcHighBoundary(context, focus, exp);
     case Precision : return funcPrecision(context, focus, exp);
     case hasTemplateIdOf: return funcHasTemplateIdOf(context, focus, exp);
-    case Debug: return funcDebug(context, focus, exp);
+      case Debug: return funcDebug(context, focus, exp);
+      case Section: return funcSection(context, focus, exp);
+      case Entry: return funcEntry(context, focus, exp);
 
 
     case Custom: { 
@@ -4662,6 +4674,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     }
     log.info("Debug Point '"+name+"': "+b.toString());
     return focus;
+  }
+
+  private List<Base> funcSection(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    return null;
+  }
+
+  private List<Base> funcEntry(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    return null;
   }
 
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
