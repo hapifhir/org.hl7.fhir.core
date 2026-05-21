@@ -10,6 +10,7 @@ import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.PackageLoadController;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
