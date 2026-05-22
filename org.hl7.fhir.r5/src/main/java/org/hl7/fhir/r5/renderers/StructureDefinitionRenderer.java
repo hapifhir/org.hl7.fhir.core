@@ -6034,10 +6034,14 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     List<ElementWithInvariant> invariants = new ArrayList<>();
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       for (ElementDefinitionConstraintComponent c : ed.getConstraint()) {
-        ExpressionNode expr = fpe.parse(c.getExpression());
-        StructuralConstraintType type = isRelevantExpression(expr);
-        if (type != null) {
-          invariants.add(new ElementWithInvariant(type, ed, c, expr));
+        try {
+          ExpressionNode expr = fpe.parse(c.getExpression());
+          StructuralConstraintType type = isRelevantExpression(expr);
+          if (type != null) {
+            invariants.add(new ElementWithInvariant(type, ed, c, expr));
+          }
+        } catch (Exception e) {
+          // nothing at this point - notification will be elsewhere
         }
       }
     }
