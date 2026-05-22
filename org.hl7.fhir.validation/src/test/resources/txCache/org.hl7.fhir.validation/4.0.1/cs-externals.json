@@ -24,6 +24,7 @@
   "http://fkcfhir.org/fhir/CodeSystem/FMCOrderSubType" : null,
   "http://something/something" : null,
   "http://hl7.org/fhir/v2/0203" : null,
+  "http://terminology.hl7.org/CodeSystem/v2-0131" : null,
   "http://example.org/mySystem" : null,
   "http://fkcfhir.org/fhir/CodeSystem/FMCModality" : null,
   "http://hl7.org/fhir/CodeSystem/c1" : null,
@@ -59,6 +60,7 @@
   },
   "http://fhir.mimic.mit.edu/CodeSystem/admission-type" : null,
   "urn:oid:2.51.1.1" : null,
+  "http://hl7.org/fhir/ValueSet/birthDate" : null,
   "http://terminology.gene.com/fhir/usix/uapi/CodeSystem/uapi-product-name" : null,
   "urn:oid:2.16.840.1.113883.6.238" : {
     "server" : "http://tx-dev.fhir.org/r4",

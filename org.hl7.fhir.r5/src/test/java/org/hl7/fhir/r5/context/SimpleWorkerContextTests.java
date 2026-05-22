@@ -125,4 +125,6 @@ public class SimpleWorkerContextTests {
     String testFileContent = new String(simpleWorkerContext.getBinaryForKey(testPath), StandardCharsets.UTF_8);
     assertEquals("dummy file content", testFileContent);
   }
+
+
 }

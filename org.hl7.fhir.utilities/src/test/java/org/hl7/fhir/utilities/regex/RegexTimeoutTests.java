@@ -1,7 +1,11 @@
 package org.hl7.fhir.utilities.regex;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
@@ -22,6 +26,28 @@ class RegexTimeoutTests {
   static final String BAD_SUFFIX_REGEX = "((a+)+)+b";
   static final String EVIL_NO_SUFFIX = "a".repeat(50);
 
+   private static Set<Thread> threadsBefore;
+
+      @BeforeAll
+      static void beforeAll()
+      {
+          threadsBefore = Collections.unmodifiableSet(Thread.getAllStackTraces().keySet());
+      }
+
+      @AfterAll
+      static void afterAll() throws InterruptedException {
+        // We need a tiny amount of delay here. Interruption is introduced as regexs process chars, which is fast, but
+        // not instantaneous.
+        Thread.sleep(10);
+        Set<Thread> threadsAfter = Thread.getAllStackTraces().keySet();
+        if (threadsAfter.size() != threadsBefore.size())
+        {
+          threadsAfter.removeAll(threadsBefore);
+          throw new IllegalStateException("Lingering threads in test: " + threadsAfter);
+        }
+      }
+
+
   @Test
   void test_BadRegex_Matches_EvilString() {
     assertThrows( TimeoutException.class, () -> RegexTimeout.matches(EVIL_STRING, BAD_REGEX));
@@ -35,7 +61,6 @@ class RegexTimeoutTests {
   }
 
   // find()
-
   @Test
   void test_BadRegex_Find_EvilString() {
     assertThrows(TimeoutException.class, () -> RegexTimeout.find(EVIL_NO_SUFFIX, BAD_SUFFIX_REGEX));
@@ -54,7 +79,6 @@ class RegexTimeoutTests {
   }
 
   // replaceAll()
-
   @Test
   void test_BadRegex_ReplaceAll_EvilString() {
     assertThrows(TimeoutException.class, () -> RegexTimeout.replaceAll(EVIL_NO_SUFFIX, BAD_SUFFIX_REGEX, "X"));
@@ -66,7 +90,6 @@ class RegexTimeoutTests {
   }
 
   // replaceFirst()
-
   @Test
   void test_BadRegex_ReplaceFirst_EvilString() {
     assertThrows(TimeoutException.class, () -> RegexTimeout.replaceFirst(EVIL_NO_SUFFIX, BAD_SUFFIX_REGEX, "X"));
@@ -78,7 +101,6 @@ class RegexTimeoutTests {
   }
 
   // split()
-
   @Test
   void test_BadRegex_Split_EvilString() {
     assertThrows(TimeoutException.class, () -> RegexTimeout.split(EVIL_NO_SUFFIX, BAD_SUFFIX_REGEX));
@@ -90,7 +112,6 @@ class RegexTimeoutTests {
   }
 
   // split(limit)
-
   @Test
   void test_BadRegex_SplitWithLimit_EvilString() {
     assertThrows(TimeoutException.class, () -> RegexTimeout.split(EVIL_NO_SUFFIX, BAD_SUFFIX_REGEX, 2));
