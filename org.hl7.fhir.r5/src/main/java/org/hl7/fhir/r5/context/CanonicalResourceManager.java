@@ -637,12 +637,18 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       CachedCanonicalResource<T> cr = indexedResources.get(id);
       if (cr != null) {
         drop(cr);
+        if (masterDefinitions.containsKey(cr.getUrl())) {
+          masterDefinitions.remove(cr.getUrl());
+        }
       }
     } else {
       List<CachedCanonicalResource<T>> set = listForId.get(id);
       if (set != null) { // it really should be
         for (CachedCanonicalResource<T> i : set) {
           drop(i);
+          if (masterDefinitions.containsKey(i.getUrl())) {
+            masterDefinitions.remove(i.getUrl());
+          }
         }
       }
     }
