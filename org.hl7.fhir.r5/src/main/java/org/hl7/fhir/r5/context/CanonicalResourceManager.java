@@ -388,8 +388,10 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
     allResources.add(cr);
     if (cr.getPackageInfo() != null && cr.getPackageInfo().isMaster() && cr.getUrl() != null) {
-      if (Utilities.existsInList(cr.proxy.getType(), "CodeSystem", "ValueSet") ||
-            "StructureDefinition".equals(cr.proxy.getType()) && "specializes".equals(cr.proxy.getDerivation())) {
+      String type = cr.proxy != null ? cr.proxy.getType() : cr.getResource().fhirType();
+      String deriv = cr.proxy != null ? cr.proxy.getDerivation() : cr.getResource() instanceof StructureDefinition ? ((StructureDefinition) cr.getResource()).getDerivationElement().primitiveValue() : null;
+      if (Utilities.existsInList(type, "CodeSystem", "ValueSet") ||
+            "StructureDefinition".equals(type) && "specializes".equals(deriv)) {
         masterDefinitions.put(cr.getUrl(), cr);
       }
     }
