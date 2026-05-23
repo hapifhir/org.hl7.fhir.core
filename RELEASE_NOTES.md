@@ -1,25 +1,23 @@
-## Validator Changes
+# Validator changes
 
-* Issues are only raised against preferred bindings when they are defined in profiles (or in IG publisher)
-* Better error handling regenerating packages
-* Add ability to suppress errors for missing resource ids
-* Handle Regex ReDos error in terminology services
-* Handle contained resources in value sets
-* Add support for op = CHILD in value set filters
-* fix bug choosing incorrect server for implied value sets
-* fix bug choosing correct snomed server when value sets are in play
+* fix FHIRPath error evaluating $this in repeat()
+* fix json parser NPE for some incomplete arrays
+* Validate using new contentReferenceProfile extension
+* disallow extensions on resource.id
+* fix issue with multiple languages in internal terminology server
+* Applied https://jira.hl7.org/browse/FHIR-56312, which allows htmlChecks to be invoked on 'string' as well as xhtml.  Also fixed issue where htmlChecks was returning 'false' rather than 'empty' when invoked on invalid types.  (Spec says it returns empty.)
+* Fix issue with old HTML not being processed properly
+* refactor PO pipeline to allow loading a .po file at runtime (-po file)
+* Fix version loading issue with cross version extensions
 
-## Other code changes
+# Other changes
 
-* make external tx tests multi-threaded
-* various fixes for terminology test framework
-* Add ability to suppress validation by message parameters
-* Fix json comparison bug
-* render type characteristics
-* Fix mapping representation for http urls
-* Control validation of FHIRPath functions
-* Fix missing assets and malformed icon URLs in comparison output
-* Add JVM specific tests for DateTimeUtil
-* Add setting for regex timeout in FHIRPathEngine
-* Add Enable-Native-Access to generated jar (Suppress SQLite java warning)
-* Update Various Dependencies
+* Fix timeout logic in RegexTimeout (#2447)
+* Suppress checkstyle systemout error on main(...) class
+* Clean up unchanged file imports
+* Fix typo in getLoadedPackages
+* cleanup some warnings
+* Fix method signatures + cleanup
+* add start of support for structural constraints
+* move CompliesWIthChecker for advisor support
+* Updates jackson version and reorganizes properties file
