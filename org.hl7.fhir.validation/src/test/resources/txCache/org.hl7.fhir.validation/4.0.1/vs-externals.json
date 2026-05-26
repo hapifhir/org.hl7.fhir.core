@@ -2,6 +2,7 @@
   "http://hl7.org/a/1" : null,
   "http://example.org/invalid-valueset-canonical" : null,
   "http://hl7.org/fhir/us/davinci-hrex/ValueSet/hrex-endpoint-name" : null,
+  "http://hl7.org/fhir/ValueSet/birthDate" : null,
   "http://fhir.ch/ig/ch-ig/ValueSet/ch-ig-example" : null,
   "http://hl7.org/fhir/us/qicore/ValueSet/qicore-negation-reason" : null,
   "http://fhir.ch/ig/ch-ig/ValueSet/OrganizationType" : null,
