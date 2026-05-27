@@ -1828,7 +1828,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
         if (usage.getValue().fhirType().equals(t.getValue().fhirType())) {
           switch (usage.getValue().fhirType()) {
           case "CodeableConcept": 
-            for (Coding uc : usage.getValueCodeableConcept().getCoding()) {              
+            for (Coding uc : usage.getValueCodeableConcept().getCoding()) {
               for (Coding tc : t.getValueCodeableConcept().getCoding()) {
                 @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
                 //False positive: not using String.matches
@@ -1837,6 +1837,7 @@ public class BaseValidator implements IValidationContextResourceLoader, IMessagi
                   return true;
                 }
               }
+            }
             case "Quantity":
               return false; // for now
             case "Range":

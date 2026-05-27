@@ -2721,6 +2721,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String applicableVersion = resource.getProperty().getStructure().getFhirVersionElement().primitiveValue();
     String extensionUrl = definition.getUrl();
     String extensionUrlVersioned = definition.getUrl()+(definition.hasVersion() ? " v"+definition.getVersion() : "");
+
+
+    ElementDefinition ed = stack.getDefinition();
+    if (ed != null && "Resource.id".equals(ed.getBase().getPath())) {
+      rule(errors, "2026-05-20", IssueType.BUSINESSRULE, stack, false, I18nConstants.FHIR_RESOURCE_ID_CANT_BE_EXTENDED, extensionUrl);
+      return false;
+    }
     boolean ok = false;
     Set<String> pset = new HashSet<>();
     CommaSeparatedStringBuilder contexts = new CommaSeparatedStringBuilder();
@@ -5982,6 +5989,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
+  private ElementDefinition resolveElementReference(String location, String sourceProfile, String contentProfile) {
+    String profile = contentProfile.startsWith("#") ? contentProfile.substring(1) : sourceProfile;
+    String element = contentProfile.substring(contentProfile.indexOf("#") + 1);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, profile);
+    if (sd == null) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_PROFILE__AT_, profile, location));
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      if (element.equals(ed.getId())) {
+        return ed;
+      }
+    }
+    throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_ELEMENT_WITH_ID_, element));
+  }
 
   private ElementDefinition resolveNameReference(StructureDefinitionSnapshotComponent snapshot, String contentReference) {
     for (ElementDefinition ed : snapshot.getElement())
@@ -7650,7 +7671,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, ei.line(), ei.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_NOTYPE, ei.getName(), describeTypes(checkDefn.getType())) && ok;
       }
     } else if (checkDefn.getContentReference() != null) {
-      typeDefn = resolveNameReference(profile.getSnapshot(), checkDefn.getContentReference());
+      if (checkDefn.hasExtension(ExtensionDefinitions.EXT_CONTENT_PROFILE)) {
+        String uri = ExtensionUtilities.readStringExtension(checkDefn, ExtensionDefinitions.EXT_CONTENT_PROFILE);
+        typeDefn = resolveElementReference(checkDefn.getPath(), profile.getVersionedUrl(), uri);
+        checkDefn = typeDefn;
+      } else {
+        typeDefn = resolveNameReference(profile.getSnapshot(), checkDefn.getContentReference());
+      }
       
     } else if (checkDefn.getType().size() == 1 && ("Element".equals(checkDefn.getType().get(0).getWorkingCode()) || "BackboneElement".equals(checkDefn.getType().get(0).getWorkingCode()))) {
       if (checkDefn.getType().get(0).hasProfile()) {
@@ -8959,6 +8986,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (validationLanguage != null) {
       return validationLanguage;
+    }
+    if (context.getExpansionParameters() != null) {
+      DataType lang = context.getExpansionParameters().getParameterValue("displayLanguage");
+      if (lang != null) {
+        return lang.primitiveValue();
+      }
     }
     if (context.getLocale() != null) {
       return context.getLocale().toLanguageTag();

@@ -57,6 +57,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.util.ElementUtil;
@@ -1511,7 +1512,9 @@ public class FHIRPathEngine {
     case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case Precision: return checkParamCount(lexer, location, exp, 0);
     case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
-    case Debug: return checkParamCount(lexer, location, exp, 0, 1);
+      case Debug: return checkParamCount(lexer, location, exp, 0, 1);
+      case Section: return checkParamCount(lexer, location, exp, 1, 1);
+      case Entry: return checkParamCount(lexer, location, exp, 1, 1);
     case Custom: if (details != null) {
         return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
       }
@@ -3932,6 +3935,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       case Debug: {
         return focus;
       }
+      case Section: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, "Composition.section");
+      }
+      case Entry: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, "Resource");
+      }
     case Custom : {
       return hostServices.checkFunction(this, context.appInfo,exp.getName(), focus, paramTypes);
     }
@@ -4214,7 +4225,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     case HighBoundary : return funcHighBoundary(context, focus, exp);
     case Precision : return funcPrecision(context, focus, exp);
     case hasTemplateIdOf: return funcHasTemplateIdOf(context, focus, exp);
-    case Debug: return funcDebug(context, focus, exp);
+      case Debug: return funcDebug(context, focus, exp);
+      case Section: return funcSection(context, focus, exp);
+      case Entry: return funcEntry(context, focus, exp);
 
 
     case Custom: { 
@@ -4670,6 +4683,16 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return focus;
   }
 
+  private List<Base> funcSection(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    // TODO: this method needs to be written yet
+    return null;
+  }
+
+  private List<Base> funcEntry(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    // TODO: this method needs to be written yet
+    return null;
+  }
+
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
   public static String bytesToHex(byte[] bytes) {
     char[] hexChars = new char[bytes.length * 2];
@@ -4820,11 +4843,21 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcHtmlChecks1(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    // todo: actually check the HTML
     if (focus.size() != 1) {
-      return makeBoolean(false);          
+      return new ArrayList<Base>();
     }
-    XhtmlNode x = focus.get(0).getXhtml();
+    Base n = focus.get(0);
+    XhtmlNode x;
+    if (n.getXhtml() != null)
+      x = n.getXhtml();
+    else if (n instanceof StringType) {
+      try {
+        x = new XhtmlParser().parseFragment("<div xmlns=\"http://www.w3.org/1999/xhtml\">"+n.primitiveValue()+"</div>");
+      } catch (Exception e) {
+        return makeBoolean(false);  
+      }
+    } else
+      return new ArrayList<Base>();
     if (x == null) {
       return makeBoolean(false);                
     }
@@ -5529,7 +5562,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       for (Base item : current) {
         pc.clear();
         pc.add(item);
-        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), false));
+        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), true));
       }
       more = false;
       current.clear();
