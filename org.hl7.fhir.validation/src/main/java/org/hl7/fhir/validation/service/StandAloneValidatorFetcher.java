@@ -19,7 +19,6 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import lombok.Getter;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -237,7 +236,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
     }
 
     // maybe it's a package we've already loaded. if it is, we'll give up
-    for (String s : context.getManager().getloadedPackages()) {
+    for (String s : context.getManager().getLoadedPackages()) {
       if ((s.startsWith(pid+"#") && ver == null) || s.equals(pid+"#"+ver) ) {
         urlList.put(url, false);
         return false;

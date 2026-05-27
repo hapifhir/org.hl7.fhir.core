@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.9.8-SNAPSHOT</version>
+    <version>6.9.9-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -25,8 +25,9 @@
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.4.0</hapi_fhir_version>
-        <validator_test_case_version>1.7.61-SNAPSHOT</validator_test_case_version>
-        <jackson_version>2.21.1</jackson_version>
+        <validator_test_case_version>1.7.61</validator_test_case_version>
+        <jackson_version>2.21.3</jackson_version>
+        <jackson_annotations_version>2.21</jackson_annotations_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
         <junit_platform_launcher_version>1.14.0</junit_platform_launcher_version>
         <maven_surefire_version>3.5.3</maven_surefire_version>
@@ -50,7 +51,6 @@
         <logback.version>1.5.25</logback.version>
         <log4jVersion>2.26.0</log4jVersion>
         <okio.version>3.16.4</okio.version>
-        <jackson_annotations_version>2.21</jackson_annotations_version>
         <surefire.native.access.arg/>
     </properties>
 
@@ -498,6 +498,11 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.1.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.5.0</version>
                 </plugin>
@@ -552,6 +557,9 @@
                         <goals>
                             <goal>test-jar</goal>
                         </goals>
+                        <configuration>
+                            <skipIfEmpty>true</skipIfEmpty>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -577,7 +585,6 @@
                     <checkRuntimeClasspath>false</checkRuntimeClasspath>
                     <checkTestClasspath>false</checkTestClasspath>
                     <skip>false</skip>
-                    <quiet>false</quiet>
                     <preferLocal>true</preferLocal>
                     <useResultFile>true</useResultFile>
                     <resultFileMinClasspathCount>2</resultFileMinClasspathCount>

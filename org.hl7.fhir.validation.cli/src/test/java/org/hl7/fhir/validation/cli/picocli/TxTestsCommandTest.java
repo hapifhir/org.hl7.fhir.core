@@ -53,6 +53,14 @@ public class TxTestsCommandTest {
   }
 
   @Test
+  public void testCommandHasSuiteOption() {
+    CommandLine commandLine = new CommandLine(new TxTestsCommand());
+    boolean hasOption = commandLine.getCommandSpec()
+      .optionsMap().containsKey("-suite");
+    assertThat(hasOption).isTrue();
+  }
+
+  @Test
   public void testCommandHasExternalsOption() {
     CommandLine commandLine = new CommandLine(new TxTestsCommand());
     boolean hasOption = commandLine.getCommandSpec()

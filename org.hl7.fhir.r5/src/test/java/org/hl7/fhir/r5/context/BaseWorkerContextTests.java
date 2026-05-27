@@ -111,7 +111,7 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public List<String> getloadedPackages() {
+    public List<String> getLoadedPackages() {
       return List.of();
     }
 
@@ -331,7 +331,7 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public List<String> getloadedPackages() {
+      public List<String> getLoadedPackages() {
         return List.of();
       }
 
