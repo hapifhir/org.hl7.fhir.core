@@ -46,19 +46,48 @@ import org.hl7.fhir.utilities.VersionUtilities;
 @MarkedToMoveToAdjunctPackage
 public class TurtleParser extends TurtleParserBase {
 
-  // Cross-version usage
-  private TurtleParserR6 r6Parser;
+  // `volatile` so the one-shot lazy publish of the R6 delegate is visible across threads.
+  // Per-call setting sync below is intentionally NOT synchronized: the inherited ParserBase
+  // setters/fields aren't thread-safe to begin with, and parse()/compose() mutate other
+  // instance state that isn't guarded either, so adding a lock here would imply a guarantee
+  // we can't actually deliver. Concurrent mutation of a single parser instance is unsupported.
+  private volatile TurtleParserR6 r6Parser;
 
   /** R5 Turtle Parser with optional redirect to TurtleParserR6 */
   public TurtleParser(IWorkerContext context) {
     super(context);
   }
 
-  private TurtleParserR6 r6Parser() {
-    if (r6Parser == null) {
-      r6Parser = new TurtleParserR6(context);
+  TurtleParserR6 r6Parser() {
+    TurtleParserR6 parser = r6Parser;
+    if (parser == null) {
+      // `synchronized` ensures only one thread creates the delegate and publishes it safely,
+      // so a racing first-time R6 caller can't silently lose a delegate (and its initial setup).
+      synchronized (this) {
+        parser = r6Parser;
+        if (parser == null) {
+          parser = new TurtleParserR6(context);
+          r6Parser = parser;
+        }
+      }
     }
-    return r6Parser;
+    syncR6ParserState();
+    return parser;
+  }
+
+  /**
+   * Copy outer parser settings into the R6 delegate so it sees the same configuration.
+   * Not synchronized by design — see the note on {@link #r6Parser}.
+   */
+  private void syncR6ParserState() {
+    r6Parser.setupValidation(policy);
+    r6Parser.setLinkResolver(linkResolver);
+    r6Parser.setShowDecorations(showDecorations);
+    r6Parser.setIdPolicy(idPolicy);
+    r6Parser.setLogical(logical);
+    r6Parser.setSignatureServices(signatureServices);
+    r6Parser.canonicalFilter = canonicalFilter;
+    r6Parser.setStyle(getStyle());
   }
 
   @Override

@@ -42,7 +42,8 @@ public class ShExGenerator extends ShExGeneratorBase {
   public static class ShExComparator extends BaseShExComparator {
   }
 
-  // `volatile` makes lazy-init state visible across threads without stale cached reads
+  // `volatile` so the one-shot lazy publish of the R6 delegate, and the snapshot of the
+  // configuration last synced into it, are visible across threads without stale cached reads.
   private volatile ShExGeneratorR6 r6Generator;
   private volatile ShExGeneratorConfig syncedR6Configuration;
 
@@ -131,7 +132,9 @@ public class ShExGenerator extends ShExGeneratorBase {
     ShExGeneratorConfig currentConfig = currentConfiguration();
     ShExGeneratorR6 generator = r6Generator;
     if (generator == null) {
-      // `synchronized` ensures only one thread creates the delegate and publishes it safely
+      // First level of thread-safety: ensure only one thread constructs the delegate and
+      // publishes it. Without this, a racing first-time R6 caller could create a second
+      // delegate that gets silently dropped along with its initial config snapshot.
       synchronized (this) {
         generator = r6Generator;
         if (generator == null) {
@@ -145,7 +148,10 @@ public class ShExGenerator extends ShExGeneratorBase {
 
     // If the deprecated config/settings changed, we need to get their current values
     if (!currentConfig.equals(syncedR6Configuration)) {
-      // `synchronized` ensures config resync is applied atomically when deprecated mutable fields change
+      // Second level of thread-safety: ensure config resync is applied atomically with the
+      // "last-synced" marker, so two threads can't both observe drift and double-copy (or copy
+      // out of order). Safe to do here because ShExGeneratorConfig is an immutable value and
+      // copyConfigurationTo is the only writer the delegate sees on the R6 path.
       synchronized (this) {
         if (!currentConfig.equals(syncedR6Configuration)) {
           copyConfigurationTo(r6Generator);

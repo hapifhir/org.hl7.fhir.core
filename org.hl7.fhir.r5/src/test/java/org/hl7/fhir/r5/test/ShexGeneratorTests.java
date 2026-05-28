@@ -3,12 +3,18 @@ package org.hl7.fhir.r5.test;
 import java.io.InputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +46,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @Slf4j
 public class ShexGeneratorTests {
@@ -86,6 +93,34 @@ public class ShexGeneratorTests {
       new ShExGenerator(r6WorkerContext, config),
       new ShExGeneratorR6(r6WorkerContext, config)
     );
+  }
+
+  /**
+   * Drift detector for {@link ShExGeneratorConfig}: if a new public mutable field is added to
+   * {@link ShExGeneratorBase}, this test fails so the new field is either threaded through
+   * ShExGeneratorConfig (and the R5→R6 sync) or explicitly added to the ignored set below.
+   */
+  @Test
+  public void shExGeneratorConfigCoversAllPublicBaseSettings() {
+    Set<String> covered = Set.of(
+        "doDatatypes", "withComments", "completeModel", "debugMode",
+        "processConstraints", "constraintPolicy");
+    Set<String> ignored = Set.of();
+
+    Set<String> declared = Arrays.stream(ShExGeneratorBase.class.getDeclaredFields())
+        .filter(f -> Modifier.isPublic(f.getModifiers()))
+        .filter(f -> !Modifier.isStatic(f.getModifiers()))
+        .filter(f -> !Modifier.isFinal(f.getModifiers()))
+        .map(Field::getName)
+        .collect(Collectors.toSet());
+
+    Set<String> unaccounted = new HashSet<>(declared);
+    unaccounted.removeAll(covered);
+    unaccounted.removeAll(ignored);
+
+    assertThat(unaccounted)
+        .as("New ShExGeneratorBase field(s) not covered by ShExGeneratorConfig — add to covered or ignored set")
+        .isEmpty();
   }
 
   /** Generate complete ShEx schema from default org.hl7.fhir.r5 context of StructureDefinitions */
@@ -276,6 +311,8 @@ public class ShexGeneratorTests {
     if (Files.exists(expectedShexPath)) {
       System.out.println("Comparing with expected ShEx: " + expectedShexPath.toString());
       assertThat(normalize(Files.readString(actualShexPath))).isEqualTo(normalize(Files.readString(expectedShexPath)));
+    } else { 
+      fail("File expected for comparison does not exist: " + expectedShexPath); 
     }
   }
 

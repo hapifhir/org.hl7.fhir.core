@@ -3,16 +3,26 @@ package org.hl7.fhir.r5.test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.ParserBase;
+import org.hl7.fhir.r5.elementmodel.ParserBase.IdRenderingPolicy;
+import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
+import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.elementmodel.TurtleParserR6;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.junit.jupiter.api.BeforeAll;
@@ -79,6 +89,51 @@ public class TurtleGeneratorTests {
   public void testR6ClassNameHandlesEmptyInput() {
     assertThat(TurtleParserR6.getClassName(null)).isNull();
     assertThat(TurtleParserR6.getClassName("")).isEmpty();
+  }
+
+  /** Verifies the sync wiring actually runs; the drift detector below verifies the field set. */
+  @Test
+  public void syncR6ParserStatePropagatesSettingsToDelegate() throws Exception {
+    TurtleParser parser = new TurtleParser(TestingUtilities.getSharedWorkerContext());
+    parser.setupValidation(ValidationPolicy.EVERYTHING);
+    parser.setIdPolicy(IdRenderingPolicy.None);
+    parser.setShowDecorations(true);
+
+    Method r6ParserMethod = TurtleParser.class.getDeclaredMethod("r6Parser");
+    r6ParserMethod.setAccessible(true);
+    TurtleParserR6 delegate = (TurtleParserR6) r6ParserMethod.invoke(parser);
+
+    assertThat(delegate.getPolicy()).isEqualTo(ValidationPolicy.EVERYTHING);
+    assertThat(delegate.getIdPolicy()).isEqualTo(IdRenderingPolicy.None);
+    assertThat(delegate.isShowDecorations()).isTrue();
+  }
+
+  /**
+   * Drift detector for {@code TurtleParser.syncR6ParserState()}: if a new mutable field is
+   * added to {@link ParserBase}, this test fails so the new field is either propagated to the
+   * R6 delegate or explicitly added to the ignored set below.
+   */
+  @Test
+  public void syncR6ParserStateCoversAllParserBaseSettings() {
+    Set<String> covered = Set.of(
+        "policy", "linkResolver", "showDecorations", "idPolicy",
+        "logical", "signatureServices", "canonicalFilter");
+    // Internal plumbing established at construction time; not part of user-configurable state.
+    Set<String> ignored = Set.of("context", "profileUtilities", "contextUtilities");
+
+    Set<String> declared = Arrays.stream(ParserBase.class.getDeclaredFields())
+        .filter(f -> !Modifier.isStatic(f.getModifiers()))
+        .filter(f -> !Modifier.isFinal(f.getModifiers()))
+        .map(Field::getName)
+        .collect(Collectors.toSet());
+
+    Set<String> unaccounted = new HashSet<>(declared);
+    unaccounted.removeAll(covered);
+    unaccounted.removeAll(ignored);
+
+    assertThat(unaccounted)
+        .as("New ParserBase field(s) not propagated by TurtleParser.syncR6ParserState — add to covered or ignored set")
+        .isEmpty();
   }
 
 
