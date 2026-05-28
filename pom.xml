@@ -62,6 +62,7 @@
     </organization>
 
     <modules>
+        <module>org.hl7.fhir.spotbugs</module>
         <module>org.hl7.fhir.utilities</module>
         <module>org.hl7.fhir.dstu2</module>
         <module>org.hl7.fhir.dstu2016may</module>
@@ -711,6 +712,13 @@
                 <configuration>
                     <threshold>High</threshold>
                     <maxHeap>8192</maxHeap>
+                    <plugins>
+                        <plugin>
+                            <groupId>ca.uhn.hapi.fhir</groupId>
+                            <artifactId>org.hl7.fhir.spotbugs</artifactId>
+                            <version>${project.version}</version>
+                        </plugin>
+                    </plugins>
                 </configuration>
             </plugin>
         </plugins>

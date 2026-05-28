@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MessageCollection>
+
+    <Plugin>
+        <ShortDescription>HL7 FHIR Regex Usage Detector</ShortDescription>
+        <Details>Detects calls to Java regex evaluation methods that may compile patterns on each invocation.</Details>
+    </Plugin>
+
+    <Detector class="org.hl7.fhir.spotbugs.RegexUsageDetector">
+        <Details>
+            Detects calls to Pattern.compile, Pattern.matches, String.matches, String.replaceAll,
+            String.replaceFirst, String.split, and Apache Commons RegExUtils methods. These calls
+            implicitly or explicitly compile a regex pattern and are only permitted for reviewed
+            regular expressions or known inputs.
+        </Details>
+    </Detector>
+
+    <BugCode abbrev="RXEP">
+        <Description>Explicit regex Pattern API used</Description>
+    </BugCode>
+
+    <BugCode abbrev="RXIS">
+        <Description>String method implicitly compiles a regex pattern</Description>
+    </BugCode>
+
+    <BugCode abbrev="RXUU">
+        <Description>Apache Commons RegExUtils used</Description>
+    </BugCode>
+
+    <BugPattern type="REGEX_EXPLICIT_PATTERN_USAGE">
+        <ShortDescription>Explicit regex Pattern API used</ShortDescription>
+        <LongDescription>Call to {0} uses the explicit regex Pattern API in {1}.</LongDescription>
+        <Details><![CDATA[
+            <p>Usage of <code>Pattern.compile(...)</code> and <code>Pattern.matches(...)</code> is only
+            allowed for reviewed regular expressions or known inputs. Compiling a pattern at every call
+            site incurs unnecessary overhead. Consider compiling the pattern once as a static constant,
+            or confirm that the input is safe before merging.</p>
+        ]]></Details>
+    </BugPattern>
+
+    <BugPattern type="REGEX_IMPLICIT_STRING_USAGE">
+        <ShortDescription>String method implicitly compiles a regex pattern</ShortDescription>
+        <LongDescription>Call to {0} implicitly compiles a regex pattern on every invocation in {1}.</LongDescription>
+        <Details><![CDATA[
+            <p>Usage of <code>String.matches(...)</code>, <code>String.replaceAll(...)</code>,
+            <code>String.replaceFirst(...)</code>, and <code>String.split(...)</code> implicitly
+            compile a regex pattern on each call. This is only allowed for reviewed regular expressions
+            or known inputs. Consider using a pre-compiled <code>Pattern</code> constant instead.</p>
+        ]]></Details>
+    </BugPattern>
+
+    <BugPattern type="REGEX_UTILS_USAGE">
+        <ShortDescription>Apache Commons RegExUtils used</ShortDescription>
+        <LongDescription>Call to {0} uses Apache Commons RegExUtils in {1}.</LongDescription>
+        <Details><![CDATA[
+            <p>Usage of <code>RegExUtils</code> is only allowed for reviewed regular expressions or
+            known inputs. Ensure that the regular expression passed to this method has been reviewed
+            for correctness and safety.</p>
+        ]]></Details>
+    </BugPattern>
+
+</MessageCollection>
