@@ -266,6 +266,12 @@
             <version>4.0.4</version>
         </dependency>
         <!-- End to end -->
+
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

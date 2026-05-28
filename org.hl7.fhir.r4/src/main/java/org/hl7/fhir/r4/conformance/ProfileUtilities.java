@@ -2575,7 +2575,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.getPieces().add(gen.new Piece(corePath + "valueset-resource-aggregation-mode.html", " {", null));
           boolean firstA = true;
           for (Enumeration<AggregationMode> a : t.getAggregation()) {
-            if (firstA = true)
+            if (firstA)
               firstA = false;
             else
               c.getPieces().add(gen.new Piece(corePath + "valueset-resource-aggregation-mode.html", ", ", null));

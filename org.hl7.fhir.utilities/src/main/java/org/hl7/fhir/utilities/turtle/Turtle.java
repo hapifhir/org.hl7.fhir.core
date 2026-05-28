@@ -886,7 +886,7 @@ public class Turtle {
 				String end = "\"";
 				while (cursor < source.length()) {
 					ch = grab();
-          if (b.length() == 2 && ch != '"' && b.equals("\"\"")) {
+          if (b.length() == 2 && ch != '"' && b.toString().equals("\"\"")) {
 						cursor--;
 						break;
 					}
@@ -907,7 +907,7 @@ public class Turtle {
 				end = "'";
 				while (cursor < source.length()) {
 					ch = grab();
-					if (b.equals("''") && ch != '\'') {
+					if (b.toString().equals("''") && ch != '\'') {
 						cursor--;
 						break;
 					}

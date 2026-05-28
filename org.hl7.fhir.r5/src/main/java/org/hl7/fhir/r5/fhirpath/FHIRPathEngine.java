@@ -4969,7 +4969,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         }
       }
       for (XhtmlNode c : node.getChildNodes()) {
-        if (!checkHtmlNames(c, block && !"p".equals(c))) {
+        if (!checkHtmlNames(c, block && !"p".equals(c.getName()))) {
           return false;
         }
       }

@@ -4677,7 +4677,7 @@ public class FHIRPathEngine {
         }
       }
       for (XhtmlNode c : node.getChildNodes()) {
-        if (!checkHtmlNames(c, block && !"p".equals(c))) {
+        if (!checkHtmlNames(c, block && !"p".equals(c.getName()))) {
           return false;
         }
       }

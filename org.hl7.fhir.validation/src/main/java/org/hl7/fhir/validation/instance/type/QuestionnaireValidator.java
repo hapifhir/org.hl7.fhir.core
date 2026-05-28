@@ -1511,7 +1511,7 @@ public class QuestionnaireValidator extends BaseValidator {
       } else {
         boolean found = false;
         for (DateType item : list) {
-          if (item.getValue().equals(v.primitiveValue())) {
+          if (item.getValueAsString().equals(v.primitiveValue())) {
             found = true;
             break;
           }

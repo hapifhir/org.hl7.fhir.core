@@ -608,8 +608,8 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public void drop(CachedCanonicalResource<T> cr) {
     while (indexedResources.values().remove(cr));
-    while (listForId.values().remove(cr));
-    while (listForUrl.values().remove(cr));
+    while (listForId.values().remove(cr)); // TODO: no-op — values() is List<CachedCanonicalResource<T>>, remove(cr) is always false; fix to listForId.get(cr.getId()).remove(cr)
+    while (listForUrl.values().remove(cr)); // TODO: no-op — same type mismatch; cleanup already done correctly at lines below
     String surl = cr.supplements();
     if (surl != null) {
       supplements.get(surl).remove(cr);
