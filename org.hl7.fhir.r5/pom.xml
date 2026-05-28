@@ -19,6 +19,11 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.github.spotbugs</groupId>
+			<artifactId>spotbugs-annotations</artifactId>
+		</dependency>
+
 		<!-- HAPI Dependencies -->
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
