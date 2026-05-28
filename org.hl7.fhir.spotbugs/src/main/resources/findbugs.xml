@@ -5,7 +5,7 @@
     <Detector class="org.hl7.fhir.spotbugs.RegexUsageDetector"
               reports="REGEX_EXPLICIT_PATTERN_USAGE,REGEX_IMPLICIT_STRING_USAGE,REGEX_UTILS_USAGE"
               speed="fast"/>
-    <BugPattern type="REGEX_EXPLICIT_PATTERN_USAGE" abbrev="RXEP" category="CORRECTNESS"/>
-    <BugPattern type="REGEX_IMPLICIT_STRING_USAGE"  abbrev="RXIS" category="CORRECTNESS"/>
-    <BugPattern type="REGEX_UTILS_USAGE"            abbrev="RXUU" category="CORRECTNESS"/>
+    <BugPattern type="REGEX_EXPLICIT_PATTERN_USAGE" abbrev="RXEP" category="SECURITY"/>
+    <BugPattern type="REGEX_IMPLICIT_STRING_USAGE"  abbrev="RXIS" category="SECURITY"/>
+    <BugPattern type="REGEX_UTILS_USAGE"            abbrev="RXUU" category="SECURITY"/>
 </FindbugsPlugin>

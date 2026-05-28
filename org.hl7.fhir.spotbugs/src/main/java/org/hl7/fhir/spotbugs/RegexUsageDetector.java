@@ -8,10 +8,6 @@ import org.apache.bcel.Const;
 
 /**
  * SpotBugs detector that flags calls to Java regex evaluation methods.
- *
- * Covers the same ground as the checkstyle stringImplicitPatternUsage / patternUsage /
- * regexUtilsUsage rules but is type-aware: a .split() call on a non-String receiver is
- * not flagged.
  */
 public class RegexUsageDetector extends OpcodeStackDetector {
 
