@@ -2,7 +2,6 @@ package org.hl7.fhir.validation.instance;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.validation.ValidatorSettings;
@@ -29,7 +28,7 @@ import static org.mockito.Mockito.when;
  * @see <a href="https://github.com/hapifhir/org.hl7.fhir.core/issues/2269">#2269</a>
  */
 @ExtendWith(MockitoExtension.class)
-class TxIssueSeverityCapTests {
+class InstanceValidatorTxIssueSeverityTests {
 
   @Mock
   private IWorkerContext context;
