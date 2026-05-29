@@ -673,6 +673,7 @@
                 <artifactId>license-maven-plugin</artifactId>
                 <configuration>
                     <skipUpdateLicense>true</skipUpdateLicense>
+                    <includedScopes>compile,runtime</includedScopes>
                 </configuration>
             </plugin>
 
