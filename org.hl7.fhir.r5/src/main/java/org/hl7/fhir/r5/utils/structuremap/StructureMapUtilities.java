@@ -1384,17 +1384,24 @@ public class StructureMapUtilities {
       lexer.take();
       target.setVariable(lexer.take());
     }
-    while (Utilities.existsInList(lexer.getCurrent(), "first", "last", "share", "collate")) {
-      if (lexer.getCurrent().equals("share")) {
+    if (Utilities.existsInList(lexer.getCurrent(), "first", "last", "share", "single")) {
+      String mode = lexer.getCurrent();
+      lexer.next();
+      if (mode.equals("share")) {
         target.addListMode(StructureMapTargetListMode.SHARE);
-        lexer.next();
+        if (lexer.done() || Utilities.existsInList(lexer.getCurrent(), ";", ",", "then", "}", "first", "last", "share", "single")) {
+          throw lexer.error("'share' target list mode requires a listRuleId (e.g. 'share myId')");
+        }
         target.setListRuleId(lexer.take());
-      } else {
-        if (lexer.getCurrent().equals("first"))
-          target.addListMode(StructureMapTargetListMode.FIRST);
-        else
-          target.addListMode(StructureMapTargetListMode.LAST);
-        lexer.next();
+      } else if (mode.equals("first")) {
+        target.addListMode(StructureMapTargetListMode.FIRST);
+      } else if (mode.equals("last")) {
+        target.addListMode(StructureMapTargetListMode.LAST);
+      } else { // "single"
+        target.addListMode(StructureMapTargetListMode.SINGLE);
+      }
+      if (Utilities.existsInList(lexer.getCurrent(), "first", "last", "share", "single")) {
+        throw lexer.error("only one list mode is permitted on a target");
       }
     }
   }
