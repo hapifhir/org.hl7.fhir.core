@@ -530,16 +530,19 @@ public class StructureMapUtilities {
       b.append(rs.getVariable());
     }
     if (rs.hasCondition()) {
-      b.append(" where ");
+      b.append(" where (");
       b.append(rs.getCondition());
+      b.append(")");
     }
     if (rs.hasCheck()) {
-      b.append(" check ");
+      b.append(" check (");
       b.append(rs.getCheck());
+      b.append(")");
     }
     if (rs.hasLogMessage()) {
-      b.append(" log ");
+      b.append(" log (");
       b.append(rs.getLogMessage());
+      b.append(")");
     }
   }
 
@@ -725,6 +728,84 @@ public class StructureMapUtilities {
 
   public IWorkerContext getWorker() {
     return worker;
+  }
+
+  // === FML FHIRPath canonicalisation ===================================================
+  // Several FML clauses (`where`, `check`, `log`) wrap their expressions in `( ... )`
+  // per the grammar, but the wrapping parens belong to the clause syntax, NOT to the
+  // FHIRPath expression itself. Other clauses (`default`, `@search`, EVALUATE) consume
+  // the outer parens explicitly before invoking `fpe.parse(lexer)`. The hand-rolled
+  // parser is permissive about missing parens on `where`/`check`/`log`, which means
+  // the FHIRPath sub-parser can swallow a leading `(` and produce an AST whose root
+  // is a redundant Group node. Storing that string verbatim and re-wrapping with `(`
+  // on render would cause parens to grow on each round-trip.
+  //
+  // To avoid this we strip any redundant outer Group from the parsed AST before
+  // stringifying. The render side can then unconditionally wrap with `( ... )` to
+  // produce grammar-conformant output for the wrap-on-render clauses, and the stored
+  // strings stay canonical (useful for equality, diff, and dedupe).
+
+  /**
+   * Strip redundant outer Group nodes from a freshly parsed FHIRPath expression.
+   * A Group is "redundant" only when it forms the entire root expression — i.e.
+   * it has no inner invocation chain (`(foo).bar` keeps its parens, because the
+   * Group has an inner `.bar`) and is not the left operand of a binary operation
+   * (`(a or b) and c` keeps its parens, because the Group has an operation).
+   */
+  private static ExpressionNode stripOuterGroup(ExpressionNode n) {
+    while (n != null
+        && n.getKind() == ExpressionNode.Kind.Group
+        && n.getInner() == null
+        && n.getOperation() == null) {
+      n = n.getGroup();
+    }
+    return n;
+  }
+
+  /**
+   * Parse an FML-embedded FHIRPath expression, canonicalise the AST by stripping
+   * any redundant outer Group, and return the stringified form.
+   *
+   * @param lexer         current lexer positioned at the start of the expression
+   * @param clause        the FML clause keyword (e.g. "where", "default") — used
+   *                      only for the validation warning
+   * @param requireParens when true, emit a soft warning if the original input did
+   *                      not enclose the expression in parentheses (i.e. the AST
+   *                      root is not a Group). Use true only for clauses where
+   *                      the FML grammar requires `<clause> ( fpExpression )`.
+   */
+  private String parseFhirPathToCanonical(FHIRLexer lexer, String clause, boolean requireParens) throws FHIRLexerException {
+    return parseFhirPathToCanonicalNode(lexer, clause, requireParens).toString();
+  }
+
+  /**
+   * As {@link #parseFhirPathToCanonical} but also returns the canonicalised AST
+   * so callers can stash it in userdata for later evaluation. Storing the
+   * stripped node is safe because Group is a pure passthrough wrapper in
+   * FHIRPath evaluation.
+   */
+  private ExpressionNode parseFhirPathToCanonicalNode(FHIRLexer lexer, String clause, boolean requireParens) throws FHIRLexerException {
+    ExpressionNode raw = fpe.parse(lexer);
+    if (requireParens) {
+      warnIfNonCanonicalFmlExpression(lexer, clause, raw);
+    }
+    return stripOuterGroup(raw);
+  }
+
+  private void warnIfNonCanonicalFmlExpression(FHIRLexer lexer, String clause, ExpressionNode raw) {
+    if (raw == null) {
+      return;
+    }
+    if (raw.getKind() != ExpressionNode.Kind.Group
+        || raw.getInner() != null
+        || raw.getOperation() != null) {
+      // The FML grammar requires `<clause> ( fpExpression )`. The engine accepts
+      // unparenthesised forms for backwards compatibility, but downstream strict
+      // parsers (e.g. ANTLR-generated tooling) will reject them. Warn so authors
+      // can update their source; output will be canonicalised regardless.
+      log.warn("FML: '{}' clause at {} is not enclosed in parentheses; the FML grammar requires `{} ( ... )`. Output will be canonicalised.",
+          clause, lexer.getCurrentLocation(), clause);
+    }
   }
 
   public StructureMap parse(String text, String srcName) throws FHIRException {
@@ -1212,19 +1293,22 @@ public class StructureMapUtilities {
     }
     if (lexer.hasToken("where")) {
       lexer.take();
-      ExpressionNode node = fpe.parse(lexer);
+      // Grammar requires `where ( ... )`; warn on unparenthesised input and canonicalise.
+      ExpressionNode node = parseFhirPathToCanonicalNode(lexer, "where", true);
       source.setUserData(MAP_WHERE_EXPRESSION, node);
       source.setCondition(node.toString());
     }
     if (lexer.hasToken("check")) {
       lexer.take();
-      ExpressionNode node = fpe.parse(lexer);
+      // Grammar requires `check ( ... )`; warn on unparenthesised input and canonicalise.
+      ExpressionNode node = parseFhirPathToCanonicalNode(lexer, "check", true);
       source.setUserData(MAP_WHERE_CHECK, node);
       source.setCheck(node.toString());
     }
     if (lexer.hasToken("log")) {
       lexer.take();
-      ExpressionNode node = fpe.parse(lexer);
+      // Grammar requires `log ( ... )`; warn on unparenthesised input and canonicalise.
+      ExpressionNode node = parseFhirPathToCanonicalNode(lexer, "log", true);
       source.setUserData(MAP_WHERE_LOG, node);
       source.setLogMessage(node.toString());
     }
