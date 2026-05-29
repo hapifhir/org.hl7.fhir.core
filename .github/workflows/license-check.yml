@@ -33,8 +33,8 @@ jobs:
         run: mvn clean install -DskipTests
       - name: Collect module licenses
         run: mvn license:add-third-party -Dlicense.includedScopes=compile,runtime
-      - name: Aggregate module licenses -Dlicense.includedScopes=compile,runtime
-        run: mvn license:aggregate-add-third-party
+      - name: Aggregate licenses
+        run: mvn license:aggregate-add-third-party -Dlicense.includedScopes=compile,runtime
       - name: Set script permissions
         run: chmod u+x .github/workflows/license-check/license-check.sh
       - name: Run script
