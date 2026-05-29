@@ -1043,11 +1043,11 @@ public class StructureMapUtilities {
     StructureMapConstComponent cmp = result.addConst();
     cmp.setName(lexer.take());
     lexer.token("=");
-    ExpressionNode node = fpe.parse(lexer);
-    cmp.setValue(node.toString());
+    // `let` does not require parens in the grammar, so no warning — just canonicalise.
+    cmp.setValue(parseFhirPathToCanonical(lexer, "let", false));
     lexer.skipToken(";");
   }
-  
+
   private void parseGroup(StructureMap result, FHIRLexer lexer) throws FHIRException {
     String comment = lexer.getAllComments();
     lexer.token("group");
@@ -1253,7 +1253,9 @@ public class StructureMapUtilities {
     if (source.getContext().equals("search") && lexer.hasToken("(")) {
       source.setContext("@search");
       lexer.take();
-      ExpressionNode node = fpe.parse(lexer);
+      // Outer `(` already consumed above, so the FML grammar's required parens are
+      // structurally present. Canonicalise to collapse any redundant inner wrapping.
+      ExpressionNode node = parseFhirPathToCanonicalNode(lexer, "@search", false);
       source.setUserData(MAP_SEARCH_EXPRESSION, node);
       source.setElement(node.toString());
       lexer.token(")");
@@ -1275,8 +1277,8 @@ public class StructureMapUtilities {
       lexer.token("default");
       if (lexer.hasToken("(")) {
         lexer.token("(");
-        ExpressionNode node = fpe.parse(lexer);
-      source.setDefaultValue(node.toString());
+        // Outer `(` already consumed above. Canonicalise the inner expression.
+        source.setDefaultValue(parseFhirPathToCanonical(lexer, "default", false));
         lexer.token(")");
       } else {
         // legacy double-quoted format: convert to single-quoted FHIRPath string literal
@@ -1342,9 +1344,9 @@ public class StructureMapUtilities {
       name = start;
 
     if ("(".equals(name)) {
-      // inline fluentpath expression
+      // inline fluentpath expression — outer `(` already consumed as `name`.
       target.setTransform(StructureMapTransform.EVALUATE);
-      ExpressionNode node = fpe.parse(lexer);
+      ExpressionNode node = parseFhirPathToCanonicalNode(lexer, "evaluate", false);
       target.setUserData(MAP_EXPRESSION, node);
       target.addParameter().setValue(new StringType(node.toString()));
       lexer.token(")");
