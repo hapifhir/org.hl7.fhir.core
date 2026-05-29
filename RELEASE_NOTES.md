@@ -4,4 +4,6 @@
 
 ## Other code changes
 
-* no changes
+* Enforce timeouts in funcReplaceMatches in r4, r4b, r5
+* Implement toDateTime() in FHIRPath (Oliver Egger)
+* Build improvements
