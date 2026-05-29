@@ -150,18 +150,35 @@ public class StructureMapUtilities {
 
   public static String render(StructureMap map) {
     StringBuilder b = new StringBuilder();
-    b.append("/// url = \""+map.getUrl()+"\"\r\n");
-    b.append("/// name = \""+map.getName()+"\"\r\n");
-    b.append("/// title = \""+map.getTitle()+"\"\r\n");
-    b.append("/// status = \""+map.getStatus().toCode()+"\"\r\n");
-    b.append("\r\n");
-    if (map.getDescription() != null) {
-      renderMultilineDoco(b, map.getDescription(), 0);
-      b.append("\r\n");
+    b.append("/// url = \""+Utilities.escapeJava(map.getUrl())+"\"\r\n");
+    b.append("/// name = \""+Utilities.escapeJava(map.getName())+"\"\r\n");
+    if (map.hasTitle()) {
+      b.append("/// title = \""+Utilities.escapeJava(map.getTitle())+"\"\r\n");
     }
+    b.append("/// status = \""+map.getStatus().toCode()+"\"\r\n");
+    if (map.hasDescription()) {
+      String desc = map.getDescription();
+      // Use triple-quoted markdown form when the description spans multiple lines so
+      // the source remains human-readable. Falls back to the single-line escaped
+      // form when: the description has no line breaks; it contains """ (which cannot
+      // be represented inside a verbatim triple-quoted block); or it ends with a "
+      // (which would be greedily merged into the closing """ by the parser).
+      if ((desc.indexOf('\n') >= 0 || desc.indexOf('\r') >= 0) && !desc.contains("\"\"\"") && !desc.endsWith("\"")) {
+        b.append("/// description = \"\"\"");
+        b.append(desc);
+        b.append("\"\"\"\r\n");
+      } else {
+        b.append("/// description = \""+Utilities.escapeJava(desc)+"\"\r\n");
+      }
+    }
+    if (map.hasExperimental()) {
+      b.append("/// experimental = "+map.getExperimental()+"\r\n");
+    }
+    b.append("\r\n");
     renderConceptMaps(b, map);
     renderUses(b, map);
     renderImports(b, map);
+    renderConsts(b, map);
     for (StructureMapGroupComponent g : map.getGroup())
       renderGroup(b, g);
     return b.toString();
@@ -289,6 +306,18 @@ public class StructureMapUtilities {
       b.append("\r\n");
   }
 
+  private static void renderConsts(StringBuilder b, StructureMap map) {
+    for (StructureMapConstComponent c : map.getConst()) {
+      b.append("let ");
+      b.append(c.getName());
+      b.append(" = ");
+      b.append(c.getValue());
+      b.append(";\r\n");
+    }
+    if (map.hasConst())
+      b.append("\r\n");
+  }
+
   public static String groupToString(StructureMapGroupComponent g) {
     StringBuilder b = new StringBuilder();
     renderGroup(b, g);
@@ -364,13 +393,13 @@ public class StructureMapUtilities {
       }
     }
     if (r.getTarget().size() > 1) {
-      b.append(" -> ");
+      b.append(" ->");
       boolean first = true;
       for (StructureMapGroupRuleTargetComponent rt : r.getTarget()) {
         if (first)
           first = false;
         else
-          b.append(", ");
+          b.append(",");
         if (MULTIPLE_TARGETS_ONELINE)
           b.append(' ');
         else {
@@ -474,17 +503,17 @@ public class StructureMapUtilities {
       b.append(')');
     } else if (rs.hasElement()) {
       b.append('.');
-      b.append(rs.getElement());
+      b.append(renderElementName(rs.getElement()));
     }
     if (rs.hasType()) {
       b.append(" : ");
       b.append(rs.getType());
-      if (rs.hasMin()) {
-        b.append(" ");
-        b.append(rs.getMin());
-        b.append("..");
-        b.append(rs.getMax());
-      }
+    }
+    if (rs.hasMin()) {
+      b.append(" ");
+      b.append(rs.getMin());
+      b.append("..");
+      b.append(rs.getMax());
     }
 
     if (rs.hasListMode()) {
@@ -492,8 +521,9 @@ public class StructureMapUtilities {
       b.append(rs.getListMode().toCode());
     }
     if (rs.hasDefaultValue()) {
-      b.append(" default ");
-      b.append("\"" + Utilities.escapeJson(rs.getDefaultValue()) + "\"");
+      b.append(" default (");
+      b.append(rs.getDefaultValue());
+      b.append(")");
     }
     if (!abbreviate && rs.hasVariable()) {
       b.append(" as ");
@@ -519,12 +549,74 @@ public class StructureMapUtilities {
     return b.toString();
   }
 
+  /** if the element name is NOT a valid token, or IS an FML keyword, then it needs backticks */
+  private static String renderElementName(String name) {
+    if (Utilities.isToken(name) && !isFmlKeyword(name)) {
+      return name;
+    }
+    return "`" + name + "`";
+  }
+
+  /** escape a string for embedding inside an FML single-quoted string literal */
+  private static String escapeFmlString(String s) {
+    if (s == null) {
+      return "";
+    }
+    StringBuilder b = new StringBuilder(s.length());
+    for (char c : s.toCharArray()) {
+      switch (c) {
+        case '\\': b.append("\\\\"); break;
+        case '\'': b.append("\\'"); break;
+        case '\r': b.append("\\r"); break;
+        case '\n': b.append("\\n"); break;
+        case '\t': b.append("\\t"); break;
+        default: b.append(c);
+      }
+    }
+    return b.toString();
+  }
+
+  /** Is the name an FML keyword in the grammar and thus will need escaping if used in an identifier */
+  private static boolean isFmlKeyword(String name) {
+    return Utilities.existsInList(name, 
+      "map",
+               "uses",
+               "as", 
+               "alias",
+               "imports",
+               "group",
+               "extends",
+               "default", 
+               "where", 
+               "check", 
+               "log",
+               "then", 
+               "true",
+               "false",
+               "types", 
+               "type",
+               "first", 
+               "not_first", 
+               "last", 
+               "not_last", 
+               "only_one",
+               "share", 
+               "single", 
+               "source", 
+               "target", 
+               "queried",
+               "produced", 
+               "conceptmap", // is this case sensitivity correct?
+               "prefix", 
+               "let");
+  }
+
   private static void renderTarget(StringBuilder b, StructureMapGroupRuleTargetComponent rt, boolean abbreviate) {
     if (rt.hasContext()) {
       b.append(rt.getContext());
       if (rt.hasElement()) {
         b.append('.');
-        b.append(rt.getElement());
+        b.append(renderElementName(rt.getElement()));
       }
     }
     if (!abbreviate && rt.hasTransform()) {
@@ -663,10 +755,21 @@ public class StructureMapUtilities {
         result.setTitle(lexer.readConstant("title"));
         break;
       case "description" : 
-        result.setTitle(lexer.readConstant("description"));
+        result.setDescription(lexer.readMarkdown("description"));
         break;
       case "status" : 
         result.setStatus(PublicationStatus.fromCode(lexer.readConstant("status")));
+        break;
+      case "experimental" : 
+        if (lexer.isStringConstant()) {
+          result.setExperimental(lexer.readConstant("experimental").equals("true"));
+        } else if (lexer.hasToken("true")) {
+          lexer.token("true");
+          result.setExperimental(true);
+        } else {
+          lexer.token("false");
+          result.setExperimental(false);
+        }
         break;
       default:
         lexer.readConstant("nothing");
@@ -697,6 +800,9 @@ public class StructureMapUtilities {
     while (lexer.hasToken("conceptmap"))
       parseConceptMap(result, lexer);
     
+    while (lexer.hasToken("let"))
+      parseConst(result, lexer);
+
     while (!lexer.done()) {
       parseGroup(result, lexer);
     }
@@ -825,11 +931,17 @@ public class StructureMapUtilities {
     if (lexer.getCurrent().equals("source")) {
       st.setMode(StructureMapModelMode.SOURCE);
       doco = lexer.tokenWithTrailingComment("source");
+    } else if (lexer.getCurrent().equals("queried")) {
+      st.setMode(StructureMapModelMode.QUERIED);
+      doco = lexer.tokenWithTrailingComment("queried");
     } else if (lexer.getCurrent().equals("target")) {
       st.setMode(StructureMapModelMode.TARGET);
       doco = lexer.tokenWithTrailingComment("target");
+    } else if (lexer.getCurrent().equals("produced")) {
+      st.setMode(StructureMapModelMode.PRODUCED);
+      doco = lexer.tokenWithTrailingComment("produced");
     } else {
-      throw lexer.error("Found '"+lexer.getCurrent()+"' expecting 'source' or 'target'");
+      throw lexer.error("Found '"+lexer.getCurrent()+"' expecting 'source', 'queried', 'target' or 'produced'");
     }
     if (lexer.hasToken(";")) {
       doco = lexer.tokenWithTrailingComment(";");
@@ -842,6 +954,16 @@ public class StructureMapUtilities {
   private void parseImports(StructureMap result, FHIRLexer lexer) throws FHIRException {
     lexer.token("imports");
     result.addImport(lexer.readConstant("url"));
+    lexer.skipToken(";");
+  }
+
+  private void parseConst(StructureMap result, FHIRLexer lexer) throws FHIRException {
+    lexer.token("let");
+    StructureMapConstComponent cmp = result.addConst();
+    cmp.setName(lexer.take());
+    lexer.token("=");
+    ExpressionNode node = fpe.parse(lexer);
+    cmp.setValue(node.toString());
     lexer.skipToken(";");
   }
   
@@ -1070,7 +1192,16 @@ public class StructureMapUtilities {
     }
     if (lexer.hasToken("default")) {
       lexer.token("default");
-      source.setDefaultValue(lexer.readConstant("default value"));
+      if (lexer.hasToken("(")) {
+        lexer.token("(");
+        ExpressionNode node = fpe.parse(lexer);
+      source.setDefaultValue(node.toString());
+        lexer.token(")");
+      } else {
+        // legacy double-quoted format: convert to single-quoted FHIRPath string literal
+        String s = lexer.readConstant("default value");
+        source.setDefaultValue("'" + Utilities.escapeJava(s) + "'");
+      }
     }
     if (Utilities.existsInList(lexer.getCurrent(), "first", "last", "not_first", "not_last", "only_one"))
       source.setListMode(StructureMapSourceListMode.fromCode(lexer.take()));
@@ -1113,7 +1244,7 @@ public class StructureMapUtilities {
       target.setContext(start);
       start = null;
       lexer.token(".");
-      target.setElement(lexer.take());
+      target.setElement(readAsStringOrProcessedConstant(lexer.take(), lexer));
     } 
     String name;
     boolean isConstant = false;

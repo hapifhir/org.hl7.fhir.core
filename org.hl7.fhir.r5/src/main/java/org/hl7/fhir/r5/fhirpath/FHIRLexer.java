@@ -416,6 +416,43 @@ public class FHIRLexer {
     return processConstant(take());
   }
 
+  /**
+   * Reads either a standard double-quoted string constant or a triple-quoted
+   * (""" ... """) markdown block which may span multiple lines. Content inside
+   * a triple-quoted block is taken verbatim - no escape processing is performed.
+   *
+   * <p>Detection relies on the fact that the standard tokenizer will lex the
+   * first two quotes of {@code """} as an empty string token ({@code ""}),
+   * leaving the cursor positioned at the third quote. If that is the case, this
+   * method consumes the third opening quote, scans for the matching closing
+   * {@code """}, and returns the content between them. Otherwise it falls back
+   * to {@link #readConstant(String)}.
+   */
+  public String readMarkdown(String desc) throws FHIRLexerException {
+    if ("\"\"".equals(current) && cursor < source.length() && source.charAt(cursor) == '"') {
+      // consume the third opening quote
+      cursor++;
+      currentLocation.incColumn();
+      int start = cursor;
+      boolean last13 = false;
+      while (cursor + 2 < source.length()
+          && !(source.charAt(cursor) == '"' && source.charAt(cursor + 1) == '"' && source.charAt(cursor + 2) == '"')) {
+        last13 = currentLocation.checkChar(source.charAt(cursor), last13);
+        cursor++;
+      }
+      if (cursor + 2 >= source.length()) {
+        throw error("Unterminated triple-quoted string");
+      }
+      String result = source.substring(start, cursor);
+      // consume the closing """
+      cursor += 3;
+      currentLocation.incColumn(3);
+      next();
+      return result;
+    }
+    return readConstant(desc);
+  }
+
   public String readFixedName(String desc) throws FHIRLexerException {
     if (!isFixedName())
       throw error("Found "+current+" expecting \"["+desc+"]\"");
@@ -423,6 +460,7 @@ public class FHIRLexer {
     return processFixedName(take());
   }
 
+  // This is now aligned with processConstantString in the FHIRPathEngine
   public String processConstant(String s) throws FHIRLexerException {
     StringBuilder b = new StringBuilder();
     int i = 1;
@@ -462,11 +500,12 @@ public class FHIRLexer {
           i++;
           int uc = Integer.parseInt(s.substring(i, i+4), 16);
           b.append(Character.toString(uc));
-          i = i + 4;
+          i = i + 3;
           break;
         default:
           throw new FHIRLexerException("Unknown FHIRPath character escape \\"+s.charAt(i), currentLocation);
         }
+        i++;
       } else {
         b.append(ch);
         i++;

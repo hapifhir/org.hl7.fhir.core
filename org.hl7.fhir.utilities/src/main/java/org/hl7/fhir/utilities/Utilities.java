@@ -777,6 +777,8 @@ public class Utilities {
   }
 
 
+  /** Escapes special characters in a Java string: \n \r " and \
+   */
   public static String escapeJava(String doco) {
     if (doco == null)
       return "";
