@@ -1991,6 +1991,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (newIssueComponent.getDetails().hasCoding("http://hl7.org/fhir/tools/CodeSystem/tx-issue-type", "invalid-display") && settings.isDisplayWarningMode() && newIssueComponent.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR) {
       newIssueComponent.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
     }
+    if ((bindingStrength == BindingStrength.PREFERRED || bindingStrength == BindingStrength.EXTENSIBLE)
+      && newIssueComponent.getSeverity().isHigherThan(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING)) {
+      newIssueComponent.setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
+    }
     return newIssueComponent;
   }
 
