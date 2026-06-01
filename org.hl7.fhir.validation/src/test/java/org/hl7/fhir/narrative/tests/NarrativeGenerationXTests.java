@@ -28,7 +28,6 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestPackageLoader;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
@@ -56,7 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class NarrativeGenerationTestsX {
+public class NarrativeGenerationXTests {
 
   public static class TestProfileKnowledgeProvider implements ProfileKnowledgeProvider {
 
