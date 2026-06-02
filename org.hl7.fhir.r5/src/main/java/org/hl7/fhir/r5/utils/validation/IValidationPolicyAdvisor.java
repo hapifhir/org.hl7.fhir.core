@@ -72,7 +72,9 @@ public interface IValidationPolicyAdvisor {
    * @param messageId - the message id (from messages.properties)
    * @return true if the validator should ignore the message
    */
-  boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments);
+  default boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
+    return isSuppressMessageId(path, messageId);
+  }
 
   /**
    * @deprecated implement {@link #isSuppressMessageId(String, String, Object...)} instead.
@@ -80,9 +82,7 @@ public interface IValidationPolicyAdvisor {
    *   the addition of {@code theMessageArguments} and will be removed in a future release.
    */
   @Deprecated
-  default boolean isSuppressMessageId(String path, String messageId) {
-    return isSuppressMessageId(path, messageId, new Object[0]);
-  }
+   boolean isSuppressMessageId(String path, String messageId) ;
 
   /**
    * Whether to try validating a reference, and if so, how much validation to apply
