@@ -284,5 +284,7 @@ public interface IValidationPolicyAdvisor {
    * or replaced by some arbitrary placeholder (e.g. "XXX") to allow for automated tested frameworks
    * @return a value to use, or null to use the real value
    */
-  String relativeDatePlaceHolder();
+  default String relativeDatePlaceHolder() {
+    return null;
+  }
 }
