@@ -75,6 +75,16 @@ public interface IValidationPolicyAdvisor {
   boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments);
 
   /**
+   * @deprecated implement {@link #isSuppressMessageId(String, String, Object...)} instead.
+   *   This bridge method exists for binary compatibility with implementations that predate
+   *   the addition of {@code theMessageArguments} and will be removed in a future release.
+   */
+  @Deprecated
+  default boolean isSuppressMessageId(String path, String messageId) {
+    return isSuppressMessageId(path, messageId, new Object[0]);
+  }
+
+  /**
    * Whether to try validating a reference, and if so, how much validation to apply
    * 
    * @param validator
