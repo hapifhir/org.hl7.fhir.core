@@ -82,8 +82,8 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
       }
     }
     if (body != null) {
-      if (body.length > 100000) {
-        body = Arrays.copyOf(body, 100000);
+      if (body.length > 1000000) {
+        body = Arrays.copyOf(body, 1000000);
       }
       file.println("");
       file.println(Utilities.escapeXmlText(new String(body, StandardCharsets.UTF_8)));

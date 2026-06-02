@@ -165,6 +165,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
   }
 
   public boolean execute(Set<String> modes, String filter) throws IOException, URISyntaxException {
+    return execute(modes, filter, null);
+  }
+
+  public boolean execute(Set<String> modes, String filter, String suite) throws IOException, URISyntaxException {
     if (outputDir == null) {
       outputDir = Utilities.path("[tmp]", serverId());
     }
@@ -193,6 +197,9 @@ public class TxTester implements ITerminologyRequestIdProvider {
     if (filter != null) {
       log.info("  Filter Parameter: "+filter);
     }
+    if (suite != null) {
+      log.info("  Suite Parameter: "+suite);
+    }
 
     AtomicInteger counter = new AtomicInteger();
     AtomicInteger errCount = new AtomicInteger();
@@ -209,12 +216,12 @@ public class TxTester implements ITerminologyRequestIdProvider {
         JsonObject tests = loadTests(loader);
         readTests(tests, loader.version());
         versions.add(new StringPair(loader.code(), loader.version()));
-        for (JsonObject suite : tests.getJsonObjects("suites")) {
-          if ((!suite.has("mode") || modes.contains(suite.asString("mode"))) && passesVersion(suite)) {
-            if (suite.asBoolean("disabled")) {
+        for (JsonObject suiteObj : tests.getJsonObjects("suites")) {
+          if ((!suiteObj.has("mode") || modes.contains(suiteObj.asString("mode"))) && passesVersion(suiteObj)) {
+            if (suiteObj.asBoolean("disabled")) {
               // ok = true;
-            } else {
-              ok = runSuite(loader, suite, modes, filter, json.forceArray("suites"), counter, errCount) && ok;
+            } else if (suite == null || suite.equals(suiteObj.asString("name"))) {
+              ok = runSuite(loader, suiteObj, modes, filter, json.forceArray("suites"), counter, errCount) && ok;
             }
           }
         }
@@ -228,7 +235,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       testReport.setScore(s / 100);
       testReport.setResult(errCount.intValue() == 0 ? TestReportResult.PASS : TestReportResult.FAIL);
 
-      if (filter == null) {
+      if (filter == null && suite == null) {
         String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join("+", modes);
         if (ok) {
           log.info(software+" passed all "+counter.intValue()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
@@ -238,6 +245,16 @@ public class TxTester implements ITerminologyRequestIdProvider {
           log.info("Failed Tests: "+ CommaSeparatedStringBuilder.join(",", fails ));
           return false;
         }
+      } else if (suite != null) {
+        String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join("+", modes);
+        int passed = counter.intValue() - errCount.intValue();
+        if (ok) {
+          log.info(software+" passed all "+counter.intValue()+" tests for suite '"+suite+"' ("+passed+" passed, 0 failed, "+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
+        } else {
+          log.info(software+" did not pass tests for suite '"+suite+"' ("+passed+" passed, "+errCount.intValue()+" failed of "+counter.intValue()+", "+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
+          log.info("Failed Tests: "+ CommaSeparatedStringBuilder.join(",", fails));
+        }
+        return ok;
       } else {
         log.info(software+" "+(ok ? "Passed the tests" : "did not pass the tests")+" '"+filter+"'");
         return ok;
@@ -638,7 +655,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
           outputT.add("message", msg);
         }
         tr.getActionFirstRep().getOperation().setResult(msg == null ? TestReportActionResult.PASS : TestReportActionResult.FAIL).setMessage(msg);
-        return new ResultInformation(msg);
+        return msg == null ? new ResultInformation(true) : new ResultInformation(msg);
       } catch (Exception e) {
         log.error("  Tested "+ testName +": "+ "  ... Exception: "+e.getMessage());
 

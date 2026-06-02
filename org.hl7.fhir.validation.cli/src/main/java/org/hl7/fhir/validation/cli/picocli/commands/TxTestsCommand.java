@@ -66,6 +66,12 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
   private String filter;
 
   @CommandLine.Option(
+    names = {"-suite"},
+    description = "Run only tests belonging to the named suite"
+  )
+  private String suite;
+
+  @CommandLine.Option(
     names = {"-externals"},
     description = "Path to JSON file with external test definitions"
   )
@@ -123,7 +129,7 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
         CommaSeparatedStringBuilder.join(" | ", Utilities.sorted(modeSet)));
 
       // Execute tests
-      boolean ok = txTester.setOutput(outputDir).execute(modeSet, filter);
+      boolean ok = txTester.setOutput(outputDir).execute(modeSet, filter, suite);
 
       // Write report
       new org.hl7.fhir.r5.formats.JsonParser()

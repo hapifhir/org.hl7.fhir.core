@@ -265,6 +265,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   private Set<CachedCanonicalResource<T>> allResources = new HashSet<>();
   private Map<String, List<CachedCanonicalResource<T>>> listForId;
   private Map<String, List<CachedCanonicalResource<T>>> listForUrl;
+  private Map<String, CachedCanonicalResource<T>> masterDefinitions;
   private Map<String, CachedCanonicalResource<T>> indexedResources;
   private Map<String, List<CachedCanonicalResource<T>>> supplements; // general index based on CodeSystem.supplements
   private String version; // for debugging purposes
@@ -276,6 +277,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     this.minimalMemory = minimalMemory;
     allResources = new HashSet<>();
     listForId = new HashMap<>();
+    masterDefinitions = new HashMap<>();
     listForUrl = new HashMap<>();
     indexedResources = new HashMap<>();
     supplements = new HashMap<>(); // general index based on CodeSystem.supplements
@@ -385,6 +387,14 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       set.add(cr);
     }
     allResources.add(cr);
+    if (cr.getPackageInfo() != null && cr.getPackageInfo().isMaster() && cr.getUrl() != null) {
+      String type = cr.proxy != null ? cr.proxy.getType() : cr.getResource().fhirType();
+      String deriv = cr.proxy != null ? cr.proxy.getDerivation() : cr.getResource() instanceof StructureDefinition ? ((StructureDefinition) cr.getResource()).getDerivationElement().primitiveValue() : null;
+      if (Utilities.existsInList(type, "CodeSystem", "ValueSet") ||
+            "StructureDefinition".equals(type) && "specializes".equals(deriv)) {
+        masterDefinitions.put(cr.getUrl(), cr);
+      }
+    }
     if (!listForUrl.containsKey(cr.getUrl())) {
       listForUrl.put(cr.getUrl(), new ArrayList<>());
     }
@@ -632,12 +642,18 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       CachedCanonicalResource<T> cr = indexedResources.get(id);
       if (cr != null) {
         drop(cr);
+        if (masterDefinitions.containsKey(cr.getUrl())) {
+          masterDefinitions.remove(cr.getUrl());
+        }
       }
     } else {
       List<CachedCanonicalResource<T>> set = listForId.get(id);
       if (set != null) { // it really should be
         for (CachedCanonicalResource<T> i : set) {
           drop(i);
+          if (masterDefinitions.containsKey(i.getUrl())) {
+            masterDefinitions.remove(i.getUrl());
+          }
         }
       }
     }
@@ -691,10 +707,15 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public T get(String url) {
+    CachedCanonicalResource<T> cr = masterDefinitions.get(url);
+    if (cr != null) {
+      return cr.getResource();
+    }
     return indexedResources.containsKey(url) ? indexedResources.get(url).getResource() : null;
   }
 
   public T get(String system, String version) {
+
     if (version == null) {
       return get(system);
     } else {
@@ -753,10 +774,15 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         return indexedResources.get(pv+":"+url).getResource();
       }
     }
+    CachedCanonicalResource<T> cr = masterDefinitions.get(url);
+    if (cr != null) {
+      return cr.getResource();
+    }
     return indexedResources.containsKey(url) ? indexedResources.get(url).getResource() : null;
   }
 
   public T getByPackage(String system, String version, List<String> pvlist) {
+
     if (version == null) {
       return getByPackage(system, pvlist);
     } else {

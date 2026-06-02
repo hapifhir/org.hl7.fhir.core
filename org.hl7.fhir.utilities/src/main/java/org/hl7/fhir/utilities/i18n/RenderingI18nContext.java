@@ -1204,6 +1204,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONSENT_HT_DOC_TYPE = "CONSENT_HT_DOC_TYPE";
   public static final String CONSENT_HT_CODE = "CONSENT_HT_CODE";
   public static final String STRUC_DEF_TYPE_CHARACTERISTICS = "STRUC_DEF_TYPE_CHARACTERISTICS";
+  public static final String STRUCTURAL_REQUIREMENTS = "STRUCTURAL_REQUIREMENTS";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";

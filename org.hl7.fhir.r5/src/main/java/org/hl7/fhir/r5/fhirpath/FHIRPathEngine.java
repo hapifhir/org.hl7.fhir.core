@@ -54,9 +54,11 @@ import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.util.ElementUtil;
@@ -800,7 +802,7 @@ public class FHIRPathEngine {
       list.add(base);
     }
     traceLog = new StringBuilder();
-    return execute(new ExecutionContext(null, base.isResource() ? base : null, base.isResource() ? base : null, base, base), list, exp, true);
+    return execute(new ExecutionContext(null, base!=null && base.isResource() ? base : null, base!=null && base.isResource() ? base : null, base, base), list, exp, true);
   }
 
   /**
@@ -1528,7 +1530,9 @@ public class FHIRPathEngine {
     case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case Precision: return checkParamCount(lexer, location, exp, 0);
     case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
-    case Debug: return checkParamCount(lexer, location, exp, 0, 1);
+      case Debug: return checkParamCount(lexer, location, exp, 0, 1);
+      case Section: return checkParamCount(lexer, location, exp, 1, 1);
+      case Entry: return checkParamCount(lexer, location, exp, 1, 1);
     case Custom: if (details != null) {
         return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
       }
@@ -3945,6 +3949,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       case Debug: {
         return focus;
       }
+      case Section: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, "Composition.section");
+      }
+      case Entry: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, "Resource");
+      }
     case Custom : {
       return hostServices.checkFunction(this, context.appInfo,exp.getName(), focus, paramTypes);
     }
@@ -4227,7 +4239,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     case HighBoundary : return funcHighBoundary(context, focus, exp);
     case Precision : return funcPrecision(context, focus, exp);
     case hasTemplateIdOf: return funcHasTemplateIdOf(context, focus, exp);
-    case Debug: return funcDebug(context, focus, exp);
+      case Debug: return funcDebug(context, focus, exp);
+      case Section: return funcSection(context, focus, exp);
+      case Entry: return funcEntry(context, focus, exp);
 
 
     case Custom: { 
@@ -4681,6 +4695,16 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return focus;
   }
 
+  private List<Base> funcSection(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    // TODO: this method needs to be written yet
+    return null;
+  }
+
+  private List<Base> funcEntry(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    // TODO: this method needs to be written yet
+    return null;
+  }
+
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
   public static String bytesToHex(byte[] bytes) {
     char[] hexChars = new char[bytes.length * 2];
@@ -4831,11 +4855,21 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcHtmlChecks1(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    // todo: actually check the HTML
     if (focus.size() != 1) {
-      return makeBoolean(false);          
+      return new ArrayList<Base>();
     }
-    XhtmlNode x = focus.get(0).getXhtml();
+    Base n = focus.get(0);
+    XhtmlNode x;
+    if (n.getXhtml() != null)
+      x = n.getXhtml();
+    else if (n instanceof StringType) {
+      try {
+        x = new XhtmlParser().parseFragment("<div xmlns=\"http://www.w3.org/1999/xhtml\">"+n.primitiveValue()+"</div>");
+      } catch (Exception e) {
+        return makeBoolean(false);  
+      }
+    } else
+      return new ArrayList<Base>();
     if (x == null) {
       return makeBoolean(false);                
     }
@@ -5138,10 +5172,15 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     String repl = convertToString(replB);
 
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
-      //
+      // no-op
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-        result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+        try {
+          String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
+          result.add(new StringType(replaced).noExtensions());
+        } catch (TimeoutException te) {
+          throw new FHIRException("Timeout evaluating regex: " + regex, te);
+        }
       }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
@@ -5236,11 +5275,47 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return result;
   }
 
+  /**
+   * Implements FHIRPath toDateTime() - see https://hl7.org/fhirpath/#todatetime-datetime
+   *
+   * If the input collection contains a single item, this function returns:
+   *   - the item itself if it is a DateTime
+   *   - a DateTime built from a Date (a date is a valid datetime)
+   *   - a DateTime parsed from a String, if that string matches the FHIRPath
+   *     datetime format. Partial dates of the form YYYY, YYYY-MM and YYYY-MM-DD
+   *     are accepted.
+   *
+   * If the input collection is empty, the result is empty.
+   * If the input collection contains more than one item, an error is signalled.
+   */
   private List<Base> funcToDateTime(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-    //  List<Base> result = new ArrayList<Base>();
-    //  result.add(new BooleanType(convertToBoolean(focus)));
-    //  return result;
-    throw makeException(expr, I18nConstants.FHIRPATH_NOT_IMPLEMENTED, "toDateTime");
+    List<Base> result = new ArrayList<Base>();
+    if (focus.size() > 1) {
+      throw makeException(expr, I18nConstants.FHIRPATH_NO_COLLECTION, "toDateTime", focus.size());
+    }
+    if (focus.size() == 0) {
+      return result;
+    }
+    Base item = focus.get(0);
+    if (item instanceof DateTimeType) {
+      result.add(item);
+    } else if (item instanceof DateType) {
+      // a date is a valid datetime
+      result.add(new DateTimeType(((DateType) item).getValueAsString()).noExtensions());
+    } else if (item instanceof StringType) {
+      String s = convertToString(item);
+      // Same FHIRPath/FHIR datetime regex as funcIsDateTime so that
+      // toDateTime() and convertsToDateTime() agree on what is convertible.
+      if (s != null && s.matches(RegexConstants.DATE_TIME_REGEX)) {
+        try {
+          result.add(new DateTimeType(s).noExtensions());
+        } catch (Exception e) {
+          // String matched the syntactic regex but the calendar value is not
+          // valid (e.g. 2024-02-30) - return empty per spec.
+        }
+      }
+    }
+    return result;
   }
 
   private List<Base> funcToTime(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
@@ -5533,7 +5608,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       for (Base item : current) {
         pc.clear();
         pc.add(item);
-        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), false));
+        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), true));
       }
       more = false;
       current.clear();
@@ -6212,8 +6287,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
       result.add(new BooleanType((convertToString(focus.get(0)).matches
-          ("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"))).noExtensions());
-    } else { 
+          (RegexConstants.DATE_TIME_REGEX))).noExtensions());
+    } else {
       result.add(new BooleanType(false).noExtensions());
     }
     return result;
@@ -6227,8 +6302,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
       result.add(new BooleanType((convertToString(focus.get(0)).matches
-          ("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"))).noExtensions());
-    } else { 
+          (RegexConstants.DATE_TIME_REGEX))).noExtensions());
+    } else {
       result.add(new BooleanType(false).noExtensions());
     }
     return result;
