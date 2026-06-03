@@ -1340,9 +1340,7 @@ public class LiquidEngine implements IHostApplicationServices {
           }          
           LiquidforloopObject forloop = new LiquidforloopObject(list.size(), i, offset, limit, parentLoop);
           lctxt.globalVars.put("forloop", List.of(forloop));
-          if (lctxt.globalVars.containsKey(varName)) {
-            lctxt.globalVars.remove(varName);
-          }
+          lctxt.globalVars.remove(varName);
           lctxt.loopVars.put(varName, o);
           boolean wantBreak = false;
           for (LiquidNode n : body) {
