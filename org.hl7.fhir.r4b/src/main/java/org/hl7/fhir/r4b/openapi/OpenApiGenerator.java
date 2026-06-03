@@ -228,7 +228,7 @@ public class OpenApiGenerator {
     if (isJson())
       resp.content("application/fhir+json").schemaRef(specRef() + "/fhir.schema.json#/definitions/CapabilityStatement");
     if (isXml())
-      resp.content("application/fhir+xml").schemaRef(specRef() + "/CapabilityStatement.xsd");
+      resp.content("application/fhir+xml").schemaRef(specRef() + "/capabilitystatement.xsd");
 
     // parameters - but do they apply?
     op.paramRef("#/components/parameters/format");
