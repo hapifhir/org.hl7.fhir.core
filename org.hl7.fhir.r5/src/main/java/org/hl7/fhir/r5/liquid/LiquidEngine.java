@@ -684,7 +684,7 @@ public class LiquidEngine implements IHostApplicationServices {
         case DIVIDED_BY: {
           String raw = singleString(t);
           String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
-          if (isInteger(raw) && isInteger(argRaw)) {
+          if (isLong(raw) && isLong(argRaw)) {
             long a = Long.parseLong(raw.trim());
             long b = Long.parseLong(argRaw.trim());
             t = List.of(String.valueOf(a / b));
@@ -701,7 +701,7 @@ public class LiquidEngine implements IHostApplicationServices {
         case MINUS: {
           String raw = singleString(t);
           String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
-          if (isInteger(raw) && isInteger(argRaw)) {
+          if (isLong(raw) && isLong(argRaw)) {
             t = List.of(String.valueOf(Long.parseLong(raw.trim()) - Long.parseLong(argRaw.trim())));
           } else {
             t = List.of(formatNumber(toDouble(raw) - toDouble(argRaw), raw));
@@ -711,7 +711,7 @@ public class LiquidEngine implements IHostApplicationServices {
         case MODULO: {
           String raw = singleString(t);
           String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
-          if (isInteger(raw) && isInteger(argRaw)) {
+          if (isLong(raw) && isLong(argRaw)) {
             t = List.of(String.valueOf(Long.parseLong(raw.trim()) % Long.parseLong(argRaw.trim())));
           } else {
             t = List.of(formatNumber(toDouble(raw) % toDouble(argRaw), raw));
@@ -721,7 +721,7 @@ public class LiquidEngine implements IHostApplicationServices {
         case PLUS: {
           String raw = singleString(t);
           String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
-          if (isInteger(raw) && isInteger(argRaw)) {
+          if (isLong(raw) && isLong(argRaw)) {
             t = List.of(String.valueOf(Long.parseLong(raw.trim()) + Long.parseLong(argRaw.trim())));
           } else {
             t = List.of(formatNumber(toDouble(raw) + toDouble(argRaw), raw));
@@ -742,7 +742,7 @@ public class LiquidEngine implements IHostApplicationServices {
         case TIMES: {
           String raw = singleString(t);
           String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
-          if (isInteger(raw) && isInteger(argRaw)) {
+          if (isLong(raw) && isLong(argRaw)) {
             t = List.of(String.valueOf(Long.parseLong(raw.trim()) * Long.parseLong(argRaw.trim())));
           } else {
             t = List.of(formatNumber(toDouble(raw) * toDouble(argRaw), raw));
@@ -864,9 +864,17 @@ public class LiquidEngine implements IHostApplicationServices {
       }
     }
 
-    private boolean isInteger(String s) {
+    private boolean isLong(String s) {
+      if (s == null) {
+        return false;
+      }
+
+      if(s.trim().matches("\\d+")) {
+        return true;
+      }
+
       try {
-        Long.parseLong(s.trim());
+       Double.parseDouble(s.trim());
         return true;
       } catch (NumberFormatException e) {
         return false;
