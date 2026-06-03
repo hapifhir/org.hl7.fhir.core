@@ -869,12 +869,8 @@ public class LiquidEngine implements IHostApplicationServices {
         return false;
       }
 
-      if(s.trim().matches("\\d+")) {
-        return true;
-      }
-
-      try {
-       Double.parseDouble(s.trim());
+     try {
+        Long.parseLong(s.trim());
         return true;
       } catch (NumberFormatException e) {
         return false;
