@@ -241,7 +241,10 @@ public class LiquidEngine implements IHostApplicationServices {
     return b.toString();
   }
   
-  private static String singleString(List<String> t) throws FHIRException {
+  private String singleString(List<String> t) throws FHIRException {
+    if (t == null) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_SYNTAX));
+    }
     if (t.size() == 0) {
       return "";
     } else if (t.size() == 1) {
@@ -686,10 +689,17 @@ public class LiquidEngine implements IHostApplicationServices {
           String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
           if (isLong(raw) && isLong(argRaw)) {
             long a = Long.parseLong(raw.trim());
-            long b = Long.parseLong(argRaw.trim());
-            t = List.of(String.valueOf(a / b));
+            long denominator = Long.parseLong(argRaw.trim());
+            if (denominator == 0) {
+              throw new FHIRException(new ArithmeticException("/ by zero"));
+            }
+            t = List.of(String.valueOf(a / denominator));
           } else {
-            t = List.of(formatNumber(toDouble(raw) / toDouble(argRaw), raw));
+            double denominator = toDouble(argRaw);
+            if (denominator == 0) {
+              throw new FHIRException(new ArithmeticException("/ by zero"));
+            }
+            t = List.of(formatNumber(toDouble(raw) / denominator, raw));
           }
           break;
         }
@@ -712,9 +722,17 @@ public class LiquidEngine implements IHostApplicationServices {
           String raw = singleString(t);
           String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
           if (isLong(raw) && isLong(argRaw)) {
-            t = List.of(String.valueOf(Long.parseLong(raw.trim()) % Long.parseLong(argRaw.trim())));
+            long denominator = Long.parseLong(argRaw.trim());
+            if (denominator == 0) {
+              throw new FHIRException(new ArithmeticException("/ by zero"));
+            }
+            t = List.of(String.valueOf(Long.parseLong(raw.trim()) % denominator));
           } else {
-            t = List.of(formatNumber(toDouble(raw) % toDouble(argRaw), raw));
+            double denominator = toDouble(argRaw);
+            if (denominator == 0) {
+              throw new FHIRException(new ArithmeticException("/ by zero"));
+            }
+            t = List.of(formatNumber(toDouble(raw) % denominator, raw));
           }
           break;
         }
@@ -866,7 +884,7 @@ public class LiquidEngine implements IHostApplicationServices {
 
     private boolean isLong(String s) {
       if (s == null) {
-        return false;
+        throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_SYNTAX));
       }
 
      try {
