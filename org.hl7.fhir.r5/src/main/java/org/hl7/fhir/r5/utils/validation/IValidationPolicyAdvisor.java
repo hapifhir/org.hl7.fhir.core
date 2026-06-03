@@ -82,7 +82,9 @@ public interface IValidationPolicyAdvisor {
    *   the addition of {@code theMessageArguments} and will be removed in a future release.
    */
   @Deprecated
-   boolean isSuppressMessageId(String path, String messageId) ;
+   default boolean isSuppressMessageId(String path, String messageId) {
+    return false;
+  }
 
   /**
    * Whether to try validating a reference, and if so, how much validation to apply
