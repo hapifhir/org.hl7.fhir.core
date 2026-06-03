@@ -93,7 +93,7 @@ import java.util.*;
  * getTargetType(map) - return the definition for the type to create to hand in
  * transform(appInfo, source, map, target) - transform from source to target following the map
  * analyse(appInfo, map) - generate profiles and other analysis artifacts for the targets of the transform
- * map generateMapFromMappings(StructureDefinition) - build a mapping from a structure definition with loigcal mappings
+ * map generateMapFromMappings(StructureDefinition) - build a mapping from a structure definition with logical mappings
  *
  * @author Grahame Grieve
  */
@@ -106,6 +106,7 @@ public class StructureMapUtilities {
   public static final String MAP_WHERE_EXPRESSION = "map.where.expression";
   public static final String MAP_SEARCH_EXPRESSION = "map.search.expression";
   public static final String MAP_EXPRESSION = "map.transform.expression";
+  public static final String MAP_IDENTITY_TRANSFORM_SET = "map.identity-transform.set";
   private static final boolean MULTIPLE_TARGETS_ONELINE = true;
   public static final String AUTO_VAR_NAME = "vvv";
   public static final String DEF_GROUP_NAME = "DefaultMappingGroupAnonymousAlias";
@@ -378,6 +379,25 @@ public class StructureMapUtilities {
   private static void renderRule(StringBuilder b, StructureMapGroupRuleComponent r, int indent) {
     if (r.hasFormatCommentPre()) {
       renderMultilineDoco(b, r.getFormatCommentsPre(), indent);
+    }
+    // This user data comes from parsing the simple transform `src -> tgt: type, subtype, action, recorded;`
+    // This could also be an extension at a later date
+    if (r.hasUserData(MAP_IDENTITY_TRANSFORM_SET)) {
+      if (Boolean.FALSE.equals(r.getUserData(MAP_IDENTITY_TRANSFORM_SET)))
+        return;
+      String elements = (String)r.getUserData(MAP_IDENTITY_TRANSFORM_SET);
+      if (elements != null) {
+        for (int i = 0; i < indent; i++)
+          b.append(' ');
+        b.append(r.getSourceFirstRep().getContextElement());
+        b.append(" -> ");
+        b.append(r.getTargetFirstRep().getContextElement());
+        b.append(": ");
+        b.append(elements);
+        b.append(";");
+        b.append("\r\n");
+      }
+      return;
     }
     for (int i = 0; i < indent; i++)
       b.append(' ');
@@ -1171,50 +1191,99 @@ public class StructureMapUtilities {
           lexer.next();
       }
     }
-    if (lexer.hasToken("then")) {
-      lexer.token("then");
-      if (lexer.hasToken("{")) {
-        lexer.token("{");
-        while (!lexer.hasToken("}")) {
-          if (lexer.done())
-            throw lexer.error("premature termination expecting '}' in nested group");
-          parseRule(map, rule.getRule(), lexer, newFmt);
-        }
-        lexer.token("}");
-      } else {
-        done = false;
-        while (!done) {
-          parseRuleReference(rule, lexer);
-          done = !lexer.hasToken(",");
-          if (!done)
-            lexer.next();
-        }
+
+    if (lexer.hasToken(":")) {
+      lexer.take();
+      // Batch form that will produce a list of simple rules, comma separated ("Simple Form: Identity Transform" heading in the specification)
+      // https://hl7.org/fhir/R5/mapping-language.html#simple
+      Queue<String> elements = new ArrayDeque<String>();
+      String elementName = lexer.take();
+      rule.getSourceFirstRep().setElement(elementName);
+      rule.getTargetFirstRep().setElement(elementName);
+      while (lexer.hasToken(",")) {
+        lexer.token(",");
+        elements.add(lexer.take());
       }
-    }
-    if (isSimpleSyntax(rule)) {
-      rule.getSourceFirstRep().setVariable(AUTO_VAR_NAME);
-      rule.getTargetFirstRep().setVariable(AUTO_VAR_NAME);
-      rule.getTargetFirstRep().setTransform(StructureMapTransform.CREATE); // with no parameter - e.g. imply what is to be created
-      // no dependencies - imply what is to be done based on types
-    }
-    if (newFmt) {
+
+      // And also permit the inclusion of the rule name
+      String ruleName = null;
       if (lexer.isConstant()) {
         if (lexer.isStringConstant()) {
-          rule.setName(fixName(lexer.readConstant("ruleName")));
+          ruleName = fixName(lexer.readConstant("ruleName"));
         } else {
-          rule.setName(lexer.take());
+          ruleName = lexer.take();
         }
-      } else {
-        if (rule.getSource().size() != 1 || !rule.getSourceFirstRep().hasElement() && exceptionsForChecks )
-          throw lexer.error("Complex rules must have an explicit name");
-        if (rule.getSourceFirstRep().hasType())
-          rule.setName(rule.getSourceFirstRep().getElement() + Utilities.capitalize(rule.getSourceFirstRep().getType()));
-        else
-          rule.setName(rule.getSourceFirstRep().getElement());
+        rule.setName(ruleName + "_" + elementName);
       }
       String doco = lexer.tokenWithTrailingComment(";");
       if (doco != null) {
         rule.setDocumentation(doco);
+      }
+
+      // Now scan the list of elements and create new rules for each
+      String sourceContext = rule.getSourceFirstRep().getContext();
+      String targetContext = rule.getTargetFirstRep().getContext();
+      rule.setUserData(MAP_IDENTITY_TRANSFORM_SET, String.join(", ", elementName, String.join(", ", elements)));
+      for (String element : elements) {
+        StructureMapGroupRuleComponent newRule = new StructureMapGroupRuleComponent();
+        list.add(newRule);
+        if (ruleName != null) {
+          newRule.setName(ruleName + "_" + element);
+        }
+        newRule.getSourceFirstRep().setContext(sourceContext);
+        newRule.getSourceFirstRep().setElement(element);
+        newRule.getTargetFirstRep().setContext(targetContext);
+        newRule.getTargetFirstRep().setElement(element);
+        newRule.setUserData(MAP_IDENTITY_TRANSFORM_SET, false);
+      }
+
+    } else {
+
+      if (lexer.hasToken("then")) {
+        lexer.token("then");
+        if (lexer.hasToken("{")) {
+          lexer.token("{");
+          while (!lexer.hasToken("}")) {
+            if (lexer.done())
+              throw lexer.error("premature termination expecting '}' in nested group");
+            parseRule(map, rule.getRule(), lexer, newFmt);
+          }
+          lexer.token("}");
+        } else {
+          done = false;
+          while (!done) {
+            parseRuleReference(rule, lexer);
+            done = !lexer.hasToken(",");
+            if (!done)
+              lexer.next();
+          }
+        }
+      }
+      if (isSimpleSyntax(rule)) {
+        rule.getSourceFirstRep().setVariable(AUTO_VAR_NAME);
+        rule.getTargetFirstRep().setVariable(AUTO_VAR_NAME);
+        rule.getTargetFirstRep().setTransform(StructureMapTransform.CREATE); // with no parameter - e.g. imply what is to be created
+        // no dependencies - imply what is to be done based on types
+      }
+      if (newFmt) {
+        if (lexer.isConstant()) {
+          if (lexer.isStringConstant()) {
+            rule.setName(fixName(lexer.readConstant("ruleName")));
+          } else {
+            rule.setName(lexer.take());
+          }
+        } else {
+          if (rule.getSource().size() != 1 || !rule.getSourceFirstRep().hasElement() && exceptionsForChecks )
+            throw lexer.error("Complex rules must have an explicit name");
+          if (rule.getSourceFirstRep().hasType())
+            rule.setName(rule.getSourceFirstRep().getElement() + Utilities.capitalize(rule.getSourceFirstRep().getType()));
+          else
+            rule.setName(rule.getSourceFirstRep().getElement());
+        }
+        String doco = lexer.tokenWithTrailingComment(";");
+        if (doco != null) {
+          rule.setDocumentation(doco);
+        }
       }
     }
   }
