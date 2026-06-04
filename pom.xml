@@ -459,6 +459,7 @@
                             <!--    For JUnit4 use TestUtilities.runningAsSurefire() or
                                     TestingUtilities.runningAsSurefire() to exclude a test from surefire executions-->
                             <runningAsSurefire>true</runningAsSurefire>
+                            <file.encoding>${project.build.sourceEncoding}</file.encoding>
                         </systemPropertyVariables>
                         <redirectTestOutputToFile>false</redirectTestOutputToFile>
                         <!-- For JUnit5 use an excludedInSurefire tag to exclude a test from surefire executions -->

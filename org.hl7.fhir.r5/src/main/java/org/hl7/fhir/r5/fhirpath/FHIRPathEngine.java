@@ -406,6 +406,23 @@ public class FHIRPathEngine {
     }
 
   }
+  
+  /**
+   * Parse a path for later use using execute, but allow the path to be part of some other syntax (e.g. a Liquid expression)
+   * 
+   * @param lexer
+   * @return
+   * @throws FHIRLexerException
+   */
+  public ExpressionNodeWithOffset parsePartialExpression(FHIRLexer lexer) throws FHIRLexerException {
+    if (lexer.done()) {
+      throw lexer.error("Path cannot be empty");
+    }
+    ExpressionNode result = parseExpression(lexer, true);
+    result.check();
+    return new ExpressionNodeWithOffset(lexer.getCurrentStart(), result);    
+  }
+  
   /**
    * Parse a path for later use using execute
    * 
