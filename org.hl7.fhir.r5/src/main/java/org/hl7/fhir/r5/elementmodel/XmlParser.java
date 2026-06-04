@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParserFactory;
@@ -761,7 +762,7 @@ public class XmlParser extends ParserBase {
       xml.setDefaultNamespace(ns);
     }
     if (hasTypeAttr(e))
-      xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+      xml.namespace(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "xsi");
     if (Utilities.isAbsoluteUrl(e.getType())) {
       xml.namespace(urlRoot(e.getType()), "et");
     }
