@@ -906,7 +906,7 @@ public class StructureMapUtilities {
     if (id.startsWith("#"))
       throw lexer.error("Concept Map identifier must start with #");
     map.setId(id);
-    map.setStatus(PublicationStatus.DRAFT); // todo: how to add this to the text format
+    map.setStatus(result.getStatus()); // Just use the status of the SMap itself
     result.getContained().add(map);
     lexer.token("{");
     //	  lexer.token("source");
