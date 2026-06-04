@@ -171,6 +171,11 @@ public class TerminologyCache {
 
   private SystemNameKeyGenerator systemNameKeyGenerator = new SystemNameKeyGenerator();
 
+  // Set once unload() has performed its final flush. After that, save() is a no-op so that any
+  // late terminology work cannot overwrite the just-flushed, complete on-disk cache with a
+  // freshly-repopulated partial one (see unload()).
+  private boolean unloaded = false;
+
   public class CacheToken {
     @Getter
     private String name;
@@ -386,6 +391,7 @@ public class TerminologyCache {
     // not useable after this is called — flush any pending writes first so we don't lose
     // entries that were waiting out the SAVE_DELAY_MS coalescing window.
     save();
+    unloaded = true;
     caches.clear();
     vsCache.clear();
     csCache.clear();
@@ -738,6 +744,8 @@ public class TerminologyCache {
 
   private void save(NamedCache nc) {
     if (folder == null)
+      return;
+    if (unloaded) // unload() already wrote the complete cache; don't overwrite it with later partial state
       return;
 
     try {
