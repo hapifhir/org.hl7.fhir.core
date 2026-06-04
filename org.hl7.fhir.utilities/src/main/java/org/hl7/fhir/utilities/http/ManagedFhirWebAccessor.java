@@ -80,36 +80,36 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
 
   public HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
     return executeWithClientCredentialsRetry(httpRequest.getUrl(), () -> {
-    switch (ManagedWebAccess.getAccessPolicy()) {
-      case DIRECT: {
-        HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
-        assert requestWithAuthorizationHeaders.getUrl() != null;
+      switch (ManagedWebAccess.getAccessPolicy()) {
+        case DIRECT: {
+          HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
+          assert requestWithAuthorizationHeaders.getUrl() != null;
 
-        RequestBody body = requestWithAuthorizationHeaders.getBody() == null ? null : RequestBody.create(requestWithAuthorizationHeaders.getBody());
-        Request.Builder requestBuilder = new Request.Builder()
-          .url(requestWithAuthorizationHeaders.getUrl())
-          .method(requestWithAuthorizationHeaders.getMethod().name(), body);
+          RequestBody body = requestWithAuthorizationHeaders.getBody() == null ? null : RequestBody.create(requestWithAuthorizationHeaders.getBody());
+          Request.Builder requestBuilder = new Request.Builder()
+            .url(requestWithAuthorizationHeaders.getUrl())
+            .method(requestWithAuthorizationHeaders.getMethod().name(), body);
 
-        for (HTTPHeader header : requestWithAuthorizationHeaders.getHeaders()) {
-          requestBuilder.addHeader(header.getName(), header.getValue());
+          for (HTTPHeader header : requestWithAuthorizationHeaders.getHeaders()) {
+            requestBuilder.addHeader(header.getName(), header.getValue());
+          }
+          OkHttpClient okHttpClient = getOkHttpClient();
+
+          if (!ManagedWebAccess.inAllowedPaths(requestWithAuthorizationHeaders.getUrl().toString())) {
+            throw new IOException("The pathname '" + requestWithAuthorizationHeaders.getUrl().toString() + "' cannot be accessed by policy");
+          }
+          Response response = okHttpClient.newCall(requestBuilder.build()).execute();
+          return getHTTPResult(response);
         }
-        OkHttpClient okHttpClient = getOkHttpClient();
-
-        if (!ManagedWebAccess.inAllowedPaths(requestWithAuthorizationHeaders.getUrl().toString())) {
-          throw new IOException("The pathname '" + requestWithAuthorizationHeaders.getUrl().toString() + "' cannot be accessed by policy");
-        }
-        Response response = okHttpClient.newCall(requestBuilder.build()).execute();
-        return getHTTPResult(response);
+        case MANAGED:
+          HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
+          assert requestWithAuthorizationHeaders.getUrl() != null;
+          return ManagedWebAccess.getFhirWebAccessor().httpCall(requestWithAuthorizationHeaders);
+        case PROHIBITED:
+          throw new IOException("Access to the internet is not allowed by local security policy");
+        default:
+          throw new IOException("Internal Error");
       }
-      case MANAGED:
-        HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
-        assert requestWithAuthorizationHeaders.getUrl() != null;
-        return ManagedWebAccess.getFhirWebAccessor().httpCall(requestWithAuthorizationHeaders);
-      case PROHIBITED:
-        throw new IOException("Access to the internet is not allowed by local security policy");
-      default:
-        throw new IOException("Internal Error");
-    }
     });
   }
 

@@ -47,6 +47,11 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
    * don't implement {@link ITokenInvalidatingAuthProvider}, and for any auth type other than
    * client_credentials.
    */
+  protected HTTPResult executeWithClientCredentialsRetry(String url, IOSupplier<HTTPResult> action)
+      throws IOException {
+    return executeWithClientCredentialsRetry(new URL(url), action);
+  }
+
   protected HTTPResult executeWithClientCredentialsRetry(URL url, IOSupplier<HTTPResult> action)
       throws IOException {
     HTTPResult result = action.get();

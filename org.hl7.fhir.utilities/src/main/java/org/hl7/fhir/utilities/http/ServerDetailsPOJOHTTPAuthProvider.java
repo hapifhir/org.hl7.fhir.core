@@ -53,7 +53,9 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
         headers.put("Api-Key", providedAPIKey);
       }
       case CLIENT_CREDENTIALS -> {
-        // A token-fetch failure surfaces as an unchecked FHIRException (the IHTTPAuthenticationProvider contract has no checked throws); callers catching IOException will not catch it. The 401/403 retry only triggers on HTTP status, not on this exception.
+        // A token-fetch failure surfaces as an unchecked FHIRException (the IHTTPAuthenticationProvider
+        // contract has no checked throws), so callers catching IOException will not catch it. The
+        // 401/403 retry only triggers on HTTP status, not on this exception.
         try {
           String ccToken = HTTPTokenManager.getToken(serverDetails);
           headers.put("Authorization", "Bearer " + ccToken);
