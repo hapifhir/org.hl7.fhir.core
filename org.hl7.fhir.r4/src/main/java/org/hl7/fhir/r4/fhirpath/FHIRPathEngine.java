@@ -69,6 +69,7 @@ import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.regex.RegexUtils;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -4862,10 +4863,15 @@ public class FHIRPathEngine {
     String repl = convertToString(replB);
 
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
-      //
+      // no-op
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-        result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+        try {
+          String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
+          result.add(new StringType(replaced).noExtensions());
+        } catch (TimeoutException te) {
+          throw new FHIRException("Timeout evaluating regex: " + regex, te);
+        }
       }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
