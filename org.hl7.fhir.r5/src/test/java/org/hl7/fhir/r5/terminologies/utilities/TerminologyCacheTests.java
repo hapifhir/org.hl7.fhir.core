@@ -148,6 +148,10 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     public void testCachePersistence() throws IOException {
       assertInMemoryCacheContents();
 
+      // Writes are debounced (see TerminologyCache.SAVE_DELAY_MS), so explicitly flush
+      // before constructing a second cache that reads from disk.
+      terminologyCacheA.save();
+
       //Create another cache using the same directory, and check that it gives the same results.
 
         TerminologyCache terminologyCacheB = new TerminologyCache(lock, tempCacheDirectory.toString());
@@ -170,6 +174,10 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     @Test
     public void testCacheExpiresCapabilitiesFiles() throws IOException, InterruptedException {
       assertInMemoryCacheContents();
+
+      // Writes are debounced (see TerminologyCache.SAVE_DELAY_MS), so explicitly flush
+      // before constructing a second cache that reads from disk.
+      terminologyCacheA.save();
 
       Thread.sleep(200L);
       TerminologyCache terminologyCacheB = new TerminologyCache(lock, tempCacheDirectory.toString(), 100L);

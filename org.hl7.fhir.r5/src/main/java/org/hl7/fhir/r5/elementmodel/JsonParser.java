@@ -671,8 +671,18 @@ public class JsonParser extends ParserBase {
             JsonElement f = arrI(arr2, i);
             if (m != null && m.isJsonString() && arr1.isUnquoted(i)) {
               logError(errors, "2022-11-26", line(m), col(m), path+"."+name+"["+i+"]", IssueType.INVALID, context.formatMessage(I18nConstants.JSON_PROPERTY_VALUE_NO_QUOTES, "item", m.asString()), IssueSeverity.ERROR);
+            } else if (m == null && f == null) {
+              if (arr1.size() < arr2.size()) {
+                logError(errors, "2026-05-18", line(arr2), col(arr2), path+"."+name, IssueType.INVALID,
+                  context.formatMessage(I18nConstants.JSON_PROPERTY_INVALID_ARRAY, i), IssueSeverity.ERROR);
+              } else {
+                logError(errors, "2026-05-18", line(arr1), col(arr1), path + "." + name, IssueType.INVALID,
+                  context.formatMessage(I18nConstants.JSON_PROPERTY_INVALID_ARRAY, i), IssueSeverity.ERROR);
+              }
+
+            } else {
+              parseChildPrimitiveInstance(errors, element, property, name, isJsonName, npath, fpath, m, f);
             }
-            parseChildPrimitiveInstance(errors, element, property, name, isJsonName, npath, fpath, m, f);
           }
         }
       } else {
@@ -695,6 +705,8 @@ public class JsonParser extends ParserBase {
           I18nConstants.THIS_PROPERTY_MUST_BE_AN_SIMPLE_VALUE_NOT_, describe(main), name, npath), IssueSeverity.ERROR);
     } else if (fork != null && !(fork instanceof JsonObject)) {
       logError(errors, ValidationMessage.NO_RULE_DATE, line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(fork), name, npath), IssueSeverity.ERROR);
+    } else if (main == null && fork == null) {
+      throw new Error("TO handle");
     } else {
       Element n = new Element(isJsonName ? property.getName() : name, property).markLocation(line(main != null ? main : fork), col(main != null ? main : fork)).setFormat(FhirFormat.JSON);
       if (main != null) {
@@ -768,6 +780,9 @@ public class JsonParser extends ParserBase {
   }
 
   private int line(JsonElement e) {
+    if (e == null) {
+      return 0;
+    }
     return e.getStart().getLine();
   }
 
