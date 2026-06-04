@@ -490,6 +490,75 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
   }
 
   @Test
+  void testManagedWebAccessorPostRetryOn401() throws Exception {
+    tokenServer = new MockWebServer();
+    tokenServer.start();
+
+    // First token
+    tokenServer.enqueue(new MockResponse()
+      .setBody("{\"access_token\":\"expired-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
+      .addHeader("Content-Type", "application/json")
+      .setResponseCode(200));
+
+    // Second token after invalidation
+    tokenServer.enqueue(new MockResponse()
+      .setBody("{\"access_token\":\"fresh-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
+      .addHeader("Content-Type", "application/json")
+      .setResponseCode(200));
+
+    ServerDetailsPOJO serverPojo = ServerDetailsPOJO.builder()
+      .url(server.url("").toString())
+      .authenticationType("client_credentials")
+      .type("fhir")
+      .clientId("testClient")
+      .clientSecret("testSecret")
+      .tokenEndpoint(tokenServer.url("/token").toString())
+      .build();
+
+    ManagedWebAccessor accessor = new ManagedWebAccessor(Arrays.asList("fhir"), DUMMY_AGENT, new ServerDetailsPOJOHTTPAuthProvider(List.of(serverPojo)));
+
+    // SimpleHTTPClient (ManagedWebAccessor path) has no retry interceptor, so one 401 then 200
+    server.enqueue(new MockResponse()
+      .setBody("Unauthorized").setResponseCode(401));
+    server.enqueue(new MockResponse()
+      .setBody("Success").setResponseCode(200));
+
+    HTTPResult result = accessor.post(server.url("blah").toString(), "{}".getBytes(StandardCharsets.UTF_8), "application/json");
+
+    assertThat(result.getCode()).isEqualTo(200);
+    assertThat(result.getContentAsString()).isEqualTo("Success");
+
+    // Two token fetches (cache invalidated, fresh token fetched)
+    assertThat(tokenServer.getRequestCount()).isEqualTo(2);
+
+    RecordedRequest firstRequest = server.takeRequest();
+    assertThat(firstRequest.getHeader("Authorization")).isEqualTo("Bearer expired-token");
+    RecordedRequest retryRequest = server.takeRequest();
+    assertThat(retryRequest.getHeader("Authorization")).isEqualTo("Bearer fresh-token");
+  }
+
+  @Test
+  void testNonClientCredentialsAuthDoesNotRetry() throws Exception {
+    ServerDetailsPOJO serverPojo = ServerDetailsPOJO.builder()
+      .url(server.url("").toString())
+      .authenticationType("token")
+      .type("fhir")
+      .token(DUMMY_TOKEN)
+      .build();
+
+    ManagedWebAccessor accessor = new ManagedWebAccessor(Arrays.asList("fhir"), DUMMY_AGENT, new ServerDetailsPOJOHTTPAuthProvider(List.of(serverPojo)));
+
+    // Single 401 from the resource server; no retry should occur for non-cc auth
+    server.enqueue(new MockResponse()
+      .setBody("Unauthorized").setResponseCode(401));
+
+    HTTPResult result = accessor.get(server.url("blah").toString(), "application/json");
+
+    assertThat(result.getCode()).isEqualTo(401);
+    assertThat(server.getRequestCount()).isEqualTo(1);
+  }
+
+  @Test
   public void verifyAllowedPaths() {
     assertDoesNotThrow(() -> {
       //TODO the allowed paths cannot be set for now, meaning all will be allowed.

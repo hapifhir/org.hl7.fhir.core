@@ -62,7 +62,7 @@ class ServerDetailsPOJOHTTPAuthProviderTest {
     ServerDetailsPOJOHTTPAuthProvider provider =
       new ServerDetailsPOJOHTTPAuthProvider(List.of(buildClientCredentialsServer()));
 
-    assertThat(provider.invalidateTokenIfClientCredentials(new URL("https://fhir.example.org/Patient")))
+    assertThat(provider.invalidateCachedCredentials(new URL("https://fhir.example.org/Patient")))
       .isTrue();
   }
 
@@ -71,7 +71,7 @@ class ServerDetailsPOJOHTTPAuthProviderTest {
     ServerDetailsPOJOHTTPAuthProvider provider =
       new ServerDetailsPOJOHTTPAuthProvider(List.of(buildClientCredentialsServer()));
 
-    assertThat(provider.invalidateTokenIfClientCredentials(new URL("https://other.example.com/Patient")))
+    assertThat(provider.invalidateCachedCredentials(new URL("https://other.example.com/Patient")))
       .isFalse();
   }
 }

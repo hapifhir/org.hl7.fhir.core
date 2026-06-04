@@ -9,6 +9,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -55,8 +59,39 @@ class HTTPTokenManagerTest {
 
     RecordedRequest request = tokenServer.takeRequest();
     assertThat(request.getMethod()).isEqualTo("POST");
-    assertThat(request.getBody().readUtf8()).contains("grant_type=client_credentials");
-    assertThat(request.getBody().toString()).doesNotContain("refresh_token");
+    String body = request.getBody().readUtf8();
+    assertThat(body).contains("grant_type=client_credentials");
+    assertThat(body).doesNotContain("refresh_token");
+  }
+
+  @Test
+  void testClientCredentialsAreFormUrlEncoded() throws Exception {
+    String clientId = "cli ent+id";
+    String clientSecret = "s3cr3t/+&=value";
+    ServerDetailsPOJO server = buildServer(clientId, clientSecret);
+
+    tokenServer.enqueue(new MockResponse()
+      .setBody("{\"access_token\":\"abc123\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
+      .addHeader("Content-Type", "application/json")
+      .setResponseCode(200));
+
+    HTTPTokenManager.getToken(server);
+
+    RecordedRequest request = tokenServer.takeRequest();
+    String body = request.getBody().readUtf8();
+
+    // Parse the form body and URL-decode each value; this proves encoding happened
+    // and round-trips regardless of the exact scheme used.
+    Map<String, String> params = new HashMap<>();
+    for (String pair : body.split("&")) {
+      int eq = pair.indexOf('=');
+      String key = pair.substring(0, eq);
+      String value = pair.substring(eq + 1);
+      params.put(key, URLDecoder.decode(value, StandardCharsets.UTF_8));
+    }
+
+    assertThat(params).containsEntry("client_id", clientId);
+    assertThat(params).containsEntry("client_secret", clientSecret);
   }
 
   @Test
@@ -110,7 +145,9 @@ class HTTPTokenManagerTest {
 
     assertThatThrownBy(() -> HTTPTokenManager.getToken(server))
       .isInstanceOf(IOException.class)
-      .hasMessageContaining("Token endpoint returned HTTP 401");
+      .hasMessageContaining("returned HTTP 401")
+      .hasMessageContaining("invalid_client")
+      .hasMessageNotContaining("(response body suppressed)");
   }
 
   @Test

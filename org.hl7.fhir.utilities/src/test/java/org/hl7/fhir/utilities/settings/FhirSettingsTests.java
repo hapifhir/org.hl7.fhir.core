@@ -15,6 +15,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 @Isolated
 public class FhirSettingsTests implements ResourceLoaderTests {
@@ -121,13 +123,20 @@ public class FhirSettingsTests implements ResourceLoaderTests {
     assertEquals("https://auth.example.org/token", server.getTokenEndpoint());
   }
 
-  @Test
-  public void testClientCredentialsMissingFieldsThrows() throws IOException {
+  @ParameterizedTest
+  @CsvSource({
+    "settings-client-credentials-missing-clientId.json, clientId",
+    "settings-client-credentials-missing-clientSecret.json, clientSecret",
+    "settings-client-credentials-missing-tokenEndpoint.json, tokenEndpoint"
+  })
+  public void testClientCredentialsMissingFieldThrows(String resourceFile, String missingField) throws IOException {
     Path path = Files.createTempFile("fhir-settings-cc-bad", "json").toAbsolutePath();
-    copyResourceToFile(path, "settings", "settings-client-credentials-missing.json");
+    copyResourceToFile(path, "settings", resourceFile);
 
-    assertThrows(IOException.class, () -> {
+    IOException ex = assertThrows(IOException.class, () -> {
       FhirSettings.getFhirSettingsPOJO(path.toString());
     });
+    assertTrue(ex.getMessage().contains("missing required field: " + missingField),
+      "Expected message to name missing field '" + missingField + "' but was: " + ex.getMessage());
   }
 }
