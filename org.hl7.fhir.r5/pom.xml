@@ -207,7 +207,11 @@
             <version>1.2026.1</version>
             <scope>compile</scope>
         </dependency>
-        
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.utilities</artifactId>
+        </dependency>
+
     </dependencies>
 
 	<build>

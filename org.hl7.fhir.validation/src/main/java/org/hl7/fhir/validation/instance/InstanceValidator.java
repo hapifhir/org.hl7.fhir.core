@@ -1441,12 +1441,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 //            TYPE_CHECKS_FIXED_CC_US = The pattern [system {0}, code {1}, display "{2}" and userSelected {5}] defined in the profile {3} not found. Issues: {4} 
 
             if (fixedCoding.hasUserSelected()) {
-              ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, false, pattern ? I18nConstants.TYPE_CHECKS_PATTERN_CC_US : I18nConstants.TYPE_CHECKS_FIXED_CC_US, 
+              ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, false, I18nConstants.TYPE_CHECKS_PATTERN_CC_US,
                   fixedCoding.getSystemElement().asStringValue(), fixedCoding.getCodeElement().asStringValue(), fixedCoding.getDisplayElement().asStringValue(),
                   fixedSource, allErrorsFixed, fixedCoding.getUserSelected()) && ok;
               
             } else {
-              ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, false, pattern ? I18nConstants.TYPE_CHECKS_PATTERN_CC : I18nConstants.TYPE_CHECKS_FIXED_CC, 
+              ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, false, I18nConstants.TYPE_CHECKS_PATTERN_CC,
                   fixedCoding.getSystemElement().asStringValue(), fixedCoding.getCodeElement().asStringValue(), fixedCoding.getDisplayElement().asStringValue(),
                   fixedSource, allErrorsFixed) && ok;
             }
