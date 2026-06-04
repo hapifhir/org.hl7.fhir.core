@@ -50,6 +50,7 @@ public class ServerDetailsPOJO {
 
     String clientId;
 
+    @lombok.ToString.Exclude
     String clientSecret;
 
     String tokenEndpoint;

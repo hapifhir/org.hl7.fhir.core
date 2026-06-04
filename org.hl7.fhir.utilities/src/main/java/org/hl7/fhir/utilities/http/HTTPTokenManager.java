@@ -29,11 +29,14 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
  *   <li>{@link #getToken} returns a cached token if it is still valid, or
  *       fetches a new one from the token endpoint using a standard OAuth 2.0
  *       client_credentials POST request.</li>
- *   <li>Tokens are proactively refreshed {@value #EXPIRY_BUFFER_SECONDS} seconds
- *       before they expire, so callers are unlikely to receive an expired token.</li>
+ *   <li>Tokens are treated as expired {@value #EXPIRY_BUFFER_SECONDS} seconds before their
+ *       actual expiry, so an about-to-expire token is re-fetched on the next {@link #getToken}
+ *       call (rather than handed out and failing mid-request) — there is no background refresh.</li>
  *   <li>{@link #invalidateToken} removes a cached token, forcing the next call to
- *       re-fetch. This is used by the retry logic in ManagedWebAccessor /
- *       ManagedFhirWebAccessor when a FHIR server returns 401/403.</li>
+ *       re-fetch. This is used by the retry logic in
+ *       {@link ManagedWebAccessorBase#executeWithClientCredentialsRetry} (invoked via
+ *       {@link ITokenInvalidatingAuthProvider#invalidateCachedCredentials}) when a server
+ *       returns 401/403; it applies to any server, not only FHIR.</li>
  * </ul>
  * <p>
  * Thread safety: concurrent callers requesting a token for the same server will
@@ -115,6 +118,7 @@ public class HTTPTokenManager {
   }
 
   private static String getCacheKey(ServerDetailsPOJO server) {
+    // Assumes (tokenEndpoint, clientId) fully identifies the issued token. If scope/audience are ever added to the token request, they MUST be folded into this key to avoid serving a token minted for a different scope.
     return server.getTokenEndpoint() + "|" + server.getClientId();
   }
 
@@ -151,7 +155,7 @@ public class HTTPTokenManager {
       int responseCode = conn.getResponseCode();
       if (responseCode < 200 || responseCode >= 300) {
         String errorBody = readErrorBody(conn);
-        throw new IOException("Token endpoint returned HTTP " + responseCode + ": " + errorBody);
+        throw new IOException("Token endpoint " + tokenEndpoint + " returned HTTP " + responseCode + ": " + safeOAuthError(errorBody));
       }
 
       String responseBody = FileUtilities.streamToString(conn.getInputStream());
@@ -166,7 +170,7 @@ public class HTTPTokenManager {
     try {
       json = JsonParser.parseString(responseBody).getAsJsonObject();
     } catch (Exception e) {
-      throw new IOException("Token endpoint " + tokenEndpoint + " returned non-JSON response: " + responseBody, e);
+      throw new IOException("Token endpoint " + tokenEndpoint + " returned a non-JSON response (body suppressed)", e);
     }
 
     String accessToken = JsonUtilities.str(json, "access_token");
@@ -178,7 +182,7 @@ public class HTTPTokenManager {
     if (json.has("expires_in") && !json.get("expires_in").isJsonNull()) {
       try {
         expiresIn = json.get("expires_in").getAsInt();
-      } catch (NumberFormatException e) {
+      } catch (RuntimeException e) {
         log.warn("Token endpoint {} returned non-integer expires_in, defaulting to {}s", tokenEndpoint, DEFAULT_EXPIRES_IN);
         expiresIn = DEFAULT_EXPIRES_IN;
       }
@@ -187,8 +191,24 @@ public class HTTPTokenManager {
       expiresIn = DEFAULT_EXPIRES_IN;
     }
 
+    if (expiresIn <= 0) {
+      log.warn("Token endpoint {} returned non-positive expires_in={}, defaulting to {}s", tokenEndpoint, expiresIn, DEFAULT_EXPIRES_IN);
+      expiresIn = DEFAULT_EXPIRES_IN;
+    }
+
     long expiresAtMillis = System.currentTimeMillis() + (expiresIn * 1000L);
     return new CachedToken(accessToken, expiresAtMillis);
+  }
+
+  /** Extracts OAuth error/error_description if the body is JSON; never includes the raw body (may contain credentials). */
+  private static String safeOAuthError(String body) {
+    try {
+      com.google.gson.JsonObject o = com.google.gson.JsonParser.parseString(body).getAsJsonObject();
+      String err = org.hl7.fhir.utilities.json.JsonUtilities.str(o, "error");
+      String desc = org.hl7.fhir.utilities.json.JsonUtilities.str(o, "error_description");
+      if (err != null) return err + (desc != null ? ": " + desc : "");
+    } catch (Exception ignore) { /* not JSON */ }
+    return "(response body suppressed)";
   }
 
   /** Reads the error stream for inclusion in error messages. Never throws. */
