@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * </ul>
  */
 @Isolated
-public class OAuthClientCredentialsIntegrationTest {
+class OAuthClientCredentialsIntegrationTest {
 
   private MockWebServer tokenServer;
   private MockWebServer fhirServer;
@@ -64,7 +64,7 @@ public class OAuthClientCredentialsIntegrationTest {
   // (Settings file parsing is separately tested in FhirSettingsTests.)
   // -----------------------------------------------------------------------
   @Test
-  public void testFullFlowViaManagedWebAccess() throws Exception {
+  void testFullFlowViaManagedWebAccess() throws Exception {
     // Set up token endpoint
     tokenServer.enqueue(new MockResponse()
       .setBody("{\"access_token\":\"settings-token-abc\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
@@ -110,7 +110,7 @@ public class OAuthClientCredentialsIntegrationTest {
   // once (the second request reuses the cached token).
   // -----------------------------------------------------------------------
   @Test
-  public void testTokenCachingAcrossRequests() throws Exception {
+  void testTokenCachingAcrossRequests() throws Exception {
     tokenServer.enqueue(new MockResponse()
       .setBody("{\"access_token\":\"cached-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
       .addHeader("Content-Type", "application/json")
@@ -150,7 +150,7 @@ public class OAuthClientCredentialsIntegrationTest {
   // Second FHIR request triggers a new token fetch transparently.
   // -----------------------------------------------------------------------
   @Test
-  public void testTransparentTokenRefreshOnExpiry() throws Exception {
+  void testTransparentTokenRefreshOnExpiry() throws Exception {
     // First token expires immediately (1s < 30s buffer)
     tokenServer.enqueue(new MockResponse()
       .setBody("{\"access_token\":\"short-lived-token\",\"token_type\":\"Bearer\",\"expires_in\":1}")
@@ -201,7 +201,7 @@ public class OAuthClientCredentialsIntegrationTest {
   // 401s before our code sees it.
   // -----------------------------------------------------------------------
   @Test
-  public void testRetryOn401FromFhirServer() throws Exception {
+  void testRetryOn401FromFhirServer() throws Exception {
     // First token (will be "rejected" by FHIR server)
     tokenServer.enqueue(new MockResponse()
       .setBody("{\"access_token\":\"rejected-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
@@ -252,7 +252,7 @@ public class OAuthClientCredentialsIntegrationTest {
   // ManagedWebAccess.addServerAuthDetail() after loadFromFHIRSettings().
   // -----------------------------------------------------------------------
   @Test
-  public void testAddServerAuthDetailPath() throws Exception {
+  void testAddServerAuthDetailPath() throws Exception {
     tokenServer.enqueue(new MockResponse()
       .setBody("{\"access_token\":\"cli-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
       .addHeader("Content-Type", "application/json")
@@ -307,7 +307,7 @@ public class OAuthClientCredentialsIntegrationTest {
   // ManagedFhirWebAccessor.
   // -----------------------------------------------------------------------
   @Test
-  public void testManagedWebAccessorPath() throws Exception {
+  void testManagedWebAccessorPath() throws Exception {
     tokenServer.enqueue(new MockResponse()
       .setBody("{\"access_token\":\"web-token\",\"token_type\":\"Bearer\",\"expires_in\":3600}")
       .addHeader("Content-Type", "application/json")
@@ -350,7 +350,7 @@ public class OAuthClientCredentialsIntegrationTest {
   // NullPointerException or silent failure.
   // -----------------------------------------------------------------------
   @Test
-  public void testTokenEndpointFailureProducesDescriptiveError() throws Exception {
+  void testTokenEndpointFailureProducesDescriptiveError() throws Exception {
     // Token endpoint returns 401 (e.g., bad client credentials)
     tokenServer.enqueue(new MockResponse()
       .setBody("{\"error\":\"invalid_client\",\"error_description\":\"Client authentication failed\"}")

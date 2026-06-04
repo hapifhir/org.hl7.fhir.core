@@ -29,6 +29,9 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
   @Override
   public Map<String, String> getHeaders(URL url) {
     ServerDetailsPOJO serverDetails = getServerDetails(url);
+    if (serverDetails == null) {
+      return Collections.emptyMap();
+    }
     HTTPAuthenticationMode authenticationMode = getHTTPAuthenticationMode(serverDetails);
 
     if (authenticationMode == null) {

@@ -235,7 +235,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
   }
 
   @Test
-  public void testClientCredentialsAuthFromSettings() throws Exception {
+  void testClientCredentialsAuthFromSettings() throws Exception {
     tokenServer = new MockWebServer();
     tokenServer.start();
 
@@ -270,7 +270,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
   }
 
   @Test
-  public void testClientCredentials401Retry() throws Exception {
+  void testClientCredentials401Retry() throws Exception {
     tokenServer = new MockWebServer();
     tokenServer.start();
 
@@ -324,10 +324,13 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
     // Third request used fresh token after invalidation
     RecordedRequest retryRequest = server.takeRequest();
     assertThat(retryRequest.getHeader("Authorization")).isEqualTo("Bearer fresh-token");
+
+    // Token endpoint was hit exactly twice (cache invalidated, fresh token fetched)
+    assertThat(tokenServer.getRequestCount()).isEqualTo(2);
   }
 
   @Test
-  public void testClientCredentialsProgrammaticApi() throws Exception {
+  void testClientCredentialsProgrammaticApi() throws Exception {
     tokenServer = new MockWebServer();
     tokenServer.start();
 
@@ -362,7 +365,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
   }
 
   @Test
-  public void testClientCredentialsProgrammaticApiOnManagedWebAccessor() throws Exception {
+  void testClientCredentialsProgrammaticApiOnManagedWebAccessor() throws Exception {
     tokenServer = new MockWebServer();
     tokenServer.start();
 
@@ -395,7 +398,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
   }
 
   @Test
-  public void testManagedWebAccessorRetryOn401() throws Exception {
+  void testManagedWebAccessorRetryOn401() throws Exception {
     tokenServer = new MockWebServer();
     tokenServer.start();
 
@@ -446,7 +449,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
   }
 
   @Test
-  public void testManagedWebAccessorRetryOn403() throws Exception {
+  void testManagedWebAccessorRetryOn403() throws Exception {
     tokenServer = new MockWebServer();
     tokenServer.start();
 

@@ -13,7 +13,7 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class HTTPTokenManagerTest {
+class HTTPTokenManagerTest {
 
   private MockWebServer tokenServer;
 
@@ -42,7 +42,7 @@ public class HTTPTokenManagerTest {
   }
 
   @Test
-  public void testBasicTokenFetch() throws Exception {
+  void testBasicTokenFetch() throws Exception {
     ServerDetailsPOJO server = buildServer("myClient", "mySecret");
 
     tokenServer.enqueue(new MockResponse()
@@ -60,7 +60,7 @@ public class HTTPTokenManagerTest {
   }
 
   @Test
-  public void testTokenCaching() throws Exception {
+  void testTokenCaching() throws Exception {
     ServerDetailsPOJO server = buildServer("myClient", "mySecret");
 
     tokenServer.enqueue(new MockResponse()
@@ -77,7 +77,7 @@ public class HTTPTokenManagerTest {
   }
 
   @Test
-  public void testInvalidateTokenForcesRefetch() throws Exception {
+  void testInvalidateTokenForcesRefetch() throws Exception {
     ServerDetailsPOJO server = buildServer("myClient", "mySecret");
 
     tokenServer.enqueue(new MockResponse()
@@ -101,7 +101,7 @@ public class HTTPTokenManagerTest {
   }
 
   @Test
-  public void testTokenEndpointErrorThrowsIOException() {
+  void testTokenEndpointErrorThrowsIOException() {
     ServerDetailsPOJO server = buildServer("myClient", "mySecret");
 
     tokenServer.enqueue(new MockResponse()
@@ -114,7 +114,7 @@ public class HTTPTokenManagerTest {
   }
 
   @Test
-  public void testMissingAccessTokenThrowsIOException() {
+  void testMissingAccessTokenThrowsIOException() {
     ServerDetailsPOJO server = buildServer("myClient", "mySecret");
 
     tokenServer.enqueue(new MockResponse()
@@ -128,7 +128,7 @@ public class HTTPTokenManagerTest {
   }
 
   @Test
-  public void testMissingExpiresInDefaultsTo3600() throws Exception {
+  void testMissingExpiresInDefaultsTo3600() throws Exception {
     ServerDetailsPOJO server = buildServer("myClient", "mySecret");
 
     tokenServer.enqueue(new MockResponse()
@@ -146,7 +146,7 @@ public class HTTPTokenManagerTest {
   }
 
   @Test
-  public void testExpiredTokenTriggersRefetch() throws Exception {
+  void testExpiredTokenTriggersRefetch() throws Exception {
     ServerDetailsPOJO server = buildServer("myClient", "mySecret");
 
     // First token expires in 1s (within 30s buffer, so immediately "expiring soon")
@@ -178,7 +178,7 @@ public class HTTPTokenManagerTest {
   }
 
   @Test
-  public void testNonJsonResponseThrowsIOException() {
+  void testNonJsonResponseThrowsIOException() {
     ServerDetailsPOJO server = buildServer("myClient", "mySecret");
 
     tokenServer.enqueue(new MockResponse()
