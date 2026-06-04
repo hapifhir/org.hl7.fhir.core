@@ -4692,13 +4692,15 @@ public class FHIRPathEngine {
     String repl = convertToString(replB);
 
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
-      //
+      // no-op
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //Regex sourced from FHIRPath expression parameter; user-supplied at runtime
-        String replaced = convertToString(focus.get(0)).replaceAll(regex, repl);
-        result.add(new StringType(replaced).noExtensions());
+        try {
+          String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
+          result.add(new StringType(replaced).noExtensions());
+        } catch (TimeoutException te) {
+          throw new FHIRException("Timeout evaluating regex: " + regex, te);
+        }
       }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
