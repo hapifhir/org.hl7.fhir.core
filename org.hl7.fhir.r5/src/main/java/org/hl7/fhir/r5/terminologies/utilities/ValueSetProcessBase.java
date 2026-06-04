@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 
 import org.hl7.fhir.r5.terminologies.expansion.OperationIsTooCostly;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -311,7 +312,7 @@ public class ValueSetProcessBase {
     if (system == null || candidate == null || criteria == null) {
       return false;
     }
-    CodeSystem cs = context.fetchCodeSystem(system);
+    CodeSystem cs = context.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule());
     VersionAlgorithm va = cs == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(cs.getVersionAlgorithm());
     if (va == VersionAlgorithm.Unknown) {
       va = VersionAlgorithm.guessFormat(candidate);
@@ -351,9 +352,14 @@ public class ValueSetProcessBase {
     return new OperationIsTooCostly(msg);
   }
 
-  protected TerminologyServiceException failTSE(String msg) {
+  protected TerminologyServiceException createTerminologyServiceException(String msg) {
     allErrors.add(msg);
     return new TerminologyServiceException(msg);
+  }
+
+  protected TerminologyServiceException createTerminologyServiceException(String msg, ValueSetExpansionOutcome outcome) {
+    allErrors.add(msg);
+    return new TerminologyServiceException(msg).setOutcome(outcome);
   }
 
   public Collection<? extends String> getAllErrors() {

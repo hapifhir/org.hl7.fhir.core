@@ -1776,6 +1776,12 @@ public String toString() {
     return this;
   }
 
+  public Parameters addCodeParameter(String name, String s) {
+    if (s != null)
+      addParameter().setName(name).setValue(new CodeType(s));
+    return this;
+  }
+
   public Parameters addParameter(String name, DataType v) {
     if (v != null)
       addParameter().setName(name).setValue(v);

@@ -32,6 +32,7 @@ package org.hl7.fhir.r5.terminologies;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
@@ -52,7 +53,7 @@ public class ConceptMapEngine {
   }
 
   public Coding translate(Coding source, String url) throws FHIRException {
-    ConceptMap cm = context.fetchResource(ConceptMap.class, url);
+    ConceptMap cm = context.fetchResource(ConceptMap.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     if (cm == null)
       throw new FHIRException("Unable to find ConceptMap '"+url+"'");
     if (source.hasSystem()) 

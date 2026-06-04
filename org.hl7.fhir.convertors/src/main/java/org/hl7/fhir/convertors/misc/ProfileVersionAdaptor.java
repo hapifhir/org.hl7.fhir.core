@@ -133,10 +133,16 @@ public class ProfileVersionAdaptor {
             ed.getType().clear();
             ed.setMin(0);
             ed.setMax("0");
+            if (lastExt == null) {
+              // this happens when the extension directly has an unsupported type
+              lastExt = new ElementDefinition().setPath("Extension.extension");
+              sd.getDifferential().getElement().add(1, lastExt);
+            }
             lastExt.setDefinition(ed.getDefinition());
             lastExt.setShort(ed.getShort());
             lastExt.setMax("*");
             lastExt.getSlicing().setRules(SlicingRules.OPEN).setOrdered(false).addDiscriminator().setType(DiscriminatorType.VALUE).setPath("url");
+
             StructureDefinition type = sCtxt.fetchTypeDefinition(tr.getCode());
             if (type == null) {
               throw new DefinitionException("unable to find definition for " + tr.getCode());
@@ -449,13 +455,18 @@ public class ProfileVersionAdaptor {
       if (ctxt.getType() != null) {
         switch (ctxt.getType()) {
         case ELEMENT:
-          String newPath = adaptPath(ctxt.getExpression());
-          if (newPath == null) {
-            log.add(new ConversionMessage("Remove the extension context "+ctxt.getExpression(), ConversionMessageStatus.WARNING));
-            toRemove.add(ctxt);
-          } else if (!newPath.equals(ctxt.getExpression())) {
-            log.add(new ConversionMessage("Adjust the extension context "+ctxt.getExpression()+" to "+newPath, ConversionMessageStatus.WARNING));
-            ctxt.setExpression(newPath);
+          // what happens here depends on whether there's version specific mappings.
+          // if they're version specific, we leave everything, but if it's not, we
+          // try guessing.
+          if (!ctxt.hasExtension(ExtensionDefinitions.EXT_FHIRVERSION_SPECIFIC_USE)) {
+            String newPath = adaptPath(ctxt.getExpression());
+            if (newPath == null) {
+              log.add(new ConversionMessage("Remove the extension context " + ctxt.getExpression(), ConversionMessageStatus.WARNING));
+              toRemove.add(ctxt);
+            } else if (!newPath.equals(ctxt.getExpression())) {
+              log.add(new ConversionMessage("Adjust the extension context " + ctxt.getExpression() + " to " + newPath, ConversionMessageStatus.WARNING));
+              ctxt.setExpression(newPath);
+            }
           }
           break;
         case EXTENSION:

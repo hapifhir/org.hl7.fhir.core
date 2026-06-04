@@ -134,7 +134,7 @@ public class HTTPClientCommand implements Callable<Integer> {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         JsonParser jsonParser = new JsonParser();
         Resource resource = jsonParser.parse(response.body());
-        ValidationOutputRenderSummary renderSummary = ValidationOutputRenderUtilities.renderValidationOutput(resource, null, null, false, false, "NOW!");
+        ValidationOutputRenderSummary renderSummary = ValidationOutputRenderUtilities.renderValidationOutput(resource, null, null, false, false, "NOW!", null);
         if (renderSummary.totalErrors() > 0) {
           System.exit(1);
         }

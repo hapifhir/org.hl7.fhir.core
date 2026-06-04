@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
@@ -58,35 +59,35 @@ public class ImplementationGuideValidator extends BaseValidator {
 
   private boolean checkDependency(List<ValidationMessage> errors, Element ig, NodeStack stack, Element dependency, List<String> fvl) {
     boolean ok = true;
-    String url = dependency.getNamedChildValue("uri");
+    String uri = dependency.getNamedChildValue("uri");
     String packageId = dependency.getNamedChildValue("packageId");
     String version = dependency.getNamedChildValue("version");
-    if (url != null && url.contains("|")) {
-      String uver = url.substring(url.indexOf("|")+1);
-      url = url.substring(0, url.indexOf("|"));
+    if (uri != null && uri.contains("|")) {
+      String uver = uri.substring(uri.indexOf("|")+1);
+      uri = uri.substring(0, uri.indexOf("|"));
       if (Utilities.noString(uver)) {
         ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(),false, I18nConstants.IG_DEPENDENCY_CAN_VERSION_NONE, uver) && ok;                   
       } else if (version == null) {
         ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(),false, I18nConstants.IG_DEPENDENCY_CAN_VERSION_ALONE, uver) && ok;                   
       } else if (!uver.equals(version)) {
-        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), url == null || url.contains("/ImplementationGuide/"), I18nConstants.IG_DEPENDENCY_CAN_VERSION_ERROR, uver, version) && ok;                   
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), uri == null || uri.contains("/ImplementationGuide/"), I18nConstants.IG_DEPENDENCY_CAN_VERSION_ERROR, uver, version) && ok;
       }
     }
-    ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), url == null || url.contains("/ImplementationGuide/"), I18nConstants.IG_DEPENDENCY_DIRECT, url) && ok;         
+    ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), uri == null || uri.contains("/ImplementationGuide/"), I18nConstants.IG_DEPENDENCY_DIRECT, uri) && ok;
     ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), packageId == null || packageId.matches(FilesystemPackageCacheManager.PACKAGE_REGEX), I18nConstants.IG_DEPENDENCY_INVALID_PACKAGEID, packageId) && ok;         
 
     try {
-      ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, url);
-      warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), fetchedIgDependency != null, I18nConstants.IG_DEPENDENCY_INVALID_URL, url);                   
+      ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, uri, ExtensionUtilities.getVersionResolutionRules(dependency.getNamedChild("uri")));
+      warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), fetchedIgDependency != null, I18nConstants.IG_DEPENDENCY_INVALID_URL, uri);
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-      if (url != null && packageId != null && (fetchedIgDependency == null || !fetchedIgDependency.hasUserData(UserDataNames.IG_FAKE))) {
-        String pid = pcm.getPackageId(url);
+      if (uri != null && packageId != null && (fetchedIgDependency == null || !fetchedIgDependency.hasUserData(UserDataNames.IG_FAKE))) {
+        String pid = pcm.getPackageId(uri);
         String canonical = pcm.getPackageUrl(packageId);
-        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), pid == null || pid.equals(packageId) || packageId.startsWith(pid+"."+VersionUtilities.getNameForVersion(context.getVersion()).toLowerCase()), I18nConstants.IG_DEPENDENCY_CLASH_PACKAGEID, url, pid, packageId) && ok;         
-        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), canonical == null || canonical.equals(url) || url.startsWith(Utilities.pathURL(canonical, "ImplementationGuide")), I18nConstants.IG_DEPENDENCY_CLASH_CANONICAL, packageId, canonical, url) && ok;         
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), pid == null || pid.equals(packageId) || packageId.startsWith(pid+"."+VersionUtilities.getNameForVersion(context.getVersion()).toLowerCase()), I18nConstants.IG_DEPENDENCY_CLASH_PACKAGEID, uri, pid, packageId) && ok;
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), canonical == null || canonical.equals(uri) || uri.startsWith(Utilities.pathURL(canonical, "ImplementationGuide")), I18nConstants.IG_DEPENDENCY_CLASH_CANONICAL, packageId, canonical, uri) && ok;
       }
       if (packageId == null && ok) {
-        packageId = pcm.getPackageId(url);
+        packageId = pcm.getPackageId(uri);
       }
       if (ok && warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), packageId != null, I18nConstants.IG_DEPENDENCY_NO_PACKAGE) &&
           warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), version != null, I18nConstants.IG_DEPENDENCY_NO_VERSION)) {

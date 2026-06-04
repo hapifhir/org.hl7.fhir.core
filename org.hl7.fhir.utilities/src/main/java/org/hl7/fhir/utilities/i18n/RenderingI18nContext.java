@@ -1119,6 +1119,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_INTRP_CH_NO_VS = "SDR_INTRP_CH_NO_VS";
   public static final String SDR_INTRP_CH_DET_VS = "SDR_INTRP_CH_DET_VS";
   public static final String VSR_LOGICAL = "VSR_LOGICAL";
+  public static final String VSR_RULES_TEXT = "VSR_RULES_TEXT";
   public static final String VSR_TRIGGER = "VSR_TRIGGER";
   public static final String VSR_NO_DEF = "VSR_NO_DEF";
   public static final String SDR_CONCEPT_DOMAIN = "SDR_CONCEPT_DOMAIN";
@@ -1144,6 +1145,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VS_VERSION_BY_PACKAGE = "VS_VERSION_BY_PACKAGE";
   public static final String VS_VERSION_THIS_PACKAGE = "VS_VERSION_THIS_PACKAGE";
   public static final String VS_VERSION_WILDCARD_BY_PACKAGE = "VS_VERSION_WILDCARD_BY_PACKAGE";
+  public static final String VS_VERSION_LATEST = "VS_VERSION_LATEST";
   public static final String VS_VERSION_FOUND = "VS_VERSION_FOUND";
   public static final String VS_VERSION_NONE = "VS_VERSION_NONE";
   public static final String VS_VERSION_NOTHING = "VS_VERSION_NOTHING";
@@ -1194,13 +1196,15 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONSENT_PROVISION = "CONSENT_PROVISION";
   public static final String CONSENT_HT_PERIOD = "CONSENT_HT_PERIOD";
   public static final String CONSENT_HT_DATA_PERIOD = "CONSENT_HT_DATA_PERIOD";
-public static final String CONSENT_HT_SEC_LABEL = "CONSENT_HT_SEC_LABEL";
+  public static final String CONSENT_HT_SEC_LABEL = "CONSENT_HT_SEC_LABEL";
   public static final String CONSENT_HT_ACTION = "CONSENT_HT_ACTION";
   public static final String CONSENT_HT_PURPOSE = "CONSENT_HT_PURPOSE";
   public static final String CONSENT_HT_CLASS = "CONSENT_HT_CLASS";
   public static final String CONSENT_HT_RESOURCE_TYPE = "CONSENT_HT_RESOURCE_TYPE";
   public static final String CONSENT_HT_DOC_TYPE = "CONSENT_HT_DOC_TYPE";
   public static final String CONSENT_HT_CODE = "CONSENT_HT_CODE";
+  public static final String STRUC_DEF_TYPE_CHARACTERISTICS = "STRUC_DEF_TYPE_CHARACTERISTICS";
+  public static final String STRUCTURAL_REQUIREMENTS = "STRUCTURAL_REQUIREMENTS";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";

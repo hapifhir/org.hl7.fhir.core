@@ -35,15 +35,7 @@ import java.util.Map;
 
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.utils.client.ResourceFormat;
@@ -146,6 +138,15 @@ public class TerminologyClientR5 implements ITerminologyClient {
   public Parameters subsumes(Parameters pin) {
     return client.operateType(CodeSystem.class, "subsumes", pin);
   }
+
+  public Parameters getValueSetRelationship(ValueSet vsThis, ValueSet vsOther) {
+    Parameters pIn = new Parameters();
+    pIn.addParameter().setName("thisValueSet").setResource(vsThis);
+    pIn.addParameter().setName("otherValueSet").setResource(vsOther);
+    pIn.addParameter().setName("diagnostics").setValue(new BooleanType(true));
+    return client.operateType(ValueSet.class, "related", pIn);
+  }
+
 
   @Override
   public Parameters validateVS(Parameters pin) {

@@ -137,17 +137,6 @@ public class FhirSettings {
     return instance.fhirSettingsPOJO.getProhibitNetworkAccess() != null && instance.fhirSettingsPOJO.getProhibitNetworkAccess();
   }
 
-
-  /**
-   * See ManagedWebAccess and use that to control network access
-   * @deprecated 
-   * @param value
-   */
-  @Deprecated(since="2025-06-20", forRemoval = true)
-  public static void setProhibitNetworkAccess(boolean value) {
-    prohibitNetworkAccess = value;
-  }
-
   public static String getTxFhirProduction() {
     getInstance();
     return instance.fhirSettingsPOJO.getTxFhirProduction() == null

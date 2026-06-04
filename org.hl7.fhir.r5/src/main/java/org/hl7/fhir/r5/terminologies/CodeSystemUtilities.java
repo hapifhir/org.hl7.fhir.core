@@ -790,7 +790,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     } else if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm")) {
       return new SystemReference("RxNorm", "http://www.nlm.nih.gov/research/umls/rxnorm");
     } else if (ctxt != null) {
-      CodeSystem cs = ctxt.fetchCodeSystem(system);
+      CodeSystem cs = ctxt.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule());
       if (cs != null && cs.hasWebPath()) {
         return new SystemReference(cs.present(), cs.getWebPath(), Utilities.isAbsoluteUrl(cs.getWebPath()));
       } else if (cs != null) {
@@ -841,6 +841,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static CodeSystem mergeSupplements(@Nonnull CodeSystem cs, @Nonnull List<CodeSystem> supplements) {
     CodeSystem ret = cs.copy();
+    ret.setUserData(UserDataNames.CS_SUPPLEMENT_LIST, supplements);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (CodeSystem sup : supplements) {
       b.append(sup.getVersionedUrl());      

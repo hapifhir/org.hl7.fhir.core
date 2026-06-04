@@ -6,6 +6,7 @@ import java.io.PrintStream;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.OperationOutcome;
 
@@ -21,6 +22,10 @@ public abstract class ValidationOutputRenderer {
   protected boolean moreThanOne;
 
   protected PrintStream dst;
+
+  @Setter
+  @Getter
+  protected IWorkerContext context;
 
   @Setter
   @Getter

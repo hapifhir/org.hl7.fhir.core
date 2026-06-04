@@ -1,10 +1,7 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -14,6 +11,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
@@ -51,6 +49,7 @@ import org.hl7.fhir.validation.codesystem.UcumChecker;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidationContext;
+import org.hl7.fhir.validation.special.TxTester;
 
 @Slf4j
 public class ValueSetValidator extends BaseValidator {
@@ -185,7 +184,7 @@ public class ValueSetValidator extends BaseValidator {
     case "http://www.ama-assn.org/go/cpt": return new CPTChecker(context, settings, xverManager, errors, session); 
     case "urn:ietf:bcp:47": return new BCP47Checker(context, settings, xverManager, errors, session);  
     default: 
-      CodeSystem cs = context.fetchCodeSystem(system);
+      CodeSystem cs = context.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule());
       if (cs != null) {
         return new CodeSystemBasedChecker(context, settings, xverManager, errors, cs, session);
       } else {
@@ -251,6 +250,12 @@ public class ValueSetValidator extends BaseValidator {
       }
       for (ParameterDeclaration p : parameters) {
         warning(errors, "2025-03-21", IssueType.BUSINESSRULE, stack.push(p.ext, i, null, null), p.used, I18nConstants.VALUESET_PARAMETER_NOT_USED, p.name);     
+      }
+      List<Element> expansions = vs.getChildrenByName("expansion");
+      cc = 0;
+      for (Element expansion : expansions) {
+        ok = validateValueSetExpansion(valContext, errors, expansion, stack.push(expansion, expansions.size() > 1 ? cc : -1, null, null), vs.getNamedChildValue("url", false), vs, vss) && ok;
+        cc++;
       }
     }
     if (!stack.isContained()) {
@@ -327,14 +332,14 @@ public class ValueSetValidator extends BaseValidator {
       int i = 0;
       for (Element ve : valuesets) {
         String v = ve.getValue();
-        ValueSet vs = context.findTxResource(ValueSet.class, v);
+        ValueSet vs = context.findTxResource(ValueSet.class, v, ExtensionUtilities.getVersionResolutionRules(ve));
         if (vs == null) {
           // we couldn't find it, but it might be an implicit value set 
           ValueSetExpansionOutcome vse = context.expandVS(new ExpansionOptions().withCacheOk(true).withHierarchical(false).withMaxCount(0), v);
           if (!vse.isOk() ) {
             NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
 
-            Resource rs = context.fetchResource(Resource.class, v);
+            Resource rs = context.fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRules(ve));
             if (rs != null) {
               warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
             } else { 
@@ -372,9 +377,9 @@ public class ValueSetValidator extends BaseValidator {
         }
       }
       if (version == null) {
-        CodeSystem cs = context.fetchCodeSystem(system);
+        CodeSystem cs = context.fetchCodeSystem(system, ExtensionUtilities.getVersionResolutionRules(include));
 
-        if (cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(system) && fetcher != null) {
+        if (cs != null && !CodeSystemUtilities.isExemptFromMultipleVersionChecking(system) && fetcher != null && ExtensionUtilities.getVersionResolutionRules(include) != IWorkerContext.VersionResolutionRules.LATEST) {
           Set<IValidatorResourceFetcher.ResourceVersionInformation> possibleVersions = fetcher.fetchCanonicalResourceVersions(null, valContext.getAppContext(), system);
           warning(errors, NO_RULE_DATE, IssueType.INVALID,  stack.getLiteralPath()+".system", possibleVersions.size() <= 1, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_MULTIPLE_POSSIBLE_VERSIONS,
               system, cs.getVersion(), CommaSeparatedStringBuilder.join(", ", Utilities.sorted(IValidatorResourceFetcher.ResourceVersionInformation.toStrings(possibleVersions))));
@@ -387,10 +392,10 @@ public class ValueSetValidator extends BaseValidator {
     CodeSystemChecker csChecker = getSystemValidator(system, errors);
     CodeSystem cs = null;
     if (!Utilities.noString(system)) {
-      cs = context.fetchCodeSystem(system, version, null);
+      cs = context.fetchCodeSystem(system, ExtensionUtilities.getVersionResolutionRules(include), version, null);
       if (cs == null) {
         // can we get it from a terminology server? 
-        cs = context.findTxResource(CodeSystem.class, system, version, null);
+        cs = context.findTxResource(CodeSystem.class, system, ExtensionUtilities.getVersionResolutionRules(include), version, null);
       }
       boolean validateConcepts = true;
       if (cs != null) { // if it's null, we can't analyse this
@@ -435,7 +440,7 @@ public class ValueSetValidator extends BaseValidator {
             }
           }
         }
-        ValueSet vs = context.findTxResource(ValueSet.class, system, version, null);
+        ValueSet vs = context.findTxResource(ValueSet.class, system, ExtensionUtilities.getVersionResolutionRules(include), version, null);
         if (vs != null) {
           validateConcepts = false;
           List<String> systems = TerminologyUtilities.listSystems(vs);
@@ -464,7 +469,7 @@ public class ValueSetValidator extends BaseValidator {
           } else {
             var si = context.getTxSupportInfo(system, version);
             if (concepts.size() > 1 && !si.isSupported()) {
-              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_CS_NO_SUPPORT, si.getServer());
+              hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_CS_NO_SUPPORT, si.getServer(), system);
             } else if (concepts.size() > 1 && (si.getTestVersion() == null || !VersionUtilities.isThisOrLater("1.7.8", si.getTestVersion(), VersionUtilities.VersionPrecision.PATCH))) {
               hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_BATCH_ON_SERVER, si.getServer());
             } else {
@@ -621,7 +626,7 @@ public class ValueSetValidator extends BaseValidator {
         PropertyValidationRules rules = csChecker.rulesForFilter(property, EnumSet.noneOf(PropertyOperation.class));
         if (rules != null) {
           if (!rules.getOps().isEmpty()) {
-            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, opInSet(op, rules.getOps()), I18nConstants.VALUESET_BAD_FILTER_OP, op, property, CommaSeparatedStringBuilder.join(",", rules.getOps()), system) && ok;
+            ok = rule(errors, "2024-03-09", IssueType.INVALID, stack,op == null || opInSet(op, rules.getOps()), I18nConstants.VALUESET_BAD_FILTER_OP, op, property, CommaSeparatedStringBuilder.join(",", rules.getOps()), system) && ok;
           }
 
           if (value == null) {
@@ -819,5 +824,214 @@ public class ValueSetValidator extends BaseValidator {
     return ok;
   }
 
+  private boolean validateValueSetExpansion(ValidationContext valContext, List<ValidationMessage> errors, Element expansion, NodeStack stack, String vsid, Element vsSrc, ValueSet vs) {
+    boolean ok = true;
+    // we start by validating the contains, and collecting any obligations for the parameters and properties
+    Set<String> versionedSystems = new HashSet<>();
+    Set<String> unversionedSystems = new HashSet<>();
+    Set<String> keys = new HashSet<>();
+    Map<String, Set<String>> properties = new HashMap<>();
+    List<Element> parameters = expansion.getChildrenByName("parameter");
+    List<Element> controlParameters = filterParameters(parameters);
 
+    warning(errors, "2026-03-27", IssueType.BUSINESSRULE, stack, !controlParameters.isEmpty(), I18nConstants.VALUESET_EXPANSION_PARAMETER_NOT_FOUND);
+    hint(errors, "2026-03-27", IssueType.BUSINESSRULE, stack, expansion.hasChild("identifier"), I18nConstants.VALUESET_EXPANSION_NO_IDENTIFIER);
+    // if there's a date, it should be the same or after the vs date
+
+    AtomicInteger count = new AtomicInteger();
+    List<Element> containsList = expansion.getChildrenByName("contains");
+    int cc = 0;
+    for (Element contains : containsList) {
+      ok = validateValueSetExpansionContains(valContext, errors, contains, stack.push(contains, cc, null, null),
+        versionedSystems, unversionedSystems, properties, keys, count) && ok;
+      cc++;
+    }
+
+    // ok we have 3 lists now, all systems, systems that don't have versions, and all the properties
+    String total = expansion.getNamedChildValue("total");
+    String offset = expansion.getNamedChildValue("offset");
+    if (total != null && offset != null && Utilities.isInteger(total) && Utilities.isInteger(offset)) {
+      int t = Integer.parseInt(total);
+      int o = Integer.parseInt(offset);
+      warning(errors, "2026-03-27", IssueType.INVALID, stack, o+count.intValue() <= t, I18nConstants.VALUESET_EXPANSION_PARAMETER_COUNT_WRONG, total, count.intValue(), offset);
+    }
+
+    Set<String> usedSystems = scanForUsedCodeSystems(parameters);
+    for (String system : unversionedSystems) {
+      Set<String> matches = findVersionMatches(system, usedSystems);
+      if (matches.isEmpty()) {
+        warning(errors, "2026-03-27", IssueType.INVALID, stack, false, I18nConstants.VALUESET_EXPANSION_PARAMETER_SYSTEM_NEEDED, system);
+      } else if (matches.size() > 1) {
+        ok = rule(errors, "2026-03-27", IssueType.INVALID, stack, false, I18nConstants.VALUESET_EXPANSION_PARAMETER_SYSTEM_MULTIPLE, system, CommaSeparatedStringBuilder.join(", ", matches)) && ok;
+      }
+    }
+    // there should be parameters for code system for each code system in the expansion
+
+    for (String p : properties.keySet()) {
+      Element defn = getPropertyDefinition(expansion, p);
+      if (defn == null) {
+        ok = rule(errors, "2026-03-27", IssueType.INVALID, stack, false, I18nConstants.VALUESET_EXPANSION_PROPERTY_NO_DEFN, p) && ok;
+      } else {
+        // todo: check types
+      }
+    }
+
+    // if we can produce a valid value set from the compose, we expand it, and compare the members
+    if (vs != null) {
+      // safe to hack it here, because we're otherwise finished with it
+      vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase());
+      vs.setVersion(null);
+      vs.setExpansion(null);
+      ValueSetExpansionOutcome vse = context.expandVS(vs, true, false);
+      if (vse.isOk()) {
+        Set<String> missing = new HashSet<>();
+        for (ValueSet.ValueSetExpansionContainsComponent ccs : vse.getValueset().getExpansion().getContains()) {
+          if (keys.contains(ccs.getSystem()+"#"+ccs.getCode())) {
+            keys.remove(ccs.getSystem()+"#"+ccs.getCode());
+          } else if (keys.contains(ccs.getSystem()+"|"+ccs.getVersion()+"#"+ccs.getCode())) {
+            keys.remove(ccs.getSystem()+"|"+ccs.getVersion()+"#"+ccs.getCode());
+          } else {
+            missing.add(ccs.getSystem()+"|"+ccs.getVersion()+"#"+ccs.getCode());
+          }
+        }
+        warningPlural(errors, "2026-03-27", IssueType.INVALID, stack, missing.isEmpty(), missing.size(), I18nConstants.VALUESET_EXPANSION_MISSING, showCodeList(missing));
+        warningPlural(errors, "2026-03-27", IssueType.INVALID, stack, keys.isEmpty(), keys.size(), I18nConstants.VALUESET_EXPANSION_EXTRA, showCodeList(keys));
+
+      }
+    }
+    return ok;
+  }
+
+  private String showCodeList(Set<String> set) {
+    if (set.isEmpty()) {
+      return "";
+    } else if (set.size() == 1) {
+      return extractCode(set.iterator().next());
+    } else {
+      boolean more = false;
+      List<String> codes = new ArrayList<>();
+      int c = 0;
+      for (String s : Utilities.sorted(set)) {
+        codes.add(extractCode(s));
+        c++;
+        if (c == 5) {
+          more = true;
+          break;
+        }
+      }
+      return CommaSeparatedStringBuilder.join(", ", codes)+(more ? ",..." : "");
+    }
+  }
+
+  private String extractCode(String s) {
+    return s.substring(s.indexOf("#")+1);
+  }
+
+  private Element getPropertyDefinition(Element expansion, String p) {
+    for (Element defn : expansion.getChildrenByName("property")) {
+      String code = defn.getNamedChildValue("code");
+      if (code.equals(p)) {
+        return defn;
+      }
+    }
+    return null;
+  }
+
+  private List<Element> filterParameters(List<Element> parameters) {
+    List<Element> result = new ArrayList<>();
+    for (Element parameter : parameters) {
+      String name = parameter.getNamedChildValue("name");
+      if (!name.startsWith("used-")) {
+        result.add(parameter);
+      }
+    }
+    return result;
+  }
+
+  private Set<String> findVersionMatches(String system, Set<String> systems) {
+    Set<String> result = new HashSet<>();
+    for (String s : systems) {
+      if (s.startsWith(system+"|")) {
+        result.add(s);
+      }
+    }
+    return result;
+  }
+
+  private Set<String> scanForUsedCodeSystems(List<Element> parameters) {
+    Set<String> result = new HashSet<>();
+    for (Element parameter : parameters) {
+      String name = parameter.getNamedChildValue("name");
+      if (name != null && name.equals("used-codesystem")) {
+        result.add(parameter.getNamedChildValue("value"));
+      }
+    }
+    return result;
+  }
+
+  private boolean validateValueSetExpansionContains(ValidationContext valContext, List<ValidationMessage> errors, Element contains, NodeStack stack,
+                                                    Set<String> versionedSystems, Set<String> unversionedSystems, Map<String, Set<String>> properties, Set<String> keys, AtomicInteger count) {
+    boolean ok = true;
+    count.getAndAdd(1);
+    String system = contains.getNamedChildValue("system");
+    String version = contains.getNamedChildValue("version");
+    String code = contains.getNamedChildValue("code");
+    if (system != null) {
+      if (version == null) {
+        unversionedSystems.add(system);
+        keys.add(system+"#"+code);
+      } else {
+        versionedSystems.add(system+"|"+version);
+        keys.add(system+"|"+version+"#"+code);
+      }
+    }
+
+    List<Element> propertyList = contains.getChildrenByName("property");
+    int cc = 0;
+    for (Element property : propertyList) {
+      ok = validateValueSetExpansionContainsProperty(valContext, errors, property, stack.push(property, cc, null, null), properties) && ok;
+      cc++;
+    }
+
+    List<Element> containsList = contains.getChildrenByName("contains");
+    cc = 0;
+    for (Element containsChild : containsList) {
+      ok = validateValueSetExpansionContains(valContext, errors, containsChild, stack.push(containsChild, cc, null, null),
+        versionedSystems, unversionedSystems, properties, keys, count) && ok;
+      cc++;
+    }
+    return ok;
+  }
+
+  private boolean validateValueSetExpansionContainsProperty(ValidationContext valContext, List<ValidationMessage> errors, Element property, NodeStack stack, Map<String, Set<String>> properties) {
+    boolean ok = true;
+    checkPropertyDetails(property, properties);
+    List<Element> subPropertyList = property.getChildrenByName("subProperty");
+    int cc = 0;
+    for (Element subProperty : subPropertyList) {
+      ok = validateValueSetExpansionContainsPropertySubProperty(valContext, errors, subProperty, stack.push(subProperty, cc, null, null), properties) && ok;
+      cc++;
+    }
+    return ok;
+  }
+
+  private boolean validateValueSetExpansionContainsPropertySubProperty(ValidationContext valContext, List<ValidationMessage> errors, Element subProperty, NodeStack push, Map<String, Set<String>> properties) {
+    checkPropertyDetails(subProperty, properties);
+    return true;
+  }
+
+  private void checkPropertyDetails(Element property, Map<String, Set<String>> properties) {
+    String subPropertyName = property.getNamedChildValue("code");
+    if (subPropertyName != null) {
+      Set<String> propTypes = properties.get(subPropertyName);
+      if (propTypes == null) {
+        propTypes = new HashSet<>();
+        properties.put(subPropertyName, propTypes);
+      }
+      Element subPropertyValue = property.getNamedChild("value");
+      if (subPropertyValue != null) {
+        propTypes.add(subPropertyValue.fhirType());
+      }
+    }
+  }
 }

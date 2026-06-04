@@ -54,7 +54,7 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
       this.id = id;
     }
 
-    public boolean matches(@Nonnull String mid, @Nonnull String path, String[] p) {
+    public boolean matches(@Nonnull String mid, @Nonnull String path, String[] p, Object... theMessageArguments) {
       if (regex) {
         return stringMatches(id, mid) && regexMatches(this.path, path);
       } else {
@@ -128,18 +128,18 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
   }
   
   @Override
-  public boolean isSuppressMessageId(String path, String messageId) {
+  public boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
     String[] p = path.split("\\.");
     for (SuppressMessageRule rule : suppressMessageRules) {
-      if (rule.matches(messageId, path, p)) {
+      if (rule.matches(messageId, path, p, theMessageArguments)) {
         log.debug("Suppressed: " + messageId + " at path " + path + " with rule-path: " + rule.path);
         return true;
       }
     }
     if (base != null) {
-      return base.isSuppressMessageId(path, messageId);      
+      return base.isSuppressMessageId(path, messageId, theMessageArguments);
     } else {
-      return super.isSuppressMessageId(path, messageId);
+      return super.isSuppressMessageId(path, messageId, theMessageArguments);
     }
   }
 

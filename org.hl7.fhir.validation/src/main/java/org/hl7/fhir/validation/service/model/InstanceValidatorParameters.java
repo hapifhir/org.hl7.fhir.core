@@ -3,6 +3,7 @@ package org.hl7.fhir.validation.service.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
@@ -166,6 +167,10 @@ public class InstanceValidatorParameters {
   @SerializedName("wantInvariantsInMessages")
   private boolean wantInvariantsInMessages = false;
 
+  @JsonProperty("enforceAggregationOutsideBundles")
+  @SerializedName("enforceAggregationOutsideBundles")
+  @Getter @Setter private Boolean enforceAggregationOutsideBundles = null;
+  
   @SerializedName("wantInvariantsInMessages")
   @JsonProperty("wantInvariantsInMessages")
   public boolean isWantInvariantsInMessages() {

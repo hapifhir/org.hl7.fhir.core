@@ -993,7 +993,7 @@ public class LiquidEngine implements IHostApplicationServices {
     if (externalHostServices != null)
       return externalHostServices.resolveValueSet(engine, ctxt.externalContext, url);
     else
-      return engine.getWorker().fetchResource(ValueSet.class, url);
+      return engine.getWorker().fetchResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
   }
 
   /**

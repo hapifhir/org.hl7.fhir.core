@@ -39,6 +39,7 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
@@ -297,7 +298,7 @@ public class DefinitionNavigator {
       if (tr.getProfile().size() > 1) {
         return;
       } else if (tr.getProfile().size() == 1) {
-        sdt = context.fetchResource(StructureDefinition.class, tr.getProfile().get(0).asStringValue());        
+        sdt = context.fetchResource(StructureDefinition.class, tr.getProfile().get(0).asStringValue(), ExtensionUtilities.getVersionResolutionRules(tr.getProfile().get(0)));
       } else {
         sdt = context.fetchTypeDefinition(ed.getTypeFirstRep().getWorkingCode());
       }
@@ -376,7 +377,7 @@ public class DefinitionNavigator {
 
   private void loadTypedChildren(TypeRefComponent type, Resource src) throws DefinitionException {
     typeOfChildren = null;
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode(), null, src);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode(), IWorkerContext.VersionResolutionRules.defaultRule(), null, src);
     if (sd != null) {
       DefinitionNavigator dn = new DefinitionNavigator(context, sd, diff, followTypes, 0, globalPath, localPath, names, sd.getType());
       typeChildren = dn.children();

@@ -80,7 +80,7 @@ public class ObjectConverter  {
     if (base == null)
       return null;
     String tn = base.fhirType();
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, null));
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, null), IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd == null)
       throw new FHIRException("Unable to find definition for type "+tn);
     Element res = new Element(property.getName(), property);

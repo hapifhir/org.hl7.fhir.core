@@ -76,33 +76,12 @@ class TxTestHTTPHandler extends BaseHTTPHandler implements HttpHandler {
 
     public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
       String contents = txtests.load(filename);
+      // always load as R5
       try (InputStream inputStream = IOUtils.toInputStream(contents, Charsets.UTF_8)) {
         if (filename.contains(".json")) {
-          if (Constants.VERSION.equals(version) || "5.0".equals(version))
-            return new JsonParser().parse(inputStream);
-          else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
-            return VersionConvertorFactory_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream));
-          else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
-            return VersionConvertorFactory_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream));
-          else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(version) || "1.0".equals(version))
-            return VersionConvertorFactory_10_50.convertResource(new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream));
-          else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
-            return VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(inputStream));
-          else
-            throw new FHIRException("unknown version " + version);
+          return new JsonParser().parse(inputStream);
         } else {
-          if (Constants.VERSION.equals(version) || "5.0".equals(version))
-            return new XmlParser().parse(inputStream);
-          else if (org.hl7.fhir.dstu3.model.Constants.VERSION.equals(version) || "3.0".equals(version))
-            return VersionConvertorFactory_30_50.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(inputStream));
-          else if (org.hl7.fhir.dstu2016may.model.Constants.VERSION.equals(version) || "1.4".equals(version))
-            return VersionConvertorFactory_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(inputStream));
-          else if (org.hl7.fhir.dstu2.model.Constants.VERSION.equals(version) || "1.0".equals(version))
-            return VersionConvertorFactory_10_50.convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(inputStream));
-          else if (org.hl7.fhir.r4.model.Constants.VERSION.equals(version) || "4.0".equals(version))
-            return VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(inputStream));
-          else
-            throw new FHIRException("unknown version " + version);
+          return new XmlParser().parse(inputStream);
         }
       }
     }

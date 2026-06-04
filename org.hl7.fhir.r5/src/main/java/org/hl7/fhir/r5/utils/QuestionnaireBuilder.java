@@ -469,7 +469,7 @@ public class QuestionnaireBuilder {
         cc.setSystem("http://hl7.org/fhir/fhir-types");
       } else for (UriType u : t.getProfile()) {
         ProfileUtilities pu = new ProfileUtilities(context, null, null);
-        StructureDefinition ps = pu.getProfile(profile, u.getValue());
+        StructureDefinition ps = pu.getProfile(profile, u);
         if (ps != null) {
           ValueSetExpansionContainsComponent cc = vs.getExpansion().addContains();
 	        cc.setCode(u.getValue());
@@ -513,7 +513,7 @@ public class QuestionnaireBuilder {
         ProfileUtilities pu = new ProfileUtilities(context, null, null);
         StructureDefinition ps = null;
         if (t.hasProfile())
-          ps = pu.getProfile(profile, t.getProfile().get(0).getValue());
+          ps = pu.getProfile(profile, t.getProfile().get(0));
 
         if (ps != null) {
           cc.setCode(t.getProfile().get(0).getValue());
@@ -1042,7 +1042,7 @@ public class QuestionnaireBuilder {
     private void addExtensionQuestions(StructureDefinition profile, QuestionnaireItemComponent group, ElementDefinition element, String path, String url, List<QuestionnaireResponse.QuestionnaireResponseItemComponent> answerGroups, List<ElementDefinition> parents) throws FHIRException { 
       // if this a  profiled extension, then we add it
     	if (!Utilities.noString(url)) {
-    		StructureDefinition ed =  context.fetchResource(StructureDefinition.class, url);
+    		StructureDefinition ed =  context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     		if (ed != null) {
           if (answerGroups.size() > 0)
             throw new NotImplementedException("Debug this");

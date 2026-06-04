@@ -8,7 +8,7 @@ package org.hl7.fhir.validation.http;
  */
 public final class ParamNames  {
   private ParamNames() {
-    /* This utility class should not be instantiated */
+    throw new UnsupportedOperationException("This utility class should not be instantiated");
   }
 
   public static final String JURISDICTION = "jurisdiction";

@@ -1,38 +1,44 @@
 package org.hl7.fhir.utilities.http;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
-
 /**
- * Simple HTTP client for making requests to a server.
+ * Manages access via a simple HTTP client for making requests to a server with no FHIR-specific code.
  */
 public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccessor> {
 
-  public ManagedWebAccessor(Iterable<String> serverTypes, String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
-    super(serverTypes, userAgent, serverAuthDetails);
+  public ManagedWebAccessor(Iterable<String> serverTypes, String userAgent, IHTTPAuthenticationProvider httpAuthHeaderProvider) {
+    super(serverTypes, userAgent, httpAuthHeaderProvider);
   }
-
-  private Map<String, String> newHeaders(String url) throws IOException {
+  
+  private Map<String, String> newHeaders(String urlString) throws MalformedURLException {
+    URL url = new URL(urlString);
     Map<String, String> headers = new HashMap<>(this.getHeaders());
-    ResolvedAuth auth = resolveAuth(url);
-    headers.putAll(auth.getHeaders());
+    if (this.getHttpAuthHeaderProvider().canProvideHeaders(url)) {
+      headers.putAll(this.getHttpAuthHeaderProvider().getHeaders(url));
+    }
     if (getUserAgent() != null) {
       headers.put("User-Agent", getUserAgent());
     }
     return headers;
   }
 
-  private SimpleHTTPClient setupClient(String url) throws IOException {
+  private SimpleHTTPClient setupSimpleHTTPClient(String url) throws IOException {
     if (!ManagedWebAccess.inAllowedPaths(url)) {
-      throw new IOException("The pathname '" + url + "' cannot be accessed by policy");
+      throw new IOException("The pathname '"+url+"' cannot be accessed by policy");
     }
-    SimpleHTTPClient client = new SimpleHTTPClient();
-    for (Map.Entry<String, String> entry : newHeaders(url).entrySet()) {
+    SimpleHTTPClient client = new SimpleHTTPClient(getHttpAuthHeaderProvider());
+
+    for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
       client.addHeader(entry.getKey(), entry.getValue());
+    }
+
+    if (getUserAgent() != null) {
+      client.addHeader("User-Agent", getUserAgent());
     }
     return client;
   }
@@ -42,19 +48,15 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   }
 
   public HTTPResult get(String url, String accept) throws IOException {
-    switch (ManagedWebAccess.getAccessPolicy()) {
-    case DIRECT:
-      return executeWithTokenRetry(url, () -> {
-        SimpleHTTPClient client = setupClient(url);
-        return client.get(url, accept);
-      });
-    case MANAGED:
-      return ManagedWebAccess.getAccessor().get(getServerTypes(), url, accept, newHeaders(url));
-    case PROHIBITED:
-      throw new IOException("Access to the internet is not allowed by local security policy");
-    default:
-      throw new IOException("Internal Error");
-    }
+    return switch (ManagedWebAccess.getAccessPolicy()) {
+      case DIRECT -> {
+        SimpleHTTPClient client = setupSimpleHTTPClient(url);
+        yield client.get(url, accept);
+      }
+      case MANAGED ->  ManagedWebAccess.getAccessor().get(getServerTypes(), url, accept, newHeaders(url));
+      case PROHIBITED -> throw new IOException("Access to the internet is not allowed by local security policy");
+      default -> throw new IOException("Internal Error");
+    };
   }
 
   public HTTPResult post(String url, byte[] content, String contentType) throws IOException {
@@ -64,10 +66,8 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   public HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
-      return executeWithTokenRetry(url, () -> {
-        SimpleHTTPClient client = setupClient(url);
-        return client.post(url, contentType, content, accept);
-      });
+      SimpleHTTPClient client = setupSimpleHTTPClient(url);
+      return client.post(url, contentType, content, accept);
     case MANAGED:
       return ManagedWebAccess.getAccessor().post(getServerTypes(), url, content, contentType, accept, newHeaders(url));
     case PROHIBITED:
@@ -82,18 +82,15 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   }
 
   public HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
-    switch (ManagedWebAccess.getAccessPolicy()) {
-    case DIRECT:
-      return executeWithTokenRetry(url, () -> {
-        SimpleHTTPClient client = setupClient(url);
-        return client.put(url, contentType, content, accept);
-      });
-    case MANAGED:
-      return ManagedWebAccess.getAccessor().put(getServerTypes(), url, content, contentType, accept, newHeaders(url));
-    case PROHIBITED:
-      throw new IOException("Access to the internet is not allowed by local security policy");
-    default:
-      throw new IOException("Internal Error");
-    }
+    return switch (ManagedWebAccess.getAccessPolicy()) {
+      case DIRECT -> {
+        SimpleHTTPClient client = setupSimpleHTTPClient(url);
+        yield client.put(url, contentType, content, accept);
+      }
+      case MANAGED ->
+        ManagedWebAccess.getAccessor().put(getServerTypes(), url, content, contentType, accept, newHeaders(url));
+      case PROHIBITED -> throw new IOException("Access to the internet is not allowed by local security policy");
+      default -> throw new IOException("Internal Error");
+    };
   }
 }

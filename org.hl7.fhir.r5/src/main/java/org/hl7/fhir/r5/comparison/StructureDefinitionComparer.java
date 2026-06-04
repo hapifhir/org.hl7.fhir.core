@@ -15,26 +15,17 @@ import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.AggregationMode;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -929,8 +920,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           ex.setProfile(null);
         } else {
           // both have profiles. Is one derived from the other? 
-          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getProfile().get(0).getValue(), null, nwSource);
-          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getProfile().get(0).getValue(), null, nwSource);
+          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getProfile().get(0).getValue(),
+            ExtensionUtilities.getVersionResolutionRules(ex.getProfile().get(0)), null, nwSource);
+          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getProfile().get(0).getValue(),
+            ExtensionUtilities.getVersionResolutionRules(nw.getProfile().get(0)), null, nwSource);
           if (sdex != null && sdnw != null) {
             if (sdex.getUrl().equals(sdnw.getUrl())) {
               pfound = true;
@@ -957,8 +950,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           ex.setTargetProfile(null);
         } else {
           // both have profiles. Is one derived from the other? 
-          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getTargetProfile().get(0).getValue(), null, nwSource);
-          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getTargetProfile().get(0).getValue(), null, nwSource);
+          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class,
+            ex.getTargetProfile().get(0).getValue(), ExtensionUtilities.getVersionResolutionRules(ex.getTargetProfile().get(0)), null, nwSource);
+          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class,
+            nw.getTargetProfile().get(0).getValue(), ExtensionUtilities.getVersionResolutionRules(nw.getTargetProfile().get(0)), null, nwSource);
           if (sdex != null && sdnw != null) {
             if (matches(sdex, sdnw)) {
               tfound = true;
@@ -1009,7 +1004,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       if (right.getUrl().equals(sd.getBaseDefinitionNoVersion())) {
         return true;
       }
-      sd = sd.hasBaseDefinition() ? ctxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), null, sd) : null;
+      sd = sd.hasBaseDefinition() ? ctxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()), null, sd) : null;
     }
     return false;
   }
@@ -1029,8 +1024,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           pfound = true;
           c.setProfile(r.getProfile());
         } else {
-          StructureDefinition sdl = resolveProfile(comp, res, path, l.getProfile().get(0).getValue(), comp.getLeft().getName(), session.getContextLeft(), comp.getLeft());
-          StructureDefinition sdr = resolveProfile(comp, res, path, r.getProfile().get(0).getValue(), comp.getRight().getName(), session.getContextRight(), comp.getRight());
+          StructureDefinition sdl = resolveProfile(comp, res, path, l.getProfile().get(0), comp.getLeft().getName(), session.getContextLeft(), comp.getLeft());
+          StructureDefinition sdr = resolveProfile(comp, res, path, r.getProfile().get(0), comp.getRight().getName(), session.getContextRight(), comp.getRight());
           if (sdl != null && sdr != null) {
             if (sdl == sdr) {
               pfound = true;
@@ -1061,8 +1056,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           tfound = true;
           c.setTargetProfile(r.getTargetProfile());
         } else {
-          StructureDefinition sdl = resolveProfile(comp, res, path, l.getTargetProfile().get(0).getValue(), comp.getLeft().getName(), session.getContextLeft(), comp.getLeft());
-          StructureDefinition sdr = resolveProfile(comp, res, path, r.getTargetProfile().get(0).getValue(), comp.getRight().getName(), session.getContextRight(), comp.getRight());
+          StructureDefinition sdl = resolveProfile(comp, res, path, l.getTargetProfile().get(0), comp.getLeft().getName(), session.getContextLeft(), comp.getLeft());
+          StructureDefinition sdr = resolveProfile(comp, res, path, r.getTargetProfile().get(0), comp.getRight().getName(), session.getContextRight(), comp.getRight());
           if (sdl != null && sdr != null) {
             if (matches(sdl, sdr)) {
               tfound = true;
@@ -1184,8 +1179,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       return true;      
     } else {
       // ok, now we compare the value sets. This may be unresolvable. 
-      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSet(), leftSrc, session.getContextLeft());
-      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSet(), rightSrc, session.getContextRight());
+      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSetElement(), leftSrc, session.getContextLeft());
+      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSetElement(), rightSrc, session.getContextRight());
       if (lvs == null) {
         vm(IssueSeverity.ERROR, "Unable to resolve left value set "+left.getValueSet().toString()+" at "+path, path, comp.getMessages(), res.getMessages());
         return true;
@@ -1269,10 +1264,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     return result;
   }
 
-  private StructureDefinition resolveProfile(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, String url, String name, IWorkerContext ctxt, Resource urlSource) {
-    StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url, null, urlSource);
+  private StructureDefinition resolveProfile(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, Element urlElement, String name, IWorkerContext ctxt, Resource urlSource) {
+    StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, urlElement.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(urlElement), null, urlSource);
     if (sd == null) {
-      ValidationMessage vm = vmI(IssueSeverity.WARNING, "Unable to resolve profile "+url+" in profile "+name, path);
+      ValidationMessage vm = vmI(IssueSeverity.WARNING, "Unable to resolve profile "+urlElement.primitiveValue()+" in profile "+name, path);
     }
     return sd;
   }
@@ -1291,8 +1286,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     if (Base.compareDeep(left.getValueSet(), right.getValueSet(), false))
       union.setValueSet(left.getValueSet());
     else {
-      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSet(), leftSrc, session.getContextLeft());
-      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSet(), rightSrc, session.getContextRight());
+      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSetElement(), leftSrc, session.getContextLeft());
+      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSetElement(), rightSrc, session.getContextRight());
       if (lvs != null && rvs != null) {
         ValueSetComparison compP = (ValueSetComparison) session.compare(lvs, rvs);
         if (compP != null) {
@@ -1307,10 +1302,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     return union;
   }
 
-  private ValueSet resolveVS(StructureDefinition ctxtLeft, String vsRef, Resource src, IWorkerContext ctxt) {
-    if (vsRef == null)
+  private ValueSet resolveVS(StructureDefinition ctxtLeft, Element vsRef, Resource src, IWorkerContext ctxt) {
+    if (vsRef == null || vsRef.primitiveValue() == null)
       return null;
-    return ctxt.fetchResource(ValueSet.class, vsRef, null, src);
+    return ctxt.fetchResource(ValueSet.class, vsRef.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(vsRef), null, src);
   }
 
   public XhtmlNode renderStructure(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
@@ -1523,7 +1518,7 @@ public BindingResolution resolveBinding(StructureDefinition def, ElementDefiniti
 }
 
 @Override
-public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+public BindingResolution resolveBinding(StructureDefinition def, String url, String path, Element ctxt) throws FHIRException {
   return new BindingResolution("??", "??");
 }
 

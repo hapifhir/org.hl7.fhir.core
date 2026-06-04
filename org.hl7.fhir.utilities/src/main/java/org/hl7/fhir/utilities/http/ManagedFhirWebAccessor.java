@@ -44,8 +44,8 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     return this;
   }
 
-  public ManagedFhirWebAccessor(String userAgent, List<ServerDetailsPOJO> serverAuthDetails) {
-    super(Arrays.asList("fhir"), userAgent, serverAuthDetails);
+  public ManagedFhirWebAccessor(String userAgent, IHTTPAuthenticationProvider authenticationProvider) {
+    super(Arrays.asList("fhir"), userAgent, authenticationProvider);
     this.timeout = 5000;
     this.timeoutUnit = TimeUnit.MILLISECONDS;
   }
@@ -60,7 +60,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     return request.withHeaders(headers);
   }
 
-  protected HTTPRequest requestWithManagedHeaders(HTTPRequest httpRequest) throws IOException {
+  protected HTTPRequest requestWithAuthorizationHeaders(HTTPRequest httpRequest) {
     HTTPRequest requestWithDefaultHeaders = httpRequestWithDefaultHeaders(httpRequest);
 
     List<HTTPHeader> headers = new ArrayList<>();
@@ -70,41 +70,40 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
       headers.add(new HTTPHeader(entry.getKey(), entry.getValue()));
     }
 
-    ResolvedAuth auth = resolveAuth(httpRequest.getUrl() != null ? httpRequest.getUrl().toString() : null);
-    for (Map.Entry<String, String> entry : auth.getHeaders().entrySet()) {
-      headers.add(new HTTPHeader(entry.getKey(), entry.getValue()));
+    if (getHttpAuthHeaderProvider() != null && getHttpAuthHeaderProvider().canProvideHeaders(httpRequest.getUrl())) {
+      for (Map.Entry<String, String> entry : getHttpAuthHeaderProvider().getHeaders(httpRequest.getUrl()).entrySet()) {
+           headers.add(new HTTPHeader(entry.getKey(), entry.getValue()));
+      }
     }
-
     return httpRequest.withHeaders(headers);
   }
 
   public HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
-      case DIRECT:
-        String url = httpRequest.getUrl() != null ? httpRequest.getUrl().toString() : null;
-        return executeWithTokenRetry(url, () -> {
-          HTTPRequest requestWithHeaders = requestWithManagedHeaders(httpRequest);
-          assert requestWithHeaders.getUrl() != null;
+      case DIRECT: {
+        HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
+        assert requestWithAuthorizationHeaders.getUrl() != null;
 
-          RequestBody body = requestWithHeaders.getBody() == null ? null : RequestBody.create(requestWithHeaders.getBody());
-          Request.Builder requestBuilder = new Request.Builder()
-            .url(requestWithHeaders.getUrl())
-            .method(requestWithHeaders.getMethod().name(), body);
+        RequestBody body = requestWithAuthorizationHeaders.getBody() == null ? null : RequestBody.create(requestWithAuthorizationHeaders.getBody());
+        Request.Builder requestBuilder = new Request.Builder()
+          .url(requestWithAuthorizationHeaders.getUrl())
+          .method(requestWithAuthorizationHeaders.getMethod().name(), body);
 
-          for (HTTPHeader header : requestWithHeaders.getHeaders()) {
-            requestBuilder.addHeader(header.getName(), header.getValue());
-          }
+        for (HTTPHeader header : requestWithAuthorizationHeaders.getHeaders()) {
+          requestBuilder.addHeader(header.getName(), header.getValue());
+        }
+        OkHttpClient okHttpClient = getOkHttpClient();
 
-          if (!ManagedWebAccess.inAllowedPaths(requestWithHeaders.getUrl().toString())) {
-            throw new IOException("The pathname '" + requestWithHeaders.getUrl().toString() + "' cannot be accessed by policy");
-          }
-          Response response = getOkHttpClient().newCall(requestBuilder.build()).execute();
-          return getHTTPResult(response);
-        });
+        if (!ManagedWebAccess.inAllowedPaths(requestWithAuthorizationHeaders.getUrl().toString())) {
+          throw new IOException("The pathname '" + requestWithAuthorizationHeaders.getUrl().toString() + "' cannot be accessed by policy");
+        }
+        Response response = okHttpClient.newCall(requestBuilder.build()).execute();
+        return getHTTPResult(response);
+      }
       case MANAGED:
-        HTTPRequest httpRequestWithManagedHeaders = requestWithManagedHeaders(httpRequest);
-        assert httpRequestWithManagedHeaders.getUrl() != null;
-        return ManagedWebAccess.getFhirWebAccessor().httpCall(httpRequestWithManagedHeaders);
+        HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
+        assert requestWithAuthorizationHeaders.getUrl() != null;
+        return ManagedWebAccess.getFhirWebAccessor().httpCall(requestWithAuthorizationHeaders);
       case PROHIBITED:
         throw new IOException("Access to the internet is not allowed by local security policy");
       default:

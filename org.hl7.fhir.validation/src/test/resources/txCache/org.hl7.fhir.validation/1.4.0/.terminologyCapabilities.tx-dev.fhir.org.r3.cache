@@ -16,6 +16,9 @@
     "uri" : "http://fdasis.nlm.nih.gov"
   },
   {
+    "uri" : "http://fhir.org/packages/fhir.tx.support/CodeSystem/designation-usage"
+  },
+  {
     "uri" : "http://healthit.gov/nhin/purposeofuse"
   },
   {
@@ -1183,6 +1186,9 @@
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/assemble-expectation"
   },
   {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/AustralianStateCodes"
+  },
+  {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/chf-codes"
   },
   {
@@ -1205,6 +1211,9 @@
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/questionnaire-answer-constraint"
+  },
+  {
+    "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/questionnaire-behavior-condition"
   },
   {
     "uri" : "http://hl7.org/fhir/uv/sdc/CodeSystem/temp"
@@ -5638,6 +5647,9 @@
     "uri" : "https://fhir-terminology.ohdsi.org"
   },
   {
+    "uri" : "https://terminology.dhp.uz/fhir/CodeSystem/loinc-supplement-uz"
+  },
+  {
     "uri" : "https://www.cdc.gov/nhsn/cdaportal/terminology/codesystem/cdcnhsn.html"
   },
   {
@@ -5663,6 +5675,9 @@
   },
   {
     "uri" : "urn:ietf:bcp:47"
+  },
+  {
+    "uri" : "urn:ietf:rfc:3986"
   },
   {
     "uri" : "urn:iso-astm:E1762-95:2013"

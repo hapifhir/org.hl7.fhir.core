@@ -457,7 +457,7 @@ public class VerticalBarParser extends ParserBase {
   
   @Override
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/v2/StructureDefinition/Message");
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/v2/StructureDefinition/Message", IWorkerContext.VersionResolutionRules.defaultRule());
     Element message = new Element("Message", new Property(context, sd.getSnapshot().getElementFirstRep(), sd, getProfileUtilities(), getContextUtilities()));
     byte[] content = FileUtilities.streamToBytes(inStream);
     ByteArrayInputStream stream = new ByteArrayInputStream(content);

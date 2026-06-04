@@ -99,6 +99,16 @@ public class BasePackageCacheManagerTests {
       public NpmPackage loadPackage(String id, String version) throws FHIRException, IOException {
         return null;
       }
+
+      @Override
+      public String getLatestVersion(String statedId, boolean milestonesOnly) throws IOException {
+        return null;
+      }
+
+      @Override
+      public String getLatestVersion(String statedId, String versionFilter) throws IOException {
+        return null;
+      }
     };
   }
 

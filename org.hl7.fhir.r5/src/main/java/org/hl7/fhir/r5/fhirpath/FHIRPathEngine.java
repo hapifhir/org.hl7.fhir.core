@@ -15,9 +15,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
@@ -31,6 +32,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefiniti
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Function;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Kind;
@@ -41,40 +43,22 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FHIRConstant;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.TypedElementDefinition;
 import org.hl7.fhir.r5.fhirpath.TypeDetails.ProfiledType;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.BaseDateTimeType;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.r5.model.DateTimeType;
-import org.hl7.fhir.r5.model.DateType;
-import org.hl7.fhir.r5.model.DecimalType;
-import org.hl7.fhir.r5.model.Element;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Property.PropertyMatcher;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.TimeType;
-import org.hl7.fhir.r5.model.TypeConvertor;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.regex.RegexConstants;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.util.ElementUtil;
@@ -186,6 +170,7 @@ public class FHIRPathEngine {
   private boolean doNotEnforceAsCaseSensitive;
   private FHIRPathAnalysis analysis;
   private ProfileUtilities profileUtilities;
+  @Getter @Setter private boolean allowUknownFunctions;
 
   /*
    * The FHIRPath engine consults with the HostApplicationServices when an element fails to
@@ -197,6 +182,8 @@ public class FHIRPathEngine {
   private boolean allowDoubleQuotes;
   private List<IssueMessage> typeWarnings = new ArrayList<>();
   private boolean emitSQLonFHIRWarning;
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
   public interface IDebugTracer {
 
@@ -798,7 +785,7 @@ public class FHIRPathEngine {
       list.add(base);
     }
     traceLog = new StringBuilder();
-    return execute(new ExecutionContext(null, base.isResource() ? base : null, base.isResource() ? base : null, base, base), list, exp, true);
+    return execute(new ExecutionContext(null, base!=null && base.isResource() ? base : null, base!=null && base.isResource() ? base : null, base, base), list, exp, true);
   }
 
   /**
@@ -1223,8 +1210,8 @@ public class FHIRPathEngine {
           if (hostServices != null) {
             details = hostServices.resolveFunction(this, result.getName());
           }
-          if (details == null) {
-            throw lexer.error("The name "+result.getName()+" is not a valid function name");
+          if (details == null && !allowUknownFunctions) {
+            throw lexer.error("The name "+result.getName()+" is not a known function name");
           }
           f = Function.Custom;
         }
@@ -1525,9 +1512,13 @@ public class FHIRPathEngine {
     case LowBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case HighBoundary: return checkParamCount(lexer, location, exp, 0, 1);
     case Precision: return checkParamCount(lexer, location, exp, 0);
-      case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
+    case hasTemplateIdOf: return checkParamCount(lexer, location, exp, 1);
       case Debug: return checkParamCount(lexer, location, exp, 0, 1);
-    case Custom: return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
+      case Section: return checkParamCount(lexer, location, exp, 1, 1);
+      case Entry: return checkParamCount(lexer, location, exp, 1, 1);
+    case Custom: if (details != null) {
+        return checkParamCount(lexer, location, exp, details.getMinParameters(), details.getMaxParameters());
+      }
     }
     return false;
   }
@@ -2057,7 +2048,7 @@ public class FHIRPathEngine {
             if (tn.equals(sd.getType())) {
               return makeBoolean(true);
             }
-            sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
+            sd = profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
           }
           return makeBoolean(false);
         }      
@@ -2072,7 +2063,7 @@ public class FHIRPathEngine {
             if (tn.equals(sd.getType())) {
               return makeBoolean(true);
             }
-            sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
+            sd = profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
           }
           return makeBoolean(false);
         }      
@@ -2731,7 +2722,7 @@ public class FHIRPathEngine {
   private List<Base> opMemberOf(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     boolean ans = false;
     String url = right.get(0).primitiveValue();
-    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.findTxResource(ValueSet.class, url);
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.findTxResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     if (vs != null) {
       for (Base l : left) {
         if (Utilities.existsInList(l.fhirType(), "code", "string", "uri")) {
@@ -3399,7 +3390,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
             result.add(item);
             break;
           }
-          sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
+          sd = profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
         }
       }
     } else {
@@ -3442,7 +3433,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         if (stated.equals(sd.getTypeName())) {
           return true;
         }
-        sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
+        sd = profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
       }
       return false;
     } catch (Exception e) { 
@@ -3760,7 +3751,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
             for (String pt : profiles) {
               String extn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : pt;
               String subExtn = pt.contains("#") ? pt.substring(0, pt.indexOf("#")) : null;
-              StructureDefinition sd = profileUtilities.findProfile(extn, null); // source doesn't matter looking up extensions
+              StructureDefinition sd = profileUtilities.findProfileStr(extn, null); // source doesn't matter looking up extensions
               if (sd != null) {
                 String id = subExtn == null ? "Extension.extension:"+url : subExtn+".extension:"+url;
                 ElementDefinition ed = sd.getSnapshot().getElementById(id);
@@ -3941,6 +3932,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       case Debug: {
         return focus;
       }
+      case Section: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, "Composition.section");
+      }
+      case Entry: {
+        checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String));
+        return new TypeDetails(CollectionStatus.SINGLETON, "Resource");
+      }
     case Custom : {
       return hostServices.checkFunction(this, context.appInfo,exp.getName(), focus, paramTypes);
     }
@@ -3952,14 +3951,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
 
   private ExtensionDefinition findExtensionDefinition(TypeDetails focus, String url) {
     if (Utilities.isAbsoluteUrl(url)) {
-      StructureDefinition sd = profileUtilities.findProfile(url, null);
+      StructureDefinition sd = profileUtilities.findProfileStr(url, null);
       if (sd == null) {
         return null;
       } else {
         return new ExtensionDefinition(true, sd, sd.getSnapshot().getElementFirstRep());
       }
     }
-    StructureDefinition sd = profileUtilities.findProfile(focus.getType(), null);
+    StructureDefinition sd = profileUtilities.findProfileStr(focus.getType(), null);
     if (sd != null) {
       for (ElementDefinition ed : sd.getSnapshot().getElement()) {
         if (ed.hasFixed() && url.equals(ed.getFixed().primitiveValue())) {
@@ -3996,7 +3995,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       if (!pt.hasProfiles()) { // get back to this later
         String purl = tn;
         while (purl != null && !purl.equals(pt.getUri())) {
-          StructureDefinition sd = profileUtilities.findProfile(purl, null); // #TODO: fix up TypeDetails to track down the soruce of the profiled Types
+          StructureDefinition sd = profileUtilities.findProfileStr(purl, null); // #TODO: fix up TypeDetails to track down the soruce of the profiled Types
           purl = sd == null ? null : sd.getBaseDefinitionNoVersion();
         }
         if (purl != null) {
@@ -4223,7 +4222,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     case HighBoundary : return funcHighBoundary(context, focus, exp);
     case Precision : return funcPrecision(context, focus, exp);
     case hasTemplateIdOf: return funcHasTemplateIdOf(context, focus, exp);
-    case Debug: return funcDebug(context, focus, exp);
+      case Debug: return funcDebug(context, focus, exp);
+      case Section: return funcSection(context, focus, exp);
+      case Entry: return funcEntry(context, focus, exp);
 
 
     case Custom: { 
@@ -4257,7 +4258,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     List<Base> swb = execute(context, baseToList(context.thisItem), exp.getParameters().get(0), true);
     String sw = convertToString(swb);
 
-    StructureDefinition sd = this.profileUtilities.findProfile(sw, null); // no source for tracking CDA refs
+    StructureDefinition sd = this.profileUtilities.findProfileStr(sw, null); // no source for tracking CDA refs
     if (focus.size() == 1 && sd != null) {
       boolean found = false;
       for (Identifier id : sd.getIdentifier()) {
@@ -4677,6 +4678,16 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return focus;
   }
 
+  private List<Base> funcSection(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    // TODO: this method needs to be written yet
+    return null;
+  }
+
+  private List<Base> funcEntry(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
+    // TODO: this method needs to be written yet
+    return null;
+  }
+
   private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
   public static String bytesToHex(byte[] bytes) {
     char[] hexChars = new char[bytes.length * 2];
@@ -4827,11 +4838,21 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
   }
 
   private List<Base> funcHtmlChecks1(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
-    // todo: actually check the HTML
     if (focus.size() != 1) {
-      return makeBoolean(false);          
+      return new ArrayList<Base>();
     }
-    XhtmlNode x = focus.get(0).getXhtml();
+    Base n = focus.get(0);
+    XhtmlNode x;
+    if (n.getXhtml() != null)
+      x = n.getXhtml();
+    else if (n instanceof StringType) {
+      try {
+        x = new XhtmlParser().parseFragment("<div xmlns=\"http://www.w3.org/1999/xhtml\">"+n.primitiveValue()+"</div>");
+      } catch (Exception e) {
+        return makeBoolean(false);  
+      }
+    } else
+      return new ArrayList<Base>();
     if (x == null) {
       return makeBoolean(false);                
     }
@@ -5054,7 +5075,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     }
 
     String url = nl.get(0).primitiveValue();
-    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.findTxResource(ValueSet.class, url);
+    ValueSet vs = hostServices != null ? hostServices.resolveValueSet(this, context.appInfo, url) : worker.findTxResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRulesBase(nl.get(0)));
     if (vs == null) {
       return new ArrayList<Base>();
     }
@@ -5134,10 +5155,15 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     String repl = convertToString(replB);
 
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
-      //
+      // no-op
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-        result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+        try {
+          String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
+          result.add(new StringType(replaced).noExtensions());
+        } catch (TimeoutException te) {
+          throw new FHIRException("Timeout evaluating regex: " + regex, te);
+        }
       }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
@@ -5232,11 +5258,47 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return result;
   }
 
+  /**
+   * Implements FHIRPath toDateTime() - see https://hl7.org/fhirpath/#todatetime-datetime
+   *
+   * If the input collection contains a single item, this function returns:
+   *   - the item itself if it is a DateTime
+   *   - a DateTime built from a Date (a date is a valid datetime)
+   *   - a DateTime parsed from a String, if that string matches the FHIRPath
+   *     datetime format. Partial dates of the form YYYY, YYYY-MM and YYYY-MM-DD
+   *     are accepted.
+   *
+   * If the input collection is empty, the result is empty.
+   * If the input collection contains more than one item, an error is signalled.
+   */
   private List<Base> funcToDateTime(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
-    //  List<Base> result = new ArrayList<Base>();
-    //  result.add(new BooleanType(convertToBoolean(focus)));
-    //  return result;
-    throw makeException(expr, I18nConstants.FHIRPATH_NOT_IMPLEMENTED, "toDateTime");
+    List<Base> result = new ArrayList<Base>();
+    if (focus.size() > 1) {
+      throw makeException(expr, I18nConstants.FHIRPATH_NO_COLLECTION, "toDateTime", focus.size());
+    }
+    if (focus.size() == 0) {
+      return result;
+    }
+    Base item = focus.get(0);
+    if (item instanceof DateTimeType) {
+      result.add(item);
+    } else if (item instanceof DateType) {
+      // a date is a valid datetime
+      result.add(new DateTimeType(((DateType) item).getValueAsString()).noExtensions());
+    } else if (item instanceof StringType) {
+      String s = convertToString(item);
+      // Same FHIRPath/FHIR datetime regex as funcIsDateTime so that
+      // toDateTime() and convertsToDateTime() agree on what is convertible.
+      if (s != null && s.matches(RegexConstants.DATE_TIME_REGEX)) {
+        try {
+          result.add(new DateTimeType(s).noExtensions());
+        } catch (Exception e) {
+          // String matched the syntactic regex but the calendar value is not
+          // valid (e.g. 2024-02-30) - return empty per spec.
+        }
+      }
+    }
+    return result;
   }
 
   private List<Base> funcToTime(ExecutionContext context, List<Base> focus, ExpressionNode expr) {
@@ -5401,7 +5463,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           if (n.equals(sd.getType())) {
             return makeBoolean(true);
           }
-          sd = profileUtilities.findProfile(sd.getBaseDefinition(), sd);
+          sd = profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
         }
         return makeBoolean(false);
       }
@@ -5445,7 +5507,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
               result.add(b);
               break;
             }
-            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinition(), sd);
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
           }
         }
       }
@@ -5486,7 +5548,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
               result.add(b);
               break;
             }
-            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinition(), sd);
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
           }
         }
       } else if (tn.startsWith("CDA.")) {
@@ -5500,7 +5562,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
               result.add(b);
               break;
             }
-            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinition(), sd);
+            sd = sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE ? null : profileUtilities.findProfile(sd.getBaseDefinitionElement(), sd);
           }
         }
       }
@@ -5529,7 +5591,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       for (Base item : current) {
         pc.clear();
         pc.add(item);
-        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), false));
+        added.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), true));
       }
       more = false;
       current.clear();
@@ -5946,9 +6008,12 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
-          Pattern p = Pattern.compile("(?s)" + sw);
-          Matcher m = p.matcher(st);
-          boolean ok = m.find();
+          boolean ok;
+          try {
+            ok = RegexTimeout.find(st, "(?s)" + sw, regexTimeoutMillis);
+          } catch (TimeoutException e) {
+            throw new FHIRException("Timeout evaluating regex: " + sw, e);
+          }
           result.add(new BooleanType(ok).noExtensions());
         }
       }
@@ -5968,9 +6033,12 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
-          Pattern p = Pattern.compile("(?s)" + sw);
-          Matcher m = p.matcher(st);
-          boolean ok = m.matches();
+          boolean ok;
+          try {
+            ok = RegexTimeout.matches(st, "(?s)" + sw, regexTimeoutMillis);
+          } catch (TimeoutException e) {
+            throw new FHIRException("Timeout evaluating regex: " + sw, e);
+          }
           result.add(new BooleanType(ok).noExtensions());
         }
       }
@@ -6202,8 +6270,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
       result.add(new BooleanType((convertToString(focus.get(0)).matches
-          ("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"))).noExtensions());
-    } else { 
+          (RegexConstants.DATE_TIME_REGEX))).noExtensions());
+    } else {
       result.add(new BooleanType(false).noExtensions());
     }
     return result;
@@ -6217,8 +6285,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
       result.add(new BooleanType((convertToString(focus.get(0)).matches
-          ("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"))).noExtensions());
-    } else { 
+          (RegexConstants.DATE_TIME_REGEX))).noExtensions());
+    } else {
       result.add(new BooleanType(false).noExtensions());
     }
     return result;
@@ -6614,7 +6682,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       String tail = "";
       StructureDefinition sd = worker.fetchTypeDefinition(url);
       if (sd == null) {
-        sd = profileUtilities.findProfile(url, null); // #TODO: add version correctness here. It's not version correct as is
+        sd = profileUtilities.findProfileStr(url, null); // #TODO: add version correctness here. It's not version correct as is
       }
       if (sd == null) {
         if (url.startsWith(TypeDetails.FP_NS)) {
@@ -6631,14 +6699,14 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       }
       if (m != null && hasDataType(m.definition)) {
         if (m.fixedType != null)  {
-          StructureDefinition dt = profileUtilities.findProfile(ProfileUtilities.sdNs(m.fixedType, null), sd);
+          StructureDefinition dt = profileUtilities.findProfileStr(ProfileUtilities.sdNs(m.fixedType, null), sd);
           if (dt == null) {
             throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(m.fixedType, null), "getChildTypesByName#2");
           }
           sdl.add(dt);
         } else
           for (TypeRefComponent t : m.definition.getType()) {
-            StructureDefinition dt = profileUtilities.findProfile(ProfileUtilities.sdNs(t.getCode(), null), null); // #TODO: Version correctness
+            StructureDefinition dt = profileUtilities.findProfileStr(ProfileUtilities.sdNs(t.getCode(), null), null); // #TODO: Version correctness
             if (dt == null) {
               throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_TYPE, ProfileUtilities.sdNs(t.getCode(), null), "getChildTypesByName#3");
             }
@@ -6869,7 +6937,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           List<ElementDefinitionMatch> list = new ArrayList<>();
           // for each type, does it have the next node in the path? 
           for (TypeRefComponent tr : ed.getType()) {
-            StructureDefinition nsd = profileUtilities.findProfile(ProfileUtilities.sdNs(tr.getCode(), null), sd);
+            StructureDefinition nsd = profileUtilities.findProfileStr(ProfileUtilities.sdNs(tr.getCode(), null), sd);
             if (nsd == null) { 
               throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ed.getType().get(0).getCode(), "getElementDefinition");
             }
@@ -6878,7 +6946,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
           }
           return list;
         }
-        StructureDefinition nsd = profileUtilities.findProfile(ProfileUtilities.sdNs(ed.getType().get(0).getCode(), null), sd);
+        StructureDefinition nsd = profileUtilities.findProfileStr(ProfileUtilities.sdNs(ed.getType().get(0).getCode(), null), sd);
         if (nsd == null) { 
           throw makeException(expr, I18nConstants.FHIRPATH_NO_TYPE, ed.getType().get(0).getCode(), "getElementDefinition");
         }
@@ -6942,7 +7010,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         ref = ref.replace(sdt.getUrl()+"#", "#");
         break;
       }
-      sdt = profileUtilities.findProfile(sdt.getBaseDefinition(), sdt);
+      sdt = profileUtilities.findProfile(sdt.getBaseDefinitionElement(), sdt);
     }
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ref.equals("#"+ed.getId())) {
@@ -7027,7 +7095,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         if (element.getTypes().get(0).getTargetProfile().size() > 1) {
           throw makeExceptionPlural(element.getTypes().get(0).getTargetProfile().size(), expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_NO_TARGET, element.getElement().getId());
         }
-        sd = profileUtilities.findProfile(element.getTypes().get(0).getTargetProfile().get(0).getValue(), profile);
+        sd = profileUtilities.findProfile(element.getTypes().get(0).getTargetProfile().get(0), profile);
         if (sd == null) {
           throw makeException(expr, I18nConstants.FHIRPATH_RESOLVE_DISCRIMINATOR_CANT_FIND, element.getTypes().get(0).getTargetProfile(), element.getElement().getId());
         }
@@ -7038,9 +7106,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         for (ElementDefinition t : childDefinitions.getList()) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
-                null : profileUtilities.findProfile(t.getType().get(0).getProfile().get(0).getValue(), profile);
+                null : profileUtilities.findProfile(t.getType().get(0).getProfile().get(0), profile);
             while (exsd != null && !exsd.getBaseDefinitionNoVersion().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
-              exsd = profileUtilities.findProfile(exsd.getBaseDefinition(), exsd);
+              exsd = profileUtilities.findProfile(exsd.getBaseDefinitionElement(), exsd);
             }
             if (exsd != null && exsd.getUrl().equals(targetUrl)) {
               if (profileUtilities.getChildMap(sd, t, false).getList().isEmpty()) {
@@ -7127,9 +7195,9 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       throw makeExceptionPlural(ed.getTypes().get(0).getProfile().size(), expr, I18nConstants.FHIRPATH_DISCRIMINATOR_MULTIPLE_PROFILES, ed.getElement().getId());
     }
     if (ed.getTypes().get(0).hasProfile()) { 
-      return profileUtilities.findProfile(ed.getTypes().get(0).getProfile().get(0).getValue(), ed.getSrc());
+      return profileUtilities.findProfile(ed.getTypes().get(0).getProfile().get(0), ed.getSrc());
     } else {
-      return profileUtilities.findProfile(ProfileUtilities.sdNs(ed.getTypes().get(0).getCode(), null), ed.getSrc());
+      return profileUtilities.findProfileStr(ProfileUtilities.sdNs(ed.getTypes().get(0).getCode(), null), ed.getSrc());
     }
   }
 

@@ -99,6 +99,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
 import ca.uhn.fhir.parser.DataFormatException;
+import org.hl7.fhir.utilities.npm.PackageLoadController;
 
 /*
  * This is a stand alone implementation of worker context for use inside a tool.
@@ -191,19 +192,23 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private String date;
   private IValidatorFactory validatorFactory;
   private boolean progress;
-  private final List<String> loadedPackages = new ArrayList<>();
+
+  @Getter private final List<String> loadedPackages = new ArrayList<>();
   private boolean canNoTS;
   private XVerExtensionManager xverManager;
   private boolean allowLazyLoading = true;
   private IPackageCacheManager packageCacheManager;
   @Getter @Setter private ILoaderFactory loaderFactory;
+  @Getter PackageLoadController packageLoadController;
 
   private SimpleWorkerContext() throws IOException, FHIRException {
     super();
+    packageLoadController = new PackageLoadController();
   }
 
   private SimpleWorkerContext(Locale locale) throws IOException, FHIRException {
     super(locale);
+    packageLoadController = new PackageLoadController();
   }
 
   public SimpleWorkerContext(SimpleWorkerContext other) throws IOException, FHIRException {
@@ -231,11 +236,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     questionnaire = other.questionnaire;
     packageCacheManager = other.packageCacheManager;
     loaderFactory = other.loaderFactory;
-  }
-
-
-  public List<String> getLoadedPackages() {
-    return loadedPackages;
+    packageLoadController = other.packageLoadController.copy();
   }
 
   // -- Initializations
@@ -307,7 +308,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       SimpleWorkerContext context = getSimpleWorkerContextInstance();
       context.setAllowLoadingDuplicates(allowLoadingDuplicates);
       context.terminologyClientManager.setFactory(TerminologyClientR5.factory());
-      context.loadFromPackage(pi, null);
+      context.loadFromPackage(pi, null, true);
       return build(context);
     }
     
@@ -324,7 +325,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (loader != null) {
         context.terminologyClientManager.setFactory(loader.txFactory());
       }
-      context.loadFromPackage(pi, loader);
+      context.loadFromPackage(pi, loader, true);
       context.finishLoading(genSnapshots);
       if (defaultExpParams) {
         context.setExpansionParameters(makeExpProfile());
@@ -532,19 +533,19 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   
 
   @Override
-  public int loadFromPackage(NpmPackage npm, IContextResourceLoader loader) throws IOException, FHIRException {
-    return loadFromPackageInt(npm, loader, loader == null ? defaultTypesToLoad() : loader.getTypes());
+  public int loadFromPackage(NpmPackage npm, IContextResourceLoader loader, boolean isMaster) throws IOException, FHIRException {
+    return loadFromPackageInt(npm, loader, loader == null ? defaultTypesToLoad() : loader.getTypes(), isMaster);
   }
 
-  public int loadPackage(NpmPackage npm) throws IOException, FHIRException {
+  public int loadPackage(NpmPackage npm, boolean isMaster) throws IOException, FHIRException {
     IContextResourceLoader loader =  loaderFactory.makeLoader(npm.fhirVersion());
-    return loadFromPackageInt(npm, loader, loader == null ? defaultTypesToLoad() : loader.getTypes());
+    return loadFromPackageInt(npm, loader, loader == null ? defaultTypesToLoad() : loader.getTypes(), isMaster);
   }
 
-  public int loadPackage(String idAndVer) throws IOException, FHIRException {
+  public int loadPackage(String idAndVer, boolean isMaster) throws IOException, FHIRException {
     NpmPackage npm = packageCacheManager.loadPackage(idAndVer);
     IContextResourceLoader loader =  loaderFactory.makeLoader(npm.fhirVersion());
-    return loadFromPackageInt(npm, loader, loader == null ? defaultTypesToLoad() : loader.getTypes());
+    return loadFromPackageInt(npm, loader, loader == null ? defaultTypesToLoad() : loader.getTypes(), isMaster);
   }
 
   public static Set<String> defaultTypesToLoad() {
@@ -572,15 +573,14 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         t = t + loadFromPackageAndDependenciesInt(npm, loader.getNewLoader(npm), pcm, path+" -> "+npm.name()+"#"+npm.version());
       }
     }
-    t = t + loadFromPackageInt(pi, loader, loader.getTypes());
+    t = t + loadFromPackageInt(pi, loader, loader.getTypes(), false);
     return t;
   }
 
-
-  public int loadFromPackageInt(NpmPackage pi, IContextResourceLoader loader, Set<String> types) throws IOException, FHIRException {
+  public int loadFromPackageInt(NpmPackage pi, IContextResourceLoader loader, Set<String> types, boolean isMaster) throws IOException, FHIRException {
     int t = 0;
     if (progress) {
-      log.info("Load Package "+pi.name()+"#"+pi.version());
+      log.info("Load Package "+pi.name()+"#"+pi.version()+ (isMaster ? " (Master)" : ""));
     }
     if (loadedPackages.contains(pi.id()+"#"+pi.version())) {
       return 0;
@@ -600,7 +600,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       types = loader.getTypes();
     }
     boolean hasIG = false;
-    PackageInformation pii = new PackageInformation(pi);
+    PackageInformation pii = new PackageInformation(pi, isMaster);
     if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad() || !allowLazyLoading) {
       // can't lazy load R2 because of valueset/codesystem implementation
       if (types == null || types.size() == 0) {
@@ -828,8 +828,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   @Override
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
-    T r = super.fetchResource(class_, uri);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules) {
+    T r = super.fetchResource(class_, uri, rules);
     if (r instanceof StructureDefinition) {
       StructureDefinition p = (StructureDefinition)r;
       try {
@@ -844,23 +844,20 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   @Override
-  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
-    T r = super.fetchResource(class_, uri);
+  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules) {
+    T r = super.fetchResource(class_, uri, rules);
     return r;
   }
 
   @Override
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource source) {
-    T resource = super.fetchResource(class_, uri, version, source);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource source) {
+    T resource = super.fetchResource(class_, uri, rules, version, source);
     if (resource instanceof StructureDefinition) {
       StructureDefinition structureDefinition = (StructureDefinition)resource;
       generateSnapshot(structureDefinition, "4");
     }
     return resource;
   }
-
-
-
 
   public String listMapUrls() {
     return Utilities.listCanonicalUrls(transforms.keys());
@@ -930,7 +927,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       String v = idAndver.substring(idAndver.lastIndexOf("#")+1);
       for (String s : loadedPackages) {
         String v2 = s.substring(s.lastIndexOf("#")+1);
-        if (s.startsWith("hl7.fhir.uv.extensions.") && VersionUtilities.versionMatches(v, v2)) {
+        if (s.startsWith("hl7.fhir.uv.extensions.") && VersionUtilities.isSemVerWithWildcards(v) && VersionUtilities.isSemVer(v2,true) && VersionUtilities.versionMatches(v, v2)) {
           return true;
         }
       }
