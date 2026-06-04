@@ -5182,6 +5182,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
         try {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
           String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
           result.add(new StringType(replaced).noExtensions());
         } catch (TimeoutException te) {
@@ -5310,9 +5312,11 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new DateTimeType(((DateType) item).getValueAsString()).noExtensions());
     } else if (item instanceof StringType) {
       String s = convertToString(item);
-      // Same FHIRPath/FHIR datetime regex as funcIsDateTime so that
-      // toDateTime() and convertsToDateTime() agree on what is convertible.
-      if (s != null && s.matches(RegexConstants.DATE_TIME_REGEX)) {
+
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = s.matches(RegexConstants.DATE_TIME_REGEX);
+      if (s != null && isMatch) {
         try {
           result.add(new DateTimeType(s).noExtensions());
         } catch (Exception e) {
@@ -6311,7 +6315,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
       result.add(new BooleanType((convertToString(focus.get(0)).matches
-          (RegexConstants.DATE_TIME_REGEX))).noExtensions());
+          (RegexConstants.DATE_REGEX))).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }

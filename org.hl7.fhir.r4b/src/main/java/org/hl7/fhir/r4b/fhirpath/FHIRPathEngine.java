@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -4696,6 +4697,8 @@ public class FHIRPathEngine {
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
         try {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
           String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
           result.add(new StringType(replaced).noExtensions());
         } catch (TimeoutException te) {
@@ -5764,7 +5767,7 @@ public class FHIRPathEngine {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //non-overlapping alternation with bounded optional groups, safe
       boolean isMatch = convertToString(focus.get(0)).matches(
-          "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?" );
+          RegexConstants.DATE_TIME_REGEX );
       result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
@@ -5782,7 +5785,7 @@ public class FHIRPathEngine {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //non-overlapping alternation with bounded optional groups, safe
       boolean isMatch = convertToString(focus.get(0)).matches(
-          "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?" );
+          RegexConstants.DATE_REGEX );
       result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());

@@ -555,9 +555,13 @@ public class LiquidEngine implements IHostApplicationServices {
         case REMOVE:
           t = List.of(singleString(t).replace(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)), ""));
           break;
-        case REMOVE_FIRST:
-          t = List.of(singleString(t).replaceFirst(Pattern.quote(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression))), ""));
+        case REMOVE_FIRST: {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //Regex sourced from Liquid expression parameter; user-supplied at runtime, Pattern.quote() applied
+          String removeFirstResult = singleString(t).replaceFirst(Pattern.quote(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression))), "");
+          t = List.of(removeFirstResult);
           break;
+        }
         case REMOVE_LAST: {
           String target = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
           String s = singleString(t);
@@ -611,16 +615,24 @@ public class LiquidEngine implements IHostApplicationServices {
           t = offset < s.length() ? List.of(s.substring(offset, end)) : List.of("");
           break;
         }
-        case SPLIT:
-          t = new ArrayList<>(Arrays.asList(singleString(t).split(
+        case SPLIT: {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //Regex sourced from Liquid expression parameter; user-supplied at runtime, Pattern.quote() applied
+          List<String> splitResult = new ArrayList<>(Arrays.asList(singleString(t).split(
             Pattern.quote(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression))))));
-          break;          
+          t = splitResult;
+          break;
+        }
         case STRIP:
           t = List.of(singleString(t).strip());
           break;
-        case STRIP_HTML:
-          t = List.of(singleString(t).replaceAll("<[^>]*>", ""));
+        case STRIP_HTML: {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //simple character class match; safe
+          String stripped = singleString(t).replaceAll("<[^>]*>", "");
+          t = List.of(stripped);
           break;
+        }
         case STRIP_NEWLINES:
           t = List.of(singleString(t).replace("\r\n", "").replace("\n", "").replace("\r", ""));
           break;
@@ -641,6 +653,8 @@ public class LiquidEngine implements IHostApplicationServices {
           String ellipsis = i.expression2 != null
             ? liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression2))
             : "...";
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //simple character class split; safe
           String[] parts = singleString(t).split("\\s+");
           if (parts.length > words) {
             StringBuilder sb = new StringBuilder();
@@ -1076,11 +1090,17 @@ public class LiquidEngine implements IHostApplicationServices {
 
       // Epoch handling: seconds (10 digits) or milliseconds (13 digits)
       try {
-        if (s.matches("^-?\\d{13}$")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, fixed-width, safe
+        boolean isEpochMillis = s.matches("^-?\\d{13}$");
+        if (isEpochMillis) {
           long ms = Long.parseLong(s);
           return ZonedDateTime.ofInstant(java.time.Instant.ofEpochMilli(ms), localZone);
         }
-        if (s.matches("^-?\\d{10}$")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, fixed-width, safe
+        boolean isEpochSeconds = s.matches("^-?\\d{10}$");
+        if (isEpochSeconds) {
           long sec = Long.parseLong(s);
           return ZonedDateTime.ofInstant(java.time.Instant.ofEpochSecond(sec), localZone);
         }
@@ -1130,13 +1150,22 @@ public class LiquidEngine implements IHostApplicationServices {
 
       // XSD partial date types: gYear (yyyy), gYearMonth (yyyy-MM), date (yyyy-MM-dd)
       try {
-        if (s.matches("-?\\d{4}")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //fixed-width, safe
+        boolean isGYear = s.matches("-?\\d{4}");
+        if (isGYear) {
           return LocalDateTime.of(Integer.parseInt(s), 1, 1, 0, 0).atZone(localZone);
         }
-        if (s.matches("-?\\d{4}-\\d{2}")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //fixed-width, safe
+        boolean isGYearMonth = s.matches("-?\\d{4}-\\d{2}");
+        if (isGYearMonth) {
           return java.time.YearMonth.parse(s).atDay(1).atStartOfDay(localZone);
         }
-        if (s.matches("-?\\d{4}-\\d{2}-\\d{2}")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //fixed-width, safe
+        boolean isDate = s.matches("-?\\d{4}-\\d{2}-\\d{2}");
+        if (isDate) {
           return java.time.LocalDate.parse(s).atStartOfDay(localZone);
         }
       } catch (Exception e) {
