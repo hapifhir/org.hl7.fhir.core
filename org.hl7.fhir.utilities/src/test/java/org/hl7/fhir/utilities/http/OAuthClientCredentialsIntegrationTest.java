@@ -49,6 +49,9 @@ public class OAuthClientCredentialsIntegrationTest {
     HTTPTokenManager.clearCache();
     tokenServer.shutdown();
     fhirServer.shutdown();
+    // Reset the global ManagedWebAccess state mutated via addServerAuthDetail()
+    // so it does not leak into other test classes.
+    ManagedWebAccess.loadFromFHIRSettings();
   }
 
   // -----------------------------------------------------------------------
@@ -118,7 +121,7 @@ public class OAuthClientCredentialsIntegrationTest {
     fhirServer.enqueue(new MockResponse().setBody("Response 2").setResponseCode(200));
 
     ServerDetailsPOJO server = buildServer();
-    ManagedFhirWebAccessor accessor = new ManagedFhirWebAccessor("test-agent", java.util.List.of(server));
+    ManagedFhirWebAccessor accessor = new ManagedFhirWebAccessor("test-agent", new ServerDetailsPOJOHTTPAuthProvider(java.util.List.of(server)));
 
     String fhirUrl = fhirServer.url("/Patient").toString();
 
@@ -164,7 +167,7 @@ public class OAuthClientCredentialsIntegrationTest {
     fhirServer.enqueue(new MockResponse().setBody("Response 2").setResponseCode(200));
 
     ServerDetailsPOJO server = buildServer();
-    ManagedFhirWebAccessor accessor = new ManagedFhirWebAccessor("test-agent", java.util.List.of(server));
+    ManagedFhirWebAccessor accessor = new ManagedFhirWebAccessor("test-agent", new ServerDetailsPOJOHTTPAuthProvider(java.util.List.of(server)));
 
     String fhirUrl = fhirServer.url("/Patient").toString();
 
@@ -220,7 +223,7 @@ public class OAuthClientCredentialsIntegrationTest {
       .setResponseCode(200));
 
     ServerDetailsPOJO server = buildServer();
-    ManagedFhirWebAccessor accessor = new ManagedFhirWebAccessor("test-agent", java.util.List.of(server));
+    ManagedFhirWebAccessor accessor = new ManagedFhirWebAccessor("test-agent", new ServerDetailsPOJOHTTPAuthProvider(java.util.List.of(server)));
 
     String fhirUrl = fhirServer.url("/Patient/123").toString();
     HTTPResult result = accessor.httpCall(
@@ -324,8 +327,7 @@ public class OAuthClientCredentialsIntegrationTest {
       .tokenEndpoint(tokenServer.url("/token").toString())
       .build();
 
-    ManagedWebAccessor accessor = new ManagedWebAccessor(
-      Arrays.asList("fhir"), "test-agent", java.util.List.of(server));
+    ManagedWebAccessor accessor = new ManagedWebAccessor(Arrays.asList("fhir"), "test-agent", new ServerDetailsPOJOHTTPAuthProvider(java.util.List.of(server)));
 
     String url = fhirServer.url("/Package").toString();
     HTTPResult result = accessor.get(url, "application/json");
@@ -355,14 +357,19 @@ public class OAuthClientCredentialsIntegrationTest {
       .setResponseCode(401));
 
     ServerDetailsPOJO server = buildServer();
-    ManagedFhirWebAccessor accessor = new ManagedFhirWebAccessor("test-agent", java.util.List.of(server));
+    ManagedFhirWebAccessor accessor = new ManagedFhirWebAccessor("test-agent", new ServerDetailsPOJOHTTPAuthProvider(java.util.List.of(server)));
 
     String fhirUrl = fhirServer.url("/Patient").toString();
 
-    org.junit.jupiter.api.Assertions.assertThrows(IOException.class, () -> {
-      accessor.httpCall(
-        new HTTPRequest().withUrl(fhirUrl).withMethod(HTTPRequest.HttpMethod.GET));
-    });
+    // getHeaders() cannot throw a checked IOException under the provider model, so the
+    // token-fetch failure surfaces as a FHIRException that wraps the descriptive IOException.
+    org.hl7.fhir.exceptions.FHIRException ex = org.junit.jupiter.api.Assertions.assertThrows(
+      org.hl7.fhir.exceptions.FHIRException.class, () -> {
+        accessor.httpCall(
+          new HTTPRequest().withUrl(fhirUrl).withMethod(HTTPRequest.HttpMethod.GET));
+      });
+    assertThat(ex.getMessage()).contains("client_credentials token");
+    assertThat(ex.getCause()).isInstanceOf(IOException.class);
 
     // No requests should have reached the FHIR server
     assertThat(fhirServer.getRequestCount()).isEqualTo(0);

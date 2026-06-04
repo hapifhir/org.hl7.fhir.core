@@ -254,7 +254,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       .tokenEndpoint(tokenServer.url("/token").toString())
       .build();
 
-    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(DUMMY_AGENT, List.of(serverPojo));
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(DUMMY_AGENT, new ServerDetailsPOJOHTTPAuthProvider(List.of(serverPojo)));
 
     HttpUrl serverUrl = server.url("blah/blah/blah?arg=blah");
     server.enqueue(new MockResponse()
@@ -295,7 +295,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       .tokenEndpoint(tokenServer.url("/token").toString())
       .build();
 
-    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(DUMMY_AGENT, List.of(serverPojo));
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(DUMMY_AGENT, new ServerDetailsPOJOHTTPAuthProvider(List.of(serverPojo)));
 
     HttpUrl serverUrl = server.url("blah/blah/blah?arg=blah");
 
@@ -345,9 +345,9 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       .tokenEndpoint(tokenServer.url("/token").toString())
       .build();
 
-    // Use the programmatic .withClientCredentials() API instead of settings-based lookup
-    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(DUMMY_AGENT, null)
-      .withClientCredentials(serverPojo);
+    // Programmatically supply the client_credentials config via the auth provider
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(
+      DUMMY_AGENT, new ServerDetailsPOJOHTTPAuthProvider(List.of(serverPojo)));
 
     HttpUrl serverUrl = server.url("blah/blah/blah?arg=blah");
     server.enqueue(new MockResponse()
@@ -380,8 +380,8 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       .tokenEndpoint(tokenServer.url("/token").toString())
       .build();
 
-    ManagedWebAccessor accessor = new ManagedWebAccessor(Arrays.asList("fhir"), DUMMY_AGENT, null)
-      .withClientCredentials(serverPojo);
+    ManagedWebAccessor accessor = new ManagedWebAccessor(
+      Arrays.asList("fhir"), DUMMY_AGENT, new ServerDetailsPOJOHTTPAuthProvider(List.of(serverPojo)));
 
     server.enqueue(new MockResponse()
       .setBody("Dummy Response").setResponseCode(200));
@@ -420,7 +420,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       .tokenEndpoint(tokenServer.url("/token").toString())
       .build();
 
-    ManagedWebAccessor accessor = new ManagedWebAccessor(Arrays.asList("fhir"), DUMMY_AGENT, List.of(serverPojo));
+    ManagedWebAccessor accessor = new ManagedWebAccessor(Arrays.asList("fhir"), DUMMY_AGENT, new ServerDetailsPOJOHTTPAuthProvider(List.of(serverPojo)));
 
     // SimpleHTTPClient does not have a retry interceptor, so one 401 is enough
     server.enqueue(new MockResponse()
@@ -469,7 +469,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       .tokenEndpoint(tokenServer.url("/token").toString())
       .build();
 
-    ManagedWebAccessor accessor = new ManagedWebAccessor(Arrays.asList("fhir"), DUMMY_AGENT, List.of(serverPojo));
+    ManagedWebAccessor accessor = new ManagedWebAccessor(Arrays.asList("fhir"), DUMMY_AGENT, new ServerDetailsPOJOHTTPAuthProvider(List.of(serverPojo)));
 
     server.enqueue(new MockResponse()
       .setBody("Forbidden").setResponseCode(403));
