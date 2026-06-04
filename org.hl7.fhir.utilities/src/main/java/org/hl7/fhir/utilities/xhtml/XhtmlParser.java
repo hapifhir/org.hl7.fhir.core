@@ -38,6 +38,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -163,134 +164,143 @@ public class XhtmlParser {
 
   }
 
-  private Set<String> elements = new HashSet<String>();
-  private Set<String> attributes = new HashSet<String>();  
-  private Map<String, String> definedEntities = new HashMap<>();
+  private static final Set<String> ELEMENTS;
+  private static final Set<String> ATTRIBUTES;
+  private static final Map<String, String> DEFINED_ENTITIES;
+
+  static {
+    Set<String> elems = new HashSet<String>();
+    Set<String> attrs = new HashSet<String>();
+
+    elems.add("p");
+    elems.add("br");
+    elems.add("div");
+    elems.add("h1");
+    elems.add("h2");
+    elems.add("h3");
+    elems.add("h4");
+    elems.add("h5");
+    elems.add("h6");
+    elems.add("a");
+    elems.add("span");
+    elems.add("b");
+    elems.add("em");
+    elems.add("i");
+    elems.add("strong");
+    elems.add("small");
+    elems.add("big");
+    elems.add("tt");
+    elems.add("small");
+    elems.add("dfn");
+    elems.add("q");
+    elems.add("var");
+    elems.add("abbr");
+    elems.add("acronym");
+    elems.add("cite");
+    elems.add("blockquote");
+    elems.add("hr");
+    elems.add("address");
+    elems.add("bdo");
+    elems.add("kbd");
+    elems.add("q");
+    elems.add("sub");
+    elems.add("sup");
+    elems.add("ul");
+    elems.add("ol");
+    elems.add("li");
+    elems.add("dl");
+    elems.add("dt");
+    elems.add("dd");
+    elems.add("pre");
+    elems.add("table");
+    elems.add("caption");
+    elems.add("colgroup");
+    elems.add("col");
+    elems.add("thead");
+    elems.add("tr");
+    elems.add("tfoot");
+    elems.add("tbody");
+    elems.add("th");
+    elems.add("td");
+    elems.add("code");
+    elems.add("samp");
+    elems.add("img");
+    elems.add("map");
+    elems.add("area");
+    ELEMENTS = Collections.unmodifiableSet(elems);
+
+    attrs.add("title");
+    attrs.add("style");
+    attrs.add("class");
+    attrs.add("id");
+    attrs.add("lang");
+    attrs.add("xml:lang");
+    attrs.add("dir");
+    attrs.add("accesskey");
+    attrs.add("tabindex");
+    // tables:
+    attrs.add("span");
+    attrs.add("width");
+    attrs.add("align");
+    attrs.add("valign");
+    attrs.add("char");
+    attrs.add("charoff");
+    attrs.add("abbr");
+    attrs.add("axis");
+    attrs.add("headers");
+    attrs.add("scope");
+    attrs.add("rowspan");
+    attrs.add("colspan");
+
+    attrs.add("a.href");
+    attrs.add("a.name");
+    attrs.add("img.src");
+    attrs.add("img.border");
+    attrs.add("div.xmlns");
+    attrs.add("blockquote.cite");
+    attrs.add("q.cite");
+    attrs.add("a.charset");
+    attrs.add("a.type");
+    attrs.add("a.name");
+    attrs.add("a.href");
+    attrs.add("a.hreflang");
+    attrs.add("a.rel");
+    attrs.add("a.rev");
+    attrs.add("a.shape");
+    attrs.add("a.coords");
+    attrs.add("img.src");
+    attrs.add("img.alt");
+    attrs.add("img.longdesc");
+    attrs.add("img.height");
+    attrs.add("img.width");
+    attrs.add("img.usemap");
+    attrs.add("img.ismap");
+    attrs.add("map.name");
+    attrs.add("area.shape");
+    attrs.add("area.coords");
+    attrs.add("area.href");
+    attrs.add("area.nohref");
+    attrs.add("area.alt");
+    attrs.add("table.summary");
+    attrs.add("table.width");
+    attrs.add("table.border");
+    attrs.add("table.frame");
+    attrs.add("table.rules");
+    attrs.add("table.cellspacing");
+    attrs.add("table.cellpadding");
+    ATTRIBUTES = Collections.unmodifiableSet(attrs);
+
+    Map<String, String> entities = new HashMap<>();
+    initEntities(entities);
+    DEFINED_ENTITIES = Collections.unmodifiableMap(entities);
+  }
+
   private Map<String, String> declaredEntities = new HashMap<>();
 
 
   public XhtmlParser() {
     super();
     policy = ParserSecurityPolicy.Accept; // for general parsing
-
-    // set up sets
-    elements.add("p");
-    elements.add("br");
-    elements.add("div");
-    elements.add("h1");
-    elements.add("h2");
-    elements.add("h3");
-    elements.add("h4");
-    elements.add("h5");
-    elements.add("h6");
-    elements.add("a");
-    elements.add("span");
-    elements.add("b");
-    elements.add("em");
-    elements.add("i");
-    elements.add("strong");
-    elements.add("small");
-    elements.add("big");
-    elements.add("tt");
-    elements.add("small");
-    elements.add("dfn");
-    elements.add("q");
-    elements.add("var");
-    elements.add("abbr");
-    elements.add("acronym");
-    elements.add("cite");
-    elements.add("blockquote");
-    elements.add("hr");
-    elements.add("address");
-    elements.add("bdo");
-    elements.add("kbd");
-    elements.add("q");
-    elements.add("sub");
-    elements.add("sup");
-    elements.add("ul");
-    elements.add("ol");
-    elements.add("li");
-    elements.add("dl");
-    elements.add("dt");
-    elements.add("dd");
-    elements.add("pre");
-    elements.add("table");
-    elements.add("caption");
-    elements.add("colgroup");
-    elements.add("col");
-    elements.add("thead");
-    elements.add("tr");
-    elements.add("tfoot");
-    elements.add("tbody");
-    elements.add("th");
-    elements.add("td");
-    elements.add("code");
-    elements.add("samp");
-    elements.add("img");
-    elements.add("map");
-    elements.add("area");
-
-    attributes.add("title");
-    attributes.add("style");
-    attributes.add("class");
-    attributes.add("id");
-    attributes.add("lang");
-    attributes.add("xml:lang");
-    attributes.add("dir");
-    attributes.add("accesskey");
-    attributes.add("tabindex");
-    // tables:
-    attributes.add("span");
-    attributes.add("width");
-    attributes.add("align");
-    attributes.add("valign");
-    attributes.add("char");
-    attributes.add("charoff");
-    attributes.add("abbr");
-    attributes.add("axis");
-    attributes.add("headers");
-    attributes.add("scope");
-    attributes.add("rowspan");
-    attributes.add("colspan");
-
-    attributes.add("a.href");
-    attributes.add("a.name");
-    attributes.add("img.src");
-    attributes.add("img.border");
-    attributes.add("div.xmlns");
-    attributes.add("blockquote.cite");
-    attributes.add("q.cite");
-    attributes.add("a.charset");
-    attributes.add("a.type");
-    attributes.add("a.name");
-    attributes.add("a.href");
-    attributes.add("a.hreflang");
-    attributes.add("a.rel");
-    attributes.add("a.rev");
-    attributes.add("a.shape");
-    attributes.add("a.coords");
-    attributes.add("img.src");
-    attributes.add("img.alt");
-    attributes.add("img.longdesc");
-    attributes.add("img.height");
-    attributes.add("img.width");
-    attributes.add("img.usemap");
-    attributes.add("img.ismap");
-    attributes.add("map.name");
-    attributes.add("area.shape");
-    attributes.add("area.coords");
-    attributes.add("area.href");
-    attributes.add("area.nohref");
-    attributes.add("area.alt");
-    attributes.add("table.summary");
-    attributes.add("table.width");
-    attributes.add("table.border");
-    attributes.add("table.frame");
-    attributes.add("table.rules");
-    attributes.add("table.cellspacing");
-    attributes.add("table.cellpadding");
-
-    defineEntities();
   }
 
   public enum ParserSecurityPolicy {
@@ -428,7 +438,7 @@ public class XhtmlParser {
   }  
 
   private boolean attributeIsOk(String elem, String attr, String value) throws FHIRFormatError  {
-    boolean ok = attributes.contains(attr) || attributes.contains(elem+"."+attr);
+    boolean ok = ATTRIBUTES.contains(attr) || ATTRIBUTES.contains(elem+"."+attr);
     if (ok)
       return true;
     else switch (policy) {
@@ -453,7 +463,7 @@ public class XhtmlParser {
   }
 
   private boolean elementIsOk(String name) throws FHIRFormatError  {
-    boolean ok = elements.contains(name);
+    boolean ok = ELEMENTS.contains(name);
     if (ok)
       return true;
     else switch (policy) {
@@ -1020,8 +1030,8 @@ public class XhtmlParser {
           error(I18nConstants.XHTML_XHTML_Entity_Illegal, "&"+c+";");
         }
       }
-      if (definedEntities.containsKey("&"+c+";")) {
-        s.append(definedEntities.get("&"+c+";"));
+      if (DEFINED_ENTITIES.containsKey("&"+c+";")) {
+        s.append(DEFINED_ENTITIES.get("&"+c+";"));
         // what's going on here? 
         // the contents that follow already existed, and then I added the routine to populate the entities 
         // which was generated from other code. The code that follows is probably redundant, but I haven't
@@ -1385,7 +1395,7 @@ public class XhtmlParser {
     return result;
   }
 
-  private void defineEntities() {
+  private static void initEntities(Map<String, String> definedEntities) {
     definedEntities.put("&AElig;", "\u00C6");
 //    definedEntities.put("&AMP;", "\u0026");
     definedEntities.put("&Aacute;", "\u00C1");

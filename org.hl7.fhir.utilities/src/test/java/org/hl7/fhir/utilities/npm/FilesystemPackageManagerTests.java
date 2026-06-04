@@ -355,6 +355,19 @@ public class FilesystemPackageManagerTests {
     Assertions.assertTrue(npmPackage.isIndexed());
   }
 
+  @Test
+  void testAddScopedPackage() throws IOException {
+    String pcmPath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-scopedPackageTest")).getAbsolutePath();
+
+    final FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withCacheFolder(pcmPath).build();
+
+    Assertions.assertTrue(pcm.listPackages().isEmpty());
+
+    NpmPackage npmPackage = pcm.addPackageToCache("@fhir/example.fhir.uv.myig", "1.2.3", this.getClass().getResourceAsStream("/npm/dummy-package-no-index-scoped.tgz"), "https://packages.fhir.org/example.fhir.uv.myig/1.2.3");
+    Assertions.assertTrue(npmPackage.isIndexed());
+    Assertions.assertNotNull(pcm.loadPackage("@fhir/example.fhir.uv.myig", "1.2.3"));
+  }
+
   private class MultiThreadTestRunnable implements Runnable {
 
     private final FilesystemPackageCacheManager pcm;

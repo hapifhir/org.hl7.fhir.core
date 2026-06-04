@@ -6393,8 +6393,8 @@ public class ProfileUtilities extends TranslatingUtilities {
           child.getSelf().getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name,
           profile.present());
     } else if (ed.getPath().endsWith("[x]") && !child.getSelf().getPath().endsWith("[x]")) {
-      String edLastNode = ed.getPath().replaceAll("(.*\\.)*(.*)", "$2");
-      String childLastNode = child.getSelf().getPath().replaceAll("(.*\\.)*(.*)", "$2");
+      String edLastNode = Utilities.pathTail(ed.getPath());
+      String childLastNode = Utilities.pathTail(child.getSelf().getPath());
       String p = childLastNode.substring(edLastNode.length() - 3);
       if (isPrimitive(Utilities.uncapitalize(p)))
         p = Utilities.uncapitalize(p);

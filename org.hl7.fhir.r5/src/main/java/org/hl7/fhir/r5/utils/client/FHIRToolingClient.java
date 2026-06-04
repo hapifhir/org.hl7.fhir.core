@@ -38,10 +38,12 @@ import org.hl7.fhir.r5.model.Resource;
 
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.client.network.ByteUtils;
 import org.hl7.fhir.r5.utils.client.network.Client;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.FHIRBaseToolingClient;
+import org.hl7.fhir.utilities.ITerminologyRequestIdProvider;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
@@ -84,7 +86,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
 
   private static final Logger logger = LoggerFactory.getLogger(FHIRToolingClient.class);
 
-
   public static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssK";
   public static final String DATE_FORMAT = "yyyy-MM-dd";
   public static final String hostKey = "http.proxyHost";
@@ -111,6 +112,9 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   @Setter
   private String contentLanguage;
 
+  @Setter
+  @Getter
+  private ITerminologyRequestIdProvider requestIdProvider;
 
   private int useCount;
 
@@ -523,16 +527,35 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     }
     return (Parameters) result.getPayload();
   }
-  
+
   public Parameters translate(Parameters p) {
     recordUse();
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ConceptMap.class, "translate"),
-          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "5.0"),
         generateHeaders(true),
         "ConceptMap/$translate",
+        timeoutNormal);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+
+  public Parameters doRelated(Parameters p) {
+    recordUse();
+    org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "related"),
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+        withVer(getPreferredResourceFormat(), "5.0"),
+        generateHeaders(true),
+        "ValueSet/$related",
         timeoutNormal);
     } catch (IOException e) {
       e.printStackTrace();
@@ -633,7 +656,14 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     if (hasBody && !Utilities.noString(contentLanguage)) {
       headers.add(new HTTPHeader("Content-Language", contentLanguage));
     }
-    
+
+    if (requestIdProvider != null) {
+      String header = requestIdProvider.getRequestId();
+      if (header != null) {
+        headers.add(new HTTPHeader("X-Request-Id", header));
+      }
+    }
+
     return headers;
   }
 
@@ -676,6 +706,6 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   public int getUseCount() {
     return useCount;
   }
-  
+
 }
 

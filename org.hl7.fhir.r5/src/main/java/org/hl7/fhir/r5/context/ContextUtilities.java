@@ -13,9 +13,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
@@ -24,15 +22,9 @@ import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.StructureMap;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
-import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.NamingSystem;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -95,7 +87,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       oidCache.put(oid, uri);
       return uri;
     }
-    CodeSystem cs = context.fetchCodeSystem("http://terminology.hl7.org/CodeSystem/v2-tables");
+    CodeSystem cs = context.fetchCodeSystem("http://terminology.hl7.org/CodeSystem/v2-tables", IWorkerContext.VersionResolutionRules.defaultRule());
     if (cs != null) {
       for (ConceptDefinitionComponent cc : cs.getConcept()) {
         for (ConceptPropertyComponent cp : cc.getProperty()) {
@@ -184,7 +176,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     }
 
     if (context.hasResource(CanonicalResource.class, url)) {
-      CanonicalResource cr = context.fetchResource(CanonicalResource.class, url);
+      CanonicalResource cr = context.fetchResource(CanonicalResource.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
       return cr.getWebPath();
     }
     return null;
@@ -271,7 +263,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p))) {
       if (!p.hasBaseDefinition())
         throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE___HAS_NO_BASE_AND_NO_SNAPSHOT, p.getName(), p.getUrl()));
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getBaseDefinition(), null, p);
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, p.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(p.getBaseDefinitionElement()), null, p);
       if (sd == null && "http://hl7.org/fhir/StructureDefinition/Base".equals(p.getBaseDefinitionNoVersion())) {
         sd = ProfileUtilities.makeBaseDefinition(p.getFhirVersion());
       }
@@ -343,7 +335,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     }
     StructureDefinition sd;
     try {
-      sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + t);
+      sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + t, IWorkerContext.VersionResolutionRules.defaultRule());
     } catch (Exception e) {
       return false;
     }
@@ -370,7 +362,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   }
 
   @Override
-  public BindingResolution resolveBinding(StructureDefinition profile, String url, String path) {
+  public BindingResolution resolveBinding(StructureDefinition profile, String url, String path, Element ctxt) {
     return null;
   }
 
@@ -484,7 +476,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       if ("DomainResource".equals(sd.getType())) {
         return true;
       }
-      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
     }
     return false;
   }
@@ -563,18 +555,5 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     return null;
   }
 
-  public NamingSystem fetchNamingSystem(String url) {
-    if (url == null) {
-      return null;
-    }
-    for (NamingSystem ns : context.fetchResourcesByType(NamingSystem.class)) {
-      for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
-        if (url.equals(id.getValue())) {
-          return ns;
-        }
-      }
-    }
-    return null;
-  }
 }
 

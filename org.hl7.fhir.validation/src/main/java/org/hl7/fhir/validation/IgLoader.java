@@ -41,6 +41,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.turtle.Turtle;
 import org.hl7.fhir.validation.ValidationEngine.IValidationEngineLoader;
@@ -67,7 +68,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
   private static final String[] EXEMPT_FILES = {"spec.internals", "version.info", "schematron.zip", "package.json"};
   private static final int SCAN_HEADER_SIZE = 2048;
 
-  @Getter private final FilesystemPackageCacheManager packageCacheManager;
+  @Getter private final IPackageCacheManager packageCacheManager;
   @Getter private final SimpleWorkerContext context;
   @Getter private final String version;
   @Getter private final boolean isDebug;
@@ -79,7 +80,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       this(packageCacheManager, context, theVersion, false);
   }
 
-  public IgLoader(FilesystemPackageCacheManager packageCacheManager,
+  public IgLoader(IPackageCacheManager packageCacheManager,
                   SimpleWorkerContext context,
                   String theVersion,
                   boolean isDebug) {
@@ -143,7 +144,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       }
       IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
       loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
-      int count = getContext().loadFromPackage(npm, loader);
+      int count = getContext().loadFromPackage(npm, loader, false);
       log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
     } else {
       StringBuilder packageLoadLine = new StringBuilder();

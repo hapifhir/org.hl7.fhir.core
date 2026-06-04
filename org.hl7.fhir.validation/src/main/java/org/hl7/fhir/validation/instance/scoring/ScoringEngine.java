@@ -169,7 +169,7 @@ public class ScoringEngine {
           return rule.substring(7).equals(element.getNamedChildValue("system"));
         } else if (rule.startsWith("binding:")) {
           Coding c = ObjectConverter.readAsCoding(element);
-          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8));
+          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), IWorkerContext.VersionResolutionRules.defaultRule());
           if (vs == null) {
             reasons.add("Unable to find ValueSet: " + rule.substring(8));
             return false;
@@ -201,7 +201,7 @@ public class ScoringEngine {
           return rule.substring(7).equals(element.getNamedChildValue("system"));
         } else if (rule.startsWith("binding:")) {
           Coding c = ObjectConverter.readAsCoding(element);
-          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8));
+          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), IWorkerContext.VersionResolutionRules.defaultRule());
           if (vs == null) {
             reasons.add("Unable to find ValueSet: " + rule.substring(8));
             return false;
@@ -227,7 +227,7 @@ public class ScoringEngine {
           return rule.substring(7).equals(element.getNamedChildValue("system"));
         } else if (rule.startsWith("binding:")) {
           CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
-          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8));
+          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), IWorkerContext.VersionResolutionRules.defaultRule());
           if (vs == null) {
             reasons.add("Unable to find ValueSet: " + rule.substring(8));
             return false;

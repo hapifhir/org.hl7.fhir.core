@@ -137,17 +137,6 @@ public class FhirSettings {
     return instance.fhirSettingsPOJO.getProhibitNetworkAccess() != null && instance.fhirSettingsPOJO.getProhibitNetworkAccess();
   }
 
-
-  /**
-   * See ManagedWebAccess and use that to control network access
-   * @deprecated 
-   * @param value
-   */
-  @Deprecated(since="2025-06-20", forRemoval = true)
-  public static void setProhibitNetworkAccess(boolean value) {
-    prohibitNetworkAccess = value;
-  }
-
   public static String getTxFhirProduction() {
     getInstance();
     return instance.fhirSettingsPOJO.getTxFhirProduction() == null
@@ -212,7 +201,28 @@ public class FhirSettings {
     final ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     final InputStream inputStream = ManagedFileAccess.inStream(file);
-    return objectMapper.readValue(inputStream, FhirSettingsPOJO.class);
+    FhirSettingsPOJO settings = objectMapper.readValue(inputStream, FhirSettingsPOJO.class);
+    normalizeSettings(settings);
+    return settings;
+  }
+
+  /**
+   * Normalizes settings after deserialization to ensure required fields have safe defaults.
+   * This prevents NPEs when switch statements expect non-null values.
+   */
+  private static void normalizeSettings(FhirSettingsPOJO settings) {
+    if (settings == null || settings.getServers() == null) {
+      return;
+    }
+
+    for (ServerDetailsPOJO server : settings.getServers()) {
+      if (server == null) {
+        continue;
+      }
+      if (server.getAuthenticationType() == null) {
+        server.setAuthenticationType("none");
+      }
+    }
   }
 
   protected static String getDefaultSettingsPath() throws IOException {

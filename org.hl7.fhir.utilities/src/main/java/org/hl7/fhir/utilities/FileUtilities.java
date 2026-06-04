@@ -28,6 +28,12 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
 public class FileUtilities {
 
+  private FileUtilities() {
+    throw new UnsupportedOperationException("This utility class should not be instantiated");
+  }
+
+  static final Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
+
   public static String bytesToString(final byte[] bs) throws IOException {
     return new String(bs, StandardCharsets.UTF_8);
   }
@@ -136,7 +142,6 @@ public class FileUtilities {
   }
 
   public static List<String> fileToLines(String file) throws FileNotFoundException, IOException {
-    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
     List<String> res = new ArrayList<String>();
     for (String s : LINE_SEP_PATTERN.split(fileToString(file))) {
       res.add(s);
@@ -144,13 +149,11 @@ public class FileUtilities {
     return res;
   }
 
-  public static String[] fileToLines(File file) throws FileNotFoundException, IOException {
-    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
+  public static String[] fileToLines(File file) throws IOException {
     return LINE_SEP_PATTERN.split(fileToString(file));
   }
 
-  public static String[] streamToLines(InputStream stream) throws FileNotFoundException, IOException {
-    Pattern LINE_SEP_PATTERN = Pattern.compile("\\R");
+  public static String[] streamToLines(InputStream stream) throws IOException {
     return LINE_SEP_PATTERN.split(streamToString(stream));
   }
 
@@ -224,6 +227,11 @@ public class FileUtilities {
   public static File createDirectory(String path) throws IOException {
     ManagedFileAccess.csfile(path).mkdirs();
     return ManagedFileAccess.file(path);
+  }
+
+  public static File createDirectory(File path) throws IOException {
+    ManagedFileAccess.csfile(path.getAbsolutePath()).mkdirs();
+    return ManagedFileAccess.file(path.getAbsolutePath());
   }
 
   public static File createDirectoryNC(String path) throws IOException {
@@ -480,7 +488,7 @@ public class FileUtilities {
       }
     }
   }
-  
+
   public static void deleteAllFiles(String folder, String type) throws IOException {
     File src = ManagedFileAccess.file(folder);
     String[] files = src.list();
@@ -491,7 +499,19 @@ public class FileUtilities {
         ManagedFileAccess.file(folder + File.separator + f).delete();
       }
     }
-  
+
+  }
+  public static void deleteAllFiles(String folder) throws IOException {
+    File src = ManagedFileAccess.file(folder);
+    String[] files = src.list();
+    for (String f : files) {
+      if (ManagedFileAccess.file(folder + File.separator + f).isDirectory()) {
+        deleteAllFiles(folder + File.separator + f);
+      } else {
+        ManagedFileAccess.file(folder + File.separator + f).delete();
+      }
+    }
+
   }
 
   public static String changeFileExt(String name, String ext) {
@@ -535,7 +555,7 @@ public class FileUtilities {
 
   public static void copyFiles(String source, String dest, String... extensions) throws IOException {
     for (File f : new File(source).listFiles()) {
-      boolean copy = false;
+      boolean copy = extensions.length == 0;
       for (String e : extensions) {
         if (f.getName().endsWith(e)) {
           copy = true;

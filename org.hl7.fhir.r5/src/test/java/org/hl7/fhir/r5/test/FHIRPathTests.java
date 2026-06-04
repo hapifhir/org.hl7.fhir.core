@@ -43,7 +43,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
+
 
 public class FHIRPathTests {
 
@@ -75,7 +75,7 @@ public class FHIRPathTests {
     }
 
     @Override
-    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveReference)");
     }
 
@@ -96,7 +96,7 @@ public class FHIRPathTests {
 
     @Override
     public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-      return context.fetchResource(ValueSet.class, url);
+      return context.fetchResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     }
 
     @Override

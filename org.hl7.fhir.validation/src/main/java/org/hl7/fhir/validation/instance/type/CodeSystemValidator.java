@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
@@ -131,7 +133,7 @@ public class CodeSystemValidator extends BaseValidator {
       String vsu = cs.getNamedChildValue("valueSet", false);
       if (!Utilities.noString(vsu)) {
         if ("supplement".equals(content)) {
-          csB = context.fetchCodeSystem(supp);
+          csB = context.fetchCodeSystem(supp, ExtensionUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
           if (csB != null) {
             if (csB.hasValueSet()) {
               warning(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), vsu.equals(vsu), I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT2, csB.getValueSet());            
@@ -146,7 +148,7 @@ public class CodeSystemValidator extends BaseValidator {
         }
         ValueSet vs;
         try {
-          vs = context.fetchResourceWithException(ValueSet.class, vsu);
+          vs = context.fetchResourceWithException(ValueSet.class, vsu, ExtensionUtilities.getVersionResolutionRules(cs.getNamedChild("valueSet")));
         } catch (FHIRException e) {
           vs = null;
         }
@@ -178,11 +180,11 @@ public class CodeSystemValidator extends BaseValidator {
       if ("supplement".equals(content) || supp != null) {      
         if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
           if (context.getTxSupportInfo(supp, null).isSupported()) {
-            csSupp = context.fetchCodeSystem(supp);
+            csSupp = context.fetchCodeSystem(supp, ExtensionUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
             if (csSupp != null) {
               if (csSupp.hasHierarchyMeaningElement() && cs.hasChild("hierarchyMeaning")) {
                 String hm = cs.getNamedChildValue("hierarchyMeaning");
-                ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), hm.equals(csSupp.getHierarchyMeaning().toCode()), I18nConstants.CODESYSTEM_CS_SUPP_HIERARCHY_MEANING, hm, csSupp.getHierarchyMeaning().toCode()) & ok;
+                ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), hm.equals(csSupp.getHierarchyMeaning().toCode()), I18nConstants.CODESYSTEM_CS_SUPP_HIERARCHY_MEANING, hm, csSupp.getHierarchyMeaning().toCode()) && ok;
               }
 
 
@@ -249,7 +251,7 @@ public class CodeSystemValidator extends BaseValidator {
   }
 
 
-  private boolean  checkPropertyDefinition(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean equals, String hierarchyMeaning, CodeSystem csB, Element property, Map<String, PropertyDef> properties) {
+  private boolean checkPropertyDefinition(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean equals, String hierarchyMeaning, CodeSystem csB, Element property, Map<String, PropertyDef> properties) {
     boolean ok = true;
     String uri = property.getNamedChildValue("uri");
     String code = property.getNamedChildValue("code");
@@ -269,7 +271,7 @@ public class CodeSystemValidator extends BaseValidator {
           if (uri.contains("#")) {
             String base = uri.substring(0, uri.indexOf("#"));
             String pcode = uri.substring(uri.indexOf("#")+1);
-            CodeSystem pcs = context.findTxResource(CodeSystem.class, base);
+            CodeSystem pcs = context.findTxResource(CodeSystem.class, base, IWorkerContext.VersionResolutionRules.defaultRule());
             if (pcs == null) {
               warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_URI_UNKNOWN_BASE, base, code);
             } else {
@@ -498,7 +500,7 @@ public class CodeSystemValidator extends BaseValidator {
     if (url == null) {
       return null;
     } else {
-      ValueSet vs = context.findTxResource(ValueSet.class, url);
+      ValueSet vs = context.findTxResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
       if (vs == null) {
         warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, message, url);
       }
@@ -816,7 +818,7 @@ public class CodeSystemValidator extends BaseValidator {
           }
           break;
         case "supplement": 
-          CodeSystem css = context.fetchCodeSystem(supp);
+          CodeSystem css = context.fetchCodeSystem(supp, ExtensionUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
           if (css != null) {
             rule(errors, "2023-08-15", IssueType.INVALID, nstack, count == css.getCount(), I18nConstants.CODESYSTEM_CS_COUNT_SUPPLEMENT_WRONG, css.getCount(), statedCount);
           }

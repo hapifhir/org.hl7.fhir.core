@@ -582,6 +582,13 @@ public class HierarchicalTableGenerator {
       this.innerTable = innerTable;
     }
 
+    public XhtmlNode xhtmlRoot() {
+      Piece p = new Piece(null);
+      getPieces().add(p);
+      XhtmlNode div = new XhtmlNode(NodeType.Element, "div");
+      p.children = div.getChildNodes();
+      return div;
+    }
   }
 
   public class Title extends Cell {
@@ -1306,7 +1313,7 @@ public class HierarchicalTableGenerator {
       //      files.put(filename, b.toString());
       return b.toString();
     } else {
-      return corePrefix+filename;
+      return Utilities.pathURL(corePrefix, filename);
     }
   }
 

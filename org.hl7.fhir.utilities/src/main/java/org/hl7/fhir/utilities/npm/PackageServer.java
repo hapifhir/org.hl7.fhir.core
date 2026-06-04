@@ -27,7 +27,7 @@ public class PackageServer {
   }
 
   @Getter
-  private String url;
+  final private String url;
 
   @Getter
   private HTTPAuthenticationMode authenticationMode;

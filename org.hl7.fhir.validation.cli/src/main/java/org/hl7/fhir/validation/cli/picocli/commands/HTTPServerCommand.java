@@ -1,7 +1,7 @@
 package org.hl7.fhir.validation.cli.picocli.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.validation.FhirValidatorHttpService;
+import org.hl7.fhir.validation.http.FhirValidatorHttpService;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptions;
 import org.hl7.fhir.validation.cli.picocli.options.InstanceValidatorOptionsConvertor;
@@ -50,7 +50,7 @@ import java.util.concurrent.Callable;
     The server runs until terminated with Ctrl-C.
 
     Example:
-      java -jar validator_cli.jar server -port 8080 -version 4.0 \\
+      java -jar validator_cli.jar server 8080 -version 4.0 \\
         -ig hl7.fhir.us.carin-bb#1.1.0
     """,
   hidden = false
@@ -65,6 +65,12 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
     description = "Port Number to use"
   )
   private int port;
+
+  @CommandLine.Option(
+    names = {"-allowNetworkAccess"},
+    description = "Setting this to true allows this server to be accessed outside the local machine. WARNING: Setting this to true you assume responsibility for securing access to this application."
+  )
+  private boolean allowNetworkAccess;
 
   // The remaining parameters are processed as sources
   @CommandLine.Parameters(
@@ -97,11 +103,12 @@ public class HTTPServerCommand extends ValidationEngineCommand implements Callab
 
       FhirValidatorHttpService service = new FhirValidatorHttpService(
         validationEngine,
+        !allowNetworkAccess,
         port
       );
       service.startServer();
 
-      log.info("Press Ctrl-C to stop the server, or use the client to ask the server to stop (-client -stop)");
+      log.info("Press Ctrl-C to stop the server, or use the client to ask the server to stop (client -stop)");
 
       // Run indefinitely until interrupted
       while (true) {

@@ -16,7 +16,7 @@ import java.util.Map;
 @MarkedToMoveToAdjunctPackage
 public class XVerExtensionManagerNew extends XVerExtensionManager {
 
-  public static final String XVER_VERSION_RELEASE = "0.0.1-snapshot-2";
+  public static final String XVER_VERSION_RELEASE = "0.1.0";
   private Map<String, JsonObject> lists = new HashMap<>();
 
   public XVerExtensionManagerNew(IWorkerContext context) {
@@ -38,12 +38,12 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
     String pid = "hl7.fhir.uv.xver-"+targetVersion+"."+sourceVersion;
     if (!context.hasPackage(pid, XVER_VERSION_RELEASE)) {
       try {
-        context.getManager().loadPackage(pid+"#0.0.1-snapshot-2");
+        context.getManager().loadPackage(pid+"#0.1.0");
       } catch (IOException e) {
         return XVerExtensionStatus.BadVersion;
       }
     }
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd == null) {
       // well, it's not an approved extension, but why? We're going to look in the old
       // version stuff to see whether it's a valid element or not - it'll affect the return value.
@@ -84,7 +84,7 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
 
   @Override
   public StructureDefinition getDefinition(String url) {
-    return context.fetchResource(StructureDefinition.class, url);
+    return context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
   }
 }
 

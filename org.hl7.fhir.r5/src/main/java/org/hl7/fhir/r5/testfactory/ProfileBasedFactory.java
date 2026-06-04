@@ -17,6 +17,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -323,7 +324,7 @@ public class ProfileBasedFactory {
               }
               List<String> choices = new ArrayList<>();
               for (CanonicalType ct : targets) {
-                StructureDefinition sd = fpe.getWorker().fetchResource(StructureDefinition.class, ct.primitiveValue());
+                StructureDefinition sd = fpe.getWorker().fetchResource(StructureDefinition.class, ct.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(ct));
                 if (!Utilities.existsInList(sd.getType(), "Resource", "DomainResource")) {
                   choices.add(sd.getType());
                 }

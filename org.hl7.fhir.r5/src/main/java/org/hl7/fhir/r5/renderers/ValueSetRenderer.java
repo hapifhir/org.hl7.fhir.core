@@ -19,6 +19,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.comparison.VersionComparisonAnnotation;
 import org.hl7.fhir.r5.context.ExpansionOptions;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
@@ -115,7 +116,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
             }
           }
           String u = exts.get(i).getValue().primitiveValue();
-          CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, u);
+          CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, u, ExtensionUtilities.getVersionResolutionRules(exts.get(i).getValue()));
           if (cs == null) {
             p.code().tx(u);
           } else if (!cs.hasWebPath()) {
@@ -183,7 +184,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
           re = new ConceptMapRenderInstructions(cm.present(), cm.getUrl(), false);
         }
         if (re != null) {
-          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker().findTxResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue(), null, cm) : null;
+          ValueSet vst = cm.hasTargetScope() ? getContext().getWorker()
+            .findTxResource(ValueSet.class, cm.hasTargetScopeCanonicalType() ? cm.getTargetScopeCanonicalType().getValue() : cm.getTargetScopeUriType().asStringValue(),
+              ExtensionUtilities.getVersionResolutionRules(cm.getTargetScope()), null, cm) : null;
           res.add(new UsedConceptMap(re, vst == null ? cm.getWebPath() : vst.getWebPath(), cm));
         }
       }
@@ -388,7 +391,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if ("fr-CA".equals(lang)) { 
       return "French (Canadian)"; // this one was omitted from the value set 
     } 
-    ValueSet v = getContext().getWorker().findTxResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages"); 
+    ValueSet v = getContext().getWorker().findTxResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages", IWorkerContext.VersionResolutionRules.defaultRule());
     if (v != null) { 
       ConceptReferenceComponent l = null; 
       for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) { 
@@ -663,7 +666,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         x.tx(context.formatPhrase(RenderingContext.VALUE_SET_LOINCV)+v);        
       }
     } else if (Utilities.noString(v)) {
-      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, null, source);
+      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, IWorkerContext.VersionResolutionRules.defaultRule(), null, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
           x.ah(context.prefixLocalHref(cr.getWebPath())).tx(t+" "+cr.present()+" "+ context.formatPhrase(RenderingContext.VALUE_SET_NO_VERSION)+cr.fhirType()+")");          
@@ -674,7 +677,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         x.tx(t+" "+displaySystem(u)+" "+ context.formatPhrase(RenderingContext.VALUE_SET_NO_VER));
       }
     } else {
-      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, v, source);
+      CanonicalResource cr = (CanonicalResource) getContext().getWorker().fetchResource(Resource.class, u, IWorkerContext.VersionResolutionRules.defaultRule(), v, source);
       if (cr != null) {
         if (cr.hasWebPath()) {
           x.ah(context.prefixLocalHref(cr.getWebPath())).tx(t+" "+cr.present()+" v"+v+" ("+cr.fhirType()+")");          
@@ -866,7 +869,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (supplementedCodeSystems.containsKey(key)) {
       return supplementedCodeSystems.get(key);
     }
-    CodeSystem cs = getContext().getWorker().fetchSupplementedCodeSystem(system, version, source);
+    CodeSystem cs = getContext().getWorker().fetchSupplementedCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule(), version, null, source);
     supplementedCodeSystems.put(key, cs);
     return cs;
   }
@@ -1451,7 +1454,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     Map<String, ConceptDefinitionComponent> definitions = new HashMap<>();
     
     if (inc.hasSystem()) {
-      CodeSystem e = getContext().getWorker().findTxResource(CodeSystem.class, inc.getSystem(), inc.getVersion(), vsRes);
+      CodeSystem e = getContext().getWorker().findTxResource(CodeSystem.class, inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), vsRes);
       if (inc.getConcept().size() == 0 && inc.getFilter().size() == 0) {
         li.addText(type+" "+ context.formatPhrase(RenderingContext.VALUE_SET_ALL_CODES_DEF) + " ");
         addCsRef(inc, li, e);
@@ -1550,7 +1553,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           else
             li.tx(", ");
           XhtmlNode wli = renderStatus(vs, li);
-          AddVsRef(vs.asStringValue(), wli, vsRes);
+          AddVsRef(vs.asStringValue(), vs, wli, vsRes);
         }
       }
       if (inc.hasExtension(ExtensionDefinitions.EXT_EXPAND_RULES) || inc.hasExtension(ExtensionDefinitions.EXT_EXPAND_GROUP)) {
@@ -1571,13 +1574,13 @@ public class ValueSetRenderer extends TerminologyRenderer {
           }
           i++;
           XhtmlNode wli = renderStatus(vs, li);
-          AddVsRef(vs.asStringValue(), wli, vsRes);
+          AddVsRef(vs.asStringValue(), vs, wli, vsRes);
         }
       } else {
         XhtmlNode xul = li.ul();
         for (UriType vs : inc.getValueSet()) {
           XhtmlNode wli = renderStatus(vs,  xul.li());
-          AddVsRef(vs.asStringValue(), wli, vsRes);
+          AddVsRef(vs.asStringValue(), vs, wli, vsRes);
         }
         
       }

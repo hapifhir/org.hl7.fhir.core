@@ -243,14 +243,14 @@ public class SnomedCTChecker extends CodeSystemChecker {
         return new StringWithFlag(iss.getText(), false);
       }
     }
-    if (oo.getIssue().size() == 1 && oo.getIssueFirstRep().getLocation().size() == 0) {
+    if (oo.getIssue().size() == 1 && oo.getIssueFirstRep().getExpression().size() == 0) {
       return new StringWithFlag(oo.getIssueFirstRep().getText(), true);
     }
     return null;
   }
 
   private boolean hasLocation(OperationOutcomeIssueComponent iss, String... paths) {
-    for (StringType loc : iss.getLocation()) {
+    for (StringType loc : iss.getExpression()) {
       for (String path : paths) {
         if (path.equals(loc.getValue())) {
           return true;

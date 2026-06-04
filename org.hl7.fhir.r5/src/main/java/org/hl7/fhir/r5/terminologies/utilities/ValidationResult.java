@@ -203,8 +203,9 @@ public class ValidationResult {
     return definition == null ? null : definition.getDefinition();
   }
 
-  public void setDefinition(ConceptDefinitionComponent definition) {
+  public ValidationResult setDefinition(ConceptDefinitionComponent definition) {
     this.definition = definition;
+    return this;
   }
 
   public ConceptDefinitionComponent asConceptDefinition() {
@@ -237,7 +238,7 @@ public class ValidationResult {
     return CommaSeparatedStringBuilder.join("; ", trimmed);
   }
 
-  public boolean IsNoService() {
+  public boolean isNoService() {
     return errorClass == TerminologyServiceErrorClass.NOSERVICE;
   }
 

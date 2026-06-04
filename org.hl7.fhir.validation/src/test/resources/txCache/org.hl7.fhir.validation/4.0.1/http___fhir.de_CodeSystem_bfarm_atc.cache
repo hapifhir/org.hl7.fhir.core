@@ -1,0 +1,48 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://fhir.de/CodeSystem/bfarm/atc",
+  "code" : "B02BD01"
+}, "url": "http://fhir.de/ValueSet/bfarm/atc--0", "version": "1.0.0", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Blutgerinnungsfaktoren IX, II, VII und X in Kombination",
+  "code" : "B02BD01",
+  "system" : "http://fhir.de/CodeSystem/bfarm/atc",
+  "version" : "2022",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n30ms http://fhir.de/ValueSet/bfarm/atc--0|1.0.0: Analysing http://fhir.de/ValueSet/bfarm/atc--0|1.0.0 for validation purposes\n30ms http://fhir.de/ValueSet/bfarm/atc--0|1.0.0: Parameters: disp-lang=en-US, generate-narrative\n30ms http://fhir.de/ValueSet/bfarm/atc--0|1.0.0: Prepare include[0]: \"(http://fhir.de/CodeSystem/bfarm/atc)\"\n31ms http://fhir.de/ValueSet/bfarm/atc--0|1.0.0: CodeSystem found: \"http://fhir.de/CodeSystem/bfarm/atc|2022\"\n31ms http://fhir.de/ValueSet/bfarm/atc--0|1.0.0: Validate \"[http://fhir.de/CodeSystem/bfarm/atc#B02BD01 (\"undefined\")]\"\n31ms http://fhir.de/ValueSet/bfarm/atc--0|1.0.0: Check \"http://fhir.de/CodeSystem/bfarm/atc#B02BD01\"\n31ms http://fhir.de/ValueSet/bfarm/atc--0|1.0.0: CodeSystem found: http://fhir.de/CodeSystem/bfarm/atc|2022 for http://fhir.de/CodeSystem/bfarm/atc\n31ms http://fhir.de/ValueSet/bfarm/atc--0|1.0.0: check code in (http://fhir.de/CodeSystem/bfarm/atc) at Coding\n31ms http://fhir.de/ValueSet/bfarm/atc--0|1.0.0: Code \"B02BD01\" found in http://fhir.de/CodeSystem/bfarm/atc|2022",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "MSG_EXPERIMENTAL"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to experimental CodeSystem http://fhir.de/CodeSystem/bfarm/atc|2022"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

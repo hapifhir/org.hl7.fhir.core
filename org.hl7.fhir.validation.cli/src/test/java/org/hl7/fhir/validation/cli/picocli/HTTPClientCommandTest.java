@@ -36,10 +36,10 @@ public class HTTPClientCommandTest {
   }
 
   @Test
-  public void testCallReturnsZero() {
-    // Verify stub command returns success (exit code 0)
-    HTTPClientCommand command = new HTTPClientCommand();
-    Integer result = command.call();
+  public void testNoSourcesReturnsZero() {
+    // Verify no validations return success (exit code 0)
+    CommandLine cmd = new CommandLine(new HTTPClientCommand());
+    Integer result = cmd.execute(new String[0]);
     assertThat(result).isEqualTo(0);
   }
 }

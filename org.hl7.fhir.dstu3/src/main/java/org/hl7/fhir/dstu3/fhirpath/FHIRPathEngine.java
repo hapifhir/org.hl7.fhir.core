@@ -9,7 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
@@ -23,21 +26,10 @@ import org.hl7.fhir.dstu3.fhirpath.FHIRPathUtilityClasses.ExecutionContext;
 import org.hl7.fhir.dstu3.fhirpath.FHIRPathUtilityClasses.ExecutionTypeContext;
 import org.hl7.fhir.dstu3.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.dstu3.fhirpath.TypeDetails.ProfiledType;
-import org.hl7.fhir.dstu3.model.Base;
-import org.hl7.fhir.dstu3.model.BooleanType;
-import org.hl7.fhir.dstu3.model.DateTimeType;
-import org.hl7.fhir.dstu3.model.DateType;
-import org.hl7.fhir.dstu3.model.DecimalType;
-import org.hl7.fhir.dstu3.model.ElementDefinition;
+import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.dstu3.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.dstu3.model.IntegerType;
-import org.hl7.fhir.dstu3.model.Property;
-import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.dstu3.model.StringType;
-import org.hl7.fhir.dstu3.model.StructureDefinition;
 import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.dstu3.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.dstu3.model.TimeType;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
@@ -78,6 +70,7 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import ca.uhn.fhir.util.ElementUtil;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 
 /**
  *
@@ -90,6 +83,8 @@ public class FHIRPathEngine {
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
 
   /**
@@ -572,10 +567,10 @@ public class FHIRPathEngine {
 
   private ExpressionNode organisePrecedence(FHIRLexer lexer, ExpressionNode node) {
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Times, Operation.DivideBy, Operation.Div, Operation.Mod)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Union)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.LessThen, Operation.Greater, Operation.LessOrEqual, Operation.GreaterOrEqual));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Is, Operation.As));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Union));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.LessThen, Operation.Greater, Operation.LessOrEqual, Operation.GreaterOrEqual));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Equals, Operation.Equivalent, Operation.NotEquals, Operation.NotEquivalent));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.In, Operation.Contains));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.And));
@@ -2146,7 +2141,11 @@ public class FHIRPathEngine {
     String repl = convertToString(execute(context, focus, exp.getParameters().get(1), true));
 
     if (focus.size() == 1 && !Utilities.noString(regex)) {
-      result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)));
+      try {
+        result.add(new StringType(RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl, regexTimeoutMillis)));
+      } catch (TimeoutException e) {
+        throw new FHIRException("Timeout evaluating regex: " + regex, e);
+      }
     } else {
       result.add(new StringType(convertToString(focus.get(0))));
     }
@@ -2328,29 +2327,42 @@ public class FHIRPathEngine {
     return result;
   }
 
+  public static Identifier makeIdentifier(Base base) {
+    if (base == null) {
+      return null;
+    }
+    if (base instanceof Identifier) {
+      return (Identifier) base;
+    }
+    return null;
+  }
 
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) {
     List<Base> result = new ArrayList<Base>();
-    Base refContext = null;
     for (Base item : focus) {
-      String s = convertToString(item);
+      Base refContext = item;
+      String url = null;
+      Identifier id = null;
+
       if (item.fhirType().equals("Reference")) {
+        refContext = item;
         Property p = item.getChildByName("reference");
         if (p != null && p.hasValues()) {
-          refContext = item;
-          s = convertToString(p.getValues().get(0));
-        } else {
-          s = null; // a reference without any valid actual reference (just identifier or display, but we can't resolve it)
+          url = convertToString(p.getValues().get(0));
         }
-      }
-      if (item.fhirType().equals("canonical")) {
+        p = item.getChildByName("identifier");
+        if (p != null && p.hasValues()) {
+          id = makeIdentifier(p.getValues().get(0));
+        }
+      } else if (item.isPrimitive()) {
+        url = item.primitiveValue();
         refContext = item;
-        s = item.primitiveValue();
       }
-      if (s != null) {
+
+      if (url != null || id != null) {
         Base res = null;
-        if (s.startsWith("#")) {
-          String t = s.substring(1);
+        if (url != null && url.startsWith("#")) {
+          String t = url.substring(1);
           Property p = context.getResource().getChildByName("contained");
           if (p != null) {
             for (Base c : p.getValues()) {
@@ -2362,7 +2374,7 @@ public class FHIRPathEngine {
           }
         } else if (hostServices != null) {
           try {
-            res = hostServices.resolveReference(this, context.getAppInfo(), s, item);
+            res = hostServices.resolveReference(this, context.getAppInfo(), url, id, refContext);
           } catch (Exception e) {
             res = null;
           }
@@ -2430,8 +2442,13 @@ public class FHIRPathEngine {
       String st = convertToString(focus.get(0));
       if (Utilities.noString(st))
         result.add(new BooleanType(false));
-      else
-        result.add(new BooleanType(st.matches(sw)));
+      else {
+        try {
+          result.add(new BooleanType(RegexTimeout.matches(st, sw, regexTimeoutMillis)));
+        } catch (TimeoutException e) {
+          throw new FHIRException("Timeout evaluating regex: " + sw, e);
+        }
+      }
     } else
       result.add(new BooleanType(false));
     return result;

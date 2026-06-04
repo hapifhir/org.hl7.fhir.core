@@ -32,10 +32,7 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.liquid.LiquidEngine;
 import org.hl7.fhir.r5.liquid.LiquidEngine.LiquidDocument;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.Tuple;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -353,7 +350,7 @@ public class ComparisonRenderer implements IHostApplicationServices {
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
     return null;
   }
 

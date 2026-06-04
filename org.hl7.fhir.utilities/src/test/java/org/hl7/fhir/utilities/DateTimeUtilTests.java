@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.condition.JRE.*;
 
 import java.util.Date;
 import java.util.Locale;
@@ -9,6 +10,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledForJreRange;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,21 +43,37 @@ public class DateTimeUtilTests {
   @Disabled
   @ParameterizedTest
   @MethodSource("getToHumanDisplayParams")
-  public void testToHumanDisplay(TimeZone theTimeZone, TemporalPrecisionEnum thePrecision, Date theValue, String expected) {
+  void testToHumanDisplay(TimeZone theTimeZone, TemporalPrecisionEnum thePrecision, Date theValue, String expected) {
     final String humanDisplay = DateTimeUtil.toHumanDisplay(theTimeZone, thePrecision, theValue, "dummyValueAsString");
     assertEquals(expected, humanDisplay);
   }
 
-  private static Stream<Arguments> getToHumanDisplayLocalTimezoneParams() {
+  private static Stream<Arguments> getToHumanDisplayLocalTimezoneDummyParams() {
     return Stream.of(
       Arguments.of(TemporalPrecisionEnum.YEAR, new Date("2002/02/04"), "dummyValueAsString"),
       Arguments.of(TemporalPrecisionEnum.MONTH, new Date("2002/02/04"), "dummyValueAsString"),
-      Arguments.of(TemporalPrecisionEnum.DAY, new Date("2002/02/04"), "dummyValueAsString"),
-      Arguments.of(TemporalPrecisionEnum.MILLI, new Date("2002/02/04"), "04-Feb-2002 00:00:00"),
-      Arguments.of(TemporalPrecisionEnum.SECOND, new Date("2002/02/04"), "04-Feb-2002 00:00:00"),
-      Arguments.of(TemporalPrecisionEnum.MINUTE, new Date("2002/02/04"), "04-Feb-2002 00:00:00")
-
+      Arguments.of(TemporalPrecisionEnum.DAY, new Date("2002/02/04"), "dummyValueAsString")
     );
+  }
+
+  private static Stream<Arguments> getToHumanDisplayLocalTimezoneParams_Java25() {
+    return Stream.concat(
+      getToHumanDisplayLocalTimezoneDummyParams(),
+      Stream.of(
+      Arguments.of(TemporalPrecisionEnum.MILLI, new Date("2002/02/04"), "4 Feb 2002, 00:00:00"),
+      Arguments.of(TemporalPrecisionEnum.SECOND, new Date("2002/02/04"), "4 Feb 2002, 00:00:00"),
+      Arguments.of(TemporalPrecisionEnum.MINUTE, new Date("2002/02/04"), "4 Feb 2002, 00:00:00")
+    ));
+  }
+
+  private static Stream<Arguments> getToHumanDisplayLocalTimezoneParams_Java17_24() {
+    return Stream.concat(
+      getToHumanDisplayLocalTimezoneDummyParams(),
+      Stream.of(
+        Arguments.of(TemporalPrecisionEnum.MILLI, new Date("2002/02/04"), "04-Feb-2002 00:00:00"),
+        Arguments.of(TemporalPrecisionEnum.SECOND, new Date("2002/02/04"), "04-Feb-2002 00:00:00"),
+        Arguments.of(TemporalPrecisionEnum.MINUTE, new Date("2002/02/04"), "04-Feb-2002 00:00:00")
+      ));
   }
 
   private static Locale defaultLocale;
@@ -64,24 +82,38 @@ public class DateTimeUtilTests {
   public static void beforeAll() {
     defaultLocale = Locale.getDefault();
     ourLog.info("Test setup: getting current default locale");
-    ourLog.info("Locale.getDefault(): " + defaultLocale);
+    ourLog.info("Locale.getDefault() = {} ", defaultLocale);
     ourLog.info("Test setup: setting default locale to UK for tests");
     Locale.setDefault(Locale.UK);
-    ourLog.info("Locale.getDefault(): " + Locale.getDefault());
-    ourLog.info("DateTime format: " + FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM));
+    ourLog.info("Locale.getDefault() = {}", Locale.getDefault());
+    ourLog.info("DateTime format = {}", FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM));
   }
 
   @AfterAll
-  public static void afterAll() {
+  static void afterAll() {
     ourLog.info("Test teardown: setting default locale back to default");
     Locale.setDefault(defaultLocale);
-    ourLog.info("Locale.getDefault(): " + Locale.getDefault());
-    ourLog.info("DateTime format: " + FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM));
+    ourLog.info("Locale.getDefault() = {} ", Locale.getDefault());
+    ourLog.info("DateTime format =  {}", FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM));
+  }
+
+
+
+  @ParameterizedTest
+  @MethodSource("getToHumanDisplayLocalTimezoneParams_Java25")
+  @EnabledForJreRange(min = JAVA_25)
+  void testToHumanDisplayLocalTimezone_Java25(TemporalPrecisionEnum thePrecision, Date theValue, String expected) {
+    testToHumanDisplayLocalTimezone(thePrecision,theValue,  expected);
   }
 
   @ParameterizedTest
-  @MethodSource("getToHumanDisplayLocalTimezoneParams")
-  public void testToHumanDisplayLocalTimezone(TemporalPrecisionEnum thePrecision, Date theValue, String expected){
+  @MethodSource("getToHumanDisplayLocalTimezoneParams_Java17_24")
+  @EnabledForJreRange(min = JAVA_17, max = JAVA_24)
+  void testToHumanDisplayLocalTimezone_Java17_24(TemporalPrecisionEnum thePrecision, Date theValue, String expected) {
+    testToHumanDisplayLocalTimezone(thePrecision,theValue,  expected);
+  }
+
+  void testToHumanDisplayLocalTimezone(TemporalPrecisionEnum thePrecision, Date theValue, String expected){
     final String humanDisplay = DateTimeUtil.toHumanDisplayLocalTimezone(thePrecision, theValue, "dummyValueAsString");
     assertEquals(expected, humanDisplay);
   }
@@ -89,24 +121,6 @@ public class DateTimeUtilTests {
   @Test
   @DisplayName("Date Reasoning Tests")
   void testDateRoutines() {
-//    Assertions.assertEquals("2021-01-01T00:00:00.000", Utilities.lowBoundaryForDate("2021"));
-//    Assertions.assertEquals("2021-04-01T00:00:00.000", Utilities.lowBoundaryForDate("2021-04"));
-//    Assertions.assertEquals("2020-02-01T00:00:00.000", Utilities.lowBoundaryForDate("2020-02"));
-//    Assertions.assertEquals("2021-04-04T00:00:00.000", Utilities.lowBoundaryForDate("2021-04-04"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.000", Utilities.lowBoundaryForDate("2021-04-04T21:22:23"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.245", Utilities.lowBoundaryForDate("2021-04-04T21:22:23.245"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.000Z", Utilities.lowBoundaryForDate("2021-04-04T21:22:23Z"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.245+10:00", Utilities.lowBoundaryForDate("2021-04-04T21:22:23.245+10:00"));
-//
-//    Assertions.assertEquals("2021-12-31T23:23:59.999", Utilities.highBoundaryForDate("2021"));
-//    Assertions.assertEquals("2021-04-30T23:23:59.999", Utilities.highBoundaryForDate("2021-04"));
-//    Assertions.assertEquals("2020-02-29T23:23:59.999", Utilities.highBoundaryForDate("2020-02"));
-//    Assertions.assertEquals("2021-04-04T23:23:59.999", Utilities.highBoundaryForDate("2021-04-04"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.999", Utilities.highBoundaryForDate("2021-04-04T21:22:23"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.245", Utilities.highBoundaryForDate("2021-04-04T21:22:23.245"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.999Z", Utilities.highBoundaryForDate("2021-04-04T21:22:23Z"));
-//    Assertions.assertEquals("2021-04-04T21:22:23.245+10:00", Utilities.highBoundaryForDate("2021-04-04T21:22:23.245+10:00"));
-
     assertEquals(8, DateTimeUtil.getDatePrecision("1900-01-01"));
     assertEquals(4, DateTimeUtil.getDatePrecision("1900"));
     assertEquals(6, DateTimeUtil.getDatePrecision("1900-06"));

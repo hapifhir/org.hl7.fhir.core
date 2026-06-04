@@ -126,8 +126,18 @@ public class CommaSeparatedStringBuilder {
     }
     return b.toString();
   }
-  
+
   public static String join2(String sep, String finalSep, Collection<String> list) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep, finalSep);
+    for (String s : list) {
+      if (s != null) {
+        b.append(s);
+      }
+    }
+    return b.toString();
+  }
+
+  public static String join2(String sep, String finalSep, String[] list) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(sep, finalSep);
     for (String s : list) {
       if (s != null) {

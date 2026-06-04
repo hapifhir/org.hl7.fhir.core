@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -108,7 +109,12 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
     }
     return profiles;
   }
-    
+
+  @Override
+  public String relativeDatePlaceHolder() {
+    return null;
+  }
+
 
   private void getImpliedProfilesForObservation(List<StructureDefinition> profiles, IMessagingServices msgServices, List<ValidationMessage> messages, IWorkerContext context, String stackPath, Element resource) {
     Element code = resource.getNamedChild("code", false);
@@ -160,7 +166,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
 
   private void addProfile(List<StructureDefinition> profiles, IMessagingServices msgServices, List<ValidationMessage> messages, IWorkerContext context, String stackPath, Element resource, String url, String name, String systemName, List<String> codes) {
     resource.addMessage(msgServices.signpost(messages, null, IssueType.INFORMATIONAL, resource.line(), resource.col(), stackPath, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_OBS, url, name, systemName, codes.get(0)));
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd != null) {
       profiles.add(sd);
     } else {
@@ -195,7 +201,7 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
   }
 
   @Override
-  public boolean isSuppressMessageId(String path, String messageId) {
+  public boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
     return false;
   }
 

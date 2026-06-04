@@ -3,7 +3,7 @@
   "system" : "http://covidcare.au/app/alert",
   "code" : "trendNegative",
   "display" : "CovidCare: Vital signs trend negative alert: re-check recommended"
-}, "valueSet" :null, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -19,7 +19,6 @@
   }]
 }}####
 v: {
-  "display" : "CovidCare: Vital signs trend negative alert: re-check recommended",
   "code" : "trendNegative",
   "system" : "http://covidcare.au/app/alert",
   "severity" : "error",
@@ -47,7 +46,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://covidcare.au/app/alert' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

@@ -9,6 +9,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingAdditionalComponent;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
@@ -31,6 +32,7 @@ public class AdditionalBindingsRenderer {
   public class AdditionalBindingDetail {
     private String purpose;
     private String valueSet;
+    private Element ctxt;
     private String doco;
     private String docoShort;
     private List<UsageContext> usages = new ArrayList<UsageContext>();
@@ -106,8 +108,9 @@ public class AdditionalBindingsRenderer {
 
   protected void seeBinding(Extension ext, Extension compExt, boolean compare, String label) {
     AdditionalBindingDetail abr = new AdditionalBindingDetail();
-    abr.purpose =  label;
-    abr.valueSet =  ext.getValue().primitiveValue();
+    abr.purpose = label;
+    abr.valueSet = ext.getValue().primitiveValue();
+    abr.ctxt = ext.getValue();
     if (compare) {
       abr.isUnchanged = compExt!=null && ext.getValue().primitiveValue().equals(compExt.getValue().primitiveValue());
 
@@ -170,6 +173,7 @@ public class AdditionalBindingsRenderer {
     AdditionalBindingDetail abr = new AdditionalBindingDetail();
     abr.purpose =  ext.getExtensionString("purpose");
     abr.valueSet =  ext.getExtensionString("valueSet");
+    abr.ctxt = ext.getExtensionByUrl("valueSet").getValue();
     abr.doco =  ext.getExtensionString("documentation");
     abr.docoShort =  ext.getExtensionString("shortDoco");
     for (Extension x : ext.getExtensionsByUrl("usage")) {
@@ -186,6 +190,7 @@ public class AdditionalBindingsRenderer {
     AdditionalBindingDetail abr = new AdditionalBindingDetail();
     abr.purpose =  ab.getPurpose().toCode();
     abr.valueSet =  ab.getValueSet();
+    abr.ctxt = ab.getValueSetElement();
     abr.doco =  ab.getDocumentation();
     abr.docoShort =  ab.getShortDoco();
     abr.usages.addAll(ab.getUsage());
@@ -246,10 +251,10 @@ public class AdditionalBindingsRenderer {
         tr.style(STYLE_REMOVED);
       }
       children.add(tr);
-      BindingResolution br = pkp == null ? makeNullBr(binding) : pkp.resolveBinding(profile, binding.valueSet, path);
+      BindingResolution br = pkp == null ? makeNullBr(binding) : pkp.resolveBinding(profile, binding.valueSet, path, binding.ctxt);
       BindingResolution compBr = null;
       if (binding.compare!=null  && binding.compare.valueSet!=null)
-        compBr = pkp == null ? makeNullBr(binding.compare) : pkp.resolveBinding(profile, binding.compare.valueSet, path);
+        compBr = pkp == null ? makeNullBr(binding.compare) : pkp.resolveBinding(profile, binding.compare.valueSet, path, binding.ctxt);
 
       XhtmlNode valueset = tr.td().style("font-size: 11px");
       if (binding.compare!=null && binding.valueSet.equals(binding.compare.valueSet))
@@ -323,7 +328,7 @@ public class AdditionalBindingsRenderer {
     boolean rendered = false;
     if (!c.hasDisplay()) {
       if (c.hasSystem() && c.getSystem().contains("/StructureDefinition/")) {
-        StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, c.getSystem());
+        StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, c.getSystem(), IWorkerContext.VersionResolutionRules.defaultRule());
         if (sd != null && sd.hasName()) {
           rendered = true;
           td.ah(sd.getWebPath()).tx(sd.getName());
@@ -331,7 +336,7 @@ public class AdditionalBindingsRenderer {
           td.code().tx(c.getCode());
         }
       } else {
-        CodeSystem cs = context.getContext().fetchCodeSystem(c.getSystem());
+        CodeSystem cs = context.getContext().fetchCodeSystem(c.getSystem(), IWorkerContext.VersionResolutionRules.defaultRule());
         if (cs != null && cs.hasName()) {
           rendered = true;
           td.ah(cs.getWebPath()).tx(cs.getName());
@@ -444,7 +449,7 @@ public class AdditionalBindingsRenderer {
     if (b.getValueSet() == null) {
       return; // what should happen?
     }
-    BindingResolution br = pkp.resolveBinding(profile, b.getValueSet(), corePath);
+    BindingResolution br = pkp.resolveBinding(profile, b.getValueSet(), corePath, b.getValueSetElement());
     XhtmlNode a = children.ahOrCode(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !context.getPkp().prependLinks() ? br.url : corePath+br.url, b.hasDocumentation() ? b.getDocumentation() : br.uri);
     if (b.hasDocumentation()) {
       a.attribute("title", b.getDocumentation());
@@ -487,15 +492,17 @@ public class AdditionalBindingsRenderer {
 
   public void seeAdditionalBinding(String purpose, String doco, ValueSet valueSet) {
     AdditionalBindingDetail abr = new AdditionalBindingDetail();
-    abr.purpose =  purpose;
-    abr.valueSet =  valueSet.getUrl();
+    abr.purpose = purpose;
+    abr.valueSet = valueSet.getUrl();
+    abr.ctxt = valueSet.getUrlElement();
     bindings.add(abr);
   }
 
-  public void seeAdditionalBinding(String purpose, String doco, String ref) {
+  public void seeAdditionalBinding(String purpose, String doco, String ref, Element ctxt) {
     AdditionalBindingDetail abr = new AdditionalBindingDetail();
-    abr.purpose =  purpose;
-    abr.valueSet =  ref;
+    abr.purpose = purpose;
+    abr.valueSet = ref;
+    abr.ctxt = ctxt;
     bindings.add(abr);
     
   }

@@ -1167,4 +1167,96 @@ public class VersionUtilitiesTest {
     assertFalse(VersionUtilities.versionHasWildcards("1.0.0?-alpha"));
     assertFalse(VersionUtilities.versionHasWildcards("1.?0.0"));
   }
+
+  @Test
+  public void testCompareVersionsGeneral_Semver() {
+    assertEquals(-1, VersionUtilities.compareVersionsGeneral("1.0.0", "2.0.0"));
+    assertEquals(1, VersionUtilities.compareVersionsGeneral("2.0.0", "1.0.0"));
+    assertEquals(0, VersionUtilities.compareVersionsGeneral("1.0.0", "1.0.0"));
+    assertEquals(-1, VersionUtilities.compareVersionsGeneral("1.0.0", "1.0.1"));
+    assertEquals(1, VersionUtilities.compareVersionsGeneral("1.1.0", "1.0.9"));
+  }
+
+  @Test
+  public void testCompareVersionsGeneral_Integer() {
+    assertEquals(-1, VersionUtilities.compareVersionsGeneral("1", "2"));
+    assertEquals(1, VersionUtilities.compareVersionsGeneral("2", "1"));
+    assertEquals(0, VersionUtilities.compareVersionsGeneral("5", "5"));
+    assertTrue(VersionUtilities.compareVersionsGeneral("9", "10") < 0);
+    assertTrue(VersionUtilities.compareVersionsGeneral("10", "9") > 0);
+  }
+
+  @Test
+  public void testCompareVersionsGeneral_Date() {
+    assertEquals(-1, VersionUtilities.compareVersionsGeneral("2024-01-01", "2024-06-15"));
+    assertEquals(1, VersionUtilities.compareVersionsGeneral("2024-06-15", "2024-01-01"));
+    assertEquals(0, VersionUtilities.compareVersionsGeneral("2024-01-01", "2024-01-01"));
+  }
+
+  @Test
+  public void testCompareVersionsGeneral_Alpha() {
+    assertTrue(VersionUtilities.compareVersionsGeneral("abc", "def") < 0);
+    assertTrue(VersionUtilities.compareVersionsGeneral("def", "abc") > 0);
+    assertEquals(0, VersionUtilities.compareVersionsGeneral("abc", "abc"));
+  }
+
+  @Test
+  public void testCompareVersionsGeneral_EquivalentDateFormats() {
+    assertEquals(0, VersionUtilities.compareVersionsGeneral("2024-01", "202401"));
+    assertEquals(0, VersionUtilities.compareVersionsGeneral("2024-01-15", "20240115"));
+  }
+
+  @Test
+  public void testCompareVersionsGeneral_NullVersions() {
+    int v1null = VersionUtilities.compareVersionsGeneral(null, "1.0.0");
+    int v2null = VersionUtilities.compareVersionsGeneral("1.0.0", null);
+    assertEquals(Integer.signum(v1null), -Integer.signum(v2null));
+    assertEquals(0, VersionUtilities.compareVersionsGeneral(null, null));
+    assertEquals(0, VersionUtilities.compareVersionsGeneral("", ""));
+  }
+
+  @Test
+  public void testCompareVersionsGeneral_MismatchedFormats() {
+    // semver vs integer
+    int r1 = VersionUtilities.compareVersionsGeneral("1.0.0", "2");
+    int r2 = VersionUtilities.compareVersionsGeneral("2", "1.0.0");
+    assertEquals(Integer.signum(r1), -Integer.signum(r2));
+
+    // semver vs date
+    int r3 = VersionUtilities.compareVersionsGeneral("1.0.0", "2024-01-01");
+    int r4 = VersionUtilities.compareVersionsGeneral("2024-01-01", "1.0.0");
+    assertEquals(Integer.signum(r3), -Integer.signum(r4));
+
+    // date vs integer
+    int r5 = VersionUtilities.compareVersionsGeneral("2024-01-01", "5");
+    int r6 = VersionUtilities.compareVersionsGeneral("5", "2024-01-01");
+    assertEquals(Integer.signum(r5), -Integer.signum(r6));
+  }
+
+  @Test
+  public void testCompareVersionsGeneral_SemverPartCount() {
+    int r1 = VersionUtilities.compareVersionsGeneral("1.0", "1.0.0");
+    int r2 = VersionUtilities.compareVersionsGeneral("1.0.0", "1.0");
+    assertEquals(Integer.signum(r1), -Integer.signum(r2));
+  }
+
+  @Test
+  public void testCompareVersionsGeneral_Antisymmetric() {
+    String[][] pairs = {
+      {"1.0.0", "2.0.0"},
+      {"2024-01-01", "2025-06-15"},
+      {"3", "7"},
+      {"alpha", "beta"},
+      {"1.0.0-alpha", "1.0.0"},
+    };
+    for (String[] pair : pairs) {
+      int ab = VersionUtilities.compareVersionsGeneral(pair[0], pair[1]);
+      int ba = VersionUtilities.compareVersionsGeneral(pair[1], pair[0]);
+      if (ab == 0) {
+        assertEquals(0, ba);
+      } else {
+        assertEquals(Integer.signum(ab), -Integer.signum(ba));
+      }
+    }
+  }
 }

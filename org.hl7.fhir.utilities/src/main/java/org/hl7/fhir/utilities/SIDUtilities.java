@@ -1,9 +1,7 @@
 package org.hl7.fhir.utilities;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class SIDUtilities {
@@ -12,6 +10,7 @@ public class SIDUtilities {
   private static final Set<String> ID_SYSTEMS;
   private static final Set<String> INCORRECT_SIDS;
   private static final Set<String> ALL_SYSTEMS;
+  public static final String EIGHT_DIGITS_REGEX = "[\\d]{8}";
 
   static {
     // Initialize code systems
@@ -101,7 +100,7 @@ public class SIDUtilities {
       } else {
         switch (u) {
           case "http://hl7.org/fhir/sid/ndc":
-            return v.matches("[\\d]{8}");
+            return v.matches(EIGHT_DIGITS_REGEX);
           case "http://hl7.org/fhir/sid/icpc2":
             return false;
           case "http://hl7.org/fhir/sid/icd-10":
@@ -109,7 +108,7 @@ public class SIDUtilities {
           case "http://hl7.org/fhir/sid/icd-9":
             return false;
           case "http://hl7.org/fhir/sid/cvx":
-            return v.matches("[\\d]{8}");
+            return v.matches(EIGHT_DIGITS_REGEX);
           case "http://hl7.org/fhir/sid/srt":
             return false;
           case "http://hl7.org/fhir/sid/icd-10-vn":

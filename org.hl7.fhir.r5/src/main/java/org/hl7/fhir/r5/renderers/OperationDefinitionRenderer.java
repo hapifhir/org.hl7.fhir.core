@@ -88,7 +88,8 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (opd.hasInputProfile()) { 
       XhtmlNode p = x.para(); 
       p.tx(context.formatPhrase(RenderingContext.OP_DEF_INPAR)); 
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile(), null, opd);
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile(),
+        ExtensionUtilities.getVersionResolutionRules(opd.getInputProfileElement()), null, opd);
       if (sd == null) { 
         p.pre().tx(opd.getInputProfile());         
       } else { 
@@ -98,7 +99,8 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     if (opd.hasOutputProfile()) { 
       XhtmlNode p = x.para(); 
       p.tx(context.formatPhrase(RenderingContext.OP_DEF_OUTPAR)); 
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile(), null, opd);
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile(),
+        ExtensionUtilities.getVersionResolutionRules(opd.getOutputProfileElement()), null, opd);
       if (sd == null) { 
         p.pre().tx(opd.getOutputProfile());         
       } else { 
@@ -204,7 +206,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     } 
     td = tr.td(); 
     if (p.hasBinding() && p.getBinding().hasValueSet()) { 
-      AddVsRef(p.getBinding().getValueSet(), td, opd); 
+      AddVsRef(p.getBinding().getValueSet(), p.getBinding().getValueSetElement(), td, opd);
       td.tx(" ("+p.getBinding().getStrength().getDisplay()+")"); 
     } 
     addMarkdown(tr.td(), p.getDocumentation()); 

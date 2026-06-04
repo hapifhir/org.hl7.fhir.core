@@ -24,6 +24,7 @@ public class RendererFactory {
     case "CapabilityStatement": return new CapabilityStatementRenderer(context);
     case "CodeSystem": return new CodeSystemRenderer(context);
     case "CompartmentDefinition":  return new CompartmentDefinitionRenderer(context);
+    case "Consent": return new ConsentRenderer(context);
     case "ConceptMap": return new ConceptMapRenderer(context);
     case "DiagnosticReport": return new DiagnosticReportRenderer(context);
     case "ExampleScenario": return new ExampleScenarioRenderer(context);
@@ -74,6 +75,7 @@ public class RendererFactory {
     switch (resource.fhirType()) {
     case "DiagnosticReport": return new DiagnosticReportRenderer(context);
     case "Library": return new LibraryRenderer(context);
+    case "Consent": return new ConsentRenderer(context);
     case "ViewDefinition": return new ViewDefinitionRenderer(context);
     case "WebTemplate": return new WebTemplateRenderer(context);
     case "FeatureDefinition": return new FeatureDefinitionRenderer(context);
@@ -116,7 +118,7 @@ public class RendererFactory {
     return Utilities.existsInList(rt, 
         "CodeSystem", "ValueSet", "ConceptMap", 
         "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", 
-        "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements", "TestPlan", "ExampleScenario");
+        "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements", "TestPlan", "ExampleScenario", "Consent");
   }
 
   /**

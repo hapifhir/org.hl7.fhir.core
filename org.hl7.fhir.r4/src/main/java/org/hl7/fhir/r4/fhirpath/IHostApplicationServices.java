@@ -3,6 +3,7 @@ package org.hl7.fhir.r4.fhirpath;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r4.model.Base;
+import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 
@@ -104,14 +105,22 @@ public interface IHostApplicationServices {
   public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters);
 
   /**
-   * Implementation of resolve() function. Passed a string, return matching resource, if one is known - else null
+   * Implementation of resolve() function. Passed a string/identifier, return matching resource, if one is known - else null
    *
-   * @param url the reference (Reference.reference or the value of the canonical
-   * @return
+   * The signature of this method was changed as of version 6.8.2+. We could have added another routine, but that
+   * would make implementation really difficult where you might resolve either with url or identifier, and you'd still
+   * have to make the same amount of changes. If you don't use logical references, just ignore the identifier
+   *
+   * @param engine - the FHIRPath engine that is the operational context of the request
+   * @param appContext - the application provided context when FHIRPath was invoked
+   * @param url - the reference (Reference.reference or the value of the canonical)
+   * @param identifier - the identifier, if one was present (from Reference.identifier)
+   * @param refContext - the object that contained the reference - this can be used to help resolve the reference
+   * @return A Base that is the resource being referenced
    * @throws FHIRException
    * @appContext - passed in by the host to the FHIRPathEngine
    */
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException;
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException;
 
   public boolean conformsToProfile(FHIRPathEngine engine, Object appContext, Base item, String url) throws FHIRException;
 

@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+  "code" : "NA"
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "not applicable",
+  "code" : "NA",
+  "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+  "version" : "3.0.0",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://terminology.hl7.org/CodeSystem/v3-NullFlavor/vs|3.0.0: Validate \"[http://terminology.hl7.org/CodeSystem/v3-NullFlavor#NA (\"undefined\")]\"\n2ms http://terminology.hl7.org/CodeSystem/v3-NullFlavor/vs|3.0.0: Check \"http://terminology.hl7.org/CodeSystem/v3-NullFlavor#NA\"\n2ms http://terminology.hl7.org/CodeSystem/v3-NullFlavor/vs|3.0.0: CodeSystem found: http://terminology.hl7.org/CodeSystem/v3-NullFlavor|3.0.0 for http://terminology.hl7.org/CodeSystem/v3-NullFlavor|3.0.0\n2ms http://terminology.hl7.org/CodeSystem/v3-NullFlavor/vs|3.0.0: check code in (http://terminology.hl7.org/CodeSystem/v3-NullFlavor) at Coding\n2ms http://terminology.hl7.org/CodeSystem/v3-NullFlavor/vs|3.0.0: Code \"NA\" found in http://terminology.hl7.org/CodeSystem/v3-NullFlavor|3.0.0",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

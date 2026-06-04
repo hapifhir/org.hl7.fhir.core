@@ -19,7 +19,6 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import lombok.Getter;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -30,12 +29,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -185,7 +179,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
   
   @Override
-  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type, boolean canonical, List<CanonicalType> targets) throws IOException, FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, IWorkerContext.VersionResolutionRules rules, String type, boolean canonical, List<CanonicalType> targets) throws IOException, FHIRException {
     if (!Utilities.isAbsoluteUrl(url)) {
       return false;
     }
@@ -224,11 +218,11 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
         pidList.put(base, pid);
       }
     }
-    ver = url.contains("|") ? url.substring(url.indexOf("|") + 1) : null;
     if (pid == null && Utilities.startsWithInList(url, "http://hl7.org/fhir", "http://terminology.hl7.org")) {
       urlList.put(url, false);
       return false;
     }
+    ver = url.contains("|") ? url.substring(url.indexOf("|") + 1) : null;
 
     if (url.startsWith("http://hl7.org/fhir")) {
       // first possibility: it's a reference to a version specific URL http://hl7.org/fhir/X.X/...
@@ -238,6 +232,14 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
         boolean res = pi.hasCanonical(vu.getUrl());
         urlList.put(url, res);
         return res;
+      }
+    }
+
+    // maybe it's a package we've already loaded. if it is, we'll give up
+    for (String s : context.getManager().getLoadedPackages()) {
+      if ((s.startsWith(pid+"#") && ver == null) || s.equals(pid+"#"+ver) ) {
+        urlList.put(url, false);
+        return false;
       }
     }
 
@@ -262,7 +264,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       }
       if (pi != null) {
         context.getManager().loadFromPackage(pi, null);
-        return pi.hasCanonical(url) ||  context.fetchResource(Resource.class, url) != null;
+        return pi.hasCanonical(url) ||  context.fetchResource(Resource.class, url, IWorkerContext.VersionResolutionRules.defaultRule()) != null;
       }
     }
 
@@ -392,9 +394,9 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   @Override
-  public void findResource(Object validator, String url) {
+  public void findResource(Object validator, String url, IWorkerContext.VersionResolutionRules rules) {
     try {
-      resolveURL((IResourceValidator) validator, null, null, url, null, false, null);
+      resolveURL((IResourceValidator) validator, null, null, url, rules,null, false, null);
     } catch (Exception e) {
     }
   }
@@ -405,8 +407,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   @Override
-  public boolean isSuppressMessageId(String path, String messageId) {
-    return policyAdvisor.isSuppressMessageId(path, messageId);
+  public boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
+    return policyAdvisor.isSuppressMessageId(path, messageId, theMessageArguments);
   }
 
   @Override
@@ -440,6 +442,11 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
       IMessagingServices msgServices, List<ValidationMessage> messages) {
     return policyAdvisor.getImpliedProfilesForResource(validator, appContext, stackPath, definition, structure, resource, valid, msgServices, messages);
+  }
+
+  @Override
+  public String relativeDatePlaceHolder() {
+    return policyAdvisor.relativeDatePlaceHolder();
   }
 
 

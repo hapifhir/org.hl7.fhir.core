@@ -8,6 +8,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -200,7 +201,7 @@ public class LibraryRenderer extends ResourceRenderer {
         p.tx(title);
         p.tx(": ");
       }
-      Resource res = context.getContext().fetchResource(Resource.class, url);
+      Resource res = context.getContext().fetchResource(Resource.class, url, ExtensionUtilities.getVersionResolutionRulesBase(att.getBaseForChild("url")));
       if (res == null || !res.hasWebPath()) {
         p.code().ah(context.prefixLocalHref(url)).tx(url);        
       } else if (res instanceof CanonicalResource) {

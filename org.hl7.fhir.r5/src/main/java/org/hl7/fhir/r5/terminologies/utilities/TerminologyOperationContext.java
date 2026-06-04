@@ -22,18 +22,24 @@ public class TerminologyOperationContext {
   public static class TerminologyServiceProtectionException extends FHIRException {
 
     private TerminologyServiceErrorClass error;
+    private String msgId;
     private IssueType type;
+    private ValueSetProcessBase.OpIssueCode code;
     private String diagnostics;
 
-    public TerminologyServiceProtectionException(String message, TerminologyServiceErrorClass error, IssueType type) {
+    public TerminologyServiceProtectionException(String message, TerminologyServiceErrorClass error, IssueType type, String msgId, ValueSetProcessBase.OpIssueCode code) {
       super(message);
       this.error = error;
       this.type = type;
+      this.msgId = msgId;
+      this.code = code;
     }
-    public TerminologyServiceProtectionException(String message, TerminologyServiceErrorClass error, IssueType type, String diagnostics) {
+    public TerminologyServiceProtectionException(String message, TerminologyServiceErrorClass error, IssueType type, String msgId, ValueSetProcessBase.OpIssueCode code, String diagnostics) {
       super(message);
       this.error = error;
       this.type = type;
+      this.msgId = msgId;
+      this.code = code;
       this.diagnostics = diagnostics;
     }
 
@@ -48,6 +54,13 @@ public class TerminologyOperationContext {
       return diagnostics;
     }
 
+    public String getMsgId() {
+      return msgId;
+    }
+
+    public ValueSetProcessBase.OpIssueCode getCode() {
+      return code;
+    }
   }
 
   public static boolean debugging = java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
@@ -107,13 +120,13 @@ public class TerminologyOperationContext {
          break; // no point dumping more
        }
      }
-     throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_TIME, contexts.get(0), EXPANSION_DEAD_TIME_SECS, name+" (local)"), TerminologyServiceErrorClass.TOO_COSTLY, IssueType.TOOCOSTLY);
+     throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_TOO_COSTLY_TIME, contexts.get(0), EXPANSION_DEAD_TIME_SECS, name+" (local)"), TerminologyServiceErrorClass.TOO_COSTLY, IssueType.TOOCOSTLY, I18nConstants.VALUESET_TOO_COSTLY_TIME, ValueSetProcessBase.OpIssueCode.VSProcessing);
     }
   }
   
   public void seeContext(String context) {
     if (contexts.contains(context)) {
-      throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_CIRCULAR_REFERENCE, context, contexts.toString()), TerminologyServiceErrorClass.PROCESSING, IssueType.PROCESSING);
+      throw new TerminologyServiceProtectionException(worker.formatMessage(I18nConstants.VALUESET_CIRCULAR_REFERENCE, context, contexts.toString()), TerminologyServiceErrorClass.PROCESSING, IssueType.PROCESSING, I18nConstants.VALUESET_CIRCULAR_REFERENCE, ValueSetProcessBase.OpIssueCode.VSProcessing);
     }
     contexts.add(context);
   }

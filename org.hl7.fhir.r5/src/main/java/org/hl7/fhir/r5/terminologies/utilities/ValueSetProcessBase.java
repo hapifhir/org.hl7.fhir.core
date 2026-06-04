@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.context.BaseWorkerContext;
@@ -28,6 +30,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 
 import org.hl7.fhir.r5.terminologies.expansion.OperationIsTooCostly;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -103,13 +106,16 @@ public class ValueSetProcessBase {
   private ContextUtilities cu;
   protected TerminologyOperationContext opContext;
   protected List<String> requiredSupplements = new ArrayList<>();
+  protected List<String> usedSupplements = new ArrayList<>();
   protected List<String> allErrors = new ArrayList<>();
+  @Getter @Setter private CanonicalResource externalSource;
 
   protected ValueSetProcessBase(BaseWorkerContext context, TerminologyOperationContext opContext) {
     super();
     this.context = context;
     this.opContext = opContext;
   }
+
   public static class AlternateCodesProcessingRules {
     private boolean all;
     private List<String> uses = new ArrayList<>();
@@ -190,7 +196,6 @@ public class ValueSetProcessBase {
     }
     result.setCode(type);
     if (location != null) {
-      result.addLocation(location);
       result.addExpression(location);
     }
     result.getDetails().setText(message);
@@ -209,6 +214,9 @@ public class ValueSetProcessBase {
   }
   
   public void checkCanonical(List<OperationOutcomeIssueComponent> issues, String path, CanonicalResource resource, CanonicalResource source) {
+    if (source == null) {
+      source = this.externalSource;
+    }
     if (resource != null) {
       StandardsStatus standardsStatus = ExtensionUtilities.getStandardsStatus(resource);
       if (standardsStatus == StandardsStatus.DEPRECATED) {
@@ -300,21 +308,11 @@ public class ValueSetProcessBase {
     return cu;
   }
 
-
-  public String removeSupplement(String s) {
-    requiredSupplements.remove(s);
-    if (s.contains("|")) {
-      s = s.substring(0, s.indexOf("|"));
-      requiredSupplements.remove(s);
-    }
-    return s;
-  }
-
   protected boolean versionsMatch(@Nonnull String system, @Nonnull String candidate, @Nonnull String criteria) {
     if (system == null || candidate == null || criteria == null) {
       return false;
     }
-    CodeSystem cs = context.fetchCodeSystem(system);
+    CodeSystem cs = context.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule());
     VersionAlgorithm va = cs == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(cs.getVersionAlgorithm());
     if (va == VersionAlgorithm.Unknown) {
       va = VersionAlgorithm.guessFormat(candidate);
@@ -354,9 +352,14 @@ public class ValueSetProcessBase {
     return new OperationIsTooCostly(msg);
   }
 
-  protected TerminologyServiceException failTSE(String msg) {
+  protected TerminologyServiceException createTerminologyServiceException(String msg) {
     allErrors.add(msg);
     return new TerminologyServiceException(msg);
+  }
+
+  protected TerminologyServiceException createTerminologyServiceException(String msg, ValueSetExpansionOutcome outcome) {
+    allErrors.add(msg);
+    return new TerminologyServiceException(msg).setOutcome(outcome);
   }
 
   public Collection<? extends String> getAllErrors() {
@@ -389,5 +392,22 @@ public class ValueSetProcessBase {
     }
   }
 
+
+  protected void seeUsedSupplement(String s) {
+    usedSupplements.add(s);
+    if (s.contains("|")) {
+      usedSupplements.add(s.substring(0, s.indexOf("|")));
+    }
+  }
+
+  protected List<String> checkForMissingSupplements() {
+    List<String> list = new ArrayList<>();
+    for (String s : requiredSupplements) {
+      if (!usedSupplements.contains(s)) {
+        list.add(s);
+      }
+    }
+    return list;
+  }
 
 }

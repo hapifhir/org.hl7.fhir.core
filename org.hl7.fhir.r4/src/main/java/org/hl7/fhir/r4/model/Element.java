@@ -224,9 +224,11 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     if (ext.isEmpty())
       return null;
     if (ext.size() > 1)
-      throw new FHIRException("Multiple matching extensions found");
+      throw new FHIRException("Multiple matching extensions found for "+theUrl);
+    if (!ext.get(0).hasValue())
+      return null;
     if (!ext.get(0).getValue().isPrimitive())
-      throw new FHIRException("Extension could not be converted to a string");
+      throw new FHIRException("Extension "+theUrl+" could not be converted to a string");
     return ext.get(0).getValue().primitiveValue();
   }
 

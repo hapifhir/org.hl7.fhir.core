@@ -18,6 +18,7 @@ import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.PackageLoadController;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,7 +61,7 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+    public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules) {
       return null;
     }
 
@@ -75,6 +76,11 @@ public class BaseWorkerContextTests {
     }
 
     @Override
+    public PackageLoadController getPackageLoadController() {
+      return null;
+    }
+
+    @Override
     public void cachePackage(PackageInformation packageInfo) {
 
     }
@@ -85,23 +91,28 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+    public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
     @Override
-    public int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+    public int loadPackage(NpmPackage pi, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
     @Override
-    public int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
+    public int loadPackage(String idAndVer, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
     @Override
     public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
       return 0;
+    }
+
+    @Override
+    public List<String> getLoadedPackages() {
+      return List.of();
     }
 
     @Override
@@ -270,7 +281,7 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+      public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules) {
         return null;
       }
 
@@ -285,6 +296,11 @@ public class BaseWorkerContextTests {
       }
 
       @Override
+      public PackageLoadController getPackageLoadController() {
+        return null;
+      }
+
+      @Override
       public void cachePackage(PackageInformation packageInfo) {
 
       }
@@ -295,23 +311,28 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+      public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 
       @Override
-      public int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+      public int loadPackage(NpmPackage pi, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 
       @Override
-      public int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
+      public int loadPackage(String idAndVer, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 
       @Override
       public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
         return 0;
+      }
+
+      @Override
+      public List<String> getLoadedPackages() {
+        return List.of();
       }
 
       @Override

@@ -32,21 +32,15 @@ package org.hl7.fhir.r5.model;
 // Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
 
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
@@ -1382,10 +1376,11 @@ For resource issues, this will be a simple XPath limited to element names, repet
       @Override 
       public String toString() { 
         String srvr = hasExtension(ExtensionDefinitions.EXT_ISSUE_SERVER) ? " (from "+getExtensionString(ExtensionDefinitions.EXT_ISSUE_SERVER)+")" : "";
+        String ctxt = hasExtension(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT) ? " (context: "+getExtensionString(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT)+")" : "";
         if (getExpression().size() == 1) { 
-          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression().get(0)+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+srvr; 
+          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression().get(0)+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+ctxt+srvr;
         } else { 
-          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression()+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+srvr; 
+          return getSeverity().toCode()+"/"+getCode().toCode()+" @ "+getExpression()+(hasDiagnostics() ? " "+getDiagnostics() : "")+": "+getDetails().getText()+ctxt+srvr;
         } 
       } 
 
@@ -1410,14 +1405,6 @@ For resource issues, this will be a simple XPath limited to element names, repet
         case NULL: return true;
         default: return false;
         }
-      }
-
-      public List<StringType> getExpressionOrLocation() {
-        return hasExpression() ? getExpression() : getLocation();
-      }
-
-      public boolean hasExpressionOrLocation() {
-        return hasExpression() || hasLocation();
       }
 
       public void resetPath(String root, String newRoot) {

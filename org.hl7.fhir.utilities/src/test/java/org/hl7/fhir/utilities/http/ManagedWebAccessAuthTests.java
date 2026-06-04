@@ -8,13 +8,17 @@ import org.apache.commons.net.util.Base64;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.doReturn;
 
 public class ManagedWebAccessAuthTests {
 
@@ -22,8 +26,14 @@ public class ManagedWebAccessAuthTests {
   public static final String DUMMY_USERNAME = "dummy1";
   public static final String DUMMY_PASSWORD = "pass1";
 
+  public static String dummyBasic() {
+    byte[] b = Base64.encodeBase64((DUMMY_USERNAME + ":" + DUMMY_PASSWORD).getBytes(StandardCharsets.US_ASCII));
+    return "Basic " + new String(b, StandardCharsets.US_ASCII);
+  }
+
   public static final String DUMMY_TOKEN = "dummyToken";
   private static final String DUMMY_API_KEY = "dummyApiKey";
+  public static final String PATH_ON_MOCK_SERVER = "blah/blah/blah?arg=blah";
   private MockWebServer server;
 
   @BeforeEach
@@ -36,8 +46,8 @@ public class ManagedWebAccessAuthTests {
   }
 
   @Test
-  public void testBaseCase() throws IOException, InterruptedException {
-    HttpUrl serverUrl = server.url("blah/blah/blah?arg=blah");
+  void testBaseCase() throws IOException, InterruptedException {
+    HttpUrl serverUrl = server.url(PATH_ON_MOCK_SERVER);
 
     server.enqueue(
       new MockResponse()
@@ -59,21 +69,26 @@ public class ManagedWebAccessAuthTests {
 
 
   @Test
-  public void testBasicAuthCase() throws IOException, InterruptedException {
+  void testBasicAuthCase() throws IOException, InterruptedException {
+    IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
 
-    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null).withBasicAuth("dummy1", "pass1");
+    URL url = server.url(PATH_ON_MOCK_SERVER).url();
+    doReturn(true).when(authenticationProvider).canProvideHeaders(url);
+    doReturn(Map.of("Authorization", dummyBasic())).when(authenticationProvider).getHeaders(url);
 
-    testBasicServerAuth(builder);
+    ManagedFhirWebAccessor managedFhirWebAccessor = new ManagedFhirWebAccessor("dummyAgent", authenticationProvider);
+
+    testBasicServerAuth(managedFhirWebAccessor);
   }
 
-  private void testBasicServerAuth(ManagedFhirWebAccessor builder) throws IOException, InterruptedException {
-    HttpUrl serverUrl = server.url("blah/blah/blah?arg=blah");
+  private void testBasicServerAuth(ManagedFhirWebAccessor managedFhirWebAccessor) throws IOException, InterruptedException {
+    HttpUrl serverUrl = server.url(PATH_ON_MOCK_SERVER);
 
     server.enqueue(
       new MockResponse()
         .setBody("Dummy Response").setResponseCode(200)
     );
-    HTTPResult result = builder.httpCall(new HTTPRequest().withUrl(serverUrl.toString()).withMethod(HTTPRequest.HttpMethod.GET));
+    HTTPResult result = managedFhirWebAccessor.httpCall(new HTTPRequest().withUrl(serverUrl.toString()).withMethod(HTTPRequest.HttpMethod.GET));
 
     assertThat(result.getCode()).isEqualTo(200);
     assertThat(result.getContentAsString()).isEqualTo("Dummy Response");
@@ -83,24 +98,22 @@ public class ManagedWebAccessAuthTests {
     assert packageRequest.getRequestUrl() != null;
     assertExpectedHeaders(packageRequest, serverUrl.url().toString(), "GET");
 
-    byte[] b = Base64.encodeBase64((DUMMY_USERNAME + ":" + DUMMY_PASSWORD).getBytes(StandardCharsets.US_ASCII));
-    String b64 = new String(b, StandardCharsets.US_ASCII);
-
-    assertThat(packageRequest.getHeader("Authorization")).isEqualTo("Basic " + b64);
+    assertThat(packageRequest.getHeader("Authorization")).isEqualTo(dummyBasic());
   }
 
   @Test
-  public void testTokenAuthCase() throws IOException, InterruptedException {
+  void testTokenAuthCase() throws IOException, InterruptedException {
+    IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
+    URL url = server.url(PATH_ON_MOCK_SERVER).url();
+    doReturn(true).when(authenticationProvider).canProvideHeaders(url);
+    doReturn(Map.of("Authorization", "Bearer "+ DUMMY_TOKEN)).when(authenticationProvider).getHeaders(url);
 
-
-    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null).withToken(DUMMY_TOKEN);
-
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", authenticationProvider);
     testTokenAuthCase(builder);
   }
 
   private void testTokenAuthCase(ManagedFhirWebAccessor builder) throws IOException, InterruptedException {
-    HttpUrl serverUrl = server.url("blah/blah/blah?arg=blah");
-
+    HttpUrl serverUrl = server.url(PATH_ON_MOCK_SERVER);
     server.enqueue(
       new MockResponse()
         .setBody("Dummy Response").setResponseCode(200)
@@ -126,14 +139,16 @@ public class ManagedWebAccessAuthTests {
 
   @Test
   public void testApiKeyAuthCase() throws IOException, InterruptedException {
-
-    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", null).withApiKey(DUMMY_API_KEY);
-
+    IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
+    URL url = server.url(PATH_ON_MOCK_SERVER).url();
+    doReturn(true).when(authenticationProvider).canProvideHeaders(url);
+    doReturn(Map.of("Api-Key", DUMMY_API_KEY)).when(authenticationProvider).getHeaders(url);
+    ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", authenticationProvider);
     testApiKeyAuthCase(builder);
   }
 
   private void testApiKeyAuthCase(ManagedFhirWebAccessor builder) throws IOException, InterruptedException {
-    HttpUrl serverUrl = server.url("blah/blah/blah?arg=blah");
+    HttpUrl serverUrl = server.url(PATH_ON_MOCK_SERVER);
 
     server.enqueue(
       new MockResponse()
@@ -156,7 +171,7 @@ public class ManagedWebAccessAuthTests {
   public void testBasicAuthFromSettings() throws IOException, InterruptedException {
     ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(
       "dummyAgent",
-      List.of(getBasicAuthServerPojo()));
+      new ServerDetailsPOJOHTTPAuthProvider(List.of(getBasicAuthServerPojo())));
 
     testBasicServerAuth(builder);
   }
@@ -168,14 +183,14 @@ public class ManagedWebAccessAuthTests {
       "fhir",
       DUMMY_USERNAME,
       DUMMY_PASSWORD,
-      null, null, null);
+      null, null, null, null);
   }
 
 @Test
 public void testTokenAuthFromSettings() throws IOException, InterruptedException {
   ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(
     "dummyAgent",
-    List.of(getTokenAuthServerPojo()));
+    new ServerDetailsPOJOHTTPAuthProvider(List.of(getTokenAuthServerPojo())));
 
   testTokenAuthCase(builder);
 }
@@ -187,14 +202,14 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       "fhir",
      null,
       null,
-      DUMMY_TOKEN, null, null);
+      DUMMY_TOKEN, null, null, null);
   }
 
   @Test
   public void testApiKeyAuthFromSettings() throws IOException, InterruptedException {
     ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(
       "dummyAgent",
-      List.of(getApiKeyAuthServerPojo()));
+      new ServerDetailsPOJOHTTPAuthProvider(List.of(getApiKeyAuthServerPojo())));
 
     testApiKeyAuthCase(builder);
   }
@@ -206,7 +221,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       "fhir",
       null,
       null,
-     null, DUMMY_API_KEY, null);
+     null, DUMMY_API_KEY, null, null);
   }
 
   @Test

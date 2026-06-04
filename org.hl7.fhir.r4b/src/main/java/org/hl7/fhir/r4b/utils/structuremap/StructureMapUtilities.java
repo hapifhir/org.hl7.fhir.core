@@ -168,7 +168,7 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base base) throws FHIRException {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier,  Base base) throws FHIRException {
       if (services == null)
         return null;
       return services.resolveReference(appContext, url);

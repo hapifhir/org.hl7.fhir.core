@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.context;
 
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
@@ -65,7 +66,7 @@ public class CoreVersionPinner {
       pinCoreVersionVS(ct);
     }
     if (vsi.hasSystem() && !vsi.hasVersion()) {
-      CodeSystem cs = context.fetchResource(CodeSystem.class, vsi.getSystem());
+      CodeSystem cs = context.fetchResource(CodeSystem.class, vsi.getSystem(), ExtensionUtilities.getVersionResolutionRules(vsi));
       if (cs != null && cs.hasVersion() && !vsi.getSystem().contains("terminology.hl7.org")) {
         vsi.setVersion(cs.getVersion());
         vsi.getVersionElement().setUserData(UserDataNames.VERSION_PINNED_ON_LOAD, true);
@@ -75,7 +76,7 @@ public class CoreVersionPinner {
 
   private void pinCoreVersionCS(CanonicalType ct) {
     if (ct.hasValue() && !ct.getValue().contains("|") && !ct.getValue().contains("terminology.hl7.org")) {
-      CodeSystem cs = context.fetchResource(CodeSystem.class, ct.getValue());
+      CodeSystem cs = context.fetchResource(CodeSystem.class, ct.getValue(), ExtensionUtilities.getVersionResolutionRules(ct));
       if (cs != null && cs.hasVersion()) {
         ct.setValue(ct.getValue() + "|" + cs.getVersion());
         ct.setUserData(UserDataNames.VERSION_PINNED_ON_LOAD, true);
@@ -85,7 +86,7 @@ public class CoreVersionPinner {
 
   private void pinCoreVersionVS(CanonicalType ct) {
     if (ct.hasValue() && !ct.getValue().contains("|") && !ct.getValue().contains("terminology.hl7.org")) {
-      ValueSet vs = context.fetchResource(ValueSet.class, ct.getValue());
+      ValueSet vs = context.fetchResource(ValueSet.class, ct.getValue(), ExtensionUtilities.getVersionResolutionRules(ct));
       if (vs != null && vs.hasVersion()) {
         ct.setValue(ct.getValue() + "|" + vs.getVersion());
         ct.setUserData(UserDataNames.VERSION_PINNED_ON_LOAD, true);
@@ -95,7 +96,7 @@ public class CoreVersionPinner {
 
   private void pinCoreVersionSD(CanonicalType ct) {
     if (ct.hasValue() && !ct.getValue().contains("|")) {
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, ct.getValue());
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, ct.getValue(), ExtensionUtilities.getVersionResolutionRules(ct));
       if (sd != null && sd.hasVersion()) {
         ct.setValue(ct.getValue() + "|" + sd.getVersion());
         ct.setUserData(UserDataNames.VERSION_PINNED_ON_LOAD, true);

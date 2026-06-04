@@ -23,10 +23,7 @@ import org.hl7.fhir.dstu3.support.utils.client.network.ByteUtils;
 import org.hl7.fhir.dstu3.support.utils.client.network.Client;
 import org.hl7.fhir.dstu3.support.utils.client.network.ResourceRequest;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.FHIRBaseToolingClient;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 
 import org.hl7.fhir.utilities.http.HTTPHeader;
 
@@ -78,6 +75,8 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   private String acceptLanguage;
   @Setter
   private String contentLanguage;
+  @Getter @Setter
+  private ITerminologyRequestIdProvider requestIdProvider;
   @Getter
   private int useCount;
 
@@ -478,10 +477,29 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
     ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ConceptMap.class, "transform"),
-          ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
         withVer(getPreferredResourceFormat(), "3.0"),
         generateHeaders(true),
         "ConceptMap/$transform",
+        timeoutNormal);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+    }
+    return (Parameters) result.getPayload();
+  }
+
+  public Parameters doRelated(Parameters p) {
+    recordUse();
+    ResourceRequest<Resource> result = null;
+    try {
+      result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "related"),
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat()), true),
+        withVer(getPreferredResourceFormat(), "3.0"),
+        generateHeaders(true),
+        "ValueSet/$related",
         timeoutNormal);
     } catch (IOException e) {
       e.printStackTrace();
@@ -605,6 +623,12 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
       headers.add(new HTTPHeader("Content-Language",contentLanguage));
     }
 
+    if (requestIdProvider != null) {
+      String header = requestIdProvider.getRequestId();
+      if (header != null) {
+        headers.add(new HTTPHeader("X-Request-Id", header));
+      }
+    }
     return headers;
   }
 

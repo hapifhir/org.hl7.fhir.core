@@ -1,12 +1,15 @@
 package org.hl7.fhir.utilities.validation;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.With;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 
 public class ValidationOptions {
-  
+
   public enum R5BundleRelativeReferencePolicy {
     DEFAULT,
     NEVER,
@@ -46,6 +49,9 @@ public class ValidationOptions {
   private FhirPublication fhirVersion;
   private R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
   private boolean isDefaultLang = false;
+  private boolean noAbstract = false;
+
+  @Getter @Setter private Object externalSource;
   
   public ValidationOptions() { this(FhirPublication.R5); }
 
@@ -113,9 +119,12 @@ public class ValidationOptions {
   public boolean isGuessSystem() {
     return guessSystem;
   }
-  
+
   public boolean isActiveOnly() {
     return activeOnly;
+  }
+  public boolean isNoAbstract() {
+    return noAbstract;
   }
 
   /**
@@ -198,13 +207,19 @@ public class ValidationOptions {
     n.guessSystem = value;
     return n;
   }
-  
+
   public ValidationOptions withActiveOnly() {
     ValidationOptions n = this.copy();
     n.activeOnly = true;
     return n;
   }
-  
+
+  public ValidationOptions withNoAbstract() {
+    ValidationOptions n = this.copy();
+    n.noAbstract = true;
+    return n;
+  }
+
   /** Only for additional bindings **/
   public ValidationOptions withCheckValueSetOnly() {
     ValidationOptions n = this.copy();
@@ -266,12 +281,16 @@ public class ValidationOptions {
     this.guessSystem = guessSystem;
     return this;
   }
-  
+
   public ValidationOptions setActiveOnly(boolean activeOnly) {
     this.activeOnly = activeOnly;
     return this;
   }
-  
+  public ValidationOptions setNoAbstract(boolean noAbstract) {
+    this.noAbstract = noAbstract;
+    return this;
+  }
+
   public ValidationOptions setCheckValueSetOnly() {
     this.membershipOnly = true;
     return this;
@@ -342,8 +361,9 @@ public class ValidationOptions {
     n.isDefaultLang = isDefaultLang;
     n.useServer = useServer;
     n.useClient = useClient;
-    n.guessSystem = guessSystem; 
-    n.activeOnly = activeOnly; 
+    n.guessSystem = guessSystem;
+    n.activeOnly = activeOnly;
+    n.noAbstract = noAbstract;
     n.vsAsUrl = vsAsUrl;
     n.versionFlexible = versionFlexible;
     n.membershipOnly = membershipOnly;
@@ -357,7 +377,7 @@ public class ValidationOptions {
 
   public String toJson() {
     return "\"langs\":\""+( langs == null ? "" : langs.toString())+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", "+
-       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"activeOnly\":\""+Boolean.toString(activeOnly)+(exampleOK ? "\", \"exampleOK\":\""+Boolean.toString(exampleOK) : "")+
+      "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"noAbstract\":\""+Boolean.toString(noAbstract)+"\", \"activeOnly\":\""+Boolean.toString(activeOnly)+(exampleOK ? "\", \"exampleOK\":\""+Boolean.toString(exampleOK) : "")+
        "\", \"membershipOnly\":\""+Boolean.toString(membershipOnly)+"\", \"displayWarningMode\":\""+Boolean.toString(displayWarningMode)+
        "\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\""+
        (r5BundleRelativeReferencePolicy != R5BundleRelativeReferencePolicy.DEFAULT ? ", \"r5BundleRelativeReferencePolicy\":\""+r5BundleRelativeReferencePolicy.toCode()+"\"" : "");
@@ -379,5 +399,10 @@ public class ValidationOptions {
     return fhirVersion;
   }
 
-  
+  public ValidationOptions withExternalSource(Object res) {
+    this.externalSource = res;
+    return this;
+  }
+
+
 }
