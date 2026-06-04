@@ -72,6 +72,8 @@ import org.hl7.fhir.utilities.Utilities;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import javax.xml.XMLConstants;
+
 public class Convert {
 
   private final CDAUtilities cda;
@@ -433,7 +435,7 @@ public class Convert {
   public Type makeTypeFromANY(Element e) throws Exception {
     if (e == null)
       return null;
-    String t = e.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String t = e.getAttributeNS(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     if (Utilities.noString(t))
       throw new Exception("Missing type on RIM attribute with type any");
     if (t.equals("CD") || t.equals("CE"))
