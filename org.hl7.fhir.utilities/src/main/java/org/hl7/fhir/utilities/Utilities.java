@@ -994,7 +994,30 @@ public class Utilities {
     return b.toString();
   }
 
-
+  /** escape a string based on FHIRPaths encoding rules */
+  public static String escapeFhirPathString(String s) {
+    if (s == null) {
+      return "";
+    }
+    StringBuilder b = new StringBuilder(s.length());
+    for (char c : s.toCharArray()) {
+      switch (c) {
+        case '\\': b.append("\\\\"); break;
+        case '\'': b.append("\\'"); break;
+        case '\r': b.append("\\r"); break;
+        case '\n': b.append("\\n"); break;
+        case '\t': b.append("\\t"); break;
+        case ' ': b.append(" "); break;
+        default:
+          if ((c == '\r' || c == '\n') || isWhitespace(c) || c < 32) { 
+            b.append("\\u");
+            b.append(Utilities.padLeft(Integer.toHexString(c), '0', 4));
+          } else
+            b.append(c);
+      }
+    }
+    return b.toString();
+  }
   public static String escapeJson(String value) {
     return escapeJson(value, true);
   }
@@ -1018,7 +1041,7 @@ public class Utilities {
       else if (c == ' ')
         b.append(" ");
       else if ((c == '\r' || c == '\n') || (isWhitespace(c) && escapeUnicodeWhitespace)) { 
-        b.append("\\u"+Utilities.padLeft(Integer.toHexString(c), '0', 4));
+        b.append("\\u" + Utilities.padLeft(Integer.toHexString(c), '0', 4));
       } else if (((int) c) < 32)
         b.append("\\u" + Utilities.padLeft(Integer.toHexString(c), '0', 4));
       else

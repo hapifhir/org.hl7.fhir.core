@@ -580,25 +580,6 @@ public class StructureMapUtilities {
     return "`" + name + "`";
   }
 
-  /** escape a string for embedding inside an FML single-quoted string literal */
-  private static String escapeFmlString(String s) {
-    if (s == null) {
-      return "";
-    }
-    StringBuilder b = new StringBuilder(s.length());
-    for (char c : s.toCharArray()) {
-      switch (c) {
-        case '\\': b.append("\\\\"); break;
-        case '\'': b.append("\\'"); break;
-        case '\r': b.append("\\r"); break;
-        case '\n': b.append("\\n"); break;
-        case '\t': b.append("\\t"); break;
-        default: b.append(c);
-      }
-    }
-    return b.toString();
-  }
-
   /** Is the name an FML keyword in the grammar and thus will need escaping if used in an identifier */
   private static boolean isFmlKeyword(String name) {
     return Utilities.existsInList(name, 
@@ -1425,9 +1406,11 @@ public class StructureMapUtilities {
       if (target.getTransform() == StructureMapTransform.EVALUATE) {
         parseParameter(target, lexer);
         lexer.token(",");
-        ExpressionNode node = fpe.parse(lexer);
+        ExpressionNode node = parseFhirPathToCanonicalNode(lexer, "evaluate", false);
+        if (node != null) {
         target.setUserData(MAP_EXPRESSION, node);
         target.addParameter().setValue(new StringType(node.toString()));
+        }
       } else {
         while (!lexer.hasToken(")")) {
           parseParameter(target, lexer);
