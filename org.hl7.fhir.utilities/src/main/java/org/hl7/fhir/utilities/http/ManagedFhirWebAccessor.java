@@ -79,6 +79,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
   }
 
   public HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
+    return executeWithClientCredentialsRetry(httpRequest.getUrl(), () -> {
     switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT: {
         HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
@@ -109,6 +110,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
       default:
         throw new IOException("Internal Error");
     }
+    });
   }
 
   private HTTPResult getHTTPResult(Response execute) throws IOException {

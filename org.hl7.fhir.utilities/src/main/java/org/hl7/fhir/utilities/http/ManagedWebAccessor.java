@@ -48,7 +48,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   }
 
   public HTTPResult get(String url, String accept) throws IOException {
-    return switch (ManagedWebAccess.getAccessPolicy()) {
+    return executeWithClientCredentialsRetry(new URL(url), () -> switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT -> {
         SimpleHTTPClient client = setupSimpleHTTPClient(url);
         yield client.get(url, accept);
@@ -56,7 +56,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
       case MANAGED ->  ManagedWebAccess.getAccessor().get(getServerTypes(), url, accept, newHeaders(url));
       case PROHIBITED -> throw new IOException("Access to the internet is not allowed by local security policy");
       default -> throw new IOException("Internal Error");
-    };
+    });
   }
 
   public HTTPResult post(String url, byte[] content, String contentType) throws IOException {
@@ -64,17 +64,19 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   }
 
   public HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
-    switch (ManagedWebAccess.getAccessPolicy()) {
-    case DIRECT:
-      SimpleHTTPClient client = setupSimpleHTTPClient(url);
-      return client.post(url, contentType, content, accept);
-    case MANAGED:
-      return ManagedWebAccess.getAccessor().post(getServerTypes(), url, content, contentType, accept, newHeaders(url));
-    case PROHIBITED:
-      throw new IOException("Access to the internet is not allowed by local security policy");
-    default:
-      throw new IOException("Internal Error");
-    }
+    return executeWithClientCredentialsRetry(new URL(url), () -> {
+      switch (ManagedWebAccess.getAccessPolicy()) {
+      case DIRECT:
+        SimpleHTTPClient client = setupSimpleHTTPClient(url);
+        return client.post(url, contentType, content, accept);
+      case MANAGED:
+        return ManagedWebAccess.getAccessor().post(getServerTypes(), url, content, contentType, accept, newHeaders(url));
+      case PROHIBITED:
+        throw new IOException("Access to the internet is not allowed by local security policy");
+      default:
+        throw new IOException("Internal Error");
+      }
+    });
   }
 
   public HTTPResult put(String url, byte[] content, String contentType) throws IOException {
@@ -82,7 +84,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   }
 
   public HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
-    return switch (ManagedWebAccess.getAccessPolicy()) {
+    return executeWithClientCredentialsRetry(new URL(url), () -> switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT -> {
         SimpleHTTPClient client = setupSimpleHTTPClient(url);
         yield client.put(url, contentType, content, accept);
@@ -91,6 +93,6 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
         ManagedWebAccess.getAccessor().put(getServerTypes(), url, content, contentType, accept, newHeaders(url));
       case PROHIBITED -> throw new IOException("Access to the internet is not allowed by local security policy");
       default -> throw new IOException("Internal Error");
-    };
+    });
   }
 }

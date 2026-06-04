@@ -12,7 +12,7 @@ import java.util.Map;
  * URL prefix match against an iterable collection of {@link ServerDetailsPOJO} objects. The information for the first
  * matching entry will be used.
  */
-public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationProvider {
+public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationProvider, ITokenInvalidatingAuthProvider {
 
   private final Iterable<ServerDetailsPOJO> servers;
 
@@ -49,6 +49,15 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
         String providedAPIKey = serverDetails.getApikey();
         headers.put("Api-Key", providedAPIKey);
       }
+      case CLIENT_CREDENTIALS -> {
+        try {
+          String ccToken = HTTPTokenManager.getToken(serverDetails);
+          headers.put("Authorization", "Bearer " + ccToken);
+        } catch (java.io.IOException e) {
+          throw new org.hl7.fhir.exceptions.FHIRException(
+            "Failed to obtain client_credentials token for " + serverDetails.getUrl(), e);
+        }
+      }
       default -> { /* do nothing */ }
 
   }
@@ -68,6 +77,7 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
       case "basic" -> HTTPAuthenticationMode.BASIC;
       case "token" -> HTTPAuthenticationMode.TOKEN;
       case "apikey" -> HTTPAuthenticationMode.APIKEY;
+      case "client_credentials" -> HTTPAuthenticationMode.CLIENT_CREDENTIALS;
       default -> HTTPAuthenticationMode.NONE;
     };
   }
@@ -82,5 +92,16 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
    */
   private ServerDetailsPOJO getServerDetails(URL url) {
     return ManagedWebAccessUtils.getServer(url.toString(), servers);
+  }
+
+  @Override
+  public boolean invalidateTokenIfClientCredentials(URL url) {
+    ServerDetailsPOJO serverDetails = getServerDetails(url);
+    if (serverDetails != null
+        && getHTTPAuthenticationMode(serverDetails) == HTTPAuthenticationMode.CLIENT_CREDENTIALS) {
+      HTTPTokenManager.invalidateToken(serverDetails);
+      return true;
+    }
+    return false;
   }
 }

@@ -3,7 +3,7 @@ package org.hl7.fhir.utilities.http;
 import java.net.URL;
 import java.util.Map;
 
-public class HTTPAuthenticationProviderChain implements IHTTPAuthenticationProvider {
+public class HTTPAuthenticationProviderChain implements IHTTPAuthenticationProvider, ITokenInvalidatingAuthProvider {
 
   private final Iterable<IHTTPAuthenticationProvider> providers;
 
@@ -29,5 +29,15 @@ public class HTTPAuthenticationProviderChain implements IHTTPAuthenticationProvi
       }
     }
     return Map.of();
+  }
+
+  @Override
+  public boolean invalidateTokenIfClientCredentials(URL url) {
+    for (IHTTPAuthenticationProvider p : providers) {
+      if (p.canProvideHeaders(url) && p instanceof ITokenInvalidatingAuthProvider inv) {
+        return inv.invalidateTokenIfClientCredentials(url);
+      }
+    }
+    return false;
   }
 }
