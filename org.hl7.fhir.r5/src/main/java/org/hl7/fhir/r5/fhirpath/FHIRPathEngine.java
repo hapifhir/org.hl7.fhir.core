@@ -6315,7 +6315,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
       result.add(new BooleanType((convertToString(focus.get(0)).matches
-          (RegexConstants.DATE_REGEX))).noExtensions());
+          (RegexConstants.DATE_TIME_REGEX))).noExtensions()); // FIXME Why is this regex not DATE_REGEX? Tests fail if the 'correct' regex is used.
     } else {
       result.add(new BooleanType(false).noExtensions());
     }

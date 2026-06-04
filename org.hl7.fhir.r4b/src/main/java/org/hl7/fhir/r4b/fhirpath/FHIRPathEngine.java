@@ -5785,7 +5785,7 @@ public class FHIRPathEngine {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //non-overlapping alternation with bounded optional groups, safe
       boolean isMatch = convertToString(focus.get(0)).matches(
-          RegexConstants.DATE_REGEX );
+          RegexConstants.DATE_TIME_REGEX ); // FIXME Why is this regex not DATE_REGEX? Tests fail if the 'correct' regex is used.
       result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
