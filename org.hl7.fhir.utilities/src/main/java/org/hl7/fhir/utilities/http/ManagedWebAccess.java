@@ -190,10 +190,13 @@ public class ManagedWebAccess {
    * entries loaded from fhir-settings.json. Call this after loadFromFHIRSettings().
    */
   public static void addServerAuthDetail(ServerDetailsPOJO server) {
-    if (serverAuthDetails == null) {
-      serverAuthDetails = new ArrayList<>();
+    if (serverDetailsList == null) {
+      serverDetailsList = new ArrayList<>();
+    } else if (!(serverDetailsList instanceof ArrayList)) {
+      serverDetailsList = new ArrayList<>(serverDetailsList);
     }
-    serverAuthDetails.add(0, server);
+    serverDetailsList.add(0, server);
+    defaultAuthenticationProvider = new ServerDetailsPOJOHTTPAuthProvider(serverDetailsList);
   }
 
   public static void loadFromFHIRSettings() {
