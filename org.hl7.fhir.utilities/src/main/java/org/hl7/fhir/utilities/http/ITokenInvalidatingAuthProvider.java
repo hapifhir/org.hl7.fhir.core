@@ -13,8 +13,12 @@ import java.net.URL;
  */
 public interface ITokenInvalidatingAuthProvider {
   /**
-   * If the given URL is served by a client_credentials configuration, invalidate its cached token.
-   * @return {@code true} if a client_credentials token was invalidated (so a retry is worthwhile)
+   * Invalidate any cached credentials this provider holds for the URL (e.g. an OAuth client_credentials
+   * token), so the next request fetches fresh.
+   * <p>
+   * Delegating implementations (e.g. a provider chain) consult the first provider that can serve the URL
+   * and need not scan past it.
+   * @return true if something was invalidated (a retry is worthwhile)
    */
-  boolean invalidateTokenIfClientCredentials(URL url);
+  boolean invalidateCachedCredentials(URL url);
 }

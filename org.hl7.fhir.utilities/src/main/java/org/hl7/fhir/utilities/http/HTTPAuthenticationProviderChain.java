@@ -32,10 +32,10 @@ public class HTTPAuthenticationProviderChain implements IHTTPAuthenticationProvi
   }
 
   @Override
-  public boolean invalidateTokenIfClientCredentials(URL url) {
+  public boolean invalidateCachedCredentials(URL url) {
     for (IHTTPAuthenticationProvider p : providers) {
       if (p.canProvideHeaders(url) && p instanceof ITokenInvalidatingAuthProvider inv) {
-        return inv.invalidateTokenIfClientCredentials(url);
+        return inv.invalidateCachedCredentials(url);
       }
     }
     return false;
