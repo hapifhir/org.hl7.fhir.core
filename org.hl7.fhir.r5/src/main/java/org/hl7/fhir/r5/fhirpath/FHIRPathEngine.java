@@ -4987,7 +4987,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         }
       }
       for (XhtmlNode c : node.getChildNodes()) {
-        if (!checkHtmlNames(c, block && !"p".equals(c))) { //TODO "p".equals(c) is always false due to type mismatch
+        if (!checkHtmlNames(c, block && !"p".equals(c))) { // FIXME SpotBugs issue: EC_UNRELATED_TYPES "p".equals(c) is always false (String vs XhtmlNode); compare "p".equals(c.getName())
           return false;
         }
       }
