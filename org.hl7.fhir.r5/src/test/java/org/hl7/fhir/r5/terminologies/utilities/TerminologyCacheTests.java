@@ -259,6 +259,42 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     assertEquals("dummyInfo", retrievedCodeableConceptResult.getMessage());
   }
 
+  @Test
+  public void testCacheUseAfterUnloadThrows() throws IOException {
+    Object lock = new Object();
+    Path tempCacheDirectory = createTempCacheDirectory();
+    TerminologyCache cache = new TerminologyCache(lock, tempCacheDirectory.toString());
+
+    ValueSet valueSet = new ValueSet();
+    valueSet.setUrl("dummyValueSetURL");
+    Coding coding = new Coding();
+    coding.setCode("dummyCode");
+
+    TerminologyCache.CacheToken validationToken = cache.generateValidationToken(CacheTestUtils.validationOptions,
+      coding, valueSet, new Parameters());
+    TerminologyCache.CacheToken expansionToken = cache.generateExpandToken(valueSet,
+      new ExpansionOptions().withHierarchical(true));
+
+    // Before unload(): normal use works.
+    cache.cacheValidation(validationToken,
+      new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null), true);
+    assertNotNull(cache.getValidation(validationToken));
+
+    // unload() persists the complete cache and must be the last terminology operation.
+    cache.unload();
+
+    // Any subsequent use is a programming error (it would overwrite the persisted cache with
+    // partial state), so it must fail loudly rather than silently corrupt the on-disk cache.
+    assertThrows(AssertionError.class, () -> cache.getValidation(validationToken));
+    assertThrows(AssertionError.class, () -> cache.cacheValidation(validationToken,
+      new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "dummyInfo", null), true));
+    assertThrows(AssertionError.class, () -> cache.getExpansion(expansionToken));
+    assertThrows(AssertionError.class, () -> cache.cacheExpansion(expansionToken,
+      new ValueSetExpansionOutcome(valueSet), true));
+
+    deleteTempCacheDirectory(tempCacheDirectory);
+  }
+
   private void assertCanonicalResourceEquals(CanonicalResource a, CanonicalResource b) {
     assertTrue(a.equalsDeep(b));
   }

@@ -382,13 +382,28 @@ public class TerminologyCache {
     return id;
   }
   
+  private boolean unloaded = false;
+
   public void unload() {
     // not useable after this is called — flush any pending writes first so we don't lose
     // entries that were waiting out the SAVE_DELAY_MS coalescing window.
     save();
+    unloaded = true;
     caches.clear();
     vsCache.clear();
     csCache.clear();
+  }
+
+  // Using the terminology cache after unload() is a programming error in the caller: unload()
+  // has already persisted the complete cache, so any later entry would overwrite it on disk with
+  // partial state. This is an invariant on the *code* (no IG content can trigger it — callers must
+  // finish all terminology work before unload()), so fail hard with an AssertionError that is not
+  // caught by the publisher's per-operation `catch (Exception)`, rather than silently corrupting
+  // the persisted cache or degrading output.
+  private void checkLoaded() {
+    if (unloaded) {
+      throw new AssertionError("Terminology cache used after unload(): unload() persists the complete cache and must be the last terminology operation; later use overwrites the on-disk cache with partial data.");
+    }
   }
   
   public void clear() throws IOException {
@@ -607,6 +622,7 @@ public class TerminologyCache {
   }
 
   public ValueSetExpansionOutcome getExpansion(CacheToken cacheToken) {
+    checkLoaded();
     synchronized (lock) {
       NamedCache nc = getNamedCache(cacheToken);
       CacheEntry e = nc.map.get(cacheToken.key);
@@ -618,7 +634,8 @@ public class TerminologyCache {
   }
 
   public void cacheExpansion(CacheToken cacheToken, ValueSetExpansionOutcome res, boolean persistent) {
-    synchronized (lock) {      
+    checkLoaded();
+    synchronized (lock) {
       NamedCache nc = getNamedCache(cacheToken);
       CacheEntry e = new CacheEntry();
       e.request = cacheToken.request;
@@ -665,6 +682,7 @@ public class TerminologyCache {
   }
 
   public ValidationResult getValidation(CacheToken cacheToken) {
+    checkLoaded();
     if (cacheToken.key == null) {
       return null;
     }
@@ -683,6 +701,7 @@ public class TerminologyCache {
   }
 
   public void cacheValidation(CacheToken cacheToken, ValidationResult res, boolean persistent) {
+    checkLoaded();
     if (cacheToken.key != null) {
       synchronized (lock) {      
         NamedCache nc = getNamedCache(cacheToken);
