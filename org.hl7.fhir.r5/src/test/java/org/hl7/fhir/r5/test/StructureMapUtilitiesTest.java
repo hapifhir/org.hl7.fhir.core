@@ -138,6 +138,132 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     Assertions.assertEquals("-quote", structureMap.getGroup().get(0).getRule().get(1).getSourceFirstRep().getElement());
     Assertions.assertEquals("-backtick", structureMap.getGroup().get(0).getRule().get(2).getSourceFirstRep().getElement());
   }
+
+  @Test
+  void testTripleQuotedDescription() throws FHIRException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = "/// url = \"http://example.com/StructureMap/triple\"\r\n"
+      + "/// name = \"TripleQuotedDescription\"\r\n"
+      + "/// description = \"\"\"\r\n"
+      + "You should use my *awesome* map.\r\n"
+      + "It does really cool things.\r\n"
+      + "\"\"\"\r\n"
+      + "/// status = \"draft\"\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Basic\" alias Basic as target\r\n"
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src.identifier -> tgt.identifier;\r\n"
+      + "}";
+
+    StructureMap structureMap = scu.parse(fileMap, "TripleQuotedDescription");
+    Assertions.assertEquals("\r\nYou should use my *awesome* map.\r\nIt does really cool things.\r\n", structureMap.getDescription());
+  }
+
+  @Test
+  void testSingleQuotedDescriptionStillWorks() throws FHIRException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = "/// url = \"http://example.com/StructureMap/single\"\r\n"
+      + "/// name = \"SingleQuotedDescription\"\r\n"
+      + "/// description = \"A simple single line description\"\r\n"
+      + "/// status = \"draft\"\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Basic\" alias Basic as target\r\n"
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src.identifier -> tgt.identifier;\r\n"
+      + "}";
+
+    StructureMap structureMap = scu.parse(fileMap, "SingleQuotedDescription");
+    Assertions.assertEquals("A simple single line description", structureMap.getDescription());
+  }
+
+  @Test
+  void testEmptyQuotedDescriptionStillWorks() throws FHIRException {
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    String fileMap = "/// url = \"http://example.com/StructureMap/empty\"\r\n"
+      + "/// name = \"EmptyQuotedDescription\"\r\n"
+      + "/// description = \"\"\r\n"
+      + "/// status = \"draft\"\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\r\n"
+      + "uses \"http://hl7.org/fhir/StructureDefinition/Basic\" alias Basic as target\r\n"
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src.identifier -> tgt.identifier;\r\n"
+      + "}";
+
+    StructureMap structureMap = scu.parse(fileMap, "EmptyQuotedDescription");
+    // empty description falls back to title; title is unset, so getDescription should be empty / null
+    Assertions.assertTrue(structureMap.getDescription() == null || structureMap.getDescription().isEmpty());
+  }
+
+  @Test
+  void testRenderMultiLineDescriptionUsesTripleQuotes() throws FHIRException {
+    StructureMap map = new StructureMap();
+    map.setUrl("http://example.com/StructureMap/render-multi");
+    map.setName("RenderMulti");
+    map.setStatus(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
+    map.setDescription("You should use my *awesome* map.\r\nIt does really cool things.");
+
+    String rendered = StructureMapUtilities.render(map);
+    Assertions.assertTrue(rendered.contains("/// description = \"\"\""), "Expected triple-quoted description in:\r\n" + rendered);
+    Assertions.assertTrue(rendered.contains("You should use my *awesome* map."), "Expected verbatim markdown content in:\r\n" + rendered);
+    Assertions.assertTrue(rendered.contains("It does really cool things.\"\"\""), "Expected triple-quoted close in:\r\n" + rendered);
+
+    // round-trip: re-parse the rendered output and confirm description is preserved
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap reparsed = scu.parse(rendered, "RenderMulti");
+    Assertions.assertEquals("You should use my *awesome* map.\r\nIt does really cool things.", reparsed.getDescription());
+  }
+
+  @Test
+  void testRenderSingleLineDescriptionUsesSingleQuotes() throws FHIRException {
+    StructureMap map = new StructureMap();
+    map.setUrl("http://example.com/StructureMap/render-single");
+    map.setName("RenderSingle");
+    map.setStatus(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
+    map.setDescription("A simple one-line description with a \"quote\" in it.");
+
+    String rendered = StructureMapUtilities.render(map);
+    Assertions.assertTrue(rendered.contains("/// description = \"A simple one-line description with a \\\"quote\\\" in it.\""),
+      "Expected escaped single-quoted description in:\r\n" + rendered);
+    Assertions.assertFalse(rendered.contains("\"\"\""), "Did not expect triple quotes for a single-line description in:\r\n" + rendered);
+  }
+
+  @Test
+  void testRenderDescriptionContainingTripleQuoteFallsBack() throws FHIRException {
+    StructureMap map = new StructureMap();
+    map.setUrl("http://example.com/StructureMap/render-fallback");
+    map.setName("RenderFallback");
+    map.setStatus(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
+    // multi-line content but also contains """ which cannot live inside a verbatim block
+    map.setDescription("Line one\r\nLine \"\"\" two\r\nLine three");
+
+    String rendered = StructureMapUtilities.render(map);
+    Assertions.assertFalse(rendered.contains("/// description = \"\"\""),
+      "Expected fallback to single-line escaped form when description contains triple quotes, got:\r\n" + rendered);
+
+    // round-trip still works
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap reParsed = scu.parse(rendered, "RenderFallback");
+    Assertions.assertEquals("Line one\r\nLine \"\"\" two\r\nLine three", reParsed.getDescription());
+  }
+
+  @Test
+  void testRenderDescriptionEndingWithQuoteFallsBack() throws FHIRException {
+    StructureMap map = new StructureMap();
+    map.setUrl("http://example.com/StructureMap/render-trailing-quote");
+    map.setName("RenderTrailingQuote");
+    map.setStatus(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
+    // multi-line content ending with " — would be greedily merged into the closing """
+    map.setDescription("Line one\r\nLine two ends with \"");
+
+    String rendered = StructureMapUtilities.render(map);
+    Assertions.assertFalse(rendered.contains("/// description = \"\"\""),
+      "Expected fallback to single-line escaped form when description ends with a quote, got:\r\n" + rendered);
+
+    // round-trip still works
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap reParsed = scu.parse(rendered, "RenderTrailingQuote");
+    Assertions.assertEquals("Line one\r\nLine two ends with \"", reParsed.getDescription());
+  }
   
   // assert indices are equal to Element.numberChildren()
   private void checkNumberChildren(Element e, String indent) {
