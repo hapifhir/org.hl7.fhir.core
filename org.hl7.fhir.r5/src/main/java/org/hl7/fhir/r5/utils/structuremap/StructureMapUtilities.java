@@ -293,6 +293,13 @@ public class StructureMapUtilities {
       }
       b.append("as ");
       b.append(s.getMode().toCode());
+      // Same-line trailing `//` comment captured in formatCommentsPost is
+      // emitted after the mode keyword, mirroring how renderRule handles
+      // trailing-on-`;` comments.
+      if (s.hasFormatCommentPost()) {
+        b.append(" // ");
+        b.append(s.getFormatCommentsPost().get(0));
+      }
       b.append("\r\n");
     }
     if (map.hasStructure())
@@ -379,8 +386,8 @@ public class StructureMapUtilities {
   }
 
   private static void renderRule(StringBuilder b, StructureMapGroupRuleComponent r, int indent) {
-    if (r.hasFormatCommentPre()) {
-      renderMultilineDoco(b, r.getFormatCommentsPre(), indent);
+    if (r.hasDocumentation()) {
+      renderMultilineDoco(b, r.getDocumentation(), indent);
     }
     // This user data comes from parsing the simple transform `src -> tgt: type, subtype, action, recorded;`
     // This could also be an extension at a later date
@@ -481,6 +488,10 @@ public class StructureMapUtilities {
       }
     }
     b.append(";");
+    if (r.hasFormatCommentPost()) {
+      b.append(" // ");
+      b.append(r.getFormatCommentsPost().get(0));
+    }
     b.append("\r\n");
   }
 
@@ -1020,6 +1031,9 @@ public class StructureMapUtilities {
       lexer.token("alias");
       st.setAlias(lexer.take());
     }
+    if (!Utilities.noString(preComment)) {
+      st.setDocumentation(preComment);
+    }
     lexer.token("as");
     String doco;
     if (lexer.getCurrent().equals("source")) {
@@ -1037,15 +1051,8 @@ public class StructureMapUtilities {
     } else {
       throw lexer.error("Found '"+lexer.getCurrent()+"' expecting 'source', 'queried', 'target' or 'produced'");
     }
-    if (lexer.hasToken(";")) {
-      doco = lexer.tokenWithTrailingComment(";");
-    }
-    // Pre-comments win over trailing inline comments (more idiomatic FML style
-    // and consistent with how groups capture their documentation).
-    if (!Utilities.noString(preComment)) {
-      st.setDocumentation(preComment);
-    } else {
-      st.setDocumentation(doco);
+    if (doco != null) {
+      st.getFormatCommentsPost().add(doco);
     }
   }
   
@@ -1162,7 +1169,6 @@ public class StructureMapUtilities {
   }
 
 
-
   private void parseRule(StructureMap map, List<StructureMapGroupRuleComponent> list, FHIRLexer lexer, boolean newFmt) throws FHIRException {
     StructureMapGroupRuleComponent rule = new StructureMapGroupRuleComponent();
     if (!newFmt) {
@@ -1170,7 +1176,9 @@ public class StructureMapUtilities {
       lexer.token(":");
       lexer.token("for");
     } else {
-      rule.addFormatCommentsPre(lexer.getComments());
+      if (lexer.hasComments()) {
+        rule.setDocumentation(lexer.getAllComments());
+      }
     }
     list.add(rule);
     boolean done = false;
@@ -1219,7 +1227,7 @@ public class StructureMapUtilities {
       }
       String doco = lexer.tokenWithTrailingComment(";");
       if (doco != null) {
-        rule.setDocumentation(doco);
+        rule.getFormatCommentsPost().add(doco);
       }
 
       // Now scan the list of elements and create new rules for each
@@ -1285,7 +1293,7 @@ public class StructureMapUtilities {
         }
         String doco = lexer.tokenWithTrailingComment(";");
         if (doco != null) {
-          rule.setDocumentation(doco);
+          rule.getFormatCommentsPost().add(doco);
         }
       }
     }
