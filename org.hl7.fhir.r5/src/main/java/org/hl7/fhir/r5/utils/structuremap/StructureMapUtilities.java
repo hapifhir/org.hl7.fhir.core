@@ -2840,6 +2840,16 @@ public class StructureMapUtilities {
         }
         return fpe.check(vars, null, null, expr);
       case TRANSLATE:
+        // the return type comes from the 3rd parameter
+        if (tgtParameters.size() >= 3) {
+          String param = getParamString(vars, tgtParameters.get(2));
+          if (param != null) {
+            if (param.equals("Coding") || param.equals("CodeableConcept") || param.equals("code"))
+              return new TypeDetails(CollectionStatus.SINGLETON, param);
+            throw new FHIRException("Invalid output format \"" + param + "\" provided to translate()");
+          }
+        }
+        // default to CodeableConcept, though this probably should fail here
         return new TypeDetails(CollectionStatus.SINGLETON, "CodeableConcept");
       case CC:
         ProfiledType res = new ProfiledType("CodeableConcept");
