@@ -253,7 +253,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
         n.setDisplay(pref.getValue());
       }
     }
-    if (!n.hasDisplay() && display != null && langs != null && (langs.matches(dispLang) || Utilities.existsInList(langs.getSource(), "en", "en-US"))) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: not using String.matches
+    boolean langMatches = langs != null && langs.matches(dispLang);
+    if (!n.hasDisplay() && display != null && langs != null && (langMatches || Utilities.existsInList(langs.getSource(), "en", "en-US"))) {
       n.setDisplay(display);      
     }
 
@@ -372,11 +375,17 @@ public class ValueSetExpander extends ValueSetProcessBase {
       return true;
     }
     for (Token t : designations) {
-      if ((d.hasUse() && t.matches(d.getUse())) || t.matchesLang(d.getLanguage())) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean tokenMatchesUse = d.hasUse() && t.matches(d.getUse());
+      if (tokenMatchesUse || t.matchesLang(d.getLanguage())) {
         return true;
       }
       for (Coding c : d.getAdditionalUse()) {
-        if (t.matches(c)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean tokenMatchesCoding = t.matches(c);
+        if (tokenMatchesCoding) {
           return true;
         }
       }
@@ -950,6 +959,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       focus.getExpansion().addParameter().setName(name).setValue(new CodeType(value.primitiveValue()));
     }
     if ("designation".equals(name)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] v = value.primitiveValue().split("\\|");
       if (v.length != 2 || !Utilities.isAbsoluteUrl(v[0]) || Utilities.noString(v[1])) {
         throw new NoTerminologyServiceException("Unable to understand designation parameter "+value.primitiveValue());
@@ -1421,7 +1432,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
         doServerIncludeCodes(inc, heirarchical, exp, imports, expParams, extensions, noInactive, valueSet.getExpansion().getProperty());
       } else {
         if (cs.hasUserData(UserDataNames.tx_known_supplements)) {
-          for (String s : cs.getUserString(UserDataNames.tx_known_supplements).split("\\,")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String[] supplements = cs.getUserString(UserDataNames.tx_known_supplements).split("\\,");
+          for (String s : supplements) {
             seeSupplement(s);
           }
         }
@@ -1611,7 +1625,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (!existsInParams(exp.getParameter(), "used-codesystem", u))
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-codesystem").setValue(u));
       if (cs.hasUserData(UserDataNames.tx_known_supplements)) {
-        for (String s : cs.getUserString(UserDataNames.tx_known_supplements).split("\\,")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] supplements = cs.getUserString(UserDataNames.tx_known_supplements).split("\\,");
+        for (String s : supplements) {
           u = new UriType(s);
           if (!existsInParams(exp.getParameter(), "used-supplement", u)) {
             exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-supplement").setValue(u));

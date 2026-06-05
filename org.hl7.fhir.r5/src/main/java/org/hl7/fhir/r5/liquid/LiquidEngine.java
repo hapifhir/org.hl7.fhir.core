@@ -1,11 +1,16 @@
 package org.hl7.fhir.r5.liquid;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -59,6 +64,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+
 @MarkedToMoveToAdjunctPackage
 public class LiquidEngine implements IHostApplicationServices {
 
@@ -91,7 +97,7 @@ public class LiquidEngine implements IHostApplicationServices {
       rindex = (limit-offset) - 1 - i;
       rindex0 = (limit-offset) - i;
       length = limit-offset;
-      last = i == (limit-offset)-1;                
+      last = i == (limit-offset)-1;
     }
     
 
@@ -163,15 +169,15 @@ public class LiquidEngine implements IHostApplicationServices {
   private ILiquidEngineIncludeResolver includeResolver;
   private ILiquidRenderingSupport renderingSupport;
   private MarkDownProcessor processor = new MarkDownProcessor(Dialect.COMMON_MARK);
-  private Map<String, Base> vars = new HashMap<>();
+  private Map<String, List<Base>> vars = new HashMap<>();
   private KeyIssuer keyIssuer;
   
   private class LiquidEngineContext {
     private Object externalContext;
     private Map<String, Base> loopVars = new HashMap<>();
-    private Map<String, Base> globalVars = new HashMap<>();
+    private Map<String, List<Base>> globalVars = new HashMap<>();
 
-    public LiquidEngineContext(Object externalContext, Map<String, Base> vars) {
+    public LiquidEngineContext(Object externalContext, Map<String, List<Base>> vars) {
       super();
       this.externalContext = externalContext;
       globalVars = new HashMap<>();
@@ -218,7 +224,7 @@ public class LiquidEngine implements IHostApplicationServices {
     this.renderingSupport = renderingSupport;
   }
 
-  public Map<String, Base> getVars() {
+  public Map<String, List<Base>> getVars() {
     return vars;
   }
 
@@ -230,9 +236,31 @@ public class LiquidEngine implements IHostApplicationServices {
     StringBuilder b = new StringBuilder();
     LiquidEngineContext ctxt = new LiquidEngineContext(appContext, vars );
     for (LiquidNode n : document.body) {
-      n.evaluate(b, resource, ctxt);
+      b.append(singleString(n.evaluate(resource, ctxt)));
     }
     return b.toString();
+  }
+  
+  private String singleString(List<String> t) throws FHIRException {
+    if (t == null) {
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_SYNTAX));
+    }
+    if (t.size() == 0) {
+      return "";
+    } else if (t.size() == 1) {
+      return t.get(0);
+    } else {
+      boolean first = false;
+      StringBuilder b = new StringBuilder();
+      for (String s : t) {
+        if (first) {
+          b.append(", ");
+        }
+        first = true;
+        b.append(s);
+      }
+      return b.toString();
+    }
   }
   
 
@@ -240,7 +268,7 @@ public class LiquidEngine implements IHostApplicationServices {
     protected void closeUp() {
     }
 
-    public abstract void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException;
+    public abstract List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException;
   }
 
   private class LiquidConstant extends LiquidNode {
@@ -258,42 +286,163 @@ public class LiquidEngine implements IHostApplicationServices {
     }
 
     @Override
-    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) {
-      b.append(constant);
+    public List<String> evaluate(Base resource, LiquidEngineContext ctxt) {
+      return List.of(constant);
     }
 
   }
+
+  /*
+   * Returns list:
+   *  - compact, map, reverse, slice, sort, sort_natural, uniq, where
+   */
   
   private enum LiquidFilter {
+    // String filters
+    APPEND,
+    BASE64_DECODE,
+    BASE64_ENCODE,
+    CAPITALIZE,
+    DOWNCASE,
+    ESCAPE,
+    ESCAPE_ONCE,
+    LSTRIP,
+    NEWLINE_TO_BR,
     PREPEND,
-    MARKDOWNIFY,
+    REMOVE,
+    REMOVE_FIRST,
+    REMOVE_LAST,
+    REPLACE,
+    REPLACE_FIRST,
+    REPLACE_LAST,
+    RSTRIP,
+    SLICE,
+    SPLIT,
+    STRIP,
+    STRIP_HTML,
+    STRIP_NEWLINES,
+    TRUNCATE,
+    TRUNCATEWORDS,
     UPCASE,
-    DOWNCASE;
+    URL_DECODE,
+    URL_ENCODE,
+    // Math filters
+    ABS,
+    AT_LEAST,
+    AT_MOST,
+    CEIL,
+    DIVIDED_BY,
+    FLOOR,
+    MINUS,
+    MODULO,
+    PLUS,
+    ROUND,
+    TIMES,
+    // Array filters
+    COMPACT,
+    CONCAT,
+    FIRST,
+    JOIN,
+    LAST,
+    MAP,
+    REVERSE,
+    SIZE,
+    SORT,
+    SORT_NATURAL,
+    SUM,
+    UNIQ,
+    WHERE,
+    // Date filter
+    DATE,
+    // Other filters
+    DEFAULT,
+    JSON,
+    // Non-standard but supported
+    MARKDOWNIFY,
+    ;
     
     public static LiquidFilter fromCode(String code) {
-      if ("prepend".equals(code)) {
-        return PREPEND;
+      switch (code) {
+      // String filters
+      case "append": return APPEND;
+      case "base64_decode": return BASE64_DECODE;
+      case "base64_encode": return BASE64_ENCODE;
+      case "capitalize": return CAPITALIZE;
+      case "downcase": return DOWNCASE;
+      case "escape": return ESCAPE;
+      case "escape_once": return ESCAPE_ONCE;
+      case "lstrip": return LSTRIP;
+      case "newline_to_br": return NEWLINE_TO_BR;
+      case "prepend": return PREPEND;
+      case "remove": return REMOVE;
+      case "remove_first": return REMOVE_FIRST;
+      case "remove_last": return REMOVE_LAST;
+      case "replace": return REPLACE;
+      case "replace_first": return REPLACE_FIRST;
+      case "replace_last": return REPLACE_LAST;
+      case "rstrip": return RSTRIP;
+      case "slice": return SLICE;
+      case "split": return SPLIT;
+      case "strip": return STRIP;
+      case "strip_html": return STRIP_HTML;
+      case "strip_newlines": return STRIP_NEWLINES;
+      case "truncate": return TRUNCATE;
+      case "truncatewords": return TRUNCATEWORDS;
+      case "upcase": return UPCASE;
+      case "url_decode": return URL_DECODE;
+      case "url_encode": return URL_ENCODE;
+      // Math filters
+      case "abs": return ABS;
+      case "at_least": return AT_LEAST;
+      case "at_most": return AT_MOST;
+      case "ceil": return CEIL;
+      case "divided_by": return DIVIDED_BY;
+      case "floor": return FLOOR;
+      case "minus": return MINUS;
+      case "modulo": return MODULO;
+      case "plus": return PLUS;
+      case "round": return ROUND;
+      case "times": return TIMES;
+      // Array filters
+      case "compact": return COMPACT;
+      case "concat": return CONCAT;
+      case "first": return FIRST;
+      case "join": return JOIN;
+      case "last": return LAST;
+      case "map": return MAP;
+      case "reverse": return REVERSE;
+      case "size": return SIZE;
+      case "sort": return SORT;
+      case "sort_natural": return SORT_NATURAL;
+      case "sum": return SUM;
+      case "uniq": return UNIQ;
+      case "where": return WHERE;
+      // Date filter
+      case "date": return DATE;
+      // Other filters
+      case "default": return DEFAULT;
+      case "json": return JSON;
+      // Non-standard but supported
+      case "markdownify": return MARKDOWNIFY;
+      default: return null;
       }
-      if ("markdownify".equals(code)) {
-        return MARKDOWNIFY;
-      }
-      if ("upcase".equals(code)) {
-        return UPCASE;
-      }
-      if ("downcase".equals(code)) {
-        return DOWNCASE;
-      }
-      return null;
     }
   }
 
   private class LiquidExpressionNode {
     private LiquidFilter filter; // null at root
     private ExpressionNode expression; // null for some filters
+    private ExpressionNode expression2; // null for some filters
     public LiquidExpressionNode(LiquidFilter filter, ExpressionNode expression) {
       super();
       this.filter = filter;
       this.expression = expression;
+    }
+    public LiquidExpressionNode(LiquidFilter filter, ExpressionNode expression, ExpressionNode expression2) {
+      super();
+      this.filter = filter;
+      this.expression = expression;
+      this.expression2 = expression2;
     }
     
   }
@@ -303,69 +452,789 @@ public class LiquidEngine implements IHostApplicationServices {
     private List<LiquidExpressionNode> compiled = new ArrayList<>();
 
     @Override
-    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+    public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled.size() == 0) {
         FHIRLexer lexer = new FHIRLexer(statement, "liquid statement", false, true);
         lexer.setLiquidMode(true);
-        compiled.add(new LiquidExpressionNode(null, engine.parse(lexer)));
+        try {
+          compiled.add(new LiquidExpressionNode(null, engine.parse(lexer)));
+        } catch (Exception e) {
+          throw lexer.error(engine.getWorker().formatMessage(I18nConstants.LIQUID_STATEMENT_ERROR, statement, e.getMessage()));
+        }
         while (!lexer.done()) {
           if (lexer.getCurrent().equals("||")) {
             lexer.next();
             String f = lexer.getCurrent();
             LiquidFilter filter = LiquidFilter.fromCode(f);
             if (filter == null) {
-              lexer.error(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_FILTER, f));
+              throw lexer.error(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_FILTER, f));
             }
             lexer.next();
             if (!lexer.done() && lexer.getCurrent().equals(":")) {
               lexer.next();
-              compiled.add(new LiquidExpressionNode(filter, engine.parse(lexer)));
+              ExpressionNodeWithOffset po = engine.parsePartialExpression(lexer);
+              ExpressionNode ex1 = po.getNode();
+              if (!lexer.done() && lexer.getCurrent().equals(",")) {
+                lexer.next();
+                ExpressionNodeWithOffset po2 = engine.parsePartialExpression(lexer);
+                ExpressionNode ex2 = po2.getNode();
+                compiled.add(new LiquidExpressionNode(filter, ex1, ex2));
+              } else {
+                compiled.add(new LiquidExpressionNode(filter, ex1));
+              }
             } else {
               compiled.add(new LiquidExpressionNode(filter, null));
             }
           } else {
-            lexer.error(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_SYNTAX)); 
+            throw lexer.error(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_SYNTAX));
           }
         }
       }
       
-      String t = null;
+      List<String> t = null;
       for (LiquidExpressionNode i : compiled) {
         if (i.filter == null) { // first
-          t = stmtToString(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          t = liquify(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
         } else switch (i.filter) {
+
+        // ── String filters ──────────────────────────────────────────────
+
+        case APPEND:
+          t = List.of(singleString(t) + liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)));
+          break;
+        case BASE64_DECODE:
+          t = List.of(new String(java.util.Base64.getDecoder().decode(singleString(t)), java.nio.charset.StandardCharsets.UTF_8));
+          break;
         case PREPEND:
-          t = stmtToString(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)) + t;
+          t = List.of(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)) + singleString(t));
           break; 
         case MARKDOWNIFY:
-          t = processMarkdown(t);
+          t = List.of(processMarkdown(singleString(t)));
           break;
         case UPCASE:
-          t = t.toUpperCase();
+          t = List.of(singleString(t).toUpperCase());
           break;
-        case DOWNCASE:
-          t = t.toLowerCase();
+        case BASE64_ENCODE:
+          t = List.of(java.util.Base64.getEncoder().encodeToString(singleString(t).getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+          break;
+        case CAPITALIZE: {
+          String s = singleString(t);
+          t = !s.isEmpty() ? List.of(s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase()) : List.of(s);
           break;
         }
+        case DOWNCASE:
+          t = List.of(singleString(t).toLowerCase());
+          break;
+        case ESCAPE:
+          t = List.of(singleString(t)
+            .replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace("\"", "&quot;")
+            .replace("'", "&#39;"));
+          break;
+        case ESCAPE_ONCE: {
+          // Unescape first, then escape — so already-escaped entities aren't double-escaped
+          String s = singleString(t)
+            .replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+            .replace("&quot;", "\"").replace("&#39;", "'");
+          t = List.of(s
+            .replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace("\"", "&quot;")
+            .replace("'", "&#39;"));
+          break;
+        }
+        case LSTRIP:
+          t = List.of(singleString(t).stripLeading());
+          break;
+        case NEWLINE_TO_BR:
+          t = List.of(singleString(t).replace("\r\n", "<br />\r\n").replace("\n", "<br />\n"));
+          break;
+        case REMOVE:
+          t = List.of(singleString(t).replace(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)), ""));
+          break;
+        case REMOVE_FIRST: {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //Regex sourced from Liquid expression parameter; user-supplied at runtime, Pattern.quote() applied
+          String removeFirstResult = singleString(t).replaceFirst(Pattern.quote(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression))), "");
+          t = List.of(removeFirstResult);
+          break;
+        }
+        case REMOVE_LAST: {
+          String target = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          String s = singleString(t);
+          int p = s.lastIndexOf(target);
+          if (p != -1) {
+            t = List.of(s.substring(0, p) + s.substring(p + target.length()));
+          }
+          break;
+        }
+        case REPLACE:
+          t = List.of(singleString(t).replace(
+            liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)),
+            liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression2))));
+          break;
+        case REPLACE_FIRST: {
+          String target = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          String replacement = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression2));
+          String s = singleString(t);
+          int p = s.indexOf(target);
+          if (p != -1) {
+            t = List.of(s.substring(0, p) + replacement + s.substring(p + target.length()));
+          }
+          break;
+        }
+        case REPLACE_LAST: {
+          String target = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          String replacement = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression2));
+          String s = singleString(t);
+          int p = s.lastIndexOf(target);
+          if (p != -1) {
+            t = List.of(s.substring(0, p) + replacement + s.substring(p + target.length()));
+          }
+          break;
+        }
+        case RSTRIP:
+          t = List.of(singleString(t).stripTrailing());
+          break;
+        case SLICE: {
+          String s = singleString(t);
+          int offset = Integer.parseInt(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)));
+          int length = i.expression2 != null
+            ? Integer.parseInt(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression2)))
+            : 1;
+          if (offset < 0) {
+            offset = s.length() + offset;
+          }
+          if (offset < 0) {
+            offset = 0;
+          }
+          int end = Math.min(offset + length, s.length());
+          t = offset < s.length() ? List.of(s.substring(offset, end)) : List.of("");
+          break;
+        }
+        case SPLIT: {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //Regex sourced from Liquid expression parameter; user-supplied at runtime, Pattern.quote() applied
+          List<String> splitResult = new ArrayList<>(Arrays.asList(singleString(t).split(
+            Pattern.quote(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression))))));
+          t = splitResult;
+          break;
+        }
+        case STRIP:
+          t = List.of(singleString(t).strip());
+          break;
+        case STRIP_HTML: {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //simple character class match; safe
+          String stripped = singleString(t).replaceAll("<[^>]*>", "");
+          t = List.of(stripped);
+          break;
+        }
+        case STRIP_NEWLINES:
+          t = List.of(singleString(t).replace("\r\n", "").replace("\n", "").replace("\r", ""));
+          break;
+        case TRUNCATE: {
+          int len = Integer.parseInt(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)));
+          String ellipsis = i.expression2 != null
+            ? liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression2))
+            : "...";
+          String s = singleString(t);
+          if (s.length() > len) {
+            int end = Math.max(len - ellipsis.length(), 0);
+            t = List.of(s.substring(0, end) + ellipsis);
+          }
+          break;
+        }
+        case TRUNCATEWORDS: {
+          int words = Integer.parseInt(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)));
+          String ellipsis = i.expression2 != null
+            ? liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression2))
+            : "...";
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //simple character class split; safe
+          String[] parts = singleString(t).split("\\s+");
+          if (parts.length > words) {
+            StringBuilder sb = new StringBuilder();
+            for (int w = 0; w < words; w++) {
+              if (w > 0) sb.append(" ");
+              sb.append(parts[w]);
+            }
+            sb.append(ellipsis);
+            t = List.of(sb.toString());
+          }
+          break;
+        }
+        case URL_DECODE:
+          t = List.of(java.net.URLDecoder.decode(singleString(t), java.nio.charset.StandardCharsets.UTF_8));
+          break;
+        case URL_ENCODE:
+          t = List.of(java.net.URLEncoder.encode(singleString(t), java.nio.charset.StandardCharsets.UTF_8));
+          break;
+
+        // ── Math filters ────────────────────────────────────────────────
+
+        case ABS: {
+          double v = toDouble(singleString(t));
+          t = List.of(formatNumber(Math.abs(v), singleString(t)));
+          break;
+        }
+        case AT_LEAST: {
+          double v = toDouble(singleString(t));
+          double min = toDouble(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)));
+          t = List.of(formatNumber(Math.max(v, min), singleString(t)));
+          break;
+        }
+        case AT_MOST: {
+          double v = toDouble(singleString(t));
+          double max = toDouble(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)));
+          t = List.of(formatNumber(Math.min(v, max), singleString(t)));
+          break;
+        }
+        case CEIL: {
+          double v = toDouble(singleString(t));
+          t = List.of(String.valueOf((long) Math.ceil(v)));
+          break;
+        }
+        case DIVIDED_BY: {
+          String raw = singleString(t);
+          String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          if (isLong(raw) && isLong(argRaw)) {
+            long a = Long.parseLong(raw.trim());
+            long denominator = Long.parseLong(argRaw.trim());
+            if (denominator == 0) {
+              throw new FHIRException(new ArithmeticException("/ by zero"));
+            }
+            t = List.of(String.valueOf(a / denominator));
+          } else {
+            double denominator = toDouble(argRaw);
+            if (denominator == 0) {
+              throw new FHIRException(new ArithmeticException("/ by zero"));
+            }
+            t = List.of(formatNumber(toDouble(raw) / denominator, raw));
+          }
+          break;
+        }
+        case FLOOR: {
+          double v = toDouble(singleString(t));
+          t = List.of(String.valueOf((long) Math.floor(v)));
+          break;
+        }
+        case MINUS: {
+          String raw = singleString(t);
+          String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          if (isLong(raw) && isLong(argRaw)) {
+            t = List.of(String.valueOf(Long.parseLong(raw.trim()) - Long.parseLong(argRaw.trim())));
+          } else {
+            t = List.of(formatNumber(toDouble(raw) - toDouble(argRaw), raw));
+          }
+          break;
+        }
+        case MODULO: {
+          String raw = singleString(t);
+          String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          if (isLong(raw) && isLong(argRaw)) {
+            long denominator = Long.parseLong(argRaw.trim());
+            if (denominator == 0) {
+              throw new FHIRException(new ArithmeticException("/ by zero"));
+            }
+            t = List.of(String.valueOf(Long.parseLong(raw.trim()) % denominator));
+          } else {
+            double denominator = toDouble(argRaw);
+            if (denominator == 0) {
+              throw new FHIRException(new ArithmeticException("/ by zero"));
+            }
+            t = List.of(formatNumber(toDouble(raw) % denominator, raw));
+          }
+          break;
+        }
+        case PLUS: {
+          String raw = singleString(t);
+          String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          if (isLong(raw) && isLong(argRaw)) {
+            t = List.of(String.valueOf(Long.parseLong(raw.trim()) + Long.parseLong(argRaw.trim())));
+          } else {
+            t = List.of(formatNumber(toDouble(raw) + toDouble(argRaw), raw));
+          }
+          break;
+        }
+        case ROUND: {
+          double v = toDouble(singleString(t));
+          if (i.expression != null) {
+            int places = Integer.parseInt(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)));
+            double factor = Math.pow(10, places);
+            t = List.of(String.valueOf(Math.round(v * factor) / factor));
+          } else {
+            t = List.of(String.valueOf(Math.round(v)));
+          }
+          break;
+        }
+        case TIMES: {
+          String raw = singleString(t);
+          String argRaw = liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          if (isLong(raw) && isLong(argRaw)) {
+            t = List.of(String.valueOf(Long.parseLong(raw.trim()) * Long.parseLong(argRaw.trim())));
+          } else {
+            t = List.of(formatNumber(toDouble(raw) * toDouble(argRaw), raw));
+          }
+          break;
+        }
+
+        // ── Array filters ───────────────────────────────────────────────
+
+        case COMPACT:
+          t = new ArrayList<>(t);
+          t.removeIf(item -> item == null || item.isEmpty());
+          break;
+        case CONCAT: {
+          List<String> other = liquify(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression));
+          List<String> merged = new ArrayList<>(t);
+          merged.addAll(other);
+          t = merged;
+          break;
+        }
+        case FIRST:
+          t = t.isEmpty() ? List.of("") : List.of(t.get(0));
+          break;
+        case JOIN:
+          t = List.of(String.join(
+            liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)), t));
+          break;
+        case LAST:
+          t = t.isEmpty() ? List.of("") : List.of(t.get(t.size() - 1));
+          break;
+        case MAP:
+          // map is complex (requires property access on objects); not feasible with string-only pipeline
+          throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_FILTER_NOT_SUPPORTED, "map"));
+        case REVERSE: {
+          List<String> rev = new ArrayList<>(t);
+          Collections.reverse(rev);
+          t = rev;
+          break;
+        }
+        case SIZE:
+          t = List.of(String.valueOf(t.size() == 1 ? singleString(t).length() : t.size()));
+          break;
+        case SORT: {
+          List<String> sorted = new ArrayList<>(t);
+          Collections.sort(sorted);
+          t = sorted;
+          break;
+        }
+        case SORT_NATURAL: {
+          List<String> sorted = new ArrayList<>(t);
+          sorted.sort(String.CASE_INSENSITIVE_ORDER);
+          t = sorted;
+          break;
+        }
+        case SUM: {
+          double sum = 0;
+          for (String item : t) {
+            try {
+              sum += Double.parseDouble(item.trim());
+            } catch (NumberFormatException e) {
+              // non-numeric items treated as 0
+            }
+          }
+          t = List.of(formatNumber(sum, "0"));
+          break;
+        }
+        case UNIQ: {
+          List<String> unique = new ArrayList<>();
+          for (String item : t) {
+            if (!unique.contains(item)) {
+              unique.add(item);
+            }
+          }
+          t = unique;
+          break;
+        }
+        case WHERE:
+          // where requires property access on objects; not feasible with string-only pipeline
+          //
+          throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_FILTER_NOT_SUPPORTED, "where"));
+
+        // ── Date filter ─────────────────────────────────────────────────
+
+        case DATE: {
+          String fmt = rubyToJavaDateFormat(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)));
+          ZonedDateTime dt = parseArbitraryDateTime(singleString(t));
+          try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(fmt);
+            t = List.of(dt.format(formatter));
+          } catch (Exception e) {
+            throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_BAD_DATE_FORMAT, fmt));
+          }
+          break;
+        }
+
+        // ── Other filters ───────────────────────────────────────────────
+
+        case DEFAULT: {
+          String s = singleString(t);
+          if (s == null || s.isEmpty()) {
+            t = List.of(liquifySingle(ctxt, engine.evaluate(ctxt, resource, resource, resource, i.expression)));
+          }
+          break;
+        }
+        case JSON:
+          // Simple JSON serialization: quote and escape the string value
+          t = List.of(jsonEscape(singleString(t)));
+          break;
       }
-      b.append(t);
+      }
+      return t;
+    }
+
+    private double toDouble(String s) {
+      try {
+        return Double.parseDouble(s.trim());
+      } catch (NumberFormatException e) {
+        return 0;
+      }
+    }
+
+    private boolean isLong(String s) {
+      if (s == null) {
+        throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNKNOWN_SYNTAX));
+      }
+
+     try {
+        Long.parseLong(s.trim());
+        return true;
+      } catch (NumberFormatException e) {
+        return false;
+      }
+    }
+
+    private String formatNumber(double v, String hint) {
+      if (v == Math.floor(v) && !Double.isInfinite(v)) {
+        return String.valueOf((long) v);
+      }
+      return String.valueOf(v);
+    }
+
+    private String jsonEscape(String s) {
+      StringBuilder sb = new StringBuilder("\"");
+      for (int j = 0; j < s.length(); j++) {
+        char c = s.charAt(j);
+        switch (c) {
+        case '"': sb.append("\\\""); break;
+        case '\\': sb.append("\\\\"); break;
+        case '\n': sb.append("\\n"); break;
+        case '\r': sb.append("\\r"); break;
+        case '\t': sb.append("\\t"); break;
+        default:
+          if (c < 0x20) {
+            sb.append(String.format("\\u%04x", (int) c));
+          } else {
+            sb.append(c);
+          }
+        }
+      }
+      sb.append("\"");
+      return sb.toString();
+    }
+
+    private String rubyToJavaDateFormat(String rubyFormat) {
+      if (rubyFormat == null) {
+        return null;
+      }
+      StringBuilder sb = new StringBuilder();
+      int i = 0;
+      while (i < rubyFormat.length()) {
+        char c = rubyFormat.charAt(i);
+        if (c == '%' && i + 1 < rubyFormat.length()) {
+          i++;
+          char directive = rubyFormat.charAt(i);
+          switch (directive) {
+          // Date directives
+          case 'Y': sb.append("yyyy"); break;   // 4-digit year
+          case 'C': sb.append("yy"); break;      // century (year / 100) — approximate with 2-digit year
+          case 'y': sb.append("yy"); break;       // 2-digit year
+          case 'm': sb.append("MM"); break;       // zero-padded month (01..12)
+          case 'B': sb.append("MMMM"); break;     // full month name
+          case 'b': sb.append("MMM"); break;       // abbreviated month name
+          case 'h': sb.append("MMM"); break;       // same as %b
+          case 'd': sb.append("dd"); break;        // zero-padded day of month (01..31)
+          case 'e': sb.append("d"); break;         // day of month, space-padded ( 1..31) — Java 'd' is unpadded
+          case 'j': sb.append("DDD"); break;       // day of year (001..366)
+          // Time directives
+          case 'H': sb.append("HH"); break;       // 24-hour zero-padded (00..23)
+          case 'k': sb.append("H"); break;         // 24-hour space-padded ( 0..23) — Java 'H' is unpadded
+          case 'I': sb.append("hh"); break;        // 12-hour zero-padded (01..12)
+          case 'l': sb.append("h"); break;         // 12-hour space-padded ( 1..12) — Java 'h' is unpadded
+          case 'P': sb.append("a"); break;         // am/pm lowercase
+          case 'p': sb.append("a"); break;         // AM/PM (Java 'a' outputs AM/PM by default)
+          case 'M': sb.append("mm"); break;        // minute (00..59)
+          case 'S': sb.append("ss"); break;        // second (00..59)
+          case 'L': sb.append("SSS"); break;       // millisecond (000..999)
+          case 'N': sb.append("nnnnnnnnn"); break; // nanosecond (000000000..999999999)
+          // Time zone directives
+          case 'z': sb.append("Z"); break;         // +hhmm offset
+          case 'Z': sb.append("z"); break;         // time zone abbreviation
+          case ':':
+            // Handle %:z, %::z, %:::z
+            if (i + 1 < rubyFormat.length() && rubyFormat.charAt(i + 1) == 'z') {
+              sb.append("XXX"); // +hh:mm
+              i++;
+            } else if (i + 2 < rubyFormat.length() && rubyFormat.charAt(i + 1) == ':' && rubyFormat.charAt(i + 2) == 'z') {
+              sb.append("XXX':00'"); // +hh:mm:ss — approximate
+              i += 2;
+            } else {
+              sb.append(':');
+            }
+            break;
+          // Week / day-of-week directives
+          case 'A': sb.append("EEEE"); break;     // full weekday name
+          case 'a': sb.append("EEE"); break;       // abbreviated weekday name
+          case 'u': sb.append("e"); break;         // day of week (Monday=1..Sunday=7)
+          case 'w': sb.append("e"); break;         // day of week (Sunday=0..Saturday=6) — approximate
+          case 'U': sb.append("ww"); break;        // week number (Sunday as first day) — approximate with ISO week
+          case 'W': sb.append("ww"); break;        // week number (Monday as first day)
+          // Epoch
+          case 's': sb.append("'epoch'"); break;   // seconds since epoch — not directly supported
+          // Literal percent
+          case '%': sb.append('%'); break;
+          // Shorthand combinations
+          case 'c': sb.append("EEE MMM d HH:mm:ss yyyy"); break;  // date and time
+          case 'D': sb.append("MM/dd/yy"); break;                  // %m/%d/%y
+          case 'F': sb.append("yyyy-MM-dd"); break;                // %Y-%m-%d (ISO 8601 date)
+          case 'v': sb.append("d-MMM-yyyy"); break;                // %e-%b-%Y
+          case 'x': sb.append("MM/dd/yy"); break;                  // same as %D
+          case 'X': sb.append("HH:mm:ss"); break;                  // same as %T
+          case 'r': sb.append("hh:mm:ss a"); break;                // %I:%M:%S %p (12-hour time)
+          case 'R': sb.append("HH:mm"); break;                     // %H:%M
+          case 'T': sb.append("HH:mm:ss"); break;                  // %H:%M:%S
+          // Flags: -, _, 0, ^ — strip and ignore
+          case '-':
+          case '_':
+          case '0':
+          case '^':
+          case '#':
+            // These are Ruby format flags that modify the next directive.
+            // Skip the flag and let the next iteration handle the directive.
+            // We don't re-increment i, so the next char will be processed in the next loop iteration as if after '%'.
+            // To handle this, we need to peek at the next character and treat it as the directive.
+            if (i + 1 < rubyFormat.length()) {
+              i++;
+              char next = rubyFormat.charAt(i);
+              // Recurse through the switch for the actual directive by re-processing
+              // For simplicity, we just call the same logic:
+              sb.append(rubyDirectiveToJava(next));
+            }
+            break;
+          default:
+            // Unknown directive — pass through as literal
+            sb.append("'%").append(directive).append("'");
+            break;
+          }
+        } else if (c == '\'') {
+          sb.append("''"); // escape single quote for DateTimeFormatter
+        } else if (Character.isLetter(c)) {
+          sb.append('\'').append(c).append('\''); // quote literal letters so they aren't interpreted as patterns
+        } else {
+          sb.append(c);
+        }
+        i++;
+      }
+      return sb.toString();
+    }
+
+    private String rubyDirectiveToJava(char directive) {
+      switch (directive) {
+      case 'Y': return "yyyy";
+      case 'y': return "yy";
+      case 'm': return "MM";
+      case 'B': return "MMMM";
+      case 'b': return "MMM";
+      case 'h': return "MMM";
+      case 'd': return "dd";
+      case 'e': return "d";
+      case 'j': return "DDD";
+      case 'H': return "HH";
+      case 'k': return "H";
+      case 'I': return "hh";
+      case 'l': return "h";
+      case 'P': return "a";
+      case 'p': return "a";
+      case 'M': return "mm";
+      case 'S': return "ss";
+      case 'L': return "SSS";
+      case 'N': return "nnnnnnnnn";
+      case 'z': return "Z";
+      case 'Z': return "z";
+      case 'A': return "EEEE";
+      case 'a': return "EEE";
+      case 'u': return "e";
+      case 'w': return "e";
+      case 'F': return "yyyy-MM-dd";
+      case 'T': return "HH:mm:ss";
+      case 'R': return "HH:mm";
+      case 'r': return "hh:mm:ss a";
+      case '%': return "%";
+      default: return "'%" + directive + "'";
+      }
+    }
+
+    private ZonedDateTime parseArbitraryDateTime(String dateTimeString) throws FHIRException {
+      String s = dateTimeString == null ? "" : dateTimeString.trim();
+
+      if (s.isEmpty()) {
+        throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNABLE_TO_PARSE_DATETIME, dateTimeString));
+      }
+
+      ZoneId localZone = ZoneId.systemDefault();
+
+      // Epoch handling: seconds (10 digits) or milliseconds (13 digits)
+      try {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, fixed-width, safe
+        boolean isEpochMillis = s.matches("^-?\\d{13}$");
+        if (isEpochMillis) {
+          long ms = Long.parseLong(s);
+          return ZonedDateTime.ofInstant(java.time.Instant.ofEpochMilli(ms), localZone);
+        }
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, fixed-width, safe
+        boolean isEpochSeconds = s.matches("^-?\\d{10}$");
+        if (isEpochSeconds) {
+          long sec = Long.parseLong(s);
+          return ZonedDateTime.ofInstant(java.time.Instant.ofEpochSecond(sec), localZone);
+        }
+      } catch (Exception e) {
+        // fall through
+      }
+
+      // ISO strings with explicit offset/zone
+      try {
+        return java.time.ZonedDateTime.parse(s);
+      } catch (Exception e) {
+        // fall through
+      }
+      try {
+        return java.time.OffsetDateTime.parse(s).toZonedDateTime();
+      } catch (Exception e) {
+        // fall through
+      }
+      try {
+        return java.time.Instant.parse(s).atZone(localZone);
+      } catch (Exception e) {
+        // fall through
+      }
+
+      // ISO local date-time (no zone): assume local timezone
+      try {
+        return LocalDateTime.parse(s).atZone(localZone);
+      } catch (Exception e) {
+        // fall through
+      }
+
+      // XSD dateTime with optional fractional seconds and optional offset
+      try {
+        DateTimeFormatter xsdFormatter = new java.time.format.DateTimeFormatterBuilder()
+          .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+          .optionalStart().appendFraction(java.time.temporal.ChronoField.NANO_OF_SECOND, 0, 9, true).optionalEnd()
+          .optionalStart().appendOffsetId().optionalEnd()
+          .toFormatter();
+        java.time.temporal.TemporalAccessor parsed = xsdFormatter.parseBest(s, java.time.OffsetDateTime::from, LocalDateTime::from);
+        if (parsed instanceof java.time.OffsetDateTime) {
+          return ((java.time.OffsetDateTime) parsed).toZonedDateTime();
+        }
+        return ((LocalDateTime) parsed).atZone(localZone);
+      } catch (Exception e) {
+        // fall through
+      }
+
+      // XSD partial date types: gYear (yyyy), gYearMonth (yyyy-MM), date (yyyy-MM-dd)
+      try {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //fixed-width, safe
+        boolean isGYear = s.matches("-?\\d{4}");
+        if (isGYear) {
+          return LocalDateTime.of(Integer.parseInt(s), 1, 1, 0, 0).atZone(localZone);
+        }
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //fixed-width, safe
+        boolean isGYearMonth = s.matches("-?\\d{4}-\\d{2}");
+        if (isGYearMonth) {
+          return java.time.YearMonth.parse(s).atDay(1).atStartOfDay(localZone);
+        }
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //fixed-width, safe
+        boolean isDate = s.matches("-?\\d{4}-\\d{2}-\\d{2}");
+        if (isDate) {
+          return java.time.LocalDate.parse(s).atStartOfDay(localZone);
+        }
+      } catch (Exception e) {
+        // fall through
+      }
+
+      // Try common patterns (lenient single/double digit month and day variants)
+      DateTimeFormatter[] formatters = {
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"),
+        DateTimeFormatter.ofPattern("M/d/yyyy HH:mm:ss"),
+        DateTimeFormatter.ofPattern("M-d-yyyy HH:mm:ss"),
+        DateTimeFormatter.ofPattern("M/d/yyyy"),
+        DateTimeFormatter.ofPattern("M-d-yyyy"),
+        DateTimeFormatter.ofPattern("M/d/yy"),
+        DateTimeFormatter.ofPattern("M-d-yy"),
+        DateTimeFormatter.ofPattern("d/M/yyyy"),
+        DateTimeFormatter.ofPattern("d-M-yyyy"),
+        DateTimeFormatter.ofPattern("d/M/yy"),
+        DateTimeFormatter.ofPattern("d-M-yy"),
+        DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss yyyy", java.util.Locale.ENGLISH),
+        DateTimeFormatter.ofPattern("MMMM d, yyyy", java.util.Locale.ENGLISH),
+        DateTimeFormatter.ofPattern("MMM d, yyyy", java.util.Locale.ENGLISH),
+      };
+      for (DateTimeFormatter fmt : formatters) {
+        try {
+          return java.time.OffsetDateTime.parse(s, fmt).toZonedDateTime();
+        } catch (Exception e) {
+          // try next
+        }
+        try {
+          return LocalDateTime.parse(s, fmt).atZone(localZone);
+        } catch (Exception e) {
+          // try next
+        }
+        try {
+          return java.time.LocalDate.parse(s, fmt).atStartOfDay(localZone);
+        } catch (Exception e) {
+          // try next
+        }
+      }
+
+      throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_UNABLE_TO_PARSE_DATETIME, dateTimeString));
     }
 
     private String processMarkdown(String t) {
       return processor.process(t, "liquid");
     }
 
-    private String stmtToString(LiquidEngineContext ctxt, List<Base> items) {
-      StringBuilder b = new StringBuilder();
-      boolean first = true;
+    private String liquifySingle(LiquidEngineContext ctxt, List<Base> items) throws FHIRException {
+      return singleString(liquify(ctxt, items));
+    }
+    
+    
+    private List<String> liquify(LiquidEngineContext ctxt, List<Base> items) {
+      List<String> l = new ArrayList<>();
       for (Base i : items) {
         if (i != null) {
-          if (first) first = false; else b.append(", ");
-          String s = renderingSupport != null ? renderingSupport.renderForLiquid(ctxt.externalContext, i) : null;
-          b.append(s != null ? s : engine.convertToString(i));
+          if (i instanceof StringType)
+            l.add(i.primitiveValue());
+          else {
+            String s = renderingSupport != null ? renderingSupport.renderForLiquid(ctxt.externalContext, i) : null;
+            l.add(s != null ? s : engine.convertToString(i));
+          }
         }
       }
-      return b.toString();
+      return l;
     }
   }
 
@@ -375,10 +1244,12 @@ public class LiquidEngine implements IHostApplicationServices {
     private List<LiquidNode> body = new ArrayList<>();
 
     @Override
-    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+    public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      StringBuilder b = new StringBuilder();
       for (LiquidNode n : body) {
-        n.evaluate(b, resource, ctxt);
+        b.append(singleString(n.evaluate(resource, ctxt)));
       }
+      return List.of(b.toString());
     }
   }
 
@@ -390,7 +1261,7 @@ public class LiquidEngine implements IHostApplicationServices {
     private List<LiquidNode> elseBody = new ArrayList<>();
 
     @Override
-    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+    public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null)
         compiled = engine.parse(condition);
       boolean ok = engine.evaluateToBoolean(ctxt, resource, resource, resource, compiled);
@@ -410,9 +1281,11 @@ public class LiquidEngine implements IHostApplicationServices {
           }
         }
       }
+      StringBuilder b = new StringBuilder();
       for (LiquidNode n : list) {
-        n.evaluate(b, resource, ctxt);
+        b.append(singleString(n.evaluate(resource, ctxt)));
       }
+      return List.of(b.toString());
     }
   }
 
@@ -421,7 +1294,7 @@ public class LiquidEngine implements IHostApplicationServices {
   }
 
   private class LiquidContinue extends LiquidNode {
-    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+    public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
       throw new LiquidContinueExecuted();
     }
   }
@@ -431,7 +1304,7 @@ public class LiquidEngine implements IHostApplicationServices {
   }
 
   private class LiquidBreak extends LiquidNode {
-    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+    public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
       throw new LiquidBreakExecuted();
     }
   }
@@ -440,37 +1313,34 @@ public class LiquidEngine implements IHostApplicationServices {
     private List<String> list = new ArrayList<>();
     private int cursor = 0;
 
-    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
-      b.append(list.get(cursor));
+    public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      String s = list.get(cursor);
       cursor++;
       if (cursor == list.size()) {
         cursor = 0;
       }
+      return List.of(s);
     }
   }
 
   private class LiquidAssign extends LiquidNode {
     private String varName;
-    private String expression;
-    private ExpressionNode compiled;
+    private LiquidStatement value;
     @Override
-    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
-      if (compiled == null) {
-        boolean dbl = engine.isAllowDoubleQuotes();
-        engine.setAllowDoubleQuotes(true);
-        ExpressionNodeWithOffset po = engine.parsePartial(expression, 0);
-        compiled = po.getNode();
-        engine.setAllowDoubleQuotes(dbl);
+    public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
+      List<String> result = value.evaluate(resource, ctxt);
+      List<Base> list = new ArrayList<>();
+      for (String s : result) {
+        list.add(new StringType(s));
       }
-      List<Base> list = engine.evaluate(ctxt, resource, resource, resource, compiled);
+
       if (list.isEmpty()) {
         ctxt.globalVars.remove(varName);
-      } else if (list.size() == 1) {
-        ctxt.globalVars.put(varName, list.get(0));
       } else {
-        throw new Error("Assign returned a list?");
+        ctxt.globalVars.put(varName, list);
       }      
-    }    
+      return new ArrayList<String>();
+    }
   }
   
   private class LiquidFor extends LiquidNode {
@@ -484,7 +1354,7 @@ public class LiquidEngine implements IHostApplicationServices {
     private List<LiquidNode> elseBody = new ArrayList<>();
 
     @Override
-    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+    public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
       if (compiled == null) {
         ExpressionNodeWithOffset po = engine.parsePartial(condition, 0);
         compiled = po.getNode();
@@ -492,18 +1362,21 @@ public class LiquidEngine implements IHostApplicationServices {
           parseModifiers(condition.substring(po.getOffset()));
         }
       }
+      
       List<Base> list = engine.evaluate(ctxt, resource, resource, resource, compiled);
+      
       LiquidEngineContext lctxt = new LiquidEngineContext(ctxt);
+      StringBuilder b = new StringBuilder();
       if (list.isEmpty()) {
         for (LiquidNode n : elseBody) {
-          n.evaluate(b, resource, lctxt);
+          b.append(singleString(n.evaluate(resource, lctxt)));
         }
       } else {
         if (reversed) {
           Collections.reverse(list);
         }
         int i = 0;
-        LiquidforloopObject parentLoop = (LiquidforloopObject) lctxt.globalVars.get("forloop");
+        LiquidforloopObject parentLoop = (LiquidforloopObject) (lctxt.globalVars.containsKey("forloop") ? lctxt.globalVars.get("forloop").get(0) : null);
         for (Base o : list) {
           if (offset >= 0 && i < offset) {
             i++;
@@ -513,15 +1386,13 @@ public class LiquidEngine implements IHostApplicationServices {
             break;
           }          
           LiquidforloopObject forloop = new LiquidforloopObject(list.size(), i, offset, limit, parentLoop);
-          lctxt.globalVars.put("forloop", forloop);
-          if (lctxt.globalVars.containsKey(varName)) {
-            throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_VARIABLE_ALREADY_ASSIGNED, varName));
-          }
+          lctxt.globalVars.put("forloop", List.of(forloop));
+          lctxt.globalVars.remove(varName);
           lctxt.loopVars.put(varName, o);
           boolean wantBreak = false;
           for (LiquidNode n : body) {
             try {
-              n.evaluate(b, resource, lctxt);
+              b.append(singleString(n.evaluate(resource, lctxt)));
             } catch (LiquidContinueExecuted e) {
               break;
             } catch (LiquidBreakExecuted e) {
@@ -534,8 +1405,13 @@ public class LiquidEngine implements IHostApplicationServices {
           }
           i++;
         }
-        lctxt.globalVars.put("forloop", parentLoop);
+        if (parentLoop != null) {
+          lctxt.globalVars.put("forloop", List.of(parentLoop));
+        } else {
+          lctxt.globalVars.remove("forloop");
+        }
       }
+      return List.of(b.toString());
     }
 
     private void parseModifiers(String cnt) {
@@ -578,7 +1454,7 @@ public class LiquidEngine implements IHostApplicationServices {
           throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_SYNTAX_UNEXPECTED, cnt));
         }
       }      
-    }
+    }   
   }
 
   private class LiquidCapture extends LiquidNode {
@@ -586,12 +1462,13 @@ public class LiquidEngine implements IHostApplicationServices {
     private List<LiquidNode> body = new ArrayList<>();
 
     @Override
-    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+    public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
       StringBuilder bc = new StringBuilder();
       for (LiquidNode n : body) {
-        n.evaluate(bc, resource, ctxt);
+        bc.append(singleString(n.evaluate(resource, ctxt)));
       }
-      ctxt.globalVars.put(varName, new StringType(bc.toString()));
+      ctxt.globalVars.put(varName, List.of(new StringType(bc.toString())));
+      return new ArrayList<String>();
     }
   }
 
@@ -600,13 +1477,13 @@ public class LiquidEngine implements IHostApplicationServices {
     private Map<String, ExpressionNode> params = new HashMap<>();
 
     @Override
-    public void evaluate(StringBuilder b, Base resource, LiquidEngineContext ctxt) throws FHIRException {
+    public List<String> evaluate(Base resource, LiquidEngineContext ctxt) throws FHIRException {
       if (includeResolver == null) {
-        throw new FHIRException("Includes are not supported in this context");
+        throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_INCLUDE_NOT_SUPPORTED));
       }
       String src = includeResolver.fetchInclude(LiquidEngine.this, page);
       if (src == null) {
-        throw new FHIRException("The include '"+page+"' could not be resolved");
+        throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_INCLUDE_NOT_RESOLVED, page));
       }
       LiquidParser parser = new LiquidParser(src);
       LiquidDocument doc = parser.parse(page);
@@ -616,9 +1493,11 @@ public class LiquidEngine implements IHostApplicationServices {
       for (String s : params.keySet()) {
         incl.addProperty(s, engine.evaluate(ctxt, resource, resource, resource, params.get(s)));
       }
+      StringBuilder b = new StringBuilder();
       for (LiquidNode n : doc.body) {
-        n.evaluate(b, resource, nctxt);
+        b.append(singleString(n.evaluate(resource, nctxt)));
       }
+      return List.of(b.toString());
     }
   }
 
@@ -636,7 +1515,7 @@ public class LiquidEngine implements IHostApplicationServices {
     public LiquidParser(String source) {
       this.source = source;
       if (source == null) {
-        throw new FHIRException("No Liquid source to parse");
+        throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_NO_SOURCE_TO_PARSE));
       }
       cursor = 0;
     }
@@ -803,7 +1682,7 @@ public class LiquidEngine implements IHostApplicationServices {
       return res;
     }
 
-    private LiquidNode parseLoop(String cnt) throws FHIRException {
+    private LiquidFor handleLoop(String cnt) throws FHIRException {
       int i = 0;
       while (!Character.isWhitespace(cnt.charAt(i)))
         i++;
@@ -820,27 +1699,18 @@ public class LiquidEngine implements IHostApplicationServices {
       if (!"in".equals(cnt.substring(j, i)))
         throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_SYNTAX_LOOP, name, cnt));
       res.condition = cnt.substring(i).trim();
+      return res;    
+    }
+
+    
+    private LiquidNode parseLoop(String cnt) throws FHIRException {
+      LiquidFor res = handleLoop(cnt);
       parseList(res.body, false, new String[] { "endloop" });
       return res;
     }
 
     private LiquidNode parseFor(String cnt) throws FHIRException {
-      int i = 0;
-      while (!Character.isWhitespace(cnt.charAt(i)))
-        i++;
-      LiquidFor res = new LiquidFor();
-      res.varName = cnt.substring(0, i);
-      if ("include".equals(res.varName)) {
-        throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_VARIABLE_ILLEGAL, res.varName));
-      }
-      while (Character.isWhitespace(cnt.charAt(i)))
-        i++;
-      int j = i;
-      while (!Character.isWhitespace(cnt.charAt(i)))
-        i++;
-      if (!"in".equals(cnt.substring(j, i)))
-        throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_SYNTAX_LOOP, name, cnt));
-      res.condition = cnt.substring(i).trim();
+      LiquidFor res = handleLoop(cnt);
       String term = parseList(res.body, true, new String[] { "endfor", "else" });
       if ("else".equals(term)) {
         parseList(res.elseBody, false, new String[] { "endfor" });
@@ -869,7 +1739,10 @@ public class LiquidEngine implements IHostApplicationServices {
       int j = i;
       while (!Character.isWhitespace(cnt.charAt(i)))
         i++;
-      res.expression = cnt.substring(i).trim();
+
+      res.value = new LiquidStatement();
+      res.value.statement = cnt.substring(i).trim();
+      
       return res;
     }
 
@@ -911,7 +1784,7 @@ public class LiquidEngine implements IHostApplicationServices {
     if (ctxt.loopVars.containsKey(name))
       return new ArrayList<Base>(Arrays.asList(ctxt.loopVars.get(name)));
     if (ctxt.globalVars.containsKey(name))
-      return new ArrayList<Base>(Arrays.asList(ctxt.globalVars.get(name)));
+      return new ArrayList<Base>(ctxt.globalVars.get(name));
     if (externalHostServices == null)
       return new ArrayList<Base>();
     return externalHostServices.resolveConstant(engine, ctxt.externalContext, name, mode);

@@ -18,6 +18,9 @@ public class RegexFilter extends ConceptFilter {
 
   @Override
   public boolean includeConcept(CodeSystem cs, ConceptDefinitionComponent def) {
-    return def.getCode().matches(regex);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //Regex sourced from FHIR ValueSet filter value; user-supplied at runtime
+    boolean matches = def.getCode().matches(regex);
+    return matches;
   }
 }

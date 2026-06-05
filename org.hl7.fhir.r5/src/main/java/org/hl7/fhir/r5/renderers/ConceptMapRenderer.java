@@ -1124,7 +1124,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   private static MultipleMappingRow findExistingRowByTarget(List<MultipleMappingRow> rows, String system, String code, int i) {
     for (MultipleMappingRow row : rows) {
       for (MultipleMappingRowItem cells : row.rowSets) {
-        if (cells.cells.size() > i + 1 && cells.cells.get(i+1).matches(system, code)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean cellMatches = cells.cells.size() > i + 1 && cells.cells.get(i+1).matches(system, code);
+        if (cellMatches) {
           return row;
         }
       }
@@ -1135,7 +1138,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   private static MultipleMappingRow findExistingRowBySource(List<MultipleMappingRow> rows, String system, String code, int i) {
     for (MultipleMappingRow row : rows) {
       for (MultipleMappingRowItem cells : row.rowSets) {
-        if (cells.cells.size() > i && cells.cells.get(i).matches(system, code)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean cellMatchesSource = cells.cells.size() > i && cells.cells.get(i).matches(system, code);
+        if (cellMatchesSource) {
           return row;
         }
       }

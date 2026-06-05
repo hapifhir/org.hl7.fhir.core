@@ -376,7 +376,7 @@ public class QuestionnaireBuilder {
       group.setRequired(element.getMin() > 0);
 	    if (element.getMin() > 0)
 	    	ExtensionUtilities.addMin(group, element.getMin());
-      group.setRepeats(!element.getMax().equals('1'));
+      group.setRepeats(!element.getMax().equals("1"));
 	    if (!element.getMax().equals("*"))
 	    	ExtensionUtilities.addMax(group, Integer.parseInt(element.getMax()));
 

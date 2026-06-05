@@ -267,6 +267,8 @@ public class GraphDefinitionEngine {
 
   public Map<String, List<String>> splitQuery(String string) {
     final Map<String, List<String>> query_pairs = new LinkedHashMap<String, List<String>>();
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     final String[] pairs = string.split("&");
     for (String pair : pairs) {
       final int idx = pair.indexOf("=");

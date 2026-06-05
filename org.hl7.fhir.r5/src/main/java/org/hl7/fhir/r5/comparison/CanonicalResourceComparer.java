@@ -352,7 +352,10 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
 
   private CodeableConcept findCodeableConceptInList(List<CodeableConcept> list, CodeableConcept item) {
     for (CodeableConcept t : list) {
-      if (t.matches(item)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean conceptMatches = t.matches(item);
+      if (conceptMatches) {
         return t;
       }
     }

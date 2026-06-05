@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
  * <p>This utility class executes common regular expression methods and times out if processing takes longer than expected.</p>
  * <p>500ms is the default timeout.</p>
  */
+@SuppressWarnings({"checkstyle:patternUsage", "checkstyle:stringImplicitPatternUsage"})
+//Regex sourced from regex parameter; user-supplied at runtime, with timeout enforcement
 public final class RegexTimeout {
 
   private RegexTimeout() {

@@ -91,20 +91,14 @@ public class ICFImporter {
       }
       codes.put(id, c);
       for (int i = level + 1; i < 100; i++) {
-        if (codes.containsKey(i)) {
-          codes.remove(i);
-        }
+        codes.remove(String.valueOf(i));
       }
     
     }
     csv.close();
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst), cs); 
   }
-//
-//  private String processLink(String cell) {
-//    String[] p = cell.split("\\\"\\\"");
-//    return p[1];
-//  }
+
 
   private String fixDisplay(String cell) {
     int i = 0;
