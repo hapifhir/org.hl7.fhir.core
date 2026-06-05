@@ -4685,7 +4685,7 @@ public class FHIRPathEngine {
         }
       }
       for (XhtmlNode c : node.getChildNodes()) {
-        if (!checkHtmlNames(c, block && !"p".equals(c))) {
+        if (!checkHtmlNames(c, block && !"p".equals(c))) { // FIXME SpotBugs issue: EC_UNRELATED_TYPES "p".equals(c) is always false (String vs XhtmlNode); compare "p".equals(c.getName())
           return false;
         }
       }

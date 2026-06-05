@@ -4125,7 +4125,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             c.getPieces().add(gen.new Piece(corePath + "valueset-resource-aggregation-mode.html", " {", null));
             boolean firstA = true;
             for (Enumeration<AggregationMode> a : t.getAggregation()) {
-              if (firstA = true)
+              if (firstA)
                 firstA = false;
               else
                 c.getPieces().add(gen.new Piece(corePath + "valueset-resource-aggregation-mode.html", ", ", null));
@@ -4786,7 +4786,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         (element.hasSliceName() ? translate("sd.table", "Slice") + " " + element.getSliceName() : ""));
     if (hasDef && element.hasDefinition()) {
       hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : ""));
-      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement()));
+      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement())); // FIXME SpotBugs issue: UC_USELESS_CONDITION !hasDef is always false here (inside if (hasDef && ...)); simplify to gt(element.getDefinitionElement())
     }
     if (element.hasSlicing() && slicesExist(elements, element)) { // some elements set up slicing but don't actually
                                                                   // slice, so we don't augment the name

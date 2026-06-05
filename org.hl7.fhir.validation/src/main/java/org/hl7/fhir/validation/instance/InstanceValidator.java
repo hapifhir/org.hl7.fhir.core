@@ -1447,7 +1447,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   fixedSource, allErrorsFixed, fixedCoding.getUserSelected()) && ok;
               
             } else {
-              ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, false, pattern ? I18nConstants.TYPE_CHECKS_PATTERN_CC : I18nConstants.TYPE_CHECKS_FIXED_CC, 
+              ok = rule(errors, NO_RULE_DATE, IssueType.VALUE, focus.line(), focus.col(), path, false, pattern ? I18nConstants.TYPE_CHECKS_PATTERN_CC : I18nConstants.TYPE_CHECKS_FIXED_CC, // FIXME SpotBugs issue: UC_USELESS_CONDITION pattern is always true or always false in context
                   fixedCoding.getSystemElement().asStringValue(), fixedCoding.getCodeElement().asStringValue(), fixedCoding.getDisplayElement().asStringValue(),
                   fixedSource, allErrorsFixed) && ok;
             }

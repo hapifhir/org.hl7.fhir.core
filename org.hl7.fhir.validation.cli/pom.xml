@@ -467,6 +467,13 @@
                         </excludes>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId><!-- Use the latest version -->
+                    <configuration>
+                        <onlyAnalyze>org.hl7.fhir.validation.cli.*</onlyAnalyze>
+                    </configuration>
+                </plugin>
         	</plugins>
         </pluginManagement>
     </build>

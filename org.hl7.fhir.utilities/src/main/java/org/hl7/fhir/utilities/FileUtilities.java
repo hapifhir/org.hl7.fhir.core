@@ -353,7 +353,6 @@ public class FileUtilities {
         } catch (Exception e) {
           // nothing
         }
-        System.gc();
         i++;
       } while (!src.renameTo(dst) && i < 10);
       if (src.exists()) {

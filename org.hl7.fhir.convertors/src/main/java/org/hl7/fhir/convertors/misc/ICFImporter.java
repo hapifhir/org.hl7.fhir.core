@@ -91,9 +91,7 @@ public class ICFImporter {
       }
       codes.put(id, c);
       for (int i = level + 1; i < 100; i++) {
-        if (codes.containsKey(i)) {
-          codes.remove(i);
-        }
+        codes.remove(String.valueOf(i));
       }
     
     }

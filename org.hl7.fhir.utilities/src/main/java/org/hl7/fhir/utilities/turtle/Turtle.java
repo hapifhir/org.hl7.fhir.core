@@ -886,7 +886,7 @@ public class Turtle {
 				String end = "\"";
 				while (cursor < source.length()) {
 					ch = grab();
-          if (b.length() == 2 && ch != '"' && b.equals("\"\"")) {
+          if (b.length() == 2 && ch != '"' && b.equals("\"\"")) { // FIXME SpotBugs issue: EC_UNRELATED_TYPES b.equals("\"\"") is always false (StringBuilder vs String); use b.toString().equals("\"\"")
 						cursor--;
 						break;
 					}
@@ -907,7 +907,7 @@ public class Turtle {
 				end = "'";
 				while (cursor < source.length()) {
 					ch = grab();
-					if (b.equals("''") && ch != '\'') {
+					if (b.equals("''") && ch != '\'') { // FIXME SpotBugs issue: EC_UNRELATED_TYPES b.equals("''") is always false (StringBuilder vs String); use b.toString().equals("''")
 						cursor--;
 						break;
 					}

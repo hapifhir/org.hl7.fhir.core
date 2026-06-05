@@ -1325,7 +1325,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     hint = checkAdd(hint, element.hasSliceName() ? context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_PAR, element.getSliceName()) : ""); 
     if (hasDef && element.hasDefinition()) { 
       hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : "")); 
-      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement())); 
+      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement())); // FIXME SpotBugs issue: UC_USELESS_CONDITION !hasDef is always false here (inside if (hasDef && ...)); simplify to gt(element.getDefinitionElement())
     } 
     if (element.hasSlicing() && slicesExist(elements, element)) { // some elements set up slicing but don't actually slice, so we don't augment the name  
       sName = context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_FOR, sName); 
@@ -4315,8 +4315,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } else { 
         removed(x).ah(context.prefixLocalHref(oLink)).txOrCode(code, oldStr).iff(externalO).txN(" ").img("external.png", null); 
       } 
-    } else if (oldStr.equals(newStr)) { 
-      if (mode==GEN_MODE_DIFF) { 
+    } else if (oldStr.equals(newStr)) {
+      if (mode==GEN_MODE_DIFF) { // FIXME SpotBugs issue: UC_USELESS_CONDITION mode==GEN_MODE_DIFF is always true or always false in context
         return null; 
       } else { 
         unchanged(x).ah(context.prefixLocalHref(nLink)).txOrCode(code, newStr).iff(externalN).txN(" ").img("external.png", null); 
@@ -4924,7 +4924,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         compareString(x, toStr(d.getMin()), d.getMinElement(), null, "min", d, toStr(compare.getMin()), null, mode, false, false); 
       } 
       x.tx(".."); 
-      if (!(mode==GEN_MODE_DIFF && (d.getMax().equals(compare.getMax()) || "1".equals(d.getMax())))) { 
+      if (!(mode==GEN_MODE_DIFF && (d.getMax().equals(compare.getMax()) || "1".equals(d.getMax())))) { // FIXME SpotBugs issue: UC_USELESS_CONDITION the mode==GEN_MODE_DIFF condition is always true or always false in context
         compareString(x, d.getMax(), d.getMaxElement(), null, "max", d, compare.getMax(), null, mode, false, false); 
       } 
     } 
