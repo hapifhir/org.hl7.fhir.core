@@ -641,10 +641,18 @@ public class FmlParser extends ParserBase {
       throw lexer.error("variable on target is not a list, so can't add an element");
     } else if (!lexer.isConstant()) {
       ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueId" : "value").setValue(lexer.take());
-    } else if (lexer.isStringConstant())
+    } else if (lexer.isStringConstant()) {
       ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueString" : "value").setValue(lexer.readConstant("??"));
-    else {
-      ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueString" : "value").setValue(readConstant(lexer.take(), lexer));
+    } else if (r5) {
+      // Typed dispatch for bare constants on the r5+ path; mirrors
+      // StructureMapUtilities.readConstant so integers/decimals/booleans pick
+      // the correct value[x] element instead of being stringified.
+      Element param = ref.addElement(name).markLocation(lexer.getCurrentLocation());
+      setParameterConstantValue(param, lexer.take(), lexer);
+    } else {
+      // Pre-r5: there is no value[x] discrimination; everything goes into
+      // `value` as a string after escape processing.
+      ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement("value").setValue(readConstant(lexer.take(), lexer));
     }
   }
  
@@ -686,6 +694,28 @@ public class FmlParser extends ParserBase {
       return s;
     else
       return lexer.processConstant(s);
+  }
+
+  /**
+   * Set the appropriate {@code value[x]} child on a parameter element based on
+   * the shape of the constant token: bare integers become {@code valueInteger},
+   * decimals become {@code valueDecimal}, {@code true}/{@code false} become
+   * {@code valueBoolean}, and anything else becomes {@code valueString} (with
+   * lexer escape sequences processed). Mirrors the typed {@code DataType}
+   * dispatch in {@code StructureMapUtilities.readConstant}, which is needed to
+   * keep the element-model JSON output aligned with the typed-model JSON
+   * output (otherwise everything ended up in {@code valueString}).
+   */
+  private void setParameterConstantValue(Element parameter, String s, FHIRLexer lexer) throws FHIRLexerException {
+    if (Utilities.isInteger(s)) {
+      parameter.makeElement("valueInteger").setValue(s);
+    } else if (Utilities.isDecimal(s, false)) {
+      parameter.makeElement("valueDecimal").setValue(s);
+    } else if (Utilities.existsInList(s, "true", "false")) {
+      parameter.makeElement("valueBoolean").setValue(s);
+    } else {
+      parameter.makeElement("valueString").setValue(lexer.processConstant(s));
+    }
   }
 
   /**
