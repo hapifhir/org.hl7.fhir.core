@@ -101,6 +101,8 @@ public class ADLImporter {
     check("root", adl.getNodeName(), "archetype", "Wrong XML for ADL XML");
     check("root", XMLUtil.getNamedChild(adl, "adl_version").getTextContent(), "1.4", "unsupported ADL version");
 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String id = XMLUtil.getFirstChild(XMLUtil.getNamedChild(adl, "archetype_id")).getTextContent().split("\\.")[1];
     // create structure definition
     StructureDefinition sd = new StructureDefinition();

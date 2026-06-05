@@ -182,6 +182,8 @@ public class JsonNumberCanonicalizer {
       String formatted = String.format("%.16e", value);
       
       // Parse and reformat to match ECMAScript exactly
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = formatted.toLowerCase().split("e");
       String mantissa = removeTrailingZeros(parts[0]);
       int exp = Integer.parseInt(parts[1]);
@@ -243,7 +245,10 @@ public class JsonNumberCanonicalizer {
       }
       
       // Remove trailing zeros after decimal point
-      str = str.replaceAll("0+$", "");
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //anchored, safe
+      String stripped = str.replaceAll("0+$", "");
+      str = stripped;
       
       // Remove decimal point if no fractional part remains
       if (str.endsWith(".")) {
@@ -278,6 +283,8 @@ public class JsonNumberCanonicalizer {
       
       // Convert to lowercase and split
       str = str.toLowerCase();
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = str.split("e");
       String mantissa = removeTrailingZeros(parts[0]);
       String exponent = parts[1];

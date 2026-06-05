@@ -1300,8 +1300,12 @@ public class NarrativeGenerator {
     if (defn != null) {
       String displayHint = ExtensionUtilities.getDisplayHint(defn);
       if (!Utilities.noString(displayHint)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] list = displayHint.split(";");
         for (String item : list) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] parts = item.split(":");
           if (parts.length != 2)
             throw new DefinitionException("error reading display hint: '"+displayHint+"'");
@@ -2498,6 +2502,8 @@ public class NarrativeGenerator {
     boolean firstVersion = true;
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2)
           versions.put(parts[0], parts[1]);
@@ -2522,11 +2528,13 @@ public class NarrativeGenerator {
             if (!s.equals("http://snomed.info/sct"))
               b.append(describeSystem(s)+" version "+versions.get(s));
             else {
-              parts = versions.get(s).split("\\/");
-              if (parts.length >= 5) {
-                String m = describeModule(parts[4]);
-                if (parts.length == 7)
-                  b.append("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //single literal character split
+              String[] snomedParts = versions.get(s).split("\\/");
+              if (snomedParts.length >= 5) {
+                String m = describeModule(snomedParts[4]);
+                if (snomedParts.length == 7)
+                  b.append("SNOMED CT "+m+" edition "+formatSCTDate(snomedParts[6]));
                 else
                   b.append("SNOMED CT "+m+" edition");
               } else
@@ -2730,6 +2738,8 @@ public class NarrativeGenerator {
 	  if (text == null)
 	    return;
 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //fixed-width, safe
     String[] lines = text.split("\\r\\n");
     for (int i = 0; i < lines.length; i++) {
       if (i > 0)
@@ -3540,7 +3550,9 @@ public class NarrativeGenerator {
 	      String link = text.substring(text.indexOf("[[[")+3, text.indexOf("]]]"));
 	      String right = text.substring(text.indexOf("]]]")+3);
 	      String url = link;
-	      String[] parts = link.split("\\#");
+	      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] parts = link.split("\\#");
 	      StructureDefinition p = context.fetchResource(StructureDefinition.class, parts[0]);
 	      if (p == null)
 	        p = context.fetchTypeDefinition(parts[0]);

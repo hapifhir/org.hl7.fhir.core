@@ -439,30 +439,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     }
   }
 
-//
-//  private String getGrandChildBase(List<ElementDefinition> grandChildren) {
-//    if (grandChildren == null || grandChildren.isEmpty()) {
-//      return null;
-//    }
-//    String[] path = grandChildren.get(0).getPath().split("\\.");
-//    for (int i = 1; i < grandChildren.size(); i++) {
-//      path = getSharedString(path, grandChildren.get(1).getPath().split("\\."));
-//    }
-//    return CommaSeparatedStringBuilder.join(".", path);
-//  }
-//
-//  private String[] getSharedString(String[] path, String[] path2) {
-//    int m = -1;
-//    for (int i = 0; i < Integer.min(path.length, path2.length); i++) {
-//      if (path[i].equals(path2[i])) {
-//        m = i;
-//      } else {
-//        break;
-//      }
-//    }
-//    return m == -1 ? new String[0] : Arrays.copyOfRange(path, 0, m+1);
-//  }
-
   private String labelForSubExtension(String url, StructureDefinition sd) {  
     return url;
   }
@@ -644,8 +620,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (defn != null) {
       String displayHint = ExtensionUtilities.getDisplayHint(defn);
       if (!Utilities.noString(displayHint)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] list = displayHint.split(";");
         for (String item : list) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] parts = item.split(":");
           if (parts.length == 1) {
             hints.put("value", parts[0].trim());            

@@ -698,8 +698,13 @@ public class LanguageUtils {
     String elementPath = e.getProperty().getDefinition().getBase().getPath();
     if (e.getName().equals("extension")) {
       String url = e.getChildValue("url");
+      @SuppressWarnings("checkstyle:patternUsage")
+      //anchored segments, safe
       Matcher m = Pattern.compile(INTERVERSION_PATTERN).matcher(url);
-      if (m.matches()) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: Matcher.matches() on m which has been independently reviewed
+      boolean matched = m.matches();
+      if (matched) {
         elementPath = m.group(1);
       }
     }

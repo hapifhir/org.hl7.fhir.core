@@ -432,6 +432,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   private String getVersionPathComponent(String definition) {
     if (Utilities.noString(definition)) return "";
     if (!definition.startsWith(VERS_DEF_PREFIX)) return "";
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String restOfDef[] = definition.substring(VERS_DEF_PREFIX.length()).split(" ");
     if (restOfDef[1].startsWith("(")) return "R"+restOfDef[0];
     return "";
@@ -1712,10 +1714,13 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       if (Utilities.noString(path)) {
         if (isParam && (canonicalUri.toLowerCase().startsWith(SP_BASE)) && (!Utilities.noString(currentFhirBase)) && (!Utilities.noString(hostResource))) {
           String resourceName = "";
-          if (canonicalUri.substring(SP_BASE.length()).split("-")[0].toLowerCase().equals("resource")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String canonicalSuffix = canonicalUri.substring(SP_BASE.length()).split("-")[0].toLowerCase();
+          if (canonicalSuffix.equals("resource")) {
             resourceName = "resource";
           }
-          else if (canonicalUri.substring(SP_BASE.length()).split("-")[0].toLowerCase().equals("domainresource")) {
+          else if (canonicalSuffix.equals("domainresource")) {
             resourceName = "domainresource";
           }
           else {

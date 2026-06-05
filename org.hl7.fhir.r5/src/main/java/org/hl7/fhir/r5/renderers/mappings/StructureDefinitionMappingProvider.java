@@ -49,6 +49,8 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
           }
         }
         if (m != null) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] maps = (m.getMap() == null ? "" : m.getMap()).split("\\,");
           for (String s : maps) {
             String tgt = processMap(s);
@@ -75,6 +77,8 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
       }
       boolean complex = false;
       if (m != null) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] maps = (m.getMap() == null ? "" : m.getMap()).split("\\,");
         if (maps.length == 1) {
           renderMap(div, maps[0]);

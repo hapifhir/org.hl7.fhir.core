@@ -418,7 +418,10 @@ public class XmlParser extends ParserBase {
           else {
             String[] vl = {av};
             if (property.isList() && av.contains(" ")) {
-              vl = av.split(" ");
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //single literal character split
+              String[] avParts = av.split(" ");
+              vl = avParts;
             }
             for (String v : vl) {
               Element n = new Element(property.getName(), property, property.getType(), v).markLocation(line, col).setFormat(FhirFormat.XML);

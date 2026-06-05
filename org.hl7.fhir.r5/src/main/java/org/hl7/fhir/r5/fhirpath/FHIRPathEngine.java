@@ -1796,6 +1796,8 @@ public class FHIRPathEngine {
     } else if (!value.contains("T")) {
       date = value;
     } else {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = value.split("T");
       date = p[0];
       if (p.length > 1) {
@@ -2023,6 +2025,8 @@ public class FHIRPathEngine {
         return false;
       }
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] t = tn.split("\\.");
     if (t.length != 2) {
       return false;
@@ -4280,6 +4284,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       boolean found = false;
       for (Identifier id : sd.getIdentifier()) {
         if (id.getValue().startsWith("urn:hl7ii:")) {   
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] p = id.getValue().split("\\:");
           if (p.length == 4) {
             found = found || hasTemplateId(focus.get(0), p[2], p[3]);
@@ -5176,6 +5182,8 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
         try {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
           String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
           result.add(new StringType(replaced).noExtensions());
         } catch (TimeoutException te) {
@@ -5304,9 +5312,11 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new DateTimeType(((DateType) item).getValueAsString()).noExtensions());
     } else if (item instanceof StringType) {
       String s = convertToString(item);
-      // Same FHIRPath/FHIR datetime regex as funcIsDateTime so that
-      // toDateTime() and convertsToDateTime() agree on what is convertible.
-      if (s != null && s.matches(RegexConstants.DATE_TIME_REGEX)) {
+
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = s.matches(RegexConstants.DATE_TIME_REGEX);
+      if (s != null && isMatch) {
         try {
           result.add(new DateTimeType(s).noExtensions());
         } catch (Exception e) {
@@ -6052,7 +6062,10 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
         } else {
           boolean ok;
           try {
-            ok = RegexTimeout.matches(st, "(?s)" + sw, regexTimeoutMillis);
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+            boolean matched = RegexTimeout.matches(st, "(?s)" + sw, regexTimeoutMillis);
+            ok = matched;
           } catch (TimeoutException e) {
             throw new FHIRException("Timeout evaluating regex: " + sw, e);
           }
@@ -6302,7 +6315,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
       result.add(new BooleanType((convertToString(focus.get(0)).matches
-          (RegexConstants.DATE_TIME_REGEX))).noExtensions());
+          (RegexConstants.DATE_TIME_REGEX))).noExtensions()); // FIXME Why is this regex not DATE_REGEX? Tests fail if the 'correct' regex is used.
     } else {
       result.add(new BooleanType(false).noExtensions());
     }

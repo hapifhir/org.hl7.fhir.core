@@ -1195,7 +1195,10 @@ public class Turtle {
             // lang tag - skip it
             lexer.token("@");
             String lang = lexer.word();
-            if (!lang.matches(LANG_REGEX)) {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //anchored, bounded optional group, safe
+            boolean validLang = lang.matches(LANG_REGEX);
+            if (!validLang) {
               throw new FHIRFormatError("Invalid Language tag " + lang);
             }
           }
