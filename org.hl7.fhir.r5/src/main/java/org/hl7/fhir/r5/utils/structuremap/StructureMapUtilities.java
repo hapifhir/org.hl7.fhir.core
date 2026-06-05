@@ -2824,16 +2824,19 @@ public class StructureMapUtilities {
   }
 
   private TypeDetails analyseTransform(TransformContext context, StructureMap map, StructureMapGroupRuleTargetComponent tgt, VariableForProfiling var, VariablesForProfiling vars) throws FHIRException {
+    var tgtParameters = tgt.getParameter();
     switch (tgt.getTransform()) {
       case CREATE:
-        String p = getParamString(vars, tgt.getParameter().get(0));
+        if (tgtParameters.size() != 1)
+          throw new FHIRException("Transform " + tgt.getTransform().toCode() + " requires exactly 1 parameter");
+        String p = getParamString(vars, tgtParameters.get(0));
         return new TypeDetails(CollectionStatus.SINGLETON, p);
       case COPY:
-        return getParam(vars, tgt.getParameter().get(0));
+        return getParam(vars, tgtParameters.get(0));
       case EVALUATE:
         ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
         if (expr == null) {
-          expr = fpe.parse(getParamString(vars, tgt.getParameter().get(tgt.getParameter().size() - 1)));
+          expr = fpe.parse(getParamString(vars, tgtParameters.get(tgtParameters.size() - 1)));
         }
         return fpe.check(vars, null, null, expr);
       case TRANSLATE:
@@ -2843,7 +2846,7 @@ public class StructureMapUtilities {
         if (tgt.getParameter().size() >= 2 && isParamId(vars, tgt.getParameter().get(1))) {
           TypeDetails td = vars.get(null, getParamId(vars, tgt.getParameter().get(1))).getProperty().getTypes();
           if (td != null && td.hasBinding())
-            // todo: do we need to check that there's no implicit translation her? I don't think we do...
+            // todo: do we need to check that there's no implicit translation here? I don't think we do...
             res.addBinding(td.getBinding());
         }
         return new TypeDetails(CollectionStatus.SINGLETON, res);
