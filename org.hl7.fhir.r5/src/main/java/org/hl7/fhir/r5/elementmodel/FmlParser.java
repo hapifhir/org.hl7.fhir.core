@@ -246,6 +246,10 @@ public class FmlParser extends ParserBase {
   }
 
   private void parseUses(Element result, FHIRLexer lexer) throws FHIRException {
+    // Capture any comments that appeared on the lines IMMEDIATELY before this
+    // `uses` keyword as the structure's documentation (idiomatic FML style;
+    // matches the pre-comment handling for groups and StructureMapUtilities).
+    String preComment = lexer.getAllComments();
     lexer.token("uses");
     Element st = result.addElement("structure");
     st.makeElement("url").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("url"));
@@ -254,10 +258,24 @@ public class FmlParser extends ParserBase {
       st.makeElement("alias").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
     }
     lexer.token("as");
-    st.makeElement("mode").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    lexer.skipToken(";");
-    if (lexer.hasComments()) {
-      st.makeElement("documentation").markLocation(lexer.getCommentLocation()).setValue(lexer.getFirstComment());
+    // Use tokenWithTrailingComment so only a comment that sits on the SAME LINE
+    // as the consumed mode (or trailing `;`) is captured as this uses's
+    // inline documentation. Without this, a multi-line `//` comment block that
+    // immediately precedes the next `group` gets its first line stolen as the
+    // previous uses's documentation, splitting the block across two FHIR
+    // elements.
+    SourceLocation modeLoc = lexer.getCurrentLocation();
+    String modeValue = lexer.getCurrent();
+    String doco = lexer.tokenWithTrailingComment(modeValue);
+    st.makeElement("mode").markLocation(modeLoc).setValue(modeValue);
+    if (lexer.hasToken(";")) {
+      doco = lexer.tokenWithTrailingComment(";");
+    }
+    // Pre-comments win over trailing inline comments.
+    if (!Utilities.noString(preComment)) {
+      st.makeElement("documentation").setValue(preComment);
+    } else if (doco != null) {
+      st.makeElement("documentation").setValue(doco);
     }
   }
   
