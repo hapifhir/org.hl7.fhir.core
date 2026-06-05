@@ -280,6 +280,9 @@ public class StructureMapUtilities {
 
   private static void renderUses(StringBuilder b, StructureMap map) {
     for (StructureMapStructureComponent s : map.getStructure()) {
+      if (s.hasDocumentation()) {
+        renderMultilineDoco(b, s.getDocumentation(), 0);
+      }
       b.append("uses \"");
       b.append(s.getUrl());
       b.append("\" ");
@@ -290,7 +293,6 @@ public class StructureMapUtilities {
       }
       b.append("as ");
       b.append(s.getMode().toCode());
-      renderDoco(b, s.getDocumentation());
       b.append("\r\n");
     }
     if (map.hasStructure())
@@ -1006,6 +1008,11 @@ public class StructureMapUtilities {
 
 
   private void parseUses(StructureMap result, FHIRLexer lexer) throws FHIRException {
+    // Capture any comments that appeared on the lines IMMEDIATELY before this
+    // `uses` keyword. This mirrors how parseGroup treats pre-group comments and
+    // makes `// doc \n uses "..." as source` populate structure.documentation
+    // in addition to the inline `uses "..." as source // doc` form.
+    String preComment = lexer.getAllComments();
     lexer.token("uses");
     StructureMapStructureComponent st = result.addStructure();
     st.setUrl(lexer.readConstant("url"));
@@ -1033,7 +1040,13 @@ public class StructureMapUtilities {
     if (lexer.hasToken(";")) {
       doco = lexer.tokenWithTrailingComment(";");
     }
-    st.setDocumentation(doco);
+    // Pre-comments win over trailing inline comments (more idiomatic FML style
+    // and consistent with how groups capture their documentation).
+    if (!Utilities.noString(preComment)) {
+      st.setDocumentation(preComment);
+    } else {
+      st.setDocumentation(doco);
+    }
   }
   
   
@@ -1192,7 +1205,7 @@ public class StructureMapUtilities {
       }
 
       // And also permit the inclusion of the rule name
-      // Note that each generated rule from the comma seperated list of rules will have the name generated:
+      // Note that each generated rule from the comma separated list of rules will have the name generated:
       //   ruleName + "_" + elementName
       // This could be detected and consolidate into the simple form again
       String ruleName = null;
