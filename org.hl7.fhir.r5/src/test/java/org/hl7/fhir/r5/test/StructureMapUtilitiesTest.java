@@ -95,13 +95,13 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     Assertions.assertEquals("http://github.com/FHIR/fhir-test-cases/r5/fml/syntax", structureMap.getUrl());
     Assertions.assertEquals("Patient", structureMap.getStructure().get(0).getAlias());
     Assertions.assertEquals("http://hl7.org/fhir/StructureDefinition/Patient", structureMap.getStructure().get(0).getUrl());
-    Assertions.assertEquals("Source Documentation", structureMap.getStructure().get(0).getDocumentation());
+    Assertions.assertEquals("Source Documentation", structureMap.getStructure().get(0).getFormatCommentsPost().get(0));
     Assertions.assertEquals("http://hl7.org/fhir/StructureDefinition/Patient", structureMap.getStructure().get(0).getUrl());
     Assertions.assertEquals("http://hl7.org/fhir/StructureDefinition/Basic", structureMap.getStructure().get(1).getUrl());
-    Assertions.assertEquals("Target Documentation", structureMap.getStructure().get(1).getDocumentation());
+    Assertions.assertEquals("Target Documentation", structureMap.getStructure().get(1).getFormatCommentsPost().get(0));
     Assertions.assertEquals("Groups\r\nrule for patient group", structureMap.getGroup().get(0).getDocumentation());
-    Assertions.assertEquals("Comment to rule", structureMap.getGroup().get(0).getRule().get(0).getFormatCommentsPre().get(0));
-    Assertions.assertEquals("Copy identifier short syntax", structureMap.getGroup().get(0).getRule().get(1).getFormatCommentsPre().get(0));
+    Assertions.assertEquals("Comment to rule", structureMap.getGroup().get(0).getRule().get(0).getDocumentation());
+    Assertions.assertEquals("Copy identifier short syntax", structureMap.getGroup().get(0).getRule().get(1).getDocumentation());
 
     StructureMapGroupRuleTargetComponent target = structureMap.getGroup().get(0).getRule().get(2).getTarget().get(1);
     Assertions.assertEquals("'urn:uuid:' + r.lower()", target.getParameter().get(0).toString());
