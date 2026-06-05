@@ -137,7 +137,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     
     write("\r\n");
     if (config.getIni().hasProperty("imports", analysis.getName())) {
-      for (String imp : config.getIni().getStringProperty("imports", analysis.getName()).split("\\,")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] imports = config.getIni().getStringProperty("imports", analysis.getName()).split("\\,");
+      for (String imp : imports) {
         write("import "+imp.replace("{{pid}}", packageName)+";\r\n");
       }
     }
@@ -330,7 +333,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		if (VersionUtilities.isR4BVer(version)) {
 		  String extras = config.getIni().getStringProperty("R4B.NullImplementation", analysis.getName());
 		  if (!Utilities.noString(extras)) {
-		    for (String n : extras.split("\\,")) {
+		    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+		    //single literal character split
+		    String[] extraItems = extras.split("\\,");
+		    for (String n : extraItems) {
 		      String t = n.substring(n.indexOf(":")+1);
 		      n = n.substring(0, n.indexOf(":"));
 		      if (n.endsWith("[]")) {
@@ -1652,6 +1658,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 
 
 	private ElementDefinition getElementForPath(StructureDefinition structure, String pathname) throws Exception {
+	  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+	  //single literal character split
 	  String[] path = pathname.split("\\.");
 	  if (!path[0].equals(structure.getName()))
 	    throw new Exception("Element Path '"+pathname+"' is not legal in this context");

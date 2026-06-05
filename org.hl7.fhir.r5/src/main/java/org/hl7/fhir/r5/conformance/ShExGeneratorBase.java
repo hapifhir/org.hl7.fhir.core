@@ -608,6 +608,8 @@ public abstract class ShExGeneratorBase {
     String bd = null;
     if (sd.hasBaseDefinition()) {
       bd = sd.getBaseDefinitionNoVersion();
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] els = bd.split("/");
       bd = els[els.length - 1];
     }
@@ -736,6 +738,8 @@ public abstract class ShExGeneratorBase {
             String sdType = sd.getType();
             String cstype = constraint.getSource();
             if ((!cstype.isEmpty()) && (cstype.indexOf("/") != -1)) {
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //single literal character split
               String[] els = cstype.split("/");
               cstype = els[els.length - 1];
             }
@@ -811,6 +815,8 @@ public abstract class ShExGeneratorBase {
             log.debug("\t\tWARNING: CONTEXT-OF-USE SKIPPED as it has 'http' in it, might be a URL, instead of '.' delimited string");
             continue;  // some erroneous context of use may use a URL; ignore them
           }
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] backRefs = toStore.split("\\.");
           toStore = "a [fhir:" + getClassName(backRefs[0]) + "]";
           for (int i = 1; i < backRefs.length; i++)
@@ -1126,7 +1132,10 @@ public abstract class ShExGeneratorBase {
       temp = text.replace("\n", token);
       while (temp.contains("SHEX_")) {
         pre += "\n# Unmapped construct found: " + StringUtils.substringBetween(temp, "SHEX_", "_SHEX");
-        temp = temp.replaceFirst("SHEX_", " ").replaceFirst("_SHEX", " ");
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //fixed-width literal strings; safe
+        String tempNext = temp.replaceFirst("SHEX_", " ").replaceFirst("_SHEX", " ");
+        temp = tempNext;
       }
 
       pre += "\n# ";
@@ -1162,6 +1171,8 @@ public abstract class ShExGeneratorBase {
   private String positionParts(String funCall, String mainTxt, String nextText, int depth, boolean complete){
     if (funCall.contains(CALLER)) {
       if (depth == 0) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //CALLER is a fixed-width literal string constant; safe
         String toReturn = funCall.replaceFirst(CALLER, mainTxt);
         toReturn = postProcessing(toReturn, nextText);
         return toReturn.replace(CALLER, "");
@@ -1169,7 +1180,10 @@ public abstract class ShExGeneratorBase {
       else{
         String mT = (mainTxt != null) ? mainTxt.trim() : "";
         String dR = (mT.startsWith(".") || mT.startsWith("{") || mT.startsWith("[")) ? "" : ".";
-        return  postProcessing(funCall.replaceFirst(CALLER, Matcher.quoteReplacement(CALLER + dR + mT )), nextText) ;
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //CALLER is a fixed-width literal string constant; safe
+        String replacedCaller = funCall.replaceFirst(CALLER, Matcher.quoteReplacement(CALLER + dR + mT));
+        return postProcessing(replacedCaller, nextText);
       }
     }
 
@@ -1213,7 +1227,10 @@ public abstract class ShExGeneratorBase {
   private String postProcessing(String p, String q){
     String qp = q;
     if ((q != null)&&(q.trim().startsWith("XOR"))){
-      qp = q.split("XOR")[1];
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //fixed-width, safe
+      String[] xorParts = q.split("XOR");
+      qp = xorParts[1];
 
       // because p xor q = ( p and not q) OR (not p and q)
       //return "(" + p + " AND NOT " + qp + ") OR ( NOT " + p + " AND " + qp + ")";
@@ -1312,6 +1329,8 @@ public abstract class ShExGeneratorBase {
     if (text.length() <= max_col) {
       rval.add(text);
     } else {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] words = text.split(" ");
       int word_idx = 0;
       while(word_idx < words.length) {
@@ -1503,6 +1522,8 @@ public abstract class ShExGeneratorBase {
   //          (!imports.contains(importType)))
   //            imports.add(importType);
   //    }
+        @SuppressWarnings("checkstyle:patternUsage")
+        //simple character class match; safe
         Pattern p = Pattern.compile("<([^\\s>/]+)");
         Matcher m = p.matcher(typeDefn);
         while (m.find()) {
@@ -1572,8 +1593,13 @@ public abstract class ShExGeneratorBase {
 
   private String getCanonicalShapeName(String canonical) {
     // Remove | version suffix -- not relevant/specified for ShEx
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] elements = canonical.split("/");
-    return elements[elements.length - 1].split("\\|")[0];
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] versionParts = elements[elements.length - 1].split("\\|");
+    return versionParts[0];
   }
 
   /**
@@ -1792,10 +1818,13 @@ public abstract class ShExGeneratorBase {
     String restriction = "";
     if (oneOrMoreType.contains(ONE_OR_MORE_CHOICES)) {
       oomType = oneOrMoreType.replace(ONE_OR_MORE_CHOICES, "_");
-      origType = oneOrMoreType.split(ONE_OR_MORE_CHOICES)[0];
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //ONE_OR_MORE_CHOICES is a literal string constant; safe
+      String[] choicesParts = oneOrMoreType.split(ONE_OR_MORE_CHOICES);
+      origType = choicesParts[0];
       restriction = "AND {" + getLinkPredicate() + " \n\t\t\t@<";
 
-      String choices = oneOrMoreType.split(ONE_OR_MORE_CHOICES)[1];
+      String choices = choicesParts[1];
       restriction += choices.replace("_OR_", "> OR \n\t\t\t@<") + "> }";
     }
 
@@ -1842,6 +1871,8 @@ public abstract class ShExGeneratorBase {
         String sdType = sd.getType();
         String cstype = constraint.getSource();
         if ((cstype != null) && (cstype.indexOf("/") != -1)) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] els = cstype.split("/");
           cstype = els[els.length - 1];
         }

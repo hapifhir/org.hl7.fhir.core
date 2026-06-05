@@ -98,11 +98,7 @@ public class ICFImporter {
     csv.close();
     new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(dst), cs); 
   }
-//
-//  private String processLink(String cell) {
-//    String[] p = cell.split("\\\"\\\"");
-//    return p[1];
-//  }
+
 
   private String fixDisplay(String cell) {
     int i = 0;

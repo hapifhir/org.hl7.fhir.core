@@ -608,6 +608,8 @@ public class StructureMapUtilities {
   private static void renderMultilineDoco(StringBuilder b, String doco, int indent) {
     if (Utilities.noString(doco))
       return;
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] lines = doco.split("\\r?\\n");
     for (String line : lines) {
       for (int i = 0; i < indent; i++)
@@ -2064,6 +2066,8 @@ public class StructureMapUtilities {
           throw new FHIRException("Unable to translate - cannot find map " + conceptMapUrl);
       } else {
         if (conceptMapUrl.contains("#")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] p = conceptMapUrl.split("\\#");
           StructureMap mapU = worker.fetchResource(StructureMap.class, p[0], IWorkerContext.VersionResolutionRules.defaultRule());
           for (Resource r : mapU.getContained()) {

@@ -151,7 +151,10 @@ public class Convert {
   }
 
   public boolean isGuid(String r) {
-    return r.matches("[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, fixed-width UUID pattern, safe
+    boolean isGuid = r.matches("[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}");
+    return isGuid;
   }
 
   public InstantType makeInstantFromTS(Element child) throws Exception {
@@ -295,6 +298,8 @@ public class Convert {
         c.setUse(ContactPointUse.OLD);
     }
     if (e.getAttribute("value") != null) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] url = e.getAttribute("value").split(":");
       if (url.length == 1) {
         c.setValue(url[0].trim());

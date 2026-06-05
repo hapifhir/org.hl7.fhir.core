@@ -100,6 +100,8 @@ public class MarkDownProcessor {
     if (mdIfParagrapghs && content.contains("\n")) {
       return true;
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] lines = content.split("\\r?\\n");
     for (String s : lines) {
       if (s.startsWith("* ") || isHeading(s) || s.startsWith("1. ") || s.startsWith("    ")) {
@@ -169,7 +171,9 @@ public class MarkDownProcessor {
     // Detect autolinks, which should start with a scheme, followed by a colon, followed by some content. Whitespace
     // is not allowed and for practical purposes, the scheme is considered to consist of lowercase ASCII characters
     // only.
-    Pattern autolinkPattern = Pattern.compile("<[a-z]+:[^\\s]+>");
+    @SuppressWarnings("checkstyle:patternUsage")
+    // Pattern <[a-z]+:\S+> is safe for use
+    Pattern autolinkPattern = Pattern.compile("<[a-z]+:\\S+>");
     Matcher autolinkMatcher = autolinkPattern.matcher(s);
     return autolinkMatcher.find();
   }
@@ -218,11 +222,16 @@ public class MarkDownProcessor {
   public static String preProcess(String source) {
     // Escape all unescaped open and closing tags ('<' or '</', followed by an ASCII letter, followed by ASCII 
     // letters, digits and/or hyphens).
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //non-overlapping character classes, safe
     String processed = source.replaceAll("(?<!\\\\)<(\\/)?([A-Za-z][A-Za-z0-9-]*[\\s>])", "\\\\<$1$2");
 
-    // Escape all other HTML tags: HTML comments, processing instructions, declarations and CDATA sections -- 
+    // Escape all other HTML tags: HTML comments, processing instructions, declarations and CDATA sections --
     // everything starting with '<?' or '<!'.
-    processed = processed.replaceAll("<(!|\\?)", "\\\\<$1");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //non-overlapping alternation, safe
+    String processed2 = processed.replaceAll("<(!|\\?)", "\\\\<$1");
+    processed = processed2;
 
     return processed;
   }

@@ -325,6 +325,8 @@ public class Analyser {
     return "http://hl7.org/fhir/StructureDefinition/"+name;
   }
   private ElementDefinition getElementForPath(StructureDefinition structure, String pathname) throws Exception {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] path = pathname.split("\\.");
     if (!path[0].equals(structure.getName()))
       throw new Exception("Element Path '"+pathname+"' is not legal in this context ("+structure.getName()+")");

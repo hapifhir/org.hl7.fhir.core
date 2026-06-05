@@ -343,6 +343,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     byte[] bytes = IOUtils.toByteArray(stream);
     binaries.put("version.info", bytes);
 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] vi = new String(bytes).split("\\r?\\n");
     for (String s : vi) {
       if (s.startsWith("version=")) {
