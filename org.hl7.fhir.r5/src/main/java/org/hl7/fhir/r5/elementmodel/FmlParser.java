@@ -114,6 +114,9 @@ public class FmlParser extends ParserBase {
       while (lexer.hasToken("conceptmap"))
         parseConceptMap(result, lexer);
 
+      while (lexer.hasToken("let"))
+        parseConst(result, lexer);
+
       while (!lexer.done()) {
         parseGroup(result, lexer);
       }
@@ -262,6 +265,23 @@ public class FmlParser extends ParserBase {
   private void parseImports(Element result, FHIRLexer lexer) throws FHIRException {
     lexer.token("imports");
     result.addElement("import").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("url"));
+    lexer.skipToken(";");
+  }
+
+  /**
+   * Parse a top-level {@code let name = fp-expression;} declaration. The {@code
+   * let} clause does not require parens in the FML grammar, so the FHIRPath
+   * expression is parsed directly and canonicalised (any redundant outer Group
+   * is stripped). Mirrors {@code StructureMapUtilities.parseConst}.
+   */
+  private void parseConst(Element result, FHIRLexer lexer) throws FHIRException {
+    lexer.token("let");
+    Element cnst = result.addElement("const").markLocation(lexer.getCurrentLocation());
+    cnst.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+    lexer.token("=");
+    SourceLocation loc = lexer.getCurrentLocation();
+    ExpressionNode node = parseCanonicalFhirPath(lexer);
+    cnst.makeElement("value").markLocation(loc).setValue(node.toString());
     lexer.skipToken(";");
   }
 
@@ -467,7 +487,22 @@ public class FmlParser extends ParserBase {
     }
     if (lexer.hasToken("default")) {
       lexer.token("default");
-     source.makeElement("defaultValue").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("default value"));
+      SourceLocation defLoc = lexer.getCurrentLocation();
+      if (lexer.hasToken("(")) {
+        // New form: `default ( fp-expression )`. The outer parens belong to the
+        // FML clause syntax, not to the FHIRPath itself, so canonicalise the AST
+        // after parsing (mirrors StructureMapUtilities).
+        lexer.token("(");
+        ExpressionNode node = parseCanonicalFhirPath(lexer);
+        source.makeElement("defaultValue").markLocation(defLoc).setValue(node.toString());
+        lexer.token(")");
+      } else {
+        // Legacy form: `default "string"`. Convert to a single-quoted FHIRPath
+        // string literal so the stored defaultValue is a valid FHIRPath
+        // expression (mirrors StructureMapUtilities).
+        String s = lexer.readConstant("default value");
+        source.makeElement("defaultValue").markLocation(defLoc).setValue("'" + Utilities.escapeJava(s) + "'");
+      }
     }
     if (Utilities.existsInList(lexer.getCurrent(), "first", "last", "not_first", "not_last", "only_one")) {
       source.makeElement("listMode").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
@@ -480,23 +515,23 @@ public class FmlParser extends ParserBase {
     if (lexer.hasToken("where")) {
       lexer.take();
       SourceLocation loc = lexer.getCurrentLocation();
-      ExpressionNode node = fpe.parse(lexer);
+      ExpressionNode node = parseCanonicalFhirPath(lexer);
       source.setUserData(StructureMapUtilities.MAP_WHERE_EXPRESSION, node);
       source.makeElement("condition").markLocation(loc).setValue(node.toString());
     }
     if (lexer.hasToken("check")) {
       lexer.take();
       SourceLocation loc = lexer.getCurrentLocation();
-      ExpressionNode node = fpe.parse(lexer);
+      ExpressionNode node = parseCanonicalFhirPath(lexer);
       source.setUserData(StructureMapUtilities.MAP_WHERE_CHECK, node);
       source.makeElement("check").markLocation(loc).setValue(node.toString());
     }
     if (lexer.hasToken("log")) {
       lexer.take();
       SourceLocation loc = lexer.getCurrentLocation();
-      ExpressionNode node = fpe.parse(lexer);
-      source.setUserData(StructureMapUtilities.MAP_WHERE_CHECK, node);
-      source.makeElement("logMessage").markLocation(loc).setValue(lexer.take());
+      ExpressionNode node = parseCanonicalFhirPath(lexer);
+      source.setUserData(StructureMapUtilities.MAP_WHERE_LOG, node);
+      source.makeElement("logMessage").markLocation(loc).setValue(node.toString());
     }
   }
   
@@ -632,5 +667,25 @@ public class FmlParser extends ParserBase {
       return lexer.processConstant(s);
   }
 
-  
+  /**
+   * Parse an FML-embedded FHIRPath expression and strip any redundant outer Group
+   * node from the AST. The FML grammar wraps {@code where}, {@code check} and
+   * {@code log} expressions in {@code ( ... )} as part of the clause syntax; those
+   * parens belong to the clause, not the FHIRPath, so the parsed AST root often
+   * appears as a Group with no inner chain and no operation. Storing the
+   * stringified form of such a Group and then re-wrapping with parens on render
+   * would cause parens to accumulate on each round-trip. Mirrors
+   * {@code StructureMapUtilities.parseFhirPathToCanonicalNode}.
+   */
+  private ExpressionNode parseCanonicalFhirPath(FHIRLexer lexer) throws FHIRLexerException {
+    ExpressionNode n = fpe.parse(lexer);
+    while (n != null
+        && n.getKind() == ExpressionNode.Kind.Group
+        && n.getInner() == null
+        && n.getOperation() == null) {
+      n = n.getGroup();
+    }
+    return n;
+  }
+ 
 }
