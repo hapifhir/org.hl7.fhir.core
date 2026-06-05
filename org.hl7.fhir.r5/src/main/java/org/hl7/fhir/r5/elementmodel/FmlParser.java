@@ -84,10 +84,47 @@ public class FmlParser extends ParserBase {
       }
       while (lexer.hasToken("///")) {
         lexer.next();
+        SourceLocation fidLoc = lexer.getCurrentLocation();
         String fid = lexer.takeDottedToken();
-        Element e = result.makeElement(fid).markLocation(lexer.getCurrentLocation());
         lexer.token("=");
-        e.setValue(lexer.readConstant("meta value"));
+        // Per-field metadata handling, mirroring StructureMapUtilities.parse:
+        //  - `description` uses readMarkdown so the triple-quoted (`"""...
+        //    ..."""`) form is accepted as well as the single-line quoted form.
+        //  - `experimental` accepts a quoted "true"/"false" string OR a bare
+        //    true/false token (FML grammar permits both forms).
+        //  - Unknown fields are tolerated and silently dropped (a constant is
+        //    still consumed so the lexer stays in sync).
+        switch (fid) {
+          case "url":
+            result.makeElement("url").markLocation(fidLoc).setValue(lexer.readConstant("url"));
+            break;
+          case "name":
+            result.makeElement("name").markLocation(fidLoc).setValue(lexer.readConstant("name"));
+            break;
+          case "title":
+            result.makeElement("title").markLocation(fidLoc).setValue(lexer.readConstant("title"));
+            break;
+          case "description":
+            result.makeElement("description").markLocation(fidLoc).setValue(lexer.readMarkdown("description"));
+            break;
+          case "status":
+            result.makeElement("status").markLocation(fidLoc).setValue(lexer.readConstant("status"));
+            break;
+          case "experimental":
+            if (lexer.isStringConstant()) {
+              result.makeElement("experimental").markLocation(fidLoc).setValue(Boolean.toString("true".equals(lexer.readConstant("experimental"))));
+            } else if (lexer.hasToken("true")) {
+              lexer.token("true");
+              result.makeElement("experimental").markLocation(fidLoc).setValue("true");
+            } else {
+              lexer.token("false");
+              result.makeElement("experimental").markLocation(fidLoc).setValue("false");
+            }
+            break;
+          default:
+            lexer.readConstant("nothing");
+            break;
+        }
       }
       lexer.setMetadataFormat(false);
       if (!result.hasChild("status")) {
@@ -100,7 +137,7 @@ public class FmlParser extends ParserBase {
         }
       }
       if (!result.hasChild("description") && result.hasChild("title")) {
-        result.makeElement("description").setValue(Utilities.makeId(result.getChildValue("title")));
+        result.makeElement("description").setValue(result.getChildValue("title"));
       }
       
       while (lexer.hasToken("conceptmap"))
