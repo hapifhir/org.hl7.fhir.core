@@ -462,7 +462,7 @@ public class FmlParser extends ParserBase {
 
   private void parseSource(Element rule, FHIRLexer lexer) throws FHIRException {
     Element source = rule.addElement("source").markLocation(lexer.getCurrentLocation());
-    source.makeElement("context").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+    source.makeElement("context").markLocation(lexer.getCurrentLocation()).setValue(readAsStringOrProcessedConstant(lexer.take(), lexer));
     if (source.getChildValue("context").equals("search") && lexer.hasToken("(")) {
       source.makeElement("context").markLocation(lexer.getCurrentLocation()).setValue("@search");
       lexer.take();
@@ -473,7 +473,7 @@ public class FmlParser extends ParserBase {
       lexer.token(")");
     } else if (lexer.hasToken(".")) {
       lexer.token(".");
-      source.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+      source.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(readAsStringOrProcessedConstant(lexer.take(), lexer));
     }
     if (lexer.hasToken(":")) {
       // type and cardinality
@@ -538,12 +538,15 @@ public class FmlParser extends ParserBase {
   private void parseTarget(Element rule, FHIRLexer lexer) throws FHIRException {
     Element target = rule.addElement("target").markLocation(lexer.getCurrentLocation());
     SourceLocation loc = lexer.getCurrentLocation();
-    String start = lexer.take();
+    // Strip backticks (and process escapes) once here so both target.context
+    // assignments below see the canonical value. Plain identifiers and the
+    // sentinel '(' pass through unchanged.
+    String start = readAsStringOrProcessedConstant(lexer.take(), lexer);
     if (lexer.hasToken(".")) {
       target.makeElement("context").markLocation(loc).setValue(start);
       start = null;
       lexer.token(".");
-      target.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+      target.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(readAsStringOrProcessedConstant(lexer.take(), lexer));
     }
     String name;
     boolean isConstant = false;
@@ -665,6 +668,20 @@ public class FmlParser extends ParserBase {
       return s;
     else
       return lexer.processConstant(s);
+  }
+
+  /**
+   * If {@code s} is a backtick- or double-quoted token (used in FML to escape
+   * names that contain special characters or that collide with grammar
+   * keywords) strip the delimiters and process any escape sequences; otherwise
+   * return {@code s} unchanged. Mirrors
+   * {@code StructureMapUtilities.readAsStringOrProcessedConstant}.
+   */
+  private String readAsStringOrProcessedConstant(String s, FHIRLexer lexer) throws FHIRLexerException {
+    if (s.startsWith("\"") || s.startsWith("`"))
+      return lexer.processConstant(s);
+    else
+      return s;
   }
 
   /**
