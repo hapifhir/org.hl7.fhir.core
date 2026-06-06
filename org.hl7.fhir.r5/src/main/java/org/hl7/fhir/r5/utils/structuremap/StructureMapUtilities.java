@@ -590,47 +590,14 @@ public class StructureMapUtilities {
     return b.toString();
   }
 
-  /** if the element name is NOT a valid token, or IS an FML keyword, then it needs backticks */
+  /** if the element name is NOT a valid token then it needs backticks */
   private static String renderElementName(String name) {
-    if (Utilities.isToken(name) && !isFmlKeyword(name)) {
+    // if the name isn't a simple identifier, then escaping is required (\w is `A-Za-z0-9_`)
+    if (name.matches("^[A-Za-z_]\\w*$"))
       return name;
-    }
-    return "`" + name + "`";
-  }
-
-  /** Is the name an FML keyword in the grammar and thus will need escaping if used in an identifier */
-  private static boolean isFmlKeyword(String name) {
-    return Utilities.existsInList(name, 
-      "map",
-               "uses",
-               "as", 
-               "alias",
-               "imports",
-               "group",
-               "extends",
-               "default", 
-               "where", 
-               "check", 
-               "log",
-               "then", 
-               "true",
-               "false",
-               "types", 
-               "type",
-               "first", 
-               "not_first", 
-               "last", 
-               "not_last", 
-               "only_one",
-               "share", 
-               "single", 
-               "source", 
-               "target", 
-               "queried",
-               "produced", 
-               "conceptmap", // is this case sensitivity correct?
-               "prefix", 
-               "let");
+    // Inside backticks the lexer treats \ as an escape and ` as the terminator,
+    // so both must be escaped to round-trip through FHIRLexer.processConstant.
+    return "`" + name.replace("\\", "\\\\").replace("`", "\\`") + "`";
   }
 
   private static void renderTarget(StringBuilder b, StructureMapGroupRuleTargetComponent rt, boolean abbreviate) {
