@@ -78,6 +78,14 @@ public class TurtleGeneratorTests {
   }
 
   @Test
+  public void testExamplesR4() throws IOException, UcumException {
+    // Re-initialize context of current FHIR build
+    var r4context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("4.0.1");
+    initializeParsers(r4context);
+    testExpectedExamples(expectedTurtleDirectory.resolve("R4"), outputTurtleDirectory);
+  }
+
+  @Test
   public void testExamplesR6() throws IOException, UcumException {
     // Re-initialize context of current FHIR build
     var r6context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("6.0.0");
