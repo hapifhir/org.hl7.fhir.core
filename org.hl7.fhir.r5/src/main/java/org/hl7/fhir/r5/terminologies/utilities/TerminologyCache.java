@@ -41,6 +41,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -329,8 +330,8 @@ public class TerminologyCache {
   }
 
 
-  private Object lock;
-  private String folder;
+  private final Object lock;
+  private final String folder;
   @Getter private int requestCount;
   @Getter private int hitCount;
   @Getter private int networkCount;
@@ -721,9 +722,7 @@ public class TerminologyCache {
       // the last save for this NamedCache. Entries that miss the window stay in memory
       // until the next write past the deadline, or until save() is called explicitly.
       if (now - nc.lastSaveAt >= SAVE_DELAY_MS) {
-        save(nc);
-        nc.dirty = false;
-        nc.lastSaveAt = now;
+        save(nc, now);
       }
     }
   }
@@ -795,9 +794,7 @@ public class TerminologyCache {
       long now = System.currentTimeMillis();
       for (NamedCache nc : caches.values()) {
         if (nc.dirty) {
-          save(nc);
-          nc.dirty = false;
-          nc.lastSaveAt = now;
+          save(nc, now);
         }
       }
     }
@@ -820,7 +817,7 @@ public class TerminologyCache {
     }
   }
 
-  private void save(NamedCache nc) {
+  private void save(NamedCache nc, long lastSaveAt) {
     if (folder == null)
       return;
 
@@ -923,6 +920,8 @@ public class TerminologyCache {
     } catch (Exception e) {
       log.error("error saving "+nc.name+": "+e.getMessage(), e);
     }
+    nc.dirty = false;
+    nc.lastSaveAt = lastSaveAt;
   }
 
   private boolean isCapabilityCache(String fn) {
@@ -1059,15 +1058,15 @@ public class TerminologyCache {
       return;
     }
     try {
-      int j = s.indexOf(BREAK);
-      if (j < 0) {
+      int breakIndex = s.indexOf(BREAK);
+      if (breakIndex < 0) {
         log.warn("Malformed entry "+c+" in "+fn+" (no break marker) - ignoring it");
         return;
       }
-      String request = s.substring(0, j);
-      String p = s.substring(j + BREAK.length() + 1).trim();
+      String request = s.substring(0, breakIndex);
+      String resultString = s.substring(breakIndex + BREAK.length() + 1).trim();
 
-      CacheEntry cacheEntry = getCacheEntry(request, p);
+      CacheEntry cacheEntry = getCacheEntry(request, resultString);
 
       // Mirror store()'s dedup so the set and map stay consistent even if a file somehow
       // holds the same request twice: the last occurrence wins, no orphan is left behind.
@@ -1161,19 +1160,26 @@ public class TerminologyCache {
     // in memory only (recomputed on every load), so the algorithm can change freely.
     int start = 0;
     int end = s.length();
+
+    //Trim leading and trailing whitespace.
     while (start < end && s.charAt(start) <= ' ') start++;     // trim() leading
     while (end > start && s.charAt(end - 1) <= ' ') end--;     // trim() trailing
-    long h = 0xcbf29ce484222325L;                             // FNV-1a 64-bit offset basis
+
+    long hash = 0xcbf29ce484222325L;                             // FNV-1a 64-bit offset basis
     for (int i = start; i < end; i++) {
       char c = s.charAt(i);
+
+      //Normalize returns and newlines
       if (c == '\r') {                                         // \r and \r\n both become \n
         c = '\n';
         if (i + 1 < end && s.charAt(i + 1) == '\n') i++;
       }
-      h ^= c;
-      h *= 0x100000001b3L;                                     // FNV-1a 64-bit prime
+
+      //Iterate FNV-1a hash
+      hash *= 0x100000001b3L; // FNV-1a 64-bit prime
+      hash ^= c;
     }
-    return Long.toString(h);
+    return Long.toString(hash);
   }
 
   // management
