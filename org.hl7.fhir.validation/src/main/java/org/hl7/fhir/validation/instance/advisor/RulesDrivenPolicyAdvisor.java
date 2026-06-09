@@ -117,35 +117,10 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
     } else if (actual == null) {
       return false;
     }
-    String[] expected = specifier.split("\\.");
-    String[] found = actual.split("\\.");
-    if (expected.length > found.length) {
-      return false;
-    }
-    for (int i = 0; i < expected.length; i++) {
-      if (!compliesWithPathSegmentMatches(expected[i], found[i])) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private boolean compliesWithPathSegmentMatches(String specifier, String actual) {
-    if ("*".equals(specifier)) {
-      return true;
-    }
-    return normalizeCompliesWithPathSegment(specifier).equals(normalizeCompliesWithPathSegment(actual));
-  }
-
-  private String normalizeCompliesWithPathSegment(String segment) {
-    String normalized = segment;
-    if (normalized.contains(":")) {
-      normalized = normalized.substring(0, normalized.indexOf(":"));
-    }
-    if (normalized.contains("[")) {
-      normalized = normalized.substring(0, normalized.indexOf("["));
-    }
-    return normalized;
+    // Reuse the same path matching as message suppression (messageId@path) so the two advisor
+    // formats behave identically: sub-paths require an explicit trailing ".*" and slices (":")
+    // are not normalized.
+    return pathMatches(specifier.split("\\."), actual.split("\\."));
   }
 
   boolean stringMatches(String specifier, String actual) {

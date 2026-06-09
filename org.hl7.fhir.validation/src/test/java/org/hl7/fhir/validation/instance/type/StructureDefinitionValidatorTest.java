@@ -30,7 +30,8 @@ class StructureDefinitionValidatorTest {
 
   @Test
   void suppressesOnlyMatchingCompliesWithReasons() throws Exception {
-    StructureDefinitionValidator validator = validatorWithAdvisor("= " + CLAIMED_PROFILE + "@Patient.name\n");
+    // slices are not normalized, so the slice has to be named explicitly (consistent with messageId@path)
+    StructureDefinitionValidator validator = validatorWithAdvisor("= " + CLAIMED_PROFILE + "@Patient.name:official.given\n");
     List<ValidationMessage> errors = new ArrayList<>();
 
     validator.reportCompliesWithMessages(errors, "StructureDefinition", CLAIMED_PROFILE, List.of(

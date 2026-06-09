@@ -35,13 +35,20 @@ class RulesDrivenPolicyAdvisorTest {
   void textDrivenAdvisorSuppressesCompliesWithReasons() throws JsonException, IOException {
     String source = "- SOME_MESSAGE@Patient\n"
       + "= http://example.org/Profile@Patient.name\n"
+      + "= http://example.org/Sub@Patient.name.*\n"
       + "= *@Observation.code\n";
 
     TextDrivenPolicyAdvisor advisor = new TextDrivenPolicyAdvisor(baseAdvisor(), "advisor.txt", source);
 
     assertTrue(advisor.isSuppressMessageId("Patient", "SOME_MESSAGE"));
     assertTrue(advisor.isSuppressCompliesWithReason("http://example.org/Profile", "Patient.name"));
-    assertTrue(advisor.isSuppressCompliesWithReason("http://example.org/Profile", "Patient.name:official.given"));
+    // consistent with messageId@path: a bare path matches only exactly, not sub-paths or slices
+    assertFalse(advisor.isSuppressCompliesWithReason("http://example.org/Profile", "Patient.name.given"));
+    assertFalse(advisor.isSuppressCompliesWithReason("http://example.org/Profile", "Patient.name:official.given"));
+    // an explicit trailing wildcard matches sub-paths
+    assertTrue(advisor.isSuppressCompliesWithReason("http://example.org/Sub", "Patient.name.given"));
+    // but slices are not normalized, so the wildcard does not reach into a slice
+    assertFalse(advisor.isSuppressCompliesWithReason("http://example.org/Sub", "Patient.name:official.given"));
     assertTrue(advisor.isSuppressCompliesWithReason("http://example.org/Other", "Observation.code"));
     assertFalse(advisor.isSuppressCompliesWithReason("http://example.org/Profile", "Patient.birthDate"));
   }
