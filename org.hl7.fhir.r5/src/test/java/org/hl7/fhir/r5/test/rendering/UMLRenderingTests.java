@@ -34,6 +34,7 @@ import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -60,6 +61,14 @@ public class UMLRenderingTests {
   private static String dest;
   private static RenderingContext rc;
 
+
+  @AfterAll
+  public static void tearDown() {
+    context = null;
+    rc = null;
+    source = null;
+    dest = null;
+  }
 
   @BeforeAll
   public static void setUp() throws IOException {

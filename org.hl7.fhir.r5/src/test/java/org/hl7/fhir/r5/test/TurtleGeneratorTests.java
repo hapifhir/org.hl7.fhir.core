@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.elementmodel.TurtleParserR6;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -61,6 +62,14 @@ public class TurtleGeneratorTests {
     expectedTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "expectedTtlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_TTL_DIR));
 
     initializeParsers(TestingUtilities.getSharedWorkerContext());
+  }
+
+  @AfterAll
+  public static void tearDown() {
+    parsers = null;
+    inputXmlDirectory = null;
+    outputTurtleDirectory = null;
+    expectedTurtleDirectory = null;
   }
 
   private static void initializeParsers(IWorkerContext context) {
