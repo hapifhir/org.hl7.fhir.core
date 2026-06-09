@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -41,6 +42,12 @@ public class CDARoundTripTests {
 	  NpmPackage npm = new FilesystemPackageCacheManager.Builder().build().loadPackage("hl7.cda.uv.core", "2.0.0-sd");
 	  context.loadFromPackage(npm, null);
 	}
+
+  @AfterAll
+  public static void tearDown() throws FHIRException, IOException {
+    context = null;
+    fp = null;
+  }
 
 // old-test    
 //  @Test

@@ -25,12 +25,7 @@ import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.elementmodel.TurtleParserR6;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.*;
 
 /**
  * TurtleGeneratorTests
@@ -67,11 +62,7 @@ public class TurtleGeneratorTests {
   @AfterAll
   public static void tearDown() {
     parsers = null;
-    inputXmlDirectory = null;
-    outputTurtleDirectory = null;
-    expectedTurtleDirectory = null;
   }
-
   private static void initializeParsers(IWorkerContext context) {
     parsers = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(context);
     System.out.println("FHIR version for testing: " + context.getVersion());

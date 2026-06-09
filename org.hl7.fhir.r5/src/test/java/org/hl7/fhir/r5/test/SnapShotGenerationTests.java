@@ -473,6 +473,12 @@ public class SnapShotGenerationTests {
   private List<ValidationMessage> messages;
   private static IWorkerContext testContext;
 
+  @AfterAll
+  public static void tearDown() throws FHIRException, IOException {
+    fp = null;
+    testContext = null;
+  }
+
   @BeforeAll
   static void setUp() throws FHIRException, IOException {
     testContext = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());

@@ -43,6 +43,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -242,6 +243,11 @@ public class NarrativeGenerationTests {
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
     context.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
   }
+  @AfterAll
+  public static void tearDown() throws FHIRException, IOException {
+    context = null;
+  }
+
 
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
