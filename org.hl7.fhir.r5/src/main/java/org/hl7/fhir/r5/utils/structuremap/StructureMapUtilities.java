@@ -716,9 +716,12 @@ public class StructureMapUtilities {
   }
 
   /** if the element name is NOT a valid token then it needs backticks */
-  private static String renderElementName(String name) {
+  public static String renderElementName(String name) {
     // if the name isn't a simple identifier, then escaping is required (\w is `A-Za-z0-9_`)
-    if (name.matches("^[A-Za-z_]\\w*$"))
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    // one anchored character class [A-Za-z_] followed by \w*, anchored at both ends with ^ and $
+    boolean matches = name.matches("^[A-Za-z_]\\w*$");
+    if (matches)
       return name;
     // Inside backticks the lexer treats \ as an escape and ` as the terminator,
     // so both must be escaped to round-trip through FHIRLexer.processConstant.

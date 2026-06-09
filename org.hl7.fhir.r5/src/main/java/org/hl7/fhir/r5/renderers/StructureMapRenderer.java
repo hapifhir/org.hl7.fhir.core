@@ -668,16 +668,6 @@ public class StructureMapRenderer extends TerminologyRenderer {
         (r.getDependent().size() == 0 || (r.getDependent().size() == 1 && StructureMapUtilities.DEF_GROUP_NAME.equals(r.getDependentFirstRep().getName()))) && (r.getRule().size() == 0);
   }
   
-  /** if the element name is NOT a valid token then it needs backticks */
-  private static String renderElementName(String name) {
-    // if the name isn't a simple identifier, then escaping is required (\w is `A-Za-z0-9_`)
-    if (name.matches("^[A-Za-z_]\\w*$"))
-      return name;
-    // Inside backticks the lexer treats \ as an escape and ` as the terminator,
-    // so both must be escaped to round-trip through FHIRLexer.processConstant.
-    return "`" + name.replace("\\", "\\\\").replace("`", "\\`") + "`";
-  }
-
   private void renderSource(XhtmlNode x,StructureMapGroupRuleSourceComponent rs, boolean abbreviate) {
     x.tx(rs.getContext());
     if (rs.getContext().equals("@search")) {
@@ -686,7 +676,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.color(COLOR_SYNTAX).tx(")");
     } else if (rs.hasElement()) {
       x.tx(".");
-      x.tx(renderElementName(rs.getElement()));
+      x.tx(StructureMapUtilities.renderElementName(rs.getElement()));
     }
     if (rs.hasType()) {
       x.color(COLOR_SYNTAX).tx(" : ");
@@ -738,7 +728,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.tx(rt.getContext());
       if (rt.hasElement()) {
         x.tx(".");
-        x.tx(renderElementName(rt.getElement()));
+        x.tx(StructureMapUtilities.renderElementName(rt.getElement()));
       }
     }
     if (!abbreviate && rt.hasTransform()) {
