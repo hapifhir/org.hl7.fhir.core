@@ -396,9 +396,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       }
     }
     x.color(COLOR_SYNTAX).tx(" {\r\n");
-    for (StructureMapGroupRuleComponent r : g.getRule()) {
-      renderRule(x, g, r, 2);
-    }
+    renderRules(x, g, g.getRule(), 2);
     if (g.hasFormatCommentPost()) {
       renderMultilineDoco(x, g.getFormatCommentsPost(), 0, scanVariables(g, null));
     }
@@ -407,6 +405,112 @@ public class StructureMapRenderer extends TerminologyRenderer {
 
   private String resolveRuleReference(IdType idType) {
     return null;
+  }
+
+  // === Simple Form: Identity Transform batch detection ===============================
+  // Mirrors StructureMapUtilities. Runs of consecutive sibling rules that look like
+  // simple identity rules (`s.x -> t.x;`) sharing source/target context and a common
+  // `<prefix> + makeId(element)` name shape are re-emitted as the compact batch form
+  // `s -> t: e1, e2, e3 ["prefix"];`. See StructureMapUtilities for the full rationale.
+
+  private static boolean isSimpleIdentityRule(StructureMapGroupRuleComponent r) {
+    if (r.getSource().size() != 1 || r.getTarget().size() != 1)
+      return false;
+    if (r.hasRule() || r.hasDependent())
+      return false;
+    StructureMapGroupRuleSourceComponent s = r.getSourceFirstRep();
+    StructureMapGroupRuleTargetComponent t = r.getTargetFirstRep();
+    if (!s.hasContext() || !s.hasElement())
+      return false;
+    if (!t.hasContext() || !t.hasElement())
+      return false;
+    if (s.hasType() || s.hasMin() || s.hasListMode() || s.hasDefaultValue()
+        || s.hasVariable() || s.hasCondition() || s.hasCheck() || s.hasLogMessage())
+      return false;
+    if (t.hasTransform() || t.hasVariable() || !t.getParameter().isEmpty() || !t.getListMode().isEmpty())
+      return false;
+    return s.getElement().equals(t.getElement());
+  }
+
+  private static String identityBatchPrefix(StructureMapGroupRuleComponent r) {
+    if (!isSimpleIdentityRule(r) || !r.hasName())
+      return null;
+    String suffix = Utilities.makeId(r.getSourceFirstRep().getElement());
+    String name = r.getName();
+    if (suffix.isEmpty() || !name.endsWith(suffix))
+      return null;
+    return name.substring(0, name.length() - suffix.length());
+  }
+
+  private static int detectIdentityBatchEnd(List<StructureMapGroupRuleComponent> rules, int start) {
+    StructureMapGroupRuleComponent first = rules.get(start);
+    String prefix = identityBatchPrefix(first);
+    if (prefix == null)
+      return start;
+    String srcCtx = first.getSourceFirstRep().getContext();
+    String tgtCtx = first.getTargetFirstRep().getContext();
+    int end = start;
+    for (int j = start + 1; j < rules.size(); j++) {
+      StructureMapGroupRuleComponent r = rules.get(j);
+      if (r.hasDocumentation() || r.hasFormatCommentPost() || r.hasFormatCommentPre())
+        break;
+      String p = identityBatchPrefix(r);
+      if (p == null || !prefix.equals(p))
+        break;
+      if (!srcCtx.equals(r.getSourceFirstRep().getContext())
+          || !tgtCtx.equals(r.getTargetFirstRep().getContext()))
+        break;
+      end = j;
+    }
+    return end;
+  }
+
+  private void renderIdentityBatch(XhtmlNode x, StructureMapGroupComponent g,
+      List<StructureMapGroupRuleComponent> rules, int start, int end, int indent) {
+    StructureMapGroupRuleComponent first = rules.get(start);
+    Collection<String> tokens = scanVariables(g, first);
+    if (first.hasFormatCommentPre()) {
+      renderMultilineDoco(x, first.getFormatCommentsPre(), indent, tokens);
+    }
+    if (first.hasDocumentation()) {
+      renderMultilineDoco(x, first.getDocumentation(), indent, tokens);
+    }
+    for (int i = 0; i < indent; i++)
+      x.tx(" ");
+    x.tx(first.getSourceFirstRep().getContext());
+    x.color(COLOR_SYNTAX).b().tx(" -> ");
+    x.tx(first.getTargetFirstRep().getContext());
+    x.color(COLOR_SYNTAX).tx(": ");
+    for (int j = start; j <= end; j++) {
+      if (j > start)
+        x.color(COLOR_SYNTAX).tx(", ");
+      x.tx(rules.get(j).getSourceFirstRep().getElement());
+    }
+    String prefix = identityBatchPrefix(first);
+    if (prefix != null && !prefix.isEmpty()) {
+      x.tx(" ");
+      x.i().tx("\"" + prefix + "\"");
+    }
+    x.color(COLOR_SYNTAX).tx(";");
+    if (first.hasFormatCommentPost()) {
+      renderDoco(x, first.getFormatCommentsPost().get(0), false, tokens);
+    }
+    x.tx("\r\n");
+  }
+
+  private void renderRules(XhtmlNode x, StructureMapGroupComponent g,
+      List<StructureMapGroupRuleComponent> rules, int indent) {
+    int i = 0;
+    while (i < rules.size()) {
+      int end = detectIdentityBatchEnd(rules, i);
+      if (end > i) {
+        renderIdentityBatch(x, g, rules, i, end, indent);
+        i = end + 1;
+      } else {
+        renderRule(x, g, rules.get(i), indent);
+        i++;
+      }
+    }
   }
 
   private void renderRule(XhtmlNode x, StructureMapGroupComponent g, StructureMapGroupRuleComponent r, int indent) {
@@ -454,9 +558,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
     if (r.hasRule()) {
       x.b().tx(" then");
       x.color(COLOR_SYNTAX).tx(" {\r\n");
-      for (StructureMapGroupRuleComponent ir : r.getRule()) {
-        renderRule(x, g, ir, indent + 2);
-      }
+      renderRules(x, g, r.getRule(), indent + 2);
       for (int i = 0; i < indent; i++)
         x.tx(" ");
       x.color(COLOR_SYNTAX).tx("}");
