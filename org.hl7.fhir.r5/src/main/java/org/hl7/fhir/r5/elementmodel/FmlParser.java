@@ -433,56 +433,122 @@ public class FmlParser extends ParserBase {
           lexer.next();
       }
     }
-    if (lexer.hasToken("then")) {
-      lexer.token("then");
-      if (lexer.hasToken("{")) {
-        lexer.token("{");
-        while (!lexer.hasToken("}")) {
-          if (lexer.done())
-            throw lexer.error("premature termination expecting '}' in nested group");
-          parseRule(map, rule, lexer, newFmt);
-        }
-        lexer.token("}");
-      } else {
-        done = false;
-        while (!done) {
-          parseRuleReference(rule, lexer);
-          done = !lexer.hasToken(",");
-          if (!done)
-            lexer.next();
-        }
-      }
-    }
-    if (!rule.hasChild("documentation") && lexer.hasComments()) {
-      rule.makeElement("documentation").markLocation(lexer.getCommentLocation()).setValue(lexer.getFirstComment());
-    }
-
-    if (isSimpleSyntax(rule)) {
-      rule.forceElement("source").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
-      rule.forceElement("target").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
-      rule.forceElement("target").makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
-      Element dep = rule.forceElement("dependent").markLocation(rule);
-      dep.makeElement("name").markLocation(rule).setValue(StructureMapUtilities.DEF_GROUP_NAME);
-      dep.addElement("parameter").markLocation(dep).makeElement("valueId").markLocation(dep).setValue(StructureMapUtilities.AUTO_VAR_NAME);
-      dep.addElement("parameter").markLocation(dep).makeElement("valueId").markLocation(dep).setValue(StructureMapUtilities.AUTO_VAR_NAME);
-      // no dependencies - imply what is to be done based on types
-    }
-    if (newFmt) {
-      if (lexer.isConstant()) {
-        if (lexer.isStringConstant()) {
-          rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(fixName(lexer.readConstant("ruleName")));
+    if (newFmt && lexer.hasToken(":")) {
+      // Batch identity-transform form: `src -> tgt: e1, e2, e3 [ruleName];`
+      // (https://hl7.org/fhir/R5/mapping-language.html#simple). The first
+      // element name is attached to the rule that was just parsed; each
+      // subsequent element produces a sibling rule with the same source/target
+      // context. Mirrors StructureMapUtilities.parseRule's batch branch.
+      parseIdentityTransformSet(context, rule, lexer);
+    } else {
+      if (lexer.hasToken("then")) {
+        lexer.token("then");
+        if (lexer.hasToken("{")) {
+          lexer.token("{");
+          while (!lexer.hasToken("}")) {
+            if (lexer.done())
+              throw lexer.error("premature termination expecting '}' in nested group");
+            parseRule(map, rule, lexer, newFmt);
+          }
+          lexer.token("}");
         } else {
-          rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+          done = false;
+          while (!done) {
+            parseRuleReference(rule, lexer);
+            done = !lexer.hasToken(",");
+            if (!done)
+              lexer.next();
+          }
         }
-      } else {
-        if (rule.getChildrenByName("source").size() != 1 || !rule.getChildrenByName("source").get(0).hasChild("element"))
-          throw lexer.error("Complex rules must have an explicit name");
-        if (rule.getChildrenByName("source").get(0).hasChild("type"))
-          rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element") + Utilities.capitalize(rule.getChildrenByName("source").get(0).getNamedChildValue("type")));
-        else
-          rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element"));
       }
-      lexer.token(";");
+
+      if (isSimpleSyntax(rule)) {
+        rule.forceElement("source").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+        rule.forceElement("target").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+        rule.forceElement("target").makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
+        Element dep = rule.forceElement("dependent").markLocation(rule);
+        dep.makeElement("name").markLocation(rule).setValue(StructureMapUtilities.DEF_GROUP_NAME);
+        dep.addElement("parameter").markLocation(dep).makeElement("valueId").markLocation(dep).setValue(StructureMapUtilities.AUTO_VAR_NAME);
+        dep.addElement("parameter").markLocation(dep).makeElement("valueId").markLocation(dep).setValue(StructureMapUtilities.AUTO_VAR_NAME);
+        // no dependencies - imply what is to be done based on types
+      }
+      if (newFmt) {
+        if (lexer.isConstant()) {
+          if (lexer.isStringConstant()) {
+            rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(fixName(lexer.readConstant("ruleName")));
+          } else {
+            rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+          }
+        } else {
+          if (rule.getChildrenByName("source").size() != 1 || !rule.getChildrenByName("source").get(0).hasChild("element"))
+            throw lexer.error("Complex rules must have an explicit name");
+          if (rule.getChildrenByName("source").get(0).hasChild("type"))
+            rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element") + Utilities.capitalize(rule.getChildrenByName("source").get(0).getNamedChildValue("type")));
+          else
+            rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element"));
+        }
+        // Consume the `;` plus any same-line trailing `// foo` comment.
+        String trailingComment = lexer.tokenWithTrailingComment(";");
+        if (trailingComment != null) {
+          rule.getFormatCommentsPost().add(trailingComment);
+        }
+      }
+    }
+  }
+
+  /**
+   * Implements the "Simple Form: Identity Transform" batch syntax
+   * (https://hl7.org/fhir/R5/mapping-language.html#simple). On entry the lexer
+   * is positioned at the leading {@code :}; {@code rule} already has the
+   * parsed source and target with their context set but no element. The first
+   * element name is attached to the existing rule; each subsequent element
+   * name produces a freshly minted sibling rule in {@code context} that shares
+   * the same source/target context. Mirrors
+   * {@code StructureMapUtilities.parseRule}'s batch branch: every produced
+   * rule (including the first) is named {@code makeId(ruleName + element)}
+   * (ruleName defaulting to the empty string) so that the renderer can
+   * recover the compact form purely from the rule name pattern, without any
+   * out-of-band user data.
+   */
+  private void parseIdentityTransformSet(Element context, Element rule, FHIRLexer lexer) throws FHIRException {
+    lexer.take(); // consume ':'
+    List<String> elements = new ArrayList<>();
+    String elementName = lexer.take();
+    Element firstSource = rule.getChildren("source").get(0);
+    Element firstTarget = rule.getChildren("target").get(0);
+    firstSource.makeElement("element").setValue(elementName);
+    firstTarget.makeElement("element").setValue(elementName);
+    while (lexer.hasToken(",")) {
+      lexer.token(",");
+      elements.add(lexer.take());
+    }
+    // Optional explicit rule name after the elements.
+    String ruleName = null;
+    if (lexer.isConstant()) {
+      if (lexer.isStringConstant()) {
+        ruleName = fixName(lexer.readConstant("ruleName"));
+      } else {
+        ruleName = lexer.take();
+      }
+    }
+    String namePrefix = ruleName != null ? ruleName : "";
+    rule.makeElement("name").setValue(Utilities.makeId(namePrefix + elementName));
+    // Consume the `;` plus any same-line trailing `// foo` comment.
+    // StructureMapUtilities stores that trailing comment in
+    // rule.formatCommentsPost; the element model has no equivalent slot, so
+    // the trailing comment is intentionally discarded here.
+    lexer.tokenWithTrailingComment(";");
+    String sourceContext = firstSource.getChildValue("context");
+    String targetContext = firstTarget.getChildValue("context");
+    for (String element : elements) {
+      Element newRule = context.addElement("rule");
+      newRule.makeElement("name").setValue(Utilities.makeId(namePrefix + element));
+      Element newSource = newRule.addElement("source");
+      newSource.makeElement("context").setValue(sourceContext);
+      newSource.makeElement("element").setValue(element);
+      Element newTarget = newRule.addElement("target");
+      newTarget.makeElement("context").setValue(targetContext);
+      newTarget.makeElement("element").setValue(element);
     }
   }
 
