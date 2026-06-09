@@ -7301,7 +7301,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table")); // todo: change to graph definition
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Property", "A profiled resource", null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Card.",
-        "Minimum and Maximum # of times the the element can appear in the instance", null, 0));
+        "Minimum and Maximum # of times the element can appear in the instance", null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Content", "What goes here", null, 0));
     model.getTitles()
         .add(gen.new Title(null, model.getDocoRef(), "Description", "Description of the profile", null, 0));
