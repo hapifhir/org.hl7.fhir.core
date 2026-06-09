@@ -570,7 +570,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
     }
     if (rs.hasDefaultValue()) {
       x.b().tx(" default ");
-      x.tx("\"" + Utilities.escapeJson(rs.getDefaultValue()) + "\"");
+      x.color(COLOR_SYNTAX).tx("(");
+      x.tx(rs.getDefaultValue());
+      x.color(COLOR_SYNTAX).tx(")");
     }
     if (!abbreviate && rs.hasVariable()) {
       x.b().tx(" as ");
@@ -578,15 +580,21 @@ public class StructureMapRenderer extends TerminologyRenderer {
     }
     if (rs.hasCondition()) {
       x.b().tx(" where ");
+      x.color(COLOR_SYNTAX).tx("(");
       x.tx(rs.getCondition());
+      x.color(COLOR_SYNTAX).tx(")");
     }
     if (rs.hasCheck()) {
       x.b().tx(" check ");
+      x.color(COLOR_SYNTAX).tx("(");
       x.tx(rs.getCheck());
+      x.color(COLOR_SYNTAX).tx(")");
     }
     if (rs.hasLogMessage()) {
       x.b().tx(" log ");
+      x.color(COLOR_SYNTAX).tx("(");
       x.tx(rs.getLogMessage());
+      x.color(COLOR_SYNTAX).tx(")");
     }
   }
   
