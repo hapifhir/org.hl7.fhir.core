@@ -170,7 +170,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       if (Utilities.existsInList(v, "true", "false") || Utilities.isDecimal(v, true)) {
         x.color(COLOR_CONST).tx(v);
       } else {
-        x.color(COLOR_CONST).tx("'"+v+"'");
+        x.color(COLOR_CONST).tx("\"" + Utilities.escapeJava(v) + "\"");
       }
       x.tx("\r\n");
     }
