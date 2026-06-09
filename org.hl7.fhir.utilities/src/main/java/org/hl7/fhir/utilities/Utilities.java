@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -1388,9 +1389,7 @@ public class Utilities {
    * @return
    */
   public static String fhirPathToXPath(String path) {
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] p = path.split("\\.");
+    String[] p = StringUtils.splitPreserveAllTokens(path, '.');
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(".");
     int i = 0;
     while (i < p.length) {
@@ -1672,9 +1671,7 @@ public class Utilities {
       value = value.substring(0, value.indexOf("e"));
     }
     if (value.contains(".")) {
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //single literal character split
-      String[] decimalParts = value.split("\\.");
+      String[] decimalParts = StringUtils.splitPreserveAllTokens(value, '.');
       return decimalParts[1].length();
     } else {
       return 0;

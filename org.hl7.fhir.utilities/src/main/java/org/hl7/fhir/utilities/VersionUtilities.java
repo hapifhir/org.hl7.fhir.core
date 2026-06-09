@@ -58,9 +58,7 @@ public class VersionUtilities {
     private String label;
 
     public SemVer(String ver) {
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //single literal character split
-      String[] p = ver.split("\\.");
+      String[] p = StringUtils.splitPreserveAllTokens(ver, '.');
       if (p.length > 0) {
         major = p[0];
       }
@@ -399,9 +397,7 @@ public class VersionUtilities {
   }
 
   private static String getMajMinPriv(String version) {
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] p = version.split("\\.");
+    String[] p = StringUtils.splitPreserveAllTokens(version, '.');
     return p[0] + "." + p[1];
   }
 
@@ -420,9 +416,7 @@ public class VersionUtilities {
     if (!isSemVer(version, true)) {
       return null;
     }
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] p = version.split("\\.");
+    String[] p = StringUtils.splitPreserveAllTokens(version, '.');
     return p[0] + "." + p[1] + (p.length >= 3 ? "." + p[2] : ".0");
   }
 
@@ -437,9 +431,7 @@ public class VersionUtilities {
   }
 
   private static String getPatchPriv(String version) {
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] p = version.split("\\.");
+    String[] p = StringUtils.splitPreserveAllTokens(version, '.');
     return p.length >= 3 ? p[2] : "0";
   }
 
@@ -642,9 +634,7 @@ public class VersionUtilities {
   }
 
   private static int[] splitParts(String v) {
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] p = v.split("\\.");
+    String[] p = StringUtils.splitPreserveAllTokens(v, '.');
     return Arrays.stream(p).mapToInt(Integer::parseInt).toArray();
   }
 
@@ -886,9 +876,7 @@ public class VersionUtilities {
       return null;
     }
     if (pid.startsWith("hl7.fhir.r")) {
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //single literal character split
-      String[] p = pid.split("\\.");
+      String[] p = StringUtils.splitPreserveAllTokens(pid, '.');
       return versionFromCode(p[2]);
     }
     return null;
@@ -1337,9 +1325,7 @@ public class VersionUtilities {
 
   public static boolean appearsToBeDate(String version) {
     if (version == null || version.isEmpty()) return false;
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String datePart = version.split("T")[0];
+    String datePart = StringUtils.splitPreserveAllTokens(version, 'T')[0];
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //anchored, safe
     boolean isDate = datePart.matches("^\\d{4}-?\\d{2}(-?\\d{2})?$");
@@ -1364,9 +1350,7 @@ public class VersionUtilities {
   }
 
   public static String normaliseDateString(String date) {
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] dateParts = date.split("T");
+    String[] dateParts = StringUtils.splitPreserveAllTokens(date, 'T');
     return dateParts[0].replace("-", "");
   }
 
