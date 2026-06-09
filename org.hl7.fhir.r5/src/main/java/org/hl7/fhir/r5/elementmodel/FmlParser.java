@@ -22,7 +22,6 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTransform;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
@@ -34,7 +33,6 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 @MarkedToMoveToAdjunctPackage
 public class FmlParser extends ParserBase {

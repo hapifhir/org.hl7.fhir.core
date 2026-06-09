@@ -185,6 +185,131 @@ public class StructureMapUtilities {
     return b.toString();
   }
 
+  // === Simple Form: Identity Transform batch detection =================================
+  // The "Simple Form: Identity Transform" syntax `src -> tgt: e1, e2, e3 [ruleName];`
+  // (https://hl7.org/fhir/R5/mapping-language.html#simple) is parsed into N sibling
+  // rules. To round-trip back to the compact form on render without relying on out-of-
+  // band user data, the parser names each generated rule `makeId(ruleName + element)`
+  // (with ruleName defaulting to ""). On render, runs of consecutive sibling rules that
+  // (a) look structurally like a simple identity rule (context+element on source AND
+  // target with everything matching, no transform/variable/condition/etc), (b) share
+  // the same source/target context, and (c) have names of the form `<prefix>` +
+  // `makeId(element)` for one common `prefix`, are emitted as a single batch line.
+  // A run of length 1 falls back to the normal renderRule path.
+
+  private static boolean isSimpleIdentityRule(StructureMapGroupRuleComponent r) {
+    if (r.getSource().size() != 1 || r.getTarget().size() != 1)
+      return false;
+    if (r.hasRule() || r.hasDependent())
+      return false;
+    StructureMapGroupRuleSourceComponent s = r.getSourceFirstRep();
+    StructureMapGroupRuleTargetComponent t = r.getTargetFirstRep();
+    if (!s.hasContext() || !s.hasElement())
+      return false;
+    if (!t.hasContext() || !t.hasElement())
+      return false;
+    if (s.hasType() || s.hasMin() || s.hasListMode() || s.hasDefaultValue()
+        || s.hasVariable() || s.hasCondition() || s.hasCheck() || s.hasLogMessage())
+      return false;
+    if (t.hasTransform() || t.hasVariable() || !t.getParameter().isEmpty() || !t.getListMode().isEmpty())
+      return false;
+    return s.getElement().equals(t.getElement());
+  }
+
+  /**
+   * If {@code r} is a simple identity rule whose name matches the
+   * {@code <prefix> + makeId(element)} pattern, returns the prefix part
+   * (possibly empty). Otherwise returns {@code null}.
+   */
+  private static String identityBatchPrefix(StructureMapGroupRuleComponent r) {
+    if (!isSimpleIdentityRule(r) || !r.hasName())
+      return null;
+    String suffix = Utilities.makeId(r.getSourceFirstRep().getElement());
+    String name = r.getName();
+    if (suffix.isEmpty() || !name.endsWith(suffix))
+      return null;
+    return name.substring(0, name.length() - suffix.length());
+  }
+
+  /**
+   * Returns the inclusive end index of an identity-transform batch starting at
+   * {@code start}, or {@code start} itself if there's no batch (no batch is
+   * emitted unless at least 2 consecutive rules match).
+   */
+  private static int detectIdentityBatchEnd(List<StructureMapGroupRuleComponent> rules, int start) {
+    // Trailing `// comment` on the batch terminator is preserved on the first
+    // rule by the parser, so a trailing comment on rules[start] doesn't prevent
+    // batching. Trailing comments on subsequent rules WOULD be lost, so the loop
+    // below stops if it sees one.
+    StructureMapGroupRuleComponent first = rules.get(start);
+    String prefix = identityBatchPrefix(first);
+    if (prefix == null)
+      return start;
+    String srcCtx = first.getSourceFirstRep().getContext();
+    String tgtCtx = first.getTargetFirstRep().getContext();
+    int end = start;
+    for (int j = start + 1; j < rules.size(); j++) {
+      StructureMapGroupRuleComponent r = rules.get(j);
+      // Don't swallow subsequent rules that have their own documentation or
+      // trailing format comments — those would be silently lost in a batch.
+      if (r.hasDocumentation() || r.hasFormatCommentPost())
+        break;
+      String p = identityBatchPrefix(r);
+      if (p == null || !prefix.equals(p))
+        break;
+      if (!srcCtx.equals(r.getSourceFirstRep().getContext())
+          || !tgtCtx.equals(r.getTargetFirstRep().getContext()))
+        break;
+      end = j;
+    }
+    return end;
+  }
+
+  private static void renderIdentityBatch(StringBuilder b, List<StructureMapGroupRuleComponent> rules,
+      int start, int end, int indent) {
+    StructureMapGroupRuleComponent first = rules.get(start);
+    if (first.hasDocumentation()) {
+      renderMultilineDoco(b, first.getDocumentation(), indent);
+    }
+    for (int i = 0; i < indent; i++)
+      b.append(' ');
+    b.append(first.getSourceFirstRep().getContext());
+    b.append(" -> ");
+    b.append(first.getTargetFirstRep().getContext());
+    b.append(": ");
+    for (int j = start; j <= end; j++) {
+      if (j > start)
+        b.append(", ");
+      b.append(rules.get(j).getSourceFirstRep().getElement());
+    }
+    String prefix = identityBatchPrefix(first);
+    if (prefix != null && !prefix.isEmpty()) {
+      b.append(" \"");
+      b.append(prefix);
+      b.append("\"");
+    }
+    b.append(";");
+    if (first.hasFormatCommentPost()) {
+      b.append(" // ");
+      b.append(first.getFormatCommentsPost().get(0));
+    }
+    b.append("\r\n");
+  }
+
+  private static void renderRules(StringBuilder b, List<StructureMapGroupRuleComponent> rules, int indent) {
+    int i = 0;
+    while (i < rules.size()) {
+      int end = detectIdentityBatchEnd(rules, i);
+      if (end > i) {
+        renderIdentityBatch(b, rules, i, end, indent);
+        i = end + 1;
+      } else {
+        renderRule(b, rules.get(i), indent);
+        i++;
+      }
+    }
+  }
+
   private static void renderConceptMaps(StringBuilder b, StructureMap map) {
     for (Resource r : map.getContained()) {
       if (r instanceof ConceptMap) {
@@ -373,9 +498,7 @@ public class StructureMapUtilities {
       }
     }
     b.append(" {\r\n");
-    for (StructureMapGroupRuleComponent r : g.getRule()) {
-      renderRule(b, r, 2);
-    }
+    renderRules(b, g.getRule(), 2);
     b.append("}\r\n\r\n");
   }
 
@@ -388,25 +511,6 @@ public class StructureMapUtilities {
   private static void renderRule(StringBuilder b, StructureMapGroupRuleComponent r, int indent) {
     if (r.hasDocumentation()) {
       renderMultilineDoco(b, r.getDocumentation(), indent);
-    }
-    // This user data comes from parsing the simple transform `src -> tgt: type, subtype, action, recorded;`
-    // This could also be an extension at a later date
-    if (r.hasUserData(MAP_IDENTITY_TRANSFORM_SET)) {
-      if (Boolean.FALSE.equals(r.getUserData(MAP_IDENTITY_TRANSFORM_SET)))
-        return;
-      String elements = (String)r.getUserData(MAP_IDENTITY_TRANSFORM_SET);
-      if (elements != null) {
-        for (int i = 0; i < indent; i++)
-          b.append(' ');
-        b.append(r.getSourceFirstRep().getContextElement());
-        b.append(" -> ");
-        b.append(r.getTargetFirstRep().getContextElement());
-        b.append(": ");
-        b.append(elements);
-        b.append(";");
-        b.append("\r\n");
-      }
-      return;
     }
     for (int i = 0; i < indent; i++)
       b.append(' ');
@@ -444,9 +548,7 @@ public class StructureMapUtilities {
     }
     if (r.hasRule()) {
       b.append(" then {\r\n");
-      for (StructureMapGroupRuleComponent ir : r.getRule()) {
-        renderRule(b, ir, indent + 2);
-      }
+      renderRules(b, r.getRule(), indent + 2);
       for (int i = 0; i < indent; i++)
         b.append(' ');
       b.append("}");
