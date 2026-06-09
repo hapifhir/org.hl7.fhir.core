@@ -164,7 +164,7 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     
     if (spd.hasComponent()) {
-      x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMPARATORS));
+      x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMPONENT));
       tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
@@ -175,6 +175,10 @@ public class SearchParameterRenderer extends TerminologyRenderer {
           tr.td().tx(t.getDefinition());
         }
         tr.td().code().tx(t.getExpression());
+        var tdt = tr.td();
+        if (tsp != null) {
+          tdt.code().tx(tsp.getTypeElement().getCode());
+        }
       }
     }
   }
