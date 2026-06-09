@@ -574,12 +574,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
     if (rs.hasType()) {
       x.color(COLOR_SYNTAX).tx(" : ");
       x.tx(rs.getType());
-      if (rs.hasMin()) {
-        x.tx(" ");
-        x.tx(rs.getMin());
-        x.color(COLOR_SYNTAX).tx("..");
-        x.tx(rs.getMax());
-      }
+    }
+    if (rs.hasMin()) {
+      x.tx(" ");
+      x.tx(rs.getMin());
+      x.color(COLOR_SYNTAX).tx("..");
+      x.tx(rs.getMax());
     }
 
     if (rs.hasListMode()) {
