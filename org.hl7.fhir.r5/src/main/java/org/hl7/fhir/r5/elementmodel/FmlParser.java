@@ -700,16 +700,31 @@ public class FmlParser extends ParserBase {
       }
       lexer.token(")");
     } else if (name != null) {
-      target.makeElement("transform").markLocation(loc).setValue(StructureMapTransform.COPY.toCode());
-      if (!isConstant) {
-        loc = lexer.getCurrentLocation();
-        String id = name;
-        while (lexer.hasToken(".")) {
-          id = id + lexer.take() + lexer.take();
+      // Mirror StructureMapUtilities.parseTarget: a bare identifier with no `=`
+      // and no `(` is either the target.context (when one hasn't been set) or a
+      // COPY transform parameter (when it has). Without this branch a bare
+      // target like `tgt` in `src -> tgt: id, active;` would be mis-parsed as a
+      // COPY transform and the batch identity-transform form would have no
+      // target.context to anchor on.
+      if (target.hasChild("context")) {
+        target.makeElement("transform").markLocation(loc).setValue(StructureMapTransform.COPY.toCode());
+        if (!isConstant) {
+          loc = lexer.getCurrentLocation();
+          String id = name;
+          while (lexer.hasToken(".")) {
+            id = id + lexer.take() + lexer.take();
+          }
+          target.addElement("parameter").markLocation(loc).makeElement("valueId").setValue(id);
+        } else {
+          // Bare constants on the right of `=` need typed dispatch so integers,
+          // decimals and booleans land in valueInteger/valueDecimal/valueBoolean
+          // instead of being stringified into valueString. Mirrors
+          // StructureMapUtilities.readConstant's DataType return path.
+          Element param = target.addElement("parameter").markLocation(lexer.getCurrentLocation());
+          setParameterConstantValue(param, name, lexer);
         }
-        target.addElement("parameter").markLocation(loc).makeElement("valueId").setValue(id);
       } else {
-        target.addElement("parameter").markLocation(lexer.getCurrentLocation()).makeElement("valueString").setValue(readConstant(name, lexer));
+        target.makeElement("context").markLocation(loc).setValue(name);
       }
     }
     if (lexer.hasToken("as")) {
