@@ -425,9 +425,18 @@ public class StructureMapRenderer extends TerminologyRenderer {
     if (!t.hasContext() || !t.hasElement())
       return false;
     if (s.hasType() || s.hasMin() || s.hasListMode() || s.hasDefaultValue()
-        || s.hasVariable() || s.hasCondition() || s.hasCheck() || s.hasLogMessage())
+        || s.hasCondition() || s.hasCheck() || s.hasLogMessage())
       return false;
-    if (t.hasTransform() || t.hasVariable() || !t.getParameter().isEmpty() || !t.getListMode().isEmpty())
+    if (!t.getParameter().isEmpty() || !t.getListMode().isEmpty())
+      return false;
+    // Accept the executable simple-form shape (vvv variable on both sides plus
+    // a CREATE transform on target with no params) as well as the bare shape.
+    // Mirrors StructureMapUtilities.isSimpleIdentityRule.
+    if (s.hasVariable() && !StructureMapUtilities.AUTO_VAR_NAME.equals(s.getVariable()))
+      return false;
+    if (t.hasVariable() && !StructureMapUtilities.AUTO_VAR_NAME.equals(t.getVariable()))
+      return false;
+    if (t.hasTransform() && t.getTransform() != StructureMapTransform.CREATE)
       return false;
     return s.getElement().equals(t.getElement());
   }

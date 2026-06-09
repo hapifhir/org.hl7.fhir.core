@@ -469,10 +469,6 @@ public class FmlParser extends ParserBase {
         rule.forceElement("source").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
         rule.forceElement("target").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
         rule.forceElement("target").makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
-        Element dep = rule.forceElement("dependent").markLocation(rule);
-        dep.makeElement("name").markLocation(rule).setValue(StructureMapUtilities.DEF_GROUP_NAME);
-        dep.addElement("parameter").markLocation(dep).makeElement("valueId").markLocation(dep).setValue(StructureMapUtilities.AUTO_VAR_NAME);
-        dep.addElement("parameter").markLocation(dep).makeElement("valueId").markLocation(dep).setValue(StructureMapUtilities.AUTO_VAR_NAME);
         // no dependencies - imply what is to be done based on types
       }
       if (newFmt) {
@@ -511,7 +507,11 @@ public class FmlParser extends ParserBase {
    * rule (including the first) is named {@code makeId(ruleName + element)}
    * (ruleName defaulting to the empty string) so that the renderer can
    * recover the compact form purely from the rule name pattern, without any
-   * out-of-band user data.
+   * out-of-band user data. Each generated rule is filled with the executable
+   * simple-form shape ({@code AUTO_VAR_NAME} variable on both sides plus a
+   * {@code CREATE} transform on target) so the transformer's "simple inferred,
+   * map by type" branch can execute them; the renderer's batch detector
+   * accepts that shape too, so the compact form round-trips.
    */
   private void parseIdentityTransformSet(Element context, Element rule, FHIRLexer lexer) throws FHIRException {
     lexer.take(); // consume ':'
@@ -520,7 +520,10 @@ public class FmlParser extends ParserBase {
     Element firstSource = rule.getChildren("source").get(0);
     Element firstTarget = rule.getChildren("target").get(0);
     firstSource.makeElement("element").setValue(elementName);
+    firstSource.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
     firstTarget.makeElement("element").setValue(elementName);
+    firstTarget.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+    firstTarget.makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
     while (lexer.hasToken(",")) {
       lexer.token(",");
       elements.add(lexer.take());
@@ -549,9 +552,12 @@ public class FmlParser extends ParserBase {
       Element newSource = newRule.addElement("source");
       newSource.makeElement("context").setValue(sourceContext);
       newSource.makeElement("element").setValue(element);
+      newSource.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
       Element newTarget = newRule.addElement("target");
       newTarget.makeElement("context").setValue(targetContext);
       newTarget.makeElement("element").setValue(element);
+      newTarget.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+      newTarget.makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
     }
   }
 

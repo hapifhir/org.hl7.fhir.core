@@ -215,9 +215,20 @@ public class StructureMapUtilities {
     if (!t.hasContext() || !t.hasElement())
       return false;
     if (s.hasType() || s.hasMin() || s.hasListMode() || s.hasDefaultValue()
-        || s.hasVariable() || s.hasCondition() || s.hasCheck() || s.hasLogMessage())
+        || s.hasCondition() || s.hasCheck() || s.hasLogMessage())
       return false;
-    if (t.hasTransform() || t.hasVariable() || !t.getParameter().isEmpty() || !t.getListMode().isEmpty())
+    if (!t.getParameter().isEmpty() || !t.getListMode().isEmpty())
+      return false;
+    // Accept the executable simple-form shape: vvv variable on both sides plus a
+    // CREATE transform on target with no params (matches both the non-batch
+    // isSimpleSyntax branch and the batch-form rules produced just above). A
+    // bare shape (no variable, no transform) is also accepted to stay tolerant
+    // of programmatically-built rules.
+    if (s.hasVariable() && !AUTO_VAR_NAME.equals(s.getVariable()))
+      return false;
+    if (t.hasVariable() && !AUTO_VAR_NAME.equals(t.getVariable()))
+      return false;
+    if (t.hasTransform() && t.getTransform() != StructureMapTransform.CREATE)
       return false;
     return s.getElement().equals(t.getElement());
   }
@@ -1286,10 +1297,18 @@ public class StructureMapUtilities {
       lexer.take();
       // Batch form that will produce a list of simple rules, comma separated ("Simple Form: Identity Transform" heading in the specification)
       // https://hl7.org/fhir/R5/mapping-language.html#simple
+      // Each generated rule is filled with the same executable shape that the
+      // non-batch isSimpleSyntax branch produces (vvv on both sides, CREATE on
+      // target, no params) so the transformer's "simple inferred, map by type"
+      // fallback in executeRule recognizes them. Without this, batch rules were
+      // structurally bare and silently no-op at runtime.
       Queue<String> elements = new ArrayDeque<String>();
       String elementName = lexer.take();
       rule.getSourceFirstRep().setElement(elementName);
+      rule.getSourceFirstRep().setVariable(AUTO_VAR_NAME);
       rule.getTargetFirstRep().setElement(elementName);
+      rule.getTargetFirstRep().setVariable(AUTO_VAR_NAME);
+      rule.getTargetFirstRep().setTransform(StructureMapTransform.CREATE);
       while (lexer.hasToken(",")) {
         lexer.token(",");
         elements.add(lexer.take());
@@ -1326,8 +1345,11 @@ public class StructureMapUtilities {
         newRule.setName(Utilities.makeId(namePrefix + element));
         newRule.getSourceFirstRep().setContext(sourceContext);
         newRule.getSourceFirstRep().setElement(element);
+        newRule.getSourceFirstRep().setVariable(AUTO_VAR_NAME);
         newRule.getTargetFirstRep().setContext(targetContext);
         newRule.getTargetFirstRep().setElement(element);
+        newRule.getTargetFirstRep().setVariable(AUTO_VAR_NAME);
+        newRule.getTargetFirstRep().setTransform(StructureMapTransform.CREATE);
       }
 
     } else {
