@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.http.okhttpimpl;
 
 import okhttp3.*;
 import okio.Buffer;
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
 import javax.annotation.Nonnull;
@@ -28,9 +29,7 @@ public class LoggingInterceptor implements Interceptor{
       // Log Request
       Request request = chain.request();
       List<String> hdrs = new ArrayList<>();
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //single literal character split
-      String[] headerLines = request.headers().toString().split("\\n");
+      String[] headerLines = StringUtils.splitPreserveAllTokens(request.headers().toString(), '\n');
 
       for (String headerLine : headerLines) {
         hdrs.add(headerLine.trim());

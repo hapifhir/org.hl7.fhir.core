@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities;
 
+import org.apache.commons.lang3.StringUtils;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -93,9 +94,7 @@ public class OIDUtilities {
             // Skip header line
             isHeaderProcessed = true;
           } else {
-            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-            //single literal character split
-            String[] parts = line.split(",");
+            String[] parts = StringUtils.splitPreserveAllTokens(line, ',');
             if (parts.length >= 4) {
               OIDInfo info = new OIDInfo();
               info.setOid(parts[0].trim());

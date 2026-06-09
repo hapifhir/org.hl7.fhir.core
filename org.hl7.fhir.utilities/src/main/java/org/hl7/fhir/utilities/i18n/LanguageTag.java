@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.i18n;
 
+import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +26,7 @@ public class LanguageTag {
     this.code = code;
 
     if (!Utilities.noString(code)) {
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //single literal character split
-      String[] parts = code.split("\\-");
+      String[] parts = StringUtils.splitPreserveAllTokens(code, '-');
       int c = 0;
       int t = parts.length;
       if (!registry.hasLanguage(parts[c])) {

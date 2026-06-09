@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.i18n;
 
+import org.apache.commons.lang3.StringUtils;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -299,9 +300,7 @@ public class POGenerator {
     for (String line : FileUtilities.fileToLines(path)) {
       if (line.contains("public static final String") && !line.trim().startsWith("//")) {
         int i = line.indexOf("public static final String") + "public static final String".length();
-        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //single literal character split
-        String[] p = line.substring(i).split("\\=");
+        String[] p = StringUtils.splitPreserveAllTokens(line.substring(i), '=');
         if (p.length == 2) {
           String n = p[0].trim();
           String v = p[1].trim().replace("\"", "").replace(";", "");
@@ -487,12 +486,8 @@ public class POGenerator {
 
   private void savePropertiesFile(String tgt, List<POObject> objects) throws IOException {
     String nameLine = FileUtilities.fileToLines(tgt).get(0);
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] parts = nameLine.substring(1).trim().split("\\=");
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] names = parts[1].split("\\,");
+    String[] parts = StringUtils.splitPreserveAllTokens(nameLine.substring(1).trim(), '=');
+    String[] names = StringUtils.splitPreserveAllTokens(parts[1], ',');
     List<String> pluralKeywords = new ArrayList<>();
     for (String n : names) {
       pluralKeywords.add(n.trim());

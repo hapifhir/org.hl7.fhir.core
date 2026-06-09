@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.i18n;
 
+import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -96,9 +97,7 @@ public class AcceptLanguageHeader {
     boolean wildcard = false;
     int offset = langs.size();
     if (!Utilities.noString(src)) {
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //single literal character split
-      String[] parts = src.split("\\,");
+      String[] parts = StringUtils.splitPreserveAllTokens(src, ',');
       for (int i = 0; i < parts.length; i++) {
         String lang = parts[i].trim();
         double weight = 1;

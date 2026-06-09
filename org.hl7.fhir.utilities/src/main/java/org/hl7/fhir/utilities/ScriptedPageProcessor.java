@@ -31,6 +31,7 @@ package org.hl7.fhir.utilities;
 
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /**
@@ -90,9 +91,7 @@ public abstract class ScriptedPageProcessor {
     if (Utilities.noString(command) || command.startsWith("!"))
       return "";
     
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] parts = command.split("\\ ");
+    String[] parts = StringUtils.splitPreserveAllTokens(command, ' ');
     return processCommand(command, parts);
   }
 

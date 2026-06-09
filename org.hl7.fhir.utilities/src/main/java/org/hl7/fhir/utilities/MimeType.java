@@ -31,6 +31,7 @@ package org.hl7.fhir.utilities;
 
 
 
+import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,9 +46,7 @@ public class MimeType {
   public MimeType(String s) {
     source = s;
 
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] split = s.split("\\;");
+    String[] split = StringUtils.splitPreserveAllTokens(s, ';');
     for (String ss : split) {
       String p = ss.trim();
       if (base == null)
@@ -100,9 +99,7 @@ public class MimeType {
   public static List<MimeType> parseList(String listString) {
     List<MimeType> result = new ArrayList<MimeType>();
 
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] mimeTypes = listString.split("\\,");
+    String[] mimeTypes = StringUtils.splitPreserveAllTokens(listString, ',');
     for (String mimeType : mimeTypes)
         result.add(new MimeType(mimeType));
     return result;

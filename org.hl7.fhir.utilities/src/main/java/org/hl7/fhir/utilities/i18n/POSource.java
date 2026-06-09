@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.i18n;
 
+import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -74,9 +75,7 @@ public class POSource {
       } else if (line.startsWith("#,")) {
         // retired use of #| because it caused problems with the tools
         String flags = line.substring(2).trim();
-        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-        //single literal character split
-        String[] flagParts = flags.split(",");
+        String[] flagParts = StringUtils.splitPreserveAllTokens(flags, ',');
         for (String flag : flagParts) {
           poObject.getFlags().add(flag.trim());
         }

@@ -31,6 +31,7 @@ package org.hl7.fhir.utilities.npm;
 
 
 
+import org.apache.commons.lang3.StringUtils;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -1606,9 +1607,7 @@ public class NpmPackage {
 
   public InputStream load(PackageResourceInformation p) throws IOException {
     if (p.filename.startsWith("@")) {
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //single literal character split
-      String[] pl = p.filename.substring(1).split("\\/");
+      String[] pl = StringUtils.splitPreserveAllTokens(p.filename.substring(1), '/');
       return new ByteArrayInputStream(folders.get(pl[0]).content.get(pl[1]));
     } else {
       return ManagedFileAccess.inStream(p.filename);

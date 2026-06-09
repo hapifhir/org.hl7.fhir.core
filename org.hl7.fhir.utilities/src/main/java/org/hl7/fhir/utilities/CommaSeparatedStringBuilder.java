@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities;
 
+import org.apache.commons.lang3.StringUtils;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
@@ -196,9 +197,7 @@ public class CommaSeparatedStringBuilder {
     Set<String> res = new HashSet<>();
     if (!Utilities.noString(sourcesString)) {
 
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //single literal character split
-      String[] sources = sourcesString.split("\\,");
+      String[] sources = StringUtils.splitPreserveAllTokens(sourcesString, ',');
       for (String source : sources) {
         res.add(source.trim());
       }

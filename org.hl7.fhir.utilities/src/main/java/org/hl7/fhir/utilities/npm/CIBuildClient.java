@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.npm;
 
+import org.apache.commons.lang3.StringUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -185,9 +186,7 @@ public class CIBuildClient {
   }
 
   private String getRepo(String path) {
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] p = path.split("/");
+    String[] p = StringUtils.splitPreserveAllTokens(path, '/');
     return p[0] + "/" + p[1];
   }
 
