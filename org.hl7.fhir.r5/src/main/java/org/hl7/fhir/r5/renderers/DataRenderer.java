@@ -119,7 +119,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     addMarkdown(x, processRelativeUrls(text, path)); 
   } 
 
-  protected void addMarkdown(XhtmlNode x, String text) throws FHIRFormatError, IOException, DefinitionException { 
+  public void addMarkdown(XhtmlNode x, String text) throws FHIRFormatError, IOException, DefinitionException { 
     if (text != null) { 
       // 1. custom FHIR extensions 
       while (text.contains("[[[")) { 
@@ -128,7 +128,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
         String right = text.substring(text.indexOf("]]]")+3); 
         String path = null; 
         String url = link; 
-        String[] parts = link.split("\\#"); 
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] parts = link.split("\\#");
         if (parts[0].contains(".")) { 
           path = parts[0]; 
           parts[0] = parts[0].substring(0, parts[0].indexOf(".")); 
@@ -197,7 +199,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   public static String describeVersion(String version) { 
     if (version.startsWith("http://snomed.info/sct")) { 
-      String[] p = version.split("\\/"); 
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] p = version.split("\\/");
       String ed = null; 
       String dt = ""; 
 
@@ -1908,8 +1912,10 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
     ResourceWrapper lowC = q.child("low");
     ResourceWrapper highC = q.child("high");
-    boolean sameUnits = (lowC != null && highC != null) && ((lowC.has("unit") && highC.has("unit") && lowC.child("unit").matches(highC.child("unit")))  
-        || (lowC.has("code") && highC.has("code") && lowC.child("code").matches(highC.child("code")))); 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: not using String.matches
+    boolean sameUnits = (lowC != null && highC != null) && ((lowC.has("unit") && highC.has("unit") && lowC.child("unit").matches(highC.child("unit")))
+        || (lowC.has("code") && highC.has("code") && lowC.child("code").matches(highC.child("code"))));
     String low = "?"; 
     if (q.has("low") && lowC.has("value")) 
       low = sameUnits ? lowC.primitiveValue("value").toString() : displayQuantity(lowC); 

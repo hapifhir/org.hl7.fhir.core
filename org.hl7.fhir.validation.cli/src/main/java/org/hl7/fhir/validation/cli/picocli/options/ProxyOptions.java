@@ -29,6 +29,8 @@ public class ProxyOptions {
   @CommandLine.Option(names = {"-auth"}, description = "Basic proxy authentication using [username]:[password]", scope = CommandLine.ScopeType.INHERIT)
   public void setProxyAuth(String proxyAuth) {
     if (proxyAuth != null) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = proxyAuth.split(":");
       String authUser = p[0];
       String authPass = p[1];

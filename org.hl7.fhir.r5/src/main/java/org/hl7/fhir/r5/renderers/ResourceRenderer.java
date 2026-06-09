@@ -457,7 +457,10 @@ public abstract class ResourceRenderer extends DataRenderer {
       url = url.substring(0, url.indexOf("/_hist"));
     }
     
-    if (url.matches(Constants.LOCAL_REF_REGEX)) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //Regex sourced from known Constants.LOCAL_REF_REGEX; anchored segments, safe
+    boolean urlMatchesLocal = url.matches(Constants.LOCAL_REF_REGEX);
+    if (urlMatchesLocal) {
       return true;
     } else {
       return false;

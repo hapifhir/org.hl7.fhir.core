@@ -74,7 +74,10 @@ public class POSource {
       } else if (line.startsWith("#,")) {
         // retired use of #| because it caused problems with the tools
         String flags = line.substring(2).trim();
-        for (String flag : flags.split(",")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] flagParts = flags.split(",");
+        for (String flag : flagParts) {
           poObject.getFlags().add(flag.trim());
         }
       } else if (line.startsWith("#|")) {

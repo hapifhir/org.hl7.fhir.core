@@ -608,8 +608,8 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public void drop(CachedCanonicalResource<T> cr) {
     while (indexedResources.values().remove(cr));
-    while (listForId.values().remove(cr));
-    while (listForUrl.values().remove(cr));
+    while (listForId.values().remove(cr)); // FIXME SpotBugs issue: GC_UNRELATED_TYPES listForId.values().remove(cr) is always false (values() is Collection<List<CachedCanonicalResource<T>>>); fix to listForId.get(cr.getId()).remove(cr)
+    while (listForUrl.values().remove(cr)); // FIXME SpotBugs issue: GC_UNRELATED_TYPES listForUrl.values().remove(cr) is always false (same type mismatch); fix to listForUrl.get(cr.getUrl()).remove(cr)
     String surl = cr.supplements();
     if (surl != null) {
       supplements.get(surl).remove(cr);
