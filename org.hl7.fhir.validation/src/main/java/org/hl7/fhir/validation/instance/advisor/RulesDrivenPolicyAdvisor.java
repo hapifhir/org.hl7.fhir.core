@@ -81,7 +81,7 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
   // string matching 
 
   boolean pathMatches(String[] specifier, String[] actual) {
-    if (specifier == null) {
+    if (specifier == null || specifier.length == 0) {
       return true;
     }
     for (int i = 0; i < specifier.length; i++) {
@@ -189,7 +189,7 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
     if (base != null) {
       return base.isSuppressCompliesWithReason(claimedProfileUrl, elementPath);
     } else {
-      return false;
+      return super.isSuppressCompliesWithReason(claimedProfileUrl, elementPath);
     }
   }
 

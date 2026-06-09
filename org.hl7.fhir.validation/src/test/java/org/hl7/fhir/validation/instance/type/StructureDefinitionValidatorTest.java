@@ -88,6 +88,19 @@ class StructureDefinitionValidatorTest {
     assertFalse(errors.get(0).getMessage().contains("at Patient.birthDate"), errors.get(0).getMessage());
   }
 
+  @Test
+  void doesNotPrefixLocationWhenReasonAlreadyContainsIt() throws Exception {
+    StructureDefinitionValidator validator = validatorWithAdvisor("");
+    List<ValidationMessage> errors = new ArrayList<>();
+
+    validator.reportCompliesWithMessages(errors, "StructureDefinition", CLAIMED_PROFILE, List.of(
+      reason("Patient.name", "Patient.name must comply", IssueSeverity.ERROR)));
+
+    assertEquals(1, errors.size());
+    assertTrue(errors.get(0).getMessage().contains("Patient.name must comply"), errors.get(0).getMessage());
+    assertFalse(errors.get(0).getMessage().contains("Patient.name: Patient.name"), errors.get(0).getMessage());
+  }
+
   private static TestStructureDefinitionValidator validatorWithAdvisor(String advisorSource) throws Exception {
     IWorkerContext context = mock(IWorkerContext.class);
     when(context.getResourceNames()).thenReturn(List.of("Patient"));

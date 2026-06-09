@@ -54,6 +54,15 @@ class RulesDrivenPolicyAdvisorTest {
   }
 
   @Test
+  void degenerateDotOnlyPathDoesNotThrow() throws JsonException, IOException {
+    // a malformed rule whose path is just "." splits to an empty path; it must not crash the validator
+    TextDrivenPolicyAdvisor advisor = new TextDrivenPolicyAdvisor(baseAdvisor(), "advisor.txt",
+      "= http://example.org/Degenerate@.\n");
+
+    assertTrue(advisor.isSuppressCompliesWithReason("http://example.org/Degenerate", "Patient.name"));
+  }
+
+  @Test
   void rulesDrivenAdvisorDelegatesToBaseAdvisor() {
     RulesDrivenPolicyAdvisor advisor = new RulesDrivenPolicyAdvisor(new DelegatingAdvisor());
 
@@ -71,6 +80,7 @@ class RulesDrivenPolicyAdvisorTest {
       super(ReferenceValidationPolicy.CHECK_VALID, null);
     }
 
+    @Override
     public boolean isSuppressCompliesWithReason(String claimedProfileUrl, String elementPath) {
       return "http://example.org/Base".equals(claimedProfileUrl) && "Patient.name".equals(elementPath);
     }
