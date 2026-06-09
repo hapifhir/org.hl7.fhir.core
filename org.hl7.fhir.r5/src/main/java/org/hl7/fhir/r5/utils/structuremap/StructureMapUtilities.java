@@ -109,6 +109,13 @@ public class StructureMapUtilities {
   private static final boolean MULTIPLE_TARGETS_ONELINE = true;
   public static final String AUTO_VAR_NAME = "vvv";
   public static final String DEF_GROUP_NAME = "DefaultMappingGroupAnonymousAlias";
+  // Sentinel prefix used by the "Simple Form: Identity Transform" batch parser
+  // when the source FML did not supply an explicit ruleName. Stored as the
+  // rule-name prefix (e.g. element `a` becomes `unnameda`) so that the renderer
+  // can distinguish batch-form rules from singly-written `src.x -> tgt.x;`
+  // rules — without the sentinel both shapes are indistinguishable in memory
+  // and the renderer cannot tell whether to re-collapse into batch form.
+  public static final String BATCH_IDENTITY_UNNAMED_NAME = "unnamed";
   
   private final IWorkerContext worker;
   private final FHIRPathEngine fpe;
@@ -217,8 +224,11 @@ public class StructureMapUtilities {
 
   /**
    * If {@code r} is a simple identity rule whose name matches the
-   * {@code <prefix> + makeId(element)} pattern, returns the prefix part
-   * (possibly empty). Otherwise returns {@code null}.
+   * {@code <prefix> + makeId(element)} pattern (with a non-empty prefix),
+   * returns the prefix part. A bare name with no prefix is not a batch (those
+   * come from singly-written {@code src.x -> tgt.x;} rules that share the
+   * shape but were never grouped) so {@code null} is returned in that case.
+   * Returns {@code null} when {@code r} is not a simple identity rule.
    */
   private static String identityBatchPrefix(StructureMapGroupRuleComponent r) {
     if (!isSimpleIdentityRule(r) || !r.hasName())
@@ -227,7 +237,10 @@ public class StructureMapUtilities {
     String name = r.getName();
     if (suffix.isEmpty() || !name.endsWith(suffix))
       return null;
-    return name.substring(0, name.length() - suffix.length());
+    String prefix = name.substring(0, name.length() - suffix.length());
+    if (prefix.isEmpty())
+      return null;
+    return prefix;
   }
 
   /**
@@ -282,7 +295,7 @@ public class StructureMapUtilities {
       b.append(rules.get(j).getSourceFirstRep().getElement());
     }
     String prefix = identityBatchPrefix(first);
-    if (prefix != null && !prefix.isEmpty()) {
+    if (prefix != null && !BATCH_IDENTITY_UNNAMED_NAME.equals(prefix)) {
       b.append(" \"");
       b.append(prefix);
       b.append("\"");
@@ -1283,12 +1296,12 @@ public class StructureMapUtilities {
       }
 
       // Optionally followed by an explicit ruleName. Each rule produced by this
-      // batch (including the first) is named `makeId(ruleName + element)` —
-      // with ruleName defaulting to the empty string. The render side detects
-      // runs of consecutive sibling rules whose names share a common
-      // `<prefix> + makeId(element)` shape and re-emits them as the compact
-      // batch form. This means the in-memory representation is self-describing
-      // and no out-of-band user data is needed to round-trip the simple form.
+      // batch (including the first) is named `makeId(ruleName + element)`. When
+      // the source omits the ruleName the BATCH_IDENTITY_UNNAMED_NAME sentinel
+      // is used as the prefix so the renderer can distinguish a batch from a
+      // run of singly-written `src.x -> tgt.x;` rules (which carry the bare
+      // element name with no prefix). The render side strips the sentinel back
+      // out when emitting the compact form.
       String ruleName = null;
       if (lexer.isConstant()) {
         if (lexer.isStringConstant()) {
@@ -1297,7 +1310,7 @@ public class StructureMapUtilities {
           ruleName = lexer.take();
         }
       }
-      String namePrefix = ruleName != null ? ruleName : "";
+      String namePrefix = ruleName != null ? ruleName : BATCH_IDENTITY_UNNAMED_NAME;
       rule.setName(Utilities.makeId(namePrefix + elementName));
       String doco = lexer.tokenWithTrailingComment(";");
       if (doco != null) {

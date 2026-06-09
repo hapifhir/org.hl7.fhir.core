@@ -439,7 +439,13 @@ public class StructureMapRenderer extends TerminologyRenderer {
     String name = r.getName();
     if (suffix.isEmpty() || !name.endsWith(suffix))
       return null;
-    return name.substring(0, name.length() - suffix.length());
+    String prefix = name.substring(0, name.length() - suffix.length());
+    // A bare name (no prefix) is not a batch — it's an unprefixed singly-written
+    // rule that happens to share the simple-identity shape. Mirrors
+    // StructureMapUtilities.identityBatchPrefix.
+    if (prefix.isEmpty())
+      return null;
+    return prefix;
   }
 
   private static int detectIdentityBatchEnd(List<StructureMapGroupRuleComponent> rules, int start) {
@@ -487,7 +493,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.tx(rules.get(j).getSourceFirstRep().getElement());
     }
     String prefix = identityBatchPrefix(first);
-    if (prefix != null && !prefix.isEmpty()) {
+    if (prefix != null && !StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME.equals(prefix)) {
       x.tx(" ");
       x.i().tx("\"" + prefix + "\"");
     }

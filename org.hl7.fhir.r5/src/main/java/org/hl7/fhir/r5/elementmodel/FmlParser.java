@@ -534,7 +534,7 @@ public class FmlParser extends ParserBase {
         ruleName = lexer.take();
       }
     }
-    String namePrefix = ruleName != null ? ruleName : "";
+    String namePrefix = ruleName != null ? ruleName : StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME;
     rule.makeElement("name").setValue(Utilities.makeId(namePrefix + elementName));
     // Consume the `;` plus any same-line trailing `// foo` comment.
     // StructureMapUtilities stores that trailing comment in

@@ -285,11 +285,13 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     StructureMapUtilities scu = new StructureMapUtilities(context, this);
     StructureMap sm = scu.parse(fileMap, "IdentityBatch");
 
-    // Three sibling rules with names equal to their element (makeId("" + element))
+    // Three sibling rules whose names are makeId(BATCH_IDENTITY_UNNAMED_NAME + element).
+    // The sentinel prefix lets the renderer distinguish a batch from a run of
+    // singly-written `src.x -> tgt.x;` rules; it is stripped on output.
     Assertions.assertEquals(3, sm.getGroup().get(0).getRule().size());
-    Assertions.assertEquals("id", sm.getGroup().get(0).getRule().get(0).getName());
-    Assertions.assertEquals("active", sm.getGroup().get(0).getRule().get(1).getName());
-    Assertions.assertEquals("gender", sm.getGroup().get(0).getRule().get(2).getName());
+    Assertions.assertEquals(StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME + "id", sm.getGroup().get(0).getRule().get(0).getName());
+    Assertions.assertEquals(StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME + "active", sm.getGroup().get(0).getRule().get(1).getName());
+    Assertions.assertEquals(StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME + "gender", sm.getGroup().get(0).getRule().get(2).getName());
 
     String rendered = StructureMapUtilities.render(sm);
     Assertions.assertEquals(fileMap, rendered);
