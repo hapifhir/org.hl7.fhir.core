@@ -87,8 +87,21 @@ public class StructureMapRenderer extends TerminologyRenderer {
     if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
       renderMetadata(x, "url", map.getUrlElement());
       renderMetadata(x, "name", map.getNameElement());
-      renderMetadata(x, "title", map.getTitleElement());
-      renderMetadata(x, "status", map.getStatusElement());      
+      if (map.hasTitle()) {
+        renderMetadata(x, "title", map.getTitleElement());
+      }
+      renderMetadata(x, "status", map.getStatusElement());
+      if (map.hasDescription()) {
+        renderDescriptionMetadata(x, map.getDescription());
+      }
+      if (map.hasExperimental()) {
+        XhtmlNode c = x.color(COLOR_METADATA);
+        c.tx("/// ");
+        c.b().tx("experimental");
+        c.tx(" = ");
+        x.color(COLOR_CONST).tx(Boolean.toString(map.getExperimental()));
+        x.tx("\r\n");
+      }
       x.tx("\r\n");
     } else {
       x.b().tx("map");
@@ -105,8 +118,40 @@ public class StructureMapRenderer extends TerminologyRenderer {
     renderConceptMaps(x, map);
     renderUses(x, map);
     renderImports(x, map);
+    renderConsts(x, map);
     for (StructureMapGroupComponent g : map.getGroup())
       renderGroup(x, g);
+  }
+
+  // Mirrors StructureMapUtilities: use the triple-quoted markdown form when the
+  // description spans multiple lines so the source remains human-readable. Falls
+  // back to the single-line escaped form when: the description has no line breaks;
+  // it contains """ (which cannot be represented inside a verbatim triple-quoted
+  // block); or it ends with a " (which would be greedily merged into the closing
+  // """ by the parser).
+  private void renderDescriptionMetadata(XhtmlNode x, String desc) {
+    XhtmlNode c = x.color(COLOR_METADATA);
+    c.tx("/// ");
+    c.b().tx("description");
+    c.tx(" = ");
+    if ((desc.indexOf('\n') >= 0 || desc.indexOf('\r') >= 0) && !desc.contains("\"\"\"") && !desc.endsWith("\"")) {
+      x.color(COLOR_CONST).tx("\"\"\"" + desc + "\"\"\"");
+    } else {
+      x.color(COLOR_CONST).tx("\"" + Utilities.escapeJava(desc) + "\"");
+    }
+    x.tx("\r\n");
+  }
+
+  private void renderConsts(XhtmlNode x, StructureMap map) {
+    for (StructureMap.StructureMapConstComponent c : map.getConst()) {
+      x.b().tx("let ");
+      x.color(COLOR_VARIABLE).tx(c.getName());
+      x.color(COLOR_SYNTAX).tx(" = ");
+      x.tx(c.getValue());
+      x.color(COLOR_SYNTAX).tx(";\r\n");
+    }
+    if (map.hasConst())
+      x.tx("\r\n");
   }
 
   private void renderMetadata(XhtmlNode x, String name, DataType value) {
