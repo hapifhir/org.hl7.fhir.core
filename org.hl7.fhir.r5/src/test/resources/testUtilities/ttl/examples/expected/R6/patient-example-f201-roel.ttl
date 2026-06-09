@@ -1,0 +1,149 @@
+@prefix fhir: <http://hl7.org/fhir/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sct: <http://snomed.info/id/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# - resource -------------------------------------------------------------------
+
+<http://hl7.org/fhir/Patient/f201> a fhir:Patient ;
+  fhir:nodeRole fhir:treeRoot ;
+  fhir:id [ fhir:v "f201"] ; # 
+  fhir:identifier ( [
+     fhir:use [ fhir:v "official" ] ; #  The identifier for the person as this patient (fictive) 
+     fhir:type [
+       fhir:text [ fhir:v "BSN" ]
+     ] ;
+     fhir:system [
+       fhir:v "urn:oid:2.16.840.1.113883.2.4.6.3"^^xsd:anyURI ;
+       fhir:l <urn:oid:2.16.840.1.113883.2.4.6.3>
+     ] ;
+     fhir:value [ fhir:v "123456789" ]
+  ] [
+     fhir:use [ fhir:v "official" ] ; #  The identifier for this individual 
+     fhir:type [
+       fhir:text [ fhir:v "BSN" ]
+     ] ;
+     fhir:system [
+       fhir:v "urn:oid:2.16.840.1.113883.2.4.6.3"^^xsd:anyURI ;
+       fhir:l <urn:oid:2.16.840.1.113883.2.4.6.3>
+     ] ;
+     fhir:value [ fhir:v "123456789" ]
+  ] ) ; # 
+  fhir:active [ fhir:v true] ; #  Indicates that the patient is not part of a multiple birth  
+  fhir:name ( [
+     fhir:use [ fhir:v "official" ] ; #  The name associated with the individual (fictive) 
+     fhir:text [ fhir:v "Roel" ] ;
+     fhir:family [ fhir:v "Bor" ] ;
+     fhir:given ( [ fhir:v "Roelof Olaf" ] ) ;
+     fhir:prefix ( [ fhir:v "Drs." ] ) ;
+     fhir:suffix ( [ fhir:v "PDEng." ] )
+  ] ) ; # 
+  fhir:telecom ( [
+     fhir:system [ fhir:v "phone" ] ; #  The mobile contact detail for the individual 
+     fhir:value [ fhir:v "+31612345678" ] ;
+     fhir:use [ fhir:v "mobile" ]
+  ] [
+     fhir:system [ fhir:v "phone" ] ; #  The home contact detail for the individual 
+     fhir:value [ fhir:v "+31201234567" ] ;
+     fhir:use [ fhir:v "home" ]
+  ] ) ; # 
+  fhir:gender [ fhir:v "male"] ; # 
+  fhir:birthDate [ fhir:v "1960-03-13"^^xsd:date] ; # 
+  fhir:deceased [
+     a fhir:Boolean ;
+     fhir:v false
+  ] ; #  The date and time of birth for the individual  
+  fhir:address ( [
+     fhir:use [ fhir:v "home" ] ; #  Home address for the individual 
+     fhir:line ( [ fhir:v "Bos en Lommerplein 280" ] ) ;
+     fhir:city [ fhir:v "Amsterdam" ] ;
+     fhir:postalCode [ fhir:v "1055RW" ] ;
+     fhir:country [ fhir:v "NLD" ]
+  ] ) ; #  Indicates that the individual is not deceased ,  ISO 3166 3 letter code 
+  fhir:maritalStatus [
+     fhir:coding ( [
+       a sct:36629006 ;
+       fhir:system [
+         fhir:v "http://snomed.info/sct"^^xsd:anyURI ;
+         fhir:l <http://snomed.info/sct>
+       ] ;
+       fhir:code [ fhir:v "36629006" ] ;
+       fhir:display [ fhir:v "Legally married" ]
+     ] [
+       fhir:system [
+         fhir:v "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"^^xsd:anyURI ;
+         fhir:l <http://terminology.hl7.org/CodeSystem/v3-MaritalStatus>
+       ] ;
+       fhir:code [ fhir:v "M" ]
+     ] ) #  Marital status of the person 
+  ] ; # 
+  fhir:multipleBirth [
+     a fhir:Boolean ;
+     fhir:v false
+  ] ; # 
+  fhir:photo ( [
+     fhir:contentType [ fhir:v "image/jpeg" ] ;
+     fhir:url [
+       fhir:v "Binary/f006"^^xsd:anyURI ;
+       fhir:l <http://hl7.org/fhir/Binary/f006>
+     ]
+  ] ) ; # 
+  fhir:contact ( [
+     fhir:relationship ( [
+       fhir:coding ( [
+         a sct:127850001 ;
+         fhir:system [
+           fhir:v "http://snomed.info/sct"^^xsd:anyURI ;
+           fhir:l <http://snomed.info/sct>
+         ] ;
+         fhir:code [ fhir:v "127850001" ] ;
+         fhir:display [ fhir:v "Wife" ]
+       ] [
+         fhir:system [
+           fhir:v "http://terminology.hl7.org/CodeSystem/v2-0131"^^xsd:anyURI ;
+           fhir:l <http://terminology.hl7.org/CodeSystem/v2-0131>
+         ] ;
+         fhir:code [ fhir:v "N" ]
+       ] [
+         fhir:system [
+           fhir:v "http://terminology.hl7.org/CodeSystem/v3-RoleCode"^^xsd:anyURI ;
+           fhir:l <http://terminology.hl7.org/CodeSystem/v3-RoleCode>
+         ] ;
+         fhir:code [ fhir:v "WIFE" ]
+       ] ) #  Indicates that the contact is the patient's wife 
+     ] ) ; #  Contact of the patient 
+     fhir:name [
+       fhir:use [ fhir:v "usual" ] ; #  The name of the contact 
+       fhir:text [ fhir:v "Ariadne Bor-Jansma" ]
+     ] ;
+     fhir:telecom ( [
+       fhir:system [ fhir:v "phone" ] ; #  The home contact detail 
+       fhir:value [ fhir:v "+31201234567" ] ;
+       fhir:use [ fhir:v "home" ]
+     ] )
+  ] ) ; # 
+  fhir:communication ( [
+     fhir:language [
+       fhir:coding ( [
+         fhir:system [
+           fhir:v "urn:ietf:bcp:47"^^xsd:anyURI ;
+           fhir:l <urn:ietf:bcp:47>
+         ] ;
+         fhir:code [ fhir:v "nl-NL" ] ;
+         fhir:display [ fhir:v "Dutch (Netherlands)" ]
+       ] )
+     ] ;
+     fhir:preferred [ fhir:v true ]
+  ] ) ; # 
+  fhir:managingOrganization [
+     fhir:l <http://hl7.org/fhir/Organization/f201> ;
+     fhir:reference [ fhir:v "Organization/f201" ] ;
+     fhir:display [ fhir:v "AUMC" ]
+  ] . # 
+
+<http://hl7.org/fhir/Organization/f201> a fhir:Organization .
+
+# -------------------------------------------------------------------------------------
+

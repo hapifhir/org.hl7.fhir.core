@@ -991,7 +991,11 @@ public class ProfilePathProcessor {
   }
 
   private boolean pathsMatch(String path1, String path2) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p1 = path1.split("\\.");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p2 = path2.split("\\.");
     if (p1.length != p2.length) {
       return false;

@@ -179,16 +179,23 @@ public class FhirSettings {
   }
 
   protected static String getSettingsFilePath(String explicitFilePath) {
-    final String filePath;
-    String pathFromSystemProperties;
-    try {
-      pathFromSystemProperties = getDefaultSettingsPath();
-    } catch (IOException e) {
-      pathFromSystemProperties = null;
+    if (explicitFilePath != null) {
+      log.debug("getting fhir-settings.json from explicit path: {}", explicitFilePath);
+      return explicitFilePath;
     }
-    filePath = explicitFilePath != null ? explicitFilePath :
-      System.getProperty(FHIR_SETTINGS_PATH, pathFromSystemProperties);
-    return filePath;
+
+    final String systemProperty = System.getProperty(FHIR_SETTINGS_PATH);
+    if (systemProperty != null) {
+      log.debug("getting fhir-settings.json from fhir.settings.path system property: {}", systemProperty);
+      return systemProperty;
+    }
+    try {
+      log.debug("getting fhir-settings.json from default location in user.home");
+      return getDefaultSettingsPath();
+    } catch (IOException e) {
+      log.error("Unable to construct default settings path from user.home", e);
+      return null;
+    }
   }
 
   static FhirSettingsPOJO getFhirSettingsPOJO(String filePath) throws IOException {

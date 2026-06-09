@@ -211,7 +211,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
       boolean found = false; 
       for (T t : this) { 
-        if (t.matches(item)) { 
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean tMatchesItem = t.matches(item);
+        if (tMatchesItem) {
           found = true; 
           t.status = ListItemStatus.Unchanged; 
         } 
@@ -1322,7 +1325,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     hint = checkAdd(hint, element.hasSliceName() ? context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_PAR, element.getSliceName()) : ""); 
     if (hasDef && element.hasDefinition()) { 
       hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : "")); 
-      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement())); // TODO: !hasDef is always false here (inside if (hasDef && ...)); simplify to gt(element.getDefinitionElement()) 
+      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement())); // FIXME SpotBugs issue: UC_USELESS_CONDITION !hasDef is always false here (inside if (hasDef && ...)); simplify to gt(element.getDefinitionElement())
     } 
     if (element.hasSlicing() && slicesExist(elements, element)) { // some elements set up slicing but don't actually slice, so we don't augment the name  
       sName = context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_FOR, sName); 
@@ -2438,7 +2441,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
               ref = context.getPkp() == null ? null : context.getPkp().getLinkForProfile(profile, p.getValue()); 
               if (ref != null) { 
-                String[] parts = ref.split("\\|"); 
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
+                String[] parts = ref.split("\\|");
                 if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) { 
                   if (p.hasExtension(ExtensionDefinitions.EXT_PROFILE_ELEMENT)) { 
                     String pp = p.getExtensionString(ExtensionDefinitions.EXT_PROFILE_ELEMENT); 
@@ -2624,7 +2629,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         left.getPieces().add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement()))); 
       if (element.hasSliceName()) { 
         left.getPieces().add(gen.new Piece("br")); 
-        String indent = StringUtils.repeat('\u00A0', 1+2*(element.getPath().split("\\.").length)); 
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String indent = StringUtils.repeat('\u00A0', 1+2*(element.getPath().split("\\.").length));
         left.getPieces().add(gen.new Piece(null, indent + "("+element.getSliceName() + ")", null)); 
       } 
       row.getCells().add(left); 
@@ -2810,7 +2817,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 String tn = tc.substring(0, tc.indexOf("(")); 
                 c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null)); 
                 c.addPiece(gen.new Piece(null, "(", null)); 
-                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|"); 
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
+                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
                 for (String s : p) { 
                   c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null)); 
                 } 
@@ -2851,7 +2860,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 String tn = tc.substring(0, tc.indexOf("(")); 
                 c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null)); 
                 c.addPiece(gen.new Piece(null, "(", null)); 
-                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|"); 
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
+                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
                 for (String s : p) { 
                   c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null)); 
                 } 
@@ -4305,7 +4316,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         removed(x).ah(context.prefixLocalHref(oLink)).txOrCode(code, oldStr).iff(externalO).txN(" ").img("external.png", null); 
       } 
     } else if (oldStr.equals(newStr)) {
-      if (mode==GEN_MODE_DIFF) { // TODO: UC_USELESS_CONDITION — SpotBugs flags this condition as always true or always false in context
+      if (mode==GEN_MODE_DIFF) { // FIXME SpotBugs issue: UC_USELESS_CONDITION mode==GEN_MODE_DIFF is always true or always false in context
         return null; 
       } else { 
         unchanged(x).ah(context.prefixLocalHref(nLink)).txOrCode(code, newStr).iff(externalN).txN(" ").img("external.png", null); 
@@ -4913,7 +4924,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         compareString(x, toStr(d.getMin()), d.getMinElement(), null, "min", d, toStr(compare.getMin()), null, mode, false, false); 
       } 
       x.tx(".."); 
-      if (!(mode==GEN_MODE_DIFF && (d.getMax().equals(compare.getMax()) || "1".equals(d.getMax())))) { // TODO: UC_USELESS_CONDITION — SpotBugs flags this condition as always true or always false in context
+      if (!(mode==GEN_MODE_DIFF && (d.getMax().equals(compare.getMax()) || "1".equals(d.getMax())))) { // FIXME SpotBugs issue: UC_USELESS_CONDITION the mode==GEN_MODE_DIFF condition is always true or always false in context
         compareString(x, d.getMax(), d.getMaxElement(), null, "max", d, compare.getMax(), null, mode, false, false); 
       } 
     } 
@@ -5361,7 +5372,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       parser.setOutputStyle(OutputStyle.PRETTY); 
       parser.compose(bs, value, null); 
     } 
-    String[] lines = bs.toString().split("\\r?\\n"); 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
+    String[] lines = bs.toString().split("\\r?\\n");
     StringBuilder b = new StringBuilder(); 
     for (String s : lines) { 
       if (!Utilities.noString(s) && !s.startsWith("<?")) { // eliminate the xml header if it's xml 

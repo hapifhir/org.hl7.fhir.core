@@ -31,12 +31,17 @@ package org.hl7.fhir.r5.terminologies.utilities;
 
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -79,6 +84,17 @@ import com.google.gson.JsonPrimitive;
 @Slf4j
 public class TerminologyCache {
 
+  // TODO (thread-safety): locking in this class is inconsistent. The validation / expansion /
+  // subsumption read+write paths (getValidation, cacheValidation, getExpansion, cacheExpansion,
+  // getSubsumes, cacheSubsumes, store, save) all synchronize on `lock`, but several other paths
+  // that mutate or iterate shared state take no lock:
+  //   - getServerId() mutates serverMap (and writes servers.ini)
+  //   - cacheValueSet() / cacheCodeSystem() mutate vsCache / csCache and iterate them to rewrite
+  //     the vs-externals.json / cs-externals.json files
+  //   - getReport() iterates caches and the per-NamedCache entry sets
+  // If this cache is ever touched from more than one thread, those are data races / potential
+  // ConcurrentModificationExceptions. The intended threading model needs to be decided, and then
+  // either `lock` extended to cover these paths or it documented that they are single-threaded.
 
   public static class SourcedCodeSystem {
     private String server;
@@ -167,6 +183,25 @@ public class TerminologyCache {
    * {@link #save()} call (which is what shutdown handling should use).
    */
   private static final long SAVE_DELAY_MS = 5000;
+
+  /**
+   * Upper bound on the number of persistent entries kept in a single NamedCache, both in
+   * memory and (after the next save) on disk. Without a bound, these caches accumulate
+   * entries without limit as validation/expansion results pile up over a long run - and
+   * across runs, since they persist - until reloading them exhausts the heap. When the
+   * limit is exceeded the oldest entries are evicted (FIFO), which both caps memory and
+   * lets an already-oversized file shrink to the cap on its next save. Tune as needed;
+   * entries are large (~12KB+ on disk, several times that parsed).
+   */
+  private static int maxEntriesPerCache = 5000;
+
+  public static int getMaxEntriesPerCache() {
+    return maxEntriesPerCache;
+  }
+
+  public static void setMaxEntriesPerCache(int value) {
+    maxEntriesPerCache = value;
+  }
 
 
   private SystemNameKeyGenerator systemNameKeyGenerator = new SystemNameKeyGenerator();
@@ -286,7 +321,7 @@ public class TerminologyCache {
 
   private class NamedCache {
     private String name;
-    private List<CacheEntry> list = new ArrayList<CacheEntry>(); // persistent entries
+    private Set<CacheEntry> list = new LinkedHashSet<CacheEntry>(); // persistent entries, in insertion order
     private Map<String, CacheEntry> map = new HashMap<String, CacheEntry>();
     /** True when {@link #list} has persistent entries that haven't yet been flushed to disk. */
     private boolean dirty = false;
@@ -295,11 +330,13 @@ public class TerminologyCache {
   }
 
 
-  private Object lock;
-  private String folder;
+  private final Object lock;
+  private final String folder;
   @Getter private int requestCount;
   @Getter private int hitCount;
   @Getter private int networkCount;
+  /** Set by {@link #unload()}; once true the cache rejects all reads and writes. */
+  private boolean unloaded = false;
 
   private final static long CAPABILITY_CACHE_EXPIRATION_HOURS = 24;
   private final static long CAPABILITY_CACHE_EXPIRATION_MILLISECONDS = CAPABILITY_CACHE_EXPIRATION_HOURS * 60 * 60 * 1000;
@@ -367,11 +404,12 @@ public class TerminologyCache {
     if (serverMap.containsKey(address)) {
       return serverMap.get(address);
     }
-    String id = address.replace("http://", "").replace("https://", "").replace("/", ".");
+    String base = serverIdBase(address);
+    String id = base;
     int i = 1;
     while (serverMap.containsValue(id)) {
       i++;
-      id =  address.replace("https:", "").replace("https:", "").replace("/", ".")+i;
+      id = base + i;
     }
     serverMap.put(address, id);
     if (folder != null) {
@@ -381,6 +419,21 @@ public class TerminologyCache {
     }
     return id;
   }
+
+  /**
+   * Derive the base server id from an address: strip the leading http(s):// scheme (always a
+   * prefix, so startsWith/substring is faster and safer than replacing every occurrence), then
+   * turn the remaining path separators into dots.
+   */
+  private String serverIdBase(String address) {
+    String s = address;
+    if (s.startsWith("http://")) {
+      s = s.substring("http://".length());
+    } else if (s.startsWith("https://")) {
+      s = s.substring("https://".length());
+    }
+    return s.replace("/", ".");
+  }
   
   public void unload() {
     // not useable after this is called — flush any pending writes first so we don't lose
@@ -389,8 +442,9 @@ public class TerminologyCache {
     caches.clear();
     vsCache.clear();
     csCache.clear();
+    unloaded = true;
   }
-  
+
   public void clear() throws IOException {
     if (folder != null) {
       FileUtilities.clearDirectory(folder);
@@ -592,7 +646,18 @@ public class TerminologyCache {
 
 
 
+  /**
+   * Guard against use after {@link #unload()}. All cache reads and writes route through
+   * {@link #getNamedCache}, so checking here rejects the whole read/write surface.
+   */
+  private void checkUsable() {
+    if (unloaded) {
+      throw new IllegalStateException("This TerminologyCache has been unloaded and can no longer be read from or written to");
+    }
+  }
+
   public NamedCache getNamedCache(CacheToken cacheToken) {
+    checkUsable();
 
     final String cacheName = cacheToken.name == null ? "null" : cacheToken.name;
 
@@ -640,26 +705,44 @@ public class TerminologyCache {
       return;
     }
 
-    boolean n = nc.map.containsKey(cacheToken.key);
-    nc.map.put(cacheToken.key, e);
+    // map.put returns the entry this key previously held (or null). Removing that exact
+    // object from the ordered set is O(1), replacing the old O(n) backward scan that
+    // compared full request strings on every persistent write. (remove() is a harmless
+    // no-op when the previous entry was transient and so was never in the list.)
+    CacheEntry previous = nc.map.put(cacheToken.key, e);
     if (persistent) {
-      if (n) {
-        for (int i = nc.list.size()- 1; i>= 0; i--) {
-          if (nc.list.get(i).request.equals(e.request)) {
-            nc.list.remove(i);
-          }
-        }
+      if (previous != null) {
+        nc.list.remove(previous);
       }
       nc.list.add(e);
+      enforceEntryLimit(nc);
       nc.dirty = true;
       long now = System.currentTimeMillis();
       // Coalesce frequent writes: only flush if it's been at least SAVE_DELAY_MS since
       // the last save for this NamedCache. Entries that miss the window stay in memory
       // until the next write past the deadline, or until save() is called explicitly.
       if (now - nc.lastSaveAt >= SAVE_DELAY_MS) {
-        save(nc);
-        nc.dirty = false;
-        nc.lastSaveAt = now;
+        save(nc, now);
+      }
+    }
+  }
+
+  /**
+   * Evict oldest persistent entries (FIFO) until the cache is within {@link #maxEntriesPerCache}.
+   * Keeps both {@link NamedCache#list} and {@link NamedCache#map} bounded. Only entries whose
+   * map slot still points at the evicted object are removed from the map, so a transient or
+   * re-stored entry sharing a key is left intact.
+   */
+  private void enforceEntryLimit(NamedCache nc) {
+    // LinkedHashSet iterates in insertion order, so the iterator yields oldest-first; remove
+    // through it to evict FIFO in O(1) each (no indexed removal from the front).
+    Iterator<CacheEntry> it = nc.list.iterator();
+    while (nc.list.size() > maxEntriesPerCache && it.hasNext()) {
+      CacheEntry evicted = it.next();
+      it.remove();
+      String key = String.valueOf(hashJson(evicted.request));
+      if (nc.map.get(key) == evicted) {
+        nc.map.remove(key);
       }
     }
   }
@@ -711,9 +794,7 @@ public class TerminologyCache {
       long now = System.currentTimeMillis();
       for (NamedCache nc : caches.values()) {
         if (nc.dirty) {
-          save(nc);
-          nc.dirty = false;
-          nc.lastSaveAt = now;
+          save(nc, now);
         }
       }
     }
@@ -736,12 +817,12 @@ public class TerminologyCache {
     }
   }
 
-  private void save(NamedCache nc) {
+  private void save(NamedCache nc, long lastSaveAt) {
     if (folder == null)
       return;
 
     try {
-      OutputStreamWriter sw = new OutputStreamWriter(ManagedFileAccess.outStream(Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION)), "UTF-8");
+      BufferedWriter sw = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION)), "UTF-8"));
       sw.write(ENTRY_MARKER+"\r\n");
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
@@ -839,6 +920,8 @@ public class TerminologyCache {
     } catch (Exception e) {
       log.error("error saving "+nc.name+": "+e.getMessage(), e);
     }
+    nc.dirty = false;
+    nc.lastSaveAt = lastSaveAt;
   }
 
   private boolean isCapabilityCache(String fn) {
@@ -936,35 +1019,68 @@ public class TerminologyCache {
 
   private void loadNamedCache(String fn) throws IOException {
     int c = 0;
-    try {
-      String src = FileUtilities.fileToString(Utilities.path(folder, fn));
-      String title = fn.substring(0, fn.lastIndexOf("."));
+    NamedCache nc = new NamedCache();
+    nc.name = fn.substring(0, fn.lastIndexOf("."));
 
-      NamedCache nc = new NamedCache();
-      nc.name = title;
-
-      if (src.startsWith("?"))
-        src = src.substring(1);
-      int i = src.indexOf(ENTRY_MARKER);
-      while (i > -1) {
-        c++;
-        String s = src.substring(0, i);
-        src = src.substring(i + ENTRY_MARKER.length() + 1);
-        i = src.indexOf(ENTRY_MARKER);
-        if (!Utilities.noString(s)) {
-          int j = s.indexOf(BREAK);
-          String request = s.substring(0, j);
-          String p = s.substring(j + BREAK.length() + 1).trim();
-
-          CacheEntry cacheEntry = getCacheEntry(request, p);
-
-          nc.map.put(String.valueOf(hashJson(cacheEntry.request)), cacheEntry);
-          nc.list.add(cacheEntry);
+    // Stream the file one entry at a time. Cache files can be very large (e.g. the ICD-11
+    // cache), and reading the whole file into a single String (as FileUtilities.fileToString
+    // does) needs 2-3x the file size in transient heap just for the read - enough to OOM.
+    // Streaming keeps peak memory at one entry plus a line buffer. Lines are rejoined with
+    // \r\n to preserve the on-disk request bytes so re-saving doesn't churn line endings;
+    // keys are line-ending- and whitespace-insensitive via hashJson regardless.
+    try (BufferedReader r = new BufferedReader(new InputStreamReader(
+        ManagedFileAccess.inStream(Utilities.path(folder, fn)), StandardCharsets.UTF_8))) {
+      StringBuilder segment = new StringBuilder();
+      boolean seenMarker = false;
+      String line;
+      while ((line = r.readLine()) != null) {
+        if (line.equals(ENTRY_MARKER)) {
+          if (seenMarker) {
+            loadCacheEntry(nc, segment.toString(), fn, ++c);
+          }
+          // Content before the first marker (including any legacy '?' prefix) is discarded.
+          seenMarker = true;
+          segment.setLength(0);
+        } else {
+          segment.append(line).append("\r\n");
         }
-        caches.put(nc.name, nc);
-      }        
+      }
+      // Trailing content after the last marker is intentionally ignored: only
+      // marker-terminated entries are loaded (matching the original behavior).
+      caches.put(nc.name, nc);
     } catch (Exception e) {
       log.error("Error loading "+fn+": "+e.getMessage()+" entry "+c+" - ignoring it", e);
+    }
+  }
+
+  private void loadCacheEntry(NamedCache nc, String s, String fn, int c) {
+    if (Utilities.noString(s)) {
+      return;
+    }
+    try {
+      int breakIndex = s.indexOf(BREAK);
+      if (breakIndex < 0) {
+        log.warn("Malformed entry "+c+" in "+fn+" (no break marker) - ignoring it");
+        return;
+      }
+      String request = s.substring(0, breakIndex);
+      String resultString = s.substring(breakIndex + BREAK.length() + 1).trim();
+
+      CacheEntry cacheEntry = getCacheEntry(request, resultString);
+
+      // Mirror store()'s dedup so the set and map stay consistent even if a file somehow
+      // holds the same request twice: the last occurrence wins, no orphan is left behind.
+      CacheEntry previous = nc.map.put(String.valueOf(hashJson(cacheEntry.request)), cacheEntry);
+      if (previous != null) {
+        nc.list.remove(previous);
+      }
+      nc.list.add(cacheEntry);
+      // Bound memory while loading: an already-oversized file keeps only its newest
+      // maxEntriesPerCache entries (oldest evicted as we stream). The trimmed cache is
+      // written back the next time it saves.
+      enforceEntryLimit(nc);
+    } catch (Exception e) {
+      log.error("Error loading entry "+c+" in "+fn+": "+e.getMessage()+" - ignoring it", e);
     }
   }
 
@@ -1035,10 +1151,35 @@ public class TerminologyCache {
   }
 
   public String hashJson(String s) {
-    return String.valueOf(s
-      .trim()
-      .replaceAll("\\r\\n?", "\n")
-      .hashCode());
+    // The cache key must be insensitive to line endings (requests are built with \r\n
+    // but round-trip through cache files that may use \n) and to surrounding whitespace.
+    // This computes a 64-bit FNV-1a hash over the trimmed, line-ending-normalized
+    // characters, without allocating an intermediate normalized string. A 32-bit hash
+    // (e.g. String.hashCode) collides far too readily for use as a cache key - a collision
+    // returns the wrong cached result - so the key is widened to 64 bits. Keys are held
+    // in memory only (recomputed on every load), so the algorithm can change freely.
+    int start = 0;
+    int end = s.length();
+
+    //Trim leading and trailing whitespace.
+    while (start < end && s.charAt(start) <= ' ') start++;     // trim() leading
+    while (end > start && s.charAt(end - 1) <= ' ') end--;     // trim() trailing
+
+    long hash = 0xcbf29ce484222325L;                             // FNV-1a 64-bit offset basis
+    for (int i = start; i < end; i++) {
+      char c = s.charAt(i);
+
+      //Normalize returns and newlines
+      if (c == '\r') {                                         // \r and \r\n both become \n
+        c = '\n';
+        if (i + 1 < end && s.charAt(i + 1) == '\n') i++;
+      }
+
+      //Iterate FNV-1a hash
+      hash *= 0x100000001b3L; // FNV-1a 64-bit prime
+      hash ^= c;
+    }
+    return Long.toString(hash);
   }
 
   // management

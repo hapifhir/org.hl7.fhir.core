@@ -56,6 +56,8 @@ public class Translations {
    * 
    * @param lang
    */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //simple character class split; safe
   public void setLang(String lang) {
     this.lang = lang.split("[.;]");
   }
@@ -112,6 +114,8 @@ public class Translations {
    *                   english message)
    * @return the message
    */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //simple character class split; safe
   public String getMessage(String id, String lang, String defaultMsg) {
     return getMessage(id, lang.split("[.;]"), defaultMsg);
   }

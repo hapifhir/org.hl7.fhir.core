@@ -74,7 +74,10 @@ public class ImplementationGuideValidator extends BaseValidator {
       }
     }
     ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), uri == null || uri.contains("/ImplementationGuide/"), I18nConstants.IG_DEPENDENCY_DIRECT, uri) && ok;
-    ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), packageId == null || packageId.matches(FilesystemPackageCacheManager.PACKAGE_REGEX), I18nConstants.IG_DEPENDENCY_INVALID_PACKAGEID, packageId) && ok;         
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //Regex sourced from FilesystemPackageCacheManager.PACKAGE_REGEX; anchored, bounded segments, safe
+    boolean validPackageId = packageId == null || packageId.matches(FilesystemPackageCacheManager.PACKAGE_REGEX);
+    ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), validPackageId, I18nConstants.IG_DEPENDENCY_INVALID_PACKAGEID, packageId) && ok;
 
     try {
       ImplementationGuide fetchedIgDependency = context.fetchResource(ImplementationGuide.class, uri, ExtensionUtilities.getVersionResolutionRules(dependency.getNamedChild("uri")));
@@ -91,7 +94,10 @@ public class ImplementationGuideValidator extends BaseValidator {
       }
       if (ok && warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), packageId != null, I18nConstants.IG_DEPENDENCY_NO_PACKAGE) &&
           warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), version != null, I18nConstants.IG_DEPENDENCY_NO_VERSION)) {
-        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), (packageId+"#"+version).matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX), I18nConstants.IG_DEPENDENCY_INVALID_PACKAGE_VERSION, version) && ok;               
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //Regex sourced from FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX; anchored, bounded segments, safe
+        boolean validPackageVersion = (packageId+"#"+version).matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX);
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), validPackageVersion, I18nConstants.IG_DEPENDENCY_INVALID_PACKAGE_VERSION, version) && ok;
         NpmPackage npm = pcm.loadPackage(packageId, version);
         if (warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), npm != null, I18nConstants.IG_DEPENDENCY_PACKAGE_UNKNOWN, packageId+"#"+version)) {
           if (!fvl.isEmpty()) {

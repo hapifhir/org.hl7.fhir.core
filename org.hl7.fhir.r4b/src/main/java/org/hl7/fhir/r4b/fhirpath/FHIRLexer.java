@@ -251,7 +251,7 @@ public class FHIRLexer {
         current = source.substring(currentStart, cursor);
         if (ech == '\'')
           current = "\'"+current.substring(1, current.length() - 1)+"\'";
-      } else if (ch == '`') { // TODO: UC_USELESS_CONDITION — condition is always false
+      } else if (ch == '`') { // FIXME SpotBugs issue: UC_USELESS_CONDITION ch == '`' is always false in this branch
         cursor++;
         boolean escape = false;
         while (cursor < source.length() && (escape || source.charAt(cursor) != '`')) {
