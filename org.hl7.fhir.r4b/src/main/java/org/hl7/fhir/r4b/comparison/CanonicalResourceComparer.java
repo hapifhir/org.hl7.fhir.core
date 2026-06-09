@@ -156,6 +156,8 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     comp.put(name, combined);
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   private CodeableConcept findCodeableConceptInList(List<CodeableConcept> list, CodeableConcept item) {
     for (CodeableConcept t : list) {
       if (t.matches(item)) {

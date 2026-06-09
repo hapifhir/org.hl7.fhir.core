@@ -164,11 +164,17 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
           TypeRefComponent tr = val.addType().setCode(translateDataType(verTarget, t));
           if (hasTargets(tr.getCode()) ) {
             s = s.substring(t.length()+1);
-            for (String p : s.substring(0, s.length()-1).split("\\|")) {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character split
+            String[] pipeTokens = s.substring(0, s.length()-1).split("\\|");
+            for (String p : pipeTokens) {
               if ("Any".equals(p)) {
                 tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
               } else if (p.contains(",")) {
-                for (String pp : p.split("\\,")) {
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
+                String[] commaTokens = p.split("\\,");
+                for (String pp : commaTokens) {
                   if (isResource(pp)) {
                     tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+pp);
                   }

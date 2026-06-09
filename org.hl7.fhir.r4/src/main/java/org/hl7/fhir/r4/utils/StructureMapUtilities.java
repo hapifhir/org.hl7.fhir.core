@@ -2165,6 +2165,8 @@ public class StructureMapUtilities {
           throw new FHIRException("Unable to translate - cannot find map " + conceptMapUrl);
       } else {
         if (conceptMapUrl.contains("#")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] p = conceptMapUrl.split("\\#");
           StructureMap mapU = worker.fetchResource(StructureMap.class, p[0]);
           for (Resource r : mapU.getContained()) {

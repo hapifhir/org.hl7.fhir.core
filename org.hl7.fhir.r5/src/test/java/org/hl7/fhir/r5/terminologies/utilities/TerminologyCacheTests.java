@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -29,8 +30,10 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -528,7 +531,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
   @ParameterizedTest
   @MethodSource("under1000IntParams")
-  public void testExtractedUnder1000(int max) throws IOException {
+  void testExtractedUnder1000(int max) throws IOException {
     TerminologyCache cache = createTerminologyCache();
     ValueSet vs = new ValueSet();
 
@@ -963,5 +966,44 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
       }
     }
     throw new AssertionError("no .cache file found in " + dir);
+  }
+
+  private static final long HASH_JSON_SPEED_SEED = 0xC0FFEEBABEL;
+
+
+
+  @Nested
+  class HashJsonSpeedTests {
+    private static Stream<Arguments> hashJsonSpeedInputs() {
+      return Stream.of(
+        Arguments.of(1_000_000, 1_000),
+        Arguments.of(100_000, 10_000),
+        Arguments.of(10_000, 100_000),
+        Arguments.of(1_000, 1_000_000)
+      );
+    }
+
+    TerminologyCache cache;
+
+    @BeforeEach
+    void setUp() throws IOException {
+      cache = createTerminologyCache();
+    }
+
+    @ParameterizedTest
+    @MethodSource("hashJsonSpeedInputs")
+    @Timeout(value = 4, unit = TimeUnit.SECONDS)
+    void testHashJsonSpeed(int inputLength, int iterations) throws IOException {
+      Random random = new Random(HASH_JSON_SPEED_SEED);
+      char[] chars = new char[inputLength];
+      for (int i = 0; i < inputLength; i++) {
+        chars[i] = (char) (random.nextInt(94) + 32); // printable ASCII range
+      }
+      String input = new String(chars);
+
+      for (int i = 0; i < iterations; i++) {
+        cache.hashJson(input);
+      }
+    }
   }
 }

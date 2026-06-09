@@ -53,11 +53,17 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    */
   private static final List<FastDateFormat> ourFormatters;
 
+  @SuppressWarnings("checkstyle:patternUsage")
+  //fixed-width date, safe
   private static final Pattern ourYearDashMonthDashDayPattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
+  @SuppressWarnings("checkstyle:patternUsage")
+  //fixed-width year-month with dashes, safe
   private static final Pattern ourYearDashMonthPattern = Pattern.compile("[0-9]{4}-[0-9]{2}");
   private static final FastDateFormat ourYearFormat = FastDateFormat.getInstance("yyyy");
   private static final FastDateFormat ourYearMonthDayFormat = FastDateFormat.getInstance("yyyy-MM-dd");
   private static final FastDateFormat ourYearMonthDayNoDashesFormat = FastDateFormat.getInstance("yyyyMMdd");
+  @SuppressWarnings("checkstyle:patternUsage")
+  //fixed-width date no dashes, safe
   private static final Pattern ourYearMonthDayPattern = Pattern.compile("[0-9]{4}[0-9]{2}[0-9]{2}");
   private static final FastDateFormat ourYearMonthDayTimeFormat = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
   private static final FastDateFormat ourYearMonthDayTimeMilliFormat = FastDateFormat
@@ -72,7 +78,11 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
       .getInstance("yyyy-MM-dd'T'HH:mm:ssZZ");
   private static final FastDateFormat ourYearMonthFormat = FastDateFormat.getInstance("yyyy-MM");
   private static final FastDateFormat ourYearMonthNoDashesFormat = FastDateFormat.getInstance("yyyyMM");
+  @SuppressWarnings("checkstyle:patternUsage")
+  //fixed-width year-month no dashes, safe
   private static final Pattern ourYearMonthPattern = Pattern.compile("[0-9]{4}[0-9]{2}");
+  @SuppressWarnings("checkstyle:patternUsage")
+  //fixed-width year, safe
   private static final Pattern ourYearPattern = Pattern.compile("[0-9]{4}");
   private static final FastDateFormat ourYearMonthDayTimeMinsFormat = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm");
   private static final FastDateFormat ourYearMonthDayTimeMinsUTCZFormat = FastDateFormat
@@ -292,6 +302,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   @Override
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: Matcher.matches() on ourYearPattern which has been independently reviewed
   protected Date parse(String theValue) throws IllegalArgumentException {
     try {
       if (theValue.length() == 4 && ourYearPattern.matcher(theValue).matches()) {

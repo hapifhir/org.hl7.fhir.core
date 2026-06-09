@@ -646,6 +646,8 @@ public class StructureMapRenderer extends TerminologyRenderer {
   private void renderMultilineDoco(XhtmlNode x,String doco, int indent, Collection<String> tokens) {
     if (Utilities.noString(doco))
       return;
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] lines = doco.split("\\r?\\n");
     for (String line : lines) {
       for (int i = 0; i < indent; i++)

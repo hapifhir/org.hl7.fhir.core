@@ -480,6 +480,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
     Multimap<String, String> versions = HashMultimap.create();
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals(mode)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2 && !Utilities.noString(parts[0]))
           versions.put(parts[0], parts[1]);
@@ -590,6 +592,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
       if ((p.getName().startsWith("used-") || p.getName().equals("version")) && !vlist.contains(p.getValue().primitiveValue())) {
         String name = p.getName().equals("version") ? "system" : p.getName().substring(5);
         vlist.add(p.getValue().primitiveValue());
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2 && !Utilities.noString(parts[0]))
           versions.put(name+"|"+parts[0], parts[1]);
@@ -647,6 +651,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
     u = u.substring(u.indexOf("|")+1);
     // TODO Auto-generated method stub
     if (u.equals("http://snomed.info/sct")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = v.split("\\/");
       if (parts.length >= 5) {
         String m = describeModule(parts[4]);

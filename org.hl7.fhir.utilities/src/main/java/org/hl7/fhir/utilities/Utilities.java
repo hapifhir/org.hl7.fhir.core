@@ -138,6 +138,8 @@ public class Utilities {
     }
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //bounded character class, safe
   public static boolean isValidId(String id) {
     return id.matches(RegexConstants.ID_REGEX);
   }
@@ -971,6 +973,9 @@ public class Utilities {
 
 
   public static boolean isURL(String s) {
+    //TODO Check if this can be replaced with RegexConstants.URL_REGEX
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, safe
     boolean ok = s.matches("^http(s{0,1})://[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*");
     return ok;
   }
@@ -1407,6 +1412,8 @@ public class Utilities {
    * @return
    */
   public static String fhirPathToXPath(String path) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = path.split("\\.");
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(".");
     int i = 0;
@@ -1689,7 +1696,10 @@ public class Utilities {
       value = value.substring(0, value.indexOf("e"));
     }
     if (value.contains(".")) {
-      return value.split("\\.")[1].length();
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] decimalParts = value.split("\\.");
+      return decimalParts[1].length();
     } else {
       return 0;
     }
@@ -1744,6 +1754,8 @@ public class Utilities {
     return res;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //anchored, bounded, safe
   public static boolean isValidCRName(String name) {
     return name != null && name.matches("[A-Z]([A-Za-z0-9_]){1,254}");
   }
@@ -1828,7 +1840,10 @@ public class Utilities {
 
   public static List<String> splitStrings(String src, String regex) {
     List<String> ret = new ArrayList<>();
-    for (String m : src.split(regex)) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //Regexes sourced from known callers; reviewed in MappingAssistant
+    String[] parts = src.split(regex);
+    for (String m : parts) {
       ret.add(m);
     }
     return ret;
@@ -1888,7 +1903,10 @@ public class Utilities {
   }
 
   public static String[] splitLines(String txt) {
-    return txt.split("\\r?\\n|\\r");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
+    String[] lines = txt.split("\\r?\\n|\\r");
+    return lines;
   }
 
   public static String rightTrim(String s) {
@@ -2004,7 +2022,16 @@ public class Utilities {
     return false;
   }
 
+  /**
+   *
+   * Don't use me.
+   *
+   * @deprecated this was transiently used internally, is no longer, and should not be in use.
+   */
+  @Deprecated(since="2026-04-10")
   public static String extractByRegex(String input, String regex) {
+    @SuppressWarnings("checkstyle:patternUsage")
+    //caller-provided; no internal callers in this project
     Pattern pattern = Pattern.compile(regex);
     Matcher matcher = pattern.matcher(input);
 

@@ -73,7 +73,10 @@ public class TxTesterSorters {
         String pv = p.getValue().primitiveValue();
         if (pv.contains("; ")) {
           List<String> bits = new ArrayList<>();
-          for (String s : pv.split("\\; ")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String[] pvParts = pv.split("\\; ");
+          for (String s : pvParts) {
             bits.add(s);
           }
           Collections.sort(bits);
