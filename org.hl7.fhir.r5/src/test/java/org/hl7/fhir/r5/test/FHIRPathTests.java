@@ -30,6 +30,7 @@ import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -122,6 +123,12 @@ public class FHIRPathTests {
     if (fp == null) {
       fp = new FHIRPathEngine(context);
     }
+  }
+
+  @AfterAll
+  public static void tearDown() {
+    fp = null;
+    context = null;
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
