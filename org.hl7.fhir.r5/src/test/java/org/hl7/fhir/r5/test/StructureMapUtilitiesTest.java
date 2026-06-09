@@ -265,6 +265,73 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     Assertions.assertEquals("Line one\r\nLine two ends with \"", reParsed.getDescription());
   }
   
+  // --- Simple Form: Identity Transform round-trip --------------------------------------
+  private static final String IDENTITY_BATCH_MAP_HEADER =
+      "/// url = \"http://example.com/StructureMap/identity-batch\"\r\n"
+    + "/// name = \"IdentityBatch\"\r\n"
+    + "/// status = \"draft\"\r\n"
+    + "\r\n"
+    + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\r\n"
+    + "uses \"http://hl7.org/fhir/StructureDefinition/Basic\" alias Basic as target\r\n"
+    + "\r\n";
+
+  @Test
+  void testIdentityBatchAnonymousRoundTrip() throws FHIRException {
+    String fileMap = IDENTITY_BATCH_MAP_HEADER
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src -> tgt: id, active, gender;\r\n"
+      + "}\r\n\r\n";
+
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap sm = scu.parse(fileMap, "IdentityBatch");
+
+    // Three sibling rules with names equal to their element (makeId("" + element))
+    Assertions.assertEquals(3, sm.getGroup().get(0).getRule().size());
+    Assertions.assertEquals("id", sm.getGroup().get(0).getRule().get(0).getName());
+    Assertions.assertEquals("active", sm.getGroup().get(0).getRule().get(1).getName());
+    Assertions.assertEquals("gender", sm.getGroup().get(0).getRule().get(2).getName());
+
+    String rendered = StructureMapUtilities.render(sm);
+    Assertions.assertEquals(fileMap, rendered);
+  }
+
+  @Test
+  void testIdentityBatchNamedRoundTrip() throws FHIRException {
+    String fileMap = IDENTITY_BATCH_MAP_HEADER
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src -> tgt: maritalStatus, birthDate \"Others\";\r\n"
+      + "}\r\n\r\n";
+
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap sm = scu.parse(fileMap, "IdentityBatch");
+
+    // Names are makeId(ruleName + element)
+    Assertions.assertEquals(2, sm.getGroup().get(0).getRule().size());
+    Assertions.assertEquals("OthersmaritalStatus", sm.getGroup().get(0).getRule().get(0).getName());
+    Assertions.assertEquals("OthersbirthDate", sm.getGroup().get(0).getRule().get(1).getName());
+
+    String rendered = StructureMapUtilities.render(sm);
+    Assertions.assertEquals(fileMap, rendered);
+  }
+
+  @Test
+  void testTwoIdentityBatchesAdjacentRoundTrip() throws FHIRException {
+    // Two distinct batches one after the other; the second has a different prefix
+    // so the render side should emit two separate batch lines.
+    String fileMap = IDENTITY_BATCH_MAP_HEADER
+      + "group Patient(source src : Patient, target tgt : Basic) {\r\n"
+      + "  src -> tgt: id, active, gender;\r\n"
+      + "  src -> tgt: maritalStatus, birthDate \"Others\";\r\n"
+      + "}\r\n\r\n";
+
+    StructureMapUtilities scu = new StructureMapUtilities(context, this);
+    StructureMap sm = scu.parse(fileMap, "IdentityBatch");
+
+    Assertions.assertEquals(5, sm.getGroup().get(0).getRule().size());
+    String rendered = StructureMapUtilities.render(sm);
+    Assertions.assertEquals(fileMap, rendered);
+  }
+
   // assert indices are equal to Element.numberChildren()
   private void checkNumberChildren(Element e, String indent) {
     System.out.println(indent + e + ", index: " + e.getIndex());
