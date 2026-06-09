@@ -106,7 +106,6 @@ public class StructureMapUtilities {
   public static final String MAP_WHERE_EXPRESSION = "map.where.expression";
   public static final String MAP_SEARCH_EXPRESSION = "map.search.expression";
   public static final String MAP_EXPRESSION = "map.transform.expression";
-  public static final String MAP_IDENTITY_TRANSFORM_SET = "map.identity-transform.set";
   private static final boolean MULTIPLE_TARGETS_ONELINE = true;
   public static final String AUTO_VAR_NAME = "vvv";
   public static final String DEF_GROUP_NAME = "DefaultMappingGroupAnonymousAlias";
@@ -1281,10 +1280,13 @@ public class StructureMapUtilities {
         elements.add(lexer.take());
       }
 
-      // And also permit the inclusion of the rule name
-      // Note that each generated rule from the comma separated list of rules will have the name generated:
-      //   ruleName + "_" + elementName
-      // This could be detected and consolidate into the simple form again
+      // Optionally followed by an explicit ruleName. Each rule produced by this
+      // batch (including the first) is named `makeId(ruleName + element)` —
+      // with ruleName defaulting to the empty string. The render side detects
+      // runs of consecutive sibling rules whose names share a common
+      // `<prefix> + makeId(element)` shape and re-emits them as the compact
+      // batch form. This means the in-memory representation is self-describing
+      // and no out-of-band user data is needed to round-trip the simple form.
       String ruleName = null;
       if (lexer.isConstant()) {
         if (lexer.isStringConstant()) {
@@ -1292,8 +1294,9 @@ public class StructureMapUtilities {
         } else {
           ruleName = lexer.take();
         }
-        rule.setName(ruleName + "_" + elementName);
       }
+      String namePrefix = ruleName != null ? ruleName : "";
+      rule.setName(Utilities.makeId(namePrefix + elementName));
       String doco = lexer.tokenWithTrailingComment(";");
       if (doco != null) {
         rule.getFormatCommentsPost().add(doco);
@@ -1302,18 +1305,14 @@ public class StructureMapUtilities {
       // Now scan the list of elements and create new rules for each
       String sourceContext = rule.getSourceFirstRep().getContext();
       String targetContext = rule.getTargetFirstRep().getContext();
-      rule.setUserData(MAP_IDENTITY_TRANSFORM_SET, String.join(", ", elementName, String.join(", ", elements)));
       for (String element : elements) {
         StructureMapGroupRuleComponent newRule = new StructureMapGroupRuleComponent();
         list.add(newRule);
-        if (ruleName != null) {
-          newRule.setName(ruleName + "_" + element);
-        }
+        newRule.setName(Utilities.makeId(namePrefix + element));
         newRule.getSourceFirstRep().setContext(sourceContext);
         newRule.getSourceFirstRep().setElement(element);
         newRule.getTargetFirstRep().setContext(targetContext);
         newRule.getTargetFirstRep().setElement(element);
-        newRule.setUserData(MAP_IDENTITY_TRANSFORM_SET, false);
       }
 
     } else {
