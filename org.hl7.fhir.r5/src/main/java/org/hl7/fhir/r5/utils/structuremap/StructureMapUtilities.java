@@ -163,7 +163,7 @@ public class StructureMapUtilities {
       b.append("/// title = \""+Utilities.escapeJava(map.getTitle())+"\"\r\n");
     }
     b.append("/// status = \""+map.getStatus().toCode()+"\"\r\n");
-    if (map.hasDescription()) {
+    if (map.hasDescription() && !map.getDescription().equals(map.getTitle())) {
       String desc = map.getDescription();
       // Use triple-quoted markdown form when the description spans multiple lines so
       // the source remains human-readable. Falls back to the single-line escaped

@@ -91,7 +91,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
         renderMetadata(x, "title", map.getTitleElement());
       }
       renderMetadata(x, "status", map.getStatusElement());
-      if (map.hasDescription()) {
+      if (map.hasDescription() && !map.getDescription().equals(map.getTitle())) {
         renderDescriptionMetadata(x, map.getDescription());
       }
       if (map.hasExperimental()) {
