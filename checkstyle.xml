@@ -89,9 +89,9 @@
     <module name="RegexpMultiline">
         <property name="id" value="stringImplicitPatternUsage"/>
         <property name="matchAcrossLines" value="true"/>
-        <property name="format" value="\.(matches|replaceAll|replaceFirst|split)\("/>
+        <property name="format" value="(?&lt;!StringUtils)\.(matches|replaceAll|replaceFirst|split)\("/>
         <property name="message"
-                  value="Usage of String.matches(...), String.replaceAll(...), String.replaceFirst(...), and String.split(...) implicitly compile a regex pattern on each call. This is only allowed for reviewed regular expressions or known inputs."
+                  value="Usage of String.matches(...), String.replaceAll(...), String.replaceFirst(...), and String.split(...) implicitly compile a regex pattern on each call. This is only allowed for reviewed regular expressions or known inputs. Use Apache Commons StringUtils methods for literal-separator calls instead."
         />
     </module>
     <module name="RegexpMultiline">
