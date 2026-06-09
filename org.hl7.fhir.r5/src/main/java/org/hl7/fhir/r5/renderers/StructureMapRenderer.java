@@ -301,6 +301,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
 
   private void renderUses(XhtmlNode x,StructureMap map) {
     for (StructureMapStructureComponent s : map.getStructure()) {
+      if (s.hasDocumentation()) {
+        renderMultilineDoco(x, s.getDocumentation(), 0, null);
+      }
       x.b().tx("uses");
       x.color(COLOR_SYNTAX).tx(" \"");
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, s.getUrl(), ExtensionUtilities.getVersionResolutionRules(s.getUrlElement()));
@@ -317,7 +320,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
       }
       x.b().tx("as ");
       x.b().tx(s.getMode().toCode());
-      renderDoco(x, s.getDocumentation(), false, null);
+      // Same-line trailing `//` comment captured in formatCommentsPost is
+      // emitted after the mode keyword, mirroring how renderRule handles
+      // trailing-on-`;` comments.
+      if (s.hasFormatCommentPost()) {
+        renderDoco(x, s.getFormatCommentsPost().get(0), false, null);
+      }
       x.tx("\r\n");
     }
     if (map.hasStructure())
@@ -406,6 +414,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
     if (r.hasFormatCommentPre()) {
       renderMultilineDoco(x, r.getFormatCommentsPre(), indent, tokens);
     }
+    if (r.hasDocumentation()) {
+      renderMultilineDoco(x, r.getDocumentation(), indent, tokens);
+    }
     for (int i = 0; i < indent; i++)
       x.tx(" ");
     boolean canBeAbbreviated = checkisSimple(r);
@@ -487,13 +498,10 @@ public class StructureMapRenderer extends TerminologyRenderer {
       }
     }
     x.color(COLOR_SYNTAX).tx(";");
-    if (r.hasDocumentation()) {
-      renderDoco(x, r.getDocumentation(), false, null);
+    if (r.hasFormatCommentPost()) {
+      renderDoco(x, r.getFormatCommentsPost().get(0), false, tokens);
     }
     x.tx("\r\n");
-    if (r.hasFormatCommentPost()) {
-      renderMultilineDoco(x, r.getFormatCommentsPost(), indent, tokens);
-    }
   }
 
   private Collection<String> scanVariables(StructureMapGroupComponent g, StructureMapGroupRuleComponent r) {
