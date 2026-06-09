@@ -488,13 +488,7 @@ public class SnapShotGenerationTests {
     System.out.println("loading SDC "+npm.version());
     testContext.getManager().loadFromPackage(npm, null);
   }
-
-  @AfterAll
-  static void tearDown() {
-    fp = null;
-    testContext = null;
-  }
-
+  
   public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
     SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext(testContext);
     Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "snapshot-generation", "manifest.xml"));

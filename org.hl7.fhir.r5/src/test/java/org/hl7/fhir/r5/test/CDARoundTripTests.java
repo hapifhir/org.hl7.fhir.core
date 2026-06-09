@@ -43,12 +43,6 @@ public class CDARoundTripTests {
 	  context.loadFromPackage(npm, null);
 	}
 
-  @AfterAll
-  public static void tearDown() throws FHIRException, IOException {
-    context = null;
-    fp = null;
-  }
-
 // old-test    
 //  @Test
 //  public void testCDA() throws FHIRFormatError, DefinitionException, FileNotFoundException, IOException, FHIRException {
