@@ -235,7 +235,7 @@ public class NarrativeGenerationTests {
   }
 
   @BeforeAll
-  public static void setUp() throws IOException {
+  static void setUp() throws IOException {
     var simpleContext = TestingUtilities.getSharedWorkerContext("5.0.0");
     simpleContext.connectToTSServer(new TerminologyClientR5.TerminologyClientR5Factory(), "http://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
     context = simpleContext;
@@ -244,7 +244,7 @@ public class NarrativeGenerationTests {
     context.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
   }
   @AfterAll
-  public static void tearDown() throws FHIRException, IOException {
+  static void tearDown() {
     context = null;
   }
 

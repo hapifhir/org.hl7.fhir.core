@@ -474,7 +474,7 @@ public class SnapShotGenerationTests {
   private static IWorkerContext testContext;
 
   @AfterAll
-  public static void tearDown() throws FHIRException, IOException {
+  public static void tearDown()  {
     fp = null;
     testContext = null;
   }

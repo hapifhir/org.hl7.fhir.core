@@ -1298,7 +1298,7 @@ public class Utilities {
         upcase = true;
       }
     }
-    if (b.length() == 0) {
+    if (b.isEmpty()) {
       b.append("name");
     }
     return b.toString();
