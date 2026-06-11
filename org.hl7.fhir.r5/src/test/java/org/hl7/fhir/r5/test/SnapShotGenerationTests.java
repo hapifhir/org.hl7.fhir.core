@@ -57,6 +57,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -472,8 +473,14 @@ public class SnapShotGenerationTests {
   private List<ValidationMessage> messages;
   private static IWorkerContext testContext;
 
+  @AfterAll
+  public static void tearDown()  {
+    fp = null;
+    testContext = null;
+  }
+
   @BeforeAll
-  public static void setUp() throws FHIRException, IOException {
+  static void setUp() throws FHIRException, IOException {
     testContext = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     fp = new FHIRPathEngine(testContext);
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
@@ -481,7 +488,7 @@ public class SnapShotGenerationTests {
     System.out.println("loading SDC "+npm.version());
     testContext.getManager().loadFromPackage(npm, null);
   }
-
+  
   public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
     SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext(testContext);
     Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "snapshot-generation", "manifest.xml"));

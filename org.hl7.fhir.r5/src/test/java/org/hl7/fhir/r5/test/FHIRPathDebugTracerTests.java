@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -137,6 +138,11 @@ public class FHIRPathDebugTracerTests {
     if (fp == null) {
       fp = new FHIRPathEngine(TestingUtilities.getSharedWorkerContext());
     }
+  }
+
+  @AfterAll
+  public static void tearDown() {
+    fp = null;
   }
 
   private org.hl7.fhir.r5.elementmodel.Element loadTestResource(String filename)

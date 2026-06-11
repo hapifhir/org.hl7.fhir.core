@@ -930,7 +930,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (!(onlyInformationIsMapping(all, element) || (context.getStructureMode() == StructureDefinitionRendererMode.OBLIGATIONS && !elementOrDescendentsHaveObligations(all, element)))) { 
       Row row = gen.new Row();
       // in deeply sliced things, there can be duplicate paths that are not usefully differentiated by id, and anyway, we want path
-      String anchor = element.getPath();
+      String anchor = element.getId() == null ? element.getPath() : element.getId();
       anchor = makeAnchorUnique(anchor);
       row.setId(context.prefixAnchor(anchor)); 
       row.setAnchor(context.prefixAnchor(anchor)); 
