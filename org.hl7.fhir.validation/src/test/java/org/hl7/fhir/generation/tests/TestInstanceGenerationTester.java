@@ -2,7 +2,6 @@ package org.hl7.fhir.generation.tests;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Locale;
 

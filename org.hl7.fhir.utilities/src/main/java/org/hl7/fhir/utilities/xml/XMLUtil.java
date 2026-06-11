@@ -618,7 +618,7 @@ public class XMLUtil {
   }
 
   public static String getXsiType(org.w3c.dom.Element element) {
-    Attr a = element.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+    Attr a = element.getAttributeNodeNS(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     return (a == null ? null : a.getTextContent());
     
   }

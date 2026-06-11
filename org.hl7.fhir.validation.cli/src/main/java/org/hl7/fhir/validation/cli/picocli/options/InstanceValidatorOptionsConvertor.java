@@ -92,7 +92,10 @@ public class InstanceValidatorOptionsConvertor {
 
     if (options.compactProfiles != null && !options.compactProfiles.isEmpty()) {
       for (String compactProfile : options.compactProfiles) {
-        for (String profile : compactProfile.split("\\,")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] profileParts = compactProfile.split("\\,");
+        for (String profile : profileParts) {
           instanceValidatorParameters.addProfile(profile);
         }
       }

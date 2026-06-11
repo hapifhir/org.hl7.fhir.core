@@ -2142,7 +2142,10 @@ public class FHIRPathEngine {
 
     if (focus.size() == 1 && !Utilities.noString(regex)) {
       try {
-        result.add(new StringType(RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl, regexTimeoutMillis)));
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.replaceAll is safe for user-supplied regular expressions
+        String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl, regexTimeoutMillis);
+        result.add(new StringType(replaced));
       } catch (TimeoutException e) {
         throw new FHIRException("Timeout evaluating regex: " + regex, e);
       }
@@ -2444,7 +2447,10 @@ public class FHIRPathEngine {
         result.add(new BooleanType(false));
       else {
         try {
-          result.add(new BooleanType(RegexTimeout.matches(st, sw, regexTimeoutMillis)));
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+          boolean matched = RegexTimeout.matches(st, sw, regexTimeoutMillis);
+          result.add(new BooleanType(matched));
         } catch (TimeoutException e) {
           throw new FHIRException("Timeout evaluating regex: " + sw, e);
         }

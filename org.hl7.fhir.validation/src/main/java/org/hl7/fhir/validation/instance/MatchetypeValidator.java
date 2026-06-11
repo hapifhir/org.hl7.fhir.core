@@ -180,7 +180,10 @@ public class MatchetypeValidator {
     if (expectedElement.hasExtension(EXT_OPT_PROP)) {
       //      res.add("$optional-properties$");
       //      res.add("$count-arrays$");
-      for (String s : expectedElement.getExtensionString(EXT_OPT_PROP).split("\\,")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] optProps = expectedElement.getExtensionString(EXT_OPT_PROP).split("\\,");
+      for (String s : optProps) {
         res.add(s);
       }
     }
@@ -190,7 +193,10 @@ public class MatchetypeValidator {
   private List<String> listCountOnlys(Element expectedElement) {
     List<String> res = new ArrayList<>();
     if (expectedElement.hasExtension(EXT_OPT_COUNT)) {
-      for (String s : expectedElement.getExtensionString(EXT_OPT_COUNT).split("\\,")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] countProps = expectedElement.getExtensionString(EXT_OPT_COUNT).split("\\,");
+      for (String s : countProps) {
         res.add(s);
       }
     }
@@ -369,6 +375,8 @@ public class MatchetypeValidator {
         }
         return true;
       } else if (expectedJsonString.startsWith("$external:")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] cmd = expectedJsonString.substring(1, expectedJsonString.length() - 1).split("\\:");
         if (externals != null) {
           String s = externals.asString(cmd[1]);
@@ -387,13 +395,19 @@ public class MatchetypeValidator {
       } else {
         switch (expectedJsonString) {
         case "$$" : return true;
-        case "$instant$": return actualJsonString.matches(RegexConstants.INSTANT_REGEX);
-        case "$date$": return actualJsonString.matches(RegexConstants.DATE_REGEX);
-        case "$uuid$": return actualJsonString.matches(RegexConstants.URN_UUID_REGEX);
+        case "$instant$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.INSTANT_REGEX); return r; }
+        case "$date$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.DATE_REGEX); return r; }
+        case "$uuid$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.URN_UUID_REGEX); return r; }
         case "$string$": return actualJsonString.equals(actualJsonString.trim());
-        case "$id$": return actualJsonString.matches(RegexConstants.ID_REGEX);
-        case "$url$": return actualJsonString.matches(RegexConstants.URL_REGEX);
-        case "$token$": return actualJsonString.matches(RegexConstants.TOKEN_REGEX);
+        case "$id$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.ID_REGEX); return r; }
+        case "$url$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.URL_REGEX); return r; }
+        case "$token$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.TOKEN_REGEX); return r; }
         case "$semver$": return VersionUtilities.isSemVer(actualJsonString, false);
         case "$version$": return matchesVariable(actualJsonString, "version");
         default: 
@@ -415,7 +429,10 @@ public class MatchetypeValidator {
 
   private List<String> readChoices(String s) {
     List<String> list = new ArrayList<>();
-    for (String p : s.split("\\|")) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] choices = s.split("\\|");
+    for (String p : choices) {
       list.add(p);
     }
     return list;
@@ -484,6 +501,8 @@ public class MatchetypeValidator {
         List<String> fragments = readChoices(expected.substring(11, expected.length()-1));
         return "Contains all of "+fragments.toString();
       } else if (expected.startsWith("$external:")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] cmd = expected.substring(1, expected.length() - 1).split(":");
         if (externals != null) {
           String s = externals.asString(cmd[1]);

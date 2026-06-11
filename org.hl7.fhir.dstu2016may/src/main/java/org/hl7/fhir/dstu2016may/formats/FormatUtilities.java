@@ -64,10 +64,12 @@ import java.net.URI;
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.utilities.regex.RegexConstants;
 
+import javax.xml.XMLConstants;
+
 public abstract class FormatUtilities {
   public static final String FHIR_NS = "http://hl7.org/fhir";
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
-  public static final String NS_XSI = "http://www.w3.org/2001/XMLSchema-instance";
+  public static final String NS_XSI = XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI;
 
   protected String toString(String value) {
     return value;
@@ -95,7 +97,10 @@ public abstract class FormatUtilities {
   }
 
   public static boolean isValidId(String tail) {
-    return tail.matches(RegexConstants.ID_REGEX);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //bounded character class, safe
+    boolean isValid = tail.matches(RegexConstants.ID_REGEX);
+    return isValid;
   }
 
   public static String makeId(String candidate) {

@@ -340,6 +340,8 @@ public class ClassDiagramRenderer {
         if (p.hasAttribute("transform")) {
           String s = p.getAttribute("transform");
           if (s.startsWith("translate(")) {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character split
             String[] sp = s.substring(10, s.length()-1).split("\\,");
             double tx = Double.valueOf(sp[0]);
             double ty = sp.length > 1 ? Double.valueOf(sp[1]) : 0;
@@ -608,6 +610,8 @@ public class ClassDiagramRenderer {
       if (!path.contains(".")) {
         n = sd.getName();
       } else if (!constraintMode && !children.isEmpty()) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] p = path.split("\\.");
         StringBuilder b =  new StringBuilder();
         for (String s : p) {

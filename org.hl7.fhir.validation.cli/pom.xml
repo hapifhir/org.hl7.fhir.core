@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.9.9-SNAPSHOT</version>
+        <version>6.9.10-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -465,6 +465,13 @@
                             <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.utilities</exclude>
                             <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.validation</exclude>
                         </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId><!-- Use the latest version -->
+                    <configuration>
+                        <onlyAnalyze>org.hl7.fhir.validation.cli.*</onlyAnalyze>
                     </configuration>
                 </plugin>
         	</plugins>
