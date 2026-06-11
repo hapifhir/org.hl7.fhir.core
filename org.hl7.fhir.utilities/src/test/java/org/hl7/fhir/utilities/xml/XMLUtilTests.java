@@ -41,24 +41,9 @@ public class XMLUtilTests {
   public void testTransformerFactoryThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
     DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     DocumentBuilder safeBuilder = factory.newDocumentBuilder();
-
-    File file = ManagedFileAccess.file("src/test/resources/xml/resource.xml");
-
-    Document document = safeBuilder.parse(file);
-
-    StringWriter sw = new StringWriter();
     TransformerFactory tf = XMLUtil.newXXEProtectedTransformerFactory();
 
-    File templateFile = ManagedFileAccess.file("src/test/resources/xml/evil-transform.xslt");
-    Source xsltSource = new StreamSource(templateFile);
-    Transformer transformer = tf.newTransformer(xsltSource);
-    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-    transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-
-    XPathException e = assertThrows(XPathException.class, () -> transformer.transform(new DOMSource(document), new StreamResult(sw)));
-    assertThat(e.getMessage()).contains("URIs using protocol file are not permitted");
+    assertTransformerFactoryThrowsExceptionOnEvilTransform(safeBuilder, tf);
   }
 
   @Test
@@ -73,6 +58,33 @@ public class XMLUtilTests {
 
     SAXParseException e = assertThrows(SAXParseException.class, () -> xmlReader.parse(new StreamSource(templateFile).getSystemId()));
     assertThat(e.getMessage()).contains("DOCTYPE is disallowed");
+  }
+
+  @Test
+  public void testSaxonTransformerFactoryThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
+    DocumentBuilder safeBuilder = factory.newDocumentBuilder();
+    TransformerFactory tf = XMLUtil.newXXEProtectedSaxonTransformerFactory();
+
+    assertTransformerFactoryThrowsExceptionOnEvilTransform(safeBuilder, tf);
+  }
+
+  private static void assertTransformerFactoryThrowsExceptionOnEvilTransform(DocumentBuilder safeBuilder, TransformerFactory tf) throws IOException, SAXException, TransformerConfigurationException {
+    File file = ManagedFileAccess.file("src/test/resources/xml/resource.xml");
+
+    Document document = safeBuilder.parse(file);
+    StringWriter sw = new StringWriter();
+
+    File templateFile = ManagedFileAccess.file("src/test/resources/xml/evil-transform.xslt");
+    Source xsltSource = new StreamSource(templateFile);
+    Transformer transformer = tf.newTransformer(xsltSource);
+    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+    transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+    XPathException e = assertThrows(XPathException.class, () -> transformer.transform(new DOMSource(document), new StreamResult(sw)));
+    assertThat(e.getMessage()).contains("URIs using protocol file are not permitted");
   }
 
   @SuppressWarnings("checkstyle:saxParserFactoryNewInstance")

@@ -138,4 +138,12 @@
                   value="Usage of SAXParserFactory.getXMLReader() is only allowed in XMLUtil.getXXEProtectedXMLReader(...). If the location of this call in XMLUtil has changed, please modify the expected line number in org.hl7.fhir.utilities/checkstyle_suppressions.xml"
         />
     </module>
+    <module name="RegexpMultiline">
+        <property name="id" value="transformerFactoryImplInstantiation"/>
+        <property name="matchAcrossLines" value="true"/>
+        <property name="format" value="new\s+[\w.]*TransformerFactoryImpl\("/>
+        <property name="message"
+                  value="Instantiation of TransformerFactoryImpl is only allowed in XsltUtilities. If the location of this call in XsltUtilities has changed, please modify the expected line numbers in org.hl7.fhir.utilities/checkstyle_suppressions.xml"
+        />
+    </module>
 </module>
