@@ -107,7 +107,7 @@ public class FHIRPathTests {
   private static SimpleWorkerContext context;
 
   @BeforeAll
-  public static void setUp() throws FileNotFoundException, FHIRException, IOException {
+  static void setUp() throws FHIRException, IOException {
     context = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     if (!context.hasPackage("hl7.cda.us.ccda", null)) {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
@@ -122,7 +122,7 @@ public class FHIRPathTests {
   }
 
   @AfterAll
-  public static void tearDown() throws FHIRException, IOException {
+  static void tearDown() {
     context = null;
     fp = null;
   }
