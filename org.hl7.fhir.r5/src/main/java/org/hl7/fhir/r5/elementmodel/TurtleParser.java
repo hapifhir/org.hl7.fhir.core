@@ -109,13 +109,11 @@ public class TurtleParser extends TurtleParserBase {
   public void compose(Element e, OutputStream stream, OutputStyle style, String base) throws IOException, FHIRException {
     // Redirect cross-version serialization
     String fhirVersion = context.getVersion();
-    if ( VersionUtilities.isR4Ver(fhirVersion) ) {
-        throw new FHIRException("Turtle serialization for R4 is not supported in this build. Use the R4 module.");
-    } else if ( VersionUtilities.isR6Ver(fhirVersion) ) {
-        r6Parser().compose(e, stream, style, base);
-        return;
+    if ( VersionUtilities.isR6Ver(fhirVersion) ) {
+      r6Parser().compose(e, stream, style, base);
+    } else {
+      super.compose(e, stream, style, base);
     }
-    super.compose(e, stream, style, base);
   }
 
   @Override
