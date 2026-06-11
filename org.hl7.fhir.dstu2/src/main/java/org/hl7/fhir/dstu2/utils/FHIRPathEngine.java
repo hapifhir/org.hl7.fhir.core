@@ -2457,15 +2457,19 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcMatches(ExecutionContext context, List<Base> focus, ExpressionNode exp)
-      throws PathEngineException {
-    List<Base> result = new ArrayList<Base>();
-    String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    throws PathEngineException {
+    List<Base> result = new ArrayList<>();
+    String regex = convertToString(execute(context, focus, exp.getParameters().get(0), true));
 
-    if (focus.size() == 1 && !Utilities.noString(sw)) {
-      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-      //Regex from FHIRPath caller
-      boolean matchResult = convertToString(focus.get(0)).matches(sw);
-      result.add(new BooleanType(matchResult));
+    if (focus.size() == 1 && !Utilities.noString(regex)) {
+      try {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.replaceAll is safe for user-supplied regular expressions
+        final boolean matchResult = RegexTimeout.matches(convertToString(focus.get(0)), regex);
+        result.add(new BooleanType(matchResult));
+      } catch (TimeoutException e) {
+          throw new PathEngineException("Timeout evaluating regex: " + regex, e);
+      }
     } else
       result.add(new BooleanType(false));
     return result;
