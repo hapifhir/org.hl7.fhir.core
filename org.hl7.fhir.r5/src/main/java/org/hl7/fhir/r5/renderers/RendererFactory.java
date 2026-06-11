@@ -18,6 +18,10 @@ public class RendererFactory {
         return new LiquidRenderer(context, liquidTemplate);
       }
     }
+    if (Utilities.isAbsoluteUrl(resourceName)) {
+      resourceName = Utilities.tail(resourceName);
+
+    }
     switch (resourceName) {
     case "ActorDefinition": return new ActorDefinitionRenderer(context);
     case "Bundle": return new BundleRenderer(context);
@@ -47,6 +51,7 @@ public class RendererFactory {
     case "TestPlan": return new TestPlanRenderer(context);
     case "ValueSet": return new ValueSetRenderer(context);
     case "ViewDefinition": return new ViewDefinitionRenderer(context);
+      case "FeatureDefinition" : return new FeatureDefinitionRenderer(context);
     case "WebTemplate": return new WebTemplateRenderer(context);
     }
     return new ProfileDrivenRenderer(context);    

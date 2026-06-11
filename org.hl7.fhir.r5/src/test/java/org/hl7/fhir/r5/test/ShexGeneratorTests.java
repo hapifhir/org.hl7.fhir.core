@@ -37,6 +37,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,14 @@ public class ShexGeneratorTests {
     expectedProfileDirectory = TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_PROFILE_DIR);
     r5WorkerContext = TestingUtilities.getSharedWorkerContext();
     r6WorkerContext = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("6.0.0");
+  }
+
+  @AfterAll
+  public static void tearDown() {
+    r5WorkerContext = null;
+    r6WorkerContext = null;
+    expectedShexDirectory = null;
+    expectedProfileDirectory = null;
   }
 
   /** Calling R5 ShExGenerator with R6 context should preserve the variable settings when redirected to ShExGeneratorR6 */

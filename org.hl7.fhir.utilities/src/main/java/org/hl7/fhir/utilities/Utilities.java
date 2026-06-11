@@ -1277,6 +1277,33 @@ public class Utilities {
     return b.toString();
   }
 
+  public static String makeNameFromCode(String code) {
+    StringBuilder b = new StringBuilder();
+    boolean upcase = false;
+    for (char ch : code.toCharArray()) {
+      if (ch >= 'a' && ch <= 'z') {
+        if (upcase) {
+          b.append(Character.toUpperCase(ch));
+        } else {
+          b.append(ch);
+        }
+        upcase = false;
+      } else if (ch >= 'A' && ch <= 'Z') {
+        upcase = false;
+        b.append(ch);
+      } else if (ch >= '0' && ch <= '9') {
+        upcase = false;
+        b.append(ch);
+      } else {
+        upcase = true;
+      }
+    }
+    if (b.isEmpty()) {
+      b.append("name");
+    }
+    return b.toString();
+  }
+
 
   public static String extractBaseUrl(String url) {
     if (url == null)
