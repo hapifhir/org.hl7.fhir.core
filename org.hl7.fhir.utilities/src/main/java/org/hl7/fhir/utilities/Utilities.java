@@ -1287,9 +1287,12 @@ public class Utilities {
         } else {
           b.append(ch);
         }
+        upcase = false;
       } else if (ch >= 'A' && ch <= 'Z') {
+        upcase = false;
         b.append(ch);
       } else if (ch >= '0' && ch <= '9') {
+        upcase = false;
         b.append(ch);
       } else {
         upcase = true;

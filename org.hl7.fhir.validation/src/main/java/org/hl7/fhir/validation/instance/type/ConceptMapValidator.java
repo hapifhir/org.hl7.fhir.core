@@ -381,7 +381,7 @@ public class ConceptMapValidator extends BaseValidator {
           if (!noTerminologyChecks && ctxt.hasSourceVS() && ctxt.source != null) {
             ValidationResult vr = context.validateCode(options.withCheckValueSetOnly().withNoServer(), ctxt.source.url, ctxt.source.version, c, null, ctxt.sourceScope.vs);
             if (vr.getErrorClass() == TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS){
-              warning( errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_SOURCE_CANT_CHECK, c, ctxt.source.cs.getVersionedUrl());
+              warning(errors, "2026-06-11", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_SOURCE_CODE_CANT_CHECK, c, ctxt.source.cs.getVersionedUrl());
             } else if (!warningOrError(ctxt.source.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_SOURCE_CODE_INVALID_VS, c, ctxt.sourceScope.vs.getVersionedUrl())) {
               ok = (ctxt.source.cs.getContent() != CodeSystemContentMode.COMPLETE) && ok;
             } else {
@@ -434,7 +434,7 @@ public class ConceptMapValidator extends BaseValidator {
           if (!noTerminologyChecks && ctxt.hasTargetVS() && ctxt.target != null) {
             ValidationResult vr = context.validateCode(options.withCheckValueSetOnly().withNoServer(), ctxt.target.url, ctxt.target.version, c, null, ctxt.targetScope.vs);
             if (vr.getErrorClass() == TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS){
-              warning( errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_TARGET_CODE_CANT_CHECK, c, ctxt.target.cs.getVersionedUrl());
+              warning(errors, "2026-06-11", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_TARGET_CODE_CANT_CHECK, c, ctxt.target.cs.getVersionedUrl());
             } else if (!warningOrError(ctxt.target.cs.getContent() == CodeSystemContentMode.COMPLETE, errors, "2023-09-06", IssueType.REQUIRED, code.line(), code.col(), cstack.getLiteralPath(), vr.isOk(), I18nConstants.CONCEPTMAP_GROUP_TARGET_CODE_INVALID_VS, c, ctxt.target.cs.getVersionedUrl())) {
               ok = (ctxt.target.cs.getContent() != CodeSystemContentMode.COMPLETE) && ok;
             }
