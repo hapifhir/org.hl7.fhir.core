@@ -57,6 +57,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -473,13 +474,19 @@ public class SnapShotGenerationTests {
   private static IWorkerContext testContext;
 
   @BeforeAll
-  public static void setUp() throws FHIRException, IOException {
+  static void setUp() throws FHIRException, IOException {
     testContext = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     fp = new FHIRPathEngine(testContext);
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage npm = pcm.loadPackage("hl7.fhir.uv.sdc");
     System.out.println("loading SDC "+npm.version());
     testContext.getManager().loadFromPackage(npm, null);
+  }
+
+  @AfterAll
+  static void tearDown() {
+    fp = null;
+    testContext = null;
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
