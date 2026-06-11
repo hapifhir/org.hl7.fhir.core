@@ -41,6 +41,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.turtle.Turtle;
 
 
 @MarkedToMoveToAdjunctPackage
@@ -104,6 +105,7 @@ public class TurtleParser extends TurtleParserBase {
     delegate.setSignatureServices(signatureServices);
     delegate.canonicalFilter = canonicalFilter;
     delegate.setStyle(getStyle());
+    delegate.base = base;
   }
 
   @Override
@@ -126,16 +128,36 @@ public class TurtleParser extends TurtleParserBase {
 
   @Override
   public void compose(Element e, OutputStream stream, OutputStyle style, String base) throws IOException, FHIRException {
-    // Redirect cross-version serialization
-    String fhirVersion = context.getVersion();
-    if ( VersionUtilities.isR4Ver(fhirVersion) ) {
-        r4Parser().compose(e, stream, style, base);
-        return;
-    } else if ( VersionUtilities.isR6Ver(fhirVersion) ) {
-        r6Parser().compose(e, stream, style, base);
-        return;
+    TurtleParserBase delegate = composeDelegate();
+    if (delegate != null) {
+      delegate.compose(e, stream, style, base);
+    } else {
+      super.compose(e, stream, style, base);
     }
-    super.compose(e, stream, style, base);
+  }
+
+  @Override
+  public void compose(Element e, Turtle ttl, String base) throws FHIRException {
+    this.base = base == null || base.isEmpty() ? FHIR_URI_BASE : base;
+    TurtleParserBase delegate = composeDelegate();
+    if (delegate != null) {
+      delegate.compose(e, ttl, base);
+    } else {
+      super.compose(e, ttl, base);
+    }
+  }
+
+  /** Returns the cross-version delegate to use for compose(), or {@code null} for native R5 (default). */
+  private TurtleParserBase composeDelegate() {
+    String fhirVersion = context.getVersion();
+    if (VersionUtilities.isR4Ver(fhirVersion)) {
+      return r4Parser();
+    }
+    if (VersionUtilities.isR6Ver(fhirVersion)) {
+      return r6Parser();
+    }
+    // Default to R5
+    return null;
   }
 
   @Override

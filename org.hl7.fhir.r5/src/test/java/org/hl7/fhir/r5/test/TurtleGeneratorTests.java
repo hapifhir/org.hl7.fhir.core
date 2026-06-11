@@ -25,6 +25,7 @@ import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.elementmodel.TurtleParserR6;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.turtle.Turtle;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,8 @@ import org.junit.jupiter.api.Assumptions;
  */
 public class TurtleGeneratorTests {
   private static TurtleGeneratorTestUtils.ParserContext parsers;
+  private static final String R4_VERSION = "4.0.1";
+  private static final String R6_VERSION = "6.0.0";
 
   private static final Path ROOT_TEST_PATH = Paths.get("testUtilities");
   private static final Path DEFAULT_EXPECTED_XML_DIR = ROOT_TEST_PATH.resolve("xml/examples/expected");
@@ -80,7 +83,7 @@ public class TurtleGeneratorTests {
   @Test
   public void testExamplesR4() throws IOException, UcumException {
     // Re-initialize context of current FHIR build
-    var r4context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("4.0.1");
+    var r4context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R4_VERSION);
     initializeParsers(r4context);
     testExpectedExamples(expectedTurtleDirectory.resolve("R4"), outputTurtleDirectory);
   }
@@ -88,7 +91,7 @@ public class TurtleGeneratorTests {
   @Test
   public void testExamplesR6() throws IOException, UcumException {
     // Re-initialize context of current FHIR build
-    var r6context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("6.0.0");
+    var r6context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R6_VERSION);
     initializeParsers(r6context);
     testExpectedExamples(expectedTurtleDirectory.resolve("R6"), outputTurtleDirectory);
   }
@@ -97,6 +100,36 @@ public class TurtleGeneratorTests {
   public void testR6ClassNameHandlesEmptyInput() {
     assertThat(TurtleParserR6.getClassName(null)).isNull();
     assertThat(TurtleParserR6.getClassName("")).isEmpty();
+  }
+
+  // Not all of these are critical and can be consolidated if we want to reduce tests
+  @Test
+  public void testAsHtmlGeneratesProperFormattingR4() throws Exception {
+    var r4context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R4_VERSION);
+    testAsHtmlGeneratesProperFormatting("R4", r4context);
+  }
+
+  @Test
+  public void testAsHtmlGeneratesProperFormattingR5() throws Exception {
+    testAsHtmlGeneratesProperFormatting("R5", TestingUtilities.getSharedWorkerContext());
+  }
+
+  @Test
+  public void testAsHtmlGeneratesProperFormattingR6() throws Exception {
+    var r6context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R6_VERSION);
+    testAsHtmlGeneratesProperFormatting("R6", r6context);
+  }
+
+  @Test
+  public void asHtmlRendersLinkedPredicatesAsAnchors() throws Exception {
+    Turtle ttl = new Turtle();
+    ttl.prefix("fhir", "http://hl7.org/fhir/");
+    Turtle.Section section = ttl.section("test");
+    Turtle.Subject subject = section.subject("fhir:Example");
+    subject.linkedPredicate("fhir:name", "value", "http://example.org/name", null);
+
+    String html = ttl.asHtml(false);
+    assertThat(html).contains("<a href=\"http://example.org/name\">fhir:name</a>");
   }
 
   /** Verifies the sync wiring actually runs; the drift detector below verifies the field set. */
@@ -244,5 +277,30 @@ public class TurtleGeneratorTests {
     }
 
     return inputXmlDirectory.resolve(xmlFileName);
+  }
+
+   private void testAsHtmlGeneratesProperFormatting(String versionDirectory, IWorkerContext context) throws Exception {
+    Path xmlResourcePath = inputXmlDirectory.resolve(versionDirectory).resolve("patient-example-f201-roel.xml");
+    Assumptions.assumeTrue(Files.exists(xmlResourcePath), "XML example missing: " + xmlResourcePath);
+
+    Turtle rdf = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(context).composeTurtleFromXmlResourcePath(xmlResourcePath);
+
+    String prismHtml = rdf.asHtml(true);
+    String plainHtml = rdf.asHtml(false);
+    String preOpen = "<pre class=\"rdf\" data-fhir=\"generated\" style=\"white-space: pre; overflow: hidden\">";
+
+    assertThat(prismHtml).startsWith(preOpen + "<code class=\"language-turtle\">\r\n").endsWith("</code></pre>\r\n\r\n");
+    assertThat(plainHtml).startsWith(preOpen + "\r\n").endsWith("</pre>\r\n\r\n");
+
+    // The HTML rendering path emits prefix declarations with XML-escaped angle brackets.
+    assertThat(prismHtml).contains("@prefix fhir: &lt;http://hl7.org/fhir/&gt; .");
+    assertThat(plainHtml).contains("@prefix fhir: &lt;http://hl7.org/fhir/&gt; .");
+
+    // Write out for manual inspection
+    String stem = xmlResourcePath.getFileName().toString().replaceFirst("\\.xml$", "");
+    Path prismOut = outputTurtleDirectory.resolve(stem + "." + versionDirectory + ".prism.html");
+    Path plainOut = outputTurtleDirectory.resolve(stem + "." + versionDirectory + ".plain.html");
+    Files.writeString(prismOut, prismHtml);
+    Files.writeString(plainOut, plainHtml);
   }
 }
