@@ -1,3 +1,8 @@
+## Security
+
+* XXE protection now covers saxon specific implementations
+* Regex processing is now time bounded in dstu FHIRPathEngine funcMatches
+
 ## Validator Changes
 
 * RDF/turtle revamp
