@@ -222,7 +222,21 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     map.setDescription("A simple one-line description with a \"quote\" in it.");
 
     String rendered = StructureMapUtilities.render(map);
-    Assertions.assertTrue(rendered.contains("/// description = \"A simple one-line description with a \\\"quote\\\" in it.\""),
+    Assertions.assertTrue(rendered.contains("/// description = 'A simple one-line description with a \"quote\" in it.'"),
+      "Expected escaped single-quoted description in:\r\n" + rendered);
+    Assertions.assertFalse(rendered.contains("\"\"\""), "Did not expect triple quotes for a single-line description in:\r\n" + rendered);
+  }
+
+  @Test
+  void testRenderSingleLineDescriptionUsesSingleQuotesAndEscapedQuote() throws FHIRException {
+    StructureMap map = new StructureMap();
+    map.setUrl("http://example.com/StructureMap/render-single-escaped");
+    map.setName("RenderSingleEscaped");
+    map.setStatus(org.hl7.fhir.r5.model.Enumerations.PublicationStatus.DRAFT);
+    map.setDescription("A simple one-line description with a 'quote' in it.");
+
+    String rendered = StructureMapUtilities.render(map);
+    Assertions.assertTrue(rendered.contains("/// description = 'A simple one-line description with a \\'quote\\' in it.'"),
       "Expected escaped single-quoted description in:\r\n" + rendered);
     Assertions.assertFalse(rendered.contains("\"\"\""), "Did not expect triple quotes for a single-line description in:\r\n" + rendered);
   }
@@ -267,9 +281,9 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
   
   // --- Simple Form: Identity Transform round-trip --------------------------------------
   private static final String IDENTITY_BATCH_MAP_HEADER =
-      "/// url = \"http://example.com/StructureMap/identity-batch\"\r\n"
-    + "/// name = \"IdentityBatch\"\r\n"
-    + "/// status = \"draft\"\r\n"
+      "/// url = 'http://example.com/StructureMap/identity-batch'\r\n"
+    + "/// name = 'IdentityBatch'\r\n"
+    + "/// status = 'draft'\r\n"
     + "\r\n"
     + "uses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias Patient as source\r\n"
     + "uses \"http://hl7.org/fhir/StructureDefinition/Basic\" alias Basic as target\r\n"
