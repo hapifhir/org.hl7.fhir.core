@@ -246,8 +246,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } else {
       if (designations == null) {
         designations = new ArrayList<>();
+      } else {
+        designations = new ArrayList<>(designations); // copy, so we don't mutate the source code system
       }
-      designations.add(new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra").setCode("preferredForLanguage")));
+      // the demoted display goes first in the list, so that it takes precedence over any other designations
+      // in the same language (and other servers behave that way - see test language-xform-en-multi-de-hard)
+      designations.add(0, new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra").setCode("preferredForLanguage")));
       pref = findMatchingDesignation(designations);
       if (pref != null) {
         n.setDisplay(pref.getValue());
