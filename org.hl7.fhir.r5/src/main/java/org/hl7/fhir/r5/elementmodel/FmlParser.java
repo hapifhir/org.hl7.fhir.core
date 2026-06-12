@@ -620,7 +620,7 @@ public class FmlParser extends ParserBase {
         // string literal so the stored defaultValue is a valid FHIRPath
         // expression (mirrors StructureMapUtilities).
         String s = lexer.readConstant("default value");
-        source.makeElement("defaultValue").markLocation(defLoc).setValue("'" + Utilities.escapeJava(s) + "'");
+        source.makeElement("defaultValue").markLocation(defLoc).setValue("'" + Utilities.escapeFhirPathString(s) + "'");
       }
     }
     if (Utilities.existsInList(lexer.getCurrent(), "first", "last", "not_first", "not_last", "only_one")) {

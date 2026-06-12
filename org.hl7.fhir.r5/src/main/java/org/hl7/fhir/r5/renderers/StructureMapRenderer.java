@@ -137,7 +137,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
     if ((desc.indexOf('\n') >= 0 || desc.indexOf('\r') >= 0) && !desc.contains("\"\"\"") && !desc.endsWith("\"")) {
       x.color(COLOR_CONST).tx("\"\"\"" + desc + "\"\"\"");
     } else {
-      x.color(COLOR_CONST).tx("\"" + Utilities.escapeJava(desc) + "\"");
+      x.color(COLOR_CONST).tx("'" + Utilities.escapeFhirPathString(desc) + "'");
     }
     x.tx("\r\n");
   }
@@ -170,7 +170,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       if (Utilities.existsInList(v, "true", "false") || Utilities.isDecimal(v, true)) {
         x.color(COLOR_CONST).tx(v);
       } else {
-        x.color(COLOR_CONST).tx("\"" + Utilities.escapeJava(v) + "\"");
+        x.color(COLOR_CONST).tx("'" + Utilities.escapeFhirPathString(v) + "'");
       }
       x.tx("\r\n");
     }
@@ -787,7 +787,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       else if (rtp.hasValueIntegerType())
         x.color(COLOR_CONST).tx(rtp.getValueIntegerType().asStringValue());
       else
-        x.color(COLOR_CONST).tx("'" + Utilities.escapeJava(rtp.getValueStringType().asStringValue()) + "'");
+        x.color(COLOR_CONST).tx("'" + Utilities.escapeFhirPathString(rtp.getValueStringType().asStringValue()) + "'");
     } catch (FHIRException e) {
       e.printStackTrace();
       x.tx("error!");

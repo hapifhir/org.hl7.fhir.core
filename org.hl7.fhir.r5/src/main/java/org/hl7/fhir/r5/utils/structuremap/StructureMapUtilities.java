@@ -157,12 +157,12 @@ public class StructureMapUtilities {
 
   public static String render(StructureMap map) {
     StringBuilder b = new StringBuilder();
-    b.append("/// url = \""+Utilities.escapeJava(map.getUrl())+"\"\r\n");
-    b.append("/// name = \""+Utilities.escapeJava(map.getName())+"\"\r\n");
+    b.append("/// url = '"+Utilities.escapeFhirPathString(map.getUrl())+"'\r\n");
+    b.append("/// name = '"+Utilities.escapeFhirPathString(map.getName())+"'\r\n");
     if (map.hasTitle()) {
-      b.append("/// title = \""+Utilities.escapeJava(map.getTitle())+"\"\r\n");
+      b.append("/// title = '"+Utilities.escapeFhirPathString(map.getTitle())+"'\r\n");
     }
-    b.append("/// status = \""+map.getStatus().toCode()+"\"\r\n");
+    b.append("/// status = '"+Utilities.escapeFhirPathString(map.getStatus().toCode())+"'\r\n");
     if (map.hasDescription() && !map.getDescription().equals(map.getTitle())) {
       String desc = map.getDescription();
       // Use triple-quoted markdown form when the description spans multiple lines so
@@ -175,7 +175,7 @@ public class StructureMapUtilities {
         b.append(desc);
         b.append("\"\"\"\r\n");
       } else {
-        b.append("/// description = \""+Utilities.escapeJava(desc)+"\"\r\n");
+        b.append("/// description = '"+Utilities.escapeFhirPathString(desc)+"'\r\n");
       }
     }
     if (map.hasExperimental()) {
@@ -797,7 +797,7 @@ public class StructureMapUtilities {
       else if (rtp.hasValueIntegerType())
         b.append(rtp.getValueIntegerType().asStringValue());
       else
-        b.append("'" + Utilities.escapeJava(rtp.getValueStringType().asStringValue()) + "'");
+        b.append("'" + Utilities.escapeFhirPathString(rtp.getValueStringType().asStringValue()) + "'");
     } catch (FHIRException e) {
       e.printStackTrace();
       b.append("error!");
@@ -1472,7 +1472,7 @@ public class StructureMapUtilities {
       } else {
         // legacy double-quoted format: convert to single-quoted FHIRPath string literal
         String s = lexer.readConstant("default value");
-        source.setDefaultValue("'" + Utilities.escapeJava(s) + "'");
+        source.setDefaultValue("'" + Utilities.escapeFhirPathString(s) + "'");
       }
     }
     if (Utilities.existsInList(lexer.getCurrent(), "first", "last", "not_first", "not_last", "only_one"))
