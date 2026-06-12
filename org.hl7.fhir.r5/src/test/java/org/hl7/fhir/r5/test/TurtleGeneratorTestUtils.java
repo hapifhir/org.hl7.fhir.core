@@ -128,6 +128,7 @@ public final class TurtleGeneratorTestUtils {
         InputStream inputJsonStream = ManagedFileAccess.inStream(jsonResourcePath.toString());
         OutputStream outputTurtleStream = ManagedFileAccess.outStream(turtleFilePath)
       ) {
+        System.out.println("Generating " + turtleFilePath);
         generateTurtleFromJsonStream(inputJsonStream, outputTurtleStream);
         return turtleFilePath;
       }

@@ -48,10 +48,12 @@ public class TurtleGeneratorTests {
 
   private static final Path ROOT_TEST_PATH = Paths.get("testUtilities");
   private static final Path DEFAULT_EXPECTED_XML_DIR = ROOT_TEST_PATH.resolve("xml/examples/expected");
+  private static final Path DEFAULT_EXPECTED_JSON_DIR = ROOT_TEST_PATH.resolve("json/examples/expected");
   private static final Path DEFAULT_OUTPUT_TURTLE_DIR = Paths.get(System.getProperty("java.io.tmpdir"));
   private static final Path DEFAULT_EXPECTED_TTL_DIR = ROOT_TEST_PATH.resolve("ttl/examples/expected");
     // These can be overwritten with a local.properties file (org.hl7.fhir.r5/src/test/resources/local.properties)
   private static Path inputXmlDirectory;
+  private static Path inputJsonDirectory;
   private static Path outputTurtleDirectory;
   private static Path expectedTurtleDirectory;
 
@@ -60,6 +62,7 @@ public class TurtleGeneratorTests {
     // Override configured directories in org.hl7.fhir.r5/src/test/resources/local.properties
     var props = TurtleGeneratorTestUtils.loadLocalProperties();
     inputXmlDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputXmlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_XML_DIR));
+    inputJsonDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputJsonDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_JSON_DIR));
     outputTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "outputTtlDirectory", DEFAULT_OUTPUT_TURTLE_DIR);
     Files.createDirectories(outputTurtleDirectory);
     expectedTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "expectedTtlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_TTL_DIR));
@@ -71,6 +74,7 @@ public class TurtleGeneratorTests {
   public static void tearDown() {
     parsers = null;
     inputXmlDirectory = null;
+    inputJsonDirectory = null;
     outputTurtleDirectory = null;
     expectedTurtleDirectory = null;
   }
@@ -83,27 +87,41 @@ public class TurtleGeneratorTests {
   // ---------------------------------------------------------------------------
   // Tests
   // ---------------------------------------------------------------------------
+  // XML conversion
   @Test
-  public void testExamples() throws IOException, UcumException {
-    // As used in R5 serialization
-    testExpectedExamples(expectedTurtleDirectory.resolve("R5"), outputTurtleDirectory);
+  public void testXmlExamplesR5() throws IOException, UcumException {
+    testExpectedXmlExamples(expectedTurtleDirectory.resolve("R5"), outputTurtleDirectory);
   }
 
   @Test
-  public void testExamplesR4() throws IOException, UcumException {
-    // Re-initialize context of current FHIR build
+  public void testXmlExamplesR4() throws IOException, UcumException {
     var r4context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R4_VERSION);
     initializeParsers(r4context);
-    testExpectedExamples(expectedTurtleDirectory.resolve("R4"), outputTurtleDirectory);
+    testExpectedXmlExamples(expectedTurtleDirectory.resolve("R4"), outputTurtleDirectory);
   }
 
   @Test
-  public void testExamplesR6() throws IOException, UcumException {
-    // Re-initialize context of current FHIR build
+  public void testXmlExamplesR6() throws IOException, UcumException {
     var r6context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R6_VERSION);
     initializeParsers(r6context);
-    testExpectedExamples(expectedTurtleDirectory.resolve("R6"), outputTurtleDirectory);
+    testExpectedXmlExamples(expectedTurtleDirectory.resolve("R6"), outputTurtleDirectory);
   }
+
+  
+  // JSON conversion
+  @Test
+  public void testJsonExampleR5() throws IOException, UcumException {
+    testExpectedJsonExamples(inputJsonDirectory.resolve("R5"), outputTurtleDirectory);
+  }
+  @Test
+  public void testJsonExampleR4() throws IOException, UcumException {
+    var r4context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R4_VERSION);
+    initializeParsers(r4context);
+    testExpectedJsonExamples(inputJsonDirectory.resolve("R4"), outputTurtleDirectory);
+  }
+
+  // TODO add R6 JSON example from somewhere
+
 
   @Test
   public void testR6ClassNameHandlesEmptyInput() {
@@ -239,7 +257,7 @@ public class TurtleGeneratorTests {
   /**
    * Examples should (1) parse without errors and (2) match the corresponding expected TTL
    */
-  private void testExpectedExamples(Path expectedDirectory, Path outputDirectory) throws IOException, UcumException {
+  private void testExpectedXmlExamples(Path expectedDirectory, Path outputDirectory) throws IOException, UcumException {
     List<Path> expectedTurtlePaths;
     try (var paths = Files.list(expectedDirectory)) {
       expectedTurtlePaths = paths
@@ -258,6 +276,24 @@ public class TurtleGeneratorTests {
           parsers.parseGeneratedTurtle(expectedTurtlePath.toString()),
           parsers.parseGeneratedTurtle(parsers.generateTurtleFromXmlResourcePath(xmlResourcePath, outputDirectory)),
           "Generated Turtle did not match expected output for " + expectedTurtlePath.getFileName());
+    }
+  }
+
+  private void testExpectedJsonExamples(Path expectedDirectory, Path outputDirectory) throws IOException, UcumException {
+    List<Path> expectedJsonPaths;
+    try (var paths = Files.list(expectedDirectory)) {
+      expectedJsonPaths = paths
+          .filter(Files::isRegularFile)
+          .filter(path -> path.toString().endsWith(".json"))
+          .sorted()
+          .collect(Collectors.toList());
+    }
+
+    Assumptions.assumeFalse(expectedJsonPaths.isEmpty(), "No expected JSON fixtures found in " + expectedDirectory);
+
+    for (Path expectedJsonPath : expectedJsonPaths) {
+      parsers.generateTurtleFromJsonResourcePath(expectedJsonPath, outputDirectory);
+      // TODO finalize example JSON files and match to expected corresponding TTL
     }
   }
 
