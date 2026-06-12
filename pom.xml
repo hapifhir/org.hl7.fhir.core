@@ -405,6 +405,7 @@
                 <artifactId>spotbugs-annotations</artifactId>
                 <version>4.9.8</version>
                 <scope>provided</scope>
+                <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry.javaagent</groupId>

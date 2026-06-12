@@ -270,7 +270,8 @@
         <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
-            <scope>provided</scope>
+            <scope>provided</scope> <!--  available at compile time and test time, but not bundled into the jar. Maven assumes the runtime environment will provide it -->
+            <optional>true</optional> <!-- prevents the dependency from being transitively inherited by downstream consumers -->
         </dependency>
     </dependencies>
 
