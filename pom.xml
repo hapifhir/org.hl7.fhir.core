@@ -404,8 +404,9 @@
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-annotations</artifactId>
                 <version>4.9.8</version>
-                <scope>provided</scope>
-                <optional>true</optional>
+                <!-- spotbugs-annotations is LGPL licensed. To keep licensing simple, it is not included in the distributed software, using the settings below -->
+                <scope>provided</scope> <!--  available at compile time and test time, but not bundled into the jar. Maven assumes the runtime environment will provide it -->
+                <optional>true</optional> <!-- prevents the dependency from being transitively inherited by downstream consumers -->
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry.javaagent</groupId>
@@ -438,11 +439,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.1.4</version>
-                </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
