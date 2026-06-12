@@ -25,3 +25,4 @@
   * Added additional capabilities into Liquid engine to support full Liquid (with exception of Map and Where)
   * Throw errors + catch parse errors in tests + Messages placeholders
 * More I18n work
+* Fix NPE rendering some references
