@@ -34,6 +34,8 @@ import java.util.Map;
  */
 
 
+import java.io.IOException;
+
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
@@ -159,6 +161,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters cacheControl(String mode, Parameters body) throws FHIRException, IOException {
+    return client.operateSystem("cache-control", "mode=" + mode, body);
+  }
+
+  @Override
   public ITerminologyClient setTimeoutFactor(int i) {
     client.setTimeoutFactor(i);
     return this;
@@ -251,6 +258,16 @@ public class TerminologyClientR5 implements ITerminologyClient {
     this.clientHeaders = clientHeaders;
     this.client.setClientHeaders(this.clientHeaders.headers());
     this.client.setVersionInMimeTypes(true);
+    return this;
+  }
+
+  @Override
+  public ITerminologyClient addClientHeader(HTTPHeader header) {
+    if (this.clientHeaders == null) {
+      this.clientHeaders = new ClientHeaders();
+    }
+    this.clientHeaders.addHeader(header);
+    this.client.setClientHeaders(this.clientHeaders.headers());
     return this;
   }
 

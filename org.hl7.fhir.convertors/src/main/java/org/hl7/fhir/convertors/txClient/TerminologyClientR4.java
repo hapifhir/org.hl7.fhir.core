@@ -202,6 +202,13 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters cacheControl(String mode, Parameters body) throws FHIRException, IOException {
+    org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("cacheControl.request", body == null ? new Parameters() : body);
+    org.hl7.fhir.r4.model.Parameters r = client.operateSystem("cache-control", "mode=" + mode, p2);
+    return (Parameters) convertResource("cacheControl.response", r);
+  }
+
+  @Override
   public Parameters batchValidateVS(Parameters pin) throws FHIRException {
     try {
       org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("validateVS.request", pin);
@@ -332,6 +339,16 @@ public class TerminologyClientR4 implements ITerminologyClient {
       this.client.setClientHeaders(this.clientHeaders.headers());
     }
     this.client.setVersionInMimeTypes(true);
+    return this;
+  }
+
+  @Override
+  public ITerminologyClient addClientHeader(HTTPHeader header) {
+    if (this.clientHeaders == null) {
+      this.clientHeaders = new ClientHeaders();
+    }
+    this.clientHeaders.addHeader(header);
+    this.client.setClientHeaders(this.clientHeaders.headers());
     return this;
   }
 

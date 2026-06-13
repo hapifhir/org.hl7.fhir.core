@@ -5708,9 +5708,6 @@
   }],
   "expansion" : {
     "parameter" : [{
-      "name" : "cache-id"
-    },
-    {
       "name" : "tx-resource"
     },
     {

@@ -360,7 +360,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         result = client.issueGetResourceRequest(url, withVer(getPreferredResourceFormat(), "5.0"), generateHeaders(false), "GET " + resourceClass.getName() + "/$" + name, timeoutLong);
       }
       if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException(result.getHttpStatus(), "Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+        throw new EFhirClientException(result.getHttpStatus(), serverErrorMessage(result.getHttpStatus(), (OperationOutcome) result.getPayload()), (OperationOutcome) result.getPayload());
       }
       if (result.getPayload() instanceof Parameters) {
         return (Parameters) result.getPayload();
@@ -370,9 +370,50 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
         return p_out;
       }
     } catch (Exception e) {
-      handleException(0, "Error performing tx5 operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);  		
+      handleException(0, "Error performing tx5 operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);
     }
     return null;
+  }
+
+  /**
+   * Invoke a system-level (base) operation by POST: &lt;base&gt;/$name?query, with the
+   * given Parameters as the body. Used for $cache-control. Any client headers
+   * (e.g. x-cache-id) are included via generateHeaders.
+   */
+  public Parameters operateSystem(String name, String query, Parameters params) throws IOException {
+    recordUse();
+    URI url = resourceAddress.getBaseServiceUri().resolve("$" + name + (query == null || query.isEmpty() ? "" : "?" + query));
+    byte[] body = ByteUtils.resourceToByteArray(params == null ? new Parameters() : params, false, isJson(getPreferredResourceFormat()), true);
+    ResourceRequest<Resource> result = client.issuePostRequest(url, body, withVer(getPreferredResourceFormat(), "5.0"), generateHeaders(true),
+        "POST $" + name, timeoutLong);
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException(result.getHttpStatus(), serverErrorMessage(result.getHttpStatus(), (OperationOutcome) result.getPayload()), (OperationOutcome) result.getPayload());
+    }
+    if (result.getPayload() instanceof Parameters) {
+      return (Parameters) result.getPayload();
+    }
+    Parameters p_out = new Parameters();
+    if (result.getPayload() != null) {
+      p_out.addParameter().setName("return").setResource(result.getPayload());
+    }
+    return p_out;
+  }
+
+  /**
+   * Build a human-readable error message for an unsuccessful server response,
+   * folding in the server's OperationOutcome detail text (e.g. the cache-id-unknown
+   * message) so it isn't lost behind a bare status code.
+   */
+  private String serverErrorMessage(int status, OperationOutcome oo) {
+    String msg = "Server returned error code " + status;
+    if (oo != null && oo.hasIssue()) {
+      org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent iss = oo.getIssueFirstRep();
+      String detail = (iss.hasDetails() && iss.getDetails().hasText()) ? iss.getDetails().getText() : iss.getDiagnostics();
+      if (detail != null && !detail.isEmpty()) {
+        msg = msg + ": " + detail;
+      }
+    }
+    return msg;
   }
 
   public Bundle transaction(Bundle batch) {

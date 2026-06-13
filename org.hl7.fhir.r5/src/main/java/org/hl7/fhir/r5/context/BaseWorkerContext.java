@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import lombok.EqualsAndHashCode;
@@ -305,7 +304,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected boolean noTerminologyServer;
   private int expandCodesLimit = 1000;
   protected org.hl7.fhir.r5.context.ILoggingService logger = new Slf4JLoggingService(log);
-  @Getter protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), UUID.randomUUID().toString(), logger);
+  @Getter protected final TerminologyClientManager terminologyClientManager = new TerminologyClientManager(new TerminologyClientR5.TerminologyClientR5Factory(), logger);
   protected AtomicReference<Parameters> expansionParameters = new AtomicReference<>(null);
   private Map<String, PackageInformation> packages = new HashMap<>();
 
@@ -918,9 +917,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     p.addParameter("count", expandCodesLimit);
     p.addParameter("offset", 0);
     txLog("$expand on " + txCache.summary(vs) + " on " + tc.getAddress());
-    if (addDependentResources(opCtxt, tc, p, vs)) {
-      p.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
-    }
+    // dependent resources are still sent; the cache-id now travels as an HTTP header
+    addDependentResources(opCtxt, tc, p, vs);
 
     try {
       ValueSet result = tc.getClient().expandValueset(vs, p);
@@ -986,7 +984,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     p.setParameter("excludeNested", !options.isHierarchical());
     List<String> allErrors = new ArrayList<>();
 
-    p.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
     TerminologyClientContext tc = terminologyClientManager.chooseServer(url, true);
     try {
       if (tc == null) {
@@ -1138,7 +1135,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, allErrors, false);
     }
 
-    p.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
     Set<String> systems = findRelevantSystems(vs);
     TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, true);
     addDependentResources(null, tc, p, vs);
@@ -1664,7 +1660,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     p.setParameter("excludeNested", !hierarchical);
 
     addDependentResources(opCtxt, tcd, p, vs);
-    p.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
     return p;
   }
 
@@ -1950,7 +1945,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         cache = addDependentCodeSystem(opCtxt, terminologyClientContext, pin, s, null, null) || cache;
       }
     }
-    pin.addParameter().setName("cache-id").setValue(new IdType(terminologyClientManager.getCacheId()));
+    // cache-id is no longer sent as a parameter; it travels as an HTTP header
+    // (X-Cache-Id) set on the per-server client when its cache was started.
     for (ParametersParameterComponent pp : pin.getParameter()) {
       if (pp.getName().equals("profile")) {
         throw new Error(formatMessage(I18nConstants.CAN_ONLY_SPECIFY_PROFILE_IN_THE_CONTEXT));
@@ -3339,10 +3335,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return terminologyClientManager;
   }
 
-  public String getCacheId() {
-    return terminologyClientManager.getCacheId();
-  }
-
   public TimeTracker clock() {
     return clock;
   }
@@ -3504,6 +3496,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     binaries.clear();
     validationCache.clear();
     txCache.unload();
+    // release any server-side terminology caches we started (best-effort)
+    if (terminologyClientManager != null) {
+      terminologyClientManager.endCaches();
+    }
   }
 
   private <T extends Resource> T doFindTxResource(Class<T> class_, String canonical, VersionResolutionRules rules) {

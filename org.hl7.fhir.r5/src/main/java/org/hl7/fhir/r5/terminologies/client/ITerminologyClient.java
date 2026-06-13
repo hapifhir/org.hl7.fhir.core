@@ -61,6 +61,13 @@ public interface ITerminologyClient {
   Parameters batchValidateVS(Parameters pin) throws FHIRException;
   Parameters subsumes(Parameters pin) throws FHIRException;
   Parameters getValueSetRelationship(ValueSet vsThis, ValueSet vsOther) throws FHIRException, IOException;
+  /**
+   * Invoke the system-level $cache-control operation. mode is "start" (create a
+   * cache and return its server-issued id in the response Parameters), "end"
+   * (release the cache named by the x-cache-id header), or "check". body may carry
+   * resources to front-load on start, or be null.
+   */
+  Parameters cacheControl(String mode, Parameters body) throws FHIRException, IOException;
   ITerminologyClient setTimeoutFactor(int i) throws FHIRException;
   ToolingClientLogger getLogger();
   ITerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
@@ -78,6 +85,8 @@ public interface ITerminologyClient {
   CanonicalResource read(String type, String id);
   Iterable<HTTPHeader> getClientHeaders();
   ITerminologyClient setClientHeaders(ClientHeaders clientHeaders);
+  /** Add a single persistent client header (e.g. x-cache-id) without replacing the rest. */
+  ITerminologyClient addClientHeader(HTTPHeader header);
   ITerminologyClient setUserAgent(String userAgent);
   ITerminologyClient setAcceptLanguage(String lang);
   ITerminologyClient setContentLanguage(String lang);

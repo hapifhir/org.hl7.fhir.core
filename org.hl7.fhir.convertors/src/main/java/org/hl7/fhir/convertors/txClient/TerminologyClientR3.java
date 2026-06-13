@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.txClient;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.EnumSet;
 import java.util.Map;
@@ -122,6 +123,13 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
+  public Parameters cacheControl(String mode, Parameters body) throws FHIRException, IOException {
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(body == null ? new Parameters() : body);
+    org.hl7.fhir.dstu3.model.Parameters r = client.operateSystem("cache-control", "mode=" + mode, p2);
+    return (Parameters) VersionConvertorFactory_30_50.convertResource(r);
+  }
+
+  @Override
   public Parameters batchValidateCS(Parameters pin) throws FHIRException {
     org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(pin);
     p2 = client.operateType(org.hl7.fhir.dstu3.model.CodeSystem.class, "batch-validate-code", p2);
@@ -238,6 +246,16 @@ public class TerminologyClientR3 implements ITerminologyClient {
       this.client.setClientHeaders(this.clientHeaders.headers());
     }
     this.client.setVersionInMimeTypes(true);
+    return this;
+  }
+
+  @Override
+  public ITerminologyClient addClientHeader(HTTPHeader header) {
+    if (this.clientHeaders == null) {
+      this.clientHeaders = new ClientHeaders();
+    }
+    this.clientHeaders.addHeader(header);
+    this.client.setClientHeaders(this.clientHeaders.headers());
     return this;
   }
 
