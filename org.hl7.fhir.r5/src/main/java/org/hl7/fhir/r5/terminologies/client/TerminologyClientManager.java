@@ -181,7 +181,7 @@ public class TerminologyClientManager {
       return null;
     }
     if (systems.contains(UNRESOLVED_VALUESET) || systems.isEmpty() || !useEcosystem) {
-      return serverList.get(0);
+      return getMaster();
     }
     
     List<ServerOptionList> choices = new ArrayList<>();

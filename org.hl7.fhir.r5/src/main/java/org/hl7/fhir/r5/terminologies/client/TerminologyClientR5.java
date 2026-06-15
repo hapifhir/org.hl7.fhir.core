@@ -161,8 +161,8 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
-  public Parameters cacheControl(String mode, Parameters body) throws FHIRException, IOException {
-    return client.operateSystem("cache-control", "mode=" + mode, body);
+  public Parameters cacheControl(CacheControlMode mode, Parameters body) throws FHIRException, IOException {
+    return client.operateSystem("cache-control", "mode=" + mode.toCode(), body);
   }
 
   @Override

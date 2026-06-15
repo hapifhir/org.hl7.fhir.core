@@ -25,6 +25,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.parsers.SAXParserFactory;
+
 /**
  * Unit tests for the $cache-control client logic in TerminologyClientContext:
  * detecting server support, starting a cache, carrying the cache-id as a header,
@@ -78,14 +80,14 @@ public class TerminologyClientContextTests {
   @Test
   public void serverAdvertisesCacheControl_startsCacheAndSetsHeader() throws IOException {
     ITerminologyClient client = baseMock(capabilityStatement(true));
-    when(client.cacheControl(eq("start"), isNull())).thenReturn(cacheIdResponse(CACHE_ID));
+    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), isNull())).thenReturn(cacheIdResponse(CACHE_ID));
     ILoggingService logger = mock(ILoggingService.class);
 
     TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, logger);
 
     assertEquals(CACHE_ID, ctx.getCacheId(), "the server-issued cache-id should be stored");
     assertTrue(ctx.usingCache(), "caching should be engaged");
-    verify(client).cacheControl(eq("start"), isNull());
+    verify(client).cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), isNull());
     verify(client).addClientHeader(argThat(h ->
       TerminologyClientContext.CACHE_ID_HEADER.equals(h.getName()) && CACHE_ID.equals(h.getValue())));
   }
@@ -119,7 +121,7 @@ public class TerminologyClientContextTests {
   @Test
   public void startFails_cachingOffAndLogged() throws IOException {
     ITerminologyClient client = baseMock(capabilityStatement(true));
-    when(client.cacheControl(eq("start"), isNull())).thenThrow(new FHIRException("server unavailable"));
+    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), isNull())).thenThrow(new FHIRException("server unavailable"));
     ILoggingService logger = mock(ILoggingService.class);
 
     TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, logger);
@@ -133,7 +135,7 @@ public class TerminologyClientContextTests {
   @Test
   public void startReturnsNoCacheId_cachingOffAndLogged() throws IOException {
     ITerminologyClient client = baseMock(capabilityStatement(true));
-    when(client.cacheControl(eq("start"), isNull())).thenReturn(new Parameters()); // no cache-id parameter
+    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), isNull())).thenReturn(new Parameters()); // no cache-id parameter
     ILoggingService logger = mock(ILoggingService.class);
 
     TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, logger);
@@ -146,8 +148,8 @@ public class TerminologyClientContextTests {
   @Test
   public void endCache_releasesAndClears() throws IOException {
     ITerminologyClient client = baseMock(capabilityStatement(true));
-    when(client.cacheControl(eq("start"), isNull())).thenReturn(cacheIdResponse(CACHE_ID));
-    when(client.cacheControl(eq("end"), isNull())).thenReturn(new Parameters());
+    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), isNull())).thenReturn(cacheIdResponse(CACHE_ID));
+    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.END_CACHE), isNull())).thenReturn(new Parameters());
     ILoggingService logger = mock(ILoggingService.class);
 
     TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, logger);
@@ -155,7 +157,7 @@ public class TerminologyClientContextTests {
 
     ctx.endCache();
 
-    verify(client).cacheControl(eq("end"), isNull());
+    verify(client).cacheControl(eq(ITerminologyClient.CacheControlMode.END_CACHE), isNull());
     assertNull(ctx.getCacheId(), "cache-id should be cleared after end");
     assertFalse(ctx.usingCache());
   }
@@ -168,6 +170,6 @@ public class TerminologyClientContextTests {
 
     ctx.endCache();
 
-    verify(client, never()).cacheControl(eq("end"), any());
+    verify(client, never()).cacheControl(eq(ITerminologyClient.CacheControlMode.END_CACHE), any());
   }
 }

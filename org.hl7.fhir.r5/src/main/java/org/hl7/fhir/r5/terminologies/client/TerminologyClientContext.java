@@ -190,24 +190,6 @@ public class TerminologyClientContext {
     return cacheId;
   }
 
-  /**
-   * Release this server's cache via $cache-control?mode=end. Best-effort: failures
-   * are ignored (the server will time the cache out anyway). No-op if no cache is
-   * active for this server.
-   */
-  public void endCache() {
-    if (cacheId == null) {
-      return;
-    }
-    try {
-      client.cacheControl("end", null);
-    } catch (Exception e) {
-      // best-effort release; ignore
-    }
-    cacheId = null;
-    setTxCaching(false);
-  }
-
   private void initialize() throws IOException {
 
       // we don't cache the quick CS - we want to know that the server is with us. 
@@ -229,28 +211,50 @@ public class TerminologyClientContext {
           }
         }
       }
-      // Caching is engaged by the explicit $cache-control protocol: if the server
-      // advertises the operation (and caching is enabled), ask it to start a cache
-      // and use the server-issued id thereafter, carried as an HTTP header. The
-      // server owns the id, so it can authoritatively reject an unknown cache later.
-      this.cacheId = null;
-      if (TerminologyClientContext.canUseCacheId && serverSupportsCacheControl()) {
-        try {
-          Parameters res = client.cacheControl("start", null);
-          String id = (res != null && res.hasParameter("cache-id")) ? res.getParameterValue("cache-id").primitiveValue() : null;
-          if (id != null && !id.isEmpty()) {
-            this.cacheId = id;
-            setTxCaching(true);
-            applyCacheIdHeader(id);
-          } else if (logger != null) {
-            logger.logMessage("Terminology server " + getAddress() + " advertised $cache-control but $cache-control?mode=start returned no cache-id; caching disabled for this server");
-          }
-        } catch (Exception e) {
-          if (logger != null) {
-            logger.logMessage("Unable to start a terminology cache on " + getAddress() + " via $cache-control (" + e.getMessage() + "); caching disabled for this server");
-          }
+    startCache();
+  }
+
+  private void startCache() {
+    // Caching is engaged by the explicit $cache-control protocol: if the server
+    // advertises the operation (and caching is enabled), ask it to start a cache
+    // and use the server-issued id thereafter, carried as an HTTP header. The
+    // server owns the id, so it can authoritatively reject an unknown cache later.
+    this.cacheId = null;
+    if (TerminologyClientContext.canUseCacheId && serverSupportsCacheControl()) {
+      try {
+        Parameters res = client.cacheControl(ITerminologyClient.CacheControlMode.START_CACHE, null);
+        String id = (res != null && res.hasParameter("cache-id")) ? res.getParameterValue("cache-id").primitiveValue() : null;
+        if (id != null && !id.isEmpty()) {
+          this.cacheId = id;
+          setTxCaching(true);
+          applyCacheIdHeader(id);
+        } else if (logger != null) {
+          logger.logMessage("Terminology server " + getAddress() + " advertised $cache-control but $cache-control?mode=start returned no cache-id; caching disabled for this server");
+        }
+      } catch (Exception e) {
+        if (logger != null) {
+          logger.logMessage("Unable to start a terminology cache on " + getAddress() + " via $cache-control (" + e.getMessage() + "); caching disabled for this server");
         }
       }
+    }
+  }
+
+  /**
+   * Release this server's cache via $cache-control?mode=end. Best-effort: failures
+   * are ignored (the server will time the cache out anyway). No-op if no cache is
+   * active for this server.
+   */
+  public void endCache() {
+    if (cacheId == null) {
+      return;
+    }
+    try {
+      client.cacheControl(ITerminologyClient.CacheControlMode.END_CACHE, null);
+    } catch (Exception e) {
+      // best-effort release; ignore
+    }
+    cacheId = null;
+    setTxCaching(false);
   }
 
   /**

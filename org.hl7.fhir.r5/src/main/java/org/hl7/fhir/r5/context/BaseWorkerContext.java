@@ -1206,7 +1206,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 2nd pass: What can we do internally 
     // 3rd pass: hit the server
     for (CodingValidationRequest t : codes) {
-      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, getExpansionParameters()) : null);
+      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs, getExpansionParametersForCacheToken()) : null);
       if (t.getCoding().hasSystem()) {
         codeSystemsUsed.add(t.getCoding().getSystem());
       }
@@ -1430,7 +1430,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       codeSystemsUsed.add(code.getSystem());
     }
 
-    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParameters()) : null;
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken()) : null;
     ValidationResult res = null;
     if (cachingAllowed && txCache != null) {
       res = txCache.getValidation(cacheToken);
@@ -1583,7 +1583,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return null;
     }
 
-    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateSubsumesToken(options, parent, child, getExpansionParameters()) : null;
+    final CacheToken cacheToken = cachingAllowed && txCache != null ? txCache.generateSubsumesToken(options, parent, child, getExpansionParametersForCacheToken()) : null;
     if (cachingAllowed && txCache != null) {
       Boolean res = txCache.getSubsumes(cacheToken);
       if (res != null) {
@@ -1717,7 +1717,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
-    CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, getExpansionParameters());
+    CacheToken cacheToken = txCache.generateValidationToken(options, code, vs, getExpansionParametersForCacheToken());
     ValidationResult res = null;
     if (cachingAllowed) {
       res = txCache.getValidation(cacheToken);
@@ -1918,7 +1918,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   protected void addServerValidationParameters(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext terminologyClientContext, ValueSet vs, Parameters pin, ValidationOptions options, Set<String> systems) {
-    boolean cache = false;
     if (vs != null) {
       if (terminologyClientContext != null && terminologyClientContext.isTxCaching() && terminologyClientContext.getCacheId() != null && vs.getUrl() != null && terminologyClientContext.getCached().contains(vs.getUrl() + "|" + vs.getVersion())) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()));
@@ -1937,12 +1936,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           terminologyClientContext.getCached().add(vs.getUrl() + "|" + vs.getVersion());
         }
       }
-      cache = true;
       addDependentResources(opCtxt, terminologyClientContext, pin, vs);
     }
     if (systems != null) {
       for (String s : systems) {
-        cache = addDependentCodeSystem(opCtxt, terminologyClientContext, pin, s, null, null) || cache;
+        addDependentCodeSystem(opCtxt, terminologyClientContext, pin, s, null, null);
       }
     }
     // cache-id is no longer sent as a parameter; it travels as an HTTP header
@@ -1975,23 +1973,20 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     pin.addParameter("diagnostics", true);
   }
 
-  private boolean addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {
-    boolean cache = false;
+  private void addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-      cache = addDependentResources(opCtxt, tc, pin, inc, vs) || cache;
+      addDependentResources(opCtxt, tc, pin, inc, vs);
     }
     for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
-      cache = addDependentResources(opCtxt, tc, pin, inc, vs) || cache;
+      addDependentResources(opCtxt, tc, pin, inc, vs);
     }
-    return cache;
   }
 
-  private boolean addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ConceptSetComponent inc, Resource src) {
-    boolean cache = false;
+  private void addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ConceptSetComponent inc, Resource src) {
     for (CanonicalType c : inc.getValueSet()) {
       ValueSet vs = fetchResource(ValueSet.class, c.getValue(), ExtensionUtilities.getVersionResolutionRules(c), null, src);
       if (vs != null && !hasCanonicalResource(pin, "tx-resource", vs.getVUrl())) {
-        cache = checkAddToParams(tc, pin, vs) || cache;
+        checkAddToParams(tc, pin, vs);
         addDependentResources(opCtxt, tc, pin, vs);
         for (Extension ext : vs.getExtensionsByUrl(ExtensionDefinitions.EXT_VS_CS_SUPPL_NEEDED)) {
           if (ext.hasValueCanonicalType()) {
@@ -2001,29 +1996,27 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
               if (opCtxt != null) {
                 opCtxt.seeSupplement(supp);
               }
-              cache = checkAddToParams(tc, pin, supp) || cache;
+              checkAddToParams(tc, pin, supp);
             }
           }
         }
       }
     }
     String sys = inc.getSystem();
-    cache = addDependentCodeSystem(opCtxt, tc, pin, sys, src, inc) || cache;
-    return cache;
+    addDependentCodeSystem(opCtxt, tc, pin, sys, src, inc);
   }
 
-  public boolean addDependentCodeSystem(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, String sys, Resource src, Element element) {
-    boolean cache = false;
+  public void addDependentCodeSystem(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, String sys, Resource src, Element element) {
     CodeSystem cs = fetchResource(CodeSystem.class, sys, ExtensionUtilities.getVersionResolutionRules(element), null, src);
     if (cs != null && !hasCanonicalResource(pin, "tx-resource", cs.getVUrl()) && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
-      cache = checkAddToParams(tc, pin, cs) || cache;
+      checkAddToParams(tc, pin, cs);
     }
     for (CodeSystem supp : codeSystems.getSupplements(cs)) {
       if (opCtxt != null) {
         opCtxt.seeSupplement(supp);
       }
       if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl())) {
-        cache = checkAddToParams(tc, pin, supp) || cache;
+        checkAddToParams(tc, pin, supp);
       }
     }
     if (sys != null) {
@@ -2034,7 +2027,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           opCtxt.seeSupplement(supp);
         }
         if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl())) {
-          cache = checkAddToParams(tc, pin, supp) || cache;
+          checkAddToParams(tc, pin, supp);
         }
       }
       if (!sys.contains("!")) {
@@ -2045,13 +2038,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
               opCtxt.seeSupplement(supp);
             }
             if (!hasCanonicalResource(pin, "tx-resource", supp.getVUrl())) {
-              cache = checkAddToParams(tc, pin, supp) || cache;
+              checkAddToParams(tc, pin, supp);
             }
           }
         }
       }
     }
-    return cache;
   }
 
   private String getFixedVersion(String sys, Parameters pin) {
@@ -2277,6 +2269,18 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public Parameters getExpansionParameters() {
     final Parameters parameters = expansionParameters.get();
     return parameters == null ? null : parameters.copy();
+  }
+
+  /**
+   * The master expansion Parameters with no defensive copy, for read-only use
+   * only - specifically cache-token generation, where passing the same stable
+   * instance lets {@link org.hl7.fhir.r5.terminologies.utilities.TerminologyCache}
+   * memoise the serialised form across calls (and avoids a per-call deep copy).
+   * Callers must not mutate the result. The reference changes whenever the
+   * expansion parameters are replaced, which the memo keys off.
+   */
+  protected Parameters getExpansionParametersForCacheToken() {
+    return expansionParameters.get();
   }
 
   public void setExpansionParameters(Parameters expansionParameters) {

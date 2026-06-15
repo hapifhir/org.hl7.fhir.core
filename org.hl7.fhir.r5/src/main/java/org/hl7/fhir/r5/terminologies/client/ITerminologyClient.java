@@ -44,7 +44,16 @@ import java.util.Map;
 import org.hl7.fhir.utilities.ITerminologyRequestIdProvider;
 
 public interface ITerminologyClient {
+  public enum CacheControlMode {START_CACHE, END_CACHE;
 
+    public String toCode() {
+      switch (this) {
+        case START_CACHE: return "start";
+        case END_CACHE: return "end";
+        default: throw new IllegalArgumentException("Unknown cache mode: " + this);
+      }
+    }
+  }
   EnumSet<FhirPublication> supportableVersions();
   void setAllowedVersions(EnumSet<FhirPublication> versions);
   EnumSet<FhirPublication> getAllowedVersions();
@@ -67,7 +76,7 @@ public interface ITerminologyClient {
    * (release the cache named by the x-cache-id header), or "check". body may carry
    * resources to front-load on start, or be null.
    */
-  Parameters cacheControl(String mode, Parameters body) throws FHIRException, IOException;
+  Parameters cacheControl(CacheControlMode mode, Parameters body) throws FHIRException, IOException;
   ITerminologyClient setTimeoutFactor(int i) throws FHIRException;
   ToolingClientLogger getLogger();
   ITerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
@@ -80,13 +89,18 @@ public interface ITerminologyClient {
   Parameters lookupCode(Map<String, String> params) throws FHIRException;
   Parameters lookupCode(Parameters params) throws FHIRException;
   Parameters translate(Parameters params) throws FHIRException;
-  Parameters doRelated(Parameters params) throws FHIRException;
+  Parameters doCompare(Parameters params) throws FHIRException;
   Bundle batch(Bundle batch);
   CanonicalResource read(String type, String id);
   Iterable<HTTPHeader> getClientHeaders();
+
+  // setClientHeaders resets the client headers completely,
+  // it is intended to be used at startup
   ITerminologyClient setClientHeaders(ClientHeaders clientHeaders);
-  /** Add a single persistent client header (e.g. x-cache-id) without replacing the rest. */
+  // Add a single persistent client header (e.g. x-cache-id) without replacing the rest.
+  // note that setClientHeaders will clear any headers added this way
   ITerminologyClient addClientHeader(HTTPHeader header);
+
   ITerminologyClient setUserAgent(String userAgent);
   ITerminologyClient setAcceptLanguage(String lang);
   ITerminologyClient setContentLanguage(String lang);
