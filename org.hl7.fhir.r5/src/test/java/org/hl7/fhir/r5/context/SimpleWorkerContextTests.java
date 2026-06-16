@@ -70,7 +70,7 @@ public class SimpleWorkerContextTests {
     context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient, false);
 
     Mockito.verify(terminologyCache).getTerminologyCapabilities(address);
-    Mockito.verify(terminologyClient).getCapabilitiesStatement(); //FIXME why called twice?
+    Mockito.verify(terminologyClient).getCapabilitiesStatement();
 
     Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
     Mockito.verify(terminologyClient, times(0)).getTerminologyCapabilities();
@@ -93,7 +93,7 @@ public class SimpleWorkerContextTests {
     Mockito.verify(terminologyCache, times(0)).getTerminologyCapabilities(address);
     Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
 
-    Mockito.verify(terminologyClient).getTerminologyCapabilities(); //FIXME why called twice?
+    Mockito.verify(terminologyClient).getTerminologyCapabilities();
     Mockito.verify(terminologyClient).getCapabilitiesStatement();
 
   }
