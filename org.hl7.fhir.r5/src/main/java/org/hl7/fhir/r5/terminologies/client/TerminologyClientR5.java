@@ -146,7 +146,7 @@ public class TerminologyClientR5 implements ITerminologyClient {
     pIn.addParameter().setName("thisValueSet").setResource(vsThis);
     pIn.addParameter().setName("otherValueSet").setResource(vsOther);
     pIn.addParameter().setName("diagnostics").setValue(new BooleanType(true));
-    return client.operateType(ValueSet.class, "related", pIn);
+    return client.operateType(ValueSet.class, "compare", pIn);
   }
 
 
@@ -319,8 +319,8 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
-  public Parameters doRelated(Parameters params) throws FHIRException {
-    return client.doRelated(params);
+  public Parameters doCompare(Parameters params) throws FHIRException {
+    return client.doCompare(params);
   }
 
   @Override

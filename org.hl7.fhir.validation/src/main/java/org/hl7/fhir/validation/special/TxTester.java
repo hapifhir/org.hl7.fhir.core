@@ -615,7 +615,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         // If the server caches, get this thread's cache-id for the suite (starting
         // the cache + front-loading setup on first use). When cached, the setup is
         // sent via the cache, not on each request.
-        String cid = cacheForSuite(suite.asString("name"), setup);
+        String cid = suiteCacheId(suite.asString("name"), setup);
         List<Resource> effectiveSetup = cid != null ? Collections.emptyList() : setup;
         // Set this thread's client headers for the request: the suite cache-id (if
         // caching this suite) and/or the test's own header. We always set (even to
@@ -671,8 +671,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
           msg = batch(test.str("name"), effectiveSetup, (Bundle) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("batch-validate")) {
           msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
-        } else if (test.asString("operation").equals("related")) {
-          msg = related(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+        } else if (test.asString("operation").equals("compare")) {
+          msg = compare(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -1030,7 +1030,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return diff;
   }
 
-  private String related(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  private String compare(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -1039,7 +1039,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     int code = 0;
     String pj;
     try {
-      Parameters po = client().doRelated(p);
+      Parameters po = client().doCompare(p);
       TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
@@ -1159,7 +1159,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
    * keyed by suite name; tests of a suite may be spread across threads, so each
    * thread independently caches the suites it runs.
    */
-  private String cacheForSuite(String suiteName, List<Resource> setup) {
+  private String suiteCacheId(String suiteName, List<Resource> setup) {
     if (setup.isEmpty() || !serverSupportsCacheControl()) {
       return null;
     }
@@ -1185,7 +1185,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       for (Resource r : setup) {
         p.addParameter().setName("tx-resource").setResource(r);
       }
-      Parameters resp = client().cacheControl("start", p);
+      Parameters resp = client().cacheControl(ITerminologyClient.CacheControlMode.START_CACHE, p);
       if (resp != null && resp.hasParameter("cache-id")) {
         return resp.getParameterValue("cache-id").primitiveValue();
       }
@@ -1209,7 +1209,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     }
     try {
       client().setClientHeaders(new ClientHeaders(List.of(new HTTPHeader(TerminologyClientContext.CACHE_ID_HEADER, cacheId))));
-      client().cacheControl("end", null);
+      client().cacheControl(ITerminologyClient.CacheControlMode.END_CACHE, null);
       client().setClientHeaders(new ClientHeaders());
     } catch (Exception e) {
       // best effort
