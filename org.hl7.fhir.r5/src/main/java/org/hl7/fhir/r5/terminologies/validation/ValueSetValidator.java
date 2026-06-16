@@ -1219,6 +1219,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     
     for (ConceptDefinitionDesignationComponent ds : cc.getDesignation()) {
       opContext.deadCheck("validateCode1 "+ds.toString());
+      if (!isOkLanguage(ds.getLanguage()) && (!ds.hasLanguage() || ds.getLanguage().equals(cs.getLanguage()))
+          && code.getDisplay().equalsIgnoreCase(ds.getValue())) {
+        // the display matches a designation in the code system's default language; that's
+        // acceptable if there are no displays in the requested language(s) (b.count() == 0)
+        // (see tests validation-simple-*-good-language-none)
+        isDefaultLang = true;
+      }
       if (isOkLanguage(ds.getLanguage())) {
         b.append("'"+ds.getValue()+"' ("+ds.getLanguage()+")");
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {

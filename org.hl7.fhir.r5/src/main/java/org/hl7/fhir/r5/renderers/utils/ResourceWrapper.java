@@ -433,7 +433,9 @@ public abstract class ResourceWrapper {
   
 
   public boolean matches(ResourceWrapper b) {
-    if (isEmpty() || b.isEmpty()) {
+    if (b == null) {
+      return false;
+    } else if (isEmpty() || b.isEmpty()) {
       return isEmpty() && b.isEmpty();
     } else {
       if (hasPrimitiveValue() || b.hasPrimitiveValue()) {
