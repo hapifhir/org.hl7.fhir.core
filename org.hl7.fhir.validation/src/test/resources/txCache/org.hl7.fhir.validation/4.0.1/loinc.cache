@@ -6236,6 +6236,7 @@ v: {
   }
 }}####
 e: {
+  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
@@ -6268,5 +6269,156 @@ e: {
   }
 },
   "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "5792-7"
+}, "url": "http://hl7.org/fhir/ValueSet/birthDate", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"true", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "5792-7",
+  "system" : "http://loinc.org",
+  "severity" : "error",
+  "error" : "The provided code 'http://loinc.org#5792-7' was not found in the value set 'http://hl7.org/fhir/ValueSet/birthDate'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/ValueSet/birthDate: Analysing http://hl7.org/fhir/ValueSet/birthDate for validation purposes\n1ms http://hl7.org/fhir/ValueSet/birthDate: Parameters: disp-lang=en-US, generate-narrative, membership-only, default-to-latest\n1ms http://hl7.org/fhir/ValueSet/birthDate: Validate \"[http://loinc.org#5792-7 (\"undefined\")]\"\n4ms http://hl7.org/fhir/ValueSet/birthDate: Check \"http://loinc.org#5792-7\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://loinc.org#5792-7' was not found in the value set 'http://hl7.org/fhir/ValueSet/birthDate'"
+    },
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "5792-7"
+}, "url": "http://some/value/set", "langs":"", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"true", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "5792-7",
+  "system" : "http://loinc.org",
+  "severity" : "error",
+  "error" : "The provided code 'http://loinc.org#5792-7' was not found in the value set 'http://some/value/set'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://some/value/set: Analysing http://some/value/set for validation purposes\n1ms http://some/value/set: Parameters: disp-lang=en-US, generate-narrative, membership-only, default-to-latest\n1ms http://some/value/set: Validate \"[http://loinc.org#5792-7 (\"undefined\")]\"\n3ms http://some/value/set: Check \"http://loinc.org#5792-7\"",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://loinc.org#5792-7' was not found in the value set 'http://some/value/set'"
+    },
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA33-6"
+}, "url": "http://example.com/yesno", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Yes",
+  "code" : "LA33-6",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://example.com/yesno: Analysing http://example.com/yesno for validation purposes\n1ms http://example.com/yesno: Parameters: disp-lang=en-US, generate-narrative, default-to-latest\n1ms http://example.com/yesno: Prepare include[0]: \"(http://loinc.org)(LA33-6,LA32-8)\"\n3ms http://example.com/yesno: CodeSystem found: \"http://loinc.org|2.82\"\n3ms http://example.com/yesno: Validate \"[http://loinc.org#LA33-6 (\"undefined\")]\"\n5ms http://example.com/yesno: Check \"http://loinc.org#LA33-6\"\n8ms http://example.com/yesno: CodeSystem found: http://loinc.org|2.82 for http://loinc.org\n8ms http://example.com/yesno: check code in (http://loinc.org)(LA33-6,LA32-8) at Coding\n8ms http://example.com/yesno: Code \"LA33-6\" found in http://loinc.org|2.82",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://loinc.org",
+  "code" : "LA32-8"
+}, "url": "http://example.com/yesno", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "No",
+  "code" : "LA32-8",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms http://example.com/yesno: Analysing http://example.com/yesno for validation purposes\n1ms http://example.com/yesno: Parameters: disp-lang=en-US, generate-narrative, default-to-latest\n1ms http://example.com/yesno: Prepare include[0]: \"(http://loinc.org)(LA33-6,LA32-8)\"\n10ms http://example.com/yesno: CodeSystem found: \"http://loinc.org|2.82\"\n10ms http://example.com/yesno: Validate \"[http://loinc.org#LA32-8 (\"undefined\")]\"\n12ms http://example.com/yesno: Check \"http://loinc.org#LA32-8\"\n20ms http://example.com/yesno: CodeSystem found: http://loinc.org|2.82 for http://loinc.org\n20ms http://example.com/yesno: check code in (http://loinc.org)(LA33-6,LA32-8) at Coding\n20ms http://example.com/yesno: Code \"LA32-8\" found in http://loinc.org|2.82",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
 }
 -------------------------------------------------------------------------------------

@@ -6,7 +6,7 @@
   "name" : "FHIRTerminologyServer",
   "title" : "FHIR Terminology Server",
   "status" : "active",
-  "date" : "2026-06-13T16:53:32.220Z",
+  "date" : "2026-06-17T01:32:11.814Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -3644,6 +3644,13 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/care-consideration",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/care-service-accessibility",
     "version" : [{
       "code" : "1.0.0"
@@ -3826,6 +3833,13 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/color-names",
+    "version" : [{
+      "code" : "20260630"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/common-tags",
     "version" : [{
       "code" : "1.0.1"
@@ -3864,6 +3878,13 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/composition-altcode-kind",
     "version" : [{
       "code" : "2.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/composition-attestation-mode",
+    "version" : [{
+      "code" : "1.0.0"
     }],
     "content" : "complete"
   },
@@ -4127,6 +4148,48 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-severity",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-availability-status",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-category",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-nametype",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-specification-category",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/device-status-reason",
     "version" : [{
       "code" : "2.0.0"
@@ -4136,14 +4199,49 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-activationState",
     "version" : [{
-      "code" : "2.0.0"
+      "code" : "3.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-annunciation",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-category",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-manifestation",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-presence",
+    "version" : [{
+      "code" : "1.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-priority",
     "version" : [{
-      "code" : "2.0.0"
+      "code" : "3.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-type",
+    "version" : [{
+      "code" : "1.0.0"
     }],
     "content" : "complete"
   },
@@ -4156,6 +4254,13 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-status-reason",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicedefinition-relationtype",
     "version" : [{
       "code" : "1.0.0"
     }],
@@ -4200,6 +4305,13 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/discharge-disposition",
     "version" : [{
       "code" : "1.0.1"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/document-relationship-type",
+    "version" : [{
+      "code" : "1.0.0"
     }],
     "content" : "complete"
   },
@@ -4263,6 +4375,20 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/evidence-quality",
     "version" : [{
       "code" : "1.0.1"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/evidence-variable-constraint",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/evidence-variable-unacceptable-data-handling",
+    "version" : [{
+      "code" : "1.0.0"
     }],
     "content" : "complete"
   },
@@ -4838,6 +4964,34 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-availability",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-calibration-state",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-calibration-type",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-category",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/missingtoothreason",
     "version" : [{
       "code" : "1.0.1"
@@ -4897,6 +5051,13 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/observation-category",
     "version" : [{
       "code" : "2.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/observation-referencerange-normalvalue",
+    "version" : [{
+      "code" : "1.0.0"
     }],
     "content" : "complete"
   },
@@ -5076,6 +5237,13 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/reading-mode",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/reason-medication-given",
     "version" : [{
       "code" : "1.0.1"
@@ -5128,6 +5296,13 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/research-study-prim-purp-type",
     "version" : [{
       "code" : "2.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-study-purpose-type",
+    "version" : [{
+      "code" : "1.0.0"
     }],
     "content" : "complete"
   },
@@ -5363,6 +5538,13 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/task-code",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/testscript-operation-codes",
     "version" : [{
       "code" : "2.0.0"
@@ -5410,6 +5592,13 @@
       "code" : "4.0.0"
     }],
     "content" : "fragment"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/us-military-service-period",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/usage-context-type",

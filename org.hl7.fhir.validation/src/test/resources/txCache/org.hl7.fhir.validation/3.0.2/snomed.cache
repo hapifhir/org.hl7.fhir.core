@@ -1047,7 +1047,6 @@ v: {
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
   "diagnostics" : "0ms tx-op\n1ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Validate \"[http://snomed.info/sct#11181000146103 (\"undefined\")]\"\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Check \"http://snomed.info/sct#11181000146103\"\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: CodeSystem found: http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201 for http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: check code in (http://snomed.info/sct) at CodeableConcept.coding[0]\n2ms http://snomed.info/sct/vs|http://snomed.info/sct/900000000000207008/version/20250201: Code \"11181000146103\" not found in http://snomed.info/sct|http://snomed.info/sct/900000000000207008/version/20250201: undefined",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -1070,6 +1069,34 @@ v: {
     },
     "expression" : ["CodeableConcept.coding[0].code"]
   }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://snomed.info/sct",
+  "code" : "55011004"
+}, "url": "http://example.com/ValueSet/testVS", "langs":"en", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Steady",
+  "code" : "55011004",
+  "system" : "http://snomed.info/sct",
+  "version" : "http://snomed.info/sct/900000000000207008/version/20250201",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n1ms http://example.com/ValueSet/testVS: Analysing http://example.com/ValueSet/testVS for validation purposes\n1ms http://example.com/ValueSet/testVS: Parameters: disp-lang=en, generate-narrative, default-to-latest\n1ms http://example.com/ValueSet/testVS: Validate \"[http://snomed.info/sct#55011004 (\"undefined\")]\"\n2ms http://example.com/ValueSet/testVS: Check \"http://snomed.info/sct#55011004\"",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
 }
 
 }

@@ -717,7 +717,6 @@ v: {
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r3",
   "diagnostics" : "0ms tx-op\n4ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#87504-7 (\"Administrative information\")]\"\n6ms http://loinc.org/vs|2.82: Check \"http://loinc.org#87504-7\"\n9ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n9ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at CodeableConcept.coding[0]\n9ms http://loinc.org/vs|2.82: Code \"87504-7\" found in http://loinc.org|2.82",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -740,6 +739,37 @@ v: {
     },
     "expression" : ["CodeableConcept.coding[0].display"]
   }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "coding" : [{
+    "system" : "http://loinc.org",
+    "code" : "2069-3",
+    "display" : "Chloride [Moles/volume] in Blood"
+  }]
+}, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Chloride [Moles/volume] in Blood",
+  "code" : "2069-3",
+  "system" : "http://loinc.org",
+  "version" : "2.82",
+  "server" : "https://tx-dev.fhir.org/r3",
+  "diagnostics" : "0ms tx-op\n3ms http://loinc.org/vs|2.82: Validate \"[http://loinc.org#2069-3 (\"Chloride [Moles/volume] in Blood\")]\"\n5ms http://loinc.org/vs|2.82: Check \"http://loinc.org#2069-3\"\n8ms http://loinc.org/vs|2.82: CodeSystem found: http://loinc.org|2.82 for http://loinc.org|2.82\n8ms http://loinc.org/vs|2.82: check code in (http://loinc.org) at CodeableConcept.coding[0]\n8ms http://loinc.org/vs|2.82: Code \"2069-3\" found in http://loinc.org|2.82",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
 }
 
 }
