@@ -310,7 +310,7 @@ class ValidationServiceTests {
       }
 
       @Override
-      protected void loadIgsAndExtensions(ValidationEngine validationEngine, List<String> igs, boolean isRecursive) {
+      protected void loadIgsAndExtensions(ValidationEngine validationEngine, List<String> igs, boolean isRecursive, boolean onlyDirectIgDependencies) {
         //Don't care. Do nothing.
       }
     };
