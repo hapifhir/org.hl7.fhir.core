@@ -485,7 +485,7 @@ public class CompliesWithChecker {
           } else {
             TerminologyClientManager terminologyClientManager = context.getTerminologyClientManager();
             ITerminologyClient client = terminologyClientManager != null ? terminologyClientManager.getMasterClient() : null;
-            if (client != null && TerminologyUtilities.supportsOperation(client.getCapabilitiesStatement(), "ValueSet", "$related")) {
+            if (client != null && TerminologyUtilities.supportsOperation(client.getCapabilitiesStatement(), "ValueSet", "$compare")) {
               Parameters params = client.getValueSetRelationship(cVS, aVS);
               throw new Error("not done yet");
             } else {

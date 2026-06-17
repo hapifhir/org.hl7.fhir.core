@@ -890,6 +890,7 @@ public class ValueSetValidator extends BaseValidator {
     // if we can produce a valid value set from the compose, we expand it, and compare the members
     if (vs != null) {
       // safe to hack it here, because we're otherwise finished with it
+      // and making sure this is not cached
       vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase());
       vs.setVersion(null);
       vs.setExpansion(null);

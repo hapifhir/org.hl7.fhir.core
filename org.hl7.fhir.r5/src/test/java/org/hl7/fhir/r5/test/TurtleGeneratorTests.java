@@ -25,6 +25,8 @@ import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.elementmodel.TurtleParserR6;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.Utilities;
 import org.junit.jupiter.api.*;
 
 /**
@@ -40,7 +42,6 @@ public class TurtleGeneratorTests {
 
   private static final Path ROOT_TEST_PATH = Paths.get("testUtilities");
   private static final Path DEFAULT_EXPECTED_XML_DIR = ROOT_TEST_PATH.resolve("xml/examples/expected");
-  private static final Path DEFAULT_OUTPUT_TURTLE_DIR = Paths.get(System.getProperty("java.io.tmpdir"));
   private static final Path DEFAULT_EXPECTED_TTL_DIR = ROOT_TEST_PATH.resolve("ttl/examples/expected");
     // These can be overwritten with a local.properties file (org.hl7.fhir.r5/src/test/resources/local.properties)
   private static Path inputXmlDirectory;
@@ -52,7 +53,7 @@ public class TurtleGeneratorTests {
     // Override configured directories in org.hl7.fhir.r5/src/test/resources/local.properties
     var props = TurtleGeneratorTestUtils.loadLocalProperties();
     inputXmlDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputXmlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_XML_DIR));
-    outputTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "outputTtlDirectory", DEFAULT_OUTPUT_TURTLE_DIR);
+    outputTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "outputTtlDirectory", Path.of(Utilities.path("[tmp]", "ttl")));
     Files.createDirectories(outputTurtleDirectory);
     expectedTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "expectedTtlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_TTL_DIR));
 
@@ -204,9 +205,12 @@ public class TurtleGeneratorTests {
     for (Path expectedTurtlePath : expectedTurtlePaths) {
       Path xmlResourcePath = getXmlExamplePathForExpectedTurtle(expectedTurtlePath);
       Assertions.assertTrue(Files.exists(xmlResourcePath), "Missing XML example for " + expectedTurtlePath.getFileName() + " at path: " + xmlResourcePath);
+      String expected = parsers.parseGeneratedTurtle(expectedTurtlePath.toString());
+      String actual = parsers.parseGeneratedTurtle(parsers.generateTurtleFromXmlResourcePath(xmlResourcePath, outputDirectory));
+      FileUtilities.stringToFile(actual, Utilities.path("[tmp]", "ttl", xmlResourcePath.getFileName().toString()));
       Assertions.assertEquals(
-          parsers.parseGeneratedTurtle(expectedTurtlePath.toString()),
-          parsers.parseGeneratedTurtle(parsers.generateTurtleFromXmlResourcePath(xmlResourcePath, outputDirectory)),
+        expected,
+        actual,
           "Generated Turtle did not match expected output for " + expectedTurtlePath.getFileName());
     }
   }

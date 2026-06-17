@@ -1538,7 +1538,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (vsi.hasSystem()) {
       if (vsi.hasFilter()) {
         ValueSet vsDummy = new ValueSet();
-        vsDummy.setUrl(UUIDUtilities.makeUuidUrn());
+        String uuid = vsi.getUserString(UserDataNames.CACHED_UUID);
+        if (uuid == null) {
+          uuid = UUIDUtilities.makeUuidUrn();
+          vsi.setUserData(UserDataNames.CACHED_UUID, uuid);
+        }
+        vsDummy.setVersion("1");
+        vsDummy.setUrl(uuid);
         vsDummy.setStatus(PublicationStatus.ACTIVE);
         vsDummy.getCompose().addInclude(vsi);
         Coding c = new Coding().setCode(code).setSystem(vsi.getSystem());
@@ -1587,7 +1593,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
           return true;
         } else {
           ValueSet vsDummy = new ValueSet();
-          vsDummy.setUrl(UUIDUtilities.makeUuidUrn());
+          String uuid = vsi.getUserString(UserDataNames.CACHED_UUID);
+          if (uuid == null) {
+            uuid = UUIDUtilities.makeUuidUrn();
+            vsi.setUserData(UserDataNames.CACHED_UUID, uuid);
+          }
+          vsDummy.setVersion("1");
+          vsDummy.setUrl(uuid);
           vsDummy.setStatus(PublicationStatus.ACTIVE);
           vsDummy.getCompose().addInclude(vsi);
           ValidationResult vr = context.validateCode(options.withNoClient(), code, vsDummy);

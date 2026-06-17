@@ -252,7 +252,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
   private boolean scanObsForIssued(List<ObservationNode> observations, ResourceWrapper iss) throws UnsupportedEncodingException, FHIRException, IOException { 
     for (ObservationNode o : observations) { 
-      if (o.resolution != null) {
+      if (o.resolution != null && o.resolution.getResource() != null) {
         ResourceWrapper obs = o.resolution.getResource();
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //False positive: not using String.matches
@@ -271,22 +271,25 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
   } 
 
   private boolean scanObsForEffective(List<ObservationNode> observations, ResourceWrapper eff) throws UnsupportedEncodingException, FHIRException, IOException { 
-    for (ObservationNode o : observations) { 
-      if (o.resolution != null) {
-        ResourceWrapper obs = o.resolution.getResource();
+    for (ObservationNode o : observations) {
+      if (o.resolution == null || o.resolution.getResource() == null) {
+        continue;
+      }
+      ResourceWrapper obs = o.resolution.getResource();
+      if (obs != null) {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //False positive: not using String.matches
         boolean effMatches = eff != null && eff.matches(obs.child("effective[x]"));
         if (obs != null && obs.has("effective[x]") && (eff == null || !effMatches)) {
-          return true; 
-        } 
-        if (o.contained != null) { 
-          if (scanObsForEffective(o.contained, eff)) { 
-            return true; 
-          } 
-        } 
+          return true;
+        }
+        if (o.contained != null) {
+          if (scanObsForEffective(o.contained, eff)) {
+            return true;
+          }
+        }
       }
-    }       
+    }
     return false; 
   } 
 
