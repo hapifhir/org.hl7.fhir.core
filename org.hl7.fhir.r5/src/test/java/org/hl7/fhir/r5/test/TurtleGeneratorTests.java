@@ -207,9 +207,6 @@ public class TurtleGeneratorTests {
       Assertions.assertTrue(Files.exists(xmlResourcePath), "Missing XML example for " + expectedTurtlePath.getFileName() + " at path: " + xmlResourcePath);
       String expected = parsers.parseGeneratedTurtle(expectedTurtlePath.toString());
       String actual = parsers.parseGeneratedTurtle(parsers.generateTurtleFromXmlResourcePath(xmlResourcePath, outputDirectory));
-      FileUtilities.stringToFile(expected, "/Users/grahame/temp/ttl/expected.ttl");
-      FileUtilities.stringToFile(actual, "/Users/grahame/temp/ttl/actual.ttl");
-
       Assertions.assertEquals(
         expected,
         actual,

@@ -45,6 +45,22 @@ class TestInstanceGenerationTester {
     context.loadFromPackage(pcm.loadPackage("hl7.fhir.us.core#6.0.0"), new R4ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
         new NullLoaderKnowledgeProviderR5(), context.getVersion()));
             
+    // DEBUG: the generated code.text is copied verbatim from the bp profile's Observation.code
+    // pattern (ProfileBasedFactory.populateElementFromDataType); the factory never writes a
+    // CodeableConcept.text itself. Log the pattern as loaded to see whether terminology completion
+    // against tx-dev.fhir.org injected a text into the fixed value (which would then propagate into
+    // every generated instance, and differ between CI and local depending on tx-dev responses).
+    StructureDefinition bp = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/bp");
+    if (bp != null && bp.hasSnapshot()) {
+      for (org.hl7.fhir.r5.model.ElementDefinition ed : bp.getSnapshot().getElement()) {
+        if ("Observation.code".equals(ed.getPath()) && ed.hasPattern()) {
+          TestInstanceGenerationTester.log.info("bp Observation.code pattern as loaded: {}",
+            new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.NORMAL)
+              .composeString((org.hl7.fhir.r5.model.DataType) ed.getPattern(), "pattern"));
+        }
+      }
+    }
+
     FHIRPathEngine fpe = new FHIRPathEngine(context);
     TestDataHostServices hs = new TestDataHostServices(context, new DateTimeType("2024-12-24T09:01:00+11:00"),
       new DateType("2024-12-24"), new StringType("https://www.hl7.org/fhir"));
@@ -101,7 +117,17 @@ class TestInstanceGenerationTester {
     }
     
     for (String name : Utilities.strings("Patient-1.json", "Patient2-1.json", "Encounter-1.json", "MedicationStatement-1.json", "Observation-bp-1.json", "Observation-weight-1.json")) {
-      String diff = new CompareUtilities(null, null, null).checkJsonSrcIsSame(name, FileUtilities.fileToString(Utilities.path(expected, name)), FileUtilities.fileToString(Utilities.path(output, name)), false);
+      String expectedSrc = FileUtilities.fileToString(Utilities.path(expected, name));
+      String actualSrc = FileUtilities.fileToString(Utilities.path(output, name));
+      String diff = new CompareUtilities(null, null, null).checkJsonSrcIsSame(name, expectedSrc, actualSrc, false);
+      if (diff != null) {
+        // Debugging for non-reproducible CI failures: this test depends on the live tx server
+        // (tx-dev.fhir.org) and on the -SNAPSHOT fhir-test-cases templates/fixtures, both of which
+        // can differ between CI and local. Dump both sides so the divergence is visible in the log.
+        TestInstanceGenerationTester.log.error("Difference for {}: {}", name, diff);
+        TestInstanceGenerationTester.log.error("EXPECTED {} (from fhir-test-cases):\n{}", name, expectedSrc);
+        TestInstanceGenerationTester.log.error("ACTUAL {} (generated):\n{}", name, actualSrc);
+      }
       Assertions.assertNull(diff, "unexpected difference for "+name);
     }
   }
