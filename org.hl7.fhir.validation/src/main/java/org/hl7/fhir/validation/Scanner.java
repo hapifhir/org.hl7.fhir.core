@@ -184,7 +184,7 @@ public class Scanner {
     b.append("<tr><th></th><th></th>");
     for (String s : sort(igs)) {
       ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, s);
-      b.append("<th colspan=\"" + Integer.toString(profiles.get(s).size() + 1) + "\"><b title=\"" + s + "\">" + ig.present() + "</b></th>");
+      b.append("<th colspan=\"" + Integer.toString(profiles.get(s).size() + 1) + "\"><b title=\"" + Utilities.escapeXml(s) + "\">" + Utilities.escapeXml(ig.present()) + "</b></th>");
     }
     b.append("</tr>\r\n");
     b.append("<tr><th><b>Source</b></th><th><span>Core Spec</span></th>");
@@ -193,14 +193,14 @@ public class Scanner {
       b.append("<th><span>Global</span></th>");
       for (String sp : sort(profiles.get(s))) {
         StructureDefinition sd = getContext().fetchResource(StructureDefinition.class, sp);
-        b.append("<th><b title=\"" + sp + "\"><span>" + sd.present() + "</span></b></th>");
+        b.append("<th><b title=\"" + Utilities.escapeXml(sp) + "\"><span>" + Utilities.escapeXml(sd.present()) + "</span></b></th>");
       }
     }
     b.append("</tr>\r\n");
 
     for (String s : sort(refs)) {
       b.append("<tr>");
-      b.append("<td>" + s + "</td>");
+      b.append("<td>" + Utilities.escapeXml(s) + "</td>");
       b.append(genOutcome(items, s, null, null));
       for (String si : sort(igs)) {
         ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, si);
@@ -217,7 +217,7 @@ public class Scanner {
     b.append("<table class=\"grid\">");
     b.append("<tr><th></th><th></th>");
     for (String s : sort(refs)) {
-      b.append("<th><span>" + s + "</span></th>");
+      b.append("<th><span>" + Utilities.escapeXml(s) + "</span></th>");
     }
     b.append("</tr>\r\n");
     b.append("<tr><td></td><td>Core Spec</td>");
@@ -228,7 +228,7 @@ public class Scanner {
     for (String si : sort(igs)) {
       b.append("<tr>");
       ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, si);
-      b.append("<td><b title=\"" + si + "\">" + ig.present() + "</b></td>");
+      b.append("<td><b title=\"" + Utilities.escapeXml(si) + "\">" + Utilities.escapeXml(ig.present()) + "</b></td>");
       b.append("<td>Global</td>");
       for (String s : sort(refs)) {
         b.append(genOutcome(items, s, si, null));
@@ -238,7 +238,7 @@ public class Scanner {
       for (String sp : sort(profiles.get(ig.getUrl()))) {
         b.append("<tr>");
         StructureDefinition sd = getContext().fetchResource(StructureDefinition.class, sp);
-        b.append("<td></td><td><b title=\"" + sp + "\">" + sd.present() + "</b></td>");
+        b.append("<td></td><td><b title=\"" + Utilities.escapeXml(sp) + "\">" + Utilities.escapeXml(sd.present()) + "</b></td>");
         for (String s : sort(refs)) {
           b.append(genOutcome(items, s, si, sp));
         }
@@ -263,11 +263,11 @@ public class Scanner {
     StringBuilder b = new StringBuilder();
     b.append("<html>");
     b.append("<head>");
-    b.append("<title>" + title + "</title>");
+    b.append("<title>" + Utilities.escapeXml(title) + "</title>");
     b.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");
     b.append("</head>");
     b.append("<body>");
-    b.append("<h2>" + title + "</h2>");
+    b.append("<h2>" + Utilities.escapeXml(title) + "</h2>");
     b.append(s);
     b.append("</body>");
     b.append("</html>");
