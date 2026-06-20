@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.test;
 
 import java.io.InputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -32,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ShExGeneratorBase;
+import org.hl7.fhir.r5.conformance.ShExGeneratorBase.HTMLLinkPolicy;
 import org.hl7.fhir.r5.conformance.ShExGeneratorConfig;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ShExGeneratorR6;
@@ -48,6 +50,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -59,6 +62,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.hl7.fhir.r5.test.ShexGeneratorTestUtils.printList;
 
 @Slf4j
 public class ShexGeneratorTests {
@@ -248,7 +252,7 @@ public class ShexGeneratorTests {
 
   @Test
   public void testCanonical() throws FHIRException, IOException, UcumException {
-    doTest("canonical", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("canonical");
   }
 
   @Test
@@ -263,12 +267,12 @@ public class ShexGeneratorTests {
 
   @Test
   public void testbodyheight() throws FHIRException, IOException, UcumException {
-    doTest("bodyheight", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("bodyheight");
   }
 
   @Test
   public void testQuestionnaireResponse() throws FHIRException, IOException, UcumException {
-    doTest("QuestionnaireResponse", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("QuestionnaireResponse");
   }
   @Test
   public void testCapabilityStatement() throws FHIRException, IOException, UcumException {
@@ -312,7 +316,6 @@ public class ShexGeneratorTests {
     });
   }
 
-
   private void doTestMatchFromFileR5(String relativeProfilePath) throws IOException, UcumException {
     doTestMatchFromFile(relativeProfilePath, expectedShexDirectory.resolve("R5"));
   }
@@ -333,6 +336,121 @@ public class ShexGeneratorTests {
     Path expectedShexPath =  expectedDirectory.resolve(shexFileName.toLowerCase() + ".shex"); 
     compareShex(expectedShexPath, generatedShexPath);
   }
+
+   private void doTestSingleSD(String name, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat) throws FileNotFoundException, IOException, FHIRException, UcumException {
+    // ------- Comment following for debugging/testing
+//    StructureDefinition sd = TestingUtilities.getSharedWorkerContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
+//    if (sd == null) {
+//      throw new FHIRException("StructuredDefinition for " + name + "was null");
+//    }
+//    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
+//    FileUtilities. OR TextFile. stringToFile(new ShExGenerator(TestingUtilities.getSharedWorkerContext()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
+
+    // For Testing Schema Processing and Constraint Mapping related Development
+    // If you un-comment the following lines, please comment all other lines in this method.
+    // Test with processing constraints flag
+    // ----------------- Uncomment following to testing/Debugging -----
+        boolean processConstraints = true;
+        this.doTestSingleSD(name.toLowerCase(), cat, name,
+          false, ShExGenerator.ConstraintTranslationPolicy.ALL,
+          true, true, true, processConstraints);
+  }
+
+  /**
+  This is one of the main method to control generation of ShEx Schema
+  - processConstraints - toggle flag to include or exclude constaints
+  - excludeMetaSDs - toggle including/excluding MetaSDs
+  **/
+  private void doTestSingleSD(String shortName, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat,
+                              String name, boolean useSelectedExtensions,
+                              ShExGenerator.ConstraintTranslationPolicy policy,
+                              boolean debugMode, boolean validateShEx,
+                              boolean excludeMetaSDs, boolean processConstraints) {
+    IWorkerContext ctx = TestingUtilities.getSharedWorkerContext();
+    StructureDefinition sd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
+    if (sd == null) {
+      throw new FHIRException("StructuredDefinition for " + name + "(Kind:" + cat + ") was null");
+    }
+    //Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
+    Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas", shortName + ".shex");
+    Path auxPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas/aux.shex");
+
+
+    this.shexGenerator = new ShExGenerator(ctx);
+
+    this.shexGenerator.debugMode = debugMode;
+    this.shexGenerator.processConstraints = processConstraints;
+    this.shexGenerator.constraintPolicy = policy;
+
+    if (excludeMetaSDs) {
+      // ShEx Generator skips resources which are at Meta level of FHIR Resource definitions
+      this.shexGenerator.setExcludedStructureDefinitionUrls(
+        ShexGeneratorTestUtils.getMetaStructureDefinitionsToSkip());
+    }
+    else
+      this.shexGenerator.setExcludedStructureDefinitionUrls(null);
+
+    // when ShEx translates only selected resource extensions
+    if (useSelectedExtensions) {
+      List<StructureDefinition> selExtns = new ArrayList<StructureDefinition>();
+      for (String eUrl : ShexGeneratorTestUtils.getSelectedExtensions()) {
+        StructureDefinition esd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(eUrl, null));
+        if (esd != null)
+          selExtns.add(esd);
+      }
+      this.shexGenerator.setSelectedExtension(selExtns);
+    }
+
+    String schema = this.shexGenerator.generate(HTMLLinkPolicy.NONE, sd);
+    if (!schema.isEmpty()) {
+
+      if (validateShEx) {
+        try {
+//          ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
+//          Schema sch = validator.schema();
+//
+//          Assert.assertNotNull(sch);
+
+          System.out.println("VALIDATION PASSED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
+        } catch (Exception e) {
+          System.out.println("VALIDATION FAILED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
+          e.printStackTrace();
+        }
+      }
+      File auxFile = auxPath.toFile();
+      try {
+        auxFile.createNewFile();
+        String auxContent = FileUtilities.fileToString(auxFile);
+        List<String> importsInAux = substringBetweenMarkers(auxContent, "#imported_begin\nIMPORT <", ">\n#imported_end");
+        List<String> oomInAux = substringBetweenMarkers(auxContent, "#oneOrMore_begin", "#oneOrMore_end");
+        List<String> vsInAux = substringBetweenMarkers(auxContent,"#value_set_begins", "#value_set_ends");
+
+        List<String> importsInSchema = substringBetweenMarkers(schema, "#imported_begin\nIMPORT <", ">\n#imported_end");
+        List<String> oomInSchema = substringBetweenMarkers(schema, "#oneOrMore_begin", "#oneOrMore_end");
+        List<String> vsInSchema = substringBetweenMarkers(schema,"#value_set_begins", "#value_set_ends");
+
+        // Add this so that aux.shex can have it.
+        importsInSchema.add("#imported_begin\nIMPORT <" + shortName + ".shex>\n#imported_end");
+
+        schema = schema.replaceAll("(?s)#oneOrMore_begin.*?#oneOrMore_end", "");
+        schema = schema.replaceAll("(?s)#value_set_begins.*?#value_set_ends", "");
+//        if (outPath.toString().contains("http"))
+//        {
+//          System.out.println("Filename may not be valid" + outPath.toString());
+//        }
+        FileUtilities.stringToFile(schema, outPath.toString());
+        FileUtilities.stringToFile("PREFIX fhir: <http://hl7.org/fhir/> \n" +
+        "PREFIX fhirvs: <http://hl7.org/fhir/ValueSet/> \n" +
+        "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
+        addItems(importsInAux, importsInSchema, true) + addItems(oomInAux, oomInSchema, false) + addItems(vsInAux, vsInSchema, false), auxPath.toString());
+      } catch (IOException e) {
+        throw new RuntimeException("failed to create " + auxPath, e);
+      }
+    }
+  }
+
+
 
   private Path generateShex(String outputName, StructureDefinition sd, IWorkerContext context) throws IOException, UcumException {
     Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), outputName + ".shex");
@@ -489,12 +607,12 @@ public class ShexGeneratorTests {
 
   @Test
   public void testFiveWs() throws FHIRException, IOException, UcumException {
-    doTest("FiveWs", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("FiveWs");
   }
 
   @Test
   public void testxhtml() throws FHIRException, IOException, UcumException {
-    doTest("xhtml", ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION);
+    doTestR5("xhtml");
   }
 
   @Test
@@ -677,99 +795,6 @@ public class ShexGeneratorTests {
     System.out.println("************************************************************************");
   }
 
-  /**
-  This is one of the main method to control generation of ShEx Schema
-  - processConstraints - toggle flag to include or exclude constaints
-  - excludeMetaSDs - toggle including/excluding MetaSDs
-  **/
-  private void doTestSingleSD(String shortName, ShexGeneratorTestUtils.RESOURCE_CATEGORY cat,
-                              String name, boolean useSelectedExtensions,
-                              ShExGenerator.ConstraintTranslationPolicy policy,
-                              boolean debugMode, boolean validateShEx,
-                              boolean excludeMetaSDs, boolean processConstraints) {
-    IWorkerContext ctx = TestingUtilities.getSharedWorkerContext();
-    StructureDefinition sd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
-    if (sd == null) {
-      throw new FHIRException("StructuredDefinition for " + name + "(Kind:" + cat + ") was null");
-    }
-    //Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
-    Path outPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas", shortName + ".shex");
-    Path auxPath = FileSystems.getDefault().getPath(System.getProperty("user.home") + "/runtime_environments/ShExSchemas/aux.shex");
-
-
-    this.shexGenerator = new ShExGenerator(ctx);
-
-    this.shexGenerator.debugMode = debugMode;
-    this.shexGenerator.processConstraints = processConstraints;
-    this.shexGenerator.constraintPolicy = policy;
-
-    if (excludeMetaSDs) {
-      // ShEx Generator skips resources which are at Meta level of FHIR Resource definitions
-      this.shexGenerator.setExcludedStructureDefinitionUrls(
-        ShexGeneratorTestUtils.getMetaStructureDefinitionsToSkip());
-    }
-    else
-      this.shexGenerator.setExcludedStructureDefinitionUrls(null);
-
-    // when ShEx translates only selected resource extensions
-    if (useSelectedExtensions) {
-      List<StructureDefinition> selExtns = new ArrayList<StructureDefinition>();
-      for (String eUrl : ShexGeneratorTestUtils.getSelectedExtensions()) {
-        StructureDefinition esd = ctx.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(eUrl, null));
-        if (esd != null)
-          selExtns.add(esd);
-      }
-      this.shexGenerator.setSelectedExtension(selExtns);
-    }
-
-    String schema = this.shexGenerator.generate(HTMLLinkPolicy.NONE, sd);
-    if (!schema.isEmpty()) {
-
-      if (validateShEx) {
-        try {
-//          ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
-//          Schema sch = validator.schema();
-//
-//          Assert.assertNotNull(sch);
-
-          System.out.println("VALIDATION PASSED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
-        } catch (Exception e) {
-          System.out.println("VALIDATION FAILED for ShEx Schema " + sd.getName() + " (Kind:" + cat + ")");
-          e.printStackTrace();
-        }
-      }
-      File auxFile = auxPath.toFile();
-      try {
-        auxFile.createNewFile();
-        String auxContent = FileUtilities.fileToString(auxFile);
-        List<String> importsInAux = substringBetweenMarkers(auxContent, "#imported_begin\nIMPORT <", ">\n#imported_end");
-        List<String> oomInAux = substringBetweenMarkers(auxContent, "#oneOrMore_begin", "#oneOrMore_end");
-        List<String> vsInAux = substringBetweenMarkers(auxContent,"#value_set_begins", "#value_set_ends");
-
-        List<String> importsInSchema = substringBetweenMarkers(schema, "#imported_begin\nIMPORT <", ">\n#imported_end");
-        List<String> oomInSchema = substringBetweenMarkers(schema, "#oneOrMore_begin", "#oneOrMore_end");
-        List<String> vsInSchema = substringBetweenMarkers(schema,"#value_set_begins", "#value_set_ends");
-
-        // Add this so that aux.shex can have it.
-        importsInSchema.add("#imported_begin\nIMPORT <" + shortName + ".shex>\n#imported_end");
-
-        schema = schema.replaceAll("(?s)#oneOrMore_begin.*?#oneOrMore_end", "");
-        schema = schema.replaceAll("(?s)#value_set_begins.*?#value_set_ends", "");
-//        if (outPath.toString().contains("http"))
-//        {
-//          System.out.println("Filename may not be valid" + outPath.toString());
-//        }
-        FileUtilities.stringToFile(schema, outPath.toString());
-        FileUtilities.stringToFile("PREFIX fhir: <http://hl7.org/fhir/> \n" +
-        "PREFIX fhirvs: <http://hl7.org/fhir/ValueSet/> \n" +
-        "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
-        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
-        addItems(importsInAux, importsInSchema, true) + addItems(oomInAux, oomInSchema, false) + addItems(vsInAux, vsInSchema, false), auxPath.toString());
-      } catch (IOException e) {
-        throw new RuntimeException("failed to create " + auxPath, e);
-      }
-    }
-  }
 
   // at one point FHIR core ShEx generation generated a different name for HealthCareService
   // some sort of capitalization of one letter in this resource
