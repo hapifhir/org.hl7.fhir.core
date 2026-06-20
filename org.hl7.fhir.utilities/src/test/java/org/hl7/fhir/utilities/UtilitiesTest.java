@@ -399,7 +399,7 @@ class UtilitiesTest {
   }
 
   @Test
-  void testSimpleSplit() throws IOException {
+  void testSimpleSplit() {
     checkEquals(new String[] {}, Utilities.simpleSplit(null, ","));
     checkEquals(new String[] {""}, Utilities.simpleSplit("", ","));
     checkEquals(new String[] {"", ""}, Utilities.simpleSplit(",", ","));
@@ -424,6 +424,61 @@ class UtilitiesTest {
     assertThat(actual).hasSize(1);
     assertThat(actual.get(0).getName()).isEqualTo(key);
     assertThat(actual.get(0).getValue()).isEqualTo(value);
+  }
+
+  static Stream<Arguments> pathTailArguments() {
+    return Stream.of(
+      Arguments.of("Patient.name.given", "given"),
+      Arguments.of("Patient.name", "name"),
+      Arguments.of("Patient", "Patient"),
+      Arguments.of("value[x]", "value[x]"),
+      Arguments.of("Patient.value[x]", "value[x]")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("pathTailArguments")
+  void testPathTail(String input, String expected) {
+    assertEquals(expected, Utilities.pathTail(input));
+  }
+
+  static Stream<Arguments> makeNameFromCodeArguments() {
+    return Stream.of(
+      // plain names pass through unchanged
+      Arguments.of("simple", "simple"),
+      Arguments.of("Simple", "Simple"),
+      Arguments.of("alreadyCamelCase", "alreadyCamelCase"),
+      Arguments.of("code123", "code123"),
+      // non-name characters are stripped and the next letter is capitalised
+      Arguments.of("blood-pressure", "bloodPressure"),
+      Arguments.of("blood pressure", "bloodPressure"),
+      Arguments.of("blood_pressure", "bloodPressure"),
+      Arguments.of("blood.pressure.systolic", "bloodPressureSystolic"),
+      Arguments.of("a-b-c", "aBC"),
+      // consecutive separators collapse to a single capitalisation
+      Arguments.of("blood--pressure", "bloodPressure"),
+      Arguments.of("blood - pressure", "bloodPressure"),
+      // uppercase letters and digits after a separator are kept as-is
+      Arguments.of("blood-Pressure", "bloodPressure"),
+      Arguments.of("code-1a", "code1a"),
+      // leading separators capitalise the first letter; trailing ones are dropped
+      Arguments.of("-code", "Code"),
+      Arguments.of("code-", "code"),
+      Arguments.of(" code ", "Code"),
+      // unicode/symbol characters are stripped too
+      Arguments.of("http://example.org/code", "httpExampleOrgCode"),
+      Arguments.of("50%-done", "50Done"),
+      // nothing usable left -> "name"
+      Arguments.of("", "name"),
+      Arguments.of("---", "name"),
+      Arguments.of("!@#$", "name")
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("makeNameFromCodeArguments")
+  void testMakeNameFromCode(String code, String expected) {
+    assertEquals(expected, Utilities.makeNameFromCode(code));
   }
 
   @Test

@@ -92,8 +92,12 @@ public class TxTestData {
 
     return ManagedFileAccess.inStream(f);
   }
- 
+
   public static TxTestData loadTestDataFromPackage(String source) throws IOException {
+    return loadTestDataFromPackage(source, new HashSet());
+  }
+
+  public static TxTestData loadTestDataFromPackage(String source, Set<String> omissions) throws IOException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage npm = pcm.loadPackage(source);
     
@@ -104,7 +108,7 @@ public class TxTestData {
     Map<String, TxTestSetup> examples = new HashMap<String, TxTestSetup>();
     JsonObject manifest = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(contents);
     for (JsonObject suite : manifest.getJsonObjects("suites")) {
-      if (!"tx.fhir.org".equals(suite.asString("mode"))) {
+      if (!"tx.fhir.org".equals(suite.asString("mode")) && !omissions.contains(suite.asString("name"))) {
         String sn = suite.asString("name");
         for (JsonObject test : suite.getJsonObjects("tests")) {
           String tn = test.asString("name");

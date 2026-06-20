@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>org.hl7.fhir.core</artifactId>
-		<version>6.7.8-SNAPSHOT</version>
+		<version>6.9.11-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -19,6 +19,11 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.github.spotbugs</groupId>
+			<artifactId>spotbugs-annotations</artifactId>
+		</dependency>
+
 		<!-- HAPI Dependencies -->
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
@@ -101,7 +106,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
-			<artifactId>okhttp</artifactId>
+			<artifactId>okhttp-jvm</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -126,7 +131,18 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Test dependencies -->
+		<!-- JGit for gitignore file processing -->
+		<dependency>
+				<groupId>org.eclipse.jgit</groupId>
+				<artifactId>org.eclipse.jgit</artifactId>
+				<version>7.4.0.202509020913-r</version>
+		</dependency>
+		<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>2.0.17</version>
+		</dependency>
+			<!-- Test dependencies -->
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
@@ -152,7 +168,6 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>mockwebserver</artifactId>
-			<version>${okhttp.version}</version>
 			<optional>true</optional>
 			<scope>test</scope>
 		</dependency>
@@ -194,10 +209,14 @@
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml-mit</artifactId>
-            <version>1.2023.9</version>
+            <version>1.2026.1</version>
             <scope>compile</scope>
         </dependency>
-        
+        <dependency>
+            <groupId>ca.uhn.hapi.fhir</groupId>
+            <artifactId>org.hl7.fhir.utilities</artifactId>
+        </dependency>
+
     </dependencies>
 
 	<build>

@@ -3,7 +3,7 @@
   "system" : "http://hl7.org/fhir/ValueSet/account-type",
   "code" : "132037003",
   "display" : "Pineywoods pig breed"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -19,9 +19,9 @@ v: {
   "system" : "http://hl7.org/fhir/ValueSet/account-type",
   "severity" : "error",
   "error" : "The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/account-type')",
-  "class" : "CODESYSTEM_UNSUPPORTED",
+  "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "http://hl7.org/fhir/ValueSet/account-type",
+  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -42,7 +42,6 @@ v: {
       }],
       "text" : "The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/account-type')"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

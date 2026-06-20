@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
@@ -42,6 +43,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -91,8 +93,8 @@ public class NarrativeGenerationTests {
     }
 
     @Override
-    public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
-      ValueSet vs = context.fetchResource(ValueSet.class, url);
+    public BindingResolution resolveBinding(StructureDefinition def, String url, String path, org.hl7.fhir.r5.model.Element ctxt) throws FHIRException {
+      ValueSet vs = context.fetchResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRules(ctxt));
       if (vs != null) {
         if (vs.hasWebPath()) {
           return new BindingResolution(vs.present(), vs.getWebPath());
@@ -233,7 +235,7 @@ public class NarrativeGenerationTests {
   }
 
   @BeforeAll
-  public static void setUp() throws IOException {
+  static void setUp() throws IOException {
     var simpleContext = TestingUtilities.getSharedWorkerContext("5.0.0");
     simpleContext.connectToTSServer(new TerminologyClientR5.TerminologyClientR5Factory(), "http://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
     context = simpleContext;
@@ -241,6 +243,11 @@ public class NarrativeGenerationTests {
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");
     context.getManager().loadFromPackage(ips,  new TestPackageLoader(Utilities.stringSet("StructureDefinition", "ValueSet" )));
   }
+  @AfterAll
+  static void tearDown() {
+    context = null;
+  }
+
 
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")

@@ -2,10 +2,9 @@ package org.hl7.fhir.convertors.txClient;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Resource;
@@ -13,18 +12,14 @@ import org.hl7.fhir.r4.utils.client.EFhirClientException;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
+import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.ITerminologyRequestIdProvider;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
@@ -179,6 +174,15 @@ public class TerminologyClientR4 implements ITerminologyClient {
     }
   }
 
+  public Parameters getValueSetRelationship(ValueSet vsThis, ValueSet vsOther) throws IOException {
+    Parameters pIn = new Parameters();
+    pIn.addParameter().setName("thisValueSet").setResource(vsThis);
+    pIn.addParameter().setName("otherValueSet").setResource(vsOther);
+    pIn.addParameter().setName("diagnostics").setValue(new BooleanType(true));
+    org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) VersionConvertorFactory_40_50.convertResource(pIn);
+    return (org.hl7.fhir.r5.model.Parameters) VersionConvertorFactory_40_50.convertResource(client.operateType(org.hl7.fhir.r4.model.ValueSet.class, "compare", p2));
+  }
+
   @Override
   public Parameters validateVS(Parameters pin) throws FHIRException {
     try {
@@ -195,6 +199,13 @@ public class TerminologyClientR4 implements ITerminologyClient {
     } catch (IOException e) {
       throw new FHIRException(e);
     }
+  }
+
+  @Override
+  public Parameters cacheControl(CacheControlMode mode, Parameters body) throws FHIRException, IOException {
+    org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("cacheControl.request", body == null ? new Parameters() : body);
+    org.hl7.fhir.r4.model.Parameters r = client.operateSystem("cache-control", "mode=" + mode, p2);
+    return (Parameters) convertResource("cacheControl.response", r);
   }
 
   @Override
@@ -239,6 +250,22 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
+  public ITerminologyClient setFormat(ResourceFormat fmt) throws FHIRException {
+    if (fmt == ResourceFormat.RESOURCE_XML) {
+      this.client.setPreferredResourceFormat(org.hl7.fhir.r4.utils.client.ResourceFormat.RESOURCE_XML);
+    } else {
+      this.client.setPreferredResourceFormat(org.hl7.fhir.r4.utils.client.ResourceFormat.RESOURCE_JSON);
+    }
+    return this;
+  }
+
+  @Override
+  public ITerminologyClient setRequestIdProvider(ITerminologyRequestIdProvider provider) throws FHIRException {
+    this.client.setRequestIdProvider(provider);
+    return this;
+  }
+
+  @Override
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException {
     return (CapabilityStatement) convertResource("getCapabilitiesStatementQuick.response", client.getCapabilitiesStatementQuick());
   }
@@ -255,7 +282,16 @@ public class TerminologyClientR4 implements ITerminologyClient {
 
   @Override
   public Parameters lookupCode(Parameters params) throws FHIRException {
-    return (Parameters) convertResource("lookupCode.response", client.lookupCode((org.hl7.fhir.r4.model.Parameters) convertResource("lookupCode.request", params)));
+    try {
+      return (Parameters) convertResource("lookupCode.response", client.lookupCode((org.hl7.fhir.r4.model.Parameters) convertResource("lookupCode.request", params)));
+    } catch (EFhirClientException e) {
+      List<org.hl7.fhir.r4.model.OperationOutcome> r4 = e.getServerErrors();
+      List<org.hl7.fhir.r5.model.OperationOutcome> r5 = new ArrayList<OperationOutcome>();
+      for (org.hl7.fhir.r4.model.OperationOutcome op : r4) {
+        r5.add((OperationOutcome) convertResource("lookupCode.error", op));
+      }
+      throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), r5.isEmpty() ? null : r5.get(0));
+    }
   }
 
   @Override
@@ -307,6 +343,16 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
+  public ITerminologyClient addClientHeader(HTTPHeader header) {
+    if (this.clientHeaders == null) {
+      this.clientHeaders = new ClientHeaders();
+    }
+    this.clientHeaders.addHeader(header);
+    this.client.setClientHeaders(this.clientHeaders.headers());
+    return this;
+  }
+
+  @Override
   public ITerminologyClient setUserAgent(String userAgent) {
     client.setUserAgent(userAgent);
     return this;
@@ -347,8 +393,14 @@ public class TerminologyClientR4 implements ITerminologyClient {
   }
 
   @Override
-  public Parameters translate(Parameters params) throws FHIRException {  
-    return (Parameters) convertResource("translate.response", client.translate((org.hl7.fhir.r4.model.Parameters) convertResource("translate.request", params)));
+  public Parameters translate(Parameters params) throws FHIRException {
+    org.hl7.fhir.r4.model.Parameters p4 = (org.hl7.fhir.r4.model.Parameters) convertResource("translate.request", params);
+    return (Parameters) convertResource("translate.response", client.translate(p4));
+  }
+
+  @Override
+  public Parameters doCompare(Parameters params) throws FHIRException {
+    return (Parameters) convertResource("compare.response", client.doCompare((org.hl7.fhir.r4.model.Parameters) convertResource("compare.request", params)));
   }
 
   private org.hl7.fhir.r4.model.Resource convertResource(String name, org.hl7.fhir.r5.model.Resource resource) {

@@ -30,10 +30,7 @@ import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,7 +40,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
+
 
 public class FHIRPathTests {
 
@@ -75,8 +72,13 @@ public class FHIRPathTests {
     }
 
     @Override
-    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveReference)");
+    }
+
+    @Override
+    public Base findContainingResource(Object appContext, Base item) {
+      return null;
     }
 
     @Override
@@ -91,7 +93,7 @@ public class FHIRPathTests {
 
     @Override
     public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-      return context.fetchResource(ValueSet.class, url);
+      return context.fetchResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     }
 
     @Override
@@ -105,7 +107,7 @@ public class FHIRPathTests {
   private static SimpleWorkerContext context;
 
   @BeforeAll
-  public static void setUp() throws FileNotFoundException, FHIRException, IOException {
+  static void setUp() throws FHIRException, IOException {
     context = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     if (!context.hasPackage("hl7.cda.us.ccda", null)) {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
@@ -117,6 +119,12 @@ public class FHIRPathTests {
     if (fp == null) {
       fp = new FHIRPathEngine(context);
     }
+  }
+
+  @AfterAll
+  static void tearDown() {
+    context = null;
+    fp = null;
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {

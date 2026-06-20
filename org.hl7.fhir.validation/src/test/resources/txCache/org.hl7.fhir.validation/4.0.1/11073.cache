@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "urn:iso:std:iso:11073:10101",
   "code" : "68193"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -19,28 +19,9 @@ v: {
   "system" : "urn:iso:std:iso:11073:10101",
   "version" : "2024-12-05",
   "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n2ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Validate \"[urn:iso:std:iso:11073:10101#68193 (\"undefined\")]\"\n2ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Check \"urn:iso:std:iso:11073:10101#68193\"\n2ms urn:iso:std:iso:11073:10101/vs|2024-12-05: CodeSystem found: urn:iso:std:iso:11073:10101|2024-12-05 for urn:iso:std:iso:11073:10101|2024-12-05\n2ms urn:iso:std:iso:11073:10101/vs|2024-12-05: check code in (urn:iso:std:iso:11073:10101) at Coding\n2ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Code \"68193\" found in urn:iso:std:iso:11073:10101|2024-12-05",
   "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "MSG_DRAFT"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "business-rule",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "status-check"
-      }],
-      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.32.0"
-    }
-  }]
+  "resourceType" : "OperationOutcome"
 }
 
 }
@@ -48,7 +29,7 @@ v: {
 {"code" : {
   "system" : "urn:iso:std:iso:11073:10101",
   "code" : "150588"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -65,28 +46,10 @@ v: {
   "system" : "urn:iso:std:iso:11073:10101",
   "version" : "2024-12-05",
   "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n1ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Validate \"[urn:iso:std:iso:11073:10101#150588 (\"undefined\")]\"\n2ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Check \"urn:iso:std:iso:11073:10101#150588\"\n2ms urn:iso:std:iso:11073:10101/vs|2024-12-05: CodeSystem found: urn:iso:std:iso:11073:10101|2024-12-05 for urn:iso:std:iso:11073:10101|2024-12-05\n2ms urn:iso:std:iso:11073:10101/vs|2024-12-05: check code in (urn:iso:std:iso:11073:10101) at Coding\n2ms urn:iso:std:iso:11073:10101/vs|2024-12-05: Code \"150588\" found in urn:iso:std:iso:11073:10101|2024-12-05",
   "unknown-systems" : "",
   "issues" : {
-  "resourceType" : "OperationOutcome",
-  "issue" : [{
-    "extension" : [{
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-      "valueString" : "MSG_DRAFT"
-    },
-    {
-      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
-      "valueUrl" : "https://tx-dev.fhir.org/r4"
-    }],
-    "severity" : "information",
-    "code" : "business-rule",
-    "details" : {
-      "coding" : [{
-        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-        "code" : "status-check"
-      }],
-      "text" : "Reference to draft CodeSystem urn:iso:std:iso:11073:10101|2024-12-05 from fhir.tx.support.r4#0.32.0"
-    }
-  }]
+  "resourceType" : "OperationOutcome"
 }
 
 }

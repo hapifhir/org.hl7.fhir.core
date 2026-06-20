@@ -34,20 +34,16 @@ import java.util.Map;
  */
 
 
+import java.io.IOException;
+
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
+import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.ITerminologyRequestIdProvider;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
@@ -145,6 +141,15 @@ public class TerminologyClientR5 implements ITerminologyClient {
     return client.operateType(CodeSystem.class, "subsumes", pin);
   }
 
+  public Parameters getValueSetRelationship(ValueSet vsThis, ValueSet vsOther) {
+    Parameters pIn = new Parameters();
+    pIn.addParameter().setName("thisValueSet").setResource(vsThis);
+    pIn.addParameter().setName("otherValueSet").setResource(vsOther);
+    pIn.addParameter().setName("diagnostics").setValue(new BooleanType(true));
+    return client.operateType(ValueSet.class, "compare", pIn);
+  }
+
+
   @Override
   public Parameters validateVS(Parameters pin) {
     return client.operateType(ValueSet.class, "validate-code", pin);
@@ -153,6 +158,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   @Override
   public Parameters batchValidateVS(Parameters pin) {
     return client.operateType(ValueSet.class, "batch-validate-code", pin);
+  }
+
+  @Override
+  public Parameters cacheControl(CacheControlMode mode, Parameters body) throws FHIRException, IOException {
+    return client.operateSystem("cache-control", "mode=" + mode.toCode(), body);
   }
 
   @Override
@@ -199,6 +209,18 @@ public class TerminologyClientR5 implements ITerminologyClient {
   }
 
   @Override
+  public ITerminologyClient setFormat(ResourceFormat fmt) throws FHIRException {
+    this.client.setPreferredResourceFormat(fmt);
+    return this;
+  }
+
+  @Override
+  public ITerminologyClient setRequestIdProvider(ITerminologyRequestIdProvider provider) throws FHIRException {
+    this.client.setRequestIdProvider(provider);
+    return this;
+  }
+
+  @Override
   public int getRetryCount() throws FHIRException {
     return client.getRetryCount();
   }
@@ -236,6 +258,16 @@ public class TerminologyClientR5 implements ITerminologyClient {
     this.clientHeaders = clientHeaders;
     this.client.setClientHeaders(this.clientHeaders.headers());
     this.client.setVersionInMimeTypes(true);
+    return this;
+  }
+
+  @Override
+  public ITerminologyClient addClientHeader(HTTPHeader header) {
+    if (this.clientHeaders == null) {
+      this.clientHeaders = new ClientHeaders();
+    }
+    this.clientHeaders.addHeader(header);
+    this.client.setClientHeaders(this.clientHeaders.headers());
     return this;
   }
 
@@ -284,6 +316,11 @@ public class TerminologyClientR5 implements ITerminologyClient {
   @Override
   public Parameters translate(Parameters params) throws FHIRException {
     return client.translate(params);
+  }
+
+  @Override
+  public Parameters doCompare(Parameters params) throws FHIRException {
+    return client.doCompare(params);
   }
 
   @Override

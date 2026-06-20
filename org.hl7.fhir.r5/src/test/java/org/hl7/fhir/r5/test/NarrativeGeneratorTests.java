@@ -30,11 +30,14 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.xmlpull.v1.XmlPullParserException;
 
-public class NarrativeGeneratorTests {
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+class NarrativeGeneratorTests {
 
   private static RenderingContext rc;
 
@@ -44,9 +47,16 @@ public class NarrativeGeneratorTests {
     rc.setDestDir(Utilities.path("[tmp]"));
   }
 
+  @AfterAll
+  public static void tearDown() {
+    rc = null;
+  }
+
   @Test
-  public void test() throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
-    process(TestingUtilities.loadTestResourceStream("r5", "questionnaireresponse-example-f201-lifelines.xml"));
+  void test() {
+    assertDoesNotThrow(() -> {
+      process(TestingUtilities.loadTestResourceStream("r5", "questionnaireresponse-example-f201-lifelines.xml"));
+    });
   }
 
   private void process(InputStream stream) throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {

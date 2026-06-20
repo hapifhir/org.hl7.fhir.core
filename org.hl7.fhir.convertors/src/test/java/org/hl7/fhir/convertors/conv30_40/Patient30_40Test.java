@@ -12,8 +12,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Patient30_40Test {
@@ -47,35 +46,35 @@ public class Patient30_40Test {
 
     org.hl7.fhir.r4.model.Patient result = (org.hl7.fhir.r4.model.Patient) VersionConvertorFactory_30_40.convertResource(input);
 
-    assertThat(result, is(not(nullValue())));
-    assertThat(result.getIdentifier(), hasSize(1));
+    assertThat(result).isNotNull();
+    assertThat(result.getIdentifier()).hasSize(1);
     assertTrue(result.getIdentifier().get(0).equalsDeep(new org.hl7.fhir.r4.model.Identifier().setValue("12345").setSystem("system")));
 
-    assertThat(result.getActive(), is(true));
-    assertThat(result.getName(), hasSize(1));
-    assertThat(result.getName().get(0).getFamily(), is("Awesome"));
-    assertThat(result.getTelecom(), hasSize(1));
-    assertThat(result.getTelecom().get(0).getValue(), is("123456789"));
-    assertThat(result.getGender(), is(org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.FEMALE));
-    assertThat(result.getBirthDate(), is(birthDate));
-    assertThat(result.getDeceasedBooleanType().getValue(), is(true));
-    assertThat(result.getAddress(), hasSize(1));
-    assertThat(result.getAddress().get(0).getCity(), is("Big City"));
+    assertThat(result.getActive()).isTrue();
+    assertThat(result.getName()).hasSize(1);
+    assertThat(result.getName().get(0).getFamily()).isEqualTo("Awesome");
+    assertThat(result.getTelecom()).hasSize(1);
+    assertThat(result.getTelecom().get(0).getValue()).isEqualTo("123456789");
+    assertThat(result.getGender()).isEqualTo(org.hl7.fhir.r4.model.Enumerations.AdministrativeGender.FEMALE);
+    assertThat(result.getBirthDate()).isEqualTo(birthDate);
+    assertThat(result.getDeceasedBooleanType().getValue()).isTrue();
+    assertThat(result.getAddress()).hasSize(1);
+    assertThat(result.getAddress().get(0).getCity()).isEqualTo("Big City");
     assertTrue(result.getMaritalStatus().equalsDeep(createR4CodeableConcept("Married")));
-    assertThat(result.getMultipleBirthBooleanType().getValue(), is(true));
-    assertThat(result.getPhoto(), hasSize(1));
-    assertThat(result.getPhoto().get(0).getTitle(), is("Profile picture"));
-    assertThat(result.getContact(), hasSize(1));
-    assertThat(result.getContact().get(0).getRelationship(), hasSize(1));
+    assertThat(result.getMultipleBirthBooleanType().getValue()).isTrue();
+    assertThat(result.getPhoto()).hasSize(1);
+    assertThat(result.getPhoto().get(0).getTitle()).isEqualTo("Profile picture");
+    assertThat(result.getContact()).hasSize(1);
+    assertThat(result.getContact().get(0).getRelationship()).hasSize(1);
     assertTrue(result.getContact().get(0).getRelationship().get(0).equalsDeep(createR4CodeableConcept("Dad")));
-    assertThat(result.getExtension(), hasSize(1));
-    assertThat(result.getExtension().get(0).getUrl(), is(VersionConvertorConstants.EXT_PAT_ANIMAL));
-    assertThat(result.getCommunication(), hasSize(1));
+    assertThat(result.getExtension()).hasSize(1);
+    assertThat(result.getExtension().get(0).getUrl()).isEqualTo(VersionConvertorConstants.EXT_PAT_ANIMAL);
+    assertThat(result.getCommunication()).hasSize(1);
     assertTrue(result.getCommunication().get(0).getLanguage().equalsDeep(createR4CodeableConcept("en")));
-    assertThat(result.getGeneralPractitioner(), hasSize(1));
+    assertThat(result.getGeneralPractitioner()).hasSize(1);
     assertTrue(result.getGeneralPractitioner().get(0).equalsDeep(new org.hl7.fhir.r4.model.Reference("Practitioner/12345")));
     assertTrue(result.getManagingOrganization().equalsDeep(new org.hl7.fhir.r4.model.Reference("Organization/12345")));
-    assertThat(result.getLink(), hasSize(1));
+    assertThat(result.getLink()).hasSize(1);
     assertTrue(result.getLink().get(0).getOther().equalsDeep(new org.hl7.fhir.r4.model.Reference("Resource/12345")));
   }
 
@@ -88,21 +87,21 @@ public class Patient30_40Test {
 
     org.hl7.fhir.r4.model.Extension result = Patient30_40.convertAnimalComponent(input);
 
-    assertThat(result, is(not(nullValue())));
-    assertThat(result.getUrl(), is(VersionConvertorConstants.EXT_PAT_ANIMAL));
-    assertThat(result.getValue(), is(nullValue()));
-    assertThat(result.getExtension(), hasSize(3));
+    assertThat(result).isNotNull();
+    assertThat(result.getUrl()).isEqualTo(VersionConvertorConstants.EXT_PAT_ANIMAL);
+    assertThat(result.getValue()).isNull();
+    assertThat(result.getExtension()).hasSize(3);
 
     org.hl7.fhir.r4.model.Extension speciesExtension = result.getExtensionByUrl("species");
-    assertThat(speciesExtension, is(not(nullValue())));
+    assertThat(speciesExtension).isNotNull();
     assertTrue(speciesExtension.getValue().equalsDeep(createR4CodeableConcept("dog")));
 
     org.hl7.fhir.r4.model.Extension breedExtension = result.getExtensionByUrl("breed");
-    assertThat(breedExtension, is(not(nullValue())));
+    assertThat(breedExtension).isNotNull();
     assertTrue(breedExtension.getValue().equalsDeep(createR4CodeableConcept("labradoodle")));
 
     org.hl7.fhir.r4.model.Extension genderExtension = result.getExtensionByUrl("genderStatus");
-    assertThat(genderExtension, is(not(nullValue())));
+    assertThat(genderExtension).isNotNull();
     assertTrue(genderExtension.getValue().equalsDeep(createR4CodeableConcept("female")));
   }
 
@@ -134,35 +133,35 @@ public class Patient30_40Test {
 
     org.hl7.fhir.dstu3.model.Patient result = (org.hl7.fhir.dstu3.model.Patient) VersionConvertorFactory_30_40.convertResource(input);
 
-    assertThat(result, is(not(nullValue())));
-    assertThat(result.getIdentifier(), hasSize(1));
+    assertThat(result).isNotNull();
+    assertThat(result.getIdentifier()).hasSize(1);
     assertTrue(result.getIdentifier().get(0).equalsDeep(new org.hl7.fhir.dstu3.model.Identifier().setValue("12345").setSystem("system")));
 
-    assertThat(result.getActive(), is(true));
-    assertThat(result.getName(), hasSize(1));
-    assertThat(result.getName().get(0).getFamily(), is("Awesome"));
-    assertThat(result.getTelecom(), hasSize(1));
-    assertThat(result.getTelecom().get(0).getValue(), is("123456789"));
-    assertThat(result.getGender(), is(org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender.FEMALE));
-    assertThat(result.getBirthDate(), is(birthDate));
-    assertThat(result.getDeceasedBooleanType().getValue(), is(true));
-    assertThat(result.getAddress(), hasSize(1));
-    assertThat(result.getAddress().get(0).getCity(), is("Big City"));
+    assertThat(result.getActive()).isTrue();
+    assertThat(result.getName()).hasSize(1);
+    assertThat(result.getName().get(0).getFamily()).isEqualTo("Awesome");
+    assertThat(result.getTelecom()).hasSize(1);
+    assertThat(result.getTelecom().get(0).getValue()).isEqualTo("123456789");
+    assertThat(result.getGender()).isEqualTo(org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender.FEMALE);
+    assertThat(result.getBirthDate()).isEqualTo(birthDate);
+    assertThat(result.getDeceasedBooleanType().getValue()).isTrue();
+    assertThat(result.getAddress()).hasSize(1);
+    assertThat(result.getAddress().get(0).getCity()).isEqualTo("Big City");
     assertTrue(result.getMaritalStatus().equalsDeep(createDstu3CodeableConcept("Married")));
-    assertThat(result.getMultipleBirthBooleanType().getValue(), is(true));
-    assertThat(result.getPhoto(), hasSize(1));
-    assertThat(result.getPhoto().get(0).getTitle(), is("Profile picture"));
-    assertThat(result.getContact(), hasSize(1));
-    assertThat(result.getContact().get(0).getRelationship(), hasSize(1));
+    assertThat(result.getMultipleBirthBooleanType().getValue()).isTrue();
+    assertThat(result.getPhoto()).hasSize(1);
+    assertThat(result.getPhoto().get(0).getTitle()).isEqualTo("Profile picture");
+    assertThat(result.getContact()).hasSize(1);
+    assertThat(result.getContact().get(0).getRelationship()).hasSize(1);
     assertTrue(result.getContact().get(0).getRelationship().get(0).equalsDeep(createDstu3CodeableConcept("Dad")));
-    assertThat(result.getExtensionByUrl(VersionConvertorConstants.EXT_PAT_ANIMAL), is(nullValue()));
+    assertThat(result.getExtensionByUrl(VersionConvertorConstants.EXT_PAT_ANIMAL)).isNull();
     assertTrue(result.getAnimal().getSpecies().equalsDeep(createDstu3CodeableConcept("dog")));
-    assertThat(result.getCommunication(), hasSize(1));
+    assertThat(result.getCommunication()).hasSize(1);
     assertTrue(result.getCommunication().get(0).getLanguage().equalsDeep(createDstu3CodeableConcept("en")));
-    assertThat(result.getGeneralPractitioner(), hasSize(1));
+    assertThat(result.getGeneralPractitioner()).hasSize(1);
     assertTrue(result.getGeneralPractitioner().get(0).equalsDeep(new org.hl7.fhir.dstu3.model.Reference("Practitioner/12345")));
     assertTrue(result.getManagingOrganization().equalsDeep(new org.hl7.fhir.dstu3.model.Reference("Organization/12345")));
-    assertThat(result.getLink(), hasSize(1));
+    assertThat(result.getLink()).hasSize(1);
     assertTrue(result.getLink().get(0).getOther().equalsDeep(new org.hl7.fhir.dstu3.model.Reference("Resource/12345")));
   }
 
@@ -174,7 +173,7 @@ public class Patient30_40Test {
     input.addExtension(new org.hl7.fhir.r4.model.Extension("genderStatus", createR4CodeableConcept("female")));
 
     org.hl7.fhir.dstu3.model.Patient.AnimalComponent result = Patient30_40.convertAnimalComponent(input);
-    assertThat(result, is(not(nullValue())));
+    assertThat(result).isNotNull();
     assertTrue(result.getSpecies().equalsDeep(createDstu3CodeableConcept("dog")));
     assertTrue(result.getBreed().equalsDeep(createDstu3CodeableConcept("labradoodle")));
     assertTrue(result.getGenderStatus().equalsDeep(createDstu3CodeableConcept("female")));

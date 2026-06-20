@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
+@Deprecated(since="2025-11-07")
 public class MapParameters {
   @JsonProperty("map")
   @SerializedName("map")

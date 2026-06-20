@@ -4,6 +4,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.*;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
@@ -93,7 +94,7 @@ public class TerminologyFunctions {
         }
         ValueSet vs = null;
         if (param1.get(0).isPrimitive()) {
-          vs = engine.getWorker().findTxResource(ValueSet.class, param1.get(0).primitiveValue());
+          vs = engine.getWorker().findTxResource(ValueSet.class, param1.get(0).primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(param1.get(0)));
         } else {
           // nothing
         }
@@ -144,7 +145,7 @@ public class TerminologyFunctions {
         }
         ValueSet vs = null;
         if (param1.get(0).isPrimitive()) {
-          vs = engine.getWorker().findTxResource(ValueSet.class, param1.get(0).primitiveValue());
+          vs = engine.getWorker().findTxResource(ValueSet.class, param1.get(0).primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(param1.get(0)));
         } else {
           // nothing
         }
@@ -207,7 +208,7 @@ public class TerminologyFunctions {
         }
         ConceptMap cm = null;
         if (param1.get(0).isPrimitive()) {
-          cm = engine.getWorker().findTxResource(ConceptMap.class, param1.get(0).primitiveValue());
+          cm = engine.getWorker().findTxResource(ConceptMap.class, param1.get(0).primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(param1.get(0)));
         } else {
           // nothing
         }

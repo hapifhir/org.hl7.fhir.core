@@ -43,6 +43,7 @@ msgstr ""
 
 # ADD_BIND_ANY
 #: ADD_BIND_ANY
+msgctxt "ADD_BIND_ANY"
 msgid "Any"
 msgstr ""
 
@@ -634,22 +635,22 @@ msgstr ""
 # CODESYSTEM_CONTENT_EXAMPLE
 #: CODESYSTEM_CONTENT_EXAMPLE
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides some code<if test=\"code-count != 1\">s</if><param name=\"h\"/> <b>that are example only</b>:"
-msgstr "!!この<param name=\\\"cased\\\"/>コードシステム <param name=\\\"cs\\\"/> はいくつかの例コード<if test=\\\"code-count != 1\\\">たち</if><param name=\\\"h\\\"/>を提供します:"
+msgstr "!!この<param name=\"cased\"/>コードシステム <param name=\"cs\"/> はいくつかの例コード<if test=\"code-count != 1\">たち</if><param name=\"h\"/>を提供します:"
 
 # CODESYSTEM_CONTENT_FRAGMENT
 #: CODESYSTEM_CONTENT_FRAGMENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> provides <b>a fragment</b> that includes following code<if test=\"code-count != 1\">s</if><param name=\"h\"/>:"
-msgstr "!!この<param name=\\\"cased\\\"/>コードシステム <param name=\\\"cs\\\"/> は以下のコード<param name=\\\"h\\\"/>を含むフラグメントを提供します:"
+msgstr "!!この<param name=\"cased\"/>コードシステム <param name=\"cs\"/> は以下のコード<param name=\"h\"/>を含むフラグメントを提供します:"
 
 # CODESYSTEM_CONTENT_NOTPRESENT
 #: CODESYSTEM_CONTENT_NOTPRESENT
 msgid "This <param name=\"cased\"/> code system <param name=\"cs\"/> defines codes<param name=\"h\"/>, but no codes are represented here"
-msgstr "!!このコードシステム <param name=\\\"cs\\\"/> はコード<param name=\\\"h\\\"/>を定義しますが、ここではコードは表現されていません"
+msgstr "!!このコードシステム <param name=\"cs\"/> はコード<param name=\"h\"/>を定義しますが、ここではコードは表現されていません"
 
 # CODESYSTEM_CONTENT_SUPPLEMENT
 #: CODESYSTEM_CONTENT_SUPPLEMENT
 msgid "This code system supplement <param name=\"cs\"/> defines {0} on the following code<if test=\"code-count != 1\">s</if>:"
-msgstr "!!!!このコードシステム <param name=\\\"cs\\\"/> は次のコードに {0} を定義します:"
+msgstr "!!このコードシステム <param name=\"cs\"/> は次のコードに {0} を定義します:"
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
@@ -844,6 +845,230 @@ msgstr ""
 #: CONC_MAP_TRGT_TYPE
 msgctxt "CONC_MAP_TRGT_TYPE"
 msgid "Type"
+msgstr ""
+
+# CONF_MAY
+#: CONF_MAY
+msgctxt "CONF_MAY"
+msgid "MAY"
+msgstr ""
+
+# CONF_MAY_PLURAL
+#: CONF_MAY_PLURAL
+msgctxt "CONF_MAY_PLURAL"
+msgid "MAY"
+msgstr ""
+
+# CONF_SHALL
+#: CONF_SHALL
+msgctxt "CONF_SHALL"
+msgid "SHALL"
+msgstr ""
+
+# CONF_SHALLNOT
+#: CONF_SHALLNOT
+msgctxt "CONF_SHALLNOT"
+msgid "SHALL NOT"
+msgstr ""
+
+# CONF_SHALLNOT_PLURAL
+#: CONF_SHALLNOT_PLURAL
+msgctxt "CONF_SHALLNOT_PLURAL"
+msgid "SHALL NOT"
+msgstr ""
+
+# CONF_SHALL_PLURAL
+#: CONF_SHALL_PLURAL
+msgctxt "CONF_SHALL_PLURAL"
+msgid "SHALL"
+msgstr ""
+
+# CONF_SHOULD
+#: CONF_SHOULD
+msgctxt "CONF_SHOULD"
+msgid "SHOULD"
+msgstr ""
+
+# CONF_SHOULDNOT
+#: CONF_SHOULDNOT
+msgctxt "CONF_SHOULDNOT"
+msgid "SHOULD NOT"
+msgstr ""
+
+# CONF_SHOULDNOT_PLURAL
+#: CONF_SHOULDNOT_PLURAL
+msgctxt "CONF_SHOULDNOT_PLURAL"
+msgid "SHOULD NOT"
+msgstr ""
+
+# CONF_SHOULD_PLURAL
+#: CONF_SHOULD_PLURAL
+msgctxt "CONF_SHOULD_PLURAL"
+msgid "SHOULD"
+msgstr ""
+
+# CONSENT_CATEGORY
+#: CONSENT_CATEGORY
+msgid "Category"
+msgid_plural "Categories"
+msgstr[0] ""
+
+# CONSENT_DATE
+#: CONSENT_DATE
+msgid "Agreement Date"
+msgstr ""
+
+# CONSENT_PART_TBL_CONTROLLER
+#: CONSENT_PART_TBL_CONTROLLER
+msgid "Controller"
+msgstr ""
+
+# CONSENT_PART_TBL_DETAILS
+#: CONSENT_PART_TBL_DETAILS
+msgctxt "CONSENT_PART_TBL_DETAILS"
+msgid "Details"
+msgstr ""
+
+# CONSENT_PART_TBL_GRANTEE
+#: CONSENT_PART_TBL_GRANTEE
+msgid "Grantee"
+msgstr ""
+
+# CONSENT_PART_TBL_GRANTOR
+#: CONSENT_PART_TBL_GRANTOR
+msgid "Grantor"
+msgstr ""
+
+# CONSENT_PART_TBL_MANAGER
+#: CONSENT_PART_TBL_MANAGER
+msgid "Manager"
+msgstr ""
+
+# CONSENT_PART_TBL_PARTY
+#: CONSENT_PART_TBL_PARTY
+msgid "Party"
+msgstr ""
+
+# CONSENT_PART_TBL_PATIENT
+#: CONSENT_PART_TBL_PATIENT
+msgid "Patient"
+msgstr ""
+
+# CONSENT_PART_TBL_ROLE
+#: CONSENT_PART_TBL_ROLE
+msgctxt "CONSENT_PART_TBL_ROLE"
+msgid "Role"
+msgstr ""
+
+# CONSENT_PERIOD
+#: CONSENT_PERIOD
+msgid "Applicable Period"
+msgstr ""
+
+# CONSENT_SCOPE
+#: CONSENT_SCOPE
+msgctxt "CONSENT_SCOPE"
+msgid "Scope"
+msgid_plural "Scopes"
+msgstr[0] ""
+
+# CSREQ_DESC
+#: CSREQ_DESC
+msgid "Conformance statements found throughout the narrative of the IG consolidated into this computable resource for traceability purposes"
+msgstr ""
+
+# CSREQ_TITLE
+#: CSREQ_TITLE
+msgid "Narrative Conformance Statements"
+msgstr ""
+
+# CSTABLE_CLEAR_FILTERS
+#: CSTABLE_CLEAR_FILTERS
+msgid "Clear Filters"
+msgstr ""
+
+# CSTABLE_COND_ANY
+#: CSTABLE_COND_ANY
+msgctxt "CSTABLE_COND_ANY"
+msgid "Any"
+msgstr ""
+
+# CSTABLE_COND_NO
+#: CSTABLE_COND_NO
+msgid "No"
+msgstr ""
+
+# CSTABLE_COND_YES
+#: CSTABLE_COND_YES
+msgid "Yes"
+msgstr ""
+
+# CSTABLE_HEAD_ACTOR
+#: CSTABLE_HEAD_ACTOR
+msgid "Actor{1}"
+msgid_plural "Actors{1}"
+msgstr[0] ""
+
+# CSTABLE_HEAD_CAT
+#: CSTABLE_HEAD_CAT
+msgid "Category{1}"
+msgid_plural "Categories{1}"
+msgstr[0] ""
+
+# CSTABLE_HEAD_COND
+#: CSTABLE_HEAD_COND
+msgid "Conditional?"
+msgstr ""
+
+# CSTABLE_HEAD_EXPECT
+#: CSTABLE_HEAD_EXPECT
+msgid "Expectation"
+msgstr ""
+
+# CSTABLE_HEAD_ID
+#: CSTABLE_HEAD_ID
+msgctxt "CSTABLE_HEAD_ID"
+msgid "Id"
+msgstr ""
+
+# CSTABLE_HEAD_RULE
+#: CSTABLE_HEAD_RULE
+msgid "Rule"
+msgstr ""
+
+# CSTABLE_TITLE_ACTOR
+#: CSTABLE_TITLE_ACTOR
+msgid "Filter to only statements that apply to the specified actor(s)"
+msgstr ""
+
+# CSTABLE_TITLE_CAT
+#: CSTABLE_TITLE_CAT
+msgid "Filter to only statements that apply to the specified category(ies)"
+msgstr ""
+
+# CSTABLE_TITLE_CLEAR
+#: CSTABLE_TITLE_CLEAR
+msgid "Clear the Filter"
+msgstr ""
+
+# CSTABLE_TITLE_COND
+#: CSTABLE_TITLE_COND
+msgid "Filter to only statements that are conditional, not conditional, or no constraint"
+msgstr ""
+
+# CSTABLE_TITLE_EXPECT
+#: CSTABLE_TITLE_EXPECT
+msgid "Filter to only statements with one of the selected expectation type(s)"
+msgstr ""
+
+# CSTABLE_TITLE_ID
+#: CSTABLE_TITLE_ID
+msgid "Filter to only statements with ids that contain the specified text"
+msgstr ""
+
+# CSTABLE_TITLE_RULE
+#: CSTABLE_TITLE_RULE
+msgid "Filter to only statements that contain the specified text"
 msgstr ""
 
 # CS_VERSION_NOTHING_TEXT
@@ -1264,6 +1489,7 @@ msgstr ""
 
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
+msgctxt "DIAG_REP_REND_IDENTIFIER"
 msgid "Identifier"
 msgstr ""
 
@@ -1569,6 +1795,7 @@ msgstr ""
 
 # GENERAL_DETAILS
 #: GENERAL_DETAILS
+msgctxt "GENERAL_DETAILS"
 msgid "Details"
 msgstr ""
 
@@ -1602,6 +1829,13 @@ msgstr ""
 #: GENERAL_FLAGS
 msgid "Flags"
 msgstr ""
+
+# GENERAL_IDENTIFIER
+#: GENERAL_IDENTIFIER
+msgctxt "GENERAL_IDENTIFIER"
+msgid "Identifier"
+msgid_plural "Identifiers"
+msgstr[0] ""
 
 # GENERAL_LOCATION
 #: GENERAL_LOCATION
@@ -2082,6 +2316,7 @@ msgstr ""
 
 # OP_DEF_SCO
 #: OP_DEF_SCO
+msgctxt "OP_DEF_SCO"
 msgid "Scope"
 msgstr ""
 
@@ -2418,8 +2653,14 @@ msgstr ""
 msgid "Recorded"
 msgstr ""
 
+# PROV_REFERENCE
+#: PROV_REFERENCE
+msgid "This {0} is referenced from the following provenance resources:"
+msgstr ""
+
 # PROV_ROLE
 #: PROV_ROLE
+msgctxt "PROV_ROLE"
 msgid "Role"
 msgstr ""
 
@@ -2787,7 +3028,7 @@ msgstr ""
 
 # R44B_PACKAGE_REF
 #: R44B_PACKAGE_REF
-msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\\"{2}\\">R4B ({3}.r4b)</a> are available."
+msgid "Packages for both <a href=\"{0}\">R4 ({1}.r4)</a> and <a href=\"{2}\">R4B ({3}.r4b)</a> are available."
 msgstr ""
 
 # R44B_PROBLEMS
@@ -4178,6 +4419,7 @@ msgstr ""
 
 # STRUC_DEF_ID
 #: STRUC_DEF_ID
+msgctxt "STRUC_DEF_ID"
 msgid "Id"
 msgstr ""
 
@@ -5626,17 +5868,17 @@ msgstr ""
 
 # VS_VERSION_FOUND
 #: VS_VERSION_FOUND
-msgid "Version is not explicity stated. When building this specification, the most recent version {0} has been used"
+msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
 msgstr ""
 
 # VS_VERSION_NONE
 #: VS_VERSION_NONE
-msgid "Version is not explicity stated, and the target {0} has no stated version either"
+msgid "Version is not explicitly stated, and the target {0} has no stated version either"
 msgstr ""
 
 # VS_VERSION_NOTHING
 #: VS_VERSION_NOTHING
-msgid "Version is not explicity stated. No matching {0} found"
+msgid "Version is not explicitly stated. No matching {0} found"
 msgstr ""
 
 # VS_VERSION_NOTHING_TEXT

@@ -100,7 +100,7 @@ public class ResourceParser extends ParserBase {
           }      
           n.setPath(npath);
           if (p.isResource()) {
-            StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(v.fhirType(), null));
+            StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(v.fhirType(), null), IWorkerContext.VersionResolutionRules.defaultRule());
             if (sd == null)
               throw new FHIRFormatError(context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, v.fhirType()));
             n.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd, getProfileUtilities(), getContextUtilities()), SpecialElement.fromProperty(n.getProperty()), p);

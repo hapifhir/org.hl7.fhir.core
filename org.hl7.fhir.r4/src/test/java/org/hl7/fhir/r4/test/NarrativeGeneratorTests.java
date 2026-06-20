@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.xmlpull.v1.XmlPullParserException;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 @Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NarrativeGeneratorTests {
@@ -30,9 +32,10 @@ public class NarrativeGeneratorTests {
   }
 
   @Test
-  public void test()
-      throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
-    process(TestingUtilities.resourceNameToFile("questionnaireresponse-example-f201-lifelines.xml"));
+  public void test() throws FHIRException {
+    assertDoesNotThrow(() -> {
+      process(TestingUtilities.resourceNameToFile("questionnaireresponse-example-f201-lifelines.xml"));
+    });
   }
 
   private void process(String path)

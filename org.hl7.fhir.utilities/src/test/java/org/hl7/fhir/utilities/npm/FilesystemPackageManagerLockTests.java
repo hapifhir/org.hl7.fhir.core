@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FilesystemPackageManagerLockTests {
@@ -29,7 +28,7 @@ public class FilesystemPackageManagerLockTests {
 
 
   @BeforeEach
-  public void setUp() throws IOException {
+  void setUp() throws IOException {
     cachePath = ManagedFileAccess.fromPath(Files.createTempDirectory("fpcm-multithreadingTest")).getAbsolutePath();
     cacheDirectory = new File(cachePath);
     filesystemPackageCacheLockManager = new FilesystemPackageCacheManagerLocks(cacheDirectory);
@@ -37,7 +36,7 @@ public class FilesystemPackageManagerLockTests {
   }
 
   @Test
-  public void testBaseCases() throws IOException {
+  void testBaseCases() throws IOException {
     filesystemPackageCacheLockManager.getCacheLock().doWriteWithLock(() -> {
       assertThat(cacheDirectory).exists();
       assertThat(cacheDirectory).isDirectory();
@@ -60,7 +59,8 @@ public class FilesystemPackageManagerLockTests {
     }, null);
   }
 
-  @Test void testNoPackageWriteOrReadWhileWholeCacheIsLocked() throws IOException, InterruptedException {
+  @Test
+  void testNoPackageWriteOrReadWhileWholeCacheIsLocked() throws IOException, InterruptedException {
     final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
 
     AtomicBoolean cacheLockFinished = new AtomicBoolean(false);
@@ -118,13 +118,15 @@ public class FilesystemPackageManagerLockTests {
     }
   }
 
-  @Test void testWhenLockIsntHeld_canLockFileBeHeldByThisProcessIsTrue() throws IOException {
+  @Test
+  void testWhenLockIsntHeld_canLockFileBeHeldByThisProcessIsTrue() throws IOException {
     File lockFile = getPackageLockFile();
     lockFile.createNewFile();
     Assertions.assertTrue(filesystemPackageCacheLockManager.getCacheLock().canLockFileBeHeldByThisProcess(lockFile));
   }
 
-  @Test void testWhenLockIsHelp_canLockFileBeHeldByThisProcessIsFalse() throws InterruptedException, TimeoutException, IOException {
+  @Test
+  void testWhenLockIsHelp_canLockFileBeHeldByThisProcessIsFalse() throws InterruptedException, TimeoutException, IOException {
     File lockFile = getPackageLockFile();
     Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(cachePath, DUMMY_PACKAGE + ".lock", 2);
 
@@ -135,7 +137,8 @@ public class FilesystemPackageManagerLockTests {
     lockThread.join();
   }
 
-  @Test void testSinglePackageWriteMultiPackageRead() throws IOException {
+  @Test
+  void testSinglePackageWriteMultiPackageRead() throws IOException {
     final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
     AtomicInteger writeCounter = new AtomicInteger(0);
 
@@ -198,19 +201,23 @@ public class FilesystemPackageManagerLockTests {
   }
 
   @Test
-  public void testReadWhenLockedByFileTimesOut() throws InterruptedException, TimeoutException, IOException {
+  void testReadWhenLockedByFileTimesOut() throws InterruptedException, TimeoutException, IOException {
     FilesystemPackageCacheManagerLocks shorterTimeoutManager = filesystemPackageCacheLockManager;
     final FilesystemPackageCacheManagerLocks.PackageLock packageLock = shorterTimeoutManager.getPackageLock(DUMMY_PACKAGE);
     File lockFile = getPackageLockFile();
     Thread lockThread = LockfileTestProcessUtility.lockWaitAndDeleteInNewProcess(cachePath, lockFile.getName(), 5);
     LockfileTestUtility.waitForLockfileCreation(cachePath,lockFile.getName());
 
-    Exception exception = assertThrows(IOException.class, () -> {
-      packageLock.doReadWithLock(() -> {
-        assertThat(lockFile).exists();
-        return null;
-      }, new FilesystemPackageCacheManagerLocks.LockParameters(3L, TimeUnit.SECONDS));
-    });
+    Exception exception = assertThrows(
+      IOException.class,
+      () -> packageLock.doReadWithLock(
+        () -> {
+          assertThat(lockFile).exists();
+          return null;
+          },
+        new FilesystemPackageCacheManagerLocks.LockParameters(3L, TimeUnit.SECONDS)
+      )
+    );
 
     assertThat(exception.getMessage()).contains("Package cache timed out waiting for lock");
     assertThat(exception.getCause().getMessage()).contains("Timeout waiting for lock file deletion: " + lockFile.getName());
@@ -220,7 +227,7 @@ public class FilesystemPackageManagerLockTests {
 
 
   @Test
-  public void testReadWhenLockFileIsDeleted() throws InterruptedException, TimeoutException, IOException {
+  void testReadWhenLockFileIsDeleted() throws InterruptedException, TimeoutException, IOException {
 
     final FilesystemPackageCacheManagerLocks.PackageLock packageLock = filesystemPackageCacheLockManager.getPackageLock(DUMMY_PACKAGE);
 

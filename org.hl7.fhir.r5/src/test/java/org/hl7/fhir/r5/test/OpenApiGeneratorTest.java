@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -10,28 +8,42 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.openapi.OpenApiGenerator;
 import org.hl7.fhir.r5.openapi.Writer;
-import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.junit.jupiter.api.Test;
 
-public class OpenApiGeneratorTest {
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+class OpenApiGeneratorTest {
 
   @Test
-  public void testBase1() throws IOException, FHIRFormatError {
-    InputStream sfn = TestingUtilities.loadTestResourceStream("r5", "openapi", "cs-base.json");
-    String dfn = TestingUtilities.tempFile("openapi", "swagger-base.json");
-    run(sfn, dfn);
+  void testBase1() {
+    assertDoesNotThrow(() -> {
+      InputStream sfn = TestingUtilities.loadTestResourceStream("r5", "openapi", "cs-base.json");
+      String dfn = TestingUtilities.tempFile("openapi", "swagger-base.json");
+      run(sfn, dfn);
+    });
   }
 
   @Test
-  public void testBase2() throws FHIRFormatError, FileNotFoundException, IOException {
-    InputStream sfn = TestingUtilities.loadTestResourceStream("r5", "openapi", "cs-base2.json");
-    String dfn = TestingUtilities.tempFile("openapi", "swagger-base2.json");
-    run(sfn, dfn);
+  void testBase2() {
+    assertDoesNotThrow(() -> {
+      InputStream sfn = TestingUtilities.loadTestResourceStream("r5", "openapi", "cs-base2.json");
+      String dfn = TestingUtilities.tempFile("openapi", "swagger-base2.json");
+      run(sfn, dfn);
+    });
   }
 
-  public void run(InputStream sfn, String dfn) throws IOException, FHIRFormatError, FileNotFoundException {
+  @Test
+  void testExtendedOperations() {
+    assertDoesNotThrow(() -> {
+      InputStream sfn = TestingUtilities.loadTestResourceStream("r5", "openapi", "cs-r5-extended.json");
+      String dfn = TestingUtilities.tempFile("openapi", "swagger-extended.json");
+      run(sfn, dfn);
+    });
+  }
+
+  public void run(InputStream sfn, String dfn) throws IOException, FHIRFormatError {
     CapabilityStatement cs = (CapabilityStatement) new JsonParser().parse(sfn);
     Writer oa = new Writer(ManagedFileAccess.outStream(dfn));
     OpenApiGenerator gen = new OpenApiGenerator(TestingUtilities.getSharedWorkerContext(), cs, oa);

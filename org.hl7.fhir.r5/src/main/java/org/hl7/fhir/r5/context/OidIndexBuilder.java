@@ -40,7 +40,7 @@ public class OidIndexBuilder {
           "OID            nvarchar NOT NULL,\r\n"+
           "TYPE           nvarchar NOT NULL,\r\n"+
           "URL            nvarchar NOT NULL,\r\n"+
-          "VERSION        nvarchar NOT NULL,\r\n"+
+          "VERSION        nvarchar NULL,\r\n"+
           "Status         nvarchar NOT NULL,\r\n"+
           "PRIMARY KEY (OID, URL))\r\n");
 

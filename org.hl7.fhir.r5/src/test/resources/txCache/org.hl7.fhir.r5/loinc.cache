@@ -46,12 +46,16 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:4cebb452-43ce-42c4-8b34-ea1afac4e818",
-    "timestamp" : "2025-10-10T00:45:27.883Z",
+    "identifier" : "urn:uuid:ac43bdae-ffdd-42c6-9e10-ca74f3ac28bc",
+    "timestamp" : "2026-03-11T18:16:50.930Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "includeDefinition",
       "valueBoolean" : false
     },
     {
@@ -131,12 +135,16 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:e821af50-91d7-4e1c-9be4-da9cca78c0cb",
-    "timestamp" : "2025-10-10T00:45:29.144Z",
+    "identifier" : "urn:uuid:aa4cdf3a-1d0a-4621-aa55-c483e0817123",
+    "timestamp" : "2026-03-11T18:16:51.812Z",
     "total" : 8,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "includeDefinition",
       "valueBoolean" : false
     },
     {
@@ -243,12 +251,16 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:130a8bcf-e1dd-46fc-8b28-7f5fb70f8ac8",
-    "timestamp" : "2025-10-10T00:45:30.291Z",
+    "identifier" : "urn:uuid:6fd9e5c3-b4d3-4894-bddb-fddea1f2164c",
+    "timestamp" : "2026-03-11T18:16:54.471Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "includeDefinition",
       "valueBoolean" : false
     },
     {
@@ -311,16 +323,18 @@ e: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "LP43571-6"
-}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"en, en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters"
 }}####
 v: {
   "code" : "LP43571-6",
   "system" : "http://loinc.org",
+  "version" : "2.81",
   "severity" : "error",
   "error" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.81: Validate \"[http://loinc.org#LP43571-6 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.81: Check \"http://loinc.org#LP43571-6\"\n5ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n5ms http://loinc.org/vs|2.81: check code in (http://loinc.org) at Coding\n5ms http://loinc.org/vs|2.81: Code \"LP43571-6\" not found in http://loinc.org|2.81: undefined",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
@@ -342,7 +356,6 @@ v: {
       }],
       "text" : "Unknown code 'LP43571-6' in the CodeSystem 'http://loinc.org' version '2.81'"
     },
-    "location" : ["Coding.code"],
     "expression" : ["Coding.code"]
   }]
 }
@@ -368,12 +381,16 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:1612120a-9a58-4abf-bb16-9b3e36bdea7d",
-    "timestamp" : "2025-10-10T00:45:35.369Z",
+    "identifier" : "urn:uuid:89eacb55-acf8-4711-b301-d636b4b6eac4",
+    "timestamp" : "2026-03-11T18:17:00.026Z",
     "total" : 1,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "includeDefinition",
       "valueBoolean" : false
     },
     {
@@ -401,7 +418,7 @@ e: {
 {"code" : {
   "system" : "http://loinc.org",
   "code" : "38269-7"
-}, "valueSet" :null, "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
+}, "valueSet" :null, "langs":"en-AU", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"true", "profile": {
   "resourceType" : "Parameters"
 }}####
 v: {
@@ -410,6 +427,7 @@ v: {
   "system" : "http://loinc.org",
   "version" : "2.81",
   "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n2ms http://loinc.org/vs|2.81: Validate \"[http://loinc.org#38269-7 (\"undefined\")]\"\n3ms http://loinc.org/vs|2.81: Check \"http://loinc.org#38269-7\"\n5ms http://loinc.org/vs|2.81: CodeSystem found: http://loinc.org|2.81 for http://loinc.org|2.81\n5ms http://loinc.org/vs|2.81: check code in (http://loinc.org) at Coding\n5ms http://loinc.org/vs|2.81: Code \"38269-7\" found in http://loinc.org|2.81",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"
@@ -452,12 +470,16 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:f257aba2-eb8d-4b2b-87bc-3282defa76b7",
-    "timestamp" : "2025-10-10T00:45:42.799Z",
+    "identifier" : "urn:uuid:173990ec-c768-427e-8bed-a245627d1bbd",
+    "timestamp" : "2026-03-11T18:17:05.558Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "includeDefinition",
       "valueBoolean" : false
     },
     {
@@ -541,12 +563,16 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:0064c4fe-ac16-431a-94c5-e2660c7cad63",
-    "timestamp" : "2025-10-10T00:45:44.044Z",
+    "identifier" : "urn:uuid:6a0d589c-b7e7-4960-a6a8-636f57edc96e",
+    "timestamp" : "2026-03-11T18:17:06.349Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "includeDefinition",
       "valueBoolean" : false
     },
     {
@@ -627,12 +653,16 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:e777497f-bc3d-4407-b3aa-af82b266152b",
-    "timestamp" : "2025-10-10T00:45:45.280Z",
+    "identifier" : "urn:uuid:2ae3d65f-ac01-4bcf-a848-3feb73f7013e",
+    "timestamp" : "2026-03-11T18:17:07.182Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "includeDefinition",
       "valueBoolean" : false
     },
     {
@@ -711,12 +741,16 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:2f6e1c35-27f3-495f-9743-9facf1d83e97",
-    "timestamp" : "2025-10-10T00:45:46.512Z",
+    "identifier" : "urn:uuid:643cdb1c-c1b5-4632-a8bd-9df2d9fa0479",
+    "timestamp" : "2026-03-11T18:17:08.026Z",
     "total" : 6,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "includeDefinition",
       "valueBoolean" : false
     },
     {
@@ -801,12 +835,16 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:6591ed07-718a-4b33-aa54-6062870aff7c",
-    "timestamp" : "2025-10-10T00:45:47.732Z",
+    "identifier" : "urn:uuid:37f1875f-73aa-4815-91f9-9d5cef6b7c8e",
+    "timestamp" : "2026-03-11T18:17:08.887Z",
     "total" : 5,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "includeDefinition",
       "valueBoolean" : false
     },
     {
@@ -882,12 +920,16 @@ e: {
   "resourceType" : "ValueSet",
   "status" : "active",
   "expansion" : {
-    "identifier" : "urn:uuid:5123b8d6-1578-4b67-8658-f7ad98676083",
-    "timestamp" : "2025-10-10T00:45:48.944Z",
+    "identifier" : "urn:uuid:da90c3ca-5615-431c-9d94-18bff8e80267",
+    "timestamp" : "2026-03-11T18:17:09.792Z",
     "total" : 4,
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "includeDefinition",
       "valueBoolean" : false
     },
     {

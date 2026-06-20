@@ -14,9 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -41,15 +39,41 @@ public class XMLUtilTests {
 
   @Test
   public void testTransformerFactoryThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     DocumentBuilder safeBuilder = factory.newDocumentBuilder();
+    TransformerFactory tf = XMLUtil.newXXEProtectedTransformerFactory();
 
+    assertTransformerFactoryThrowsExceptionOnEvilTransform(safeBuilder, tf);
+  }
+
+  @Test
+  public void testSaxParserFactoryThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
+
+    SAXParserFactory spf = XMLUtil.newXXEProtectedSaxParserFactory();
+    spf.setNamespaceAware(true);
+    spf.setValidating(false);
+    XMLReader xmlReader = XMLUtil.getXXEProtectedXMLReader(spf);
+
+    File templateFile = ManagedFileAccess.file("src/test/resources/xml/evil-resource.xml");
+
+    SAXParseException e = assertThrows(SAXParseException.class, () -> xmlReader.parse(new StreamSource(templateFile).getSystemId()));
+    assertThat(e.getMessage()).contains("DOCTYPE is disallowed");
+  }
+
+  @Test
+  public void testSaxonTransformerFactoryThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
+    DocumentBuilder safeBuilder = factory.newDocumentBuilder();
+    TransformerFactory tf = XMLUtil.newXXEProtectedSaxonTransformerFactory();
+
+    assertTransformerFactoryThrowsExceptionOnEvilTransform(safeBuilder, tf);
+  }
+
+  private static void assertTransformerFactoryThrowsExceptionOnEvilTransform(DocumentBuilder safeBuilder, TransformerFactory tf) throws IOException, SAXException, TransformerConfigurationException {
     File file = ManagedFileAccess.file("src/test/resources/xml/resource.xml");
 
     Document document = safeBuilder.parse(file);
-
     StringWriter sw = new StringWriter();
-    TransformerFactory tf = XMLUtil.newXXEProtectedTransformerFactory();
 
     File templateFile = ManagedFileAccess.file("src/test/resources/xml/evil-transform.xslt");
     Source xsltSource = new StreamSource(templateFile);
@@ -63,22 +87,9 @@ public class XMLUtilTests {
     assertThat(e.getMessage()).contains("URIs using protocol file are not permitted");
   }
 
+  @SuppressWarnings("checkstyle:saxParserFactoryNewInstance")
   @Test
-  public void testSaxParserFactoryThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
-
-    SAXParserFactory spf = XMLUtil.newXXEProtectedSaxParserFactory();
-    spf.setNamespaceAware(true);
-    spf.setValidating(false);
-    XMLReader xmlReader = spf.newSAXParser().getXMLReader();
-
-    File templateFile = ManagedFileAccess.file("src/test/resources/xml/evil-resource.xml");
-
-    SAXParseException e = assertThrows(SAXParseException.class, () -> xmlReader.parse(new StreamSource(templateFile).getSystemId()));
-    assertThat(e.getMessage()).contains("DOCTYPE is disallowed");
-  }
-
-  @Test
-  public void testXMLReaderThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
+  public void testXMLReaderThrowsExceptionForExternalEntity() {
     SAXParserFactory spf = SAXParserFactory.newInstance();
 
     IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> XMLUtil.getXXEProtectedXMLReader(spf));

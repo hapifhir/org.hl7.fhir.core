@@ -7,7 +7,9 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -38,7 +40,6 @@ public class ObligationsRenderer extends Renderer {
     private boolean matched = false;
     private boolean removed = false;
     private String source;
-//    private ValueSet vs;
     
     private ObligationDetail compare;
     private int count = 1;
@@ -67,8 +68,8 @@ public class ObligationsRenderer extends Renderer {
       if (ext.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_SOURCE, ExtensionDefinitions.EXT_OBLIGATION_SOURCE_SHORT)) {
         this.source = ext.getExtensionString(ExtensionDefinitions.EXT_OBLIGATION_SOURCE, ExtensionDefinitions.EXT_OBLIGATION_SOURCE_SHORT);
       } else if (ext.hasUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE)) {
-        this.source = ((StructureDefinition) ext.getUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE)).getVersionedUrl();        
-      }      
+        this.source = ((StructureDefinition) ext.getUserData(UserDataNames.SNAPSHOT_EXTENSION_SOURCE)).getVersionedUrl();
+      }
     }
     
     private String getKey() {
@@ -267,7 +268,7 @@ public class ObligationsRenderer extends Renderer {
     boolean add = context.getActorWhiteList().isEmpty();
     if (!add) {
       for (CanonicalType a : obd.actors) { 
-        ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, a.getValue());
+        ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, a.getValue(), ExtensionUtilities.getVersionResolutionRules(a));
         add = add || (context.getActorWhiteList().contains(ad));
       }
     }
@@ -361,7 +362,7 @@ public class ObligationsRenderer extends Renderer {
     }
     if (ob.source != null && !ob.source.equals(profile.getVersionedUrl())) {
       children.tx(" ");
-      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, ob.source);
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, ob.source, IWorkerContext.VersionResolutionRules.defaultRule());
       String link = sd != null ? sd.getWebPath() : ob.source;
       String title = context.formatPhrase(RenderingContext.OBLIGATION_SOURCE, sd == null ? ob.source : sd.present()); 
       children.ah(link, title).attribute("data-no-external", "true").img("external.png", "source-link");
@@ -437,7 +438,7 @@ public class ObligationsRenderer extends Renderer {
       if (!ob.actors.isEmpty() ||  ob.compare == null || ob.compare.actors.isEmpty()) {
         boolean firstActor = true;
         for (CanonicalType anActor : ob.actors) {
-          ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, anActor.getCanonical());
+          ActorDefinition ad = context.getContext().fetchResource(ActorDefinition.class, anActor.getCanonical(), ExtensionUtilities.getVersionResolutionRules(anActor));
           boolean existingActor = ob.compare != null && ob.compare.actors.contains(anActor);
 
           if (!firstActor) {
@@ -457,7 +458,7 @@ public class ObligationsRenderer extends Renderer {
         if (ob.compare != null) {
           for (CanonicalType compActor : ob.compare.actors) {
             if (!ob.actors.contains(compActor)) {
-              ActorDefinition compAd = context.getContext().fetchResource(ActorDefinition.class, compActor.toString());
+              ActorDefinition compAd = context.getContext().fetchResource(ActorDefinition.class, compActor.toString(), ExtensionUtilities.getVersionResolutionRules(compActor));
               if (!firstActor) {
                 actorId.br();
                 firstActor = true;
@@ -537,7 +538,7 @@ public class ObligationsRenderer extends Renderer {
       }
       if (hasSource) {
         if (ob.source != null && !ob.source.equals(profile.getVersionedUrl())) {
-          StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, ob.source);
+          StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, ob.source, IWorkerContext.VersionResolutionRules.defaultRule());
           var td = tr.td().style("font-size: 11px");
           td.tx("from ");
           if (sd != null) {

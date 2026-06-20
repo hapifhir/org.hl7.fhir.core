@@ -12,10 +12,13 @@ import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 public class ScoringEngine {
 
@@ -169,7 +172,7 @@ public class ScoringEngine {
           return rule.substring(7).equals(element.getNamedChildValue("system"));
         } else if (rule.startsWith("binding:")) {
           Coding c = ObjectConverter.readAsCoding(element);
-          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8));
+          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), IWorkerContext.VersionResolutionRules.defaultRule());
           if (vs == null) {
             reasons.add("Unable to find ValueSet: " + rule.substring(8));
             return false;
@@ -178,7 +181,16 @@ public class ScoringEngine {
             return vr.isOk();
           }
         } else if (rule.startsWith("regex:")) {
-          return element.primitiveValue().matches(rule.substring(6));
+          String regex = rule.substring(6);
+          try {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //False positive: RegexTimeout.matches is the approved timeout wrapper
+            boolean result = RegexTimeout.matches(element.primitiveValue(),regex);
+            return result;
+          } catch (TimeoutException e) {
+            reasons.add(context.formatMessage(I18nConstants.REGEX_MATCH_TIMED_OUT, regex));
+            return false;
+          }
         } else {
           reasons.add("Unknown rule '" + rule + "' on an Identifier at " + path);
           return false;
@@ -201,7 +213,7 @@ public class ScoringEngine {
           return rule.substring(7).equals(element.getNamedChildValue("system"));
         } else if (rule.startsWith("binding:")) {
           Coding c = ObjectConverter.readAsCoding(element);
-          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8));
+          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), IWorkerContext.VersionResolutionRules.defaultRule());
           if (vs == null) {
             reasons.add("Unable to find ValueSet: " + rule.substring(8));
             return false;
@@ -227,7 +239,7 @@ public class ScoringEngine {
           return rule.substring(7).equals(element.getNamedChildValue("system"));
         } else if (rule.startsWith("binding:")) {
           CodeableConcept cc = ObjectConverter.readAsCodeableConcept(element);
-          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8));
+          ValueSet vs = context.fetchResource(ValueSet.class, rule.substring(8), IWorkerContext.VersionResolutionRules.defaultRule());
           if (vs == null) {
             reasons.add("Unable to find ValueSet: " + rule.substring(8));
             return false;
@@ -404,6 +416,8 @@ public class ScoringEngine {
     }
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Regexes sourced from Constants.URI_REGEX/LOCAL_REF_REGEX; non-overlapping resource name alternation, safe
   private boolean checkReferenceRule(String path, Element element, String rule, List<String> reasons) {
     String ref = element.getNamedChildValue("reference");
     switch (rule) {

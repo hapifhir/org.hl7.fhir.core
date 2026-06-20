@@ -167,11 +167,15 @@ public class XhtmlToMarkdownConverter {
       case "pre":
         b.append("```\r\n");
         XhtmlNode code = c.getElement("code");
+        String literalText;
         if (code != null) {
-          b.append(code.toLiteralText());
+          literalText = code.toLiteralText();
         } else {
-          b.append(c.toLiteralText());
+          literalText = c.toLiteralText();
         }
+        // Normalize line endings: convert LF to CRLF
+        literalText = literalText.replace("\r\n", "\n").replace("\n", "\r\n");
+        b.append(literalText);
         b.append("\r\n```\r\n");
         break;
       case "para":
@@ -235,19 +239,21 @@ public class XhtmlToMarkdownConverter {
     }
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Regexes sourced from known filter lists (classFilters, idFilters); reviewed in configureForIGs
   private boolean elementPasses(XhtmlNode x) {
     String clss = x.getAttribute("class");
     if (clss != null) {
-      for (String f : classFilters) {
-        if (clss.matches(f) || clss.contains(f)) {
+      for (String classFilter : classFilters) {
+        if (clss.matches(classFilter) || clss.contains(classFilter)) {
           return false;
         }
       }
     }
     String id = x.getAttribute("id");
     if (id != null) {
-      for (String f : idFilters) {
-        if (id.matches(f)) {
+      for (String idFilter : idFilters) {
+        if (id.matches(idFilter)) {
           return false;
         }
       }
@@ -727,9 +733,11 @@ public class XhtmlToMarkdownConverter {
     return false;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Regexes sourced from known filter list (imageFilters); reviewed in configureForIGs
   private boolean imageRefPasses(String src) {
-    for (String f : imageFilters) {
-      if (src.matches(f)) {
+    for (String imageFilter : imageFilters) {
+      if (src.matches(imageFilter)) {
         return false;
       }
     }
@@ -739,7 +747,7 @@ public class XhtmlToMarkdownConverter {
   private void process(StringBuilder b, XhtmlNode x, boolean trim, boolean allowParagraphs, boolean inPara) {
     for (XhtmlNode c : x.getChildNodes()) {
       if (c.getNodeType() == NodeType.Text) {
-        addText(b, true, c.getContent());
+        addText(b, false, c.getContent());
       } else if (c.getName() != null) {
         part(b, c, trim, allowParagraphs, inPara);
       }

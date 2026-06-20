@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParserFactory;
@@ -226,7 +227,7 @@ public class XmlParser extends ParserBase {
 
     StructureDefinition sd = getDefinition(errors, line(element, false), col(element, false), (ns == null ? "noNamespace" : ns), name);
     if (sd == null && rd != null) {
-      sd = context.fetchResource(StructureDefinition.class, rd);
+      sd = context.fetchResource(StructureDefinition.class, rd, IWorkerContext.VersionResolutionRules.defaultRule());
     }
     if (sd == null) {
       return null;
@@ -318,14 +319,28 @@ public class XmlParser extends ParserBase {
       if (sd == sdA) {
         return sd;
       }
-      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), IWorkerContext.VersionResolutionRules.defaultRule());
     }
     return null;
   }
 
-  public Element parse(List<ValidationMessage> errors, org.w3c.dom.Element base, String type) throws Exception {
+  public Element parse(List<ValidationMessage> errors, org.w3c.dom.Element base, String typeName) throws Exception {
+    String typeTail = null;
+    String type = typeName;
+    if (typeName.contains(".")) {
+      typeTail = typeName.substring(typeName.indexOf('.') + 1);
+      type = typeName.substring(0, typeName.indexOf('.'));
+    }
+
     StructureDefinition sd = getDefinition(errors, 0, 0, FormatUtilities.FHIR_NS, type);
-    Element result = new Element(base.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd, getProfileUtilities(), getContextUtilities())).setFormat(FhirFormat.XML).setNativeObject(base);
+    if (sd == null) {
+      throw new FHIRException("Unable to find definition for type "+type);
+    }
+    ElementDefinition ed = sd.getSnapshot().getElement().get(0);
+    if (typeTail != null) {
+      ed = sd.getSnapshot().getElementByPath(typeName);
+    }
+    Element result = new Element(base.getLocalName(), new Property(context, ed, sd, getProfileUtilities(), getContextUtilities())).setFormat(FhirFormat.XML).setNativeObject(base);
     result.setPath(base.getLocalName());
     String path = "/"+pathPrefix(base.getNamespaceURI())+base.getLocalName();
     checkElement(errors, base, result, path, result.getProperty(), false);
@@ -403,7 +418,10 @@ public class XmlParser extends ParserBase {
           else {
             String[] vl = {av};
             if (property.isList() && av.contains(" ")) {
-              vl = av.split(" ");
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //single literal character split
+              String[] avParts = av.split(" ");
+              vl = avParts;
             }
             for (String v : vl) {
               Element n = new Element(property.getName(), property, property.getType(), v).markLocation(line, col).setFormat(FhirFormat.XML);
@@ -664,7 +682,7 @@ public class XmlParser extends ParserBase {
   private void parseResource(List<ValidationMessage> errors, String string, org.w3c.dom.Element container, Element parent, Property elementProperty) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
     org.w3c.dom.Element res = XMLUtil.getFirstChild(container);
     String name = res.getLocalName();
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null), IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd == null)
       throw new FHIRFormatError(context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, res.getLocalName()));
     parent.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd, getProfileUtilities(), getContextUtilities()), SpecialElement.fromProperty(parent.getProperty()), elementProperty);
@@ -676,7 +694,7 @@ public class XmlParser extends ParserBase {
     Node node = element.getPreviousSibling();
     while (node != null && node.getNodeType() != Node.ELEMENT_NODE) {
       if (node.getNodeType() == Node.COMMENT_NODE)
-        context.getComments().add(0, node.getTextContent());
+        context.getComments().add(0, node.getTextContent().trim());
       node = node.getPreviousSibling();
     }
     node = element.getLastChild();
@@ -685,7 +703,7 @@ public class XmlParser extends ParserBase {
     }
     while (node != null) {
       if (node.getNodeType() == Node.COMMENT_NODE)
-        context.getComments().add(node.getTextContent());
+        context.getComments().add(node.getTextContent().trim());
       node = node.getNextSibling();
     }
   }
@@ -747,7 +765,7 @@ public class XmlParser extends ParserBase {
       xml.setDefaultNamespace(ns);
     }
     if (hasTypeAttr(e))
-      xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+      xml.namespace(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "xsi");
     if (Utilities.isAbsoluteUrl(e.getType())) {
       xml.namespace(urlRoot(e.getType()), "et");
     }

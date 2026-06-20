@@ -15,9 +15,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
 import org.fhir.ucum.UcumException;
@@ -38,34 +39,18 @@ import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FHIRConstant;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.TypedElementDefinition;
 import org.hl7.fhir.r4b.fhirpath.TypeDetails.ProfiledType;
-import org.hl7.fhir.r4b.model.Base;
-import org.hl7.fhir.r4b.model.BaseDateTimeType;
-import org.hl7.fhir.r4b.model.BooleanType;
-import org.hl7.fhir.r4b.model.CodeableConcept;
-import org.hl7.fhir.r4b.model.Constants;
-import org.hl7.fhir.r4b.model.DateTimeType;
-import org.hl7.fhir.r4b.model.DateType;
-import org.hl7.fhir.r4b.model.DecimalType;
-import org.hl7.fhir.r4b.model.Element;
-import org.hl7.fhir.r4b.model.ElementDefinition;
+import org.hl7.fhir.r4b.model.*;
 import org.hl7.fhir.r4b.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r4b.model.IntegerType;
-import org.hl7.fhir.r4b.model.Property;
 import org.hl7.fhir.r4b.model.Property.PropertyMatcher;
-import org.hl7.fhir.r4b.model.Quantity;
-import org.hl7.fhir.r4b.model.Resource;
-import org.hl7.fhir.r4b.model.StringType;
-import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4b.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r4b.model.TimeType;
-import org.hl7.fhir.r4b.model.TypeConvertor;
-import org.hl7.fhir.r4b.model.ValueSet;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -129,6 +114,8 @@ public class FHIRPathEngine {
   private boolean doNotEnforceAsSingletonRule;
   private boolean doNotEnforceAsCaseSensitive;
   private boolean allowDoubleQuotes;
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
   /**
    * @param worker - used when validating paths (@check), and used doing value set
@@ -1048,10 +1035,10 @@ public class FHIRPathEngine {
 
   private ExpressionNode organisePrecedence(FHIRLexer lexer, ExpressionNode node) {
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Times, Operation.DivideBy, Operation.Div, Operation.Mod)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Union)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.LessThan, Operation.Greater, Operation.LessOrEqual, Operation.GreaterOrEqual));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Is, Operation.As));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Union));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.LessThan, Operation.Greater, Operation.LessOrEqual, Operation.GreaterOrEqual));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Equals, Operation.Equivalent, Operation.NotEquals, Operation.NotEquivalent));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.In, Operation.Contains, Operation.MemberOf));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.And));
@@ -1592,6 +1579,8 @@ public class FHIRPathEngine {
     } else if (!value.contains("T")) {
       date = value;
     } else {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = value.split("T");
       date = p[0];
       if (p.length > 1) {
@@ -1849,6 +1838,8 @@ public class FHIRPathEngine {
         return false;
       }
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] t = tn.split("\\.");
     if (t.length != 2) {
       return false;
@@ -4702,10 +4693,17 @@ public class FHIRPathEngine {
     String repl = convertToString(replB);
 
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
-      //
+      // no-op
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-        result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+        try {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+          String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
+          result.add(new StringType(replaced).noExtensions());
+        } catch (TimeoutException te) {
+          throw new FHIRException("Timeout evaluating regex: " + regex, te);
+        }
       }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
@@ -5203,32 +5201,45 @@ public class FHIRPathEngine {
     return result;
   }
 
+  public static Identifier makeIdentifier(Base base) {
+    if (base == null) {
+      return null;
+    }
+    if (base instanceof Identifier) {
+      return (Identifier) base;
+    }
+    return null;
+  }
+
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    Base refContext = null;
     for (Base item : focus) {
-      String s = convertToString(item);
+      Base refContext = item;
+      String url = null;
+      Identifier id = null;
+
       if (item.fhirType().equals("Reference")) {
         refContext = item;
         Property p = item.getChildByName("reference");
         if (p != null && p.hasValues()) {
-          s = convertToString(p.getValues().get(0));
-        } else {
-          s = null; // a reference without any valid actual reference (just identifier or display,
-                    // but we can't resolve it)
+          url = convertToString(p.getValues().get(0));
         }
-      }
-      if (item.fhirType().equals("canonical")) {
-        s = item.primitiveValue();
+        p = item.getChildByName("identifier");
+        if (p != null && p.hasValues()) {
+          id = makeIdentifier(p.getValues().get(0));
+        }
+      } else if (item.isPrimitive()) {
+        url = item.primitiveValue();
         refContext = item;
       }
-      if (s != null) {
+
+      if (url != null || id != null) {
         Base res = null;
-        if (s.startsWith("#")) {
+        if (url != null && url.startsWith("#")) {
           Property p = context.rootResource.getChildByName("contained");
           if (p != null) {
             for (Base c : p.getValues()) {
-              if (chompHash(s).equals(chompHash(c.getIdBase()))) {
+              if (chompHash(url).equals(chompHash(c.getIdBase()))) {
                 res = c;
                 break;
               }
@@ -5236,7 +5247,7 @@ public class FHIRPathEngine {
           }
         } else if (hostServices != null) {
           try {
-            res = hostServices.resolveReference(this, context.appInfo, s, refContext);
+            res = hostServices.resolveReference(this, context.appInfo, url, id, refContext);
           } catch (Exception e) {
             res = null;
           }
@@ -5494,9 +5505,12 @@ public class FHIRPathEngine {
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
-          Pattern p = Pattern.compile("(?s)" + sw);
-          Matcher m = p.matcher(st);
-          boolean ok = m.find();
+          boolean ok;
+          try {
+            ok = RegexTimeout.find(st, "(?s)" + sw, regexTimeoutMillis);
+          } catch (TimeoutException e) {
+            throw new FHIRException("Timeout evaluating regex: " + sw, e);
+          }
           result.add(new BooleanType(ok).noExtensions());
         }
       }
@@ -5506,6 +5520,8 @@ public class FHIRPathEngine {
     return result;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: Matcher.matches() on p; regex is user-supplied at runtime
   private List<Base> funcMatchesFull(ExecutionContext context, List<Base> focus, ExpressionNode exp)
       throws FHIRException {
     List<Base> result = new ArrayList<Base>();
@@ -5517,9 +5533,12 @@ public class FHIRPathEngine {
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
-          Pattern p = Pattern.compile("(?s)" + sw);
-          Matcher m = p.matcher(st);
-          boolean ok = m.matches();
+          boolean ok;
+          try {
+            ok = RegexTimeout.matches(st, "(?s)" + sw, regexTimeoutMillis);
+          } catch (TimeoutException e) {
+            throw new FHIRException("Timeout evaluating regex: " + sw, e);
+          }
           result.add(new BooleanType(ok).noExtensions());
         }
       }
@@ -5745,9 +5764,11 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof DateTimeType || focus.get(0) instanceof DateType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches(
-          "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?")))
-              .noExtensions());
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = convertToString(focus.get(0)).matches(
+          RegexConstants.DATE_TIME_REGEX );
+      result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }
@@ -5761,9 +5782,11 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof DateTimeType || focus.get(0) instanceof DateType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches(
-          "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?")))
-              .noExtensions());
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = convertToString(focus.get(0)).matches(
+          RegexConstants.DATE_TIME_REGEX ); // FIXME Why is this regex not DATE_REGEX? Tests fail if the 'correct' regex is used.
+      result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }
@@ -5792,9 +5815,11 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof TimeType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches(
-          "(T)?([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?")))
-              .noExtensions());
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = convertToString(focus.get(0)).matches(
+          "(T)?([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?");
+      result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }

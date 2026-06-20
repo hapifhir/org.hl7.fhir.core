@@ -35,6 +35,6 @@ jobs:
         id: bidi_check
         uses: HL7/bidi-checker-action@02112ffc62b81938f58a5dd7c69ef537e3a4b999 # v1.9
         env:
-          IGNORE: i18n-coverage-table\.png$|dummy-package\.tgz$|dummy-package-no-index\.tgz$
+          IGNORE: i18n-coverage-table\.png$|dummy-package\.tgz$|dummy-package-no-index\.tgz|dummy-package-no-index-scoped\.tgz$
       - name: Get the output time
         run: echo "The time was ${{ steps.bidi_check.outputs.time }}"

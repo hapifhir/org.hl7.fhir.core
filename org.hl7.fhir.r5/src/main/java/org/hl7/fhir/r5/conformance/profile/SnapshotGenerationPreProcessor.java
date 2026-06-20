@@ -13,6 +13,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeType;
@@ -136,7 +137,7 @@ public class SnapshotGenerationPreProcessor {
     if (srcWrapper.hasExtension(ExtensionDefinitions.EXT_ADDITIONAL_BASE)) {
        insertMissingSparseElements(diff.getElement(), srcWrapper.getTypeName());
        for (Extension ext : srcWrapper.getExtensionsByUrl(ExtensionDefinitions.EXT_ADDITIONAL_BASE)) {
-         StructureDefinition ab = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue());
+         StructureDefinition ab = context.fetchResource(StructureDefinition.class, ext.getValue().primitiveValue(), ExtensionUtilities.getVersionResolutionRules(ext.getValue()));
          if (ab == null) {
            throw new FHIRException("Unable to find additional base '"+ext.getValue().primitiveValue()+"'");
          }
@@ -546,11 +547,11 @@ public class SnapshotGenerationPreProcessor {
       if (t1.getProfile().size() > 1 || t2.getProfile().size() > 1) {
         throw new FHIRException("Not handled yet: multiple profiles");        
       }
-      StructureDefinition sd1 = context.fetchResource(StructureDefinition.class, t1.getProfile().get(0).asStringValue());
+      StructureDefinition sd1 = context.fetchResource(StructureDefinition.class, t1.getProfile().get(0).asStringValue(), ExtensionUtilities.getVersionResolutionRules(t1.getProfile().get(0)));
       if (sd1 == null) {
         throw new FHIRException("Unknown type profile at '"+path+"': "+t1.getProfile().get(0).asStringValue());                
       }
-      StructureDefinition sd2 = context.fetchResource(StructureDefinition.class, t2.getProfile().get(0).asStringValue());
+      StructureDefinition sd2 = context.fetchResource(StructureDefinition.class, t2.getProfile().get(0).asStringValue(), ExtensionUtilities.getVersionResolutionRules(t2.getProfile().get(0)));
       if (sd2 == null) {
         throw new FHIRException("Unknown type profile at '"+path+"': "+t2.getProfile().get(0).asStringValue());                
       }
@@ -605,7 +606,7 @@ public class SnapshotGenerationPreProcessor {
   private boolean specialises(StructureDefinition focus, StructureDefinition other) {
     // we ignore impose and compliesWith - for now?
     for (String url : focus.getBaseDefinitions()) {
-      StructureDefinition base = context.fetchResource(StructureDefinition.class, url);
+      StructureDefinition base = context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
       if (base != null) {
         if (base == other || specialises(base, other)) {
           return true;
@@ -845,6 +846,8 @@ public class SnapshotGenerationPreProcessor {
 
   private int determineInsertionPoint(List<ElementDefinition> elements, int startOfSlice, int endOfSlice, String id, String path, List<ElementAnalysis> edDef) {
     // we work backwards through the id, looking for peers (this is the only way we can manage slicing)
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = id.split("\\.");
     for (int i = p.length-1; i >= 1; i--) {
       String subId = p[0];
@@ -886,7 +889,11 @@ public class SnapshotGenerationPreProcessor {
   }
 
   private boolean comesAfterThis(String id, String path, List<ElementAnalysis> edDef, ElementDefinition ed) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p1 = id.split("\\.");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p2 = ed.getId().split("\\.");
     for (int i = 0; i < Integer.min(p1.length,  p2.length); i++) {
       if (!p1[i].equals(p2[i])) {
@@ -922,7 +929,10 @@ public class SnapshotGenerationPreProcessor {
 
   private List<ElementAnalysis> analysePath(ElementDefinition ed) {
     List<ElementAnalysis> res = new ArrayList<>();
-    for (String pn : ed.getPath().split("\\.")) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] pathSegments = ed.getPath().split("\\.");
+    for (String pn : pathSegments) {
       analysePathSegment(ed, res, pn);
     }
     return res;
@@ -1115,7 +1125,11 @@ public class SnapshotGenerationPreProcessor {
     }
     int i = 1; 
     while (i < list.size()) { 
-      String[] pathCurrent = list.get(i).getPath().split("\\."); 
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] pathCurrent = list.get(i).getPath().split("\\.");
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pathLast = list.get(i-1).getPath().split("\\."); 
       int firstDiff = 0; // the first entry must be a match 
       while (firstDiff < pathCurrent.length && firstDiff < pathLast.length && pathCurrent[firstDiff].equals(pathLast[firstDiff])) { 

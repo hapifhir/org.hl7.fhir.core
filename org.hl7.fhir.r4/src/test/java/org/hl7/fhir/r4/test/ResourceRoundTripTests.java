@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -25,38 +26,41 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class ResourceRoundTripTests {
 
-  @BeforeAll
-  public static void setUp() throws Exception {
-  }
 
   @Test
   @Disabled
-  public void test() throws FileNotFoundException, IOException, FHIRException, EOperationOutcome, UcumException {
-    Resource res = new XmlParser().parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("unicode.xml")));
-    new NarrativeGenerator("", "", TestingUtilities.context()).generate((DomainResource) res, null);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY)
-        .compose(ManagedFileAccess.outStream(TestingUtilities.resourceNameToFile("gen", "unicode.out.xml")), res);
+  void test() throws FHIRException {
+    assertDoesNotThrow(() -> {
+      Resource res = new XmlParser().parse(ManagedFileAccess.inStream(TestingUtilities.resourceNameToFile("unicode.xml")));
+      new NarrativeGenerator("", "", TestingUtilities.context()).generate((DomainResource) res, null);
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY)
+          .compose(ManagedFileAccess.outStream(TestingUtilities.resourceNameToFile("gen", "unicode.out.xml")), res);
+    });
   }
 
   @Test
-  public void testBundle() throws FHIRException, IOException {
-    // Create new Atom Feed
-    Bundle feed = new Bundle();
+  void testBundle() {
+    assertDoesNotThrow(() -> {
+      // Create new Atom Feed
+      Bundle feed = new Bundle();
 
-    // Serialize Atom Feed
-    IParser comp = new JsonParser();
-    ByteArrayOutputStream os = new ByteArrayOutputStream();
-    comp.compose(os, feed);
-    os.close();
-    String json = os.toString();
+      // Serialize Atom Feed
+      IParser comp = new JsonParser();
+      ByteArrayOutputStream os = new ByteArrayOutputStream();
+      comp.compose(os, feed);
+      os.close();
+      String json = os.toString();
 
-    // Deserialize Atom Feed
-    JsonParser parser = new JsonParser();
-    InputStream is = new ByteArrayInputStream(json.getBytes("UTF-8"));
-    Resource result = parser.parse(is);
-    if (result == null)
-      throw new FHIRException("Bundle was null");
+      // Deserialize Atom Feed
+      JsonParser parser = new JsonParser();
+      InputStream is = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+      Resource result = parser.parse(is);
+      assertNotNull(result);
+    });
   }
 }

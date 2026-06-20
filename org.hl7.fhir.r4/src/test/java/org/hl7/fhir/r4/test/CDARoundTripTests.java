@@ -21,6 +21,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 @Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CDARoundTripTests {
@@ -36,61 +38,59 @@ public class CDARoundTripTests {
   }
 
   @Test
-  public void testDCI() throws FHIRFormatError, DefinitionException, FileNotFoundException, IOException, FHIRException {
-    try {
-      Element e = Manager.parse(context,
-          ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir.us\\ccda-to-fhir-maps\\cda\\IAT2-Discharge_Summary-DCI.xml"),
-          FhirFormat.XML);
-      Manager.compose(context, e, ManagedFileAccess.outStream(Utilities.path("[tmp]", "ccda.xml")), FhirFormat.XML,
-          OutputStyle.PRETTY, null);
+  void testDCI() throws FHIRException {
+    assertDoesNotThrow(() -> {
+        Element e = Manager.parse(context,
+            ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir.us\\ccda-to-fhir-maps\\cda\\IAT2-Discharge_Summary-DCI.xml"),
+            FhirFormat.XML);
+        Manager.compose(context, e, ManagedFileAccess.outStream(Utilities.path("[tmp]", "ccda.xml")), FhirFormat.XML,
+            OutputStyle.PRETTY, null);
 //    Manager.compose(context, e, ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-Discharge_Summary-DCI.out.json"), FhirFormat.JSON, OutputStyle.PRETTY, null);
 //    Manager.compose(context, e, ManagedFileAccess.outStream("C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-Discharge_Summary-DCI.out.ttl"), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-      e.printStackTrace();
-      throw e;
-    }
+    });
   }
 
   @Test
-  public void testEpic()
-      throws FHIRFormatError, DefinitionException, FileNotFoundException, IOException, FHIRException {
-    Element e = Manager.parse(context,
-        ManagedFileAccess.inStream(
-            "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-Discharge-Homework-Epic.xml"),
-        FhirFormat.XML);
-    Manager.compose(context, e,
-        ManagedFileAccess.outStream(
-            "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-Discharge-Homework-Epic.out.xml"),
-        FhirFormat.XML, OutputStyle.PRETTY, null);
-    Manager.compose(context, e,
-        ManagedFileAccess.outStream(
-            "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-Discharge-Homework-Epic.out.json"),
-        FhirFormat.JSON, OutputStyle.PRETTY, null);
-    Manager.compose(context, e,
-        ManagedFileAccess.outStream(
-            "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-Discharge-Homework-Epic.out.ttl"),
-        FhirFormat.TURTLE, OutputStyle.PRETTY, null);
+  void testEpic() throws FHIRException {
+    assertDoesNotThrow(() -> {
+      Element e = Manager.parse(context,
+          ManagedFileAccess.inStream(
+              "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-Discharge-Homework-Epic.xml"),
+          FhirFormat.XML);
+      Manager.compose(context, e,
+          ManagedFileAccess.outStream(
+              "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-Discharge-Homework-Epic.out.xml"),
+          FhirFormat.XML, OutputStyle.PRETTY, null);
+      Manager.compose(context, e,
+          ManagedFileAccess.outStream(
+              "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-Discharge-Homework-Epic.out.json"),
+          FhirFormat.JSON, OutputStyle.PRETTY, null);
+      Manager.compose(context, e,
+          ManagedFileAccess.outStream(
+              "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-Discharge-Homework-Epic.out.ttl"),
+          FhirFormat.TURTLE, OutputStyle.PRETTY, null);
+    });
   }
 
   @Test
-  public void testDHIT()
-      throws FHIRFormatError, DefinitionException, FileNotFoundException, IOException, FHIRException {
-    Element e = Manager.parse(context,
-        ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-DS-Homework-DHIT.xml"),
-        FhirFormat.XML);
-    Manager.compose(context, e,
-        ManagedFileAccess.outStream(
-            "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-DS-Homework-DHIT.out.xml"),
-        FhirFormat.XML, OutputStyle.PRETTY, null);
-    Manager.compose(context, e,
-        ManagedFileAccess.outStream(
-            "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-DS-Homework-DHIT.out.json"),
-        FhirFormat.JSON, OutputStyle.PRETTY, null);
-    Manager.compose(context, e,
-        ManagedFileAccess.outStream(
-            "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-DS-Homework-DHIT.out.ttl"),
-        FhirFormat.TURTLE, OutputStyle.PRETTY, null);
+  void testDHIT() throws FHIRException {
+    assertDoesNotThrow(() -> {
+      Element e = Manager.parse(context,
+          ManagedFileAccess.inStream("C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-DS-Homework-DHIT.xml"),
+          FhirFormat.XML);
+      Manager.compose(context, e,
+          ManagedFileAccess.outStream(
+              "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-DS-Homework-DHIT.out.xml"),
+          FhirFormat.XML, OutputStyle.PRETTY, null);
+      Manager.compose(context, e,
+          ManagedFileAccess.outStream(
+              "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-DS-Homework-DHIT.out.json"),
+          FhirFormat.JSON, OutputStyle.PRETTY, null);
+      Manager.compose(context, e,
+          ManagedFileAccess.outStream(
+              "C:\\work\\org.hl7.fhir.test\\ccda-to-fhir-maps\\testdocuments\\IAT2-DS-Homework-DHIT.out.ttl"),
+          FhirFormat.TURTLE, OutputStyle.PRETTY, null);
+    });
   }
 
 }

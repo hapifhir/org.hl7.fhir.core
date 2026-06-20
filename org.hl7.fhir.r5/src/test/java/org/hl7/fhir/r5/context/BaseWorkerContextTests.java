@@ -18,6 +18,7 @@ import org.hl7.fhir.utilities.UUIDUtilities;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.PackageLoadController;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,7 +61,7 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+    public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules) {
       return null;
     }
 
@@ -75,6 +76,11 @@ public class BaseWorkerContextTests {
     }
 
     @Override
+    public PackageLoadController getPackageLoadController() {
+      return null;
+    }
+
+    @Override
     public void cachePackage(PackageInformation packageInfo) {
 
     }
@@ -85,23 +91,28 @@ public class BaseWorkerContextTests {
     }
 
     @Override
-    public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+    public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
     @Override
-    public int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+    public int loadPackage(NpmPackage pi, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
     @Override
-    public int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
+    public int loadPackage(String idAndVer, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
       return 0;
     }
 
     @Override
     public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
       return 0;
+    }
+
+    @Override
+    public List<String> getLoadedPackages() {
+      return List.of();
     }
 
     @Override
@@ -270,7 +281,7 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+      public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules) {
         return null;
       }
 
@@ -285,6 +296,11 @@ public class BaseWorkerContextTests {
       }
 
       @Override
+      public PackageLoadController getPackageLoadController() {
+        return null;
+      }
+
+      @Override
       public void cachePackage(PackageInformation packageInfo) {
 
       }
@@ -295,23 +311,28 @@ public class BaseWorkerContextTests {
       }
 
       @Override
-      public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+      public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 
       @Override
-      public int loadPackage(NpmPackage pi) throws FileNotFoundException, IOException, FHIRException {
+      public int loadPackage(NpmPackage pi, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 
       @Override
-      public int loadPackage(String idAndVer) throws FileNotFoundException, IOException, FHIRException {
+      public int loadPackage(String idAndVer, boolean isMaster) throws FileNotFoundException, IOException, FHIRException {
         return 0;
       }
 
       @Override
       public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
         return 0;
+      }
+
+      @Override
+      public List<String> getLoadedPackages() {
+        return List.of();
       }
 
       @Override
@@ -375,7 +396,6 @@ public class BaseWorkerContextTests {
     ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5).withGuessSystem().withVersionFlexible(false);
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
-    when(expParameters.copy()).thenReturn(expParameters);
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
     Mockito.doReturn(cachedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
@@ -396,7 +416,6 @@ public class BaseWorkerContextTests {
     ValueSet valueSet = new ValueSet();
     valueSet.setUrl(UUIDUtilities.makeUuidUrn());
     Coding coding = new Coding();
-    when(expParameters.copy()).thenReturn(expParameters);
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
 
     Mockito.doReturn(valueSetCheckerSimple).when(context).constructValueSetCheckerSimple(any(), any(), any());
@@ -420,7 +439,6 @@ public class BaseWorkerContextTests {
     ValidationOptions validationOptions = new ValidationOptions(FhirPublication.R5).withGuessSystem().withVersionFlexible(false).withNoClient();
     ValueSet valueSet = new ValueSet();
     Coding coding = new Coding();
-    when(expParameters.copy()).thenReturn(expParameters);
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, coding, valueSet, expParameters);
     Mockito.doReturn(pIn).when(context).constructParameters(validationOptions, coding);
 
@@ -444,7 +462,6 @@ public class BaseWorkerContextTests {
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
 
-    when(expParameters.copy()).thenReturn(expParameters);
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
     Mockito.doReturn(cachedValidationResult).when(terminologyCache).getValidation(cacheToken);
 
@@ -463,7 +480,6 @@ public class BaseWorkerContextTests {
 
     CodeableConcept codeableConcept = new CodeableConcept();
     ValueSet valueSet = new ValueSet();
-    when(expParameters.copy()).thenReturn(expParameters);
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(CacheTestUtils.validationOptions, codeableConcept, valueSet, expParameters);
 
     ValidationResult validationResultB = context.validateCode(CacheTestUtils.validationOptions, codeableConcept, valueSet);
@@ -487,7 +503,6 @@ public class BaseWorkerContextTests {
     TerminologyClientContext terminologyClientContext = context.getTxClientManager().getMaster();
 
     Mockito.doReturn(createdValidationResult).when(context).validateOnServer2(same(terminologyClientContext), same(valueSet), same(pIn),same(validationOptions), eq(Collections.emptySet()));
-    when(expParameters.copy()).thenReturn(expParameters);
     Mockito.doReturn(cacheToken).when(terminologyCache).generateValidationToken(validationOptions, codeableConcept, valueSet, expParameters);
 
     ValidationResult validationResultB = context.validateCode(validationOptions, codeableConcept, valueSet);

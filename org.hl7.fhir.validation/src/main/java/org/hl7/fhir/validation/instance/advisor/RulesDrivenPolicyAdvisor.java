@@ -3,6 +3,8 @@ package org.hl7.fhir.validation.instance.advisor;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
 import javax.annotation.Nonnull;
 
@@ -14,10 +16,10 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IMessagingServices;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
-import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.ReferenceDestinationType;
 import org.hl7.fhir.r5.utils.validation.constants.BindingKind;
 import org.hl7.fhir.r5.utils.validation.constants.ContainedReferenceValidationPolicy;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 @Slf4j
@@ -25,13 +27,13 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
 
   private IValidationPolicyAdvisor base;
   
-  public RulesDrivenPolicyAdvisor(ReferenceValidationPolicy refpol) {
-    super(refpol);
+  public RulesDrivenPolicyAdvisor(ReferenceValidationPolicy refpol, Set<String> referencesTo) {
+    super(refpol, referencesTo);
     base = null;
   }
 
   public RulesDrivenPolicyAdvisor(IValidationPolicyAdvisor base) {
-    super(base.getReferencePolicy());
+    super(base.getReferencePolicy(), base.getCheckReferencesTo());
     this.base = base;
   }
 
@@ -45,7 +47,10 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
       super();
       this.id = id;
       this.path = path;
-      this.pathSegments = path.split("\\.");
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] pathSegments = path.split("\\.");
+      this.pathSegments = pathSegments;
       this.regex = regex;
     }
 
@@ -54,9 +59,13 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
       this.id = id;
     }
 
-    public boolean matches(@Nonnull String mid, @Nonnull String path, String[] p) {
+    public boolean matches(@Nonnull String mid, @Nonnull String path, String[] p, Object... theMessageArguments) {
       if (regex) {
-        return stringMatches(id, mid) && regexMatches(this.path, path);
+        try {
+          return stringMatches(id, mid) && regexMatches(this.path, path);
+        } catch (TimeoutException e) {
+          throw new RuntimeException(e);
+        }
       } else {
         return stringMatches(id, mid) && pathMatches(pathSegments, p);
       }
@@ -106,11 +115,13 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
     }
   }
   
-  boolean regexMatches(String specifier, @Nonnull String actual) {
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: RegexTimeout.matches is the approved timeout wrapper
+  boolean regexMatches(String specifier, @Nonnull String actual) throws TimeoutException {
     if (specifier == null) {
       return true;
     } else {
-      return actual.matches(specifier);
+      return RegexTimeout.matches(actual, specifier);
     }
   }
   
@@ -128,18 +139,23 @@ public class RulesDrivenPolicyAdvisor extends BasePolicyAdvisorForFullValidation
   }
   
   @Override
-  public boolean isSuppressMessageId(String path, String messageId) {
+  public boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = path.split("\\.");
     for (SuppressMessageRule rule : suppressMessageRules) {
-      if (rule.matches(messageId, path, p)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean isMatch = rule.matches(messageId, path, p, theMessageArguments);
+      if (isMatch) {
         log.debug("Suppressed: " + messageId + " at path " + path + " with rule-path: " + rule.path);
         return true;
       }
     }
     if (base != null) {
-      return base.isSuppressMessageId(path, messageId);      
+      return base.isSuppressMessageId(path, messageId, theMessageArguments);
     } else {
-      return super.isSuppressMessageId(path, messageId);
+      return super.isSuppressMessageId(path, messageId, theMessageArguments);
     }
   }
 

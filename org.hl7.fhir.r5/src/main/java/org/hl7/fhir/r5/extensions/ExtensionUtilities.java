@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.extensions;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.*;
 
 import org.hl7.fhir.utilities.StandardsStatus;
@@ -32,6 +33,16 @@ public class ExtensionUtilities {
     // todo: write this up and get it published with the pack (and handle the redirect?)
     ex.setUrl(ExtensionDefinitions.EXT_ISSUE_MSG_ID);
     CodeType c = new CodeType();
+    c.setValue(msgId);
+    ex.setValue(c);
+    return ex;
+  }
+
+  public static Extension makeIssueContext(String msgId) {
+    Extension ex = new Extension();
+    // todo: write this up and get it published with the pack (and handle the redirect?)
+    ex.setUrl(ExtensionDefinitions.EXT_ISSUE_ISSUE_CTXT);
+    StringType c = new StringType();
     c.setValue(msgId);
     ex.setValue(c);
     return ex;
@@ -646,6 +657,22 @@ public class ExtensionUtilities {
     return null;
   }
 
+  public static Extension getLanguageExtension(Element element, String lang) {
+    for (Extension e : element.getExtension()) {
+      if (e.getUrl().equals(ExtensionDefinitions.EXT_TRANSLATION)) {
+        Extension e1 = ExtensionHelper.getExtension(e, "lang");
+
+        if (e1 != null && e1.getValue() != null && e1.getValue() instanceof CodeType && ((CodeType) e1.getValue()).getValue().equals(lang)) {
+          e1 = ExtensionHelper.getExtension(e, "content");
+          if (e1 != null && e1.hasValue()) {
+            return e1;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   public static StringType getLanguageTranslationElement(Element element, String lang) {
     for (Extension e : element.getExtension()) {
       if (e.getUrl().equals(ExtensionDefinitions.EXT_TRANSLATION)) {
@@ -688,6 +715,21 @@ public class ExtensionUtilities {
     extension.addExtension().setUrl("lang").setValue(new CodeType(lang));
     extension.addExtension().setUrl("content").setValue(new StringType(value));
     element.getExtension().add(extension);
+  }
+
+  public static void removeLanguageTranslation(Element element, String lang) {
+    if (Utilities.noString(lang))
+      return;
+
+    for (Extension extension : element.getExtension()) {
+      if (ExtensionDefinitions.EXT_TRANSLATION.equals(extension.getUrl())) {
+        String l = extension.getExtensionString("lang");
+        if (lang.equals(l)) {
+          element.getExtension().remove(extension);
+          return;
+        }
+      }
+    }    
   }
 
   public static boolean hasAllowedUnits(ElementDefinition eld) {
@@ -1453,4 +1495,31 @@ public class ExtensionUtilities {
     return Utilities.existsInList(url, "http://hl7.org/fhir/StructureDefinition/artifact-status", "http://hl7.org/fhir/StructureDefinition/capabilitystatement-prohibited", "http://hl7.org/fhir/StructureDefinition/request-doNotPerform");
   }
 
+  public static IWorkerContext.VersionResolutionRules getVersionResolutionRules(Element element) {
+    if (element == null) {
+      return IWorkerContext.VersionResolutionRules.defaultRule();
+    }
+    String rule = element.getExtensionString(ExtensionDefinitions.CANONICAL_RESOLUTION_METHOD);
+    return rule == null ? IWorkerContext.VersionResolutionRules.defaultRule() : IWorkerContext.VersionResolutionRules.fromCode(rule);
+  }
+  public static IWorkerContext.VersionResolutionRules getVersionResolutionRules(org.hl7.fhir.r5.elementmodel.Element element) {
+    if (element == null) {
+      return IWorkerContext.VersionResolutionRules.defaultRule();
+    }
+    String rule = element.getExtensionString(ExtensionDefinitions.CANONICAL_RESOLUTION_METHOD);
+    return rule == null ? IWorkerContext.VersionResolutionRules.defaultRule() : IWorkerContext.VersionResolutionRules.fromCode(rule);
+  }
+
+  public static IWorkerContext.VersionResolutionRules getVersionResolutionRulesBase(Base base) {
+    if (base == null) {
+      return IWorkerContext.VersionResolutionRules.defaultRule();
+    }
+    if (base instanceof org.hl7.fhir.r5.elementmodel.Element) {
+      return getVersionResolutionRules((org.hl7.fhir.r5.elementmodel.Element) base);
+    } else if (base instanceof Element) {
+      return getVersionResolutionRules((Element) base);
+    } else {
+      return IWorkerContext.VersionResolutionRules.defaultRule();
+    }
+  }
 }

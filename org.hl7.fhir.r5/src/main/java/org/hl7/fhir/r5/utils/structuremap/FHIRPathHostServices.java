@@ -3,12 +3,15 @@ package org.hl7.fhir.r5.utils.structuremap;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -71,7 +74,7 @@ public class FHIRPathHostServices implements IHostApplicationServices {
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
     if (structureMapUtilities.getServices() == null)
       return null;
     return structureMapUtilities.getServices().resolveReference(appContext, url);
@@ -101,11 +104,30 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-	return structureMapUtilities.getWorker().findTxResource(ValueSet.class, url);
+	  return structureMapUtilities.getWorker().findTxResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
   }
 
   @Override
   public boolean paramIsType(String name, int index) {
     return false;
   }
+
+  @Override
+  public Base findContainingResource(Object appContext, Base item) {
+    if (item instanceof Element) {
+      Element element = (Element) item;
+      while (element != null && !(element.isResource() && element.getSpecial() != Element.SpecialElement.CONTAINED)) {
+        element = element.getParentForValidator();
+      }
+      if (element != null) {
+        return element;
+      }
+    }
+    if (item instanceof Resource) {
+      return item;
+    }
+    // now it gets hard
+    return null; // for now
+  }
+
 }

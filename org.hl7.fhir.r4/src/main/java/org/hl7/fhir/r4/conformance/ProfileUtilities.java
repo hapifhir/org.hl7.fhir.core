@@ -235,7 +235,6 @@ public class ProfileUtilities extends TranslatingUtilities {
   private static final String ROW_COLOR_FATAL = "#ff9999";
   private static final String ROW_COLOR_WARNING = "#ffebcc";
   private static final String ROW_COLOR_HINT = "#ebf5ff";
-  private static final String ROW_COLOR_NOT_MUST_SUPPORT = "#d6eaf8";
   public static final int STATUS_OK = 0;
   public static final int STATUS_HINT = 1;
   public static final int STATUS_WARNING = 2;
@@ -2576,7 +2575,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.getPieces().add(gen.new Piece(corePath + "valueset-resource-aggregation-mode.html", " {", null));
           boolean firstA = true;
           for (Enumeration<AggregationMode> a : t.getAggregation()) {
-            if (firstA = true)
+            if (firstA)
               firstA = false;
             else
               c.getPieces().add(gen.new Piece(corePath + "valueset-resource-aggregation-mode.html", ", ", null));
@@ -2591,6 +2590,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         String ref;
         ref = pkp.getLinkForProfile(profile, t.getProfile().get(0).getValue());
         if (ref != null) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] parts = ref.split("\\|");
           if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) {
 //            c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], "<" + parts[1] + ">", t.getCode()))); Lloyd
@@ -2935,7 +2936,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             generateDescription(gen, row, element, null, used.used, profile.getUrl(), eurl, profile, corePath,
                 imagePath, root, logicalModel, allInvariants, snapshot);
           } else {
-            String name = urltail(eurl);
+            String name = urlFragmentOrTail(eurl);
             left.getPieces().get(0).setText(name);
             // left.getPieces().get(0).setReference((String)
             // extDefn.getExtensionStructure().getTag("filename"));
@@ -3153,6 +3154,8 @@ public class ProfileUtilities extends TranslatingUtilities {
             .add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement())));
       if (element.hasSliceName()) {
         left.getPieces().add(gen.new Piece("br"));
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String indent = StringUtils.repeat('\u00A0', 1 + 2 * (element.getPath().split("\\.").length));
         left.getPieces().add(gen.new Piece(null, indent + "(" + element.getSliceName() + ")", null));
       }
@@ -3250,7 +3253,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       return null;
   }
 
-  private String urltail(String path) {
+  private String urlFragmentOrTail(String path) {
     if (path.contains("#"))
       return path.substring(path.lastIndexOf('#') + 1);
     if (path.contains("/"))
@@ -3986,6 +3989,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       profile = source;
       code = url.substring(1);
     } else if (context != null) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = url.split("\\#");
       profile = context.fetchResource(StructureDefinition.class, parts[0]);
       code = parts.length == 1 ? null : parts[1];
@@ -4144,6 +4149,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     ElementDefinitionHolder edh = null;
     int i = 0;
     if (diffList.get(0).getPath().contains(".")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String newPath = diffList.get(0).getPath().split("\\.")[0];
       ElementDefinition e = new ElementDefinition(new StringType(newPath));
       edh = new ElementDefinitionHolder(e, true);
@@ -4186,6 +4193,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     final String prefix = path + ".";
     while (i < list.size() && list.get(i).getPath().startsWith(prefix)) {
       if (list.get(i).getPath().substring(prefix.length() + 1).contains(".")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String newPath = prefix + list.get(i).getPath().substring(prefix.length()).split("\\.")[0];
         ElementDefinition e = new ElementDefinition(new StringType(newPath));
         ElementDefinitionHolder child = new ElementDefinitionHolder(e, true);
@@ -4257,8 +4266,8 @@ public class ProfileUtilities extends TranslatingUtilities {
       ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(),
           child.getSelf().getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name);
     } else if (ed.getPath().endsWith("[x]") && !child.getSelf().getPath().endsWith("[x]")) {
-      String edLastNode = ed.getPath().replaceAll("(.*\\.)*(.*)", "$2");
-      String childLastNode = child.getSelf().getPath().replaceAll("(.*\\.)*(.*)", "$2");
+      String edLastNode = Utilities.pathTail(ed.getPath());
+      String childLastNode = Utilities.pathTail(child.getSelf().getPath());
       String p = childLastNode.substring(edLastNode.length() - 3);
       if (isPrimitive(Utilities.uncapitalize(p)))
         p = Utilities.uncapitalize(p);
@@ -4564,6 +4573,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new DefinitionException(
             "No path on element Definition " + Integer.toString(list.indexOf(ed)) + " in " + name);
       sliceInfo.seeElement(ed);
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pl = ed.getPath().split("\\.");
       for (int i = paths.size(); i < pl.length; i++) // -1 because the last path is in focus
         paths.add(pl[i]);
@@ -4603,46 +4614,6 @@ public class ProfileUtilities extends TranslatingUtilities {
     // second path - fix up any broken path based id references
 
   }
-
-//  private String describeExtension(ElementDefinition ed) {
-//    if (!ed.hasType() || !ed.getTypeFirstRep().hasProfile())
-//      return "";
-//    return "$"+urlTail(ed.getTypeFirstRep().getProfile());
-//  }
-//
-
-  private String urlTail(String profile) {
-    return profile.contains("/") ? profile.substring(profile.lastIndexOf("/") + 1) : profile;
-  }
-
-  private String checkName(String name) {
-//    if (name.contains("."))
-////      throw new Exception("Illegal name "+name+": no '.'");
-//    if (name.contains(" "))
-//      throw new Exception("Illegal name "+name+": no spaces");
-    StringBuilder b = new StringBuilder();
-    for (char c : name.toCharArray()) {
-      if (!Utilities.existsInList(c, '.', ' ', ':', '"', '\'', '(', ')', '&', '[', ']'))
-        b.append(c);
-    }
-    return b.toString().toLowerCase();
-  }
-
-  private int charCount(String path, char t) {
-    int res = 0;
-    for (char ch : path.toCharArray()) {
-      if (ch == t)
-        res++;
-    }
-    return res;
-  }
-
-//
-//private void generateForChild(TextStreamWriter txt,
-//    StructureDefinition structure, ElementDefinition child) {
-//  // TODO Auto-generated method stub
-//
-//}
 
   private interface ExampleValueAccessor {
     Type getExampleValue(ElementDefinition ed);
@@ -5123,7 +5094,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     model.setDocoRef(prefix + "formats.html#table"); // todo: change to graph definition
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Property", "A profiled resource", null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Card.",
-        "Minimum and Maximum # of times the the element can appear in the instance", null, 0));
+        "Minimum and Maximum # of times the element can appear in the instance", null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Content", "What goes here", null, 0));
     model.getTitles()
         .add(gen.new Title(null, model.getDocoRef(), "Description", "Description of the profile", null, 0));

@@ -68,8 +68,15 @@ public class ValidationContext {
   @SerializedName("checkReferences")
   private
   boolean checkReferences = false;
+
+  @JsonProperty("checkReferencesTo")
+  @SerializedName("checkReferencesTo")
+  private
+  Set<String> checkReferencesTo = new HashSet<>();
+
   @JsonProperty("resolutionContext")
   @SerializedName("resolutionContext")
+
   private
   String resolutionContext = null;
   
@@ -1684,5 +1691,12 @@ public class ValidationContext {
     this.inferFhirVersion = inferFhirVersion;
     return this;
   }
+
+  @SerializedName("checkReferences")
+  @JsonProperty("checkReferences")
+  public Set<String> getCheckReferencesTo() {
+    return checkReferencesTo;
+  }
+
 
 }

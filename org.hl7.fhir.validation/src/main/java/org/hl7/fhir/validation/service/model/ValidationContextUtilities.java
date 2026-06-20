@@ -1,7 +1,9 @@
 package org.hl7.fhir.validation.service.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import org.hl7.fhir.validation.service.WatchParameters;
 
 /**
  * This class is intended to provide backward compatibility for the deprecated ValidationContext class.
@@ -34,6 +36,7 @@ public class ValidationContextUtilities {
     validationContext.setLocale(validationEngineParameters.getLanguageCode());
     validationContext.setLang(validationEngineParameters.getLang());
     validationContext.setCheckReferences(validationEngineParameters.isCheckReferences());
+    validationContext.getCheckReferencesTo().addAll(validationEngineParameters.getCheckReferencesTo());
     validationContext.setNoInternalCaching(validationEngineParameters.isNoInternalCaching());
     validationContext.setDisableDefaultResourceFetcher(validationEngineParameters.isDisableDefaultResourceFetcher());
     validationContext.setMapLog(validationEngineParameters.getMapLog());
@@ -41,12 +44,13 @@ public class ValidationContextUtilities {
     validationContext.setNoExtensibleBindingMessages(validationEngineParameters.isNoExtensibleBindingMessages());
     validationContext.setShowTimes(validationEngineParameters.isShowTimes());
     validationContext.setMatchetypes(new ArrayList<>(validationEngineParameters.getMatchetypes()));
+    validationContext.setLocations(new HashMap<>(validationEngineParameters.getLocations()));
   }
 
   public static void addWatchParameters(ValidationContext validationContext, WatchParameters watchParameters) {
-    validationContext.setWatchMode(watchParameters.getWatchMode());
-    validationContext.setWatchScanDelay(watchParameters.getWatchScanDelay());
-    validationContext.setWatchSettleTime(watchParameters.getWatchSettleTime());
+    validationContext.setWatchMode(watchParameters.watchMode());
+    validationContext.setWatchScanDelay(watchParameters.watchScanDelay());
+    validationContext.setWatchSettleTime(watchParameters.watchSettleTime());
   }
 
   public static void addUnprocessedParameters(ValidationContext validationContext, List<String> unprocessedParameters) {
@@ -169,6 +173,7 @@ public class ValidationContextUtilities {
     validationEngineParameters.setLocale(validationContext.getLanguageCode());
     validationEngineParameters.setLang(validationContext.getLang());
     validationEngineParameters.setCheckReferences(validationContext.isCheckReferences());
+    validationEngineParameters.getCheckReferencesTo().addAll(validationContext.getCheckReferencesTo());
     validationEngineParameters.setNoInternalCaching(validationContext.isNoInternalCaching());
     validationEngineParameters.setDisableDefaultResourceFetcher(validationContext.isDisableDefaultResourceFetcher());
     validationEngineParameters.setMapLog(validationContext.getMapLog());
@@ -176,15 +181,12 @@ public class ValidationContextUtilities {
     validationEngineParameters.setNoExtensibleBindingMessages(validationContext.isNoExtensibleBindingMessages());
     validationEngineParameters.setShowTimes(validationContext.isShowTimes());
     validationEngineParameters.setMatchetypes(new ArrayList<>(validationContext.getMatchetypes()));
+    validationEngineParameters.setLocations(new HashMap<>(validationContext.getLocations()));
     return validationEngineParameters;
   }
 
   public static WatchParameters getWatchParameters(ValidationContext validationContext) {
-    WatchParameters watchParameters = new WatchParameters();
-    watchParameters.setWatchMode(validationContext.getWatchMode());
-    watchParameters.setWatchScanDelay(validationContext.getWatchScanDelay());
-    watchParameters.setWatchSettleTime(validationContext.getWatchSettleTime());
-    return watchParameters;
+    return new WatchParameters(validationContext.getWatchMode(), validationContext.getWatchScanDelay(), validationContext.getWatchScanDelay());
   }
 
   public static TransformLangParameters getTransformLangParameters(ValidationContext validationContext) {

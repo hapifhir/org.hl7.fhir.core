@@ -99,7 +99,7 @@ public class ValidationEngineTests {
         } catch (Exception e) {
           e.printStackTrace();
           System.err.println("Thread " + index + " failed");
-          outcomes[index] = OperationOutcomeUtilities.outcomeFromTextError(e.getMessage());
+          outcomes[index] = OperationOutcomeUtilities.createError(e);
         }
       });
       t.start();
@@ -172,14 +172,14 @@ public class ValidationEngineTests {
       lines.append(iss.toString());
     }
     String outcome = lines.toString();
-    if (lines.toString().equals(text)) {
+    if (outcome.equals(text)) {
       return true;
     } else {
       System.out.println("-- "+id+" -------");
       System.out.println("Expected:");
-      System.out.println(text);
+      System.out.println("'"+text+"'");
       System.out.println("Outcome:");
-      System.out.println(outcome);
+      System.out.println("'"+outcome+"'");
       return false;
     }
   }
@@ -220,8 +220,9 @@ public class ValidationEngineTests {
     CacheVerificationLogger logger = new CacheVerificationLogger();
     ve.getContext().getTxClientManager().getMasterClient().setLogger(logger);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient140.xml"), null);
-    Assertions.assertTrue(checkOutcomes("test140", op, "error/not-found @ Patient.contact[0].name.family[0].extension[0].value.ofType(code): The System URI could not be determined for the code 'VV' in the ValueSet 'http://hl7.org/fhir/ValueSet/name-part-qualifier|1.4.0'\n"
-        + "error/code-invalid @ Patient.contact[0].name.family[0].extension[0].value.ofType(code): The value provided ('VV') was not found in the value set 'EntityNamePartQualifier' (http://hl7.org/fhir/ValueSet/name-part-qualifier|1.4.0), and a code is required from this value set  (error message = The System URI could not be determined for the code 'VV' in the ValueSet 'http://hl7.org/fhir/ValueSet/name-part-qualifier|1.4.0'; The provided code '#VV' was not found in the value set 'http://hl7.org/fhir/ValueSet/name-part-qualifier|1.4.0')"));
+    Assertions.assertTrue(checkOutcomes("test140", op,
+      "error/not-found @ Patient.contact[0].name.family[0].extension[0].value.ofType(code): The System URI could not be determined for the code 'VV' in the ValueSet 'http://hl7.org/fhir/ValueSet/name-part-qualifier|1.4.0' (context: http://hl7.org/fhir/StructureDefinition/Patient)\n" +
+        "error/code-invalid @ Patient.contact[0].name.family[0].extension[0].value.ofType(code): The value provided ('VV') was not found in the value set 'EntityNamePartQualifier' (http://hl7.org/fhir/ValueSet/name-part-qualifier|1.4.0), and a code is required from this value set  (error message = The System URI could not be determined for the code 'VV' in the ValueSet 'http://hl7.org/fhir/ValueSet/name-part-qualifier|1.4.0'; The provided code '#VV' was not found in the value set 'http://hl7.org/fhir/ValueSet/name-part-qualifier|1.4.0') (context: http://hl7.org/fhir/StructureDefinition/Patient)"));
     verifyNoTerminologyRequests(logger);
   }
 
@@ -237,8 +238,8 @@ public class ValidationEngineTests {
       System.out.println("  .. load USCore");
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "observation301.xml"), null);
     Assertions.assertTrue(checkOutcomes("test301", op,
-        "warning/not-found @ Observation.code.coding[3].system: A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated\n"
-        + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer"));
+        "warning/not-found @ Observation.code.coding[3].system: A definition for CodeSystem 'http://acme.org/devices/clinical-codes' could not be found, so the code cannot be validated (context: http://hl7.org/fhir/StructureDefinition/Observation)\n" +
+          "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer"));
     verifyNoTerminologyRequests(logger);
   }
 
@@ -257,7 +258,7 @@ public class ValidationEngineTests {
     profiles.add("http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient");
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient301.xml"), profiles);
     Assertions.assertTrue(checkOutcomes("test301USCore", op, 
-        "error/structure @ Patient.name[1]: Patient.name.family: minimum required = 1, but only found 0 (from http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient|1.0.1)"));
+        "error/structure @ Patient.name[1]: Patient.name.family: minimum required = 1, but only found 0 (from http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient|1.0.1) (context: http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient|1.0.1)"));
     verifyNoTerminologyRequests(logger);
   }
 
@@ -275,13 +276,13 @@ public class ValidationEngineTests {
     List<String> profiles = new ArrayList<>();
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "observation401_ucum.json"), profiles);
     Assertions.assertTrue(checkOutcomes("test401USCore", op, 
-      "information/invalid @ Observation.meta.source: The URL value '#iLFSV7OLv0KF8dmQ' might be wrong because it appears to point to an internal target, but there is no matching target\n" +
-        "warning/code-invalid @ Observation.code: Error Cannot invoke \"org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.getAddress()\" because \"tc\" is null validating CodeableConcept\n" +
-        "warning/business-rule @ Observation.value.ofType(Quantity): Unable to validate code 'kg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services\n" +
-        "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)\n" +
-        "information/informational @ Observation: Validate Observation against the Body weight profile (http://hl7.org/fhir/StructureDefinition/bodyweight) which is required by the FHIR specification because the LOINC code 29463-7 was found\n" +
-        "information/code-invalid @ Observation.code: Could not confirm that the codes provided are from the extensible value set http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1 because there is no terminology service\n" +
-        "warning/informational @ Observation.value.ofType(Quantity).code: Unable to validate code without using server because: Resolved system http://unitsofmeasure.org (v3.0.1), but the definition doesn't include any codes, so the code has not been validated\n" +
+      "information/invalid @ Observation.meta.source: The URL value '#iLFSV7OLv0KF8dmQ' might be wrong because it appears to point to an internal target, but there is no matching target (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+        "warning/code-invalid @ Observation.code: Error Cannot invoke \"org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.getAddress()\" because \"tc\" is null validating CodeableConcept (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+        "warning/business-rule @ Observation.value.ofType(Quantity): Unable to validate code 'kg' in system 'http://unitsofmeasure.org' because the validator is running without terminology services (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+        "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation) (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+        "information/informational @ Observation: Validate Observation against the Body weight profile (http://hl7.org/fhir/StructureDefinition/bodyweight) which is required by the FHIR specification because the LOINC code 29463-7 was found (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+        "information/code-invalid @ Observation.code: Could not confirm that the codes provided are from the extensible value set http://hl7.org/fhir/ValueSet/observation-vitalsignresult|4.0.1 because there is no terminology service (context: http://hl7.org/fhir/StructureDefinition/bodyweight|4.0.1)\n" +
+        "warning/informational @ Observation.value.ofType(Quantity).code: Unable to validate code without using server because: Resolved system http://unitsofmeasure.org (v3.0.1), but the definition doesn't include any codes, so the code has not been validated (context: http://hl7.org/fhir/StructureDefinition/bodyweight|4.0.1)\n" +
         "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer"));
     verifyNoTerminologyRequests(logger);
   }
@@ -312,9 +313,9 @@ public class ValidationEngineTests {
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
       OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "relative-url-valid.json"), null);
       Assertions.assertTrue(checkOutcomes("testResolveRelativeFileValid", op, 
-          "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)\n"
-          + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n"
-          + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()"));
+          "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation) (context: http://hl7.org/fhir/StructureDefinition/Organization|4.0.1)\n" +
+            "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n" +
+            "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()"));
     } finally {
       FileUtilities.clearDirectory(folder);
       ManagedFileAccess.file(folder).delete();
@@ -336,11 +337,11 @@ public class ValidationEngineTests {
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
       OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "relative-url-invalid.json"), null);
       Assertions.assertTrue(checkOutcomes("testResolveRelativeFileInvalid", op, 
-          "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)\n"
-          + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n"
-          + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"
-          + "error/structure @ Observation.subject: Unable to find a profile match for Patient/example-newborn among choices: http://hl7.org/fhir/test/StructureDefinition/PatientRule\n"
-          + "information/structure @ Observation.subject: Details for Patient/example-newborn matching against profile http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0"));
+          "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation) (context: http://hl7.org/fhir/StructureDefinition/Patient|4.0.1)\n" +
+            "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n" +
+            "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n" +
+            "error/structure @ Observation.subject: Unable to find a profile match for Patient/example-newborn among choices: http://hl7.org/fhir/test/StructureDefinition/PatientRule (context: http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0)\n" +
+            "information/structure @ Observation.subject: Details for Patient/example-newborn matching against profile http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0 (context: http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0)"));
     } finally {
       FileUtilities.clearDirectory(folder);
       ManagedFileAccess.file(folder).delete();
@@ -362,10 +363,10 @@ public class ValidationEngineTests {
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
       OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "relative-url-error.json"), null);
       Assertions.assertTrue(checkOutcomes("testResolveRelativeFileError", op, 
-          "error/structure @ Observation.subject: Unable to resolve resource with reference 'patient/example-newborn-x'\n"
-          + "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)\n"
-          + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n"
-          + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()"));
+          "error/structure @ Observation.subject: Unable to resolve resource with reference 'patient/example-newborn-x' (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+            "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation) (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+            "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n" +
+            "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()"));
     } finally {
       FileUtilities.clearDirectory(folder);
       ManagedFileAccess.file(folder).delete();
@@ -386,11 +387,11 @@ public class ValidationEngineTests {
     ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
     OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "absolute-url-valid.json"), null);
     Assertions.assertTrue(checkOutcomes("testResolveAbsoluteValid", op, 
-        "information/informational @ Observation.subject.resolve().ofType(Patient).managingOrganization: Fetching 'Organization/1' failed. System details: org.hl7.fhir.exceptions.FHIRException: The URL 'Organization/1' is not known to the FHIR validator, and a resolution context has not been provided as part of the setup / parameters\n"
-        + "error/structure @ Observation.subject.resolve().ofType(Patient).managingOrganization: Unable to resolve resource with reference 'Organization/1'\n"
-        + "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)\n"
-        + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n"
-        + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()"));
+        "information/informational @ Observation.subject.resolve().ofType(Patient).managingOrganization: Fetching 'Organization/1' failed. System details: org.hl7.fhir.exceptions.FHIRException: The URL 'Organization/1' is not known to the FHIR validator, and a resolution context has not been provided as part of the setup / parameters (context: http://hl7.org/fhir/StructureDefinition/Patient|4.0.1)\n" +
+          "error/structure @ Observation.subject.resolve().ofType(Patient).managingOrganization: Unable to resolve resource with reference 'Organization/1' (context: http://hl7.org/fhir/StructureDefinition/Patient|4.0.1)\n" +
+          "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation) (context: http://hl7.org/fhir/StructureDefinition/Patient|4.0.1)\n" +
+          "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n" +
+          "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()"));
   }
 
   @Test
@@ -405,11 +406,11 @@ public class ValidationEngineTests {
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
       OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "absolute-url-invalid.json"), null);
       Assertions.assertTrue(checkOutcomes("testResolveAbsoluteInvalid", op, 
-          "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)\n"
-          + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n"
-          + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n"
-          + "error/structure @ Observation.subject: Unable to find a profile match for https://hl7.org/fhir/R4/patient-example-newborn.json among choices: http://hl7.org/fhir/test/StructureDefinition/PatientRule\n"
-          + "information/structure @ Observation.subject: Details for https://hl7.org/fhir/R4/patient-example-newborn.json matching against profile http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0"));
+          "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation) (context: http://hl7.org/fhir/StructureDefinition/Patient|4.0.1)\n" +
+            "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n" +
+            "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()\n" +
+            "error/structure @ Observation.subject: Unable to find a profile match for https://hl7.org/fhir/R4/patient-example-newborn.json among choices: http://hl7.org/fhir/test/StructureDefinition/PatientRule (context: http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0)\n" +
+            "information/structure @ Observation.subject: Details for https://hl7.org/fhir/R4/patient-example-newborn.json matching against profile http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0 (context: http://hl7.org/fhir/test/StructureDefinition/PatientRule|0.1.0)"));
   }
 
   @Test
@@ -424,11 +425,11 @@ public class ValidationEngineTests {
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
       OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "absolute-url-error.json"), null);
       Assertions.assertTrue(checkOutcomes("testResolveAbsoluteError", op, 
-          "information/informational @ Observation.subject: Fetching 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn' failed. System details: java.net.UnknownHostException: hl7x.org\n"
-          + "error/structure @ Observation.subject: Unable to resolve resource with reference 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn'\n"
-          + "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)\n"
-          + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n"
-          + "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()"));
+          "information/informational @ Observation.subject: Fetching 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn' failed. System details: java.net.UnknownHostException: hl7x.org (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+            "error/structure @ Observation.subject: Unable to resolve resource with reference 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn' (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+            "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation) (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+            "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n" +
+            "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()"));
   }
 
   private String setupFolder() throws IOException {

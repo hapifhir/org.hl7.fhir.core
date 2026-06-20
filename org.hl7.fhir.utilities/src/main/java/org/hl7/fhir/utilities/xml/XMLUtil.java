@@ -528,6 +528,22 @@ public class XMLUtil {
   }
 
   /**
+   * This method is used to create a new net.sf.saxon.TransformerFactoryImpl instance with external processing features
+   * configured securely.
+   * <p/>
+   * <b>IMPORTANT</b> This method should be the only place where TransformerFactory is instantiated in this project.
+   *
+   * @return A TransformerFactoryImpl instance external processing features configured securely.
+   */
+  @SuppressWarnings("checkstyle:transformerFactoryImplInstantiation")
+  public static TransformerFactory newXXEProtectedSaxonTransformerFactory() {
+    final TransformerFactory f = new net.sf.saxon.TransformerFactoryImpl();
+    f.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    f.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+    return f;
+  }
+
+  /**
    * This method is used to create a new DocumentBuilderFactory instance with external processing features configured
    * securely.
    * <p/>
@@ -602,7 +618,7 @@ public class XMLUtil {
   }
 
   public static String getXsiType(org.w3c.dom.Element element) {
-    Attr a = element.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+    Attr a = element.getAttributeNodeNS(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     return (a == null ? null : a.getTextContent());
     
   }

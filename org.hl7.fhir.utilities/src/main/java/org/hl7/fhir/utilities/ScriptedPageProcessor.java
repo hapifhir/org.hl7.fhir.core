@@ -90,6 +90,8 @@ public abstract class ScriptedPageProcessor {
     if (Utilities.noString(command) || command.startsWith("!"))
       return "";
     
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] parts = command.split("\\ ");
     return processCommand(command, parts);
   }

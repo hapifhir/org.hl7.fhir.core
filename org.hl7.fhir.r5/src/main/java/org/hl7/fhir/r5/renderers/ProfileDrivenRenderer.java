@@ -15,6 +15,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
@@ -255,6 +256,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     for (ElementDefinition e : elements) {
       if (e.getPath().equals(path) && e.hasContentReference()) {
         String ref = e.getContentReference();
+        if (ref.contains("#")) {
+          ref = ref.substring(ref.indexOf("#"));
+        }
         ElementDefinition t = null;
         // now, resolve the name
         for (ElementDefinition e1 : elements) {
@@ -384,7 +388,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             x.add(tbl);
           }
         } else if (isExtension(p)) {
-          StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, p.getUrl());          
+          StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, p.getUrl(), IWorkerContext.VersionResolutionRules.defaultRule());
           for (ResourceWrapper v : p.getValues()) {
             if (v != null) {
               ResourceWrapper vp = v.child("value");
@@ -434,30 +438,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       }
     }
   }
-
-//
-//  private String getGrandChildBase(List<ElementDefinition> grandChildren) {
-//    if (grandChildren == null || grandChildren.isEmpty()) {
-//      return null;
-//    }
-//    String[] path = grandChildren.get(0).getPath().split("\\.");
-//    for (int i = 1; i < grandChildren.size(); i++) {
-//      path = getSharedString(path, grandChildren.get(1).getPath().split("\\."));
-//    }
-//    return CommaSeparatedStringBuilder.join(".", path);
-//  }
-//
-//  private String[] getSharedString(String[] path, String[] path2) {
-//    int m = -1;
-//    for (int i = 0; i < Integer.min(path.length, path2.length); i++) {
-//      if (path[i].equals(path2[i])) {
-//        m = i;
-//      } else {
-//        break;
-//      }
-//    }
-//    return m == -1 ? new String[0] : Arrays.copyOfRange(path, 0, m+1);
-//  }
 
   private String labelForSubExtension(String url, StructureDefinition sd) {  
     return url;
@@ -596,7 +576,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           String url = v.primitiveValue("url");
           if (url != null) {
             // 1. check extension is valid
-            StructureDefinition ed = getContext().getWorker().fetchResource(StructureDefinition.class, url);
+            StructureDefinition ed = getContext().getWorker().fetchResource(StructureDefinition.class, url, ExtensionUtilities.getVersionResolutionRulesBase(v.getBase()));
             if (ed == null) {
               if (xverManager == null) {
                 xverManager = XVerExtensionManagerFactory.createExtensionManager(context.getWorker());
@@ -640,8 +620,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (defn != null) {
       String displayHint = ExtensionUtilities.getDisplayHint(defn);
       if (!Utilities.noString(displayHint)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] list = displayHint.split(";");
         for (String item : list) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] parts = item.split(":");
           if (parts.length == 1) {
             hints.put("value", parts[0].trim());            

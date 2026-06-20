@@ -28,65 +28,30 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 package org.hl7.fhir.dstu2.test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.hl7.fhir.dstu2.formats.IParser;
-import org.hl7.fhir.dstu2.formats.IParser.OutputStyle;
-import org.hl7.fhir.dstu2.formats.JsonParser;
-import org.hl7.fhir.dstu2.formats.XmlParser;
-import org.hl7.fhir.dstu2.model.Resource;
-import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.junit.jupiter.api.Test;
 
-public class ResourceTest {
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
-  private File source;
-  private boolean json;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-  public File getSource() {
-    return source;
-  }
+class ResourceTest {
 
-  public void setSource(File source) {
-    this.source = source;
-  }
+  @Test
+  void test() throws IOException {
 
-  public void test() throws FHIRFormatError, FileNotFoundException, IOException {
+    final File tempDir = Files.createTempDirectory("terminology-cache-manager").toFile();
+    final File newFile = ManagedFileAccess.file(tempDir ,"patient-example.xml");
+    FileUtilities.copyFile(ManagedFileAccess.file("src/test/resources/patient-example.xml"), newFile);
 
-    IParser p;
-    if (isJson())
-      p = new JsonParser();
-    else
-      p = new XmlParser(false);
-    Resource rf = p.parse(ManagedFileAccess.inStream(source));
-
-    FileOutputStream out = ManagedFileAccess.outStream(source.getAbsoluteFile() + ".out.json");
-    JsonParser json1 = new JsonParser();
-    json1.setOutputStyle(OutputStyle.PRETTY);
-    json1.compose(out, rf);
-    out.close();
-
-    JsonParser json = new JsonParser();
-    rf = json.parse(ManagedFileAccess.inStream(source.getAbsoluteFile() + ".out.json"));
-
-    out = ManagedFileAccess.outStream(source.getAbsoluteFile() + ".out.xml");
-    XmlParser atom = new XmlParser();
-    atom.setOutputStyle(OutputStyle.PRETTY);
-    atom.compose(out, rf, true);
-    out.close();
-
-  }
-
-  public boolean isJson() {
-    return json;
-  }
-
-  public void setJson(boolean json) {
-    this.json = json;
+    assertDoesNotThrow(()->{
+      ResourceTester r = new ResourceTester();
+      r.setSource(newFile);
+      r.test();
+    });
   }
 
 }

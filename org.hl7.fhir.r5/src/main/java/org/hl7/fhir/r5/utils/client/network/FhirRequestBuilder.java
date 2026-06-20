@@ -206,7 +206,7 @@ public class FhirRequestBuilder {
         } else {
           log.warn("Got error response with no Content-Type from "+source+" with status "+code);
           log.warn(body);
-          resource = OperationOutcomeUtilities.outcomeFromTextError(body);
+          resource = OperationOutcomeUtilities.createError(body);
         }
       } else {
         if (contentType.contains(";")) {
@@ -229,15 +229,15 @@ public class FhirRequestBuilder {
           resource = getParser(ResourceFormat.RESOURCE_XML.getHeader()).parse(body);
           break;
         case "text/plain":
-          resource = OperationOutcomeUtilities.outcomeFromTextError(body);
+          resource = OperationOutcomeUtilities.createError(body);
           break;
         case "text/html" : 
-          resource = OperationOutcomeUtilities.outcomeFromTextError(XhtmlUtils.convertHtmlToText(response.getContentAsString(), source));
+          resource = OperationOutcomeUtilities.createError(XhtmlUtils.convertHtmlToText(response.getContentAsString(), source));
           break;
         default: // not sure what else to do? 
           log.warn("Got content-type '"+contentType+"' from "+source);
           log.warn(body);
-          resource = OperationOutcomeUtilities.outcomeFromTextError(body);
+          resource = OperationOutcomeUtilities.createError(body);
         }
       }
     } catch (IOException ioe) {

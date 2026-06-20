@@ -13,6 +13,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.ClassDiagramRenderer;
@@ -33,6 +34,7 @@ import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -59,6 +61,14 @@ public class UMLRenderingTests {
   private static String dest;
   private static RenderingContext rc;
 
+
+  @AfterAll
+  public static void tearDown() {
+    context = null;
+    rc = null;
+    source = null;
+    dest = null;
+  }
 
   @BeforeAll
   public static void setUp() throws IOException {
@@ -131,7 +141,7 @@ public class UMLRenderingTests {
     }
     sd.setWebPath("http://test/path/"+sd.getId());
     ClassDiagramRenderer cdr = new ClassDiagramRenderer(source, dest, sd.getId(), null, rc, null);
-    return cdr.buildClassDiagram(sd);
+    return cdr.buildClassDiagram(sd, null);
   }
 
   private String makeProfileSvg(TestCasesSuiteTestComponent test) throws FHIRFormatError, IOException {
@@ -147,12 +157,12 @@ public class UMLRenderingTests {
       }
     }
     sd.setWebPath("http://test/path/"+sd.getId());
-    StructureDefinition sdBase = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    StructureDefinition sdBase = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()));
 
     rc.getProfileUtilities().generateSnapshot(sdBase, sd, sd.getUrl(), "http://hl7.org/fhir/test", sd.getName());
     
     ClassDiagramRenderer cdr = new ClassDiagramRenderer(source, dest, sd.getId(), null, rc, null);
-    return cdr.buildConstraintDiagram(sd);
+    return cdr.buildConstraintDiagram(sd, null);
   }
 
   private String makeSummarySvg(TestCasesSuiteTestComponent test) throws Exception {

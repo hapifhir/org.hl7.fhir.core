@@ -18,6 +18,7 @@ public class ValidationProcessInfo {
   private List<OperationOutcomeIssueComponent> issues = new ArrayList<>();
   @Getter @Setter
   private String foundVersion;
+  private boolean isFromFragment = false;
 
   public ValidationProcessInfo() {
   }
@@ -74,5 +75,13 @@ public class ValidationProcessInfo {
       }
     }
     return false;
+  }
+
+  public boolean isFragment() {
+    return isFromFragment;
+  }
+
+  public void markFromFragment() {
+    isFromFragment = true;
   }
 }

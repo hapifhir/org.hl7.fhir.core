@@ -22,21 +22,26 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
 public class TxServiceTestHelper {
-  public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String lang, String fp, JsonObject externals, boolean isCodeSystem, Set<String> modes) throws JsonSyntaxException, FileNotFoundException, IOException {
+  public static String getDiffForValidation(String id, IWorkerContext context, String name, Resource requestParameters, String expectedResponse, String expectedResponse2, String lang, String fp, JsonObject externals, boolean isCodeSystem, Set<String> modes) throws JsonSyntaxException, FileNotFoundException, IOException {
     org.hl7.fhir.r5.model.Parameters p = (org.hl7.fhir.r5.model.Parameters) requestParameters;
     ValueSet valueSet = null;
     String valueSetUrl = null;
     if (!isCodeSystem) {
-      if (p.hasParameter("valueSetVersion")) {
+      if (p.hasParameter("valueSet")) {
+        valueSet = (ValueSet) p.getParameter("valueSet").getResource();
+        valueSetUrl = valueSet.getVUrl();
+      } else if (p.hasParameter("valueSetVersion")) {
         valueSetUrl = p.getParameterValue("url").primitiveValue()+"|"+p.getParameterValue("valueSetVersion").primitiveValue();
-        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), p.getParameterValue("valueSetVersion").primitiveValue(), null);
+        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule(), p.getParameterValue("valueSetVersion").primitiveValue(), null);
       } else {
         valueSetUrl = p.getParameterValue("url").primitiveValue();
-        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue());
+        valueSet = context.fetchResource(ValueSet.class, p.getParameterValue("url").primitiveValue(), IWorkerContext.VersionResolutionRules.defaultRule());
       }
     }
     ValidationResult validationResult = null;
@@ -72,6 +77,9 @@ public class TxServiceTestHelper {
       if (p.hasParameter("activeOnly") && "true".equals(p.getParameterString("activeOnly"))) {
         options = options.setActiveOnly(true);
       }
+      if (p.hasParameter("abstract") && "false".equals(p.getParameterString("abstract"))) {
+        options = options.setNoAbstract(true);
+      }
       Parameters newParameters = context.getExpansionParameters();
       for (ParametersParameterComponent pp : p.getParameter()) {
         if (Utilities.existsInList(pp.getName(), "default-valueset-version", "system-version", "force-system-version", "default-system-version")) {
@@ -82,6 +90,9 @@ public class TxServiceTestHelper {
       newParameters.clearParameters("includeAlternateCodes");
       for (Parameters.ParametersParameterComponent pp : p.getParameter()) {
         if ("includeAlternateCodes".equals(pp.getName())) {
+          newParameters.addParameter(pp.copy());
+        }
+        if ("useSupplement".equals(pp.getName())) {
           newParameters.addParameter(pp.copy());
         }
       }
@@ -114,15 +125,22 @@ public class TxServiceTestHelper {
     }
     if (operationOutcome != null) {
       TxTesterSorters.sortOperationOutcome(operationOutcome);
-      TxTesterScrubbers.scrubOO(operationOutcome, false);
+      TxTesterScrubbers.scrubOperationOutcome(operationOutcome, false);
 
       String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(operationOutcome);
 
 
+      boolean option2 = false;
+      String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      if (diff != null && expectedResponse2 != null) {
+        diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse2, actualResponse);
+        if (diff == null) {
+          option2 = true;
+        }
+      }
 
-      writeDiffToFileSystem( name, expectedResponse, actualResponse);
+      writeDiffToFileSystem( name, option2 ? expectedResponse2 : expectedResponse, actualResponse);
 
-      String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
       if (diff != null) {
         FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
@@ -160,12 +178,7 @@ public class TxServiceTestHelper {
         }
         if (validationResult.getDisplay() != null) {
           parameters.addParameter("display", validationResult.getDisplay());
-        } else if (display != null) {
-          parameters.addParameter("display", new StringType(display));
         }
-        //      if (vm.getCodeableConcept() != null) {
-        //        res.addParameter("codeableConcept", vm.getCodeableConcept());
-        //      } else
         if (codeableConcept != null) {
           parameters.addParameter("codeableConcept", codeableConcept);
         }
@@ -173,7 +186,7 @@ public class TxServiceTestHelper {
           parameters.addParameter("inactive", true);
         }
         if (validationResult.getStatus() != null) {
-          parameters.addParameter("status", validationResult.getStatus());
+          parameters.addCodeParameter("status", validationResult.getStatus());
         }
         if (validationResult.getUnknownSystems() != null) {
           for (String s : validationResult.getUnknownSystems()) {
@@ -188,13 +201,21 @@ public class TxServiceTestHelper {
       }
 
       TxTesterSorters.sortParameters(parameters);
-      TxTesterScrubbers.scrubParams(parameters, false);
+      TxTesterScrubbers.scrubParameters(parameters, false);
 
       String actualResponse = new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).composeString(parameters);
 
-      writeDiffToFileSystem(name, expectedResponse, actualResponse);
+      boolean option2 = false;
+      String diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      if (diff != null && expectedResponse2 != null) {
+        diff = new CompareUtilities(modes, externals, vars()).checkJsonSrcIsSame(id, expectedResponse2, actualResponse);
+        if (diff == null) {
+          option2 = true;
+        }
+      }
 
-      String diff = new CompareUtilities(modes, externals).checkJsonSrcIsSame(id, expectedResponse, actualResponse);
+      writeDiffToFileSystem(name, option2 ? expectedResponse2 : expectedResponse, actualResponse);
+
       if (diff != null) {
          FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(fp));
         FileUtilities.stringToFile(actualResponse, fp);
@@ -223,6 +244,14 @@ public class TxServiceTestHelper {
     }
     FileUtilities.stringToFile(expected, fullExpected + testName + ".json");
     FileUtilities.stringToFile(actual, fullActual + testName + ".json");
+
+  }
+
+
+  private static Map<String, String> vars() {
+    Map<String, String> vars = new HashMap<String, String>();
+    vars.put("version", "5.0.0");
+    return vars;
 
   }
 }

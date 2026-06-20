@@ -15,9 +15,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.Pair;
 import org.fhir.ucum.UcumException;
@@ -68,7 +69,10 @@ import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.regex.RegexConstants;
+import org.hl7.fhir.utilities.regex.RegexUtils;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -178,6 +182,8 @@ public class FHIRPathEngine {
   private boolean allowDoubleQuotes;
   private List<IssueMessage> typeWarnings = new ArrayList<>();
   private boolean emitSQLonFHIRWarning;
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
   /**
    * @param worker - used when validating paths (@check), and used doing value set membership when executing tests (once that's defined)
@@ -1218,10 +1224,10 @@ public class FHIRPathEngine {
 
   private ExpressionNode organisePrecedence(FHIRLexer lexer, ExpressionNode node) {
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Times, Operation.DivideBy, Operation.Div, Operation.Mod)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Union)); 
-    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.LessThan, Operation.Greater, Operation.LessOrEqual, Operation.GreaterOrEqual));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Plus, Operation.Minus, Operation.Concatenate));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Is, Operation.As));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Union));
+    node = gatherPrecedence(lexer, node, EnumSet.of(Operation.LessThan, Operation.Greater, Operation.LessOrEqual, Operation.GreaterOrEqual));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.Equals, Operation.Equivalent, Operation.NotEquals, Operation.NotEquivalent));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.In, Operation.Contains, Operation.MemberOf));
     node = gatherPrecedence(lexer, node, EnumSet.of(Operation.And));
@@ -1677,6 +1683,8 @@ public class FHIRPathEngine {
     } else if (!value.contains("T")) {
       date = value;
     } else {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = value.split("T");
       date = p[0];
       if (p.length > 1) {
@@ -1904,6 +1912,8 @@ public class FHIRPathEngine {
         return false;
       }
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] t = tn.split("\\.");
     if (t.length != 2) {
       return false;
@@ -4043,6 +4053,8 @@ public class FHIRPathEngine {
       boolean found = false;
       for (Identifier id : sd.getIdentifier()) {
         if (id.getValue().startsWith("urn:hl7ii:")) {   
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] p = id.getValue().split("\\:");
           if (p.length == 4) {
             found = found || hasTemplateId(focus.get(0), p[2], p[3]);
@@ -4673,7 +4685,7 @@ public class FHIRPathEngine {
         }
       }
       for (XhtmlNode c : node.getChildNodes()) {
-        if (!checkHtmlNames(c, block && !"p".equals(c))) {
+        if (!checkHtmlNames(c, block && !"p".equals(c))) { // FIXME SpotBugs issue: EC_UNRELATED_TYPES "p".equals(c) is always false (String vs XhtmlNode); compare "p".equals(c.getName())
           return false;
         }
       }
@@ -4858,10 +4870,17 @@ public class FHIRPathEngine {
     String repl = convertToString(replB);
 
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
-      //
+      // no-op
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-        result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+        try {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+          String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
+          result.add(new StringType(replaced).noExtensions());
+        } catch (TimeoutException te) {
+          throw new FHIRException("Timeout evaluating regex: " + regex, te);
+        }
       }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
@@ -5381,29 +5400,42 @@ public class FHIRPathEngine {
     return result;
   }
 
+  public static Identifier makeIdentifier(Base base) {
+    if (base == null) {
+      return null;
+    }
+    if (base instanceof Identifier) {
+      return (Identifier) base;
+    }
+    return null;
+  }
 
   private List<Base> funcResolve(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
-    Base refContext = null;
     for (Base item : focus) {
-      String s = convertToString(item);
+      Base refContext = item;
+      String url = null;
+      Identifier id = null;
+
       if (item.fhirType().equals("Reference")) {
         refContext = item;
         Property p = item.getChildByName("reference");
         if (p != null && p.hasValues()) {
-          s = convertToString(p.getValues().get(0));
-        } else {
-          s = null; // a reference without any valid actual reference (just identifier or display, but we can't resolve it)
+          url = convertToString(p.getValues().get(0));
         }
-      }
-      if (item.fhirType().equals("canonical")) {
-        s = item.primitiveValue();
+        p = item.getChildByName("identifier");
+        if (p != null && p.hasValues()) {
+          id = makeIdentifier(p.getValues().get(0));
+        }
+      } else if (item.isPrimitive()) {
+        url = item.primitiveValue();
         refContext = item;
       }
-      if (s != null) {
+
+      if (url != null || id != null) {
         Base res = null;
-        if (s.startsWith("#")) {
-          String t = s.substring(1);
+        if (url != null && url.startsWith("#")) {
+          String t = url.substring(1);
           Property p = context.rootResource.getChildByName("contained");
           if (p != null) {
             for (Base c : p.getValues()) {
@@ -5415,7 +5447,7 @@ public class FHIRPathEngine {
           }
         } else if (hostServices != null) {
           try {
-            res = hostServices.resolveReference(this, context.appInfo, s, refContext);
+            res = hostServices.resolveReference(this, context.appInfo, url, id, refContext);
           } catch (Exception e) {
             res = null;
           }
@@ -5661,9 +5693,12 @@ public class FHIRPathEngine {
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
-          Pattern p = Pattern.compile("(?s)" + sw);
-          Matcher m = p.matcher(st);
-          boolean ok = m.find();
+          boolean ok;
+          try {
+            ok = RegexTimeout.find(st, "(?s)" + sw, regexTimeoutMillis);
+          } catch (TimeoutException e) {
+            throw new FHIRException("Timeout evaluating regex: " + sw, e);
+          }
           result.add(new BooleanType(ok).noExtensions());
         }
       }
@@ -5683,9 +5718,15 @@ public class FHIRPathEngine {
         if (Utilities.noString(st)) {
           result.add(new BooleanType(false).noExtensions());
         } else {
-          Pattern p = Pattern.compile("(?s)" + sw);
-          Matcher m = p.matcher(st);
-          boolean ok = m.matches();
+          boolean ok;
+          try {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+            boolean matched = RegexTimeout.matches(st, "(?s)" + sw, regexTimeoutMillis);
+            ok = matched;
+          } catch (TimeoutException e) {
+            throw new FHIRException("Timeout evaluating regex: " + sw, e);
+          }
           result.add(new BooleanType(ok).noExtensions());
         }
       }
@@ -5906,7 +5947,7 @@ public class FHIRPathEngine {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
       result.add(new BooleanType((convertToString(focus.get(0)).matches
-          ("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"))).noExtensions());
+          (RegexConstants.DATE_TIME_REGEX))).noExtensions());
     } else { 
       result.add(new BooleanType(false).noExtensions());
     }
@@ -5921,7 +5962,7 @@ public class FHIRPathEngine {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
       result.add(new BooleanType((convertToString(focus.get(0)).matches
-          ("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"))).noExtensions());
+          (RegexConstants.DATE_TIME_REGEX))).noExtensions()); // FIXME Why is this regex not DATE_REGEX? Tests fail if the 'correct' regex is used.
     } else { 
       result.add(new BooleanType(false).noExtensions());
     }

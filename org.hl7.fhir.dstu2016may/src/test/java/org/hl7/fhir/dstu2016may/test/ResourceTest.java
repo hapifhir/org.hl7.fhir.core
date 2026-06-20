@@ -2,92 +2,57 @@
 Copyright (c) 2011+, HL7, Inc
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without modification, 
+Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
 
- * Redistributions of source code must retain the above copyright notice, this 
+ * Redistributions of source code must retain the above copyright notice, this
    list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, 
-   this list of conditions and the following disclaimer in the documentation 
+ * Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
    and/or other materials provided with the distribution.
- * Neither the name of HL7 nor the names of its contributors may be used to 
-   endorse or promote products derived from this software without specific 
+ * Neither the name of HL7 nor the names of its contributors may be used to
+   endorse or promote products derived from this software without specific
    prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 */
 package org.hl7.fhir.dstu2016may.test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.hl7.fhir.dstu2016may.formats.IParser;
-import org.hl7.fhir.dstu2016may.formats.IParser.OutputStyle;
-import org.hl7.fhir.dstu2016may.formats.JsonParser;
-import org.hl7.fhir.dstu2016may.formats.XmlParser;
-import org.hl7.fhir.dstu2016may.model.Resource;
-import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @Deprecated
-public class ResourceTest {
+class ResourceTest {
 
-  private File source;
-  private boolean json;
+  @Test
+  void test() throws IOException {
+    final File tempDir = Files.createTempDirectory("terminology-cache-manager").toFile();
+    final File newFile = ManagedFileAccess.file(tempDir ,"patient-example.xml");
+    FileUtilities.copyFile(ManagedFileAccess.file("src/test/resources/patient-example.xml"), newFile);
 
-  public File getSource() {
-    return source;
-  }
+    assertDoesNotThrow(()->{
+      ResourceTester r = new ResourceTester();
+      r.setSource(newFile);
+      r.test();
+    });
 
-  public void setSource(File source) {
-    this.source = source;
-  }
-
-  public void test() throws FHIRFormatError, FileNotFoundException, IOException {
-
-    IParser p;
-    if (isJson())
-      p = new JsonParser();
-    else
-      p = new XmlParser(false);
-    Resource rf = p.parse(ManagedFileAccess.inStream(source));
-
-    FileOutputStream out = ManagedFileAccess.outStream(source.getAbsoluteFile() + ".out.json");
-    JsonParser json1 = new JsonParser();
-    json1.setOutputStyle(OutputStyle.PRETTY);
-    json1.compose(out, rf);
-    out.close();
-
-    JsonParser json = new JsonParser();
-    rf = json.parse(ManagedFileAccess.inStream(source.getAbsoluteFile() + ".out.json"));
-
-    out = ManagedFileAccess.outStream(source.getAbsoluteFile() + ".out.xml");
-    XmlParser atom = new XmlParser();
-    atom.setOutputStyle(OutputStyle.PRETTY);
-    atom.compose(out, rf, true);
-    out.close();
-
-  }
-
-  public boolean isJson() {
-    return json;
-  }
-
-  public void setJson(boolean json) {
-    this.json = json;
   }
 
 }

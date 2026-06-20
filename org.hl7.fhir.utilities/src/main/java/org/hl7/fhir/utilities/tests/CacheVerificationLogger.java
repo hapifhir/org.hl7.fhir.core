@@ -20,6 +20,7 @@ public class CacheVerificationLogger implements ToolingClientLogger {
       System.err.println(url);
       if (headers != null) {
         for (String header : headers) {
+
           System.err.println("Header: " + header);
         }
       }

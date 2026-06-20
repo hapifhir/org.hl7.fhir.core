@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
@@ -16,11 +17,11 @@ public class TerminologyUtilities {
 
   public static Set<String> listOids(CanonicalResource cr) {
     Set<String> oids = new HashSet<>();
-    
+
     if (cr.hasUrl() && cr.getUrl().startsWith("urn:oid:")) {
       oids.add(cr.getUrl().substring(8));
     }
-      
+
     for (Identifier id : cr.getIdentifier()) {
       String v = id.getValue();
       if (v != null && v.startsWith("urn:oid:")) {
@@ -35,7 +36,7 @@ public class TerminologyUtilities {
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
       if (inc.hasSystem()) {
         if (inc.hasVersion()) {
-          res.add(inc.getSystem()+"|"+inc.getVersion());
+          res.add(inc.getSystem() + "|" + inc.getVersion());
         } else {
           res.add(inc.getSystem());
         }
@@ -44,12 +45,27 @@ public class TerminologyUtilities {
     for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
       if (inc.hasSystem()) {
         if (inc.hasVersion()) {
-          res.add(inc.getSystem()+"|"+inc.getVersion());
+          res.add(inc.getSystem() + "|" + inc.getVersion());
         } else {
           res.add(inc.getSystem());
         }
       }
     }
     return Utilities.sorted(res);
+  }
+
+  public static boolean supportsOperation(CapabilityStatement capabilitiesStatement, String resourceType, String opName) {
+    for (var rest : capabilitiesStatement.getRest()) {
+      for (var resource : rest.getResource()) {
+        if (resourceType.equals(resource.getType())) {
+          for (var op : resource.getOperation()) {
+            if (opName.equals(op.getName())) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
   }
 }

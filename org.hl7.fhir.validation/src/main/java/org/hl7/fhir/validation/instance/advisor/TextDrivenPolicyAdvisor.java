@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -19,13 +20,15 @@ public class TextDrivenPolicyAdvisor extends RulesDrivenPolicyAdvisor {
     load(source);
   }
 
-  public TextDrivenPolicyAdvisor(ReferenceValidationPolicy refpol, File source) throws JsonException, IOException {
-    super(refpol);
+  public TextDrivenPolicyAdvisor(ReferenceValidationPolicy refpol, File source, Set<String> referencesTo) throws JsonException, IOException {
+    super(refpol, referencesTo);
     load(source);
   }
 
   public TextDrivenPolicyAdvisor(IValidationPolicyAdvisor base, String filename, String source) throws JsonException, IOException {
     super(base);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] lines= source.split("\\R");
     for (String line : lines) {
       processLine(line);  
