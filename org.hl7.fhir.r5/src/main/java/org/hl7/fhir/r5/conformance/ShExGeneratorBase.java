@@ -38,7 +38,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.*;
@@ -314,6 +313,7 @@ public abstract class ShExGeneratorBase {
     applyConfiguration(Objects.requireNonNull(config, "config"));
     profileUtilities = new ProfileUtilities(context, null, null);
     innerTypes = new LinkedHashSet<Pair<StructureDefinition, ElementDefinition>>();
+    innerTypeNames = new ArrayList<String>();
     oneOrMoreTypes = new ArrayList<String>();
     constraintsList = new ArrayList<String>();
     unMappedFunctions = new ArrayList<String>();
@@ -649,7 +649,7 @@ public abstract class ShExGeneratorBase {
       bd = els[els.length - 1];
     }
 
-    return capitalizeIfPrimitive(bd);
+    return bd;
   }
 
   private String getBaseTypeName(ElementDefinition ed){
@@ -661,7 +661,7 @@ public abstract class ShExGeneratorBase {
 
   private String getExtendedType(StructureDefinition sd){
     String bd = getBaseTypeName(sd);
-    String sId = capitalizeIfPrimitive(sd.getId());
+    String sId = sd.getId();
 
     if (bd!=null) {
       var className = getClassName(bd);
@@ -696,7 +696,7 @@ public abstract class ShExGeneratorBase {
     //   return "";
     if("xhtml".equals(sd.getName())) {
       return tmplt(DATATYPE_DEFINITION_TEMPLATE)
-        .add("id", capitalizeIfPrimitive("xhtml"))
+        .add("id", getClassName("xhtml"))
         .add("datatype", "rdf:XMLLiteral")
         .add("comment", "")
         .add("constraints", "")
@@ -705,9 +705,9 @@ public abstract class ShExGeneratorBase {
 
     ST shape_defn;
     // Resources are either incomplete items or consist of everything that is defined as a resource (completeModel)
-    var className = TurtleParser.getClassName(sd.getName());
+    var className = getClassName(sd.getName());
 
-    shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", TurtleParser.getClassName(getExtendedType(sd)));
+    shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", getClassName(getExtendedType(sd)));
     known_resources.add(className);
 
     if (baseDataTypes.contains(sd.getType())) {
@@ -722,7 +722,7 @@ public abstract class ShExGeneratorBase {
           (shortIdException.contains(btn)))
           rootTmpl = "\n";
 
-        String id = capitalizeIfPrimitive(sd.getId());
+        String id = sd.getId();
 
         ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
           add("id", id).
@@ -882,39 +882,6 @@ public abstract class ShExGeneratorBase {
     // shape_defn.add("contextOfUse", contextOfUseStr);
 
     return shape_defn.render();
-  }
-
-  /**
-   * Capitalize the first character of the string if it is a listed primitive type
-   * @param name
-   * @return
-   */
-  private String capitalizeIfPrimitive(String name) {
-    if (name == null || name.isEmpty()) return name;
-    if ("base64Binary".equals(name) ||
-      "boolean".equals(name) ||
-      "canonical".equals(name) ||
-      "code".equals(name) ||
-      "date".equals(name) ||
-      "dateTime".equals(name) ||
-      "decimal".equals(name) ||
-      "id".equals(name) ||
-      "instant".equals(name) ||
-      "integer".equals(name) ||
-      "integer64".equals(name) ||
-      "markdown".equals(name) ||
-      "oid".equals(name) ||
-      "positiveInt".equals(name) ||
-      "string".equals(name) ||
-      "time".equals(name) ||
-      "unsignedInt".equals(name) ||
-      "uri".equals(name) ||
-      "url".equals(name) ||
-      "uuid".equals(name) ||
-      "xhtml".equals(name)) {
-      return name.substring(0, 1).toUpperCase() + name.substring(1);
-    }
-    return name;
   }
 
   /**
@@ -1678,7 +1645,7 @@ public abstract class ShExGeneratorBase {
     if(ed.hasFixed()) {
       addldef = tmplt(FIXED_VALUE_TEMPLATE).add("val", ed.getFixed().primitiveValue()).render();
     }
-    return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", capitalizeIfPrimitive(typ)).add("vsdef", addldef).render();
+    return tmplt(SIMPLE_ELEMENT_DEFN_TEMPLATE).add("typ", getClassName(typ)).add("vsdef", addldef).render();
   }
 
   // TODO: inspect
@@ -1974,7 +1941,7 @@ public abstract class ShExGeneratorBase {
     String path = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
     ST element_reference = tmplt(SHAPE_DEFINITION_TEMPLATE);
     element_reference.add("resourceDecl", "");  // Not a resource
-    element_reference.add("id", TurtleParser.getClassName(removeMultipleX(path) + getExtendedType(ed)));
+    element_reference.add("id", getClassName(removeMultipleX(path) + getExtendedType(ed)));
     element_reference.add("fhirType", " ");
     String comment = ed.getShort();
     element_reference.add("comment", comment == null? " " : "# " + comment);
