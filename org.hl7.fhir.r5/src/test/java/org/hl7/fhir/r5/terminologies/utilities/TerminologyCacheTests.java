@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -29,8 +30,10 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -75,6 +78,13 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     Object lock = new Object();
     TerminologyCache terminologyCache = new TerminologyCache(lock, null);
     return terminologyCache;
+  }
+
+  // A fresh temp directory yields a genuinely empty cache. NOTE: new TerminologyCache(lock, null)
+  // does NOT - null resolves to the shared [tmp]/default-tx-cache and loads whatever is on disk,
+  // so any test that asserts on cache size/contents must use an isolated directory like this.
+  private TerminologyCache createEmptyTerminologyCache() throws IOException {
+    return new TerminologyCache(new Object(), createTempCacheDirectory().toString());
   }
 
   public Path createTempCacheDirectory() throws IOException {
@@ -148,6 +158,10 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     public void testCachePersistence() throws IOException {
       assertInMemoryCacheContents();
 
+      // Writes are debounced (see TerminologyCache.SAVE_DELAY_MS), so explicitly flush
+      // before constructing a second cache that reads from disk.
+      terminologyCacheA.save();
+
       //Create another cache using the same directory, and check that it gives the same results.
 
         TerminologyCache terminologyCacheB = new TerminologyCache(lock, tempCacheDirectory.toString());
@@ -170,6 +184,10 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     @Test
     public void testCacheExpiresCapabilitiesFiles() throws IOException, InterruptedException {
       assertInMemoryCacheContents();
+
+      // Writes are debounced (see TerminologyCache.SAVE_DELAY_MS), so explicitly flush
+      // before constructing a second cache that reads from disk.
+      terminologyCacheA.save();
 
       Thread.sleep(200L);
       TerminologyCache terminologyCacheB = new TerminologyCache(lock, tempCacheDirectory.toString(), 100L);
@@ -513,7 +531,7 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
   @ParameterizedTest
   @MethodSource("under1000IntParams")
-  public void testExtractedUnder1000(int max) throws IOException {
+  void testExtractedUnder1000(int max) throws IOException {
     TerminologyCache cache = createTerminologyCache();
     ValueSet vs = new ValueSet();
 
@@ -621,5 +639,371 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     String jsonToken = terminologyCache.hashJson(json);
 
     assertEquals(paddedJsonToken, jsonToken);
+  }
+
+  @Test
+  void testHashJsonNormalizesLoneAndPairedCarriageReturns() throws IOException {
+    TerminologyCache terminologyCache = createTerminologyCache();
+    // Lone \r and \r\n are both normalized to \n before hashing.
+    assertEquals(terminologyCache.hashJson("a\nb\nc"), terminologyCache.hashJson("a\rb\rc"));
+    assertEquals(terminologyCache.hashJson("a\nb\nc"), terminologyCache.hashJson("a\r\nb\r\nc"));
+    // Mixed line endings collapse to the same value.
+    assertEquals(terminologyCache.hashJson("a\nb\nc"), terminologyCache.hashJson("a\rb\r\nc"));
+  }
+
+  @Test
+  void testHashJsonDistinguishesDifferentContent() throws IOException {
+    TerminologyCache terminologyCache = createTerminologyCache();
+    assertNotEquals(terminologyCache.hashJson("{\"a\":1}"), terminologyCache.hashJson("{\"a\":2}"));
+  }
+
+  @Test
+  void testHashJsonAvoidsKnownHashCodeCollision() throws IOException {
+    // "Aa" and "BB" share the same 32-bit String.hashCode() (2112); the widened key must
+    // give them distinct hashes so they can't collide onto the same cache entry.
+    TerminologyCache terminologyCache = createTerminologyCache();
+    assertEquals(2112, "Aa".hashCode());
+    assertEquals(2112, "BB".hashCode());
+    assertNotEquals(terminologyCache.hashJson("Aa"), terminologyCache.hashJson("BB"));
+  }
+
+  @Test
+  void testDistinctRequestsGetDistinctEntries() throws IOException {
+    // Two requests in the same named-cache bucket (same system) must not collide:
+    // each token must retrieve its own result, never the other's.
+    TerminologyCache cache = createEmptyTerminologyCache();
+    ValueSet valueSet = new ValueSet();
+    Coding coding1 = new Coding().setSystem("http://example.org/sys").setCode("code1");
+    Coding coding2 = new Coding().setSystem("http://example.org/sys").setCode("code2");
+
+    TerminologyCache.CacheToken token1 = cache.generateValidationToken(CacheTestUtils.validationOptions, coding1, valueSet, new Parameters());
+    TerminologyCache.CacheToken token2 = cache.generateValidationToken(CacheTestUtils.validationOptions, coding2, valueSet, new Parameters());
+
+    assertEquals(token1.getName(), token2.getName());
+    assertNotEquals(token1.getRequest(), token2.getRequest());
+
+    cache.cacheValidation(token1, new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "first", null), false);
+    cache.cacheValidation(token2, new ValidationResult(ValidationMessage.IssueSeverity.ERROR, "second", null), false);
+
+    assertEquals("first", cache.getValidation(token1).getMessage());
+    assertEquals(ValidationMessage.IssueSeverity.INFORMATION, cache.getValidation(token1).getSeverity());
+    assertEquals("second", cache.getValidation(token2).getMessage());
+    assertEquals(ValidationMessage.IssueSeverity.ERROR, cache.getValidation(token2).getSeverity());
+  }
+
+  @Test
+  void testHitAndMissCountersTrackLookups() throws IOException {
+    TerminologyCache cache = createEmptyTerminologyCache();
+    ValueSet valueSet = new ValueSet();
+    Coding coding = new Coding().setSystem("http://example.org/sys").setCode("code");
+    TerminologyCache.CacheToken token = cache.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters());
+
+    assertNull(cache.getValidation(token));
+    assertEquals(1, cache.getRequestCount());
+    assertEquals(0, cache.getHitCount());
+    assertEquals(1, cache.getNetworkCount());
+
+    cache.cacheValidation(token, new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "v", null), false);
+
+    assertNotNull(cache.getValidation(token));
+    assertEquals(2, cache.getRequestCount());
+    assertEquals(1, cache.getHitCount());
+    assertEquals(1, cache.getNetworkCount());
+  }
+
+  @Test
+  void testPersistentUpdateReplacesEntryRatherThanDuplicating() throws IOException {
+    // Re-caching the same token must replace the persisted entry, not append a duplicate.
+    // getReport() counts entries across buckets, so it externally reflects the list size.
+    // Use an isolated (empty) cache so the count reflects only what this test adds.
+    TerminologyCache cache = createEmptyTerminologyCache();
+    ValueSet valueSet = new ValueSet();
+    Coding coding = new Coding().setSystem("http://example.org/sys").setCode("code");
+    TerminologyCache.CacheToken token = cache.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters());
+
+    cache.cacheValidation(token, new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "first", null), true);
+    assertThat(cache.getReport()).contains("report: 1 entries");
+
+    cache.cacheValidation(token, new ValidationResult(ValidationMessage.IssueSeverity.ERROR, "second", null), true);
+    assertThat(cache.getReport()).contains("report: 1 entries");
+    assertEquals("second", cache.getValidation(token).getMessage());
+  }
+
+  @Test
+  void testSubsumesCacheRoundTrip() throws IOException {
+    Object lock = new Object();
+    Path dir = createTempCacheDirectory();
+    TerminologyCache cacheA = new TerminologyCache(lock, dir.toString());
+
+    Coding parent = new Coding().setSystem("http://example.org/sys").setCode("parent");
+    Coding child = new Coding().setSystem("http://example.org/sys").setCode("child");
+
+    TerminologyCache.CacheToken token = cacheA.generateSubsumesToken(CacheTestUtils.validationOptions, parent, child, new Parameters());
+    assertNull(cacheA.getSubsumes(token));
+
+    cacheA.cacheSubsumes(token, Boolean.TRUE, true);
+    assertEquals(Boolean.TRUE, cacheA.getSubsumes(token));
+
+    // Writes are debounced, so flush before reading from a second cache.
+    cacheA.save();
+
+    TerminologyCache cacheB = new TerminologyCache(lock, dir.toString());
+    Boolean reloaded = cacheB.getSubsumes(cacheA.generateSubsumesToken(CacheTestUtils.validationOptions, parent, child, new Parameters()));
+    assertEquals(Boolean.TRUE, reloaded);
+
+    deleteTempCacheDirectory(dir);
+  }
+
+  @Test
+  void testRemoveCSDropsBucket() throws IOException {
+    TerminologyCache cache = createEmptyTerminologyCache();
+    ValueSet valueSet = new ValueSet();
+    Coding coding = new Coding().setSystem("http://snomed.info/sct").setCode("code");
+    TerminologyCache.CacheToken token = cache.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters());
+    assertEquals("snomed", token.getName());
+
+    cache.cacheValidation(token, new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "v", null), false);
+    assertNotNull(cache.getValidation(token));
+
+    cache.removeCS("http://snomed.info/sct");
+    assertNull(cache.getValidation(token));
+  }
+
+  @Test
+  void testNoCachingDisablesStorage() throws IOException {
+    TerminologyCache cache = createEmptyTerminologyCache();
+    ValueSet valueSet = new ValueSet();
+    Coding coding = new Coding().setSystem("http://example.org/sys").setCode("code");
+    TerminologyCache.CacheToken token = cache.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters());
+
+    TerminologyCache.setNoCaching(true);
+    try {
+      cache.cacheValidation(token, new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "v", null), false);
+      assertNull(cache.getValidation(token));
+    } finally {
+      TerminologyCache.setNoCaching(false);
+    }
+  }
+
+  @Test
+  void testGetServerIdIsStableAndPersists() throws IOException {
+    Object lock = new Object();
+    Path dir = createTempCacheDirectory();
+    TerminologyCache cacheA = new TerminologyCache(lock, dir.toString());
+
+    String id = cacheA.getServerId("http://tx.fhir.org/r4");
+    assertEquals("tx.fhir.org.r4", id);
+    assertEquals(id, cacheA.getServerId("http://tx.fhir.org/r4"));
+
+    // A fresh cache over the same folder loads the persisted server map from servers.ini.
+    TerminologyCache cacheB = new TerminologyCache(lock, dir.toString());
+    assertEquals(id, cacheB.getServerId("http://tx.fhir.org/r4"));
+
+    deleteTempCacheDirectory(dir);
+  }
+
+  @Test
+  void testGetServerIdDisambiguatesCollidingAddresses() throws IOException {
+    Object lock = new Object();
+    Path dir = createTempCacheDirectory();
+    TerminologyCache cache = new TerminologyCache(lock, dir.toString());
+
+    // http:// and https:// of the same host strip to the same base id, so the second must
+    // get a clean, well-formed suffix (the old code produced a malformed "..tx.fhir.org.r42").
+    assertEquals("tx.fhir.org.r4", cache.getServerId("http://tx.fhir.org/r4"));
+    assertEquals("tx.fhir.org.r42", cache.getServerId("https://tx.fhir.org/r4"));
+    // Each address keeps its own stable id on repeat lookups.
+    assertEquals("tx.fhir.org.r4", cache.getServerId("http://tx.fhir.org/r4"));
+    assertEquals("tx.fhir.org.r42", cache.getServerId("https://tx.fhir.org/r4"));
+
+    deleteTempCacheDirectory(dir);
+  }
+
+  @Test
+  void testLoadSkipsMalformedEntryAndLoadsTheRest() throws IOException {
+    // A single malformed entry must be skipped without aborting the rest of the file.
+    Object lock = new Object();
+    Path dir = createTempCacheDirectory();
+    TerminologyCache cacheA = new TerminologyCache(lock, dir.toString());
+
+    ValueSet valueSet = new ValueSet();
+    Coding coding1 = new Coding().setSystem("http://example.org/sys").setCode("code1");
+    Coding coding2 = new Coding().setSystem("http://example.org/sys").setCode("code2");
+
+    TerminologyCache.CacheToken token1 = cacheA.generateValidationToken(CacheTestUtils.validationOptions, coding1, valueSet, new Parameters());
+    TerminologyCache.CacheToken token2 = cacheA.generateValidationToken(CacheTestUtils.validationOptions, coding2, valueSet, new Parameters());
+
+    cacheA.cacheValidation(token1, new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "first", null), true);
+    cacheA.cacheValidation(token2, new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "second", null), true);
+    cacheA.save();
+
+    // Both entries share one named-cache file. Inject a malformed entry (no '####' break)
+    // as the first segment, ahead of both good entries. The entry separator is the file's
+    // own first line, so we don't depend on the private marker constant.
+    File cacheFile = findCacheFile(dir);
+    String content = new String(Files.readAllBytes(cacheFile.toPath()), java.nio.charset.StandardCharsets.UTF_8);
+    int firstLineEnd = content.indexOf('\n') + 1;
+    String marker = content.substring(0, firstLineEnd - 1).replace("\r", "");
+    String corrupted = content.substring(0, firstLineEnd)
+      + "this entry has no break separator\r\n" + marker + "\r\n"
+      + content.substring(firstLineEnd);
+    Files.write(cacheFile.toPath(), corrupted.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+
+    // Loading the corrupted file must not throw, and both good entries must survive.
+    TerminologyCache cacheB = new TerminologyCache(lock, dir.toString());
+    ValidationResult r1 = cacheB.getValidation(cacheA.generateValidationToken(CacheTestUtils.validationOptions, coding1, valueSet, new Parameters()));
+    ValidationResult r2 = cacheB.getValidation(cacheA.generateValidationToken(CacheTestUtils.validationOptions, coding2, valueSet, new Parameters()));
+    assertNotNull(r1);
+    assertNotNull(r2);
+    assertEquals("first", r1.getMessage());
+    assertEquals("second", r2.getMessage());
+
+    deleteTempCacheDirectory(dir);
+  }
+
+  @Test
+  void testPersistentEntriesAreCappedFifo() throws IOException {
+    int original = TerminologyCache.getMaxEntriesPerCache();
+    TerminologyCache.setMaxEntriesPerCache(3);
+    try {
+      TerminologyCache cache = createEmptyTerminologyCache();
+      ValueSet valueSet = new ValueSet();
+      TerminologyCache.CacheToken[] tokens = new TerminologyCache.CacheToken[5];
+      for (int i = 0; i < 5; i++) {
+        Coding coding = new Coding().setSystem("http://example.org/sys").setCode("code" + i);
+        tokens[i] = cache.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters());
+        cache.cacheValidation(tokens[i], new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "v" + i, null), true);
+      }
+      // FIFO: the two oldest entries are evicted, the newest three remain.
+      assertThat(cache.getReport()).contains("report: 3 entries");
+      assertNull(cache.getValidation(tokens[0]));
+      assertNull(cache.getValidation(tokens[1]));
+      assertEquals("v2", cache.getValidation(tokens[2]).getMessage());
+      assertEquals("v3", cache.getValidation(tokens[3]).getMessage());
+      assertEquals("v4", cache.getValidation(tokens[4]).getMessage());
+    } finally {
+      TerminologyCache.setMaxEntriesPerCache(original);
+    }
+  }
+
+  @Test
+  void testLoadTrimsOversizedCacheToLimit() throws IOException {
+    int original = TerminologyCache.getMaxEntriesPerCache();
+    try {
+      Object lock = new Object();
+      Path dir = createTempCacheDirectory();
+      ValueSet valueSet = new ValueSet();
+
+      // Write 5 entries with a generous limit so the file legitimately holds all of them.
+      TerminologyCache.setMaxEntriesPerCache(5000);
+      TerminologyCache cacheA = new TerminologyCache(lock, dir.toString());
+      for (int i = 0; i < 5; i++) {
+        Coding coding = new Coding().setSystem("http://example.org/sys").setCode("code" + i);
+        TerminologyCache.CacheToken token = cacheA.generateValidationToken(CacheTestUtils.validationOptions, coding, valueSet, new Parameters());
+        cacheA.cacheValidation(token, new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "v" + i, null), true);
+      }
+      cacheA.save();
+
+      // Reload with a tighter limit: only the newest 3 entries survive the load.
+      TerminologyCache.setMaxEntriesPerCache(3);
+      TerminologyCache cacheB = new TerminologyCache(lock, dir.toString());
+      assertThat(cacheB.getReport()).contains("3 entries");
+      assertNull(cacheB.getValidation(cacheA.generateValidationToken(CacheTestUtils.validationOptions,
+        new Coding().setSystem("http://example.org/sys").setCode("code0"), valueSet, new Parameters())));
+      assertNotNull(cacheB.getValidation(cacheA.generateValidationToken(CacheTestUtils.validationOptions,
+        new Coding().setSystem("http://example.org/sys").setCode("code4"), valueSet, new Parameters())));
+
+      deleteTempCacheDirectory(dir);
+    } finally {
+      TerminologyCache.setMaxEntriesPerCache(original);
+    }
+  }
+
+  @Test
+  void testGetValidationAfterUnloadThrows() throws IOException {
+    TerminologyCache cache = createEmptyTerminologyCache();
+    TerminologyCache.CacheToken token = cache.generateValidationToken(CacheTestUtils.validationOptions,
+      new Coding().setSystem("http://example.org/sys").setCode("code"), new ValueSet(), new Parameters());
+    cache.unload();
+    assertThrows(IllegalStateException.class, () -> cache.getValidation(token));
+  }
+
+  @Test
+  void testCacheValidationAfterUnloadThrows() throws IOException {
+    TerminologyCache cache = createEmptyTerminologyCache();
+    TerminologyCache.CacheToken token = cache.generateValidationToken(CacheTestUtils.validationOptions,
+      new Coding().setSystem("http://example.org/sys").setCode("code"), new ValueSet(), new Parameters());
+    cache.unload();
+    assertThrows(IllegalStateException.class,
+      () -> cache.cacheValidation(token, new ValidationResult(ValidationMessage.IssueSeverity.INFORMATION, "v", null), false));
+  }
+
+  @Test
+  void testGetExpansionAfterUnloadThrows() throws IOException {
+    TerminologyCache cache = createEmptyTerminologyCache();
+    ValueSet valueSet = new ValueSet();
+    valueSet.setUrl("http://example.org/vs");
+    valueSet.setVersion("1.0.0");
+    TerminologyCache.CacheToken token = cache.generateExpandToken(valueSet, new ExpansionOptions().withHierarchical(true));
+    cache.unload();
+    assertThrows(IllegalStateException.class, () -> cache.getExpansion(token));
+  }
+
+  @Test
+  void testGetSubsumesAfterUnloadThrows() throws IOException {
+    TerminologyCache cache = createEmptyTerminologyCache();
+    TerminologyCache.CacheToken token = cache.generateSubsumesToken(CacheTestUtils.validationOptions,
+      new Coding().setSystem("http://example.org/sys").setCode("parent"),
+      new Coding().setSystem("http://example.org/sys").setCode("child"), new Parameters());
+    cache.unload();
+    assertThrows(IllegalStateException.class, () -> cache.getSubsumes(token));
+  }
+
+  private File findCacheFile(Path dir) throws IOException {
+    for (File f : ManagedFileAccess.file(dir.toString()).listFiles()) {
+      if (f.getName().endsWith(".cache")) {
+        return f;
+      }
+    }
+    throw new AssertionError("no .cache file found in " + dir);
+  }
+
+  private static final long HASH_JSON_SPEED_SEED = 0xC0FFEEBABEL;
+
+
+
+  @Nested
+  class HashJsonSpeedTests {
+    private static Stream<Arguments> hashJsonSpeedInputs() {
+      return Stream.of(
+        Arguments.of(1_000_000, 1_000),
+        Arguments.of(100_000, 10_000),
+        Arguments.of(10_000, 100_000),
+        Arguments.of(1_000, 1_000_000)
+      );
+    }
+
+    TerminologyCache cache;
+
+    @BeforeEach
+    void setUp() throws IOException {
+      cache = createTerminologyCache();
+    }
+
+    @ParameterizedTest
+    @MethodSource("hashJsonSpeedInputs")
+    @Timeout(value = 4, unit = TimeUnit.SECONDS)
+    void testHashJsonSpeed(int inputLength, int iterations) throws IOException {
+      Random random = new Random(HASH_JSON_SPEED_SEED);
+      char[] chars = new char[inputLength];
+      for (int i = 0; i < inputLength; i++) {
+        chars[i] = (char) (random.nextInt(94) + 32); // printable ASCII range
+      }
+      String input = new String(chars);
+
+      for (int i = 0; i < iterations; i++) {
+        cache.hashJson(input);
+      }
+    }
   }
 }

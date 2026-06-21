@@ -31,6 +31,7 @@ package org.hl7.fhir.r5.formats;
 
 
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.math.BigDecimal;
@@ -57,7 +58,13 @@ public class JsonCreatorDirect implements JsonCreator {
   
   public JsonCreatorDirect(Writer writer, boolean pretty, boolean comments) {
     super();
-    this.writer = writer;
+    // Buffer here rather than at each call site: composition emits many tiny
+    // write() calls (every brace, name, value, indent), and an unbuffered
+    // OutputStreamWriter runs the charset encoder - allocating a HeapCharBuffer -
+    // on every one. A BufferedWriter coalesces them into one encode per flush.
+    // finish() flushes, so every caller that finishes is safe (note:
+    // JsonCreatorCanonical must call jj.finish()). Don't double-wrap.
+    this.writer = writer instanceof BufferedWriter ? writer : new BufferedWriter(writer);
     this.pretty = pretty;
     this.comments = pretty && comments;
   }

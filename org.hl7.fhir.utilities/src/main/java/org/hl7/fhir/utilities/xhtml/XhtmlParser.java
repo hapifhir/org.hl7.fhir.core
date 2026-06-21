@@ -633,7 +633,7 @@ public class XhtmlParser {
             }
             for (int i = parents.size() - 1; i >= 0; i--)
             {
-              if (parents.get(i).getName().equals(n))
+              if (parents.get(i).getName().equals(n.getName()))
                 unwindPoint = parents.get(i);
             }
             if (unwindPoint != null)

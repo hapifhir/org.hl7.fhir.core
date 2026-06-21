@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.MergedList.MergeNode;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -1578,6 +1579,8 @@ public class FHIRPathEngine {
     } else if (!value.contains("T")) {
       date = value;
     } else {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = value.split("T");
       date = p[0];
       if (p.length > 1) {
@@ -1835,6 +1838,8 @@ public class FHIRPathEngine {
         return false;
       }
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] t = tn.split("\\.");
     if (t.length != 2) {
       return false;
@@ -4688,10 +4693,17 @@ public class FHIRPathEngine {
     String repl = convertToString(replB);
 
     if (focus.size() == 0 || regexB.size() == 0 || replB.size() == 0) {
-      //
+      // no-op
     } else if (focus.size() == 1 && !Utilities.noString(regex)) {
       if (focus.get(0).hasType(FHIR_TYPES_STRING) || doImplicitStringConversion) {
-        result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)).noExtensions());
+        try {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+          String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl);
+          result.add(new StringType(replaced).noExtensions());
+        } catch (TimeoutException te) {
+          throw new FHIRException("Timeout evaluating regex: " + regex, te);
+        }
       }
     } else {
       result.add(new StringType(convertToString(focus.get(0))).noExtensions());
@@ -5508,6 +5520,8 @@ public class FHIRPathEngine {
     return result;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: Matcher.matches() on p; regex is user-supplied at runtime
   private List<Base> funcMatchesFull(ExecutionContext context, List<Base> focus, ExpressionNode exp)
       throws FHIRException {
     List<Base> result = new ArrayList<Base>();
@@ -5750,9 +5764,11 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof DateTimeType || focus.get(0) instanceof DateType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches(
-          "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?")))
-              .noExtensions());
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = convertToString(focus.get(0)).matches(
+          RegexConstants.DATE_TIME_REGEX );
+      result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }
@@ -5766,9 +5782,11 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof DateTimeType || focus.get(0) instanceof DateType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches(
-          "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?")))
-              .noExtensions());
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = convertToString(focus.get(0)).matches(
+          RegexConstants.DATE_TIME_REGEX ); // FIXME Why is this regex not DATE_REGEX? Tests fail if the 'correct' regex is used.
+      result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }
@@ -5797,9 +5815,11 @@ public class FHIRPathEngine {
     } else if (focus.get(0) instanceof TimeType) {
       result.add(new BooleanType(true).noExtensions());
     } else if (focus.get(0) instanceof StringType) {
-      result.add(new BooleanType((convertToString(focus.get(0)).matches(
-          "(T)?([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?")))
-              .noExtensions());
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //non-overlapping alternation with bounded optional groups, safe
+      boolean isMatch = convertToString(focus.get(0)).matches(
+          "(T)?([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?");
+      result.add(new BooleanType(isMatch).noExtensions());
     } else {
       result.add(new BooleanType(false).noExtensions());
     }

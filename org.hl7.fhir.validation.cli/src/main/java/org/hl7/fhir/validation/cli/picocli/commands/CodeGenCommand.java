@@ -96,7 +96,10 @@ public class CodeGenCommand extends ValidationEngineCommand implements Callable<
 
       List<String> allOptions = new ArrayList<>(options);
       for (String compactOptions : commaDelimitedOptions) {
-        for (String option : compactOptions.split("\\,")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] optionParts = compactOptions.split("\\,");
+        for (String option : optionParts) {
           allOptions.add(option);
         }
       }

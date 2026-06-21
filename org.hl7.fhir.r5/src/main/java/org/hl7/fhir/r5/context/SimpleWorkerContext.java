@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -313,9 +312,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
     
     private Parameters makeExpProfile() {
-      Parameters ep = new Parameters();
-      ep.addParameter("cache-id", UUID.randomUUID().toString().toLowerCase());
-      return ep;
+      // The cache-id is no longer sent as an expansion parameter; it travels as the
+      // X-Cache-Id HTTP header, set only when a server-side cache has actually been
+      // started via $cache-control?mode=start (see TerminologyClientContext, gated by
+      // canUseCacheId). Injecting a random cache-id parameter here made upgraded tx
+      // servers reject the request with "the cache '<id>' is not known to this server".
+      return new Parameters();
     }
 
     public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader, boolean genSnapshots) throws IOException, FHIRException {
@@ -723,6 +725,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     byte[] bytes = IOUtils.toByteArray(stream);
     binaries.put("version.info", new BytesProvider(bytes));
 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] vi = new String(bytes).split("\\r?\\n");
     for (String s : vi) {
       if (s.startsWith("version=")) {

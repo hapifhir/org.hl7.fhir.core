@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.9.8-SNAPSHOT</version>
+    <version>6.9.11-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -25,7 +25,7 @@
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.4.0</hapi_fhir_version>
-        <validator_test_case_version>1.7.61-SNAPSHOT</validator_test_case_version>
+        <validator_test_case_version>1.7.64-SNAPSHOT</validator_test_case_version>
         <jackson_version>2.21.3</jackson_version>
         <jackson_annotations_version>2.21</jackson_annotations_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
@@ -400,17 +400,45 @@
                 <artifactId>log4j-api</artifactId>
                 <version>${log4jVersion}</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-annotations</artifactId>
+                <version>4.9.8</version>
+                <!-- spotbugs-annotations is LGPL licensed. To keep licensing simple, it is not included in the distributed software, using the settings below -->
+                <scope>provided</scope> <!--  available at compile time and test time, but not bundled into the jar. Maven assumes the runtime environment will provide it -->
+                <optional>true</optional> <!-- prevents the dependency from being transitively inherited by downstream consumers -->
+            </dependency>
+            <dependency>
+                <groupId>io.opentelemetry.javaagent</groupId>
+                <artifactId>opentelemetry-testing-common</artifactId>
+                <version>2.27.0-alpha</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentelemetry.javaagent</groupId>
+                <artifactId>opentelemetry-agent-for-testing</artifactId>
+                <version>2.27.0-alpha</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentelemetry.instrumentation</groupId>
+                <artifactId>opentelemetry-instrumentation-annotations</artifactId>
+                <version>2.27.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentelemetry</groupId>
+                <artifactId>opentelemetry-api</artifactId>
+                <version>1.62.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentelemetry</groupId>
+                <artifactId>opentelemetry-context</artifactId>
+                <version>1.62.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.1.4</version>
-                </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -459,6 +487,7 @@
                             <!--    For JUnit4 use TestUtilities.runningAsSurefire() or
                                     TestingUtilities.runningAsSurefire() to exclude a test from surefire executions-->
                             <runningAsSurefire>true</runningAsSurefire>
+                            <file.encoding>${project.build.sourceEncoding}</file.encoding>
                         </systemPropertyVariables>
                         <redirectTestOutputToFile>false</redirectTestOutputToFile>
                         <!-- For JUnit5 use an excludedInSurefire tag to exclude a test from surefire executions -->
@@ -495,6 +524,11 @@
                     <groupId>com.diffplug.spotless</groupId>
                     <artifactId>spotless-maven-plugin</artifactId>
                     <inherited>false</inherited>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.1.4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -552,6 +586,9 @@
                         <goals>
                             <goal>test-jar</goal>
                         </goals>
+                        <configuration>
+                            <skipIfEmpty>true</skipIfEmpty>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -577,7 +614,6 @@
                     <checkRuntimeClasspath>false</checkRuntimeClasspath>
                     <checkTestClasspath>false</checkTestClasspath>
                     <skip>false</skip>
-                    <quiet>false</quiet>
                     <preferLocal>true</preferLocal>
                     <useResultFile>true</useResultFile>
                     <resultFileMinClasspathCount>2</resultFileMinClasspathCount>
@@ -690,6 +726,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.9.8.3</version>
+                <configuration>
+                    <threshold>High</threshold>
+                    <maxHeap>8192</maxHeap>
+                </configuration>
             </plugin>
         </plugins>
 

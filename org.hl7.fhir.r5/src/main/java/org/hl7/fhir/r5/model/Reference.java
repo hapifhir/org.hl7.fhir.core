@@ -511,7 +511,10 @@ The type is the Canonical URL of Resource Definition that is the type this refer
       if (!(value.hasReference() && hasReference())) {
         return false;
       }
-      if (!reference.matches(value.getReference())) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean refMatches = reference.matches(value.getReference());
+      if (!refMatches) {
         return true;
       }
     }
@@ -519,7 +522,10 @@ The type is the Canonical URL of Resource Definition that is the type this refer
       if (!(value.hasIdentifier() && hasIdentifier())) {
         return false;
       }
-      if (!identifier.matches(value.getIdentifier())) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean idMatches = identifier.matches(value.getIdentifier());
+      if (!idMatches) {
         return true;
       }
     }

@@ -584,7 +584,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     if (cs != null) {
       if (cs.hasUserData("supplements.installed")) {
-        for (String s : cs.getUserString("supplements.installed").split("\\,")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] installedSupplements = cs.getUserString("supplements.installed").split("\\,");
+        for (String s : installedSupplements) {
           seeUsedSupplement(s);
         }
       }
@@ -1216,6 +1219,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     
     for (ConceptDefinitionDesignationComponent ds : cc.getDesignation()) {
       opContext.deadCheck("validateCode1 "+ds.toString());
+      if (!isOkLanguage(ds.getLanguage()) && (!ds.hasLanguage() || ds.getLanguage().equals(cs.getLanguage()))
+          && code.getDisplay().equalsIgnoreCase(ds.getValue())) {
+        // the display matches a designation in the code system's default language; that's
+        // acceptable if there are no displays in the requested language(s) (b.count() == 0)
+        // (see tests validation-simple-*-good-language-none)
+        isDefaultLang = true;
+      }
       if (isOkLanguage(ds.getLanguage())) {
         b.append("'"+ds.getValue()+"' ("+ds.getLanguage()+")");
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
@@ -1528,7 +1538,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (vsi.hasSystem()) {
       if (vsi.hasFilter()) {
         ValueSet vsDummy = new ValueSet();
-        vsDummy.setUrl(UUIDUtilities.makeUuidUrn());
+        String uuid = vsi.getUserString(UserDataNames.CACHED_UUID);
+        if (uuid == null) {
+          uuid = UUIDUtilities.makeUuidUrn();
+          vsi.setUserData(UserDataNames.CACHED_UUID, uuid);
+        }
+        vsDummy.setVersion("1");
+        vsDummy.setUrl(uuid);
         vsDummy.setStatus(PublicationStatus.ACTIVE);
         vsDummy.getCompose().addInclude(vsi);
         Coding c = new Coding().setCode(code).setSystem(vsi.getSystem());
@@ -1577,7 +1593,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
           return true;
         } else {
           ValueSet vsDummy = new ValueSet();
-          vsDummy.setUrl(UUIDUtilities.makeUuidUrn());
+          String uuid = vsi.getUserString(UserDataNames.CACHED_UUID);
+          if (uuid == null) {
+            uuid = UUIDUtilities.makeUuidUrn();
+            vsi.setUserData(UserDataNames.CACHED_UUID, uuid);
+          }
+          vsDummy.setVersion("1");
+          vsDummy.setUrl(uuid);
           vsDummy.setStatus(PublicationStatus.ACTIVE);
           vsDummy.getCompose().addInclude(vsi);
           ValidationResult vr = context.validateCode(options.withNoClient(), code, vsDummy);
@@ -2118,6 +2140,8 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (f.getValue() == null) {
         return false;
       }
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] values = f.getValue().split("\\,");
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       if (d != null) {
@@ -2133,7 +2157,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
       if (f.getValue() == null) {
         return true;
       }
-      values = f.getValue().split("\\,");
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] splitValues = f.getValue().split("\\,");
+      values = splitValues;
       d = CodeSystemUtilities.getProperty(cs, code, f.getProperty());
       if (d != null) {
         String v = d.primitiveValue();
@@ -2178,7 +2205,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
   private boolean regexMatchSafe(String value, String regex) {
     try {
-      return RegexTimeout.matches(value, regex);
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+      boolean matched = RegexTimeout.matches(value, regex);
+      return matched;
     } catch (TimeoutException e) {
       throw new FHIRException(context.formatMessage(I18nConstants.REGEX_MATCH_TIMED_OUT, regex));
     }

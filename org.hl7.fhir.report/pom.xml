@@ -5,14 +5,14 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.9.8-SNAPSHOT</version>
+        <version>6.9.11-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>org.hl7.fhir.report</artifactId>
-    <packaging>bundle</packaging>
+    <packaging>pom</packaging>
 
     <name>HL7 Core Artifact - Report</name>
 

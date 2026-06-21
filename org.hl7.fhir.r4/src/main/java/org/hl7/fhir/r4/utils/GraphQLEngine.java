@@ -675,6 +675,8 @@ public class GraphQLEngine implements IGraphQLEngine {
     if ((carg != null)) {
       params.clear();
       ;
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = getSingleValue(carg).split(":");
       params.add(new Argument("search-id", new StringValue(parts[0])));
       params.add(new Argument("search-offset", new StringValue(parts[1])));
@@ -889,6 +891,8 @@ public class GraphQLEngine implements IGraphQLEngine {
     private Map<String, String> parseURL(String url) throws FHIRException {
       try {
         Map<String, String> map = new HashMap<String, String>();
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] pairs = url.split("&");
         for (String pair : pairs) {
           int idx = pair.indexOf("=");

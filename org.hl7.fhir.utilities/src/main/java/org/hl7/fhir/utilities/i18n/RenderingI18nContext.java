@@ -208,6 +208,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONC_MAP_FROM = "CONC_MAP_FROM";
   public static final String CONC_MAP_GRP = "CONC_MAP_GRP";
   public static final String CONC_MAP_NOT_SPEC = "CONC_MAP_NOT_SPEC";
+  public static final String CONC_MAP_NO_SPEC = "CONC_MAP_NO_SPEC";
   public static final String CONC_MAP_REL = "CONC_MAP_REL";
   public static final String CONC_MAP_SOURCE = "CONC_MAP_SOURCE";
   public static final String CONC_MAP_SOURCE_CARD = "CONC_MAP_SOURCE_CARD";

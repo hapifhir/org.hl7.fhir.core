@@ -185,6 +185,8 @@ public class CIBuildClient {
   }
 
   private String getRepo(String path) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = path.split("/");
     return p[0] + "/" + p[1];
   }

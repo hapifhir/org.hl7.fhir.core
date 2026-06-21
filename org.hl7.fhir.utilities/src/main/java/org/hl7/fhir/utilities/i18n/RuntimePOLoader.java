@@ -93,16 +93,20 @@ public class RuntimePOLoader {
         if (localeTag.isEmpty()) {
           return null;
         }
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character replace
         // Normalize to the underscore form used by Locale.toString() and the
         // shipped properties files (Messages_pt_BR.properties).
-        localeTag = localeTag.replace('-', '_');
-        return new String[]{entry.getValue(), localeTag};
+        String normalizedLocaleTag = localeTag.replace('-', '_');
+        return new String[]{entry.getValue(), normalizedLocaleTag};
       }
     }
     return null;
   }
 
   static Locale localeFromTag(String tag) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character replace and split
     // Properties-file convention is underscore-separated (pt_BR). Locale.forLanguageTag
     // expects hyphens, so accept either.
     String[] parts = tag.replace('-', '_').split("_");
@@ -128,10 +132,15 @@ public class RuntimePOLoader {
         try (BufferedReader r = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
           String first = r.readLine();
           if (first != null && first.startsWith("#") && first.contains("=")) {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character replace
             String[] parts = first.substring(1).trim().split("=", 2);
             if (parts.length == 2) {
               List<String> out = new ArrayList<>();
-              for (String s : parts[1].split(",")) {
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //single literal character replace
+              String[] split = parts[1].split(",");
+              for (String s : split) {
                 String t = s.trim();
                 if (!t.isEmpty()) out.add(t);
               }
