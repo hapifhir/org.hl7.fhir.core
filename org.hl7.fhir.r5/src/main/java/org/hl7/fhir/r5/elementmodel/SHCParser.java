@@ -300,17 +300,17 @@ public class SHCParser extends ParserBase {
     } catch (IllegalArgumentException e) {
       throw new FHIRException("The input is not a valid base 64 encoded string.", e);
     }
-    JWT res = new JWT();
-    res.setHeaderSrc(headerJson);
-    res.header = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(headerJson);
-    if ("DEF".equals(res.header.asString("zip"))) {
+    JWT resJwt = new JWT();
+    resJwt.setHeaderSrc(headerJson);
+    resJwt.header = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(headerJson);
+    if ("DEF".equals(resJwt.header.asString("zip"))) {
       payloadJson = inflate(payloadJson).toByteArray();
     }
-    res.setPayloadSrc(payloadJson);
-    res.payload = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(FileUtilities.bytesToString(payloadJson), true);
+    resJwt.setPayloadSrc(payloadJson);
+    resJwt.payload = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(FileUtilities.bytesToString(payloadJson), true);
 
-    checkSignature(jwt, res, errors);
-    return res;
+    checkSignature(jwt, resJwt, errors);
+    return resJwt;
   }
 
   private void checkSignature(String jwt, JWT res, List<ValidationMessage> errors) {
@@ -445,12 +445,17 @@ public class SHCParser extends ParserBase {
     final Inflater inflater = new Inflater(true);
     inflater.setInput(compressed);
 
+    int writtenBytes = 0;
     try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(compressed.length)) {
       byte[] buffer = new byte[BUFFER_SIZE];
       while (!inflater.finished()) {
         final int count = inflater.inflate(buffer);
         if (count > 0) {
           outputStream.write(buffer, 0, count);
+          writtenBytes+=count;
+          if (writtenBytes > MAX_ALLOWED_SHC_LENGTH * 2) { // This is not a strict check on JWT size; it is mean to prevent highly compressed data from causing OOM errors
+            throw new DataFormatException("Maximum size of SHC JWT exceeded.");
+          }
         } else {
           // Handle the 0 byte return condition
           if (inflater.needsInput() || inflater.needsDictionary()) {
