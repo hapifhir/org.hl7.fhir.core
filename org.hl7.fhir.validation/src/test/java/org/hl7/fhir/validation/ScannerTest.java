@@ -16,16 +16,12 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.validation.ValidatorSession;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
-import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.service.model.ScanOutputItem;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -111,30 +107,17 @@ public class ScannerTest implements ResourceLoaderTests {
     copyResourceToFile(igPath, "scanner", "ig-with-js-content.tgz");
     copyResourceToFile(patientPath, "scanner", "patient.json");
 
-    // Build the Scanner collaborators wired to the shared context,
-    // mirroring what ValidationEngine produces for ScanCommand
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-    IgLoader igLoader = new IgLoader(pcm, context, context.getVersion(), false);
+    IgLoader igLoader = new IgLoader(context.packageManager(), context, context.getVersion(), false);
     igLoader.loadIg(new ArrayList<>(), new HashMap<>(),
         ManagedFileAccess.fromPath(igPath).getAbsolutePath(), false);
-    InstanceValidator validator =
-        new InstanceValidator(context, null, null, new ValidatorSession(), new ValidatorSettings());
-    FHIRPathEngine fpe = new FHIRPathEngine(context);
-    fpe.setAllowDoubleQuotes(false);
 
-    Scanner scanner = new Scanner(context, validator, igLoader, fpe);
+    Scanner scanner = new Scanner(context, null, null, null);
 
     // Collect the IG URLs exactly as Scanner.validateScan(outputDirectory, sources) does,
     // so we can call genScanOutput with includeStyleResources=false (no network access)
     List<String> sources = List.of(ManagedFileAccess.fromPath(patientPath).getAbsolutePath());
-    Set<String> urls = new HashSet<>();
-    for (ImplementationGuide ig : context.allImplementationGuides()) {
-      if (ig.getUrl().contains("/ImplementationGuide")
-          && !ig.getUrl().equals("http://hl7.org/fhir/ImplementationGuide/fhir")) {
-        urls.add(ig.getUrl());
-      }
-    }
-    List<ScanOutputItem> scanResults = getFakeResults(sources, urls, context);
+
+    List<ScanOutputItem> scanResults = getFakeResults(sources, context);
 
     Path outDir = Files.createTempDirectory("scanner-output");
     scanner.genScanOutput(scanResults, ManagedFileAccess.fromPath(outDir).getAbsolutePath(), false);
@@ -144,21 +127,29 @@ public class ScannerTest implements ResourceLoaderTests {
 
     for (String filename : List.of("scan.html", "c0.html", "c1.html")) {
       String content = Files.readString(outDir.resolve(filename));
+      // Our malicious IG/profile contains script elements. Through escaping, these will not appear as literal `<script>`
+      // tags, but as escaped `&lt;script&gt;` strings visible when rendered.
       assertFalse(content.contains("<script>"), filename + " contains unescaped <script>");
       assertFalse(content.contains("</script>"), filename + " contains unescaped </script>");
     }
   }
 
-  private List<ScanOutputItem> getFakeResults(List<String> sources, Set<String> urls, SimpleWorkerContext context) {
+  /** Build fake results that correspond to the malicious IG. This avoids having to build a full validation engine. It
+   * needs to pull the exact IG and profile from the context in order for genScanOutput to function correctly.
+   * */
+  private List<ScanOutputItem> getFakeResults(List<String> sources, SimpleWorkerContext context) {
     String ref = sources.get(0);
 
+    // The id of this IG itself is a 'malicious' script element.
     ImplementationGuide ig = context.allImplementationGuides().stream()
         .filter(i -> "<script>alert(\"package.json.name\")</script>".equals(i.getId()))
         .findFirst().orElse(null);
 
+    // The profile
     StructureDefinition profile = context.fetchResource(StructureDefinition.class,
         "http://example.org/fhir/StructureDefinition/minimal-patient-profile");
 
+    // Some dummy issues for each profile.
     OperationOutcome allOkOutcome = new OperationOutcome();
     OperationOutcome.OperationOutcomeIssueComponent okIssue = allOkOutcome.addIssue();
     okIssue.setSeverity(OperationOutcome.IssueSeverity.INFORMATION);
@@ -172,7 +163,9 @@ public class ScannerTest implements ResourceLoaderTests {
     errorIssue.getDetails().setText("dummy error");
 
     return List.of(
+        // The output for 'default' or R4 validation
         new ScanOutputItem(ref, null, null, allOkOutcome),
+        // The output for our malicious IG/profile
         new ScanOutputItem(ref, ig, profile, errorOutcome)
     );
   }
