@@ -421,7 +421,19 @@ public class SHCParser extends ParserBase {
     try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(compressed.length)) {
       while (!inflater.finished()) {
         length = inflater.inflate(buffer);
-        outputStream.write(buffer, 0, length);
+        if (length > 0) {
+          outputStream.write(buffer, 0, length);
+        } else {
+          // Handle the 0 byte return condition
+          if (inflater.needsInput()) {
+            // Break out if no more input chunks are available
+            break;
+          }
+          if (inflater.needsDictionary()) {
+            // Break out if a preset dictionary is missing
+            break;
+          }
+        }
       }
       return outputStream.toString(StandardCharsets.UTF_8.name());
     }
