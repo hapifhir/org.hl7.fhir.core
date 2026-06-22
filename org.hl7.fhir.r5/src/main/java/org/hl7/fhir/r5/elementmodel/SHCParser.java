@@ -304,7 +304,7 @@ public class SHCParser extends ParserBase {
     res.setHeaderSrc(headerJson);
     res.header = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(headerJson);
     if ("DEF".equals(res.header.asString("zip"))) {
-      payloadJson = inflate(payloadJson);
+      payloadJson = inflate(payloadJson).toByteArray();
     }
     res.setPayloadSrc(payloadJson);
     res.payload = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(FileUtilities.bytesToString(payloadJson), true);
@@ -376,10 +376,10 @@ public class SHCParser extends ParserBase {
 
       // Decompress the payload
       byte[] decodedPayload = jwsObject.getPayload().toBytes();
-      String decompressedPayload = decompress(decodedPayload);
+      String inflatedPayload = inflate(decodedPayload).toString(StandardCharsets.UTF_8);
 
       // Extract issuer from the payload
-      JsonObject rootNode = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(decompressedPayload);
+      JsonObject rootNode = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(inflatedPayload);
       String issuer = rootNode.asString("iss");
 
       // Fetch the public key
@@ -412,34 +412,6 @@ public class SHCParser extends ParserBase {
     }
   }
 
-  private static String decompress(byte[] compressed) throws Exception {
-    Inflater inflater = new Inflater(true);
-    inflater.setInput(compressed);
-
-    byte[] buffer = new byte[1024];
-    int length;
-    try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(compressed.length)) {
-      while (!inflater.finished()) {
-        length = inflater.inflate(buffer);
-        if (length > 0) {
-          outputStream.write(buffer, 0, length);
-        } else {
-          // Handle the 0 byte return condition
-          if (inflater.needsInput()) {
-            // Break out if no more input chunks are available
-            break;
-          }
-          if (inflater.needsDictionary()) {
-            // Break out if a preset dictionary is missing
-            break;
-          }
-        }
-      }
-      return outputStream.toString(StandardCharsets.UTF_8.name());
-    }
-  }
-
-
   private String getVCIIssuer(List<ValidationMessage> errors, String issuer) {
     try {
       JsonObject vci = org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl("https://raw.githubusercontent.com/the-commons-project/vci-directory/main/vci-issuers.json");
@@ -469,31 +441,25 @@ public class SHCParser extends ParserBase {
     return parts;
   }
 
-  public static byte[] inflate(byte[] data) throws IOException, DataFormatException {
+  public static ByteArrayOutputStream inflate(byte[] compressed) throws IOException, DataFormatException {
     final Inflater inflater = new Inflater(true);
-    inflater.setInput(data);
+    inflater.setInput(compressed);
 
-    try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length)) {
+    try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(compressed.length)) {
       byte[] buffer = new byte[BUFFER_SIZE];
       while (!inflater.finished()) {
-
         final int count = inflater.inflate(buffer);
         if (count > 0) {
           outputStream.write(buffer, 0, count);
         } else {
           // Handle the 0 byte return condition
-          if (inflater.needsInput()) {
-            // Break out if no more input chunks are available
-            break;
-          }
-          if (inflater.needsDictionary()) {
-            // Break out if a preset dictionary is missing
+          if (inflater.needsInput() || inflater.needsDictionary()) {
+            // Break out if no more input chunks are available or a preset dictionary is missing
             break;
           }
         }
       }
-
-      return outputStream.toByteArray();
+      return outputStream;
     }
   }
 
