@@ -628,9 +628,9 @@ public class JsonParserTests {
   @ValueSource(ints = {600, 5000, 20000})
   void testDeeplyNestedArraysFailCleanly(int depth) {
     StringBuilder b = new StringBuilder("{\"x\":");
-    for (int i = 0; i < depth; i++) b.append('[');
+    b.append("[".repeat(Math.max(0, depth)));
     b.append('0');
-    for (int i = 0; i < depth; i++) b.append(']');
+    b.append("]".repeat(Math.max(0, depth)));
     b.append('}');
     Assertions.assertThrows(IOException.class, () -> JsonParser.parseObject(b.toString()));
   }
@@ -639,9 +639,9 @@ public class JsonParserTests {
   @ValueSource(ints = {600, 5000, 20000})
   void testDeeplyNestedObjectsFailCleanly(int depth) {
     StringBuilder b = new StringBuilder();
-    for (int i = 0; i < depth; i++) b.append("{\"x\":");
+    b.append("{\"x\":".repeat(Math.max(0, depth)));
     b.append('0');
-    for (int i = 0; i < depth; i++) b.append('}');
+    b.append("}".repeat(Math.max(0, depth)));
     Assertions.assertThrows(IOException.class, () -> JsonParser.parseObject(b.toString()));
   }
 
@@ -650,9 +650,9 @@ public class JsonParserTests {
   void testModerateNestingStillParses() throws IOException, JsonException {
     int depth = 100;
     StringBuilder b = new StringBuilder("{\"x\":");
-    for (int i = 0; i < depth; i++) b.append('[');
+    b.append("[".repeat(depth));
     b.append('0');
-    for (int i = 0; i < depth; i++) b.append(']');
+    b.append("]".repeat(depth));
     b.append('}');
     Assertions.assertNotNull(JsonParser.parseObject(b.toString()));
   }
