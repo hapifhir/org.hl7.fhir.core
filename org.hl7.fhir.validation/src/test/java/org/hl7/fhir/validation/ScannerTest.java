@@ -32,13 +32,12 @@ public class ScannerTest implements ResourceLoaderTests {
   Path zipSlipPath;
 
   Path zipSlip2Path;
-
   Path zipSlipPeerPath;
 
   Path zipSlipWinPath;
 
   @BeforeAll
-  public void beforeAll() throws IOException {
+  void beforeAll() throws IOException {
     tempDir = Files.createTempDirectory("scanner-zip");
     ManagedFileAccess.fromPath(tempDir.resolve("child")).mkdir();
     zipNormalPath = tempDir.resolve(ZIP_NORMAL_ZIP);
@@ -55,7 +54,7 @@ public class ScannerTest implements ResourceLoaderTests {
   }
   
   @Test
-  public void testNormalZip() throws IOException {
+  void testNormalZip() throws IOException {
     Scanner scanner = new Scanner(null,null,null,null);
     scanner.unzip(ManagedFileAccess.fromPath(zipNormalPath).getAbsolutePath(), ManagedFileAccess.fromPath(tempDir).getAbsolutePath());
 
@@ -76,7 +75,7 @@ public class ScannerTest implements ResourceLoaderTests {
 
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("zipSlipData")
-  public void testUnzipZipSlip(Path path, String expectedMessage) {
+  void testUnzipZipSlip(Path path, String expectedMessage) {
     RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
       Scanner scanner = new Scanner(null,null,null,null);
       scanner.unzip(ManagedFileAccess.fromPath(path).getAbsolutePath(), ManagedFileAccess.fromPath(tempDir).getAbsolutePath());
@@ -84,5 +83,6 @@ public class ScannerTest implements ResourceLoaderTests {
     assertNotNull(thrown);
     assertEquals(expectedMessage, thrown.getMessage());
   }
+
 
 }
