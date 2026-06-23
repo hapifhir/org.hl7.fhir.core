@@ -30,6 +30,7 @@ import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
@@ -45,13 +46,15 @@ import org.junit.jupiter.api.Assumptions;
  */
 public class TurtleGeneratorTests {
   private static TurtleGeneratorTestUtils.ParserContext parsers;
+  private static TurtleGeneratorTestUtils.ParserContext r5Parsers;
+  private static TurtleGeneratorTestUtils.ParserContext r4Parsers;
+  private static TurtleGeneratorTestUtils.ParserContext r6Parsers;
   private static final String R4_VERSION = "4.0.1";
   private static final String R6_VERSION = "6.0.0";
 
   private static final Path ROOT_TEST_PATH = Paths.get("testUtilities");
   private static final Path DEFAULT_EXPECTED_XML_DIR = ROOT_TEST_PATH.resolve("xml/examples/expected");
   private static final Path DEFAULT_EXPECTED_JSON_DIR = ROOT_TEST_PATH.resolve("json/examples/expected");
-  private static final Path DEFAULT_OUTPUT_TURTLE_DIR = Paths.get(System.getProperty("java.io.tmpdir"));
   private static final Path DEFAULT_EXPECTED_TTL_DIR = ROOT_TEST_PATH.resolve("ttl/examples/expected");
     // These can be overwritten with a local.properties file (org.hl7.fhir.r5/src/test/resources/local.properties)
   private static Path inputXmlDirectory;
@@ -59,31 +62,77 @@ public class TurtleGeneratorTests {
   private static Path outputTurtleDirectory;
   private static Path expectedTurtleDirectory;
 
+  private static Path DEFAULT_OUTPUT_TURTLE_DIR;
+
   @BeforeAll
   public static void setup() throws IOException {
+    DEFAULT_OUTPUT_TURTLE_DIR = Path.of(Utilities.path("[tmp]", "ttl"));
+
     // Override configured directories in org.hl7.fhir.r5/src/test/resources/local.properties
     var props = TurtleGeneratorTestUtils.loadLocalProperties();
     inputXmlDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputXmlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_XML_DIR));
     inputJsonDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputJsonDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_JSON_DIR));
     outputTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "outputTtlDirectory", DEFAULT_OUTPUT_TURTLE_DIR);
-    outputTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "outputTtlDirectory", Path.of(Utilities.path("[tmp]", "ttl")));
     Files.createDirectories(outputTurtleDirectory);
     expectedTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "expectedTtlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_TTL_DIR));
 
-    initializeParsers(TestingUtilities.getSharedWorkerContext());
+    // Use R5 by default
+    r5Parsers = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(TestingUtilities.getSharedWorkerContext());
+    useR5Parsers();
+  }
+
+  @BeforeEach
+  void resetParsers() {
+    // Reset to R5 by default
+    useR5Parsers();
   }
 
   @AfterAll
   public static void tearDown() {
     parsers = null;
+    r5Parsers = null;
+    r4Parsers = null;
+    r6Parsers = null;
     inputXmlDirectory = null;
     inputJsonDirectory = null;
     outputTurtleDirectory = null;
     expectedTurtleDirectory = null;
   }
-  private static void initializeParsers(IWorkerContext context) {
-    parsers = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(context);
+
+  private static void useR5Parsers() {
+    parsers = r5Parsers;
+  }
+
+  /**
+   * Get cached versioned contexts
+   */
+  private static void useVersionOverrideParsers(String version) {
+    parsers = getVersionOverrideParsers(version);
+  }
+
+  /**
+   * Efficiently cache each context for when running multiple tests
+   */
+  private static TurtleGeneratorTestUtils.ParserContext getVersionOverrideParsers(String version) {
+    if (R4_VERSION.equals(version)) {
+      if (r4Parsers == null) {
+        r4Parsers = createVersionOverrideParsers(version);
+      }
+      return r4Parsers;
+    } else if (R6_VERSION.equals(version)) {
+      if (r6Parsers == null) {
+        r6Parsers = createVersionOverrideParsers(version);
+      }
+      return r6Parsers;
+    } else {
+      throw new IllegalArgumentException("Unsupported FHIR version for Turtle tests: " + version);
+    }
+  }
+
+  private static TurtleGeneratorTestUtils.ParserContext createVersionOverrideParsers(String version) {
+    IWorkerContext context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(version);
     System.out.println("FHIR version for testing: " + context.getVersion());
+    return TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(context);
   }
 
   // ---------------------------------------------------------------------------
@@ -97,15 +146,13 @@ public class TurtleGeneratorTests {
 
   @Test
   public void testXmlExamplesR4() throws IOException, UcumException {
-    var r4context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R4_VERSION);
-    initializeParsers(r4context);
+    useVersionOverrideParsers(R4_VERSION);
     testExpectedXmlExamples(expectedTurtleDirectory.resolve("R4"), outputTurtleDirectory);
   }
 
   @Test
   public void testXmlExamplesR6() throws IOException, UcumException {
-    var r6context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R6_VERSION);
-    initializeParsers(r6context);
+    useVersionOverrideParsers(R6_VERSION);
     testExpectedXmlExamples(expectedTurtleDirectory.resolve("R6"), outputTurtleDirectory);
   }
 
@@ -117,8 +164,7 @@ public class TurtleGeneratorTests {
   }
   @Test
   public void testJsonExampleR4() throws IOException, UcumException {
-    var r4context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R4_VERSION);
-    initializeParsers(r4context);
+    useVersionOverrideParsers(R4_VERSION);
     testExpectedJsonExamples(inputJsonDirectory.resolve("R4"), outputTurtleDirectory);
   }
 
@@ -134,19 +180,17 @@ public class TurtleGeneratorTests {
   // Not all of these are critical and can be consolidated if we want to reduce tests
   @Test
   public void testAsHtmlGeneratesProperFormattingR4() throws Exception {
-    var r4context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R4_VERSION);
-    testAsHtmlGeneratesProperFormatting("R4", r4context);
+    testAsHtmlGeneratesProperFormatting("R4", getVersionOverrideParsers(R4_VERSION));
   }
 
   @Test
   public void testAsHtmlGeneratesProperFormattingR5() throws Exception {
-    testAsHtmlGeneratesProperFormatting("R5", TestingUtilities.getSharedWorkerContext());
+    testAsHtmlGeneratesProperFormatting("R5", r5Parsers);
   }
 
   @Test
   public void testAsHtmlGeneratesProperFormattingR6() throws Exception {
-    var r6context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R6_VERSION);
-    testAsHtmlGeneratesProperFormatting("R6", r6context);
+    testAsHtmlGeneratesProperFormatting("R6", getVersionOverrideParsers(R6_VERSION));
   }
 
   @Test
@@ -276,7 +320,7 @@ public class TurtleGeneratorTests {
       Assertions.assertTrue(Files.exists(xmlResourcePath), "Missing XML example for " + expectedTurtlePath.getFileName() + " at path: " + xmlResourcePath);
       String expected = parsers.parseGeneratedTurtle(expectedTurtlePath.toString());
       String actual = parsers.parseGeneratedTurtle(parsers.generateTurtleFromXmlResourcePath(xmlResourcePath, outputDirectory));
-      FileUtilities.stringToFile(actual, Utilities.path("[tmp]", "ttl", xmlResourcePath.getFileName().toString()));
+      FileUtilities.stringToFile(actual, outputDirectory.resolve(xmlResourcePath.getFileName()).toString());
       Assertions.assertEquals(
         expected,
         actual,
@@ -329,11 +373,11 @@ public class TurtleGeneratorTests {
     return inputXmlDirectory.resolve(xmlFileName);
   }
 
-   private void testAsHtmlGeneratesProperFormatting(String versionDirectory, IWorkerContext context) throws Exception {
+  private void testAsHtmlGeneratesProperFormatting(String versionDirectory, TurtleGeneratorTestUtils.ParserContext parserContext) throws Exception {
     Path xmlResourcePath = inputXmlDirectory.resolve(versionDirectory).resolve("patient-example-f201-roel.xml");
     Assumptions.assumeTrue(Files.exists(xmlResourcePath), "XML example missing: " + xmlResourcePath);
 
-    Turtle rdf = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(context).composeTurtleFromXmlResourcePath(xmlResourcePath);
+    Turtle rdf = parserContext.composeTurtleFromXmlResourcePath(xmlResourcePath);
 
     String prismHtml = rdf.asHtml(true);
     String plainHtml = rdf.asHtml(false);
