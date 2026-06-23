@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.9.10-SNAPSHOT</version>
+    <version>6.9.11-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -25,7 +25,7 @@
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.4.0</hapi_fhir_version>
-        <validator_test_case_version>1.7.63-SNAPSHOT</validator_test_case_version>
+        <validator_test_case_version>1.7.64-SNAPSHOT</validator_test_case_version>
         <jackson_version>2.21.3</jackson_version>
         <jackson_annotations_version>2.21</jackson_annotations_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
@@ -404,7 +404,9 @@
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-annotations</artifactId>
                 <version>4.9.8</version>
-                <scope>provided</scope>
+                <!-- spotbugs-annotations is LGPL licensed. To keep licensing simple, it is not included in the distributed software, using the settings below -->
+                <scope>provided</scope> <!--  available at compile time and test time, but not bundled into the jar. Maven assumes the runtime environment will provide it -->
+                <optional>true</optional> <!-- prevents the dependency from being transitively inherited by downstream consumers -->
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry.javaagent</groupId>
@@ -437,11 +439,6 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.1.4</version>
-                </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>

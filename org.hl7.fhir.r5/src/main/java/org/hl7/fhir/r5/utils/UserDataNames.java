@@ -161,4 +161,5 @@ public class UserDataNames {
   public static final String VS_EXPANSION_VERSION_MAP = "VS_EXPANSION_VERSION_MAP";
   public static final String CS_SUPPLEMENT_LIST = "CS_SUPPLEMENT_LIST";
   public static final String CONTAINED_RESOURCE = "CONTAINED_RESOURCE";
+  public static final String CACHED_UUID = "CACHED_UUID";
 }

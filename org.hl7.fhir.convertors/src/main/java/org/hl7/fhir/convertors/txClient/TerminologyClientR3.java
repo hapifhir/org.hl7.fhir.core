@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.txClient;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.EnumSet;
 import java.util.Map;
@@ -119,6 +120,13 @@ public class TerminologyClientR3 implements ITerminologyClient {
     org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(pin);
     p2 = client.operateType(org.hl7.fhir.dstu3.model.ValueSet.class, "validate-code", p2);
     return (Parameters) VersionConvertorFactory_30_50.convertResource(p2);
+  }
+
+  @Override
+  public Parameters cacheControl(CacheControlMode mode, Parameters body) throws FHIRException, IOException {
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(body == null ? new Parameters() : body);
+    org.hl7.fhir.dstu3.model.Parameters r = client.operateSystem("cache-control", "mode=" + mode, p2);
+    return (Parameters) VersionConvertorFactory_30_50.convertResource(r);
   }
 
   @Override
@@ -242,6 +250,16 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
+  public ITerminologyClient addClientHeader(HTTPHeader header) {
+    if (this.clientHeaders == null) {
+      this.clientHeaders = new ClientHeaders();
+    }
+    this.clientHeaders.addHeader(header);
+    this.client.setClientHeaders(this.clientHeaders.headers());
+    return this;
+  }
+
+  @Override
   public ITerminologyClient setUserAgent(String userAgent) {
     client.setUserAgent(userAgent);
     return this;
@@ -294,7 +312,7 @@ public class TerminologyClientR3 implements ITerminologyClient {
     pIn.addParameter().setName("otherValueSet").setResource(vsOther);
     pIn.addParameter().setName("diagnostics").setValue(new BooleanType(true));
     org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(pIn);
-    return (org.hl7.fhir.r5.model.Parameters) VersionConvertorFactory_30_50.convertResource(client.operateType(org.hl7.fhir.dstu3.model.ValueSet.class, "related", p2));
+    return (org.hl7.fhir.r5.model.Parameters) VersionConvertorFactory_30_50.convertResource(client.operateType(org.hl7.fhir.dstu3.model.ValueSet.class, "compare", p2));
   }
 
   @Override
@@ -303,8 +321,8 @@ public class TerminologyClientR3 implements ITerminologyClient {
   }
 
   @Override
-  public Parameters doRelated(Parameters params) throws FHIRException {
-    return (Parameters) VersionConvertorFactory_30_50.convertResource(client.doRelated((org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(params)));
+  public Parameters doCompare(Parameters params) throws FHIRException {
+    return (Parameters) VersionConvertorFactory_30_50.convertResource(client.doCompare((org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(params)));
   }
 
   @Override
