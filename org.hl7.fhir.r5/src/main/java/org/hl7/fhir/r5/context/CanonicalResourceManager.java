@@ -109,7 +109,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         // investing in not loading it in the frst place, but it's quite a bit of
         // routing and piping. this saves a lot of memory
         if (resource instanceof DomainResource) {
-          ((DomainResource) resource).setText(null);
+          (resource).setText(null);
         }
       }
       return resource;
