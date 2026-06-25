@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.xml;
 
 import net.sf.saxon.trans.XPathException;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.XsltUtilities;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -82,7 +83,7 @@ public class XMLUtilTests {
   public void testSaxonTransformerFactoryThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
     DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     DocumentBuilder safeBuilder = factory.newDocumentBuilder();
-    TransformerFactory tf = XMLUtil.newXXEProtectedSaxonTransformerFactory();
+    TransformerFactory tf = XsltUtilities.newXXEProtectedSaxonTransformerFactory();
 
     assertTransformerFactoryThrowsExceptionOnEvilTransform(safeBuilder, tf);
   }
