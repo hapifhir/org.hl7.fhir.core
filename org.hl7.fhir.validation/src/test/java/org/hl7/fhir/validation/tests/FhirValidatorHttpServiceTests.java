@@ -1294,6 +1294,99 @@ class FhirValidatorHttpServiceTest {
       assertEquals("collection", bundle.asString("type"));
     }
 
+    /**
+     * Companion to {@link #testFmlParseEmitsRuntimeVersion} and
+     * {@link #testItbLoadResourceReplaceUpdatesExisting} — the $package operation
+     * was the third place where StructureMap serialisation could leak R5 shapes
+     * to an R4 caller (the Bundle was always composed by the R5 parser regardless
+     * of {@code -version}). The fix is now applied so the whole Bundle (including
+     * every nested StructureMap walked by {@code ResourceDependencyWalker}) goes
+     * through {@code VersionConvertorFactory_40_50.convertResource} before serialisation.
+     *
+     * <p>This test parses a 2-group FML (the outer group invokes the inner via
+     * {@code then InnerCopy(src, t)} — a dependent with 2 valueId params),
+     * registers the resulting StructureMap, packages it, then asserts that the
+     * StructureMap inside the returned Bundle has R4 {@code dependent.variable} —
+     * NOT R5 {@code dependent.parameter}. Failure mode the test guards against:
+     * the bundled SM has empty {@code dependent.variable} → transform later fails
+     * with the misleading "has N but invocation has 0 variables" error.
+     */
+    @Test
+    @DisplayName("ITB Package - bundled StructureMaps use R4 dependent.variable on R4 validator")
+    void testItbPackageEmitsRuntimeVersionForBundledStructureMaps() throws Exception {
+      setUpService(getValidationEngine());
+
+      // 1. Parse a 2-group FML — the outer rule invokes the inner via 'then InnerCopy(src, t)'
+      String smJson = parseFmlViaItb(FML_WITH_DEPENDENT);
+
+      // 2. Register the parsed SM (use replace=true so re-runs are idempotent)
+      itbLoadResource(smJson, true);
+
+      // 3. Package it by canonical URL. includeRuleReferences=true exercises the
+      //    walker code path that follows rule-level references — the path the bug
+      //    report identifies as also leaking R5 shape.
+      org.hl7.fhir.utilities.json.model.JsonObject body = new org.hl7.fhir.utilities.json.model.JsonObject();
+      body.add("operation", "package");
+      org.hl7.fhir.utilities.json.model.JsonArray input = new org.hl7.fhir.utilities.json.model.JsonArray();
+      input.add(anyContent("resource", "http://example.org/StructureMap/PassThrough"));
+      input.add(anyContent("includeRuleReferences", "true"));
+      input.add(anyContent("targetFormat", "json"));
+      body.add("input", input);
+
+      HttpResponse<String> pkgResp = httpClient.send(
+        HttpRequest.newBuilder()
+          .uri(URI.create(BASE_URL + "/itb/package/process"))
+          .POST(HttpRequest.BodyPublishers.ofString(org.hl7.fhir.utilities.json.parser.JsonParser.compose(body)))
+          .header("Content-Type", "application/json")
+          .build(),
+        HttpResponse.BodyHandlers.ofString());
+      assertEquals(200, pkgResp.statusCode(), "package: " + pkgResp.body());
+
+      org.hl7.fhir.utilities.json.model.JsonObject envelope =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(pkgResp.body());
+      String bundleJson = null;
+      for (org.hl7.fhir.utilities.json.model.JsonElement el : envelope.getJsonArray("output")) {
+        org.hl7.fhir.utilities.json.model.JsonObject ac = el.asJsonObject();
+        if ("bundle".equals(ac.asString("name"))) bundleJson = ac.asString("value");
+      }
+      assertTrue(bundleJson != null && !bundleJson.isEmpty(), "package must return a bundle");
+
+      org.hl7.fhir.utilities.json.model.JsonObject bundle =
+        org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(bundleJson);
+      assertEquals("Bundle", bundle.asString("resourceType"));
+
+      // 4. Walk every StructureMap entry. For each, every rule.dependent must use
+      //    R4 'variable[]', NOT R5 'parameter[]'. This is the heart of the bug
+      //    report: any entry that comes through with 'parameter' but no 'variable'
+      //    would re-trigger "has N but invocation has 0 variables" downstream.
+      int smCount = 0;
+      int depCount = 0;
+      for (org.hl7.fhir.utilities.json.model.JsonElement entryEl : bundle.getJsonArray("entry")) {
+        org.hl7.fhir.utilities.json.model.JsonObject resource = entryEl.asJsonObject().getJsonObject("resource");
+        if (!"StructureMap".equals(resource.asString("resourceType"))) continue;
+        smCount++;
+        org.hl7.fhir.utilities.json.model.JsonArray groups = resource.getJsonArray("group");
+        if (groups == null) continue;
+        for (org.hl7.fhir.utilities.json.model.JsonElement groupEl : groups) {
+          for (org.hl7.fhir.utilities.json.model.JsonElement ruleEl : groupEl.asJsonObject().getJsonArray("rule")) {
+            org.hl7.fhir.utilities.json.model.JsonObject rule = ruleEl.asJsonObject();
+            if (!rule.has("dependent")) continue;
+            for (org.hl7.fhir.utilities.json.model.JsonElement depEl : rule.getJsonArray("dependent")) {
+              org.hl7.fhir.utilities.json.model.JsonObject dep = depEl.asJsonObject();
+              depCount++;
+              assertFalse(dep.has("parameter"),
+                "$package output must NOT contain R5 dependent.parameter on R4 validator — found in "
+                  + resource.asString("url") + " rule " + rule.asString("name") + ": " + dep);
+              assertTrue(dep.has("variable") && dep.getJsonArray("variable").size() > 0,
+                "$package output must carry R4 dependent.variable[...] (non-empty) — got: " + dep);
+            }
+          }
+        }
+      }
+      assertTrue(smCount > 0,  "package must include at least one StructureMap in the bundle");
+      assertTrue(depCount > 0, "test FML has dependent invocations — bundled SM must contain at least one");
+    }
+
     @Test
     @DisplayName("ITB Transform - parse FML to StructureMap (GITB endpoint, real engine)")
     void testItbTransformParseFml() throws Exception {

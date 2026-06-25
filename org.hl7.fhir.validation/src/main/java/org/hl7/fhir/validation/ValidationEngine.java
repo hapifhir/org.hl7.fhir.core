@@ -919,11 +919,40 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
       log.warn("$package: could not resolve dependency " + broken);
     }
 
+    // Same version-matching as parseStructureMap: a Bundle returned to an R4-mode caller
+    // must be serialised as R4 so its StructureMaps round-trip cleanly through
+    // /loadResource. Without this, every StructureMap in the Bundle would emit
+    // dependent.parameter (R5-only) and silently lose variables on re-read.
+    String effectiveVersion = version != null ? version : (context != null ? context.getVersion() : null);
+    return serialiseBundleForVersion(bundle, effectiveVersion, outputFormat);
+  }
+
+  /**
+   * Convert {@code bundle} (an R5 Bundle) to the version matching {@code targetVersion}
+   * and serialise it. Mirrors {@link #serialiseStructureMapForVersion} but for the whole
+   * Bundle so every entry — including nested StructureMaps reached via $package's
+   * dependency walker — gets the same version conversion treatment.
+   */
+  private static byte[] serialiseBundleForVersion(Bundle bundle, String targetVersion, FhirFormat outputFormat) throws FHIRException, IOException {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    if (outputFormat == FhirFormat.XML) {
-      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+    if (targetVersion == null || targetVersion.startsWith("5.") || targetVersion.startsWith("6.")) {
+      if (outputFormat == FhirFormat.XML) new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+      else                                new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+    } else if (targetVersion.startsWith("4.0")) {
+      org.hl7.fhir.r4.model.Resource r4 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50.convertResource(bundle);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.r4.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(baos, r4);
+      else                                new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4.formats.IParser.OutputStyle.PRETTY).compose(baos, r4);
+    } else if (targetVersion.startsWith("4.3")) {
+      org.hl7.fhir.r4b.model.Resource r4b = org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50.convertResource(bundle);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.r4b.formats.XmlParser().setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(baos, r4b);
+      else                                new org.hl7.fhir.r4b.formats.JsonParser().setOutputStyle(org.hl7.fhir.r4b.formats.IParser.OutputStyle.PRETTY).compose(baos, r4b);
+    } else if (targetVersion.startsWith("3.")) {
+      org.hl7.fhir.dstu3.model.Resource r3 = org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50.convertResource(bundle);
+      if (outputFormat == FhirFormat.XML) new org.hl7.fhir.dstu3.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(baos, r3);
+      else                                new org.hl7.fhir.dstu3.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(baos, r3);
     } else {
-      new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+      if (outputFormat == FhirFormat.XML) new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
+      else                                new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(baos, bundle);
     }
     return baos.toByteArray();
   }
