@@ -11,7 +11,7 @@ name: WIP validator_cli.jar
 on:
   push:
     branches:
-      - itb-rest-test
+      - itb-rest
   workflow_dispatch:
 
 permissions:
