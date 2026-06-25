@@ -13,6 +13,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.XMLConstants;
 
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -45,9 +46,6 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
   
  */
 
-
-import net.sf.saxon.TransformerFactoryImpl;
-
 /**
  * Utilities for working with XML
  * <p>
@@ -58,7 +56,7 @@ import net.sf.saxon.TransformerFactoryImpl;
 public class XsltUtilities {
 
   public static byte[] saxonTransform(Map<String, byte[]> files, byte[] source, byte[] xslt) throws TransformerException {
-    TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedSaxonTransformerFactory();
+    TransformerFactory f = newXXEProtectedSaxonTransformerFactory();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
     f.setURIResolver(new ZipURIResolver(files));
@@ -88,7 +86,7 @@ public class XsltUtilities {
   }
 
   public static String saxonTransform(String source, String xslt) throws TransformerException, IOException {
-    TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedSaxonTransformerFactory();
+    TransformerFactory f = newXXEProtectedSaxonTransformerFactory();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(ManagedFileAccess.inStream(xslt));
     Transformer t = f.newTransformer(xsrc);
@@ -103,7 +101,7 @@ public class XsltUtilities {
   }
 
   public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt, Map<String, String> params) throws TransformerException, IOException {
-    TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedSaxonTransformerFactory();
+    TransformerFactory f = newXXEProtectedSaxonTransformerFactory();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(ManagedFileAccess.inStream(xslt));
     f.setURIResolver(new MyURIResolver(xsltDir, alt));
@@ -146,6 +144,22 @@ public class XsltUtilities {
       fsr.close();
     }
 
+  }
+
+  /**
+   * This method is used to create a new net.sf.saxon.TransformerFactoryImpl instance with external processing features
+   * configured securely.
+   * <p/>
+   * <b>IMPORTANT</b> This method should be the only place where TransformerFactory is instantiated in this project.
+   *
+   * @return A TransformerFactoryImpl instance external processing features configured securely.
+   */
+  @SuppressWarnings("checkstyle:transformerFactoryImplInstantiation")
+  public static TransformerFactory newXXEProtectedSaxonTransformerFactory() {
+    final TransformerFactory f = new net.sf.saxon.TransformerFactoryImpl();
+    f.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+    f.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+    return f;
   }
 
 }

@@ -2471,8 +2471,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         for (Map<String, ResourceProxy> rt : allResourcesById.values()) {
           for (ResourceProxy r : rt.values()) {
             if (uri.equals(r.getUrl())) {
-              if (version == null || version == r.getResource().getMeta().getVersionId()) {
-                return (T) r.getResource();
+              Resource resource = r.getResource();
+              if (version == null) {
+                return (T) resource;
+              }
+              if (resource instanceof CanonicalResource && version.equals(((CanonicalResource) resource).getVersion())) {
+                return (T) resource;
+              }
+              if (version.equals(resource.getMeta().getVersionId())) {
+                return (T) resource;
               }
             }
           }

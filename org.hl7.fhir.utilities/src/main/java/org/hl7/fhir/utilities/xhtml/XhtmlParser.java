@@ -62,6 +62,9 @@ public class XhtmlParser {
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
   private static final char END_OF_CHARS = (char) -1;
   private static final boolean DEBUG = false;
+  // maximum XHTML element nesting depth; well above any legitimate FHIR narrative, but low
+  // enough to fail cleanly with a FHIRFormatError rather than a StackOverflowError.
+  private static final int MAX_XHTML_DEPTH = 500;
 
   public class NamespaceNormalizationMap {
 
@@ -692,6 +695,12 @@ public class XhtmlParser {
 
   private void parseElement(XhtmlNode parent, List<XhtmlNode> parents, NamespaceNormalizationMap namespaceMap) throws IOException, FHIRFormatError
   {
+    // guard against unbounded recursion (parseElement <-> parseElementInner) on deeply nested
+    // narratives, which would otherwise cause a StackOverflowError. parents grows by one per
+    // nesting level, so it is a faithful proxy for the current depth.
+    if (parents.size() > MAX_XHTML_DEPTH) {
+      throw new FHIRFormatError("XHTML nesting depth exceeds maximum of "+MAX_XHTML_DEPTH+descLoc());
+    }
     markLocation();
     ElementName name = new ElementName(readName());
     XhtmlNode node = parent.addTag(name.getName());

@@ -26,8 +26,8 @@
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.4.0</hapi_fhir_version>
         <validator_test_case_version>1.7.64-SNAPSHOT</validator_test_case_version>
-        <jackson_version>2.21.3</jackson_version>
-        <jackson_annotations_version>2.21</jackson_annotations_version>
+        <jackson_version>2.22.0</jackson_version>
+        <jackson_annotations_version>2.22</jackson_annotations_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
         <junit_platform_launcher_version>1.14.0</junit_platform_launcher_version>
         <maven_surefire_version>3.5.3</maven_surefire_version>
@@ -375,7 +375,7 @@
             <dependency>
                 <groupId>org.xerial</groupId>
                 <artifactId>sqlite-jdbc</artifactId>
-                <version>3.53.0.0</version>
+                <version>3.53.2.0</version>
             </dependency>
 
             <dependency>

@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.xml;
 
 import net.sf.saxon.trans.XPathException;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.XsltUtilities;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -20,6 +21,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,6 +37,23 @@ public class XMLUtilTests {
 
     SAXParseException e = assertThrows(SAXParseException.class, ()-> safeBuilder.parse(file));
     assertThat(e.getMessage()).contains("DOCTYPE is disallowed");
+  }
+
+  // A document nested far beyond MAX_ELEMENT_DEPTH must fail with a SAXException during DOM
+  // construction (via jdk.xml.maxElementDepth) rather than a StackOverflowError inside Xerces.
+  @Test
+  public void testDocumentBuilderBoundsElementDepth() throws ParserConfigurationException {
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
+    int depth = 5000;
+    StringBuilder b = new StringBuilder("<root xmlns=\"urn:x\">");
+    for (int i = 0; i < depth; i++) b.append("<a>");
+    b.append("x");
+    for (int i = 0; i < depth; i++) b.append("</a>");
+    b.append("</root>");
+    assertThrows(SAXException.class, () -> {
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      builder.parse(new InputSource(new StringReader(b.toString())));
+    });
   }
 
   @Test
@@ -64,7 +83,7 @@ public class XMLUtilTests {
   public void testSaxonTransformerFactoryThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
     DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     DocumentBuilder safeBuilder = factory.newDocumentBuilder();
-    TransformerFactory tf = XMLUtil.newXXEProtectedSaxonTransformerFactory();
+    TransformerFactory tf = XsltUtilities.newXXEProtectedSaxonTransformerFactory();
 
     assertTransformerFactoryThrowsExceptionOnEvilTransform(safeBuilder, tf);
   }

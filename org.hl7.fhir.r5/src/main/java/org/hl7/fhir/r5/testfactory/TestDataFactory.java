@@ -265,7 +265,6 @@ public class TestDataFactory {
     try {
       checkDownloadBaseData();
 
-      //FIXME trim additional details
       String dataWithSheetInfo = details.asString("data");
       String[] split = splitDataWithSheetInfo(dataWithSheetInfo);
       TableDataProvider.SheetInfo sheetInfo = split[1] == null ? new TableDataProvider.SheetInfo(null, null) :

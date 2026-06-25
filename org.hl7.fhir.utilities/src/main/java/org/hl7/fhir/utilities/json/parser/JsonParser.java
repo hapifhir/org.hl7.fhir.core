@@ -240,6 +240,12 @@ public class JsonParser {
   enum ItemType {
     Object, String, Number, Boolean, Array, End, Eof, Null;
   }
+  // maximum object/array nesting depth; well above any legitimate FHIR resource, but low enough
+  // to fail cleanly with a JsonException rather than a StackOverflowError on the mutual recursion
+  // between readObject() and readArray().
+  private static final int MAX_JSON_DEPTH = 500;
+  private int parseDepth = 0;
+
   private JsonLexer lexer;
   private ItemType itemType = ItemType.Object;
   private String itemName;
@@ -364,6 +370,10 @@ public class JsonParser {
   }
 
   private void readObject(String path, JsonObject obj, boolean root) throws IOException, JsonException {
+    if (++parseDepth > MAX_JSON_DEPTH) {
+      throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
+    }
+    try {
     while (!(itemType == ItemType.End) || (root && (itemType == ItemType.Eof))) {
       obj.setExtraComma(false);
       switch (itemType) {
@@ -438,9 +448,16 @@ public class JsonParser {
       obj.setExtraComma(lexer.getType() == TokenType.Comma);
       next();
     }
+    } finally {
+      parseDepth--;
+    }
   }
 
   private boolean readArray(String path, JsonArray arr, boolean root) throws IOException, JsonException {
+    if (++parseDepth > MAX_JSON_DEPTH) {
+      throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
+    }
+    try {
     boolean res = false;
     while (!((itemType == ItemType.End) || (root && (itemType == ItemType.Eof)))) {
       res  = true;
@@ -503,6 +520,9 @@ public class JsonParser {
       next();
     }
     return res;
+    } finally {
+      parseDepth--;
+    }
   }
 
   private void next() throws IOException {
