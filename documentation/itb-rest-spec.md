@@ -23,6 +23,7 @@ The validator exposes **ten GITB REST services** under `/itb/`:
 | `FHIRTransformer`         | Processing | `/itb/transform`         | `transform`, `parse` |
 | `QuestionnaireGenerator`  | Processing | `/itb/questionnaire`     | `generate` |
 | `PackageGenerator`        | Processing | `/itb/package`           | `package` |
+| `ResourceLoader`          | Processing | `/itb/loadResource`      | `loadResource` |
 
 Per the GITB contract, each kind has a fixed sub-path scheme — the **handler URI is the service root**, and ITB knows the operation names from the contract:
 
@@ -379,6 +380,26 @@ Outputs: `structureMap` (the parsed `StructureMap` as a string) and `targetMime`
 
 > The legacy native handler: `POST /fml?name=<name>&format=json|xml` with the FML source as the request body.
 
+##### Version compatibility — `StructureMap` JSON encoding differs across FHIR versions
+
+`StructureMap.group.rule.dependent` is encoded differently in different FHIR versions:
+
+- **R5**: `dependent.parameter` — a typed list (`[{ "valueId": "src" }, ...]`)
+- **R4 / R4B / R3**: `dependent.variable` — a string list (`["src", "t"]`)
+
+The `parse` operation (and the legacy `POST /fml`) **emit a `StructureMap` in the format that matches the validator's runtime FHIR version** — i.e. an R4-mode validator (`-version r4`) produces R4-format JSON with `dependent.variable`. This guarantees that the parsed `StructureMap` round-trips back through `loadResource` on the same validator without losing data.
+
+If you POST a mismatched `StructureMap` (e.g. an R5-format JSON to an R4 validator), `loadResource` will still accept it but the descriptor in the response will include a warning:
+
+```
+StructureMap/foo (...) (warning: incoming StructureMap JSON contains R5-only field 'dependent.parameter'
+but validator is running in version 4.0; dependent invocations may have been silently truncated...)
+```
+
+This is the silent-data-loss case that previously made `transform` fail with the misleading error *"Rule 'X' has N but the invocation has 0 variables"*. The warning makes the failure mode visible at registration time.
+
+If you need to author a `StructureMap` in one version and run it on a validator at a different version, convert the resource explicitly before posting it (use the public FHIR version converter API), or run the validator at the matching version.
+
 ### 4.6 `QuestionnaireGenerator`
 
 **Path**: `/itb/questionnaire` — Operation: `generate`.
@@ -423,6 +444,39 @@ Outputs: `bundle` (the `collection` Bundle as a string) and `targetMime` (`appli
 > **Scope.** This implements the core of CRMI `$package` — root + transitive dependency closure, with optional ValueSet expansion. The following `$package` parameters are **not** implemented: paging (`count`/`offset`), `contentEndpoint`/`terminologyEndpoint`, `packageOnly`, `manifest`, and capability-based filtering.
 >
 > The legacy native handler: `GET /package?url=<url>&expand=true|false&format=json|xml`.
+
+### 4.8 `ResourceLoader`
+
+**Path**: `/itb/loadResource` — Operation: `loadResource`.
+
+Ad-hoc registration of FHIR resources in the running validator's context — typically a `StructureMap` parsed via `FHIRTransformer.parse`, but any canonical resource (`StructureDefinition`, `ValueSet`, `CodeSystem`, etc.) or a `collection`/`batch`/`transaction` `Bundle` of them works. Lets you author and iterate without rebuilding an NPM package. Same engine path as the legacy native `POST /loadResource` handler, exposed in GITB shape.
+
+| Input | Required | Notes |
+|---|---|---|
+| `content` | yes | FHIR resource or `collection`/`batch`/`transaction` Bundle, serialised as JSON or XML. |
+| `format` | no | Input format: `json` (default) or `xml`. |
+| `replace` | no | When `"true"`, a canonical resource whose URL is already in the context drops the existing copy and registers the new one. Default `false` — same-URL re-submissions are reported as `(skipped, already in context)`. Use `replace=true` in the authoring loop where you iterate on an FML map and resubmit under the same canonical URL without bumping `version` on each edit. |
+
+Outputs: `loaded` (count of resources registered) and `resources` (comma-separated list of descriptors, one per registered resource).
+
+The `resources` descriptor format is `<fhirType>/<id> (<url>[|<version>])` with one of these suffixes when applicable:
+- `(skipped, already in context)` — same-URL resource already present and `replace` was not `true`.
+- `(replaced)` — same-URL resource was present, `replace=true` dropped it and the new one was registered.
+- `(warning: ...)` — see version compatibility below.
+
+#### Version compatibility — same caveat as `FHIRTransformer.parse`
+
+The loader parses each resource using the validator's runtime FHIR version. If the JSON contains R5-only fields (most importantly `StructureMap.group.rule.dependent.parameter`) and the validator is running in a pre-R5 version, the R4 / R4B / R3 JSON parser silently drops those fields. The transform engine then sees an empty dependent invocation and fails at runtime with a misleading *"Rule 'X' has N but the invocation has 0 variables"* error.
+
+To make the data loss visible at registration time rather than during the next transform, the loader scans the incoming bytes for the known R5-only pattern (`"dependent"` followed by `"parameter"` within ~600 chars) when the validator is in a non-R5 version. If detected, the registered resource's descriptor is suffixed with:
+
+```
+(warning: incoming StructureMap JSON contains R5-only field 'dependent.parameter' but validator is
+running in version 4.0; dependent invocations may have been silently truncated — run the validator
+in R5 mode or post an R4-format StructureMap that uses 'dependent.variable' instead)
+```
+
+Cleanest practice: always pair `FHIRTransformer.parse` with `ResourceLoader.loadResource` on the **same** validator. The parse output is in the validator's own version format, so the round-trip is lossless.
 
 ---
 

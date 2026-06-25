@@ -45,10 +45,12 @@ class LoadResourceHTTPHandler extends BaseHTTPHandler implements HttpHandler {
           getAcceptHeader(exchange));
         return;
       }
-      String format = parseQueryParams(exchange.getRequestURI().getQuery()).get("format");
+      java.util.Map<String, String> q = parseQueryParams(exchange.getRequestURI().getQuery());
+      String format = q.get("format");
+      boolean replace = "true".equalsIgnoreCase(q.get("replace"));
       FhirFormat inputFormat = detectFormat(format, exchange.getRequestHeaders().getFirst("Content-Type"), body);
 
-      List<String> loaded = service.getValidationEngine().loadResourceFromBytes(body, inputFormat);
+      List<String> loaded = service.getValidationEngine().loadResourceFromBytes(body, inputFormat, replace);
 
       JsonObject out = new JsonObject();
       out.add("loaded", loaded.size());
