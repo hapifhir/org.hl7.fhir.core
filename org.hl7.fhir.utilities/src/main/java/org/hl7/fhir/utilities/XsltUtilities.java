@@ -13,6 +13,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.XMLConstants;
 
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
@@ -100,7 +101,7 @@ public class XsltUtilities {
   }
 
   public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt, Map<String, String> params) throws TransformerException, IOException {
-    TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedSaxonTransformerFactory();
+    TransformerFactory f = newXXEProtectedSaxonTransformerFactory();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(ManagedFileAccess.inStream(xslt));
     f.setURIResolver(new MyURIResolver(xsltDir, alt));
