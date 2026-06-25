@@ -445,6 +445,10 @@ Outputs: `bundle` (the `collection` Bundle as a string) and `targetMime` (`appli
 >
 > The legacy native handler: `GET /package?url=<url>&expand=true|false&format=json|xml`.
 
+#### Version compatibility
+
+Same caveat as `FHIRTransformer.parse` (§4.5): the returned Bundle is serialised in the format matching the validator's runtime FHIR version. So under `-version r4`, every bundled `StructureMap` uses R4 `dependent.variable[String]` rather than R5 `dependent.parameter[{value[x]}]`. Without this, re-loading the bundle on the same R4 validator would silently drop dependent variables and break transforms with the misleading *"Rule 'X' has N but the invocation has 0 variables"* error. The conversion is applied to the whole Bundle (every entry), so nested artifacts walked by the dependency follower — including imported StructureMaps and `translate(...)` ConceptMap references when `includeRuleReferences=true` — all come through in the validator's native format.
+
 ### 4.8 `ResourceLoader`
 
 **Path**: `/itb/loadResource` — Operation: `loadResource`.
