@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.9.8-SNAPSHOT</version>
+        <version>6.9.11-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -164,6 +164,17 @@
                 <artifactId>duplicate-finder-maven-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <!-- bnd tool (used by maven-bundle-plugin) has a built-in convention: packages matching *.impl are automatically treated as private and excluded
+                         from Export-Package. org.hl7.fhir.convertors.advisors.impl is so named, and must be included. So we explicitly set Export-Package -->
+                    <instructions>
+                        <Export-Package>org.hl7.fhir.convertors.*</Export-Package>
+                    </instructions>
                 </configuration>
             </plugin>
         </plugins>

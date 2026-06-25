@@ -339,7 +339,10 @@ private static TxTestData testData;
 
   @AfterClass
   public static void saveWhenDone() throws IOException {
-
+    // Release the per-class base engine (a full r5 context) so it doesn't stay resident for
+    // the rest of the module's single reused test JVM.
+    baseEngine = null;
+    System.gc();
   }
 
   private Map<String, String> vars() {

@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* no changes
+* Fix SpotBugs annotations dependencies for downstream projects

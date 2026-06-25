@@ -119,7 +119,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     addMarkdown(x, processRelativeUrls(text, path)); 
   } 
 
-  protected void addMarkdown(XhtmlNode x, String text) throws FHIRFormatError, IOException, DefinitionException { 
+  public void addMarkdown(XhtmlNode x, String text) throws FHIRFormatError, IOException, DefinitionException { 
     if (text != null) { 
       // 1. custom FHIR extensions 
       while (text.contains("[[[")) { 
@@ -128,7 +128,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
         String right = text.substring(text.indexOf("]]]")+3); 
         String path = null; 
         String url = link; 
-        String[] parts = link.split("\\#"); 
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] parts = link.split("\\#");
         if (parts[0].contains(".")) { 
           path = parts[0]; 
           parts[0] = parts[0].substring(0, parts[0].indexOf(".")); 
@@ -197,7 +199,9 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
   public static String describeVersion(String version) { 
     if (version.startsWith("http://snomed.info/sct")) { 
-      String[] p = version.split("\\/"); 
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] p = version.split("\\/");
       String ed = null; 
       String dt = ""; 
 
@@ -357,11 +361,19 @@ public class DataRenderer extends Renderer implements CodeResolver {
         for (ConceptReferenceDesignationComponent cd : l.getDesignation()) { 
           if (cd.getLanguage().equals(lang)) 
             nativelang = cd.getValue(); 
-        } 
-        if (nativelang == null) 
-          return en+" ("+lang+")"; 
-        else 
-          return nativelang+" ("+en+", "+lang+")"; 
+        }
+        if (lang != null) {
+          if (nativelang == null)
+            return en + " (" + lang + ")";
+          else
+            return nativelang + " (" + en + ", " + lang + ")";
+        } else {
+          if (nativelang == null)
+            return en;
+          else
+            return nativelang + " (" + en +")";
+
+        }
       } 
     } 
     return lang; 
@@ -1367,11 +1379,21 @@ public class DataRenderer extends Renderer implements CodeResolver {
     if (Utilities.noString(s)) 
       s = c.primitiveValue("code"); 
 
+    CodeSystem cs = context.getContext().findTxResource(CodeSystem.class, c.primitiveValue("system"), IWorkerContext.VersionResolutionRules.PACKAGE,
+      c.primitiveValue("version"), null);
+    String url = cs == null ? null : cs.getWebPath();
+    if (url == null) {
+      url = getLinkForCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code"), null);
+    }
     if (context.isTechnicalMode() && details) {
       String d = c.primitiveValue("display") == null ? lookupCode(c.primitiveValue("system"), c.primitiveValue("version"), c.primitiveValue("code")): c.primitiveValue("display");
-      d = context.formatPhrase(d == null || d.equals(c.primitiveValue("code")) ? RenderingContext.DATA_REND_DETAILS_STATED_ND :  RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.primitiveValue("system")), c.primitiveValue("code"), d); 
-      x.addText(s+" "+d);
-    } else { 
+      d = context.formatPhrase(d == null || d.equals(c.primitiveValue("code")) ? RenderingContext.DATA_REND_DETAILS_STATED_ND :  RenderingContext.DATA_REND_DETAILS_STATED, displaySystem(c.primitiveValue("system")), c.primitiveValue("code"), d);
+      if (url != null) {
+        x.ah(url).addText(s + " " + d);
+      }
+    } else if (url != null) {
+      x.ah(url, "{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}").addText(s);
+    } else {
       x.span(null, "{"+c.primitiveValue("system")+" "+c.primitiveValue("code")+"}").addText(s);
     }
   } 
@@ -1890,8 +1912,10 @@ public class DataRenderer extends Renderer implements CodeResolver {
 
     ResourceWrapper lowC = q.child("low");
     ResourceWrapper highC = q.child("high");
-    boolean sameUnits = (lowC != null && highC != null) && ((lowC.has("unit") && highC.has("unit") && lowC.child("unit").matches(highC.child("unit")))  
-        || (lowC.has("code") && highC.has("code") && lowC.child("code").matches(highC.child("code")))); 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: not using String.matches
+    boolean sameUnits = (lowC != null && highC != null) && ((lowC.has("unit") && highC.has("unit") && lowC.child("unit").matches(highC.child("unit")))
+        || (lowC.has("code") && highC.has("code") && lowC.child("code").matches(highC.child("code"))));
     String low = "?"; 
     if (q.has("low") && lowC.has("value")) 
       low = sameUnits ? lowC.primitiveValue("value").toString() : displayQuantity(lowC); 

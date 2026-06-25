@@ -694,6 +694,8 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
 
 
   private String prepEnumName(String en) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] parts = en.split("\\.");
     if (parts.length == 1)
       return upFirst(parts[0]);

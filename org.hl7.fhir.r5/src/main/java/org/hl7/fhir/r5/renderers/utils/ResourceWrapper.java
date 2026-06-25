@@ -433,7 +433,9 @@ public abstract class ResourceWrapper {
   
 
   public boolean matches(ResourceWrapper b) {
-    if (isEmpty() || b.isEmpty()) {
+    if (b == null) {
+      return false;
+    } else if (isEmpty() || b.isEmpty()) {
       return isEmpty() && b.isEmpty();
     } else {
       if (hasPrimitiveValue() || b.hasPrimitiveValue()) {
@@ -445,7 +447,10 @@ public abstract class ResourceWrapper {
         return false;
       } else {
         for (int i = 0; i < children().size(); i++) {
-          if (!children().get(i).matches(b.children().get(i))) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: not using String.matches
+          boolean childMatches = children().get(i).matches(b.children().get(i));
+          if (!childMatches) {
             return false;
           }
         }

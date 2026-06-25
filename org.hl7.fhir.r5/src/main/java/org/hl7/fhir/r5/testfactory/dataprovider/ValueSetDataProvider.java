@@ -141,7 +141,7 @@ public class ValueSetDataProvider extends TableDataProvider {
 
   @Override
   public String cell(String name) throws FHIRException {
-    int i = columns.indexOf(name);
+    int i = columnNames.indexOf(name);
     return i == -1 ? null : cells().get(i);
   }
 

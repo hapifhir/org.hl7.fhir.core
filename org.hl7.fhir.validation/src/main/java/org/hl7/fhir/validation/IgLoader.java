@@ -120,6 +120,8 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       srcPackage = src;
     }
 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored package name pattern, safe
     NpmPackage npm = srcPackage.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !ManagedFileAccess.file(srcPackage).exists() ? getPackageCacheManager().loadPackage(srcPackage, null) : null;
     if (npm == null && ManagedFileAccess.file(srcPackage).exists()) {
       // try treating the file as an npm
@@ -144,7 +146,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       }
       IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
       loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
-      int count = getContext().loadFromPackage(npm, loader);
+      int count = getContext().loadFromPackage(npm, loader, false);
       log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
     } else {
       StringBuilder packageLoadLine = new StringBuilder();
@@ -262,6 +264,9 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
         return fetchFromUrl(src + (v == null ? "" : "|" + v), explore);
     }
 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored package name patterns, safe
+    boolean isPackageRef = src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX);
     File f = ManagedFileAccess.file(Utilities.path(src));
     if (f.exists()) {
       if (f.isDirectory() && ManagedFileAccess.file(Utilities.path(src, "package.tgz")).exists()) {
@@ -313,7 +318,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
         res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
         return res;
       }
-    } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
+    } else if (isPackageRef && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
       return fetchByPackage(src, false);
     }
     throw new FHIRException("Unable to find/resolve/read " + (explore ? "-ig " : "") + src);
@@ -465,6 +470,9 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       }
     }
 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored package name patterns, safe
+    boolean isPackageRef = src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX);
     File f = ManagedFileAccess.file(Utilities.path(src));
     if (f.exists()) {
       if (f.isDirectory() && ManagedFileAccess.file(Utilities.path(src, "package.tgz")).exists()) {
@@ -491,7 +499,7 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
         res.put(FileUtilities.changeFileExt(src, "." + fmt.getExtension()), ByteProvider.forFile(src));
         return res;
       }
-    } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
+    } else if (isPackageRef && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
       versions.see(fetchVersionByPackage(src), "Package " + src);
       return null;
     }

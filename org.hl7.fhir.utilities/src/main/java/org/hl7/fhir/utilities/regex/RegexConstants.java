@@ -6,7 +6,7 @@ package org.hl7.fhir.utilities.regex;
  * Any regexes here should be evaluated for possible catastrophic backtracking (as much as is possible) and verified to
  * be safe.
  */
-public class RegexConstants {
+public final class RegexConstants {
   private RegexConstants() {
     throw new UnsupportedOperationException("This utility class should not be instantiated");
   }
@@ -22,6 +22,12 @@ public class RegexConstants {
       "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])" +
       "(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]{1,9})?" +
       "(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?";
+
+  //non-overlapping alternation with bounded optional groups, safe
+  public static final String DATE_TIME_REGEX =
+      "([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])" +
+      "(T([01][0-9]|2[0-3])(:[0-5][0-9](:([0-5][0-9]|60))?)?(\\.[0-9]+)?" +
+      "(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?";
 
   public static final String URN_UUID_REGEX =
       "urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";

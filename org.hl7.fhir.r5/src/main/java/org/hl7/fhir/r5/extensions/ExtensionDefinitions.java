@@ -224,4 +224,5 @@ public class ExtensionDefinitions {
   public static final String EXT_SUPPL_TYPE = "http://hl7.org/fhir/StructureDefinition/codesystem-supplement-type";
   public static final String CANONICAL_RESOLUTION_METHOD = "http://hl7.org/fhir/StructureDefinition/version-resolution-method";
   public static final String EXT_VALUESET_RULES_TEXT = "http://hl7.org/fhir/StructureDefinition/valueset-rules-text";
+  public static final String EXT_CONTENT_PROFILE = "http://hl7.org/fhir/StructureDefinition/contentReferenceProfile";
 }

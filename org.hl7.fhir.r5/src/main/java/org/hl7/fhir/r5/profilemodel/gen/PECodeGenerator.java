@@ -832,7 +832,10 @@ public class PECodeGenerator {
     if (!Utilities.noString(doco)) {
       String pfx = Utilities.padLeft("", ' ', indent);
       w(b, pfx+"/*"+(jdoc ? "*" : ""));
-      for (String line : doco.split("\\R")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //simple character class split; safe
+      String[] docoLines = doco.split("\\R");
+      for (String line : docoLines) {
         for (String nl : naturalLines(line))
           w(b, pfx+" * "+nl);
         w(b, pfx+" *");

@@ -20,6 +20,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,28 +38,30 @@ public class XMLUtilTests {
     assertThat(e.getMessage()).contains("DOCTYPE is disallowed");
   }
 
+  // A document nested far beyond MAX_ELEMENT_DEPTH must fail with a SAXException during DOM
+  // construction (via jdk.xml.maxElementDepth) rather than a StackOverflowError inside Xerces.
+  @Test
+  public void testDocumentBuilderBoundsElementDepth() throws ParserConfigurationException {
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
+    int depth = 5000;
+    StringBuilder b = new StringBuilder("<root xmlns=\"urn:x\">");
+    for (int i = 0; i < depth; i++) b.append("<a>");
+    b.append("x");
+    for (int i = 0; i < depth; i++) b.append("</a>");
+    b.append("</root>");
+    assertThrows(SAXException.class, () -> {
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      builder.parse(new InputSource(new StringReader(b.toString())));
+    });
+  }
+
   @Test
   public void testTransformerFactoryThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
     DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     DocumentBuilder safeBuilder = factory.newDocumentBuilder();
-
-    File file = ManagedFileAccess.file("src/test/resources/xml/resource.xml");
-
-    Document document = safeBuilder.parse(file);
-
-    StringWriter sw = new StringWriter();
     TransformerFactory tf = XMLUtil.newXXEProtectedTransformerFactory();
 
-    File templateFile = ManagedFileAccess.file("src/test/resources/xml/evil-transform.xslt");
-    Source xsltSource = new StreamSource(templateFile);
-    Transformer transformer = tf.newTransformer(xsltSource);
-    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-    transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-
-    XPathException e = assertThrows(XPathException.class, () -> transformer.transform(new DOMSource(document), new StreamResult(sw)));
-    assertThat(e.getMessage()).contains("URIs using protocol file are not permitted");
+    assertTransformerFactoryThrowsExceptionOnEvilTransform(safeBuilder, tf);
   }
 
   @Test
@@ -73,6 +76,33 @@ public class XMLUtilTests {
 
     SAXParseException e = assertThrows(SAXParseException.class, () -> xmlReader.parse(new StreamSource(templateFile).getSystemId()));
     assertThat(e.getMessage()).contains("DOCTYPE is disallowed");
+  }
+
+  @Test
+  public void testSaxonTransformerFactoryThrowsExceptionForExternalEntity() throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
+    DocumentBuilder safeBuilder = factory.newDocumentBuilder();
+    TransformerFactory tf = XMLUtil.newXXEProtectedSaxonTransformerFactory();
+
+    assertTransformerFactoryThrowsExceptionOnEvilTransform(safeBuilder, tf);
+  }
+
+  private static void assertTransformerFactoryThrowsExceptionOnEvilTransform(DocumentBuilder safeBuilder, TransformerFactory tf) throws IOException, SAXException, TransformerConfigurationException {
+    File file = ManagedFileAccess.file("src/test/resources/xml/resource.xml");
+
+    Document document = safeBuilder.parse(file);
+    StringWriter sw = new StringWriter();
+
+    File templateFile = ManagedFileAccess.file("src/test/resources/xml/evil-transform.xslt");
+    Source xsltSource = new StreamSource(templateFile);
+    Transformer transformer = tf.newTransformer(xsltSource);
+    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+    transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+    XPathException e = assertThrows(XPathException.class, () -> transformer.transform(new DOMSource(document), new StreamResult(sw)));
+    assertThat(e.getMessage()).contains("URIs using protocol file are not permitted");
   }
 
   @SuppressWarnings("checkstyle:saxParserFactoryNewInstance")

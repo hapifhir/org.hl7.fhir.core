@@ -27,6 +27,8 @@ public class TextDrivenPolicyAdvisor extends RulesDrivenPolicyAdvisor {
 
   public TextDrivenPolicyAdvisor(IValidationPolicyAdvisor base, String filename, String source) throws JsonException, IOException {
     super(base);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] lines= source.split("\\R");
     for (String line : lines) {
       processLine(line);  

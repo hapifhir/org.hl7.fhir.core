@@ -16,7 +16,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.profile.CompliesWithChecker;
+import org.hl7.fhir.validation.instance.type.CompliesWithChecker;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -564,6 +564,8 @@ public class StructureDefinitionValidator extends BaseValidator {
       }
       try {
         String pp = (path.contains("#") ? path.substring(path.indexOf("#") + 1) : path);
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] p = pp.split("\\.");
         String url = path.contains("#") ? path.substring(0, path.indexOf("#")) : "http://hl7.org/fhir/StructureDefinition/" + p[0];
 
@@ -572,13 +574,19 @@ public class StructureDefinitionValidator extends BaseValidator {
           // this is a hack for the fact that CanonicalResource wasn't properly defined in R3-R5
           sd = ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/CodeSystem", IWorkerContext.VersionResolutionRules.defaultRule());
           pp = pp.replace("CanonicalResource", "CodeSystem");
-          p = pp.split("\\.");
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String[] pCanonical = pp.split("\\.");
+          p = pCanonical;
         }
         if (sd == null && url.equals("http://hl7.org/fhir/StructureDefinition/MetadataResource")) {
           // this is a hack for the fact that MetadataResource wasn't properly defined in R3-R5
           sd = ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/PlanDefinition", IWorkerContext.VersionResolutionRules.defaultRule());
           pp = pp.replace("MetadataResource", "PlanDefinition");
-          p = pp.split("\\.");
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String[] pMetadata = pp.split("\\.");
+          p = pMetadata;
         }
         if (sd == null) {
           ok = false;
@@ -1398,7 +1406,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       Element valueSet = binding.getNamedChild("valueSet", false);
       String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference", false);
       if (warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
-        Resource vs = context.fetchResource(Resource.class, ref, ExtensionUtilities.getVersionResolutionRules(valueSet));
+        Resource vs = context.findTxResource(Resource.class, ref, ExtensionUtilities.getVersionResolutionRules(valueSet));
 
         // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
 

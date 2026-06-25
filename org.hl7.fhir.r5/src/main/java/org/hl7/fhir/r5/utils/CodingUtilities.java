@@ -67,6 +67,8 @@ public class CodingUtilities {
    * @param fmt the format is [system](|[version])#[code], no display
    * @return whether the code conforms to the filter using regex
    */
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //Regex sourced from fmt parameter; user-supplied at runtime
   public static boolean filterMatches(Coding c, String fmt) {
     if (fmt.contains("|")) {
       return (""+c.getSystem()+"|"+c.getVersion()+"#"+c.getCode()).matches(fmt);

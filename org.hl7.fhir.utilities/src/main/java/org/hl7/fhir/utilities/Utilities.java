@@ -138,6 +138,8 @@ public class Utilities {
     }
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //bounded character class, safe
   public static boolean isValidId(String id) {
     return id.matches(RegexConstants.ID_REGEX);
   }
@@ -971,6 +973,9 @@ public class Utilities {
 
 
   public static boolean isURL(String s) {
+    //TODO Check if this can be replaced with RegexConstants.URL_REGEX
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, safe
     boolean ok = s.matches("^http(s{0,1})://[a-zA-Z0-9_/\\-\\.]+\\.([A-Za-z/]{2,5})[a-zA-Z0-9_/\\&\\?\\=\\-\\.\\~\\%]*");
     return ok;
   }
@@ -1272,6 +1277,33 @@ public class Utilities {
     return b.toString();
   }
 
+  public static String makeNameFromCode(String code) {
+    StringBuilder b = new StringBuilder();
+    boolean upcase = false;
+    for (char ch : code.toCharArray()) {
+      if (ch >= 'a' && ch <= 'z') {
+        if (upcase) {
+          b.append(Character.toUpperCase(ch));
+        } else {
+          b.append(ch);
+        }
+        upcase = false;
+      } else if (ch >= 'A' && ch <= 'Z') {
+        upcase = false;
+        b.append(ch);
+      } else if (ch >= '0' && ch <= '9') {
+        upcase = false;
+        b.append(ch);
+      } else {
+        upcase = true;
+      }
+    }
+    if (b.isEmpty()) {
+      b.append("name");
+    }
+    return b.toString();
+  }
+
 
   public static String extractBaseUrl(String url) {
     if (url == null)
@@ -1383,6 +1415,8 @@ public class Utilities {
    * @return
    */
   public static String fhirPathToXPath(String path) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = path.split("\\.");
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder(".");
     int i = 0;
@@ -1665,7 +1699,10 @@ public class Utilities {
       value = value.substring(0, value.indexOf("e"));
     }
     if (value.contains(".")) {
-      return value.split("\\.")[1].length();
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] decimalParts = value.split("\\.");
+      return decimalParts[1].length();
     } else {
       return 0;
     }
@@ -1720,6 +1757,8 @@ public class Utilities {
     return res;
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //anchored, bounded, safe
   public static boolean isValidCRName(String name) {
     return name != null && name.matches("[A-Z]([A-Za-z0-9_]){1,254}");
   }
@@ -1759,9 +1798,24 @@ public class Utilities {
 
   // from https://en.wikipedia.org/wiki/Whitespace_character#Unicode  
   public static boolean isWhitespace(int ch) {
-    return Utilities.existsInList(ch, '\u0009', '\n', '\u000B','\u000C','\r','\u0020','\u0085','\u00A0',
-        '\u1680','\u2000','\u2001','\u2002','\u2003','\u2004','\u2005','\u2006','\u2007','\u2008','\u2009','\u200A',
-        '\u2028', '\u2029', '\u202F', '\u205F', '\u3000');
+    // Hot path: escapeJson calls this for nearly every character of every string
+    // it writes. existsInList is varargs, so the old form allocated a fresh
+    // int[25] on every call. The only sub-0x80 whitespace is 0x20 and the
+    // 0x09-0x0D control range, so ASCII (the overwhelming majority of characters)
+    // resolves in two comparisons; the rare Unicode space separators fall through
+    // to a non-allocating switch. Behaviour is identical to the previous list.
+    if (ch < 0x80) {
+      return ch == 0x0020 || (ch >= 0x0009 && ch <= 0x000D);
+    }
+    switch (ch) {
+      case 0x0085: case 0x00A0: case 0x1680:
+      case 0x2000: case 0x2001: case 0x2002: case 0x2003: case 0x2004:
+      case 0x2005: case 0x2006: case 0x2007: case 0x2008: case 0x2009: case 0x200A:
+      case 0x2028: case 0x2029: case 0x202F: case 0x205F: case 0x3000:
+        return true;
+      default:
+        return false;
+    }
   }
 
   public static boolean stringsEqual(String s1, String s2) {
@@ -1804,7 +1858,10 @@ public class Utilities {
 
   public static List<String> splitStrings(String src, String regex) {
     List<String> ret = new ArrayList<>();
-    for (String m : src.split(regex)) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //Regexes sourced from known callers; reviewed in MappingAssistant
+    String[] parts = src.split(regex);
+    for (String m : parts) {
       ret.add(m);
     }
     return ret;
@@ -1864,7 +1921,10 @@ public class Utilities {
   }
 
   public static String[] splitLines(String txt) {
-    return txt.split("\\r?\\n|\\r");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
+    String[] lines = txt.split("\\r?\\n|\\r");
+    return lines;
   }
 
   public static String rightTrim(String s) {
@@ -1980,7 +2040,16 @@ public class Utilities {
     return false;
   }
 
+  /**
+   *
+   * Don't use me.
+   *
+   * @deprecated this was transiently used internally, is no longer, and should not be in use.
+   */
+  @Deprecated(since="2026-04-10")
   public static String extractByRegex(String input, String regex) {
+    @SuppressWarnings("checkstyle:patternUsage")
+    //caller-provided; no internal callers in this project
     Pattern pattern = Pattern.compile(regex);
     Matcher matcher = pattern.matcher(input);
 

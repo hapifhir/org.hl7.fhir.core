@@ -307,7 +307,10 @@ public class StructureMapValidator extends BaseValidator {
         return false;
       }
       for (int i = 0; i < list.size(); i++) {
-        if (!list.get(i).matches(other.list.get(i))) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean itemMatches = list.get(i).matches(other.list.get(i));
+        if (!itemMatches) {
           return false;
         }
       }
@@ -564,7 +567,10 @@ public class StructureMapValidator extends BaseValidator {
   }
 
   private boolean idIsValid(String name) {
-    return name != null && name.matches("[a-zA-Z][a-zA-Z0-9]*");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, simple character class, safe
+    boolean validId = name != null && name.matches("[a-zA-Z][a-zA-Z0-9]*");
+    return validId;
   }
 
   private boolean validateRule(List<ValidationMessage> errors, Element src, Element group, Element rule, NodeStack stack, VariableSet variables) {
@@ -1310,7 +1316,10 @@ public class StructureMapValidator extends BaseValidator {
             Element g = (Element) grp.getTargetGroup().getUserData(UserDataNames.map_source);
             if (g.hasUserData(UserDataNames.map_parameters)) {
               VariableSet pvars = (VariableSet) g.getUserData(UserDataNames.map_parameters);
-              warning(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), pvars.matches(lvars), I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE, grp.getTargetGroup().getName(), pvars.summary(), lvars.summary());
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //False positive: not using String.matches
+              boolean pvarsMatchLvars = pvars.matches(lvars);
+              warning(errors, "2023-03-01", IssueType.INVALID, dependent.line(), dependent.col(), stack.getLiteralPath(), pvarsMatchLvars, I18nConstants.SM_DEPENDENT_PARAM_TYPE_MISMATCH_DUPLICATE, grp.getTargetGroup().getName(), pvars.summary(), lvars.summary());
             } else {
               g.setUserData(UserDataNames.map_parameters, lvars);
             }

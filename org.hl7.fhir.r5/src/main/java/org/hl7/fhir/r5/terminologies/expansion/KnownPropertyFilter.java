@@ -25,6 +25,8 @@ public class KnownPropertyFilter extends ConceptFilter {
   }
 
   @Override
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //single literal character split
   public boolean includeConcept(CodeSystem cs, ConceptDefinitionComponent def) {
     ConceptPropertyComponent pc = getPropertyForConcept(def);
     if (pc != null) {

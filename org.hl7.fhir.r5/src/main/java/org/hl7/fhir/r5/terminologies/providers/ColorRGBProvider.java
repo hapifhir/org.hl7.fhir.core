@@ -23,7 +23,10 @@ public class ColorRGBProvider extends CodeSystemProvider {
 
   @Override
   public Boolean checkCode(String code) {
-    return code.matches("^\\#[0-9a-fA-F]{6}$");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, fixed-width hex color, safe
+    boolean matches = code.matches("^\\#[0-9a-fA-F]{6}$");
+    return matches;
   }
 
 }

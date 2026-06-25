@@ -191,7 +191,10 @@ public class IEEE11073Convertor {
             c.addProperty().setCode("unit").setValue(new StringType().setValue(csv.cell("UOM_MDC")));
           if (csv.has("UOM_UCUM")) {
             CommaSeparatedStringBuilder ul = new CommaSeparatedStringBuilder();
-            for (String u : csv.cell("UOM_UCUM").split(" ")) {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character split
+            String[] ucumUnits = csv.cell("UOM_UCUM").split(" ");
+            for (String u : ucumUnits) {
               String msg = ucum.validate(u);
               if (msg != null) {
                 errorCount++;

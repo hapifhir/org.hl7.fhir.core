@@ -33,6 +33,7 @@ import org.hl7.fhir.r5.model.TestReport.TestReportTestComponent;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient.ITerminologyConversionLogger;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.test.utils.CompareUtilities;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.client.ResourceFormat;
@@ -142,6 +143,14 @@ public class TxTester implements ITerminologyRequestIdProvider {
   private final List<String> warnings = new CopyOnWriteArrayList<>();
   private CapabilityStatement capabilityStatement;
   private TerminologyCapabilities terminologyCapabilities;
+  // Server-side caching state, per thread (clients are per-thread). Maps a suite
+  // name to the server-issued cache-id this thread holds for it. The first test a
+  // thread runs from a suite starts a cache and front-loads that suite's setup
+  // resources into it; later tests from the same suite on the same thread carry
+  // the cache-id as the X-Cache-Id header instead of re-sending the setup. Tests
+  // from one suite can be scheduled across many threads, so each thread caches the
+  // suites it happens to run - that's fine, the caches are independent.
+  private final ThreadLocal<Map<String, String>> suiteCaches = ThreadLocal.withInitial(HashMap::new);
   private TxTesterConversionLogger conversionLogger;
   private TestReport testReport;
 
@@ -165,6 +174,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
   }
 
   public boolean execute(Set<String> modes, String filter) throws IOException, URISyntaxException {
+    return execute(modes, filter, null);
+  }
+
+  public boolean execute(Set<String> modes, String filter, String suite) throws IOException, URISyntaxException {
     if (outputDir == null) {
       outputDir = Utilities.path("[tmp]", serverId());
     }
@@ -193,6 +206,9 @@ public class TxTester implements ITerminologyRequestIdProvider {
     if (filter != null) {
       log.info("  Filter Parameter: "+filter);
     }
+    if (suite != null) {
+      log.info("  Suite Parameter: "+suite);
+    }
 
     AtomicInteger counter = new AtomicInteger();
     AtomicInteger errCount = new AtomicInteger();
@@ -209,12 +225,12 @@ public class TxTester implements ITerminologyRequestIdProvider {
         JsonObject tests = loadTests(loader);
         readTests(tests, loader.version());
         versions.add(new StringPair(loader.code(), loader.version()));
-        for (JsonObject suite : tests.getJsonObjects("suites")) {
-          if ((!suite.has("mode") || modes.contains(suite.asString("mode"))) && passesVersion(suite)) {
-            if (suite.asBoolean("disabled")) {
+        for (JsonObject suiteObj : tests.getJsonObjects("suites")) {
+          if ((!suiteObj.has("mode") || modes.contains(suiteObj.asString("mode"))) && passesVersion(suiteObj)) {
+            if (suiteObj.asBoolean("disabled")) {
               // ok = true;
-            } else {
-              ok = runSuite(loader, suite, modes, filter, json.forceArray("suites"), counter, errCount) && ok;
+            } else if (suite == null || suite.equals(suiteObj.asString("name"))) {
+              ok = runSuite(loader, suiteObj, modes, filter, json.forceArray("suites"), counter, errCount) && ok;
             }
           }
         }
@@ -228,7 +244,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       testReport.setScore(s / 100);
       testReport.setResult(errCount.intValue() == 0 ? TestReportResult.PASS : TestReportResult.FAIL);
 
-      if (filter == null) {
+      if (filter == null && suite == null) {
         String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join("+", modes);
         if (ok) {
           log.info(software+" passed all "+counter.intValue()+" HL7 terminology service tests ("+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
@@ -238,6 +254,16 @@ public class TxTester implements ITerminologyRequestIdProvider {
           log.info("Failed Tests: "+ CommaSeparatedStringBuilder.join(",", fails ));
           return false;
         }
+      } else if (suite != null) {
+        String m = modes.isEmpty() ? "[none]" : CommaSeparatedStringBuilder.join("+", modes);
+        int passed = counter.intValue() - errCount.intValue();
+        if (ok) {
+          log.info(software+" passed all "+counter.intValue()+" tests for suite '"+suite+"' ("+passed+" passed, 0 failed, "+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
+        } else {
+          log.info(software+" did not pass tests for suite '"+suite+"' ("+passed+" passed, "+errCount.intValue()+" failed of "+counter.intValue()+", "+Utilities.pluralize("mode", modes.size())+" "+m+", tests v"+vString(versions)+", runner v"+VersionUtil.getBaseVersion()+")");
+          log.info("Failed Tests: "+ CommaSeparatedStringBuilder.join(",", fails));
+        }
+        return ok;
       } else {
         log.info(software+" "+(ok ? "Passed the tests" : "did not pass the tests")+" '"+filter+"'");
         return ok;
@@ -531,19 +557,28 @@ public class TxTester implements ITerminologyRequestIdProvider {
     outputS.add("name", suite.asString("name"));
     List<Resource> setup = loadSetupResources(loader, suite);
     boolean ok = true;
-    for (JsonObject test : suite.getJsonObjects("tests")) {
-      TestReportTestComponent tr = getTestReportTest(suite, test);
-      if ((!test.has("mode") || modes.contains(test.asString("mode"))) && passesVersion(test)) {
-        if (test.asBoolean("disabled")) {
-          ok = true;
-        } else {
-          ResultInformation tok = runTest(loader, suite, test, setup, modes, filter, outputS.forceArray("tests"), counter, tr);
-          if (!tok.result) {
-            errCount.getAndAdd(1);
+    try {
+      // runTest decides per-test whether to use a server cache for the suite's
+      // setup (lazily started on first use per thread); we just pass the setup.
+      for (JsonObject test : suite.getJsonObjects("tests")) {
+        TestReportTestComponent tr = getTestReportTest(suite, test);
+        if ((!test.has("mode") || modes.contains(test.asString("mode"))) && passesVersion(test)) {
+          if (test.asBoolean("disabled")) {
+            ok = true;
+          } else {
+            ResultInformation tok = runTest(loader, suite, test, setup, modes, filter, outputS.forceArray("tests"), counter, tr);
+            if (!tok.result) {
+              errCount.getAndAdd(1);
+            }
+            ok = tok.result && ok;
           }
-          ok = tok.result && ok;
         }
       }
+    } finally {
+      // Sequential path: the suite is finished on this thread, so release its
+      // cache promptly. (The concurrent per-test path has no suite-end signal and
+      // relies on the server's idle timeout instead.)
+      endSuiteCache(suite.asString("name"));
     }
     return ok;
   }
@@ -577,10 +612,24 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
       try {
         counter.getAndAdd( 1);
-        if (header != null) {
-          // Header is set on this thread's client only — no cross-thread race.
-          client().setClientHeaders(new ClientHeaders(List.of(header)));
+        // If the server caches, get this thread's cache-id for the suite (starting
+        // the cache + front-loading setup on first use). When cached, the setup is
+        // sent via the cache, not on each request.
+        String cid = suiteCacheId(suite.asString("name"), setup);
+        List<Resource> effectiveSetup = cid != null ? Collections.emptyList() : setup;
+        // Set this thread's client headers for the request: the suite cache-id (if
+        // caching this suite) and/or the test's own header. We always set (even to
+        // empty), because the thread is reused across tests from the pool - leaving
+        // a previous test's cache-id or header in place would leak it to the next
+        // request. setClientHeaders replaces the whole set. (Per-thread - no race.)
+        List<HTTPHeader> hdrs = new ArrayList<>();
+        if (cid != null) {
+          hdrs.add(new HTTPHeader(TerminologyClientContext.CACHE_ID_HEADER, cid));
         }
+        if (header != null) {
+          hdrs.add(header);
+        }
+        client().setClientHeaders(new ClientHeaders(hdrs));
         conversionLogger.suiteName.set(suite.asString("name"));
         conversionLogger.testName.set(testName);
         String reqFile = chooseParam(test, "request", modes);
@@ -605,25 +654,25 @@ public class TxTester implements ITerminologyRequestIdProvider {
         String lang = test.asString("Accept-Language");
         String msg = null;
         if (test.asString("operation").equals("metadata")) {
-          msg = metadata(test.str("name"), setup, resp, expFn, actFn, lang, profile, ext, modes);
+          msg = metadata(test.str("name"), effectiveSetup, resp, expFn, actFn, lang, profile, ext, modes);
         } else if (test.asString("operation").equals("term-caps")) {
-          msg = termcaps(test.str("name"), setup, resp, expFn, actFn, lang, profile, ext, modes);
+          msg = termcaps(test.str("name"), effectiveSetup, resp, expFn, actFn, lang, profile, ext, modes);
         } else if (test.asString("operation").equals("expand")) {
-          msg = expand(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = expand(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("validate-code")) {
-          msg = validate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = validate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("cs-validate-code")) {
-          msg = validateCS(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = validateCS(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("lookup")) {
-          msg = lookup(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = lookup(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("translate")) {
-          msg = translate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = translate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("batch")) {
-          msg = batch(test.str("name"), setup, (Bundle) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = batch(test.str("name"), effectiveSetup, (Bundle) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else if (test.asString("operation").equals("batch-validate")) {
-          msg = batchValidate(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
-        } else if (test.asString("operation").equals("related")) {
-          msg = related(test.str("name"), setup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+          msg = batchValidate(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
+        } else if (test.asString("operation").equals("compare")) {
+          msg = compare(test.str("name"), effectiveSetup, (Parameters) req, resp, expFn, actFn, lang, profile, ext, getResponseCode(test), modes);
         } else {
           throw new Exception("Unknown Operation "+test.asString("operation"));
         }
@@ -638,7 +687,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
           outputT.add("message", msg);
         }
         tr.getActionFirstRep().getOperation().setResult(msg == null ? TestReportActionResult.PASS : TestReportActionResult.FAIL).setMessage(msg);
-        return new ResultInformation(msg);
+        return msg == null ? new ResultInformation(true) : new ResultInformation(msg);
       } catch (Exception e) {
         log.error("  Tested "+ testName +": "+ "  ... Exception: "+e.getMessage());
 
@@ -981,7 +1030,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return diff;
   }
 
-  private String related(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
+  private String compare(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
     for (Resource r : setup) {
       p.addParameter().setName("tx-resource").setResource(r);
     }
@@ -990,7 +1039,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
     int code = 0;
     String pj;
     try {
-      Parameters po = client().doRelated(p);
+      Parameters po = client().doCompare(p);
       TxTesterScrubbers.scrubParameters(po, tight);
       TxTesterSorters.sortParameters(po);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(po);
@@ -1082,6 +1131,89 @@ public class TxTester implements ITerminologyRequestIdProvider {
       res.add(loader.loadResource(s));
     }
     return res;
+  }
+
+  /**
+   * @return true if the server's CapabilityStatement advertises the system-level
+   * $cache-control operation.
+   */
+  private boolean serverSupportsCacheControl() {
+    if (capabilityStatement == null) {
+      return false;
+    }
+    for (CapabilityStatement.CapabilityStatementRestComponent rest : capabilityStatement.getRest()) {
+      for (CapabilityStatement.CapabilityStatementRestResourceOperationComponent op : rest.getOperation()) {
+        if ("cache-control".equals(op.getName())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Return the cache-id this thread holds for the given suite, lazily starting a
+   * cache and front-loading the suite's setup into it on first use. Returns null
+   * if caching isn't available (server doesn't support it, no setup, or start
+   * failed) - the caller then inlines the setup as before. The per-thread map is
+   * keyed by suite name; tests of a suite may be spread across threads, so each
+   * thread independently caches the suites it runs.
+   */
+  private String suiteCacheId(String suiteName, List<Resource> setup) {
+    if (setup.isEmpty() || !serverSupportsCacheControl()) {
+      return null;
+    }
+    Map<String, String> caches = suiteCaches.get();
+    if (caches.containsKey(suiteName)) {
+      // present even when the value is null: a prior start failed, so don't retry
+      // (and re-warn) on every subsequent test for this suite on this thread.
+      return caches.get(suiteName);
+    }
+    String cacheId = startSuiteCache(setup);
+    caches.put(suiteName, cacheId);
+    return cacheId;
+  }
+
+  /**
+   * Start a server cache and front-load the setup resources into it, so requests
+   * can refer to them by the cache-id (carried as the X-Cache-Id header) rather
+   * than re-sending them. Returns the server-issued cache-id, or null on failure.
+   */
+  private String startSuiteCache(List<Resource> setup) {
+    try {
+      Parameters p = new Parameters();
+      for (Resource r : setup) {
+        p.addParameter().setName("tx-resource").setResource(r);
+      }
+      Parameters resp = client().cacheControl(ITerminologyClient.CacheControlMode.START_CACHE, p);
+      if (resp != null && resp.hasParameter("cache-id")) {
+        return resp.getParameterValue("cache-id").primitiveValue();
+      }
+      log.warn("Server advertised $cache-control but returned no cache-id; not caching this suite");
+      return null;
+    } catch (Exception e) {
+      log.warn("Unable to start a terminology cache (" + e.getMessage() + "); not caching this suite");
+      return null;
+    }
+  }
+
+  /**
+   * Release this thread's cache for the named suite, if any (best-effort; the
+   * server times caches out anyway). Used by the sequential path which has a
+   * suite-end signal; the concurrent per-test path relies on the timeout.
+   */
+  private void endSuiteCache(String suiteName) {
+    String cacheId = suiteCaches.get().remove(suiteName);
+    if (cacheId == null) {
+      return;
+    }
+    try {
+      client().setClientHeaders(new ClientHeaders(List.of(new HTTPHeader(TerminologyClientContext.CACHE_ID_HEADER, cacheId))));
+      client().cacheControl(ITerminologyClient.CacheControlMode.END_CACHE, null);
+      client().setClientHeaders(new ClientHeaders());
+    } catch (Exception e) {
+      // best effort
+    }
   }
 
   public String getOutput() {

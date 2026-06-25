@@ -1,0 +1,92 @@
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Extension"
+}, "url": "http://hl7.org/fhir/ValueSet/fhir-element-types", "version": "4.3.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Extension",
+  "code" : "Extension",
+  "system" : "http://hl7.org/fhir/data-types",
+  "version" : "4.3.0",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n12ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Analysing http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0 for validation purposes\n12ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Parameters: disp-lang=en-US, generate-narrative\n12ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Prepare include[0]: \"(http://hl7.org/fhir/CodeSystem/fhirpath-types)\"\n13ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: CodeSystem found: \"http://hl7.org/fhir/CodeSystem/fhirpath-types|4.3.0\"\n13ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Prepare include[1]: \"(^http://hl7.org/fhir/ValueSet/defined-types|4.3.0)\"\n14ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: Analysing http://hl7.org/fhir/ValueSet/defined-types|4.3.0 for validation purposes\n14ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: Prepare include[0]: \"(http://hl7.org/fhir/data-types)\"\n14ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: CodeSystem found: \"http://hl7.org/fhir/data-types|4.3.0\"\n17ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: Prepare include[1]: \"(http://hl7.org/fhir/resource-types)\"\n18ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: CodeSystem found: \"http://hl7.org/fhir/resource-types|4.3.0\"\n18ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Validate \"[undefined#Extension (\"undefined\")]\" and infer system\n18ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Check \"undefined#Extension\"\n20ms start working\n20ms compose #1\n21ms compose #2\n22ms add whole code system\n23ms import value set http://hl7.org/fhir/ValueSet/defined-types|4.3.0\n23ms start working\n23ms compose #1\n24ms compose #2\n24ms add whole code system\n28ms add whole code system\n36ms finish up\n40ms finish up\n43ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Inferred CodeSystem = \"http://hl7.org/fhir/data-types\"\n43ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Check included value set http://hl7.org/fhir/ValueSet/defined-types|4.3.0\n43ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: Check \"http://hl7.org/fhir/data-types#Extension\"\n45ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: CodeSystem found: http://hl7.org/fhir/data-types|4.3.0 for http://hl7.org/fhir/data-types|4.3.0\n45ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: check code in (http://hl7.org/fhir/data-types) at \n45ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: Code \"Extension\" found in http://hl7.org/fhir/data-types|4.3.0",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "MSG_EXPERIMENTAL"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to experimental ValueSet http://hl7.org/fhir/ValueSet/defined-types|4.3.0"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "Coding"
+}, "url": "http://hl7.org/fhir/ValueSet/fhir-element-types", "version": "4.3.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "Coding",
+  "code" : "Coding",
+  "system" : "http://hl7.org/fhir/data-types",
+  "version" : "4.3.0",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "0ms tx-op\n3ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Analysing http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0 for validation purposes\n3ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Parameters: disp-lang=en-US, generate-narrative\n4ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Prepare include[0]: \"(http://hl7.org/fhir/CodeSystem/fhirpath-types)\"\n4ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: CodeSystem found: \"http://hl7.org/fhir/CodeSystem/fhirpath-types|4.3.0\"\n4ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Prepare include[1]: \"(^http://hl7.org/fhir/ValueSet/defined-types|4.3.0)\"\n4ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: Analysing http://hl7.org/fhir/ValueSet/defined-types|4.3.0 for validation purposes\n4ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: Prepare include[0]: \"(http://hl7.org/fhir/data-types)\"\n5ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: CodeSystem found: \"http://hl7.org/fhir/data-types|4.3.0\"\n5ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: Prepare include[1]: \"(http://hl7.org/fhir/resource-types)\"\n5ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: CodeSystem found: \"http://hl7.org/fhir/resource-types|4.3.0\"\n5ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Validate \"[undefined#Coding (\"undefined\")]\" and infer system\n5ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Check \"undefined#Coding\"\n6ms start working\n6ms compose #1\n6ms compose #2\n7ms add whole code system\n7ms import value set http://hl7.org/fhir/ValueSet/defined-types|4.3.0\n7ms start working\n7ms compose #1\n7ms compose #2\n8ms add whole code system\n14ms add whole code system\n22ms finish up\n23ms finish up\n24ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Inferred CodeSystem = \"http://hl7.org/fhir/data-types\"\n24ms http://hl7.org/fhir/ValueSet/fhir-element-types|4.3.0: Check included value set http://hl7.org/fhir/ValueSet/defined-types|4.3.0\n24ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: Check \"http://hl7.org/fhir/data-types#Coding\"\n25ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: CodeSystem found: http://hl7.org/fhir/data-types|4.3.0 for http://hl7.org/fhir/data-types|4.3.0\n25ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: check code in (http://hl7.org/fhir/data-types) at \n25ms http://hl7.org/fhir/ValueSet/defined-types|4.3.0: Code \"Coding\" found in http://hl7.org/fhir/data-types|4.3.0",
+  "unknown-systems" : "",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "MSG_EXPERIMENTAL"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "information",
+    "code" : "business-rule",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "status-check"
+      }],
+      "text" : "Reference to experimental ValueSet http://hl7.org/fhir/ValueSet/defined-types|4.3.0"
+    }
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------

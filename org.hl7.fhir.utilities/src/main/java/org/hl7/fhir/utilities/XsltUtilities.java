@@ -58,7 +58,7 @@ import net.sf.saxon.TransformerFactoryImpl;
 public class XsltUtilities {
 
   public static byte[] saxonTransform(Map<String, byte[]> files, byte[] source, byte[] xslt) throws TransformerException {
-    TransformerFactory f = new net.sf.saxon.TransformerFactoryImpl();
+    TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedSaxonTransformerFactory();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(new ByteArrayInputStream(xslt));
     f.setURIResolver(new ZipURIResolver(files));
@@ -88,7 +88,7 @@ public class XsltUtilities {
   }
 
   public static String saxonTransform(String source, String xslt) throws TransformerException, IOException {
-    TransformerFactoryImpl f = new net.sf.saxon.TransformerFactoryImpl();
+    TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedSaxonTransformerFactory();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(ManagedFileAccess.inStream(xslt));
     Transformer t = f.newTransformer(xsrc);
@@ -103,7 +103,7 @@ public class XsltUtilities {
   }
 
   public static void saxonTransform(String xsltDir, String source, String xslt, String dest, URIResolver alt, Map<String, String> params) throws TransformerException, IOException {
-    TransformerFactoryImpl f = new net.sf.saxon.TransformerFactoryImpl();
+    TransformerFactory f = org.hl7.fhir.utilities.xml.XMLUtil.newXXEProtectedSaxonTransformerFactory();
     f.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
     StreamSource xsrc = new StreamSource(ManagedFileAccess.inStream(xslt));
     f.setURIResolver(new MyURIResolver(xsltDir, alt));

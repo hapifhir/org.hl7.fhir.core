@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.9.8-SNAPSHOT</version>
+        <version>6.9.11-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -338,7 +338,7 @@
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <excludes>**/module-info.class,META-INF/*,**/logback-test.xml</excludes>
+                            <excludes>**/module-info.class,META-INF/MANIFEST.MF,META-INF/*.SF,META-INF/*.RSA,META-INF/*.DSA,META-INF/*.EC,META-INF/maven/**,**/logback-test.xml</excludes>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
@@ -351,7 +351,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven-jar-plugin.version}</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -466,6 +465,13 @@
                             <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.utilities</exclude>
                             <exclude>ca.uhn.hapi.fhir:org.hl7.fhir.validation</exclude>
                         </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId><!-- Use the latest version -->
+                    <configuration>
+                        <onlyAnalyze>org.hl7.fhir.validation.cli.*</onlyAnalyze>
                     </configuration>
                 </plugin>
         	</plugins>

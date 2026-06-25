@@ -28,36 +28,45 @@ public class PropertyFilter extends ConceptFilter {
 
   @Override
   public boolean includeConcept(CodeSystem cs, ConceptDefinitionComponent def) {
-    ConceptPropertyComponent pc = getPropertyForConcept(def);
-    if (pc != null) {
-      if (pc.hasValue() && pc.getValue().isPrimitive()) {
-        String v = pc.getValue().primitiveValue();
+    ConceptPropertyComponent propertyComponent = getPropertyForConcept(def);
+    if (propertyComponent != null) {
+      if (propertyComponent.hasValue() && propertyComponent.getValue().isPrimitive()) {
+        String value = propertyComponent.getValue().primitiveValue();
         switch (filter.getOp()) {
           case DESCENDENTOF:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case EQUAL:
-            return filter.getValue().equals(v);
+            return filter.getValue().equals(value);
           case EXISTS:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case GENERALIZES:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case IN:
-            return Utilities.existsInListTrimmed(v, filter.getValue().split("\\,"));
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character split
+            String[] primitiveInParts = filter.getValue().split("\\,");
+            return Utilities.existsInListTrimmed(value, primitiveInParts);
           case ISA:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case ISNOTA:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case NOTIN:
-            return !Utilities.existsInListTrimmed(v, filter.getValue().split("\\,"));
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character split
+            String[] primitiveNotInParts = filter.getValue().split("\\,");
+            return !Utilities.existsInListTrimmed(value, primitiveNotInParts);
           case NULL:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case REGEX:
-            return v != null && v.matches(filter.getValue());
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //Regex sourced from FHIR ValueSet filter value; user-supplied at runtime
+            boolean primitiveRegexMatch = value != null && value.matches(filter.getValue());
+            return primitiveRegexMatch;
           default:
             throw fail("Shouldn't get here");
         }
-      } else if (pc.getValue() instanceof Coding) {
-        Coding c = pc.getValueCoding();
+      } else if (propertyComponent.getValue() instanceof Coding) {
+        Coding c = propertyComponent.getValueCoding();
         switch (filter.getOp()) {
           case DESCENDENTOF:
             throw fail("not supported yet: " + filter.getOp().toCode());
@@ -68,13 +77,19 @@ public class PropertyFilter extends ConceptFilter {
           case GENERALIZES:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case IN:
-            return CodingUtilities.filterInList(c, filter.getValue().split("\\,"));
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character split
+            String[] codingInParts = filter.getValue().split("\\,");
+            return CodingUtilities.filterInList(c, codingInParts);
           case ISA:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case ISNOTA:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case NOTIN:
-            return !CodingUtilities.filterInList(c, filter.getValue().split("\\,"));
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character split
+            String[] codingNotInParts = filter.getValue().split("\\,");
+            return !CodingUtilities.filterInList(c, codingNotInParts);
           case NULL:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case REGEX:
@@ -83,7 +98,7 @@ public class PropertyFilter extends ConceptFilter {
             throw fail("Shouldn't get here");
         }
       } else {
-        throw fail("not supported yet: " + pc.getValue().fhirType());
+        throw fail("not supported yet: " + propertyComponent.getValue().fhirType());
       }
     } else {
       return filter.getOp() == FilterOperator.NOTIN;
