@@ -39,6 +39,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.turtle.Turtle;
 import org.hl7.fhir.utilities.turtle.Turtle.Complex;
+import org.hl7.fhir.utilities.turtle.Turtle.Section;
 import org.hl7.fhir.utilities.turtle.Turtle.Subject;
 
 
@@ -76,6 +77,16 @@ public class TurtleParserR6 extends TurtleParserBase {
     if (Utilities.existsInList(element.getType(), "canonical", "oid", "uri", "url", "uuid")) {
       linkURI(t, element.primitiveValue(), element.getType());
     }
+  }
+
+  @Override
+  protected void decorateCoding(Complex t, Element coding, Section section) throws FHIRException {
+    // Do nothing in R6
+  }
+
+  @Override
+  protected void decorateCodeableConcept(Complex t, Element codeableConcept, Section section) throws FHIRException {
+    // Do nothing in R6
   }
 
   @Override

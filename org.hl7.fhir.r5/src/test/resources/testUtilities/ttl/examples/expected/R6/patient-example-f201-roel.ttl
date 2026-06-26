@@ -2,7 +2,6 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix sct: <http://snomed.info/id/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 # - resource -------------------------------------------------------------------
@@ -64,7 +63,6 @@
   ] ) ; # Indicates that the individual is not deceased, ISO 3166 3 letter code
   fhir:maritalStatus [
      fhir:coding ( [
-       a sct:36629006 ;
        fhir:system [
          fhir:v "http://snomed.info/sct"^^xsd:anyURI ;
          fhir:l <http://snomed.info/sct>
@@ -93,7 +91,6 @@
   fhir:contact ( [
      fhir:relationship ( [
        fhir:coding ( [
-         a sct:127850001 ;
          fhir:system [
            fhir:v "http://snomed.info/sct"^^xsd:anyURI ;
            fhir:l <http://snomed.info/sct>

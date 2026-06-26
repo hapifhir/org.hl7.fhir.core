@@ -42,6 +42,8 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.turtle.Turtle;
+import org.hl7.fhir.utilities.turtle.Turtle.Complex;
+import org.hl7.fhir.utilities.turtle.Turtle.Section;
 
 
 @MarkedToMoveToAdjunctPackage
@@ -167,5 +169,33 @@ public class TurtleParser extends TurtleParserBase {
 
   public static String getClassName(String name) {
     return name; // R5 ShEx type names are not transformed
+  }
+
+  @Override
+  protected void decorateCoding(Complex t, Element coding, Section section) throws FHIRException {
+    String system = coding.getChildValue("system");
+    String code = coding.getChildValue("code");
+
+    if (system == null || code == null)
+      return;
+    if ("http://snomed.info/sct".equals(system)) {
+      t.prefix("sct", "http://snomed.info/id/");
+      if (code.contains(":") || code.contains("=")) {
+        // Post-coordinated expressions aren't supported
+      } else {
+        t.linkedPredicate("a", "sct:" + urlescape(code), null, null);
+      }
+    } else if ("http://loinc.org".equals(system)) {
+      t.prefix("loinc", "https://loinc.org/rdf/");
+      t.linkedPredicate("a", "loinc:"+urlescape(code).toUpperCase(), null, null);
+    } else if ("https://www.nlm.nih.gov/mesh".equals(system)) {
+      t.prefix("mesh", "http://id.nlm.nih.gov/mesh/");
+      t.linkedPredicate("a", "mesh:"+urlescape(code), null, null);
+    }
+  }
+
+  @Override
+  protected void decorateCodeableConcept(Complex t, Element codeableConcept, Section section) throws FHIRException {
+    // Do nothing in R5
   }
 }

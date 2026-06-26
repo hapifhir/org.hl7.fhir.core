@@ -411,7 +411,7 @@ public abstract class TurtleParserBase extends ParserBase {
       return "<" + Utilities.pathURL(base, e.getType(), id) + ">";
   }
 
-  protected String urlescape(String s) {
+  protected static String urlescape(String s) {
     StringBuilder b = new StringBuilder();
     for (char ch : s.toCharArray()) {
       if (Utilities.charInSet(ch,  ':', ';', '=', ','))
@@ -462,6 +462,11 @@ public abstract class TurtleParserBase extends ParserBase {
 
     if ("Coding".equals(element.getType()))
       decorateCoding(t, element, section);
+
+    if ("CodeableConcept".equals(element.getType())) {
+      decorateCodeableConcept(t, element, section);
+    }
+
     if (Utilities.existsInList(element.getType(), "Reference"))
       decorateReference(t, element);
 
@@ -572,30 +577,13 @@ public abstract class TurtleParserBase extends ParserBase {
   }
 
   protected void decorateCoding(Complex t, Element coding, Section section) throws FHIRException {
-    String system = coding.getChildValue("system");
-    String code = coding.getChildValue("code");
-
-    if (system == null || code == null)
-      return;
-    if ("http://snomed.info/sct".equals(system)) {
-      t.prefix("sct", "http://snomed.info/id/");
-      if (code.contains(":") || code.contains("="))
-        generateLinkedPredicate(t, code);
-      else
-        t.linkedPredicate("a", "sct:" + urlescape(code), null, null);
-    } else if ("http://loinc.org".equals(system)) {
-      t.prefix("loinc", "https://loinc.org/rdf/");
-      t.linkedPredicate("a", "loinc:"+urlescape(code).toUpperCase(), null, null);
-    } else if ("https://www.nlm.nih.gov/mesh".equals(system)) {
-      t.prefix("mesh", "http://id.nlm.nih.gov/mesh/");
-      t.linkedPredicate("a", "mesh:"+urlescape(code), null, null);
-    }  
+    // Do nothing by default
   }
 
-  private void generateLinkedPredicate(Complex t, String code) throws FHIRException {
-    Expression expression = SnomedExpressions.parse(code);
-
+  protected void decorateCodeableConcept(Complex t, Element codeableConcept, Section section) throws FHIRException {
+    // Do nothing by default
   }
+
   public OutputStyle getStyle() {
     return style;
   }
