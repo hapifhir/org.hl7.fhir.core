@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>hapi-deployable-pom</artifactId>
-        <version>8.4.0</version>
+        <version>8.10.0</version>
     </parent>
 
     <!--
@@ -24,7 +24,7 @@
         <commons_text_version>1.15.0</commons_text_version>
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
-        <hapi_fhir_version>8.4.0</hapi_fhir_version>
+        <hapi_fhir_version>8.10.0</hapi_fhir_version>
         <validator_test_case_version>1.7.64</validator_test_case_version>
         <jackson_version>2.22.0</jackson_version>
         <jackson_annotations_version>2.22</jackson_annotations_version>
