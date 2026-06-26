@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
@@ -172,6 +173,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   @BeforeClass
   public static void beforeClass() {
     ManagedWebAccess.loadFromFHIRSettings();
+    // Exercise the server-side terminology caching protocol across the validation
+    // suite. Against a server that doesn't advertise $cache-control this degrades
+    // to inlining (no-op); against one that does, the whole suite runs through the
+    // cache, which is a good real-world test of the protocol.
+    TerminologyClientContext.setCanUseCacheId(true);
   }
 
   @AfterAll
@@ -180,6 +186,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     vCurr = null;
     igLoader = null;
     manifest = null;
+    TerminologyClientContext.setCanUseCacheId(false); // don't leak the static into other suites
     System.gc();
   }
 

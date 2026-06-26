@@ -25,8 +25,7 @@ v: {
   "error" : "Wrong Display Name 'SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose' for http://hl7.org/fhir/sid/cvx#207. Valid display is 'COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#207 (\"SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#207\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"207\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#207 (\"SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#207\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"207\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -79,8 +78,7 @@ v: {
   "error" : "Wrong Display Name 'X SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose' for http://hl7.org/fhir/sid/cvx#207. Valid display is 'COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose' (for the language(s) 'en-US')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#207 (\"X SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#207\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"207\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#207 (\"X SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#207\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"207\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -130,8 +128,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#141 (\"Influenza, split virus, trivalent, preservative\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#141\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"141\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#141 (\"Influenza, split virus, trivalent, preservative\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#141\"\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"141\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -161,8 +158,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#208 (\"SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 30 mcg/0.3mL dose\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#208\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"208\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#208 (\"SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 30 mcg/0.3mL dose\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#208\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"208\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -192,8 +188,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#20 (\"diphtheria, tetanus toxoids and acellular pertussis vaccine\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#20\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"20\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#20 (\"diphtheria, tetanus toxoids and acellular pertussis vaccine\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#20\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"20\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -223,8 +218,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#138 (\"tetanus and diphtheria toxoids, not adsorbed, for adult use\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#138\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"138\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#138 (\"tetanus and diphtheria toxoids, not adsorbed, for adult use\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#138\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"138\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -254,8 +248,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#133 (\"pneumococcal conjugate vaccine, 13 valent\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#133\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"133\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#133 (\"pneumococcal conjugate vaccine, 13 valent\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#133\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"133\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -284,8 +277,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#208 (\"undefined\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#208\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"208\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#208 (\"undefined\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#208\"\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"208\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -312,8 +304,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Analysing http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2 for validation purposes\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Prepare include[0]: \"(http://hl7.org/fhir/sid/cvx)\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: \"http://hl7.org/fhir/sid/cvx|20250715\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Validate \"[http://hl7.org/fhir/sid/cvx#208 (\"undefined\")]\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Check \"http://hl7.org/fhir/sid/cvx#208\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: check code in (http://hl7.org/fhir/sid/cvx) at Coding\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Code \"208\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Analysing http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2 for validation purposes\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Prepare include[0]: \"(http://hl7.org/fhir/sid/cvx)\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: \"http://hl7.org/fhir/sid/cvx|20250715\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Validate \"[http://hl7.org/fhir/sid/cvx#208 (\"undefined\")]\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Check \"http://hl7.org/fhir/sid/cvx#208\"\n3ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx\n3ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: check code in (http://hl7.org/fhir/sid/cvx) at Coding\n3ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Code \"208\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -341,8 +332,7 @@ v: {
   "error" : "Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20250715'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#209 (\"undefined\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#209\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"209\" not found in http://hl7.org/fhir/sid/cvx|20250715: undefined",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#209 (\"undefined\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#209\"\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"209\" not found in http://hl7.org/fhir/sid/cvx|20250715: undefined",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -390,8 +380,7 @@ v: {
   "error" : "The provided code 'http://hl7.org/fhir/sid/cvx#209' was not found in the value set 'http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2'; Unknown code '209' in the CodeSystem 'http://hl7.org/fhir/sid/cvx' version '20250715'",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Analysing http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2 for validation purposes\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Prepare include[0]: \"(http://hl7.org/fhir/sid/cvx)\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: \"http://hl7.org/fhir/sid/cvx|20250715\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Validate \"[http://hl7.org/fhir/sid/cvx#209 (\"undefined\")]\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Check \"http://hl7.org/fhir/sid/cvx#209\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: check code in (http://hl7.org/fhir/sid/cvx) at Coding\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Code \"209\" not found in http://hl7.org/fhir/sid/cvx|20250715: undefined",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Analysing http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2 for validation purposes\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Prepare include[0]: \"(http://hl7.org/fhir/sid/cvx)\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: \"http://hl7.org/fhir/sid/cvx|20250715\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Validate \"[http://hl7.org/fhir/sid/cvx#209 (\"undefined\")]\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Check \"http://hl7.org/fhir/sid/cvx#209\"\n3ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx\n3ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: check code in (http://hl7.org/fhir/sid/cvx) at Coding\n3ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Code \"209\" not found in http://hl7.org/fhir/sid/cvx|20250715: undefined",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
@@ -460,8 +449,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#210 (\"undefined\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#210\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"210\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#210 (\"undefined\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#210\"\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"210\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -490,8 +478,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#207 (\"undefined\")]\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#207\"\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n1ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"207\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Validate \"[http://hl7.org/fhir/sid/cvx#207 (\"undefined\")]\"\n2ms http://hl7.org/fhir/sid/cvx/vs|20250715: Check \"http://hl7.org/fhir/sid/cvx#207\"\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx|20250715\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: check code in (http://hl7.org/fhir/sid/cvx) at CodeableConcept.coding[0]\n3ms http://hl7.org/fhir/sid/cvx/vs|20250715: Code \"207\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -518,8 +505,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Analysing http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2 for validation purposes\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Prepare include[0]: \"(http://hl7.org/fhir/sid/cvx)\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: \"http://hl7.org/fhir/sid/cvx|20250715\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Validate \"[http://hl7.org/fhir/sid/cvx#210 (\"undefined\")]\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Check \"http://hl7.org/fhir/sid/cvx#210\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: check code in (http://hl7.org/fhir/sid/cvx) at Coding\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Code \"210\" found in http://hl7.org/fhir/sid/cvx|20250715",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Analysing http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2 for validation purposes\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Prepare include[0]: \"(http://hl7.org/fhir/sid/cvx)\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: \"http://hl7.org/fhir/sid/cvx|20250715\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Validate \"[http://hl7.org/fhir/sid/cvx#210 (\"undefined\")]\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Check \"http://hl7.org/fhir/sid/cvx#210\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: check code in (http://hl7.org/fhir/sid/cvx) at Coding\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Code \"210\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
@@ -546,7 +532,7 @@ v: {
   "system" : "http://hl7.org/fhir/sid/cvx",
   "version" : "20250715",
   "server" : "https://tx-dev.fhir.org/r4",
-  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Analysing http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2 for validation purposes\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Prepare include[0]: \"(http://hl7.org/fhir/sid/cvx)\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: \"http://hl7.org/fhir/sid/cvx|20250715\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Validate \"[http://hl7.org/fhir/sid/cvx#207 (\"undefined\")]\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Check \"http://hl7.org/fhir/sid/cvx#207\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: check code in (http://hl7.org/fhir/sid/cvx) at Coding\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Code \"207\" found in http://hl7.org/fhir/sid/cvx|20250715",
+  "diagnostics" : "0ms tx-op\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Analysing http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2 for validation purposes\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Parameters: disp-lang=en-US, generate-narrative\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Prepare include[0]: \"(http://hl7.org/fhir/sid/cvx)\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: \"http://hl7.org/fhir/sid/cvx|20250715\"\n1ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Validate \"[http://hl7.org/fhir/sid/cvx#207 (\"undefined\")]\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Check \"http://hl7.org/fhir/sid/cvx#207\"\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: CodeSystem found: http://hl7.org/fhir/sid/cvx|20250715 for http://hl7.org/fhir/sid/cvx\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: check code in (http://hl7.org/fhir/sid/cvx) at Coding\n2ms http://hl7.org/fhir/uv/shc-vaccination/ValueSet/vaccine-cvx|0.6.2: Code \"207\" found in http://hl7.org/fhir/sid/cvx|20250715",
   "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome"

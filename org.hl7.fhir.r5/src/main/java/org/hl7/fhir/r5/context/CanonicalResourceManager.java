@@ -5,11 +5,8 @@ import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
-import org.hl7.fhir.r5.model.PackageInformation;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.*;
 
@@ -106,6 +103,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         }
         if (resource instanceof CodeSystem) {
           CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) resource);
+        }
+        // if a resource is loaded by this path, we'll never need it's narrative.
+        // and there's no reason to keep it in memory. at some stage, it is worth
+        // investing in not loading it in the frst place, but it's quite a bit of
+        // routing and piping. this saves a lot of memory
+        if (resource instanceof DomainResource) {
+          (resource).setText(null);
         }
       }
       return resource;

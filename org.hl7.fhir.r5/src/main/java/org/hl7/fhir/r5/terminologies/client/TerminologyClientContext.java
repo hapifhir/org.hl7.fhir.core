@@ -1,6 +1,5 @@
 package org.hl7.fhir.r5.terminologies.client;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,16 +11,15 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.ILoggingService;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.formats.IParser;
-import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
-import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 
 @MarkedToMoveToAdjunctPackage
 public class TerminologyClientContext {
@@ -81,18 +79,26 @@ public class TerminologyClientContext {
   private final TerminologyCache txCache;
   private String testVersion;
   
+  // The HTTP header that carries the server-issued cache-id on subsequent requests.
+  public static final String CACHE_ID_HEADER = "X-Cache-Id";
+
   private Map<String, TerminologyClientContextUseCount> useCounts = new HashMap<>();
   private boolean isTxCaching;
   private final Set<String> cached = new HashSet<>();
   private boolean master;
+  // The cache-id for this server: server-issued via $cache-control on initialize().
+  // null means this server isn't caching (didn't advertise $cache-control, caching
+  // was disabled, or starting a cache failed).
   private String cacheId;
+  private final ILoggingService logger;
 
-  protected TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, String cacheId, boolean master) throws IOException {
+  protected TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
     super();
     this.client = client;
     this.txCache = txCache;
-    this.cacheId = cacheId;
     this.master = master;
+    this.logger = logger;
+    // cacheId is server-issued during initialize() (or stays null if not caching)
     initialize();
   }
 
@@ -146,11 +152,6 @@ public class TerminologyClientContext {
 
   public void setTxCapabilities(TerminologyCapabilities txcaps) {
     this.txcaps = txcaps;
-    try {
-      new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).compose(new FileOutputStream("/Users/grahamegrieve/temp/txcaps.json"), txcaps);
-    } catch (IOException e) {
-
-    }
   }
 
   public Set<String> getCached() {
@@ -196,15 +197,10 @@ public class TerminologyClientContext {
       checkFeature();
       if (txCache != null && txCache.hasTerminologyCapabilities(getAddress())) {
         txcaps = txCache.getTerminologyCapabilities(getAddress());
-        try {
-          new JsonParser().setOutputStyle(IParser.OutputStyle.PRETTY).compose(new FileOutputStream("/Users/grahamegrieve/temp/txcaps.json"), txcaps);
-        } catch (IOException e) {
-
-        }
         if (txcaps.getSoftware().hasVersion() && !txcaps.getSoftware().getVersion().equals(capabilitiesStatement.getSoftware().getVersion())) {
           txcaps = null;
         }
-      } 
+      }
       if (txcaps == null) {
         txcaps = client.getTerminologyCapabilities();
         if (txCache != null) {
@@ -215,15 +211,76 @@ public class TerminologyClientContext {
           }
         }
       }
-      if (txcaps != null && TerminologyClientContext.canUseCacheId) {
-        for (TerminologyCapabilitiesExpansionParameterComponent t : txcaps.getExpansion().getParameter()) {
-          if ("cache-id".equals(t.getName())) {
-            setTxCaching(true);
-            break;
-          }
+    startCache();
+  }
+
+  private void startCache() {
+    // Caching is engaged by the explicit $cache-control protocol: if the server
+    // advertises the operation (and caching is enabled), ask it to start a cache
+    // and use the server-issued id thereafter, carried as an HTTP header. The
+    // server owns the id, so it can authoritatively reject an unknown cache later.
+    this.cacheId = null;
+    if (TerminologyClientContext.canUseCacheId && serverSupportsCacheControl()) {
+      try {
+        Parameters res = client.cacheControl(ITerminologyClient.CacheControlMode.START_CACHE, null);
+        String id = (res != null && res.hasParameter("cache-id")) ? res.getParameterValue("cache-id").primitiveValue() : null;
+        if (id != null && !id.isEmpty()) {
+          this.cacheId = id;
+          setTxCaching(true);
+          applyCacheIdHeader(id);
+        } else if (logger != null) {
+          logger.logMessage("Terminology server " + getAddress() + " advertised $cache-control but $cache-control?mode=start returned no cache-id; caching disabled for this server");
+        }
+      } catch (Exception e) {
+        if (logger != null) {
+          logger.logMessage("Unable to start a terminology cache on " + getAddress() + " via $cache-control (" + e.getMessage() + "); caching disabled for this server");
         }
       }
+    }
+  }
 
+  /**
+   * Release this server's cache via $cache-control?mode=end. Best-effort: failures
+   * are ignored (the server will time the cache out anyway). No-op if no cache is
+   * active for this server.
+   */
+  public void endCache() {
+    if (cacheId == null) {
+      return;
+    }
+    try {
+      client.cacheControl(ITerminologyClient.CacheControlMode.END_CACHE, null);
+    } catch (Exception e) {
+      // best-effort release; ignore
+    }
+    cacheId = null;
+    setTxCaching(false);
+  }
+
+  /**
+   * @return true if the server's CapabilityStatement advertises the system-level
+   * $cache-control operation.
+   */
+  private boolean serverSupportsCacheControl() {
+    if (capabilitiesStatement == null) {
+      return false;
+    }
+    for (CapabilityStatement.CapabilityStatementRestComponent rest : capabilitiesStatement.getRest()) {
+      for (CapabilityStatement.CapabilityStatementRestResourceOperationComponent op : rest.getOperation()) {
+        if ("cache-control".equals(op.getName())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Add the server-issued cache-id as a persistent request header on this context's
+   * client, so every subsequent request carries it.
+   */
+  private void applyCacheIdHeader(String id) {
+    client.addClientHeader(new HTTPHeader(CACHE_ID_HEADER, id));
   }
 
   private void checkFeature() {

@@ -38,7 +38,7 @@ class RegexTimeoutTests {
       static void afterAll() throws InterruptedException {
         // We need a tiny amount of delay here. Interruption is introduced as regexs process chars, which is fast, but
         // not instantaneous.
-        Thread.sleep(10);
+        Thread.sleep(100);
         Set<Thread> threadsAfter = Thread.getAllStackTraces().keySet();
         if (threadsAfter.size() != threadsBefore.size())
         {

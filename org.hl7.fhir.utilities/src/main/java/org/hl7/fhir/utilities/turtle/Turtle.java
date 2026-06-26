@@ -524,33 +524,36 @@ public class Turtle {
 	  return s.replace("\n", "\n#");
   }
 
-
   private void commitSection(StringBuilder b, Section section) throws Exception {
     b.append("# - "+section.name+" "+Utilities.padLeft("", '-', 75-section.name.length())+"\r\n");
     b.append("\r\n");
     if (!section.comments.isEmpty()) {
       for (String s : section.comments) {
-        b.append("# "+s+"\r\n");      
+        b.append("# "+s+"\r\n");
       }
       b.append("\r\n");
     }
     for (Subject sbj : section.subjects) {
-      b.append(Utilities.escapeXml(sbj.id));
-      b.append(" ");
+      if (Utilities.noString(sbj.id)) {
+        b.append("[");
+      } else {
+        b.append(Utilities.escapeXml(sbj.id));
+        b.append(" ");
+      }
       int i = 0;
 
       for (Predicate p : sbj.predicates) {
-        //        b.append("# test\r\n ");      
         b.append(p.makelink());
         b.append(" ");
         boolean first = true;
         for (Triple o : p.getObjects()) {
-        if (first) {
-          first = false;
-          if (p.asList) b.append("( ");
-        } else
-        	if (!p.asList) b.append(", ");
-        	else b.append(" ");
+          if (first) {
+            first = false;
+            if (p.asList) b.append("( ");
+          } else {
+            if (!p.asList) b.append(", ");
+            else b.append(" ");
+          }
           if (o instanceof StringType)
             b.append(Utilities.escapeXml(((StringType) o).value));
           else {
@@ -566,12 +569,14 @@ public class Turtle {
         i++;
         if (i < sbj.predicates.size())
           b.append(" ;"+Utilities.escapeXml(comment)+"\r\n  ");
-        else
+        else {
+          if (Utilities.noString(sbj.id))
+            b.append("]");
           b.append(" ."+Utilities.escapeXml(comment)+"\r\n\r\n");
+        }
       }
     }
   }
-
 	protected class LineOutputStreamWriter extends OutputStreamWriter {
 		private LineOutputStreamWriter(OutputStream out) throws UnsupportedEncodingException {
 			super(out, "UTF-8");
@@ -643,8 +648,8 @@ public class Turtle {
       for (Triple o : po.getObjects()) {
         if (first) {
           first = false;
-          if (po.asList) b.append(left+"( ");
-          b.append(po.makelink()+" ");
+          b.append(left+" "+po.makelink()+" ");
+          if (po.asList) b.append("( ");
         } else
         	if (!po.asList) b.append(", ");
         	else b.append(" ");
@@ -653,7 +658,7 @@ public class Turtle {
       else {
           b.append("[");
           if (write((Complex) o, b, indent+2)) {
-            b.append(left).append(" ]");
+            b.append("\r\n").append(left).append(" ]");
           } else {
             b.append(" ]");
           }

@@ -41,6 +41,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
 import lombok.Getter;
@@ -344,6 +345,29 @@ public class TerminologyCache {
   private final TerminologyCapabilitiesCache<CapabilityStatement> capabilityStatementCache;
   private final TerminologyCapabilitiesCache<TerminologyCapabilities> terminologyCapabilitiesCache;
   private Map<String, NamedCache> caches = new HashMap<String, NamedCache>();
+
+  // Memoised pretty-JSON of the expansion Parameters used in every validation /
+  // subsumes cache key. The Parameters are effectively constant for a whole run
+  // (they only change when the context replaces them), but their JSON was being
+  // recomposed on every validateCode call - including the ones that go on to hit
+  // the cache. We key the memo on object identity: callers pass the context's
+  // stable master Parameters, so a hit is the common case; when the context
+  // swaps in a new Parameters instance the identity changes and we recompose
+  // once. Held in a single AtomicReference so concurrent readers never see a
+  // params/json pair torn apart (a benign recompute race is the worst case).
+  // The produced string is byte-identical to the old inline composeString, so
+  // existing on-disk .cache keys remain valid.
+  private final AtomicReference<ExpParamsJson> expParamsJsonCache = new AtomicReference<>();
+
+  private static final class ExpParamsJson {
+    final Parameters params;
+    final String json;
+    ExpParamsJson(Parameters params, String json) {
+      this.params = params;
+      this.json = json;
+    }
+  }
+
   private Map<String, SourcedValueSetEntry> vsCache = new HashMap<>();
   private Map<String, SourcedCodeSystemEntry> csCache = new HashMap<>();
   private Map<String, String> serverMap = new HashMap<>();
@@ -500,11 +524,14 @@ public class TerminologyCache {
       nameCacheToken(vs, ct);
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
-      String expJS = expParameters == null ? "" : json.composeString(expParameters);
+      String expJS = expParamsJson(json, expParameters);
 
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
-        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
-        +"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";
+        ct.request = "{\"code\" : " + json.composeString(code, "codeableConcept") + ", \"url\": \"" + Utilities.escapeJson(vs.getUrl())
+          + "\", \"version\": \"" + Utilities.escapeJson(vs.getVersion()) + "\"" + (options == null ? "" : ", " + options.toJson()) + ", \"profile\": " + expJS + "}\r\n";
+      } else  if (vs != null && vs.hasUrl()) {
+          ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
+            +"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";
       } else if (options.getVsAsUrl()) {
         ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+extracted(json, vs)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
       } else {
@@ -530,7 +557,7 @@ public class TerminologyCache {
       ct.setName(vsUrl);
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
-      String expJS = json.composeString(expParameters);
+      String expJS = expParamsJson(json, expParameters);
 
       ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsUrl == null ? "null" : vsUrl)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
       ct.key = String.valueOf(hashJson(ct.request));
@@ -538,6 +565,25 @@ public class TerminologyCache {
     } catch (IOException e) {
       throw new Error(e);
     }
+  }
+
+  /**
+   * Pretty-JSON of the expansion Parameters for use in a cache key, memoised on
+   * the Parameters' object identity. Returns "" for null (matching the previous
+   * inline behaviour). The output is identical to {@code json.composeString(expParameters)},
+   * so cache keys are unchanged.
+   */
+  private String expParamsJson(JsonParser json, Parameters expParameters) throws IOException {
+    if (expParameters == null) {
+      return "";
+    }
+    final ExpParamsJson cached = expParamsJsonCache.get();
+    if (cached != null && cached.params == expParameters) {
+      return cached.json;
+    }
+    final String s = json.composeString(expParameters);
+    expParamsJsonCache.set(new ExpParamsJson(expParameters, s));
+    return s;
   }
 
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
@@ -562,7 +608,7 @@ public class TerminologyCache {
       nameCacheToken(vs, ct);
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
-      String expJS = json.composeString(expParameters);
+      String expJS = expParamsJson(json, expParameters);
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
         ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+
             "\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";      
@@ -1387,7 +1433,7 @@ public class TerminologyCache {
       ct.hasVersion = parent.hasVersion() || child.hasVersion();
       JsonParser json = new JsonParser();
       json.setOutputStyle(OutputStyle.PRETTY);
-      String expJS = json.composeString(expParameters);
+      String expJS = expParamsJson(json, expParameters);
       ct.request = "{\"op\": \"subsumes\", \"parent\" : "+json.composeString(parent, "code")+", \"child\" :"+json.composeString(child, "code")+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
       ct.key = String.valueOf(hashJson(ct.request));
       return ct;

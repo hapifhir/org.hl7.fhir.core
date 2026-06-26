@@ -694,7 +694,7 @@ public class XmlParser extends ParserBase {
     Node node = element.getPreviousSibling();
     while (node != null && node.getNodeType() != Node.ELEMENT_NODE) {
       if (node.getNodeType() == Node.COMMENT_NODE)
-        context.getComments().add(0, node.getTextContent());
+        context.getComments().add(0, node.getTextContent().trim());
       node = node.getPreviousSibling();
     }
     node = element.getLastChild();
@@ -703,7 +703,7 @@ public class XmlParser extends ParserBase {
     }
     while (node != null) {
       if (node.getNodeType() == Node.COMMENT_NODE)
-        context.getComments().add(node.getTextContent());
+        context.getComments().add(node.getTextContent().trim());
       node = node.getNextSibling();
     }
   }
