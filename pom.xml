@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>hapi-deployable-pom</artifactId>
-        <version>8.4.0</version>
+        <version>8.10.0</version>
     </parent>
 
     <!--
@@ -24,7 +24,7 @@
         <commons_text_version>1.15.0</commons_text_version>
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
-        <hapi_fhir_version>8.4.0</hapi_fhir_version>
+        <hapi_fhir_version>8.10.0</hapi_fhir_version>
         <validator_test_case_version>1.7.64</validator_test_case_version>
         <jackson_version>2.22.0</jackson_version>
         <jackson_annotations_version>2.22</jackson_annotations_version>
@@ -47,6 +47,7 @@
         <maven.compiler.testTarget>17</maven.compiler.testTarget>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven-checkstyle-version>3.6.0</maven-checkstyle-version>
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
         <logback.version>1.5.25</logback.version>
         <log4jVersion>2.26.0</log4jVersion>
@@ -510,7 +511,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>${maven-checkstyle-version}</version>
                     <configuration>
                         <skip>true</skip>
                     </configuration>
@@ -962,6 +963,22 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
+                        <dependencies>
+                            <!-- Override the version inherited from hapi-fhir's CHECKSTYLE profile, which
+                                 uses ${project.version} for hapi-fhir-checkstyle. In this project's context
+                                 that resolves to 6.9.12-SNAPSHOT (our version, not the HAPI version),
+                                 which doesn't exist. Declaring with ${hapi_fhir_version} here wins. -->
+                            <dependency>
+                                <groupId>com.puppycrawl.tools</groupId>
+                                <artifactId>checkstyle</artifactId>
+                                <version>${checkstyle_version}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>ca.uhn.hapi.fhir</groupId>
+                                <artifactId>hapi-fhir-checkstyle</artifactId>
+                                <version>${hapi_fhir_version}</version>
+                            </dependency>
+                        </dependencies>
                          <configuration>
                              <skip>false</skip>
                         </configuration>
