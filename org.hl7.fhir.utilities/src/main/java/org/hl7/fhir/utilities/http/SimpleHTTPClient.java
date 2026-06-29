@@ -96,7 +96,7 @@ public class SimpleHTTPClient {
           }
           location = URLDecoder.decode(location, StandardCharsets.UTF_8);
 
-          url = new URL(originalUrl, location);  // Deal with relative URLs
+          url = URI.create(originalUrl.toString()).resolve(location).toURL(); // Deal with relative URLs
           continue;
         default:
           done = true;
