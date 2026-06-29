@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.terminologies.client;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
@@ -408,7 +409,7 @@ public class TerminologyClientManager {
   }
 
   private String host() throws MalformedURLException {
-    URL url = new URL(getMasterClient().getAddress());
+    URL url = URI.create(getMasterClient().getAddress()).toURL();
     if (url.getPort() > 0) {
       return url.getHost()+":"+url.getPort();
     } else {

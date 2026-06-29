@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class ManagedFhirWebAccessorTests {
     HTTPRequest request = new HTTPRequest().withUrl("http://www.google.com");
 
     IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
-    URL url = new URL("http://www.google.com");
+    URL url = URI.create("http://www.google.com").toURL();
     doReturn(true).when(authenticationProvider).canProvideHeaders(url);
     doReturn(Map.of("Authorization", "DUMMY_VALUE")).when(authenticationProvider).getHeaders(url);
 
