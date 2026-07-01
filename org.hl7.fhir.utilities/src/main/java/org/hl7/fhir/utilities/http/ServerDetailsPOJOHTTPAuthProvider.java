@@ -12,7 +12,7 @@ import java.util.Map;
  * URL prefix match against an iterable collection of {@link ServerDetailsPOJO} objects. The information for the first
  * matching entry will be used.
  */
-public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationProvider {
+public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationProvider, ITokenInvalidatingAuthProvider {
 
   private final Iterable<ServerDetailsPOJO> servers;
 
@@ -29,6 +29,9 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
   @Override
   public Map<String, String> getHeaders(URL url) {
     ServerDetailsPOJO serverDetails = getServerDetails(url);
+    if (serverDetails == null) {
+      return Collections.emptyMap();
+    }
     HTTPAuthenticationMode authenticationMode = getHTTPAuthenticationMode(serverDetails);
 
     if (authenticationMode == null) {
@@ -49,6 +52,18 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
         String providedAPIKey = serverDetails.getApikey();
         headers.put("Api-Key", providedAPIKey);
       }
+      case CLIENT_CREDENTIALS -> {
+        // A token-fetch failure surfaces as an unchecked FHIRException (the IHTTPAuthenticationProvider
+        // contract has no checked throws), so callers catching IOException will not catch it. The
+        // 401/403 retry only triggers on HTTP status, not on this exception.
+        try {
+          String ccToken = HTTPTokenManager.getToken(serverDetails);
+          headers.put("Authorization", "Bearer " + ccToken);
+        } catch (java.io.IOException e) {
+          throw new org.hl7.fhir.exceptions.FHIRException(
+            "Failed to obtain client_credentials token for " + serverDetails.getUrl(), e);
+        }
+      }
       default -> { /* do nothing */ }
 
   }
@@ -64,10 +79,16 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
       return HTTPAuthenticationMode.NONE;
     }
 
-    return switch (serverDetails.getAuthenticationType()) {
+    String type = serverDetails.getAuthenticationType();
+    if (type == null) {
+      return HTTPAuthenticationMode.NONE;
+    }
+
+    return switch (type) {
       case "basic" -> HTTPAuthenticationMode.BASIC;
       case "token" -> HTTPAuthenticationMode.TOKEN;
       case "apikey" -> HTTPAuthenticationMode.APIKEY;
+      case "client_credentials" -> HTTPAuthenticationMode.CLIENT_CREDENTIALS;
       default -> HTTPAuthenticationMode.NONE;
     };
   }
@@ -82,5 +103,16 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
    */
   private ServerDetailsPOJO getServerDetails(URL url) {
     return ManagedWebAccessUtils.getServer(url.toString(), servers);
+  }
+
+  @Override
+  public boolean invalidateCachedCredentials(URL url) {
+    ServerDetailsPOJO serverDetails = getServerDetails(url);
+    if (serverDetails != null
+        && getHTTPAuthenticationMode(serverDetails) == HTTPAuthenticationMode.CLIENT_CREDENTIALS) {
+      HTTPTokenManager.invalidateToken(serverDetails);
+      return true;
+    }
+    return false;
   }
 }

@@ -16,13 +16,12 @@ class ManagedWebAccessUtilsTests {
   public static final String DUMMY_TOKEN = "dummy_token";
 
   public static ServerDetailsPOJO getServerDetailsPOJO(String urlString) {
-    return new ServerDetailsPOJO(
-      urlString,
-      "token",
-      "web",
-      null,
-      null,
-      DUMMY_TOKEN + "for " + urlString, null, null, null);
+    return ServerDetailsPOJO.builder()
+      .url(urlString)
+      .authenticationType("token")
+      .type("web")
+      .token(DUMMY_TOKEN + "for " + urlString)
+      .build();
   }
 
   // Created by claude-sonnet-4-6

@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.settings;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -14,6 +15,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 @Isolated
 class FhirSettingsTests implements ResourceLoaderTests {
@@ -99,5 +102,41 @@ class FhirSettingsTests implements ResourceLoaderTests {
 
     assertEquals("http://dummy2.com", servers.get(1).url);
 
+  }
+
+  @Test
+  public void testParseClientCredentialsSettings() throws IOException {
+    Path path = Files.createTempFile("fhir-settings-cc", "json").toAbsolutePath();
+    copyResourceToFile(path, "settings", "settings-client-credentials.json");
+
+    FhirSettingsPOJO fhirSettings = FhirSettings.getFhirSettingsPOJO(path.toString());
+
+    List<ServerDetailsPOJO> servers = fhirSettings.getServers();
+    assertEquals(1, servers.size());
+
+    ServerDetailsPOJO server = servers.get(0);
+    assertEquals("https://tx.example.org/fhir", server.getUrl());
+    assertEquals("fhir", server.getType());
+    assertEquals("client_credentials", server.getAuthenticationType());
+    assertEquals("my-client-id", server.getClientId());
+    assertEquals("my-client-secret", server.getClientSecret());
+    assertEquals("https://auth.example.org/token", server.getTokenEndpoint());
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "settings-client-credentials-missing-clientId.json, clientId",
+    "settings-client-credentials-missing-clientSecret.json, clientSecret",
+    "settings-client-credentials-missing-tokenEndpoint.json, tokenEndpoint"
+  })
+  public void testClientCredentialsMissingFieldThrows(String resourceFile, String missingField) throws IOException {
+    Path path = Files.createTempFile("fhir-settings-cc-bad", "json").toAbsolutePath();
+    copyResourceToFile(path, "settings", resourceFile);
+
+    IOException ex = assertThrows(IOException.class, () -> {
+      FhirSettings.getFhirSettingsPOJO(path.toString());
+    });
+    assertTrue(ex.getMessage().contains("missing required field: " + missingField),
+      "Expected message to name missing field '" + missingField + "' but was: " + ex.getMessage());
   }
 }
