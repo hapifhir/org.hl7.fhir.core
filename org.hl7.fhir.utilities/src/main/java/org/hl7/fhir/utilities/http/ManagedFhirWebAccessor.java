@@ -5,7 +5,6 @@ import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.http.okhttpimpl.LoggingInterceptor;
 import org.hl7.fhir.utilities.http.okhttpimpl.ProxyAuthenticator;
 import org.hl7.fhir.utilities.http.okhttpimpl.RetryInterceptor;
-import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -133,7 +132,15 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     builder.proxyAuthenticator(new ProxyAuthenticator());
     return builder.connectTimeout(timeout, timeoutUnit)
       .writeTimeout(timeout, timeoutUnit)
-      .readTimeout(timeout, timeoutUnit).build();
+      .readTimeout(timeout, timeoutUnit)
+      .callTimeout(calculateCallTimeout(timeout, timeoutUnit, retries), TimeUnit.MILLISECONDS).build();
+  }
+
+  static long calculateCallTimeout(long perAttemptTimeout, TimeUnit perAttemptTimeoutUnit, int retries) {
+    long attemptTimeoutMillis = perAttemptTimeoutUnit.toMillis(perAttemptTimeout);
+    int attempts = Math.max(0, retries) + 1;
+    return Math.addExact(Math.multiplyExact(attemptTimeoutMillis, attempts),
+      Math.multiplyExact(RetryInterceptor.RETRY_DELAY_MILLIS, Math.max(0, retries)));
   }
 
 }
