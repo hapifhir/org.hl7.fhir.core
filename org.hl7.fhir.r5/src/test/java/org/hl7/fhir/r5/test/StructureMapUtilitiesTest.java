@@ -183,7 +183,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
   }
 
   @Override
-  public Base resolveReference(Object appContext, String url) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
     return null;
   }
 
