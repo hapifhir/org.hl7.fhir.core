@@ -46,7 +46,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class BaseWorkerContextTests {
 
-  private static final String DUMMY_URL = "dummyUrl";
+  private static final String DUMMY_URL = "http://dummyUrl";
 
   @Spy
   BaseWorkerContext context = new BaseWorkerContext() {
