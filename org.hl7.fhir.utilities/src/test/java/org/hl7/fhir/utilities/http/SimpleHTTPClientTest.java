@@ -8,6 +8,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class SimpleHTTPClientTest {
   void testRedirectNoProvidedAuth(int code, String[] urlArgs) throws IOException, InterruptedException {
     final HttpUrl[] urls = enqueueSameServerRedirectsExceptLast(code, urlArgs);
     final List<HttpURLConnection> connections = new ArrayList<>();
-    final URL exampleInvalidUrl = new URL(EXAMPLE_INVALID_REDIRECTED);
+    final URL exampleInvalidUrl = URI.create(EXAMPLE_INVALID_REDIRECTED).toURL();
 
     IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
     //Until the last connection, use the built authentication
@@ -154,7 +155,7 @@ public class SimpleHTTPClientTest {
   void testRedirectProvidedAuth(int code, String[] urlArgs) throws IOException, InterruptedException {
     final HttpUrl[] urls = enqueueSameServerRedirectsExceptLast(code, urlArgs);
     final List<HttpURLConnection> connections = new ArrayList<>();
-    final URL exampleInvalidUrl = new URL(EXAMPLE_INVALID_REDIRECTED);
+    final URL exampleInvalidUrl = URI.create(EXAMPLE_INVALID_REDIRECTED).toURL();
 
     IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
 
