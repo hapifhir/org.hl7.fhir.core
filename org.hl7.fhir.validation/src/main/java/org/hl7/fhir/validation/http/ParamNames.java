@@ -1,7 +1,7 @@
 package org.hl7.fhir.validation.http;
 
 /**
- * HTTP query parameter name constants for the {@code /validateResource} endpoint.
+ * HTTP query parameter name constants for the {@code /validate} endpoint.
  * <p/>
  * Used by both the server-side handler and the HTTP client to ensure parameter
  * names are consistent and not duplicated as magic strings.

@@ -1,0 +1,535 @@
+###############################################################################
+# FHIR Validator — ITB REST API request collection
+#
+# Mirrors the calls made by the Gherkin smoke + modify scenarios in
+# test-workbench (`itb-api-smoke.feature`, `modify-resource.feature`).
+# Use with the "REST Client" (humao.rest-client) extension for VS Code.
+#
+# Each request is self-contained: pick any one and "Send Request".
+# To chain requests by hand, copy a value from the previous response into
+# the next request's body where indicated.
+#
+# Request groups:
+#   1. Sanity / module definitions
+#   2. IG loading            (igManager)
+#   3. Test-data generation  (testdata: generate, generateBundle)
+#   4. Resource modification (testdata: modify — set / add / remove)
+#   5. Validation            (fhir: validate)
+#   6. FHIRPath              (fhirPath: evaluate; fhirPathAssertion: validate)
+#   7. Matchetype            (matchetype: validate)
+#   8. Validation results    (validationResults: summarize / filter)
+#   9. Processing-service lifecycle (beginTransaction / endTransaction)
+###############################################################################
+
+
+### ─── Variables ────────────────────────────────────────────────────────────
+# Adjust @baseUrl for your environment. With the docker-compose mapping
+# (8088:8081), use http://localhost:8088 from the host.
+@baseUrl = http://localhost:8088
+@beAllergy = https://www.ehealth.fgov.be/standards/fhir/allergy/StructureDefinition/be-allergyintolerance
+@patient = http://hl7.org/fhir/StructureDefinition/Patient
+
+
+###############################################################################
+# 1. Sanity / module definitions
+#
+# Every GITB service answers GET /<svc>/getModuleDefinition. Hitting these
+# is the fastest way to confirm the validator is up and that all 7 services
+# are registered. Each response wraps a `module` object with id, metadata,
+# and the operations the service supports.
+###############################################################################
+
+### FHIRValidator (validation)
+GET {{baseUrl}}/itb/fhir/getModuleDefinition
+
+### MatchetypeValidator (validation)
+GET {{baseUrl}}/itb/matchetype/getModuleDefinition
+
+### FHIRPathAssertion (validation)
+GET {{baseUrl}}/itb/fhirPathAssertion/getModuleDefinition
+
+### FHIRPathProcessor (processing)
+GET {{baseUrl}}/itb/fhirPath/getModuleDefinition
+
+### TestDataGenerator (processing)  — should list generate, generateBundle, modify
+GET {{baseUrl}}/itb/testdata/getModuleDefinition
+
+### ValidationResultsProcessor (processing) — summarize / filterBySeverity / filterByText
+GET {{baseUrl}}/itb/validationResults/getModuleDefinition
+
+### IGManager (processing)
+GET {{baseUrl}}/itb/igManager/getModuleDefinition
+
+### FHIRTransformer (processing) — applies a StructureMap; also parses FML
+GET {{baseUrl}}/itb/transform/getModuleDefinition
+
+### QuestionnaireGenerator (processing) — builds a Questionnaire from a profile
+GET {{baseUrl}}/itb/questionnaire/getModuleDefinition
+
+### PackageGenerator (processing) — CRMI $package: artifact + transitive deps
+GET {{baseUrl}}/itb/package/getModuleDefinition
+
+
+###############################################################################
+# 2. IG loading
+#
+# Loads a FHIR package into the running validator's context so that profiles
+# from that package can be referenced by canonical URL in subsequent calls.
+# The processing-service envelope is `{operation, input[]}`; the validator
+# returns `{output[]}`.
+###############################################################################
+
+### Load the Belgian Allergy IG (pulls hl7.fhir.be.core as a dependency)
+POST {{baseUrl}}/itb/igManager/process
+Content-Type: application/json
+
+{
+  "operation": "loadIG",
+  "input": [
+    { "name": "ig", "value": "hl7.fhir.be.allergy#1.2.0", "embeddingMethod": "STRING" }
+  ]
+}
+
+### Load the WHO ICVP IG (pre-requisite for the ICVP→IPS transform below)
+POST {{baseUrl}}/itb/igManager/process
+Content-Type: application/json
+
+{
+  "operation": "loadIG",
+  "input": [
+    { "name": "ig", "value": "smart.who.int.icvp", "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 3. Test-data generation  (testdata: generate)
+#
+# Synthesises a FHIR resource against a profile. Optional inputs:
+#   - mappings: stringified JSON array of {path, value | parts:[{name,value}]}
+#               entries that pin specific element values.
+#   - data:     stringified JSON array of row objects when the mappings use
+#               FHIRPath expressions over `%row.<col>`.
+#   - requiredOnly: when "true", only required elements are populated.
+#
+# The response output[0].value is the generated resource as a JSON string.
+###############################################################################
+
+### Generate a Patient with required elements only and a fixed id
+# @name generatePatient
+POST {{baseUrl}}/itb/testdata/process
+Content-Type: application/json
+
+{
+  "operation": "generate",
+  "input": [
+    { "name": "profile",      "value": "{{patient}}",                        "embeddingMethod": "STRING" },
+    { "name": "requiredOnly", "value": "true",                               "embeddingMethod": "STRING" },
+    { "name": "mappings",     "value": "[{\"path\":\"Patient.id\",\"value\":\"smoke-test-001\"}]", "embeddingMethod": "STRING" }
+  ]
+}
+
+### Generate a BE-AllergyIntolerance with two coded fields (system + code parts)
+POST {{baseUrl}}/itb/testdata/process
+Content-Type: application/json
+
+{
+  "operation": "generate",
+  "input": [
+    { "name": "profile",      "value": "{{beAllergy}}", "embeddingMethod": "STRING" },
+    { "name": "requiredOnly", "value": "true",          "embeddingMethod": "STRING" },
+    { "name": "mappings",     "value": "[{\"path\":\"AllergyIntolerance.code.coding\",\"parts\":[{\"name\":\"system\",\"value\":\"http://snomed.info/sct\"},{\"name\":\"code\",\"value\":\"1232123\"}]},{\"path\":\"AllergyIntolerance.clinicalStatus.coding\",\"parts\":[{\"name\":\"system\",\"value\":\"http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical\"},{\"name\":\"code\",\"value\":\"active\"}]}]", "embeddingMethod": "STRING" }
+  ]
+}
+
+### Generate a Bundle of N resources from row data + mappings (one resource per row)
+POST {{baseUrl}}/itb/testdata/process
+Content-Type: application/json
+
+{
+  "operation": "generateBundle",
+  "input": [
+    { "name": "profile",  "value": "{{patient}}",                                 "embeddingMethod": "STRING" },
+    { "name": "data",     "value": "[{\"id\":\"row-1\"},{\"id\":\"row-2\"}]",     "embeddingMethod": "STRING" },
+    { "name": "mappings", "value": "[{\"path\":\"Patient.id\",\"expression\":\"%row.id\"}]", "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 4. Resource modification  (testdata: modify)
+#
+# Applies an in-place sequence of set/add/remove ops to an existing resource.
+#   - resource:   stringified existing FHIR JSON
+#   - operations: stringified JSON array of {op, path, value | parts}
+#   - profile:    optional canonical URL to validate the result against
+#   - enforce:    when "true" (default), the post-modification validation
+#                 result is returned as output[1] (an OperationOutcome).
+#
+# The response output[0].value is the modified resource. With enforce=true,
+# output[1].value is the OperationOutcome from validation.
+###############################################################################
+
+### Modify without enforcement: overwrite Patient.id
+POST {{baseUrl}}/itb/testdata/process
+Content-Type: application/json
+
+{
+  "operation": "modify",
+  "input": [
+    { "name": "resource",   "value": "{\"resourceType\":\"Patient\",\"id\":\"before\"}",                "embeddingMethod": "STRING" },
+    { "name": "operations", "value": "[{\"op\":\"set\",\"path\":\"Patient.id\",\"value\":\"after\"}]", "embeddingMethod": "STRING" },
+    { "name": "enforce",    "value": "false",                                                            "embeddingMethod": "STRING" }
+  ]
+}
+
+### Modify against profile (enforce=true): adds a coding, then removes the original at index 0
+POST {{baseUrl}}/itb/testdata/process
+Content-Type: application/json
+
+{
+  "operation": "modify",
+  "input": [
+    { "name": "resource",   "value": "{\"resourceType\":\"AllergyIntolerance\",\"clinicalStatus\":{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical\",\"code\":\"active\"}]},\"patient\":{\"reference\":\"Patient/x\"}}", "embeddingMethod": "STRING" },
+    { "name": "operations", "value": "[{\"op\":\"add\",\"path\":\"AllergyIntolerance.clinicalStatus.coding\",\"parts\":[{\"name\":\"system\",\"value\":\"http://example.org/cs\"},{\"name\":\"code\",\"value\":\"extra\"}]},{\"op\":\"remove\",\"path\":\"AllergyIntolerance.clinicalStatus.coding[0]\"}]", "embeddingMethod": "STRING" },
+    { "name": "profile",    "value": "{{beAllergy}}", "embeddingMethod": "STRING" },
+    { "name": "enforce",    "value": "true",          "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 5. Validation  (fhir: validate)
+#
+# Validates a FHIR resource against the base spec and (optionally) one or
+# more profiles. Returns a TAR (Test Assertion Report) with embedded
+# OperationOutcome — failOn controls when the TAR result flips to FAILURE.
+###############################################################################
+
+### Validate a Patient against the base spec only
+POST {{baseUrl}}/itb/fhir/validate
+Content-Type: application/json
+
+{
+  "input": [
+    { "name": "contentToValidate", "value": "{\"resourceType\":\"Patient\",\"id\":\"smoke-test-001\"}", "embeddingMethod": "STRING" }
+  ]
+}
+
+### Validate an AllergyIntolerance against the Belgian profile
+POST {{baseUrl}}/itb/fhir/validate
+Content-Type: application/json
+
+{
+  "input": [
+    { "name": "contentToValidate", "value": "{\"resourceType\":\"AllergyIntolerance\",\"clinicalStatus\":{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical\",\"code\":\"active\"}]},\"code\":{\"coding\":[{\"system\":\"http://snomed.info/sct\",\"code\":\"1232123\"}]},\"patient\":{\"reference\":\"Patient/smoke-test-001\"}}", "embeddingMethod": "STRING" },
+    { "name": "profiles",          "value": "{{beAllergy}}",                                            "embeddingMethod": "STRING" },
+    { "name": "failOn",            "value": "error",                                                     "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 6. FHIRPath  (fhirPath: evaluate, fhirPathAssertion: validate)
+#
+# `evaluate` extracts the (string-rendered) value of an expression — useful
+# when you want to capture a value into a variable. `validate` (TAR) treats
+# the expression as a boolean assertion — TAR is SUCCESS iff the expression
+# evaluates to "true", FAILURE for "false", empty, or non-Boolean results.
+###############################################################################
+
+### evaluate: extract Patient.id
+POST {{baseUrl}}/itb/fhirPath/process
+Content-Type: application/json
+
+{
+  "operation": "evaluate",
+  "input": [
+    { "name": "content",    "value": "{\"resourceType\":\"Patient\",\"id\":\"smoke-test-001\"}", "embeddingMethod": "STRING" },
+    { "name": "expression", "value": "Patient.id",                                              "embeddingMethod": "STRING" }
+  ]
+}
+
+### evaluate: boolean expression rendered as "true" / "false"
+POST {{baseUrl}}/itb/fhirPath/process
+Content-Type: application/json
+
+{
+  "operation": "evaluate",
+  "input": [
+    { "name": "content",    "value": "{\"resourceType\":\"Patient\",\"id\":\"smoke-test-001\"}", "embeddingMethod": "STRING" },
+    { "name": "expression", "value": "Patient.id.exists()",                                     "embeddingMethod": "STRING" }
+  ]
+}
+
+### Boolean assertion as a TAR (used in Gherkin "assert FHIRPath" step)
+POST {{baseUrl}}/itb/fhirPathAssertion/validate
+Content-Type: application/json
+
+{
+  "input": [
+    { "name": "contentToValidate", "value": "{\"resourceType\":\"Patient\",\"id\":\"smoke-test-001\"}", "embeddingMethod": "STRING" },
+    { "name": "expression",        "value": "Patient.id = 'smoke-test-001'",                          "embeddingMethod": "STRING" },
+    { "name": "description",       "value": "Patient.id matches the expected smoke-test value",       "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 7. Matchetype  (matchetype: validate)
+#
+# Pattern-matches a resource against an expected shape (Matchetype JSON).
+# The placeholder `$string$` matches any non-empty string. Returns a TAR.
+###############################################################################
+
+### Match a Patient against an expected shape
+POST {{baseUrl}}/itb/matchetype/validate
+Content-Type: application/json
+
+{
+  "input": [
+    { "name": "contentToValidate", "value": "{\"resourceType\":\"Patient\",\"id\":\"smoke-test-001\"}",         "embeddingMethod": "STRING" },
+    { "name": "matchetype",        "value": "{\"resourceType\":\"Patient\",\"id\":\"$string$\"}", "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 7b. Transformation  (transform: transform)
+#
+# Applies a FHIR StructureMap (Mapping Language) to a source resource and
+# returns the transformed result. Same engine path as the legacy native
+# `POST /transform?map=<uri>` handler, but in GITB shape so ITB can drive it.
+#
+# Inputs:
+#   - content:      stringified source resource (FHIR JSON or XML)
+#   - map:          canonical URL of the StructureMap to apply
+#   - contentType:  MIME of `content` (default application/fhir+json)
+#   - targetFormat: "json" (default) or "xml"
+#
+# Output:
+#   - result:     the transformed resource (string)
+#   - targetMime: application/fhir+json or application/fhir+xml
+#
+# The StructureMap must already be in the validator's context — load the
+# IG that contains it via `/itb/igManager` `loadIG` first.
+###############################################################################
+
+### Transform an ICVP claim to an IPS Bundle (uses the WHO ICVP IG loaded in §2)
+#
+# Source: a small ICVP claim payload (logical model `ICVPMin`).
+# Map:    http://smart.who.int/icvp/StructureMap/ICVPClaimtoIPS
+#         (defined in FML, imports ICVPLMToIPS + ICVPClaimtoICVPLM)
+# Result: a FHIR Bundle of type `document` containing a Composition
+#         (with Medication / Allergies / Problems / Immunizations sections),
+#         an Immunization, and a Patient — see expected output below.
+POST {{baseUrl}}/itb/transform/process
+Content-Type: application/json
+
+{
+  "operation": "transform",
+  "input": [
+    { "name": "content",      "value": "{\"dob\":\"1994-10-13\",\"gn\":\"Parent/Antonio Rojas\",\"n\":\"Cristina Rodriguez\",\"ndt\":\"NI\",\"nid\":\"126008-7\",\"ntl\":\"CHL\",\"s\":\"male\",\"v\":{\"bo\":\"A1234\",\"cn\":\"Juan Castro\",\"dt\":\"2020-11-15\",\"is\":\"MINSALUD\",\"vle\":\"2025-11-15\",\"vls\":\"2020-11-15\",\"vp\":\"YellowFeverProductd2c75a15ed309658b3968519ddb31690\"}}", "embeddingMethod": "STRING" },
+    { "name": "map",          "value": "http://smart.who.int/icvp/StructureMap/ICVPClaimtoIPS", "embeddingMethod": "STRING" },
+    { "name": "contentType",  "value": "application/fhir+json", "embeddingMethod": "STRING" },
+    { "name": "targetFormat", "value": "json",                  "embeddingMethod": "STRING" }
+  ]
+}
+
+# Expected response shape:
+# {
+#   "output": [
+#     { "name": "result",     "value": "<Bundle JSON>", ... },
+#     { "name": "targetMime", "value": "application/fhir+json", ... }
+#   ]
+# }
+#
+# Where the Bundle should look like:
+#   {"resourceType":"Bundle","type":"document",
+#    "identifier":{"system":"urn:oid:2.16.724.4.8.10.200.10","value":"<uuid>"},
+#    "entry":[
+#      { Composition: id, status=final, type=loinc#60591-5, sections=[Medication 10160-0, Allergies 48765-2, Problems 11450-4, Immunizations 11369-6] },
+#      { Immunization: status=completed, vaccineCode=PreQualVaccineType#YellowFever,
+#                      occurrenceString=2020-11-15T00:00:00.000Z, lotNumber=A1234,
+#                      extension[ProductID]=PreQualProductIds#YellowFeverProductd2c75a15ed309658b3968519ddb31690 },
+#      { Patient: name.text="Cristina Rodriguez", gender=male, birthDate=1994-10-13,
+#                 contact.name.text="Parent/Antonio Rojas" }
+#    ]
+#   }
+
+### Parse FHIR Mapping Language (FML) text into a StructureMap resource
+#
+# The `parse` operation is the inverse-direction companion to `transform`:
+# transform APPLIES a StructureMap; parse turns FML source text INTO one.
+# Inputs: content (FML text), name (optional), targetFormat (json|xml).
+# Output: structureMap (the parsed StructureMap as a string) + targetMime.
+POST {{baseUrl}}/itb/transform/process
+Content-Type: application/json
+
+{
+  "operation": "parse",
+  "input": [
+    { "name": "content",      "value": "map \"http://example.org/StructureMap/IdentityTest\" = \"IdentityTest\"\n\nuses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientSrc as source\nuses \"http://hl7.org/fhir/StructureDefinition/Patient\" alias PatientTgt as target\n\ngroup IdentityTest(source src : PatientSrc, target tgt : PatientTgt) {\n  src.id -> tgt.id;\n}\n", "embeddingMethod": "STRING" },
+    { "name": "name",         "value": "IdentityTest", "embeddingMethod": "STRING" },
+    { "name": "targetFormat", "value": "json",         "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 7c. Questionnaire generation  (questionnaire: generate)
+#
+# Builds a FHIR Questionnaire from a StructureDefinition profile. Coded elements
+# get their ValueSets expanded and attached as answer options. Same engine path
+# as the legacy native `GET /questionnaire?profile=<url>` handler.
+#
+# Inputs:
+#   - profile:      canonical URL of the StructureDefinition profile
+#   - targetFormat: "json" (default) or "xml"
+#
+# Output:
+#   - questionnaire: the generated Questionnaire (string)
+#   - targetMime:    application/fhir+json or application/fhir+xml
+#
+# The profile must be in the validator's context — load the IG that contains
+# it via `/itb/igManager` `loadIG` first (base FHIR profiles are always there).
+###############################################################################
+
+### Generate a Questionnaire from the base Patient profile (whole profile)
+POST {{baseUrl}}/itb/questionnaire/process
+Content-Type: application/json
+
+{
+  "operation": "generate",
+  "input": [
+    { "name": "profile",      "value": "http://hl7.org/fhir/StructureDefinition/Patient", "embeddingMethod": "STRING" },
+    { "name": "targetFormat", "value": "json",                                            "embeddingMethod": "STRING" }
+  ]
+}
+
+### Generate a Questionnaire pruned to selected elements (select = JSON array of FHIRPath exprs)
+# select recipes:  ["mustSupport = true"]  |  ["min > 0"]  |  ["path = 'Patient.name'"]
+POST {{baseUrl}}/itb/questionnaire/process
+Content-Type: application/json
+
+{
+  "operation": "generate",
+  "input": [
+    { "name": "profile",      "value": "http://hl7.org/fhir/StructureDefinition/Patient", "embeddingMethod": "STRING" },
+    { "name": "targetFormat", "value": "json",                                            "embeddingMethod": "STRING" },
+    { "name": "select",       "value": "[\"path = 'Patient.name'\",\"path = 'Patient.birthDate'\"]", "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 7d. Packaging  (package: package — CRMI $package)
+#
+# Given a root canonical artifact, returns a `collection` Bundle of that artifact
+# plus every artifact it transitively references — profiles, extensions, ValueSets,
+# CodeSystems, Library, ActivityDefinition, PlanDefinition, ConceptMap, etc. Core
+# FHIR resources are not included.
+#
+# Inputs:
+#   - resource:        canonical URL of the root artifact
+#   - expandValueSets: "true" to replace ValueSet entries with their expansion (default false)
+#   - targetFormat:    "json" (default) or "xml"
+#
+# Output:
+#   - bundle:     the collection Bundle (string)
+#   - targetMime: application/fhir+json or application/fhir+xml
+#
+# The artifact + its dependencies must be in the validator's context — load the
+# IG(s) via `/itb/igManager` `loadIG` first (base FHIR artifacts are always there).
+###############################################################################
+
+### Package a base CodeSystem (minimal deps — fast sanity check)
+POST {{baseUrl}}/itb/package/process
+Content-Type: application/json
+
+{
+  "operation": "package",
+  "input": [
+    { "name": "resource",        "value": "http://hl7.org/fhir/administrative-gender", "embeddingMethod": "STRING" },
+    { "name": "expandValueSets", "value": "false",                                     "embeddingMethod": "STRING" },
+    { "name": "targetFormat",    "value": "json",                                      "embeddingMethod": "STRING" }
+  ]
+}
+
+### Package an IG-specific profile with its dependency closure + expanded ValueSets
+# (requires the relevant IG loaded via §2 first — replace the URL with one of yours)
+POST {{baseUrl}}/itb/package/process
+Content-Type: application/json
+
+{
+  "operation": "package",
+  "input": [
+    { "name": "resource",        "value": "https://www.ehealth.fgov.be/standards/fhir/allergy/StructureDefinition/be-allergyintolerance", "embeddingMethod": "STRING" },
+    { "name": "expandValueSets", "value": "true",  "embeddingMethod": "STRING" },
+    { "name": "targetFormat",    "value": "json",  "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 8. Validation results  (validationResults: summarize / filterBySeverity / filterByText)
+#
+# Post-processes an OperationOutcome you already got back from /itb/fhir/validate.
+###############################################################################
+
+### Summarise an OperationOutcome — counts errors / warnings / information
+POST {{baseUrl}}/itb/validationResults/process
+Content-Type: application/json
+
+{
+  "operation": "summarize",
+  "input": [
+    { "name": "outcome", "value": "{\"resourceType\":\"OperationOutcome\",\"issue\":[{\"severity\":\"error\",\"code\":\"invalid\"},{\"severity\":\"warning\",\"code\":\"informational\"},{\"severity\":\"information\",\"code\":\"informational\"}]}", "embeddingMethod": "STRING" }
+  ]
+}
+
+### Filter by severity (returns count + filtered OperationOutcome)
+POST {{baseUrl}}/itb/validationResults/process
+Content-Type: application/json
+
+{
+  "operation": "filterBySeverity",
+  "input": [
+    { "name": "outcome",  "value": "{\"resourceType\":\"OperationOutcome\",\"issue\":[{\"severity\":\"error\",\"code\":\"invalid\",\"details\":{\"text\":\"a\"}},{\"severity\":\"warning\",\"code\":\"informational\",\"details\":{\"text\":\"b\"}}]}", "embeddingMethod": "STRING" },
+    { "name": "severity", "value": "error",                                                                                                                                                                                        "embeddingMethod": "STRING" }
+  ]
+}
+
+### Filter by text substring in details.text
+POST {{baseUrl}}/itb/validationResults/process
+Content-Type: application/json
+
+{
+  "operation": "filterByText",
+  "input": [
+    { "name": "outcome", "value": "{\"resourceType\":\"OperationOutcome\",\"issue\":[{\"severity\":\"error\",\"details\":{\"text\":\"identifier system missing\"}},{\"severity\":\"error\",\"details\":{\"text\":\"name required\"}}]}", "embeddingMethod": "STRING" },
+    { "name": "text",    "value": "identifier",                                                                                                                                                                              "embeddingMethod": "STRING" }
+  ]
+}
+
+
+###############################################################################
+# 9. Processing-service lifecycle
+#
+# Per the GITB processing-service contract, ITB calls beginTransaction /
+# endTransaction around a session. The validator's services are stateless
+# beyond loaded IGs — beginTransaction returns a fresh sessionId, endTransaction
+# is a 204 no-op. Useful to know the endpoints exist and respond correctly.
+###############################################################################
+
+### beginTransaction (returns {sessionId})
+POST {{baseUrl}}/itb/testdata/beginTransaction
+Content-Type: application/json
+
+{}
+
+### endTransaction (returns 204 No Content)
+POST {{baseUrl}}/itb/testdata/endTransaction
+Content-Type: application/json
+
+{}
