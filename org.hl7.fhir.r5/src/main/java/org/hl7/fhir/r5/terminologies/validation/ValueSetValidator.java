@@ -361,8 +361,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
           result = null;
         } else if (ok != null && ok) {
           result = true;
-          foundCoding = c.copy();
-          foundCoding.setVersion(info.getFoundVersion());
+          // Report the FIRST matching coding, not the last: when a CodeableConcept
+          // has several valid codings, the code/system/version/display echoed back
+          // are those of the earliest coding that validated. vcc still accumulates
+          // every valid coding below; only foundCoding is locked to the first.
+          if (foundCoding == null) {
+            foundCoding = c.copy();
+            foundCoding.setVersion(info.getFoundVersion());
+          }
           if (!options.isMembershipOnly()) {
             vcc.addCoding().setSystem(c.getSystem()).setVersion(info.getFoundVersion()).setCode(c.getCode());
           }
@@ -1185,13 +1191,16 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     String statusMessage = null;
     if (inactive) {
-      statusMessage = context.formatMessage(I18nConstants.INACTIVE_CONCEPT_FOUND, "inactive", cc.getCode());
-      info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, statusMessage, OpIssueCode.CodeComment, null, I18nConstants.INACTIVE_CONCEPT_FOUND));
+      String messageId = I18nConstants.INACTIVE_CONCEPT_FOUND;
+      String statusId1 = "inactive";
+      String statusId2 = "";
       if ("retired".equals(status)) {
-        String sMsg2 = context.formatMessage(I18nConstants.INACTIVE_CONCEPT_FOUND, status, cc.getCode());
-        info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, sMsg2, OpIssueCode.CodeComment, null, I18nConstants.INACTIVE_CONCEPT_FOUND));
-        statusMessage = sMsg2+"; "+statusMessage;
+        messageId = I18nConstants.INACTIVE_CONCEPT_FOUND_ADD;
+        statusId1 = status;
+        statusId2 = "inactive";
       }
+      statusMessage = context.formatMessage(messageId, statusId1, cc.getCode(), statusId2);
+      info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, statusMessage, OpIssueCode.CodeComment, null, I18nConstants.INACTIVE_CONCEPT_FOUND));
     } else if (status != null && "deprecated".equals(status.toLowerCase())) {
       statusMessage = context.formatMessage(I18nConstants.DEPRECATED_CONCEPT_FOUND, status == null ? "inactive" : status, cc.getCode());
       info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, statusMessage, OpIssueCode.CodeComment, null, I18nConstants.DEPRECATED_CONCEPT_FOUND));
