@@ -1,0 +1,9 @@
+env:
+  FHIR_TEST_CASES: 
+
+%user.home fhir-settings.json - /home/eric/.fhir/fhir-settings.json
+
+/org/hl7/fhir/testcases/r5/packages/hl7.fhir.r5.core.tgz
+
+hl7.fhir.r5.core.tgz
+
