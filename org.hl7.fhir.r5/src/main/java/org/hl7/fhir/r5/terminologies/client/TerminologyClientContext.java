@@ -222,7 +222,15 @@ public class TerminologyClientContext {
     this.cacheId = null;
     if (TerminologyClientContext.canUseCacheId && serverSupportsCacheControl()) {
       try {
-        Parameters res = client.cacheControl(ITerminologyClient.CacheControlMode.START_CACHE, null);
+        // Ask for an *unsealed* cache: this client populates the cache
+        // incrementally (it sends each resource the first time it is needed, then
+        // refers to it by reference thereafter), so the cache must be allowed to
+        // grow after it is created. The protocol default is sealed=true, so we
+        // must request sealed=false explicitly. The body is r5 Parameters; the
+        // R3/R4 clients convert it down before sending.
+        Parameters body = new Parameters();
+        body.addParameter("sealed", false);
+        Parameters res = client.cacheControl(ITerminologyClient.CacheControlMode.START_CACHE, body);
         String id = (res != null && res.hasParameter("cache-id")) ? res.getParameterValue("cache-id").primitiveValue() : null;
         if (id != null && !id.isEmpty()) {
           this.cacheId = id;
