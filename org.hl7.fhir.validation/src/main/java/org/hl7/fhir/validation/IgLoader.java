@@ -106,7 +106,27 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
                      Map<String, ByteProvider> binaries,
                      String src,
                      boolean recursive) throws IOException, FHIRException {
+    loadIg(igs, binaries, src, recursive, false);
+  }
 
+  /**
+   * @param igs
+   * @param binaries
+   * @param src Source of the IG
+   * @param recursive
+   * @param onlyDirectIgDependencies if true, load only direct dependencies of a package without recursing into
+   *                                 their transitive dependencies. Resources that rely on transitively loaded
+   *                                 content may fail validation.
+   * @throws IOException
+   * @throws FHIRException
+   *
+   * @see IgLoader#loadIgSource(String, boolean, boolean) loadIgSource for detailed description of the src parameter
+   */
+  public void loadIg(List<ImplementationGuide> igs,
+                     Map<String, ByteProvider> binaries,
+                     String src,
+                     boolean recursive,
+                     boolean onlyDirectIgDependencies) throws IOException, FHIRException {
     final String explicitFhirVersion;
     final String srcPackage;
     if (src.startsWith("[") && src.indexOf(']', 1) > 1) {
@@ -135,19 +155,18 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       for (String s : npm.dependencies()) {
         if (!getContext().getLoadedPackages().contains(s)) {
           if (!VersionUtilities.isCorePackage(s)) {
-            loadIg(igs, binaries, s, false);
+            if (onlyDirectIgDependencies) {
+              NpmPackage dep = getPackageCacheManager().loadPackage(s, null);
+              if (dep != null) {
+                loadPackageIntoContext(dep, s);
+              }
+            } else {
+              loadIg(igs, binaries, s, false);
+            }
           }
         }
       }
-      StringBuilder packageLoadLine = new StringBuilder();
-      packageLoadLine.append("  Load " + srcPackage);
-      if (!srcPackage.contains("#")) {
-        packageLoadLine.append("#" + npm.version());
-      }
-      IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
-      loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
-      int count = getContext().loadFromPackage(npm, loader, false);
-      log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
+      loadPackageIntoContext(npm, srcPackage);
     } else {
       StringBuilder packageLoadLine = new StringBuilder();
       packageLoadLine.append("  Load " + srcPackage);
@@ -189,6 +208,18 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
       }
       log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
     }
+  }
+
+  private void loadPackageIntoContext(NpmPackage npm, String srcPackage) throws IOException {
+    StringBuilder packageLoadLine = new StringBuilder();
+    packageLoadLine.append("  Load " + srcPackage);
+    if (!srcPackage.contains("#")) {
+      packageLoadLine.append("#" + npm.version());
+    }
+    IContextResourceLoader loader = ValidatorUtils.loaderForVersion(npm.fhirVersion());
+    loader.setPatchUrls(VersionUtilities.isCorePackage(npm.id()));
+    int count = getContext().loadFromPackage(npm, loader, false);
+    log.info(packageLoadLine + " - " + count + " resources (" + getContext().clock().milestone() + ")");
   }
 
   /**
@@ -556,8 +587,9 @@ public class IgLoader implements IValidationEngineLoader, SimpleWorkerContext.IL
             found = true;
           }
         }
-        if (found)
+        if (found) {
           continue;
+        }
       }
       if (!getContext().getLoadedPackages().contains(s)) {
         if (!VersionUtilities.isCorePackage(s)) {
