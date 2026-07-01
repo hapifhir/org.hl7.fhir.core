@@ -1541,6 +1541,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   }
 
   @Override
+  public boolean isSuppressCompliesWithReason(String claimedProfileUrl, String elementPath) {
+    return policyAdvisor != null && policyAdvisor.isSuppressCompliesWithReason(claimedProfileUrl, elementPath);
+  }
+
+  @Override
   public ReferenceValidationPolicy getReferencePolicy() {
     return ReferenceValidationPolicy.IGNORE;
   }
