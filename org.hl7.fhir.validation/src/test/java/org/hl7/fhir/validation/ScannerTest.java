@@ -10,11 +10,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.OperationOutcome;
@@ -139,11 +138,8 @@ public class ScannerTest implements ResourceLoaderTests {
    * */
   private List<ScanOutputItem> getFakeResults(List<String> sources, SimpleWorkerContext context) {
     String ref = sources.get(0);
-
-    // The id of this IG itself is a 'malicious' script element.
-    ImplementationGuide ig = context.allImplementationGuides().stream()
-        .filter(i -> "<script>alert(\"package.json.name\")</script>".equals(i.getId()))
-        .findFirst().orElse(null);
+    // The URI of this IG itself is a 'malicious' script element.
+    ImplementationGuide ig = context.fetchResource(ImplementationGuide.class, "http://example.org/fhir/ImplementationGuide/<script>alert(\"package.json.name\")</script>", IWorkerContext.VersionResolutionRules.LATEST);
 
     // The profile
     StructureDefinition profile = context.fetchResource(StructureDefinition.class,
