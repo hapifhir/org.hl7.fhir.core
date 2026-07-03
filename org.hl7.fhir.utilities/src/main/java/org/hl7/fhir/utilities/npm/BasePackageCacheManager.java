@@ -135,11 +135,16 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   private String getPackageUrl(String packageId, PackageServer server) throws IOException {
     PackageClient pc = myClientFactory.apply(server);
     List<PackageInfo> res = pc.search(packageId, null, null, false, null);
-    if (res.size() == 0) {
-      return null;
-    } else {
-      return res.get(0).getUrl();
+    // Exact-match the package id and return its canonical. The prior code took res.get(0).getUrl(),
+    // which (a) fuzzy-matched siblings (e.g. "hl7.terminology.r4" hitting "hl7.terminology.r4b") and
+    // (b) returned the package download url rather than the canonical, producing spurious
+    // IG_DEPENDENCY_CLASH_CANONICAL errors on a cache miss.
+    for (PackageInfo pi : res) {
+      if (packageId.equals(pi.getId())) {
+        return pi.getCanonical();
+      }
     }
+    return null;
   }
 
 
