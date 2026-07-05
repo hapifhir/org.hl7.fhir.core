@@ -191,10 +191,16 @@ public abstract class ShExGeneratorBase {
   private static String SYNTHETIC_RESTRICTION_TEMPLATE =
     "$comment$\n<Resource> {" +	    "<$restriction$> EXTENDS <$base$> {} \n";
 
+  private static String SIMPLEQUANTITY =
+    "\n<$restriction$> EXTENDS @<$base$> CLOSED {   " +
+      "\n    a [fhir:$restriction$]?;" +
+      "\n    fhir:comparator . {0}" +
+      "\n} \n";
+
   // If we have knowledge of all of the possible resources available to us (completeModel = true), we can build
   // a model of all possible resources.
   private static final String COMPLETE_RESOURCE_TEMPLATE =
-	    "<_AnyResource>  @<$resources$>" +
+	    "<Resource>  @<$resources$>" +
       "\n\n";
 
   // Resource Declaration
@@ -559,7 +565,7 @@ public abstract class ShExGeneratorBase {
       if (completeModel && known_resources.size() > 0) {
         shapeDefinitions.append("\n").append(tmplt(COMPLETE_RESOURCE_TEMPLATE)
           .add("resources", StringUtils.join(known_resources, "> OR\n\t@<")).render());
-        shapeDefinitions.append("\n").append(tmplt(SYNTHETIC_RESTRICTION_TEMPLATE)
+        shapeDefinitions.append("\n").append(tmplt(SIMPLEQUANTITY)
           .add("restriction", "SimpleQuantity").add("base", "Quantity").render());
         List<String> all_entries = new ArrayList<String>();
         for (String kr : known_resources)
@@ -690,14 +696,13 @@ public abstract class ShExGeneratorBase {
    * @return ShEx definition
    */
   private String genShapeDefinition(StructureDefinition sd, boolean top_level) {
-    // xhtml is treated as an atom
     //if("xhtml".equals(sd.getName()) || (completeModel && "Resource".equals(sd.getName())))
     // if(completeModel && "Resource".equals(sd.getName()))
     //   return "";
     if("xhtml".equals(sd.getName())) {
-      return tmplt(DATATYPE_DEFINITION_TEMPLATE)
-        .add("id", getClassName("xhtml"))
-        .add("datatype", "rdf:XMLLiteral")
+      return tmplt(SHAPE_DEFINITION_TEMPLATE)
+        .add("id", getClassName(getExtendedType(sd)))
+        .add("elements", "fhir:v " + tmplt(XHTML_TYPE_TEMPLATE).render() + ";\nfhir:extension . {0};")
         .add("comment", "")
         .add("constraints", "")
         .render();
@@ -725,7 +730,7 @@ public abstract class ShExGeneratorBase {
         String id = sd.getId();
 
         ST resource_decl = tmplt(RESOURCE_DECL_TEMPLATE).
-          add("id", id).
+          add("id", getClassName(id)).
           add("root", rootTmpl);
 
         shape_defn.add("resourceDecl", resource_decl.render());
@@ -1712,7 +1717,7 @@ public abstract class ShExGeneratorBase {
       String xt = getShexCode(typ.getWorkingCode());
 
       if ("xhtml.value".equals(id))
-        xt = "rdf:XMLLiteral";
+        xt = tmplt(XHTML_TYPE_TEMPLATE).render();
 
       // TODO: Remove the next line when the type of token gets switched to string
       // TODO: Add a rdf-type entry for valueInteger to xsd:integer (instead of int)
@@ -1863,7 +1868,10 @@ public abstract class ShExGeneratorBase {
       else
         choiceEntries.add(entry);
     }
-    return StringUtils.join(choiceEntries, " OR \n\t\t\t");
+    String joined = StringUtils.join(choiceEntries, " OR \n\t\t\t");
+    if (choiceEntries.size() > 1)
+      joined = "(" + joined + ")";
+    return joined;
   }
 
   /**
