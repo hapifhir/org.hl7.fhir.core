@@ -76,6 +76,8 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 public abstract class TurtleParserBase extends ParserBase {
 
   protected String base;
+  /** Type of the resource currently being composed; set in {@link #compose(Element, Turtle, String)}. */
+  protected String resourceType;
   private OutputStyle style;
 
   public static String FHIR_URI_BASE = "http://hl7.org/fhir/";
@@ -330,6 +332,7 @@ public abstract class TurtleParserBase extends ParserBase {
     if (e.getPath() == null) {
       e.populatePaths(null);
     }
+    resourceType = e.getType();
 
     ttl.prefix("fhir", FHIR_URI_BASE);
     ttl.prefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");

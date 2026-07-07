@@ -49,6 +49,8 @@ import org.hl7.fhir.utilities.turtle.Turtle.Section;
 @MarkedToMoveToAdjunctPackage
 public class TurtleParser extends TurtleParserBase {
 
+  private boolean deriveConceptIriFromNamingSystem;
+
   // `volatile` so the one-shot lazy publish of the cross-version delegates is visible across threads.
   // Per-call setting sync below is intentionally NOT synchronized: the inherited ParserBase
   // setters/fields aren't thread-safe to begin with, and parse()/compose() mutate other
@@ -108,6 +110,18 @@ public class TurtleParser extends TurtleParserBase {
     delegate.canonicalFilter = canonicalFilter;
     delegate.setStyle(getStyle());
     delegate.base = base;
+    if (delegate instanceof TurtleParserR6) {
+      ((TurtleParserR6) delegate).setDeriveConceptIriFromNamingSystem(deriveConceptIriFromNamingSystem);
+    }
+  }
+
+  public boolean isDeriveConceptIriFromNamingSystem() {
+    return deriveConceptIriFromNamingSystem;
+  }
+
+  public TurtleParser setDeriveConceptIriFromNamingSystem(boolean deriveConceptIriFromNamingSystem) {
+    this.deriveConceptIriFromNamingSystem = deriveConceptIriFromNamingSystem;
+    return this;
   }
 
   @Override
