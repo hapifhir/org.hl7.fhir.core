@@ -625,7 +625,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if ((includeAbstract || !abs)  && filterFunc.includeConcept(cs, def) && passesOtherFilters(otherFilters, cs, def.getCode())) {
       for (String code : getCodesForConcept(def, expParams)) {
         if (!(filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, version, code, exp)))
-          excludeCode(wc, system, version, code);
+          excludeCode(wc, system, cs.getVersion(), code);
       }
     }
     if (depth > 0) {
@@ -712,14 +712,20 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
 
     CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem(), ExtensionUtilities.getVersionResolutionRules(exc), exc.getVersion(), new ArrayList<>(), vs);
-    if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.getTxSupportInfo(exc.getSystem(), exc.getVersion()).isSupported()) {
+    boolean canExpandLocally = cs != null
+        && !ValueSetUtilities.isServerSide(exc.getSystem())
+        && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT);
+    if (!canExpandLocally) {
+      if (cs == null && noTerminologyServer) {
+        throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_EXP, exc.getSystem());
+      }
       ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
       ValueSet valueset = vse.getValueset();
+      if (valueset == null)
+        throw createTerminologyServiceException("Error Expanding ValueSet: " + vse.getError());
       if (valueset.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
         sources.add(valueset.getUserString(UserDataNames.VS_EXPANSION_SOURCE));
       }
-      if (valueset == null)
-        throw createTerminologyServiceException("Error Expanding ValueSet: " + vse.getError());
       excludeCodes(wc, valueset.getExpansion());
       return;
     }
