@@ -26,7 +26,7 @@
         <gson_version>2.13.1</gson_version>
         <hapi_fhir_version>8.10.0</hapi_fhir_version>
         <validator_test_case_version>1.7.65-SNAPSHOT</validator_test_case_version>
-        <jackson_version>2.22.0</jackson_version>
+        <jackson_version>2.22.1</jackson_version>
         <jackson_annotations_version>2.22</jackson_annotations_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
         <junit_platform_launcher_version>1.14.0</junit_platform_launcher_version>
@@ -321,7 +321,7 @@
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib</artifactId>
-                <version>2.2.21</version>
+                <version>2.4.0</version>
             </dependency>
 
             <dependency>
