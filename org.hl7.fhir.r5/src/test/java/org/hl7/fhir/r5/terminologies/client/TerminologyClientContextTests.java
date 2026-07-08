@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -176,5 +177,45 @@ public class TerminologyClientContextTests {
     ctx.endCache();
 
     verify(client, never()).cacheControl(eq(ITerminologyClient.CacheControlMode.END_CACHE), any());
+  }
+
+  /**
+   * When a second context wraps a client that already carries a cache-id header
+   * (the IG publisher's version comparators reuse the master client for their
+   * per-version contexts), it must adopt that cache rather than starting a second
+   * one. Starting again appended a second X-Cache-Id header, which the server
+   * reads as one unknown id ("id1, id2") and rejects with CACHE_ID_UNKNOWN.
+   */
+  @Test
+  public void sharedClientWithExistingCacheId_adoptsInsteadOfStartingSecondCache() throws IOException {
+    ITerminologyClient client = baseMock(capabilityStatement(true));
+    when(client.getClientHeaders()).thenReturn(java.util.Collections.singletonList(
+      new HTTPHeader(TerminologyClientContext.CACHE_ID_HEADER, CACHE_ID)));
+    ILoggingService logger = mock(ILoggingService.class);
+
+    TerminologyClientContext ctx = new TerminologyClientContext(client, null, false, logger);
+
+    assertEquals(CACHE_ID, ctx.getCacheId(), "the existing cache-id should be adopted");
+    assertTrue(ctx.usingCache());
+    verify(client, never()).cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), any());
+    verify(client, never()).addClientHeader(any());
+  }
+
+  @Test
+  public void adoptedCache_isNotReleasedByEndCache() throws IOException {
+    ITerminologyClient client = baseMock(capabilityStatement(true));
+    when(client.getClientHeaders()).thenReturn(java.util.Collections.singletonList(
+      new HTTPHeader(TerminologyClientContext.CACHE_ID_HEADER, CACHE_ID)));
+    ILoggingService logger = mock(ILoggingService.class);
+
+    TerminologyClientContext ctx = new TerminologyClientContext(client, null, false, logger);
+    assertEquals(CACHE_ID, ctx.getCacheId());
+
+    ctx.endCache();
+
+    // the owning context may still be using the cache; the adopter must not end it
+    verify(client, never()).cacheControl(eq(ITerminologyClient.CacheControlMode.END_CACHE), any());
+    assertNull(ctx.getCacheId(), "the adopter's own reference is still cleared");
+    assertFalse(ctx.usingCache());
   }
 }

@@ -90,6 +90,9 @@ public class TerminologyClientContext {
   // null means this server isn't caching (didn't advertise $cache-control, caching
   // was disabled, or starting a cache failed).
   private String cacheId;
+  // Whether this context started the cache itself (and so is responsible for
+  // releasing it), as opposed to adopting one already carried by a shared client.
+  private boolean cacheOwned;
   private final ILoggingService logger;
 
   protected TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
@@ -220,7 +223,23 @@ public class TerminologyClientContext {
     // and use the server-issued id thereafter, carried as an HTTP header. The
     // server owns the id, so it can authoritatively reject an unknown cache later.
     this.cacheId = null;
+    this.cacheOwned = false;
     if (TerminologyClientContext.canUseCacheId && serverSupportsCacheControl()) {
+      // If this client instance already carries a cache-id header, another
+      // TerminologyClientContext has already started a cache on it (e.g. the IG
+      // publisher's version comparators wrap the master client in their own
+      // per-version contexts). Adopt that cache rather than starting a second
+      // one: addClientHeader appends, so starting again would leave two
+      // X-Cache-Id headers on every request, which the server reads as a single
+      // unknown id "id1, id2" and rejects. The adopting context re-sends
+      // resources it hasn't seen the server cache (its own bookkeeping starts
+      // empty), which is harmless because the cache is unsealed.
+      String existing = existingCacheIdHeader();
+      if (existing != null) {
+        this.cacheId = existing;
+        setTxCaching(true);
+        return;
+      }
       try {
         // Ask for an *unsealed* cache: this client populates the cache
         // incrementally (it sends each resource the first time it is needed, then
@@ -234,6 +253,7 @@ public class TerminologyClientContext {
         String id = (res != null && res.hasParameter("cache-id")) ? res.getParameterValue("cache-id").primitiveValue() : null;
         if (id != null && !id.isEmpty()) {
           this.cacheId = id;
+          this.cacheOwned = true;
           setTxCaching(true);
           applyCacheIdHeader(id);
         } else if (logger != null) {
@@ -256,13 +276,35 @@ public class TerminologyClientContext {
     if (cacheId == null) {
       return;
     }
-    try {
-      client.cacheControl(ITerminologyClient.CacheControlMode.END_CACHE, null);
-    } catch (Exception e) {
-      // best-effort release; ignore
+    // Only the context that started the cache releases it. A context that
+    // adopted a shared client's cache (see startCache()) must not end it -
+    // the owning context may still be using it.
+    if (cacheOwned) {
+      try {
+        client.cacheControl(ITerminologyClient.CacheControlMode.END_CACHE, null);
+      } catch (Exception e) {
+        // best-effort release; ignore
+      }
     }
     cacheId = null;
+    cacheOwned = false;
     setTxCaching(false);
+  }
+
+  /**
+   * @return the value of an existing cache-id header already present on this
+   * context's client (set by another context sharing the same client), or null.
+   */
+  private String existingCacheIdHeader() {
+    if (client.getClientHeaders() == null) {
+      return null;
+    }
+    for (HTTPHeader h : client.getClientHeaders()) {
+      if (CACHE_ID_HEADER.equalsIgnoreCase(h.getName())) {
+        return h.getValue();
+      }
+    }
+    return null;
   }
 
   /**
