@@ -512,11 +512,13 @@ public class TerminologyClientManager {
   }
 
   /**
-   * Release every server cache (best-effort), e.g. on worker context unload.
+   * Shut down every server context, releasing owned server caches (best-effort),
+   * e.g. on worker context unload. Idempotent; the contexts must not be used for
+   * further requests afterwards.
    */
-  public void endCaches() {
+  public void shutdown() {
     for (TerminologyClientContext server : serverList) {
-      server.endCache();
+      server.shutdown();
     }
   }
   
