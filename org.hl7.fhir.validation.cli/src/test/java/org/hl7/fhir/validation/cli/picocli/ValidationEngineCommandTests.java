@@ -152,7 +152,7 @@ class ValidationEngineCommandTests {
       new CLI(validationService).parseArgsAndExecuteCommand(args);
 
       verify(validationService).transform(same(validationEngine), eq(
-        new TransformParameters("dummyFile.map", null, "http://tx.fhir.org", List.of("dummySource.json"), "/tmp/output.json")
+        new TransformParameters("dummyFile.map", null, "https://tx.fhir.org", List.of("dummySource.json"), "/tmp/output.json")
       ));
     }
 

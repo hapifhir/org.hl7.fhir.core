@@ -326,8 +326,8 @@ public class TerminologyClientManager {
   }
 
   private boolean isTxFhirOrg(String s) {
-    String server = s.replace("https://", "http://");
-    return Utilities.startsWithInList(server, "http://tx.fhir.org/", "http://tx-dev.fhir.org/");
+    String server = s.replace("http://", "https://");
+    return Utilities.startsWithInList(server, "https://tx.fhir.org/", "https://tx-dev.fhir.org/");
   }
 
   private TerminologyClientContext findPrimaryServer(List<TerminologyClientContext> serverList) {

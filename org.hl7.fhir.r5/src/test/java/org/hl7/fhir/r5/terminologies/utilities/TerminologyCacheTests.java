@@ -791,13 +791,13 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
     Path dir = createTempCacheDirectory();
     TerminologyCache cacheA = new TerminologyCache(lock, dir.toString());
 
-    String id = cacheA.getServerId("http://tx.fhir.org/r4");
+    String id = cacheA.getServerId("https://tx.fhir.org/r4");
     assertEquals("tx.fhir.org.r4", id);
-    assertEquals(id, cacheA.getServerId("http://tx.fhir.org/r4"));
+    assertEquals(id, cacheA.getServerId("https://tx.fhir.org/r4"));
 
     // A fresh cache over the same folder loads the persisted server map from servers.ini.
     TerminologyCache cacheB = new TerminologyCache(lock, dir.toString());
-    assertEquals(id, cacheB.getServerId("http://tx.fhir.org/r4"));
+    assertEquals(id, cacheB.getServerId("https://tx.fhir.org/r4"));
 
     deleteTempCacheDirectory(dir);
   }
