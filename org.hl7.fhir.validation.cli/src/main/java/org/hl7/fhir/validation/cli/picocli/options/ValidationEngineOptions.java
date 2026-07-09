@@ -113,7 +113,7 @@ public class ValidationEngineOptions {
   @CommandLine.Option(names = {"-tx"},
     description = """
     Terminology server URL. To run without terminology, specify 'n/a' as the URL
-    By default 'http://tx.fhir.org' will be used.
+    By default 'https://tx.fhir.org' will be used.
     """)
   @With
   public String txServer = null;

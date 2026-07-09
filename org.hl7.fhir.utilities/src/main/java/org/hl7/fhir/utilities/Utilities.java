@@ -1917,7 +1917,7 @@ public class Utilities {
 
 
   public static boolean isTxFhirOrgServer(String s) {
-    return Utilities.startsWithInList(s.replace("https://", "http://"), FhirSettings.getTxFhirProduction(), FhirSettings.getTxFhirDevelopment(), FhirSettings.getTxFhirLocal());
+    return Utilities.startsWithInList(s.replace("http://", "https://"), FhirSettings.getTxFhirProduction(), FhirSettings.getTxFhirDevelopment(), FhirSettings.getTxFhirLocal());
   }
 
   public static String[] splitLines(String txt) {

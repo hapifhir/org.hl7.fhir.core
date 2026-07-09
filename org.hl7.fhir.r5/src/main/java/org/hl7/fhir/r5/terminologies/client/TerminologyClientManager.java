@@ -326,8 +326,8 @@ public class TerminologyClientManager {
   }
 
   private boolean isTxFhirOrg(String s) {
-    String server = s.replace("https://", "http://");
-    return Utilities.startsWithInList(server, "http://tx.fhir.org/", "http://tx-dev.fhir.org/");
+    String server = s.replace("http://", "https://");
+    return Utilities.startsWithInList(server, "https://tx.fhir.org/", "https://tx-dev.fhir.org/");
   }
 
   private TerminologyClientContext findPrimaryServer(List<TerminologyClientContext> serverList) {
@@ -512,11 +512,13 @@ public class TerminologyClientManager {
   }
 
   /**
-   * Release every server cache (best-effort), e.g. on worker context unload.
+   * Shut down every server context, releasing owned server caches (best-effort),
+   * e.g. on worker context unload. Idempotent; the contexts must not be used for
+   * further requests afterwards.
    */
-  public void endCaches() {
+  public void shutdown() {
     for (TerminologyClientContext server : serverList) {
-      server.endCache();
+      server.shutdown();
     }
   }
   
