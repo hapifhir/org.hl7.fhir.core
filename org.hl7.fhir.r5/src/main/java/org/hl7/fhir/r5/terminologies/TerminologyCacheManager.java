@@ -42,6 +42,15 @@ public class TerminologyCacheManager {
   private String ghRepo;
   private String ghBranch;
 
+  /**
+   * kindling only
+   * @param serverVersion
+   * @param rootDir
+   * @param ghOrg
+   * @param ghRepo
+   * @param ghBranch
+   * @throws IOException
+   */
   public TerminologyCacheManager(String serverVersion, String rootDir, String ghOrg, String ghRepo, String ghBranch) throws IOException {
     super();
     //    this.rootDir = rootDir;
@@ -51,28 +60,23 @@ public class TerminologyCacheManager {
 
     version = CACHE_VERSION+"/"+VersionUtilities.getMajMin(serverVersion);
 
-    if (Utilities.noString(ghOrg) || Utilities.noString(ghRepo) || Utilities.noString(ghBranch)) {
-      cacheFolder = Utilities.path(rootDir, "temp", "tx-cache");
-    } else {
-      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "tx-cache", ghOrg, ghRepo, ghBranch);
-    }
+    cacheFolder = Utilities.path(rootDir, "tx-cache");
+//    if (Utilities.noString(ghOrg) || Utilities.noString(ghRepo) || Utilities.noString(ghBranch)) {
+//      cacheFolder = Utilities.path(rootDir, "temp", "tx-cache");
+//    } else {
+//      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "tx-cache", ghOrg, ghRepo, ghBranch);
+//    }
   }
 
-  public void initialize() throws IOException {
+  /**
+   * only for use with Kindling
+   *
+   * @throws IOException
+   */
+  public void initializeForKindling() throws IOException {
     File f = ManagedFileAccess.file(cacheFolder);
     if (!f.exists()) {
       FileUtilities.createDirectory(cacheFolder);      
-    }
-    if (!version.equals(getCacheVersion())) {
-      clearCache();
-      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip");
-    }
-    if (!version.equals(getCacheVersion())) {
-      clearCache();
-      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/default.zip");
-    }
-    if (!version.equals(getCacheVersion())) {
-      clearCache();
     }
 
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "cache.ini"));
