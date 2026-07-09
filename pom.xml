@@ -38,7 +38,7 @@
         <mockito_version>5.23.0</mockito_version>
         <byte_buddy_version>1.18.8</byte_buddy_version>
         <apache_poi_version>5.4.1</apache_poi_version>
-        <saxon_he_version>11.6</saxon_he_version>
+        <saxon_he_version>13.0</saxon_he_version>
         <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>

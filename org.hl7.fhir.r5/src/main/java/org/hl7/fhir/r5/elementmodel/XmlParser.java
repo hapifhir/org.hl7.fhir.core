@@ -46,10 +46,14 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.SourceLocator;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.xpath.XPathException;
+
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -167,10 +171,11 @@ public class XmlParser extends ParserBase {
         doc = builder.parse(stream);
       }
     } catch (Exception e) {
-      if (e.getMessage().contains("lineNumber:") && e.getMessage().contains("columnNumber:")) {
-        int line = Utilities.parseInt(extractVal(e.getMessage(), "lineNumber"), 0); 
-        int col = Utilities.parseInt(extractVal(e.getMessage(), "columnNumber"), 0); 
-        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, line, col, "(xml)", IssueType.INVALID, e.getMessage().substring(e.getMessage().lastIndexOf(";")+1).trim(), IssueSeverity.FATAL);
+      if (e instanceof TransformerException transformerException) {
+        SourceLocator locator = transformerException.getLocator();
+        int line = locator.getLineNumber();
+        int col = locator.getColumnNumber();
+        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, line, col, "(xml)", IssueType.INVALID, e.getMessage().substring(e.getMessage().indexOf(":")+1).trim(), IssueSeverity.FATAL);
       } else {
         logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, 0, 0, "(xml)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
       }
