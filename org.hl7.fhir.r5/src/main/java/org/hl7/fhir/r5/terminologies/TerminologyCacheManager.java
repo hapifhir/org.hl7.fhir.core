@@ -51,21 +51,21 @@ public class TerminologyCacheManager {
    * @param ghBranch
    * @throws IOException
    */
-  public TerminologyCacheManager(String serverVersion, String rootDir, String ghOrg, String ghRepo, String ghBranch) throws IOException {
+  public TerminologyCacheManager(String serverVersion, String rootDir, String ghOrg, String ghRepo, String ghBranch, boolean clear) throws IOException {
     super();
     //    this.rootDir = rootDir;
     this.ghOrg = ghOrg;
     this.ghRepo = ghRepo;
     this.ghBranch = ghBranch;
-
     version = CACHE_VERSION+"/"+VersionUtilities.getMajMin(serverVersion);
-
-    cacheFolder = Utilities.path(rootDir, "tx-cache");
-//    if (Utilities.noString(ghOrg) || Utilities.noString(ghRepo) || Utilities.noString(ghBranch)) {
-//      cacheFolder = Utilities.path(rootDir, "temp", "tx-cache");
-//    } else {
-//      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "tx-cache", ghOrg, ghRepo, ghBranch);
-//    }
+    if (Utilities.noString(ghOrg) || Utilities.noString(ghRepo) || Utilities.noString(ghBranch)) {
+      cacheFolder = Utilities.path(rootDir, "temp", "tx-cache");
+    } else {
+      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "tx-cache", ghOrg, ghRepo, ghBranch);
+    }
+    if (clear) {
+      FileUtilities.clearDirectory(cacheFolder);
+    }
   }
 
   /**
