@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.http;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   }
   
   private Map<String, String> newHeaders(String urlString) throws MalformedURLException {
-    URL url = new URL(urlString);
+    URL url = URI.create(urlString).toURL();
     Map<String, String> headers = new HashMap<>(this.getHeaders());
     if (this.getHttpAuthHeaderProvider().canProvideHeaders(url)) {
       headers.putAll(this.getHttpAuthHeaderProvider().getHeaders(url));

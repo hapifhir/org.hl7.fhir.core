@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.terminologies.client;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -441,7 +442,7 @@ public class TerminologyClientContext {
 
   public String getHost() {
     try {
-      URL uri = new URL(getAddress());
+      URL uri = URI.create(getAddress()).toURL();
       return uri.getHost();
     } catch (MalformedURLException e) {
       return getAddress();

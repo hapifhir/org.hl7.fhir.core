@@ -2,6 +2,7 @@ package org.hl7.fhir.utilities.http;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -73,7 +74,7 @@ public class SimpleHTTPClient {
     Map<String, Integer> visited = new HashMap<>();
     HttpURLConnection connection = null;
     boolean done = false;
-    URL originalUrl = new URL(urlString);
+    URL originalUrl = URI.create(urlString).toURL();
     URL url = originalUrl;
 
     while (!done) {
@@ -95,7 +96,7 @@ public class SimpleHTTPClient {
           }
           location = URLDecoder.decode(location, StandardCharsets.UTF_8);
 
-          url = new URL(originalUrl, location);  // Deal with relative URLs
+          url = URI.create(originalUrl.toString()).resolve(location).toURL(); // Deal with relative URLs
           continue;
         default:
           done = true;
@@ -138,7 +139,7 @@ public class SimpleHTTPClient {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    HttpURLConnection connection = getHttpConnection(new URL(urlString));
+    HttpURLConnection connection = getHttpConnection(URI.create(urlString).toURL());
     connection.setDoOutput(true);
     connection.setDoInput(true);
     connection.setRequestMethod("POST");
@@ -158,7 +159,7 @@ public class SimpleHTTPClient {
       throw new FHIRException("Network Access is prohibited in this context");
     }
 
-    HttpURLConnection connection = getHttpConnection(new URL(urlString));
+    HttpURLConnection connection = getHttpConnection(URI.create(urlString).toURL());
     connection.setDoOutput(true);
     connection.setDoInput(true);
     connection.setRequestMethod("PUT");
