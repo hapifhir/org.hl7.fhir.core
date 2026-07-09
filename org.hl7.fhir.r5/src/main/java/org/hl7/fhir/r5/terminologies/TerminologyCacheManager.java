@@ -79,6 +79,18 @@ public class TerminologyCacheManager {
       FileUtilities.createDirectory(cacheFolder);      
     }
 
+    if (!version.equals(getCacheVersion())) {
+      clearCache();
+      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip");
+    }
+    if (!version.equals(getCacheVersion())) {
+      clearCache();
+      fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/default.zip");
+    }
+    if (!version.equals(getCacheVersion())) {
+      clearCache();
+    }
+
     IniFile ini = new IniFile(Utilities.path(cacheFolder, "cache.ini"));
     ini.setStringProperty("cache", "version", version, null);
     ini.setDateProperty("cache", "last-use", new Date(), null);
@@ -185,7 +197,9 @@ public class TerminologyCacheManager {
     public Map<String, String> getHeaders(URL url) {
       Map<String, String> map = new HashMap<>();
       if (canProvideHeaders(url)) {
-        map.put("Authorization", "Basic " + Base64.getEncoder().encode(basicAuth.getBytes(StandardCharsets.UTF_8)));
+        // encodeToString, not encode: encode() returns byte[], and concatenating
+        // that yields "Basic [B@1a2b3c" - a header the server can never parse
+        map.put("Authorization", "Basic " + Base64.getEncoder().encodeToString(basicAuth.getBytes(StandardCharsets.UTF_8)));
       }
       return map;
     }
