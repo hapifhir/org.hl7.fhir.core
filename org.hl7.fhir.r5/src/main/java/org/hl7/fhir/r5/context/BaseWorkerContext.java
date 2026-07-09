@@ -3509,7 +3509,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     txCache.unload();
     // release any server-side terminology caches we started (best-effort)
     if (terminologyClientManager != null) {
-      terminologyClientManager.endCaches();
+      terminologyClientManager.shutdown();
     }
   }
 

@@ -1300,15 +1300,15 @@ public class TerminologyCache {
 //    servers.put("http://local.fhir.org/r4", "tx.fhir.org");
 //    servers.put("http://local.fhir.org/r5", "tx.fhir.org");
 //
-//    servers.put("http://tx-dev.fhir.org/r2", "tx.fhir.org");
-//    servers.put("http://tx-dev.fhir.org/r3", "tx.fhir.org");
-//    servers.put("http://tx-dev.fhir.org/r4", "tx.fhir.org");
-//    servers.put("http://tx-dev.fhir.org/r5", "tx.fhir.org");
+//    servers.put("https://tx-dev.fhir.org/r2", "tx.fhir.org");
+//    servers.put("https://tx-dev.fhir.org/r3", "tx.fhir.org");
+//    servers.put("https://tx-dev.fhir.org/r4", "tx.fhir.org");
+//    servers.put("https://tx-dev.fhir.org/r5", "tx.fhir.org");
 
-    servers.put("http://tx.fhir.org/r2", "tx.fhir.org");
-    servers.put("http://tx.fhir.org/r3", "tx.fhir.org");
-    servers.put("http://tx.fhir.org/r4", "tx.fhir.org");
-    servers.put("http://tx.fhir.org/r5", "tx.fhir.org");
+    servers.put("https://tx.fhir.org/r2", "tx.fhir.org");
+    servers.put("https://tx.fhir.org/r3", "tx.fhir.org");
+    servers.put("https://tx.fhir.org/r4", "tx.fhir.org");
+    servers.put("https://tx.fhir.org/r5", "tx.fhir.org");
 
     return servers;
   }
