@@ -186,11 +186,6 @@ public abstract class ShExGeneratorBase {
       "\n    rdf:rest [rdf:nil] OR @<$oomType$> " +
       "\n}\n";
 
-  // Resource Definition
-  //      an open shape of type Resource.  Used when completeModel = false.
-  private static String SYNTHETIC_RESTRICTION_TEMPLATE =
-    "$comment$\n<Resource> {" +	    "<$restriction$> EXTENDS <$base$> {} \n";
-
   private static String SIMPLEQUANTITY =
     "\n<$restriction$> EXTENDS @<$base$> CLOSED {   " +
       "\n    a [fhir:$restriction$]?;" +
@@ -1560,12 +1555,6 @@ public abstract class ShExGeneratorBase {
             oneOrMoreTypes.add(origTypeDef);
         }
       }
-
-//      for (String refType : refValues) {
-//        String toStoreRT = ONE_OR_MORE_PREFIX + refType;
-//        if (!oneOrMoreTypes.contains(toStoreRT))
-//          oneOrMoreTypes.add(toStoreRT);
-//      }
 
       String defnToStore = defn;
       if (!refChoices.isEmpty()) {
