@@ -699,9 +699,6 @@ public abstract class ShExGeneratorBase {
    * @return ShEx definition
    */
   private String genShapeDefinition(StructureDefinition sd, boolean top_level) {
-    //if("xhtml".equals(sd.getName()) || (completeModel && "Resource".equals(sd.getName())))
-    // if(completeModel && "Resource".equals(sd.getName()))
-    //   return "";
     if("xhtml".equals(sd.getName())) {
       return tmplt(SHAPE_DEFINITION_TEMPLATE)
         .add("id", getClassName(getExtendedType(sd)))

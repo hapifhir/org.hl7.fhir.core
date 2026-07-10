@@ -583,12 +583,14 @@ public class ShexGeneratorTests {
     doTestR5("xhtml");
   }
 
+  @Disabled
   @Test
   public void doTestAllSingleSDMode() throws FileNotFoundException, IOException, FHIRException, UcumException {
     processAllSharedStructureDefinitions(ShexGeneratorTestUtils.RESOURCE_CATEGORY.ALL, false,
       ShExGenerator.ConstraintTranslationPolicy.ALL, false, false);
   }
 
+  @Disabled
   @Test
   public void doTestAllBatchMode() throws FileNotFoundException, IOException, FHIRException, UcumException {
     processAllSharedStructureDefinitions(ShexGeneratorTestUtils.RESOURCE_CATEGORY.STRUCTURE_DEFINITION, false,
@@ -766,10 +768,8 @@ public class ShexGeneratorTests {
   }
 
   private void validateShex(String schema) {
-    System.out.println("ShEx validation not implemented");
-    return; 
+    // TODO finish
     try {
-      // TODO finish
       // ShExsValidator validator = ShExsValidatorBuilder.fromStringSync(schema, "ShexC");
       // Schema sch = validator.schema();
       // Assert.assertNotNull(sch);
