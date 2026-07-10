@@ -162,13 +162,4 @@ public class ShExGenerator extends ShExGeneratorBase {
     }
     return generator;
   }
-
-  private void debug(String message) {
-    if (this.debugMode)
-      System.out.println(message);
-  }
-
-  private void printBuildMessage(String message){
-    // System.out.println("ShExGenerator: " + message);
-  }
 }

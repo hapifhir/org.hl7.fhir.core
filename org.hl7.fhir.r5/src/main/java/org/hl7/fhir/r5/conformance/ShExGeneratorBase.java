@@ -124,7 +124,7 @@ public abstract class ShExGeneratorBase {
       "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n";
       //"BASE <http://hl7.org/fhir/shape/>\n";
 
-  private static String IMPORT_TEMPLATE = "\n#imported_begin \nIMPORT <$import$$fileExt$>\n#imported_end";
+  private static final String IMPORT_TEMPLATE = "IMPORT <$import$$fileExt$>\n";
 
   // Start template for single (open) entry
   private static final String START_TEMPLATE = "\n\nstart=@<$id$> AND {fhir:nodeRole [fhir:treeRoot]}\n";
@@ -340,6 +340,14 @@ public abstract class ShExGeneratorBase {
   protected abstract String getClassName(String name);
 
   protected abstract String getLinkPredicate();
+
+  /**
+   * Whether choice ([x]) elements should be emitted with a "{rdf:type IRI} AND " prefix.
+   * Defaults to false; overridden by R6 generator.
+   */
+  protected boolean emitChoiceTypeIriConstraint() {
+    return false;
+  }
 
   protected final void applyConfiguration(ShExGeneratorConfig config) {
     doDatatypes = config.isDoDatatypes();
@@ -1466,7 +1474,7 @@ public abstract class ShExGeneratorBase {
     String card = ("*".equals(ed.getMax()) ? (ed.getMin() == 0 ? "*" : "+") : (ed.getMin() == 0 ? "?" : "")) + ";";
 
     element_def = tmplt(ELEMENT_TEMPLATE);
-    if (id.endsWith("[x]")) {
+    if (id.endsWith("[x]") && emitChoiceTypeIriConstraint()) {
       element_def.add("id", "fhir:" + removeMultipleX(shortId) + " {rdf:type IRI} AND ");
     } else {
       element_def.add("id", "fhir:" + removeMultipleX(shortId) + " ");
@@ -1474,7 +1482,7 @@ public abstract class ShExGeneratorBase {
 
     List<ElementDefinition> children = profileUtilities.getChildList(sd, ed);
     if (children.size() > 0) {
-      String parentPath = sd.getName();
+      String parentPath = getStructurePathRoot(sd);
       if ((ed.hasContentReference() && (!ed.hasType())) || (!id.equals(parentPath + "." + shortId))) {
         //debug("Not Adding innerType:" + id + " to " + sd.getName());
       } else
@@ -1541,14 +1549,16 @@ public abstract class ShExGeneratorBase {
       card = card.replace("*", "?");
       defn = defn.replace("<", "<" + ONE_OR_MORE_PREFIX);
 
-      String[] alltags = defn.split("<");
-      for (String st : alltags) {
-        if (!st.startsWith(ONE_OR_MORE_PREFIX))
-          continue;
-        String stbr = "<" + st;
-        String origTypeDef = StringUtils.substringBetween(stbr, "<", ">");
-        if (!oneOrMoreTypes.contains(origTypeDef))
-          oneOrMoreTypes.add(origTypeDef);
+      if (refChoices.isEmpty()) {
+        String[] alltags = defn.split("<");
+        for (String st : alltags) {
+          if (!st.startsWith(ONE_OR_MORE_PREFIX))
+            continue;
+          String stbr = "<" + st;
+          String origTypeDef = StringUtils.substringBetween(stbr, "<", ">");
+          if (!oneOrMoreTypes.contains(origTypeDef))
+            oneOrMoreTypes.add(origTypeDef);
+        }
       }
 
 //      for (String refType : refValues) {
@@ -1668,9 +1678,17 @@ public abstract class ShExGeneratorBase {
     return "<" + uri + ">";
   }
 
+  private String getStructurePathRoot(StructureDefinition sd) {
+    if (sd.hasSnapshot() && sd.getSnapshot().hasElement() && sd.getSnapshot().getElementFirstRep().hasPath()) {
+      return sd.getSnapshot().getElementFirstRep().getPath();
+    }
+    return sd.getName();
+  }
+
   private void addInnerType(StructureDefinition sd, ElementDefinition ed){
-    if (!ed.getPath().startsWith(sd.getName()))
-      throw new AssertionError("Expected element path " + ed.getPath() + " to start wtih " + sd.getName());
+    String pathRoot = getStructurePathRoot(sd);
+    if (!ed.getPath().startsWith(pathRoot))
+      throw new AssertionError("Expected element path " + ed.getPath() + " to start wtih " + pathRoot);
     if (!ed.getType().isEmpty() && // if there's no type, the element's type is defined by a reference to another element
       !innerTypeNames.contains(ed.getPath())) {
       innerTypes.add(new ImmutablePair<StructureDefinition, ElementDefinition>(sd, ed));
@@ -1869,7 +1887,7 @@ public abstract class ShExGeneratorBase {
         choiceEntries.add(entry);
     }
     String joined = StringUtils.join(choiceEntries, " OR \n\t\t\t");
-    if (choiceEntries.size() > 1)
+    if (choiceEntries.size() > 1 && emitChoiceTypeIriConstraint())
       joined = "(" + joined + ")";
     return joined;
   }
