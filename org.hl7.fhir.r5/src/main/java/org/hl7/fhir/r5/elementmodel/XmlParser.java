@@ -171,11 +171,9 @@ public class XmlParser extends ParserBase {
         doc = builder.parse(stream);
       }
     } catch (Exception e) {
+
       if (e instanceof TransformerException transformerException) {
-        SourceLocator locator = transformerException.getLocator();
-        int line = locator.getLineNumber();
-        int col = locator.getColumnNumber();
-        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, line, col, "(xml)", IssueType.INVALID, e.getMessage().substring(e.getMessage().indexOf(":")+1).trim(), IssueSeverity.FATAL);
+        logTransformerException(e, transformerException, focusFragment);
       } else {
         logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, 0, 0, "(xml)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
       }
@@ -187,6 +185,28 @@ public class XmlParser extends ParserBase {
     List<ValidatedFragment> res = new ArrayList<>();
     res.add(focusFragment);
     return res;
+  }
+
+  private void logTransformerException(Exception e, TransformerException transformerException, ValidatedFragment focusFragment) {
+    SourceLocator locator = transformerException.getLocator();
+    final int line;
+    final int col;
+    if (locator != null) {
+      line = locator.getLineNumber();
+      col = locator.getColumnNumber();
+    } else {
+      line = 0;
+      col = 0;
+    }
+
+    final String message;
+    final String xmlParserBoilerPlate = "Error reported by XML parser:";
+    if (e.getMessage().contains(xmlParserBoilerPlate)) {
+      message = e.getMessage().substring(e.getMessage().indexOf(xmlParserBoilerPlate) + xmlParserBoilerPlate.length()).trim();
+    } else {
+      message = e.getMessage();
+    }
+    logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, line, col, "(xml)", IssueType.INVALID, message, IssueSeverity.FATAL);
   }
 
 
