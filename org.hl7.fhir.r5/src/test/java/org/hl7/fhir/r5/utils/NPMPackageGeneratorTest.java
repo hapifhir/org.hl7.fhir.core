@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -106,6 +107,22 @@ class NPMPackageGeneratorTest {
     // The author-declared dependsOn version wins; the auto-add is suppressed
     // so JsonObject.add is never called twice for the same key (no crash).
     Assertions.assertEquals("5.0.0-ballot", dep.asString("hl7.fhir.r5.core"));
+  }
+
+  @Test
+  void rejectsExplicitDependencyWithoutVersion() {
+    ImplementationGuide ig = minimalIg();
+    ImplementationGuideDependsOnComponent d = ig.addDependsOn();
+    String dependencyUri = "http://example.org/fhir/ImplementationGuide/example-dependency";
+    d.setUri(dependencyUri);
+    d.setPackageId("example.fhir.dependency");
+
+    FHIRException exception = Assertions.assertThrows(FHIRException.class,
+        () -> dependencies(ig, PackageType.CONFORMANCE, "5.0.0"));
+
+    Assertions.assertTrue(exception.getMessage().contains("missing a required version"));
+    Assertions.assertTrue(exception.getMessage().contains("example.fhir.dependency"));
+    Assertions.assertTrue(exception.getMessage().contains(dependencyUri));
   }
 
   @Test
