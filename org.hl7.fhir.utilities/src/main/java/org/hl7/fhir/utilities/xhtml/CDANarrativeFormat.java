@@ -30,15 +30,15 @@ package org.hl7.fhir.utilities.xhtml;
  */
 
 
-
-import java.io.IOException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import java.io.IOException;
+import java.util.Set;
 
 public class CDANarrativeFormat {
 
@@ -368,13 +368,13 @@ public class CDANarrativeFormat {
     case Element:
       if (n.getName().equals("br"))
         processBreak(xml, n);
-      else if (n.getName().equals("h2") || n.getName().equals("caption"))
+      else if (n.getName().equals("h1") || n.getName().equals("h2") || n.getName().equals("h3") || n.getName().equals("h4") || n.getName().equals("h5") || n.getName().equals("h6") || n.getName().equals("caption"))
         processCaption(xml, n);
       else if (n.getName().equals("col"))
         processCol(xml, n);
       else if (n.getName().equals("colgroup"))
         processColGroup(xml, n);
-      else if (n.getName().equals("span"))
+      else if (n.getName().equals("span") || n.getName().equals("div"))
         processContent(xml, n);
       else if (n.getName().equals("footnote"))
         processFootNote(xml, n);
@@ -410,8 +410,10 @@ public class CDANarrativeFormat {
         processA(xml, n);
       else if (n.getName().equals("tr"))
         processTr(xml, n);
+      else if (n.getName().equals("list") || n.getName().equals("item") || n.getName().equals("paragraph") || n.getName().equals("renderMultiMedia") || n.getName().equals("content"))
+        processPassThrough(xml, n);
       else
-        throw new FHIRException("Unknown element "+n.getName());
+        stripTag(xml, n);
     }
   }
 
@@ -492,7 +494,8 @@ public class CDANarrativeFormat {
 
   private void processRenderMultiMedia(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
     String v = n.getAttribute("src");
-    xml.attribute("referencedObject", v);
+    if (StringUtils.isNotBlank(v))
+      xml.attribute("referencedObject", v);
     processAttributes(n, xml, "id", "language", "styleCode");
     xml.enter("renderMultiMedia");
     processChildren(xml, n);
@@ -561,10 +564,29 @@ public class CDANarrativeFormat {
   }
 
   private void processA(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+    String v = n.getAttribute("href");
+    if (StringUtils.isNotBlank(v))
+      xml.attribute("referencedObject", v);
+
     processAttributes(n, xml, "id", "language", "styleCode", "align", "char", "charoff", "valign");
     xml.enter("linkHtml");
     processChildren(xml, n);
     xml.exit("linkHtml");
+  }
+
+  /**
+   * Pass an element and all its children through from the source XHTML to the CDA Narrative unchanged.
+   */
+  private void processPassThrough(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+    processAllAttributes(n, xml);
+    xml.enter(n.getName());
+    processChildren(xml, n);
+    xml.exit(n.getName());
+  }
+
+  private void processAllAttributes(XhtmlNode xn, IXMLWriter xml) throws IOException, FHIRException {
+    Set<String> attributeNames = xn.getAttributes().keySet();
+    processAttributes(xn, xml, attributeNames.toArray(new String[0]));
   }
 
   private void processAttributes(XhtmlNode xn, IXMLWriter xml, String... names) throws IOException {
@@ -637,5 +659,10 @@ public class CDANarrativeFormat {
     }
   }
 
-
+  /**
+   * drop an element from the document while preserving its children (if possible).
+   */
+  private void stripTag(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
+    processChildren(xml, n);
+  }
 }
