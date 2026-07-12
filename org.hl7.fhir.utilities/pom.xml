@@ -51,13 +51,11 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp-jvm</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.squareup.okio</groupId>
             <artifactId>okio</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -183,15 +181,6 @@
             <artifactId>sqlite-jdbc</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!--
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>logging-interceptor</artifactId>
-            <version>${okhttp.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        -->
     </dependencies>
 
     <build>
