@@ -64,7 +64,7 @@ public class CIBuildClientTests {
   }
 
   @Test
-  public void testNewQasQueryOverRefreshThreshold() throws IOException, InterruptedException {
+  void testNewQasQueryOverRefreshThreshold() throws IOException, InterruptedException {
     MockWebServer server = new MockWebServer();
     CIBuildClient ciBuildClient = getCiBuildClient(server);
 
@@ -84,7 +84,7 @@ public class CIBuildClientTests {
   }
 
   @Test
-  public void testGetPackageId() {
+  void testGetPackageId() {
     MockWebServer server = new MockWebServer();
     CIBuildClient ciBuildClient = getCiBuildClient(server);
 
@@ -95,7 +95,7 @@ public class CIBuildClientTests {
   }
 
   @Test
-  public void testGetPackageUrl() {
+  void testGetPackageUrl() {
     MockWebServer server = new MockWebServer();
     CIBuildClient ciBuildClient = getCiBuildClient(server);
 
@@ -106,7 +106,7 @@ public class CIBuildClientTests {
   }
 
   @Test
-  public void testIsCurrentPackage() throws IOException {
+  void testIsCurrentPackage() throws IOException {
     MockWebServer server = new MockWebServer();
     CIBuildClient ciBuildClient = getCiBuildClient(server);
 

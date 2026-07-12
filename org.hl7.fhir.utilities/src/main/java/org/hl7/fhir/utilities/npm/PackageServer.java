@@ -14,7 +14,6 @@ import lombok.Getter;
 
 public class PackageServer {
 
-
   public enum PackageServerType {
     FHIR,
     NPM
@@ -27,7 +26,7 @@ public class PackageServer {
   }
 
   @Getter
-  final private String url;
+  private final String url;
 
   @Getter
   private HTTPAuthenticationMode authenticationMode;
