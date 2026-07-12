@@ -44,6 +44,7 @@ public class FhirSettingsPOJO {
   private String txFhirLocal;
 
   private Boolean ignoreDefaultPackageServers;
+  private Boolean ssrfProtectionEnabled;
 
   private List<ServerDetailsPOJO> servers;
   private List<String> certificateSources;
@@ -60,6 +61,7 @@ public class FhirSettingsPOJO {
     txFhirProduction = TX_SERVER_PROD;
     txFhirDevelopment = TX_SERVER_DEV;
     txFhirLocal = TX_SERVER_LOCAL;
+    ssrfProtectionEnabled = true;
     servers = new ArrayList<>();
     certificateSources = new ArrayList<>();
   }

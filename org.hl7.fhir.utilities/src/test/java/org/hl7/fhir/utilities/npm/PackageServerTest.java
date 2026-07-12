@@ -43,7 +43,8 @@ class PackageServerTest {
       .withAuthenticationMode(HTTPAuthenticationMode.BASIC)
       .withServerType(PackageServer.PackageServerType.NPM)
       .withUsername(MockPackageServer.DUMMY_USERNAME)
-      .withPassword(MockPackageServer.DUMMY_PASSWORD);
+      .withPassword(MockPackageServer.DUMMY_PASSWORD)
+      .withAllowHttp(true);
     PackageClient packageClient = new PackageClient(testServer);
 
     InputStream inputStream = packageClient.fetch(MockPackageServer.DUMMY_PACKAGE_NAME, MockPackageServer.DUMMY_PACKAGE_VERSION);
@@ -75,7 +76,8 @@ class PackageServerTest {
     PackageServer testServer = new PackageServer(packageServerUrl)
       .withAuthenticationMode(HTTPAuthenticationMode.TOKEN)
       .withServerType(PackageServer.PackageServerType.NPM)
-      .withToken(MockPackageServer.DUMMY_TOKEN);
+      .withToken(MockPackageServer.DUMMY_TOKEN)
+      .withAllowHttp(true);
     PackageClient packageClient = new PackageClient(testServer);
 
     InputStream inputStream = packageClient.fetch(MockPackageServer.DUMMY_PACKAGE_NAME, MockPackageServer.DUMMY_PACKAGE_VERSION);
@@ -105,7 +107,8 @@ class PackageServerTest {
     server.enqueueDummyPackage();
 
     PackageServer testServer = new PackageServer(packageServerUrl)
-      .withServerType(PackageServer.PackageServerType.NPM);
+      .withServerType(PackageServer.PackageServerType.NPM)
+      .withAllowHttp(true);
     PackageClient packageClient = new PackageClient(testServer);
 
     InputStream inputStream = packageClient.fetch(MockPackageServer.DUMMY_PACKAGE_NAME, MockPackageServer.DUMMY_PACKAGE_VERSION);
@@ -132,7 +135,8 @@ class PackageServerTest {
     String packageServerUrl = server.getPackageServerUrl();
     server.enqueueDummyPackage();
 
-    PackageServer testServer = new PackageServer(packageServerUrl);
+    PackageServer testServer = new PackageServer(packageServerUrl)
+      .withAllowHttp(true);
 
     PackageClient packageClient = new PackageClient(testServer);
     InputStream inputStream = packageClient.fetch(MockPackageServer.DUMMY_PACKAGE_NAME, MockPackageServer.DUMMY_PACKAGE_VERSION);

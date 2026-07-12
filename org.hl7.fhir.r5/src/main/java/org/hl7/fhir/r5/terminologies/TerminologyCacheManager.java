@@ -189,6 +189,11 @@ public class TerminologyCacheManager {
     }
 
     @Override
+    public boolean isProtocolAllowed(URL url) {
+      return url.getProtocol().equals("https");
+    }
+
+    @Override
     public boolean canProvideHeaders(URL url) {
       return url.getHost().equals("tx.fhir.org");
     }

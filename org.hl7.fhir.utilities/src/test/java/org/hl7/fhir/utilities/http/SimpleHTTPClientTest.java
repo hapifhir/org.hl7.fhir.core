@@ -117,6 +117,7 @@ public class SimpleHTTPClientTest {
     //Until the last hop, use the built authentication
     for (int i = 0; i < urlArgs.length - 1; i++) {
       doReturn(true).when(authenticationProvider).canProvideHeaders(urls[i].url());
+      doReturn(true).when(authenticationProvider).isProtocolAllowed(urls[i].url());
       doReturn(Map.of("Authorization", "Bearer thisToken")).when(authenticationProvider).getHeaders(urls[i].url());
     }
     final SimpleHTTPClient httpClient = new SimpleHTTPClient(authenticationProvider);
@@ -146,11 +147,13 @@ public class SimpleHTTPClientTest {
     IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
 
     doReturn(true).when(authenticationProvider).canProvideHeaders(exampleInvalidUrl);
+    doReturn(true).when(authenticationProvider).isProtocolAllowed(exampleInvalidUrl);
     doReturn(Map.of("Authorization", "Bearer thatToken")).when(authenticationProvider).getHeaders(exampleInvalidUrl);
 
     //Until the last hop, use the built authentication
     for (int i = 0; i < urlArgs.length - 1; i++) {
       doReturn(true).when(authenticationProvider).canProvideHeaders(urls[i].url());
+      doReturn(true).when(authenticationProvider).isProtocolAllowed(urls[i].url());
       doReturn(Map.of("Authorization", "Bearer thisToken")).when(authenticationProvider).getHeaders(urls[i].url());
     }
 

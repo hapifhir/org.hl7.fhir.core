@@ -111,6 +111,10 @@ public class SimpleHTTPClient {
       URL url = uri.toURL();
       boolean authCanHandle = authProvider != null && authProvider.canProvideHeaders(url);
 
+      if (authCanHandle && !authProvider.isProtocolAllowed(url)) {
+        throw new IOException("URL does not use permitted protocol: " + url);
+      }
+
       Request request = buildRequest(requestMethod, uri, contentType, content, acceptHeader, authCanHandle ? url : null);
 
       try (Response response = client.newCall(request).execute()) {

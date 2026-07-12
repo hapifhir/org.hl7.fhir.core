@@ -35,10 +35,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.stream.Stream;
 
 import lombok.Getter;
 
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import static org.hl7.fhir.utilities.Utilities.existsInList;
@@ -81,6 +83,10 @@ public class ManagedWebAccess {
 
   @Getter
   private static WebAccessPolicy accessPolicy = WebAccessPolicy.DIRECT; // for legacy reasons
+
+  @Getter
+  private static boolean ssrfProtectionEnabled = true;
+
   //TODO get this from fhir settings
   private static List<String> allowedDomains = new ArrayList<>();
   @Getter
@@ -97,6 +103,10 @@ public class ManagedWebAccess {
 
   public static void setAccessPolicy(WebAccessPolicy accessPolicy) {
     ManagedWebAccess.accessPolicy = accessPolicy;
+  }
+
+  public static void setSsrfProtectionEnabled(boolean ssrfProtectionEnabled) {
+    ManagedWebAccess.ssrfProtectionEnabled = ssrfProtectionEnabled;
   }
 
   static boolean inAllowedPaths(String pathname) {
@@ -185,9 +195,45 @@ public class ManagedWebAccess {
 
   public static void loadFromFHIRSettings() {
     setAccessPolicy(FhirSettings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
+    setSsrfProtectionEnabled(FhirSettings.isSSRFProtectionEnabled());
     setUserAgent("hapi-fhir-tooling-client");
     serverDetailsList = FhirSettings.getServers();
     defaultAuthenticationProvider = new ServerDetailsPOJOHTTPAuthProvider(serverDetailsList);
+  }
+
+  public enum FhirSettingsOverrideType {
+    ADD,
+    REPLACE
+  }
+
+  /**
+   *
+   * @param fhirSettingsPOJO
+   * @param serversOverrideType
+   */
+  public static void loadFromFHIRSettingsWithOverrides(FhirSettingsPOJO fhirSettingsPOJO, FhirSettingsOverrideType serversOverrideType ) {
+    if (fhirSettingsPOJO.getProhibitNetworkAccess() != null) {
+      setAccessPolicy(fhirSettingsPOJO.getProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
+    } else {
+      setAccessPolicy(FhirSettings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
+    }
+
+    if (fhirSettingsPOJO.getSsrfProtectionEnabled() != null) {
+      setSsrfProtectionEnabled(fhirSettingsPOJO.getSsrfProtectionEnabled());
+    } else {
+      setSsrfProtectionEnabled(FhirSettings.isSSRFProtectionEnabled());
+    }
+
+    setUserAgent("hapi-fhir-tooling-client");
+    final List<ServerDetailsPOJO> serverDetailsList;
+    if (serversOverrideType == FhirSettingsOverrideType.ADD) {
+      serverDetailsList = new ArrayList<>(FhirSettings.getServers());
+    } else {
+      serverDetailsList = new ArrayList<>();
+    }
+    List<ServerDetailsPOJO> fhirSettingsServers = fhirSettingsPOJO.getServers() == null ? Collections.emptyList() : fhirSettingsPOJO.getServers();
+    ManagedWebAccess.serverDetailsList = Stream.concat(serverDetailsList.stream(), fhirSettingsServers.stream()).toList();
+    defaultAuthenticationProvider = new ServerDetailsPOJOHTTPAuthProvider(ManagedWebAccess.serverDetailsList);
   }
 
   public static String makeSecureRef(String url) {
@@ -223,4 +269,6 @@ public class ManagedWebAccess {
       return false;
     }
   }
+
+
 }

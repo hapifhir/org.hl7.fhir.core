@@ -8,6 +8,8 @@ import java.util.Map;
  */
 public interface IHTTPAuthenticationProvider {
 
+  public boolean isProtocolAllowed(URL url);
+
   public boolean canProvideHeaders(URL url);
 
   public Map<String, String> getHeaders(URL url);

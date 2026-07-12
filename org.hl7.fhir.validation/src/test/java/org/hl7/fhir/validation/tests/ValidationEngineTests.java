@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
@@ -21,16 +23,19 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.*;
+
 
 public class ValidationEngineTests {
 
@@ -38,6 +43,36 @@ public class ValidationEngineTests {
   //private static final String DEF_TX = FhirSettings.getTxFhirLocal();
 
   public static boolean inbuild;
+
+  @BeforeAll
+  public static void beforeClass() {
+    ManagedWebAccess.loadFromFHIRSettingsWithOverrides(
+      FhirSettingsPOJO.builder()
+        .servers(
+          List.of(ServerDetailsPOJO.builder()
+            .url("http://hl7x.org")
+            .authenticationType("none")
+            .type("web")
+            .allowHttp(true)
+            .headers(Collections.emptyMap())
+            .build()))
+        .build(),
+      ManagedWebAccess.FhirSettingsOverrideType.ADD
+    );
+    // Exercise the server-side terminology caching protocol across the validation
+    // suite. Against a server that doesn't advertise $cache-control this degrades
+    // to inlining (no-op); against one that does, the whole suite runs through the
+    // cache, which is a good real-world test of the protocol.
+    TerminologyClientContext.setCanUseCacheId(true);
+  }
+
+  @AfterAll
+  public static void cleanup() {
+
+    TerminologyClientContext.setCanUseCacheId(false); // don't leak the static into other suites
+    ManagedWebAccess.loadFromFHIRSettings();
+    System.gc();
+  }
 
   @Test
   @DisplayName("A ValidationEngine copied from another validation engine shouldn't interfere with the original during validations")

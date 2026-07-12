@@ -19,8 +19,20 @@ public class PackageServerHTTPAuthProvider implements IHTTPAuthenticationProvide
   }
 
   @Override
+  public boolean isProtocolAllowed(URL url) {
+    if (!ManagedWebAccessUtils.urlMatchesOrigin(url, this.url)) {
+      return false;
+    }
+    if (url.getProtocol().equals("http")) {
+      return server.isAllowHttp();
+    } else {
+      return url.getProtocol().equals("https");
+    }
+  }
+
+  @Override
   public boolean canProvideHeaders(URL url) {
-    return ManagedWebAccessUtils.urlMatchesOrigin( url, this.url);
+    return ManagedWebAccessUtils.urlMatchesOrigin(url, this.url);
   }
 
   @Override

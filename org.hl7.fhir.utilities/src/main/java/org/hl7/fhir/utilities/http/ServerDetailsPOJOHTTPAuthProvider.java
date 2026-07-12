@@ -21,6 +21,19 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
   }
 
   @Override
+  public boolean isProtocolAllowed(URL url) {
+    ServerDetailsPOJO serverDetails = getServerDetails(url);
+    if (serverDetails == null) {
+      return false;
+    }
+    if (url.getProtocol().equals("http")) {
+      return serverDetails.getAllowHttp();
+    } else {
+      return url.getProtocol().equals("https");
+    }
+  }
+
+  @Override
   public boolean canProvideHeaders(URL url) {
     ServerDetailsPOJO serverDetails = getServerDetails(url);
     return serverDetails != null;

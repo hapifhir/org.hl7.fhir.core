@@ -236,6 +236,14 @@ public class FhirSettings {
     return Utilities.path(System.getProperty("user.home"), ".fhir", "fhir-settings.json");
   }
 
+  public static boolean isSSRFProtectionEnabled() {
+    getInstance();
+    if (instance.fhirSettingsPOJO.getSsrfProtectionEnabled() != null) {
+      return instance.fhirSettingsPOJO.getSsrfProtectionEnabled();
+    }
+    return true;
+  }
+
   public static boolean isIgnoreDefaultPackageServers() {
     getInstance();
     if (instance.fhirSettingsPOJO.getIgnoreDefaultPackageServers() == null) {

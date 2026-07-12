@@ -29,7 +29,8 @@ class BasePackageCacheManagerTests {
       .withAuthenticationMode(HTTPAuthenticationMode.BASIC)
       .withServerType(PackageServer.PackageServerType.NPM)
       .withUsername(MockPackageServer.DUMMY_USERNAME)
-      .withPassword(MockPackageServer.DUMMY_PASSWORD);
+      .withPassword(MockPackageServer.DUMMY_PASSWORD)
+      .withAllowHttp(true);
 
     basePackageCacheManager.addPackageServer(testServer);
     basePackageCacheManager.myPackageServers.addAll(PackageServer.defaultServers());
@@ -58,11 +59,13 @@ class BasePackageCacheManagerTests {
 
     PackageServer testServerA = new PackageServer(packageServerAUrl)
       .withAuthenticationMode(HTTPAuthenticationMode.BASIC)
-      .withServerType(PackageServer.PackageServerType.NPM);
+      .withServerType(PackageServer.PackageServerType.NPM)
+      .withAllowHttp(true);
 
     PackageServer testServerB = new PackageServer(packageServerBUrl)
       .withAuthenticationMode(HTTPAuthenticationMode.BASIC)
-      .withServerType(PackageServer.PackageServerType.NPM);
+      .withServerType(PackageServer.PackageServerType.NPM)
+      .withAllowHttp(true);
 
     basePackageCacheManager.addPackageServer(testServerA);
     basePackageCacheManager.addPackageServer(testServerB);

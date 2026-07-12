@@ -66,6 +66,8 @@ import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -171,7 +173,19 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 
   @BeforeClass
   public static void beforeClass() {
-    ManagedWebAccess.loadFromFHIRSettings();
+    ManagedWebAccess.loadFromFHIRSettingsWithOverrides(
+      FhirSettingsPOJO.builder()
+        .servers(
+          List.of(ServerDetailsPOJO.builder()
+            .url("http://local.fhir.org:960")
+            .authenticationType("none")
+            .type("web")
+            .allowHttp(true)
+            .headers(Collections.emptyMap())
+            .build()))
+        .build(),
+      ManagedWebAccess.FhirSettingsOverrideType.ADD
+    );
     // Exercise the server-side terminology caching protocol across the validation
     // suite. Against a server that doesn't advertise $cache-control this degrades
     // to inlining (no-op); against one that does, the whole suite runs through the
@@ -188,6 +202,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     igLoader = null;
     manifest = null;
     TerminologyClientContext.setCanUseCacheId(false); // don't leak the static into other suites
+    ManagedWebAccess.loadFromFHIRSettings();
     System.gc();
   }
 
