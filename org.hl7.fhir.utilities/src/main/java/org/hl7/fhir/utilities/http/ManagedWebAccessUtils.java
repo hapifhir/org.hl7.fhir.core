@@ -1,12 +1,15 @@
 package org.hl7.fhir.utilities.http;
 
+import com.google.common.net.InetAddresses;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
+import java.io.IOException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ManagedWebAccessUtils {
 
@@ -74,4 +77,109 @@ public class ManagedWebAccessUtils {
     return Base64.getEncoder().encode(auth.getBytes(StandardCharsets.UTF_8));
   }
 
+  private static final Set<String> explicitlyBlockedHosts = Set.of(
+    "metadata.amazonaws.com", // AWS IMDS
+    "metadata.google.internal" // GCP Metadata
+  );
+
+  private static final Set<InetAddress> explicitlyBlockedInetAddresses = Arrays.stream(new String[]{
+    // Block various cloud providers internal IPs.
+    "169.254.169.254", // AWS IMDS, GCP Metadata, Azure IMDS
+    "192.0.0.192", // Oracle
+  }).map(InetAddresses::forString).collect(Collectors.toUnmodifiableSet());
+
+  /**
+   * Validates {@code url}'s scheme and host syntax against the DNS-independent parts of the
+   * SSRF policy (scheme allow-list, presence of a host, explicitly blocked hostnames). Does
+   * not perform any DNS resolution.
+   */
+  public static void throwExceptionIfNotAllowedScheme(java.net.URI url) throws IOException {
+    String scheme = url.getScheme() == null ? "" : url.getScheme().toLowerCase();
+    if (!scheme.equals("https")) {
+      throw new IOException("Refusing to fetch from non-https URL: " + url);
+    }
+    String host = url.getHost();
+    if (host == null || host.isEmpty()) {
+      throw new IOException("Refusing to fetch from URL with no host: " + url);
+    }
+    if (explicitlyBlockedHosts.contains(host)) {
+      throw new IOException("Refusing to fetch from explicitly blocked host: " + url);
+    }
+  }
+
+  /**
+   * If {@code host} is itself a literal IP address (not a hostname), validates it against the
+   * SSRF IP-range policy; otherwise does nothing.
+   * <p>
+   * This must be called explicitly wherever DNS-based validation such as
+   * {@link SsrfProtectingDns} is otherwise relied on: OkHttp's route selection recognizes
+   * literal IP hosts and uses {@code InetAddress.getByName(host)} directly, never invoking the
+   * configured {@code Dns}, so a literal IP would otherwise bypass validation entirely. This is
+   * still safe to do eagerly (unlike hostname validation, which must happen no earlier than the
+   * connection uses it) - a literal IP address has nothing to re-resolve, so there is no
+   * DNS-rebinding window between checking it and connecting to it.
+   */
+  public static void throwExceptionIfLiteralIpAndNotPublic(String host) throws IOException {
+    if (InetAddresses.isInetAddress(host)) {
+      throwExceptionIfNotPublicAddress(InetAddresses.forString(host), host);
+    }
+  }
+
+  /**
+   *
+   * <p></p>
+   * Validates a single, already-resolved address against the SSRF IP-range policy. Callers
+   * that also control DNS resolution (e.g. {@link SsrfProtectingDns}) should call this with
+   * the exact address that will be used to open the connection, so nothing is re-resolved
+   * between the check and the connection.
+   * </p>
+   * <p>The address checks are taken from the production example provided in
+   * <a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">the OWASP SSRF Prevention Cheat Sheet</a>
+   * which is from the following project:
+   * <a href="https://github.com/cc-tweaked/CC-Tweaked/blob/b9ed66983d714bcb5c6bf15b428e01a035106dbf/projects/core/src/main/java/dan200/computercraft/core/apis/http/options/AddressPredicate.java#L112-L157">CC-Tweaked's AddressPredicate</a>.
+   * </p>
+   *  Throws IOException if {@code url}'s host resolves to any non-public address
+   *  (loopback, link-local incl. 169.254/16, site-local RFC1918, IPv6 ULA fc00::/7,
+   *  unspecified, multicast). Used to block SSRF when dereferencing user-supplied
+   * links (SMART Health Links/Cards, terminology endpoints, etc.).
+   */
+  public static void throwExceptionIfNotPublicAddress(java.net.InetAddress address, String host) throws IOException {
+    if (address.isAnyLocalAddress()   // 0.0.0.0, ::0
+      || address.isLoopbackAddress()   // 127.0.0.0/8, ::1
+      || address.isLinkLocalAddress()  // 169.254.0.0/16, fe80::/10
+      || address.isSiteLocalAddress()  // 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, fec0::/10
+      || address.isMulticastAddress()  // 224.0.0.0/4, ff00::/8
+      || isUniqueLocalAddress(address) // fd00::/8
+      || isCarrierGradeNatAddress(address) // 100.64.0.0/10
+      || explicitlyBlockedInetAddresses.contains(address)) {
+      throw new IOException("Refusing to fetch from non-public address "
+        + address.getHostAddress() + " for host " + host);
+    }
+  }
+
+  /**
+   * Determine if an IP address lives inside the ULA address range.
+   *
+   * @param address The IP address to test.
+   * @return Whether this address sits in the ULA address range.
+   * @see <a href="https://en.wikipedia.org/wiki/Unique_local_address">Unique local address on Wikipedia</a>
+   */
+  private static boolean isUniqueLocalAddress(InetAddress address) {
+    // ULA is actually defined as fc00::/7 (so both fc00::/8 and fd00::/8). However, only the latter is actually
+    // defined right now, so let's be conservative.
+    return address instanceof Inet6Address && (address.getAddress()[0] & 0xff) == 0xfd;
+  }
+
+  /**
+   * Determine if an IP address lives within the CGNAT address range (100.64.0.0/10).
+   *
+   * @param address The IP address to test.
+   * @return Whether this address sits in the CGNAT address range.
+   * @see <a href="https://en.wikipedia.org/wiki/Carrier-grade_NAT">Carrier-grade NAT on Wikipedia</a>
+   */
+  private static boolean isCarrierGradeNatAddress(InetAddress address) {
+    if (!(address instanceof Inet4Address)) return false;
+    var bytes = address.getAddress();
+    return bytes[0] == 100 && ((bytes[1] & 0xFF) >= 64 && (bytes[1] & 0xFF) <= 127);
+  }
 }

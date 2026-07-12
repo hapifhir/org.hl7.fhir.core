@@ -32,7 +32,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
     if (!ManagedWebAccess.inAllowedPaths(url)) {
       throw new IOException("The pathname '"+url+"' cannot be accessed by policy");
     }
-    SimpleHTTPClient client = new SimpleHTTPClient(getHttpAuthHeaderProvider());
+    SimpleHTTPClient client = new SimpleHTTPClient(getHttpAuthHeaderProvider(), ManagedWebAccess.isSsrfProtectionEnabled());
 
     for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
       client.addHeader(entry.getKey(), entry.getValue());

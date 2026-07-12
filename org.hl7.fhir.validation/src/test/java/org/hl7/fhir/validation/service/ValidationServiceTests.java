@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminologyCacheDirectory;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalMatchers.and;
@@ -20,9 +21,12 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -316,5 +320,49 @@ class ValidationServiceTests {
     };
   }
 
+  @Test
+  void testSsrfBlockedThroughValidatesources() throws Exception {
+    final String canary = "SENTINEL-CANARY-7f3a";
+    MockWebServer server = new MockWebServer();
+    try {
+      server.start();
 
+      String manifestUrl = server.url("/manifest").toString();
+      String internalSecretUrl = server.url("/internal-secret").toString();
+
+      String manifest = "{\"files\":[{\"contentType\":\"application/smart-health-card\","
+        + "\"location\":\"" + internalSecretUrl + "\"}]}";
+      server.enqueue(new MockResponse()
+        .addHeader("Content-Type", "application/json")
+        .setBody(manifest));
+      server.enqueue(new MockResponse()
+        .setBody(canary));
+      // Point the shlink at a non-public (loopback) address — the SSRF guard in
+      // ManagedWebAccess.throwExceptionIfNotPublicUrl fires before any connection
+      // is attempted, which is the behaviour we want to observe through the service.
+
+      String key = "A".repeat(43);
+      String json = "{\"url\":\"" + manifestUrl + "\",\"key\":\"" + key + "\"}";
+      String b64 = Base64.getUrlEncoder().withoutPadding()
+        .encodeToString(json.getBytes(StandardCharsets.UTF_8));
+      String shlink = "shlink:/" + b64;
+
+      TestingUtilities.injectCorePackageLoader();
+      ValidationService service = new ValidationService();
+      ValidationRequest request = new ValidationRequest()
+        .setValidationEngineParameters(new ValidationEngineParameters()
+          .setTxServer(FhirSettings.getTxFhirDevelopment())
+          .setTxCache(getTerminologyCacheDirectory("validationService")))
+        .setFilesToValidate(List.of(
+          new FileInfo().setFileName("shl.txt").setFileContent(shlink).setFileType(null)));
+
+      ValidationResponse response = service.validateSources(request);
+      for (ValidationOutcome validationOutcome : response.getOutcomes()) {
+        assertThat(validationOutcome.getFileInfo().getFileContent()).doesNotContain(canary);
+      }
+    }
+    finally {
+      server.shutdown();
+    }
+  }
 }

@@ -15,12 +15,15 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import lombok.Getter;
+import okhttp3.Dns;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static org.hl7.fhir.utilities.Utilities.existsInList;
 
 /**
  * An HTTP client supporting simple GET, PUT, POST operations with no FHIR-specific code.
@@ -42,6 +45,10 @@ import okhttp3.Response;
  *   the new URL.
  *   See {@link IHTTPAuthenticationProvider}.</li>
  * </ol>
+ * <p>
+ * SSRF protection (when enabled) is enforced via {@link SsrfProtectingDns}: the address that is validated is the
+ * exact address OkHttp connects to, so there is no separate resolution step for an attacker to exploit via DNS
+ * rebinding.
  */
 public class SimpleHTTPClient {
 
@@ -54,20 +61,33 @@ public class SimpleHTTPClient {
   @Getter
   private final IHTTPAuthenticationProvider authProvider;
 
-  private final OkHttpClient client;
+  @Getter
+  private final boolean ssrfProtectionEnabled;
+
+  private final OkHttpClient validatingClient;
+  private final OkHttpClient passthroughClient;
 
   public SimpleHTTPClient() {
     this(null);
   }
 
   public SimpleHTTPClient(IHTTPAuthenticationProvider authProvider) {
+    this(authProvider, true);
+  }
+
+  public SimpleHTTPClient(IHTTPAuthenticationProvider authProvider, boolean ssrfProtectionEnabled) {
     this.authProvider = authProvider;
-    this.client = new OkHttpClient.Builder()
+    this.ssrfProtectionEnabled = ssrfProtectionEnabled;
+    this.validatingClient = new OkHttpClient.Builder()
+      .dns(new SsrfProtectingDns())
       .followRedirects(false)
       .followSslRedirects(false)
       .connectTimeout(Duration.ofSeconds(15))
       .readTimeout(Duration.ofSeconds(15))
       .build();
+    // Shares the connection pool/dispatcher with validatingClient; used only for requests the
+    // authProvider has taken ownership of, where SSRF validation is intentionally bypassed.
+    this.passthroughClient = validatingClient.newBuilder().dns(Dns.SYSTEM).build();
   }
 
   public void addHeader(String name, String value) {
@@ -110,12 +130,22 @@ public class SimpleHTTPClient {
 
       URL url = uri.toURL();
       boolean authCanHandle = authProvider != null && authProvider.canProvideHeaders(url);
+      boolean skipSsrfCheck = !isSsrfProtectionEnabled() || authCanHandle;
 
       if (authCanHandle && !authProvider.isProtocolAllowed(url)) {
         throw new IOException("URL does not use permitted protocol: " + url);
       }
 
+
+      if (!skipSsrfCheck) {
+        ManagedWebAccessUtils.throwExceptionIfNotAllowedScheme(uri);
+        // SsrfProtectingDns never runs for literal IP hosts (OkHttp bypasses Dns for those), so
+        // they must be validated here instead.
+        ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNotPublic(uri.getHost());
+      }
+
       Request request = buildRequest(requestMethod, uri, contentType, content, acceptHeader, authCanHandle ? url : null);
+      OkHttpClient client = skipSsrfCheck ? passthroughClient : validatingClient;
 
       try (Response response = client.newCall(request).execute()) {
         switch (response.code()) {

@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.http;
 
+import lombok.Getter;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import java.net.URL;
@@ -14,10 +15,19 @@ import java.util.Map;
  */
 public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationProvider {
 
+  @Getter
+  private final boolean ssrfProtectionEnabled;
+
   private final Iterable<ServerDetailsPOJO> servers;
 
-  public ServerDetailsPOJOHTTPAuthProvider(final Iterable<ServerDetailsPOJO> servers) {
+  public ServerDetailsPOJOHTTPAuthProvider(final Iterable<ServerDetailsPOJO> servers, boolean ssrfProtectionEnabled) {
     this.servers = servers;
+    this.ssrfProtectionEnabled = ssrfProtectionEnabled;
+  }
+
+  public ServerDetailsPOJOHTTPAuthProvider(final Iterable<ServerDetailsPOJO> servers) {
+    this(servers, true);
+
   }
 
   @Override
