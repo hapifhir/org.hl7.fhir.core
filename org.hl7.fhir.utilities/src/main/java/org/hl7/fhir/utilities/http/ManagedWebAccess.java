@@ -38,9 +38,10 @@ import java.util.*;
 
 import lombok.Getter;
 
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
+
+import static org.hl7.fhir.utilities.Utilities.existsInList;
 
 /**
  * see security.md - manages web access by the FHIR HAPI Core library
@@ -78,6 +79,7 @@ public class ManagedWebAccess {
     PROHIBITED, // no access at all to the web
   }
 
+  @Getter
   private static WebAccessPolicy accessPolicy = WebAccessPolicy.DIRECT; // for legacy reasons
   //TODO get this from fhir settings
   private static List<String> allowedDomains = new ArrayList<>();
@@ -92,10 +94,6 @@ public class ManagedWebAccess {
 
   private static List<ServerDetailsPOJO> serverDetailsList;
   private static IHTTPAuthenticationProvider defaultAuthenticationProvider;
-
-  public static WebAccessPolicy getAccessPolicy() {
-    return accessPolicy;
-  }
 
   public static void setAccessPolicy(WebAccessPolicy accessPolicy) {
     ManagedWebAccess.accessPolicy = accessPolicy;
@@ -220,7 +218,7 @@ public class ManagedWebAccess {
       }
       
       // Fall back to hardcoded local addresses
-      return Utilities.existsInList(uri.getHost(), "localhost", "local.fhir.org", "127.0.0.1", "[::1]") || (uri.getHost() != null && uri.getHost().endsWith(".localhost"));
+      return existsInList(uri.getHost(), "localhost", "local.fhir.org", "127.0.0.1", "[::1]") || (uri.getHost() != null && uri.getHost().endsWith(".localhost"));
     } catch (URISyntaxException e) {
       return false;
     }

@@ -17,22 +17,22 @@ import org.junit.jupiter.api.Test;
 import okhttp3.mockwebserver.RecordedRequest;
 import okio.Buffer;
 
-public class PackageServerTest {
+class PackageServerTest {
 
   MockPackageServer server;
 
   @BeforeEach
-  public void beforeEach() throws IOException {
+  void beforeEach() throws IOException {
     server = new MockPackageServer();
   }
 
   @AfterEach
-  public void afterEach() throws IOException {
+  void afterEach() throws IOException {
     server.shutdown();
   }
 
   @Test
-  public void testPackageServerBasicAuth() throws IOException, InterruptedException {
+  void testPackageServerBasicAuth() throws IOException, InterruptedException {
 
     String packageServerUrl = server.getPackageServerUrl();
 
