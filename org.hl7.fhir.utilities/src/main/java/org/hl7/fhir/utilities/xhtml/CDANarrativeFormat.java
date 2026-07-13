@@ -355,65 +355,41 @@ public class CDANarrativeFormat {
   
   private void processChildNode(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {
     switch (n.getNodeType()) {
-    case DocType: 
-    case Document: 
-    case Instruction: 
+      case DocType, Document, Instruction, CData:
       return;
-    case Comment: 
+    case Comment:
       xml.comment(n.getContent(), true);
       return;
     case Text: 
       xml.text(n.getContent());
       return;
     case Element:
-      if (n.getName().equals("br"))
-        processBreak(xml, n);
-      else if (n.getName().equals("h1") || n.getName().equals("h2") || n.getName().equals("h3") || n.getName().equals("h4") || n.getName().equals("h5") || n.getName().equals("h6") || n.getName().equals("caption"))
-        processCaption(xml, n);
-      else if (n.getName().equals("col"))
-        processCol(xml, n);
-      else if (n.getName().equals("colgroup"))
-        processColGroup(xml, n);
-      else if (n.getName().equals("span") || n.getName().equals("div"))
-        processContent(xml, n);
-      else if (n.getName().equals("footnote"))
-        processFootNote(xml, n);
-      else if (n.getName().equals("footnoteRef"))
-        processFootNodeRef(xml, n);
-      else if (n.getName().equals("li"))
-        processItem(xml, n);
-      else if (n.getName().equals("linkHtml"))
-        processlinkHtml(xml, n);
-      else if (n.getName().equals("ul") || n.getName().equals("ol"))
-        processList(xml, n);
-      else if (n.getName().equals("p"))
-        processParagraph(xml, n);
-      else if (n.getName().equals("img"))
-        processRenderMultiMedia(xml, n);
-      else if (n.getName().equals("sub"))
-        processSub(xml, n);
-      else if (n.getName().equals("sup"))
-        processSup(xml, n);
-      else if (n.getName().equals("table"))
-        processTable(xml, n);
-      else if (n.getName().equals("tbody"))
-        processTBody(xml, n);
-      else if (n.getName().equals("td"))
-        processTd(xml, n);
-      else if (n.getName().equals("tfoot"))
-        processTFoot(xml, n);
-      else if (n.getName().equals("th"))
-        processTh(xml, n);
-      else if (n.getName().equals("thead"))
-        processTHead(xml, n);
-      else if (n.getName().equals("a"))
-        processA(xml, n);
-      else if (n.getName().equals("tr"))
-        processTr(xml, n);
-      else if (n.getName().equals("list") || n.getName().equals("item") || n.getName().equals("paragraph") || n.getName().equals("renderMultiMedia") || n.getName().equals("content"))
-        processPassThrough(xml, n);
-      else
-        stripTag(xml, n);
+      String elementName = n.getName().toLowerCase();
+      switch (elementName) {
+        case "br" -> processBreak(xml, n);
+        case "h1", "h2", "h3", "h4", "h5", "h6", "caption" -> processCaption(xml, n);
+        case "col" -> processCol(xml, n);
+        case "colgroup" -> processColGroup(xml, n);
+        case "span", "div" -> processContent(xml, n);
+        case "li" -> processItem(xml, n);
+        case "linkhtml" -> processlinkHtml(xml, n);
+        case "ul", "ol" -> processList(xml, n);
+        case "p" -> processParagraph(xml, n);
+        case "img" -> processRenderMultiMedia(xml, n);
+        case "sub" -> processSub(xml, n);
+        case "sup" -> processSup(xml, n);
+        case "table" -> processTable(xml, n);
+        case "tbody" -> processTBody(xml, n);
+        case "td" -> processTd(xml, n);
+        case "tfoot" -> processTFoot(xml, n);
+        case "th" -> processTh(xml, n);
+        case "thead" -> processTHead(xml, n);
+        case "a" -> processA(xml, n);
+        case "tr" -> processTr(xml, n);
+        case "list", "item", "paragraph", "rendermultimedia", "content", "footnote", "footnoteref" ->
+          processPassThrough(xml, n);
+        default -> stripTag(xml, n);
+      }
     }
   }
 
@@ -448,14 +424,6 @@ public class CDANarrativeFormat {
     // todo: do something with revised..., "revised"
     processChildren(xml, n);
     xml.exit("content");
-  }
-
-  private void processFootNote(IXMLWriter xml, XhtmlNode n) {
-    throw new Error("element "+n.getName()+" not handled yet");
-  }
-
-  private void processFootNodeRef(IXMLWriter xml, XhtmlNode n) {
-    throw new Error("element "+n.getName()+" not handled yet");
   }
 
   private void processItem(IXMLWriter xml, XhtmlNode n) throws IOException, FHIRException {

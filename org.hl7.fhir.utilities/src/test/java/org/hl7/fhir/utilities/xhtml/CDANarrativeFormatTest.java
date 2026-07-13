@@ -44,11 +44,14 @@ class CDANarrativeFormatTest {
 		<div><list listType="unordered"><item>Plain text</item></list></div>,<?xml version="1.0" encoding="UTF-8"?><text><list listType="unordered"><item>Plain text</item></list></text>
 		<div><list listType="ordered"><item>Plain text</item></list></div>,<?xml version="1.0" encoding="UTF-8"?><text><list listType="ordered"><item>Plain text</item></list></text>
 		<div><content>Plain text</content></div>,<?xml version="1.0" encoding="UTF-8"?><text><content>Plain text</content></text>
+		<div>Text with a footnote.<footnoteRef IDREF="fn1"/><footnote ID="fn1">This is the footnote</footnote></div>,<?xml version="1.0" encoding="UTF-8"?><text>Text with a footnote.<footnoteRef IDREF="fn1"/><footnote ID="fn1">This is the footnote</footnote></text>
 		# strip unsupported tags but retain the contents
 		<div><b>Plain text</b></div>,<?xml version="1.0" encoding="UTF-8"?><text>Plain text</text>
 		<div><i>Plain text</i></div>,<?xml version="1.0" encoding="UTF-8"?><text>Plain text</text>
 		<div><notxhtml>Plain text</notxhtml></div>,<?xml version="1.0" encoding="UTF-8"?><text>Plain text</text>
 		<div><empty/></div>,<?xml version="1.0" encoding="UTF-8"?><text/>
+		# case insensitivity
+		<div><UL><LI>Plain text</LI></UL></div>,<?xml version="1.0" encoding="UTF-8"?><text><list listType="unordered"><item>Plain text</item></list></text>
 		""")
 	void testConvert(String theInputXhtml, String theExpectedNarrative) throws Exception {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
