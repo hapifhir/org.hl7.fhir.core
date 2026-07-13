@@ -1821,7 +1821,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
       return false;
     }
     if (criteria == null) {
-      return true; // any candidate is more detailed than no criteria at all
+      return false; // cannot be more detailed than nothing.
     }
     if (va == VersionAlgorithm.Unknown) {
       va = VersionAlgorithm.guessFormat(candidate);
