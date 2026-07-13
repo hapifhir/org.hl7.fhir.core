@@ -574,7 +574,6 @@ public class XMLUtil {
     final SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setFeature(SAX_FEATURES_EXTERNAL_GENERAL_ENTITIES, false);
     spf.setFeature(APACHE_XML_FEATURES_DISALLOW_DOCTYPE_DECL, true);
-
     return spf;
   }
 
@@ -701,14 +700,12 @@ public class XMLUtil {
     Transformer transformer = XMLUtil.newXXEProtectedTransformerFactory().newTransformer();
     Result output = new StreamResult(stream);
     Source input = new DOMSource(root);
-
     transformer.transform(input, output);
   }
 
   public static void spacer(Document doc, Element element, int indent) {
     Node node = doc.createTextNode("\n"+Utilities.padLeft("", ' ', indent));
     element.appendChild(node);
-   
   }
 
   public static String getNamedChildText(Element element, String name) {

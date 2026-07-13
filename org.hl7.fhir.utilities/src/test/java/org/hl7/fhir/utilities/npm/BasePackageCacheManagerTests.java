@@ -13,10 +13,10 @@ import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class BasePackageCacheManagerTests {
+class BasePackageCacheManagerTests {
 
   @Test
-  public void testPackageBasicAuth() throws IOException {
+  void testPackageBasicAuth() throws IOException {
     BasePackageCacheManager basePackageCacheManager = getFakeBasePackageCacheManager();
 
     MockPackageServer server = new MockPackageServer();
@@ -42,7 +42,7 @@ public class BasePackageCacheManagerTests {
 
   @Test
   @DisplayName("Test that package management moves to next server after 404")
-  public void testPackageWithConfiguredServer404() throws IOException {
+  void testPackageWithConfiguredServer404() throws IOException {
     BasePackageCacheManager basePackageCacheManager = getFakeBasePackageCacheManager();
 
     MockPackageServer serverA = new MockPackageServer();

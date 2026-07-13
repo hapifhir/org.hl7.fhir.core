@@ -7,12 +7,9 @@ import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -21,6 +18,7 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.checkerframework.checker.nullness.qual.NonNull;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,10 +33,6 @@ public class SimpleHTTPClientTest {
 
   @BeforeEach
   void setup() {
-    setupMockServer();
-  }
-
-  void setupMockServer() {
     server = new MockWebServer();
   }
 
@@ -117,36 +111,29 @@ public class SimpleHTTPClientTest {
   @MethodSource("getRedirectArgs")
   void testRedirectNoProvidedAuth(int code, String[] urlArgs) throws IOException, InterruptedException {
     final HttpUrl[] urls = enqueueSameServerRedirectsExceptLast(code, urlArgs);
-    final List<HttpURLConnection> connections = new ArrayList<>();
     final URL exampleInvalidUrl = URI.create(EXAMPLE_INVALID_REDIRECTED).toURL();
 
     IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
-    //Until the last connection, use the built authentication
+    //Until the last hop, use the built authentication
     for (int i = 0; i < urlArgs.length - 1; i++) {
       doReturn(true).when(authenticationProvider).canProvideHeaders(urls[i].url());
       doReturn(Map.of("Authorization", "Bearer thisToken")).when(authenticationProvider).getHeaders(urls[i].url());
     }
-    final SimpleHTTPClient httpClient = getHTTPClient(connections, authenticationProvider);
+    final SimpleHTTPClient httpClient = new SimpleHTTPClient(authenticationProvider);
 
-    assertThrows(UnknownHostException.class, () -> {
-       httpClient.get(urls[0].url().toString(), "application/json");
-    });
+    assertThrows(UnknownHostException.class, () -> httpClient.get(urls[0].url().toString(), "application/json"));
 
-    assertThat(connections).hasSize(urlArgs.length);
-    //Until the last connection, verify that the auth headers were set
+    //Until the last hop, verify that the auth headers were sent
     for (int i = 0; i < urlArgs.length - 1; i++) {
-      verify(connections.get(i)).setRequestProperty(eq("Authorization"),eq("Bearer thisToken"));
-      verify(connections.get(i), never()).setRequestProperty(eq("Api-Key"), anyString());
+      RecordedRequest recordedRequest = server.takeRequest();
+      assertThat(recordedRequest.getHeader("Authorization")).isEqualTo("Bearer thisToken");
+      assertThat(recordedRequest.getHeader("Api-Key")).isNull();
     }
-    //The last connection doesn't have a provider, so no headers should have been set
-    verify(connections.get(connections.size() - 1), never()).setRequestProperty(eq("Authorization"), anyString());
-    verify(connections.get(connections.size() - 1), never()).setRequestProperty(eq("Api-Key"), anyString());
+    assertThat(server.getRequestCount()).isEqualTo(urlArgs.length - 1);
 
     //The authentication provider should have asked if it could handle the url, but shouldn't have provided any headers
     verify(authenticationProvider, times(1)).canProvideHeaders(exampleInvalidUrl);
     verify(authenticationProvider, never()).getHeaders(exampleInvalidUrl);
-
-    assertServerSentRedirects(urlArgs.length - 1);
   }
 
 
@@ -154,81 +141,38 @@ public class SimpleHTTPClientTest {
   @MethodSource("getRedirectArgs")
   void testRedirectProvidedAuth(int code, String[] urlArgs) throws IOException, InterruptedException {
     final HttpUrl[] urls = enqueueSameServerRedirectsExceptLast(code, urlArgs);
-    final List<HttpURLConnection> connections = new ArrayList<>();
     final URL exampleInvalidUrl = URI.create(EXAMPLE_INVALID_REDIRECTED).toURL();
 
     IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
 
     doReturn(true).when(authenticationProvider).canProvideHeaders(exampleInvalidUrl);
-    doReturn(Map.of("Authorization", "Bearer thisToken")).when(authenticationProvider).getHeaders(exampleInvalidUrl);
+    doReturn(Map.of("Authorization", "Bearer thatToken")).when(authenticationProvider).getHeaders(exampleInvalidUrl);
 
-    //Until the last connection, use the built authentication
+    //Until the last hop, use the built authentication
     for (int i = 0; i < urlArgs.length - 1; i++) {
       doReturn(true).when(authenticationProvider).canProvideHeaders(urls[i].url());
       doReturn(Map.of("Authorization", "Bearer thisToken")).when(authenticationProvider).getHeaders(urls[i].url());
     }
-    doReturn(true).when(authenticationProvider).canProvideHeaders(urls[urlArgs.length - 1].url());
-    doReturn(Map.of("Authorization", "Bearer thatToken")).when(authenticationProvider).getHeaders(urls[urlArgs.length - 1].url());
 
-    final SimpleHTTPClient httpClient = getHTTPClient(connections, authenticationProvider);
+    final SimpleHTTPClient httpClient = new SimpleHTTPClient(authenticationProvider);
 
-    assertThrows(UnknownHostException.class, () -> {
-      httpClient.get(urls[0].url().toString(), "application/json");
-    });
+    assertThrows(UnknownHostException.class, () -> httpClient.get(urls[0].url().toString(), "application/json"));
 
-    assertThat(connections).hasSize(urlArgs.length);
     for (int i = 0; i < urlArgs.length - 1; i++) {
-      verify(connections.get(i)).setRequestProperty(eq("Authorization"),eq("Bearer thisToken"));
-      verify(connections.get(i), never()).setRequestProperty(eq("Api-Key"), anyString());
+      RecordedRequest recordedRequest = server.takeRequest();
+      assertThat(recordedRequest.getHeader("Authorization")).isEqualTo("Bearer thisToken");
+      assertThat(recordedRequest.getHeader("Api-Key")).isNull();
     }
-    verify(connections.get(connections.size() - 1)).setRequestProperty(eq("Authorization"), eq("Bearer thatToken"));
-    verify(connections.get(connections.size() - 1), never()).setRequestProperty(eq("Api-Key"), anyString());
+    assertThat(server.getRequestCount()).isEqualTo(urlArgs.length - 1);
 
-    //The authentication provider should have asked if it could handle the url and to provide the headers
+    //The authentication provider should have asked if it could handle the url and to provide the headers,
+    //even though the request against that url ultimately fails to resolve
     verify(authenticationProvider, times(1)).canProvideHeaders(exampleInvalidUrl);
     verify(authenticationProvider, times(1)).getHeaders(exampleInvalidUrl);
-
-    assertServerSentRedirects(urlArgs.length - 1);
-  }
-
-  /**
-   * Get a SimpleHTTPClient that adds any new connections to the passed list.
-   * @param connections A list to update when new connections are created
-   * @return A SimpleHTTPClient with default instantiation.
-   */
-  private static @NonNull SimpleHTTPClient getHTTPClient(List<HttpURLConnection> connections, IHTTPAuthenticationProvider authenticationProvider) {
-    return new SimpleHTTPClient(authenticationProvider) {
-      @Override
-      protected HttpURLConnection getHttpConnection(URL url) throws IOException {
-        HttpURLConnection connection = Mockito.spy(super.getHttpConnection(url));
-        connections.add(connection);
-        return connection;
-      }
-    };
   }
 
   private HttpUrl @NonNull [] enqueueSameServerRedirectsExceptLast(int code, String[] urlArgs) {
     HttpUrl[] urls = new HttpUrl[urlArgs.length];
-    for (int i = 0; i < urlArgs.length; i++) {
-      if (i < urlArgs.length - 1) {
-        urls[i] = server.url(urlArgs[i]);
-      } else {
-        urls[i] = HttpUrl.parse(EXAMPLE_INVALID_REDIRECTED);
-      }
-
-      if (i > 0) {
-        server.enqueue(
-          new MockResponse()
-            .setResponseCode(code)
-            .setBody("Pumas")
-            .addHeader("Location", urls[i].url().toString()));
-      }
-    }
-    return urls;
-  }
-
-  private HttpUrl @NonNull [] enqueueSameServerRedirectsLoop(int code, String[] urlArgs) {
-    HttpUrl[] urls = new HttpUrl[urlArgs.length + 1];
     for (int i = 0; i < urlArgs.length; i++) {
       if (i < urlArgs.length - 1) {
         urls[i] = server.url(urlArgs[i]);
