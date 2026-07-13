@@ -63,7 +63,6 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
-import org.hl7.fhir.utilities.json.model.JsonString;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -142,9 +141,9 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       JsonArray jsonTags = example.getAsJsonArray("tags");
       List<String> tags = jsonTags == null ? List.of() : jsonTags.asList().stream().map(JsonElement::getAsString).toList();
       if (testFilter.shouldRunBasedOnTags(tags)) {
-        objects.add(new Object[]{id, examples.get(id)});
+          objects.add(new Object[]{id, examples.get(id)});
+        }
       }
-    }
     return objects;
   }
 
@@ -180,10 +179,12 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     TerminologyClientContext.setCanUseCacheId(true);
   }
 
-  @AfterAll
-  public void cleanup() {
+  @AfterClass
+  public static void cleanup() throws IOException {
+    String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
+    FileUtilities.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
+
     currentEngine = null;
-    vCurr = null;
     igLoader = null;
     manifest = null;
     TerminologyClientContext.setCanUseCacheId(false); // don't leak the static into other suites
@@ -997,13 +998,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   @Override
   public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
     return vCurr.getContext().fetchResource(ValueSet.class, url);
-  }
-
-  @AfterClass
-  public static void saveWhenDone() throws IOException {
-    String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
-    FileUtilities.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
-
   }
 
   @Override

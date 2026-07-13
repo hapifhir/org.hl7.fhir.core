@@ -349,7 +349,7 @@ public class ValidationEngineTests {
   }
 
   @Test
-  public void testResolveRelativeFileError() throws Exception {
+  void testResolveRelativeFileError() throws Exception {
     String folder = setupFolder();
     try {
       ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
@@ -414,7 +414,7 @@ public class ValidationEngineTests {
   }
 
   @Test
-  public void testResolveAbsoluteError() throws Exception {
+  void testResolveAbsoluteError() throws Exception {
       ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
       ve.setFetcher(fetcher);

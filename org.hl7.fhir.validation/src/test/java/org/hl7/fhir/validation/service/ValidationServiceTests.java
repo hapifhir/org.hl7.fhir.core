@@ -132,7 +132,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that conversion works when a single source is set and the -output param is set")
-  public void convertSingleSource() throws Exception {
+  void convertSingleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -144,7 +144,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that conversion throws an Exception when no -output or -outputSuffix params are set")
-  public void convertSingleSourceNoOutput() {
+  void convertSingleSourceNoOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -156,7 +156,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that conversion throws an Exception when multiple sources are set and an -output param is set")
-  public void convertMultipleSourceOnlyOutput() {
+  void convertMultipleSourceOnlyOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -167,7 +167,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that conversion works when multiple sources are set and an output suffix parameter is set")
-  public void convertMultipleSource() throws Exception {
+  void convertMultipleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -180,7 +180,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that snapshot generation works when a single source is set and the -output param is set")
-  public void generateSnapshotSingleSource() throws Exception {
+  void generateSnapshotSingleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -195,7 +195,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that snapshot generation throws an Exception when no -output or -outputSuffix params are set")
-  public void generateSnapshotSingleSourceNoOutput() {
+  void generateSnapshotSingleSourceNoOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -205,7 +205,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that snapshot generation throws an Exception when multiple sources are set and an -output param is set")
-  public void generateSnapshotMultipleSourceOnlyOutput() {
+  void generateSnapshotMultipleSourceOnlyOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -216,7 +216,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that snapshot generation works when multiple sources are set and an output suffix parameter is set")
-  public void generateSnapshotMultipleSource() throws Exception {
+  void generateSnapshotMultipleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -271,7 +271,7 @@ class ValidationServiceTests {
   }
 
   @Test
-  public void buildValidationEngineDisableDefaultResourceFetcherTest() throws IOException, URISyntaxException {
+  void buildValidationEngineDisableDefaultResourceFetcherTest() throws IOException, URISyntaxException {
     final TimeTracker timeTracker = mock(TimeTracker.class);
     final SimpleWorkerContext workerContext = mock(SimpleWorkerContext.class);
 

@@ -1,22 +1,26 @@
 package org.hl7.fhir.utilities.http;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import lombok.Getter;
-import lombok.Setter;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * An HTTP client supporting simple GET, PUT, POST operations with no FHIR-specific code.
@@ -50,12 +54,20 @@ public class SimpleHTTPClient {
   @Getter
   private final IHTTPAuthenticationProvider authProvider;
 
+  private final OkHttpClient client;
+
   public SimpleHTTPClient() {
     this(null);
   }
 
   public SimpleHTTPClient(IHTTPAuthenticationProvider authProvider) {
     this.authProvider = authProvider;
+    this.client = new OkHttpClient.Builder()
+      .followRedirects(false)
+      .followSslRedirects(false)
+      .connectTimeout(Duration.ofSeconds(15))
+      .readTimeout(Duration.ofSeconds(15))
+      .build();
   }
 
   public void addHeader(String name, String value) {
@@ -63,119 +75,85 @@ public class SimpleHTTPClient {
   }
 
   public HTTPResult get(String url) throws IOException {
-    return get(url, null);    
+    return get(url, null);
   }
-  
-  public HTTPResult get(String urlString, String accept) throws IOException {
+
+  public HTTPResult get(String urlString, String acceptHeader) throws IOException {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-
-    Map<String, Integer> visited = new HashMap<>();
-    HttpURLConnection connection = null;
-    boolean done = false;
-    URL originalUrl = URI.create(urlString).toURL();
-    URL url = originalUrl;
-
-    while (!done) {
-      int times = visited.compute(urlString, (key, count) -> count == null ? 1 : count + 1);
-      if (times > MAX_REDIRECTS)
-        throw new IOException("Stuck in redirect loop");
-
-      connection = getHttpGetConnection(url, accept);
-
-      //(connection.getResponseCode() implicitly establishes the connection)
-      switch (connection.getResponseCode()) {
-        case HttpURLConnection.HTTP_MOVED_PERM,
-             HttpURLConnection.HTTP_MOVED_TEMP,
-             307,
-             308: // Same as HTTP_MOVED_PERM, but does not allow changing the request method from POST to GET
-          String location = connection.getHeaderField("Location");
-          if (location == null) {
-            throw new IOException("Location header missing in " + connection.getResponseCode() + " redirect");
-          }
-          location = URLDecoder.decode(location, StandardCharsets.UTF_8);
-
-          url = URI.create(originalUrl.toString()).resolve(location).toURL(); // Deal with relative URLs
-          continue;
-        default:
-          done = true;
-      }
-    }
-    return new HTTPResult(urlString, connection.getResponseCode(), connection.getResponseMessage(),  connection.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(connection.getResponseCode() >= 400 ? connection.getErrorStream() : connection.getInputStream()));
+    return execute("GET", URI.create(urlString), null, null, acceptHeader);
   }
-
-  protected HttpURLConnection getHttpConnection(URL url) throws IOException {
-    return (HttpURLConnection) url.openConnection();
-  }
-
-  private HttpURLConnection getHttpGetConnection(URL url, String accept) throws IOException {
-    HttpURLConnection connection = getHttpConnection(url);
-    connection.setRequestMethod("GET");
-    if (accept != null) {
-      connection.setRequestProperty(ACCEPT_HEADER_KEY, accept);
-    }
-    setHeaders(connection);
-    connection.setInstanceFollowRedirects(false);
-    return connection;
-  }
-
-  private void setHeaders(HttpURLConnection connection) {
-    connection.setConnectTimeout(15000);
-    connection.setReadTimeout(15000);
-    URL url = connection.getURL();
-    if (authProvider != null && authProvider.canProvideHeaders(url)) {
-      Map<String, String> providedHeaders = authProvider.getHeaders(url);
-      if (providedHeaders != null) {
-        for (Map.Entry<String, String> entry : providedHeaders.entrySet()) {
-          connection.setRequestProperty(entry.getKey(), entry.getValue());
-        }
-      }
-    }
-  }
-
 
   public HTTPResult post(String urlString, String contentType, byte[] content, String accept) throws IOException {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
-    HttpURLConnection connection = getHttpConnection(URI.create(urlString).toURL());
-    connection.setDoOutput(true);
-    connection.setDoInput(true);
-    connection.setRequestMethod("POST");
-    connection.setRequestProperty("Content-Type", contentType);
-    if (accept != null) {
-      connection.setRequestProperty(ACCEPT_HEADER_KEY, accept);
-    }
-    setHeaders(connection);
-    connection.getOutputStream().write(content);
-    connection.getOutputStream().close();
-    return new HTTPResult(urlString, connection.getResponseCode(), connection.getResponseMessage(), connection.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(connection.getResponseCode() >= 400 ? connection.getErrorStream() : connection.getInputStream()));
+    return execute("POST", URI.create(urlString), contentType, content, accept);
   }
 
- 
   public HTTPResult put(String urlString, String contentType, byte[] content, String accept) throws IOException {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
+    return execute("PUT", URI.create(urlString), contentType, content, accept);
+  }
 
-    HttpURLConnection connection = getHttpConnection(URI.create(urlString).toURL());
-    connection.setDoOutput(true);
-    connection.setDoInput(true);
-    connection.setRequestMethod("PUT");
-    connection.setRequestProperty("Content-type", contentType);
-    if (accept != null) {
-      connection.setRequestProperty(ACCEPT_HEADER_KEY, accept);
+  private @NonNull HTTPResult execute(String requestMethod, URI originalUri, String contentType, byte[] content, String acceptHeader) throws IOException {
+    URI uri = originalUri;
+    int redirects = 0;
+
+    while (true) {
+      if (++redirects > MAX_REDIRECTS) {
+        throw new IOException("Stuck in redirect loop");
+      }
+
+      URL url = uri.toURL();
+      boolean authCanHandle = authProvider != null && authProvider.canProvideHeaders(url);
+
+      Request request = buildRequest(requestMethod, uri, contentType, content, acceptHeader, authCanHandle ? url : null);
+
+      try (Response response = client.newCall(request).execute()) {
+        switch (response.code()) {
+          case 301, 302, 307, 308 -> {
+            String location = response.header("Location");
+            if (location == null) {
+              throw new IOException("Location header missing in " + response.code() + " redirect");
+            }
+            location = URLDecoder.decode(location, StandardCharsets.UTF_8);
+            uri = originalUri.resolve(location); // Deal with relative URLs
+          }
+          default -> {
+            byte[] body = response.body() == null ? null : response.body().bytes();
+            return new HTTPResult(uri.toString(), response.code(), response.message(), response.header("Content-Type"), body);
+          }
+        }
+      }
     }
-    setHeaders(connection);
-    connection.getOutputStream().write(content);
-    connection.getOutputStream().close();
-    return new HTTPResult(urlString, connection.getResponseCode(), connection.getResponseMessage(), connection.getRequestProperty("Content-Type"), FileUtilities.streamToBytes(connection.getResponseCode() >= 400 ? connection.getErrorStream() : connection.getInputStream()));
+  }
+
+  private Request buildRequest(String requestMethod, URI uri, String contentType, byte[] content, String acceptHeader, URL authUrl) throws IOException {
+    Request.Builder builder = new Request.Builder().url(HttpUrl.get(uri));
+    if (acceptHeader != null) {
+      builder.header(ACCEPT_HEADER_KEY, acceptHeader);
+    }
+    if (authUrl != null) {
+      Map<String, String> providedHeaders = authProvider.getHeaders(authUrl);
+      if (providedHeaders != null) {
+        for (Map.Entry<String, String> entry : providedHeaders.entrySet()) {
+          builder.header(entry.getKey(), entry.getValue());
+        }
+      }
+    }
+    switch (requestMethod) {
+      case "POST", "PUT" -> builder.method(requestMethod, RequestBody.create(content, contentType == null ? null : MediaType.parse(contentType)));
+      default -> { /*DO NOTHING - defaults to GET*/ }
+    }
+    return builder.build();
   }
 
   public static int nextCounter() {
     return ++counter;
   }
-
 
 }
