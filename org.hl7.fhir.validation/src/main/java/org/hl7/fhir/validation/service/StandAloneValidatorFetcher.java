@@ -19,6 +19,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import lombok.Getter;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -59,7 +60,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
 
   List<String> mappingsUris = new ArrayList<>();
   private FilesystemPackageCacheManager pcm;
-  private IWorkerContext context;
+  private @Getter IWorkerContext context;
   private IPackageInstaller installer;
   private Map<String, Boolean> urlList = new HashMap<>();
   private Map<String, String> pidList = new HashMap<>();

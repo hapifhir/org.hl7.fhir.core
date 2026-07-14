@@ -46,7 +46,7 @@ public class CanonicalResourceClient {
   }
 
   @Nonnull
-  protected ITerminologyClient getTerminologyClient(String root) throws URISyntaxException {
+  public ITerminologyClient getTerminologyClient(String root) throws URISyntaxException {
     return new TerminologyClientFactory(context.getVersion()).makeClient("source", root, Common.getValidatorUserAgent(), null);
   }
 
