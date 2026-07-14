@@ -2988,3 +2988,103 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en"
+}, "url": "urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255", "version": "1", "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "English",
+  "code" : "en",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255|1: Analysing urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255|1 for validation purposes\n1ms urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255|1: Parameters: disp-lang=en, generate-narrative\n1ms urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255|1: Prepare include[0]: \"(urn:ietf:bcp:47)\"\n1ms urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255|1: CodeSystem found: \"urn:ietf:bcp:47|null\"\n1ms urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255|1: Validate \"[undefined#en (\"undefined\")]\" and infer system\n2ms urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255|1: Check \"undefined#en\"\n2ms urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255|1: Inferred CodeSystem = \"urn:ietf:bcp:47\"\n3ms urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255|1: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n3ms urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255|1: check code in (urn:ietf:bcp:47) at \n3ms urn:uuid:22ffa93a-e8e6-4d5c-b83e-ef53d3525255|1: Code \"en\" found in urn:ietf:bcp:47|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en"
+}, "url": "urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3", "version": "1", "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "English",
+  "code" : "en",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3|1: Analysing urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3|1 for validation purposes\n1ms urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3|1: Parameters: disp-lang=en, generate-narrative\n1ms urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3|1: Prepare include[0]: \"(urn:ietf:bcp:47)\"\n1ms urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3|1: CodeSystem found: \"urn:ietf:bcp:47|null\"\n1ms urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3|1: Validate \"[undefined#en (\"undefined\")]\" and infer system\n2ms urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3|1: Check \"undefined#en\"\n2ms urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3|1: Inferred CodeSystem = \"urn:ietf:bcp:47\"\n2ms urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3|1: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n2ms urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3|1: check code in (urn:ietf:bcp:47) at \n2ms urn:uuid:f8fdbfdc-fc05-49de-acae-e6faacab4df3|1: Code \"en\" found in urn:ietf:bcp:47|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en"
+}, "url": "urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6", "version": "1", "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "English",
+  "code" : "en",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6|1: Analysing urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6|1 for validation purposes\n1ms urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6|1: Parameters: disp-lang=en, generate-narrative\n1ms urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6|1: Prepare include[0]: \"(urn:ietf:bcp:47)\"\n1ms urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6|1: CodeSystem found: \"urn:ietf:bcp:47|null\"\n1ms urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6|1: Validate \"[undefined#en (\"undefined\")]\" and infer system\n2ms urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6|1: Check \"undefined#en\"\n2ms urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6|1: Inferred CodeSystem = \"urn:ietf:bcp:47\"\n2ms urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6|1: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n2ms urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6|1: check code in (urn:ietf:bcp:47) at \n2ms urn:uuid:499540d5-e188-460b-96f7-8c59dcc0aff6|1: Code \"en\" found in urn:ietf:bcp:47|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "en"
+}, "url": "urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0", "version": "1", "langs":"en", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "English",
+  "code" : "en",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0|1: Analysing urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0|1 for validation purposes\n1ms urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0|1: Parameters: disp-lang=en, generate-narrative\n1ms urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0|1: Prepare include[0]: \"(urn:ietf:bcp:47)\"\n2ms urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0|1: CodeSystem found: \"urn:ietf:bcp:47|null\"\n2ms urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0|1: Validate \"[undefined#en (\"undefined\")]\" and infer system\n2ms urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0|1: Check \"undefined#en\"\n2ms urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0|1: Inferred CodeSystem = \"urn:ietf:bcp:47\"\n2ms urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0|1: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n2ms urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0|1: check code in (urn:ietf:bcp:47) at \n2ms urn:uuid:360b0876-241f-456b-af7f-fe26c48133f0|1: Code \"en\" found in urn:ietf:bcp:47|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------

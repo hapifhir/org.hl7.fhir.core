@@ -50,6 +50,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.validation.instance.utils.CanonicalResourceClient;
 import org.hl7.fhir.validation.service.utils.Common;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 
@@ -364,34 +365,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
 
   @Override
   public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) throws URISyntaxException {
-    if (url.contains("|")) {
-      url = url.substring(0, url.indexOf("|"));
-    }
-    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-    //single literal character split
-    String[] p = url.split("\\/");
-
-    String root = getRoot(p, url);
-    if (root != null) {
-      ITerminologyClient terminologyClient = getTerminologyClient(root);
-      return terminologyClient.read(p[p.length - 2], p[p.length - 1]);
-    } else {
-      throw new FHIRException("The URL '" + url + "' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
-    }
-  }
-
-  @Nonnull
-  protected ITerminologyClient getTerminologyClient(String root) throws URISyntaxException {
-    return new TerminologyClientFactory(context.getVersion()).makeClient("source", root, Common.getValidatorUserAgent(), null);
-  }
-
-  private String getRoot(String[] p, String url) {
-    if (p.length > 3 && Utilities.isValidId(p[p.length - 1]) && context.getResourceNames().contains(p[p.length - 2])) {
-      url = url.substring(0, url.lastIndexOf("/"));
-      return url.substring(0, url.lastIndexOf("/"));
-    } else {
-      return null;
-    }
+    return new CanonicalResourceClient(context).fetch(url);
   }
 
   @Override

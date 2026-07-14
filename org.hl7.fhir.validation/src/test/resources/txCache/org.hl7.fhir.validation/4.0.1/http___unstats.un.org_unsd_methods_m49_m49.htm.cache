@@ -2199,3 +2199,275 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "code" : "Australia"
+}, "url": "urn:uuid:26b974f0-b1e2-4e39-945e-082b9b4cc93b", "version": "1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "severity" : "error",
+  "error" : "Code 'Australia' not found in filter set; The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:26b974f0-b1e2-4e39-945e-082b9b4cc93b|1'; Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "Local Error: The local terminology server cannot handle this request. Server Error: Code 'Australia' not found in filter set; The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:26b974f0-b1e2-4e39-945e-082b9b4cc93b|1'; Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'"
+    },
+    "expression" : ["Coding.code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:26b974f0-b1e2-4e39-945e-082b9b4cc93b|1'"
+    },
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "code" : "Australia"
+}, "url": "urn:uuid:2d252509-f41a-4e88-af07-856794e79d04", "version": "1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "severity" : "error",
+  "error" : "Code 'Australia' not found in filter set; The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:2d252509-f41a-4e88-af07-856794e79d04|1'; Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "Local Error: The local terminology server cannot handle this request. Server Error: Code 'Australia' not found in filter set; The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:2d252509-f41a-4e88-af07-856794e79d04|1'; Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'"
+    },
+    "expression" : ["Coding.code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:2d252509-f41a-4e88-af07-856794e79d04|1'"
+    },
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "code" : "Australia"
+}, "url": "urn:uuid:364dd2d9-6081-4fb4-ab37-74c9d3448c74", "version": "1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "severity" : "error",
+  "error" : "Code 'Australia' not found in filter set; The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:364dd2d9-6081-4fb4-ab37-74c9d3448c74|1'; Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "Local Error: The local terminology server cannot handle this request. Server Error: Code 'Australia' not found in filter set; The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:364dd2d9-6081-4fb4-ab37-74c9d3448c74|1'; Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'"
+    },
+    "expression" : ["Coding.code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:364dd2d9-6081-4fb4-ab37-74c9d3448c74|1'"
+    },
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "code" : "Australia"
+}, "url": "urn:uuid:f6900735-fe4f-4020-b950-6a2312634bf6", "version": "1", "langs":"", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "Australia",
+  "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+  "severity" : "error",
+  "error" : "Code 'Australia' not found in filter set; The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:f6900735-fe4f-4020-b950-6a2312634bf6|1'; Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r4",
+  "diagnostics" : "Local Error: The local terminology server cannot handle this request. Server Error: Code 'Australia' not found in filter set; The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:f6900735-fe4f-4020-b950-6a2312634bf6|1'; Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "Unknown_Code_in_Version"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "text" : "Unknown code 'Australia' in the CodeSystem 'http://unstats.un.org/unsd/methods/m49/m49.htm'"
+    },
+    "expression" : ["Coding.code"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r4"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://unstats.un.org/unsd/methods/m49/m49.htm#Australia' was not found in the value set 'urn:uuid:f6900735-fe4f-4020-b950-6a2312634bf6|1'"
+    },
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
