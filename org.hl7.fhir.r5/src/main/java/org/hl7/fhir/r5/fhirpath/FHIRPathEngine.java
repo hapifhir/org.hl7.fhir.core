@@ -4868,7 +4868,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     XhtmlNode x;
     if (n.getXhtml() != null)
       x = n.getXhtml();
-    else if (n instanceof StringType) {
+    else if (n instanceof StringType || (n.isPrimitive() && "string".equals(n.fhirType()))) {
       try {
         x = new XhtmlParser().parseFragment("<div xmlns=\"http://www.w3.org/1999/xhtml\">"+n.primitiveValue()+"</div>");
       } catch (Exception e) {

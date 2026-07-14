@@ -1817,6 +1817,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private boolean versionIsMoreDetailed(VersionAlgorithm va, String criteria, String candidate) {
+    if (candidate == null) {
+      return false;
+    }
+    if (criteria == null) {
+      return false; // cannot be more detailed than nothing.
+    }
     if (va == VersionAlgorithm.Unknown) {
       va = VersionAlgorithm.guessFormat(candidate);
     }

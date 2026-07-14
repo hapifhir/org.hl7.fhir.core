@@ -425,8 +425,8 @@ public class ValidationEngineTests {
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
       OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "absolute-url-error.json"), null);
       Assertions.assertTrue(checkOutcomes("testResolveAbsoluteError", op, 
-          "information/informational @ Observation.subject: Fetching 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn' failed. System details: java.net.UnknownHostException: hl7x.org (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
-            "error/structure @ Observation.subject: Unable to resolve resource with reference 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn' (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+          "information/informational @ Observation.subject: Fetching 'https://hl7x.org/fhir/R4/Patient/Patient/example-newborn' failed. System details: java.net.UnknownHostException: hl7x.org (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+            "error/structure @ Observation.subject: Unable to resolve resource with reference 'https://hl7x.org/fhir/R4/Patient/Patient/example-newborn' (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
             "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation) (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
             "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n" +
             "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()"));

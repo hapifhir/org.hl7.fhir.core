@@ -125,6 +125,7 @@ public class ExtensionDefinitions {
   public static final String EXT_TYPE_SPEC = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier";
   public static final String EXT_TYPE_CHARACTERISTICS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics";
 
+  public static final String EXT_XHTML_RENDERING = "http://hl7.org/fhir/StructureDefinition/rendering-xhtml";
   // in the tooling IG
   public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
   public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";

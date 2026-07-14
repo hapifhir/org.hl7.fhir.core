@@ -3200,7 +3200,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
-  private boolean checkPrimitive(ValidationContext valContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, StructureDefinition profile, NodeStack node, NodeStack parentNode, Element resource) throws FHIRException {
+  private boolean checkPrimitive(ValidationContext valContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, StructureDefinition profile,
+                                 NodeStack node, NodeStack parentNode, Element resource) throws FHIRException {
     boolean ok = true;
 
     // sanity check. The only children allowed are id and extension, but value might slip through in some circumstances. 
@@ -3330,7 +3331,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (securityChecks) {
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_ERROR) && ok;
         } else if (!"markdown".equals(type)){
-          hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
+          if (parentNode == null || parentNode.getElement() == null || !"Extension".equals(parentNode.getElement().fhirType()) ||
+              !ExtensionDefinitions.EXT_XHTML_RENDERING.equals(parentNode.getElement().getNamedChildValue("url"))) {
+            hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
+          }
         }
       }
 

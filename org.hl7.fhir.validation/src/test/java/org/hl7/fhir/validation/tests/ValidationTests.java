@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.Map.Entry;
@@ -15,6 +16,7 @@ import com.google.gson.JsonArray;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.factory.*;
+import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -23,6 +25,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -76,6 +79,7 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.scoring.*;
+import org.hl7.fhir.validation.instance.utils.CanonicalResourceClient;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -84,6 +88,7 @@ import org.hl7.fhir.validation.instance.MatchetypeValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
 import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
+import org.hl7.fhir.validation.service.utils.Common;
 import org.hl7.fhir.validation.tests.utilities.TestFilter;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
@@ -100,6 +105,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.junit.BeforeClass;
+
+import javax.annotation.Nonnull;
 
 @RunWith(Parameterized.class)
 public class ValidationTests implements IHostApplicationServices, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
@@ -152,6 +159,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   private String version;
   private String name;
   private Map<String, String> packageMap = new HashMap<String, String>();
+  private boolean fetchesCanonicals;
 
 
   private static ValidationEngine currentEngine;
@@ -292,6 +300,8 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         val.setPolicyAdvisor(new TextDrivenPolicyAdvisor(this, fn, cnt));
       }
     }
+
+    this.fetchesCanonicals = content.has("fetch-canonicals") && content.get("fetch-canonicals").getAsBoolean();
 
     if (content.has("wrong-displays"))
       val.getSettings().setDisplayWarningMode("warning".equals(content.get("wrong-displays").getAsString()));
@@ -1008,13 +1018,18 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   }
 
   @Override
-  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) {
-    return null;
+  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) throws URISyntaxException {
+    if (!this.fetchesCanonicals) {
+      return null;
+    } else {
+      return new CanonicalResourceClient(this.vCurr.getContext()).fetch(url);
+    }
   }
+
 
   @Override
   public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
-    return false;
+    return this.fetchesCanonicals;
   }
 
   @Override
