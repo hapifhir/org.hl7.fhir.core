@@ -944,7 +944,7 @@ public class TerminologyCache {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"diagnostics\" : \""+Utilities.escapeJson(ce.v.getDiagnostics()).trim()+"\"");
           }
-          if (ce.v.getUnknownSystems() != null) {
+          if (ce.v.getUnknownSystems() != null && ce.v.getUnknownSystems().size() > 0) {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", ce.v.getUnknownSystems())).trim()+"\"");
           }

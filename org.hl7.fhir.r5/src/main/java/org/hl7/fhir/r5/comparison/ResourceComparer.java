@@ -59,7 +59,7 @@ public class ResourceComparer {
       super();
       this.leftId = leftId;
       this.rightId = rightId;
-      id = abbreviation()+"+"+(++counter)+"-"+leftId + "-" + rightId;
+      id = abbreviation()+"-"+(++counter)+"-"+leftId + "-" + rightId; // no '+' - production web servers don't serve files with '+' in the name
     }
 
     protected String refCell(CanonicalResource cr) {
