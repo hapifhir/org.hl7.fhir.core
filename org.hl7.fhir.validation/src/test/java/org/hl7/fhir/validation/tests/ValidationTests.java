@@ -16,7 +16,6 @@ import com.google.gson.JsonArray;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.factory.*;
-import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -25,7 +24,6 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -90,13 +88,11 @@ import org.hl7.fhir.validation.instance.MatchetypeValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
 import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
-import org.hl7.fhir.validation.service.utils.Common;
 import org.hl7.fhir.validation.tests.utilities.TestFilter;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -108,12 +104,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.junit.BeforeClass;
 
-import javax.annotation.Nonnull;
-
 @RunWith(Parameterized.class)
 public class ValidationTests implements IHostApplicationServices, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
 
-  public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
+  public static final boolean PRINT_OUTPUT_TO_CONSOLE = true;
   private static final boolean CLONE = true;
   private static final boolean BUILD_NEW = false;
   private static final boolean REVISING_TEST_CASES = false;

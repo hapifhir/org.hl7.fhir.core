@@ -53,7 +53,7 @@ public class SimpleHTTPClientTest {
         .setBody("Monkeys").setResponseCode(200)
     );
 
-    SimpleHTTPClient http = new SimpleHTTPClient(null, false);
+    SimpleHTTPClient http = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
     HTTPResult res = http.get(serverUrl.url().toString(), "application/json");
 
@@ -105,7 +105,7 @@ public class SimpleHTTPClientTest {
         .setBody("Monkeys").setResponseCode(200)
     );
 
-    SimpleHTTPClient httpClient = new SimpleHTTPClient(null, false);
+    SimpleHTTPClient httpClient = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
     HTTPResult res = httpClient.get(urls[0].url().toString(), "application/json");
 
@@ -137,7 +137,7 @@ public class SimpleHTTPClientTest {
       doReturn(true).when(authenticationProvider).isProtocolAllowed(urls[i].url());
       doReturn(Map.of("Authorization", "Bearer thisToken")).when(authenticationProvider).getHeaders(urls[i].url());
     }
-    final SimpleHTTPClient httpClient = new SimpleHTTPClient(authenticationProvider, false);
+    final SimpleHTTPClient httpClient = SimpleHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(false).build();
 
     assertThrows(UnknownHostException.class, () -> httpClient.get(urls[0].url().toString(), "application/json"));
 
@@ -174,7 +174,7 @@ public class SimpleHTTPClientTest {
       doReturn(Map.of("Authorization", "Bearer thisToken")).when(authenticationProvider).getHeaders(urls[i].url());
     }
 
-    final SimpleHTTPClient httpClient = new SimpleHTTPClient(authenticationProvider, false);
+    final SimpleHTTPClient httpClient = SimpleHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(false).build();
 
     assertThrows(UnknownHostException.class, () -> httpClient.get(urls[0].url().toString(), "application/json"));
 
@@ -233,7 +233,7 @@ public class SimpleHTTPClientTest {
       String url = server.url("resource").url().toString();
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      SimpleHTTPClient client = new SimpleHTTPClient(null, true);
+      SimpleHTTPClient client = SimpleHTTPClient.builder().ssrfProtectionEnabled(true).build();
 
       assertThrows(IOException.class, () -> call.apply(client, url));
       assertThat(server.getRequestCount()).isZero();
@@ -245,7 +245,7 @@ public class SimpleHTTPClientTest {
       String url = server.url("resource").url().toString();
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      SimpleHTTPClient client = new SimpleHTTPClient(null, false);
+      SimpleHTTPClient client = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
       HTTPResult res = call.apply(client, url);
 
@@ -265,7 +265,7 @@ public class SimpleHTTPClientTest {
       doReturn(true).when(authenticationProvider).isProtocolAllowed(expectedUrl);
       doReturn(Map.of()).when(authenticationProvider).getHeaders(expectedUrl);
 
-      SimpleHTTPClient client = new SimpleHTTPClient(authenticationProvider, true);
+      SimpleHTTPClient client = SimpleHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(true).build();
 
       HTTPResult res = call.apply(client, url);
 
@@ -282,7 +282,7 @@ public class SimpleHTTPClientTest {
       "http://metadata.google.internal/" // explicitly blocked host
     })
     void blocksVariousNonPublicUrlsWhenProtectionEnabled(String url) {
-      SimpleHTTPClient client = new SimpleHTTPClient(null, true);
+      SimpleHTTPClient client = SimpleHTTPClient.builder().ssrfProtectionEnabled(true).build();
 
       assertThrows(IOException.class, () -> client.get(url, "application/json"));
       assertThrows(IOException.class, () -> client.put(url, "text/plain", "body".getBytes(), "application/json"));
@@ -310,7 +310,7 @@ public class SimpleHTTPClientTest {
       server.enqueue(
         new MockResponse().setResponseCode(200).setBody("Monkeys")); // consumed only if the redirect is wrongly allowed
 
-      SimpleHTTPClient client = new SimpleHTTPClient(null, true);
+      SimpleHTTPClient client = SimpleHTTPClient.builder().ssrfProtectionEnabled(true).build();
 
       // The initial URL is genuinely a loopback MockWebServer address too, so simulate it being
       // public (pretend the address check passes for it) to isolate the behavior under test: that

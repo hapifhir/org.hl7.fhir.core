@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,16 +34,22 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
     if (!ManagedWebAccess.inAllowedPaths(url)) {
       throw new IOException("The pathname '"+url+"' cannot be accessed by policy");
     }
-    SimpleHTTPClient client = new SimpleHTTPClient(getHttpAuthHeaderProvider(), ManagedWebAccess.isSsrfProtectionEnabled());
+    SimpleHTTPClient.SimpleHTTPClientBuilder builder = SimpleHTTPClient.builder();
+
+    builder.authProvider(getHttpAuthHeaderProvider())
+      .ssrfProtectionEnabled(ManagedWebAccess.isSsrfProtectionEnabled());
+
+    List<HTTPHeader> headers = new ArrayList<>();
 
     for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
-      client.addHeader(entry.getKey(), entry.getValue());
+      headers.add(new HTTPHeader(entry.getKey(), entry.getValue()));
     }
 
     if (getUserAgent() != null) {
-      client.addHeader("User-Agent", getUserAgent());
+      headers.add(new HTTPHeader("User-Agent", getUserAgent()));
     }
-    return client;
+    builder.headers(headers);
+    return builder.build();
   }
 
   public HTTPResult get(String url) throws IOException {

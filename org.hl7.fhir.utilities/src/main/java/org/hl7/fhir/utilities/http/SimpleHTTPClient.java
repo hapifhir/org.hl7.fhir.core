@@ -6,14 +6,14 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.http.okhttpimpl.ProxyAuthenticator;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
+import lombok.Builder;
 import lombok.Getter;
 import okhttp3.Dns;
 import okhttp3.HttpUrl;
@@ -56,7 +56,8 @@ public class SimpleHTTPClient {
   public static final String ACCEPT_HEADER_KEY = "Accept";
   private static int counter = 1;
 
-  private final List<HTTPHeader> headers = new ArrayList<>();
+  @Getter
+  private final List<HTTPHeader> headers;
 
   @Getter
   private final IHTTPAuthenticationProvider authProvider;
@@ -67,18 +68,14 @@ public class SimpleHTTPClient {
   private final OkHttpClient validatingClient;
   private final OkHttpClient passthroughClient;
 
-  public SimpleHTTPClient() {
-    this(null);
-  }
-
-  public SimpleHTTPClient(IHTTPAuthenticationProvider authProvider) {
-    this(authProvider, true);
-  }
-
-  public SimpleHTTPClient(IHTTPAuthenticationProvider authProvider, boolean ssrfProtectionEnabled) {
+  @Builder
+  private SimpleHTTPClient(Collection<HTTPHeader> headers, IHTTPAuthenticationProvider authProvider, Boolean ssrfProtectionEnabled) {
+    this.headers = headers != null ? new ArrayList<>(headers) : Collections.emptyList();
     this.authProvider = authProvider;
-    this.ssrfProtectionEnabled = ssrfProtectionEnabled;
+    // Boxed so an unset builder value (null) defaults to true, rather than the primitive default of false.
+    this.ssrfProtectionEnabled = ssrfProtectionEnabled == null || ssrfProtectionEnabled;
     this.validatingClient = new OkHttpClient.Builder()
+      .proxyAuthenticator(new ProxyAuthenticator())
       .dns(new SsrfProtectingDns())
       .followRedirects(false)
       .followSslRedirects(false)

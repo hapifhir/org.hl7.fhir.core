@@ -3,7 +3,6 @@ package org.hl7.fhir.validation.instance.utils;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.utilities.Utilities;
