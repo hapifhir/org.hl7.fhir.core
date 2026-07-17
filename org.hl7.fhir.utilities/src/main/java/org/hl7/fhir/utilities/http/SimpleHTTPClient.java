@@ -5,7 +5,6 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -24,8 +23,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static org.hl7.fhir.utilities.Utilities.existsInList;
 
 /**
  * An HTTP client supporting simple GET, PUT, POST operations with no FHIR-specific code.
@@ -58,7 +55,7 @@ public class SimpleHTTPClient {
   public static final String ACCEPT_HEADER_KEY = "Accept";
   private static int counter = 1;
 
-  private static final long DEFAULT_TIMEOUT = 1000;
+  private static final long DEFAULT_TIMEOUT = 15000;
   private static final TimeUnit DEFAULT_TIMEOUT_UNIT = TimeUnit.MILLISECONDS;
   @Getter
   private final long timeout;
@@ -80,8 +77,8 @@ public class SimpleHTTPClient {
   @Getter
   private final boolean ssrfProtectionEnabled;
 
-  private final OkHttpClient validatingClient;
-  private final OkHttpClient passthroughClient;
+  private final OkHttpClient baseClient;
+  private final OkHttpClient ssrfProtectedClient;
 
   @Builder
   private SimpleHTTPClient(Long timeout,
@@ -97,25 +94,37 @@ public class SimpleHTTPClient {
     this.authProvider = authProvider;
     // Boxed so an unset builder value (null) defaults to true, rather than the primitive default of false.
     this.ssrfProtectionEnabled = ssrfProtectionEnabled == null || ssrfProtectionEnabled;
-    this.validatingClient = new OkHttpClient.Builder()
-      .proxyAuthenticator(new ProxyAuthenticator())
-      .dns(new SsrfProtectingDns())
-      .addInterceptor(new RetryInterceptor(this.retries))
-      .connectTimeout(this.timeout, this.timeoutUnit)
-      .writeTimeout(this.timeout, this.timeoutUnit)
-      .readTimeout(this.timeout, this.timeoutUnit)
-      .followRedirects(false)
-      .followSslRedirects(false)
-      .connectTimeout(Duration.ofSeconds(15))
-      .readTimeout(Duration.ofSeconds(15))
-      .build();
-    // Shares the connection pool/dispatcher with validatingClient; used only for requests the
-    // authProvider has taken ownership of, where SSRF validation is intentionally bypassed.
-    this.passthroughClient = validatingClient.newBuilder().dns(Dns.SYSTEM).build();
+    this.baseClient = buildBaseClient();
+    this.ssrfProtectedClient = buildSsrfProtectedClient(this.baseClient);
   }
 
-  public void addHeader(String name, String value) {
-    headers.add(new HTTPHeader(name, value));
+  /**
+   * @return A base client that uses the SimpleHTTPClient configuration.
+   */
+  private OkHttpClient buildBaseClient() {
+    return new OkHttpClient.Builder()
+      .proxyAuthenticator(new ProxyAuthenticator())
+      .dns(Dns.SYSTEM)
+      .addInterceptor(new RetryInterceptor(retries))
+      .connectTimeout(timeout, timeoutUnit)
+      .writeTimeout(timeout, timeoutUnit)
+      .readTimeout(timeout, timeoutUnit)
+      .followRedirects(false)
+      .followSslRedirects(false)
+      .build();
+  }
+
+  /**
+   *
+   * @param baseClient the base client to work from
+   * @return A client derived from baseClient, sharing the same  connection pool/dispatcher, but using an SSRF
+   * protecting DNS and a distinct RetryInterceptor
+   */
+  private OkHttpClient buildSsrfProtectedClient(OkHttpClient baseClient) {
+    return baseClient.newBuilder()
+      .addInterceptor(new RetryInterceptor(retries))
+      .dns(new SsrfProtectingDns())
+      .build();
   }
 
   public HTTPResult get(String url) throws IOException {
@@ -123,27 +132,21 @@ public class SimpleHTTPClient {
   }
 
   public HTTPResult get(String urlString, String acceptHeader) throws IOException {
-    if (FhirSettings.isProhibitNetworkAccess()) {
-      throw new FHIRException("Network Access is prohibited in this context");
-    }
     return execute("GET", URI.create(urlString), null, null, acceptHeader);
   }
 
   public HTTPResult post(String urlString, String contentType, byte[] content, String accept) throws IOException {
-    if (FhirSettings.isProhibitNetworkAccess()) {
-      throw new FHIRException("Network Access is prohibited in this context");
-    }
     return execute("POST", URI.create(urlString), contentType, content, accept);
   }
 
   public HTTPResult put(String urlString, String contentType, byte[] content, String accept) throws IOException {
-    if (FhirSettings.isProhibitNetworkAccess()) {
-      throw new FHIRException("Network Access is prohibited in this context");
-    }
     return execute("PUT", URI.create(urlString), contentType, content, accept);
   }
 
   private @NonNull HTTPResult execute(String requestMethod, URI originalUri, String contentType, byte[] content, String acceptHeader) throws IOException {
+    if (FhirSettings.isProhibitNetworkAccess()) {
+      throw new FHIRException("Network Access is prohibited in this context");
+    }
     URI uri = originalUri;
     int redirects = 0;
 
@@ -169,7 +172,7 @@ public class SimpleHTTPClient {
       }
 
       Request request = buildRequest(requestMethod, uri, contentType, content, acceptHeader, authCanHandle ? url : null);
-      OkHttpClient client = skipSsrfCheck ? passthroughClient : validatingClient;
+      OkHttpClient client = skipSsrfCheck ? baseClient : ssrfProtectedClient;
 
       try (Response response = client.newCall(request).execute()) {
         switch (response.code()) {
