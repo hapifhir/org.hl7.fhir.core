@@ -37,7 +37,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
     SimpleHTTPClient.SimpleHTTPClientBuilder builder = SimpleHTTPClient.builder();
 
     builder.authProvider(getHttpAuthHeaderProvider())
-      .ssrfProtectionEnabled(ManagedWebAccess.isSsrfProtectionEnabled());
+      .ssrfProtectionEnabled(isSSRFProtectionEnabled());
 
     List<HTTPHeader> headers = new ArrayList<>();
 

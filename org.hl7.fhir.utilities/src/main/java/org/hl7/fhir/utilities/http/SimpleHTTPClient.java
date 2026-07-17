@@ -19,6 +19,7 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 import lombok.Builder;
 import lombok.Getter;
 import okhttp3.Dns;
+import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -27,7 +28,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * An HTTP client supporting simple GET, PUT, POST operations with no FHIR-specific code.
+ * An HTTP client supporting simple GET, PUT, POST, DELETE, and OPTIONS operations with no
+ * FHIR-specific code.
  * <p>
  * This client manages authentication using the following logic:
  * <ol>
@@ -39,7 +41,7 @@ import okhttp3.Response;
  *     <li>TOKEN - uses the token field for the token authentication header</li>
  *     <li>APIKEY - uses the apiKey field for the API key authentication header</li>
  *   </ul>
- *   Note: headers added via {@code addHeader()} are always applied alongside these authentication headers.
+ *   Note: headers provided by {@code withHeader()} are always applied alongside these authentication headers.
  *   </li>
  *   <li>If {@code authenticationMode} is null or a HTTP 30x redirect to a different host occurs, the client will
  *   attempt to utilize the supplied {@code authProvider} implementation to resolve authentication and set headers for
@@ -141,22 +143,58 @@ public class SimpleHTTPClient {
   }
 
   public HTTPResult get(String url) throws IOException {
-    return get(url, null);
+    return get(url, null, Collections.emptyList());
   }
 
   public HTTPResult get(String urlString, String acceptHeader) throws IOException {
-    return execute("GET", URI.create(urlString), null, null, acceptHeader);
+    return get(urlString, acceptHeader, Collections.emptyList());
+  }
+
+  public HTTPResult get(String urlString, String acceptHeader, Iterable<HTTPHeader> headers) throws IOException {
+    return execute("GET", URI.create(urlString), null, null, acceptHeader, headers);
   }
 
   public HTTPResult post(String urlString, String contentType, byte[] content, String accept) throws IOException {
-    return execute("POST", URI.create(urlString), contentType, content, accept);
+    return post(urlString, contentType, content, accept, Collections.emptyList());
+  }
+
+  public HTTPResult post(String urlString, String contentType, byte[] content, String accept, Iterable<HTTPHeader> headers) throws IOException {
+    return execute("POST", URI.create(urlString), contentType, content, accept, headers);
   }
 
   public HTTPResult put(String urlString, String contentType, byte[] content, String accept) throws IOException {
-    return execute("PUT", URI.create(urlString), contentType, content, accept);
+    return put(urlString, contentType, content, accept, Collections.emptyList());
   }
 
-  private @NonNull HTTPResult execute(String requestMethod, URI originalUri, String contentType, byte[] content, String acceptHeader) throws IOException {
+  public HTTPResult put(String urlString, String contentType, byte[] content, String accept, Iterable<HTTPHeader> headers) throws IOException {
+    return execute("PUT", URI.create(urlString), contentType, content, accept, headers);
+  }
+
+  public HTTPResult delete(String url) throws IOException {
+    return delete(url, null, Collections.emptyList());
+  }
+
+  public HTTPResult delete(String urlString, String acceptHeader) throws IOException {
+    return delete(urlString, acceptHeader, Collections.emptyList());
+  }
+
+  public HTTPResult delete(String urlString, String acceptHeader, Iterable<HTTPHeader> headers) throws IOException {
+    return execute("DELETE", URI.create(urlString), null, null, acceptHeader, headers);
+  }
+
+  public HTTPResult options(String url) throws IOException {
+    return options(url, null, Collections.emptyList());
+  }
+
+  public HTTPResult options(String urlString, String acceptHeader) throws IOException {
+    return options(urlString, acceptHeader, Collections.emptyList());
+  }
+
+  public HTTPResult options(String urlString, String acceptHeader, Iterable<HTTPHeader> headers) throws IOException {
+    return execute("OPTIONS", URI.create(urlString), null, null, acceptHeader, headers);
+  }
+
+  private @NonNull HTTPResult execute(String requestMethod, URI originalUri, String contentType, byte[] content, String acceptHeader, Iterable<HTTPHeader> extraHeaders) throws IOException {
     if (FhirSettings.isProhibitNetworkAccess()) {
       throw new FHIRException("Network Access is prohibited in this context");
     }
@@ -184,7 +222,7 @@ public class SimpleHTTPClient {
         ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNotPublic(uri.getHost());
       }
 
-      Request request = buildRequest(requestMethod, uri, contentType, content, acceptHeader, authCanHandle ? url : null);
+      Request request = buildRequest(requestMethod, uri, contentType, content, acceptHeader, extraHeaders, authCanHandle ? url : null);
       OkHttpClient client = skipSsrfCheck ? baseClient : ssrfProtectedClient;
 
       try (Response response = client.newCall(request).execute()) {
@@ -199,15 +237,21 @@ public class SimpleHTTPClient {
           }
           default -> {
             byte[] body = response.body().bytes();
-            return new HTTPResult(uri.toString(), response.code(), response.message(), response.header("Content-Type"), body);
+            return new HTTPResult(uri.toString(), response.code(), response.message(), response.header("Content-Type"), body, toHTTPHeaders(response.headers()));
           }
         }
       }
     }
   }
 
-  private Request buildRequest(String requestMethod, URI uri, String contentType, byte[] content, String acceptHeader, URL authUrl) throws IOException {
+  private Request buildRequest(String requestMethod, URI uri, String contentType, byte[] content, String acceptHeader, Iterable<HTTPHeader> extraHeaders, URL authUrl) throws IOException {
     Request.Builder builder = new Request.Builder().url(HttpUrl.get(uri));
+    for (HTTPHeader header : headers) {
+      builder.header(header.getName(), header.getValue());
+    }
+    for (HTTPHeader header : extraHeaders) {
+      builder.header(header.getName(), header.getValue());
+    }
     if (acceptHeader != null) {
       builder.header(ACCEPT_HEADER_KEY, acceptHeader);
     }
@@ -221,9 +265,18 @@ public class SimpleHTTPClient {
     }
     switch (requestMethod) {
       case "POST", "PUT" -> builder.method(requestMethod, RequestBody.create(content, contentType == null ? null : MediaType.parse(contentType)));
+      case "DELETE", "OPTIONS" -> builder.method(requestMethod, null);
       default -> { /*DO NOTHING - defaults to GET*/ }
     }
     return builder.build();
+  }
+
+  private static Iterable<HTTPHeader> toHTTPHeaders(Headers headers) {
+    List<HTTPHeader> result = new ArrayList<>();
+    for (String name : headers.names()) {
+      result.add(new HTTPHeader(name, headers.get(name)));
+    }
+    return result;
   }
 
   public static int nextCounter() {

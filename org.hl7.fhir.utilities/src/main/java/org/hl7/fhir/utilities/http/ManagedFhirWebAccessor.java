@@ -1,11 +1,6 @@
 package org.hl7.fhir.utilities.http;
 
-import okhttp3.*;
 import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.hl7.fhir.utilities.http.okhttpimpl.LoggingInterceptor;
-import org.hl7.fhir.utilities.http.okhttpimpl.ProxyAuthenticator;
-import org.hl7.fhir.utilities.http.okhttpimpl.RetryInterceptor;
-import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,13 +14,12 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
   /**
    * The singleton instance of the HttpClient, used for all requests.
    */
-  private static OkHttpClient okHttpClient;
+  private SimpleHTTPClient httpClient;
 
   private long timeout;
   private TimeUnit timeoutUnit;
   private int retries;
   private ToolingClientLogger logger;
-  private LoggingInterceptor loggingInterceptor;
 
   public ManagedFhirWebAccessor withTimeout(long timeout, TimeUnit timeoutUnit) {
     this.timeout = timeout;
@@ -40,7 +34,6 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
 
   public ManagedFhirWebAccessor withLogger(ToolingClientLogger logger) {
     this.logger = logger;
-    this.loggingInterceptor = new LoggingInterceptor(logger);
     return this;
   }
 
@@ -83,22 +76,25 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
       case DIRECT: {
         HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
         assert requestWithAuthorizationHeaders.getUrl() != null;
+        String url = requestWithAuthorizationHeaders.getUrl().toString();
 
-        RequestBody body = requestWithAuthorizationHeaders.getBody() == null ? null : RequestBody.create(requestWithAuthorizationHeaders.getBody());
-        Request.Builder requestBuilder = new Request.Builder()
-          .url(requestWithAuthorizationHeaders.getUrl())
-          .method(requestWithAuthorizationHeaders.getMethod().name(), body);
-
-        for (HTTPHeader header : requestWithAuthorizationHeaders.getHeaders()) {
-          requestBuilder.addHeader(header.getName(), header.getValue());
+        if (!ManagedWebAccess.inAllowedPaths(url)) {
+          throw new IOException("The pathname '" + url + "' cannot be accessed by policy");
         }
-        OkHttpClient okHttpClient = getOkHttpClient();
 
-        if (!ManagedWebAccess.inAllowedPaths(requestWithAuthorizationHeaders.getUrl().toString())) {
-          throw new IOException("The pathname '" + requestWithAuthorizationHeaders.getUrl().toString() + "' cannot be accessed by policy");
-        }
-        Response response = okHttpClient.newCall(requestBuilder.build()).execute();
-        return getHTTPResult(response);
+        SimpleHTTPClient client = getHttpClient();
+        Iterable<HTTPHeader> headers = requestWithAuthorizationHeaders.getHeaders();
+        String contentType = requestWithAuthorizationHeaders.getContentType();
+        byte[] body = requestWithAuthorizationHeaders.getBody();
+
+        return switch (requestWithAuthorizationHeaders.getMethod()) {
+          case GET -> client.get(url, null, headers);
+          case POST -> client.post(url, contentType, body, null, headers);
+          case PUT -> client.put(url, contentType, body, null, headers);
+          case DELETE -> client.delete(url, null, headers);
+          case OPTIONS -> client.options(url, null, headers);
+          case HEAD, PATCH -> throw new IOException("HTTP method " + requestWithAuthorizationHeaders.getMethod() + " is not supported");
+        };
       }
       case MANAGED:
         HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
@@ -111,29 +107,18 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     }
   }
 
-  private HTTPResult getHTTPResult(Response execute) throws IOException {
-    return new HTTPResult(execute.request().url().toString(), execute.code(), execute.message(), execute.header("Content-Type"), execute.body() != null && execute.body().contentLength() != 0 ? execute.body().bytes() : null, getHeadersFromResponse(execute));
-  }
-
-  private Iterable<HTTPHeader> getHeadersFromResponse(Response response) {
-    List<HTTPHeader> headers = new ArrayList<>();
-    for (String name : response.headers().names()) {
-      headers.add(new HTTPHeader(name, response.header(name)));
+  private SimpleHTTPClient getHttpClient() {
+    if (httpClient == null) {
+      httpClient = SimpleHTTPClient.builder()
+        .timeout(timeout)
+        .timeoutUnit(timeoutUnit)
+        .retries(retries)
+        .logger(logger)
+        .authProvider(getHttpAuthHeaderProvider())
+        .ssrfProtectionEnabled(isSSRFProtectionEnabled())
+        .build();
     }
-    return headers;
-  }
-
-  private OkHttpClient getOkHttpClient() {
-    if (okHttpClient == null) {
-      okHttpClient = new OkHttpClient();
-    }
-    OkHttpClient.Builder builder = okHttpClient.newBuilder();
-    if (logger != null) builder.addInterceptor(loggingInterceptor);
-    builder.addInterceptor(new RetryInterceptor(retries));
-    builder.proxyAuthenticator(new ProxyAuthenticator());
-    return builder.connectTimeout(timeout, timeoutUnit)
-      .writeTimeout(timeout, timeoutUnit)
-      .readTimeout(timeout, timeoutUnit).build();
+    return httpClient;
   }
 
 }
