@@ -7,10 +7,12 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.http.okhttpimpl.ProxyAuthenticator;
+import org.hl7.fhir.utilities.http.okhttpimpl.RetryInterceptor;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import lombok.Builder;
@@ -56,6 +58,19 @@ public class SimpleHTTPClient {
   public static final String ACCEPT_HEADER_KEY = "Accept";
   private static int counter = 1;
 
+  private static final long DEFAULT_TIMEOUT = 1000;
+  private static final TimeUnit DEFAULT_TIMEOUT_UNIT = TimeUnit.MILLISECONDS;
+  @Getter
+  private final long timeout;
+
+  @Getter
+  private final TimeUnit timeoutUnit;
+
+  private static final int DEFAULT_RETRIES = 1;
+
+  @Getter
+  private final int retries;
+
   @Getter
   private final List<HTTPHeader> headers;
 
@@ -69,14 +84,26 @@ public class SimpleHTTPClient {
   private final OkHttpClient passthroughClient;
 
   @Builder
-  private SimpleHTTPClient(Collection<HTTPHeader> headers, IHTTPAuthenticationProvider authProvider, Boolean ssrfProtectionEnabled) {
-    this.headers = headers != null ? new ArrayList<>(headers) : Collections.emptyList();
+  private SimpleHTTPClient(Long timeout,
+                           TimeUnit timeoutUnit,
+                           Integer retries,
+                           Collection<HTTPHeader> headers,
+                           IHTTPAuthenticationProvider authProvider,
+                           Boolean ssrfProtectionEnabled) {
+    this.timeout = timeout != null ? timeout : DEFAULT_TIMEOUT;
+    this.timeoutUnit = timeoutUnit != null ? timeoutUnit : DEFAULT_TIMEOUT_UNIT;
+    this.retries = retries != null ? retries : DEFAULT_RETRIES;
+    this.headers = headers != null ? List.copyOf(new ArrayList<>(headers)) : Collections.emptyList();
     this.authProvider = authProvider;
     // Boxed so an unset builder value (null) defaults to true, rather than the primitive default of false.
     this.ssrfProtectionEnabled = ssrfProtectionEnabled == null || ssrfProtectionEnabled;
     this.validatingClient = new OkHttpClient.Builder()
       .proxyAuthenticator(new ProxyAuthenticator())
       .dns(new SsrfProtectingDns())
+      .addInterceptor(new RetryInterceptor(this.retries))
+      .connectTimeout(this.timeout, this.timeoutUnit)
+      .writeTimeout(this.timeout, this.timeoutUnit)
+      .readTimeout(this.timeout, this.timeoutUnit)
       .followRedirects(false)
       .followSslRedirects(false)
       .connectTimeout(Duration.ofSeconds(15))

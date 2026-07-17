@@ -212,6 +212,87 @@ public class SimpleHTTPClientTest {
   }
 
   @Nested
+  class Retries {
+
+    @Test
+    void singleFailureThenSuccessIsRetriedOnce() throws IOException, InterruptedException {
+      server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error"));
+      server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
+
+      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
+
+      HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
+
+      assertThat(res.getCode()).isEqualTo(200);
+      assertThat(res.getContentAsString()).isEqualTo("Monkeys");
+      assertThat(server.getRequestCount()).isEqualTo(2);
+    }
+
+    @Test
+    void exhaustingDefaultRetriesReturnsLastFailureResponse() throws IOException, InterruptedException {
+      server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error 1"));
+      server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error 2"));
+
+      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
+
+      HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
+
+      // Default retries is 1, i.e. 2 total attempts; once both fail, the last failure response is
+      // returned rather than retried indefinitely or thrown.
+      assertThat(res.getCode()).isEqualTo(500);
+      assertThat(res.getContentAsString()).isEqualTo("Server Error 2");
+      assertThat(server.getRequestCount()).isEqualTo(2);
+    }
+
+    @Test
+    void zeroRetriesMeansExactlyOneAttempt() throws IOException, InterruptedException {
+      server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error"));
+
+      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().retries(0).ssrfProtectionEnabled(false).build();
+
+      HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
+
+      assertThat(res.getCode()).isEqualTo(500);
+      assertThat(server.getRequestCount()).isEqualTo(1);
+    }
+
+    @Test
+    void configuredRetryCountIsHonoured() throws IOException, InterruptedException {
+      int retries = 3;
+      for (int i = 0; i < retries; i++) {
+        server.enqueue(new MockResponse().setResponseCode(503).setBody("Unavailable"));
+      }
+      server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
+
+      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().retries(retries).ssrfProtectionEnabled(false).build();
+
+      HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
+
+      assertThat(res.getCode()).isEqualTo(200);
+      assertThat(server.getRequestCount()).isEqualTo(retries + 1);
+    }
+
+    @Test
+    void redirectResponseIsNotTreatedAsFailureNeedingRetry() throws IOException, InterruptedException {
+      HttpUrl target = server.url("target");
+      server.enqueue(
+        new MockResponse()
+          .setResponseCode(302)
+          .addHeader("Location", target.url().toString()));
+      server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
+
+      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
+
+      HTTPResult res = httpClient.get(server.url("start").url().toString(), "application/json");
+
+      assertThat(res.getCode()).isEqualTo(200);
+      // One request per hop - if redirects were (mis)treated as retryable failures, the initial
+      // hop alone would consume both queued responses before the client ever saw the redirect.
+      assertThat(server.getRequestCount()).isEqualTo(2);
+    }
+  }
+
+  @Nested
   class SsrfProtection {
 
     @FunctionalInterface
