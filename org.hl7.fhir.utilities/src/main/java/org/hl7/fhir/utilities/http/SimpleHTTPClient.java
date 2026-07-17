@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.http.okhttpimpl.LoggingInterceptor;
 import org.hl7.fhir.utilities.http.okhttpimpl.ProxyAuthenticator;
 import org.hl7.fhir.utilities.http.okhttpimpl.RetryInterceptor;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -77,6 +79,9 @@ public class SimpleHTTPClient {
   @Getter
   private final boolean ssrfProtectionEnabled;
 
+  @Getter
+  private final ToolingClientLogger logger;
+
   private final OkHttpClient baseClient;
   private final OkHttpClient ssrfProtectedClient;
 
@@ -86,7 +91,8 @@ public class SimpleHTTPClient {
                            Integer retries,
                            Collection<HTTPHeader> headers,
                            IHTTPAuthenticationProvider authProvider,
-                           Boolean ssrfProtectionEnabled) {
+                           Boolean ssrfProtectionEnabled,
+                           ToolingClientLogger logger) {
     this.timeout = timeout != null ? timeout : DEFAULT_TIMEOUT;
     this.timeoutUnit = timeoutUnit != null ? timeoutUnit : DEFAULT_TIMEOUT_UNIT;
     this.retries = retries != null ? retries : DEFAULT_RETRIES;
@@ -94,6 +100,7 @@ public class SimpleHTTPClient {
     this.authProvider = authProvider;
     // Boxed so an unset builder value (null) defaults to true, rather than the primitive default of false.
     this.ssrfProtectionEnabled = ssrfProtectionEnabled == null || ssrfProtectionEnabled;
+    this.logger = logger;
     this.baseClient = buildBaseClient();
     this.ssrfProtectedClient = buildSsrfProtectedClient(this.baseClient);
   }
@@ -102,7 +109,7 @@ public class SimpleHTTPClient {
    * @return A base client that uses the SimpleHTTPClient configuration.
    */
   private OkHttpClient buildBaseClient() {
-    return new OkHttpClient.Builder()
+    OkHttpClient.Builder builder = new OkHttpClient.Builder()
       .proxyAuthenticator(new ProxyAuthenticator())
       .dns(Dns.SYSTEM)
       .addInterceptor(new RetryInterceptor(retries))
@@ -110,8 +117,11 @@ public class SimpleHTTPClient {
       .writeTimeout(timeout, timeoutUnit)
       .readTimeout(timeout, timeoutUnit)
       .followRedirects(false)
-      .followSslRedirects(false)
-      .build();
+      .followSslRedirects(false);
+    if (logger != null) {
+      builder.addInterceptor(new LoggingInterceptor(logger));
+    }
+    return builder.build();
   }
 
   /**
@@ -121,10 +131,13 @@ public class SimpleHTTPClient {
    * protecting DNS and a distinct RetryInterceptor
    */
   private OkHttpClient buildSsrfProtectedClient(OkHttpClient baseClient) {
-    return baseClient.newBuilder()
+    OkHttpClient.Builder builder = baseClient.newBuilder()
       .addInterceptor(new RetryInterceptor(retries))
-      .dns(new SsrfProtectingDns())
-      .build();
+      .dns(new SsrfProtectingDns());
+    if (logger != null) {
+      builder.addInterceptor(new LoggingInterceptor(logger));
+    }
+    return builder.build();
   }
 
   public HTTPResult get(String url) throws IOException {
@@ -185,7 +198,7 @@ public class SimpleHTTPClient {
             uri = originalUri.resolve(location); // Deal with relative URLs
           }
           default -> {
-            byte[] body = response.body() == null ? null : response.body().bytes();
+            byte[] body = response.body().bytes();
             return new HTTPResult(uri.toString(), response.code(), response.message(), response.header("Content-Type"), body);
           }
         }
