@@ -1,6 +1,10 @@
 package org.hl7.fhir.r4b.utils.structuremap;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathEngine;
+import org.hl7.fhir.r4b.fhirpath.TypeDetails;
+import org.hl7.fhir.r4b.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r4b.model.Base;
 import org.hl7.fhir.r4b.model.Coding;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -29,4 +33,20 @@ public interface ITransformerServices {
   public Base resolveReference(Object appContext, String url) throws FHIRException;
 
   public List<Base> performSearch(Object appContext, String url) throws FHIRException;
+
+  // FHIRPath custom-function hooks (see IHostApplicationServices). Default implementations
+  // preserve the previous hardcoded FHIRPathHostServices behavior for callers that don't
+  // override them, so adding these methods is backward-compatible.
+  default FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
+    return null;
+  }
+
+  default TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
+      throws PathEngineException {
+    throw new PathEngineException("Unknown function '" + functionName + "'");
+  }
+
+  default List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+    throw new Error("Not Implemented Yet");
+  }
 }
