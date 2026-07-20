@@ -23,10 +23,9 @@ public class CIBuildClientTests {
 
   @BeforeAll
     static void beforeAll() {
-  ManagedWebAccess.loadFromFHIRSettingsWithOverrides(
+  ManagedWebAccess.loadFromFHIRSettings(
     FhirSettingsPOJO.builder().ssrfProtectionEnabled(false)
-    .build(),
-  ManagedWebAccess.FhirSettingsOverrideType.ADD
+    .build()
     );
 }
 

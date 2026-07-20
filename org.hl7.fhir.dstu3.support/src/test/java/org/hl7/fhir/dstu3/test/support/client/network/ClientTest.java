@@ -10,7 +10,11 @@ import org.hl7.fhir.dstu3.support.utils.client.network.ByteUtils;
 import org.hl7.fhir.dstu3.support.utils.client.network.Client;
 import org.hl7.fhir.dstu3.support.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +26,7 @@ import java.net.URISyntaxException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class ClientTest {
+class ClientTest {
   private static final long TIMEOUT = 5000;
 
   private MockWebServer server;
@@ -40,6 +44,17 @@ public class ClientTest {
     .addName(humanName)
     .addAddress(address)
     .setGender(Enumerations.AdministrativeGender.MALE);
+
+  @BeforeAll
+  static void beforeAll() {
+    ManagedWebAccess.loadFromFHIRSettings(
+      FhirSettingsPOJO.builder().ssrfProtectionEnabled(false).build());
+  }
+
+  @AfterAll
+  static void afterAll() {
+    ManagedWebAccess.loadFromFHIRSettings();
+  }
 
   @BeforeEach
   void setup() {

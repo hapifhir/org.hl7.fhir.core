@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.function.BinaryOperator;
 
 import lombok.Getter;
 
@@ -193,47 +193,52 @@ public class ManagedWebAccess {
     return fhirAccessor().httpCall(httpRequest);
   }
 
+  /**
+   * Loads settings from {@link FhirSettings} alone.
+   */
   public static void loadFromFHIRSettings() {
-    setAccessPolicy(FhirSettings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
-    setSsrfProtectionEnabled(FhirSettings.isSSRFProtectionEnabled());
-    setUserAgent("hapi-fhir-tooling-client");
-    serverDetailsList = FhirSettings.getServers();
-    defaultAuthenticationProvider = new ServerDetailsPOJOHTTPAuthProvider(serverDetailsList);
-  }
-
-  public enum FhirSettingsOverrideType {
-    ADD,
-    REPLACE
+    applySettings(FhirSettings.getFhirSettingsPOJO());
   }
 
   /**
+   * Loads settings from {@link FhirSettings}, combined with the given {@code overrides} using
+   * {@link FhirSettingsPOJO#DEFAULT_COMBINATION_LOGIC} (i.e. {@code overrides} takes precedence over
+   * {@link FhirSettings} for any non-null scalar field, and its {@code servers} and {@code certificateSources}
+   * are appended to those from {@link FhirSettings}).
    *
-   * @param fhirSettingsPOJO
-   * @param serversOverrideType
+   * @param overrides a {@link FhirSettingsPOJO} to combine with the settings from {@link FhirSettings}
    */
-  public static void loadFromFHIRSettingsWithOverrides(FhirSettingsPOJO fhirSettingsPOJO, FhirSettingsOverrideType serversOverrideType ) {
-    if (fhirSettingsPOJO.getProhibitNetworkAccess() != null) {
-      setAccessPolicy(fhirSettingsPOJO.getProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
-    } else {
-      setAccessPolicy(FhirSettings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
-    }
+  public static void loadFromFHIRSettings(FhirSettingsPOJO overrides) {
+    loadFromFHIRSettings(FhirSettingsPOJO.DEFAULT_COMBINATION_LOGIC, overrides);
+  }
 
-    if (fhirSettingsPOJO.getSsrfProtectionEnabled() != null) {
-      setSsrfProtectionEnabled(fhirSettingsPOJO.getSsrfProtectionEnabled());
-    } else {
-      setSsrfProtectionEnabled(FhirSettings.isSSRFProtectionEnabled());
-    }
+  /**
+   * Loads settings from {@link FhirSettings}, combined with the given {@code overrides} using the given
+   * {@code combinationLogic}.
+   *
+   * @param combinationLogic a function that takes the settings from {@link FhirSettings} and {@code overrides}
+   *                          and returns the combined result
+   * @param overrides        a {@link FhirSettingsPOJO} to combine with the settings from {@link FhirSettings}
+   */
+  public static void loadFromFHIRSettings(BinaryOperator<FhirSettingsPOJO> combinationLogic, FhirSettingsPOJO overrides) {
+    applySettings(FhirSettings.getFhirSettingsPOJO().combineWith(combinationLogic, overrides));
+  }
 
+  /**
+   * Loads settings from the given {@link FhirSettingsPOJO} alone, ignoring {@link FhirSettings}.
+   *
+   * @param settings the {@link FhirSettingsPOJO} to load settings from
+   */
+  public static void loadFromSettings(FhirSettingsPOJO settings) {
+    applySettings(settings);
+  }
+
+  private static void applySettings(FhirSettingsPOJO settings) {
+    setAccessPolicy(settings.getProhibitNetworkAccess() != null && settings.getProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
+    setSsrfProtectionEnabled(settings.getSsrfProtectionEnabled() == null || settings.getSsrfProtectionEnabled());
     setUserAgent("hapi-fhir-tooling-client");
-    final List<ServerDetailsPOJO> serverDetailsList;
-    if (serversOverrideType == FhirSettingsOverrideType.ADD) {
-      serverDetailsList = new ArrayList<>(FhirSettings.getServers());
-    } else {
-      serverDetailsList = new ArrayList<>();
-    }
-    List<ServerDetailsPOJO> fhirSettingsServers = fhirSettingsPOJO.getServers() == null ? Collections.emptyList() : fhirSettingsPOJO.getServers();
-    ManagedWebAccess.serverDetailsList = Stream.concat(serverDetailsList.stream(), fhirSettingsServers.stream()).toList();
-    defaultAuthenticationProvider = new ServerDetailsPOJOHTTPAuthProvider(ManagedWebAccess.serverDetailsList);
+    serverDetailsList = new ArrayList<>(settings.getServers() == null ? Collections.emptyList() : settings.getServers());
+    defaultAuthenticationProvider = new ServerDetailsPOJOHTTPAuthProvider(serverDetailsList);
   }
 
   public static String makeSecureRef(String url) {

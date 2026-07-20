@@ -7,7 +7,11 @@ import okhttp3.mockwebserver.RecordedRequest;
 import org.hl7.fhir.r4.context.HTMLClientLogger;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +34,17 @@ public class ClientTest {
   private final HumanName humanName = new HumanName().addGiven("Mark").setFamily("Iantorno");
   private final Patient patient = new Patient().addName(humanName).addAddress(address)
     .setGender(Enumerations.AdministrativeGender.MALE);
+
+  @BeforeAll
+  static void beforeAll() {
+    ManagedWebAccess.loadFromFHIRSettings(
+      FhirSettingsPOJO.builder().ssrfProtectionEnabled(false).build());
+  }
+
+  @AfterAll
+  static void afterAll() {
+    ManagedWebAccess.loadFromFHIRSettings();
+  }
 
   @BeforeEach
   void setup() {

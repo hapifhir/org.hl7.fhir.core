@@ -175,7 +175,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 
   @BeforeClass
   public static void beforeClass() {
-    ManagedWebAccess.loadFromFHIRSettingsWithOverrides(
+    ManagedWebAccess.loadFromFHIRSettings(
       FhirSettingsPOJO.builder()
         .servers(
           List.of(ServerDetailsPOJO.builder()
@@ -184,9 +184,18 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
             .type("web")
             .allowHttp(true)
             .headers(Collections.emptyMap())
-            .build()))
-        .build(),
-      ManagedWebAccess.FhirSettingsOverrideType.ADD
+            .build()
+
+            /* //FIXME this works to get a test to pass, but does not 
+            ServerDetailsPOJO.builder()
+              .url("http://electronichealth.se")
+              .authenticationType("none")
+              .type("web")
+              .allowHttp(true)
+              .headers(Collections.emptyMap())
+              .build()
+             */
+          )).build()
     );
     // Exercise the server-side terminology caching protocol across the validation
     // suite. Against a server that doesn't advertise $cache-control this degrades

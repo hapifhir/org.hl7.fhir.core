@@ -3,6 +3,8 @@ package org.hl7.fhir.utilities.settings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BinaryOperator;
+import java.util.stream.Stream;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +50,63 @@ public class FhirSettingsPOJO {
 
   private List<ServerDetailsPOJO> servers;
   private List<String> certificateSources;
+
+  /**
+   * The default combination logic used by {@link #combineWith(BinaryOperator, FhirSettingsPOJO...)} when no other
+   * logic is supplied. Scalar fields take the second argument's value when it is non-null, otherwise the first
+   * argument's value. List fields ({@link #servers} and {@link #certificateSources}) are concatenated, first
+   * argument then second.
+   * <p/>
+   * This is the logic used by {@code org.hl7.fhir.utilities.http.ManagedWebAccess#loadFromFHIRSettings(FhirSettingsPOJO)}.
+   */
+  public static final BinaryOperator<FhirSettingsPOJO> DEFAULT_COMBINATION_LOGIC =
+    (a, b) -> FhirSettingsPOJO.builder()
+      .fhirDirectory(overlay(a.getFhirDirectory(), b.getFhirDirectory()))
+      .apiKeys(overlay(a.getApiKeys(), b.getApiKeys()))
+      .npmPath(overlay(a.getNpmPath(), b.getNpmPath()))
+      .rubyPath(overlay(a.getRubyPath(), b.getRubyPath()))
+      .gemPath(overlay(a.getGemPath(), b.getGemPath()))
+      .fhirTestCasesPath(overlay(a.getFhirTestCasesPath(), b.getFhirTestCasesPath()))
+      .diffToolPath(overlay(a.getDiffToolPath(), b.getDiffToolPath()))
+      .tempPath(overlay(a.getTempPath(), b.getTempPath()))
+      .testIgsPath(overlay(a.getTestIgsPath(), b.getTestIgsPath()))
+      .prohibitNetworkAccess(overlay(a.getProhibitNetworkAccess(), b.getProhibitNetworkAccess()))
+      .txFhirProduction(overlay(a.getTxFhirProduction(), b.getTxFhirProduction()))
+      .txFhirDevelopment(overlay(a.getTxFhirDevelopment(), b.getTxFhirDevelopment()))
+      .txFhirLocal(overlay(a.getTxFhirLocal(), b.getTxFhirLocal()))
+      .ignoreDefaultPackageServers(overlay(a.getIgnoreDefaultPackageServers(), b.getIgnoreDefaultPackageServers()))
+      .ssrfProtectionEnabled(overlay(a.getSsrfProtectionEnabled(), b.getSsrfProtectionEnabled()))
+      .servers(concat(a.getServers(), b.getServers()))
+      .certificateSources(concat(a.getCertificateSources(), b.getCertificateSources()))
+      .build();
+
+  private static <T> T overlay(T a, T b) {
+    return b != null ? b : a;
+  }
+
+  private static <T> List<T> concat(List<T> a, List<T> b) {
+    Stream<T> aStream = a == null ? Stream.empty() : a.stream();
+    Stream<T> bStream = b == null ? Stream.empty() : b.stream();
+    return Stream.concat(aStream, bStream).toList();
+  }
+
+  /**
+   * Combines this {@link FhirSettingsPOJO} with one or more others, in order, using the given combination logic.
+   * <p/>
+   * Example: {@code pojoA.combineWith(logic, pojoB)} or {@code pojoA.combineWith(logic, pojoB, pojoC)}.
+   *
+   * @param combinationLogic a function that takes the running result and the next {@link FhirSettingsPOJO} and
+   *                          returns the combined result
+   * @param others           the {@link FhirSettingsPOJO}s to combine into this one, in order
+   * @return the combined {@link FhirSettingsPOJO}
+   */
+  public FhirSettingsPOJO combineWith(BinaryOperator<FhirSettingsPOJO> combinationLogic, FhirSettingsPOJO... others) {
+    FhirSettingsPOJO result = this;
+    for (FhirSettingsPOJO other : others) {
+      result = combinationLogic.apply(result, other);
+    }
+    return result;
+  }
 
   protected FhirSettingsPOJO() {
     apiKeys = null;

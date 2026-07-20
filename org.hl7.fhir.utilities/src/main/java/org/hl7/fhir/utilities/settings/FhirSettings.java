@@ -38,9 +38,13 @@ public class FhirSettings {
     return instance.filePath;
   }
 
+  public static FhirSettingsPOJO getFhirSettingsPOJO() {
+    getInstance();
+    return instance.fhirSettingsPOJO;
+  }
+
   final String filePath;
   private FhirSettings(FhirSettingsPOJO fhirSettingsPOJO, String filePath) {
-
     this.fhirSettingsPOJO = fhirSettingsPOJO;
     this.filePath = filePath;
   }

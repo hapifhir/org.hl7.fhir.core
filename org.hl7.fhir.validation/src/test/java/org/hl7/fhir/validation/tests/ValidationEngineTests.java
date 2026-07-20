@@ -46,7 +46,7 @@ public class ValidationEngineTests {
 
   @BeforeAll
   public static void beforeClass() {
-    ManagedWebAccess.loadFromFHIRSettingsWithOverrides(
+    ManagedWebAccess.loadFromFHIRSettings(
       FhirSettingsPOJO.builder()
         .servers(
           List.of(ServerDetailsPOJO.builder()
@@ -56,8 +56,7 @@ public class ValidationEngineTests {
             .allowHttp(true)
             .headers(Collections.emptyMap())
             .build()))
-        .build(),
-      ManagedWebAccess.FhirSettingsOverrideType.ADD
+        .build()
     );
     // Exercise the server-side terminology caching protocol across the validation
     // suite. Against a server that doesn't advertise $cache-control this degrades
