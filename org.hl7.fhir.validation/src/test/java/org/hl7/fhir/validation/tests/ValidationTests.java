@@ -186,7 +186,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
             .headers(Collections.emptyMap())
             .build()
 
-            /* //FIXME this works to get a test to pass, but does not 
+            /* //FIXME this works to get a test to pass, but we SHOULD be trying to fetch profiles via https
             ServerDetailsPOJO.builder()
               .url("http://electronichealth.se")
               .authenticationType("none")
