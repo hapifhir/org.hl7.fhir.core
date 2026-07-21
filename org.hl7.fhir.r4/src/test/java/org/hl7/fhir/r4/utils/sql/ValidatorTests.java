@@ -20,6 +20,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /**
@@ -280,23 +281,23 @@ class ValidatorTests {
     return col;
   }
 
-  static Stream<org.junit.jupiter.params.provider.Arguments> sameFamilyDeclarations() {
+  static Stream<Arguments> sameFamilyDeclarations() {
     // resource, path, declared type, expected resolved storage kind. The declared type resolves the
     // column's type to its base family, so its storage kind is that of the family it belongs to.
     return Stream.of(
         // Declared 'id' where the engine types Resource.id as 'string'.
-        org.junit.jupiter.params.provider.Arguments.of("Patient", "id", "id", ColumnKind.String),
+        Arguments.of("Patient", "id", "id", ColumnKind.String),
         // Declared 'string' where the engine types Patient.gender as 'code'.
-        org.junit.jupiter.params.provider.Arguments.of("Patient", "gender", "string",
+        Arguments.of("Patient", "gender", "string",
             ColumnKind.String),
         // Declared 'positiveInt' where the engine types the integer choice as 'integer'.
-        org.junit.jupiter.params.provider.Arguments.of("Patient", "multipleBirth.ofType(integer)",
+        Arguments.of("Patient", "multipleBirth.ofType(integer)",
             "positiveInt", ColumnKind.Integer),
         // Declared 'instant' where the engine types the dateTime choice as 'dateTime'.
-        org.junit.jupiter.params.provider.Arguments.of("Patient", "deceased.ofType(dateTime)",
+        Arguments.of("Patient", "deceased.ofType(dateTime)",
             "instant", ColumnKind.DateTime),
         // Declared 'date' where a FHIRPath function types the value as System.DateTime.
-        org.junit.jupiter.params.provider.Arguments.of("Patient", "birthDate.lowBoundary()", "date",
+        Arguments.of("Patient", "birthDate.lowBoundary()", "date",
             ColumnKind.DateTime));
   }
 
@@ -322,15 +323,15 @@ class ValidatorTests {
     assertEquals(ColumnKind.DateTime, resolvedColumn(parsed).getKind());
   }
 
-  static Stream<org.junit.jupiter.params.provider.Arguments> crossFamilyDeclarations() {
+  static Stream<Arguments> crossFamilyDeclarations() {
     // resource, path, declared type from a different primitive family than the inferred type.
     return Stream.of(
         // Declared 'integer' where the engine types Resource.id as 'string'.
-        org.junit.jupiter.params.provider.Arguments.of("Patient", "id", "integer"),
+        Arguments.of("Patient", "id", "integer"),
         // Declared 'boolean' where the engine types Resource.id as 'string'.
-        org.junit.jupiter.params.provider.Arguments.of("Patient", "id", "boolean"),
+        Arguments.of("Patient", "id", "boolean"),
         // Declared 'base64Binary' where the engine types the dateTime choice as 'dateTime'.
-        org.junit.jupiter.params.provider.Arguments.of("Patient", "deceased.ofType(dateTime)",
+        Arguments.of("Patient", "deceased.ofType(dateTime)",
             "base64Binary"));
   }
 
