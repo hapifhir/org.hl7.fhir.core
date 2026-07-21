@@ -6,6 +6,7 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.validation.service.utils.Common;
 
 import javax.annotation.Nonnull;
@@ -24,9 +25,9 @@ public class CanonicalResourceClient {
     }
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //single literal character split
-    String[] p = url.split("\\/");
+    final String[] p = url.split("\\/");
 
-    String root = getRoot(p, url);
+    final String root = getRoot(p, url);
     if (root != null) {
       ITerminologyClient terminologyClient = getTerminologyClient(root);
       return terminologyClient.read(p[p.length - 2], p[p.length - 1]);
@@ -46,7 +47,8 @@ public class CanonicalResourceClient {
 
   @Nonnull
   public ITerminologyClient getTerminologyClient(String root) throws URISyntaxException {
-    return new TerminologyClientFactory(context.getVersion()).makeClient("source", root, Common.getValidatorUserAgent(), null);
+    final String secureRoot = ManagedWebAccess.makeSecureRef(root);
+    return new TerminologyClientFactory(context.getVersion()).makeClient("source", secureRoot, Common.getValidatorUserAgent(), null);
   }
 
 
