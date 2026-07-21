@@ -382,7 +382,7 @@ public class Validator {
               if (typeJ != null) {
                 if (typeJ instanceof JsonString) {
                   String type = typeJ.asString();
-                  if (!td.hasType(type)) {
+                  if (!td.hasType(type) && !familyMatches(type, td)) {
                     error(path+".type", typeJ, "The path expression ('"+expr+"') does not return a value of the type '"+type+"' - found "+td.describe(), IssueType.VALUE);
                   } else {
                     types.clear();
@@ -449,19 +449,19 @@ public class Validator {
 
   private String simpleType(String type) {
     type = type.replace("http://hl7.org/fhirpath/System.", "").replace("http://hl7.org/fhir/StructureDefinition/", "");
-    if (Utilities.existsInList(type, "date", "dateTime", "instant")) {
+    if (Utilities.existsInList(type, "date", "dateTime", "instant", "DateTime")) {
       return "dateTime";
     }
     if (Utilities.existsInList(type, "Boolean", "boolean")) {
       return "boolean";
     }
-    if (Utilities.existsInList(type, "Integer", "integer", "integer64")) {
+    if (Utilities.existsInList(type, "Integer", "integer", "integer64", "positiveInt", "unsignedInt")) {
       return "integer";
     }
     if (Utilities.existsInList(type, "Decimal", "decimal")) {
       return "decimal";
     }
-    if (Utilities.existsInList(type, "String", "string", "code")) {
+    if (Utilities.existsInList(type, "String", "string", "code", "id", "oid", "uri", "url", "uuid", "canonical", "markdown", "sid")) {
       return "string";
     }
     if (Utilities.existsInList(type, "Time", "time")) {
@@ -471,6 +471,22 @@ public class Validator {
       return "base64Binary";
     }
     return type;
+  }
+
+  /**
+   * Returns true when the declared type shares a primitive base family with at least one of the
+   * engine-inferred types. This accepts valid declarations of a primitive specialisation (for
+   * example 'id') where the computable definitions type the element as its base primitive (for
+   * example 'string'), in either direction, while genuine cross-family mismatches still fail.
+   */
+  private boolean familyMatches(String declaredType, TypeDetails td) {
+    String declaredFamily = simpleType(declaredType);
+    for (String t : td.getTypes()) {
+      if (declaredFamily.equals(simpleType(t))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private TypeDetails checkForEach(JsonObject vd, String path, JsonObject focus, JsonElement expression, TypeDetails t) {
