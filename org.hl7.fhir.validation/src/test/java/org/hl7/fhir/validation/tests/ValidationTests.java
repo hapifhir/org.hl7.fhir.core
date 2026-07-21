@@ -178,23 +178,14 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     ManagedWebAccess.loadFromFHIRSettings(
       FhirSettingsPOJO.builder()
         .servers(
-          List.of(ServerDetailsPOJO.builder()
+          List.of(
+            ServerDetailsPOJO.builder()
             .url("http://local.fhir.org:960")
             .authenticationType("none")
             .type("web")
             .allowHttp(true)
             .headers(Collections.emptyMap())
             .build()
-
-            /* //FIXME this works to get a test to pass, but we SHOULD be trying to fetch profiles via https
-            ServerDetailsPOJO.builder()
-              .url("http://electronichealth.se")
-              .authenticationType("none")
-              .type("web")
-              .allowHttp(true)
-              .headers(Collections.emptyMap())
-              .build()
-             */
           )).build()
     );
     // Exercise the server-side terminology caching protocol across the validation
