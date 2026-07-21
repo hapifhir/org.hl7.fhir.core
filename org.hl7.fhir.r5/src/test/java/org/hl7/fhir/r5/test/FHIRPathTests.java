@@ -30,10 +30,7 @@ import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -110,7 +107,7 @@ public class FHIRPathTests {
   private static SimpleWorkerContext context;
 
   @BeforeAll
-  public static void setUp() throws FileNotFoundException, FHIRException, IOException {
+  static void setUp() throws FHIRException, IOException {
     context = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     if (!context.hasPackage("hl7.cda.us.ccda", null)) {
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
@@ -122,6 +119,12 @@ public class FHIRPathTests {
     if (fp == null) {
       fp = new FHIRPathEngine(context);
     }
+  }
+
+  @AfterAll
+  static void tearDown() {
+    context = null;
+    fp = null;
   }
 
   public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {

@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities.http;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -35,8 +36,8 @@ public class ManagedWebAccessUtils {
 
   public static boolean urlMatchesOrigin(String requestUrlString, String serverUrlString) {
     try {
-      URL requestUrl = new URL(requestUrlString);
-      URL serverUrl = new URL(serverUrlString);
+      URL requestUrl = URI.create(requestUrlString).toURL();
+      URL serverUrl = URI.create(serverUrlString).toURL();
       return urlMatchesOrigin(requestUrl, serverUrl);
     } catch (MalformedURLException e) {
       return false;

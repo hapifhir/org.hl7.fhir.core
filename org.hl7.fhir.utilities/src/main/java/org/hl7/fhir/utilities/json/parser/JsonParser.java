@@ -9,11 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.http.URLUtil;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
@@ -240,6 +242,12 @@ public class JsonParser {
   enum ItemType {
     Object, String, Number, Boolean, Array, End, Eof, Null;
   }
+  // maximum object/array nesting depth; well above any legitimate FHIR resource, but low enough
+  // to fail cleanly with a JsonException rather than a StackOverflowError on the mutual recursion
+  // between readObject() and readArray().
+  private static final int MAX_JSON_DEPTH = 500;
+  private int parseDepth = 0;
+
   private JsonLexer lexer;
   private ItemType itemType = ItemType.Object;
   private String itemName;
@@ -364,6 +372,10 @@ public class JsonParser {
   }
 
   private void readObject(String path, JsonObject obj, boolean root) throws IOException, JsonException {
+    if (++parseDepth > MAX_JSON_DEPTH) {
+      throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
+    }
+    try {
     while (!(itemType == ItemType.End) || (root && (itemType == ItemType.Eof))) {
       obj.setExtraComma(false);
       switch (itemType) {
@@ -438,9 +450,16 @@ public class JsonParser {
       obj.setExtraComma(lexer.getType() == TokenType.Comma);
       next();
     }
+    } finally {
+      parseDepth--;
+    }
   }
 
   private boolean readArray(String path, JsonArray arr, boolean root) throws IOException, JsonException {
+    if (++parseDepth > MAX_JSON_DEPTH) {
+      throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
+    }
+    try {
     boolean res = false;
     while (!((itemType == ItemType.End) || (root && (itemType == ItemType.Eof)))) {
       res  = true;
@@ -503,6 +522,9 @@ public class JsonParser {
       next();
     }
     return res;
+    } finally {
+      parseDepth--;
+    }
   }
 
   private void next() throws IOException {
@@ -712,11 +734,13 @@ public class JsonParser {
   }
 
   private static byte[] fetch(String source) throws IOException {
-    String murl = source.contains("?") ? source+"&nocache=" + System.currentTimeMillis() : source+"?nocache=" + System.currentTimeMillis();
-    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), murl, "application/json, application/fhir+json");
+    String urlWithNoCacheParam = URLUtil.getUrlWithNoCacheParam(source);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), urlWithNoCacheParam, "application/json, application/fhir+json");
     res.checkThrowException();
     return res.getContent();
   }
+
+
 
   public String getSourceName() {
     return sourceName;

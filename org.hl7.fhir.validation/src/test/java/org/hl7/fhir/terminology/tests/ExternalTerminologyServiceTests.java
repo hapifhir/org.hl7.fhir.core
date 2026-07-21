@@ -227,7 +227,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
         error.incrementAndGet();
       }
     }
-    Assertions.assertTrue(err == null, err);
+    Assertions.assertNull(err, err);
   }
 
   public Resource loadResource(String filename) throws IOException, FHIRFormatError, FileNotFoundException, FHIRException, DefinitionException {
@@ -247,7 +247,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
   }
 
   @Override
-  public byte[] loadContent(String filename) throws FileNotFoundException, IOException {
+  public byte[] loadContent(String filename) throws IOException {
     return txtests.loadBytes(filename);
   }
 

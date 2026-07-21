@@ -846,6 +846,8 @@ public class SnapshotGenerationPreProcessor {
 
   private int determineInsertionPoint(List<ElementDefinition> elements, int startOfSlice, int endOfSlice, String id, String path, List<ElementAnalysis> edDef) {
     // we work backwards through the id, looking for peers (this is the only way we can manage slicing)
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = id.split("\\.");
     for (int i = p.length-1; i >= 1; i--) {
       String subId = p[0];
@@ -887,7 +889,11 @@ public class SnapshotGenerationPreProcessor {
   }
 
   private boolean comesAfterThis(String id, String path, List<ElementAnalysis> edDef, ElementDefinition ed) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p1 = id.split("\\.");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p2 = ed.getId().split("\\.");
     for (int i = 0; i < Integer.min(p1.length,  p2.length); i++) {
       if (!p1[i].equals(p2[i])) {
@@ -923,7 +929,10 @@ public class SnapshotGenerationPreProcessor {
 
   private List<ElementAnalysis> analysePath(ElementDefinition ed) {
     List<ElementAnalysis> res = new ArrayList<>();
-    for (String pn : ed.getPath().split("\\.")) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] pathSegments = ed.getPath().split("\\.");
+    for (String pn : pathSegments) {
       analysePathSegment(ed, res, pn);
     }
     return res;
@@ -1116,7 +1125,11 @@ public class SnapshotGenerationPreProcessor {
     }
     int i = 1; 
     while (i < list.size()) { 
-      String[] pathCurrent = list.get(i).getPath().split("\\."); 
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] pathCurrent = list.get(i).getPath().split("\\.");
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pathLast = list.get(i-1).getPath().split("\\."); 
       int firstDiff = 0; // the first entry must be a match 
       while (firstDiff < pathCurrent.length && firstDiff < pathLast.length && pathCurrent[firstDiff].equals(pathLast[firstDiff])) { 

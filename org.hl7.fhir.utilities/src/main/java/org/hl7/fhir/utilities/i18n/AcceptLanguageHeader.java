@@ -7,10 +7,6 @@ import java.util.Comparator;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
-import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguageSorter;
-
-import net.sf.saxon.functions.Lang;
 
 public class AcceptLanguageHeader {
 
@@ -61,7 +57,10 @@ public class AcceptLanguageHeader {
       if (value == 1) {
         return lang;
       } else {
-        return lang+"; q="+(String.format("%.6f", value).replaceAll("(\\.\\d+?)0*$", "$1")); //Double.toString(value);
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, safe
+        String formattedValue = String.format("%.6f", value).replaceAll("(\\.\\d+?)0*$", "$1");
+        return lang+"; q="+formattedValue; //Double.toString(value);
       }
     }
     public boolean matches(String dispLang) {
@@ -93,6 +92,8 @@ public class AcceptLanguageHeader {
     boolean wildcard = false;
     int offset = langs.size();
     if (!Utilities.noString(src)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = src.split("\\,");
       for (int i = 0; i < parts.length; i++) {
         String lang = parts[i].trim();
@@ -175,6 +176,8 @@ public class AcceptLanguageHeader {
     return b.toString();
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //False positive: not using String.matches
   public boolean matches(String dispLang) {
     for (LanguagePreference lp : langs) {
       if (lp.matches(dispLang)) {

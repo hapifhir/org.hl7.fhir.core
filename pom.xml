@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>hapi-deployable-pom</artifactId>
-        <version>8.4.0</version>
+        <version>8.10.0</version>
     </parent>
 
     <!--
@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.9.8-SNAPSHOT</version>
+    <version>6.9.13-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -24,9 +24,10 @@
         <commons_text_version>1.15.0</commons_text_version>
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
-        <hapi_fhir_version>8.4.0</hapi_fhir_version>
-        <validator_test_case_version>1.7.61-SNAPSHOT</validator_test_case_version>
-        <jackson_version>2.21.1</jackson_version>
+        <hapi_fhir_version>8.10.0</hapi_fhir_version>
+        <validator_test_case_version>1.7.65</validator_test_case_version>
+        <jackson_version>2.22.1</jackson_version>
+        <jackson_annotations_version>2.22</jackson_annotations_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
         <junit_platform_launcher_version>1.14.0</junit_platform_launcher_version>
         <maven_surefire_version>3.5.3</maven_surefire_version>
@@ -37,7 +38,7 @@
         <mockito_version>5.23.0</mockito_version>
         <byte_buddy_version>1.18.8</byte_buddy_version>
         <apache_poi_version>5.4.1</apache_poi_version>
-        <saxon_he_version>11.6</saxon_he_version>
+        <saxon_he_version>13.0</saxon_he_version>
         <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -46,11 +47,11 @@
         <maven.compiler.testTarget>17</maven.compiler.testTarget>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven-checkstyle-version>3.6.0</maven-checkstyle-version>
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
-        <logback.version>1.5.25</logback.version>
+        <logback.version>1.5.37</logback.version>
         <log4jVersion>2.26.0</log4jVersion>
         <okio.version>3.16.4</okio.version>
-        <jackson_annotations_version>2.21</jackson_annotations_version>
         <surefire.native.access.arg/>
     </properties>
 
@@ -320,7 +321,7 @@
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib</artifactId>
-                <version>2.2.21</version>
+                <version>2.4.0</version>
             </dependency>
 
             <dependency>
@@ -375,7 +376,7 @@
             <dependency>
                 <groupId>org.xerial</groupId>
                 <artifactId>sqlite-jdbc</artifactId>
-                <version>3.53.0.0</version>
+                <version>3.53.2.0</version>
             </dependency>
 
             <dependency>
@@ -400,17 +401,45 @@
                 <artifactId>log4j-api</artifactId>
                 <version>${log4jVersion}</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-annotations</artifactId>
+                <version>4.9.8</version>
+                <!-- spotbugs-annotations is LGPL licensed. To keep licensing simple, it is not included in the distributed software, using the settings below -->
+                <scope>provided</scope> <!--  available at compile time and test time, but not bundled into the jar. Maven assumes the runtime environment will provide it -->
+                <optional>true</optional> <!-- prevents the dependency from being transitively inherited by downstream consumers -->
+            </dependency>
+            <dependency>
+                <groupId>io.opentelemetry.javaagent</groupId>
+                <artifactId>opentelemetry-testing-common</artifactId>
+                <version>2.27.0-alpha</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentelemetry.javaagent</groupId>
+                <artifactId>opentelemetry-agent-for-testing</artifactId>
+                <version>2.27.0-alpha</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentelemetry.instrumentation</groupId>
+                <artifactId>opentelemetry-instrumentation-annotations</artifactId>
+                <version>2.27.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentelemetry</groupId>
+                <artifactId>opentelemetry-api</artifactId>
+                <version>1.62.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentelemetry</groupId>
+                <artifactId>opentelemetry-context</artifactId>
+                <version>1.62.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.1.4</version>
-                </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
@@ -459,6 +488,7 @@
                             <!--    For JUnit4 use TestUtilities.runningAsSurefire() or
                                     TestingUtilities.runningAsSurefire() to exclude a test from surefire executions-->
                             <runningAsSurefire>true</runningAsSurefire>
+                            <file.encoding>${project.build.sourceEncoding}</file.encoding>
                         </systemPropertyVariables>
                         <redirectTestOutputToFile>false</redirectTestOutputToFile>
                         <!-- For JUnit5 use an excludedInSurefire tag to exclude a test from surefire executions -->
@@ -481,7 +511,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>${maven-checkstyle-version}</version>
                     <configuration>
                         <skip>true</skip>
                     </configuration>
@@ -495,6 +525,11 @@
                     <groupId>com.diffplug.spotless</groupId>
                     <artifactId>spotless-maven-plugin</artifactId>
                     <inherited>false</inherited>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.1.4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -552,6 +587,9 @@
                         <goals>
                             <goal>test-jar</goal>
                         </goals>
+                        <configuration>
+                            <skipIfEmpty>true</skipIfEmpty>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -577,7 +615,6 @@
                     <checkRuntimeClasspath>false</checkRuntimeClasspath>
                     <checkTestClasspath>false</checkTestClasspath>
                     <skip>false</skip>
-                    <quiet>false</quiet>
                     <preferLocal>true</preferLocal>
                     <useResultFile>true</useResultFile>
                     <resultFileMinClasspathCount>2</resultFileMinClasspathCount>
@@ -690,6 +727,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.9.8.3</version>
+                <configuration>
+                    <threshold>High</threshold>
+                    <maxHeap>8192</maxHeap>
+                </configuration>
             </plugin>
         </plugins>
 
@@ -917,6 +963,22 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
+                        <dependencies>
+                            <!-- Override the version inherited from hapi-fhir's CHECKSTYLE profile, which
+                                 uses ${project.version} for hapi-fhir-checkstyle. In this project's context
+                                 that resolves to 6.9.12-SNAPSHOT (our version, not the HAPI version),
+                                 which doesn't exist. Declaring with ${hapi_fhir_version} here wins. -->
+                            <dependency>
+                                <groupId>com.puppycrawl.tools</groupId>
+                                <artifactId>checkstyle</artifactId>
+                                <version>${checkstyle_version}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>ca.uhn.hapi.fhir</groupId>
+                                <artifactId>hapi-fhir-checkstyle</artifactId>
+                                <version>${hapi_fhir_version}</version>
+                            </dependency>
+                        </dependencies>
                          <configuration>
                              <skip>false</skip>
                         </configuration>

@@ -246,14 +246,21 @@ public class ValueSetExpander extends ValueSetProcessBase {
     } else {
       if (designations == null) {
         designations = new ArrayList<>();
+      } else {
+        designations = new ArrayList<>(designations); // copy, so we don't mutate the source code system
       }
-      designations.add(new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra").setCode("preferredForLanguage")));
+      // the demoted display goes first in the list, so that it takes precedence over any other designations
+      // in the same language (and other servers behave that way - see test language-xform-en-multi-de-hard)
+      designations.add(0, new ConceptDefinitionDesignationComponent().setLanguage(dispLang).setValue(display).setUse(new Coding().setSystem("http://terminology.hl7.org/CodeSystem/hl7TermMaintInfra").setCode("preferredForLanguage")));
       pref = findMatchingDesignation(designations);
       if (pref != null) {
         n.setDisplay(pref.getValue());
       }
     }
-    if (!n.hasDisplay() && display != null && langs != null && (langs.matches(dispLang) || Utilities.existsInList(langs.getSource(), "en", "en-US"))) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //False positive: not using String.matches
+    boolean langMatches = langs != null && langs.matches(dispLang);
+    if (!n.hasDisplay() && display != null && langs != null && (langMatches || Utilities.existsInList(langs.getSource(), "en", "en-US"))) {
       n.setDisplay(display);      
     }
 
@@ -372,11 +379,17 @@ public class ValueSetExpander extends ValueSetProcessBase {
       return true;
     }
     for (Token t : designations) {
-      if ((d.hasUse() && t.matches(d.getUse())) || t.matchesLang(d.getLanguage())) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean tokenMatchesUse = d.hasUse() && t.matches(d.getUse());
+      if (tokenMatchesUse || t.matchesLang(d.getLanguage())) {
         return true;
       }
       for (Coding c : d.getAdditionalUse()) {
-        if (t.matches(c)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean tokenMatchesCoding = t.matches(c);
+        if (tokenMatchesCoding) {
           return true;
         }
       }
@@ -612,7 +625,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
     if ((includeAbstract || !abs)  && filterFunc.includeConcept(cs, def) && passesOtherFilters(otherFilters, cs, def.getCode())) {
       for (String code : getCodesForConcept(def, expParams)) {
         if (!(filters != null && !filters.isEmpty() && !filterContainsCode(filters, system, version, code, exp)))
-          excludeCode(wc, system, version, code);
+          excludeCode(wc, system, cs.getVersion(), code);
       }
     }
     if (depth > 0) {
@@ -699,14 +712,20 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
 
     CodeSystem cs = context.fetchSupplementedCodeSystem(exc.getSystem(), ExtensionUtilities.getVersionResolutionRules(exc), exc.getVersion(), new ArrayList<>(), vs);
-    if ((cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) && context.getTxSupportInfo(exc.getSystem(), exc.getVersion()).isSupported()) {
+    boolean canExpandLocally = cs != null
+        && !ValueSetUtilities.isServerSide(exc.getSystem())
+        && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT);
+    if (!canExpandLocally) {
+      if (cs == null && noTerminologyServer) {
+        throw failWithIssue(IssueType.NOTFOUND, OpIssueCode.NotFound, null, I18nConstants.UNKNOWN_CODESYSTEM_EXP, exc.getSystem());
+      }
       ValueSetExpansionOutcome vse = context.expandVS(new TerminologyOperationDetails(requiredSupplements), exc, false, false);
       ValueSet valueset = vse.getValueset();
+      if (valueset == null)
+        throw createTerminologyServiceException("Error Expanding ValueSet: " + vse.getError());
       if (valueset.hasUserData(UserDataNames.VS_EXPANSION_SOURCE)) {
         sources.add(valueset.getUserString(UserDataNames.VS_EXPANSION_SOURCE));
       }
-      if (valueset == null)
-        throw createTerminologyServiceException("Error Expanding ValueSet: " + vse.getError());
       excludeCodes(wc, valueset.getExpansion());
       return;
     }
@@ -950,6 +969,8 @@ public class ValueSetExpander extends ValueSetProcessBase {
       focus.getExpansion().addParameter().setName(name).setValue(new CodeType(value.primitiveValue()));
     }
     if ("designation".equals(name)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] v = value.primitiveValue().split("\\|");
       if (v.length != 2 || !Utilities.isAbsoluteUrl(v[0]) || Utilities.noString(v[1])) {
         throw new NoTerminologyServiceException("Unable to understand designation parameter "+value.primitiveValue());
@@ -1421,7 +1442,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
         doServerIncludeCodes(inc, heirarchical, exp, imports, expParams, extensions, noInactive, valueSet.getExpansion().getProperty());
       } else {
         if (cs.hasUserData(UserDataNames.tx_known_supplements)) {
-          for (String s : cs.getUserString(UserDataNames.tx_known_supplements).split("\\,")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String[] supplements = cs.getUserString(UserDataNames.tx_known_supplements).split("\\,");
+          for (String s : supplements) {
             seeSupplement(s);
           }
         }
@@ -1611,7 +1635,10 @@ public class ValueSetExpander extends ValueSetProcessBase {
       if (!existsInParams(exp.getParameter(), "used-codesystem", u))
         exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-codesystem").setValue(u));
       if (cs.hasUserData(UserDataNames.tx_known_supplements)) {
-        for (String s : cs.getUserString(UserDataNames.tx_known_supplements).split("\\,")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] supplements = cs.getUserString(UserDataNames.tx_known_supplements).split("\\,");
+        for (String s : supplements) {
           u = new UriType(s);
           if (!existsInParams(exp.getParameter(), "used-supplement", u)) {
             exp.getParameter().add(new ValueSetExpansionParameterComponent().setName("used-supplement").setValue(u));

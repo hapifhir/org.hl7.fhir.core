@@ -45,8 +45,10 @@ import java.util.UUID;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.turtle.TurtleIRIUtil;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @Deprecated
+@SuppressFBWarnings("EC_UNRELATED_TYPES")
 public class Turtle {
 
   public static final String LANG_REGEX = "[a-z]{2}(\\-[a-zA-Z]{2})?";
@@ -1195,7 +1197,10 @@ public class Turtle {
             // lang tag - skip it
             lexer.token("@");
             String lang = lexer.word();
-            if (!lang.matches(LANG_REGEX)) {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //anchored, bounded optional group, safe
+            boolean validLang = lang.matches(LANG_REGEX);
+            if (!validLang) {
               throw new FHIRFormatError("Invalid Language tag " + lang);
             }
           }

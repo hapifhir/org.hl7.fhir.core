@@ -16,9 +16,9 @@ import lombok.extern.jackson.Jacksonized;
 public class FhirSettingsPOJO {
 
 
-  protected static final String TX_SERVER_PROD = "http://tx.fhir.org";
-  protected static final String TX_SERVER_DEV = "http://tx-dev.fhir.org";
-  protected static final String TX_SERVER_LOCAL = "http://local.fhir.org";
+  protected static final String TX_SERVER_PROD = "https://tx.fhir.org";
+  protected static final String TX_SERVER_DEV = "https://tx-dev.fhir.org";
+  protected static final String TX_SERVER_LOCAL = "http://local.fhir.org:3001";
   
   private String fhirDirectory;
   private Map<String, String> apiKeys;

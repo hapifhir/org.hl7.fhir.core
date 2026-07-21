@@ -1828,7 +1828,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             c.getPieces().add(gen.new Piece(corePath+"valueset-resource-aggregation-mode.html", " {", null));
             boolean firstA = true;
             for (Enumeration<AggregationMode> a : t.getAggregation()) {
-              if (firstA = true)
+              if (firstA)
                 firstA = false;
               else
                 c.getPieces().add(gen.new Piece(corePath+"valueset-resource-aggregation-mode.html", ", ", null));
@@ -1841,6 +1841,8 @@ public class ProfileUtilities extends TranslatingUtilities {
         String ref;
         ref = pkp.getLinkForProfile(profile, t.getProfile());
         if (ref != null) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] parts = ref.split("\\|");
           if (parts[0].startsWith("http:") || parts[0].startsWith("https:"))
             c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], parts[1], t.getCode())));
@@ -1859,7 +1861,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         c.getPieces().add(gen.new Piece(corePath+"valueset-resource-aggregation-mode.html", " {", null));
         boolean firstA = true;
         for (AggregationMode a : aggs) {
-          if (firstA = true)
+          if (firstA)
             firstA = false;
           else
             c.getPieces().add(gen.new Piece(corePath+"valueset-resource-aggregation-mode.html", ", ", null));
@@ -2173,7 +2175,10 @@ public class ProfileUtilities extends TranslatingUtilities {
         left.getPieces().add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement())));
       if (element.hasSliceName()) {
         left.getPieces().add(gen.new Piece("br"));
-        String indent = StringUtils.repeat('\u00A0', 1+2*(element.getPath().split("\\.").length));
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        int pathDepth = element.getPath().split("\\.").length;
+        String indent = StringUtils.repeat('\u00A0', 1+2*pathDepth);
         left.getPieces().add(gen.new Piece(null, indent + "("+element.getSliceName() + ")", null));
       }
       row.getCells().add(left);
@@ -2697,6 +2702,8 @@ public class ProfileUtilities extends TranslatingUtilities {
   		profile = source;
   		code = url.substring(1);
   	} else if (context != null) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
   		String[] parts = url.split("\\#");
   		profile = context.fetchResource(StructureDefinition.class, parts[0]);
       code = parts.length == 1 ? null : parts[1];
@@ -3104,6 +3111,8 @@ public class ProfileUtilities extends TranslatingUtilities {
 
       if (depth > paths.size()) {
         // this means that we've jumped into a sparse thing. 
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] pl = ed.getPath().split("\\.");
         for (int i = paths.size(); i < pl.length-1; i++) // -1 because the last path is in focus
           paths.add(pl[i]);
@@ -3568,7 +3577,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     model.setDocoImg(prefix+"help16.png");
     model.setDocoRef(prefix+"formats.html#table"); // todo: change to graph definition
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Property", "A profiled resource", null, 0));
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Card.", "Minimum and Maximum # of times the the element can appear in the instance", null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Card.", "Minimum and Maximum # of times the element can appear in the instance", null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Content", "What goes here", null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), "Description", "Description of the profile", null, 0));
     return model;

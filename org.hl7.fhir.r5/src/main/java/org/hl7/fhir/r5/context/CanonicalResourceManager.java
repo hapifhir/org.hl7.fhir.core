@@ -5,11 +5,8 @@ import java.util.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumerations.CodeSystemContentMode;
-import org.hl7.fhir.r5.model.PackageInformation;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.*;
 
@@ -106,6 +103,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         }
         if (resource instanceof CodeSystem) {
           CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) resource);
+        }
+        // if a resource is loaded by this path, we'll never need it's narrative.
+        // and there's no reason to keep it in memory. at some stage, it is worth
+        // investing in not loading it in the frst place, but it's quite a bit of
+        // routing and piping. this saves a lot of memory
+        if (resource instanceof DomainResource) {
+          (resource).setText(null);
         }
       }
       return resource;
@@ -388,7 +392,12 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     }
     allResources.add(cr);
     if (cr.getPackageInfo() != null && cr.getPackageInfo().isMaster() && cr.getUrl() != null) {
-      masterDefinitions.put(cr.getUrl(), cr);
+      String type = cr.proxy != null ? cr.proxy.getType() : cr.getResource().fhirType();
+      String deriv = cr.proxy != null ? cr.proxy.getDerivation() : cr.getResource() instanceof StructureDefinition ? ((StructureDefinition) cr.getResource()).getDerivationElement().primitiveValue() : null;
+      if ((Utilities.existsInList(type, "CodeSystem", "ValueSet") ||
+            "StructureDefinition".equals(type) && "specializes".equals(deriv)) && !cr.getUrl().startsWith("http://terminology.hl7.org")) {
+        masterDefinitions.put(cr.getUrl(), cr);
+      }
     }
     if (!listForUrl.containsKey(cr.getUrl())) {
       listForUrl.put(cr.getUrl(), new ArrayList<>());
@@ -603,8 +612,8 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
 
   public void drop(CachedCanonicalResource<T> cr) {
     while (indexedResources.values().remove(cr));
-    while (listForId.values().remove(cr));
-    while (listForUrl.values().remove(cr));
+    while (listForId.values().remove(cr)); // FIXME SpotBugs issue: GC_UNRELATED_TYPES listForId.values().remove(cr) is always false (values() is Collection<List<CachedCanonicalResource<T>>>); fix to listForId.get(cr.getId()).remove(cr)
+    while (listForUrl.values().remove(cr)); // FIXME SpotBugs issue: GC_UNRELATED_TYPES listForUrl.values().remove(cr) is always false (same type mismatch); fix to listForUrl.get(cr.getUrl()).remove(cr)
     String surl = cr.supplements();
     if (surl != null) {
       supplements.get(surl).remove(cr);
@@ -637,12 +646,18 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       CachedCanonicalResource<T> cr = indexedResources.get(id);
       if (cr != null) {
         drop(cr);
+        if (masterDefinitions.containsKey(cr.getUrl())) {
+          masterDefinitions.remove(cr.getUrl());
+        }
       }
     } else {
       List<CachedCanonicalResource<T>> set = listForId.get(id);
       if (set != null) { // it really should be
         for (CachedCanonicalResource<T> i : set) {
           drop(i);
+          if (masterDefinitions.containsKey(i.getUrl())) {
+            masterDefinitions.remove(i.getUrl());
+          }
         }
       }
     }

@@ -125,6 +125,8 @@ public class LanguageSubtagRegistryLoader {
           if (currentField != null && currentValue != null) {
             record.addField(currentField, currentValue);
           }
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //simple character class split; safe
           String[] split = line.split(":\\s");
           if (split.length == 2) {
             currentField = split[0];

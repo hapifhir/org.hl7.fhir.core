@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.context;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5.TerminologyClientR5Factory;
 
 import static org.mockito.Mockito.*;
@@ -18,7 +16,6 @@ import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.utilities.ToolingClientLogger;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,7 +70,7 @@ public class SimpleWorkerContextTests {
     context.connectToTSServer(new TerminologyClientR5Factory(), terminologyClient, false);
 
     Mockito.verify(terminologyCache).getTerminologyCapabilities(address);
-    Mockito.verify(terminologyClient).getCapabilitiesStatement(); //FIXME why called twice?
+    Mockito.verify(terminologyClient).getCapabilitiesStatement();
 
     Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
     Mockito.verify(terminologyClient, times(0)).getTerminologyCapabilities();
@@ -96,7 +93,7 @@ public class SimpleWorkerContextTests {
     Mockito.verify(terminologyCache, times(0)).getTerminologyCapabilities(address);
     Mockito.verify(terminologyCache, times(0)).getCapabilityStatement(address);
 
-    Mockito.verify(terminologyClient).getTerminologyCapabilities(); //FIXME why called twice?
+    Mockito.verify(terminologyClient).getTerminologyCapabilities();
     Mockito.verify(terminologyClient).getCapabilitiesStatement();
 
   }

@@ -59,7 +59,7 @@ public class ExpressionNode {
     Encode, Decode, Escape, Unescape, Trim, Split, Join, LowBoundary, HighBoundary, Precision, Sort, Coalesce,
     
     // Local extensions to FHIRPath
-    HtmlChecks1, HtmlChecks2, Comparable, hasTemplateIdOf, Debug;
+    HtmlChecks1, HtmlChecks2, Comparable, hasTemplateIdOf, Debug, Section, Entry;
 
     public static Function fromCode(String name) {
       if (name.equals("empty")) return Function.Empty;
@@ -163,6 +163,8 @@ public class ExpressionNode {
       if (name.equals("precision")) return Function.Precision;
       if (name.equals("hasTemplateIdOf")) return Function.hasTemplateIdOf;
       if (name.equals("debug")) return Function.Debug;
+      if (name.equals("section")) return Function.Section;
+      if (name.equals("entry")) return Function.Entry;
 
       return null;
     }
@@ -269,6 +271,8 @@ public class ExpressionNode {
       case Precision: return "precision";
         case hasTemplateIdOf: return "hasTemplateIdOf";
         case Debug: return "debug";
+        case Section: return "section";
+        case Entry: return "entry";
       default: return "?custom?";
       }
     }
@@ -430,23 +434,23 @@ public class ExpressionNode {
       if (constant == null) {
         b.append("{}");
       } else if (constant instanceof StringType) {
-        b.append("'" + Utilities.escapeJson(constant.primitiveValue()) + "'");
+        b.append("'" + Utilities.escapeFhirPathString(constant.primitiveValue()) + "'");
       } else if (constant instanceof Quantity) {
         Quantity q = (Quantity) constant;
-        b.append(Utilities.escapeJson(q.hasValue() ? q.getValue().toPlainString() : ""));
+        b.append(q.hasValue() ? q.getValue().toPlainString() : "");
         if (q.hasUnit() || q.hasCode()) {
           b.append(" '");
           if (q.hasUnit()) {
-            b.append(Utilities.escapeJson(q.getUnit()));
+            b.append(Utilities.escapeFhirPathString(q.getUnit()));
           } else {
-            b.append(Utilities.escapeJson(q.getCode()));
+            b.append(Utilities.escapeFhirPathString(q.getCode()));
           }
           b.append("'");
         }
       } else if (constant.primitiveValue() != null) {
-        b.append(Utilities.escapeJson(constant.primitiveValue()));
+        b.append(Utilities.escapeFhirPathString(constant.primitiveValue()));
       } else {
-        b.append(Utilities.escapeJson(constant.toString()));
+        b.append(Utilities.escapeFhirPathString(constant.toString()));
       }
 			break;
 		case Group:
@@ -762,5 +766,24 @@ public class ExpressionNode {
   public boolean isNullSet() {
     return kind == Kind.Constant && constant == null;
   }
-		
+
+
+  public boolean isSimpleName(String name) {
+    return getKind() == Kind.Name && name.equals(getName());
+  }
+
+  public boolean hasInnerFunction(String name) {
+    return getInnerFunction(name) != null;
+  }
+
+  public ExpressionNode getInnerFunction(String name) {
+    if (inner == null) {
+      return null;
+    }
+    if (inner.getKind() == Kind.Function && name.equals(inner.getName())) {
+      return inner;
+    }
+    return null;
+  }
+
 }

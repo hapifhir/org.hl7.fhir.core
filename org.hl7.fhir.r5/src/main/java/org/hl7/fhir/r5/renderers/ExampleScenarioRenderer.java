@@ -40,11 +40,13 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlDocument;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
+import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 
 @MarkedToMoveToAdjunctPackage
+@Slf4j
 public class ExampleScenarioRenderer extends TerminologyRenderer {
 
   private Set<String> stepPrefixes = new HashSet<>();
@@ -106,6 +108,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     
     try {
       String plantUml = toPlantUml(prefixes, status, res, scen);
+      log.debug("PlantUML for " + scen.getUrl() + ":" + plantUml);
       SourceStringReader reader = new SourceStringReader(plantUml);
       final ByteArrayOutputStream os = new ByteArrayOutputStream();
       reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
@@ -149,7 +152,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   }
 
   protected String toPlantUml(Map<Element, String> prefixes, RenderingStatus status, ResourceWrapper res, ExampleScenarioProcessComponent process, ExampleScenario scen, Map<String, String> actorKeys) throws IOException {
-    String plantUml = "group " + process.getTitle() + " " + creolLink("details", prefixes.get(process), process.getDescription()) + "\r\n";
+    String plantUml = "group " + process.getTitle() + " " + creolLink("details", "#" + context.prefixAnchor(prefixes.get(process)), process.getDescription()) + "\r\n";
 
     Map<String,Boolean> actorsActive = new HashMap<String, Boolean>();
     for (ExampleScenarioActorComponent actor : scen.getActor()) {
@@ -188,14 +191,14 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     plantUml.append(handleActivation(op.getInitiator(), op.getInitiatorActive(), actorsActive, actorKeys));
     plantUml.append(handleActivation(op.getReceiver(), op.getReceiverActive(), actorsActive, actorKeys));
     plantUml.append(actorKeys.get(op.getInitiator()) + " -> " + actorKeys.get(op.getReceiver()) + ": ");
-    plantUml.append(creolLink(op.getTitle(), prefixes.get(op), op.getDescription()));
+    plantUml.append(creolLink(op.getTitle(), "#" + context.prefixAnchor(prefixes.get(op)), op.getDescription()));
     if (op.hasRequest()) {
       plantUml.append(" (" + creolLink("payload", linkForInstance(op.getRequest())) + ")\r\n");
     }
     if (op.hasResponse()) {
       plantUml.append("activate " + actorKeys.get(op.getReceiver()) + "\r\n");
       plantUml.append(actorKeys.get(op.getReceiver()) + " --> " + actorKeys.get(op.getInitiator()) + ": ");
-      plantUml.append(creolLink("response", prefixes.get(op), op.getDescription()));
+      plantUml.append(creolLink("response", "#" + context.prefixAnchor(prefixes.get(op)), op.getDescription()));
       plantUml.append(" (" + creolLink("payload", linkForInstance(op.getResponse())) + ")\r\n");
       plantUml.append("deactivate " + actorKeys.get(op.getReceiver()) + "\r\n");
     }
@@ -416,8 +419,8 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       }
       i = assignAlternativePrefixes(prefixes, step.getAlternative(), i);
       if (step.hasOperation()) {
-        prefixes.put(step.getOperation(), "node"+i);
-        i++;
+        // Operation shares its parent step's anchor so the diagram link and the textual anchor resolve to the same node.
+        prefixes.put(step.getOperation(), prefixes.get(step));
       }
     }
     return i;
@@ -502,7 +505,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       if (step.hasProcess()) {
         XhtmlNode n = row.td().colspan(6);
         n.tx(context.formatPhrase(RenderingContext.EX_SCEN_SEE));
-        n.ah(context.prefixLocalHref("#" + context.prefixAnchor(prefixes.get(step)))).tx(step.getProcess().getTitle());
+        n.ah(context.prefixLocalHref("#" + context.prefixAnchor(prefixes.get(step.getProcess())))).tx(step.getProcess().getTitle());
         n.tx(" "+ context.formatPhrase(RenderingContext.EX_SCEN_BEL));
 
       } else if (step.hasWorkflow()) {

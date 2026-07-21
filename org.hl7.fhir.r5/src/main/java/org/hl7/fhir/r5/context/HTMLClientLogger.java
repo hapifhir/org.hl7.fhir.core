@@ -71,7 +71,7 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
     file.println("<hr/><a name=\"l"+id+"\"> </a>");
     file.println("<p>#"+id+"</p>");
     file.println("<pre>");
-    file.println(method+" "+url+" HTTP/1.0");
+    file.println(method+" "+url+" HTTP/1.1");
     if (headers != null) {
       for (String s : headers) {
         if (s.startsWith("Api-Key")) {
@@ -83,7 +83,7 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
     }
     if (body != null) {
       if (body.length > 1000000) {
-        body = Arrays.copyOf(body, 100000);
+        body = Arrays.copyOf(body, 1000000);
       }
       file.println("");
       file.println(Utilities.escapeXmlText(new String(body, StandardCharsets.UTF_8)));

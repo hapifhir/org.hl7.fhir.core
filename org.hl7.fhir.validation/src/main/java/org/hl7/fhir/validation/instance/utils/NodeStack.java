@@ -91,7 +91,7 @@ public class NodeStack {
     return b.toString();
   }
 
-  private ElementDefinition getDefinition() {
+  public ElementDefinition getDefinition() {
     return definition;
   }
 

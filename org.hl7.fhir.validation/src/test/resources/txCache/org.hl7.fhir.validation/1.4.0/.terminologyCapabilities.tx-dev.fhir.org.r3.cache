@@ -3019,6 +3019,9 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/can-push-updates"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/care-consideration"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/care-service-accessibility"
   },
   {
@@ -3097,6 +3100,9 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/codesystem-altcode-kind"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/color-names"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/common-tags"
   },
   {
@@ -3113,6 +3119,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/composition-altcode-kind"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/composition-attestation-mode"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/conceptdomains"
@@ -3226,19 +3235,55 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/definition-use"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/detectedissue-severity"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-availability-status"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-category"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-nametype"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-productidentifierinudi"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/device-specification-category"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/device-status-reason"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-activationState"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-annunciation"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-category"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-manifestation"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-presence"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-priority"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicealert-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-relationship"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-status-reason"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/devicedefinition-relationtype"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/diagnosis-role"
@@ -3257,6 +3302,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/discharge-disposition"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/document-relationship-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/dose-rate-type"
@@ -3284,6 +3332,12 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/evidence-quality"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/evidence-variable-constraint"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/evidence-variable-unacceptable-data-handling"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/ex-benefitcategory"
@@ -3532,6 +3586,18 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/message-reasons-encounter"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-availability"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-calibration-state"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-calibration-type"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/metric-category"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/missingtoothreason"
   },
   {
@@ -3557,6 +3623,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/observation-category"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/observation-referencerange-normalvalue"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/observation-statistics"
@@ -3634,6 +3703,9 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/reaction-event-certainty"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/reading-mode"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/reason-medication-given"
   },
   {
@@ -3656,6 +3728,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/research-study-prim-purp-type"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/research-study-purpose-type"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/research-study-reason-stopped"
@@ -3757,6 +3832,9 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/synthesis-type"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/task-code"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/testscript-operation-codes"
   },
   {
@@ -3773,6 +3851,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/triggerEventID"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/us-military-service-period"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/usage-context-type"
@@ -5708,9 +5789,6 @@
   }],
   "expansion" : {
     "parameter" : [{
-      "name" : "cache-id"
-    },
-    {
       "name" : "tx-resource"
     },
     {

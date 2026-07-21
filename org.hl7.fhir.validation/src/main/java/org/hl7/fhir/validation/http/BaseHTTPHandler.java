@@ -23,14 +23,21 @@ public class BaseHTTPHandler {
     if (param == null || param.trim().isEmpty()) {
       return new ArrayList<>();
     }
-    return Arrays.asList(param.split(","));
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] splitParam = param.split(",");
+    return Arrays.asList(splitParam);
   }
 
   protected Map<String, String> parseQueryParams(String query) {
     Map<String, String> params = new HashMap<>();
     if (query != null) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pairs = query.split("&");
       for (String pair : pairs) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] keyValue = pair.split("=", 2);
         if (keyValue.length == 2) {
           try {

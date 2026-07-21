@@ -333,16 +333,20 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     }
 
     XhtmlNode p = x.para();
-    p.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
-    if (cm.hasSourceScope())
-      AddVsRef(cm.getSourceScope().primitiveValue(), cm.getSourceScope(), p, cm);
-    else
-      p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NOT_SPEC));
-    p.tx(" "+ (context.formatPhrase(RenderingContext.CONC_MAP_TO) + " "));
-    if (cm.hasTargetScope())
-      AddVsRef(cm.getTargetScope().primitiveValue(), cm.getTargetScope(), p, cm);
-    else 
-      p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NOT_SPEC));
+    if (cm.hasSourceScope() || cm.hasTargetScope()) {
+      p.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
+      if (cm.hasSourceScope())
+        AddVsRef(cm.getSourceScope().primitiveValue(), cm.getSourceScope(), p, cm);
+      else
+        p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NOT_SPEC));
+      p.tx(" " + (context.formatPhrase(RenderingContext.CONC_MAP_TO) + " "));
+      if (cm.hasTargetScope())
+        AddVsRef(cm.getTargetScope().primitiveValue(), cm.getTargetScope(), p, cm);
+      else
+        p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NOT_SPEC));
+    } else {
+      p.tx(context.formatPhrase(RenderingContext.CONC_MAP_NO_SPEC));
+    }
 
     x.br();
     int gc = 0;
@@ -391,9 +395,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
       StructureDefinition sdSrc = findSourceStructure(grp.getSource(), grp.getSourceElement());
       StructureDefinition sdTgt = findSourceStructure(grp.getTarget(), grp.getTargetElement());
       if (sdSrc != null && sdTgt != null) {
-        renderModelMap(sdSrc, sdTgt, status, res, x, gc, eqpath, grp, hasComment, isSimple, props, sources, targets);
+        renderModelMap(sdSrc, sdTgt, status, res, x, gc, eqpath, grp, hasComment, isSimple, props, sources, targets, cm.getGroup().size() > 1);
       } else {
-        renderCodeSystemMap(status, res, x, gc, eqpath, grp, hasComment, isSimple, props, sources, targets);
+        renderCodeSystemMap(status, res, x, gc, eqpath, grp, hasComment, isSimple, props, sources, targets, cm.getGroup().size() > 1);
       }
     }
   }
@@ -408,10 +412,12 @@ public class ConceptMapRenderer extends TerminologyRenderer {
 
   private void renderModelMap(StructureDefinition sdSrc, StructureDefinition sdTgt, RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,
       ConceptMapGroupComponent grp, boolean hasComment, boolean ok,
-      Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets)
+      Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets, boolean hasMultipleGroups)
       throws UnsupportedEncodingException, IOException {
     XhtmlNode pp = x.para();
-    pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
+    if (hasMultipleGroups) {
+      pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
+    }
     pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
     pp.ah(sdSrc.getWebPath()).tx(sdSrc.present(context.getLocale().toLanguageTag()));
     pp.tx(" to ");
@@ -434,7 +440,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
         if (edSrc == null) {        
           tr.td().colspan(3).addText(ccl.getCode());
         } else {
-          tr.td().ah(sdSrc.getWebPath()+"#"+ccl.getCode()).tx(ccl.getCode());
+          tr.td().ah(sdSrc.getWebPath()+"#s-"+ccl.getCode()).tx(ccl.getCode());
           tr.td().tx(""+edSrc.getMin()+".."+edSrc.getMax());
           tr.td().tx("todo");
         }
@@ -471,7 +477,7 @@ public class ConceptMapRenderer extends TerminologyRenderer {
           if (edTgt == null) {        
             tr.td().colspan(3).addText(ccm.getCode());
           } else {
-            tr.td().ah(sdTgt.getWebPath()+"#"+ccm.getCode()).tx(ccm.getCode());
+            tr.td().ah(sdTgt.getWebPath()+"#s-"+ccm.getCode()).tx(ccm.getCode());
             tr.td().tx(""+edTgt.getMin()+".."+edTgt.getMax());
             tr.td().tx("todo");
           }
@@ -485,11 +491,13 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   
   private void renderCodeSystemMap(RenderingStatus status, ResourceWrapper res, XhtmlNode x, int gc, String eqpath,
       ConceptMapGroupComponent grp, boolean hasComment, boolean isSimple,
-      Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets)
+      Map<String, HashSet<String>> props, Map<String, HashSet<String>> sources, Map<String, HashSet<String>> targets, boolean hasMultipleGroups)
       throws UnsupportedEncodingException, IOException {
 
     XhtmlNode pp = x.para();
-    pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
+    if (hasMultipleGroups) {
+      pp.b().tx(context.formatPhrase(RenderingContext.CONC_MAP_GRP, gc) + " ");
+    }
     pp.tx(context.formatPhrase(RenderingContext.CONC_MAP_FROM) + " ");
     if (grp.hasSource()) {
       renderCanonical(status, res, pp, CodeSystem.class, grp.getSourceElement());
@@ -1124,7 +1132,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   private static MultipleMappingRow findExistingRowByTarget(List<MultipleMappingRow> rows, String system, String code, int i) {
     for (MultipleMappingRow row : rows) {
       for (MultipleMappingRowItem cells : row.rowSets) {
-        if (cells.cells.size() > i + 1 && cells.cells.get(i+1).matches(system, code)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean cellMatches = cells.cells.size() > i + 1 && cells.cells.get(i+1).matches(system, code);
+        if (cellMatches) {
           return row;
         }
       }
@@ -1135,7 +1146,10 @@ public class ConceptMapRenderer extends TerminologyRenderer {
   private static MultipleMappingRow findExistingRowBySource(List<MultipleMappingRow> rows, String system, String code, int i) {
     for (MultipleMappingRow row : rows) {
       for (MultipleMappingRowItem cells : row.rowSets) {
-        if (cells.cells.size() > i && cells.cells.get(i).matches(system, code)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean cellMatchesSource = cells.cells.size() > i && cells.cells.get(i).matches(system, code);
+        if (cellMatchesSource) {
           return row;
         }
       }

@@ -35,3 +35,9 @@
 (Eclipse Public License v2.0) JUnit Jupiter (Aggregator) (org.junit.jupiter:junit-jupiter:5.14.0 - https://junit.org/)
 # License string includes brackets, but is a valid Apache License
 (Apache License, Version 2.0) Byte Buddy (without dependencies) (net.bytebuddy:byte-buddy:1.18.8 - https://bytebuddy.net/byte-buddy)
+# Logback allows optional licenses, of which EPL-2.0 is compatible.
+(EPL-2.0) (LGPL-2.1-only) Logback Classic Module (ch.qos.logback:logback-classic:1.5.37 - http://logback.qos.ch/logback-classic)
+# Logback allows optional licenses, of which EPL-2.0 is compatible.
+(EPL-2.0) (LGPL-2.1-only) Logback Core Module (ch.qos.logback:logback-core:1.5.37 - http://logback.qos.ch/logback-core)
+# Javassist allows optional licenses, of which Apache License 2.0 is compatible
+(Apache License 2.0) (LGPL 2.1) (MPL 1.1) Javassist (org.javassist:javassist:3.22.0-GA - http://www.javassist.org/)

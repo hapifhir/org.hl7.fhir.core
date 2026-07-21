@@ -20,7 +20,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FhirToolingClientTest {
-  String TX_ADDR = "http://tx.fhir.org";
+  String TX_ADDR = "https://tx.fhir.org";
 
   HTTPHeader h1 = new HTTPHeader("header1", "value1");
   HTTPHeader h2 = new HTTPHeader("header2", "value2");

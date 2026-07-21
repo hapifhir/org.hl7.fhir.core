@@ -62,17 +62,35 @@ public interface IValidationPolicyAdvisor {
   Set<String> getCheckReferencesTo();
 
   /**
-   * Return true if the validation message for this message id should not be reported 
-   * 
-   * Note that this is generally a pretty blunt instrument. E.g. you might want to suppress 
-   * errors associated with a particular code system, but this can only suppress errors associated 
-   * with all code systems 
-   * 
+   * @deprecated implement/override {@link #isSuppressMessageId(String, String, Object...)} instead
+   *
    * @param path - the current path of the element
    * @param messageId - the message id (from messages.properties)
    * @return true if the validator should ignore the message
    */
-  boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments);
+  @Deprecated
+  default boolean isSuppressMessageId(String path, String messageId) {
+    return false;
+  }
+
+  /**
+   * Return true if the validation message for this message id should not be reported
+   *
+   * Note that this is generally a pretty blunt instrument. E.g. you might want to suppress
+   * errors associated with a particular code system, but this can only suppress errors associated
+   * with all code systems
+   *
+   * The default implementation delegates to {@link #isSuppressMessageId(String, String)} for
+   * backwards compatibility with implementations written before the message arguments were added
+   *
+   * @param path - the current path of the element
+   * @param messageId - the message id (from messages.properties)
+   * @param theMessageArguments - the arguments that will be used to format the message
+   * @return true if the validator should ignore the message
+   */
+  default boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
+    return isSuppressMessageId(path, messageId);
+  }
 
   /**
    * Whether to try validating a reference, and if so, how much validation to apply

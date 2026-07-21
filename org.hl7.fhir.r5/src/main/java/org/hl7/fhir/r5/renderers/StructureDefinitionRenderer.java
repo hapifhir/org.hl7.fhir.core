@@ -28,25 +28,14 @@ import org.hl7.fhir.r5.context.ExpansionOptions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
+import org.hl7.fhir.r5.fhirpath.ExpressionNode;
+import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.ActorDefinition;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.BooleanType;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.CodeType;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.ConceptMap;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.DecimalType;
-import org.hl7.fhir.r5.model.Element;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.AdditionalBindingPurposeVS;
 import org.hl7.fhir.r5.model.ElementDefinition.AggregationMode;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
@@ -60,22 +49,11 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscrimin
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumeration;
-import org.hl7.fhir.r5.model.Extension;
-import org.hl7.fhir.r5.model.IdType;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.MarkdownType;
-import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.openehr.ELEMENT;
 import org.hl7.fhir.r5.renderers.mappings.ConceptMapMappingProvider;
 import org.hl7.fhir.r5.renderers.mappings.ModelMappingProvider;
 import org.hl7.fhir.r5.renderers.mappings.StructureDefinitionMappingProvider;
@@ -117,7 +95,8 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
- 
+import org.w3c.dom.Node;
+
 @MarkedToMoveToAdjunctPackage
 @Slf4j
 public class StructureDefinitionRenderer extends ResourceRenderer {
@@ -126,7 +105,6 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
 
   public enum MapStructureMode {
     IN_LIST, NOT_IN_LIST, OTHER
-    
   }
   
   public StructureDefinitionRenderer(RenderingContext context) { 
@@ -233,7 +211,10 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } 
       boolean found = false; 
       for (T t : this) { 
-        if (t.matches(item)) { 
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean tMatchesItem = t.matches(item);
+        if (tMatchesItem) {
           found = true; 
           t.status = ListItemStatus.Unchanged; 
         } 
@@ -432,6 +413,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   private List<StructureDefinition> mappingTargets = new ArrayList<>();
   // Render-local store for pattern values merged into existing in-scope rows.
   private final Map<ElementDefinition, List<Base>> mergedPatternValues = new IdentityHashMap<>();
+  private FHIRPathEngine fpe;
  
   public static class UnusedTracker { 
     private boolean used; 
@@ -948,7 +930,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     if (!(onlyInformationIsMapping(all, element) || (context.getStructureMode() == StructureDefinitionRendererMode.OBLIGATIONS && !elementOrDescendentsHaveObligations(all, element)))) { 
       Row row = gen.new Row();
       // in deeply sliced things, there can be duplicate paths that are not usefully differentiated by id, and anyway, we want path
-      String anchor = element.getPath();
+      String anchor = element.getId() == null ? element.getPath() : element.getId();
       anchor = makeAnchorUnique(anchor);
       row.setId(context.prefixAnchor(anchor)); 
       row.setAnchor(context.prefixAnchor(anchor)); 
@@ -1343,7 +1325,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     hint = checkAdd(hint, element.hasSliceName() ? context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_PAR, element.getSliceName()) : ""); 
     if (hasDef && element.hasDefinition()) { 
       hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : "")); 
-      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement())); 
+      hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement())); // FIXME SpotBugs issue: UC_USELESS_CONDITION !hasDef is always false here (inside if (hasDef && ...)); simplify to gt(element.getDefinitionElement())
     } 
     if (element.hasSlicing() && slicesExist(elements, element)) { // some elements set up slicing but don't actually slice, so we don't augment the name  
       sName = context.formatPhrase(RenderingContext.STRUC_DEF_SLICE_FOR, sName); 
@@ -2459,7 +2441,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
  
               ref = context.getPkp() == null ? null : context.getPkp().getLinkForProfile(profile, p.getValue()); 
               if (ref != null) { 
-                String[] parts = ref.split("\\|"); 
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
+                String[] parts = ref.split("\\|");
                 if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) { 
                   if (p.hasExtension(ExtensionDefinitions.EXT_PROFILE_ELEMENT)) { 
                     String pp = p.getExtensionString(ExtensionDefinitions.EXT_PROFILE_ELEMENT); 
@@ -2645,7 +2629,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         left.getPieces().add(gen.new Piece(ref, "\u00A0\u00A0" + s, !hasDef ? null : gt(element.getDefinitionElement()))); 
       if (element.hasSliceName()) { 
         left.getPieces().add(gen.new Piece("br")); 
-        String indent = StringUtils.repeat('\u00A0', 1+2*(element.getPath().split("\\.").length)); 
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String indent = StringUtils.repeat('\u00A0', 1+2*(element.getPath().split("\\.").length));
         left.getPieces().add(gen.new Piece(null, indent + "("+element.getSliceName() + ")", null)); 
       } 
       row.getCells().add(left); 
@@ -2831,7 +2817,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 String tn = tc.substring(0, tc.indexOf("(")); 
                 c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null)); 
                 c.addPiece(gen.new Piece(null, "(", null)); 
-                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|"); 
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
+                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
                 for (String s : p) { 
                   c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null)); 
                 } 
@@ -2872,7 +2860,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
                 String tn = tc.substring(0, tc.indexOf("(")); 
                 c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, tn), tn, null)); 
                 c.addPiece(gen.new Piece(null, "(", null)); 
-                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|"); 
+                @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+                //single literal character split
+                String[] p = tc.substring(tc.indexOf("(")+1, tc.indexOf(")")).split("\\|");
                 for (String s : p) { 
                   c.addPiece(gen.new Piece(context.getPkp().getLinkFor(corePath, s), s, null)); 
                 } 
@@ -4325,8 +4315,8 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       } else { 
         removed(x).ah(context.prefixLocalHref(oLink)).txOrCode(code, oldStr).iff(externalO).txN(" ").img("external.png", null); 
       } 
-    } else if (oldStr.equals(newStr)) { 
-      if (mode==GEN_MODE_DIFF) { 
+    } else if (oldStr.equals(newStr)) {
+      if (mode==GEN_MODE_DIFF) { // FIXME SpotBugs issue: UC_USELESS_CONDITION mode==GEN_MODE_DIFF is always true or always false in context
         return null; 
       } else { 
         unchanged(x).ah(context.prefixLocalHref(nLink)).txOrCode(code, newStr).iff(externalN).txN(" ").img("external.png", null); 
@@ -4934,7 +4924,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         compareString(x, toStr(d.getMin()), d.getMinElement(), null, "min", d, toStr(compare.getMin()), null, mode, false, false); 
       } 
       x.tx(".."); 
-      if (!(mode==GEN_MODE_DIFF && (d.getMax().equals(compare.getMax()) || "1".equals(d.getMax())))) { 
+      if (!(mode==GEN_MODE_DIFF && (d.getMax().equals(compare.getMax()) || "1".equals(d.getMax())))) { // FIXME SpotBugs issue: UC_USELESS_CONDITION the mode==GEN_MODE_DIFF condition is always true or always false in context
         compareString(x, d.getMax(), d.getMaxElement(), null, "max", d, compare.getMax(), null, mode, false, false); 
       } 
     } 
@@ -5382,7 +5372,9 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
       parser.setOutputStyle(OutputStyle.PRETTY); 
       parser.compose(bs, value, null); 
     } 
-    String[] lines = bs.toString().split("\\r?\\n"); 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
+    String[] lines = bs.toString().split("\\r?\\n");
     StringBuilder b = new StringBuilder(); 
     for (String s : lines) { 
       if (!Utilities.noString(s) && !s.startsWith("<?")) { // eliminate the xml header if it's xml 
@@ -5852,5 +5844,261 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   public List<StructureDefinition> getMappingTargets() {
     return mappingTargets;
   }
-  
-} 
+
+  /**
+   * This produces an xhtml fragment that contains a summary of key information requirements for a composition
+   * based on the constraints found on a profile on Composition
+   *
+   * In general, the intent is that the constraints are imposed over the top of an existing sturctured document
+   * like IPS and where profiles apply context specific rules to the document.
+   *
+   * @param sd
+   * @return
+   * @throws FHIRException
+   * @throws IOException
+   * @throws EOperationOutcome
+   */
+  public XhtmlNode compositionSummary(StructureDefinition sd) throws FHIRException, IOException, EOperationOutcome {
+    if (this.fpe == null) {
+      this.fpe = new FHIRPathEngine(context.getContext());
+    }
+    List<ElementWithInvariant> invariants = scanForInvariants(sd);
+    if (invariants.isEmpty()) {
+      return null;
+    }
+    XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
+    x.para().tx(context.formatPhrase(RenderingContext.STRUCTURAL_REQUIREMENTS));
+    XhtmlNode tbl = x.table("grid", true);
+    XhtmlNode tr = tbl.tr();
+    tr.th().tx("Section");
+    tr.th().tx("Entry");
+    boolean hasCommentsColumn = false;
+    for (ElementWithInvariant inv : invariants) {
+      if (inv.invariant.hasHuman()) {
+        hasCommentsColumn = true;
+      }
+    }
+    tr.th().tx("Comments");
+    for (ElementWithInvariant inv : invariants) {
+      renderInvariant(tbl, sd, inv, hasCommentsColumn);
+    }
+    return x;
+  }
+
+  private void renderInvariant(XhtmlNode tbl, StructureDefinition sd, ElementWithInvariant inv, boolean hasCommentsColumn) {
+    XhtmlNode tr = tbl.tr();
+    XhtmlNode tdSection = tr.td();
+    XhtmlNode tdEntry = tr.td();
+
+    if (inv.type == StructuralConstraintType.SECTION || inv.type == StructuralConstraintType.SECTION_ENTRY) {
+      // the section might be from context, or from statement
+      String criteria = extractSectionParameter(inv);
+      ElementDefinition section = findMatchingSectionElement(sd, inv, criteria);
+      if (section != null) {
+        tdSection.tx(section.getShort());
+        tdSection.tx(" (");
+        tdSection.i().tx(criteria);
+        tdSection.tx(")");
+      } else {
+        tdSection.i().tx(criteria);
+      }
+    }
+
+    if (inv.type == StructuralConstraintType.SECTION_ENTRY || inv.type == StructuralConstraintType.ENTRY) {
+      // the section might be from context, or from statement
+      String criteria = extractEntryParameter(inv);
+      if (criteria != null) {
+        StructureDefinition sdEntry = findMatchingEntryProfile(inv, criteria);
+        if (sdEntry != null) {
+          tdEntry.ah(sdEntry.getWebPath()).tx(sdEntry.present());
+          tdEntry.tx(" (");
+          tdEntry.i().tx(criteria);
+          tdEntry.tx(")");
+        } else {
+          tdEntry.i().tx(criteria);
+        }
+      } else {
+        tdEntry.i().tx("--");
+      }
+    }
+
+    if (hasCommentsColumn) {
+      XhtmlNode tdComments = tr.td();
+      if (inv.invariant.hasHuman()) {
+        tdComments.tx(inv.invariant.getHuman());
+      }
+    }
+  }
+
+  private StructureDefinition findMatchingEntryProfile(ElementWithInvariant inv, String criteria) {
+    StructureDefinition sd = context.getContext().fetchTypeDefinition(criteria);
+    if (sd == null) {
+      sd = context.getContext().fetchResource(StructureDefinition.class, criteria, IWorkerContext.VersionResolutionRules.PACKAGE);
+    }
+    if (sd != null) {
+      return sd;
+    }
+    for (StructureDefinition sdT : context.getContext().fetchResourcesByType(StructureDefinition.class)) {
+      String codeURL = getCodeForProfile(sdT);
+      if (codeURL != null && codeURL.equals(criteria)) {
+        return sdT;
+      }
+    }
+    return null;
+  }
+
+  private String getCodeForProfile(StructureDefinition sd) {
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      if (ed.getPath().endsWith(".code") && Utilities.charCount(ed.getPath(), '.') == 1) {
+        return getCodeUrlForElement(ed);
+      }
+    }
+    return null;
+  }
+
+  private ElementDefinition findMatchingSectionElement(StructureDefinition sd, ElementWithInvariant inv, String criteria) {
+    if (isSectionElement(inv.element)) {
+      return inv.element;
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      if (isSectionElement(ed) && ed.getId().equals(criteria)) {
+        return ed;
+      }
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      if (isSectionElement(ed) && ed.hasSliceName() &&  ed.getSliceName().equals(criteria)) {
+        return ed;
+      }
+    }
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      if (isSectionElement(ed)) {
+        String codeUrl = getCodeForSection(sd, ed);
+        if (codeUrl != null && codeUrl.equals(criteria)) {
+          return ed;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  private String getCodeForSection(StructureDefinition sd, ElementDefinition edSection) {
+    int index = sd.getSnapshot().getElement().indexOf(edSection)+1;
+    while (index < sd.getSnapshot().getElement().size()) {
+      ElementDefinition ed = sd.getSnapshot().getElement().get(index);
+      if (isSectionElement(ed)) {
+        return null;
+      }
+      if (ed.getPath().endsWith(".section.code")) {
+        return getCodeUrlForElement(ed);
+      }
+      index++;
+    }
+    return null;
+  }
+
+  private String getCodeUrlForElement(ElementDefinition ed) {
+    CodeableConcept cc = ed.hasFixed() ?  ed.getFixedCodeableConcept() : null;
+    if (cc == null && ed.hasPattern()) {
+      cc = ed.getPatternCodeableConcept();
+    }
+    if (cc != null && cc.hasCoding()) {
+      Coding c = cc.getCodingFirstRep();
+      return c.getSystem()+"#"+c.getCode();
+    }
+    return null;
+  }
+
+  private boolean isSectionElement(ElementDefinition element) {
+    return element.getPath().startsWith("Composition.") && element.getPath().endsWith(".section");
+  }
+
+  private String extractSectionParameter(ElementWithInvariant inv) {
+    ExpressionNode node = inv.expression.getInnerFunction("section");
+    if (node == null) {
+      return null;
+    } else {
+      return removeQuotes(node.getParameters().get(0).toString());
+    }
+  }
+
+  private String removeQuotes(String s) {
+    if (s.startsWith("'") && s.endsWith("'")) {
+      return s.substring(1, s.length()-1);
+    } else {
+      return s;
+    }
+  }
+
+  private String extractEntryParameter(ElementWithInvariant inv) {
+    ExpressionNode node = inv.expression.getInnerFunction("section");
+    if (node == null) {
+      node = inv.expression;
+    }
+    ExpressionNode node2 = node.getInnerFunction("entry");
+    if (node2 == null) {
+      return null;
+    } else {
+      return removeQuotes(node2.getParameters().get(0).toString());
+    }
+  }
+
+  private List<ElementWithInvariant> scanForInvariants(StructureDefinition sd) {
+    List<ElementWithInvariant> invariants = new ArrayList<>();
+    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+      for (ElementDefinitionConstraintComponent c : ed.getConstraint()) {
+        try {
+          ExpressionNode expr = fpe.parse(c.getExpression());
+          StructuralConstraintType type = isRelevantExpression(expr);
+          if (type != null) {
+            invariants.add(new ElementWithInvariant(type, ed, c, expr));
+          }
+        } catch (Exception e) {
+          // nothing at this point - notification will be elsewhere
+        }
+      }
+    }
+    return invariants;
+  }
+
+  private StructuralConstraintType isRelevantExpression(ExpressionNode node) {
+    if (node.isSimpleName("Composition")) {
+      ExpressionNode section = node.getInnerFunction("section");
+      if (section != null) {
+        ExpressionNode entry = section.getInnerFunction("entry");
+        if (entry != null) {
+          if (entry.hasInnerFunction("exists")) {
+            return StructuralConstraintType.SECTION_ENTRY;
+          }
+        } else {
+          if (section.hasInnerFunction("exists")) {
+            return StructuralConstraintType.SECTION;
+          }
+        }
+      } else {
+        ExpressionNode entry = node.getInnerFunction("entry");
+        if (entry != null) {
+          if (entry.hasInnerFunction("exists")) {
+            return StructuralConstraintType.ENTRY;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  private enum StructuralConstraintType { SECTION, SECTION_ENTRY, ENTRY}
+
+  private class ElementWithInvariant {
+    ElementDefinition element;
+    ElementDefinitionConstraintComponent invariant;
+    ExpressionNode expression;
+    StructuralConstraintType type;
+    public ElementWithInvariant(StructuralConstraintType type, ElementDefinition ed, ElementDefinitionConstraintComponent invariant, ExpressionNode expr) {
+      this.type = type;
+      this.invariant = invariant;
+      this.element = ed;
+      this.expression = expr;
+    }
+  }
+}

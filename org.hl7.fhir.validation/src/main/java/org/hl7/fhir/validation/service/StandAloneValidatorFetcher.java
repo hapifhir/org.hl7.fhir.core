@@ -51,6 +51,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.validation.instance.utils.CanonicalResourceClient;
 import org.hl7.fhir.validation.service.utils.Common;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 
@@ -59,7 +60,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
 
   List<String> mappingsUris = new ArrayList<>();
   private FilesystemPackageCacheManager pcm;
-  private IWorkerContext context;
+  private @Getter IWorkerContext context;
   private IPackageInstaller installer;
   private Map<String, Boolean> urlList = new HashMap<>();
   private Map<String, String> pidList = new HashMap<>();
@@ -116,6 +117,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
       if (tgt.exists()) {
         return see(tgt, loadFile(tgt));
       }
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = url.split("\\/");
       if (p.length != 2) {
         throw new FHIRException("The URL '" + url + "' was not understood - expecting type/id");                
@@ -237,7 +240,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
     }
 
     // maybe it's a package we've already loaded. if it is, we'll give up
-    for (String s : context.getManager().getloadedPackages()) {
+    for (String s : context.getManager().getLoadedPackages()) {
       if ((s.startsWith(pid+"#") && ver == null) || s.equals(pid+"#"+ver) ) {
         urlList.put(url, false);
         return false;
@@ -333,6 +336,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
   }
 
   private String findBaseUrl(String url) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = url.split("\\/");
     for (int i = 1; i < p.length; i++) {
       if (Utilities.existsInList(p[i], context.getResourceNames())) {
@@ -361,32 +366,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IV
 
   @Override
   public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) throws URISyntaxException {
-    if (url.contains("|")) {
-      url = url.substring(0, url.indexOf("|"));
-    }
-    String[] p = url.split("\\/");
-  
-    String root = getRoot(p, url);
-    if (root != null) {
-      ITerminologyClient terminologyClient = getTerminologyClient(root);
-      return terminologyClient.read(p[p.length - 2], p[p.length - 1]);
-    } else {
-      throw new FHIRException("The URL '" + url + "' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
-    }
-  }
-
-  @Nonnull
-  protected ITerminologyClient getTerminologyClient(String root) throws URISyntaxException {
-    return new TerminologyClientFactory(context.getVersion()).makeClient("source", root, Common.getValidatorUserAgent(), null);
-  }
-
-  private String getRoot(String[] p, String url) {
-    if (p.length > 3 && Utilities.isValidId(p[p.length - 1]) && context.getResourceNames().contains(p[p.length - 2])) {
-      url = url.substring(0, url.lastIndexOf("/"));
-      return url.substring(0, url.lastIndexOf("/"));
-    } else {
-      return null;
-    }
+    return new CanonicalResourceClient(context).fetch(url);
   }
 
   @Override

@@ -136,7 +136,7 @@ public class CodeSystemValidator extends BaseValidator {
           csB = context.fetchCodeSystem(supp, ExtensionUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
           if (csB != null) {
             if (csB.hasValueSet()) {
-              warning(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), vsu.equals(vsu), I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT2, csB.getValueSet());            
+              warning(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), vsu.equals(csB.getValueSet()), I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT2, csB.getValueSet());            
             } else {
               warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT1);
             }

@@ -646,6 +646,8 @@ public class MeasureValidator extends BaseValidator {
     }
     if (tgt == null) {
       // we couldn't resolve it, but we'll draw our own conclusion from the literal URL if we can. 
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = ref.split("\\/");
       if (parts.length == 2 && context.getResourceNamesAsSet().contains(parts[0])) {
         switch (parts[0]) {

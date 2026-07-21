@@ -328,6 +328,8 @@ public abstract class Base implements Serializable, IBase, IElement {
 		  if (n.equalsIgnoreCase(t))
 		  	return true;
 		  if (n.contains(".")) {
+		    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+		    //single literal character split
 		    String[] p = n.split("\\.");
 		    if (p.length == 2 && Utilities.existsInList(p[0], "FHIR", "CDA") && p[1].equalsIgnoreCase(t))
 	        return true;

@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -192,6 +191,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private String date;
   private IValidatorFactory validatorFactory;
   private boolean progress;
+
   @Getter private final List<String> loadedPackages = new ArrayList<>();
   private boolean canNoTS;
   private XVerExtensionManager xverManager;
@@ -236,10 +236,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     packageCacheManager = other.packageCacheManager;
     loaderFactory = other.loaderFactory;
     packageLoadController = other.packageLoadController.copy();
-  }
-
-  public List<String> getLoadedPackages() {
-    return loadedPackages;
   }
 
   // -- Initializations
@@ -316,9 +312,12 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
     
     private Parameters makeExpProfile() {
-      Parameters ep = new Parameters();
-      ep.addParameter("cache-id", UUID.randomUUID().toString().toLowerCase());
-      return ep;
+      // The cache-id is no longer sent as an expansion parameter; it travels as the
+      // X-Cache-Id HTTP header, set only when a server-side cache has actually been
+      // started via $cache-control?mode=start (see TerminologyClientContext, gated by
+      // canUseCacheId). Injecting a random cache-id parameter here made upgraded tx
+      // servers reject the request with "the cache '<id>' is not known to this server".
+      return new Parameters();
     }
 
     public SimpleWorkerContext fromPackage(NpmPackage pi, IContextResourceLoader loader, boolean genSnapshots) throws IOException, FHIRException {
@@ -564,11 +563,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return loadFromPackageAndDependenciesInt(pi, loader, pcm, pi.name()+"#"+pi.version());
   }
 
-  @Override
-  public List<String> getloadedPackages() {
-    return loadedPackages;
-  }
-
   public int loadFromPackageAndDependenciesInt(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm, String path) throws IOException, FHIRException {
     int t = 0;
 
@@ -584,7 +578,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     t = t + loadFromPackageInt(pi, loader, loader.getTypes(), false);
     return t;
   }
-
 
   public int loadFromPackageInt(NpmPackage pi, IContextResourceLoader loader, Set<String> types, boolean isMaster) throws IOException, FHIRException {
     int t = 0;
@@ -609,8 +602,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       types = loader.getTypes();
     }
     boolean hasIG = false;
-    PackageInformation pii = new PackageInformation(pi);
-    pii.setMaster(isMaster);
+    PackageInformation pii = new PackageInformation(pi, isMaster);
     if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad() || !allowLazyLoading) {
       // can't lazy load R2 because of valueset/codesystem implementation
       if (types == null || types.size() == 0) {
@@ -733,6 +725,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     byte[] bytes = IOUtils.toByteArray(stream);
     binaries.put("version.info", new BytesProvider(bytes));
 
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] vi = new String(bytes).split("\\r?\\n");
     for (String s : vi) {
       if (s.startsWith("version=")) {

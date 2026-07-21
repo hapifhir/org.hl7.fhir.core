@@ -493,7 +493,7 @@ public class ExtensionUtilities {
       return;
     Extension ext = getExtension(resource, uri);
     if (ext != null)
-      ext.setValue(new UriType(value));
+      ext.setValue(new CanonicalType(value));
     else
       resource.getExtension().add(new Extension(uri).setValue(new CanonicalType(value)));
   }
@@ -503,7 +503,7 @@ public class ExtensionUtilities {
       return;
     Extension ext = getExtension(resource, uri);
     if (ext != null)
-      ext.setValue(new UriType(value));
+      ext.setValue(new CanonicalType(value));
     else
       resource.getExtension().add(new Extension(uri).setValue(new CanonicalType(value)));
   }

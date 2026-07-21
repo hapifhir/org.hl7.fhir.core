@@ -72,6 +72,8 @@ import org.hl7.fhir.utilities.Utilities;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import javax.xml.XMLConstants;
+
 public class Convert {
 
   private final CDAUtilities cda;
@@ -149,7 +151,10 @@ public class Convert {
   }
 
   public boolean isGuid(String r) {
-    return r.matches("[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, fixed-width UUID pattern, safe
+    boolean isGuid = r.matches("[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}");
+    return isGuid;
   }
 
   public InstantType makeInstantFromTS(Element child) throws Exception {
@@ -293,6 +298,8 @@ public class Convert {
         c.setUse(ContactPointUse.OLD);
     }
     if (e.getAttribute("value") != null) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] url = e.getAttribute("value").split(":");
       if (url.length == 1) {
         c.setValue(url[0].trim());
@@ -428,7 +435,7 @@ public class Convert {
   public Type makeTypeFromANY(Element e) throws Exception {
     if (e == null)
       return null;
-    String t = e.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String t = e.getAttributeNS(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     if (Utilities.noString(t))
       throw new Exception("Missing type on RIM attribute with type any");
     if (t.equals("CD") || t.equals("CE"))

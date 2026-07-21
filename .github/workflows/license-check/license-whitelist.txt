@@ -29,7 +29,6 @@ Eclipse Distribution License - v 1.0
 EDL 1.0
 Unicode/ICU License
 BSD 2-Clause License
-LGPL 2.1
 GNU Lesser General Public License
 MPL 1.1
 Mozilla Public License Version 2.0

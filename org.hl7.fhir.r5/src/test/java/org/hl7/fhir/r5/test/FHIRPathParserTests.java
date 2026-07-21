@@ -6,6 +6,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,12 @@ public class FHIRPathParserTests {
     if (fp == null) {
       fp = new FHIRPathEngine(context);
     }
+  }
+
+  @AfterAll
+  static void tearDown() {
+    fp = null;
+    context = null;
   }
 
   @Test

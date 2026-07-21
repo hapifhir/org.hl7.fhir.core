@@ -687,14 +687,19 @@ public class ValueSetValidator extends BaseValidator {
             } else if ("regex".equals(op)) {
               String err = null;
               try {
-                Pattern.compile(value);
+                @SuppressWarnings("checkstyle:patternUsage")
+                //Regex sourced from FHIR ValueSet filter value; compiled to validate syntax only, not used in matching
+                Pattern compiled = Pattern.compile(value);
               } catch (PatternSyntaxException e) {
                 err = e.getMessage();
               }            
               ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, err == null, I18nConstants.VALUESET_BAD_FILTER_VALUE_VALID_REGEX, property, value, err) && ok;
               ok = rule(errors, "2024-03-09", IssueType.INVALID, stack, !"concept".equals(property), I18nConstants.VALUESET_BAD_PROPERTY_NO_REGEX, property) && ok;
             } else if (Utilities.existsInList(op, "in", "not-in")) {
-              for (String v : value.split("\\,")) {
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //single literal character split
+              String[] filterValues = value.split("\\,");
+              for (String v : filterValues) {
                 ok = checkFilterValue(errors, stack, system, version, ok, property, op, v, rules) && ok;
               }
             } else {
@@ -781,8 +786,11 @@ public class ValueSetValidator extends BaseValidator {
         if (value != null && Utilities.startsWithInList(value, "eq", "ne", "gt", "lt", "ge", "le", "sa", "eb", "ap")) {
           value = value.substring(2);
         }  
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, bounded date/time segments, safe
+        boolean validDateTime = value.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?");
         ok = rule(errors, "2024-03-09", IssueType.INVALID, stack.getLiteralPath(),
-            value.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)?)?)?"), 
+            validDateTime,
             I18nConstants.VALUESET_BAD_FILTER_VALUE_DATETIME, property, value) && ok;
         break;
       case Decimal:
@@ -803,7 +811,10 @@ public class ValueSetValidator extends BaseValidator {
         break;
       case Coding :
         Coding code;
-        if (value.matches("[a-zA-Z][a-zA-Z0-9+.-]*:[^\\s|]+\\|\\S+")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //anchored, non-overlapping segments, safe
+        boolean isCodingLegacyFormat = value.matches("[a-zA-Z][a-zA-Z0-9+.-]*:[^\\s|]+\\|\\S+");
+        if (isCodingLegacyFormat) {
           warning(errors, "2025-07-10", IssueType.INVALID, stack, false, I18nConstants.VALUESET_BAD_FILTER_VALUE_CODED_LEGACY, property, value);
           code = new Coding().setSystem(value.substring(0, value.lastIndexOf("|"))).setCode(value.substring(value.lastIndexOf("|") + 1));
         } else {
@@ -879,6 +890,7 @@ public class ValueSetValidator extends BaseValidator {
     // if we can produce a valid value set from the compose, we expand it, and compare the members
     if (vs != null) {
       // safe to hack it here, because we're otherwise finished with it
+      // and making sure this is not cached
       vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase());
       vs.setVersion(null);
       vs.setExpansion(null);

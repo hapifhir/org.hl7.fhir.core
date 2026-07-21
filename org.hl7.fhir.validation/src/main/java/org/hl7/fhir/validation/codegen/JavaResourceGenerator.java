@@ -137,7 +137,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     
     write("\r\n");
     if (config.getIni().hasProperty("imports", analysis.getName())) {
-      for (String imp : config.getIni().getStringProperty("imports", analysis.getName()).split("\\,")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] imports = config.getIni().getStringProperty("imports", analysis.getName()).split("\\,");
+      for (String imp : imports) {
         write("import "+imp.replace("{{pid}}", packageName)+";\r\n");
       }
     }
@@ -330,7 +333,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		if (VersionUtilities.isR4BVer(version)) {
 		  String extras = config.getIni().getStringProperty("R4B.NullImplementation", analysis.getName());
 		  if (!Utilities.noString(extras)) {
-		    for (String n : extras.split("\\,")) {
+		    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+		    //single literal character split
+		    String[] extraItems = extras.split("\\,");
+		    for (String n : extraItems) {
 		      String t = n.substring(n.indexOf(":")+1);
 		      n = n.substring(0, n.indexOf(":"));
 		      if (n.endsWith("[]")) {
@@ -485,6 +491,17 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 ////
 //  }
 
+  /**
+   * SearchParameters are loaded from external FHIR packages, so their text fields are untrusted.
+   * Neutralise comment delimiters so a value cannot break out of a Javadoc comment into class-level code.
+   */
+  private static String sanitizeJavadoc(String text) {
+    if (text == null) {
+      return "";
+    }
+    return text.replace("*/", "* /").replace("/*", "/ *");
+  }
+
   private void writeSearchParameterField(String name, JavaGenClass clss, boolean isAbstract, SearchParameter sp, String code, String[] theCompositeOf, List<SearchParameter> searchParams, String rn) throws IOException {
     String constName = cleanSpName(code).toUpperCase();
     
@@ -494,12 +511,12 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write(" /**\r\n"); 
     write("   * Search parameter: <b>" + code + "</b>\r\n"); 
     write("   * <p>\r\n");
-    write("   * Description: <b>" + sp.getDescription() + "</b><br>\r\n"); 
+    write("   * Description: <b>" + sanitizeJavadoc(sp.getDescription()) + "</b><br>\r\n");
     write("   * Type: <b>"+ sp.getType().toCode() + "</b><br>\r\n");
-    write("   * Path: <b>" + sp.getExpression() + "</b><br>\r\n"); 
+    write("   * Path: <b>" + sanitizeJavadoc(sp.getExpression()) + "</b><br>\r\n");
     write("   * </p>\r\n");
     write("   */\r\n");
-    write("  @SearchParamDefinition(name=\"" + code + "\", path=\"" + defaultString(sp.getExpression()) + "\", description=\""+Utilities.escapeJava(sp.getDescription())+"\", type=\""+sp.getType().toCode() + "\"");
+    write("  @SearchParamDefinition(name=\"" + code + "\", path=\"" + Utilities.escapeJava(defaultString(sp.getExpression())) + "\", description=\""+Utilities.escapeJava(sp.getDescription())+"\", type=\""+sp.getType().toCode() + "\"");
     if (theCompositeOf != null && theCompositeOf.length > 0) {
       write(", compositeOf={");
       for (int i = 0; i < theCompositeOf.length; i++) {
@@ -571,11 +588,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
      * Client parameter ([name])
      */
     write(" /**\r\n"); 
-    write("   * <b>Fluent Client</b> search parameter constant for <b>" + code + "</b>\r\n"); 
+    write("   * <b>Fluent Client</b> search parameter constant for <b>" + code + "</b>\r\n");
     write("   * <p>\r\n");
-    write("   * Description: <b>" + sp.getDescription() + "</b><br>\r\n"); 
+    write("   * Description: <b>" + sanitizeJavadoc(sp.getDescription()) + "</b><br>\r\n");
     write("   * Type: <b>"+ sp.getType().toCode() + "</b><br>\r\n");
-    write("   * Path: <b>" + sp.getExpression() + "</b><br>\r\n"); 
+    write("   * Path: <b>" + sanitizeJavadoc(sp.getExpression()) + "</b><br>\r\n");
     write("   * </p>\r\n");
     write("   */\r\n");
     write("  public static final ca.uhn.fhir.rest.gclient." + upFirst(sp.getType().toCode()) + "ClientParam" + genericTypes + " " + constName + " = new ca.uhn.fhir.rest.gclient." + upFirst(sp.getType().toCode()) + "ClientParam" + genericTypes + "(SP_" + constName + ");\r\n\r\n"); 
@@ -1652,6 +1669,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 
 
 	private ElementDefinition getElementForPath(StructureDefinition structure, String pathname) throws Exception {
+	  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+	  //single literal character split
 	  String[] path = pathname.split("\\.");
 	  if (!path[0].equals(structure.getName()))
 	    throw new Exception("Element Path '"+pathname+"' is not legal in this context");

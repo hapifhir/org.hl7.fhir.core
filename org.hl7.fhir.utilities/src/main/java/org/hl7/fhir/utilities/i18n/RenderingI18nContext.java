@@ -208,6 +208,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONC_MAP_FROM = "CONC_MAP_FROM";
   public static final String CONC_MAP_GRP = "CONC_MAP_GRP";
   public static final String CONC_MAP_NOT_SPEC = "CONC_MAP_NOT_SPEC";
+  public static final String CONC_MAP_NO_SPEC = "CONC_MAP_NO_SPEC";
   public static final String CONC_MAP_REL = "CONC_MAP_REL";
   public static final String CONC_MAP_SOURCE = "CONC_MAP_SOURCE";
   public static final String CONC_MAP_SOURCE_CARD = "CONC_MAP_SOURCE_CARD";
@@ -1204,6 +1205,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONSENT_HT_DOC_TYPE = "CONSENT_HT_DOC_TYPE";
   public static final String CONSENT_HT_CODE = "CONSENT_HT_CODE";
   public static final String STRUC_DEF_TYPE_CHARACTERISTICS = "STRUC_DEF_TYPE_CHARACTERISTICS";
+  public static final String STRUCTURAL_REQUIREMENTS = "STRUCTURAL_REQUIREMENTS";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";
