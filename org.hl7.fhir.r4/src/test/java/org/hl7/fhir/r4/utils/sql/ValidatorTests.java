@@ -207,4 +207,140 @@ class ValidatorTests {
     assertTrue(unknown.get(0).getMessage().contains("foo"),
         "expected the unknown-property issue to name 'foo' but was: " + unknown.get(0).getMessage());
   }
+
+  // Column type-conformance tests.
+  //
+  // The validator infers a column's type from its FHIRPath expression and, when the ViewDefinition
+  // also declares a type, checks the two are compatible. A declared type must be accepted when it
+  // shares a primitive base family with an inferred type (for example declared 'id' against an
+  // inferred 'string'), while a genuine cross-family mismatch must still be rejected.
+
+  /**
+   * Builds a minimal ViewDefinition on the given resource with a single column that has the given
+   * path and, when non-null, the given declared type.
+   */
+  private static JsonObject viewWithColumn(String resource, String path, String declaredType) {
+    JsonObject vd = new JsonObject();
+    vd.add("resourceType", "ViewDefinition");
+    vd.add("name", "vt_test");
+    vd.add("status", "active");
+    vd.add("resource", resource);
+    JsonObject select = vd.forceArray("select").addObject();
+    JsonObject column = select.forceArray("column").addObject();
+    column.add("name", "c");
+    column.add("path", path);
+    if (declaredType != null) {
+      column.add("type", declaredType);
+    }
+    return vd;
+  }
+
+  /**
+   * Round-trips the ViewDefinition through the JSON parser (so elements carry source locations) and
+   * validates it, returning the parsed object so tests can inspect the resolved column.
+   */
+  private static JsonObject checkAndParse(Validator v, JsonObject vd) {
+    JsonObject parsed;
+    try {
+      parsed = JsonParser.parseObject(JsonParser.compose(vd));
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to round-trip ViewDefinition fixture", e);
+    }
+    v.checkViewDefinition("ViewDefinition", parsed);
+    return parsed;
+  }
+
+  /**
+   * Filters validation issues down to the column type-conformance errors so test failures point
+   * precisely at this check.
+   */
+  private static List<ValidationMessage> typeConformanceIssues(Validator v) {
+    return v.getIssues().stream()
+        .filter(m -> m.getMessage() != null
+            && m.getMessage().contains("does not return a value of the type"))
+        .collect(Collectors.toList());
+  }
+
+  private static void assertNoTypeConformanceIssues(Validator v) {
+    List<ValidationMessage> issues = typeConformanceIssues(v);
+    if (!issues.isEmpty()) {
+      String detail = issues.stream()
+          .map(m -> m.getLocation() + ": " + m.getMessage())
+          .collect(Collectors.joining("\n  "));
+      fail("Expected no type-conformance issues but got:\n  " + detail);
+    }
+  }
+
+  /** Returns the resolved column recorded on the (single) column of a validated ViewDefinition. */
+  private static Column resolvedColumn(JsonObject parsed) {
+    JsonObject column = parsed.getJsonArray("select").asJsonObjects().get(0)
+        .getJsonArray("column").asJsonObjects().get(0);
+    Column col = (Column) column.getUserData("column");
+    assertTrue(col != null, "expected a resolved column to be recorded");
+    return col;
+  }
+
+  static Stream<org.junit.jupiter.params.provider.Arguments> sameFamilyDeclarations() {
+    // resource, path, declared type, expected resolved storage kind. The declared type resolves the
+    // column's type to its base family, so its storage kind is that of the family it belongs to.
+    return Stream.of(
+        // Declared 'id' where the engine types Resource.id as 'string'.
+        org.junit.jupiter.params.provider.Arguments.of("Patient", "id", "id", ColumnKind.String),
+        // Declared 'string' where the engine types Patient.gender as 'code'.
+        org.junit.jupiter.params.provider.Arguments.of("Patient", "gender", "string",
+            ColumnKind.String),
+        // Declared 'positiveInt' where the engine types the integer choice as 'integer'.
+        org.junit.jupiter.params.provider.Arguments.of("Patient", "multipleBirth.ofType(integer)",
+            "positiveInt", ColumnKind.Integer),
+        // Declared 'instant' where the engine types the dateTime choice as 'dateTime'.
+        org.junit.jupiter.params.provider.Arguments.of("Patient", "deceased.ofType(dateTime)",
+            "instant", ColumnKind.DateTime),
+        // Declared 'date' where a FHIRPath function types the value as System.DateTime.
+        org.junit.jupiter.params.provider.Arguments.of("Patient", "birthDate.lowBoundary()", "date",
+            ColumnKind.DateTime));
+  }
+
+  @ParameterizedTest(name = "same-family declared {2} on {0}.{1} is accepted")
+  @MethodSource("sameFamilyDeclarations")
+  void sameFamilyDeclarationIsAccepted(String resource, String path, String declaredType,
+      ColumnKind expectedKind) {
+    Validator v = newValidator();
+    JsonObject parsed = checkAndParse(v, viewWithColumn(resource, path, declaredType));
+    assertNoTypeConformanceIssues(v);
+    // The declared type resolves the column to its base family, giving the expected storage kind.
+    assertEquals(expectedKind, resolvedColumn(parsed).getKind(),
+        "resolved column should carry the declared type's storage kind");
+  }
+
+  @Test
+  @DisplayName("declared instant on a boolean|dateTime union matches the dateTime member")
+  void multiTypeUnionAcceptsWhenOneFamilyMatches() {
+    // Patient.deceased[x] is boolean|dateTime; declaring 'instant' must match the dateTime member.
+    Validator v = newValidator();
+    JsonObject parsed = checkAndParse(v, viewWithColumn("Patient", "deceased", "instant"));
+    assertNoTypeConformanceIssues(v);
+    assertEquals(ColumnKind.DateTime, resolvedColumn(parsed).getKind());
+  }
+
+  static Stream<org.junit.jupiter.params.provider.Arguments> crossFamilyDeclarations() {
+    // resource, path, declared type from a different primitive family than the inferred type.
+    return Stream.of(
+        // Declared 'integer' where the engine types Resource.id as 'string'.
+        org.junit.jupiter.params.provider.Arguments.of("Patient", "id", "integer"),
+        // Declared 'boolean' where the engine types Resource.id as 'string'.
+        org.junit.jupiter.params.provider.Arguments.of("Patient", "id", "boolean"),
+        // Declared 'base64Binary' where the engine types the dateTime choice as 'dateTime'.
+        org.junit.jupiter.params.provider.Arguments.of("Patient", "deceased.ofType(dateTime)",
+            "base64Binary"));
+  }
+
+  @ParameterizedTest(name = "cross-family declared {2} on {0}.{1} is rejected")
+  @MethodSource("crossFamilyDeclarations")
+  void crossFamilyDeclarationIsRejected(String resource, String path, String declaredType) {
+    Validator v = newValidator();
+    check(v, viewWithColumn(resource, path, declaredType));
+    List<ValidationMessage> issues = typeConformanceIssues(v);
+    assertEquals(1, issues.size(),
+        "expected exactly one type-conformance error for a cross-family declaration");
+  }
 }
