@@ -48,8 +48,8 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
   private String output;
 
   @CommandLine.Option(
-    names = {"-test-version"},
-    description = "FHIR version for tests (default: current)"
+    names = {"-version", "-test-version"},
+    description = "Version of the tests to run (default: current - the version of the tests in the ci-build of the tx-ecosystem IG)"
   )
   private String testVersion;
 
@@ -85,7 +85,8 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
 
   @CommandLine.Option(
     names = {"-mode"},
-    description = "Test modes to execute (default: general). Use !general to exclude general mode."
+    split = ",",
+    description = "Test modes to execute, comma-separated or repeated (default: general). Use !general to exclude general mode."
   )
   private List<String> modes = new ArrayList<>();
 
