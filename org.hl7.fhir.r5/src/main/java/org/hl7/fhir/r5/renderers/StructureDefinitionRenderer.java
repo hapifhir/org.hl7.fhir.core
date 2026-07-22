@@ -739,6 +739,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
         }
       }
     }
+    res.removeIf(mm -> mm.valueCount() == 0);
     int i = 0;
     for (ModelMappingProvider mm : res) {
       columns.add(mm.makeColumn("m"+ ++i));
