@@ -112,16 +112,16 @@ public class ManagedWebAccessUtils {
    * SSRF IP-range policy; otherwise does nothing.
    * <p>
    * This must be called explicitly wherever DNS-based validation such as
-   * {@link SsrfProtectingDns} is otherwise relied on: OkHttp's route selection recognizes
+   * {@link NonPublicAddressRejectingDns} is otherwise relied on: OkHttp's route selection recognizes
    * literal IP hosts and uses {@code InetAddress.getByName(host)} directly, never invoking the
    * configured {@code Dns}, so a literal IP would otherwise bypass validation entirely. This is
    * still safe to do eagerly (unlike hostname validation, which must happen no earlier than the
    * connection uses it) - a literal IP address has nothing to re-resolve, so there is no
    * DNS-rebinding window between checking it and connecting to it.
    */
-  public static void throwExceptionIfLiteralIpAndNotPublic(String host) throws IOException {
+  public static void throwExceptionIfLiteralIpAndNonPublicAddress(String host) throws IOException {
     if (InetAddresses.isInetAddress(host)) {
-      throwExceptionIfNotPublicAddress(InetAddresses.forString(host), host);
+      throwExceptionIfNonPublicAddress(InetAddresses.forString(host), host);
     }
   }
 
@@ -129,7 +129,7 @@ public class ManagedWebAccessUtils {
    *
    * <p></p>
    * Validates a single, already-resolved address against the SSRF IP-range policy. Callers
-   * that also control DNS resolution (e.g. {@link SsrfProtectingDns}) should call this with
+   * that also control DNS resolution (e.g. {@link NonPublicAddressRejectingDns}) should call this with
    * the exact address that will be used to open the connection, so nothing is re-resolved
    * between the check and the connection.
    * </p>
@@ -143,7 +143,7 @@ public class ManagedWebAccessUtils {
    *  unspecified, multicast). Used to block SSRF when dereferencing user-supplied
    * links (SMART Health Links/Cards, terminology endpoints, etc.).
    */
-  public static void throwExceptionIfNotPublicAddress(java.net.InetAddress address, String host) throws IOException {
+  public static void throwExceptionIfNonPublicAddress(java.net.InetAddress address, String host) throws IOException {
     if (address.isAnyLocalAddress()   // 0.0.0.0, ::0
       || address.isLoopbackAddress()   // 127.0.0.0/8, ::1
       || address.isLinkLocalAddress()  // 169.254.0.0/16, fe80::/10

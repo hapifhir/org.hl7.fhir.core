@@ -199,6 +199,11 @@ public class TerminologyCacheManager {
     }
 
     @Override
+    public boolean isPrivateNetworkAllowed(URL url) {
+      return false;
+    }
+
+    @Override
     public Map<String, String> getHeaders(URL url) {
       Map<String, String> map = new HashMap<>();
       if (canProvideHeaders(url)) {

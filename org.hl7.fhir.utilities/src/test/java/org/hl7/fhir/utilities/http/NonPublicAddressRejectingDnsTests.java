@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class SsrfProtectingDnsTests {
+class NonPublicAddressRejectingDnsTests {
 
   static Stream<String> nonPublicLiteralIps() {
     return Stream.of(
@@ -38,7 +38,7 @@ class SsrfProtectingDnsTests {
   @ParameterizedTest
   @MethodSource("nonPublicLiteralIps")
   void throwsForNonPublicAddress(String host) {
-    SsrfProtectingDns dns = new SsrfProtectingDns();
+    NonPublicAddressRejectingDns dns = new NonPublicAddressRejectingDns();
 
     assertThatThrownBy(() -> dns.lookup(host))
       .isInstanceOf(UnknownHostException.class)
@@ -48,7 +48,7 @@ class SsrfProtectingDnsTests {
   @ParameterizedTest
   @MethodSource("publicLiteralIps")
   void doesNotThrowForPublicAddress(String host) {
-    SsrfProtectingDns dns = new SsrfProtectingDns();
+    NonPublicAddressRejectingDns dns = new NonPublicAddressRejectingDns();
 
     assertThatCode(() -> dns.lookup(host)).doesNotThrowAnyException();
   }

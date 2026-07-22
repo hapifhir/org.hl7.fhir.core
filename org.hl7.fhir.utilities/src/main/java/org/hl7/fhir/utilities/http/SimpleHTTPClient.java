@@ -49,7 +49,7 @@ import okhttp3.Response;
  *   See {@link IHTTPAuthenticationProvider}.</li>
  * </ol>
  * <p>
- * SSRF protection (when enabled) is enforced via {@link SsrfProtectingDns}: the address that is validated is the
+ * SSRF protection (when enabled) is enforced via {@link NonPublicAddressRejectingDns}: the address that is validated is the
  * exact address OkHttp connects to, so there is no separate resolution step for an attacker to exploit via DNS
  * rebinding.
  */
@@ -85,7 +85,7 @@ public class SimpleHTTPClient {
   private final ToolingClientLogger logger;
 
   private final OkHttpClient baseClient;
-  private final OkHttpClient ssrfProtectedClient;
+  private final OkHttpClient nonPublicAddressRejectingClient;
 
   @Builder
   private SimpleHTTPClient(Long timeout,
@@ -104,7 +104,7 @@ public class SimpleHTTPClient {
     this.ssrfProtectionEnabled = ssrfProtectionEnabled == null || ssrfProtectionEnabled;
     this.logger = logger;
     this.baseClient = buildBaseClient();
-    this.ssrfProtectedClient = buildSsrfProtectedClient(this.baseClient);
+    this.nonPublicAddressRejectingClient = buildNonPublicAddressRejectingClient(this.baseClient);
   }
 
   /**
@@ -132,10 +132,10 @@ public class SimpleHTTPClient {
    * @return A client derived from baseClient, sharing the same  connection pool/dispatcher, but using an SSRF
    * protecting DNS and a distinct RetryInterceptor
    */
-  private OkHttpClient buildSsrfProtectedClient(OkHttpClient baseClient) {
+  private OkHttpClient buildNonPublicAddressRejectingClient(OkHttpClient baseClient) {
     OkHttpClient.Builder builder = baseClient.newBuilder()
       .addInterceptor(new RetryInterceptor(retries))
-      .dns(new SsrfProtectingDns());
+      .dns(new NonPublicAddressRejectingDns());
     if (logger != null) {
       builder.addInterceptor(new LoggingInterceptor(logger));
     }
@@ -208,22 +208,30 @@ public class SimpleHTTPClient {
 
       URL url = uri.toURL();
       boolean authCanHandle = authProvider != null && authProvider.canProvideHeaders(url);
-      boolean skipSsrfCheck = !isSsrfProtectionEnabled() || authCanHandle;
+      boolean privateNetworkAllowed = authProvider != null && authProvider.isPrivateNetworkAllowed(url);
+      boolean skipNonPublicAddressCheck = !isSsrfProtectionEnabled() || privateNetworkAllowed;
 
-      if (authCanHandle && !authProvider.isProtocolAllowed(url)) {
-        throw new IOException("URL does not use permitted protocol: " + url);
+      // Scheme is validated against the auth provider's own allow-list (which reflects a
+      // configured server's allowHttp setting) rather than the blanket https-only check below -
+      // allowHttp and privateNetworkAllowed are independent settings, so a configured server
+      // permitted to use plain http must not be rejected here just because it isn't also
+      // trusted to reach private network space.
+      if (authCanHandle) {
+        if (!authProvider.isProtocolAllowed(url)) {
+          throw new IOException("URL does not use permitted protocol: " + url);
+        }
+      } else if (isSsrfProtectionEnabled()) {
+        ManagedWebAccessUtils.throwExceptionIfNotAllowedScheme(uri);
       }
 
-
-      if (!skipSsrfCheck) {
-        ManagedWebAccessUtils.throwExceptionIfNotAllowedScheme(uri);
-        // SsrfProtectingDns never runs for literal IP hosts (OkHttp bypasses Dns for those), so
-        // they must be validated here instead.
-        ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNotPublic(uri.getHost());
+      if (!skipNonPublicAddressCheck) {
+        // NonPublicAddressRejectingDns never runs for literal IP hosts (OkHttp bypasses Dns for
+        // those), so they must be validated here instead.
+        ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(uri.getHost());
       }
 
       Request request = buildRequest(requestMethod, uri, contentType, content, acceptHeader, extraHeaders, authCanHandle ? url : null);
-      OkHttpClient client = skipSsrfCheck ? baseClient : ssrfProtectedClient;
+      OkHttpClient client = skipNonPublicAddressCheck ? baseClient : nonPublicAddressRejectingClient;
 
       try (Response response = client.newCall(request).execute()) {
         switch (response.code()) {

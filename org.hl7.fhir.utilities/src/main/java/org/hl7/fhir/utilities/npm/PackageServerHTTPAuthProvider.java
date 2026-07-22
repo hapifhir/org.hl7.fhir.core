@@ -31,6 +31,11 @@ public class PackageServerHTTPAuthProvider implements IHTTPAuthenticationProvide
   }
 
   @Override
+  public boolean isPrivateNetworkAllowed(URL url) {
+    return ManagedWebAccessUtils.urlMatchesOrigin(url, this.url) && server.isAllowPrivateNetwork();
+  }
+
+  @Override
   public boolean canProvideHeaders(URL url) {
     return ManagedWebAccessUtils.urlMatchesOrigin(url, this.url);
   }

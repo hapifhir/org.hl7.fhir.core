@@ -44,6 +44,12 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
   }
 
   @Override
+  public boolean isPrivateNetworkAllowed(URL url) {
+    ServerDetailsPOJO serverDetails = getServerDetails(url);
+    return serverDetails != null && Boolean.TRUE.equals(serverDetails.getAllowPrivateNetwork());
+  }
+
+  @Override
   public boolean canProvideHeaders(URL url) {
     ServerDetailsPOJO serverDetails = getServerDetails(url);
     return serverDetails != null;

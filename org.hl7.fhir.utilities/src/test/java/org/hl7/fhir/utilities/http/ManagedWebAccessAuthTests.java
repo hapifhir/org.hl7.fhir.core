@@ -89,6 +89,7 @@ public class ManagedWebAccessAuthTests {
     URL url = server.url(PATH_ON_MOCK_SERVER).url();
     doReturn(true).when(authenticationProvider).isProtocolAllowed(url);
     doReturn(true).when(authenticationProvider).canProvideHeaders(url);
+    doReturn(true).when(authenticationProvider).isPrivateNetworkAllowed(url);
     doReturn(Map.of("Authorization", dummyBasic())).when(authenticationProvider).getHeaders(url);
 
     ManagedFhirWebAccessor managedFhirWebAccessor = new ManagedFhirWebAccessor("dummyAgent", authenticationProvider);
@@ -122,6 +123,7 @@ public class ManagedWebAccessAuthTests {
     URL url = server.url(PATH_ON_MOCK_SERVER).url();
     doReturn(true).when(authenticationProvider).isProtocolAllowed(url);
     doReturn(true).when(authenticationProvider).canProvideHeaders(url);
+    doReturn(true).when(authenticationProvider).isPrivateNetworkAllowed(url);
     doReturn(Map.of("Authorization", "Bearer "+ DUMMY_TOKEN)).when(authenticationProvider).getHeaders(url);
 
     ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", authenticationProvider);
@@ -159,6 +161,7 @@ public class ManagedWebAccessAuthTests {
     URL url = server.url(PATH_ON_MOCK_SERVER).url();
     doReturn(true).when(authenticationProvider).isProtocolAllowed(url);
     doReturn(true).when(authenticationProvider).canProvideHeaders(url);
+    doReturn(true).when(authenticationProvider).isPrivateNetworkAllowed(url);
     doReturn(Map.of("Api-Key", DUMMY_API_KEY)).when(authenticationProvider).getHeaders(url);
     ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor("dummyAgent", authenticationProvider);
     testApiKeyAuthCase(builder);
@@ -200,7 +203,7 @@ public class ManagedWebAccessAuthTests {
       "fhir",
       DUMMY_USERNAME,
       DUMMY_PASSWORD,
-      null, null, true, null);
+      null, null, true, true, null);
   }
 
 @Test
@@ -219,7 +222,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       "fhir",
      null,
       null,
-      DUMMY_TOKEN, null, true, null);
+      DUMMY_TOKEN, null, true, true, null);
   }
 
   @Test
@@ -238,7 +241,7 @@ public void testTokenAuthFromSettings() throws IOException, InterruptedException
       "fhir",
       null,
       null,
-     null, DUMMY_API_KEY, true, null);
+     null, DUMMY_API_KEY, true, true, null);
   }
 
   @Test

@@ -22,9 +22,9 @@ import javax.annotation.Nonnull;
  * This is only invoked for genuine hostnames. OkHttp's route selection recognizes literal IP
  * hosts and short-circuits to {@code InetAddress.getByName(host)} without ever calling this
  * class - callers must validate those separately, e.g. via
- * {@link ManagedWebAccessUtils#throwExceptionIfLiteralIpAndNotPublic(String)}.
+ * {@link ManagedWebAccessUtils#throwExceptionIfLiteralIpAndNonPublicAddress(String)}.
  */
-class SsrfProtectingDns implements Dns {
+class NonPublicAddressRejectingDns implements Dns {
 
   @Override
   public @Nonnull List<InetAddress> lookup(@Nonnull String hostname) throws UnknownHostException {
@@ -32,7 +32,7 @@ class SsrfProtectingDns implements Dns {
 
       for (InetAddress address : addresses) {
         try {
-          ManagedWebAccessUtils.throwExceptionIfNotPublicAddress(address, hostname);
+          ManagedWebAccessUtils.throwExceptionIfNonPublicAddress(address, hostname);
         } catch (IOException e) {
           throw (UnknownHostException) new UnknownHostException(e.getMessage()).initCause(e);
         }

@@ -29,7 +29,7 @@ class ManagedWebAccessUtilsTests {
       "web",
       null,
       null,
-      DUMMY_TOKEN + "for " + urlString, null, null, null);
+      DUMMY_TOKEN + "for " + urlString, null, null, null, null);
   }
 
   // Created by claude-sonnet-4-6
@@ -197,25 +197,25 @@ class ManagedWebAccessUtilsTests {
   class ThrowExceptionIfLiteralIpAndNotPublic {
 
     @ParameterizedTest
-    @MethodSource("org.hl7.fhir.utilities.http.SsrfProtectingDnsTests#nonPublicLiteralIps")
+    @MethodSource("org.hl7.fhir.utilities.http.NonPublicAddressRejectingDnsTests#nonPublicLiteralIps")
     void throwsForNonPublicLiteralIp(String host) {
-      assertThatThrownBy(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNotPublic(host))
+      assertThatThrownBy(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(host))
         .isInstanceOf(IOException.class);
     }
 
     @ParameterizedTest
-    @MethodSource("org.hl7.fhir.utilities.http.SsrfProtectingDnsTests#publicLiteralIps")
+    @MethodSource("org.hl7.fhir.utilities.http.NonPublicAddressRejectingDnsTests#publicLiteralIps")
     void doesNotThrowForPublicLiteralIp(String host) {
-      assertThatCode(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNotPublic(host))
+      assertThatCode(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(host))
         .doesNotThrowAnyException();
     }
 
     @ParameterizedTest
     @MethodSource("org.hl7.fhir.utilities.http.ManagedWebAccessUtilsTests#nonPublicLiteralIpHostnames")
     void doesNotThrowForNonLiteralIpHostname(String host) {
-      // A no-op by design: hostnames are validated by resolving them (see SsrfProtectingDns),
+      // A no-op by design: hostnames are validated by resolving them (see NonPublicAddressRejectingDns),
       // not by this method, even when - as here - they happen to resolve to a non-public address.
-      assertThatCode(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNotPublic(host))
+      assertThatCode(() -> ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(host))
         .doesNotThrowAnyException();
     }
   }
@@ -224,18 +224,18 @@ class ManagedWebAccessUtilsTests {
   class ThrowExceptionIfNotPublicAddress {
 
     @ParameterizedTest
-    @MethodSource("org.hl7.fhir.utilities.http.SsrfProtectingDnsTests#nonPublicLiteralIps")
+    @MethodSource("org.hl7.fhir.utilities.http.NonPublicAddressRejectingDnsTests#nonPublicLiteralIps")
     void throwsForNonPublicAddress(String literalIp) throws Exception {
       InetAddress address = InetAddress.getByName(literalIp);
-      assertThatThrownBy(() -> ManagedWebAccessUtils.throwExceptionIfNotPublicAddress(address, literalIp))
+      assertThatThrownBy(() -> ManagedWebAccessUtils.throwExceptionIfNonPublicAddress(address, literalIp))
         .isInstanceOf(IOException.class);
     }
 
     @ParameterizedTest
-    @MethodSource("org.hl7.fhir.utilities.http.SsrfProtectingDnsTests#publicLiteralIps")
+    @MethodSource("org.hl7.fhir.utilities.http.NonPublicAddressRejectingDnsTests#publicLiteralIps")
     void doesNotThrowForPublicAddress(String literalIp) throws Exception {
       InetAddress address = InetAddress.getByName(literalIp);
-      assertThatCode(() -> ManagedWebAccessUtils.throwExceptionIfNotPublicAddress(address, literalIp))
+      assertThatCode(() -> ManagedWebAccessUtils.throwExceptionIfNonPublicAddress(address, literalIp))
         .doesNotThrowAnyException();
     }
   }

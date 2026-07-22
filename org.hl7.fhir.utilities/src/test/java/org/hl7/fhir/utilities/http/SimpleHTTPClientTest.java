@@ -336,7 +336,28 @@ public class SimpleHTTPClientTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("httpMethods")
-    void allowsLoopbackWhenAuthProviderCanProvideHeaders(String method, HttpCall call) throws IOException {
+    void blocksLoopbackWhenAuthProviderCanProvideHeadersButPrivateNetworkNotAllowed(String method, HttpCall call) throws IOException {
+      String url = server.url("resource").url().toString();
+      URL expectedUrl = URI.create(url).toURL();
+      server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys")); // consumed only if wrongly allowed
+
+      IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
+      doReturn(true).when(authenticationProvider).canProvideHeaders(expectedUrl);
+      doReturn(true).when(authenticationProvider).isProtocolAllowed(expectedUrl);
+      doReturn(Map.of()).when(authenticationProvider).getHeaders(expectedUrl);
+      // isPrivateNetworkAllowed left at its Mockito default (false): being able to supply auth
+      // headers for a server must not, by itself, exempt it from SSRF protection - only an
+      // explicit isPrivateNetworkAllowed(true) should.
+
+      SimpleHTTPClient client = SimpleHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(true).build();
+
+      assertThrows(IOException.class, () -> call.apply(client, url));
+      assertThat(server.getRequestCount()).isZero();
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("httpMethods")
+    void allowsLoopbackWhenAuthProviderAllowsPrivateNetwork(String method, HttpCall call) throws IOException {
       String url = server.url("resource").url().toString();
       URL expectedUrl = URI.create(url).toURL();
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
@@ -344,6 +365,7 @@ public class SimpleHTTPClientTest {
       IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
       doReturn(true).when(authenticationProvider).canProvideHeaders(expectedUrl);
       doReturn(true).when(authenticationProvider).isProtocolAllowed(expectedUrl);
+      doReturn(true).when(authenticationProvider).isPrivateNetworkAllowed(expectedUrl);
       doReturn(Map.of()).when(authenticationProvider).getHeaders(expectedUrl);
 
       SimpleHTTPClient client = SimpleHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(true).build();
@@ -396,10 +418,10 @@ public class SimpleHTTPClientTest {
       // The initial URL is genuinely a loopback MockWebServer address too, so simulate it being
       // public (pretend the address check passes for it) to isolate the behavior under test: that
       // the redirect target's address is independently, and really, re-resolved and re-checked -
-      // by SsrfProtectingDns, not by a one-time check that's discarded before connecting.
+      // by NonPublicAddressRejectingDns, not by a one-time check that's discarded before connecting.
       //
       // Both hops resolve the same hostname ("localhost"), which this environment resolves to
-      // more than one address (IPv4 and IPv6 loopback) - SsrfProtectingDns validates every
+      // more than one address (IPv4 and IPv6 loopback) - NonPublicAddressRejectingDns validates every
       // address the lookup returns, so the bypass below must exempt exactly the initial hop's
       // addresses (however many that is here) and nothing more, or a leftover exemption would
       // wrongly swallow the redirect target's re-check too.
@@ -413,7 +435,7 @@ public class SimpleHTTPClientTest {
         // redirect target's own scheme check is unaffected.
         mocked.when(() -> ManagedWebAccessUtils.throwExceptionIfNotAllowedScheme(URI.create(initialUrl)))
           .thenAnswer(invocation -> null);
-        mocked.when(() -> ManagedWebAccessUtils.throwExceptionIfNotPublicAddress(any(InetAddress.class), anyString()))
+        mocked.when(() -> ManagedWebAccessUtils.throwExceptionIfNonPublicAddress(any(InetAddress.class), anyString()))
           .thenAnswer(invocation -> {
             if (remainingBypasses.getAndUpdate(n -> n > 0 ? n - 1 : n) > 0) {
               return null; // pretend this address, from the initial hop's resolution, is public

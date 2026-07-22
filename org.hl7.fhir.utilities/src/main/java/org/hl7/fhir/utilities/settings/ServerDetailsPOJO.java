@@ -46,5 +46,13 @@ public class ServerDetailsPOJO {
      */
     Boolean allowHttp;
 
+    /**
+     * When true, allows this server to be reached even if it resolves to a private/internal
+     * address (RFC1918, loopback, link-local, cloud metadata, etc.), bypassing SSRF protection
+     * for this server only. Use this for internal servers that legitimately live on a private
+     * network - independent of whether they also require {@link #allowHttp}.
+     */
+    Boolean allowPrivateNetwork;
+
     Map<String, String> headers;
 }

@@ -44,7 +44,8 @@ class PackageServerTest {
       .withServerType(PackageServer.PackageServerType.NPM)
       .withUsername(MockPackageServer.DUMMY_USERNAME)
       .withPassword(MockPackageServer.DUMMY_PASSWORD)
-      .withAllowHttp(true);
+      .withAllowHttp(true)
+      .withAllowPrivateNetwork(true);
     PackageClient packageClient = new PackageClient(testServer);
 
     InputStream inputStream = packageClient.fetch(MockPackageServer.DUMMY_PACKAGE_NAME, MockPackageServer.DUMMY_PACKAGE_VERSION);
@@ -77,7 +78,8 @@ class PackageServerTest {
       .withAuthenticationMode(HTTPAuthenticationMode.TOKEN)
       .withServerType(PackageServer.PackageServerType.NPM)
       .withToken(MockPackageServer.DUMMY_TOKEN)
-      .withAllowHttp(true);
+      .withAllowHttp(true)
+      .withAllowPrivateNetwork(true);
     PackageClient packageClient = new PackageClient(testServer);
 
     InputStream inputStream = packageClient.fetch(MockPackageServer.DUMMY_PACKAGE_NAME, MockPackageServer.DUMMY_PACKAGE_VERSION);
@@ -108,7 +110,8 @@ class PackageServerTest {
 
     PackageServer testServer = new PackageServer(packageServerUrl)
       .withServerType(PackageServer.PackageServerType.NPM)
-      .withAllowHttp(true);
+      .withAllowHttp(true)
+      .withAllowPrivateNetwork(true);
     PackageClient packageClient = new PackageClient(testServer);
 
     InputStream inputStream = packageClient.fetch(MockPackageServer.DUMMY_PACKAGE_NAME, MockPackageServer.DUMMY_PACKAGE_VERSION);
@@ -136,7 +139,8 @@ class PackageServerTest {
     server.enqueueDummyPackage();
 
     PackageServer testServer = new PackageServer(packageServerUrl)
-      .withAllowHttp(true);
+      .withAllowHttp(true)
+      .withAllowPrivateNetwork(true);
 
     PackageClient packageClient = new PackageClient(testServer);
     InputStream inputStream = packageClient.fetch(MockPackageServer.DUMMY_PACKAGE_NAME, MockPackageServer.DUMMY_PACKAGE_VERSION);

@@ -49,6 +49,9 @@ public class PackageServer {
   @Getter
   private boolean allowHttp;
 
+  @Getter
+  private boolean allowPrivateNetwork;
+
   public static final String SECONDARY_SERVER = "https://packages.fhir.org";
   public static final String PRIMARY_SERVER = "https://packages2.fhir.org/packages";
 
@@ -77,7 +80,8 @@ public class PackageServer {
       .withPassword(pojo.getPassword())
       .withToken(pojo.getToken())
       .withApiKey(pojo.getApikey())
-      .withAllowHttp(pojo.getAllowHttp());
+      .withAllowHttp(pojo.getAllowHttp())
+      .withAllowPrivateNetwork(pojo.getAllowPrivateNetwork());
   }
 
   private static boolean isPackageServer(String serverType) {
@@ -134,6 +138,8 @@ public class PackageServer {
     packageServer.password = this.password;
     packageServer.token = this.token;
     packageServer.apiKey = this.apiKey;
+    packageServer.allowHttp = this.allowHttp;
+    packageServer.allowPrivateNetwork = this.allowPrivateNetwork;
     return packageServer;
   }
 
@@ -176,6 +182,12 @@ public class PackageServer {
   public PackageServer withAllowHttp(boolean allowHttp) {
     PackageServer packageServer = this.copy();
     packageServer.allowHttp = allowHttp;
+    return packageServer;
+  }
+
+  public PackageServer withAllowPrivateNetwork(boolean allowPrivateNetwork) {
+    PackageServer packageServer = this.copy();
+    packageServer.allowPrivateNetwork = allowPrivateNetwork;
     return packageServer;
   }
 }

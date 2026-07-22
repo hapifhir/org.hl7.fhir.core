@@ -14,4 +14,10 @@ public interface IHTTPAuthenticationProvider {
 
   public Map<String, String> getHeaders(URL url);
 
+  /**
+   * Whether {@code url} is explicitly trusted to bypass SSRF protection (private-address,
+   * DNS-rebinding, and metadata-host checks), independent of {@link #isProtocolAllowed(URL)}.
+   */
+  public boolean isPrivateNetworkAllowed(URL url);
+
 }
