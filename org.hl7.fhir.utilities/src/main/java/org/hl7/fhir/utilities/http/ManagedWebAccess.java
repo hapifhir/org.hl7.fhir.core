@@ -105,6 +105,14 @@ public class ManagedWebAccess {
     ManagedWebAccess.accessPolicy = accessPolicy;
   }
 
+  /**
+   * This globally turns off the following:
+   *  * requiring all web access to be via https protocol
+   *  * preventing access to private and non-public servers
+   * WARNING: By default this is TRUE, and it is not recommended to set this to false. It is left as a setting intended
+   * for use in testing, and never in production.
+   * @param ssrfProtectionEnabled
+   */
   public static void setSsrfProtectionEnabled(boolean ssrfProtectionEnabled) {
     ManagedWebAccess.ssrfProtectionEnabled = ssrfProtectionEnabled;
   }
@@ -241,15 +249,21 @@ public class ManagedWebAccess {
     defaultAuthenticationProvider = new ServerDetailsPOJOHTTPAuthProvider(serverDetailsList);
   }
 
+  /**
+   * Returns a secure https url for the provided url unless a matching URL is included in fhir-settings.json
+   *
+   * @param url an http or https url
+   * @return an https url
+   */
   public static String makeSecureRef(String url) {
-    if (url == null || !url.startsWith("http://") || isLocal(url)) {
+    if (url == null || !url.startsWith("http://") || isDefinedInSettings(url)) {
       return url;
     } else {
       return url.replace("http://", "https://");
     }
   }
 
-  private static boolean isLocal(String url) {
+  private static boolean isDefinedInSettings(String url) {
     URI uri;
     try {
       uri = new URI(url);
@@ -274,6 +288,4 @@ public class ManagedWebAccess {
       return false;
     }
   }
-
-
 }

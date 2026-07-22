@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 
 public class ManagedWebAccessUtils {
 
+  private ManagedWebAccessUtils() {
+    throw new UnsupportedOperationException("This utility class should not be instantiated");
+  }
+
   public static ServerDetailsPOJO getServer(Iterable<String> serverTypes, String url, Iterable<ServerDetailsPOJO> serverAuthDetails) {
     if (serverAuthDetails != null) {
       for (ServerDetailsPOJO serverDetails : serverAuthDetails) {

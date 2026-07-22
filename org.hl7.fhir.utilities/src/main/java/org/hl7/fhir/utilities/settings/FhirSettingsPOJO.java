@@ -46,6 +46,14 @@ public class FhirSettingsPOJO {
   private String txFhirLocal;
 
   private Boolean ignoreDefaultPackageServers;
+
+  /**
+   * This globally turns off the following:
+   *   * requiring all web access to be via https protocol
+   *   * preventing access to private and non-public servers
+   *  WARNING: By default this is TRUE, and it is not recommended to set this to false. It is left as a setting intended
+   *  for use in testing, and never in production.
+   */
   private Boolean ssrfProtectionEnabled;
 
   private List<ServerDetailsPOJO> servers;

@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * An {@link IHTTPAuthenticationProvider} implementation that provides authentication information for specific URLs by performing a
- * URL prefix match against an iterable collection of {@link ServerDetailsPOJO} objects. The information for the first
- * matching entry will be used.
+ * An {@link IHTTPAuthenticationProvider} implementation that provides authentication information for specific URLs by
+ * performing a URL prefix match against an iterable collection of {@link ServerDetailsPOJO} objects. The information
+ * for the first matching entry will be used.
  */
 public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationProvider {
 

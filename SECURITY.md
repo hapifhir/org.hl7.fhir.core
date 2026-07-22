@@ -42,8 +42,14 @@ restricting path access to particular directories.
 ## Network access
 
 The library will access the web to download needed collateral, or to access terminology resources or servers.
-All access is by http(s) using the okhttp library or java.net.HttpURLConnection, and is controlled by the class
-ManagedWebAccess. Authentication is for individual servers can be configured through the fhir-settings.json file.
+Access is currently implemented using the okhttp library, and is controlled by the class ManagedWebAccess. 
+Authentication for individual servers can be configured through the fhir-settings.json file.
+
+By default all web access is restricted in the following ways:
+* https is the required protocol for all requests
+* Private or non-public network access is not permitted
+These restrictions can be removed on a per-server basis in the fhir-settings.json file.
+
 You can set the static features of this class to completely cut the library off from the web, provide your own web
 accessor, provide your own provider of authentication, or limit the web resources accessed to particular domains or
 sub-domains. See the ManagedWebAccess JavaDoc for details.
