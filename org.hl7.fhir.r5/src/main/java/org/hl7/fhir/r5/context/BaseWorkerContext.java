@@ -1173,6 +1173,42 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   // --- validate code -------------------------------------------------------------------------------
 
+  /**
+   * The language to pass to the ecosystem when routing a validation: only when the operation is
+   * actually language sensitive - that is, when a display is being checked - per the tx ecosystem
+   * specification (language specific claims are invisible to language-free requests)
+   */
+  private String validationLanguage(ValidationOptions options, Coding code) {
+    if (options == null || !options.hasLanguages() || code == null || !code.hasDisplay()) {
+      return null;
+    }
+    return options.getLanguages().getSource();
+  }
+
+  private String validationLanguage(ValidationOptions options, CodeableConcept code) {
+    if (options == null || !options.hasLanguages() || code == null) {
+      return null;
+    }
+    for (Coding c : code.getCoding()) {
+      if (c.hasDisplay()) {
+        return options.getLanguages().getSource();
+      }
+    }
+    return null;
+  }
+
+  private String validationLanguage(ValidationOptions options, List<CodingValidationRequest> items) {
+    if (options == null || !options.hasLanguages()) {
+      return null;
+    }
+    for (CodingValidationRequest t : items) {
+      if (t.getCoding() != null && t.getCoding().hasDisplay()) {
+        return options.getLanguages().getSource();
+      }
+    }
+    return null;
+  }
+
   @Override
   public ValidationResult validateCode(ValidationOptions options, String system, String version, String code, String display) {
     assert options != null;
@@ -1269,7 +1305,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     if (items.size() > 0) {
-      TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
+      TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, validationLanguage(options, items));
       Parameters resp = processBatch(tc, batch, systems, items.size());
       List<ParametersParameterComponent> validations = resp.getParameters("validation");
       for (int i = 0; i < items.size(); i++) {
@@ -1531,7 +1567,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     Set<String> systems = findRelevantSystems(code, vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, validationLanguage(options, code));
 
     String csumm = cachingAllowed && txCache != null ? txCache.summary(code) : null;
     if (cachingAllowed && txCache != null) {
@@ -1791,7 +1827,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return new ValidationResult(IssueSeverity.ERROR, "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE, null);
     }
     Set<String> systems = findRelevantSystems(code, vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, validationLanguage(options, code));
 
     txLog("$validate " + txCache.summary(code) + " for " + txCache.summary(vs) + " on " + tc.getAddress());
     try {
