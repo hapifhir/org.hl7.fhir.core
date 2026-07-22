@@ -430,6 +430,22 @@ public class PolicyEnforcingHTTPClientTest {
       assertThrows(IOException.class, () -> client.post(url, "text/plain", "body".getBytes(), "application/json"));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+      "https://[::1]/",              // IPv6 loopback, bracketed as java.net.URI/HttpUrl require
+      "https://[fd00::1]/",          // IPv6 unique local address (ULA)
+      "https://[::ffff:10.0.0.1]/"   // IPv4-mapped IPv6 literal embedding a private IPv4 address
+    })
+    void blocksIpv6LiteralNonPublicUrlsWhenProtectionEnabled(String url) {
+      // Regression test: java.net.URI.getHost() returns IPv6 literals bracketed ("[::1]"), which
+      // Guava's InetAddresses does not recognize as a literal IP - validating that instead of
+      // HttpUrl.host() (bracket-free) let every IPv6 literal host bypass the SSRF check entirely,
+      // since OkHttp also never invokes the configured Dns for a literal IP host.
+      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(true).build();
+
+      assertThrows(IOException.class, () -> client.get(url, "application/json"));
+    }
+
     @Test
     void blocksRedirectFromPublicUrlToNonPublicAddress() throws UnknownHostException {
       String initialUrl = server.url("start").url().toString();

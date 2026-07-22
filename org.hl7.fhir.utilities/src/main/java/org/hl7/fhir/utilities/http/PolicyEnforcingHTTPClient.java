@@ -204,6 +204,7 @@ public class PolicyEnforcingHTTPClient {
       }
 
       URL url = uri.toURL();
+      HttpUrl httpUrl = HttpUrl.get(uri);
       boolean authCanHandle = authProvider != null && authProvider.canProvideHeaders(url);
       boolean privateNetworkAllowed = authProvider != null && authProvider.isPrivateNetworkAllowed(url);
       boolean skipNonPublicAddressCheck = !isSsrfProtectionEnabled() || privateNetworkAllowed;
@@ -223,11 +224,14 @@ public class PolicyEnforcingHTTPClient {
 
       if (!skipNonPublicAddressCheck) {
         // NonPublicAddressRejectingDns never runs for literal IP hosts (OkHttp bypasses Dns for
-        // those), so they must be validated here instead.
-        ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(uri.getHost());
+        // those), so they must be validated here instead. Validate httpUrl.host() - the exact,
+        // bracket-free host OkHttp will connect to - not uri.getHost(), which returns IPv6
+        // literals bracketed ("[::1]") and so is never recognized as a literal IP by Guava,
+        // silently skipping this check for every IPv6 literal host.
+        ManagedWebAccessUtils.throwExceptionIfLiteralIpAndNonPublicAddress(httpUrl.host());
       }
 
-      Request request = buildRequest(requestMethod, uri, contentType, content, acceptHeader, extraHeaders, authCanHandle ? url : null);
+      Request request = buildRequest(requestMethod, httpUrl, contentType, content, acceptHeader, extraHeaders, authCanHandle ? url : null);
       OkHttpClient client = skipNonPublicAddressCheck ? baseClient : nonPublicAddressRejectingClient;
 
       try (Response response = client.newCall(request).execute()) {
@@ -249,8 +253,8 @@ public class PolicyEnforcingHTTPClient {
     }
   }
 
-  private Request buildRequest(String requestMethod, URI uri, String contentType, byte[] content, String acceptHeader, Iterable<HTTPHeader> extraHeaders, URL authUrl) throws IOException {
-    Request.Builder builder = new Request.Builder().url(HttpUrl.get(uri));
+  private Request buildRequest(String requestMethod, HttpUrl httpUrl, String contentType, byte[] content, String acceptHeader, Iterable<HTTPHeader> extraHeaders, URL authUrl) throws IOException {
+    Request.Builder builder = new Request.Builder().url(httpUrl);
     for (HTTPHeader header : headers) {
       builder.header(header.getName(), header.getValue());
     }
