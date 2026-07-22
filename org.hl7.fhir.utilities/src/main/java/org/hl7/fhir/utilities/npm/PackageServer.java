@@ -80,8 +80,8 @@ public class PackageServer {
       .withPassword(pojo.getPassword())
       .withToken(pojo.getToken())
       .withApiKey(pojo.getApikey())
-      .withAllowHttp(pojo.getAllowHttp())
-      .withAllowPrivateNetwork(pojo.getAllowPrivateNetwork());
+      .withAllowHttp(Boolean.TRUE.equals(pojo.getAllowHttp()))
+      .withAllowPrivateNetwork(Boolean.TRUE.equals(pojo.getAllowPrivateNetwork()));
   }
 
   private static boolean isPackageServer(String serverType) {

@@ -37,7 +37,7 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
       return false;
     }
     if (url.getProtocol().equals("http")) {
-      return serverDetails.getAllowHttp();
+      return Boolean.TRUE.equals(serverDetails.getAllowHttp());
     } else {
       return url.getProtocol().equals("https");
     }
