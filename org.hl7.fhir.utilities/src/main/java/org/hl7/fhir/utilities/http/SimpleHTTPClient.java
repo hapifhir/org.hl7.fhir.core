@@ -237,7 +237,7 @@ public class SimpleHTTPClient {
               throw new IOException("Location header missing in " + response.code() + " redirect");
             }
             location = URLDecoder.decode(location, StandardCharsets.UTF_8);
-            uri = originalUri.resolve(location); // Deal with relative URLs
+            uri = uri.resolve(location); // Deal with relative URLs, resolved against the current hop
           }
           default -> {
             byte[] body = response.body().bytes();

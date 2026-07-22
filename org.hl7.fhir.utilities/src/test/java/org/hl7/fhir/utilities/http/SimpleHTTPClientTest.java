@@ -124,6 +124,44 @@ public class SimpleHTTPClientTest {
     }
   }
 
+  @Test
+  void testRelativeRedirectResolvesAgainstCurrentHopNotOriginalUrl() throws IOException {
+    MockWebServer serverB = new MockWebServer();
+    try {
+      serverB.start();
+      HttpUrl hop2Url = serverB.url("hop2");
+
+      // Hop 1 (on `server`): redirects to hop 2 on a different origin (serverB).
+      server.enqueue(
+        new MockResponse()
+          .setResponseCode(302)
+          .addHeader("Location", hop2Url.url().toString()));
+      // A "poison" response: only consumed if the bug regresses and the relative redirect below
+      // is wrongly resolved against `server`'s origin (the original request) instead of
+      // serverB's (the current hop) - which would send a third request back to `server`.
+      server.enqueue(new MockResponse().setResponseCode(200).setBody("WRONG-SERVER"));
+
+      // Hop 2 (on serverB): redirects with a *relative* Location. This must resolve against
+      // serverB's own origin, not `server`'s.
+      serverB.enqueue(
+        new MockResponse()
+          .setResponseCode(302)
+          .addHeader("Location", "/final"));
+      serverB.enqueue(new MockResponse().setResponseCode(200).setBody("Success"));
+
+      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
+
+      HTTPResult res = httpClient.get(server.url("start").url().toString(), "application/json");
+
+      assertThat(res.getCode()).isEqualTo(200);
+      assertThat(res.getContentAsString()).isEqualTo("Success");
+      assertThat(server.getRequestCount()).isEqualTo(1); // only the initial request
+      assertThat(serverB.getRequestCount()).isEqualTo(2); // hop2, then the relative redirect target
+    } finally {
+      serverB.shutdown();
+    }
+  }
+
   @ParameterizedTest
   @MethodSource("getRedirectArgs")
   void testRedirectNoProvidedAuth(int code, String[] urlArgs) throws IOException, InterruptedException {
