@@ -916,9 +916,17 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
   private void renderRatio(RenderingStatus status, XhtmlNode x, ResourceWrapper type) throws FHIRFormatError, DefinitionException, IOException {
-    renderQuantity(status, x, type.child("numerator"));
+    if (type.has("numerator")) {
+      renderQuantity(status, x, type.child("numerator"));
+    } else {
+      x.tx("?");
+    }
     x.tx("/");
-    renderQuantity(status, x, type.child("denominator"));      
+    if (type.has("denominator")) {
+      renderQuantity(status, x, type.child("denominator"));
+    } else {
+      x.tx("?");
+    }
     checkRenderExtensions(status, x, type);
   }
 
