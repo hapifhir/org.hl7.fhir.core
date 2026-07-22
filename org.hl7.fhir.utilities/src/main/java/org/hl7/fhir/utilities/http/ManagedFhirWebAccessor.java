@@ -14,7 +14,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
   /**
    * The singleton instance of the HttpClient, used for all requests.
    */
-  private SimpleHTTPClient httpClient;
+  private PolicyEnforcingHTTPClient httpClient;
 
   private long timeout;
   private TimeUnit timeoutUnit;
@@ -53,7 +53,14 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     return request.withHeaders(headers);
   }
 
-  protected HTTPRequest requestWithAuthorizationHeaders(HTTPRequest httpRequest) {
+  /**
+   * Adds default and static headers only - no {@link IHTTPAuthenticationProvider} headers. Safe
+   * to use with a request that will be handed to {@link PolicyEnforcingHTTPClient}: it holds the same
+   * auth provider (see {@link #getHttpClient()}) and attaches its headers itself, per redirect
+   * hop, which is redirect-safe in a way that pre-baking them here is not (see
+   * {@link #requestWithAuthorizationHeaders}).
+   */
+  protected HTTPRequest requestWithDefaultAndStaticHeaders(HTTPRequest httpRequest) {
     HTTPRequest requestWithDefaultHeaders = httpRequestWithDefaultHeaders(httpRequest);
 
     List<HTTPHeader> headers = new ArrayList<>();
@@ -62,6 +69,24 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
       headers.add(new HTTPHeader(entry.getKey(), entry.getValue()));
     }
+    return httpRequest.withHeaders(headers);
+  }
+
+  /**
+   * Pre-bakes auth headers, evaluated once against {@code httpRequest}'s original URL, into the
+   * request. Only safe for the MANAGED access path, whose external
+   * {@link ManagedWebAccess.IFhirWebAccessor} implementation has no visibility into this class's
+   * auth provider and so must receive a fully-prepared request - unlike DIRECT, MANAGED never
+   * routes through {@link PolicyEnforcingHTTPClient}, so there is no per-hop mechanism to defer to.
+   * The DIRECT path must not use this: baking these headers into a request that
+   * {@link PolicyEnforcingHTTPClient} then follows redirects with would resend them across a
+   * cross-origin redirect target.
+   */
+  protected HTTPRequest requestWithAuthorizationHeaders(HTTPRequest httpRequest) {
+    HTTPRequest requestWithDefaultAndStaticHeaders = requestWithDefaultAndStaticHeaders(httpRequest);
+
+    List<HTTPHeader> headers = new ArrayList<>();
+    requestWithDefaultAndStaticHeaders.getHeaders().forEach(headers::add);
 
     if (getHttpAuthHeaderProvider() != null && getHttpAuthHeaderProvider().canProvideHeaders(httpRequest.getUrl())) {
       for (Map.Entry<String, String> entry : getHttpAuthHeaderProvider().getHeaders(httpRequest.getUrl()).entrySet()) {
@@ -74,26 +99,26 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
   public HTTPResult httpCall(HTTPRequest httpRequest) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT: {
-        HTTPRequest requestWithAuthorizationHeaders = requestWithAuthorizationHeaders(httpRequest);
-        assert requestWithAuthorizationHeaders.getUrl() != null;
-        String url = requestWithAuthorizationHeaders.getUrl().toString();
+        HTTPRequest requestWithDefaultAndStaticHeaders = requestWithDefaultAndStaticHeaders(httpRequest);
+        assert requestWithDefaultAndStaticHeaders.getUrl() != null;
+        String url = requestWithDefaultAndStaticHeaders.getUrl().toString();
 
         if (!ManagedWebAccess.inAllowedPaths(url)) {
           throw new IOException("The pathname '" + url + "' cannot be accessed by policy");
         }
 
-        SimpleHTTPClient client = getHttpClient();
-        Iterable<HTTPHeader> headers = requestWithAuthorizationHeaders.getHeaders();
-        String contentType = requestWithAuthorizationHeaders.getContentType();
-        byte[] body = requestWithAuthorizationHeaders.getBody();
+        PolicyEnforcingHTTPClient client = getHttpClient();
+        Iterable<HTTPHeader> headers = requestWithDefaultAndStaticHeaders.getHeaders();
+        String contentType = requestWithDefaultAndStaticHeaders.getContentType();
+        byte[] body = requestWithDefaultAndStaticHeaders.getBody();
 
-        return switch (requestWithAuthorizationHeaders.getMethod()) {
+        return switch (requestWithDefaultAndStaticHeaders.getMethod()) {
           case GET -> client.get(url, null, headers);
           case POST -> client.post(url, contentType, body, null, headers);
           case PUT -> client.put(url, contentType, body, null, headers);
           case DELETE -> client.delete(url, null, headers);
           case OPTIONS -> client.options(url, null, headers);
-          case HEAD, PATCH -> throw new IOException("HTTP method " + requestWithAuthorizationHeaders.getMethod() + " is not supported");
+          case HEAD, PATCH -> throw new IOException("HTTP method " + requestWithDefaultAndStaticHeaders.getMethod() + " is not supported");
         };
       }
       case MANAGED:
@@ -107,9 +132,9 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     }
   }
 
-  private SimpleHTTPClient getHttpClient() {
+  private PolicyEnforcingHTTPClient getHttpClient() {
     if (httpClient == null) {
-      httpClient = SimpleHTTPClient.builder()
+      httpClient = PolicyEnforcingHTTPClient.builder()
         .timeout(timeout)
         .timeoutUnit(timeoutUnit)
         .retries(retries)

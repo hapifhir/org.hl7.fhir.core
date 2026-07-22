@@ -12,6 +12,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.http.okhttpimpl.LoggingInterceptor;
+import org.hl7.fhir.utilities.http.okhttpimpl.NonPublicAddressRejectingDns;
 import org.hl7.fhir.utilities.http.okhttpimpl.ProxyAuthenticator;
 import org.hl7.fhir.utilities.http.okhttpimpl.RetryInterceptor;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -53,7 +54,7 @@ import okhttp3.Response;
  * exact address OkHttp connects to, so there is no separate resolution step for an attacker to exploit via DNS
  * rebinding.
  */
-public class SimpleHTTPClient {
+public class PolicyEnforcingHTTPClient {
 
   private static final int MAX_REDIRECTS = 5;
   public static final String ACCEPT_HEADER_KEY = "Accept";
@@ -88,13 +89,13 @@ public class SimpleHTTPClient {
   private final OkHttpClient nonPublicAddressRejectingClient;
 
   @Builder
-  private SimpleHTTPClient(Long timeout,
-                           TimeUnit timeoutUnit,
-                           Integer retries,
-                           Collection<HTTPHeader> headers,
-                           IHTTPAuthenticationProvider authProvider,
-                           Boolean ssrfProtectionEnabled,
-                           ToolingClientLogger logger) {
+  private PolicyEnforcingHTTPClient(Long timeout,
+                                    TimeUnit timeoutUnit,
+                                    Integer retries,
+                                    Collection<HTTPHeader> headers,
+                                    IHTTPAuthenticationProvider authProvider,
+                                    Boolean ssrfProtectionEnabled,
+                                    ToolingClientLogger logger) {
     this.timeout = timeout != null ? timeout : DEFAULT_TIMEOUT;
     this.timeoutUnit = timeoutUnit != null ? timeoutUnit : DEFAULT_TIMEOUT_UNIT;
     this.retries = retries != null ? retries : DEFAULT_RETRIES;
@@ -129,8 +130,8 @@ public class SimpleHTTPClient {
   /**
    *
    * @param baseClient the base client to work from
-   * @return A client derived from baseClient, sharing the same  connection pool/dispatcher, but using an SSRF
-   * protecting DNS and a distinct RetryInterceptor
+   * @return A client derived from baseClient, sharing the same connection pool/dispatcher, but using an SSRF
+   * protecting DNS
    */
   private OkHttpClient buildNonPublicAddressRejectingClient(OkHttpClient baseClient) {
     OkHttpClient.Builder builder = baseClient.newBuilder()

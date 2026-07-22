@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.http;
 
+import org.hl7.fhir.utilities.http.okhttpimpl.NonPublicAddressRejectingDns;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 

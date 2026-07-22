@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.http;
 
 import com.google.common.net.InetAddresses;
+import org.hl7.fhir.utilities.http.okhttpimpl.NonPublicAddressRejectingDns;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 
 import java.io.IOException;

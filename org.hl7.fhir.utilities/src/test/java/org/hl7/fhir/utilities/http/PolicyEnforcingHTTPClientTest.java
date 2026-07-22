@@ -33,7 +33,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-public class SimpleHTTPClientTest {
+public class PolicyEnforcingHTTPClientTest {
 
   public static final String EXAMPLE_INVALID_REDIRECTED = "http://example.invalid/redirected";
   private MockWebServer server;
@@ -53,7 +53,7 @@ public class SimpleHTTPClientTest {
         .setBody("Monkeys").setResponseCode(200)
     );
 
-    SimpleHTTPClient http = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
+    PolicyEnforcingHTTPClient http = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
     HTTPResult res = http.get(serverUrl.url().toString(), "application/json");
 
@@ -105,7 +105,7 @@ public class SimpleHTTPClientTest {
         .setBody("Monkeys").setResponseCode(200)
     );
 
-    SimpleHTTPClient httpClient = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
+    PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
     HTTPResult res = httpClient.get(urls[0].url().toString(), "application/json");
 
@@ -149,7 +149,7 @@ public class SimpleHTTPClientTest {
           .addHeader("Location", "/final"));
       serverB.enqueue(new MockResponse().setResponseCode(200).setBody("Success"));
 
-      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
+      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("start").url().toString(), "application/json");
 
@@ -175,7 +175,7 @@ public class SimpleHTTPClientTest {
       doReturn(true).when(authenticationProvider).isProtocolAllowed(urls[i].url());
       doReturn(Map.of("Authorization", "Bearer thisToken")).when(authenticationProvider).getHeaders(urls[i].url());
     }
-    final SimpleHTTPClient httpClient = SimpleHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(false).build();
+    final PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(false).build();
 
     assertThrows(UnknownHostException.class, () -> httpClient.get(urls[0].url().toString(), "application/json"));
 
@@ -212,7 +212,7 @@ public class SimpleHTTPClientTest {
       doReturn(Map.of("Authorization", "Bearer thisToken")).when(authenticationProvider).getHeaders(urls[i].url());
     }
 
-    final SimpleHTTPClient httpClient = SimpleHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(false).build();
+    final PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(false).build();
 
     assertThrows(UnknownHostException.class, () -> httpClient.get(urls[0].url().toString(), "application/json"));
 
@@ -257,7 +257,7 @@ public class SimpleHTTPClientTest {
       server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error"));
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
+      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
 
@@ -271,7 +271,7 @@ public class SimpleHTTPClientTest {
       server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error 1"));
       server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error 2"));
 
-      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
+      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
 
@@ -286,7 +286,7 @@ public class SimpleHTTPClientTest {
     void zeroRetriesMeansExactlyOneAttempt() throws IOException, InterruptedException {
       server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error"));
 
-      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().retries(0).ssrfProtectionEnabled(false).build();
+      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().retries(0).ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
 
@@ -302,7 +302,7 @@ public class SimpleHTTPClientTest {
       }
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().retries(retries).ssrfProtectionEnabled(false).build();
+      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().retries(retries).ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
 
@@ -319,7 +319,7 @@ public class SimpleHTTPClientTest {
           .addHeader("Location", target.url().toString()));
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      SimpleHTTPClient httpClient = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
+      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("start").url().toString(), "application/json");
 
@@ -335,7 +335,7 @@ public class SimpleHTTPClientTest {
 
     @FunctionalInterface
     interface HttpCall {
-      HTTPResult apply(SimpleHTTPClient client, String url) throws IOException;
+      HTTPResult apply(PolicyEnforcingHTTPClient client, String url) throws IOException;
     }
 
     static Stream<Arguments> httpMethods() {
@@ -352,7 +352,7 @@ public class SimpleHTTPClientTest {
       String url = server.url("resource").url().toString();
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      SimpleHTTPClient client = SimpleHTTPClient.builder().ssrfProtectionEnabled(true).build();
+      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(true).build();
 
       assertThrows(IOException.class, () -> call.apply(client, url));
       assertThat(server.getRequestCount()).isZero();
@@ -364,7 +364,7 @@ public class SimpleHTTPClientTest {
       String url = server.url("resource").url().toString();
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      SimpleHTTPClient client = SimpleHTTPClient.builder().ssrfProtectionEnabled(false).build();
+      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
       HTTPResult res = call.apply(client, url);
 
@@ -387,7 +387,7 @@ public class SimpleHTTPClientTest {
       // headers for a server must not, by itself, exempt it from SSRF protection - only an
       // explicit isPrivateNetworkAllowed(true) should.
 
-      SimpleHTTPClient client = SimpleHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(true).build();
+      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(true).build();
 
       assertThrows(IOException.class, () -> call.apply(client, url));
       assertThat(server.getRequestCount()).isZero();
@@ -406,7 +406,7 @@ public class SimpleHTTPClientTest {
       doReturn(true).when(authenticationProvider).isPrivateNetworkAllowed(expectedUrl);
       doReturn(Map.of()).when(authenticationProvider).getHeaders(expectedUrl);
 
-      SimpleHTTPClient client = SimpleHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(true).build();
+      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(true).build();
 
       HTTPResult res = call.apply(client, url);
 
@@ -423,7 +423,7 @@ public class SimpleHTTPClientTest {
       "http://metadata.google.internal/" // explicitly blocked host
     })
     void blocksVariousNonPublicUrlsWhenProtectionEnabled(String url) {
-      SimpleHTTPClient client = SimpleHTTPClient.builder().ssrfProtectionEnabled(true).build();
+      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(true).build();
 
       assertThrows(IOException.class, () -> client.get(url, "application/json"));
       assertThrows(IOException.class, () -> client.put(url, "text/plain", "body".getBytes(), "application/json"));
@@ -451,7 +451,7 @@ public class SimpleHTTPClientTest {
       server.enqueue(
         new MockResponse().setResponseCode(200).setBody("Monkeys")); // consumed only if the redirect is wrongly allowed
 
-      SimpleHTTPClient client = SimpleHTTPClient.builder().ssrfProtectionEnabled(true).build();
+      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(true).build();
 
       // The initial URL is genuinely a loopback MockWebServer address too, so simulate it being
       // public (pretend the address check passes for it) to isolate the behavior under test: that

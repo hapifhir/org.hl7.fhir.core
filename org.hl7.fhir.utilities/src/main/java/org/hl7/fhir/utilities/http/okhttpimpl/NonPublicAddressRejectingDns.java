@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities.http;
+package org.hl7.fhir.utilities.http.okhttpimpl;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 import okhttp3.Dns;
+import org.hl7.fhir.utilities.http.ManagedWebAccessUtils;
+
 import javax.annotation.Nonnull;
 
 
@@ -24,7 +26,7 @@ import javax.annotation.Nonnull;
  * class - callers must validate those separately, e.g. via
  * {@link ManagedWebAccessUtils#throwExceptionIfLiteralIpAndNonPublicAddress(String)}.
  */
-class NonPublicAddressRejectingDns implements Dns {
+public class NonPublicAddressRejectingDns implements Dns {
 
   @Override
   public @Nonnull List<InetAddress> lookup(@Nonnull String hostname) throws UnknownHostException {

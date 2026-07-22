@@ -188,6 +188,52 @@ public class ManagedWebAccessAuthTests {
   }
 
   @Test
+  public void testDirectDoesNotLeakAuthHeadersToCrossOriginRedirect() throws IOException, InterruptedException {
+    HttpUrl serverUrl = server.url(PATH_ON_MOCK_SERVER);
+    MockWebServer serverB = new MockWebServer();
+    try {
+      serverB.start();
+      HttpUrl serverBUrl = serverB.url("redirected");
+
+      server.enqueue(
+        new MockResponse()
+          .setResponseCode(302)
+          .addHeader("Location", serverBUrl.url().toString()));
+      serverB.enqueue(new MockResponse().setBody("Dummy Response").setResponseCode(200));
+
+      IHTTPAuthenticationProvider authenticationProvider = Mockito.mock(IHTTPAuthenticationProvider.class);
+      doReturn(true).when(authenticationProvider).isProtocolAllowed(serverUrl.url());
+      doReturn(true).when(authenticationProvider).canProvideHeaders(serverUrl.url());
+      doReturn(Map.of("Authorization", dummyBasic())).when(authenticationProvider).getHeaders(serverUrl.url());
+      // canProvideHeaders/getHeaders left at their Mockito defaults (false / empty map) for
+      // serverBUrl - authenticationProvider is scoped to `server`'s origin only, mirroring a
+      // real per-server auth provider like ServerDetailsPOJOHTTPAuthProvider.
+
+      ManagedFhirWebAccessor webAccessor = new ManagedFhirWebAccessor(DUMMY_AGENT, authenticationProvider) {
+        // SSRF protection would otherwise catch every loopback address used by both mock
+        // servers; that's not what this test is about.
+        @Override
+        protected boolean isSSRFProtectionEnabled() {
+          return false;
+        }
+      };
+
+      HTTPResult result = webAccessor.httpCall(new HTTPRequest().withUrl(serverUrl.toString()).withMethod(HTTPRequest.HttpMethod.GET));
+
+      assertThat(result.getCode()).isEqualTo(200);
+      assertThat(result.getContentAsString()).isEqualTo("Dummy Response");
+
+      RecordedRequest hop1Request = server.takeRequest();
+      assertThat(hop1Request.getHeader("Authorization")).isEqualTo(dummyBasic());
+
+      RecordedRequest hop2Request = serverB.takeRequest();
+      assertThat(hop2Request.getHeader("Authorization")).isNull();
+    } finally {
+      serverB.shutdown();
+    }
+  }
+
+  @Test
   public void testBasicAuthFromSettings() throws IOException, InterruptedException {
     ManagedFhirWebAccessor builder = new ManagedFhirWebAccessor(
       "dummyAgent",
