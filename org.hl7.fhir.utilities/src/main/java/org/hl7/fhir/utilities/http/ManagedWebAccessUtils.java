@@ -140,17 +140,20 @@ public class ManagedWebAccessUtils {
    * </p>
    *  Throws IOException if {@code url}'s host resolves to any non-public address
    *  (loopback, link-local incl. 169.254/16, site-local RFC1918, IPv6 ULA fc00::/7,
-   *  unspecified, multicast). Used to block SSRF when dereferencing user-supplied
+   *  unspecified incl. 0.0.0.0/8, multicast, carrier-grade NAT, NAT64-synthesized
+   *  addresses). Used to block SSRF when dereferencing user-supplied
    * links (SMART Health Links/Cards, terminology endpoints, etc.).
    */
   public static void throwExceptionIfNonPublicAddress(java.net.InetAddress address, String host) throws IOException {
     if (address.isAnyLocalAddress()   // 0.0.0.0, ::0
+      || isThisNetworkAddress(address) // 0.0.0.0/8
       || address.isLoopbackAddress()   // 127.0.0.0/8, ::1
       || address.isLinkLocalAddress()  // 169.254.0.0/16, fe80::/10
       || address.isSiteLocalAddress()  // 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, fec0::/10
       || address.isMulticastAddress()  // 224.0.0.0/4, ff00::/8
-      || isUniqueLocalAddress(address) // fd00::/8
+      || isUniqueLocalAddress(address) // fc00::/7
       || isCarrierGradeNatAddress(address) // 100.64.0.0/10
+      || isNat64SynthesizedAddress(address) // 64:ff9b::/96
       || explicitlyBlockedInetAddresses.contains(address)) {
       throw new IOException("Refusing to fetch from non-public address "
         + address.getHostAddress() + " for host " + host);
@@ -165,9 +168,10 @@ public class ManagedWebAccessUtils {
    * @see <a href="https://en.wikipedia.org/wiki/Unique_local_address">Unique local address on Wikipedia</a>
    */
   private static boolean isUniqueLocalAddress(InetAddress address) {
-    // ULA is actually defined as fc00::/7 (so both fc00::/8 and fd00::/8). However, only the latter is actually
-    // defined right now, so let's be conservative.
-    return address instanceof Inet6Address && (address.getAddress()[0] & 0xff) == 0xfd;
+    // ULA is defined as fc00::/7, covering both fc00::/8 and fd00::/8. Only fd00::/8 is
+    // currently allocated, but fc00::/8 has no other legitimate public use, so block the whole
+    // /7 now rather than waiting on an allocation that would otherwise need a code change.
+    return address instanceof Inet6Address && (address.getAddress()[0] & 0xfe) == 0xfc;
   }
 
   /**
@@ -181,5 +185,34 @@ public class ManagedWebAccessUtils {
     if (!(address instanceof Inet4Address)) return false;
     var bytes = address.getAddress();
     return bytes[0] == 100 && ((bytes[1] & 0xFF) >= 64 && (bytes[1] & 0xFF) <= 127);
+  }
+
+  /**
+   * Determine if an IP address lives within the "this network" range (0.0.0.0/8). {@code isAnyLocalAddress()}
+   * only recognizes the single unspecified address (0.0.0.0); the rest of the /8 is also reserved.
+   *
+   * @param address The IP address to test.
+   * @return Whether this address sits in the 0.0.0.0/8 range.
+   */
+  private static boolean isThisNetworkAddress(InetAddress address) {
+    return address instanceof Inet4Address && address.getAddress()[0] == 0;
+  }
+
+  /**
+   * Determine if an IP address is NAT64-synthesized (64:ff9b::/96) - an IPv6 address with an IPv4 address
+   * embedded in its low 32 bits. Unlike IPv4-mapped addresses (::ffff:0:0/96), {@link InetAddress} does not
+   * unwrap these, so an embedded private IPv4 address is invisible to every other check in this method
+   * unless this range is blocked outright.
+   *
+   * @param address The IP address to test.
+   * @return Whether this address sits in the NAT64 well-known prefix.
+   * @see <a href="https://datatracker.ietf.org/doc/html/rfc6052">RFC 6052</a>
+   */
+  private static boolean isNat64SynthesizedAddress(InetAddress address) {
+    if (!(address instanceof Inet6Address)) return false;
+    var bytes = address.getAddress();
+    return bytes[0] == 0x00 && bytes[1] == 0x64 && bytes[2] == (byte) 0xff && bytes[3] == (byte) 0x9b
+      && bytes[4] == 0 && bytes[5] == 0 && bytes[6] == 0 && bytes[7] == 0
+      && bytes[8] == 0 && bytes[9] == 0 && bytes[10] == 0 && bytes[11] == 0;
   }
 }

@@ -24,8 +24,11 @@ class NonPublicAddressRejectingDnsTests {
       "::1",              // IPv6 loopback
       "::",               // IPv6 unspecified
       "fd00::1",          // IPv6 unique local address (ULA)
+      "fc00::1",          // IPv6 unique local address (ULA, other half of fc00::/7)
       "fe80::1",          // IPv6 link-local
       "ff02::1",          // IPv6 multicast
+      "0.1.2.3",          // 0.0.0.0/8 "this network", other than the unspecified address itself
+      "64:ff9b::7f00:1",  // NAT64-synthesized address embedding 127.0.0.1
       "169.254.169.254",  // AWS/GCP/Azure IMDS (explicitly blocked, also link-local)
       "192.0.0.192"       // Oracle metadata (explicitly blocked)
     );
