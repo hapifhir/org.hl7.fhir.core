@@ -180,12 +180,13 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         .servers(
           List.of(
             ServerDetailsPOJO.builder()
-            .url("http://local.fhir.org:960")
-            .authenticationType("none")
-            .type("web")
-            .allowHttp(true)
-            .headers(Collections.emptyMap())
-            .build()
+              .url("http://local.fhir.org:960")
+              .authenticationType("none")
+              .type("web")
+              .allowHttp(true)
+              .allowPrivateNetwork(true)
+              .headers(Collections.emptyMap())
+              .build()
           )).build()
     );
     // Exercise the server-side terminology caching protocol across the validation

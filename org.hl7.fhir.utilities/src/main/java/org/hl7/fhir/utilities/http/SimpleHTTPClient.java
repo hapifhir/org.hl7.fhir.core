@@ -134,11 +134,7 @@ public class SimpleHTTPClient {
    */
   private OkHttpClient buildNonPublicAddressRejectingClient(OkHttpClient baseClient) {
     OkHttpClient.Builder builder = baseClient.newBuilder()
-      .addInterceptor(new RetryInterceptor(retries))
       .dns(new NonPublicAddressRejectingDns());
-    if (logger != null) {
-      builder.addInterceptor(new LoggingInterceptor(logger));
-    }
     return builder.build();
   }
 
