@@ -96,7 +96,7 @@ public class ValidateCommand extends ValidationEngineCommand {
   LocaleOptions localeOptions = new LocaleOptions();
 
   @CommandLine.ArgGroup(validate = false, heading = "FHIR Settings Options%n")
-  FHIRSettingsOptions fhirSettingsOptions;
+  FHIRSettingsOptions fhirSettingsOptions = new FHIRSettingsOptions();
 
   @CommandLine.ArgGroup(validate = false, heading = "Managed Web Access Options%n")
   ManagedWebAccessOptions managedWebAccessOptions = new ManagedWebAccessOptions();

@@ -11,11 +11,15 @@ import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.special.PackageReGenerator;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
 import picocli.CommandLine;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -587,9 +591,10 @@ class CLITests {
 
     @Test
     @DisplayName("Test -fhir-settings is checked by the CLI")
-    void fhirSettingsFileExistsTest() {
+    void fhirSettingsFileExistsTest(@TempDir Path tempDir) throws IOException {
 
-      String[] args = {"-fhir-settings", "dummySettingsFile.json", "dummyFile.json"};
+      Path settingsFile = Files.createFile(tempDir.resolve("dummySettingsFile.json"));
+      String[] args = {"-fhir-settings", settingsFile.toString(), "dummyFile.json"};
 
       ValidationService validationService = mock(ValidationService.class);
 

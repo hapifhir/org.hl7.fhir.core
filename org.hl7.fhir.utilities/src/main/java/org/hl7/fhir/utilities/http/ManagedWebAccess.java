@@ -39,6 +39,7 @@ import java.util.function.BinaryOperator;
 
 import lombok.Getter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
@@ -63,6 +64,7 @@ import static org.hl7.fhir.utilities.Utilities.existsInList;
  * @author Grahame
  *
  */
+@Slf4j
 public class ManagedWebAccess {
 
   public interface IWebAccessor {
@@ -114,6 +116,9 @@ public class ManagedWebAccess {
    * @param ssrfProtectionEnabled
    */
   public static void setSsrfProtectionEnabled(boolean ssrfProtectionEnabled) {
+    if (!ssrfProtectionEnabled) {
+      log.warn("Running with SSRF protection disabled. This is not recommended for production environments.");
+    }
     ManagedWebAccess.ssrfProtectionEnabled = ssrfProtectionEnabled;
   }
 

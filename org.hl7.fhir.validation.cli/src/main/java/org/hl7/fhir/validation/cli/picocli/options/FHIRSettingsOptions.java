@@ -17,24 +17,32 @@ public class FHIRSettingsOptions {
 
   @CommandLine.Option(names = ("-fhir-settings"),
     scope = CommandLine.ScopeType.INHERIT,
+    converter = FhirSettingsFilePathConverter.class,
   description = "the location of the fhir-settings.json file. This contains global settings used throughout the validator. Documentation on fhir-settings.json is available at: " + FHIR_SETTINGS_DOCS_WEB_ADDRESS)
   @With
   public String fhirSettingsFilePath = null;
 
   public void applyOptions() {
     if (fhirSettingsFilePath != null) {
-      try {
-        if (!ManagedFileAccess.file(fhirSettingsFilePath).exists()) {
-          throw new IllegalArgumentException("Cannot find fhir-settings file: " + fhirSettingsFilePath);
-        }
-      } catch (IOException e) {
-        throw new IllegalArgumentException("Error reading fhir-settings file: " + fhirSettingsFilePath);
-      }
       FhirSettings.setExplicitFilePath(fhirSettingsFilePath);
     }
   }
 
   public FHIRSettingsOptions() {
     // All public fields should be set in their declaration for Picocli purposes, so we do nothing here.
+  }
+
+  public static class FhirSettingsFilePathConverter implements CommandLine.ITypeConverter<String> {
+    @Override
+    public String convert(String value) throws Exception {
+      try {
+        if (!ManagedFileAccess.file(value).exists()) {
+          throw new CommandLine.TypeConversionException("Cannot find fhir-settings file: " + value);
+        }
+      } catch (IOException e) {
+        throw new CommandLine.TypeConversionException("Error reading fhir-settings file: " + value);
+      }
+      return value;
+    }
   }
 }
