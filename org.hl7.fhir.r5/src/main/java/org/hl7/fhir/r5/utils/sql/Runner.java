@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -73,6 +74,7 @@ public class Runner implements IHostApplicationServices {
   private String resourceName;
   private List<ValidationMessage> issues;
   private int resCount;
+  private int currentRowIndex = 0;
 
 
   public IWorkerContext getContext() {
@@ -128,6 +130,7 @@ public class Runner implements IHostApplicationServices {
 
   public WorkContext prepare(String path, JsonObject viewDefinition) {
     WorkContext wc = new WorkContext(viewDefinition);
+    currentRowIndex = 0;
     if (context == null) {
       throw new FHIRException("No context provided");
     }
@@ -154,6 +157,7 @@ public class Runner implements IHostApplicationServices {
   }
   
   public void processResource(WorkContext wc, Base b) {
+    currentRowIndex = 0;
     if (observer != null) {
       observer.handleRow(b, -1, resCount);
     }
@@ -192,49 +196,74 @@ public class Runner implements IHostApplicationServices {
 
   private void executeSelect(JsonObject vd, JsonObject select, Base b, List<List<Cell>> rows) {
     List<Base> focus = new ArrayList<>();
+    boolean iterates = false;
 
     if (select.has("forEach")) {
+      iterates = true;
       focus.addAll(executeForEach(vd, select, b));
     } else if (select.has("forEachOrNull")) {
-
-      focus.addAll(executeForEachOrNull(vd, select, b));  
+      iterates = true;
+      focus.addAll(executeForEachOrNull(vd, select, b));
+      // Emit one synthetic null row when the iterated collection is empty, so
+      // that %rowIndex still resolves to 0 and other paths yield null cells.
       if (focus.isEmpty()) {
-        List<Column> columns = (List<Column>) select.getUserData(UserDataNames.db_columns);
-        for (List<Cell> row : rows) {
-          for (Column c : columns) {
-            Cell cell = cell(row, c.getName());
-            if (cell == null) {
-              row.add(new Cell(c, null));
-            }
-          }
-        }
-        return;
+        focus.add(null);
       }
+    } else if (select.has("repeat")) {
+      focus.addAll(executeRepeat(vd, select, b));
     } else {
       focus.add(b);
     }
-
-    //  } else if (select.has("unionAll")) {
-    //    focus.addAll(executeUnion(select, b));
 
     List<List<Cell>> tempRows = new ArrayList<>();
     tempRows.addAll(rows);
     rows.clear();
 
-    for (Base f : focus) {
-      List<List<Cell>> rowsToAdd = cloneRows(tempRows);  
+    // Save the enclosing %rowIndex so nested iteration scopes do not leak the
+    // child counter back to the parent on exit.
+    int savedRowIndex = currentRowIndex;
+    try {
+      int idx = 0;
+      for (Base f : focus) {
+        if (iterates) {
+          currentRowIndex = idx;
+        }
+        List<List<Cell>> rowsToAdd = cloneRows(tempRows);
 
-      for (JsonObject column : select.getJsonObjects("column")) {
-        executeColumn(vd, column, f, rowsToAdd);
+        for (JsonObject column : select.getJsonObjects("column")) {
+          executeColumn(vd, column, f, rowsToAdd);
+        }
+
+        // For the synthetic null row produced by an empty forEachOrNull, do
+        // not descend into nested selects or unions: they would clear the
+        // pending rows and add nothing back, swallowing the null row. Instead
+        // ensure every column declared anywhere under this select (including
+        // nested selects and unionAll branches) is present with a null cell.
+        if (f != null) {
+          for (JsonObject sub : select.getJsonObjects("select")) {
+            executeSelect(vd, sub, f, rowsToAdd);
+          }
+
+          executeUnionAll(vd, select.getJsonObjects("unionAll"), f, rowsToAdd);
+        } else {
+          @SuppressWarnings("unchecked")
+          List<Column> allColumns = (List<Column>) select.getUserData(UserDataNames.db_columns);
+          if (allColumns != null) {
+            for (List<Cell> row : rowsToAdd) {
+              for (Column c : allColumns) {
+                if (cell(row, c.getName()) == null) {
+                  row.add(new Cell(c));
+                }
+              }
+            }
+          }
+        }
+
+        rows.addAll(rowsToAdd);
+        idx++;
       }
-
-      for (JsonObject sub : select.getJsonObjects("select")) {
-        executeSelect(vd, sub, f, rowsToAdd);
-      }
-
-      executeUnionAll(vd, select.getJsonObjects("unionAll"), f, rowsToAdd);
-
-      rows.addAll(rowsToAdd);
+    } finally {
+      currentRowIndex = savedRowIndex;
     }
   }
 
@@ -281,15 +310,34 @@ public class Runner implements IHostApplicationServices {
     ExpressionNode n = (ExpressionNode) focus.getUserData(UserDataNames.db_forEachOrNull);
     List<Base> result = new ArrayList<>();
     result.addAll(fpe.evaluate(vd, b, n));
-    return result;  
+    return result;
+  }
+
+  @SuppressWarnings("unchecked")
+  private List<Base> executeRepeat(JsonObject vd, JsonObject focus, Base b) {
+    List<ExpressionNode> nodes = (List<ExpressionNode>) focus.getUserData(UserDataNames.db_repeat);
+    List<Base> result = new ArrayList<>();
+    if (nodes != null && b != null) {
+      expandRepeat(vd, b, nodes, result);
+    }
+    return result;
+  }
+
+  private void expandRepeat(JsonObject vd, Base b, List<ExpressionNode> nodes, List<Base> result) {
+    for (ExpressionNode node : nodes) {
+      for (Base child : fpe.evaluate(vd, b, node)) {
+        result.add(child);
+        expandRepeat(vd, child, nodes, result);
+      }
+    }
   }
 
   private void executeColumn(JsonObject vd, JsonObject column, Base b, List<List<Cell>> rows) {
     ExpressionNode n = (ExpressionNode) column.getUserData(UserDataNames.db_path);
-    List<Base> bl2 = new ArrayList<>();
-    if (b != null) {
-      bl2.addAll(fpe.evaluate(vd, b, n));
-    }
+    // Evaluate even when b is null: this is the synthetic null row produced by
+    // an empty forEachOrNull. The engine tolerates a null base; %rowIndex still
+    // resolves via resolveConstant, and field navigation yields the empty list.
+    List<Base> bl2 = new ArrayList<>(fpe.evaluate(vd, b, n));
     Column col = (Column) column.getUserData(UserDataNames.db_column);
     if (col == null) {
       log.error("Error");
@@ -350,10 +398,12 @@ public class Runner implements IHostApplicationServices {
       if (b instanceof BaseDateTimeType) {
         BaseDateTimeType d = (BaseDateTimeType) b;
         return Value.makeDate(d.primitiveValue(), d.getValue());
-      } else if (b.isPrimitive() && b.isDateTime()) { // ElementModel
-        return Value.makeDate(b.primitiveValue(), b.dateTimeValue().getValue());
+      } else if (b.isPrimitive() && Utilities.existsInList(b.fhirType(), "date", "dateTime", "instant")) {
+        // ElementModel does not override isDateTime() / dateTimeValue(); reconstruct via the model class.
+        DateTimeType d = new DateTimeType(b.primitiveValue());
+        return Value.makeDate(d.primitiveValue(), d.getValue());
       } else {
-        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to an integer column for column "+column.getName());
+        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to a dateTime column for column "+column.getName());
       }
     case Decimal:
       if (b instanceof DecimalType) {
@@ -362,7 +412,7 @@ public class Runner implements IHostApplicationServices {
       } else if (b.isPrimitive()) { // ElementModel
         return Value.makeDecimal(b.primitiveValue(), new BigDecimal(b.primitiveValue()));
       } else {
-        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to an integer column for column "+column.getName());
+        throw new FHIRException("Attempt to add a type "+b.fhirType()+" to a decimal column for column "+column.getName());
       }
     case Integer:
       if (b instanceof IntegerType) {
@@ -412,6 +462,12 @@ public class Runner implements IHostApplicationServices {
   public List<Base> resolveConstant(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     List<Base> list = new ArrayList<Base>();
     if (mode == FHIRPathConstantEvaluationMode.EXPLICIT) {
+      // %rowIndex - in R5, FHIRPathEngine strips the leading '%' for EXPLICIT
+      // mode before calling host services.
+      if ("rowIndex".equals(name)) {
+        list.add(new IntegerType(currentRowIndex));
+        return list;
+      }
       JsonObject vd = (JsonObject) appContext;
       JsonObject constant = findConstant(vd, name);
       if (constant != null) {
@@ -421,12 +477,16 @@ public class Runner implements IHostApplicationServices {
         }
       }
     }
-    return list;    
+    return list;
   }
 
   @Override
   public TypeDetails resolveConstantType(FHIRPathEngine engine, Object appContext, String name, FHIRPathConstantEvaluationMode mode) throws PathEngineException {
     if (mode == FHIRPathConstantEvaluationMode.EXPLICIT) {
+      // %rowIndex - integer singleton sourced from the runner's iteration state.
+      if ("rowIndex".equals(name)) {
+        return new TypeDetails(CollectionStatus.SINGLETON, "integer");
+      }
       if (appContext instanceof JsonObject) {
         JsonObject vd = (JsonObject) appContext;
         JsonObject constant = findConstant(vd, name);

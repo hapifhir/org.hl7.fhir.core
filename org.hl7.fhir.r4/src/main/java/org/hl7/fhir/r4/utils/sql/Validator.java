@@ -88,7 +88,7 @@ public class Validator {
 
 
   public void checkViewDefinition(String path, JsonObject viewDefinition) {    
-    checkProperties(viewDefinition, path, "resourceType", "url", "identifier", "name", "version", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "copyright", "resource", "constant", "select", "where");
+    checkProperties(viewDefinition, path, "resourceType", "id", "meta", "implicitRules", "language", "text", "contained", "modifierExtension", "url", "identifier", "version", "versionAlgorithmString", "versionAlgorithmCoding", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "copyrightLabel", "resource", "profile", "fhirVersion", "constant", "select", "where");
     
     JsonElement nameJ = viewDefinition.get("name");
     if (nameJ == null) {
@@ -155,13 +155,21 @@ public class Validator {
   private List<Column> checkSelect(JsonObject vd, String path, JsonObject select, TypeDetails t) {
     List<Column> columns = new ArrayList<>();
     select.setUserData("columns", columns);
-    checkProperties(select, path, "column", "select", "forEach", "forEachOrNull", "unionAll");
+    checkProperties(select, path, "id", "modifierExtension", "column", "select", "forEach", "forEachOrNull", "repeat", "unionAll");
 
     if (select.has("forEach")) {
+      if (select.has("forEachOrNull") || select.has("repeat")) {
+        error(path, select, "Only one of forEach, forEachOrNull, or repeat may be specified on a select", IssueType.INVALID);
+      }
       t = checkForEach(vd, path, select, select.get("forEach"), t);
     } else if (select.has("forEachOrNull")) {
+      if (select.has("repeat")) {
+        error(path, select, "Only one of forEach, forEachOrNull, or repeat may be specified on a select", IssueType.INVALID);
+      }
       t = checkForEachOrNull(vd, path, select, select.get("forEachOrNull"), t);
-    } 
+    } else if (select.has("repeat")) {
+      t = checkRepeat(vd, path, select, select.get("repeat"), t);
+    }
 
     if (t != null) {
       
@@ -276,7 +284,7 @@ public class Validator {
   }
 
   private Column checkColumn(JsonObject vd, String path, JsonObject column, TypeDetails t) {
-    checkProperties(column, path, "path", "name", "description", "collection", "type", "tag");
+    checkProperties(column, path, "id", "modifierExtension", "path", "name", "description", "collection", "type", "tag");
 
     if (!column.has("path")) {
       error(path, column, "no path found", IssueType.INVALID);      
@@ -513,8 +521,67 @@ public class Validator {
     }
   }
 
+  private TypeDetails checkRepeat(JsonObject vd, String path, JsonObject focus, JsonElement expression, TypeDetails t) {
+    if (!(expression instanceof JsonArray)) {
+      error(path+".repeat", expression, "repeat is not an array", IssueType.INVALID);
+      return null;
+    }
+    JsonArray arr = (JsonArray) expression;
+    if (arr.size() == 0) {
+      error(path+".repeat", expression, "repeat must contain at least one expression", IssueType.INVALID);
+      return null;
+    }
+    List<ExpressionNode> nodes = new ArrayList<>();
+    TypeDetails result = new TypeDetails(null);
+    int i = 0;
+    for (JsonElement e : arr) {
+      if (!(e instanceof JsonString)) {
+        error(path+".repeat["+i+"]", e, "repeat["+i+"] is not a string", IssueType.INVALID);
+      } else {
+        String expr = e.asString();
+        ExpressionNode n = null;
+        try {
+          n = fpe.parse(expr);
+          nodes.add(n);
+        } catch (Exception ex) {
+          error(path+".repeat["+i+"]", e, ex.getMessage(), IssueType.INVALID);
+        }
+        if (n != null) {
+          // Repeat paths are applied recursively to the focus and all yielded
+          // descendants, so a path may be invalid on the starting type but valid
+          // on a descendant yielded by another sibling path (e.g. 'answer.item'
+          // alongside 'item'). Type-check errors are recorded as warnings so the
+          // validator does not reject otherwise-valid recursive views; types that
+          // do resolve contribute to the union returned as the child focus.
+          List<IssueMessage> warnings = new ArrayList<>();
+          try {
+            TypeDetails td = fpe.checkOnTypes(vd, "Resource", resourceName, t, n, warnings);
+            if (td != null) {
+              result.update(td);
+            }
+          } catch (Exception ex) {
+            warning(path+".repeat["+i+"]", e, ex.getMessage());
+          }
+          for (IssueMessage s : warnings) {
+            warning(path+".repeat["+i+"]", e, s.getMessage());
+          }
+        }
+      }
+      i++;
+    }
+    focus.setUserData("repeat", nodes);
+    // If no path yielded any types, the runtime will produce no rows from this
+    // select. Returning null signals downstream validation to skip type-based
+    // checks on columns/nested selects, which would otherwise fail against an
+    // empty type. The runner handles empty repeat results by emitting no rows.
+    if (result.hasNoTypes()) {
+      return null;
+    }
+    return result;
+  }
+
   private void checkConstant(String path, JsonObject constant) {
-    checkProperties(constant, path, "name", "valueBase64Binary", "valueBoolean", "valueCanonical", "valueCode", "valueDate", "valueDateTime", "valueDecimal", "valueId", "valueInstant", "valueInteger", "valueInteger64", "valueOid", "valueString", "valuePositiveInt", "valueTime", "valueUnsignedInt", "valueUri", "valueUrl", "valueUuid");
+    checkProperties(constant, path, "id", "modifierExtension", "name", "valueBase64Binary", "valueBoolean", "valueCanonical", "valueCode", "valueDate", "valueDateTime", "valueDecimal", "valueId", "valueInstant", "valueInteger", "valueInteger64", "valueOid", "valueString", "valuePositiveInt", "valueTime", "valueUnsignedInt", "valueUri", "valueUrl", "valueUuid");
     JsonElement nameJ = constant.get("name");
     if (nameJ == null) {
       error(path, constant, "No name provided", IssueType.REQUIRED);      
@@ -598,7 +665,7 @@ public class Validator {
   }
   
   private void checkWhere(JsonObject vd, String path, JsonObject where) {
-    checkProperties(where, path, "path", "description");
+    checkProperties(where, path, "id", "modifierExtension", "path", "description");
 
     String expr = where.asString("path");
     if (expr == null) {
