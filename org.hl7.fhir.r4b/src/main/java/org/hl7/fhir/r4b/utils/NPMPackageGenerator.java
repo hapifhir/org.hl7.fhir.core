@@ -63,6 +63,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -283,19 +284,16 @@ public class NPMPackageGenerator {
   }
 
   private String packageForVersion(String v) {
-    if (v == null)
+    if (v == null) {
       return null;
-    if (v.startsWith("1.0"))
-      return "hl7.fhir.r2.core";
-    if (v.startsWith("1.4"))
-      return "hl7.fhir.r2b.core";
-    if (v.startsWith("3.0"))
-      return "hl7.fhir.r3.core";
-    if (v.startsWith("4.0"))
-      return "hl7.fhir.r4.core";
-    if (v.startsWith("4.1") || v.startsWith("4.3"))
-      return "hl7.fhir.r4b.core";
-    return null;
+    }
+    try {
+      return VersionUtilities.packageForVersion(v);
+    } catch (FHIRException e) {
+      // non-semver fhirVersion codes (e.g. "current", "0.01") -> no core dep,
+      // matching the old startsWith-based helper's behavior.
+      return null;
+    }
   }
 
   private String timezone() {

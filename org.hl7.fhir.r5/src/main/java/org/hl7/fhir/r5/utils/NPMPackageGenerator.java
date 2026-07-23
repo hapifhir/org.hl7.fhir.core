@@ -73,6 +73,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -134,6 +135,7 @@ public class NPMPackageGenerator {
   public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, Map<String, String> relatedIgs, boolean notForPublication) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
+    validateDependencies(ig);
     start();
     List<String> fhirVersion = new ArrayList<>();
     for (Enumeration<FHIRVersion> v : ig.getFhirVersion())
@@ -144,6 +146,7 @@ public class NPMPackageGenerator {
   public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, Map<String, String> relatedIgs, boolean notForPublication, String fhirVersion) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
+    validateDependencies(ig);
     start();
     List<String> fhirVersions = new ArrayList<>();
     fhirVersions.add(fhirVersion);
@@ -168,6 +171,7 @@ public class NPMPackageGenerator {
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion, Map<String, String> relatedIgs, boolean notForPublication) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
+    validateDependencies(ig);
     start();
     buildPackageJson(ig.getPackageId(), canonical, kind, url, date, ig, fhirVersion, notForPublication, relatedIgs);
   }
@@ -206,6 +210,15 @@ public class NPMPackageGenerator {
     }
   }
 
+  private void validateDependencies(ImplementationGuide ig) throws FHIRException {
+    for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
+      if (!d.hasVersion()) {
+        String identity = d.hasPackageId() ? d.getPackageId() + " (" + d.getUri() + ")" : d.getUri();
+        throw new FHIRException("ImplementationGuide dependency " + identity + " is missing a required version");
+      }
+    }
+  }
+
   private void buildPackageJson(String pid, String canonical, PackageType kind, String web, Date date, ImplementationGuide ig, List<String> fhirVersion, boolean notForPublication, Map<String, String> relatedIgs) throws FHIRException, IOException {
     String dtHuman = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(date);
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
@@ -223,12 +236,6 @@ public class NPMPackageGenerator {
     if (!ig.hasLicense()) {
       b.append("license");
     }
-    for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
-      if (!d.hasVersion()) {
-        b.append("dependsOn.version("+d.getUri()+")");
-      }
-    }
-
     JsonObject npm = new JsonObject();
     npm.add("name", pid);
     npm.add("version", ig.getVersion());
@@ -262,7 +269,7 @@ public class NPMPackageGenerator {
       npm.add("dependencies", dep);
       for (String v : fhirVersion) { 
         String vp = packageForVersion(v);
-        if (vp != null ) {
+        if (vp != null && !dep.has(vp) && !dependsOnDeclaresPackage(ig, vp)) {
           dep.add(vp, v);
         }
       }
@@ -333,19 +340,27 @@ public class NPMPackageGenerator {
 
 
   private String packageForVersion(String v) {
-    if (v == null)
+    if (v == null) {
       return null;
-    if (v.startsWith("1.0"))
-      return "hl7.fhir.r2.core";
-    if (v.startsWith("1.4"))
-      return "hl7.fhir.r2b.core";
-    if (v.startsWith("3.0"))
-      return "hl7.fhir.r3.core";
-    if (v.startsWith("4.0"))
-      return "hl7.fhir.r4.core";
-    if (v.startsWith("4.1") || v.startsWith("4.3"))
-      return "hl7.fhir.r4b.core";
-    return null;
+    }
+    try {
+      return VersionUtilities.packageForVersion(v);
+    } catch (FHIRException e) {
+      // non-semver fhirVersion codes (e.g. "current", "0.01") -> no core dep,
+      // matching the old startsWith-based helper's behavior.
+      return null;
+    }
+  }
+
+  private boolean dependsOnDeclaresPackage(ImplementationGuide ig, String packageId) {
+    for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
+      if (!d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)
+          && d.hasVersion()
+          && packageId.equals(d.getPackageId())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private String timezone() {
