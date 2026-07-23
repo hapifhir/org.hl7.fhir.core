@@ -1,0 +1,224 @@
+package org.hl7.fhir.utilities.http;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import lombok.extern.slf4j.Slf4j;
+
+import org.hl7.fhir.utilities.FileUtilities;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.json.JsonUtilities;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
+
+/**
+ * Manages OAuth 2.0 access tokens for the client_credentials grant type.
+ * <p>
+ * When a FHIR server (or other endpoint) is configured with authenticationType
+ * "client_credentials" in fhir-settings.json, this class handles fetching bearer
+ * tokens from the configured token endpoint and caching them until they expire.
+ * <p>
+ * Token lifecycle:
+ * <ul>
+ *   <li>{@link #getToken} returns a cached token if it is still valid, or
+ *       fetches a new one from the token endpoint using a standard OAuth 2.0
+ *       client_credentials POST request.</li>
+ *   <li>Tokens are treated as expired {@value #EXPIRY_BUFFER_SECONDS} seconds before their
+ *       actual expiry, so an about-to-expire token is re-fetched on the next {@link #getToken}
+ *       call (rather than handed out and failing mid-request) — there is no background refresh.</li>
+ *   <li>{@link #invalidateToken} removes a cached token, forcing the next call to
+ *       re-fetch. This is used by the retry logic in
+ *       {@link ManagedWebAccessorBase#executeWithClientCredentialsRetry} (invoked via
+ *       {@link ITokenInvalidatingAuthProvider#invalidateCachedCredentials}) when a server
+ *       returns 401/403; it applies to any server, not only FHIR.</li>
+ * </ul>
+ * <p>
+ * Thread safety: concurrent callers requesting a token for the same server will
+ * block on a per-cache-key lock so that only one thread performs the HTTP request.
+ */
+@Slf4j
+public class HTTPTokenManager {
+
+  private static final int DEFAULT_EXPIRES_IN = 3600;
+
+  /** Tokens are considered expired this many seconds before their actual expiry. */
+  private static final int EXPIRY_BUFFER_SECONDS = 30;
+
+  /** Cached tokens keyed by "tokenEndpoint|clientId". */
+  private static final ConcurrentHashMap<String, CachedToken> cache = new ConcurrentHashMap<>();
+
+  /** Per-cache-key lock objects to prevent concurrent token fetches for the same server. */
+  private static final ConcurrentHashMap<String, Object> locks = new ConcurrentHashMap<>();
+
+  private static final class CachedToken {
+    final String accessToken;
+    final long expiresAtMillis;
+
+    CachedToken(String accessToken, long expiresAtMillis) {
+      this.accessToken = accessToken;
+      this.expiresAtMillis = expiresAtMillis;
+    }
+
+    boolean isExpiringSoon() {
+      return System.currentTimeMillis() >= (expiresAtMillis - EXPIRY_BUFFER_SECONDS * 1000L);
+    }
+  }
+
+  private HTTPTokenManager() {}
+
+  /**
+   * Returns a valid access token for the given server, fetching a new one if
+   * the cached token is missing or expiring soon.
+   *
+   * @param server the server configuration containing clientId, clientSecret, and tokenEndpoint
+   * @return a bearer access token string
+   * @throws IOException if the token endpoint request fails
+   */
+  public static String getToken(ServerDetailsPOJO server) throws IOException {
+    String cacheKey = getCacheKey(server);
+    CachedToken cached = cache.get(cacheKey);
+
+    // Fast path: return cached token if still valid
+    if (cached != null && !cached.isExpiringSoon()) {
+      return cached.accessToken;
+    }
+
+    // Slow path: acquire per-key lock and fetch a new token.
+    // Double-check after locking in case another thread already refreshed it.
+    Object lock = locks.computeIfAbsent(cacheKey, k -> new Object());
+    synchronized (lock) {
+      cached = cache.get(cacheKey);
+      if (cached != null && !cached.isExpiringSoon()) {
+        return cached.accessToken;
+      }
+
+      CachedToken newToken = requestTokenWithClientCredentials(server);
+      cache.put(cacheKey, newToken);
+      return newToken.accessToken;
+    }
+  }
+
+  /**
+   * Removes the cached token for the given server, forcing the next
+   * {@link #getToken} call to fetch a fresh token from the endpoint.
+   */
+  public static void invalidateToken(ServerDetailsPOJO server) {
+    cache.remove(getCacheKey(server));
+  }
+
+  public static void clearCache() {
+    cache.clear();
+    locks.clear();
+  }
+
+  private static String getCacheKey(ServerDetailsPOJO server) {
+    // Assumes (tokenEndpoint, clientId) fully identifies the issued token. If scope/audience are ever added to the token request, they MUST be folded into this key to avoid serving a token minted for a different scope.
+    return server.getTokenEndpoint() + "|" + server.getClientId();
+  }
+
+  /**
+   * Builds and sends an OAuth 2.0 client_credentials token request.
+   * The client authenticates via form-encoded client_id and client_secret
+   * (as per RFC 6749 Section 4.4).
+   */
+  private static CachedToken requestTokenWithClientCredentials(ServerDetailsPOJO server) throws IOException {
+    String body = "grant_type=client_credentials"
+      + "&client_id=" + Utilities.URLEncode(server.getClientId())
+      + "&client_secret=" + Utilities.URLEncode(server.getClientSecret());
+    return executeTokenRequest(server.getTokenEndpoint(), body);
+  }
+
+  /**
+   * POSTs the form body to the token endpoint and parses the JSON response
+   * into a CachedToken with an expiry timestamp.
+   */
+  private static CachedToken executeTokenRequest(String tokenEndpoint, String formBody) throws IOException {
+    HttpURLConnection conn = (HttpURLConnection) URI.create(tokenEndpoint).toURL().openConnection();
+    try {
+      conn.setRequestMethod("POST");
+      conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+      conn.setRequestProperty("Accept", "application/json");
+      conn.setConnectTimeout(10_000);
+      conn.setReadTimeout(10_000);
+      conn.setDoOutput(true);
+
+      try (OutputStream os = conn.getOutputStream()) {
+        os.write(formBody.getBytes(StandardCharsets.UTF_8));
+      }
+
+      int responseCode = conn.getResponseCode();
+      if (responseCode < 200 || responseCode >= 300) {
+        String errorBody = readErrorBody(conn);
+        throw new IOException("Token endpoint " + tokenEndpoint + " returned HTTP " + responseCode + ": " + safeOAuthError(errorBody));
+      }
+
+      String responseBody = FileUtilities.streamToString(conn.getInputStream());
+      return parseTokenResponse(tokenEndpoint, responseBody);
+    } finally {
+      conn.disconnect();
+    }
+  }
+
+  private static CachedToken parseTokenResponse(String tokenEndpoint, String responseBody) throws IOException {
+    JsonObject json;
+    try {
+      json = JsonParser.parseString(responseBody).getAsJsonObject();
+    } catch (Exception e) {
+      throw new IOException("Token endpoint " + tokenEndpoint + " returned a non-JSON response (body suppressed)", e);
+    }
+
+    String accessToken = JsonUtilities.str(json, "access_token");
+    if (accessToken == null) {
+      throw new IOException("Token endpoint " + tokenEndpoint + " response missing 'access_token' field");
+    }
+
+    int expiresIn;
+    if (json.has("expires_in") && !json.get("expires_in").isJsonNull()) {
+      try {
+        expiresIn = json.get("expires_in").getAsInt();
+      } catch (RuntimeException e) {
+        log.warn("Token endpoint {} returned non-integer expires_in, defaulting to {}s", tokenEndpoint, DEFAULT_EXPIRES_IN);
+        expiresIn = DEFAULT_EXPIRES_IN;
+      }
+    } else {
+      log.warn("Token endpoint {} response missing 'expires_in', defaulting to {}s", tokenEndpoint, DEFAULT_EXPIRES_IN);
+      expiresIn = DEFAULT_EXPIRES_IN;
+    }
+
+    if (expiresIn <= 0) {
+      log.warn("Token endpoint {} returned non-positive expires_in={}, defaulting to {}s", tokenEndpoint, expiresIn, DEFAULT_EXPIRES_IN);
+      expiresIn = DEFAULT_EXPIRES_IN;
+    }
+
+    long expiresAtMillis = System.currentTimeMillis() + (expiresIn * 1000L);
+    return new CachedToken(accessToken, expiresAtMillis);
+  }
+
+  /** Extracts OAuth error/error_description if the body is JSON; never includes the raw body (may contain credentials). */
+  private static String safeOAuthError(String body) {
+    try {
+      com.google.gson.JsonObject o = com.google.gson.JsonParser.parseString(body).getAsJsonObject();
+      String err = org.hl7.fhir.utilities.json.JsonUtilities.str(o, "error");
+      String desc = org.hl7.fhir.utilities.json.JsonUtilities.str(o, "error_description");
+      if (err != null) return err + (desc != null ? ": " + desc : "");
+    } catch (Exception ignore) { /* not JSON */ }
+    return "(response body suppressed)";
+  }
+
+  /** Reads the error stream for inclusion in error messages. Never throws. */
+  private static String readErrorBody(HttpURLConnection conn) {
+    try {
+      java.io.InputStream es = conn.getErrorStream();
+      if (es == null) return "(no error body)";
+      return FileUtilities.streamToString(es);
+    } catch (IOException e) {
+      return "(unable to read error body)";
+    }
+  }
+}
