@@ -6,14 +6,35 @@
     "candidates" : []
   },
   {
+    "system" : "http://acme.org/messagetypes in en-AU",
+    "url" : "http://acme.org/messagetypes",
+    "language" : "en-AU",
+    "authoritative" : [],
+    "candidates" : []
+  },
+  {
     "system" : "http://cancer.questionnaire.org/system/code/yesno",
     "url" : "http://cancer.questionnaire.org/system/code/yesno",
     "authoritative" : [],
     "candidates" : []
   },
   {
+    "system" : "http://cancer.questionnaire.org/system/code/yesno in en-AU",
+    "url" : "http://cancer.questionnaire.org/system/code/yesno",
+    "language" : "en-AU",
+    "authoritative" : [],
+    "candidates" : []
+  },
+  {
     "system" : "http://example.org",
     "url" : "http://example.org",
+    "authoritative" : [],
+    "candidates" : []
+  },
+  {
+    "system" : "http://example.org in en-AU",
+    "url" : "http://example.org",
+    "language" : "en-AU",
     "authoritative" : [],
     "candidates" : []
   },

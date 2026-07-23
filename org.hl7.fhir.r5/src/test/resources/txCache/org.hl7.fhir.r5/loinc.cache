@@ -560,6 +560,7 @@ e: {
   }
 }}####
 e: {
+  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
@@ -618,6 +619,86 @@ e: {
       "system" : "http://loinc.org",
       "code" : "LA6567-7",
       "display" : "Obeys commands"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : true, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6553-7",
+        "display" : "No eye opening"
+      },
+      {
+        "code" : "LA6554-5",
+        "display" : "Eye opening to pain"
+      },
+      {
+        "code" : "LA6555-2",
+        "display" : "Eye opening to verbal command"
+      },
+      {
+        "code" : "LA6556-0",
+        "display" : "Eyes open spontaneously"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:82e72cb4-f18b-4139-bd7d-1dfcd74d60f4",
+    "timestamp" : "2026-07-23T01:20:19.084Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.82"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6553-7",
+      "display" : "No eye opening"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6554-5",
+      "display" : "Eye opening to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6555-2",
+      "display" : "Eye opening to verbal command"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6556-0",
+      "display" : "Eyes open spontaneously"
     }]
   }
 },
