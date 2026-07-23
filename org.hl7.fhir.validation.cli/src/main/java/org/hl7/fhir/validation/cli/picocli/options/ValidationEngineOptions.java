@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.With;
 import org.apache.commons.lang3.ArrayUtils;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.settings.FhirSettings;
 import picocli.CommandLine;
 
 import java.util.ArrayList;

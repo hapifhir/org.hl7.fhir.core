@@ -48,20 +48,25 @@ Authentication for individual servers can be configured through the fhir-setting
 By default all web access is restricted in the following ways:
 * https is the required protocol for all requests
 * Private or non-public network access is not permitted
-These restrictions can be removed on a per-server basis in the fhir-settings.json file.
+These restrictions can be removed on a per-server basis in the fhir-settings.json file. Documentations on 
+fhir-sessions.json is available at: https://confluence.hl7.org/spaces/FHIR/pages/161072808/Using+fhir-settings.json
 
-You can set the static features of this class to completely cut the library off from the web, provide your own web
-accessor, provide your own provider of authentication, or limit the web resources accessed to particular domains or
+Static features of the ManabedWebAccess class can be set to completely cut the library off from the web, provide your 
+own web accessor, provide your own authentication provider, or limit the web resources accessed to particular domains or
 sub-domains. See the ManagedWebAccess JavaDoc for details.
 
-Note that for legacy reasons, network access can also be prohibited using
-FhirSettings.setProhibitNetworkAccess(), but this is deprecated.
-
-Note that libraries that this library depends on may still access the network directly. Review of the use of these
+### Additional Notes:
+* For legacy reasons, network access can also be prohibited using FhirSettings.setProhibitNetworkAccess(), but 
+this is deprecated.
+* Libraries that this project depends on may still access the network directly. Review of the use of these
 libraries is ongoing.
 
-Validator: The validator CLI accesses the web to download packages and make use of the
-terminology server, which defaults to https://tx.fhir.org.
+## Default Servers
+
+The validator CLI accesses the web to download packages and make use of terminology servers including the following:
+* https://packages.fhir.org
+* https://packages2.fhir.org
+* https://tx.fhir.org.
 
 ## Logging
 
