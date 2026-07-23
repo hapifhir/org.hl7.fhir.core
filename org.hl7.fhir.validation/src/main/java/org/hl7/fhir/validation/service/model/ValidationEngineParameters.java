@@ -86,6 +86,24 @@ public class ValidationEngineParameters {
     return this;
   }
 
+  @JsonProperty("onlyDirectIgDependencies")
+  @SerializedName("onlyDirectIgDependencies")
+  private
+  boolean onlyDirectIgDependencies = false;
+
+  @SerializedName("onlyDirectIgDependencies")
+  @JsonProperty("onlyDirectIgDependencies")
+  public boolean isOnlyDirectIgDependencies() {
+    return onlyDirectIgDependencies;
+  }
+
+  @SerializedName("onlyDirectIgDependencies")
+  @JsonProperty("onlyDirectIgDependencies")
+  public ValidationEngineParameters setOnlyDirectIgDependencies(boolean onlyDirectIgDependencies) {
+    this.onlyDirectIgDependencies = onlyDirectIgDependencies;
+    return this;
+  }
+
   @JsonProperty("snomedCT")
   @SerializedName("snomedCT")
   private String snomedCT = "900000000000207008";
@@ -561,6 +579,7 @@ public class ValidationEngineParameters {
     return Objects.equals(baseEngine, that.baseEngine)
       && doNative == that.doNative
       && recursive == that.recursive
+      && onlyDirectIgDependencies == that.onlyDirectIgDependencies
       && snomedCT.equals(that.snomedCT)
       && Objects.equals(sv, that.sv)
       && isInferFhirVersion() == that.isInferFhirVersion()
@@ -593,6 +612,7 @@ public class ValidationEngineParameters {
       baseEngine,
       doNative,
       recursive,
+      onlyDirectIgDependencies,
       snomedCT,
       sv,
       inferFhirVersion,
@@ -625,6 +645,7 @@ public class ValidationEngineParameters {
       "baseEngine=" + baseEngine +
       ", doNative=" + doNative +
       ", recursive=" + recursive +
+      ", onlyDirectIgDependencies=" + onlyDirectIgDependencies +
       ", snomedCT=" + snomedCT +
       ", sv=" + sv +
       ", inferFhirVersion=" + inferFhirVersion +
