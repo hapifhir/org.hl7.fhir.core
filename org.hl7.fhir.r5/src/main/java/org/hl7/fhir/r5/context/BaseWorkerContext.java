@@ -1269,20 +1269,34 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     if (items.size() > 0) {
-      TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
-      Parameters resp = processBatch(tc, batch, systems, items.size());
-      List<ParametersParameterComponent> validations = resp.getParameters("validation");
-      for (int i = 0; i < items.size(); i++) {
-        CodingValidationRequest t = items.get(i);
-        ParametersParameterComponent r = validations.get(i);
-
-        if (r.getResource() instanceof Parameters) {
-          t.setResult(processValidationResult((Parameters) r.getResource(), null, tc.getAddress()));
+      if (vs == null) {
+        // No target ValueSet — sending /ValueSet/$batch-validate-code without
+        // url or tx-resource is malformed per FHIR spec; spec-strict servers
+        // (Ontoserver/HAPI) reject every slot. Fall back to per-code validation
+        // up-front rather than incurring the noisy round-trip.
+        for (CodingValidationRequest t : items) {
+          ValidationResult res = validateCode(options, t.getCoding(), null);
+          t.setResult(res);
           if (txCache != null) {
-            txCache.cacheValidation(t.getCacheToken(), t.getResult(), TerminologyCache.PERMANENT);
+            txCache.cacheValidation(t.getCacheToken(), res, TerminologyCache.PERMANENT);
           }
-        } else {
-          t.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(r.getResource()), null).setTxLink(txLog == null ? null : txLog.getLastId()));
+        }
+      } else {
+        TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false);
+        Parameters resp = processBatch(tc, batch, systems, items.size());
+        List<ParametersParameterComponent> validations = resp.getParameters("validation");
+        for (int i = 0; i < items.size(); i++) {
+          CodingValidationRequest t = items.get(i);
+          ParametersParameterComponent r = validations.get(i);
+    
+          if (r.getResource() instanceof Parameters) {
+            t.setResult(processValidationResult((Parameters) r.getResource(), null, tc.getAddress()));
+            if (txCache != null) {
+              txCache.cacheValidation(t.getCacheToken(), t.getResult(), TerminologyCache.PERMANENT);
+            }
+          } else {
+            t.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(r.getResource()), null).setTxLink(txLog == null ? null : txLog.getLastId()));
+          }
         }
       }
     }
