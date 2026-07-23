@@ -113,7 +113,7 @@ public class ManagedWebAccess {
    *  * preventing access to private and non-public servers
    * WARNING: By default this is TRUE, and it is not recommended to set this to false. It is left as a setting intended
    * for use in testing, and never in production.
-   * @param ssrfProtectionEnabled
+   * @param ssrfProtectionEnabled whether to enable ssrf protection
    */
   public static void setSsrfProtectionEnabled(boolean ssrfProtectionEnabled) {
     if (!ssrfProtectionEnabled) {
