@@ -40,9 +40,10 @@ import org.hl7.fhir.validation.special.TxTestData;
 import org.hl7.fhir.validation.special.TxTesterScrubbers;
 import org.hl7.fhir.validation.special.TxTesterSorters;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
-import org.junit.AfterClass;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -337,12 +338,30 @@ private static TxTestData testData;
     }
   }
 
+  private static Set<Thread> threadsBefore;
+
   @AfterClass
-  public static void saveWhenDone() throws IOException {
+  public static void saveWhenDone() throws IOException, InterruptedException {
     // Release the per-class base engine (a full r5 context) so it doesn't stay resident for
     // the rest of the module's single reused test JVM.
     baseEngine = null;
     System.gc();
+
+    // We need a tiny amount of delay here. Interruption is introduced as regexs process chars, which is fast, but
+    // not instantaneous.
+    Thread.sleep(100);
+    Set<Thread> threadsAfter = Thread.getAllStackTraces().keySet();
+    if (threadsAfter.size() != threadsBefore.size())
+    {
+      threadsAfter.removeAll(threadsBefore);
+      throw new IllegalStateException("Lingering threads in test: " + threadsAfter);
+    }
+
+  }
+
+  @BeforeClass
+  public static void atStart() throws IOException {
+    threadsBefore = Collections.unmodifiableSet(Thread.getAllStackTraces().keySet());
   }
 
   private Map<String, String> vars() {

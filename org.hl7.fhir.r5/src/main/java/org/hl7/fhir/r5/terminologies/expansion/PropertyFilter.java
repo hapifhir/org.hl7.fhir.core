@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.terminologies.expansion;
 
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -12,6 +13,7 @@ import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.utils.CodingUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.Utilities;
 
 @MarkedToMoveToAdjunctPackage
@@ -58,10 +60,13 @@ public class PropertyFilter extends ConceptFilter {
           case NULL:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case REGEX:
-            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-            //Regex sourced from FHIR ValueSet filter value; user-supplied at runtime
-            boolean primitiveRegexMatch = value != null && value.matches(filter.getValue());
-            return primitiveRegexMatch;
+            // the regex comes from the ValueSet filter value - user-supplied at runtime - so it
+            // is evaluated through RegexTimeout, which bounds evaluation of pathological patterns
+            try {
+              return value != null && RegexTimeout.matches(value, filter.getValue());
+            } catch (TimeoutException e) {
+              throw fail("The regex filter '"+filter.getValue()+"' took too long to evaluate");
+            }
           default:
             throw fail("Shouldn't get here");
         }
