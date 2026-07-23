@@ -21,7 +21,6 @@ v: {
   "error" : "The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/account-type')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{

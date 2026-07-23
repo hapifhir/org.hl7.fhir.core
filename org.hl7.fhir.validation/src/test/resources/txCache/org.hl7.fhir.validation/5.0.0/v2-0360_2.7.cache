@@ -22,7 +22,6 @@ v: {
   "error" : "A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/v2-0360|2.7' could not be found, so the code cannot be validated",
   "class" : "CODESYSTEM_UNSUPPORTED_VERSION",
   "server" : "https://tx-dev.fhir.org/r5",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{
