@@ -1,0 +1,74 @@
+# This workflow inspects a pull request's diff and fails if any line added or
+# modified by the PR introduces a FIXME comment in a *.java file. Pre-existing
+# FIXMEs that the PR does not touch are left alone until they're addressed
+# separately.
+#
+# The check is advisory once a reviewer (other than the PR author) has
+# submitted an approving review: the job still reports the new FIXMEs it
+# found, but no longer fails. New commits invalidate prior approvals (as
+# usual for GitHub reviews), so the check re-enforces until re-approved.
+
+name: FIXME Check
+
+on:
+  pull_request:
+    branches: [ master ]
+  pull_request_review:
+    types: [ submitted ]
+
+  workflow_dispatch:
+
+permissions:  # added using https://github.com/step-security/secure-repo
+  contents: read
+
+jobs:
+  fixme_check:
+    name: Check PR diff for new FIXME comments
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read       # Only read access to repository contents
+      pull-requests: read  # Needed to look up review approvals
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Set script permissions
+        run: chmod u+x .github/workflows/fixme-check/fixme-check.sh .github/workflows/fixme-check/check-approval.sh
+
+      - name: Check for new FIXME comments
+        id: fixme_check
+        continue-on-error: true
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: .github/workflows/fixme-check/fixme-check.sh "$BASE_SHA" "$HEAD_SHA"
+
+      - name: Check for reviewer approval
+        id: approval_check
+        if: steps.fixme_check.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          approved=$(.github/workflows/fixme-check/check-approval.sh "$REPO" "$PR_NUMBER" "$PR_AUTHOR")
+          echo "approved=$approved" >> "$GITHUB_OUTPUT"
+
+      - name: Fail if new FIXMEs are not approved
+        if: steps.fixme_check.outcome == 'failure' && steps.approval_check.outputs.approved != 'true'
+        run: |
+          echo "New FIXME comments were introduced in *.java files, and no reviewer has approved this PR yet."
+          exit 1
+
+      - name: Note reviewer override
+        if: steps.fixme_check.outcome == 'failure' && steps.approval_check.outputs.approved == 'true'
+        run: echo "New FIXME comments were found, but a reviewer has approved this PR, so the check is not blocking."
