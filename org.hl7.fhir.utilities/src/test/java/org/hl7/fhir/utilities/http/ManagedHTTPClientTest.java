@@ -33,7 +33,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-public class PolicyEnforcingHTTPClientTest {
+public class ManagedHTTPClientTest {
 
   public static final String EXAMPLE_INVALID_REDIRECTED = "http://example.invalid/redirected";
   private MockWebServer server;
@@ -53,7 +53,7 @@ public class PolicyEnforcingHTTPClientTest {
         .setBody("Monkeys").setResponseCode(200)
     );
 
-    PolicyEnforcingHTTPClient http = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
+    ManagedHTTPClient http = ManagedHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
     HTTPResult res = http.get(serverUrl.url().toString(), "application/json");
 
@@ -105,7 +105,7 @@ public class PolicyEnforcingHTTPClientTest {
         .setBody("Monkeys").setResponseCode(200)
     );
 
-    PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
+    ManagedHTTPClient httpClient = ManagedHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
     HTTPResult res = httpClient.get(urls[0].url().toString(), "application/json");
 
@@ -149,7 +149,7 @@ public class PolicyEnforcingHTTPClientTest {
           .addHeader("Location", "/final"));
       serverB.enqueue(new MockResponse().setResponseCode(200).setBody("Success"));
 
-      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
+      ManagedHTTPClient httpClient = ManagedHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("start").url().toString(), "application/json");
 
@@ -175,7 +175,7 @@ public class PolicyEnforcingHTTPClientTest {
       doReturn(true).when(authenticationProvider).isProtocolAllowed(urls[i].url());
       doReturn(Map.of("Authorization", "Bearer thisToken")).when(authenticationProvider).getHeaders(urls[i].url());
     }
-    final PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(false).build();
+    final ManagedHTTPClient httpClient = ManagedHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(false).build();
 
     assertThrows(UnknownHostException.class, () -> httpClient.get(urls[0].url().toString(), "application/json"));
 
@@ -212,7 +212,7 @@ public class PolicyEnforcingHTTPClientTest {
       doReturn(Map.of("Authorization", "Bearer thisToken")).when(authenticationProvider).getHeaders(urls[i].url());
     }
 
-    final PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(false).build();
+    final ManagedHTTPClient httpClient = ManagedHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(false).build();
 
     assertThrows(UnknownHostException.class, () -> httpClient.get(urls[0].url().toString(), "application/json"));
 
@@ -257,7 +257,7 @@ public class PolicyEnforcingHTTPClientTest {
       server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error"));
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
+      ManagedHTTPClient httpClient = ManagedHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
 
@@ -271,7 +271,7 @@ public class PolicyEnforcingHTTPClientTest {
       server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error 1"));
       server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error 2"));
 
-      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
+      ManagedHTTPClient httpClient = ManagedHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
 
@@ -286,7 +286,7 @@ public class PolicyEnforcingHTTPClientTest {
     void zeroRetriesMeansExactlyOneAttempt() throws IOException, InterruptedException {
       server.enqueue(new MockResponse().setResponseCode(500).setBody("Server Error"));
 
-      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().retries(0).ssrfProtectionEnabled(false).build();
+      ManagedHTTPClient httpClient = ManagedHTTPClient.builder().retries(0).ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
 
@@ -302,7 +302,7 @@ public class PolicyEnforcingHTTPClientTest {
       }
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().retries(retries).ssrfProtectionEnabled(false).build();
+      ManagedHTTPClient httpClient = ManagedHTTPClient.builder().retries(retries).ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("resource").url().toString(), "application/json");
 
@@ -319,7 +319,7 @@ public class PolicyEnforcingHTTPClientTest {
           .addHeader("Location", target.url().toString()));
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      PolicyEnforcingHTTPClient httpClient = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
+      ManagedHTTPClient httpClient = ManagedHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
       HTTPResult res = httpClient.get(server.url("start").url().toString(), "application/json");
 
@@ -335,7 +335,7 @@ public class PolicyEnforcingHTTPClientTest {
 
     @FunctionalInterface
     interface HttpCall {
-      HTTPResult apply(PolicyEnforcingHTTPClient client, String url) throws IOException;
+      HTTPResult apply(ManagedHTTPClient client, String url) throws IOException;
     }
 
     static Stream<Arguments> httpMethods() {
@@ -352,7 +352,7 @@ public class PolicyEnforcingHTTPClientTest {
       String url = server.url("resource").url().toString();
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(true).build();
+      ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(true).build();
 
       assertThrows(IOException.class, () -> call.apply(client, url));
       assertThat(server.getRequestCount()).isZero();
@@ -364,7 +364,7 @@ public class PolicyEnforcingHTTPClientTest {
       String url = server.url("resource").url().toString();
       server.enqueue(new MockResponse().setResponseCode(200).setBody("Monkeys"));
 
-      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(false).build();
+      ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(false).build();
 
       HTTPResult res = call.apply(client, url);
 
@@ -387,7 +387,7 @@ public class PolicyEnforcingHTTPClientTest {
       // headers for a server must not, by itself, exempt it from SSRF protection - only an
       // explicit isPrivateNetworkAllowed(true) should.
 
-      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(true).build();
+      ManagedHTTPClient client = ManagedHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(true).build();
 
       assertThrows(IOException.class, () -> call.apply(client, url));
       assertThat(server.getRequestCount()).isZero();
@@ -406,7 +406,7 @@ public class PolicyEnforcingHTTPClientTest {
       doReturn(true).when(authenticationProvider).isPrivateNetworkAllowed(expectedUrl);
       doReturn(Map.of()).when(authenticationProvider).getHeaders(expectedUrl);
 
-      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(true).build();
+      ManagedHTTPClient client = ManagedHTTPClient.builder().authProvider(authenticationProvider).ssrfProtectionEnabled(true).build();
 
       HTTPResult res = call.apply(client, url);
 
@@ -423,7 +423,7 @@ public class PolicyEnforcingHTTPClientTest {
       "http://metadata.google.internal/" // explicitly blocked host
     })
     void blocksVariousNonPublicUrlsWhenProtectionEnabled(String url) {
-      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(true).build();
+      ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(true).build();
 
       assertThrows(IOException.class, () -> client.get(url, "application/json"));
       assertThrows(IOException.class, () -> client.put(url, "text/plain", "body".getBytes(), "application/json"));
@@ -441,7 +441,7 @@ public class PolicyEnforcingHTTPClientTest {
       // Guava's InetAddresses does not recognize as a literal IP - validating that instead of
       // HttpUrl.host() (bracket-free) let every IPv6 literal host bypass the SSRF check entirely,
       // since OkHttp also never invokes the configured Dns for a literal IP host.
-      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(true).build();
+      ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(true).build();
 
       assertThrows(IOException.class, () -> client.get(url, "application/json"));
     }
@@ -467,7 +467,7 @@ public class PolicyEnforcingHTTPClientTest {
       server.enqueue(
         new MockResponse().setResponseCode(200).setBody("Monkeys")); // consumed only if the redirect is wrongly allowed
 
-      PolicyEnforcingHTTPClient client = PolicyEnforcingHTTPClient.builder().ssrfProtectionEnabled(true).build();
+      ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(true).build();
 
       // The initial URL is genuinely a loopback MockWebServer address too, so simulate it being
       // public (pretend the address check passes for it) to isolate the behavior under test: that
@@ -483,7 +483,7 @@ public class PolicyEnforcingHTTPClientTest {
       AtomicInteger remainingBypasses = new AtomicInteger(initialHopAddressCount);
       try (MockedStatic<ManagedWebAccessUtils> mocked = mockStatic(ManagedWebAccessUtils.class, Mockito.CALLS_REAL_METHODS)) {
         // The default policy now requires https, but MockWebServer serves plain http here and
-        // SimpleHTTPClient has no seam to configure trust for a test certificate. Since the
+        // ManagedHTTPClient has no seam to configure trust for a test certificate. Since the
         // initial hop's checks are already faked out below to isolate the redirect target as the
         // thing under test, fake past its scheme too - matched by exact URI so the (real, https)
         // redirect target's own scheme check is unaffected.

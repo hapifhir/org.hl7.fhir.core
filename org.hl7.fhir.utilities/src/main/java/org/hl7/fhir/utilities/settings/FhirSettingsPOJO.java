@@ -1,9 +1,11 @@
 package org.hl7.fhir.utilities.settings;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import lombok.AllArgsConstructor;
@@ -12,7 +14,7 @@ import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @Jacksonized
 @AllArgsConstructor
 public class FhirSettingsPOJO {
@@ -114,6 +116,18 @@ public class FhirSettingsPOJO {
       result = combinationLogic.apply(result, other);
     }
     return result;
+  }
+
+  /**
+   * Returns a deep copy, with new {@link #apiKeys}, {@link #servers} and {@link #certificateSources} collections
+   * (each server also deep-copied), so that mutating the copy cannot affect this instance.
+   */
+  public FhirSettingsPOJO copy() {
+    return toBuilder()
+      .apiKeys(apiKeys == null ? null : new HashMap<>(apiKeys))
+      .servers(servers == null ? null : servers.stream().map(ServerDetailsPOJO::copy).collect(Collectors.toList()))
+      .certificateSources(certificateSources == null ? null : new ArrayList<>(certificateSources))
+      .build();
   }
 
   protected FhirSettingsPOJO() {

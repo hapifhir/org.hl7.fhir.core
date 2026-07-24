@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.settings;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @Jacksonized
 @AllArgsConstructor
 public class ServerDetailsPOJO {
@@ -55,4 +56,13 @@ public class ServerDetailsPOJO {
     Boolean allowPrivateNetwork;
 
     Map<String, String> headers;
+
+    /**
+     * Returns a deep copy, with a new {@link #headers} map, so that mutating the copy cannot affect this instance.
+     */
+    public ServerDetailsPOJO copy() {
+      return toBuilder()
+        .headers(headers == null ? null : new HashMap<>(headers))
+        .build();
+    }
 }

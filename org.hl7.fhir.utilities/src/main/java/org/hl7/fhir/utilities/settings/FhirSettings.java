@@ -40,7 +40,7 @@ public class FhirSettings {
 
   public static FhirSettingsPOJO getFhirSettingsPOJO() {
     getInstance();
-    return instance.fhirSettingsPOJO;
+    return instance.fhirSettingsPOJO.copy();
   }
 
   final String filePath;
