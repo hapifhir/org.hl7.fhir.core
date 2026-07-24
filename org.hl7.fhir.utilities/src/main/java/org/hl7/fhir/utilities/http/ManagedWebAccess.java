@@ -78,7 +78,7 @@ public class ManagedWebAccess {
   }
 
   public enum WebAccessPolicy {
-    DIRECT, // open access to the web, though access can be restricted only to domains in AllowedDomains
+    DIRECT, // access to the web with using policies set via FhirSettings
     MANAGED, // no access except by the IWebAccessor
     PROHIBITED, // no access at all to the web
   }
@@ -103,6 +103,9 @@ public class ManagedWebAccess {
   private static List<ServerDetailsPOJO> serverDetailsList;
   private static IHTTPAuthenticationProvider defaultAuthenticationProvider;
 
+  /**
+   * @param accessPolicy the global policy for accessing web resources.
+   */
   public static void setAccessPolicy(WebAccessPolicy accessPolicy) {
     ManagedWebAccess.accessPolicy = accessPolicy;
   }
@@ -111,13 +114,12 @@ public class ManagedWebAccess {
    * This globally turns off the following:
    *  * requiring all web access to be via https protocol
    *  * preventing access to private and non-public servers
-   * WARNING: By default this is TRUE, and it is not recommended to set this to false. It is left as a setting intended
-   * for use in testing, and never in production.
+   * WARNING: By default this is TRUE. Only set to FALSE if no untrusted party can influence any of the content being processed, or the validator runs where internal network access poses no risk.
    * @param ssrfProtectionEnabled whether to enable ssrf protection
    */
   public static void setSsrfProtectionEnabled(boolean ssrfProtectionEnabled) {
     if (!ssrfProtectionEnabled) {
-      log.warn("Running with SSRF protection disabled. This is not recommended for production environments.");
+      log.warn("SSRF protection is disabled. Content being validated (including packages and other dependencies) can direct the validator to fetch URLs of the content's choosing, including internal network addresses. Only run in this mode if no untrusted party can influence any of the content being processed, or the validator runs where internal network access poses no risk.");
     }
     ManagedWebAccess.ssrfProtectionEnabled = ssrfProtectionEnabled;
   }

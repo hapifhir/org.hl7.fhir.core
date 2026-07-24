@@ -30,11 +30,11 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
     return headers;
   }
 
-  private PolicyEnforcingHTTPClient setupSimpleHTTPClient(String url) throws IOException {
+  private ManagedHTTPClient setupManagedHTTPClient(String url) throws IOException {
     if (!ManagedWebAccess.inAllowedPaths(url)) {
       throw new IOException("The pathname '"+url+"' cannot be accessed by policy");
     }
-    PolicyEnforcingHTTPClient.PolicyEnforcingHTTPClientBuilder builder = PolicyEnforcingHTTPClient.builder();
+    ManagedHTTPClient.ManagedHTTPClientBuilder builder = ManagedHTTPClient.builder();
 
     builder.authProvider(getHttpAuthHeaderProvider())
       .ssrfProtectionEnabled(isSSRFProtectionEnabled());
@@ -59,7 +59,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   public HTTPResult get(String url, String accept) throws IOException {
     return switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT -> {
-        PolicyEnforcingHTTPClient client = setupSimpleHTTPClient(url);
+        ManagedHTTPClient client = setupManagedHTTPClient(url);
         yield client.get(url, accept);
       }
       case MANAGED ->  ManagedWebAccess.getAccessor().get(getServerTypes(), url, accept, newHeaders(url));
@@ -75,7 +75,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   public HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
-      PolicyEnforcingHTTPClient client = setupSimpleHTTPClient(url);
+      ManagedHTTPClient client = setupManagedHTTPClient(url);
       return client.post(url, contentType, content, accept);
     case MANAGED:
       return ManagedWebAccess.getAccessor().post(getServerTypes(), url, content, contentType, accept, newHeaders(url));
@@ -93,7 +93,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   public HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
     return switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT -> {
-        PolicyEnforcingHTTPClient client = setupSimpleHTTPClient(url);
+        ManagedHTTPClient client = setupManagedHTTPClient(url);
         yield client.put(url, contentType, content, accept);
       }
       case MANAGED ->

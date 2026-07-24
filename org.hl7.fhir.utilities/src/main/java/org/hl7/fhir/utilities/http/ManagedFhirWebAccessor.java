@@ -14,7 +14,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
   /**
    * The singleton instance of the HttpClient, used for all requests.
    */
-  private PolicyEnforcingHTTPClient httpClient;
+  private ManagedHTTPClient httpClient;
 
   private long timeout;
   private TimeUnit timeoutUnit;
@@ -55,7 +55,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
 
   /**
    * Adds default and static headers only - no {@link IHTTPAuthenticationProvider} headers. Safe
-   * to use with a request that will be handed to {@link PolicyEnforcingHTTPClient}: it holds the same
+   * to use with a request that will be handed to {@link ManagedHTTPClient}: it holds the same
    * auth provider (see {@link #getHttpClient()}) and attaches its headers itself, per redirect
    * hop, which is redirect-safe in a way that pre-baking them here is not (see
    * {@link #requestWithAuthorizationHeaders}).
@@ -77,9 +77,9 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
    * request. Only safe for the MANAGED access path, whose external
    * {@link ManagedWebAccess.IFhirWebAccessor} implementation has no visibility into this class's
    * auth provider and so must receive a fully-prepared request - unlike DIRECT, MANAGED never
-   * routes through {@link PolicyEnforcingHTTPClient}, so there is no per-hop mechanism to defer to.
+   * routes through {@link ManagedHTTPClient}, so there is no per-hop mechanism to defer to.
    * The DIRECT path must not use this: baking these headers into a request that
-   * {@link PolicyEnforcingHTTPClient} then follows redirects with would resend them across a
+   * {@link ManagedHTTPClient} then follows redirects with would resend them across a
    * cross-origin redirect target.
    */
   protected HTTPRequest requestWithAuthorizationHeaders(HTTPRequest httpRequest) {
@@ -107,7 +107,7 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
           throw new IOException("The pathname '" + url + "' cannot be accessed by policy");
         }
 
-        PolicyEnforcingHTTPClient client = getHttpClient();
+        ManagedHTTPClient client = getHttpClient();
         Iterable<HTTPHeader> headers = requestWithDefaultAndStaticHeaders.getHeaders();
         String contentType = requestWithDefaultAndStaticHeaders.getContentType();
         byte[] body = requestWithDefaultAndStaticHeaders.getBody();
@@ -132,9 +132,9 @@ public class ManagedFhirWebAccessor extends ManagedWebAccessorBase<ManagedFhirWe
     }
   }
 
-  private PolicyEnforcingHTTPClient getHttpClient() {
+  private ManagedHTTPClient getHttpClient() {
     if (httpClient == null) {
-      httpClient = PolicyEnforcingHTTPClient.builder()
+      httpClient = ManagedHTTPClient.builder()
         .timeout(timeout)
         .timeoutUnit(timeoutUnit)
         .retries(retries)

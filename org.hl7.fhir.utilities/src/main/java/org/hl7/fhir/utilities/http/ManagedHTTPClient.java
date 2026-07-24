@@ -54,7 +54,7 @@ import okhttp3.Response;
  * exact address OkHttp connects to, so there is no separate resolution step for an attacker to exploit via DNS
  * rebinding.
  */
-public class PolicyEnforcingHTTPClient {
+public class ManagedHTTPClient {
 
   private static final int MAX_REDIRECTS = 5;
   public static final String ACCEPT_HEADER_KEY = "Accept";
@@ -89,13 +89,13 @@ public class PolicyEnforcingHTTPClient {
   private final OkHttpClient nonPublicAddressRejectingClient;
 
   @Builder
-  private PolicyEnforcingHTTPClient(Long timeout,
-                                    TimeUnit timeoutUnit,
-                                    Integer retries,
-                                    Collection<HTTPHeader> headers,
-                                    IHTTPAuthenticationProvider authProvider,
-                                    Boolean ssrfProtectionEnabled,
-                                    ToolingClientLogger logger) {
+  private ManagedHTTPClient(Long timeout,
+                            TimeUnit timeoutUnit,
+                            Integer retries,
+                            Collection<HTTPHeader> headers,
+                            IHTTPAuthenticationProvider authProvider,
+                            Boolean ssrfProtectionEnabled,
+                            ToolingClientLogger logger) {
     this.timeout = timeout != null ? timeout : DEFAULT_TIMEOUT;
     this.timeoutUnit = timeoutUnit != null ? timeoutUnit : DEFAULT_TIMEOUT_UNIT;
     this.retries = retries != null ? retries : DEFAULT_RETRIES;
@@ -109,7 +109,7 @@ public class PolicyEnforcingHTTPClient {
   }
 
   /**
-   * @return A base client that uses the SimpleHTTPClient configuration.
+   * @return An OkHTTPClient configured from our settings, but with no additional protocol or network blocking.
    */
   private OkHttpClient buildBaseClient() {
     OkHttpClient.Builder builder = new OkHttpClient.Builder()
@@ -130,8 +130,8 @@ public class PolicyEnforcingHTTPClient {
   /**
    *
    * @param baseClient the base client to work from
-   * @return A client derived from baseClient, sharing the same connection pool/dispatcher, but using an SSRF
-   * protecting DNS
+   * @return A client derived from baseClient, sharing the same connection pool/dispatcher, but blocking non-https
+   * and non-public servers.
    */
   private OkHttpClient buildNonPublicAddressRejectingClient(OkHttpClient baseClient) {
     OkHttpClient.Builder builder = baseClient.newBuilder()
