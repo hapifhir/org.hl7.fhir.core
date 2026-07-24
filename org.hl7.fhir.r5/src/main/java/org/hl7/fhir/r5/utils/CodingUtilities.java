@@ -30,7 +30,11 @@ package org.hl7.fhir.r5.utils;
  */
 
 
+import java.util.concurrent.TimeoutException;
+
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 
 public class CodingUtilities {
 
@@ -67,13 +71,17 @@ public class CodingUtilities {
    * @param fmt the format is [system](|[version])#[code], no display
    * @return whether the code conforms to the filter using regex
    */
-  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
-  //Regex sourced from fmt parameter; user-supplied at runtime
   public static boolean filterMatches(Coding c, String fmt) {
-    if (fmt.contains("|")) {
-      return (""+c.getSystem()+"|"+c.getVersion()+"#"+c.getCode()).matches(fmt);
-    } else {
-      return (""+c.getSystem()+"#"+c.getCode()).matches(fmt);
+    // the regex comes from a ValueSet filter value - user-supplied at runtime - so it is
+    // evaluated through RegexTimeout, which bounds evaluation of pathological patterns
+    try {
+      if (fmt.contains("|")) {
+        return RegexTimeout.matches(""+c.getSystem()+"|"+c.getVersion()+"#"+c.getCode(), fmt);
+      } else {
+        return RegexTimeout.matches(""+c.getSystem()+"#"+c.getCode(), fmt);
+      }
+    } catch (TimeoutException e) {
+      throw new FHIRException("The regex filter '"+fmt+"' took too long to evaluate");
     }
   }
 

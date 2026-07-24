@@ -38,6 +38,7 @@ public class TerminologyClientManager {
     private String url;
     private List<String> authoritative = new ArrayList<String>();
     private List<String> candidates = new ArrayList<String>();
+    private String language; // the language this resolution was made for (null = no language; see Language Specific Claims in the tx ecosystem IG)
     
     public ServerOptionList(String url, String address) {
       this.url = url;
@@ -69,7 +70,7 @@ public class TerminologyClientManager {
 
     @Override
     public String toString() {
-      return "["+url+ "]: authoritative = " + CommaSeparatedStringBuilder.join("|", authoritative)+ ", candidates=" + CommaSeparatedStringBuilder.join("|", candidates);
+      return "["+url+(language == null ? "" : " in "+language)+ "]: authoritative = " + CommaSeparatedStringBuilder.join("|", authoritative)+ ", candidates=" + CommaSeparatedStringBuilder.join("|", candidates);
     }    
     
   }
@@ -178,16 +179,31 @@ public class TerminologyClientManager {
 
 
   public TerminologyClientContext chooseServer(ValueSet vs, Set<String> systems, boolean expand) throws TerminologyServiceException {
+    return chooseServer(vs, systems, expand, null);
+  }
+
+  /**
+   * Choose a server for a set of code systems.
+   * 
+   * language is the language(s) of the request being routed, in Accept-Language syntax, or null.
+   * Language specific authoritative claims in the ecosystem registration are only considered when
+   * a language is passed, so it should only be provided when the operation being routed is language
+   * sensitive (an expansion where the display language matters, a validation that checks a display,
+   * a lookup that returns designations). The routing language and the language on the subsequent
+   * operation must agree, or the routing is meaningless.
+   */
+  public TerminologyClientContext chooseServer(ValueSet vs, Set<String> systems, boolean expand, String language) throws TerminologyServiceException {
     if (serverList.isEmpty()) {
       return null;
     }
     if (systems.contains(UNRESOLVED_VALUESET) || systems.isEmpty() || !useEcosystem) {
       return getMaster();
     }
+    language = effectiveLanguage(language, expand);
     
     List<ServerOptionList> choices = new ArrayList<>();
     for (String s : systems) {
-      choices.add(findServerForSystem(s, expand));
+      choices.add(findServerForSystem(s, expand, language));
     }    
     
     // first we look for a server that's authoritative for all of them
@@ -229,7 +245,7 @@ public class TerminologyClientManager {
       if (Utilities.existsInList(uri, "http://snomed.info/sct") && systems.size() > 1) {
         Set<String> sct = new HashSet<>();
         sct.add("http://snomed.info/sct");
-        return chooseServer(vs, sct, expand);
+        return chooseServer(vs, sct, expand, language);
       }
       if (Utilities.existsInList(uri, "http://unitsofmeasure.org", "http://loinc.org", "http://snomed.info/sct",
         "http://www.nlm.nih.gov/research/umls/rxnorm", "http://hl7.org/fhir/sid/cvx", "urn:ietf:bcp:13", "urn:ietf:bcp:47",
@@ -341,18 +357,26 @@ public class TerminologyClientManager {
   }
 
   public TerminologyClientContext chooseServer(String vs, boolean expand) throws TerminologyServiceException {
+    return chooseServer(vs, expand, null);
+  }
+
+  public TerminologyClientContext chooseServer(String vs, boolean expand, String language) throws TerminologyServiceException {
     if (serverList.isEmpty()) {
       return null;
     }
     if (IGNORE_TX_REGISTRY || !useEcosystem) {
       return findClient(getMasterClient().getAddress(), null, expand);
     }
+    language = effectiveLanguage(language, expand);
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(vs));
     if (usage != null) {
       request = request + "&usage="+usage;
     } 
+    if (language != null) {
+      request = request + "&language="+Utilities.URLEncode(language);
+    }
     try {
-      JsonObject json = JsonParser.parseObjectFromUrl(request);
+      JsonObject json = fetchRegistryJson(request);
       for (JsonObject item : json.getJsonObjects("authoritative")) {
         return findClient(item.asString("url"), null, expand);
       }
@@ -393,16 +417,29 @@ public class TerminologyClientManager {
     return client;
   }
 
-  private ServerOptionList findServerForSystem(String s, boolean expand) throws TerminologyServiceException {
-    ServerOptionList serverList = resMap.get(s);
+  /**
+   * All access to the ecosystem coordination server (tx-reg) goes through here, so that
+   * tests can supply their own registry responses without any network access
+   * (see TerminologyClientManagerLanguageTest)
+   */
+  protected JsonObject fetchRegistryJson(String request) throws IOException, org.hl7.fhir.utilities.json.JsonException {
+    return JsonParser.parseObjectFromUrl(request);
+  }
+
+  private ServerOptionList findServerForSystem(String s, boolean expand, String language) throws TerminologyServiceException {
+    // resolutions are language specific - the server chosen for German requests is not the
+    // right resolution for the same code system in English - so resolutions are remembered
+    // (and persisted) against both the code system and the language they were made for
+    String key = language == null ? s : s+" in "+language;
+    ServerOptionList serverList = resMap.get(key);
     if (serverList == null) {
-      serverList = decideWhichServer(s);
+      serverList = decideWhichServer(s, language);
       // testing support
       try {
         serverList.replace("tx.fhir.org", host());
       } catch (MalformedURLException e) {
       }
-      resMap.put(s, serverList);
+      resMap.put(key, serverList);
       save();
     }
     return serverList;
@@ -417,7 +454,29 @@ public class TerminologyClientManager {
     }
   }
 
-  private ServerOptionList decideWhichServer(String url) {
+  /**
+   * The language to use for routing: whatever the caller passed, if anything, else (for
+   * expansions) whatever displayLanguage is fixed in the expansion parameters - the same
+   * approach as the version handling in decideWhichServer()
+   */
+  private String effectiveLanguage(String language, boolean expand) {
+    if (language != null) {
+      language = language.trim();
+      if (language.isEmpty()) {
+        language = null;
+      }
+    }
+    if (language == null && expand && expParameters != null) {
+      for (ParametersParameterComponent p : expParameters.getParameter()) {
+        if ("displayLanguage".equals(p.getName()) && p.hasValuePrimitive()) {
+          language = p.getValue().primitiveValue();
+        }
+      }
+    }
+    return language;
+  }
+
+  private ServerOptionList decideWhichServer(String url, String language) {
     if (IGNORE_TX_REGISTRY || !useEcosystem) {
       return new ServerOptionList(url, getMasterClient().getAddress());
     }
@@ -442,9 +501,13 @@ public class TerminologyClientManager {
     if (usage != null) {
       request = request + "&usage="+usage;
     } 
+    if (language != null) {
+      request = request + "&language="+Utilities.URLEncode(language);
+    }
     try {
       ServerOptionList ret = new ServerOptionList(url);
-      JsonObject json = JsonParser.parseObjectFromUrl(request);
+      ret.language = language;
+      JsonObject json = fetchRegistryJson(request);
       for (JsonObject item : json.getJsonObjects("authoritative")) {
           ret.authoritative.add(item.asString("url"));
       }
@@ -595,7 +658,9 @@ public class TerminologyClientManager {
               if (pair.has("server")) {
                 resMap.put(pair.asString("system"), new ServerOptionList(url, pair.asString("server")));
               } else {
-                resMap.put(pair.asString("system"), new ServerOptionList(url, pair.getStrings("authoritative"), pair.getStrings("candidates")));
+                ServerOptionList sol = new ServerOptionList(url, pair.getStrings("authoritative"), pair.getStrings("candidates"));
+                sol.language = pair.asString("language");
+                resMap.put(pair.asString("system"), sol);
               }
             }
           }
@@ -615,6 +680,9 @@ public class TerminologyClientManager {
         si.add("system", s);
         ServerOptionList sol = resMap.get(s);
         si.add("url", sol.url);
+        if (sol.language != null) {
+          si.add("language", sol.language);
+        }
         si.add("authoritative", sol.authoritative);
         si.add("candidates", sol.candidates);
       }
@@ -690,7 +758,7 @@ public class TerminologyClientManager {
           if (usage != null) {
             request = request + "&usage="+usage;
           }
-          JsonObject json = JsonParser.parseObjectFromUrl(request);
+          JsonObject json = fetchRegistryJson(request);
           for (JsonObject item : json.getJsonObjects("authoritative")) {
             if (server == null) {
               server = item.asString("url");
@@ -798,7 +866,7 @@ public class TerminologyClientManager {
     }
     String server = null;
     try {
-      JsonObject json = JsonParser.parseObjectFromUrl(request);
+      JsonObject json = fetchRegistryJson(request);
       for (JsonObject item : json.getJsonObjects("authoritative")) {
         if (server == null) {
           server = item.asString("url");

@@ -858,26 +858,30 @@ public class ExtensionUtilities {
     return StandardsStatus.fromCode(ExtensionUtilities.readStringExtension(e, ExtensionDefinitions.EXT_STANDARDS_STATUS));
   }
 
-  public static void setStandardsStatus(DomainResource dr, StandardsStatus status, String normativeVersion) {
-    if (status == null)
+  public static void setStandardsStatus(DomainResource dr, StandardsStatus status, String normativeVersion, String thisVersion) {
+    if (status == null) {
       ExtensionUtilities.removeExtension(dr, ExtensionDefinitions.EXT_STANDARDS_STATUS);
-    else
+    } else {
       ExtensionUtilities.setCodeExtension(dr, ExtensionDefinitions.EXT_STANDARDS_STATUS, status.toCode());
-    if (normativeVersion == null)
-      ExtensionUtilities.removeExtension(dr, ExtensionDefinitions.EXT_NORMATIVE_VERSION);
-    else
+    }
+    if (normativeVersion != null) {
       ExtensionUtilities.setCodeExtension(dr, ExtensionDefinitions.EXT_NORMATIVE_VERSION, normativeVersion);
+    } else if (status == StandardsStatus.NORMATIVE && thisVersion != null) {
+      ExtensionUtilities.setCodeExtension(dr, ExtensionDefinitions.EXT_NORMATIVE_VERSION, thisVersion);
+    }
   }
 
-  public static void setStandardsStatus(Element dr, StandardsStatus status, String normativeVersion) {
-    if (status == null)
+  public static void setStandardsStatus(Element dr, StandardsStatus status, String normativeVersion, String thisVersion) {
+    if (status == null) {
       ExtensionUtilities.removeExtension(dr, ExtensionDefinitions.EXT_STANDARDS_STATUS);
-    else
+    } else {
       ExtensionUtilities.setCodeExtension(dr, ExtensionDefinitions.EXT_STANDARDS_STATUS, status.toCode());
-    if (normativeVersion == null)
-      ExtensionUtilities.removeExtension(dr, ExtensionDefinitions.EXT_NORMATIVE_VERSION);
-    else
+    }
+    if (normativeVersion != null) {
       ExtensionUtilities.setCodeExtension(dr, ExtensionDefinitions.EXT_NORMATIVE_VERSION, normativeVersion);
+    } else if (status == StandardsStatus.NORMATIVE && thisVersion != null) {
+      ExtensionUtilities.removeExtension(dr, ExtensionDefinitions.EXT_NORMATIVE_VERSION);
+    }
   }
 
   public static ValidationMessage readValidationMessage(OperationOutcome.OperationOutcomeIssueComponent issue, ValidationMessage.Source source) {

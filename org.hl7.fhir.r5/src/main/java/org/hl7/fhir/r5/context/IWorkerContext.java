@@ -508,6 +508,18 @@ public interface IWorkerContext {
   /**
    * this first does a fetch resource, and if nothing is found, looks in the
    * terminology eco-system for a matching definition for the resource
+   * <p>
+   * Limitations of use: a resource acquired this way is a <b>definition</b>, fetched from
+   * whichever server the ecosystem resolved - it is not a substitute for the server that
+   * hosts it. For CodeSystems in particular, the copy does not carry the supplements
+   * (language packs etc.) loaded on the servers, and it is not kept current. For that
+   * reason the terminology processing layer (validation / expansion) must not use this
+   * method to acquire CodeSystem content to compute answers from - it uses fetchResource
+   * (local content only) and routes operations to the appropriate server instead, so that
+   * supplements, languages and authority are honoured (see 'Language Specific Claims' in
+   * the tx ecosystem IG). Retrieving ValueSet definitions this way is fine and necessary
+   * (they carry no supplement dimension, and are needed client-side for the tx-resource
+   * flow), as is retrieving definitions for rendering and metadata purposes.
    * @param class_ the type of resource
    * @param canonical the URL of the resource, optionally with a |version suffix
    * @param rules - additional rules that apply when resolving the version to use
@@ -520,6 +532,18 @@ public interface IWorkerContext {
   /**
    * this first does a fetch resource, and if nothing is found, looks in the
    * terminology eco-system for a matching definition for the resource
+   * <p>
+   * Limitations of use: a resource acquired this way is a <b>definition</b>, fetched from
+   * whichever server the ecosystem resolved - it is not a substitute for the server that
+   * hosts it. For CodeSystems in particular, the copy does not carry the supplements
+   * (language packs etc.) loaded on the servers, and it is not kept current. For that
+   * reason the terminology processing layer (validation / expansion) must not use this
+   * method to acquire CodeSystem content to compute answers from - it uses fetchResource
+   * (local content only) and routes operations to the appropriate server instead, so that
+   * supplements, languages and authority are honoured (see 'Language Specific Claims' in
+   * the tx ecosystem IG). Retrieving ValueSet definitions this way is fine and necessary
+   * (they carry no supplement dimension, and are needed client-side for the tx-resource
+   * flow), as is retrieving definitions for rendering and metadata purposes.
    * @param class_ the type of resource
    * @param canonical the URL of the resource, optionally with a |version suffix
    * @param rules - additional rules that apply when resolving the version to use

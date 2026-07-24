@@ -538,6 +538,8 @@ public class RenderingI18nContext extends I18nBase {
   public static final String RES_REND_DRAFT = "RES_REND_DRAFT";
   public static final String RES_REND_ERROR = "RES_REND_ERROR";
   public static final String RES_REND_INFO_SOURCE = "RES_REND_INFO_SOURCE";
+  public static final String RES_REND_INFO_SOURCE_NAME = "RES_REND_INFO_SOURCE_NAME";
+  public static final String RES_REND_INFO_SOURCE_VALUE = "RES_REND_INFO_SOURCE_VALUE";
   public static final String RES_REND_LANGUAGE = "RES_REND_LANGUAGE";
   public static final String GENERAL_RESOURCE = "GENERAL_RESOURCE";
   public static final String RES_REND_RET = "RES_REND_RET";
@@ -547,7 +549,11 @@ public class RenderingI18nContext extends I18nBase {
   public static final String RES_REND_TAG = "RES_REND_TAG";
   public static final String RES_REND_UNKNOWN = "RES_REND_UNKNOWN";
   public static final String RES_REND_UPDATED = "RES_REND_UPDATED";
+  public static final String RES_REND_UPDATED_NAME = "RES_REND_UPDATED_NAME";
+  public static final String RES_REND_UPDATED_VALUE = "RES_REND_UPDATED_VALUE";
   public static final String RES_REND_VER = "RES_REND_VER";
+  public static final String RES_REND_VER_NAME = "RES_REND_VER_NAME";
+  public static final String RES_REND_VER_VALUE = "RES_REND_VER_VALUE";
   public static final String RES_REND_TEMPLATE_ID = "RES_REND_TEMPLATE_ID";
   public static final String SD_COMP_HEAD_CARD_L = "SD_COMP_HEAD_CARD_L";
   public static final String SD_COMP_HEAD_CARD_L_DESC  ="SD_COMP_HEAD_CARD_L_DESC";
