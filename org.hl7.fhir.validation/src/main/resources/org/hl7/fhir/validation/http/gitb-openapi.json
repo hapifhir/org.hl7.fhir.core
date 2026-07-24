@@ -1,0 +1,424 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "FHIR Validator — GITB REST services",
+    "description": "GITB-faithful REST services exposed by the HL7 FHIR Validator under `/itb/`.\n\nThe shapes mirror the GITB schemas (`gitb_vs.xsd`, `gitb_ps.xsd`):\n- Validation services expose `GET /<svc>/getModuleDefinition` and `POST /<svc>/validate`.\n- Processing services expose `GET /<svc>/getModuleDefinition`, `POST /<svc>/process`, `POST /<svc>/beginTransaction`, `POST /<svc>/endTransaction`.\n\nAll inputs and outputs are arrays of `AnyContent` items. The handler URI is the service root (e.g. `/itb/fhir`); ITB knows the operation names from the GITB contract and appends them as sub-paths.",
+    "version": "2.0.0",
+    "contact": {
+      "name": "HL7 FHIR Core Team",
+      "url": "https://github.com/hapifhir/org.hl7.fhir.core"
+    }
+  },
+  "servers": [
+    { "url": "http://localhost:8080/itb", "description": "Local development server (paths in this spec are relative to /itb)" }
+  ],
+  "tags": [
+    { "name": "FHIRValidator",            "description": "Validation service — validates a FHIR resource against base + profiles." },
+    { "name": "MatchetypeValidator",      "description": "Validation service — compares a resource against an expected matchetype pattern." },
+    { "name": "FHIRPathAssertion",        "description": "Validation service — asserts a FHIRPath expression evaluates to true." },
+    { "name": "FHIRPathProcessor",        "description": "Processing service — evaluates a FHIRPath expression and returns the value." },
+    { "name": "TestDataGenerator",        "description": "Processing service — synthesises FHIR resources from a profile + optional mappings/data." },
+    { "name": "ValidationResultsProcessor", "description": "Processing service — summarises and filters a FHIR OperationOutcome (no engine call)." },
+    { "name": "IGManager",                "description": "Processing service — loads FHIR Implementation Guide packages into the engine." },
+    { "name": "FHIRTransformer",          "description": "Processing service — applies a FHIR StructureMap to a resource (transform) and parses FHIR Mapping Language into a StructureMap (parse)." },
+    { "name": "QuestionnaireGenerator",   "description": "Processing service — generates a FHIR Questionnaire from a StructureDefinition profile." },
+    { "name": "PackageGenerator",         "description": "Processing service — CRMI $package: bundles a canonical artifact with all its transitive dependencies." }
+  ],
+
+  "paths": {
+    "/fhir/getModuleDefinition": {
+      "get": {
+        "tags": ["FHIRValidator"],
+        "summary": "FHIRValidator service definition",
+        "operationId": "fhirGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/fhir/validate": {
+      "post": {
+        "tags": ["FHIRValidator"],
+        "summary": "Validate a FHIR resource",
+        "operationId": "fhirValidate",
+        "description": "Inputs (in `input[]`):\n- `contentToValidate` (required)\n- `contentType` (default `application/fhir+json`)\n- `profiles` (comma-separated canonical URLs)\n- `bpWarnings`, `resourceIdRule`, `displayWarnings`, `failOn`, `includeContentInReport` (optional)\n\nReturns a TAR with the OperationOutcome and (optionally) the validated content in `report.context`.",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ValidateRequest" } } } },
+        "responses": { "200": { "description": "Validation result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ValidationResponse" } } } } }
+      }
+    },
+
+    "/matchetype/getModuleDefinition": {
+      "get": {
+        "tags": ["MatchetypeValidator"],
+        "summary": "MatchetypeValidator service definition",
+        "operationId": "matchetypeGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/matchetype/validate": {
+      "post": {
+        "tags": ["MatchetypeValidator"],
+        "summary": "Compare a resource against an expected matchetype pattern",
+        "operationId": "matchetypeValidate",
+        "description": "Inputs (in `input[]`): `contentToValidate`, `matchetype`, optional `mode` (`complete`|`partial`).",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ValidateRequest" } } } },
+        "responses": { "200": { "description": "Comparison result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ValidationResponse" } } } } }
+      }
+    },
+
+    "/fhirPathAssertion/getModuleDefinition": {
+      "get": {
+        "tags": ["FHIRPathAssertion"],
+        "summary": "FHIRPathAssertion service definition",
+        "operationId": "fhirPathAssertionGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/fhirPathAssertion/validate": {
+      "post": {
+        "tags": ["FHIRPathAssertion"],
+        "summary": "Assert that a FHIRPath expression evaluates to true",
+        "operationId": "fhirPathAssertionValidate",
+        "description": "Inputs (in `input[]`): `contentToValidate` (the resource), `expression` (the FHIRPath expression — should yield singleton Boolean), optional `description`.",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ValidateRequest" } } } },
+        "responses": { "200": { "description": "Assertion result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ValidationResponse" } } } } }
+      }
+    },
+
+    "/fhirPath/getModuleDefinition": {
+      "get": {
+        "tags": ["FHIRPathProcessor"],
+        "summary": "FHIRPathProcessor service definition",
+        "operationId": "fhirPathGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/fhirPath/process": {
+      "post": {
+        "tags": ["FHIRPathProcessor"],
+        "summary": "Evaluate a FHIRPath expression",
+        "operationId": "fhirPathProcess",
+        "description": "Operation: `evaluate`. Inputs (in `input[]`): `content`, `expression`. Output: `result` (stringified value).",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessRequest" } } } },
+        "responses": { "200": { "description": "Result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessResponse" } } } } }
+      }
+    },
+    "/fhirPath/beginTransaction": { "post": { "tags": ["FHIRPathProcessor"], "summary": "Begin a (no-op) transaction", "operationId": "fhirPathBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
+    "/fhirPath/endTransaction":   { "post": { "tags": ["FHIRPathProcessor"], "summary": "End a (no-op) transaction",   "operationId": "fhirPathEnd",   "responses": { "204": { "description": "No content" } } } },
+
+    "/testdata/getModuleDefinition": {
+      "get": {
+        "tags": ["TestDataGenerator"],
+        "summary": "TestDataGenerator service definition",
+        "operationId": "testdataGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/testdata/process": {
+      "post": {
+        "tags": ["TestDataGenerator"],
+        "summary": "Generate test data from a profile",
+        "operationId": "testdataProcess",
+        "description": "Operations: `generate`, `generateBundle`. Inputs (in `input[]`): `profile` (canonical URL), optional `mappings` and `data` (stringified JSON arrays). Output: `resource` (stringified FHIR JSON).",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessRequest" } } } },
+        "responses": { "200": { "description": "Generated resource", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessResponse" } } } } }
+      }
+    },
+    "/testdata/beginTransaction": { "post": { "tags": ["TestDataGenerator"], "summary": "Begin a (no-op) transaction", "operationId": "testdataBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
+    "/testdata/endTransaction":   { "post": { "tags": ["TestDataGenerator"], "summary": "End a (no-op) transaction",   "operationId": "testdataEnd",   "responses": { "204": { "description": "No content" } } } },
+
+    "/validationResults/getModuleDefinition": {
+      "get": {
+        "tags": ["ValidationResultsProcessor"],
+        "summary": "ValidationResultsProcessor service definition",
+        "operationId": "validationResultsGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/validationResults/process": {
+      "post": {
+        "tags": ["ValidationResultsProcessor"],
+        "summary": "Summarise / filter a FHIR OperationOutcome",
+        "operationId": "validationResultsProcess",
+        "description": "Operations: `summarize`, `filterBySeverity`, `filterByText`. Pure JSON utility — no FHIR engine call. Inputs (in `input[]`): `outcome` (OperationOutcome JSON); plus `severity` (filterBySeverity) or `text` (filterByText).",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessRequest" } } } },
+        "responses": { "200": { "description": "Result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessResponse" } } } } }
+      }
+    },
+    "/validationResults/beginTransaction": { "post": { "tags": ["ValidationResultsProcessor"], "summary": "Begin a (no-op) transaction", "operationId": "validationResultsBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
+    "/validationResults/endTransaction":   { "post": { "tags": ["ValidationResultsProcessor"], "summary": "End a (no-op) transaction",   "operationId": "validationResultsEnd",   "responses": { "204": { "description": "No content" } } } },
+
+    "/igManager/getModuleDefinition": {
+      "get": {
+        "tags": ["IGManager"],
+        "summary": "IGManager service definition",
+        "operationId": "igManagerGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/igManager/process": {
+      "post": {
+        "tags": ["IGManager"],
+        "summary": "Load a FHIR Implementation Guide package",
+        "operationId": "igManagerProcess",
+        "description": "Operation: `loadIG`. Idempotent — re-loading an already-loaded package is a no-op. Input (in `input[]`): `ig` (e.g. `hl7.fhir.be.core#2.1.2`). Output: `loaded` (the resolved `package#version`).",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessRequest" } } } },
+        "responses": { "200": { "description": "Result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessResponse" } } } } }
+      }
+    },
+    "/igManager/beginTransaction": { "post": { "tags": ["IGManager"], "summary": "Begin a (no-op) transaction", "operationId": "igManagerBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
+    "/igManager/endTransaction":   { "post": { "tags": ["IGManager"], "summary": "End a (no-op) transaction",   "operationId": "igManagerEnd",   "responses": { "204": { "description": "No content" } } } },
+
+    "/transform/getModuleDefinition": {
+      "get": {
+        "tags": ["FHIRTransformer"],
+        "summary": "FHIRTransformer service definition",
+        "operationId": "transformGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/transform/process": {
+      "post": {
+        "tags": ["FHIRTransformer"],
+        "summary": "Apply a FHIR StructureMap to a resource, or parse FML into a StructureMap",
+        "operationId": "transformProcess",
+        "description": "Operations: `transform` and `parse`.\n\n`transform` — inputs (in `input[]`): `content` (source resource as JSON or XML), `map` (canonical URL of the StructureMap), `contentType` (optional, default `application/fhir+json`), `targetFormat` (`json` default, or `xml`). Outputs: `result` (transformed resource), `targetMime`. The StructureMap must be in the validator's context — load the IG that contains it via `/igManager/process` first.\n\n`parse` — inputs: `content` (FHIR Mapping Language source text), `name` (optional source name for error messages, default `map`), `targetFormat` (`json` default, or `xml`). Outputs: `structureMap` (the parsed StructureMap), `targetMime`.",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessRequest" } } } },
+        "responses": { "200": { "description": "Result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessResponse" } } } } }
+      }
+    },
+    "/transform/beginTransaction": { "post": { "tags": ["FHIRTransformer"], "summary": "Begin a (no-op) transaction", "operationId": "transformBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
+    "/transform/endTransaction":   { "post": { "tags": ["FHIRTransformer"], "summary": "End a (no-op) transaction",   "operationId": "transformEnd",   "responses": { "204": { "description": "No content" } } } },
+
+    "/questionnaire/getModuleDefinition": {
+      "get": {
+        "tags": ["QuestionnaireGenerator"],
+        "summary": "QuestionnaireGenerator service definition",
+        "operationId": "questionnaireGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/questionnaire/process": {
+      "post": {
+        "tags": ["QuestionnaireGenerator"],
+        "summary": "Generate a FHIR Questionnaire from a StructureDefinition profile",
+        "operationId": "questionnaireProcess",
+        "description": "Operation: `generate`. Inputs (in `input[]`): `profile` (canonical URL of the StructureDefinition), `targetFormat` (`json` default, or `xml`), `select` (optional stringified JSON array of FHIRPath expressions evaluated per ElementDefinition — the Questionnaire is built in full then pruned to elements any expression matches, plus their ancestors/descendants; e.g. `[\"mustSupport = true\"]` or `[\"path = 'Patient.name'\"]`). Outputs: `questionnaire` (the generated Questionnaire), `targetMime` (`application/fhir+json` or `application/fhir+xml`). The Questionnaire is built from the profile's snapshot; coded elements have their ValueSets expanded as answer options. The profile must be in the validator's context — load the IG that contains it via `/igManager/process` first.",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessRequest" } } } },
+        "responses": { "200": { "description": "Result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessResponse" } } } } }
+      }
+    },
+    "/questionnaire/beginTransaction": { "post": { "tags": ["QuestionnaireGenerator"], "summary": "Begin a (no-op) transaction", "operationId": "questionnaireBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
+    "/questionnaire/endTransaction":   { "post": { "tags": ["QuestionnaireGenerator"], "summary": "End a (no-op) transaction",   "operationId": "questionnaireEnd",   "responses": { "204": { "description": "No content" } } } },
+
+    "/package/getModuleDefinition": {
+      "get": {
+        "tags": ["PackageGenerator"],
+        "summary": "PackageGenerator service definition",
+        "operationId": "packageGetModuleDefinition",
+        "responses": { "200": { "description": "Module definition", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/GetModuleDefinitionResponse" } } } } }
+      }
+    },
+    "/package/process": {
+      "post": {
+        "tags": ["PackageGenerator"],
+        "summary": "Bundle a canonical artifact with its transitive dependencies (CRMI $package)",
+        "operationId": "packageProcess",
+        "description": "Operation: `package`. Inputs (in `input[]`): `resource` (canonical URL of the root artifact), `expandValueSets` (when `true`, ValueSet entries are replaced by their expansion; default false), `targetFormat` (`json` default, or `xml`). Outputs: `bundle` (a `collection` Bundle of the artifact plus its transitive dependency closure — profiles, extensions, ValueSets, CodeSystems, Library, ActivityDefinition, PlanDefinition, etc.; core FHIR resources excluded), `targetMime`. The artifact and its dependencies must be in the validator's context — load the IG(s) via `/igManager/process` first. Not implemented: paging, content/terminology endpoints, packageOnly, manifest, capability filtering.",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessRequest" } } } },
+        "responses": { "200": { "description": "Result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProcessResponse" } } } } }
+      }
+    },
+    "/package/beginTransaction": { "post": { "tags": ["PackageGenerator"], "summary": "Begin a (no-op) transaction", "operationId": "packageBegin", "responses": { "200": { "description": "Session id", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BeginTransactionResponse" } } } } } } },
+    "/package/endTransaction":   { "post": { "tags": ["PackageGenerator"], "summary": "End a (no-op) transaction",   "operationId": "packageEnd",   "responses": { "204": { "description": "No content" } } } }
+  },
+
+  "components": {
+    "schemas": {
+
+      "AnyContent": {
+        "type": "object",
+        "description": "GITB AnyContent — typed payload used in `input[]`, `output[]`, and TAR `context[]`.",
+        "required": ["name", "value"],
+        "properties": {
+          "name":            { "type": "string" },
+          "value":           { "type": "string", "description": "Encoded according to `embeddingMethod`." },
+          "embeddingMethod": { "$ref": "#/components/schemas/EmbeddingMethod" },
+          "type":            { "type": "string", "description": "GITB simple type — typically `string`." },
+          "mimeType":        { "type": "string", "description": "Output-only rendering hint; ignored on inputs." },
+          "encoding":        { "type": "string", "default": "UTF-8" },
+          "forContext":      { "type": "boolean", "default": true },
+          "forReport":       { "type": "boolean", "default": true },
+          "item":            { "type": "array", "items": { "$ref": "#/components/schemas/AnyContent" }, "description": "Nested AnyContent items for structured payloads." }
+        }
+      },
+      "EmbeddingMethod": {
+        "type": "string",
+        "enum": ["STRING", "BASE_64", "URI"],
+        "description": "How the value of an AnyContent item is encoded."
+      },
+
+      "Configuration": {
+        "type": "object",
+        "description": "Name/value Configuration entry.",
+        "required": ["name", "value"],
+        "properties": {
+          "name":  { "type": "string" },
+          "value": { "type": "string" }
+        }
+      },
+
+      "GetModuleDefinitionResponse": {
+        "type": "object",
+        "required": ["module"],
+        "properties": {
+          "module": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/ValidationModule" },
+              { "$ref": "#/components/schemas/ProcessingModule" }
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "type": "object",
+        "properties": {
+          "name":        { "type": "string" },
+          "version":     { "type": "string" },
+          "description": { "type": "string" }
+        }
+      },
+      "TypedParameter": {
+        "type": "object",
+        "properties": {
+          "name":        { "type": "string" },
+          "type":        { "type": "string" },
+          "use":         { "type": "string", "enum": ["R", "O"], "description": "R = required, O = optional." },
+          "description": { "type": "string" }
+        }
+      },
+      "TypedParameters": {
+        "type": "object",
+        "properties": {
+          "param": { "type": "array", "items": { "$ref": "#/components/schemas/TypedParameter" } }
+        }
+      },
+      "ValidationModule": {
+        "type": "object",
+        "description": "GITB ValidationModule (one operation, fixed name `validate`).",
+        "properties": {
+          "id":        { "type": "string" },
+          "operation": { "type": "string", "enum": ["validate"] },
+          "metadata":  { "$ref": "#/components/schemas/Metadata" },
+          "inputs":    { "$ref": "#/components/schemas/TypedParameters" }
+        }
+      },
+      "ProcessingModule": {
+        "type": "object",
+        "description": "GITB ProcessingModule (one or more named operations).",
+        "properties": {
+          "id":        { "type": "string" },
+          "metadata":  { "$ref": "#/components/schemas/Metadata" },
+          "operation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name":    { "type": "string" },
+                "inputs":  { "$ref": "#/components/schemas/TypedParameters" },
+                "outputs": { "$ref": "#/components/schemas/TypedParameters" }
+              }
+            }
+          }
+        }
+      },
+
+      "ValidateRequest": {
+        "type": "object",
+        "required": ["input"],
+        "properties": {
+          "sessionId": { "type": "string", "description": "Optional session correlation id." },
+          "config":    { "type": "array", "items": { "$ref": "#/components/schemas/Configuration" }, "description": "Optional Configuration entries." },
+          "input":     { "type": "array", "items": { "$ref": "#/components/schemas/AnyContent" }, "description": "Named inputs as AnyContent items." }
+        }
+      },
+      "ValidationResponse": {
+        "type": "object",
+        "required": ["report"],
+        "properties": { "report": { "$ref": "#/components/schemas/TAR" } }
+      },
+
+      "ProcessRequest": {
+        "type": "object",
+        "required": ["input"],
+        "properties": {
+          "sessionId": { "type": "string" },
+          "operation": { "type": "string", "description": "Operation name from the service's ProcessingModule. Optional when the service has only one operation." },
+          "input":     { "type": "array", "items": { "$ref": "#/components/schemas/AnyContent" } }
+        }
+      },
+      "ProcessResponse": {
+        "type": "object",
+        "properties": {
+          "report": { "$ref": "#/components/schemas/TAR" },
+          "output": { "type": "array", "items": { "$ref": "#/components/schemas/AnyContent" } }
+        }
+      },
+
+      "BeginTransactionResponse": {
+        "type": "object",
+        "required": ["sessionId"],
+        "properties": { "sessionId": { "type": "string", "format": "uuid" } }
+      },
+
+      "TestResultType": {
+        "type": "string",
+        "enum": ["SUCCESS", "FAILURE", "WARNING", "UNDEFINED"]
+      },
+      "LevelType": {
+        "type": "string",
+        "enum": ["ERROR", "WARNING", "INFO"]
+      },
+      "ValidationCounters": {
+        "type": "object",
+        "properties": {
+          "nrOfErrors":     { "type": "integer", "minimum": 0 },
+          "nrOfWarnings":   { "type": "integer", "minimum": 0 },
+          "nrOfAssertions": { "type": "integer", "minimum": 0 }
+        }
+      },
+      "ValidationOverview": {
+        "type": "object",
+        "properties": {
+          "name":      { "type": "string" },
+          "version":   { "type": "string" },
+          "note":      { "type": "string" },
+          "profileID": { "type": "string" }
+        }
+      },
+      "ReportItem": {
+        "type": "object",
+        "required": ["level", "description"],
+        "properties": {
+          "level":       { "$ref": "#/components/schemas/LevelType" },
+          "description": { "type": "string" },
+          "location":    { "type": "string", "description": "JSON path or `content:<line>:<col>`." },
+          "type":        { "type": "string" },
+          "value":       { "type": "string" },
+          "assertionID": { "type": "string" }
+        }
+      },
+      "TAR": {
+        "type": "object",
+        "description": "GITB Test Assertion Report.",
+        "properties": {
+          "id":       { "type": "string", "format": "uuid" },
+          "date":     { "type": "string", "format": "date-time" },
+          "result":   { "$ref": "#/components/schemas/TestResultType" },
+          "counters": { "$ref": "#/components/schemas/ValidationCounters" },
+          "overview": { "$ref": "#/components/schemas/ValidationOverview" },
+          "items":    { "type": "array", "items": { "$ref": "#/components/schemas/ReportItem" } },
+          "context":  { "type": "array", "items": { "$ref": "#/components/schemas/AnyContent" } }
+        }
+      }
+    }
+  }
+}

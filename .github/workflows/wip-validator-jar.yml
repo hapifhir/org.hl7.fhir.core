@@ -1,0 +1,78 @@
+name: WIP validator_cli.jar
+
+# Builds validator_cli.jar from the current commit and uploads it as an asset on
+# the `wip` release of this fork. Triggered on every push to itb-rest, and also
+# on demand via the Actions tab.
+#
+# Guarded to the costateixeira fork so this never runs (or tries to publish a
+# release asset) on upstream hapifhir/org.hl7.fhir.core if the workflow file is
+# ever merged there.
+
+on:
+  push:
+    branches:
+      - itb-rest
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wip-validator-jar
+  cancel-in-progress: true
+
+jobs:
+  build-and-publish:
+    name: Build and publish validator_cli.jar to the `wip` release
+    if: github.repository == 'costateixeira/org.hl7.fhir.core'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4.6.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build validator_cli (skip tests)
+        run: mvn -B -ntp package -pl org.hl7.fhir.validation.cli -am -DskipTests
+
+      - name: Stage validator_cli.jar
+        id: stage
+        run: |
+          set -euo pipefail
+          JAR=$(ls org.hl7.fhir.validation.cli/target/org.hl7.fhir.validation.cli-*-SNAPSHOT.jar 2>/dev/null \
+                | grep -v 'tests' | head -1)
+          if [ -z "${JAR:-}" ]; then
+            echo "No CLI jar found under org.hl7.fhir.validation.cli/target/" >&2
+            ls -la org.hl7.fhir.validation.cli/target/ || true
+            exit 1
+          fi
+          cp "$JAR" validator_cli.jar
+          ls -la validator_cli.jar
+          echo "jar=validator_cli.jar" >> "$GITHUB_OUTPUT"
+
+      - name: Ensure `wip` release exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if ! gh release view wip >/dev/null 2>&1; then
+            gh release create wip \
+              --title "WIP build" \
+              --notes "Rolling build of validator_cli.jar from the latest commit on itb-rest. Asset is replaced on every push." \
+              --prerelease
+          fi
+
+      - name: Upload validator_cli.jar to the `wip` release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload wip ${{ steps.stage.outputs.jar }} --clobber

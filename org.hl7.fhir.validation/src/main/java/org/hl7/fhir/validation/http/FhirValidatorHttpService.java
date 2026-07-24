@@ -44,15 +44,19 @@ public class FhirValidatorHttpService {
     }
     server = HttpServer.create(inetSocketAddress, 0);
 
-    server.createContext("/validateResource", new ValidateResourceHTTPHandler(this));
+    server.createContext("/validate", new ValidateResourceHTTPHandler(this));
     server.createContext("/fhirpath", new FhirPathHTTPHandler(this));
     server.createContext("/matchetype", new MatchetypeHTTPHandler(this));
     server.createContext("/testdata", new TestDataHTTPHandler(this));
-    server.createContext("/loadIG", new LoadIGHTTPHandler(this));
+    server.createContext("/loadIg", new LoadIGHTTPHandler(this));
+    server.createContext("/loadResource", new LoadResourceHTTPHandler(this));
     server.createContext("/convert", new ConvertHTTPHandler(this));
     server.createContext("/snapshot", new SnapshotHTTPHandler(this));
+    server.createContext("/questionnaire", new QuestionnaireHTTPHandler(this));
     server.createContext("/narrative", new NarrativeHTTPHandler(this));
     server.createContext("/transform", new TransformHTTPHandler(this));
+    server.createContext("/fml", new FmlHTTPHandler(this));
+    server.createContext("/package", new PackageHTTPHandler(this));
     server.createContext("/version", new VersionHTTPHandler(this));
     server.createContext("/compile", new CompileHTTPHandler(this));
     server.createContext("/openapi.json", new OpenApiHTTPHandler());
@@ -60,6 +64,22 @@ public class FhirValidatorHttpService {
     server.createContext("/redoc", new DocsHTTPHandler(DocsHTTPHandler.REDOC_HTML));
     server.createContext("/txTest", new TxTestHTTPHandler(this));
     server.createContext("/stop", new StopHTTPHandler(this));
+
+    // GITB-faithful REST services for ITB integration (gitb_vs.xsd / gitb_ps.xsd).
+    //   Validation services: GET <prefix>/getModuleDefinition + POST <prefix>/validate
+    //   Processing services: GET <prefix>/getModuleDefinition + POST <prefix>/process
+    //                        + POST <prefix>/beginTransaction + POST <prefix>/endTransaction
+    server.createContext("/itb/fhir",              new GitbFhirHandler(this));               // VS
+    server.createContext("/itb/matchetype",        new GitbMatchetypeHandler(this));         // VS
+    server.createContext("/itb/fhirPathAssertion", new GitbFhirPathAssertionHandler(this));  // VS
+    server.createContext("/itb/fhirPath",          new GitbFhirPathHandler(this));           // PS
+    server.createContext("/itb/testdata",          new GitbTestDataHandler(this));           // PS
+    server.createContext("/itb/validationResults", new GitbValidationResultsHandler(this));  // PS
+    server.createContext("/itb/igManager",         new GitbIgManagerHandler(this));          // PS
+    server.createContext("/itb/loadResource",      new GitbLoadResourceHandler(this));       // PS
+    server.createContext("/itb/transform",         new GitbTransformHandler(this));          // PS
+    server.createContext("/itb/questionnaire",     new GitbQuestionnaireHandler(this));      // PS
+    server.createContext("/itb/package",           new GitbPackageHandler(this));            // PS
 
     // Start the server
     server.setExecutor(null); // Use default executor
