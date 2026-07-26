@@ -20,10 +20,11 @@ public class RegexFilter extends ConceptFilter {
 
   @Override
   public boolean includeConcept(CodeSystem cs, ConceptDefinitionComponent def) {
-    // the regex comes from the ValueSet filter value - user-supplied at runtime - so it is
-    // evaluated through RegexTimeout, which bounds evaluation of pathological patterns
     try {
-      return RegexTimeout.matches(def.getCode(), regex);
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: RegexTimeout.matches is the approved timeout wrapper. The regex comes from the ValueSet filter value - user-supplied at runtime
+      boolean matches = RegexTimeout.matches(def.getCode(), regex);
+     return matches;
     } catch (TimeoutException e) {
       throw fail("The regex filter '"+regex+"' took too long to evaluate against code '"+def.getCode()+"'");
     } catch (RuntimeException e) {

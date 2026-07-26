@@ -72,13 +72,19 @@ public class CodingUtilities {
    * @return whether the code conforms to the filter using regex
    */
   public static boolean filterMatches(Coding c, String fmt) {
-    // the regex comes from a ValueSet filter value - user-supplied at runtime - so it is
-    // evaluated through RegexTimeout, which bounds evaluation of pathological patterns
     try {
       if (fmt.contains("|")) {
-        return RegexTimeout.matches(""+c.getSystem()+"|"+c.getVersion()+"#"+c.getCode(), fmt);
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.matches is the approved timeout wrapper. The regex comes from a ValueSet filter value - user-supplied at runtime
+
+        boolean matches = RegexTimeout.matches("" + c.getSystem() + "|" + c.getVersion() + "#" + c.getCode(), fmt);
+        return matches;
       } else {
-        return RegexTimeout.matches(""+c.getSystem()+"#"+c.getCode(), fmt);
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.matches is the approved timeout wrapper. The regex comes from a ValueSet filter value - user-supplied at runtime
+
+        boolean matches = RegexTimeout.matches("" + c.getSystem() + "#" + c.getCode(), fmt);
+        return matches;
       }
     } catch (TimeoutException e) {
       throw new FHIRException("The regex filter '"+fmt+"' took too long to evaluate");
