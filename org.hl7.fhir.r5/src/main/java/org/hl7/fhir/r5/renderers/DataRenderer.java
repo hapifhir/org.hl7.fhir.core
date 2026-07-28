@@ -638,14 +638,15 @@ public class DataRenderer extends Renderer implements CodeResolver {
     case "Ratio":  return displayRatio(type);
     case "Reference" : return displayReference(type);
     case "Money" : return displayMoney(type);
+    case "base64Binary" : return displayBase64(type);
     case "dateTime":
-    case "date" : 
+    case "date" :
     case "instant" :
       return displayDateTime(type);
     default:
-      if (type.isPrimitive()) { 
-        return context.getTranslated(type); 
-      } else if (Utilities.existsInList(type.fhirType(),  "Meta", "Dosage", "Signature", "UsageContext", "RelatedArtifact", "ElementDefinition", "Base64BinaryType", "Attachment")) {
+      if (type.isPrimitive()) {
+        return context.getTranslated(type);
+      } else if (Utilities.existsInList(type.fhirType(),  "Meta", "Dosage", "Signature", "UsageContext", "RelatedArtifact", "ElementDefinition", "Attachment")) {
         return "";
       } else if ("Extension".equals(type.fhirType())) {
         return displayDataType(type.child("value"));
@@ -654,6 +655,17 @@ public class DataRenderer extends Renderer implements CodeResolver {
       }
     }
   } 
+
+  private String displayBase64(ResourceWrapper type) {
+    String b64 = type.primitiveValue();
+    if (b64 == null) {
+      return "";
+    } else if (b64.length() <= 32) {
+      return b64;
+    } else {
+      return b64.substring(0, 32)+"...";
+    }
+  }
 
   private String displayMoney(ResourceWrapper type) {
     String currency = type.primitiveValue("currency");
@@ -892,7 +904,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     case "base64Binary":
       int length = type.primitiveValue().length();
       if (length >= context.getBase64Limit()) {
-        x.tx(context.formatPhrase(RenderingContext.DATA_REND_BASE64, length));
+        x.code(displayBase64(type));
+        x.tx(" "+context.formatPhrase(RenderingContext.DATA_REND_BASE64, length));
       } else {
         x.code(type.primitiveValue());
       }
@@ -933,10 +946,19 @@ public class DataRenderer extends Renderer implements CodeResolver {
   private void renderAttachment(RenderingStatus status, XhtmlNode x, ResourceWrapper att) {
     String ct = att.primitiveValue("contentType");
     if (att.has("url")) {
-      x.tx(context.formatMessage(RenderingContext.DATA_REND_ATT_URL, ct, att.primitiveValue("url")));
+      String url = att.primitiveValue("url");
+      if (ct != null) {
+        x.tx(ct+" @ ");
+      }
+      XhtmlNode a = x.ah(url);
+      a.tx(url);
+      if (Utilities.isAbsoluteUrl(url)) {
+        a.tx(" ");
+        a.img("external.png", "icon").style("vertical-align: baseline");
+      }
     } else if (att.has("data")) {
-      x.tx(context.formatMessage(RenderingContext.DATA_REND_ATT_DATA, ct, displayDataType(att.child("data"))));      
-    }    
+      x.tx(context.formatMessage(RenderingContext.DATA_REND_ATT_DATA, ct, displayDataType(att.child("data"))));
+    }
   }
 
   private void renderContactDetail(RenderingStatus status, XhtmlNode x, ResourceWrapper cd) throws IOException {

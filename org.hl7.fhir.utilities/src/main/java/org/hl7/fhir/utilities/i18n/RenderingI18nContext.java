@@ -302,6 +302,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DIAG_REP_REND_ERR = "DIAG_REP_REND_ERR";
   public static final String GENERAL_FLAGS = "GENERAL_FLAGS";
   public static final String DIAG_REP_REND_FOR = "DIAG_REP_REND_FOR";
+  public static final String DIAG_REP_REND_FORM = "DIAG_REP_REND_FORM";
   public static final String DIAG_REP_REND_IDENTIFIER = "DIAG_REP_REND_IDENTIFIER";
   public static final String GENERAL_TODO = "GENERAL_TODO";
   public static final String GENERAL_NOTE = "GENERAL_NOTE";
