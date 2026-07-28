@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonNull;
+import org.hl7.fhir.utilities.json.model.JsonNumber;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -138,6 +140,10 @@ public class SqlOnFhirRunnerTests {
         // Get actual results.
         JsonArray actualResults = storage.getResults();
 
+        // Assume success, then let the checks below record any mismatch. This
+        // must be set before the checks, not after, or their verdict is lost.
+        result.passed = true;
+
         // Compare with expected results.
         if (test.has("expect")) {
           JsonArray expectedResults = test.getJsonArray("expect");
@@ -149,8 +155,6 @@ public class SqlOnFhirRunnerTests {
           JsonArray expectedColumns = test.getJsonArray("expectColumns");
           checkColumnOrder(expectedColumns, actualResults, result);
         }
-
-        result.passed = true;
 
       } catch (Exception e) {
         if (expectError) {
@@ -213,15 +217,25 @@ public class SqlOnFhirRunnerTests {
       return;
     }
 
-    // Deep comparison of JSON results.
+    // Multiset comparison: row order is not significant in SQL on FHIR,
+    // but duplicate rows must still match in count. For each expected row,
+    // find an unconsumed actual row that matches; mark it consumed so the
+    // same actual row cannot satisfy two expected rows.
+    boolean[] consumed = new boolean[actual.size()];
     for (int i = 0; i < expected.size(); i++) {
       JsonElement expectedRow = expected.get(i);
-      JsonElement actualRow = actual.get(i);
-
-      if (!compareJsonElements(expectedRow, actualRow)) {
+      boolean found = false;
+      for (int j = 0; j < actual.size(); j++) {
+        if (!consumed[j] && compareJsonElements(expectedRow, actual.get(j))) {
+          consumed[j] = true;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
         result.passed = false;
-        result.error = String.format("Row %d mismatch: expected %s, got %s",
-                                     i, expectedRow, actualRow);
+        result.error = String.format("No matching actual row for expected row %d: %s",
+                                     i, expectedRow);
         return;
       }
     }
@@ -269,6 +283,11 @@ public class SqlOnFhirRunnerTests {
         }
       }
       return true;
+    } else if (expected instanceof JsonNumber) {
+      // Numbers compare by value, not by rendering: an engine is free to return
+      // 0.95000000 where the test suite writes 0.95.
+      return new BigDecimal(((JsonNumber) expected).getValue())
+          .compareTo(new BigDecimal(((JsonNumber) actual).getValue())) == 0;
     } else {
       // Primitive comparison.
       return expected.toString().equals(actual.toString());

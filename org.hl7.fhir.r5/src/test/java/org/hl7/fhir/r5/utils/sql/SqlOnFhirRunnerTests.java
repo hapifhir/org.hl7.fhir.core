@@ -1,12 +1,14 @@
 package org.hl7.fhir.r5.utils.sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.JsonParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -25,10 +29,12 @@ import org.hl7.fhir.r5.utils.sql.Runner;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonNull;
+import org.hl7.fhir.utilities.json.model.JsonNumber;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -142,6 +148,10 @@ public class SqlOnFhirRunnerTests {
         // Get actual results.
         JsonArray actualResults = storage.getResults();
 
+        // Assume success, then let the checks below record any mismatch. This
+        // must be set before the checks, not after, or their verdict is lost.
+        result.passed = true;
+
         // Compare with expected results.
         if (test.has("expect")) {
           JsonArray expectedResults = test.getJsonArray("expect");
@@ -153,8 +163,6 @@ public class SqlOnFhirRunnerTests {
           JsonArray expectedColumns = test.getJsonArray("expectColumns");
           checkColumnOrder(expectedColumns, actualResults, result);
         }
-
-        result.passed = true;
 
       } catch (Exception e) {
         if (expectError) {
@@ -217,15 +225,25 @@ public class SqlOnFhirRunnerTests {
       return;
     }
 
-    // Deep comparison of JSON results.
+    // Multiset comparison: row order is not significant in SQL on FHIR,
+    // but duplicate rows must still match in count. For each expected row,
+    // find an unconsumed actual row that matches; mark it consumed so the
+    // same actual row cannot satisfy two expected rows.
+    boolean[] consumed = new boolean[actual.size()];
     for (int i = 0; i < expected.size(); i++) {
       JsonElement expectedRow = expected.get(i);
-      JsonElement actualRow = actual.get(i);
-
-      if (!compareJsonElements(expectedRow, actualRow)) {
+      boolean found = false;
+      for (int j = 0; j < actual.size(); j++) {
+        if (!consumed[j] && compareJsonElements(expectedRow, actual.get(j))) {
+          consumed[j] = true;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
         result.passed = false;
-        result.error = String.format("Row %d mismatch: expected %s, got %s",
-                                     i, expectedRow, actualRow);
+        result.error = String.format("No matching actual row for expected row %d: %s",
+                                     i, expectedRow);
         return;
       }
     }
@@ -273,6 +291,11 @@ public class SqlOnFhirRunnerTests {
         }
       }
       return true;
+    } else if (expected instanceof JsonNumber) {
+      // Numbers compare by value, not by rendering: an engine is free to return
+      // 0.95000000 where the test suite writes 0.95.
+      return new BigDecimal(((JsonNumber) expected).getValue())
+          .compareTo(new BigDecimal(((JsonNumber) actual).getValue())) == 0;
     } else {
       // Primitive comparison.
       return expected.toString().equals(actual.toString());
@@ -300,6 +323,58 @@ public class SqlOnFhirRunnerTests {
                                      expected, actualColumns);
       }
     }
+  }
+
+  /**
+   * Regression test for <a
+   * href="https://github.com/hapifhir/org.hl7.fhir.core/issues/2442">issue #2442</a>: a date /
+   * dateTime / instant column whose source value is supplied as an element-model primitive
+   * previously fell through to an else branch in {@code Runner.genValue} that threw a misleading
+   * "to an integer column" error. {@code org.hl7.fhir.r5.elementmodel.Element} does not override
+   * {@code isDateTime()} / {@code dateTimeValue()}, so the original guard never matched.
+   */
+  @Test
+  @DisplayName("birthDate column resolves correctly when input is an element-model Patient")
+  public void birthDateColumnFromElementModelInput() throws Exception {
+    // Parse a Patient via the element-model parser so the value reaching genValue is an Element,
+    // not a model BaseDateTimeType.
+    String patientJson = "{\"resourceType\":\"Patient\",\"id\":\"p1\",\"birthDate\":\"1970-06-15\"}";
+    Element patient = new JsonParser(context).parse(patientJson, "Patient");
+    assertNotNull(patient);
+
+    Provider provider = new Provider() {
+      @Override
+      public List<Base> fetch(String resourceType) {
+        List<Base> result = new ArrayList<>();
+        if ("Patient".equals(resourceType)) {
+          result.add(patient);
+        }
+        return result;
+      }
+
+      @Override
+      public Base resolveReference(Base rootResource, String ref, String specifiedResourceType) {
+        return null;
+      }
+    };
+
+    String viewJson = "{\"resource\":\"Patient\",\"status\":\"active\",\"select\":[{\"column\":["
+        + "{\"name\":\"id\",\"path\":\"id\",\"type\":\"id\"},"
+        + "{\"name\":\"birth_date\",\"path\":\"birthDate\"}]}]}";
+    JsonObject view = org.hl7.fhir.utilities.json.parser.JsonParser.parseObject(viewJson);
+
+    TestStorage storage = new TestStorage();
+    Runner runner = new Runner();
+    runner.setContext(context);
+    runner.setProvider(provider);
+    runner.setStorage(storage);
+    runner.execute(view);
+
+    JsonArray rows = storage.getResults();
+    assertEquals(1, rows.size());
+    JsonObject row = (JsonObject) rows.get(0);
+    assertEquals("p1", row.asString("id"));
+    assertEquals("1970-06-15", row.asString("birth_date"));
   }
 
   /**

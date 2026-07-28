@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.r5.utils.sql.Validator.TrueFalseOrUnknown;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -138,11 +139,26 @@ public class StorageSqlite3 implements Storage {
 
   @Override
   public String getKeyForSourceResource(Base res) {
-    throw new Error("Key management for resources isn't decided yet");
+    return resolveKey(res);
   }
 
   @Override
   public String getKeyForTargetResource(Base res) {
-    throw new Error("Key management for resources isn't decided yet");
+    return resolveKey(res);
+  }
+
+  /**
+   * Prefer the DBBuilder-supplied SQLite primary key (UserDataNames.db_key)
+   * when present so view-result keys join against the Resources table. Falls
+   * back to type/id for callers that have not pre-stamped a key.
+   */
+  private String resolveKey(Base res) {
+    if (res == null) {
+      return null;
+    }
+    if (res.hasUserData(UserDataNames.db_key)) {
+      return res.getUserString(UserDataNames.db_key);
+    }
+    return res.fhirType() + "/" + res.getIdBase();
   }
 }
