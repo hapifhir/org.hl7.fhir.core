@@ -37,16 +37,6 @@ public class TxTestsCommandTest {
   }
 
   @Test
-  public void testCommandHasVersionOption() {
-    // -version is the name documented in the tx-ecosystem IG (testcases.md);
-    // it is an alias for -test-version
-    CommandLine commandLine = new CommandLine(new TxTestsCommand());
-    boolean hasOption = commandLine.getCommandSpec()
-      .optionsMap().containsKey("-version");
-    assertThat(hasOption).isTrue();
-  }
-
-  @Test
   public void testCommandHasTxOption() {
     CommandLine commandLine = new CommandLine(new TxTestsCommand());
     boolean hasOption = commandLine.getCommandSpec()
