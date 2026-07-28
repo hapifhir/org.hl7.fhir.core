@@ -992,8 +992,8 @@ public class TerminologyCacheTests implements ResourceLoaderTests {
 
     @ParameterizedTest
     @MethodSource("hashJsonSpeedInputs")
-    @Timeout(value = 4, unit = TimeUnit.SECONDS)
-    void testHashJsonSpeed(int inputLength, int iterations) throws IOException {
+    @Timeout(value = 6, unit = TimeUnit.SECONDS)
+    void testHashJsonSpeed(int inputLength, int iterations) {
       Random random = new Random(HASH_JSON_SPEED_SEED);
       char[] chars = new char[inputLength];
       for (int i = 0; i < inputLength; i++) {

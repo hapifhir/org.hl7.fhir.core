@@ -60,10 +60,11 @@ public class PropertyFilter extends ConceptFilter {
           case NULL:
             throw fail("not supported yet: " + filter.getOp().toCode());
           case REGEX:
-            // the regex comes from the ValueSet filter value - user-supplied at runtime - so it
-            // is evaluated through RegexTimeout, which bounds evaluation of pathological patterns
             try {
-              return value != null && RegexTimeout.matches(value, filter.getValue());
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //False positive: RegexTimeout.matches is the approved timeout wrapper. The regex comes from the ValueSet filter value - user-supplied at runtime
+              boolean matches = RegexTimeout.matches(value, filter.getValue());
+              return value != null && matches;
             } catch (TimeoutException e) {
               throw fail("The regex filter '"+filter.getValue()+"' took too long to evaluate");
             }
