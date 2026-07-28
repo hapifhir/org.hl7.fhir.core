@@ -57,6 +57,32 @@
     {
       "resourceType": "Patient",
       "id": "pt3"
+    },
+    {
+      "resourceType": "QuestionnaireResponse",
+      "id": "qr1",
+      "questionnaire": "http://example.com/Questionnaire/q1",
+      "status": "completed",
+      "item": [
+        {
+          "linkId": "1",
+          "text": "Group 1",
+          "item": [
+            {
+              "linkId": "1.1",
+              "text": "Question 1.1"
+            },
+            {
+              "linkId": "1.2",
+              "text": "Question 1.2"
+            }
+          ]
+        },
+        {
+          "linkId": "2",
+          "text": "Group 2"
+        }
+      ]
     }
   ],
   "tests": [
@@ -280,6 +306,63 @@
           "contact_family": "Contact2",
           "telecom_index": 0,
           "system": "phone"
+        }
+      ]
+    },
+    {
+      "title": "%rowIndex with repeat",
+      "description": "%rowIndex tracks the position within the flattened repeat traversal",
+      "tags": ["shareable"],
+      "view": {
+        "resource": "QuestionnaireResponse",
+        "status": "active",
+        "select": [
+          {
+            "column": [
+              {
+                "name": "id",
+                "path": "id",
+                "type": "id"
+              }
+            ]
+          },
+          {
+            "repeat": ["item"],
+            "column": [
+              {
+                "name": "item_index",
+                "path": "%rowIndex",
+                "type": "integer"
+              },
+              {
+                "name": "linkId",
+                "path": "linkId",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      "expect": [
+        {
+          "id": "qr1",
+          "item_index": 0,
+          "linkId": "1"
+        },
+        {
+          "id": "qr1",
+          "item_index": 1,
+          "linkId": "1.1"
+        },
+        {
+          "id": "qr1",
+          "item_index": 2,
+          "linkId": "1.2"
+        },
+        {
+          "id": "qr1",
+          "item_index": 3,
+          "linkId": "2"
         }
       ]
     },
