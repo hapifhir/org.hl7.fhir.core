@@ -217,12 +217,10 @@ public class Runner implements IHostApplicationServices {
 
     // An iterating select opens a new %rowIndex scope, numbering the elements
     // it produces. A select without one leaves the enclosing scope in place.
-    boolean iterates = false;
+    boolean iterates = true;
     if (select.has("forEach")) {
-      iterates = true;
       focus.addAll(executeForEach(ctx, select, b));
     } else if (select.has("forEachOrNull")) {
-      iterates = true;
       focus.addAll(executeForEachOrNull(ctx, select, b));
       // Emit one synthetic null row when the iterated collection is empty, so
       // that %rowIndex still resolves to 0 and other paths yield null cells.
@@ -230,8 +228,10 @@ public class Runner implements IHostApplicationServices {
         focus.add(null);
       }
     } else if (select.has("repeat")) {
+      // The index runs over the flattened traversal, not over each level of it.
       focus.addAll(executeRepeat(ctx, select, b));
     } else {
+      iterates = false;
       focus.add(b);
     }
 
