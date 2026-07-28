@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonNull;
+import org.hl7.fhir.utilities.json.model.JsonNumber;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -281,6 +283,11 @@ public class SqlOnFhirRunnerTests {
         }
       }
       return true;
+    } else if (expected instanceof JsonNumber) {
+      // Numbers compare by value, not by rendering: an engine is free to return
+      // 0.95000000 where the test suite writes 0.95.
+      return new BigDecimal(((JsonNumber) expected).getValue())
+          .compareTo(new BigDecimal(((JsonNumber) actual).getValue())) == 0;
     } else {
       // Primitive comparison.
       return expected.toString().equals(actual.toString());
