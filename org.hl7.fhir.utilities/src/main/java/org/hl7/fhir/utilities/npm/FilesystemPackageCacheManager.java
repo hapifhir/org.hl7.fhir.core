@@ -892,7 +892,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     if (url == null) {
       throw new FHIRException("Unable to resolve package id " + id);
     }
-    PackageList pl = PackageList.fromUrl(Utilities.pathURL(url, "package-list.json"));
+    String secureUrl = ManagedWebAccess.makeSecureRef(url);
+    PackageList pl = PackageList.fromUrl(Utilities.pathURL(secureUrl, "package-list.json"));
     if (!id.equals(pl.pid()))
       throw new FHIRException("Package ids do not match in " + pl.source() + ": " + id + " vs " + pl.pid());
     for (PackageListEntry vo : pl.versions()) {
