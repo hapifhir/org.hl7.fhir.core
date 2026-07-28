@@ -146,6 +146,10 @@ public class SqlOnFhirRunnerTests {
         // Get actual results.
         JsonArray actualResults = storage.getResults();
 
+        // Assume success, then let the checks below record any mismatch. This
+        // must be set before the checks, not after, or their verdict is lost.
+        result.passed = true;
+
         // Compare with expected results.
         if (test.has("expect")) {
           JsonArray expectedResults = test.getJsonArray("expect");
@@ -157,8 +161,6 @@ public class SqlOnFhirRunnerTests {
           JsonArray expectedColumns = test.getJsonArray("expectColumns");
           checkColumnOrder(expectedColumns, actualResults, result);
         }
-
-        result.passed = true;
 
       } catch (Exception e) {
         if (expectError) {
