@@ -203,7 +203,7 @@ public class TerminologyClientManager {
     
     List<ServerOptionList> choices = new ArrayList<>();
     for (String s : systems) {
-      choices.add(findServerForSystem(s, expand, language));
+      choices.add(findServerForSystem(s, language));
     }    
     
     // first we look for a server that's authoritative for all of them
@@ -217,7 +217,7 @@ public class TerminologyClientManager {
         }
         if (ok) {
           log(vs, s, systems, choices, "Found authoritative server "+s);
-          return findClient(s, systems, expand);
+          return findClientContext(s, systems, expand);
         }
       }
     }
@@ -233,7 +233,7 @@ public class TerminologyClientManager {
         }
         if (ok) {
           log(vs, s, systems, choices, "Found partially authoritative server "+s);
-          return findClient(s, systems, expand);
+          return findClientContext(s, systems, expand);
         }
       }
     }
@@ -271,7 +271,7 @@ public class TerminologyClientManager {
         }
         if (ok) {
           log(vs, s, systems, choices, "Found candidate server " + s);
-          return findClient(s, systems, expand);
+          return findClientContext(s, systems, expand);
         }
       }
     }
@@ -291,7 +291,7 @@ public class TerminologyClientManager {
         .orElse(null);
     if (max != null) {
       log(vs, max, systems, choices, "Found most authoritative server "+max);
-      return findClient(max, systems, expand);
+      return findClientContext(max, systems, expand);
     }
 
     // no agreement? Then what we do depends     
@@ -306,14 +306,14 @@ public class TerminologyClientManager {
         } else {
           log(vs, el, systems, choices, "Handled by multiple servers. Using source @ '"+el+"'");
         }        
-        return findClient(el, systems, expand);
+        return findClientContext(el, systems, expand);
       } else {
         if (systems.size() == 1) {
           log(vs, serverList.get(0).getAddress(), systems, choices, "System not handled by any servers. Using primary server");
         } else {
           log(vs, serverList.get(0).getAddress(), systems, choices, "Systems handled by multiple servers. Using primary server");
         }
-        return findClient(serverList.get(0).getAddress(), systems, expand);
+        return findClientContext(serverList.get(0).getAddress(), systems, expand);
       }      
     } else {
       if (systems.size() == 1) {
@@ -322,7 +322,7 @@ public class TerminologyClientManager {
         log(vs, serverList.get(0).getAddress(), systems, choices, "Systems handled by multiple servers. Using primary server");
       }
       log(vs, serverList.get(0).getAddress(), systems, choices, "Fallback: primary server");
-      return findClient(serverList.get(0).getAddress(), systems, expand);
+      return findClientContext(serverList.get(0).getAddress(), systems, expand);
     }
   }
 
@@ -365,7 +365,7 @@ public class TerminologyClientManager {
       return null;
     }
     if (IGNORE_TX_REGISTRY || !useEcosystem) {
-      return findClient(getMasterClient().getAddress(), null, expand);
+      return findClientContext(getMasterClient().getAddress(), null, expand);
     }
     language = effectiveLanguage(language, expand);
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(vs));
@@ -378,10 +378,10 @@ public class TerminologyClientManager {
     try {
       JsonObject json = fetchRegistryJson(request);
       for (JsonObject item : json.getJsonObjects("authoritative")) {
-        return findClient(item.asString("url"), null, expand);
+        return findClientContext(item.asString("url"), null, expand);
       }
       for (JsonObject item : json.getJsonObjects("candidates")) {
-        return findClient(item.asString("url"), null, expand);
+        return findClientContext(item.asString("url"), null, expand);
       }
     } catch (Exception e) {
       String msg = "Error resolving valueSet "+vs+": "+e.getMessage();
@@ -400,7 +400,7 @@ public class TerminologyClientManager {
     internalLog.add(new InternalLogEvent(message, server, svs, sys, sch));
   }
 
-  private TerminologyClientContext findClient(String server, Set<String> systems, boolean expand) {
+  private TerminologyClientContext findClientContext(String server, Set<String> systems, boolean expand) {
     server = ManagedWebAccess.makeSecureRef(server);
     TerminologyClientContext client = serverMap.get(server);
     if (client == null) {
@@ -426,7 +426,7 @@ public class TerminologyClientManager {
     return JsonParser.parseObjectFromUrl(request);
   }
 
-  private ServerOptionList findServerForSystem(String s, boolean expand, String language) throws TerminologyServiceException {
+  private ServerOptionList findServerForSystem(String s, String language) throws TerminologyServiceException {
     // resolutions are language specific - the server chosen for German requests is not the
     // right resolution for the same code system in English - so resolutions are remembered
     // (and persisted) against both the code system and the language they were made for
@@ -534,7 +534,7 @@ public class TerminologyClientManager {
       return serverSupportMap.get(key);
     }
     try {
-      var client = findClient(server, null, false);
+      var client = findClientContext(server, null, false);
       Bundle bnd = client.getClient().search("CodeSystem",
         canonical.contains("|")
           ? "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|")))+"&version="+Utilities.escapeUrl(canonical.substring(canonical.indexOf("|")+1))

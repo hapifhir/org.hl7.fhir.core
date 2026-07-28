@@ -517,7 +517,7 @@ public interface IWorkerContext {
    * method to acquire CodeSystem content to compute answers from - it uses fetchResource
    * (local content only) and routes operations to the appropriate server instead, so that
    * supplements, languages and authority are honoured (see 'Language Specific Claims' in
-   * the tx ecosystem IG). Retrieving ValueSet definitions this way is fine and necessary
+   * the tx ecosystem IG). xRetrieving ValueSet definitions this way is fine and necessary
    * (they carry no supplement dimension, and are needed client-side for the tx-resource
    * flow), as is retrieving definitions for rendering and metadata purposes.
    * @param class_ the type of resource

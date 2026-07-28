@@ -49,7 +49,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -114,8 +113,6 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
-
-import com.google.gson.JsonObject;
 
 @Slf4j
 @MarkedToMoveToAdjunctPackage
@@ -1181,7 +1178,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
    * supply that language (language specific claims are invisible to language-free requests -
    * see 'Language Specific Claims' in the tx ecosystem IG)
    */
-  private String validationLanguage(ValidationOptions options) {
+  private String findValidationLanguage(ValidationOptions options) {
     if (options == null || !options.hasLanguages()) {
       return null;
     }
@@ -1284,7 +1281,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     if (items.size() > 0) {
-      TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, validationLanguage(options));
+      TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, findValidationLanguage(options));
       Parameters resp = processBatch(tc, batch, systems, items.size());
       List<ParametersParameterComponent> validations = resp.getParameters("validation");
       for (int i = 0; i < items.size(); i++) {
@@ -1546,7 +1543,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
 
     Set<String> systems = findRelevantSystems(code, vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, validationLanguage(options));
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, findValidationLanguage(options));
 
     String csumm = cachingAllowed && txCache != null ? txCache.summary(code) : null;
     if (cachingAllowed && txCache != null) {
@@ -1806,7 +1803,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return new ValidationResult(IssueSeverity.ERROR, "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE, null);
     }
     Set<String> systems = findRelevantSystems(code, vs);
-    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, validationLanguage(options));
+    TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, findValidationLanguage(options));
 
     txLog("$validate " + txCache.summary(code) + " for " + txCache.summary(vs) + " on " + tc.getAddress());
     try {

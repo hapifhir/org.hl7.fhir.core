@@ -56,7 +56,6 @@ public class TerminologyClientManagerEcosystemTest {
    */
   private static void assumeLanguageAwareEcosystem() {
     boolean languageAware = false;
-    String reason;
     try {
       JsonObject json = JsonParser.parseObjectFromUrl(Utilities.pathURL(monitorUrl(),
           "resolve?fhirVersion=R4&url="+Utilities.URLEncode(EDQM)+"&language=cs"));
@@ -70,11 +69,10 @@ public class TerminologyClientManagerEcosystemTest {
           languageAware = true;
         }
       }
-      reason = "the coordination server at "+monitorUrl()+" is not language aware (yet)";
+      Assumptions.assumeTrue(languageAware, "the coordination server at "+monitorUrl()+" is not language aware (yet)");
     } catch (Exception e) {
-      reason = "the ecosystem at "+monitorUrl()+" is not reachable: "+e.getMessage();
+      Assumptions.assumeTrue(languageAware, "the ecosystem at "+monitorUrl()+" is not reachable: "+e.getMessage());
     }
-    Assumptions.assumeTrue(languageAware, reason);
   }
 
   private static ITerminologyClient makeFakeClient(final String address) {

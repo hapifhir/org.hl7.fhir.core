@@ -48,7 +48,7 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
   private String output;
 
   @CommandLine.Option(
-    names = {"-version", "-test-version"},
+    names = {"-test-version"},
     description = "Version of the tests to run (default: current - the version of the tests in the ci-build of the tx-ecosystem IG)"
   )
   private String testVersion;
