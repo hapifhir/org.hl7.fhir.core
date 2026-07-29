@@ -76,9 +76,10 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
     addTableRow(status, tbl, dr, RenderingContext.DIAG_REP_REND_PER, "performer");
     addTableRow(status, tbl, dr, RenderingContext.DIAG_REP_REND_IDENTIFIER, "identifier");
-    addTableRow(status, tbl, dr, RenderingContext.GENERAL_REQUEST, "request"); 
+    addTableRow(status, tbl, dr, RenderingContext.GENERAL_REQUEST, "request");
+    addTableRow(status, tbl, dr, RenderingContext.DIAG_REP_REND_FORM, "presentedForm");
 
-    x.para().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REPDET)); 
+    x.para().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REPDET));
 
     List<ResourceWrapper> items = dr.children("result"); 
     if (!items.isEmpty()) { 

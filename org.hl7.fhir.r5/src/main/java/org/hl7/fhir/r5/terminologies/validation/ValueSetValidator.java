@@ -586,7 +586,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
       cs = findSpecialCodeSystem(system, version);
     }
     if (cs == null) {
-      cs = context.findTxResource(CodeSystem.class, system, rules, version, source);
+      // fetchResource, not findTxResource: CodeSystem content is never pulled from servers
+      // to compute answers locally - see the limitations of use on IWorkerContext.findTxResource
+      cs = context.fetchResource(CodeSystem.class, system, rules, version, source);
     }
     if (cs != null) {
       if (cs.hasUserData("supplements.installed")) {
@@ -602,7 +604,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (!requiredSupplements.isEmpty()) {
       List<CodeSystem> additionalSupplements = new ArrayList<>();
       for (String s : requiredSupplements) {
-        CodeSystem scs = context.findTxResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
+        CodeSystem scs = context.fetchResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
         if (scs != null && cs.getUrl().equals(scs.getSupplements())) {
           additionalSupplements.add(scs);
         }
@@ -1774,8 +1776,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
         if (cs != null && !(versionCoding.equals(cs.getVersion()) || versionIsMoreDetailed(va, versionCoding, cs.getVersion()))) {
           if (result == null) {
-            issues.addAll(makeIssue(cs.getVersionNeeded() ? IssueSeverity.ERROR : IssueSeverity.WARNING, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
-              context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT, system, cs.getVersion(), notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT));
+            if (cs.getVersion() != null || cs.getVersionNeeded()) { // if thre's no version in the codesystem. we don't make an issue about this
+              issues.addAll(makeIssue(cs.getVersionNeeded() ? IssueSeverity.ERROR : IssueSeverity.WARNING, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
+                context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT, system, cs.getVersion(), notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT));
+            }
           } else if (!result.equals(versionVS)) {
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
               context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH_CHANGED, system, result, notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH_CHANGED));

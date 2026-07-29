@@ -193,7 +193,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     vs.addIdentifier().setSystem("urn:ietf:rfc:3986").setValue(oid);
   }
 
-  public static void markStatus(ValueSet vs, String wg, StandardsStatus status, String fmm, IWorkerContext context, String normativeVersion) throws FHIRException {
+  public static void markStatus(ValueSet vs, String wg, StandardsStatus status, String fmm, IWorkerContext context, String normativeVersion, String thisVersion) throws FHIRException {
     if (vs.hasUserData(UserDataNames.render_external_link))
       return;
     
@@ -206,7 +206,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     if (status != null) {
       StandardsStatus ss = ExtensionUtilities.getStandardsStatus(vs);
       if (ss == null || ss.isLowerThan(status)) 
-        ExtensionUtilities.setStandardsStatus(vs, status, normativeVersion);
+        ExtensionUtilities.setStandardsStatus(vs, status, normativeVersion, context.getVersion());
       if (status == StandardsStatus.NORMATIVE) {
         vs.setStatus(PublicationStatus.ACTIVE);
       }
@@ -218,13 +218,13 @@ public class ValueSetUtilities extends TerminologyUtilities {
       }
     }
     if (vs.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM))
-      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM), wg, status, fmm, normativeVersion);
+      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM), wg, status, fmm, normativeVersion, thisVersion);
     else if (status == StandardsStatus.NORMATIVE && context != null) {
       for (ConceptSetComponent csc : vs.getCompose().getInclude()) {
         if (csc.hasSystem()) {
           CodeSystem cs = context.fetchCodeSystem(csc.getSystem(), ExtensionUtilities.getVersionResolutionRules(csc.getSystemElement()));
           if (cs != null) {
-            CodeSystemUtilities.markStatus(cs, wg, status, fmm, normativeVersion);
+            CodeSystemUtilities.markStatus(cs, wg, status, fmm, normativeVersion, context.getVersion());
           }
         }
       }

@@ -413,7 +413,6 @@ public class I18nConstants {
   public static final String LIQUID_UNKNOWN_NOEND = "LIQUID_UNKNOWN_NOEND";
   public static final String LIQUID_UNKNOWN_SYNTAX = "LIQUID_UNKNOWN_SYNTAX";
   public static final String LIQUID_VARIABLE_ILLEGAL = "LIQUID_VARIABLE_ILLEGAL";
-  public static final String LIQUID_VARIABLE_ALREADY_ASSIGNED = "LIQUID_VARIABLE_ALREADY_ASSIGNED";
   public static final String LOGICAL_MODEL_NAME_MISMATCH = "LOGICAL_MODEL_NAME_MISMATCH";
   public static final String LOGICAL_MODEL_QNAME_MISMATCH = "LOGICAL_MODEL_QNAME_MISMATCH";
   public static final String MEASURE_MR_GRP_CODE_MISMATCH = "MEASURE_MR_GRP_CODE_MISMATCH";
@@ -532,8 +531,6 @@ public class I18nConstants {
   public static final String NO_URL_IN_EXPAND_VALUE_SET_2 = "no_url_in_expand_value_set_2";
   public static final String NO_VALIDATOR_CONFIGURED = "No_validator_configured";
   public static final String NO_VALID_DISPLAY_FOUND = "NO_VALID_DISPLAY_FOUND";
-  public static final String NO_VALID_DISPLAY_FOUND_LANG_NONE = "NO_VALID_DISPLAY_FOUND_LANG_NONE";
-  public static final String NO_VALID_DISPLAY_FOUND_LANG_SOME = "NO_VALID_DISPLAY_FOUND_LANG_SOME";
   public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK";
   public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR";
   public static final String NO_VALUE_SET_IN_URL = "no_value_set";
@@ -914,8 +911,6 @@ public class I18nConstants {
   public static final String THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE = "This__cannot_be_parsed_as_a_FHIR_object_no_namespace";
   public static final String TX_GENERAL_CC_ERROR_MESSAGE = "TX_GENERAL_CC_ERROR_MESSAGE";
   public static final String TX_SERVER_NO_BATCH_RESPONSE = "TX_SERVER_NO_BATCH_RESPONSE";
-  public static final String TYPE_CHECKS_FIXED_CC = "TYPE_CHECKS_FIXED_CC";
-  public static final String TYPE_CHECKS_FIXED_CC_US = "TYPE_CHECKS_FIXED_CC_US";
   public static final String TYPE_CHECKS_PATTERN_CC = "TYPE_CHECKS_PATTERN_CC";
   public static final String TYPE_CHECKS_PATTERN_CC_US = "TYPE_CHECKS_PATTERN_CC_US"; 
   public static final String TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT = "type_on_first_differential_element";
@@ -1087,7 +1082,6 @@ public class I18nConstants {
   public static final String UNKNOWN_CODE_IN = "Unknown_Code_in";
   public static final String UNKNOWN_CODE_IN_FRAGMENT = "UNKNOWN_CODE_IN_FRAGMENT";
   public static final String UNKNOWN_CODE_IN_VERSION = "Unknown_Code_in_Version";
-  public static final String UNKNOWN_CODE_IN_VERSION_SCT = "Unknown_Code_in_Version_SCT";
   public static final String UNKNOWN_DATA_FORMAT_ = "Unknown_Data_format_";
   public static final String UNKNOWN_DATE_FORMAT_ = "Unknown_Date_format_";
   public static final String UNKNOWN_PROPERTY = "UNKNOWN_PROPERTY";
@@ -1231,7 +1225,6 @@ public class I18nConstants {
   public static final String VALUESET_SHAREABLE_MISSING_HL7 = "VALUESET_SHAREABLE_MISSING_HL7";
   public static final String VALUESET_SUPPLEMENT_MISSING = "VALUESET_SUPPLEMENT_MISSING";
   public static final String VALUESET_TOO_COSTLY = "VALUESET_TOO_COSTLY";
-  public static final String VALUESET_TOO_COSTLY_COUNT = "VALUESET_TOO_COSTLY_COUNT";
   public static final String VALUESET_TOO_COSTLY_TIME = "VALUESET_TOO_COSTLY_TIME";
   public static final String VALUESET_UNC_SYSTEM_WARNING = "VALUESET_UNC_SYSTEM_WARNING";
   public static final String VALUESET_UNC_SYSTEM_WARNING_VER = "VALUESET_UNC_SYSTEM_WARNING_VER";
