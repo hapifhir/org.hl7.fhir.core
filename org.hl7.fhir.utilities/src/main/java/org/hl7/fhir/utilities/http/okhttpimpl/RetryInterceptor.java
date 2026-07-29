@@ -9,7 +9,9 @@ import java.io.IOException;
 
 /**
  * An {@link Interceptor} for {@link okhttp3.OkHttpClient} that controls the number of times we retry a to execute a
- * given request, before reporting a failure. This includes unsuccessful return codes and timeouts.
+ * given request, before reporting a failure. This includes unsuccessful return codes and timeouts. Redirect
+ * responses (3xx) are treated as successful for retry purposes, since they are expected outcomes handled by the
+ * caller rather than failures.
  */
 @Slf4j
 public class RetryInterceptor implements Interceptor {
@@ -40,6 +42,9 @@ public class RetryInterceptor implements Interceptor {
         }
         response = chain.proceed(request);
       } catch (IOException e) {
+        // The failed attempt's response (if any) was already closed above; forget it so a
+        // subsequent IOException doesn't cause a stale, closed Response to be returned below.
+        response = null;
         try {
           // Include a small break in between requests.
           Thread.sleep(RETRY_TIME);
@@ -49,7 +54,7 @@ public class RetryInterceptor implements Interceptor {
       } finally {
         retryCounter++;
       }
-    } while ((response == null || !response.isSuccessful()) && (retryCounter <= maxRetry + 1));
+    } while ((response == null || (!response.isSuccessful() && !response.isRedirect())) && (retryCounter <= maxRetry));
 
     /*
      * if something has gone wrong, and we are unable to complete the request, we still need to initialize the return

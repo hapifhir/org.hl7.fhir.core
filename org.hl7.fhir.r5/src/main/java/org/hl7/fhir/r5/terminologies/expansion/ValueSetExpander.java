@@ -1452,7 +1452,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
         if (!requiredSupplements.isEmpty()) {
           List<CodeSystem> additionalSupplements = new ArrayList<>();
           for (String s : requiredSupplements) {
-            CodeSystem scs = context.findTxResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
+            CodeSystem scs = context.fetchResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
             if (scs != null && cs.getUrl().equals(scs.getSupplements())) {
               additionalSupplements.add(scs);
             }

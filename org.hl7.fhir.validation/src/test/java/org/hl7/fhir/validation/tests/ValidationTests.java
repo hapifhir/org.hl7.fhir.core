@@ -16,7 +16,6 @@ import com.google.gson.JsonArray;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.factory.*;
-import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -25,7 +24,6 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -69,6 +67,8 @@ import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -88,13 +88,11 @@ import org.hl7.fhir.validation.instance.MatchetypeValidator;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
 import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
-import org.hl7.fhir.validation.service.utils.Common;
 import org.hl7.fhir.validation.tests.utilities.TestFilter;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -106,12 +104,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.junit.BeforeClass;
 
-import javax.annotation.Nonnull;
-
 @RunWith(Parameterized.class)
 public class ValidationTests implements IHostApplicationServices, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
 
-  public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
+  public static final boolean PRINT_OUTPUT_TO_CONSOLE = true;
   private static final boolean CLONE = true;
   private static final boolean BUILD_NEW = false;
   private static final boolean REVISING_TEST_CASES = false;
@@ -131,7 +127,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       if (version == null) {
         version = "5.0.0";
       }
-      examples.put(VersionUtilities.getNameForVersion(version) + "." + name, o);
+      String id = VersionUtilities.getNameForVersion(version) + "." + name;
+      if (examples.containsKey(id)) {
+        throw new FHIRException("Duplicate test case name in the validator manifest: " + id);
+      }
+      examples.put(id, o);
     }
 
     List<String> names = new ArrayList<String>(examples.size());
@@ -179,7 +179,20 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 
   @BeforeClass
   public static void beforeClass() {
-    ManagedWebAccess.loadFromFHIRSettings();
+    ManagedWebAccess.loadFromFHIRSettings(
+      FhirSettingsPOJO.builder()
+        .servers(
+          List.of(
+            ServerDetailsPOJO.builder()
+              .url("http://local.fhir.org:960")
+              .authenticationType("none")
+              .type("web")
+              .allowHttp(true)
+              .allowPrivateNetwork(true)
+              .headers(Collections.emptyMap())
+              .build()
+          )).build()
+    );
     // Exercise the server-side terminology caching protocol across the validation
     // suite. Against a server that doesn't advertise $cache-control this degrades
     // to inlining (no-op); against one that does, the whole suite runs through the
@@ -196,6 +209,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     igLoader = null;
     manifest = null;
     TerminologyClientContext.setCanUseCacheId(false); // don't leak the static into other suites
+    ManagedWebAccess.loadFromFHIRSettings();
     System.gc();
   }
 
@@ -718,8 +732,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String mode, String profile, String name, List<String> suppress) throws IOException {
     errors.removeIf(vm -> vm.containsText(suppress));
 
+    String expectedFileName = name.replace("/", "-") + "-" + mode + ".json";
+    String expectedJavaRef = "java/" + expectedFileName;
+
     if (REVISING_TEST_CASES) {
-      String fnSrc = Utilities.path("/Users/grahamegrieve/work/test-cases/validator/outcomes/java", name.replace("/", "-") + "-" + mode + ".json");
+      String fnSrc = Utilities.path("/Users/grahamegrieve/work/test-cases/validator/outcomes/java", expectedFileName);
       if (!new File(fnSrc).exists()) {
         JsonObject java = focus.getAsJsonObject("java");
         OperationOutcome goal = java.has("outcome") ? (OperationOutcome) new JsonParser().parse(java.getAsJsonObject("outcome")) : new OperationOutcome();
@@ -727,19 +744,25 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         FileUtilities.stringToFile(jsonGoal, fnSrc);
       }
       focus.remove("java");
-      focus.addProperty("java", "java/" + name.replace("/", "-") + "-" + mode + ".json");
+      focus.addProperty("java", expectedJavaRef);
     }
 
-    byte[] testResourceBytes = TestingUtilities.findTestResource("validator", "outcomes", "java", name.replace("/", "-") + "-" + mode + ".json") ?
-      TestingUtilities.loadTestResourceBytes("validator", "outcomes", "java", name.replace("/", "-") + "-" + mode + ".json") :
-      " { \"resourceType\" : \"OperationOutcome\" }".getBytes();
+    JsonElement javaRef = focus.get("java");
+    if (javaRef == null || !javaRef.isJsonPrimitive() || !expectedJavaRef.equals(javaRef.getAsString())) {
+      Assertions.fail("Manifest problem for test " + name + " (mode '" + mode + "'): the 'java' property is " +
+          (javaRef == null ? "missing" : javaRef.toString()) + " but should be \"" + expectedJavaRef + "\"");
+    }
+    if (!TestingUtilities.findTestResource("validator", "outcomes", "java", expectedFileName)) {
+      Assertions.fail("Manifest problem for test " + name + " (mode '" + mode + "'): the expected outcome file " + expectedJavaRef + " does not exist in the test cases");
+    }
+    byte[] testResourceBytes = TestingUtilities.loadTestResourceBytes("validator", "outcomes", "java", expectedFileName);
     OperationOutcome expected = (OperationOutcome) new JsonParser().parse(testResourceBytes);
     OperationOutcome actual = content.has("ids-in-errors") ? OperationOutcomeUtilities.createOutcomeSimpleWithIds(errors) : OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     actual.getIssue().forEach(iss -> iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_SLICE_INFO));
 
     String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
-    FileUtilities.stringToFile(json, Utilities.path(outputFolder, name.replace("/", "-") + "-" + mode + ".json"));
+    FileUtilities.stringToFile(json, Utilities.path(outputFolder, expectedFileName));
 
     List<String> fails = new ArrayList<>();
 

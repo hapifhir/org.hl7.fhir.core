@@ -134,11 +134,12 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   private String getPackageUrl(String packageId, PackageServer server) throws IOException {
     PackageClient pc = myClientFactory.apply(server);
-    List<PackageInfo> res = pc.search(packageId, null, null, false, null);
+    List<PackageInfo> res = pc.search(packageId, null, null, false, null, true);
     if (res.size() == 0) {
       return null;
     } else {
-      return res.get(0).getUrl();
+      // the canonical, not the download url, consistent with the cache-hit branch in getPackageUrl(String)
+      return res.get(0).getCanonical();
     }
   }
 
@@ -162,16 +163,12 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
       return null;
     }
     PackageClient pc = myClientFactory.apply(server);
-    List<PackageInfo> res = pc.search(null, canonical, null, false, null);
+    // exact match, because the server searches canonicals by partial match - e.g. http://hl7.org.au/fhir/
+    // is the canonical url for the HL7 Australia base package, and the root of all the others
+    List<PackageInfo> res = pc.search(null, canonical, null, false, null, true);
     if (res.size() == 0) {
       return null;
     } else {
-      // this is driven by HL7 Australia (http://hl7.org.au/fhir/ is the canonical url for the base package, and the root for all the others)
-      for (PackageInfo pi : res) {
-        if (canonical.equals(pi.getCanonical())) {
-          return pi.getId();
-        }
-      }
       return res.get(0).getId();
     }
   }
