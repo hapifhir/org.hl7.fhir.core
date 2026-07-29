@@ -8,23 +8,19 @@ import okhttp3.Response;
 import java.io.IOException;
 
 /**
- * An {@link Interceptor} for {@link okhttp3.OkHttpClient} that controls the number of times we retry a to execute a
- * given request, before reporting a failure. This includes unsuccessful return codes and timeouts.
+ * An {@link Interceptor} for {@link okhttp3.OkHttpClient} that controls the number of times we retry a request
+ * before reporting a failure. This includes unsuccessful return codes and timeouts.
  */
 @Slf4j
 public class RetryInterceptor implements Interceptor {
 
-  // Delay between retying failed requests, in millis
-  private final long RETRY_TIME = 2000;
+  public static final long RETRY_DELAY_MILLIS = 2000;
 
   // Maximum number of times to retry the request before failing
   private final int maxRetry;
 
-  // Internal counter for tracking the number of times we've tried this request
-  private int retryCounter = 0;
-
   public RetryInterceptor(int maxRetry) {
-    this.maxRetry = maxRetry;
+    this.maxRetry = Math.max(0, maxRetry);
   }
 
   @Override
@@ -32,30 +28,39 @@ public class RetryInterceptor implements Interceptor {
     Request request = chain.request();
     Response response = null;
 
-    do {
+    for (int attempt = 0; attempt <= maxRetry; attempt++) {
       try {
-        // If we are retrying a failed request that failed due to a bad response from the server, we must close it first
         if (response != null) {
           response.close();
+          response = null;
         }
         response = chain.proceed(request);
-      } catch (IOException e) {
-        try {
-          // Include a small break in between requests.
-          Thread.sleep(RETRY_TIME);
-        } catch (InterruptedException e1) {
-          log.info(chain.request().method() + " to url -> " + chain.request().url() + " interrupted on try <" + retryCounter + ">");
-        }
-      } finally {
-        retryCounter++;
-      }
-    } while ((response == null || !response.isSuccessful()) && (retryCounter <= maxRetry + 1));
 
-    /*
-     * if something has gone wrong, and we are unable to complete the request, we still need to initialize the return
-     * response so we don't get a null pointer exception.
-     */
-    return response != null ? response : chain.proceed(request);
+        if (response.isSuccessful() || attempt == maxRetry) {
+          return response;
+        }
+      } catch (IOException e) {
+        if (attempt == maxRetry) {
+          throw e;
+        }
+      }
+
+      try {
+        Thread.sleep(RETRY_DELAY_MILLIS);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        log.info(chain.request().method() + " to url -> " + chain.request().url()
+          + " interrupted on try <" + attempt + ">");
+        if (response != null) {
+          return response;
+        }
+        throw new IOException("Interrupted while waiting to retry " + request.method()
+          + " to " + request.url(), e);
+      }
+    }
+
+    throw new IOException("Request retry loop exited without a response for " + request.method()
+      + " to " + request.url());
   }
 
 }
