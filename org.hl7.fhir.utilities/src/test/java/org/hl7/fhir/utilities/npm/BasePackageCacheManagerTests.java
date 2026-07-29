@@ -107,7 +107,10 @@ class BasePackageCacheManagerTests {
 
     MockPackageServer server = new MockPackageServer();
     server.getMockWebServer().enqueue(new okhttp3.mockwebserver.MockResponse().setBody(TERMINOLOGY_CATALOG_RESPONSE));
-    basePackageCacheManager.addPackageServer(new PackageServer(server.getPackageServerUrl()));
+    basePackageCacheManager.addPackageServer(
+      new PackageServer(server.getPackageServerUrl())
+        .withAllowHttp(true)
+        .withAllowPrivateNetwork(true));
 
     assertEquals("http://terminology.hl7.org", basePackageCacheManager.getPackageUrl("hl7.terminology.r4"));
     server.shutdown();
@@ -133,7 +136,8 @@ class BasePackageCacheManagerTests {
 
     MockPackageServer server = new MockPackageServer();
     server.getMockWebServer().enqueue(new okhttp3.mockwebserver.MockResponse().setBody(AU_CATALOG_RESPONSE));
-    basePackageCacheManager.addPackageServer(new PackageServer(server.getPackageServerUrl()));
+    basePackageCacheManager.addPackageServer(new PackageServer(server.getPackageServerUrl()).withAllowHttp(true)
+      .withAllowPrivateNetwork(true));
 
     assertEquals("hl7.fhir.au.base", basePackageCacheManager.getPackageId("http://hl7.org.au/fhir"));
     server.shutdown();
