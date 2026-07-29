@@ -3,7 +3,7 @@
 #: ABSTRACT_CODE_NOT_ALLOWED
 #, fuzzy
 msgid "Code ''{0}#{1}'' is abstract, and not allowed in this context"
-msgstr "Project-Id-Version: FHIR\nReport-Msgid-Bugs-To: you@example.com\nPOT-Creation-Date: 2025-07-19 23:27+0000\nPO-Revision-Date: 2025-07-19 23:27+0000\nLanguage: ar\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n"
+msgstr "الرمز ''{0}#{1}'' مجرد، وغير مسموح به في هذا السياق"
 
 # ALL_OK
 #: ALL_OK
