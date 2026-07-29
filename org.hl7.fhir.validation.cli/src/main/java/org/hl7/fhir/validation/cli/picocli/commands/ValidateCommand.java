@@ -43,6 +43,7 @@ import java.util.*;
     LangRegenerateCommand.class,
     NarrativeCommand.class,
     CodeGenCommand.class,
+    IgCodeGenCommand.class,
     PreloadCacheCommand.class,
     ScanCommand.class,
     SnapshotCommand.class,

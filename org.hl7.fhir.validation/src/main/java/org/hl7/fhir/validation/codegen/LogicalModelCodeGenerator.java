@@ -36,6 +36,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.utilities.FhirPublication;
+import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -46,22 +47,23 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 public class LogicalModelCodeGenerator {
 
   public static void main(String[] args) throws Exception {
-    String folder = args[0]; 
-    String packageName = args[1];
+    String packageName = args[0];
+    String folder = args[1];
     String cfgPath = args[2];
     List<String> packages = new ArrayList<String>();
     for (int i = 3; i < args.length; i++) {
       packages.add(args[i]);
     }
-    
-    new LogicalModelCodeGenerator().generate(folder, packageName, cfgPath, packages);
+
+    new LogicalModelCodeGenerator().generate(packageName, folder, cfgPath, packages);
   }
 
-  private void generate(String packageName, String folder, String cfgPath, List<String> packages) throws Exception {
+  public void generate(String packageName, String folder, String cfgPath, List<String> packages) throws Exception {
     long start = System.currentTimeMillis();
     Map<String, AnalysisElementInfo> elementInfo = new HashMap<>();
     Set<String> genClassList = new HashSet<>();
-    
+
+    FileUtilities.createDirectory(folder);
     log.info("Load Configuration from "+cfgPath);
     Configuration config = new Configuration(cfgPath);
     Date ddate = new Date();
@@ -103,7 +105,7 @@ public class LogicalModelCodeGenerator {
     
     log.info("Generate Model in "+folder);
     log.info(" .. Constants");
-    JavaConstantsGenerator cgen = new JavaConstantsGenerator(ManagedFileAccess.outStream(Utilities.path(folder, "Constants.java")), master, config, date, npm.version(), packageName);
+    JavaConstantsGenerator cgen = new JavaConstantsGenerator(ManagedFileAccess.outStream(Utilities.path(folder, "Constants.java")), master, config, date, npm.fhirVersion(), packageName);
     cgen.generate();
     cgen.close();
     log.info(" .. Enumerations");
