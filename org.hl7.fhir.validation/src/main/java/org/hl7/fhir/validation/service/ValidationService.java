@@ -642,7 +642,7 @@ public class ValidationService {
     log.info(lineStart + " - Version " + txver + " (" + timeTracker.milestone() + ")");
     validationEngine.setDebug(validationEngineParameters.isDoDebug());
     validationEngine.getContext().setLogger(new Slf4JLoggingService(log));
-    loadIgsAndExtensions(validationEngine, validationEngineParameters.getIgs(), validationEngineParameters.isRecursive());
+    loadIgsAndExtensions(validationEngine, validationEngineParameters.getIgs(), validationEngineParameters.isRecursive(), validationEngineParameters.isOnlyDirectIgDependencies());
     if (validationEngineParameters.getTxCache() != null) {
       TerminologyCache cache = new TerminologyCache(new Object(), validationEngineParameters.getTxCache());
       validationEngine.getContext().initTxCache(cache);
@@ -705,15 +705,15 @@ public class ValidationService {
     return validationEngine;
   }
 
-  protected void loadIgsAndExtensions(ValidationEngine validationEngine, List<String> igs, boolean isRecursive) throws IOException, URISyntaxException {
+  protected void loadIgsAndExtensions(ValidationEngine validationEngine, List<String> igs, boolean isRecursive, boolean onlyDirectIgDependencies) throws IOException, URISyntaxException {
     IgLoader igLoader = new IgLoader(validationEngine.getPcm(), validationEngine.getContext(), validationEngine.getVersion(), validationEngine.isDebug());
-    igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.terminology", false);
+    igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.terminology", false, onlyDirectIgDependencies);
     if (!VersionUtilities.isR5Ver(validationEngine.getContext().getVersion())) {
-      igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false);
+      igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), "hl7.fhir.uv.extensions", false, onlyDirectIgDependencies);
     }
 
     for (String src : igs) {
-      igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), src, isRecursive);
+      igLoader.loadIg(validationEngine.getIgs(), validationEngine.getBinaries(), src, isRecursive, onlyDirectIgDependencies);
     }
     log.info("  Package Summary: "+ validationEngine.getContext().loadedPackageSummary());
   }

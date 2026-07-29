@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -170,5 +172,58 @@ public class IgLoaderTests {
     assertNotNull(es4);
     assertNotNull(es5);
 
+  }
+
+  @Test
+  public void testPackageIgLoadIncludesTransitiveDependenciesByDefault() throws IOException {
+    IgLoader igLoader = new IgLoader(filesystemPackageCacheManager, simpleWorkerContext, "4.0.1");
+
+    NpmPackage root = mockPackage("test.root", "1.0.0", "4.0.1", List.of("test.dep#1.0.0"));
+    NpmPackage dependency = mockPackage("test.dep", "1.0.0", "4.0.1", List.of("test.trans#1.0.0"));
+    NpmPackage transitiveDependency = mockPackage("test.trans", "1.0.0", "4.0.1", List.of());
+
+    doReturn(root).when(filesystemPackageCacheManager).loadPackage("test.root#1.0.0", null);
+    doReturn(dependency).when(filesystemPackageCacheManager).loadPackage("test.dep#1.0.0", null);
+    doReturn(transitiveDependency).when(filesystemPackageCacheManager).loadPackage("test.trans#1.0.0", null);
+    doReturn(new ArrayList<String>()).when(simpleWorkerContext).getLoadedPackages();
+    doReturn(timeTracker).when(simpleWorkerContext).clock();
+    doReturn("0").when(timeTracker).milestone();
+    doReturn(1).when(simpleWorkerContext).loadFromPackage(Mockito.any(), Mockito.any(), Mockito.eq(false));
+
+    igLoader.loadIg(Collections.emptyList(), Collections.emptyMap(), "test.root#1.0.0", false);
+
+    Mockito.verify(filesystemPackageCacheManager).loadPackage("test.root#1.0.0", null);
+    Mockito.verify(filesystemPackageCacheManager).loadPackage("test.dep#1.0.0", null);
+    Mockito.verify(filesystemPackageCacheManager).loadPackage("test.trans#1.0.0", null);
+  }
+
+  @Test
+  public void testPackageIgLoadCanLoadOnlyDirectDependencies() throws IOException {
+    IgLoader igLoader = new IgLoader(filesystemPackageCacheManager, simpleWorkerContext, "4.0.1");
+
+    NpmPackage root = mockPackage("test.root", "1.0.0", "4.0.1", List.of("test.dep#1.0.0"));
+    NpmPackage dependency = mockPackage("test.dep", "1.0.0", "4.0.1", List.of("test.trans#1.0.0"));
+
+    doReturn(root).when(filesystemPackageCacheManager).loadPackage("test.root#1.0.0", null);
+    doReturn(dependency).when(filesystemPackageCacheManager).loadPackage("test.dep#1.0.0", null);
+    doReturn(new ArrayList<String>()).when(simpleWorkerContext).getLoadedPackages();
+    doReturn(timeTracker).when(simpleWorkerContext).clock();
+    doReturn("0").when(timeTracker).milestone();
+    doReturn(1).when(simpleWorkerContext).loadFromPackage(Mockito.any(), Mockito.any(), Mockito.eq(false));
+
+    igLoader.loadIg(Collections.emptyList(), Collections.emptyMap(), "test.root#1.0.0", false, true);
+
+    Mockito.verify(filesystemPackageCacheManager).loadPackage("test.root#1.0.0", null);
+    Mockito.verify(filesystemPackageCacheManager).loadPackage("test.dep#1.0.0", null);
+    Mockito.verify(filesystemPackageCacheManager, Mockito.never()).loadPackage("test.trans#1.0.0", null);
+  }
+
+  private NpmPackage mockPackage(String id, String version, String fhirVersion, List<String> dependencies) {
+    NpmPackage npmPackage = Mockito.mock(NpmPackage.class);
+    Mockito.lenient().doReturn(id).when(npmPackage).id();
+    Mockito.lenient().doReturn(version).when(npmPackage).version();
+    Mockito.lenient().doReturn(fhirVersion).when(npmPackage).fhirVersion();
+    Mockito.lenient().doReturn(dependencies).when(npmPackage).dependencies();
+    return npmPackage;
   }
 }

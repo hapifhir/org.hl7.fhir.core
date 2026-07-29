@@ -52,6 +52,10 @@ public class ValidationContext {
   @SerializedName("recursive")
   private
   boolean recursive = false;
+  @JsonProperty("onlyDirectIgDependencies")
+  @SerializedName("onlyDirectIgDependencies")
+  private
+  boolean onlyDirectIgDependencies = false;
   @JsonProperty("showMessagesFromReferences")
   @SerializedName("showMessagesFromReferences")
   private
@@ -399,6 +403,7 @@ public class ValidationContext {
     this.doNative = other.doNative;
     this.hintAboutNonMustSupport = other.hintAboutNonMustSupport;
     this.recursive = other.recursive;
+    this.onlyDirectIgDependencies = other.onlyDirectIgDependencies;
     this.showMessagesFromReferences = other.showMessagesFromReferences;
     this.doDebug = other.doDebug;
     this.assumeValidRestReferences = other.assumeValidRestReferences;
@@ -722,6 +727,19 @@ public class ValidationContext {
   @JsonProperty("recursive")
   public ValidationContext setRecursive(boolean recursive) {
     this.recursive = recursive;
+    return this;
+  }
+
+  @SerializedName("onlyDirectIgDependencies")
+  @JsonProperty("onlyDirectIgDependencies")
+  public boolean isOnlyDirectIgDependencies() {
+    return onlyDirectIgDependencies;
+  }
+
+  @SerializedName("onlyDirectIgDependencies")
+  @JsonProperty("onlyDirectIgDependencies")
+  public ValidationContext setOnlyDirectIgDependencies(boolean onlyDirectIgDependencies) {
+    this.onlyDirectIgDependencies = onlyDirectIgDependencies;
     return this;
   }
 
@@ -1379,6 +1397,7 @@ public class ValidationContext {
       doNative == that.doNative &&
       hintAboutNonMustSupport == that.hintAboutNonMustSupport &&
       recursive == that.recursive &&
+      onlyDirectIgDependencies == that.onlyDirectIgDependencies &&
       showMessagesFromReferences == that.showMessagesFromReferences &&
       doDebug == that.doDebug &&
       assumeValidRestReferences == that.assumeValidRestReferences &&
@@ -1458,7 +1477,7 @@ public class ValidationContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(baseEngine, doNative, extensions, certSources, matchetypes, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
+    return Objects.hash(baseEngine, doNative, extensions, certSources, matchetypes, hintAboutNonMustSupport, recursive, onlyDirectIgDependencies, doDebug, assumeValidRestReferences, checkReferences,canDoNative, noInternalCaching, resolutionContext, aiService,
       noExtensibleBindingMessages, noInvariants, displayWarnings, wantInvariantsInMessages, map, output, outputSuffix, htmlOutput, txServer, sv, txLog, txCache, mapLog, lang, srcLang, tgtLang, fhirpath, snomedCT,
       targetVer, packageName, igs, questionnaireMode, level, profiles, options, sources, inputs, mode, locale, locations, crumbTrails, showMessageIds, forPublication, showTimes, allowExampleUrls, outputStyle, jurisdiction, noUnicodeBiDiControlChars,
       watchMode, watchScanDelay, watchSettleTime, bestPracticeLevel, unknownCodeSystemsCauseErrors, noExperimentalContent, advisorFile, expansionParameters, format, htmlInMarkdownCheck, allowDoubleQuotesInFHIRPath, checkIPSCodes);
@@ -1474,6 +1493,7 @@ public class ValidationContext {
       ", matchetypes=" + matchetypes +
       ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
       ", recursive=" + recursive +
+      ", onlyDirectIgDependencies=" + onlyDirectIgDependencies +
       ", doDebug=" + doDebug +
       ", assumeValidRestReferences=" + assumeValidRestReferences +
       ", checkReferences=" + checkReferences +

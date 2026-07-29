@@ -16,6 +16,7 @@ public class ValidationContextUtilities {
     validationContext.setInferFhirVersion(validationEngineParameters.isInferFhirVersion());
     validationContext.setDoNative(validationEngineParameters.isDoNative());
     validationContext.setRecursive(validationEngineParameters.isRecursive());
+    validationContext.setOnlyDirectIgDependencies(validationEngineParameters.isOnlyDirectIgDependencies());
     validationContext.setSnomedCT(validationEngineParameters.getSnomedCT());
     validationContext.setSv(validationEngineParameters.getSv());
     for (String ig : validationEngineParameters.getIgs()) {
@@ -153,6 +154,7 @@ public class ValidationContextUtilities {
     validationEngineParameters.setInferFhirVersion(validationContext.isInferFhirVersion());
     validationEngineParameters.setDoNative(validationContext.isDoNative());
     validationEngineParameters.setRecursive(validationContext.isRecursive());
+    validationEngineParameters.setOnlyDirectIgDependencies(validationContext.isOnlyDirectIgDependencies());
     validationEngineParameters.setSnomedCT(validationContext.getSnomedCT());
     validationEngineParameters.setSv(validationContext.getSv());
     for (String ig : validationContext.getIgs()) {

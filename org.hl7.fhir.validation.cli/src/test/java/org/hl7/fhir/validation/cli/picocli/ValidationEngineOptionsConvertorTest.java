@@ -50,6 +50,10 @@ public class ValidationEngineOptionsConvertorTest {
         new ValidationEngineOptions().withRecursive(true),
         new ValidationEngineParameters().setRecursive(true)
       ),
+      Arguments.of("onlyDirectIgDependencies flag",
+        new ValidationEngineOptions().withOnlyDirectIgDependencies(true),
+        new ValidationEngineParameters().setOnlyDirectIgDependencies(true)
+      ),
       Arguments.of("clearTxCache flag",
         new ValidationEngineOptions().withClearTxCache(true),
         new ValidationEngineParameters().setClearTxCache(true)

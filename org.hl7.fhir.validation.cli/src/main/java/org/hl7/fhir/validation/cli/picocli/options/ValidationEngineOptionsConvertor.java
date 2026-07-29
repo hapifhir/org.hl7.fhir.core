@@ -23,6 +23,7 @@ public class ValidationEngineOptionsConvertor {
     // Boolean flags
     validationEngineParameters.setDoNative(options.doNative);
     validationEngineParameters.setRecursive(options.recursive);
+    validationEngineParameters.setOnlyDirectIgDependencies(options.onlyDirectIgDependencies);
     validationEngineParameters.setClearTxCache(options.clearTxCache);
     validationEngineParameters.setCheckReferences(options.checkReferences);
     validationEngineParameters.setNoInternalCaching(options.noInternalCaching);

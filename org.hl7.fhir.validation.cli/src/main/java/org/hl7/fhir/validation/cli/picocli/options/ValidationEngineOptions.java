@@ -47,6 +47,11 @@ public class ValidationEngineOptions {
   @With
   public boolean recursive = false;
 
+  @CommandLine.Option(names = {"-only-direct-ig-dependencies"},
+    description = "Skip transitive package dependencies when loading IGs, including hardcoded ones (e.g. hl7.terminology). Warning: may cause validation errors if resources depend on transitively loaded content.")
+  @With
+  public boolean onlyDirectIgDependencies = false;
+
   @CommandLine.Option(names = {"-clear-tx-cache"},
     description = "Clear the terminology cache before validation")
   @With
