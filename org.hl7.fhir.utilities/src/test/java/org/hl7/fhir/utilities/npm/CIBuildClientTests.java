@@ -2,6 +2,10 @@ package org.hl7.fhir.utilities.npm;
 
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import okhttp3.mockwebserver.MockWebServer;
@@ -16,6 +20,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 
 public class CIBuildClientTests {
+
+  @BeforeAll
+    static void beforeAll() {
+  ManagedWebAccess.loadFromFHIRSettings(
+    FhirSettingsPOJO.builder().ssrfProtectionEnabled(false)
+    .build()
+    );
+}
+
+@AfterAll
+  static void afterAll() {
+    ManagedWebAccess.loadFromFHIRSettings();
+}
 
   static final String DUMMY_PACKAGE = "my.dummy.package";
 

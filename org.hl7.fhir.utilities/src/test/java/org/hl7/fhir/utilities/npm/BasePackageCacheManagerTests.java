@@ -30,7 +30,9 @@ class BasePackageCacheManagerTests {
       .withAuthenticationMode(HTTPAuthenticationMode.BASIC)
       .withServerType(PackageServer.PackageServerType.NPM)
       .withUsername(MockPackageServer.DUMMY_USERNAME)
-      .withPassword(MockPackageServer.DUMMY_PASSWORD);
+      .withPassword(MockPackageServer.DUMMY_PASSWORD)
+      .withAllowHttp(true)
+      .withAllowPrivateNetwork(true);
 
     basePackageCacheManager.addPackageServer(testServer);
     basePackageCacheManager.myPackageServers.addAll(PackageServer.defaultServers());
@@ -59,11 +61,15 @@ class BasePackageCacheManagerTests {
 
     PackageServer testServerA = new PackageServer(packageServerAUrl)
       .withAuthenticationMode(HTTPAuthenticationMode.BASIC)
-      .withServerType(PackageServer.PackageServerType.NPM);
+      .withServerType(PackageServer.PackageServerType.NPM)
+      .withAllowHttp(true)
+      .withAllowPrivateNetwork(true);
 
     PackageServer testServerB = new PackageServer(packageServerBUrl)
       .withAuthenticationMode(HTTPAuthenticationMode.BASIC)
-      .withServerType(PackageServer.PackageServerType.NPM);
+      .withServerType(PackageServer.PackageServerType.NPM)
+      .withAllowHttp(true)
+      .withAllowPrivateNetwork(true);
 
     basePackageCacheManager.addPackageServer(testServerA);
     basePackageCacheManager.addPackageServer(testServerB);
@@ -101,7 +107,10 @@ class BasePackageCacheManagerTests {
 
     MockPackageServer server = new MockPackageServer();
     server.getMockWebServer().enqueue(new okhttp3.mockwebserver.MockResponse().setBody(TERMINOLOGY_CATALOG_RESPONSE));
-    basePackageCacheManager.addPackageServer(new PackageServer(server.getPackageServerUrl()));
+    basePackageCacheManager.addPackageServer(
+      new PackageServer(server.getPackageServerUrl())
+        .withAllowHttp(true)
+        .withAllowPrivateNetwork(true));
 
     assertEquals("http://terminology.hl7.org", basePackageCacheManager.getPackageUrl("hl7.terminology.r4"));
     server.shutdown();
@@ -127,7 +136,8 @@ class BasePackageCacheManagerTests {
 
     MockPackageServer server = new MockPackageServer();
     server.getMockWebServer().enqueue(new okhttp3.mockwebserver.MockResponse().setBody(AU_CATALOG_RESPONSE));
-    basePackageCacheManager.addPackageServer(new PackageServer(server.getPackageServerUrl()));
+    basePackageCacheManager.addPackageServer(new PackageServer(server.getPackageServerUrl()).withAllowHttp(true)
+      .withAllowPrivateNetwork(true));
 
     assertEquals("hl7.fhir.au.base", basePackageCacheManager.getPackageId("http://hl7.org.au/fhir"));
     server.shutdown();
