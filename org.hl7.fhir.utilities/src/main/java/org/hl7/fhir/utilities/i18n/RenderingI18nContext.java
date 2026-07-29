@@ -539,8 +539,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String RES_REND_DRAFT = "RES_REND_DRAFT";
   public static final String RES_REND_ERROR = "RES_REND_ERROR";
   public static final String RES_REND_INFO_SOURCE = "RES_REND_INFO_SOURCE";
-  public static final String RES_REND_INFO_SOURCE_NAME = "RES_REND_INFO_SOURCE_NAME";
-  public static final String RES_REND_INFO_SOURCE_VALUE = "RES_REND_INFO_SOURCE_VALUE";
   public static final String RES_REND_LANGUAGE = "RES_REND_LANGUAGE";
   public static final String GENERAL_RESOURCE = "GENERAL_RESOURCE";
   public static final String RES_REND_RET = "RES_REND_RET";
@@ -550,11 +548,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String RES_REND_TAG = "RES_REND_TAG";
   public static final String RES_REND_UNKNOWN = "RES_REND_UNKNOWN";
   public static final String RES_REND_UPDATED = "RES_REND_UPDATED";
-  public static final String RES_REND_UPDATED_NAME = "RES_REND_UPDATED_NAME";
-  public static final String RES_REND_UPDATED_VALUE = "RES_REND_UPDATED_VALUE";
   public static final String RES_REND_VER = "RES_REND_VER";
-  public static final String RES_REND_VER_NAME = "RES_REND_VER_NAME";
-  public static final String RES_REND_VER_VALUE = "RES_REND_VER_VALUE";
   public static final String RES_REND_TEMPLATE_ID = "RES_REND_TEMPLATE_ID";
   public static final String SD_COMP_HEAD_CARD_L = "SD_COMP_HEAD_CARD_L";
   public static final String SD_COMP_HEAD_CARD_L_DESC  ="SD_COMP_HEAD_CARD_L_DESC";
@@ -985,7 +979,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String PROF_DRIV_SUMM_NONE = "PROF_DRIV_SUMM_NONE";
   public static final String PROF_DRIV_SUMM = "PROF_DRIV_SUMM";
   public static final String DOCUMENT_SUMMARY = "DOCUMENT_SUMMARY";
-  public static final String DATA_REND_ATT_URL = "DATA_REND_ATT_URL";
   public static final String DATA_REND_ATT_DATA = "DATA_REND_ATT_DATA";
   public static final String GENERAL_DATA_DISPLAY_PROPERTY = "GENERAL_DATA_DISPLAY_PROPERTY";
   public static final String DATA_REND_CURRENCY = "DATA_REND_CURRENCY";
@@ -1069,8 +1062,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_VER_ON = "SDR_VER_ON";
   public static final String SDR_VER_BEF = "SDR_VER_BEF";
   public static final String SDR_VER_UNK = "SDR_VER_UNK";
-  public static final String SDR_FIXED_VALUE = "SDR_FIXED_VALUE";
-  public static final String SDR_PATTERN_VALUE = "SDR_PATTERN_VALUE";
   public static final String SDR_CLICK_COPY = "SDR_CLICK_COPY";
   public static final String SDR_FROM = "SDR_FROM";
   public static final String SDR_SRC_FHIR = "SDR_SRC_FHIR";
@@ -1186,7 +1177,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONSENT_BASIS_REGULATION_NONE = "CONSENT_BASIS_REGULATION_NONE";
   public static final String CONSENT_BASIS_POLICY_PREFIX = "CONSENT_BASIS_POLICY_PREFIX";
   public static final String CONSENT_BASIS_POLICY_SUFFIX = "CONSENT_BASIS_POLICY_SUFFIX";
-  public static final String CONSENT_BASIS_POLICY_SUFFIX_MORE = "CONSENT_BASIS_POLICY_SUFFIX_MORE";
   public static final String CONSENT_HTABLE_RULE = "CONSENT_HTABLE_RULE";
   public static final String CONSENT_HTABLE_RULE_DESC = "CONSENT_HTABLE_RULE_DESC";
   public static final String CONSENT_HTABLE_WHEN = "CONSENT_HTABLE_WHEN";
