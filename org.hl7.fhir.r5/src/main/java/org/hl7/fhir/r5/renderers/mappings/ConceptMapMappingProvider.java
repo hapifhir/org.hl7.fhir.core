@@ -1,7 +1,9 @@
 package org.hl7.fhir.r5.renderers.mappings;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -62,6 +64,18 @@ public class ConceptMapMappingProvider extends ModelMappingProvider {
     }
   }
 
+  @Override
+  public int valueCount() {
+    // one row per distinct source code that will render something (a no-map note, or one or more targets)
+    Set<String> codes = new HashSet<>();
+    for (SourceElementComponent t : grp.getElement()) {
+      if (t.hasCode() && (t.getNoMap() || t.hasTarget())) {
+        codes.add(t.getCode());
+      }
+    }
+    return codes.size();
+  }
+
   private void renderMap(XhtmlNode x, TargetElementComponent tgt) {
     if (tgt == null) {
       x.tx("No Equivalent");
@@ -88,6 +102,6 @@ public class ConceptMapMappingProvider extends ModelMappingProvider {
     default: return "??";
     }
   }
-  
-  
+
+
 }

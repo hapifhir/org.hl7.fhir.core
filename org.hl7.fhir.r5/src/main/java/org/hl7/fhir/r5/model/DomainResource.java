@@ -615,8 +615,8 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
     return ExtensionUtilities.getStandardsStatus(this);
   }
 
-  public void setStandardsStatus(StandardsStatus status) {
-    ExtensionUtilities.setStandardsStatus(this, status, null);
+  public void setStandardsStatus(StandardsStatus status, String thisVersion) {
+    ExtensionUtilities.setStandardsStatus(this, status, null, thisVersion);
   }
 
     
