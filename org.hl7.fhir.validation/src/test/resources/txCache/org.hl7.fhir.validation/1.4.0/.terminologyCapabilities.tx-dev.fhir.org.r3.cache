@@ -3085,6 +3085,9 @@
     "uri" : "http://terminology.hl7.org/CodeSystem/cited-medium"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/claim-adjudication-basis-categories"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/claim-exception"
   },
   {
@@ -3101,6 +3104,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/color-names"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/color-rgb"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/common-tags"
@@ -3278,6 +3284,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-relationship"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-relationship-status"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-status-reason"
@@ -3851,6 +3860,9 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/triggerEventID"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/us-claim-information-category"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/us-military-service-period"
