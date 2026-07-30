@@ -50,6 +50,7 @@ public class CLI {
       throw new IllegalArgumentException(e);
     }
 
+    parentCommand.coordinateFhirSettings();
     verifyProxySystemProperties();
 
     Display.displaySystemInfo(log);

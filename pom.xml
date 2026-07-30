@@ -50,7 +50,7 @@
         <maven-checkstyle-version>3.6.0</maven-checkstyle-version>
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
         <logback.version>1.5.37</logback.version>
-        <log4jVersion>2.26.0</log4jVersion>
+        <log4jVersion>2.26.1</log4jVersion>
         <okio.version>3.16.4</okio.version>
         <surefire.native.access.arg/>
     </properties>

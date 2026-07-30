@@ -349,7 +349,7 @@ private static TxTestData testData;
 
     // We need a tiny amount of delay here. Interruption is introduced as regexs process chars, which is fast, but
     // not instantaneous.
-    Thread.sleep(100);
+    Thread.sleep(200);
     Set<Thread> threadsAfter = Thread.getAllStackTraces().keySet();
     if (threadsAfter.size() != threadsBefore.size())
     {

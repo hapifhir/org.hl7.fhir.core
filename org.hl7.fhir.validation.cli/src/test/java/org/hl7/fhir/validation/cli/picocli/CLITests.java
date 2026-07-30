@@ -5,21 +5,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.commands.*;
-import org.hl7.fhir.validation.cli.picocli.options.FHIRSettingsOptions;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.special.PackageReGenerator;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
 import picocli.CommandLine;
 
-import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -600,8 +600,6 @@ class CLITests {
         assertThat(rePackageConstruction.constructed()).hasSizeGreaterThanOrEqualTo(1);
         verify(rePackageConstruction.constructed().get(0), atLeastOnce()).call();
 
-        // Verify CodeGenCommand was NOT constructed or called
-        //assertThat(codeGenConstruction.constructed()).isEmpty();
       }
     }
   }
@@ -610,31 +608,24 @@ class CLITests {
   @DisplayName("Global Parameter Tests")
   class GlobalParameterTests {
 
-    @Mock
-    ValidationService validationService;
-
-    @Mock
-    ValidationEngine validationEngine;
-
     @Test
     @DisplayName("Test -fhir-settings is checked by the CLI")
-    void fhirSettingsFileExistsTest() {
+    void fhirSettingsFileExistsTest(@TempDir Path tempDir) throws IOException {
 
-      String[] args = {"-fhir-settings", "dummySettingsFile.json", "dummyFile.json"};
+      Path settingsFile = Files.createFile(tempDir.resolve("dummySettingsFile.json"));
+      String[] args = {"-fhir-settings", settingsFile.toString(), "dummyFile.json"};
+
+      ValidationService validationService = mock(ValidationService.class);
 
       try (MockedConstruction<ValidateCommand> construction = mockConstruction(ValidateCommand.class,
         (mock, context) -> {
           when(mock.call()).thenReturn(0);
           doNothing().when(mock).setValidationService(any());
-        });
-           MockedConstruction<FHIRSettingsOptions> fhirSettingsConstruction = mockConstruction(FHIRSettingsOptions.class,
-             (mock, context) -> {
-              doNothing().when(mock).setFhirSettingsFile("dummySettingsFile.json");
-             })
+        })
       ) {
-          int result =   new CLI(validationService).parseArgsAndExecuteCommand(args);
-          assertThat(result).isZero();
-        verify(fhirSettingsConstruction.constructed().get(0), atLeastOnce()).setFhirSettingsFile("dummySettingsFile.json");
+        int result = new CLI(validationService).parseArgsAndExecuteCommand(args);
+        assertThat(result).isZero(); // No exceptions thrown because
+        verify(construction.constructed().get(0), atLeastOnce()).coordinateFhirSettings();
       }
     }
 
