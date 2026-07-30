@@ -17,6 +17,7 @@
 
 ## Other code changes
 
+* Internal tooling for http/https requests now prevents server-side request forgeries, as well as the option to bypass these for custom configurations or testing.
 * Delegate FHIRPath custom-function hooks (resolveFunction/checkFunction/executeFunction) to ITransformerServices in StructureMapUtilities
 * Allow unknown resource types when parsing resources
 * Render DiagnosticReport.presentedForm
