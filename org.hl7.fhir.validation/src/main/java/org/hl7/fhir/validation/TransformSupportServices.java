@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.terminologies.ConceptMapEngine;
 import org.hl7.fhir.r5.utils.structuremap.ITransformerServices;
@@ -62,8 +63,8 @@ public class TransformSupportServices implements ITransformerServices {
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
-    return validatorService.resolveReference(engine, new ValidationContext(appContext), url, null, refContext);
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
+    return validatorService.resolveReference(engine, new ValidationContext(appContext), url, identifier, refContext);
   }
 
   @Override

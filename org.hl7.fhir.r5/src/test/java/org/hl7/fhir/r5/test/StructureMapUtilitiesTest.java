@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetComponent;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
@@ -392,7 +393,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
     return null;
   }
 
