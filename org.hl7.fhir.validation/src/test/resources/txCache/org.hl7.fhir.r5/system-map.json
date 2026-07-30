@@ -1,15 +1,2 @@
 {
-  "systems" : [{
-    "system" : "http://johnmoehrke.github.io/xacml-consent/CodeSystem/cs-health-sensitivity",
-    "url" : "http://johnmoehrke.github.io/xacml-consent/CodeSystem/cs-health-sensitivity",
-    "authoritative" : [],
-    "candidates" : []
-  },
-  {
-    "system" : "http://johnmoehrke.github.io/xacml-consent/CodeSystem/cs-health-sensitivity in en-AU",
-    "url" : "http://johnmoehrke.github.io/xacml-consent/CodeSystem/cs-health-sensitivity",
-    "language" : "en-AU",
-    "authoritative" : [],
-    "candidates" : []
-  }]
 }

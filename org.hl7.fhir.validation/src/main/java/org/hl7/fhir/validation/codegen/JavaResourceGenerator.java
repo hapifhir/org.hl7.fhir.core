@@ -812,13 +812,27 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write(indent+"  }\r\n\r\n");  
   }
 	
+  private boolean isContentReference(ElementDefinition e) {
+    // in the past, content references were represented as a type with the code @{path}, but
+    // now they come as {url}#{path} in ElementDefinition.contentReference (and we don't care
+    // about the url - it's always a reference to the structure definition being processed)
+    if (e.hasContentReference()) {
+      return true;
+    }
+    if (e.getType().size() > 0) {
+      String s = e.getType().get(0).getCode();
+      return s != null && s.contains("#");
+    }
+    return false;
+  }
+
   private String resolvedTypeCode(ElementDefinition e) {
     return resolvedTypeCode(e, null);
   }
   
   private String resolvedTypeCode(ElementDefinition e, String tf) {
     if (e.hasContentReference()) {
-      return e.getContentReference().replace("#",  "@");
+      return "@"+e.getContentReference().substring(e.getContentReference().indexOf("#")+1);
     }
     StringBuilder tn = new StringBuilder();
     boolean first = true;
@@ -940,8 +954,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           } else if (tn.contains("Enumeration<")) { // enumeration
             write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory().fromType(TypeConvertor.castToCode(value));\r\n");
             cn = "(Enumeration) value";
-          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !e.getType().get(0).getCode().startsWith("@")) {
-            StructureDefinition sd = definitions.getContext().fetchTypeDefinition(e.getTypeFirstRep().getCode());
+          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !isContentReference(e)) {
+            StructureDefinition sd = definitions.getContext().fetchTypeDefinition(getContentElement(e));
             String tnn = checkConstraint(getTypeName(e));
             if (!isCoreType(sd) || sd.getKind() == StructureDefinitionKind.LOGICAL) {
               cn = "("+upFirst(tn)+") value";              
@@ -955,7 +969,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
                 cn = cn.replace("Type(", "(");
               }
             }
-          } else if (e.getType().size() > 0 && !e.getType().get(0).getCode().startsWith("@")) { 
+          } else if (e.getType().size() > 0 && !isContentReference(e)) { 
             cn = "TypeConvertor.castToType(value)";
           }
         }
@@ -972,6 +986,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     if (!first)
       write(indent+"    return value;\r\n");
     write(indent+"  }\r\n\r\n");  
+  }
+
+  private String getContentElement(ElementDefinition e) {
+    return e.getContentReference() == null ? e.getPath() : e.getContentReference().substring(e.getContentReference().indexOf("#")+1);
   }
 
 
@@ -993,7 +1011,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           } if (tn.contains("Enumeration<")) { // enumeration
             write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory().fromType(TypeConvertor.castToCode(value));\r\n");
             cn = "(Enumeration) value";
-          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !e.getType().get(0).getName().startsWith("@")) { 
+          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !isContentReference(e)) { 
             StructureDefinition sd = definitions.getContext().fetchTypeDefinition(e.getTypeFirstRep().getCode());
             String tnn = checkConstraint(getTypeName(e));
             if (!isCoreType(sd) || sd.getKind() == StructureDefinitionKind.LOGICAL) {
@@ -1008,7 +1026,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
               }
               cn = "TypeConvertor.castTo"+upFirst(tnn)+"(value)";
             }
-          } else if (e.getType().size() > 0 && !e.getType().get(0).getCode().startsWith("@")) { 
+          } else if (e.getType().size() > 0 && !isContentReference(e)) { 
             cn = "TypeConvertor.castToType(value)";
           }
         }
@@ -1061,7 +1079,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         String name = e.getName().replace("[x]", "");
         write(indent+"    case "+propId(name)+": /*"+name+"*/ ");
         if (e.hasContentReference()) {
-          write("return new String[] {\""+e.getContentReference().replace("#", "@")+"\"};\r\n");
+          write("return new String[] {\"@"+e.getContentReference().substring(e.getContentReference().indexOf("#")+1)+"\"};\r\n");
         } else {
           write("return new String[] {"+asCommaText(e.getType())+"};\r\n");
         }

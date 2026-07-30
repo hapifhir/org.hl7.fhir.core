@@ -70,7 +70,7 @@ public class JsonParser extends JsonParserBase {
   protected <E extends Enum<E>> Enumeration<E> parseEnumeration(String s, E item, EnumFactory e) throws IOException, FHIRFormatError {
     Enumeration<E> res = new Enumeration<E>(e);
     if (s != null)
-      res.setValue((E) e.fromCode(s));
+      res.setValueAsString(s); // string based, so that (when Configuration.isAllowCustomResourceTypes() is set) a code mapped to a CUSTOM value keeps the actual code
     return res;
   }
 
@@ -36356,7 +36356,7 @@ public class JsonParser extends JsonParserBase {
 
   protected <E extends Enum<E>> void composeEnumerationCore(String name, Enumeration<E> value, EnumFactory e, boolean inArray) throws IOException {
     if (value != null && value.getValue() != null) {
-      prop(name, e.toCode(value.getValue()));
+      prop(name, value.asStringValue()); // string based, so that a CUSTOM value round-trips the actual code
     } else if (inArray)   
       writeNull(name);
   }    

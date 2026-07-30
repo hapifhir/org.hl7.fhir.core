@@ -2104,7 +2104,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public ValidationResult processValidationResult(Parameters pOut, String vs, String server) {
     boolean ok = false;
-    String message = "No Message returned";
+    String message = null;
     String display = null;
     String system = null;
     String code = null;
@@ -2200,8 +2200,35 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       }
     }
+    if (!ok && message == null) {
+      // the server didn't return a message, but it did fail. Servers are allowed to convey the reason for
+      // failure in the issues alone, so build a message from them: error issues if there are any, otherwise
+      // whatever issues there are (better than reporting an anonymous failure)
+      List<String> msgs = new ArrayList<>();
+      for (OperationOutcomeIssueComponent iss : issues) {
+        if ((iss.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.FATAL ||
+             iss.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR)
+            && iss.getDetails().hasText() && !msgs.contains(iss.getDetails().getText())) {
+          msgs.add(iss.getDetails().getText());
+        }
+      }
+      if (msgs.isEmpty()) {
+        for (OperationOutcomeIssueComponent iss : issues) {
+          if (iss.getDetails().hasText() && !msgs.contains(iss.getDetails().getText())) {
+            msgs.add(iss.getDetails().getText());
+          }
+        }
+      }
+      if (!msgs.isEmpty()) {
+        Collections.sort(msgs);
+        message = String.join("; ", msgs);
+      }
+    }
     ValidationResult res = null;
     if (!ok) {
+      if (message == null) {
+        message = "The server did not return an error message";
+      }
       res = new ValidationResult(IssueSeverity.ERROR, message, err, null).setTxLink(txLog == null ? null : txLog.getLastId());
       if (code != null) {
         res.setDefinition(new ConceptDefinitionComponent().setDisplay(display).setCode(code));
@@ -2213,10 +2240,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (version != null) {
         res.setVersion(version);
       }
-    } else if (message != null && !message.equals("No Message returned")) {
+    } else if (message != null) {
       res = new ValidationResult(IssueSeverity.WARNING, message, system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog == null ? null : txLog.getLastId());
     } else if (display != null) {
-      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog == null ? null : txLog.getLastId());
+       res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog == null ? null : txLog.getLastId());
     } else {
       res = new ValidationResult(system, version, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog == null ? null : txLog.getLastId());
     }

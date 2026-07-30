@@ -254,6 +254,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           return null;
         }
       }
+      if (!(appContext instanceof ValidationContext)) {
+        // the FHIRPath engine now consults the host services for implicit constant names during type
+        // checking, using whatever appInfo the caller supplied; if it isn't a ValidationContext, there
+        // are no constants to resolve (and returning null beats a ClassCastException swallowed into
+        // a validation message)
+        return null;
+      }
       ValidationContext c = (ValidationContext) appContext;
       if (externalHostServices != null)
         return externalHostServices.resolveConstantType(engine, c.getAppContext(), name, mode);
