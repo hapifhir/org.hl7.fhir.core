@@ -173,7 +173,6 @@ public class FhirRequestBuilder {
     if (response.getContent() != null) {
       try {
         byte[] body = response.getContent();
-
         resource = (T) getParser(format).parse(body);
         if (resource instanceof OperationOutcome && hasError((OperationOutcome) resource)) {
           error = (OperationOutcome) resource;

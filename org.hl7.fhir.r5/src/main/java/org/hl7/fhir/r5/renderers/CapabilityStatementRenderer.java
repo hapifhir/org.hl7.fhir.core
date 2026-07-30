@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -431,6 +432,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   private String getVersionPathComponent(String definition) {
     if (Utilities.noString(definition)) return "";
     if (!definition.startsWith(VERS_DEF_PREFIX)) return "";
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String restOfDef[] = definition.substring(VERS_DEF_PREFIX.length()).split(" ");
     if (restOfDef[1].startsWith("(")) return "R"+restOfDef[0];
     return "";
@@ -1046,7 +1049,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
         tr = tbl.tr();
         tr.td().code().tx(ExtensionUtilities.readStringExtension(ext, "search"));
         String url = ExtensionUtilities.readStringExtension(ext, "profile");
-        StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url);
+        StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
         if (sd != null) {
           tr.td().code().ah(sd.getWebPath()).tx(sd.present());
         } else {
@@ -1636,6 +1639,8 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
   private String getResourceExpectation(CapabilityStatementRestResourceComponent r) {
     String capExpectation = expectationForDisplay(r,EXPECTATION);
     if (!Utilities.noString(capExpectation)) return capExpectation;
+    if (!context.isInferResourceConformance())
+      return "unspecified";
     boolean shalls = false;
     boolean shoulds = false;
     boolean mays = false;
@@ -1699,7 +1704,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       return;
     }
 
-    Resource cr = context.getContext().fetchResource(Resource.class, canonicalUri);
+    Resource cr = context.getContext().fetchResource(Resource.class, canonicalUri, IWorkerContext.VersionResolutionRules.defaultRule());
     if (cr == null) {
       node.addText(name);
     }
@@ -1709,10 +1714,13 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       if (Utilities.noString(path)) {
         if (isParam && (canonicalUri.toLowerCase().startsWith(SP_BASE)) && (!Utilities.noString(currentFhirBase)) && (!Utilities.noString(hostResource))) {
           String resourceName = "";
-          if (canonicalUri.substring(SP_BASE.length()).split("-")[0].toLowerCase().equals("resource")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String canonicalSuffix = canonicalUri.substring(SP_BASE.length()).split("-")[0].toLowerCase();
+          if (canonicalSuffix.equals("resource")) {
             resourceName = "resource";
           }
-          else if (canonicalUri.substring(SP_BASE.length()).split("-")[0].toLowerCase().equals("domainresource")) {
+          else if (canonicalSuffix.equals("domainresource")) {
             resourceName = "domainresource";
           }
           else {

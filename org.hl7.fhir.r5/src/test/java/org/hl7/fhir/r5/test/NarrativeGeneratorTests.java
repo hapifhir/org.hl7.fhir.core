@@ -30,13 +30,14 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.xmlpull.v1.XmlPullParserException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-public class NarrativeGeneratorTests {
+class NarrativeGeneratorTests {
 
   private static RenderingContext rc;
 
@@ -44,6 +45,11 @@ public class NarrativeGeneratorTests {
   public static void setUp() throws FHIRException, IOException {
     rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]"));
+  }
+
+  @AfterAll
+  public static void tearDown() {
+    rc = null;
   }
 
   @Test

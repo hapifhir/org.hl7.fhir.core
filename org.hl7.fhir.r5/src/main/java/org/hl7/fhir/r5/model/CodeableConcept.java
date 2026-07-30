@@ -371,7 +371,10 @@ public boolean hasCoding(String system, String code) {
     for (Coding c : l.getCoding()) {
       boolean done = false;
       for (Coding t : r.getCoding()) {
-        if (t.matches(c)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean codesMatch = t.matches(c);
+        if (codesMatch) {
           handled.add(t);
           res.getCoding().add(Coding.merge(c, t));
           done = true;
@@ -399,7 +402,10 @@ public boolean hasCoding(String system, String code) {
     CodeableConcept res = new CodeableConcept();
     for (Coding c : l.getCoding()) {
       for (Coding t : r.getCoding()) {
-        if (t.matches(c)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean codesMatch = t.matches(c);
+        if (codesMatch) {
           res.getCoding().add(Coding.intersect(c, t));
           break;
         }

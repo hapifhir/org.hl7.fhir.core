@@ -3,7 +3,7 @@
   "system" : "https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName",
   "code" : "R8000",
   "display" : "Clinical Practitioner Access Role"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -15,7 +15,6 @@
   }]
 }}####
 v: {
-  "display" : "Clinical Practitioner Access Role",
   "code" : "R8000",
   "system" : "https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName",
   "severity" : "error",
@@ -43,7 +42,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'https://fhir.hl7.org.uk/CodeSystem/UKCore-SDSJobRoleName' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.liquid.LiquidEngine;
 import org.hl7.fhir.r5.liquid.LiquidEngine.LiquidDocument;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
@@ -41,10 +42,14 @@ public class LiquidJsonTest extends BaseHostServices {
     LiquidEngine liquid = new LiquidEngine(context, this);
     LiquidDocument template = liquid.parse(TestingUtilities.loadTestResource("r5", "liquid-json", "history.liquid"), null);
     BaseJsonWrapper base = new BaseJsonWrapper(json);
-    String s = liquid.evaluate(template, base, this).trim();
-    String expected = TestingUtilities.loadTestResource("r5", "liquid-json", "history.html").trim();
+    String s = fixEoln(liquid.evaluate(template, base, this)).trim();
+    String expected = fixEoln(TestingUtilities.loadTestResource("r5", "liquid-json", "history.html")).trim();
     System.out.println(s);
     Assertions.assertEquals(expected, s);
+  }
+
+  private String fixEoln(String text) {
+    return text.replace("\r\n", "\n");
   }
   
   @Test
@@ -55,8 +60,8 @@ public class LiquidJsonTest extends BaseHostServices {
     LiquidEngine liquid = new LiquidEngine(context, this);
     LiquidDocument template = liquid.parse(TestingUtilities.loadTestResource("r5", "liquid-json", "test-cases.liquid"), null);
     BaseJsonWrapper base = new BaseJsonWrapper(json);
-    String s = liquid.evaluate(template, base, this).trim();
-    String expected = TestingUtilities.loadTestResource("r5", "liquid-json", "test-cases.html").trim();
+    String s = fixEoln(liquid.evaluate(template, base, this).trim());
+    String expected = fixEoln(TestingUtilities.loadTestResource("r5", "liquid-json", "test-cases.html").trim());
     System.out.println(s);
     Assertions.assertEquals(expected, s);
   }
@@ -86,7 +91,7 @@ public class LiquidJsonTest extends BaseHostServices {
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext)
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext)
       throws FHIRException {
     // TODO Auto-generated method stub
     return null;

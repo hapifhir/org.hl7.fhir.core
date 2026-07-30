@@ -17,7 +17,6 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.http.HTTPAuthenticationMode;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccessor;
@@ -25,9 +24,6 @@ import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
-
-import static org.hl7.fhir.utilities.VersionUtilities.checkVersionNotNullAndValid;
-import static org.hl7.fhir.utilities.VersionUtilities.fixForSpecialValue;
 
 @Slf4j
 public class PackageClient {
@@ -131,6 +127,19 @@ public class PackageClient {
   }
 
   public List<PackageInfo> search(String name, String pkgCanonical, String fhirVersion, boolean preRelease, String canonical) throws IOException {
+    return search(name, pkgCanonical, fhirVersion, preRelease, canonical, false);
+  }
+
+  /**
+   * Search the package server catalog.
+   *
+   * The server treats name and pkgCanonical as partial matches (e.g. searching for
+   * hl7.terminology.r4 also returns hl7.terminology.r4b, and http://hl7.org.au/fhir/
+   * matches every package whose canonical starts with it). Pass exactMatch = true
+   * when looking a package up by its id or canonical rather than searching, so that
+   * near-miss siblings are filtered out of the results.
+   */
+  public List<PackageInfo> search(String name, String pkgCanonical, String fhirVersion, boolean preRelease, String canonical, boolean exactMatch) throws IOException {
     CommaSeparatedStringBuilder params = new CommaSeparatedStringBuilder("&");
     if (!Utilities.noString(name)) {
       params.append("name="+name);
@@ -164,6 +173,14 @@ public class PackageClient {
           obj.asString("canonical"),
           address, d));
       }
+      if (exactMatch) {
+        if (!Utilities.noString(name)) {
+          res.removeIf(pi -> !name.equals(pi.getId()));
+        }
+        if (!Utilities.noString(pkgCanonical)) {
+          res.removeIf(pi -> !pkgCanonical.equals(pi.getCanonical()));
+        }
+      }
       if (hasDates) {
         Collections.sort(res, new PackageInfo.PackageInfoSorter(true));
       } else {
@@ -171,29 +188,23 @@ public class PackageClient {
       }
     } catch (IOException e1) {
     }
-    return res;    
-  }  
+    return res;
+  }
 
   public Date getNewPackages(Date lastCalled, List<PackageInfo> updates) {
     return null;
   }
  
-  private InputStream fetchUrl(String source, String accept) throws IOException {
-    ManagedWebAccessor webAccessor = ManagedWebAccess.accessor(Arrays.asList("web"));
-    if (server.getAuthenticationMode() == HTTPAuthenticationMode.TOKEN) {
-      webAccessor.withToken(server.getToken());
-    } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.BASIC) {
-      webAccessor.withBasicAuth(server.getUsername(), server.getPassword());
-    } else if (server.getAuthenticationMode() == HTTPAuthenticationMode.APIKEY) {
-      webAccessor.withApiKey(server.getApiKey());
-    }
-    HTTPResult res = webAccessor.get(source, accept);
+  private InputStream fetchUrl(String urlString, String accept) throws IOException {
+    ManagedWebAccessor webAccessor = ManagedWebAccess.accessor(Arrays.asList("web"), new PackageServerHTTPAuthProvider(server));
+
+    HTTPResult res = webAccessor.get(urlString, accept);
     res.checkThrowException();
     return new ByteArrayInputStream(res.getContent());
   }
 
-  private JsonObject fetchJson(String source) throws IOException {
-    String src = FileUtilities.streamToString(fetchUrl(source, "application/json"));
+  private JsonObject fetchJson(String urlString) throws IOException {
+    String src = FileUtilities.streamToString(fetchUrl(urlString, "application/json"));
     return JsonParser.parseObject(src);
   }
   
@@ -229,6 +240,7 @@ public class PackageClient {
     if (list.isEmpty()) {
       throw new IOException("Package not found: "+id);
     } else {
+      Collections.sort(list, new PackageInfo.PackageInfoVersionSorter());
       String v = null;
       for (PackageInfo p : list) {
         String version = p.getVersion();

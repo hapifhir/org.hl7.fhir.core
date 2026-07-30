@@ -146,7 +146,7 @@ class TurtleTests {
   void test_labeled_blank_node_with_PN_CHARS_BASE_character_boundaries() throws Exception {
     doTest(
         TestingUtilities.resourceNameToFile("turtle", "labeled_blank_node_with_PN_CHARS_BASE_character_boundaries.ttl"),
-        false);
+        true);
   }
 
   @Test
@@ -491,13 +491,13 @@ class TurtleTests {
   @Test
   void test_localName_with_assigned_nfc_PN_CHARS_BASE_character_boundariesNT() throws Exception {
     doTest(TestingUtilities.resourceNameToFile("turtle",
-        "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.nt"), false);
+        "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.nt"), true);
   }
 
   @Test
   void test_localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries() throws Exception {
     doTest(TestingUtilities.resourceNameToFile("turtle",
-        "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.ttl"), false);
+        "localName_with_assigned_nfc_PN_CHARS_BASE_character_boundaries.ttl"), true);
   }
 
   @Test
@@ -535,13 +535,13 @@ class TurtleTests {
   @Test
   void test_localName_with_nfc_PN_CHARS_BASE_character_boundariesNT() throws Exception {
     doTest(TestingUtilities.resourceNameToFile("turtle", "localName_with_nfc_PN_CHARS_BASE_character_boundaries.nt"),
-        false);
+        true);
   }
 
   @Test
   void test_localName_with_nfc_PN_CHARS_BASE_character_boundaries() throws Exception {
     doTest(TestingUtilities.resourceNameToFile("turtle", "localName_with_nfc_PN_CHARS_BASE_character_boundaries.ttl"),
-        false);
+        true);
   }
 
   @Test

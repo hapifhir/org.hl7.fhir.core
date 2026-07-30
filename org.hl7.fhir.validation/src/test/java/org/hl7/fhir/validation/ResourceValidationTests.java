@@ -16,6 +16,7 @@ import org.hl7.fhir.utilities.settings.FhirSettings;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +25,16 @@ public class ResourceValidationTests {
   private static IWorkerContext ctxt;
   private static ValidationEngine engine;
   private static InstanceValidator val;
+
+  @AfterAll
+  static void tearDownClass() {
+    // Release the per-class engine (a full r5 context) so it doesn't stay resident for the
+    // rest of the module's single reused test JVM.
+    engine = null;
+    ctxt = null;
+    val = null;
+    System.gc();
+  }
 
 
   private List<ValidationMessage> runTest(String filename) throws IOException, FileNotFoundException, Exception {

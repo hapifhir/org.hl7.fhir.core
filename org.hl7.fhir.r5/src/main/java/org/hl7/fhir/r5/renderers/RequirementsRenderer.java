@@ -7,6 +7,8 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ActorDefinition;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -42,7 +44,6 @@ public class RequirementsRenderer extends ResourceRenderer {
     if (req.has("actor")) {
       List<ResourceWrapper> actors = req.children("actor");
       if (actors.size() == 1) {
-        ActorDefinition acd = context.getWorker().fetchResource(ActorDefinition.class, actors.get(0).primitiveValue(), null, req.getResourceNative());
         XhtmlNode p = x.para();
         p.tx(context.formatPhrase(RenderingContext.REQ_ACTOR)+" ");
         renderCanonical(status, p, ActorDefinition.class, actors.get(0));
@@ -84,6 +85,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     }
     XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
 
+    CodeSystem cs = context.getWorker().fetchCodeSystem("http://hl7.org/fhir/conformance-expectation", IWorkerContext.VersionResolutionRules.defaultRule());
     for (ResourceWrapper stmt : req.children("statement")) {
       XhtmlNode tr = tbl.tr();
       String lbl = stmt.has("label") ? stmt.primitiveValue("label") : stmt.primitiveValue("key");
@@ -92,13 +94,19 @@ public class RequirementsRenderer extends ResourceRenderer {
       td.tx(lbl);
       td = tr.td();
       boolean first = true;
-      CodeSystem cs = context.getWorker().fetchCodeSystem("http://hl7.org/fhir/conformance-expectation");
-      for (ResourceWrapper t : stmt.children("conformance")) {
-        if (first) first = false; else td.tx(", ");
-        if (cs != null) {
-          td.ah(context.prefixLocalHref(cs.getWebPath()+"#conformance-expectation-"+t.primitiveValue())).tx(t.primitiveValue().toUpperCase());          
-        } else {
-          td.tx(t.primitiveValue().toUpperCase());
+      List<ResourceWrapper> confs = stmt.children("conformance");
+      if (confs.isEmpty()) {
+        boolean shallNot = stmt.extensionValue("http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot").primitiveValue().equals("true");
+        if (shallNot)
+          td.tx(context.formatPhrase(RenderingContext.CONF_SHALLNOT));
+      } else {
+        for (ResourceWrapper t : stmt.children("conformance")) {
+          if (first) first = false; else td.tx(", ");
+          if (cs != null) {
+            td.ah(context.prefixLocalHref(cs.getWebPath()+"#conformance-expectation-"+t.primitiveValue())).tx(t.primitiveValue().toUpperCase());          
+          } else {
+            td.tx(t.primitiveValue().toUpperCase());
+          }
         }
       }
       td = tr.td();
@@ -112,7 +120,8 @@ public class RequirementsRenderer extends ResourceRenderer {
           String url = stmt.primitiveValue("derivedFrom");
           String key = url.contains("#") ? url.substring(url.indexOf("#")+1) : "";
           if (url.contains("#")) { url = url.substring(0, url.indexOf("#")); };
-          Requirements reqr = context.getWorker().fetchResource(Requirements.class, url, null, req.getResourceNative());
+          Requirements reqr = context.getWorker().fetchResource(Requirements.class, url,
+            ExtensionUtilities.getVersionResolutionRulesBase(stmt.getBaseForChild("derivedFrom")), null, req.getResourceNative());
           if (reqr != null) {
             RequirementsStatementComponent stmtr = reqr.findStatement(key);
             if (stmtr != null) {
@@ -134,7 +143,8 @@ public class RequirementsRenderer extends ResourceRenderer {
             if (url.contains("#")) {
               url = url.substring(0, url.indexOf("#"));
             }
-            Resource r = context.getWorker().fetchResource(Resource.class, url, null, req.getResourceNative());
+            Resource r = context.getWorker().fetchResource(Resource.class, url,
+              ExtensionUtilities.getVersionResolutionRulesBase(c.getBase()), null, req.getResourceNative());
             if (r != null) {
               String desc = getResourceDescription(r, null);
               li.ah(context.prefixLocalHref(c.primitiveValue())).tx(desc);
@@ -168,7 +178,8 @@ public class RequirementsRenderer extends ResourceRenderer {
               if (url.contains("#")) {
                 url = url.substring(0, url.indexOf("#"));
               }
-              Resource r = context.getWorker().fetchResource(Resource.class, url, null, req.getResourceNative());
+              Resource r = context.getWorker().fetchResource(Resource.class, url,
+                ExtensionUtilities.getVersionResolutionRulesBase(c.getBaseForChild("reference")), null, req.getResourceNative());
               ResourceWithReference t = null;
               if (r == null && context.getResolver() != null) {
                 t = context.getResolver().resolve(context, url, null);                

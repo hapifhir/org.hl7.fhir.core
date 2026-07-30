@@ -183,7 +183,9 @@ public class Factory {
 	}
 
 	public static Coding makeCoding(String code) throws FHIRException {
-		String[] parts = code.split("\\|");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] parts = code.split("\\|");
 		Coding c = new Coding();
 		if (parts.length == 2) {
 			c.setSystem(parts[0]);

@@ -2,7 +2,7 @@
 {"code" : {
   "system" : "http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes",
   "code" : "profile2"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -41,7 +41,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }
@@ -51,7 +50,7 @@ v: {
 {"code" : {
   "system" : "http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes",
   "code" : "profile1"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -90,7 +89,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://hl7.org/fhir/test/CodeSystem/profile-slicing-codes' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

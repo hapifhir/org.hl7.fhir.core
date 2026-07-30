@@ -81,6 +81,7 @@ public class VersionConvertorConstants {
   public static final String EXT_DOC_REF_CREATED = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DocumentReference.created";
   public static final String EXT_DIA_REP_PERFORMER = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DiagnosticReport.performer.role";
   public static final String EXT_VERSION_ALGORITHM = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CanonicalResource.versionAlgorithm";
+  public static final String EXT_VALUESET_FILTER_OP = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.filter.op";
 
   public static String refToVS(String url) {
     if (url == null)

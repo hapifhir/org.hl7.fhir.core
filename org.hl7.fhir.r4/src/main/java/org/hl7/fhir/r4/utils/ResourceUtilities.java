@@ -79,7 +79,9 @@ public class ResourceUtilities {
     boolean first = true;
     for (OperationOutcomeIssueComponent t : error.getIssue()) {
       if (first) first = false; else b.append("\r\n");
-      String txt = t.hasDiagnostics() ? t.getDiagnostics() : gen(t.getDetails());
+      String txt = t.hasDetails() && t.getDetails().hasText() ?
+            t.getDetails().getText()
+            : t.hasDiagnostics() ? t.getDiagnostics() : gen(t.getDetails());
       if (t.getSeverity() == IssueSeverity.ERROR)
         b.append("Error: " + txt);
       else if (t.getSeverity() == IssueSeverity.FATAL)

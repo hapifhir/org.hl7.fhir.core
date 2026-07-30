@@ -177,6 +177,8 @@ public class DicomPackageBuilder {
   }
 
   private String processVersion(String s) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = s.split("\\_");
     return p[0].substring(0, 4)+"."+(1+(p[0].charAt(4) - 'a'))+"."+p[1];
   }

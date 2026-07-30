@@ -73,7 +73,10 @@ public class TxTesterSorters {
         String pv = p.getValue().primitiveValue();
         if (pv.contains("; ")) {
           List<String> bits = new ArrayList<>();
-          for (String s : pv.split("\\; ")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String[] pvParts = pv.split("\\; ");
+          for (String s : pvParts) {
             bits.add(s);
           }
           Collections.sort(bits);
@@ -123,8 +126,8 @@ public class TxTesterSorters {
         s2 = o2.hasCode() ? o2.getCode().toCode() : "";
         ret = s1.compareTo(s2);
         if (ret == 0) {
-          s1 = o1.hasExpressionOrLocation() ? o1.getExpressionOrLocation().get(0).primitiveValue() : "";
-          s2 = o2.hasExpressionOrLocation() ? o2.getExpressionOrLocation().get(0).primitiveValue() : "";
+          s1 = o1.hasExpression() ? o1.getExpression().get(0).primitiveValue() : "";
+          s2 = o2.hasExpression() ? o2.getExpression().get(0).primitiveValue() : "";
           ret = s1.compareTo(s2);
           if (ret == 0) {
             s1 = o1.getDetails().hasText() ? o1.getDetails().getText() : "";

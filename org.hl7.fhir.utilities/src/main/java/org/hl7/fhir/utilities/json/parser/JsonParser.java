@@ -9,11 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.http.URLUtil;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
@@ -52,6 +54,18 @@ import org.hl7.fhir.utilities.json.parser.JsonLexer.TokenType;
  *
  */
 public class JsonParser {
+
+  // these give control over the line break character used when pretty printing. In most cases it doesn't
+  // or shouldn't matter, but in some corner cases - specially for diff programs - it can matter
+  public static final String LINE_BREAK_WINDOWS = "\r\n";
+  public static final String LINE_BREAK_UNIX = "\n";
+  public static final String LINE_BREAK_DEFAULT = LINE_BREAK_UNIX;
+  public static String LINE_BREAK = LINE_BREAK_DEFAULT;
+
+  // The default of 0 is generally considered 'correct' but for some comparisons
+  // we need a value of 2
+  public static int ARRAY_NESTING_OFFSET_DEFAULT = 0;
+  public static int ARRAY_NESTING_OFFSET = ARRAY_NESTING_OFFSET_DEFAULT;
 
   protected JsonParser() {
     super();
@@ -228,6 +242,12 @@ public class JsonParser {
   enum ItemType {
     Object, String, Number, Boolean, Array, End, Eof, Null;
   }
+  // maximum object/array nesting depth; well above any legitimate FHIR resource, but low enough
+  // to fail cleanly with a JsonException rather than a StackOverflowError on the mutual recursion
+  // between readObject() and readArray().
+  private static final int MAX_JSON_DEPTH = 500;
+  private int parseDepth = 0;
+
   private JsonLexer lexer;
   private ItemType itemType = ItemType.Object;
   private String itemName;
@@ -352,6 +372,10 @@ public class JsonParser {
   }
 
   private void readObject(String path, JsonObject obj, boolean root) throws IOException, JsonException {
+    if (++parseDepth > MAX_JSON_DEPTH) {
+      throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
+    }
+    try {
     while (!(itemType == ItemType.End) || (root && (itemType == ItemType.Eof))) {
       obj.setExtraComma(false);
       switch (itemType) {
@@ -426,9 +450,16 @@ public class JsonParser {
       obj.setExtraComma(lexer.getType() == TokenType.Comma);
       next();
     }
+    } finally {
+      parseDepth--;
+    }
   }
 
   private boolean readArray(String path, JsonArray arr, boolean root) throws IOException, JsonException {
+    if (++parseDepth > MAX_JSON_DEPTH) {
+      throw lexer.error("Exceeded maximum JSON nesting depth of " + MAX_JSON_DEPTH);
+    }
+    try {
     boolean res = false;
     while (!((itemType == ItemType.End) || (root && (itemType == ItemType.Eof)))) {
       res  = true;
@@ -491,6 +522,9 @@ public class JsonParser {
       next();
     }
     return res;
+    } finally {
+      parseDepth--;
+    }
   }
 
   private void next() throws IOException {
@@ -603,7 +637,7 @@ public class JsonParser {
     }
     write(b, element, pretty, 0);
     if (pretty) {
-      b.append("\n");
+      b.append(LINE_BREAK);
     }
     return b.toString();
   }
@@ -612,7 +646,7 @@ public class JsonParser {
     for (JsonComment s : comments) {
       b.append("// ");
       b.append(s.getContent());
-      b.append("\n");
+      b.append(LINE_BREAK);
       b.append(Utilities.padLeft("", ' ', indent));
     }
   }
@@ -633,6 +667,7 @@ public class JsonParser {
           if (i.type() == JsonElementType.ARRAY || i.type() == JsonElementType.OBJECT
               || i.hasComments()) { // 20 is a somewhat arbitrary cut off
             complex = true;
+            break;
           }
         }
         if (length > 60) {
@@ -640,19 +675,19 @@ public class JsonParser {
         }
       }
       for (JsonElement i : arr.getItems()) {
-        if (first) first = false; else b.append(pretty && !complex ? ", " : ",");
-        if (pretty && complex) {
-          b.append("\n");
-          b.append(Utilities.padLeft("", ' ', indent+2));
-          if (i.hasComments()) {
-            writeComments(b, i.getComments(), indent+2);
+        if (first) {
+          first = false;
+        } else {
+          b.append(pretty && !complex ? ", " : ",");
+          if (pretty && complex) {
+            b.append(LINE_BREAK);
+            b.append(Utilities.padLeft("", ' ', indent+ARRAY_NESTING_OFFSET));
+            if (i.hasComments()) {
+              writeComments(b, i.getComments(), indent+ARRAY_NESTING_OFFSET);
+            }
           }
         }
-        write(b, i, pretty && complex, indent+2);
-      }
-      if (pretty && complex) {
-        b.append("\n");
-        b.append(Utilities.padLeft("", ' ', indent));
+        write(b, i, pretty && complex, indent+ARRAY_NESTING_OFFSET);
       }
       b.append("]");
       break;
@@ -671,7 +706,7 @@ public class JsonParser {
       for (JsonProperty p : ((JsonObject) e).getProperties()) {
         if (first) first = false; else b.append(",");
         if (pretty) {
-          b.append("\n");
+          b.append(LINE_BREAK);
           b.append(Utilities.padLeft("", ' ', indent+2));
           if (p.getValue().hasComments()) {
             writeComments(b, p.getValue().getComments(), indent+2);
@@ -683,7 +718,7 @@ public class JsonParser {
         write(b, p.getValue(), pretty, indent+2);
       }
       if (pretty) {
-        b.append("\n");
+        b.append(LINE_BREAK);
         b.append(Utilities.padLeft("", ' ', indent));
       }
       b.append("}");
@@ -699,11 +734,13 @@ public class JsonParser {
   }
 
   private static byte[] fetch(String source) throws IOException {
-    String murl = source.contains("?") ? source+"&nocache=" + System.currentTimeMillis() : source+"?nocache=" + System.currentTimeMillis();
-    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), murl, "application/json, application/fhir+json");
+    String urlWithNoCacheParam = URLUtil.getUrlWithNoCacheParam(source);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), urlWithNoCacheParam, "application/json, application/fhir+json");
     res.checkThrowException();
     return res.getContent();
   }
+
+
 
   public String getSourceName() {
     return sourceName;

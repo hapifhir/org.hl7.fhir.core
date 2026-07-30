@@ -299,9 +299,9 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     addChildNode(node);
     return node;
   }
-  
+
   public XhtmlNode addText(String content) {
-    if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
+    if (!(nodeType == NodeType.Element || nodeType == NodeType.Document))
       throw new Error("Wrong node type");
     if (content != null) {
       XhtmlNode node = new XhtmlNode(NodeType.Text);
@@ -313,10 +313,21 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     }
   }
 
+  public XhtmlNode addTextWithWhitespace(String content) {
+    String s = allText();
+    if (s != null && !Character.isWhitespace(s.charAt(s.length()-1))) {
+      addText(" ");
+    }
+    return addText(content);
+  }
+
   public void addTextWithLineBreaks(String content) {
     if (content != null) {
       boolean first = true;
-      for (String line : content.split("\\r?\\n")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //simple character class split; safe
+      String[] contentLines = content.split("\\r?\\n");
+      for (String line : contentLines) {
         if (first) {
           first = false;
         } else {
@@ -396,7 +407,7 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
         }
         if (Utilities.existsInList(n.getName(), "p", "div", "tr", "th", "ul", "ol", "li", "h1", "h2", "h3", "h4", "h5", "h6")) {
           b.append("\r\n");
-        } else if (Utilities.existsInList(n.getName(), "th", "td", "span")) {
+        } else if (Utilities.existsInList(n.getName(), "th", "td")) {
           b.append(" ");
         }
       }
@@ -975,6 +986,8 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
   private boolean passesTest(String test) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] p = test.split("\\s+");
     if (p.length != 3) {
       return false;
@@ -1059,7 +1072,11 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (!hasAttribute("class"))
       return false;
     String classValue = getAttribute("class");
-    return Arrays.asList(classValue.split(" ")).contains(name);
+
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] classNames = classValue.split(" ");
+    return Arrays.asList(classNames).contains(name);
   }
 
   public XhtmlNode clss(String name) {
@@ -1126,7 +1143,10 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (code) {
       XhtmlNode c = code();
       boolean first = true;
-      for (String line : cnt.split("\\r?\\n")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //simple character class split; safe
+      String[] cntLines = cnt.split("\\r?\\n");
+      for (String line : cntLines) {
         if (first) first = false; else c.br();
         c.tx(line.replace(" ", Character.toString(0xA0)));
       }

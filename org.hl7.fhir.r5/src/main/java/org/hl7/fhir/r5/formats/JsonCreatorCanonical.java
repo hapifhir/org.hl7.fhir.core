@@ -199,6 +199,10 @@ public class JsonCreatorCanonical implements JsonCreator {
   @Override
   public void finish() throws IOException {
     writeObject(root);
+    // jj (the underlying JsonCreatorDirect) buffers internally, so it must be
+    // finished/flushed here - the canonical writer emits everything lazily in
+    // this call and never otherwise signals completion to jj.
+    jj.finish();
   }
 
   private void writeObject(JsonCanObject obj) throws IOException {

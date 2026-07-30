@@ -63,7 +63,7 @@ public class TransformSupportServices implements ITransformerServices {
 
   @Override
   public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
-    return validatorService.resolveReference(engine, new ValidationContext(appContext), url, refContext);
+    return validatorService.resolveReference(engine, new ValidationContext(appContext), url, null, refContext);
   }
 
   @Override

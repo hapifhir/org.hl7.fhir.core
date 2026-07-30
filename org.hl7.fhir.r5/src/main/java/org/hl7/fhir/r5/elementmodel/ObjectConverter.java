@@ -40,18 +40,7 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.CodeableConcept;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.Factory;
-import org.hl7.fhir.r5.model.Identifier;
-import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Quantity;
-import org.hl7.fhir.r5.model.Reference;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumerations.QuantityComparator;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -67,6 +56,7 @@ public class ObjectConverter  {
     this.context = context;
     profileUtilities = new ProfileUtilities(context, null, null);
   }
+
 
   public Element convert(Resource ig) throws IOException, FHIRException {
     if (ig == null)
@@ -90,7 +80,7 @@ public class ObjectConverter  {
     if (base == null)
       return null;
     String tn = base.fhirType();
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, null));
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, null), IWorkerContext.VersionResolutionRules.defaultRule());
     if (sd == null)
       throw new FHIRException("Unable to find definition for type "+tn);
     Element res = new Element(property.getName(), property);
@@ -127,6 +117,12 @@ public class ObjectConverter  {
         b.setProperty(child.getName(), convertToType(child));
       }
     }
+    return b;
+  }
+
+  public DateTimeType readAsDateTime(Element e) {
+    DateTimeType b = (DateTimeType) new Factory().create("dateTime");
+    b.setValueAsString(e.primitiveValue());
     return b;
   }
 
@@ -217,4 +213,9 @@ public class ObjectConverter  {
     return r;
   }
 
+  public TimeType readAsTime(Element e) {
+    TimeType b = (TimeType) new Factory().create("time");
+    ((PrimitiveType) b).setValueAsString(e.primitiveValue());
+    return b;
+  }
 }

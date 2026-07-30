@@ -3,7 +3,7 @@
   "system" : "https://api-v8-r4.hspconsortium.org/DrugFormulary0/open/CodeSystem/usdrugformulary-DrugTierCS",
   "code" : "BRAND",
   "display" : "Brand"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -15,7 +15,6 @@
   }]
 }}####
 v: {
-  "display" : "Brand",
   "code" : "BRAND",
   "system" : "https://api-v8-r4.hspconsortium.org/DrugFormulary0/open/CodeSystem/usdrugformulary-DrugTierCS",
   "severity" : "error",
@@ -43,7 +42,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'https://api-v8-r4.hspconsortium.org/DrugFormulary0/open/CodeSystem/usdrugformulary-DrugTierCS' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

@@ -59,7 +59,10 @@ public class Translations {
    * @param lang
    */
   public void setLang(String lang) {
-    this.lang = lang.split("[.;]");
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
+    String[] langParts = lang.split("[.;]");
+    this.lang = langParts;
   }
   
   /**
@@ -111,7 +114,10 @@ public class Translations {
    * @return the message
    */
   public String getMessage(String id, String lang, String defaultMsg) {
-    return getMessage(id, lang.split("[.;]"), defaultMsg);
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
+    String[] langParts = lang.split("[.;]");
+    return getMessage(id, langParts, defaultMsg);
   }
 
   private String getMessage(String id, String[] lang, String defaultMsg) {

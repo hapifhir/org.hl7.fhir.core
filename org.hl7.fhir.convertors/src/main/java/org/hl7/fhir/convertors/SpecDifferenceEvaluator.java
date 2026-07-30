@@ -855,9 +855,9 @@ public class SpecDifferenceEvaluator {
     if (!canonicalsMatch(rev.getValueSet(), orig.getValueSet())) {
       XhtmlNode li = ul.li();
       li.tx("Change value set from ");
-      describeReference(li, orig.getValueSet());
+      describeReference(li, orig.getValueSet(), orig.getValueSetElement());
       li.tx(" to ");
-      describeReference(li, rev.getValueSet());
+      describeReference(li, rev.getValueSet(), rev.getValueSetElement());
     }
     if (!maxValueSetsMatch(rev, orig)) {
       XhtmlNode li = ul.li();
@@ -874,20 +874,8 @@ public class SpecDifferenceEvaluator {
       int cAdd = 0;
       int cDel = 0;
       if (vrev != null && vorig != null) {
-        for (ValueSetExpansionContainsComponent cc : vorig.getExpansion().getContains()) {
-          if (!hasCode(vrev, cc, systemMatters)) {
-            liDel.sep(", ");
-            liDel.code().tx(cc.getCode());
-            cDel++;
-          }
-        }
-        for (ValueSetExpansionContainsComponent cc : vrev.getExpansion().getContains()) {
-          if (!hasCode(vorig, cc, systemMatters)) {
-            liAdd.sep(", ");
-            liAdd.code().tx(cc.getCode());
-            cAdd++;
-          }
-        }
+        cDel = addChangedCodes(vorig.getExpansion().getContains(), vrev, systemMatters, liDel);
+        cAdd = addChangedCodes(vrev.getExpansion().getContains(), vorig, systemMatters, liAdd);
       }
       if (cDel > 0) {
         XhtmlNode li = ul.li();
@@ -941,7 +929,7 @@ public class SpecDifferenceEvaluator {
     if (ref == null) {
       li.code().tx("none");
     } else {
-      ValueSet vs = context.fetchResource(ValueSet.class, ref);
+      ValueSet vs = context.fetchResource(ValueSet.class, ref, IWorkerContext.VersionResolutionRules.defaultRule());
       if (vs == null || !vs.hasWebPath()) {
         li.code().tx(ref);
       } else {
@@ -989,8 +977,8 @@ public class SpecDifferenceEvaluator {
       binding.setAttribute("max", getMaxValueSet(orig.getBinding()));
   }
 
-  private void describeReference(XhtmlNode li, String ref) {
-    Resource res = context.fetchResource(Resource.class, ref);
+  private void describeReference(XhtmlNode li, String ref, org.hl7.fhir.r5.model.Element ctxt) {
+    Resource res = context.fetchResource(Resource.class, ref, ExtensionUtilities.getVersionResolutionRules(ctxt));
     if (res != null && res.hasWebPath()) {
       if (res instanceof CanonicalResource) {
         CanonicalResource cr = (CanonicalResource) res;
@@ -1638,11 +1626,46 @@ public class SpecDifferenceEvaluator {
   }
 
   private boolean hasCode(ValueSet vs, ValueSetExpansionContainsComponent cc, boolean systemMatters) {
-    for (ValueSetExpansionContainsComponent ct : vs.getExpansion().getContains()) {
-      if ((!systemMatters || ct.getSystem().equals(cc.getSystem())) && ct.getCode().equals(cc.getCode()))
+    return hasCode(vs.getExpansion().getContains(), cc, systemMatters);
+  }
+
+  private boolean hasCode(List<ValueSetExpansionContainsComponent> list, ValueSetExpansionContainsComponent cc, boolean systemMatters) {
+    for (ValueSetExpansionContainsComponent ct : list) {
+      if ((!systemMatters || ct.getSystem().equals(cc.getSystem())) && ct.hasCode() && ct.getCode().equals(cc.getCode()))
+        return true;
+      if (ct.hasContains() && hasCode(ct.getContains(), cc, systemMatters))
         return true;
     }
     return false;
+  }
+
+  private int addChangedCodes(List<ValueSetExpansionContainsComponent> source, ValueSet target, boolean systemMatters, XhtmlNode li) {
+    int count = 0;
+    for (ValueSetExpansionContainsComponent cc : source) {
+      if (cc.hasCode() && !hasCode(target, cc, systemMatters)) {
+        li.sep(", ");
+        li.code().tx(cc.getCode());
+        count++;
+      }
+      if (cc.hasContains()) {
+        count += addChangedCodes(cc.getContains(), target, systemMatters, li);
+      }
+    }
+    return count;
+  }
+
+  private boolean addChangedCodes(Document doc, Element element, String elementName, List<ValueSetExpansionContainsComponent> source, ValueSet target, boolean systemMatters) {
+    boolean changed = false;
+    for (ValueSetExpansionContainsComponent cc : source) {
+      if (cc.hasCode() && !hasCode(target, cc, systemMatters)) {
+        element.appendChild(makeElementWithAttribute(doc, elementName, "code", cc.getCode()));
+        changed = true;
+      }
+      if (cc.hasContains()) {
+        changed = addChangedCodes(doc, element, elementName, cc.getContains(), target, systemMatters) || changed;
+      }
+    }
+    return changed;
   }
 
   private void compareBindings(Document doc, Element element, ElementDefinition rev, ElementDefinition orig, CompareFhirVersion version) {
@@ -1678,18 +1701,8 @@ public class SpecDifferenceEvaluator {
       ValueSet vorig = getValueSet(rev.getValueSet(), getPackage(version).getExpansions());
       boolean changed = false;
       if (vrev != null && vorig != null) {
-        for (ValueSetExpansionContainsComponent cc : vorig.getExpansion().getContains()) {
-          if (!hasCode(vrev, cc, systemMatters)) {
-            element.appendChild(makeElementWithAttribute(doc, "removed-code", "code", cc.getCode()));
-            changed = true;
-          }
-        }
-        for (ValueSetExpansionContainsComponent cc : vrev.getExpansion().getContains()) {
-          if (!hasCode(vorig, cc, systemMatters)) {
-            element.appendChild(makeElementWithAttribute(doc, "added-code", "code", cc.getCode()));
-            changed = true;
-          }
-        }
+        changed = addChangedCodes(doc, element, "removed-code", vorig.getExpansion().getContains(), vrev, systemMatters) || changed;
+        changed = addChangedCodes(doc, element, "added-code", vrev.getExpansion().getContains(), vorig, systemMatters) || changed;
       }
       if (changed) {
         element.setAttribute("binding-codes-changed", "true");

@@ -50,6 +50,7 @@ public class CLI {
       throw new IllegalArgumentException(e);
     }
 
+    parentCommand.coordinateFhirSettings();
     verifyProxySystemProperties();
 
     Display.displaySystemInfo(log);
@@ -88,10 +89,12 @@ public class CLI {
     argMap.put("-spreadsheet", "spreadsheet");
     argMap.put("-tests", "tests");
     argMap.put("-txTests", "txTests");
+    argMap.put("-transform", "transform");
     argMap.put("-aiTests", "aiTests");
     argMap.put("-factory", "factory");
     argMap.put("-server", "server");
     argMap.put("-re-package", "re-package");
+    argMap.put("-tx-pack", "re-package");
     argMap.put("-?", "-help");
     argMap.put("/?", "-help");
 

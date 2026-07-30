@@ -56,7 +56,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (r.isDirect()) {   
       renderResourceTechDetails(r, x);
       genSummaryTable(status, x, (CodeSystem) r.getBase());
-      render(status, x, (CodeSystem) r.getBase(), r);      
+      render(status, x, (CodeSystem) r.getBase(), r);
     } else {
       // the intention is to change this in the future
       x.para().tx("CodeSystemRenderer only renders native resources directly");
@@ -184,7 +184,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
           XhtmlNode td = tr.td();
           String url = p.getExtensionString(ExtensionDefinitions.EXT_PROPERTY_VALUESET);
           if (url != null) {
-            ValueSet vs = context.getContext().fetchResource(ValueSet.class, url);
+            ValueSet vs = context.getContext().fetchResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRules(p.getExtensionByUrl(ExtensionDefinitions.EXT_PROPERTY_VALUESET).getValue()));
             if (vs == null) {
               td.code().tx(url);
             } else {
@@ -436,7 +436,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
 
 
-  private void addDefineRowToTable(RenderingStatus status, XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean hasDefinitions, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, List<String> langs, boolean isSupplement) throws FHIRFormatError, DefinitionException, IOException {
+  private void  addDefineRowToTable(RenderingStatus status, XhtmlNode t, ConceptDefinitionComponent c, int level, boolean hasHierarchy, boolean hasDisplay, boolean hasDefinitions, boolean comment, boolean version, boolean deprecated, List<UsedConceptMap> maps, String system, CodeSystem cs, List<PropertyComponent> properties, CodeSystemNavigator csNav, List<String> langs, boolean isSupplement) throws FHIRFormatError, DefinitionException, IOException {
     boolean hasExtensions = false;
     XhtmlNode tr = t.tr();
     boolean notCurrent = CodeSystemUtilities.isNotCurrent(cs, c);
@@ -589,15 +589,16 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         for (ConceptPropertyComponent pcv : pcvl) {
           if (pcv.hasValue()) {
             if (first) first = false; else td.addText(", ");
-            if (pcv.hasValueCoding()) { 
-              td.addText(pcv.getValueCoding().getCode());
+            if (pcv.hasValueCoding()) {
+              ResourceWrapper cc = ResourceWrapper.forType(context.getContextUtilities(), pcv.getValueCoding());
+              renderCoding(status, td, cc, false);
             } else {
               String pv = pcv.getValue().primitiveValue();
               if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pv)) {
                 if (nolink) {
                   td.code(pv);
                 } else {
-                  CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pv);
+                  CanonicalResource cr = (CanonicalResource) context.getContext().fetchResource(Resource.class, pv, ExtensionUtilities.getVersionResolutionRules(pcv.getValue()));
                   if (cr != null) {
                     if (cr.hasWebPath()) {
                       td.ah(context.prefixLocalHref(cr.getWebPath()), cr.getVersionedUrl()).tx(cr.present());
@@ -787,7 +788,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       td.tx((cs.getContent().getDisplay())+": "+describeContent(cs.getContent(), cs));
       if (cs.getContent() == CodeSystemContentMode.SUPPLEMENT) {
         td.tx(" ");
-        CodeSystem tgt = context.getContext().fetchCodeSystem(cs.getSupplements());
+        CodeSystem tgt = context.getContext().fetchCodeSystem(cs.getSupplements(), ExtensionUtilities.getVersionResolutionRules(cs.getSupplementsElement()));
         if (tgt != null) {
           td.ah(tgt.getWebPath()).tx(tgt.present());
         } else {
@@ -805,7 +806,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     if (cs.hasValueSet()) {
       tr = tbl.tr();
       tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VALUESET)+":");
-      ValueSet vs = context.getContext().findTxResource(ValueSet.class, cs.getValueSet());
+      ValueSet vs = context.getContext().findTxResource(ValueSet.class, cs.getValueSet(), ExtensionUtilities.getVersionResolutionRules(cs.getValueSetElement()));
       if (vs == null) {
         tr.td().tx(context.formatPhrase(RenderingContext.CODE_SYS_THE_VALUE_SET, cs.getValueSet())+")");
       } else {

@@ -208,6 +208,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONC_MAP_FROM = "CONC_MAP_FROM";
   public static final String CONC_MAP_GRP = "CONC_MAP_GRP";
   public static final String CONC_MAP_NOT_SPEC = "CONC_MAP_NOT_SPEC";
+  public static final String CONC_MAP_NO_SPEC = "CONC_MAP_NO_SPEC";
   public static final String CONC_MAP_REL = "CONC_MAP_REL";
   public static final String CONC_MAP_SOURCE = "CONC_MAP_SOURCE";
   public static final String CONC_MAP_SOURCE_CARD = "CONC_MAP_SOURCE_CARD";
@@ -301,6 +302,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DIAG_REP_REND_ERR = "DIAG_REP_REND_ERR";
   public static final String GENERAL_FLAGS = "GENERAL_FLAGS";
   public static final String DIAG_REP_REND_FOR = "DIAG_REP_REND_FOR";
+  public static final String DIAG_REP_REND_FORM = "DIAG_REP_REND_FORM";
   public static final String DIAG_REP_REND_IDENTIFIER = "DIAG_REP_REND_IDENTIFIER";
   public static final String GENERAL_TODO = "GENERAL_TODO";
   public static final String GENERAL_NOTE = "GENERAL_NOTE";
@@ -977,7 +979,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String PROF_DRIV_SUMM_NONE = "PROF_DRIV_SUMM_NONE";
   public static final String PROF_DRIV_SUMM = "PROF_DRIV_SUMM";
   public static final String DOCUMENT_SUMMARY = "DOCUMENT_SUMMARY";
-  public static final String DATA_REND_ATT_URL = "DATA_REND_ATT_URL";
   public static final String DATA_REND_ATT_DATA = "DATA_REND_ATT_DATA";
   public static final String GENERAL_DATA_DISPLAY_PROPERTY = "GENERAL_DATA_DISPLAY_PROPERTY";
   public static final String DATA_REND_CURRENCY = "DATA_REND_CURRENCY";
@@ -1061,8 +1062,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_VER_ON = "SDR_VER_ON";
   public static final String SDR_VER_BEF = "SDR_VER_BEF";
   public static final String SDR_VER_UNK = "SDR_VER_UNK";
-  public static final String SDR_FIXED_VALUE = "SDR_FIXED_VALUE";
-  public static final String SDR_PATTERN_VALUE = "SDR_PATTERN_VALUE";
   public static final String SDR_CLICK_COPY = "SDR_CLICK_COPY";
   public static final String SDR_FROM = "SDR_FROM";
   public static final String SDR_SRC_FHIR = "SDR_SRC_FHIR";
@@ -1119,6 +1118,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_INTRP_CH_NO_VS = "SDR_INTRP_CH_NO_VS";
   public static final String SDR_INTRP_CH_DET_VS = "SDR_INTRP_CH_DET_VS";
   public static final String VSR_LOGICAL = "VSR_LOGICAL";
+  public static final String VSR_RULES_TEXT = "VSR_RULES_TEXT";
   public static final String VSR_TRIGGER = "VSR_TRIGGER";
   public static final String VSR_NO_DEF = "VSR_NO_DEF";
   public static final String SDR_CONCEPT_DOMAIN = "SDR_CONCEPT_DOMAIN";
@@ -1144,6 +1144,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String VS_VERSION_BY_PACKAGE = "VS_VERSION_BY_PACKAGE";
   public static final String VS_VERSION_THIS_PACKAGE = "VS_VERSION_THIS_PACKAGE";
   public static final String VS_VERSION_WILDCARD_BY_PACKAGE = "VS_VERSION_WILDCARD_BY_PACKAGE";
+  public static final String VS_VERSION_LATEST = "VS_VERSION_LATEST";
   public static final String VS_VERSION_FOUND = "VS_VERSION_FOUND";
   public static final String VS_VERSION_NONE = "VS_VERSION_NONE";
   public static final String VS_VERSION_NOTHING = "VS_VERSION_NOTHING";
@@ -1164,6 +1165,44 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONSENT_PART_TBL_GRANTEE = "CONSENT_PART_TBL_GRANTEE";
   public static final String CONSENT_PART_TBL_MANAGER = "CONSENT_PART_TBL_MANAGER";
   public static final String CONSENT_PART_TBL_CONTROLLER = "CONSENT_PART_TBL_CONTROLLER";
+  public static final String CONSENT_PART_TBL_PATIENT_DESC = "CONSENT_PART_TBL_PATIENT_DESC";
+  public static final String CONSENT_PART_TBL_PARTY_DESC = "CONSENT_PART_TBL_PARTY_DESC";
+  public static final String CONSENT_PART_TBL_GRANTOR_DESC = "CONSENT_PART_TBL_GRANTOR_DESC";
+  public static final String CONSENT_PART_TBL_GRANTEE_DESC = "CONSENT_PART_TBL_GRANTEE_DESC";
+  public static final String CONSENT_PART_TBL_MANAGER_DESC = "CONSENT_PART_TBL_MANAGER_DESC";
+  public static final String CONSENT_PART_TBL_CONTROLLER_DESC = "CONSENT_PART_TBL_CONTROLLER_DESC";
+  public static final String CONSENT_BASIS_REGULATION_PREFIX = "CONSENT_BASIS_REGULATION_PREFIX";
+  public static final String CONSENT_BASIS_REGULATION_SUFFIX = "CONSENT_BASIS_REGULATION_SUFFIX";
+  public static final String CONSENT_BASIS_REGULATION_SUFFIX_MORE = "CONSENT_BASIS_REGULATION_SUFFIX_MORE";
+  public static final String CONSENT_BASIS_REGULATION_NONE = "CONSENT_BASIS_REGULATION_NONE";
+  public static final String CONSENT_BASIS_POLICY_PREFIX = "CONSENT_BASIS_POLICY_PREFIX";
+  public static final String CONSENT_BASIS_POLICY_SUFFIX = "CONSENT_BASIS_POLICY_SUFFIX";
+  public static final String CONSENT_HTABLE_RULE = "CONSENT_HTABLE_RULE";
+  public static final String CONSENT_HTABLE_RULE_DESC = "CONSENT_HTABLE_RULE_DESC";
+  public static final String CONSENT_HTABLE_WHEN = "CONSENT_HTABLE_WHEN";
+  public static final String CONSENT_HTABLE_WHEN_DESC = "CONSENT_HTABLE_WHEN_DESC";
+  public static final String CONSENT_HTABLE_WHO = "CONSENT_HTABLE_WHO";
+  public static final String CONSENT_HTABLE_WHO_DESC = "CONSENT_HTABLE_WHO_DESC";
+  public static final String CONSENT_HTABLE_WHAT = "CONSENT_HTABLE_WHAT";
+  public static final String CONSENT_HTABLE_WHAT_DESC = "CONSENT_HTABLE_WHAT_DESC";
+  public static final String CONSENT_HTABLE_RULES = "CONSENT_HTABLE_RULES";
+  public static final String CONSENT_HTABLE_RULES_DESC = "CONSENT_HTABLE_RULES_DESC";
+  public static final String CONSENT_PERMIT = "CONSENT_PERMIT";
+  public static final String CONSENT_DENY = "CONSENT_DENY";
+  public static final String CONSENT_PERMIT_DESC = "CONSENT_PERMIT_DESC";
+  public static final String CONSENT_DENY_DESC = "CONSENT_DENY_DESC";
+  public static final String CONSENT_PROVISION = "CONSENT_PROVISION";
+  public static final String CONSENT_HT_PERIOD = "CONSENT_HT_PERIOD";
+  public static final String CONSENT_HT_DATA_PERIOD = "CONSENT_HT_DATA_PERIOD";
+  public static final String CONSENT_HT_SEC_LABEL = "CONSENT_HT_SEC_LABEL";
+  public static final String CONSENT_HT_ACTION = "CONSENT_HT_ACTION";
+  public static final String CONSENT_HT_PURPOSE = "CONSENT_HT_PURPOSE";
+  public static final String CONSENT_HT_CLASS = "CONSENT_HT_CLASS";
+  public static final String CONSENT_HT_RESOURCE_TYPE = "CONSENT_HT_RESOURCE_TYPE";
+  public static final String CONSENT_HT_DOC_TYPE = "CONSENT_HT_DOC_TYPE";
+  public static final String CONSENT_HT_CODE = "CONSENT_HT_CODE";
+  public static final String STRUC_DEF_TYPE_CHARACTERISTICS = "STRUC_DEF_TYPE_CHARACTERISTICS";
+  public static final String STRUCTURAL_REQUIREMENTS = "STRUCTURAL_REQUIREMENTS";
 
   protected String getMessagesSourceFileName() {
     return "rendering-phrases";

@@ -183,7 +183,7 @@ public class ImplicitValueSets {
       vs.setStatus(PublicationStatus.ACTIVE);
       vs.setCopyright("This content LOINC® is copyright © 1995 Regenstrief Institute, Inc. and the LOINC Committee, and available at no cost under the license at http://loinc.org/terms-of-use");
       vs.getCompose().addInclude().setSystem("http://loinc.org").addFilter().setProperty("LIST").setOp(Enumerations.FilterOperator.EQUAL).setValue(c);
-      vs.setWebPath("https://loinc.org/LL"+c);
+      vs.setWebPath("https://loinc.org/"+c);
       return vs;
     } else if (url.startsWith("http://loinc.org/vs/LP")) {
       String c = url.substring("http://loinc.org/vs/".length());

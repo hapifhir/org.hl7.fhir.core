@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.net.URISyntaxException;
@@ -30,7 +29,6 @@ import org.hl7.fhir.r5.context.Slf4JLoggingService;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser;
@@ -77,19 +75,14 @@ import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.ValidatorUtils.SourceFile;
 
 import org.hl7.fhir.validation.service.model.*;
-import org.hl7.fhir.validation.service.renderers.CSVRenderer;
-import org.hl7.fhir.validation.service.renderers.CompactRenderer;
-import org.hl7.fhir.validation.service.renderers.DefaultRenderer;
-import org.hl7.fhir.validation.service.renderers.ESLintCompactRenderer;
-import org.hl7.fhir.validation.service.renderers.NativeRenderer;
-import org.hl7.fhir.validation.service.renderers.ValidationOutputRenderer;
 import org.hl7.fhir.validation.service.utils.Common;
 import org.hl7.fhir.validation.service.utils.EngineMode;
-import org.hl7.fhir.validation.service.utils.Slf4JOutputStream;
 import org.hl7.fhir.validation.service.utils.VersionSourceInformation;
 import org.hl7.fhir.validation.instance.advisor.BasePolicyAdvisorForFullValidation;
 import org.hl7.fhir.validation.instance.advisor.JsonDrivenPolicyAdvisor;
 import org.hl7.fhir.validation.instance.advisor.TextDrivenPolicyAdvisor;
+
+import static org.hl7.fhir.validation.service.ValidationOutputRenderUtilities.renderValidationOutput;
 
 @Slf4j
 public class ValidationService {
@@ -99,8 +92,6 @@ public class ValidationService {
 
   private final Map<String, ValidationEngine> baseEngines = new ConcurrentHashMap<>();
 
-
-
   @Deprecated(since="2025-11-07")
   public void putBaseEngine(String key, ValidationContext validationContext) throws IOException, URISyntaxException {
       ValidationEngineParameters  validationEngineParameters = ValidationContextUtilities.getValidationEngineParameters(validationContext);
@@ -108,7 +99,6 @@ public class ValidationService {
       putBaseEngine(key, validationEngineParameters, instanceValidatorParameters);
   }
   public void putBaseEngine(String key, ValidationEngineParameters validationEngineParameters, InstanceValidatorParameters defaultInstanceValidatorParameters) throws IOException, URISyntaxException {
-
 
     if (validationEngineParameters.getSv() == null) {
       throw new IllegalArgumentException("Cannot create a base engine without an explicit version");
@@ -203,7 +193,7 @@ public class ValidationService {
           response.addOutcome(outcome);
       } else {
         ValidatedFragments validatedFragments = validationEngine.validateAsFragments(fileToValidate.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fileToValidate.getFileType()),
-          instanceValidatorParameters.getProfiles(), messages);
+          instanceValidatorParameters, messages);
 
         List<ValidationOutcome> validationOutcomes = getValidationOutcomesFromValidatedFragments(fileToValidate, validatedFragments);
         for (ValidationOutcome validationOutcome : validationOutcomes) {
@@ -251,10 +241,8 @@ public class ValidationService {
   private ValidationOutcome getValidationOutcomeForUnknownFileFormat(FileInfo fileInfo) {
     ValidationOutcome outcome = new ValidationOutcome();
 
-    List<ValidationMessage> errorList = new ArrayList<>() {{
-      add(new ValidationMessage().setType(ValidationMessage.IssueType.EXCEPTION).setLevel(ValidationMessage.IssueSeverity.FATAL).setMessage("Unable to infer format from file. Please check that your file is in a valid FHIR format."));
-
-    } };
+    List<ValidationMessage> errorList = new ArrayList<>();
+    errorList.add(new ValidationMessage().setType(ValidationMessage.IssueType.EXCEPTION).setLevel(ValidationMessage.IssueSeverity.FATAL).setMessage("Unable to infer format from file. Please check that your file is in a valid FHIR format."));
     outcome.setMessages(errorList);
     outcome.setFileInfo(fileInfo);
     return outcome;
@@ -294,7 +282,7 @@ public class ValidationService {
   /**
    * Uses the passed validationEngine to validate a set of sources.
    *
-   * @param validationEngine the engine to use for
+   * @param validationEngine the engine to use for validation
    * @param validateSourceParameters the parameters used for validation
    * @throws Exception if the validation setup or actual validation fails..
    */
@@ -316,12 +304,12 @@ public class ValidationService {
     List<ValidationRecord> records = new ArrayList<>();
     List<SourceFile> refs = new ArrayList<>();
 
-    int ec = 0;
+    int errorCount = 0;
     boolean first = true;
 
     do {
       long start = System.currentTimeMillis();
-      Resource resource = validationEngine.validate(validateSourceParameters.sources(), instanceValidatorParameters.getProfiles(), refs, records, igLoader, watchParameters.watchMode() == ValidatorWatchMode.ALL, watchParameters.watchSettleTime(), first);
+      Resource resource = validationEngine.validate(validateSourceParameters.sources(), instanceValidatorParameters, refs, records, igLoader, watchParameters.watchMode() == ValidatorWatchMode.ALL, watchParameters.watchSettleTime(), first);
       first = false;
       boolean statusNeeded = false;
       if (resource != null) {
@@ -330,52 +318,9 @@ public class ValidationService {
         log.info("Done. " + validationEngine.getContext().clock().report() + ". Memory = " + Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed() + mbean.getNonHeapMemoryUsage().getUsed()));
         log.info("");
 
-        PrintStream dst = null;
-        ValidationOutputRenderer renderer = makeValidationOutputRenderer(validateSourceParameters.output(), instanceValidatorParameters.getOutputStyle());
-        renderer.setCrumbTrails(instanceValidatorParameters.isCrumbTrails());
-        renderer.setShowMessageIds(instanceValidatorParameters.isShowMessageIds());
-        renderer.setRunDate(runDate);
-        if (renderer.isSingleFile()) {
-          if (validateSourceParameters.output() == null) {
-            dst = new PrintStream(new Slf4JOutputStream());
-          } else {
-            dst = new PrintStream(ManagedFileAccess.outStream(Utilities.path(validateSourceParameters.output())));
-          }
-          renderer.setOutput(dst);
-        } else {
-          File dir = ManagedFileAccess.file(validateSourceParameters.output());
-          if (!dir.isDirectory()) {
-            throw new Error("The output location " + dir.getAbsolutePath() + " must be an existing directory for the output style " + renderer.getStyleCode());
-          }
-          renderer.setFolder(dir);
-        }
-
-        if (resource instanceof Bundle) {
-          if (renderer.handlesBundleDirectly()) {
-            renderer.render((Bundle) resource);
-          } else {
-            renderer.start(((Bundle) resource).getEntry().size() > 1);
-            for (Bundle.BundleEntryComponent e : ((Bundle) resource).getEntry()) {
-              OperationOutcome op = (OperationOutcome) e.getResource();
-              ec = ec + countErrors(op);
-              renderer.render(op);
-            }
-            renderer.finish();
-          }
-        } else if (resource == null) {
-          ec = ec + 1;
-          log.info("No output from validation - nothing to validate");
-        } else {
-          renderer.start(false);
-          OperationOutcome op = (OperationOutcome) resource;
-          ec = countErrors(op);
-          renderer.render((OperationOutcome) resource);
-          renderer.finish();
-        }
-
-        if (validateSourceParameters.output() != null && dst != null) {
-          dst.close();
-        }
+        ValidationOutputRenderSummary renderSummary = renderValidationOutput(resource, validateSourceParameters.output(), instanceValidatorParameters.getOutputStyle(),
+          instanceValidatorParameters.isCrumbTrails(), instanceValidatorParameters.isShowMessageIds(), runDate, validationEngine.getContext());
+        errorCount += renderSummary.totalErrors();
 
         if (instanceValidatorParameters.getHtmlOutput() != null) {
           String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis() - start);
@@ -404,48 +349,8 @@ public class ValidationService {
       }
     } while (watchParameters.watchMode() != ValidatorWatchMode.NONE);
     
-    if (ec > 0) {
+    if (errorCount > 0) {
       SystemExitManager.setError(1);
-    }
-  }
-
-  private int countErrors(OperationOutcome oo) {
-    int error = 0;
-    for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
-      if (issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL || issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR)
-        error++;
-    }
-    return error;
-  }
-
-  private ValidationOutputRenderer makeValidationOutputRenderer(String output, String style) {
-
-    // adding to this list?
-    // Must document the option at https://confluence.hl7.org/display/FHIR/Using+the+FHIR+Validator#UsingtheFHIRValidator-ManagingOutput
-    // if you're going to make a PR, document the link where the outputstyle is documented, along with a sentence that describes it, in the PR notes
-    if (Utilities.noString(style)) {
-      if (output == null) {
-        return new DefaultRenderer();
-      } else if (output.endsWith(".json")) {
-        return new NativeRenderer(FhirFormat.JSON);
-      } else {
-        return new NativeRenderer(FhirFormat.XML);
-      }
-    } else if (Utilities.existsInList(style, "eslint-compact")) {
-      return new ESLintCompactRenderer();
-    } else if (Utilities.existsInList(style, "compact-split")) {
-      return new CompactRenderer(true);
-    } else if (Utilities.existsInList(style, "compact")) {
-      return new CompactRenderer(false);
-    } else if (Utilities.existsInList(style, "csv")) {
-      return new CSVRenderer();
-    } else if (Utilities.existsInList(style, "xml")) {
-      return new NativeRenderer(FhirFormat.XML);
-    } else if (Utilities.existsInList(style, "json")) {
-      return new NativeRenderer(FhirFormat.JSON);
-    } else {
-      log.info("Unknown output style '"+style+"'");
-      return new DefaultRenderer();
     }
   }
 

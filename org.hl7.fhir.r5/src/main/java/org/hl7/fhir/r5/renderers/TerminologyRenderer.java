@@ -9,6 +9,8 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -183,10 +185,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       cs = null;
     }
     String statedVersion = inc.getVersion();
+    IWorkerContext.VersionResolutionRules resolutionMethod = ExtensionUtilities.getVersionResolutionRules(inc);
     String actualVersion = cs == null ? null : cs.getVersion();
     boolean fromPackages = cs == null ? false : cs.hasSourcePackage();
     boolean fromThisPackage = cs == null ? false : !Utilities.isAbsoluteUrlLinkable(cs.getWebPath());
-    renderVersionReference(context, cs, statedVersion, actualVersion, fromPackages, span, fromThisPackage, context.formatPhrase(RenderingContext.GENERAL_CODESYSTEM), RenderingI18nContext.CS_VERSION_NOTHING_TEXT);
+    renderVersionReference(context, cs, statedVersion, resolutionMethod, actualVersion, fromPackages, span, fromThisPackage, context.formatPhrase(RenderingContext.GENERAL_CODESYSTEM), RenderingI18nContext.CS_VERSION_NOTHING_TEXT);
   }
 
   private String getSpecialReference(String system) {
@@ -264,7 +267,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
       code = uri.substring(uri.indexOf("#")+1);
       uri = uri.substring(0, uri.indexOf("#"));
     }
-    CodeSystem cs = getContext().getWorker().fetchCodeSystem(uri);
+    CodeSystem cs = getContext().getWorker().fetchCodeSystem(uri, IWorkerContext.VersionResolutionRules.defaultRule());
     if (cs == null) {
       return null;
     }
@@ -273,19 +276,20 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   }
 
 
-  protected void AddVsRef(String value, XhtmlNode li, Resource source) {
+  protected void AddVsRef(String value, Base ctxt, XhtmlNode li, Resource source) {
     Resource res = null;
     if (res != null && !(res instanceof CanonicalResource)) {
       li.addText(value);
       return;      
-    }      
+    }
+    IWorkerContext.VersionResolutionRules rules = ExtensionUtilities.getVersionResolutionRulesBase(ctxt);
     CanonicalResource vs = (CanonicalResource) res;
     if (vs == null)
-      vs = getContext().getWorker().findTxResource(ValueSet.class, value, null, source);
+      vs = getContext().getWorker().findTxResource(ValueSet.class, value, rules, null, source);
     if (vs == null)
-      vs = getContext().getWorker().fetchResource(StructureDefinition.class, value, null, source);
+      vs = getContext().getWorker().fetchResource(StructureDefinition.class, value, rules, null, source);
     if (vs == null)
-      vs = getContext().getWorker().fetchResource(Questionnaire.class, value, null, source);
+      vs = getContext().getWorker().fetchResource(Questionnaire.class, value, rules, null, source);
     if (vs != null) {
       String ref = (String) vs.getWebPath();
 
@@ -297,7 +301,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
         a.addText(vs.present());
       }
     } else {
-      CodeSystem cs = getContext().getWorker().fetchCodeSystem(value);
+      CodeSystem cs = getContext().getWorker().fetchCodeSystem(value, rules);
       if (cs != null) {
         String ref = (String) cs.getWebPath();
         ref = context.fixReference(ref);

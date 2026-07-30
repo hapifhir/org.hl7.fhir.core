@@ -38,6 +38,8 @@ import java.io.UnsupportedEncodingException;
 
 import org.hl7.fhir.utilities.ElementDecoration;
 
+import javax.xml.XMLConstants;
+
 /**
  * XML Writer class.
  */
@@ -903,8 +905,8 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
   }
   @Override
   public void setSchemaLocation(String ns, String loc) throws IOException {
-    namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
-    attribute("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation", ns+" "+loc);
+    namespace(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "xsi");
+    attribute(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "schemaLocation", ns+" "+loc);
     
   }
   @Override

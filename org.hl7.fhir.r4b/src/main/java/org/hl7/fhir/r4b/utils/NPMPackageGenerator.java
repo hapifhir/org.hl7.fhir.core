@@ -248,7 +248,7 @@ public class NPMPackageGenerator {
     for (ContactDetail t : ig.getContact()) {
       String email = email(t.getTelecom());
       String url = url(t.getTelecom());
-      if (t.hasName() & (email != null || url != null)) {
+      if (t.hasName() && (email != null || url != null)) {
         JsonObject md = new JsonObject();
         m.add(md);
         md.addProperty("name", t.getName());

@@ -24,13 +24,10 @@ import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
-import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
@@ -38,6 +35,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
@@ -233,7 +231,7 @@ public class SnapShotGenerationXTests {
     }
 
     @Override
-    public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+    public BindingResolution resolveBinding(StructureDefinition def, String url, String path, org.hl7.fhir.r5.model.Element ctxt) throws FHIRException {
       BindingResolution br = new BindingResolution();
       br.url = path + "/something.html";
       br.display = "something";
@@ -361,7 +359,7 @@ public class SnapShotGenerationXTests {
     }
 
     @Override
-    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) {
+    public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) {
       // TODO Auto-generated method stub
       return null;
     }
@@ -435,6 +433,7 @@ public class SnapShotGenerationXTests {
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String id, TestDetails test, SnapShotGenerationTestsContext context) throws Exception {
+    XVerExtensionManagerFactory.setNewLoader(true);
     version = test.version;
     this.context = context;
     if (fp == null)

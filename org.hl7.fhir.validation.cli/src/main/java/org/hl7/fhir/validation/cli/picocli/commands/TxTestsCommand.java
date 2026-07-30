@@ -49,7 +49,7 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
 
   @CommandLine.Option(
     names = {"-test-version"},
-    description = "FHIR version for tests (default: current)"
+    description = "Version of the tests to run (default: current - the version of the tests in the ci-build of the tx-ecosystem IG)"
   )
   private String testVersion;
 
@@ -66,6 +66,12 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
   private String filter;
 
   @CommandLine.Option(
+    names = {"-suite"},
+    description = "Run only tests belonging to the named suite"
+  )
+  private String suite;
+
+  @CommandLine.Option(
     names = {"-externals"},
     description = "Path to JSON file with external test definitions"
   )
@@ -79,7 +85,8 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
 
   @CommandLine.Option(
     names = {"-mode"},
-    description = "Test modes to execute (default: general). Use !general to exclude general mode."
+    split = ",",
+    description = "Test modes to execute, comma-separated or repeated (default: general). Use !general to exclude general mode."
   )
   private List<String> modes = new ArrayList<>();
 
@@ -98,7 +105,8 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
         new TxTester.InternalTxLoader(version),
         tx,
         false,
-        externalsJson
+        externalsJson,
+        testVersion
       );
 
       // Add input loaders
@@ -122,7 +130,7 @@ public class TxTestsCommand extends ValidationServiceCommand implements Callable
         CommaSeparatedStringBuilder.join(" | ", Utilities.sorted(modeSet)));
 
       // Execute tests
-      boolean ok = txTester.setOutput(outputDir).execute(modeSet, filter);
+      boolean ok = txTester.setOutput(outputDir).execute(modeSet, filter, suite);
 
       // Write report
       new org.hl7.fhir.r5.formats.JsonParser()

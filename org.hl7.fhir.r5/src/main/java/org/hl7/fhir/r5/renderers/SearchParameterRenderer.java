@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
@@ -164,17 +165,21 @@ public class SearchParameterRenderer extends TerminologyRenderer {
     }
     
     if (spd.hasComponent()) {
-      x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_COMPARATORS));
+      x.para().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_COMPONENT));
       tbl = x.table("grid", false).markGenerated(!context.forValidResource());
       for (SearchParameterComponentComponent t : spd.getComponent()) {
         tr = tbl.tr();
-        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), null, spd);
+        SearchParameter tsp = context.getWorker().fetchResource(SearchParameter.class, t.getDefinition(), ExtensionUtilities.getVersionResolutionRules(t.getDefinitionElement()), null, spd);
         if (tsp != null && tsp.hasWebPath()) {
           tr.td().ah(context.prefixLocalHref(tsp.getWebPath())).tx(tsp.present());          
         } else {
           tr.td().tx(t.getDefinition());
         }
         tr.td().code().tx(t.getExpression());
+        var tdt = tr.td();
+        if (tsp != null) {
+          tdt.code().tx(tsp.getTypeElement().getCode());
+        }
       }
     }
   }

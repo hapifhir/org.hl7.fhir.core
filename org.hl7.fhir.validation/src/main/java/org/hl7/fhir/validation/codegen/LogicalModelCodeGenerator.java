@@ -73,7 +73,7 @@ public class LogicalModelCodeGenerator {
     IContextResourceLoader loader = ContextResourceLoaderFactory.makeLoader(npm.fhirVersion(), new NullLoaderKnowledgeProviderR5());
     SimpleWorkerContext context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm, loader, true);
     String version = context.getVersion();
-    context.connectToTSServer(new TerminologyClientFactory(FhirPublication.R5), "http://tx.fhir.org", 
+    context.connectToTSServer(new TerminologyClientFactory(FhirPublication.R5), "https://tx.fhir.org",
         "CodeGenerator", null, true);
     context.setExpansionParameters(new Parameters());
     

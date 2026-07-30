@@ -23,14 +23,21 @@ public class BaseHTTPHandler {
     if (param == null || param.trim().isEmpty()) {
       return new ArrayList<>();
     }
-    return Arrays.asList(param.split(","));
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] splitParam = param.split(",");
+    return Arrays.asList(splitParam);
   }
 
   protected Map<String, String> parseQueryParams(String query) {
     Map<String, String> params = new HashMap<>();
     if (query != null) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pairs = query.split("&");
       for (String pair : pairs) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] keyValue = pair.split("=", 2);
         if (keyValue.length == 2) {
           try {
@@ -108,6 +115,21 @@ public class BaseHTTPHandler {
         sendResponse(exchange, statusCode, baos.toString(StandardCharsets.UTF_8.name()), "application/fhir+xml");
       } else {
         new JsonParser().compose(baos, outcome);
+        sendResponse(exchange, statusCode, baos.toString(StandardCharsets.UTF_8.name()), "application/fhir+json");
+      }
+    } catch (Exception e) {
+      sendResponse(exchange, 500, "Error serializing response: " + e.getMessage(), "text/plain");
+    }
+  }
+
+  protected void sendResource(HttpExchange exchange, int statusCode, org.hl7.fhir.r5.model.Resource resource, String format) throws IOException {
+    try {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      if ("xml".equalsIgnoreCase(format)) {
+        new XmlParser().compose(baos, resource);
+        sendResponse(exchange, statusCode, baos.toString(StandardCharsets.UTF_8.name()), "application/fhir+xml");
+      } else {
+        new JsonParser().compose(baos, resource);
         sendResponse(exchange, statusCode, baos.toString(StandardCharsets.UTF_8.name()), "application/fhir+json");
       }
     } catch (Exception e) {

@@ -51,15 +51,15 @@ public class TerminologyClientFactoryTest {
 
   @ParameterizedTest
   @MethodSource("data")
-  public void testMakeClient(String url, FhirPublication fhirPublication, String expectedAddress) throws URISyntaxException {
+  void testMakeClient(String url, FhirPublication fhirPublication, String expectedAddress) throws URISyntaxException {
     ITerminologyClient terminologyClient = new TerminologyClientFactory(fhirPublication).makeClient("id", url, "dummyUserAgent", null);
     assertEquals(expectedAddress, terminologyClient.getAddress());
   }
 
   @Test
-  public void testMakeClientDstu1Fails() throws URISyntaxException {
+  void testMakeClientDstu1Fails() {
     assertThrows(Error.class, () -> {
-        ITerminologyClient terminologyClient = new TerminologyClientFactory(FhirPublication.DSTU1).makeClient("id", "urldoesnotmatter", "dummyUserAgent", null);
+         new TerminologyClientFactory(FhirPublication.DSTU1).makeClient("id", "urldoesnotmatter", "dummyUserAgent", null);
       }
     );
   }

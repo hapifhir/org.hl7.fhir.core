@@ -55,20 +55,21 @@ public class Scanner {
     this.fhirPathEngine = fhirPathEngine;
   }
 
-  public void validateScan(String output, List<String> sources) throws Exception {
-    if (Utilities.noString(output))
+  public void validateScan(String outputDirectory, List<String> sources) throws Exception {
+    if (Utilities.noString(outputDirectory))
       throw new Exception("Output parameter required when scanning");
-    if (!(ManagedFileAccess.file(output).isDirectory()))
-      throw new Exception("Output '" + output + "' must be a directory when scanning");
+    if (!(ManagedFileAccess.file(outputDirectory).isDirectory()))
+      throw new Exception("Output '" + outputDirectory + "' must be a directory when scanning");
     log.info("  .. scan " + sources + " against loaded IGs");
     Set<String> urls = new HashSet<>();
     for (ImplementationGuide ig : getContext().allImplementationGuides()) {
       if (ig.getUrl().contains("/ImplementationGuide") && !ig.getUrl().equals("http://hl7.org/fhir/ImplementationGuide/fhir"))
         urls.add(ig.getUrl());
     }
-    List<ScanOutputItem> res = validateScan(sources, urls);
-    genScanOutput(output, res);
-    log.info("Done. output in " + Utilities.path(output, "scan.html"));
+    List<ScanOutputItem> scanResults = validateScan(sources, urls);
+
+    genScanOutput(scanResults, outputDirectory, true);
+    log.info("Done. output in " + Utilities.path(outputDirectory, "scan.html"));
   }
 
   protected List<ScanOutputItem> validateScan(List<String> sources, Set<String> guides) throws FHIRException, IOException, EOperationOutcome {
@@ -128,131 +129,131 @@ public class Scanner {
     return res;
   }
 
-  protected void genScanOutput(String folder, List<ScanOutputItem> items) throws IOException, FHIRException, EOperationOutcome {
-    String f = Utilities.path(folder, "comparison.zip");
-    download("https://fhir.org/archive/comparison.zip", f);
-    unzip(f, folder);
-
-    for (int i = 0; i < items.size(); i++) {
-      items.get(i).setId("c" + i);
-      genScanOutputItem(items.get(i), Utilities.path(folder, items.get(i).getId() + ".html"));
+  protected void genScanOutput(List<ScanOutputItem> scanResults, String outputDirectory, boolean includeStyleResources) throws IOException, FHIRException, EOperationOutcome {
+    if (includeStyleResources) {
+      String zipPath = Utilities.path(outputDirectory, "comparison.zip");
+      download("https://fhir.org/archive/comparison.zip", zipPath);
+      unzip(zipPath, outputDirectory);
+    }
+    for (int i = 0; i < scanResults.size(); i++) {
+      scanResults.get(i).setId("c" + i);
+      generateScanOutputItem(scanResults.get(i), Utilities.path(outputDirectory, scanResults.get(i).getId() + ".html"));
     }
 
-    StringBuilder b = new StringBuilder();
-    b.append("<html>");
-    b.append("<head>");
-    b.append("<title>Implementation Guide Scan</title>");
-    b.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");
-    b.append("<style>\r\n");
-    b.append("th \r\n");
-    b.append("{\r\n");
-    b.append("  vertical-align: bottom;\r\n");
-    b.append("  text-align: center;\r\n");
-    b.append("}\r\n");
-    b.append("\r\n");
-    b.append("th span\r\n");
-    b.append("{\r\n");
-    b.append("  -ms-writing-mode: tb-rl;\r\n");
-    b.append("  -webkit-writing-mode: vertical-rl;\r\n");
-    b.append("  writing-mode: vertical-rl;\r\n");
-    b.append("  transform: rotate(180deg);\r\n");
-    b.append("  white-space: nowrap;\r\n");
-    b.append("}\r\n");
-    b.append("</style>\r\n");
-    b.append("</head>");
-    b.append("<body>");
-    b.append("<h2>Implementation Guide Scan</h2>");
+    StringBuilder sBuilder = new StringBuilder();
+    sBuilder.append("<html>");
+    sBuilder.append("<head>");
+    sBuilder.append("<title>Implementation Guide Scan</title>");
+    sBuilder.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");
+    sBuilder.append("<style>\r\n");
+    sBuilder.append("th \r\n");
+    sBuilder.append("{\r\n");
+    sBuilder.append("  vertical-align: bottom;\r\n");
+    sBuilder.append("  text-align: center;\r\n");
+    sBuilder.append("}\r\n");
+    sBuilder.append("\r\n");
+    sBuilder.append("th span\r\n");
+    sBuilder.append("{\r\n");
+    sBuilder.append("  -ms-writing-mode: tb-rl;\r\n");
+    sBuilder.append("  -webkit-writing-mode: vertical-rl;\r\n");
+    sBuilder.append("  writing-mode: vertical-rl;\r\n");
+    sBuilder.append("  transform: rotate(180deg);\r\n");
+    sBuilder.append("  white-space: nowrap;\r\n");
+    sBuilder.append("}\r\n");
+    sBuilder.append("</style>\r\n");
+    sBuilder.append("</head>");
+    sBuilder.append("<body>");
+    sBuilder.append("<h2>Implementation Guide Scan</h2>");
 
     // organise
-    Set<String> refs = new HashSet<>();
-    Set<String> igs = new HashSet<>();
-    Map<String, Set<String>> profiles = new HashMap<>();
-    for (ScanOutputItem item : items) {
-      refs.add(item.getRef());
+    Set<String> resultRefs = new HashSet<>();
+    Set<String> igUrls = new HashSet<>();
+    Map<String, Set<String>> profileUrls = new HashMap<>();
+    for (ScanOutputItem item : scanResults) {
+      resultRefs.add(item.getRef());
       if (item.getIg() != null) {
-        igs.add(item.getIg().getUrl());
-        if (!profiles.containsKey(item.getIg().getUrl())) {
-          profiles.put(item.getIg().getUrl(), new HashSet<>());
+        igUrls.add(item.getIg().getUrl());
+        if (!profileUrls.containsKey(item.getIg().getUrl())) {
+          profileUrls.put(item.getIg().getUrl(), new HashSet<>());
         }
         if (item.getProfile() != null)
-          profiles.get(item.getIg().getUrl()).add(item.getProfile().getUrl());
+          profileUrls.get(item.getIg().getUrl()).add(item.getProfile().getUrl());
       }
     }
 
-    b.append("<h2>By reference</h2>\r\n");
-    b.append("<table class=\"grid\">");
-    b.append("<tr><th></th><th></th>");
-    for (String s : sort(igs)) {
-      ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, s);
-      b.append("<th colspan=\"" + Integer.toString(profiles.get(s).size() + 1) + "\"><b title=\"" + s + "\">" + ig.present() + "</b></th>");
+    sBuilder.append("<h2>By reference</h2>\r\n");
+    sBuilder.append("<table class=\"grid\">");
+    sBuilder.append("<tr><th></th><th></th>");
+    for (String igUrl : sort(igUrls)) {
+      ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, igUrl);
+      sBuilder.append("<th colspan=\"" + Integer.toString(profileUrls.get(igUrl).size() + 1) + "\"><b title=\"" + Utilities.escapeXml(igUrl) + "\">" + Utilities.escapeXml(ig.present()) + "</b></th>");
     }
-    b.append("</tr>\r\n");
-    b.append("<tr><th><b>Source</b></th><th><span>Core Spec</span></th>");
-    for (String s : sort(igs)) {
-      ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, s);
-      b.append("<th><span>Global</span></th>");
-      for (String sp : sort(profiles.get(s))) {
-        StructureDefinition sd = getContext().fetchResource(StructureDefinition.class, sp);
-        b.append("<th><b title=\"" + sp + "\"><span>" + sd.present() + "</span></b></th>");
+    sBuilder.append("</tr>\r\n");
+    sBuilder.append("<tr><th><b>Source</b></th><th><span>Core Spec</span></th>");
+    for (String igUrl : sort(igUrls)) {
+      sBuilder.append("<th><span>Global</span></th>");
+      for (String profileUrl : sort(profileUrls.get(igUrl))) {
+        StructureDefinition sd = getContext().fetchResource(StructureDefinition.class, profileUrl);
+        sBuilder.append("<th><b title=\"" + Utilities.escapeXml(profileUrl) + "\"><span>" + Utilities.escapeXml(sd.present()) + "</span></b></th>");
       }
     }
-    b.append("</tr>\r\n");
+    sBuilder.append("</tr>\r\n");
 
-    for (String s : sort(refs)) {
-      b.append("<tr>");
-      b.append("<td>" + s + "</td>");
-      b.append(genOutcome(items, s, null, null));
-      for (String si : sort(igs)) {
-        ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, si);
-        b.append(genOutcome(items, s, si, null));
-        for (String sp : sort(profiles.get(ig.getUrl()))) {
-          b.append(genOutcome(items, s, si, sp));
+    for (String resultRef : sort(resultRefs)) {
+      sBuilder.append("<tr>");
+      sBuilder.append("<td>" + Utilities.escapeXml(resultRef) + "</td>");
+      sBuilder.append(generateOutcome(scanResults, resultRef, null, null));
+      for (String igUrl : sort(igUrls)) {
+        ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, igUrl);
+        sBuilder.append(generateOutcome(scanResults, resultRef, igUrl, null));
+        for (String profileUrl : sort(profileUrls.get(ig.getUrl()))) {
+          sBuilder.append(generateOutcome(scanResults, resultRef, igUrl, profileUrl));
         }
       }
-      b.append("</tr>\r\n");
+      sBuilder.append("</tr>\r\n");
     }
-    b.append("</table>\r\n");
+    sBuilder.append("</table>\r\n");
 
-    b.append("<h2>By IG</h2>\r\n");
-    b.append("<table class=\"grid\">");
-    b.append("<tr><th></th><th></th>");
-    for (String s : sort(refs)) {
-      b.append("<th><span>" + s + "</span></th>");
+    sBuilder.append("<h2>By IG</h2>\r\n");
+    sBuilder.append("<table class=\"grid\">");
+    sBuilder.append("<tr><th></th><th></th>");
+    for (String s : sort(resultRefs)) {
+      sBuilder.append("<th><span>" + Utilities.escapeXml(s) + "</span></th>");
     }
-    b.append("</tr>\r\n");
-    b.append("<tr><td></td><td>Core Spec</td>");
-    for (String s : sort(refs)) {
-      b.append(genOutcome(items, s, null, null));
+    sBuilder.append("</tr>\r\n");
+    sBuilder.append("<tr><td></td><td>Core Spec</td>");
+    for (String ref : sort(resultRefs)) {
+      sBuilder.append(generateOutcome(scanResults, ref, null, null));
     }
-    b.append("</tr>\r\n");
-    for (String si : sort(igs)) {
-      b.append("<tr>");
-      ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, si);
-      b.append("<td><b title=\"" + si + "\">" + ig.present() + "</b></td>");
-      b.append("<td>Global</td>");
-      for (String s : sort(refs)) {
-        b.append(genOutcome(items, s, si, null));
+    sBuilder.append("</tr>\r\n");
+    for (String igUrl : sort(igUrls)) {
+      sBuilder.append("<tr>");
+      ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, igUrl);
+      sBuilder.append("<td><b title=\"" + Utilities.escapeXml(igUrl) + "\">" + Utilities.escapeXml(ig.present()) + "</b></td>");
+      sBuilder.append("<td>Global</td>");
+      for (String resultRef : sort(resultRefs)) {
+        sBuilder.append(generateOutcome(scanResults, resultRef, igUrl, null));
       }
-      b.append("</tr>\r\n");
+      sBuilder.append("</tr>\r\n");
 
-      for (String sp : sort(profiles.get(ig.getUrl()))) {
-        b.append("<tr>");
-        StructureDefinition sd = getContext().fetchResource(StructureDefinition.class, sp);
-        b.append("<td></td><td><b title=\"" + sp + "\">" + sd.present() + "</b></td>");
-        for (String s : sort(refs)) {
-          b.append(genOutcome(items, s, si, sp));
+      for (String profileUrl : sort(profileUrls.get(ig.getUrl()))) {
+        sBuilder.append("<tr>");
+        StructureDefinition sd = getContext().fetchResource(StructureDefinition.class, profileUrl);
+        sBuilder.append("<td></td><td><b title=\"" + Utilities.escapeXml(profileUrl) + "\">" + Utilities.escapeXml(sd.present()) + "</b></td>");
+        for (String resultRef : sort(resultRefs)) {
+          sBuilder.append(generateOutcome(scanResults, resultRef, igUrl, profileUrl));
         }
-        b.append("</tr>\r\n");
+        sBuilder.append("</tr>\r\n");
       }
     }
-    b.append("</table>\r\n");
+    sBuilder.append("</table>\r\n");
 
-    b.append("</body>");
-    b.append("</html>");
-    FileUtilities.stringToFile(b.toString(), Utilities.path(folder, "scan.html"));
+    sBuilder.append("</body>");
+    sBuilder.append("</html>");
+    FileUtilities.stringToFile(sBuilder.toString(), Utilities.path(outputDirectory, "scan.html"));
   }
 
-  protected void genScanOutputItem(ScanOutputItem item, String filename) throws IOException, FHIRException, EOperationOutcome {
+  protected void generateScanOutputItem(ScanOutputItem item, String filename) throws IOException, FHIRException, EOperationOutcome {
     RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setNoSlowLookup(true);
     RendererFactory.factory(item.getOutcome(), rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), item.getOutcome()));
@@ -260,32 +261,32 @@ public class Scanner {
 
     String title = item.getTitle();
 
-    StringBuilder b = new StringBuilder();
-    b.append("<html>");
-    b.append("<head>");
-    b.append("<title>" + title + "</title>");
-    b.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");
-    b.append("</head>");
-    b.append("<body>");
-    b.append("<h2>" + title + "</h2>");
-    b.append(s);
-    b.append("</body>");
-    b.append("</html>");
-    FileUtilities.stringToFile(b.toString(), filename);
+    StringBuilder sBuilder = new StringBuilder();
+    sBuilder.append("<html>");
+    sBuilder.append("<head>");
+    sBuilder.append("<title>" + Utilities.escapeXml(title) + "</title>");
+    sBuilder.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");
+    sBuilder.append("</head>");
+    sBuilder.append("<body>");
+    sBuilder.append("<h2>" + Utilities.escapeXml(title) + "</h2>");
+    sBuilder.append(s);
+    sBuilder.append("</body>");
+    sBuilder.append("</html>");
+    FileUtilities.stringToFile(sBuilder.toString(), filename);
   }
 
-  protected String genOutcome(List<ScanOutputItem> items, String src, String ig, String profile) {
+  protected String generateOutcome(List<ScanOutputItem> scanResults, String resultRef, String ig, String profile) {
     ScanOutputItem item = null;
-    for (ScanOutputItem t : items) {
+    for (ScanOutputItem scanResult : scanResults) {
       boolean match = true;
-      if (!t.getRef().equals(src))
+      if (!scanResult.getRef().equals(resultRef))
         match = false;
-      if (!((ig == null && t.getIg() == null) || (ig != null && t.getIg() != null && ig.equals(t.getIg().getUrl()))))
+      if (!((ig == null && scanResult.getIg() == null) || (ig != null && scanResult.getIg() != null && ig.equals(scanResult.getIg().getUrl()))))
         match = false;
-      if (!((profile == null && t.getProfile() == null) || (profile != null && t.getProfile() != null && profile.equals(t.getProfile().getUrl()))))
+      if (!((profile == null && scanResult.getProfile() == null) || (profile != null && scanResult.getProfile() != null && profile.equals(scanResult.getProfile().getUrl()))))
         match = false;
       if (match) {
-        item = t;
+        item = scanResult;
         break;
       }
     }

@@ -16,6 +16,7 @@ import org.hl7.fhir.r4b.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Rendering framework:
@@ -24,6 +25,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
  * 
  */
 @Deprecated
+@SuppressFBWarnings("EC_UNRELATED_TYPES")
 public class CompartmentDefinitionRenderer extends ResourceRenderer {
 
   public CompartmentDefinitionRenderer(RenderingContext context) {

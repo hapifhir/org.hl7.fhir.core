@@ -197,6 +197,7 @@ public class RePackageCommand extends ValidationEngineCommand implements Callabl
       InstanceValidatorParameters params = getInstanceValidatorParameters();
       if (params.getExpansionParameters() != null) {
         validationEngine.loadExpansionParameters(params.getExpansionParameters());
+        packageReGenerator.setExpansionParameters(validationEngine.getContext().getExpansionParameters());
       }
 
       // Set ignore/include lists
@@ -239,13 +240,19 @@ public class RePackageCommand extends ValidationEngineCommand implements Callabl
     }
 
     // Validate scope if provided
-    if (scope != null && !scope.matches("ig|igs|core")) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, non-overlapping alternation, safe
+    boolean scopeIsInvalid = scope != null && !scope.matches("ig|igs|core");
+    if (scopeIsInvalid) {
       log.error("Invalid scope: {}. Must be one of: ig, igs, core", scope);
       System.exit(1);
     }
 
     // Validate format if provided
-    if (format != null && !format.matches("(?i)xml|json")) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, non-overlapping alternation, safe
+    boolean formatIsInvalid = format != null && !format.matches("(?i)xml|json");
+    if (formatIsInvalid) {
       log.error("Invalid format: {}. Must be xml or json", format);
       System.exit(1);
     }

@@ -58,6 +58,8 @@ public class VersionUtilities {
     private String label;
 
     public SemVer(String ver) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = ver.split("\\.");
       if (p.length > 0) {
         major = p[0];
@@ -397,6 +399,8 @@ public class VersionUtilities {
   }
 
   private static String getMajMinPriv(String version) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = version.split("\\.");
     return p[0] + "." + p[1];
   }
@@ -416,6 +420,8 @@ public class VersionUtilities {
     if (!isSemVer(version, true)) {
       return null;
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = version.split("\\.");
     return p[0] + "." + p[1] + (p.length >= 3 ? "." + p[2] : ".0");
   }
@@ -431,6 +437,8 @@ public class VersionUtilities {
   }
 
   private static String getPatchPriv(String version) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = version.split("\\.");
     return p.length >= 3 ? p[2] : "0";
   }
@@ -634,6 +642,8 @@ public class VersionUtilities {
   }
 
   private static int[] splitParts(String v) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = v.split("\\.");
     return Arrays.stream(p).mapToInt(Integer::parseInt).toArray();
   }
@@ -876,6 +886,8 @@ public class VersionUtilities {
       return null;
     }
     if (pid.startsWith("hl7.fhir.r")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = pid.split("\\.");
       return versionFromCode(p[2]);
     }
@@ -1317,4 +1329,88 @@ public class VersionUtilities {
     }
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //anchored, safe
+  public static boolean isAnInteger(String version) {
+    return version != null && version.matches("^\\d+$");
+  }
+
+  public static boolean appearsToBeDate(String version) {
+    if (version == null || version.isEmpty()) return false;
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String datePart = version.split("T")[0];
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //anchored, safe
+    boolean isDate = datePart.matches("^\\d{4}-?\\d{2}(-?\\d{2})?$");
+    return isDate;
+  }
+
+  public static String guessVersionAlgorithmFromVersion(String version) {
+    if (isSemVer(version, true)) {
+      return "semver";
+    }
+    if (appearsToBeDate(version)) {
+      return "date";
+    }
+    if (isAnInteger(version)) {
+      return "integer";
+    }
+    return "alpha";
+  }
+
+  public static boolean dateIsMoreRecent(String date, String date2) {
+    return normaliseDateString(date).compareTo(normaliseDateString(date2)) > 0;
+  }
+
+  public static String normaliseDateString(String date) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] dateParts = date.split("T");
+    return dateParts[0].replace("-", "");
+  }
+
+  public static int compareVersionsGeneral(String version1, String version2) {
+    if (version1 != null && !version1.isEmpty() && version2 != null && !version2.isEmpty()) {
+      if (version1.equals(version2)) {
+        return 0;
+      }
+      String fmt1 = guessVersionAlgorithmFromVersion(version1);
+      String fmt2 = guessVersionAlgorithmFromVersion(version2);
+      if (!fmt1.equals(fmt2)) {
+        return version1.compareTo(version2);
+      }
+      switch (fmt1) {
+        case "semver":
+          boolean b1 = isThisOrLater(version1, version2, VersionPrecision.PATCH);
+          boolean b2 = isThisOrLater(version2, version1, VersionPrecision.PATCH);
+          if (b1 && b2) {
+            return 0;
+          } else if (b2) {
+            return 1;
+          } else {
+            return -1;
+          }
+        case "date":
+          if (dateIsMoreRecent(version1, version2)) {
+            return 1;
+          } else if (dateIsMoreRecent(version2, version1)) {
+            return -1;
+          } else {
+            return 0;
+          }
+        case "integer":
+          return Integer.compare(Integer.parseInt(version1), Integer.parseInt(version2));
+        case "alpha":
+        default:
+          return version1.compareTo(version2);
+      }
+    } else if (version1 != null && !version1.isEmpty()) {
+      return 1;
+    } else if (version2 != null && !version2.isEmpty()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
 }

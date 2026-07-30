@@ -3,12 +3,15 @@ package org.hl7.fhir.r5.utils.structuremap;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.FHIRPathUtilityClasses.FunctionDetails;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
@@ -57,21 +60,27 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
-    return null; // throw new Error("Not Implemented Yet");
+    return structureMapUtilities.getServices() == null ? null : structureMapUtilities.getServices().resolveFunction(engine, functionName);
   }
 
   @Override
   public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
-    throw new Error("Not Implemented Yet");
+    if (structureMapUtilities.getServices() == null) {
+      throw new PathEngineException("Unknown function '" + functionName + "'");
+    }
+    return structureMapUtilities.getServices().checkFunction(engine, appContext, functionName, focus, parameters);
   }
 
   @Override
   public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
-    throw new Error("Not Implemented Yet");
+    if (structureMapUtilities.getServices() == null) {
+      throw new Error("Not Implemented Yet");
+    }
+    return structureMapUtilities.getServices().executeFunction(engine, appContext, focus, functionName, parameters);
   }
 
   @Override
-  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Base refContext) throws FHIRException {
+  public Base resolveReference(FHIRPathEngine engine, Object appContext, String url, Identifier identifier, Base refContext) throws FHIRException {
     if (structureMapUtilities.getServices() == null)
       return null;
     return structureMapUtilities.getServices().resolveReference(engine, appContext, url, refContext);
@@ -101,7 +110,7 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-	return structureMapUtilities.getWorker().findTxResource(ValueSet.class, url);
+	  return structureMapUtilities.getWorker().findTxResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
   }
 
   @Override

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Locale;
 
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
@@ -232,7 +233,10 @@ public class ResourceWrapperModel extends ResourceWrapper {
         return false;
       } else {
         for (int i = 0; i < children().size(); i++) {
-          if (!children().get(i).matches(b.children().get(i))) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: not using String.matches
+          boolean childMatches = children().get(i).matches(b.children().get(i));
+          if (!childMatches) {
             return false;
           }
         }
@@ -272,7 +276,7 @@ public class ResourceWrapperModel extends ResourceWrapper {
   public String getCodeSystemUri() {
     ElementDefinition pd = model.getProperty().getDefinition(); 
     if (pd != null && pd.hasBinding() && pd.getBinding().hasValueSet()) { 
-      ValueSet vs = contextUtils.getWorker().fetchResource(ValueSet.class, pd.getBinding().getValueSet()); 
+      ValueSet vs = contextUtils.getWorker().fetchResource(ValueSet.class, pd.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(pd.getBinding().getValueSetElement()));
       if (vs != null && vs.hasCompose() && !vs.getCompose().hasExclude() && vs.getCompose().getInclude().size() == 1) { 
         return vs.getCompose().getIncludeFirstRep().getSystem(); 
       } 

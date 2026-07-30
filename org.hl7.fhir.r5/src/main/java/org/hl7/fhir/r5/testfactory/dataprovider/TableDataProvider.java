@@ -17,30 +17,31 @@ public abstract class TableDataProvider {
   public abstract String cell(String name) throws FHIRException;
   public abstract void reset() throws FHIRException;
 
-
-  public static TableDataProvider forFile(String path, Locale locale) throws FHIRException {
-    try {
-      String filename = path;
-      String sheetname = null;
-      String range = null;
-
-      if (path.contains("!")) {
-          range = path.substring(path.indexOf("!")+1);
-          path = path.substring(0, path.indexOf("!"));
+  public record SheetInfo(String sheet, String range){
+    public static SheetInfo fromString(String string) {
+      if (string.contains("!")) {
+        final int splitIndex = string.indexOf("!");
+        if (splitIndex + 1 < string.length()) {
+          final String sheetName = string.substring(0, splitIndex);
+          final String range = string.substring(splitIndex + 1);
+          return new SheetInfo(sheetName, range);
         }
-      if (path.contains(";")) {
-        filename = path.substring(0, path.indexOf(";"));
-        sheetname = path.substring(path.indexOf(";")+1);
       }
-      String extension = Utilities.getFileExtension(filename);
+      return new SheetInfo(string, null);
+    }
+  }
+
+  public static TableDataProvider forFile(String path, SheetInfo sheetInfo, Locale locale) throws FHIRException {
+    try {
+      String extension = Utilities.getFileExtension(path);
       if (Utilities.existsInList(extension, "csv", "txt")) {
-        return new CSVDataProvider(filename);
+        return new CSVDataProvider(path);
       } else if (Utilities.existsInList(extension, "xlsx")) {
-        return new ExcelDataProvider(filename, sheetname, range, locale);
+        return new ExcelDataProvider(path, sheetInfo.sheet, sheetInfo.range, locale);
       } else if (Utilities.existsInList(extension, "db")) {
-        return new SQLDataProvider(DriverManager.getConnection("jdbc:sqlite:"+filename), sheetname);
+        return new SQLDataProvider(DriverManager.getConnection("jdbc:sqlite:"+ path), sheetInfo.sheet);
       } else {
-        throw new FHIRException("Unknown File Type "+path);
+        throw new FHIRException("Unknown File Type "+ path);
       }
     } catch (Exception e) {
       throw new FHIRException(e);

@@ -35,15 +35,25 @@ package org.hl7.fhir.r5.openehr;
 
 
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.formats.*;
 import org.xmlpull.v1.*;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.FHIRException;
-import java.io.IOException;
-import java.util.Enumeration;
 
+import javax.xml.XMLConstants;
+import java.io.IOException;
+
+/**
+ * OpenEHR type names are ALL_CAPS (e.g., COMPOSITION, ADDRESS, UUID). Methods here
+ * (e.g., parseADDRESS, composeUUID) target these OpenEHR types and differ intentionally
+ * from the identically-named superclass methods in camelCase (e.g., parseAddress,
+ * composeUuid), which target FHIR types. Verify the correct method is called.
+ */
+@SuppressWarnings({
+  "java:S1845", //Potential confusion for similarly named methods. See JavaDoc regarding
+  "java:S100" //Methods violate java naming convention. Acceptable because these are generated from OpenEHR classnames
+  }
+)
 public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
 
   public OpenehrXmlParser(boolean allowUnknownContent) {
@@ -57,7 +67,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected ACCESS_CONTROL_SETTINGS parseACCESS_CONTROL_SETTINGS(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     default: throw new FHIRException("Unsupported type '"+type+"'");
     }
@@ -71,7 +81,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected ACTOR parseACTOR(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "AGENT": return parseAGENT(xpp);
     case "GROUP": return parseGROUP(xpp);
@@ -93,7 +103,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected AUTHORED_RESOURCE parseAUTHORED_RESOURCE(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     default: throw new FHIRException("Unsupported type '"+type+"'");
     }
@@ -117,7 +127,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected Any parseAny(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "EHR": return parseEHR(xpp);
     default: throw new FHIRException("Unsupported type '"+type+"'");
@@ -132,7 +142,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected CARE_ENTRY parseCARE_ENTRY(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "INSTRUCTION": return parseINSTRUCTION(xpp);
     case "OBSERVATION": return parseOBSERVATION(xpp);
@@ -154,7 +164,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected CONTENT_ITEM parseCONTENT_ITEM(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "SECTION": return parseSECTION(xpp);
     default: throw new FHIRException("Unsupported type '"+type+"'");
@@ -169,7 +179,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected DATA_STRUCTURE parseDATA_STRUCTURE(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "HISTORY": return parseHISTORY(xpp);
     default: throw new FHIRException("Unsupported type '"+type+"'");
@@ -184,7 +194,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected DATA_VALUE parseDATA_VALUE(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "DV-TEXT": return parseDV_TEXT(xpp);
     case "DV-IDENTIFIER": return parseDV_IDENTIFIER(xpp);
@@ -204,7 +214,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected DV_ABSOLUTE_QUANTITY parseDV_ABSOLUTE_QUANTITY(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     default: throw new FHIRException("Unsupported type '"+type+"'");
     }
@@ -218,7 +228,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected DV_AMOUNT parseDV_AMOUNT(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "DV-DURATION": return parseDV_DURATION(xpp);
     case "DV-COUNT": return parseDV_COUNT(xpp);
@@ -238,7 +248,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected DV_ENCAPSULATED parseDV_ENCAPSULATED(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "DV-MULTIMEDIA": return parseDV_MULTIMEDIA(xpp);
     case "DV-PARSABLE": return parseDV_PARSABLE(xpp);
@@ -258,7 +268,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected DV_ORDERED parseDV_ORDERED(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "DV-DATE-TIME": return parseDV_DATE_TIME(xpp);
     case "DV-TIME": return parseDV_TIME(xpp);
@@ -283,7 +293,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected DV_QUANTIFIED parseDV_QUANTIFIED(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     default: throw new FHIRException("Unsupported type '"+type+"'");
     }
@@ -301,7 +311,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
   
   protected DV_TEMPORAL parseDV_TEMPORAL(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "DV-DATE": return parseDV_DATE(xpp);
     default: throw new FHIRException("Unsupported type '"+type+"'");
@@ -316,7 +326,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected DV_TIME_SPECIFICATION parseDV_TIME_SPECIFICATION(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "DV-GENERAL-TIME-SPECIFICATION": return parseDV_GENERAL_TIME_SPECIFICATION(xpp);
     case "DV-PERIODIC-TIME-SPECIFICATION": return parseDV_PERIODIC_TIME_SPECIFICATION(xpp);
@@ -334,7 +344,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected ENTRY parseENTRY(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "ADMIN-ENTRY": return parseADMIN_ENTRY(xpp);
     default: throw new FHIRException("Unsupported type '"+type+"'");
@@ -361,7 +371,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected EVENT parseEVENT(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "INTERVAL-EVENT": return parseINTERVAL_EVENT(xpp);
     case "POINT-EVENT": return parsePOINT_EVENT(xpp);
@@ -383,7 +393,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected ITEM_STRUCTURE parseITEM_STRUCTURE(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "ITEM-SINGLE": return parseITEM_SINGLE(xpp);
     case "ITEM-TREE": return parseITEM_TREE(xpp);
@@ -401,7 +411,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected ITEM parseITEM(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "ELEMENT": return parseELEMENT(xpp);
     case "CLUSTER": return parseCLUSTER(xpp);
@@ -417,7 +427,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected LOCATABLE parseLOCATABLE(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "CONTACT": return parseCONTACT(xpp);
     case "EVENT-CONTEXT": return parseEVENT_CONTEXT(xpp);
@@ -443,7 +453,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected OBJECT_ID parseOBJECT_ID(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "TEMPLATE-ID": return parseTEMPLATE_ID(xpp);
     case "ARCHETYPE-ID": return parseARCHETYPE_ID(xpp);
@@ -461,7 +471,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected PARTY_PROXY parsePARTY_PROXY(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "PARTY-SELF": return parsePARTY_SELF(xpp);
     case "PARTY-IDENTIFIED": return parsePARTY_IDENTIFIED(xpp);
@@ -479,7 +489,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected PARTY parsePARTY(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "ROLE": return parseROLE(xpp);
     default: throw new FHIRException("Unsupported type '"+type+"'");
@@ -504,7 +514,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected PATHABLE parsePATHABLE(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "INSTRUCTION-DETAILS": return parseINSTRUCTION_DETAILS(xpp);
     case "ISM-TRANSITION": return parseISM_TRANSITION(xpp);
@@ -532,7 +542,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected UID_BASED_ID parseUID_BASED_ID(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "OBJECT-VERSION-ID": return parseOBJECT_VERSION_ID(xpp);
     case "HIER-OBJECT-ID": return parseHIER_OBJECT_ID(xpp);
@@ -548,7 +558,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected UID parseUID(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "ISO-OID": return parseISO_OID(xpp);
     case "UUID": return parseUUID(xpp);
@@ -567,7 +577,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   }
 
   protected VERSION parseVERSION(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    String type = xpp.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance", "type");
+    String type = xpp.getAttributeValue(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
     switch (type) {
     case "IMPORTED-VERSION": return parseIMPORTED_VERSION(xpp);
     case "ORIGINAL-VERSION": return parseORIGINAL_VERSION(xpp);
@@ -644,6 +654,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return true;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parseAddress}. See class JavaDoc. */
   protected ADDRESS parseADDRESS(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     ADDRESS res = new ADDRESS();
     next(xpp);
@@ -658,6 +669,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parseAddressContent}. See class JavaDoc. */
   protected boolean parseADDRESSContent(int eventType, XmlPullParser xpp, ADDRESS res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("details")) {
       res.setDetails(parseITEM_STRUCTURE(xpp));
@@ -927,6 +939,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return true;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parseComposition}. See class JavaDoc. */
   protected COMPOSITION parseCOMPOSITION(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     COMPOSITION res = new COMPOSITION();
     next(xpp);
@@ -941,6 +954,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parseCompositionContent}. See class JavaDoc. */
   protected boolean parseCOMPOSITIONContent(int eventType, XmlPullParser xpp, COMPOSITION res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("language")) {
       res.setLanguage(parseCODE_PHRASE(xpp));
@@ -1671,6 +1685,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parseElementContent}. See class JavaDoc. */
   protected boolean parseELEMENTContent(int eventType, XmlPullParser xpp, ELEMENT res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("null_flavour")) {
       res.setNull_flavour(parseDV_CODED_TEXT(xpp));
@@ -1856,6 +1871,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return true;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parseGroup}. See class JavaDoc. */
   protected GROUP parseGROUP(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     GROUP res = new GROUP();
     next(xpp);
@@ -1870,6 +1886,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parseGroupContent}. See class JavaDoc. */
   protected boolean parseGROUPContent(int eventType, XmlPullParser xpp, GROUP res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (!parseACTORContent(eventType, xpp, res)){ //2
       return false;
@@ -2327,6 +2344,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return true;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parseObservation}. See class JavaDoc. */
   protected OBSERVATION parseOBSERVATION(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     OBSERVATION res = new OBSERVATION();
     next(xpp);
@@ -2341,6 +2359,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parseObservationContent}. See class JavaDoc. */
   protected boolean parseOBSERVATIONContent(int eventType, XmlPullParser xpp, OBSERVATION res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("data")) {
       res.setData(parseHISTORY(xpp));
@@ -2577,6 +2596,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return true;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parsePerson}. See class JavaDoc. */
   protected PERSON parsePERSON(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     PERSON res = new PERSON();
     next(xpp);
@@ -2591,6 +2611,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parsePersonContent}. See class JavaDoc. */
   protected boolean parsePERSONContent(int eventType, XmlPullParser xpp, PERSON res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (!parseACTORContent(eventType, xpp, res)){ //2
       return false;
@@ -2939,6 +2960,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return true;
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#parseUuid}. See class JavaDoc. */
   protected UUID parseUUID(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     UUID res = new UUID();
     next(xpp);
@@ -3409,6 +3431,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  @Override
   protected DataType parseType(String prefix, XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     if (prefix == null) {
       throw new IOException("prefix == null!");
@@ -3460,6 +3483,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  @Override
   protected DataType parseType(XmlPullParser xpp, String type) throws XmlPullParserException, IOException, FHIRFormatError {
     if (type == null) {
       throw new IOException("type == null!");
@@ -3511,6 +3535,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  @Override
   public Base parseFragment(XmlPullParser xpp, String type) throws XmlPullParserException, IOException, FHIRFormatError {
     if (type == null) {
       throw new IOException("type == null!");
@@ -4789,6 +4814,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composeAddress}. See class JavaDoc. */
   protected void composeADDRESS(String name, ADDRESS element) throws IOException {
     if (element != null) {
       xml.enter(FHIR_NS, name);
@@ -4798,6 +4824,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composeAddressElements}. See class JavaDoc. */
   protected void composeADDRESSElements(ADDRESS element) throws IOException {
     composeLOCATABLEElements(element);
     if (element.hasDetails()) {
@@ -5012,6 +5039,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composeComposition}. See class JavaDoc. */
   protected void composeCOMPOSITION(String name, COMPOSITION element) throws IOException {
     if (element != null) {
       xml.enter(FHIR_NS, name);
@@ -5021,6 +5049,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composeCompositionElements}. See class JavaDoc. */
   protected void composeCOMPOSITIONElements(COMPOSITION element) throws IOException {
     composeLOCATABLEElements(element);
     if (element.hasLanguage()) {
@@ -5608,6 +5637,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composeElementElements}. See class JavaDoc. */
   protected void composeELEMENTElements(ELEMENT element) throws IOException {
     composeITEMElements(element);
     if (element.hasNull_flavour()) {
@@ -5773,6 +5803,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     composeOBJECT_IDElements(element);
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composeGroup}. See class JavaDoc. */
   protected void composeGROUP(String name, GROUP element) throws IOException {
     if (element != null) {
       xml.enter(FHIR_NS, name);
@@ -5782,6 +5813,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composeGroupElements}. See class JavaDoc. */
   protected void composeGROUPElements(GROUP element) throws IOException {
     composeACTORElements(element);
   }
@@ -6134,6 +6166,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     composeUID_BASED_IDElements(element);
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composeObservation}. See class JavaDoc. */
   protected void composeOBSERVATION(String name, OBSERVATION element) throws IOException {
     if (element != null) {
       xml.enter(FHIR_NS, name);
@@ -6143,6 +6176,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composeObservationElements}. See class JavaDoc. */
   protected void composeOBSERVATIONElements(OBSERVATION element) throws IOException {
     composeCARE_ENTRYElements(element);
     if (element.hasData()) {
@@ -6327,6 +6361,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     composePARTY_PROXYElements(element);
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composePerson}. See class JavaDoc. */
   protected void composePERSON(String name, PERSON element) throws IOException {
     if (element != null) {
       xml.enter(FHIR_NS, name);
@@ -6336,6 +6371,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composePersonElements}. See class JavaDoc. */
   protected void composePERSONElements(PERSON element) throws IOException {
     composeACTORElements(element);
   }
@@ -6623,6 +6659,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  /** Ensure that use of this method is intended, and NOT {@link org.hl7.fhir.r5.formats.XmlParser#composeUuid}. See class JavaDoc. */
   protected void composeUUID(String name, UUID element) throws IOException {
     if (element != null) {
       xml.enter(FHIR_NS, name);
@@ -7036,6 +7073,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  @Override
   protected void composeResource(String name, Resource resource) throws IOException {
     if (name == null) {
       throw new IOException("name == null");
@@ -7047,6 +7085,7 @@ public class OpenehrXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
+  @Override
   protected void composeType(String prefix, DataType type) throws IOException {
     if (prefix == null) {
       throw new IOException("prefix == null");

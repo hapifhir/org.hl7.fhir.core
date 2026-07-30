@@ -215,4 +215,12 @@ public class TimeType extends PrimitiveType<String> {
     return "@T"+primitiveValue();
   }
 
+  public boolean before(TimeType other) {
+    return primitiveValue().compareTo(other.primitiveValue()) < 0;
+
+  }
+
+  public boolean after(TimeType other) {
+    return primitiveValue().compareTo(other.primitiveValue()) > 0;
+  }
 }

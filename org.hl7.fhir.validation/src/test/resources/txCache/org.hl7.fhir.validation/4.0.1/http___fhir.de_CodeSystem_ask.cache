@@ -3,7 +3,7 @@
   "system" : "http://fhir.de/CodeSystem/ask",
   "code" : "05482",
   "display" : "Blutgerinnungsfaktor II"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -15,7 +15,6 @@
   }]
 }}####
 v: {
-  "display" : "Blutgerinnungsfaktor II",
   "code" : "05482",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",
@@ -43,7 +42,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ask' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }
@@ -54,7 +52,7 @@ v: {
   "system" : "http://fhir.de/CodeSystem/ask",
   "code" : "06225",
   "display" : "Blutgerinnungsfaktor VII"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -66,7 +64,6 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Blutgerinnungsfaktor VII",
   "code" : "06225",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",
@@ -94,7 +91,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ask' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }
@@ -105,7 +101,7 @@ v: {
   "system" : "http://fhir.de/CodeSystem/ask",
   "code" : "1234",
   "display" : "Protein S (human)"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -117,7 +113,6 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Protein S (human)",
   "code" : "1234",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",
@@ -145,7 +140,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ask' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }
@@ -156,7 +150,7 @@ v: {
   "system" : "http://fhir.de/CodeSystem/ask",
   "code" : "10669",
   "display" : "Plasmaprotein C vom Menschen"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -168,7 +162,6 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Plasmaprotein C vom Menschen",
   "code" : "10669",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",
@@ -196,7 +189,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ask' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }
@@ -207,7 +199,7 @@ v: {
   "system" : "http://fhir.de/CodeSystem/ask",
   "code" : "03800",
   "display" : "Blutgerinnungsfaktor IX vom Menschen"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -219,7 +211,6 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Blutgerinnungsfaktor IX vom Menschen",
   "code" : "03800",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",
@@ -247,7 +238,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ask' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }
@@ -258,7 +248,7 @@ v: {
   "system" : "http://fhir.de/CodeSystem/ask",
   "code" : "06226",
   "display" : "Blutgerinnungsfaktor X"
-}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+}, "valueSet" :null, "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
   "resourceType" : "Parameters",
   "parameter" : [{
     "name" : "profile-url",
@@ -270,7 +260,6 @@ v: {
   }]
 }}####
 v: {
-  "display" : "Blutgerinnungsfaktor X",
   "code" : "06226",
   "system" : "http://fhir.de/CodeSystem/ask",
   "severity" : "error",
@@ -298,7 +287,6 @@ v: {
       }],
       "text" : "A definition for CodeSystem 'http://fhir.de/CodeSystem/ask' could not be found, so the code cannot be validated"
     },
-    "location" : ["Coding.system"],
     "expression" : ["Coding.system"]
   }]
 }

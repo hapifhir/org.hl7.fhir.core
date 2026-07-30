@@ -73,6 +73,8 @@ public class BaseDataTableProvider {
 
   private Map<String, String> parse(String value) {
     Map<String, String> map = new HashMap<>();
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //fixed-width separator, safe
     String[] parts = value.split("\\|\\:\\|");
     for (String p : parts) {
       String n = p.substring(0, p.indexOf(":"));

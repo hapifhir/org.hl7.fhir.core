@@ -154,11 +154,17 @@ public class XVerExtensionManager {
         TypeRefComponent tr = val.addType().setCode(translateDataType(verTarget, t));
         if (hasTargets(tr.getCode())) {
           s = s.substring(t.length() + 1);
-          for (String p : s.substring(0, s.length() - 1).split("\\|")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
+          String[] targetProfiles = s.substring(0, s.length() - 1).split("\\|");
+          for (String p : targetProfiles) {
             if ("Any".equals(p)) {
               tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
             } else if (p.contains(",")) {
-              for (String pp : p.split("\\,")) {
+              @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+              //single literal character split
+              String[] profileParts = p.split("\\,");
+              for (String pp : profileParts) {
                 tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/" + pp);
               }
             } else {

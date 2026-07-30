@@ -7,6 +7,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.QuestionnaireResponse;
@@ -97,7 +98,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
 
     ResourceWrapper b = qr.child("questionnaire");
     String ref = b == null ? null : b.primitiveValue();
-    Questionnaire q = context.getContext().fetchResource(Questionnaire.class, ref);
+    Questionnaire q = context.getContext().fetchResource(Questionnaire.class, ref, ExtensionUtilities.getVersionResolutionRulesBase(b == null ? null : b.getBase()));
     
     r.setIcon("icon_q_root.gif", context.formatPhrase(RenderingContext.QUEST_RESP_ROOT));
     r.getCells().add(gen.new Cell(null, null, qr.getId(), null, null));
@@ -214,7 +215,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, null, src);
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, ExtensionUtilities.getVersionResolutionRules(i.getDefinitionElement()), null, src);
     if (sd != null) {
       String url = sd.getWebPath();
       if (url != null) {
@@ -235,7 +236,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
       path = d.substring(d.indexOf("#")+1);
       d = d.substring(0, d.indexOf("#"));
     }
-    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d, null, src);
+    StructureDefinition sd = context.getWorker().fetchResource(StructureDefinition.class, d,  ExtensionUtilities.getVersionResolutionRules(i.getDefinitionElement()), null, src);
     if (sd != null) {
       String url = sd.getWebPath();
       if (url != null) {

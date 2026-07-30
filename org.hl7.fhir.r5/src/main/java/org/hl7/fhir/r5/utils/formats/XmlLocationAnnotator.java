@@ -50,6 +50,8 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.LocatorImpl;
 import org.xml.sax.helpers.XMLFilterImpl;
 
+import javax.xml.XMLConstants;
+
 // http://javacoalface.blogspot.com.au/2011/04/line-and-column-numbers-in-xml-dom.html
 
 public class XmlLocationAnnotator extends XMLFilterImpl  {
@@ -75,14 +77,14 @@ public class XmlLocationAnnotator extends XMLFilterImpl  {
 
   @Override
   public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
-    if (!name.equals("http://javax.xml.XMLConstants/property/accessExternalDTD")) {
+    if (!name.equals(XMLConstants.ACCESS_EXTERNAL_DTD)) {
       super.setProperty(name, value);
     }
   }
 
   @Override
   public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
-    if (!name.equals("http://javax.xml.XMLConstants/property/accessExternalDTD")) {
+    if (!name.equals(XMLConstants.ACCESS_EXTERNAL_DTD)) {
       return null;
     } else {
       return super.getProperty(name);

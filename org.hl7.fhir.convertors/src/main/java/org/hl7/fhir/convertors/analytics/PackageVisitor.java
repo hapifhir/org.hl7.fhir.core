@@ -233,6 +233,8 @@ public class PackageVisitor {
       cpidSet.add(pid);
       if (step == 0 || (step == 1 && i < t/2) || (step == 2 && i >= t/2)) {
         long ms1 = System.currentTimeMillis();
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] p = url.split("\\/");
         String repo = "https://build.fhir.org/ig/"+p[0]+"/"+p[1];
         JsonObject manifest = JsonParser.parseObjectFromUrl(repo+"/package.manifest.json");

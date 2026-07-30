@@ -499,6 +499,7 @@ msgstr "Capacités par ressource/profil"
 
 # CAPABILITY_RES_TYP
 #: CAPABILITY_RES_TYP
+msgctxt "CAPABILITY_RES_TYP"
 msgid "Resource Type"
 msgstr "Type de Ressource"
 
@@ -654,8 +655,15 @@ msgstr ""
 
 # CODESYSTEM_DEPRECATED
 #: CODESYSTEM_DEPRECATED
+msgctxt "CODESYSTEM_DEPRECATED"
 msgid "Deprecated"
 msgstr "Déprécié"
+
+# CODESYSTEM_DEPRECATED_TRUE
+#: CODESYSTEM_DEPRECATED_TRUE
+msgctxt "CODESYSTEM_DEPRECATED_TRUE"
+msgid "Deprecated"
+msgstr ""
 
 # CODESYSTEM_FILTERS
 #: CODESYSTEM_FILTERS
@@ -667,10 +675,21 @@ msgstr "Filtres"
 msgid "Op"
 msgstr "Op"
 
+# CODESYSTEM_LVL
+#: CODESYSTEM_LVL
+msgctxt "CODESYSTEM_LVL"
+msgid "Level"
+msgstr ""
+
 # CODESYSTEM_PROPS_DESC
 #: CODESYSTEM_PROPS_DESC
 msgid "This code system defines the following properties for its concepts"
 msgstr "Cette terminologie de référence (CodeSystem) définit les propriétés suivantes pour ses concepts"
+
+# CODESYSTEM_REPLACED_BY
+#: CODESYSTEM_REPLACED_BY
+msgid "Replaced by"
+msgstr ""
 
 # CODE_SYS_CODE_NOT_HERE
 #: CODE_SYS_CODE_NOT_HERE
@@ -792,6 +811,11 @@ msgstr "Groupe {0}"
 msgid "(not specified)"
 msgstr "(non spécifié)"
 
+# CONC_MAP_NO_SPEC
+#: CONC_MAP_NO_SPEC
+msgid "This mapping does not specify any particular context of use."
+msgstr ""
+
 # CONC_MAP_REL
 #: CONC_MAP_REL
 msgid "Relationship"
@@ -907,6 +931,43 @@ msgctxt "CONF_SHOULD_PLURAL"
 msgid "SHOULD"
 msgstr ""
 
+# CONSENT_BASIS_POLICY_PREFIX
+#: CONSENT_BASIS_POLICY_PREFIX
+msgid "the policy"
+msgid_plural "the policies"
+msgstr[0] ""
+msgstr[1] ""
+
+# CONSENT_BASIS_POLICY_SUFFIX
+#: CONSENT_BASIS_POLICY_SUFFIX
+msgctxt "CONSENT_BASIS_POLICY_SUFFIX"
+msgid "."
+msgstr ""
+
+# CONSENT_BASIS_REGULATION_NONE
+#: CONSENT_BASIS_REGULATION_NONE
+msgid "This consent is made under"
+msgstr ""
+
+# CONSENT_BASIS_REGULATION_PREFIX
+#: CONSENT_BASIS_REGULATION_PREFIX
+msgid "This consent is made under the regulation"
+msgid_plural "This consent is made under the regulations"
+msgstr[0] ""
+msgstr[1] ""
+
+# CONSENT_BASIS_REGULATION_SUFFIX
+#: CONSENT_BASIS_REGULATION_SUFFIX
+msgctxt "CONSENT_BASIS_REGULATION_SUFFIX"
+msgid "."
+msgstr ""
+
+# CONSENT_BASIS_REGULATION_SUFFIX_MORE
+#: CONSENT_BASIS_REGULATION_SUFFIX_MORE
+msgctxt "CONSENT_BASIS_REGULATION_SUFFIX_MORE"
+msgid "and"
+msgstr ""
+
 # CONSENT_CATEGORY
 #: CONSENT_CATEGORY
 msgid "Category"
@@ -919,9 +980,125 @@ msgstr[1] ""
 msgid "Agreement Date"
 msgstr ""
 
+# CONSENT_DENY
+#: CONSENT_DENY
+msgid "deny"
+msgstr ""
+
+# CONSENT_DENY_DESC
+#: CONSENT_DENY_DESC
+msgid "The subject has NOT given their consent."
+msgstr ""
+
+# CONSENT_HTABLE_RULE
+#: CONSENT_HTABLE_RULE
+msgctxt "CONSENT_HTABLE_RULE"
+msgid "Rule"
+msgstr ""
+
+# CONSENT_HTABLE_RULES
+#: CONSENT_HTABLE_RULES
+msgid "Rules"
+msgstr ""
+
+# CONSENT_HTABLE_RULES_DESC
+#: CONSENT_HTABLE_RULES_DESC
+msgid "Other Applicable Rules"
+msgstr ""
+
+# CONSENT_HTABLE_RULE_DESC
+#: CONSENT_HTABLE_RULE_DESC
+msgid "Applicable Rule"
+msgstr ""
+
+# CONSENT_HTABLE_WHAT
+#: CONSENT_HTABLE_WHAT
+msgid "What"
+msgstr ""
+
+# CONSENT_HTABLE_WHAT_DESC
+#: CONSENT_HTABLE_WHAT_DESC
+msgid "Applicable Data"
+msgstr ""
+
+# CONSENT_HTABLE_WHEN
+#: CONSENT_HTABLE_WHEN
+msgid "Time Period"
+msgstr ""
+
+# CONSENT_HTABLE_WHEN_DESC
+#: CONSENT_HTABLE_WHEN_DESC
+msgctxt "CONSENT_HTABLE_WHEN_DESC"
+msgid "Applicable Period"
+msgstr ""
+
+# CONSENT_HTABLE_WHO
+#: CONSENT_HTABLE_WHO
+msgid "Who"
+msgstr ""
+
+# CONSENT_HTABLE_WHO_DESC
+#: CONSENT_HTABLE_WHO_DESC
+msgid "Applicable Parties"
+msgstr ""
+
+# CONSENT_HT_ACTION
+#: CONSENT_HT_ACTION
+msgid "For action"
+msgstr ""
+
+# CONSENT_HT_CLASS
+#: CONSENT_HT_CLASS
+msgid "Class"
+msgstr ""
+
+# CONSENT_HT_CODE
+#: CONSENT_HT_CODE
+msgctxt "CONSENT_HT_CODE"
+msgid "Code"
+msgstr ""
+
+# CONSENT_HT_DATA_PERIOD
+#: CONSENT_HT_DATA_PERIOD
+msgid "Data from Period"
+msgstr ""
+
+# CONSENT_HT_DOC_TYPE
+#: CONSENT_HT_DOC_TYPE
+msgid "Document Type"
+msgstr ""
+
+# CONSENT_HT_PERIOD
+#: CONSENT_HT_PERIOD
+msgctxt "CONSENT_HT_PERIOD"
+msgid "Period"
+msgstr ""
+
+# CONSENT_HT_PURPOSE
+#: CONSENT_HT_PURPOSE
+msgctxt "CONSENT_HT_PURPOSE"
+msgid "Purpose"
+msgstr ""
+
+# CONSENT_HT_RESOURCE_TYPE
+#: CONSENT_HT_RESOURCE_TYPE
+msgctxt "CONSENT_HT_RESOURCE_TYPE"
+msgid "Resource Type"
+msgstr ""
+
+# CONSENT_HT_SEC_LABEL
+#: CONSENT_HT_SEC_LABEL
+msgid "Labled as"
+msgstr ""
+
 # CONSENT_PART_TBL_CONTROLLER
 #: CONSENT_PART_TBL_CONTROLLER
 msgid "Controller"
+msgstr ""
+
+# CONSENT_PART_TBL_CONTROLLER_DESC
+#: CONSENT_PART_TBL_CONTROLLER_DESC
+msgid "Who controls/enforces the access according to the consent."
 msgstr ""
 
 # CONSENT_PART_TBL_DETAILS
@@ -935,9 +1112,20 @@ msgstr ""
 msgid "Grantee"
 msgstr ""
 
+# CONSENT_PART_TBL_GRANTEE_DESC
+#: CONSENT_PART_TBL_GRANTEE_DESC
+msgctxt "CONSENT_PART_TBL_GRANTEE_DESC"
+msgid "Who is agreeing to the policy and rules"
+msgstr ""
+
 # CONSENT_PART_TBL_GRANTOR
 #: CONSENT_PART_TBL_GRANTOR
 msgid "Grantor"
+msgstr ""
+
+# CONSENT_PART_TBL_GRANTOR_DESC
+#: CONSENT_PART_TBL_GRANTOR_DESC
+msgid "Who is granting rights according to the policy and rules"
 msgstr ""
 
 # CONSENT_PART_TBL_MANAGER
@@ -945,14 +1133,30 @@ msgstr ""
 msgid "Manager"
 msgstr ""
 
+# CONSENT_PART_TBL_MANAGER_DESC
+#: CONSENT_PART_TBL_MANAGER_DESC
+msgid "Who manages the consent through its lifecycle."
+msgstr ""
+
 # CONSENT_PART_TBL_PARTY
 #: CONSENT_PART_TBL_PARTY
 msgid "Party"
 msgstr ""
 
+# CONSENT_PART_TBL_PARTY_DESC
+#: CONSENT_PART_TBL_PARTY_DESC
+msgctxt "CONSENT_PART_TBL_PARTY_DESC"
+msgid "Who is agreeing to the policy and rules"
+msgstr ""
+
 # CONSENT_PART_TBL_PATIENT
 #: CONSENT_PART_TBL_PATIENT
 msgid "Patient"
+msgstr ""
+
+# CONSENT_PART_TBL_PATIENT_DESC
+#: CONSENT_PART_TBL_PATIENT_DESC
+msgid "Who the consent applies to"
 msgstr ""
 
 # CONSENT_PART_TBL_ROLE
@@ -963,7 +1167,23 @@ msgstr ""
 
 # CONSENT_PERIOD
 #: CONSENT_PERIOD
+msgctxt "CONSENT_PERIOD"
 msgid "Applicable Period"
+msgstr ""
+
+# CONSENT_PERMIT
+#: CONSENT_PERMIT
+msgid "permit"
+msgstr ""
+
+# CONSENT_PERMIT_DESC
+#: CONSENT_PERMIT_DESC
+msgid "The subject has given their consent."
+msgstr ""
+
+# CONSENT_PROVISION
+#: CONSENT_PROVISION
+msgid "Consent Provision"
 msgstr ""
 
 # CONSENT_SCOPE
@@ -1037,6 +1257,7 @@ msgstr ""
 
 # CSTABLE_HEAD_RULE
 #: CSTABLE_HEAD_RULE
+msgctxt "CSTABLE_HEAD_RULE"
 msgid "Rule"
 msgstr ""
 
@@ -1145,11 +1366,6 @@ msgstr "au déjeuner"
 msgctxt "DATA_REND_ATT_DATA"
 msgid "{0}: {1}"
 msgstr "{0} : {1}"
-
-# DATA_REND_ATT_URL
-#: DATA_REND_ATT_URL
-msgid "{0} @ {1}"
-msgstr "{0} @ {1}"
 
 # DATA_REND_BASE64
 #: DATA_REND_BASE64
@@ -1491,6 +1707,11 @@ msgstr "Erreur :"
 msgid "for"
 msgstr "pour"
 
+# DIAG_REP_REND_FORM
+#: DIAG_REP_REND_FORM
+msgid "Presented Form"
+msgstr ""
+
 # DIAG_REP_REND_IDENTIFIER
 #: DIAG_REP_REND_IDENTIFIER
 msgctxt "DIAG_REP_REND_IDENTIFIER"
@@ -1534,8 +1755,8 @@ msgstr "Impossible d''obtenir les détails du patient"
 
 # DIAG_REP_REND_WHEN
 #: DIAG_REP_REND_WHEN
-msgid "When For"
-msgstr "When For"
+msgid "Relevant Time"
+msgstr "!!When For"
 
 # DIAG_REP_SUMMARY
 #: DIAG_REP_SUMMARY
@@ -1562,6 +1783,11 @@ msgstr ""
 #: EXAMPLE_SCEN_STEP_SCEN
 msgid "Step {0}  - See scenario {1}"
 msgstr "Étape {0} - Voir le scénario {1}"
+
+# EXT_STANDARDS_STATUS
+#: EXT_STANDARDS_STATUS
+msgid "Standards Status"
+msgstr ""
 
 # EX_SCEN_ALT
 #: EX_SCEN_ALT
@@ -1648,6 +1874,11 @@ msgstr "Mode de rendu ExampleScenario inconnu {0}"
 msgid "Unable to find referenced actor {0}"
 msgstr "Impossible de trouver l''acteur référencé {0}"
 
+# FEATURE
+#: FEATURE
+msgid "Feature"
+msgstr ""
+
 # FMM_TABLE
 #: FMM_TABLE
 msgid "<table class=\"cols\" data-fhir=\"generated\"><tbody><tr><td><a href=\"http://hl7.org/fhir/versions.html#maturity\">Maturity Level</a>: {0}</td><td>&nbsp;<a href=\"{1}versions.html#std-process\" title=\"Standard Status\">{2}</a></td></tr></tbody></table>"
@@ -1706,6 +1937,7 @@ msgstr "Cardinalité"
 
 # GENERAL_CODE
 #: GENERAL_CODE
+msgctxt "GENERAL_CODE"
 msgid "Code"
 msgstr "Code"
 
@@ -1754,6 +1986,11 @@ msgstr "Contact :"
 #: GENERAL_CONTENT
 msgid "Content"
 msgstr "Contenu"
+
+# GENERAL_COPY
+#: GENERAL_COPY
+msgid "Click to Copy"
+msgstr ""
 
 # GENERAL_COPYRIGHT
 #: GENERAL_COPYRIGHT
@@ -1825,7 +2062,6 @@ msgstr "Filtre"
 
 # GENERAL_FIXED_VALUE
 #: GENERAL_FIXED_VALUE
-msgctxt "GENERAL_FIXED_VALUE"
 msgid "Fixed Value: {0}"
 msgstr "Valeur fixe : {0}"
 
@@ -1911,7 +2147,6 @@ msgstr "Paramètres"
 
 # GENERAL_PATTERN_VALUE
 #: GENERAL_PATTERN_VALUE
-msgctxt "GENERAL_PATTERN_VALUE"
 msgid "Pattern Value: {0}"
 msgstr "Valeur du modèle : {0}"
 
@@ -1934,6 +2169,7 @@ msgstr "Propriétés"
 
 # GENERAL_PURPOSE
 #: GENERAL_PURPOSE
+msgctxt "GENERAL_PURPOSE"
 msgid "Purpose"
 msgstr "But"
 
@@ -2079,6 +2315,7 @@ msgstr "La valeur doit être supérieure ou égale à {0}"
 
 # GENERAL_VER
 #: GENERAL_VER
+msgctxt "GENERAL_VER"
 msgid "Version"
 msgstr "Version"
 
@@ -2286,6 +2523,7 @@ msgstr "Identifiants"
 
 # NAME_SYS_PER
 #: NAME_SYS_PER
+msgctxt "NAME_SYS_PER"
 msgid "Period"
 msgstr "Période"
 
@@ -3172,6 +3410,11 @@ msgstr "Erreur de rendu : {0}"
 msgid "Information Source: <param name=\"source\"/>"
 msgstr ""
 
+# RES_REND_INFO_SOURCE_NAME
+#: RES_REND_INFO_SOURCE_NAME
+msgid "Information Source"
+msgstr ""
+
 # RES_REND_LANGUAGE
 #: RES_REND_LANGUAGE
 msgid "Language: {0}"
@@ -3212,10 +3455,21 @@ msgstr "Inconnu"
 msgid "Last updated: {0}"
 msgstr "Dernière mise à jour : {0}"
 
+# RES_REND_UPDATED_NAME
+#: RES_REND_UPDATED_NAME
+msgid "Last updated"
+msgstr ""
+
 # RES_REND_VER
 #: RES_REND_VER
 msgid "version: {0}"
 msgstr "version : {0}"
+
+# RES_REND_VER_NAME
+#: RES_REND_VER_NAME
+msgctxt "RES_REND_VER_NAME"
+msgid "Version"
+msgstr ""
 
 # SDR_ALL_ELEM
 #: SDR_ALL_ELEM
@@ -3336,8 +3590,8 @@ msgstr "Exemples pour ce/t/te {0}"
 
 # SDR_EXPERIMENTAL
 #: SDR_EXPERIMENTAL
-msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for genuine usage."
-msgstr "Ceci est une définition d''extension expérimentale ; la définition est destinée à des fins de test, d''éducation ou d''évaluation, et ne devrait pas atteindre un niveau de maturité permettant une utilisation réelle."
+msgid "This is an experimental extension definition; the definition is intended for testing purposes, education or evaluation, and the definition is not anticipated to be matured to a point where it is intended for production use."
+msgstr "!!Ceci est une définition d''extension expérimentale ; la définition est destinée à des fins de test, d''éducation ou d''évaluation, et ne devrait pas atteindre un niveau de maturité permettant une utilisation réelle."
 
 # SDR_EXTENSION_SUMMARY
 #: SDR_EXTENSION_SUMMARY
@@ -3413,14 +3667,9 @@ msgstr "Cette extension est autorisée pour une utilisation avec"
 
 # SDR_EXT_VER_SFX
 #: SDR_EXT_VER_SFX
+msgctxt "SDR_EXT_VER_SFX"
 msgid "."
 msgstr "."
-
-# SDR_FIXED_VALUE
-#: SDR_FIXED_VALUE
-msgctxt "SDR_FIXED_VALUE"
-msgid "Fixed Value: {0}"
-msgstr "Valeur fixe : {0}"
 
 # SDR_FROM
 #: SDR_FROM
@@ -3511,7 +3760,7 @@ msgstr "Pas encore géré : extension complexe ''{0}''"
 # SDR_NOT_USED
 #: SDR_NOT_USED
 msgid "This {0} is not used by any profiles in this Implementation Guide"
-msgstr "Ce {0} n''est utilisé par aucun autre profil dans ce guide d''implémentation"
+msgstr "Ce/t/te {0} n''est utilisé/e par aucun autre profil dans ce guide d''implémentation"
 
 # SDR_OFF_URL
 #: SDR_OFF_URL
@@ -3527,12 +3776,6 @@ msgstr "Un de ces {0}"
 #: SDR_ONLY_ONE
 msgid "Only One!"
 msgstr "Un seul !"
-
-# SDR_PATTERN_VALUE
-#: SDR_PATTERN_VALUE
-msgctxt "SDR_PATTERN_VALUE"
-msgid "Pattern Value: {0}"
-msgstr "Valeur de motif : {0}"
 
 # SDR_PRIM_VALUE
 #: SDR_PRIM_VALUE
@@ -3919,8 +4162,8 @@ msgstr "Il y a une slice sans discriminateur à {0}"
 
 # SD_XIG_LINK
 #: SD_XIG_LINK
-msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">usages in the FHIR IG Statistics</a></p>"
-msgstr "<p>Vous pouvez également vérifier <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">les usages dans le FHIR IG Statistics</a></p>"
+msgid "<p>You can also check for <a href=\"https://packages2.fhir.org/xig/resource/{0}|current/StructureDefinition/StructureDefinition-{1}.json\">usages in the FHIR IG Statistics</a></p>"
+msgstr "!!<p>Vous pouvez également vérifier <a href=\"https://packages2.fhir.org/xig/{0}|current/StructureDefinition/{1}\">les usages dans le FHIR IG Statistics</a></p>"
 
 # SEARCH_PAR_ALLOWED
 #: SEARCH_PAR_ALLOWED
@@ -4007,6 +4250,11 @@ msgstr "{0} - version de développement local (intégration continue v{1}) const
 #: STATUS_MSG_PUBLICATION_HOLDER
 msgid "Publication Build: This will be filled in by the publication tooling"
 msgstr "Publication Build : Ceci sera rempli par l''outil de publication"
+
+# STRUCTURAL_REQUIREMENTS
+#: STRUCTURAL_REQUIREMENTS
+msgid "Structural Requirements"
+msgstr ""
 
 # STRUC_DEF_ABSTRACT
 #: STRUC_DEF_ABSTRACT
@@ -4106,8 +4354,8 @@ msgstr "Ce jeu de valeurs est un candidat pour remplacer le jeu de valeurs de co
 
 # STRUC_DEF_CANNOT_TARGET
 #: STRUC_DEF_CANNOT_TARGET
-msgid "Instances of this logical model cannot be the target of a Reference"
-msgstr "Les instances de ce modèle logique ne peuvent pas être la cible d''une référence"
+msgid "Instances of this type cannot be the target of a Reference"
+msgstr "!!Les instances de ce modèle logique ne peuvent pas être la cible d''une référence"
 
 # STRUC_DEF_CANT_FIND
 #: STRUC_DEF_CANT_FIND
@@ -4116,8 +4364,8 @@ msgstr "getElementByName : impossible de trouver {0} dans {1} depuis {2}"
 
 # STRUC_DEF_CAN_TARGET
 #: STRUC_DEF_CAN_TARGET
-msgid "Instances of this logical model can be the target of a Reference"
-msgstr "Les instances de ce modèle logique peuvent être la cible d''une référence"
+msgid "Instances of this type can be the target of a Reference"
+msgstr "!!Les instances de ce modèle logique peuvent être la cible d''une référence"
 
 # STRUC_DEF_CAP
 #: STRUC_DEF_CAP
@@ -5021,6 +5269,11 @@ msgstr "Cette structure fait référence à ces autres structures"
 msgid "This type can be bound to a value set using the {0}"
 msgstr "Ce type peut être lié à un jeu de valeurs en utilisant le {0}"
 
+# STRUC_DEF_TYPE_CHARACTERISTICS
+#: STRUC_DEF_TYPE_CHARACTERISTICS
+msgid "Type Characteristics"
+msgstr ""
+
 # STRUC_DEF_TYPE_PARAMETER
 #: STRUC_DEF_TYPE_PARAMETER
 msgid "Type Parameter"
@@ -5667,6 +5920,7 @@ msgstr "Édition de la République de Corée (Corée du Sud)"
 
 # VALUE_SET_LEVEL
 #: VALUE_SET_LEVEL
+msgctxt "VALUE_SET_LEVEL"
 msgid "Level"
 msgstr "Niveau"
 
@@ -5857,6 +6111,11 @@ msgstr "Définition logique (CLD)"
 msgid "No formal definition provided for this value set"
 msgstr "Aucune définition formelle fournie pour ce jeu de valeurs"
 
+# VSR_RULES_TEXT
+#: VSR_RULES_TEXT
+msgid "This ValueSet does not have a formal definition; instead, the value set must be prepared by hand using these instructions."
+msgstr ""
+
 # VSR_TRIGGER
 #: VSR_TRIGGER
 msgid "Used as a trigger criteria in"
@@ -5876,6 +6135,11 @@ msgstr "La version n''est pas explicitement indiquée, ce qui signifie qu'elle e
 #: VS_VERSION_FOUND
 msgid "Version is not explicitly stated. When building this specification, the most recent version {0} has been used"
 msgstr "La version n''est pas explicitement indiquée. Lors de la génération de cette spécification, la version la plus récente {0} a été utilisée"
+
+# VS_VERSION_LATEST
+#: VS_VERSION_LATEST
+msgid "Version is always the latest available, which is {0} at this time"
+msgstr ""
 
 # VS_VERSION_NONE
 #: VS_VERSION_NONE
@@ -5912,7 +6176,13 @@ msgstr "La version est indiquée comme étant {0}. Lors de la construction de ce
 msgid "Version is stated to be {0}, which means it is fixed to {1}, the version found through the package references"
 msgstr "La version est indiquée comme étant {0}, ce qui signifie qu'elle est fixée à {1}, la version trouvée via les références de package"
 
+# WEB_SOURCE
+#: WEB_SOURCE
+msgid "Web Source"
+msgstr ""
+
 # _NA
 #: _NA
 msgid "n/a"
 msgstr "n/a"
+

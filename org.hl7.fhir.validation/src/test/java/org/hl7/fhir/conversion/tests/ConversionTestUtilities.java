@@ -63,6 +63,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.hl7.fhir.validation.IgLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -91,6 +92,8 @@ public class ConversionTestUtilities {
 	      SimpleWorkerContext fcontext = TestingUtilities.getWorkerContext(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
 	      fcontext.setUcumService(new UcumEssenceService(ConversionTestUtilities.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionParameters(new Parameters());
+        fcontext.setPackageManager(new FilesystemPackageCacheManager.Builder().build());
+        fcontext.setLoaderFactory(new IgLoader(fcontext.packageManager(), fcontext, fcontext.getVersion(), true));
 	      fcontexts.put(version, fcontext);
 	    } catch (Exception e) {
 	      throw new Error(e);

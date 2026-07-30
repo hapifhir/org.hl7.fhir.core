@@ -37,17 +37,12 @@ import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.BaseWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.Constants;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.CodeSystemRenderer;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
 import org.hl7.fhir.r5.renderers.ValueSetRenderer;
@@ -373,7 +368,7 @@ public class ComparisonTests {
 
     @Override
     public BindingResolution resolveBinding(StructureDefinition def, ElementDefinitionBindingComponent binding, String path) throws FHIRException {
-      ValueSet vs = context.fetchResource(ValueSet.class, binding.getValueSet());
+      ValueSet vs = context.fetchResource(ValueSet.class, binding.getValueSet(), ExtensionUtilities.getVersionResolutionRules(binding.getValueSetElement()));
       if (vs != null) {
         return new BindingResolution(vs.present(), vs.getWebPath());
       } else {
@@ -382,8 +377,8 @@ public class ComparisonTests {
     }
 
     @Override
-    public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
-      ValueSet vs = context.fetchResource(ValueSet.class, url);
+    public BindingResolution resolveBinding(StructureDefinition def, String url, String path, Element ctxt) throws FHIRException {
+      ValueSet vs = context.fetchResource(ValueSet.class, url, ExtensionUtilities.getVersionResolutionRules(ctxt));
       if (vs != null) {
         if (vs.hasWebPath()) {
           return new BindingResolution(vs.present(), vs.getWebPath());

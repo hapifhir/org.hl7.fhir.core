@@ -15,6 +15,8 @@ public class AsteriskFilter implements FilenameFilter {
   String dir;
   String regex;
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //applied to filesystem paths; ReDoS risk negligible
   public AsteriskFilter(String filter) throws IOException {
     if (!filter.matches(DIR_REGEX))
       throw new IOException("Filter names must have the following syntax: [directorypath][prefix]?*[suffix]?   I.e. The asterisk must be in the filename, not the directory path");
@@ -42,6 +44,8 @@ public class AsteriskFilter implements FilenameFilter {
     }
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //applied to filesystem paths; ReDoS risk negligible
   public boolean accept(File dir, String s) {
     return s.matches(regex);
   }
