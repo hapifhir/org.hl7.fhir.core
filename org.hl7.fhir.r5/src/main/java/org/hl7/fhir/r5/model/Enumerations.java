@@ -19190,6 +19190,10 @@ The primary difference between a medicationstatement and a medicationadministrat
        * Added in R6
        */
       PERSONALRELATIONSHIP,
+      /**
+       * A resource type that isn't defined in any version of FHIR - only returned when Configuration.isAllowCustomResourceTypes() is set. The actual type name is carried in the string value of the Enumeration that holds this constant, and is not recoverable from the constant itself
+       */
+      CUSTOM,
         /**
            * added to help the parsers
          */
@@ -19613,7 +19617,22 @@ The primary difference between a medicationstatement and a medicationadministrat
             return INSURANCEPRODUCT;
           if ("PersonalRelationship".equals(codeString))
             return PERSONALRELATIONSHIP;
+        if (Configuration.isAllowCustomResourceTypes() && isPlausibleCustomResourceType(codeString))
+          return CUSTOM;
         throw new FHIRException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
+        }
+        /**
+         * Checks whether a code that isn't defined in any version of FHIR is at least shaped like a
+         * resource type name (leading upper case letter, then letters and digits only), for use when
+         * Configuration.isAllowCustomResourceTypes() is set
+         */
+        public static boolean isPlausibleCustomResourceType(String codeString) {
+            if (codeString == null || codeString.length() == 0 || !Character.isUpperCase(codeString.charAt(0)))
+                return false;
+            for (char c : codeString.toCharArray())
+                if (!Character.isLetterOrDigit(c))
+                    return false;
+            return true;
         }
         public static boolean isValidCode(String codeString) {
             if (codeString == null || "".equals(codeString))
@@ -19851,6 +19870,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case DEVICEALERT: return "DeviceAlert";
             case INSURANCEPRODUCT: return "InsuranceProduct";
             case PERSONALRELATIONSHIP: return "PersonalRelationship";
+            case CUSTOM: return null;
             case NULL: return null;
             default: return "?";
           }
@@ -20065,6 +20085,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case DEVICEALERT: return "http://hl7.org/fhir/fhir-types";
             case INSURANCEPRODUCT: return "http://hl7.org/fhir/fhir-types";
             case PERSONALRELATIONSHIP: return "http://hl7.org/fhir/fhir-types";
+            case CUSTOM: return null;
             case NULL: return null;
             default: return "?";
           }
@@ -20279,6 +20300,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case DEVICEALERT: return "";
             case INSURANCEPRODUCT: return "";
             case PERSONALRELATIONSHIP: return "";
+            case CUSTOM: return "A resource type that is not defined in any published version of FHIR";
             case NULL: return null;
             default: return "?";
           }
@@ -20493,6 +20515,7 @@ The primary difference between a medicationstatement and a medicationadministrat
             case INSURANCEPRODUCT: return "InsuranceProduct";
             case DEVICEALERT: return "DeviceAlert";
             case PERSONALRELATIONSHIP: return "PersonalRelationship";
+            case CUSTOM: return null;
             case NULL: return null;
             default: return "?";
           }
@@ -20920,6 +20943,8 @@ The primary difference between a medicationstatement and a medicationadministrat
         return VersionIndependentResourceTypesAll.INSURANCEPRODUCT;
       if ("PersonalRelationship".equals(codeString))
         return VersionIndependentResourceTypesAll.PERSONALRELATIONSHIP;
+      if (Configuration.isAllowCustomResourceTypes() && VersionIndependentResourceTypesAll.isPlausibleCustomResourceType(codeString))
+        return VersionIndependentResourceTypesAll.CUSTOM;
       throw new IllegalArgumentException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
     }
 
@@ -21347,6 +21372,11 @@ The primary difference between a medicationstatement and a medicationadministrat
             return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.INSURANCEPRODUCT, code);
           if ("PersonalRelationship".equals(codeString))
             return new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.PERSONALRELATIONSHIP, code);
+          if (Configuration.isAllowCustomResourceTypes() && VersionIndependentResourceTypesAll.isPlausibleCustomResourceType(codeString)) {
+            Enumeration<VersionIndependentResourceTypesAll> res = new Enumeration<VersionIndependentResourceTypesAll>(this, VersionIndependentResourceTypesAll.CUSTOM, code);
+            res.setValueAsString(codeString);
+            return res;
+          }
         throw new FHIRException("Unknown VersionIndependentResourceTypesAll code '"+codeString+"'");
         }
     public String toCode(VersionIndependentResourceTypesAll code) {

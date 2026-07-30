@@ -882,6 +882,7 @@ public class StructureMapValidator extends BaseValidator {
                   String exp = params.get(0).getChildValue("value");
                   if (rule(errors, "2023-03-01", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), exp != null, I18nConstants.SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE, "0", params.size())) {
                     try {
+                      fpe.setLocation(params.get(0).getPath());
                       TypeDetails td = fpe.check(variables, null, v.getSd().getUrl(), v.getEd().getPath(), fpe.parse(exp));
                       if (td.getTypes().size() == 1) {
                         type = td.getType();

@@ -705,7 +705,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           if (!td.isEmpty()) {
             List<IssueMessage> warnings = new ArrayList<IssueMessage>();
             try {
-              TypeDetails eval = fpe.checkOnTypes(this, "Resource", tn, td, fpe.parse(pathExp), warnings, true);
+              TypeDetails eval = fpe.checkOnTypes(null, "Resource", tn, td, fpe.parse(pathExp), warnings, true); // appInfo must be null (or a ValidationContext): there are no external constants in discriminator paths
               if (eval.isEmpty()) {
                 ok = rule(errors, "2024-11-06", IssueType.INVALID, dStack, false, I18nConstants.SD_PATH_NOT_VALID, pathExp, path) && ok;
               } 
