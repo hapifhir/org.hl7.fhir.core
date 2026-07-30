@@ -258,7 +258,21 @@ public class TerminologyClientManager {
       }
     }
 
-    choices.forEach(choice -> checkActuallySupports(choice));
+    // check the candidates actually support the code system - but filter a copy: the
+    // ServerOptionList objects are cached in resMap (and persisted to system-map.json),
+    // and must keep recording what the registry actually said, not the outcome of a
+    // possibly-transient support check
+    List<ServerOptionList> filteredChoices = new ArrayList<>();
+    for (ServerOptionList choice : choices) {
+      ServerOptionList filtered = checkActuallySupports(choice);
+      if (filtered.candidates.size() < choice.candidates.size()) {
+        List<String> removed = new ArrayList<>(choice.candidates);
+        removed.removeAll(filtered.candidates);
+        log(vs, null, systems, choices, "Candidate server(s) "+CommaSeparatedStringBuilder.join("|", removed)+" dropped for "+choice.url+": no usable copy of the code system found there");
+      }
+      filteredChoices.add(filtered);
+    }
+    choices = filteredChoices;
 
     // now we look for a server that's a candidate for all of them
     for (ServerOptionList ol : choices) {
@@ -326,13 +340,16 @@ public class TerminologyClientManager {
     }
   }
 
-  private void checkActuallySupports(ServerOptionList choice) {
+  private ServerOptionList checkActuallySupports(ServerOptionList choice) {
     for (String s : choice.candidates) {
       if (isTxFhirOrg(s)) {
-        return;
+        return choice;
       }
     }
-    choice.candidates.removeIf(server -> !isSupportedServer(server, choice.url));
+    ServerOptionList res = new ServerOptionList(choice.url, choice.authoritative, choice.candidates);
+    res.language = choice.language;
+    res.candidates.removeIf(server -> !isSupportedServer(server, choice.url));
+    return res;
   }
 
   private boolean isSupportedServer(String server, String url) {
@@ -539,18 +556,16 @@ public class TerminologyClientManager {
         canonical.contains("|")
           ? "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|")))+"&version="+Utilities.escapeUrl(canonical.substring(canonical.indexOf("|")+1))
           : "?url=" + Utilities.escapeUrl(canonical));
-      if (bnd.getEntry().size() == 1 && bnd.getEntry().get(0).hasResource() && bnd.getEntry().get(0).getResource() instanceof CodeSystem) {
-        CodeSystem cs = (CodeSystem) bnd.getEntry().get(0).getResource();
-        boolean ok = cs.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cs.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT;
+      if (bnd.getEntry().size() > 0) {
+        boolean ok = anyUsableCodeSystem(bnd);
         serverSupportMap.put(key, ok);
         return ok;
       }
       if (canonical.contains("|")) {
         bnd = client.getClient().search("CodeSystem",
           "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|"))));
-        if (bnd.getEntry().size() == 1 && bnd.getEntry().get(0).hasResource() && bnd.getEntry().get(0).getResource() instanceof CodeSystem) {
-          CodeSystem cs = (CodeSystem) bnd.getEntry().get(0).getResource();
-          boolean ok = cs.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cs.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT;
+        if (bnd.getEntry().size() > 0) {
+          boolean ok = anyUsableCodeSystem(bnd);
           serverSupportMap.put(key, ok);
           return ok;
         }
@@ -559,6 +574,24 @@ public class TerminologyClientManager {
       // nothing
     }
     serverSupportMap.put(key, false);
+    return false;
+  }
+
+  /**
+   * A server supports a code system if any version it hosts has usable content.
+   * Servers commonly host multiple versions of the same code system (e.g. ANZSCO
+   * on the AU servers) - this used to require exactly one search match, which
+   * wrongly disqualified any server holding more than one version.
+   */
+  private boolean anyUsableCodeSystem(Bundle bnd) {
+    for (Bundle.BundleEntryComponent be : bnd.getEntry()) {
+      if (be.hasResource() && be.getResource() instanceof CodeSystem) {
+        CodeSystem cs = (CodeSystem) be.getResource();
+        if (cs.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cs.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT) {
+          return true;
+        }
+      }
+    }
     return false;
   }
 
@@ -659,6 +692,9 @@ public class TerminologyClientManager {
                 resMap.put(pair.asString("system"), new ServerOptionList(url, pair.asString("server")));
               } else {
                 ServerOptionList sol = new ServerOptionList(url, pair.getStrings("authoritative"), pair.getStrings("candidates"));
+                if (sol.authoritative.isEmpty() && sol.candidates.isEmpty()) {
+                  continue; // don't reload a persisted empty resolution (written by older versions) - re-ask the registry
+                }
                 sol.language = pair.asString("language");
                 resMap.put(pair.asString("system"), sol);
               }
@@ -675,10 +711,13 @@ public class TerminologyClientManager {
     if (cacheFile != null && cache.getFolder() != null) {
       JsonObject json = new JsonObject();
       for (String s : Utilities.sorted(resMap.keySet())) {
+        ServerOptionList sol = resMap.get(s);
+        if (sol.authoritative.isEmpty() && sol.candidates.isEmpty()) {
+          continue; // an empty resolution isn't worth remembering across runs - it may have been transient (registry outage etc), so re-ask next time
+        }
         JsonObject si = new JsonObject();
         json.forceArray("systems").add(si);
         si.add("system", s);
-        ServerOptionList sol = resMap.get(s);
         si.add("url", sol.url);
         if (sol.language != null) {
           si.add("language", sol.language);
