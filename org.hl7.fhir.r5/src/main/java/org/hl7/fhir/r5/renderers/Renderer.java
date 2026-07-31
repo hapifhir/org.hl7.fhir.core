@@ -64,7 +64,11 @@ public class Renderer  {
   }
 
   public Renderer(IWorkerContext worker) {
-    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R5", "", worker.getLocale(), ResourceRendererMode.END_USER, GenerationRules.IG_PUBLISHER);
+    this.context = new RenderingContext(worker, new RendererFactory(), new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R5", "", worker.getLocale(), ResourceRendererMode.END_USER, GenerationRules.IG_PUBLISHER);
+  }
+
+  public Renderer(IWorkerContext worker, RendererFactory renderer) {
+    this.context = new RenderingContext(worker, renderer, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R5", "", worker.getLocale(), ResourceRendererMode.END_USER, GenerationRules.IG_PUBLISHER);
   }
 
 

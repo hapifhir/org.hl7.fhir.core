@@ -62,6 +62,16 @@ public class JsonParser extends JsonParserBase {
     setAllowComments(allowComments);
   }
 
+  public JsonParser(CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+  }
+
+  public JsonParser(boolean allowUnknownContent, boolean allowComments, CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+    setAllowUnknownContent(allowUnknownContent);
+    setAllowComments(allowComments);
+  }
+
   protected void parseBaseProperties(JsonObject json, Base res) throws IOException, FHIRFormatError {
     // nothing
   }

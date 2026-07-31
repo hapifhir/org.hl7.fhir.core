@@ -84,7 +84,7 @@ public class ParametersRenderer extends ResourceRenderer {
         if (x != null) {
           td.addChildren(x);
         } else {
-          ResourceRenderer rr = RendererFactory.factory(rw, context);
+          ResourceRenderer rr = rendererFactory.factory(rw, context);
           rr.buildNarrative(status, td, rw);
         }
       } else if (p.has("part")) {

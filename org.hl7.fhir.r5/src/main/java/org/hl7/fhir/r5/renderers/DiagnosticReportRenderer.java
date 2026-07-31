@@ -103,7 +103,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     
     for (ResourceWrapper cont : dr.children("contained")) {
       x.hr();
-      RendererFactory.factory(cont, context.forContained()).setInner(true).buildNarrative(status, x, cont);
+      rendererFactory.factory(cont, context.forContained()).setInner(true).buildNarrative(status, x, cont);
     }
   } 
 

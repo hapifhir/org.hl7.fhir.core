@@ -1,5 +1,9 @@
 package org.hl7.fhir.r5.renderers;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -10,7 +14,37 @@ import org.hl7.fhir.utilities.Utilities;
 @MarkedToMoveToAdjunctPackage
 public class RendererFactory {
 
-  public static ResourceRenderer factory(String resourceName, RenderingContext context) {
+  /**
+   * Renderers registered for resource types that are not handled by the built-in renderers - 
+   * typically resources defined by an incubator IG (see additional-resources-r5.md). A registered 
+   * renderer takes precedence over the built-in renderer (and the profile-driven fallback) for the 
+   * same resource name.
+   * <p/>
+   * The registered class must have a public constructor that takes a single RenderingContext
+   * argument, as all the built-in renderers do. Registration is per RendererFactory instance (not
+   * global): the application constructs the factory it hands to the RenderingContext and registers
+   * the renderers it wants on that factory, so the registration is naturally scoped to that
+   * rendering context and does not affect any other.
+   */
+  private final Map<String, Class<? extends ResourceRenderer>> registeredRenderers = new HashMap<>();
+
+  public void registerRenderer(String name, Class<? extends ResourceRenderer> renderer) {
+    registeredRenderers.put(name, renderer);
+  }
+
+  private ResourceRenderer makeRegisteredRenderer(String name, RenderingContext context) {
+    Class<? extends ResourceRenderer> clss = registeredRenderers.get(name);
+    if (clss == null) {
+      return null;
+    }
+    try {
+      return clss.getConstructor(RenderingContext.class).newInstance(context).withRendererFactory(this);
+    } catch (Exception e) {
+      throw new FHIRException("Unable to instantiate the registered renderer "+clss.getName()+" for '"+name+"' (it must have a public constructor that takes a RenderingContext): "+e.getMessage(), e);
+    }
+  }
+
+  public ResourceRenderer factory(String resourceName, RenderingContext context) {
 
     if (context.getTemplateProvider() != null) {
       String liquidTemplate = context.getTemplateProvider().findTemplate(context, resourceName);
@@ -22,47 +56,51 @@ public class RendererFactory {
       resourceName = Utilities.tail(resourceName);
 
     }
-    switch (resourceName) {
-    case "ActorDefinition": return new ActorDefinitionRenderer(context);
-    case "Bundle": return new BundleRenderer(context);
-    case "CapabilityStatement": return new CapabilityStatementRenderer(context);
-    case "CodeSystem": return new CodeSystemRenderer(context);
-    case "CompartmentDefinition":  return new CompartmentDefinitionRenderer(context);
-    case "Consent": return new ConsentRenderer(context);
-    case "ConceptMap": return new ConceptMapRenderer(context);
-    case "DiagnosticReport": return new DiagnosticReportRenderer(context);
-    case "ExampleScenario": return new ExampleScenarioRenderer(context);
-    case "ImplementationGuide": return new ImplementationGuideRenderer(context);
-    case "Library": return new LibraryRenderer(context);
-    case "List": return new ListRenderer(context);
-    case "NamingSystem": return new NamingSystemRenderer(context);
-    case "OperationDefinition": return new OperationDefinitionRenderer(context);
-    case "OperationOutcome": return new OperationOutcomeRenderer(context);
-    case "Parameters": return new ParametersRenderer(context);
-    case "Patient": return new PatientRenderer(context);
-    case "Provenance": return new ProvenanceRenderer(context);
-    case "Questionnaire": return new QuestionnaireRenderer(context);
-    case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context);
-    case "Requirements": return new RequirementsRenderer(context);
-    case "SearchParameter": return new SearchParameterRenderer(context);
-    case "StructureDefinition": return new StructureDefinitionRenderer(context);
-    case "StructureMap": return new StructureMapRenderer(context);
-    case "SubscriptionTopic": return new SubscriptionTopicRenderer(context);
-    case "TestPlan": return new TestPlanRenderer(context);
-    case "ValueSet": return new ValueSetRenderer(context);
-    case "ViewDefinition": return new ViewDefinitionRenderer(context);
-      case "FeatureDefinition" : return new FeatureDefinitionRenderer(context);
-    case "WebTemplate": return new WebTemplateRenderer(context);
+    ResourceRenderer registered = makeRegisteredRenderer(resourceName, context);
+    if (registered != null) {
+      return registered;
     }
-    return new ProfileDrivenRenderer(context);    
+    switch (resourceName) {
+    case "ActorDefinition": return new ActorDefinitionRenderer(context).withRendererFactory(this);
+    case "Bundle": return new BundleRenderer(context).withRendererFactory(this);
+    case "CapabilityStatement": return new CapabilityStatementRenderer(context).withRendererFactory(this);
+    case "CodeSystem": return new CodeSystemRenderer(context).withRendererFactory(this);
+    case "CompartmentDefinition":  return new CompartmentDefinitionRenderer(context).withRendererFactory(this);
+    case "Consent": return new ConsentRenderer(context).withRendererFactory(this);
+    case "ConceptMap": return new ConceptMapRenderer(context).withRendererFactory(this);
+    case "DiagnosticReport": return new DiagnosticReportRenderer(context).withRendererFactory(this);
+    case "ExampleScenario": return new ExampleScenarioRenderer(context).withRendererFactory(this);
+    case "ImplementationGuide": return new ImplementationGuideRenderer(context).withRendererFactory(this);
+    case "Library": return new LibraryRenderer(context).withRendererFactory(this);
+    case "List": return new ListRenderer(context).withRendererFactory(this);
+    case "NamingSystem": return new NamingSystemRenderer(context).withRendererFactory(this);
+    case "OperationDefinition": return new OperationDefinitionRenderer(context).withRendererFactory(this);
+    case "OperationOutcome": return new OperationOutcomeRenderer(context).withRendererFactory(this);
+    case "Parameters": return new ParametersRenderer(context).withRendererFactory(this);
+    case "Patient": return new PatientRenderer(context).withRendererFactory(this);
+    case "Provenance": return new ProvenanceRenderer(context).withRendererFactory(this);
+    case "Questionnaire": return new QuestionnaireRenderer(context).withRendererFactory(this);
+    case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context).withRendererFactory(this);
+    case "Requirements": return new RequirementsRenderer(context).withRendererFactory(this);
+    case "SearchParameter": return new SearchParameterRenderer(context).withRendererFactory(this);
+    case "StructureDefinition": return new StructureDefinitionRenderer(context).withRendererFactory(this);
+    case "StructureMap": return new StructureMapRenderer(context).withRendererFactory(this);
+    case "SubscriptionTopic": return new SubscriptionTopicRenderer(context).withRendererFactory(this);
+    case "TestPlan": return new TestPlanRenderer(context).withRendererFactory(this);
+    case "ValueSet": return new ValueSetRenderer(context).withRendererFactory(this);
+    case "ViewDefinition": return new ViewDefinitionRenderer(context).withRendererFactory(this);
+      case "FeatureDefinition" : return new FeatureDefinitionRenderer(context).withRendererFactory(this);
+    case "WebTemplate": return new WebTemplateRenderer(context).withRendererFactory(this);
+    }
+    return new ProfileDrivenRenderer(context).withRendererFactory(this);
   }
 
-  public static ResourceRenderer factory(Resource resource, RenderingContext context) {
+  public ResourceRenderer factory(Resource resource, RenderingContext context) {
 
     if (context.getTemplateProvider() != null && resource instanceof DomainResource) {
       String liquidTemplate = context.getTemplateProvider().findTemplate(context, (DomainResource) resource);
       if (liquidTemplate != null) {
-        return new LiquidRenderer(context, liquidTemplate);
+        return new LiquidRenderer(context, liquidTemplate).withRendererFactory(this);
       }
     }
 
@@ -70,57 +108,61 @@ public class RendererFactory {
   }
 
 
-  public static ResourceRenderer factory(ResourceWrapper resource, RenderingContext context) {
+  public ResourceRenderer factory(ResourceWrapper resource, RenderingContext context) {
     if (context.getTemplateProvider() != null) {
       String liquidTemplate = context.getTemplateProvider().findTemplate(context, resource.fhirType());
       if (liquidTemplate != null) {
         return new LiquidRenderer(context, liquidTemplate);
       }
     }
+    ResourceRenderer registered = makeRegisteredRenderer(resource.fhirType(), context);
+    if (registered != null) {
+      return registered;
+    }
     switch (resource.fhirType()) {
-    case "DiagnosticReport": return new DiagnosticReportRenderer(context);
-    case "Library": return new LibraryRenderer(context);
-    case "Consent": return new ConsentRenderer(context);
-    case "ViewDefinition": return new ViewDefinitionRenderer(context);
-    case "WebTemplate": return new WebTemplateRenderer(context);
-    case "FeatureDefinition": return new FeatureDefinitionRenderer(context);
-    case "List": return new ListRenderer(context);
-    case "Patient": return new PatientRenderer(context);
-    case "Provenance": return new ProvenanceRenderer(context);
-    case "Parameters": return new ParametersRenderer(context);
-    case "Questionnaire": return new QuestionnaireRenderer(context);
-    case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context);
+    case "DiagnosticReport": return new DiagnosticReportRenderer(context).withRendererFactory(this);
+    case "Library": return new LibraryRenderer(context).withRendererFactory(this);
+    case "Consent": return new ConsentRenderer(context).withRendererFactory(this);
+    case "ViewDefinition": return new ViewDefinitionRenderer(context).withRendererFactory(this);
+    case "WebTemplate": return new WebTemplateRenderer(context).withRendererFactory(this);
+    case "FeatureDefinition": return new FeatureDefinitionRenderer(context).withRendererFactory(this);
+    case "List": return new ListRenderer(context).withRendererFactory(this);
+    case "Patient": return new PatientRenderer(context).withRendererFactory(this);
+    case "Provenance": return new ProvenanceRenderer(context).withRendererFactory(this);
+    case "Parameters": return new ParametersRenderer(context).withRendererFactory(this);
+    case "Questionnaire": return new QuestionnaireRenderer(context).withRendererFactory(this);
+    case "QuestionnaireResponse": return new QuestionnaireResponseRenderer(context).withRendererFactory(this);
     }
     if (resource.isDirect()) {
       switch (resource.fhirType()) {
 
-      case "ActorDefinition": return new ActorDefinitionRenderer(context);
-      case "Bundle": return new BundleRenderer(context);
-      case "CapabilityStatement": return new CapabilityStatementRenderer(context);
-      case "CodeSystem": return new CodeSystemRenderer(context);
-      case "CompartmentDefinition":  return new CompartmentDefinitionRenderer(context);
-      case "ConceptMap": return new ConceptMapRenderer(context);
-      case "ExampleScenario": return new ExampleScenarioRenderer(context);
-      case "ImplementationGuide": return new ImplementationGuideRenderer(context);
-      case "NamingSystem": return new NamingSystemRenderer(context);
-      case "OperationDefinition": return new OperationDefinitionRenderer(context);
-      case "OperationOutcome": return new OperationOutcomeRenderer(context);
-      case "Requirements": return new RequirementsRenderer(context);
-      case "SearchParameter": return new SearchParameterRenderer(context);
-      case "StructureDefinition": return new StructureDefinitionRenderer(context);
-      case "StructureMap": return new StructureMapRenderer(context);
-      case "SubscriptionTopic": return new SubscriptionTopicRenderer(context);
-      case "TestPlan": return new TestPlanRenderer(context);
-      case "ValueSet": return new ValueSetRenderer(context);
+      case "ActorDefinition": return new ActorDefinitionRenderer(context).withRendererFactory(this);
+      case "Bundle": return new BundleRenderer(context).withRendererFactory(this);
+      case "CapabilityStatement": return new CapabilityStatementRenderer(context).withRendererFactory(this);
+      case "CodeSystem": return new CodeSystemRenderer(context).withRendererFactory(this);
+      case "CompartmentDefinition":  return new CompartmentDefinitionRenderer(context).withRendererFactory(this);
+      case "ConceptMap": return new ConceptMapRenderer(context).withRendererFactory(this);
+      case "ExampleScenario": return new ExampleScenarioRenderer(context).withRendererFactory(this);
+      case "ImplementationGuide": return new ImplementationGuideRenderer(context).withRendererFactory(this);
+      case "NamingSystem": return new NamingSystemRenderer(context).withRendererFactory(this);
+      case "OperationDefinition": return new OperationDefinitionRenderer(context).withRendererFactory(this);
+      case "OperationOutcome": return new OperationOutcomeRenderer(context).withRendererFactory(this);
+      case "Requirements": return new RequirementsRenderer(context).withRendererFactory(this);
+      case "SearchParameter": return new SearchParameterRenderer(context).withRendererFactory(this);
+      case "StructureDefinition": return new StructureDefinitionRenderer(context).withRendererFactory(this);
+      case "StructureMap": return new StructureMapRenderer(context).withRendererFactory(this);
+      case "SubscriptionTopic": return new SubscriptionTopicRenderer(context).withRendererFactory(this);
+      case "TestPlan": return new TestPlanRenderer(context).withRendererFactory(this);
+      case "ValueSet": return new ValueSetRenderer(context).withRendererFactory(this);
       }
     }
 
-    return new ProfileDrivenRenderer(context);    
+    return new ProfileDrivenRenderer(context).withRendererFactory(this);
   }
 
-  public static boolean hasSpecificRenderer(String rt) {
+  public boolean hasSpecificRenderer(String rt) {
 
-    return Utilities.existsInList(rt, 
+    return registeredRenderers.containsKey(rt) || Utilities.existsInList(rt, 
         "CodeSystem", "ValueSet", "ConceptMap", 
         "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", 
         "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements", "TestPlan", "ExampleScenario", "Consent");
@@ -132,7 +174,7 @@ public class RendererFactory {
    * @param rt
    * @return
    */
-  public static boolean hasIGSpecificRenderer(String rt) {
+  public boolean hasIGSpecificRenderer(String rt) {
 
     return Utilities.existsInList(rt, "ValueSet", "CapabilityStatement", "Questionnaire");
   }

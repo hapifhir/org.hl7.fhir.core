@@ -74,8 +74,8 @@ public class DataRenderer extends Renderer implements CodeResolver {
     super(context); 
   } 
 
-  public DataRenderer(IWorkerContext worker) { 
-    super(worker); 
+  public DataRenderer(IWorkerContext worker, RendererFactory renderer) {
+    super(worker, renderer);
   } 
 
   // -- 2. Markdown support ------------------------------------------------------- 
@@ -597,7 +597,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
   // -- 6. Data type Rendering ----------------------------------------------  
 
   public static String display(IWorkerContext context, DataType type) { 
-    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", context.getLocale(), ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE)).displayDataType(type);
+    return new DataRenderer(new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir/R4", "", context.getLocale(), ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE)).displayDataType(type);
   } 
 
   public String displayBase(Base b) { 

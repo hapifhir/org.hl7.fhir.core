@@ -52,8 +52,18 @@ public class ToolsRegistration {
    * is always present for consistency across the generated packages
    */
   public static void register(boolean overridesBase) {    
-    org.hl7.fhir.r5.formats.ParserBase.registerCustomResource("TestCases", new ToolsJsonParserFactory(), overridesBase);
+    register(org.hl7.fhir.r5.formats.CustomResourceRegistry.GLOBAL, overridesBase);
 
+  }
+
+  /**
+   * Register the parsers for the resources in this package into the given custom resource 
+   * registry, rather than the global one - so the registration only affects parsers that are 
+   * given this registry, not the whole process. See register(boolean) for the meaning of 
+   * overridesBase
+   */
+  public static void register(org.hl7.fhir.r5.formats.CustomResourceRegistry registry, boolean overridesBase) {
+    registry.registerCustomResource("TestCases", new ToolsJsonParserFactory(), overridesBase);
   }
 
   public static class ToolsJsonParserFactory implements IParserFactory {

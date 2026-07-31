@@ -82,7 +82,7 @@ public class JavaParserGenerator extends JavaBaseGenerator {
     if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE && !analysis.isAbstract()) {
       // whether the registration overrides resources with the same names in the base specification
       // is the choice of the application performing the registration
-      register.append("    org.hl7.fhir.r5.formats.ParserBase.registerCustomResource(\""+analysis.getName()+"\", new "+jname+"JsonParserFactory(), overridesBase);\r\n");
+      register.append("    registry.registerCustomResource(\""+analysis.getName()+"\", new "+jname+"JsonParserFactory(), overridesBase);\r\n");
     }
   }
 

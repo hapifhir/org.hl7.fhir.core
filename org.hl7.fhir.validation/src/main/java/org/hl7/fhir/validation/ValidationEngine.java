@@ -856,7 +856,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = igLoader.loadContent(source, "validate", false, true);
     Resource res = igLoader.loadResourceByVersion(version, cnt.getFocus().getBytes(), source);
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     genResource(res, rc);
     return (Resource) res;
   }
@@ -870,7 +870,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         }
       }
     } else {
-      RendererFactory.factory(res, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), res));
+      new RendererFactory().factory(res, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), res));
     }
   }
 
@@ -1020,7 +1020,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public byte[] generateNarrative(byte[] resource, FhirFormat format) throws FHIRException, IOException, EOperationOutcome {
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
     Resource res = new ObjectConverter(context).convert(e);
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     genResource(res, rc);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     if (format == FhirFormat.XML) {

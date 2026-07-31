@@ -103,6 +103,14 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
     ClassesLoadedFlags.ourXmlParserBaseLoaded = true;
   }
 
+  protected XmlParserBase() {
+    super();
+  }
+
+  protected XmlParserBase(CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+  }
+
 	@Override
 	public ParserType getType() {
 		return ParserType.XML;
@@ -221,8 +229,10 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
 
   protected boolean composeCustomResource(Resource resource) throws IOException {
-    if (customResourceHandlers.containsKey(resource.fhirType())) {
-      customResourceHandlers.get(resource.fhirType()).getFactory().composerXml(xml).composeResource(resource);
+    if (customResourceRegistry.has(resource.fhirType())) {
+      XmlParserBase composer = customResourceRegistry.get(resource.fhirType()).getFactory().composerXml(xml);
+      composer.setCustomResourceRegistry(customResourceRegistry);
+      composer.composeResource(resource);
       return true;
     } else {
       return false;
@@ -230,8 +240,10 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
   }
 
   protected Resource parseCustomResource(XmlPullParser xpp) throws FHIRFormatError, IOException, XmlPullParserException {
-    if (customResourceHandlers.containsKey(xpp.getName())) {
-      return customResourceHandlers.get(xpp.getName()).getFactory().parserXml(allowUnknownContent).parse(xpp);
+    if (customResourceRegistry.has(xpp.getName())) {
+      XmlParserBase parser = customResourceRegistry.get(xpp.getName()).getFactory().parserXml(allowUnknownContent);
+      parser.setCustomResourceRegistry(customResourceRegistry);
+      return parser.parse(xpp);
     } else {
       return null;
     }
@@ -242,9 +254,11 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
    * registered as overriding the base specification (returns null if there's no such handler)
    */
   protected Resource parseOverridingCustomResource(XmlPullParser xpp) throws FHIRFormatError, IOException, XmlPullParserException {
-    CustomResourceHandler handler = customResourceHandlers.get(xpp.getName());
+    CustomResourceHandler handler = customResourceRegistry.get(xpp.getName());
     if (handler != null && handler.isOverridesBase()) {
-      return handler.getFactory().parserXml(allowUnknownContent).parse(xpp);
+      XmlParserBase parser = handler.getFactory().parserXml(allowUnknownContent);
+      parser.setCustomResourceRegistry(customResourceRegistry);
+      return parser.parse(xpp);
     } else {
       return null;
     }

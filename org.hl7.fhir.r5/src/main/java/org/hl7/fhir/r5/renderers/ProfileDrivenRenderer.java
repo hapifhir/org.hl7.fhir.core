@@ -328,9 +328,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       if (round2) {
         for (ResourceWrapper v : p.getValues()) {
           RenderingContext ctxt = context.forContained();
-          if (v.getResourceWrapper() != null && !RendererFactory.hasSpecificRenderer(v.fhirType())) {
+          if (v.getResourceWrapper() != null && !rendererFactory.hasSpecificRenderer(v.fhirType())) {
             x.hr();
-            ResourceRenderer rnd = RendererFactory.factory(v.fhirType(), ctxt);
+            ResourceRenderer rnd = rendererFactory.factory(v.fhirType(), ctxt);
             rnd.buildNarrative(status, x.blockquote(), v);
           }
         }

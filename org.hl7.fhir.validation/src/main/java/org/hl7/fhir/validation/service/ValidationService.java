@@ -39,6 +39,7 @@ import org.hl7.fhir.r5.liquid.LiquidEngine;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator;
 import org.hl7.fhir.r5.profilemodel.gen.PECodeGenerator.ExtensionPolicy;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
@@ -91,6 +92,7 @@ public class ValidationService {
   private String runDate;
 
   private final Map<String, ValidationEngine> baseEngines = new ConcurrentHashMap<>();
+  private RendererFactory rendererFactory;
 
   @Deprecated(since="2025-11-07")
   public void putBaseEngine(String key, ValidationContext validationContext) throws IOException, URISyntaxException {
@@ -117,9 +119,10 @@ public class ValidationService {
 
   public boolean hasBaseEngineForKey(String key) { return baseEngines.containsKey(key); }
 
-  public ValidationService() {
+  public ValidationService(RendererFactory rendererFactory) {
     sessionCache = new PassiveExpiringSessionCache();
     runDate = new SimpleDateFormat("hh:mm:ss", new Locale("en", "US")).format(new Date());
+    this.rendererFactory = rendererFactory;
   }
 
 
@@ -757,13 +760,13 @@ public class ValidationService {
     CanonicalResource cr = validationEngine.loadCanonicalResource(sources.get(0), version);
     boolean ok = true;
     if (cr instanceof StructureDefinition) {
-      new StructureDefinitionSpreadsheetGenerator(validationEngine.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr, false).finish(ManagedFileAccess.outStream(output));
+      new StructureDefinitionSpreadsheetGenerator(validationEngine.getContext(), false, false, rendererFactory).renderStructureDefinition((StructureDefinition) cr, false).finish(ManagedFileAccess.outStream(output));
     } else if (cr instanceof CodeSystem) {
-      new CodeSystemSpreadsheetGenerator(validationEngine.getContext()).renderCodeSystem((CodeSystem) cr).finish(ManagedFileAccess.outStream(output));
+      new CodeSystemSpreadsheetGenerator(validationEngine.getContext(), rendererFactory).renderCodeSystem((CodeSystem) cr).finish(ManagedFileAccess.outStream(output));
     } else if (cr instanceof ValueSet) {
-      new ValueSetSpreadsheetGenerator(validationEngine.getContext()).renderValueSet((ValueSet) cr).finish(ManagedFileAccess.outStream(output));
+      new ValueSetSpreadsheetGenerator(validationEngine.getContext(), rendererFactory).renderValueSet((ValueSet) cr).finish(ManagedFileAccess.outStream(output));
     } else if (cr instanceof ConceptMap) {
-      new ConceptMapSpreadsheetGenerator(validationEngine.getContext()).renderConceptMap((ConceptMap) cr).finish(ManagedFileAccess.outStream(output));
+      new ConceptMapSpreadsheetGenerator(validationEngine.getContext(), rendererFactory).renderConceptMap((ConceptMap) cr).finish(ManagedFileAccess.outStream(output));
     } else {
       ok = false;
       log.info(" ...Unable to generate spreadsheet for "+ sources.get(0)+": no way to generate a spreadsheet for a "+cr.fhirType());

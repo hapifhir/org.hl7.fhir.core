@@ -162,7 +162,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private void generateParser(Analysis analysis) throws Exception {
 
     if (analysis.getAncestor().getName().equals("Resource")) {
-      register.append("    org.hl7.fhir.r5.formats.ParserBase.registerCustomResource(\""+analysis.getName()+"\", new "+jname+"JsonParserFactory(), overridesBase);\r\n");
+      register.append("    registry.registerCustomResource(\""+analysis.getName()+"\", new "+jname+"JsonParserFactory(), overridesBase);\r\n");
       pregf.append("    } else if (t.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getClassName()+"(json);\r\n");
       creg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+analysis.getName()+"\", ("+analysis.getClassName()+")resource);\r\n");
       cregn.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");

@@ -54,7 +54,41 @@ import org.hl7.fhir.utilities.xml.IXMLWriter;
 
 public abstract class ParserBase extends FormatUtilities implements IParser {
 
-  protected static Map<String, CustomResourceHandler> customResourceHandlers = new HashMap<>();
+  /**
+   * the registry of custom resource parsers/composers this parser consults. Defaults to the 
+   * process-wide CustomResourceRegistry.GLOBAL; a caller can scope a parser to a different set 
+   * of custom resources by passing a registry to the constructor, or via 
+   * setCustomResourceRegistry / withCustomResourceRegistry
+   */
+  protected CustomResourceRegistry customResourceRegistry;
+
+  protected ParserBase() {
+    this.customResourceRegistry = CustomResourceRegistry.GLOBAL;
+  }
+
+  protected ParserBase(CustomResourceRegistry customResourceRegistry) {
+    this.customResourceRegistry = customResourceRegistry == null ? CustomResourceRegistry.GLOBAL : customResourceRegistry;
+  }
+
+  /**
+   * Set the registry of custom resources this parser consults (null resets it to the global 
+   * registry). This is instance-level state, so it does not affect any other parser
+   */
+  public void setCustomResourceRegistry(CustomResourceRegistry customResourceRegistry) {
+    this.customResourceRegistry = customResourceRegistry == null ? CustomResourceRegistry.GLOBAL : customResourceRegistry;
+  }
+
+  /**
+   * fluent variant of setCustomResourceRegistry
+   */
+  public ParserBase withCustomResourceRegistry(CustomResourceRegistry customResourceRegistry) {
+    setCustomResourceRegistry(customResourceRegistry);
+    return this;
+  }
+
+  public CustomResourceRegistry getCustomResourceRegistry() {
+    return customResourceRegistry;
+  }
 
   public interface IParserFactory {
     public JsonParserBase composerJson(JsonCreator json);
@@ -87,15 +121,6 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     }
   }
 
-  /**
-   * Register a parser for a custom (additional) resource. If overridesBase is true, the 
-   * custom resource takes precedence over any resource with the same name defined in the 
-   * base specification; otherwise the custom resource is only considered when the base 
-   * specification doesn't define the resource name
-   */
-  public static void registerCustomResource(String name, IParserFactory factory, boolean overridesBase) {
-    customResourceHandlers.put(name, new CustomResourceHandler(factory, overridesBase));
-  }
   // -- implementation of variant type methods from the interface --------------------------------
   
   public Resource parse(String input) throws FHIRFormatError, IOException {
@@ -287,10 +312,6 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     } finally {
       input.close();
     }
-  }
-
-  public static Map<String, CustomResourceHandler> getCustomResourceHandlers() {
-    return customResourceHandlers;
   }
 
 }

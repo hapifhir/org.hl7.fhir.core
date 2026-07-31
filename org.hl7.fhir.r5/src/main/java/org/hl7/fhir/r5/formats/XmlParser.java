@@ -53,6 +53,15 @@ public class XmlParser extends XmlParserBase {
     setAllowUnknownContent(allowUnknownContent);
   }
 
+  public XmlParser(CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+  }
+
+  public XmlParser(boolean allowUnknownContent, CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+    setAllowUnknownContent(allowUnknownContent);
+  }
+
   protected boolean parseBaseContent(int eventType, XmlPullParser xpp, Base res) throws XmlPullParserException, IOException, FHIRFormatError {
     return false;
   }

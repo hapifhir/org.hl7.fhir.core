@@ -103,6 +103,14 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     ClassesLoadedFlags.ourJsonParserBaseLoaded = true;
   }
 
+  protected JsonParserBase() {
+    super();
+  }
+
+  protected JsonParserBase(CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+  }
+
   @Override
   public ParserType getType() {
 	  return ParserType.JSON;
@@ -217,8 +225,10 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   }
 
   protected boolean customCompose(Resource resource) throws IOException {
-    if (customResourceHandlers.containsKey(resource.fhirType())) {
-      customResourceHandlers.get(resource.fhirType()).getFactory().composerJson(json).composeResource(resource);
+    if (customResourceRegistry.has(resource.fhirType())) {
+      JsonParserBase composer = customResourceRegistry.get(resource.fhirType()).getFactory().composerJson(json);
+      composer.setCustomResourceRegistry(customResourceRegistry);
+      composer.composeResource(resource);
       return true;
     } else {
       return false;
@@ -226,7 +236,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   }
 
   protected boolean customCompose(String name, Resource resource) {
-    if (customResourceHandlers.containsKey(resource.fhirType())) {
+    if (customResourceRegistry.has(resource.fhirType())) {
       throw new Error("Not sorted yet");
       // customResourceHandlers.get(resource.fhirType()).parser().composeResource(name, resource);
       // return true;
@@ -236,8 +246,10 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   }
 
   protected Resource parseCustomResource(String t, JsonObject json) throws FHIRFormatError, IOException {
-    if (customResourceHandlers.containsKey(t)) {
-      return customResourceHandlers.get(t).getFactory().parserJson(allowUnknownContent, allowComments).parse(json);
+    if (customResourceRegistry.has(t)) {
+      JsonParserBase parser = customResourceRegistry.get(t).getFactory().parserJson(allowUnknownContent, allowComments);
+      parser.setCustomResourceRegistry(customResourceRegistry);
+      return parser.parse(json);
     } else {
       return null;
     }
@@ -248,9 +260,11 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
    * registered as overriding the base specification (returns null if there's no such handler)
    */
   protected Resource parseOverridingCustomResource(String t, JsonObject json) throws FHIRFormatError, IOException {
-    CustomResourceHandler handler = customResourceHandlers.get(t);
+    CustomResourceHandler handler = customResourceRegistry.get(t);
     if (handler != null && handler.isOverridesBase()) {
-      return handler.getFactory().parserJson(allowUnknownContent, allowComments).parse(json);
+      JsonParserBase parser = handler.getFactory().parserJson(allowUnknownContent, allowComments);
+      parser.setCustomResourceRegistry(customResourceRegistry);
+      return parser.parse(json);
     } else {
       return null;
     }

@@ -42,8 +42,41 @@ import org.hl7.fhir.utilities.xml.IXMLWriter;
 
 public class TestingParser {
 
-  public static void register() {    
+  /**
+   * Register the parsers for the resources in this package with the core parsers. 
+   * 
+   * If overridesBase is true, these resources take precedence over any resources with the 
+   * same names defined in the base specification; if it is false, they are only used for 
+   * resource names that the base specification doesn't define. Whether overriding the base 
+   * resources makes sense (or is the whole point) depends on the resources in this package - 
+   * see the package documentation. The parameter is always present for consistency across 
+   * the generated packages
+   */
+  public static void register(boolean overridesBase) {    
+    register(org.hl7.fhir.r5.formats.CustomResourceRegistry.GLOBAL, overridesBase);
+  }
 
+  /**
+   * Register the parsers for the resources in this package into the given custom resource 
+   * registry, rather than the global one - so the registration only affects parsers that are 
+   * given this registry, not the whole process. See register(boolean) for the meaning of 
+   * overridesBase
+   */
+  public static void register(org.hl7.fhir.r5.formats.CustomResourceRegistry registry, boolean overridesBase) {    
+    registry.registerCustomResource("TestPlan", new TestingJsonParserFactory(), overridesBase);
+    registry.registerCustomResource("TestScript", new TestingJsonParserFactory(), overridesBase);
+    registry.registerCustomResource("TestReport", new TestingJsonParserFactory(), overridesBase);
+
+  }
+
+  /**
+   * The versioned package id(s) of the package(s) that the code in this java package was 
+   * generated from. An application that registers these resources will usually also need to 
+   * load these packages into its worker context, so that the definitions in the context 
+   * agree with the generated code
+   */
+  public static String[] packages() {    
+    return new String[] { "hl7.fhir.uv.testing#current" };
   }
 
   public static class TestingJsonParserFactory implements IParserFactory {

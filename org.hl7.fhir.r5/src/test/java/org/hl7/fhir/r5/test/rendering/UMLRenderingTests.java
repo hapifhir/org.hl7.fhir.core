@@ -17,6 +17,7 @@ import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.ClassDiagramRenderer;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
@@ -74,7 +75,7 @@ public class UMLRenderingTests {
   public static void setUp() throws IOException {
     context = TestingUtilities.getSharedWorkerContext("5.0.0");
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
-    rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setShowSummaryTable(true);
     rc.setDefinitionsTarget("test.html");

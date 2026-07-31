@@ -85,7 +85,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           first = false;
         }
         x.hr();
-        RendererFactory.factory(cont, context.forContained()).setInner(true).buildNarrative(status, x, cont);
+        rendererFactory.factory(cont, context.forContained()).setInner(true).buildNarrative(status, x, cont);
       }
     }
   } 
@@ -379,7 +379,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         if (vs == null) { 
           defn.getPieces().add(gen.new Piece(null, i.primitiveValue("answerValueSet"), null));                     
         } else { 
-          defn.getPieces().add(gen.new Piece(vs.getWebPath(), RendererFactory.factory(vs, context.forContained()).buildSummary(vs), null));                               
+          defn.getPieces().add(gen.new Piece(vs.getWebPath(), rendererFactory.factory(vs, context.forContained()).buildSummary(vs), null));
         } 
       } else { 
         ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"),
@@ -584,7 +584,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         if (vs == null) { 
           defn.getPieces().add(gen.new Piece(null, i.primitiveValue("answerValueSet"), null));                     
         } else { 
-          defn.getPieces().add(gen.new Piece(vs.getWebPath(), RendererFactory.factory(vs, context.forContained()).buildSummary(vs), null));                               
+          defn.getPieces().add(gen.new Piece(vs.getWebPath(), rendererFactory.factory(vs, context.forContained()).buildSummary(vs), null));
         } 
       } else { 
         ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"),
@@ -825,9 +825,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         if (vs == null) {
           ans.tx(i.primitiveValue("answerValueSet"));
         } else if (vs.getWebPath() == null) {                     
-          ans.ah(context.prefixLocalHref("#hc"+vs.getScopedId())).tx(RendererFactory.factory(vs, context.forContained()).buildSummary(vs));                               
+          ans.ah(context.prefixLocalHref("#hc"+vs.getScopedId())).tx(rendererFactory.factory(vs, context.forContained()).buildSummary(vs));
         } else { 
-          ans.ah(context.prefixLocalHref(vs.getWebPath())).tx(RendererFactory.factory(vs, context.forContained()).buildSummary(vs));                               
+          ans.ah(context.prefixLocalHref(vs.getWebPath())).tx(rendererFactory.factory(vs, context.forContained()).buildSummary(vs));
         } 
       } else { 
         ValueSet vs = context.getWorker().findTxResource(ValueSet.class, i.primitiveValue("answerValueSet"),
@@ -1150,7 +1150,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
 
   private void defn(XhtmlNode tbl, String name, String url, Resource res) throws UnsupportedEncodingException, IOException { 
     if (res != null && res.hasWebPath()) { 
-      defn(tbl, context.formatPhrase(RenderingContext.GENERAL_DEFINITION), RendererFactory.factory(res, context.forContained()).buildSummary(wrap(res)), res.getWebPath()); 
+      defn(tbl, context.formatPhrase(RenderingContext.GENERAL_DEFINITION), rendererFactory.factory(res, context.forContained()).buildSummary(wrap(res)), res.getWebPath());
     } else if (Utilities.isAbsoluteUrlLinkable(url)) { 
       defn(tbl, context.formatPhrase(RenderingContext.GENERAL_DEFINITION), url, url); 
     } { 

@@ -31,6 +31,7 @@ import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor;
 import org.hl7.fhir.utilities.TimeTracker;
@@ -88,7 +89,7 @@ class ValidationServiceTests {
   void validationSessionBaseEngineTest() throws Exception {
     TestingUtilities.injectCorePackageLoader();
 
-    ValidationService myService = Mockito.spy(new ValidationService());
+    ValidationService myService = Mockito.spy(new ValidationService(new RendererFactory()));
 
     ValidationEngineParameters baseContext = new ValidationEngineParameters().setBaseEngine("myDummyKey").setSv("4.0.1").setTxServer(FhirSettings.getTxFhirDevelopment()).setTxCache(getTerminologyCacheDirectory("validationService"));
     myService.putBaseEngine("myDummyKey", baseContext, null);
@@ -296,7 +297,7 @@ class ValidationServiceTests {
   }
 
   private static ValidationService createFakeValidationService(ValidationEngine.ValidationEngineBuilder validationEngineBuilder, ValidationEngine validationEngine) {
-    return new ValidationService() {
+    return new ValidationService(new RendererFactory()) {
       @Override
       protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
         when(validationEngineBuilder.withDefaultInstanceValidatorParameters(any(InstanceValidatorParameters.class))).thenReturn(validationEngineBuilder);
@@ -348,7 +349,7 @@ class ValidationServiceTests {
       String shlink = "shlink:/" + b64;
 
       TestingUtilities.injectCorePackageLoader();
-      ValidationService service = new ValidationService();
+      ValidationService service = new ValidationService(new RendererFactory());
       ValidationRequest request = new ValidationRequest()
         .setValidationEngineParameters(new ValidationEngineParameters()
           .setTxServer(FhirSettings.getTxFhirDevelopment())

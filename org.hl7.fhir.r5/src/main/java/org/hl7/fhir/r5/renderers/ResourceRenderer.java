@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -52,8 +54,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   protected XVerExtensionManager xverManager;
   protected boolean multiLangMode;
   protected boolean inner;
+  @Getter @Setter
+  protected RendererFactory rendererFactory;
   
-  
+  public ResourceRenderer withRendererFactory(RendererFactory rendererFactory) {
+    this.rendererFactory =  rendererFactory;
+    return this;
+  }
   public ResourceRenderer(RenderingContext context) {
     super(context);
   }
@@ -254,7 +261,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (rr.getResource() == null) {
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(canonical.primitiveValue());        
       } else {
-        x.ah(context.prefixLocalHref(rr.getWebPath())).tx(RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));        
+        x.ah(context.prefixLocalHref(rr.getWebPath())).tx(rendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
       }
     }
   }
@@ -306,7 +313,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         } else {
           String disp;
           try {
-            disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
+            disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : rendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
           } catch (IOException e) {
             disp = e.getMessage();
           }
@@ -426,7 +433,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : rr.getUrlReference();
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
       } else if (rr.getResource() != null) {
-        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
+        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : rendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
       } else {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : "?rref2?";
@@ -650,11 +657,11 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else { 
         ResourceWithReference rr = resolveReference(resource, uri.primitiveValue(), false);
         if (rr != null) {
-          x.ah(rr.getWebPath()).addText(RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));           
+          x.ah(rr.getWebPath()).addText(rendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
         } else {
           Resource r = context.getContext().fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRules(uri));
           if (r != null && r.getWebPath() != null) { 
-              x.ah(context.prefixLocalHref(r.getWebPath())).addText(RendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));           
+              x.ah(context.prefixLocalHref(r.getWebPath())).addText(rendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));
           } else { 
             String url = context.getResolver() != null ? context.getResolver().resolveUri(context, v) : null; 
             if (url != null) {           
@@ -692,14 +699,14 @@ public abstract class ResourceRenderer extends DataRenderer {
           if (rr.getResource() == null) {
             x.ah(context.prefixLocalHref(rr.getWebPath())).addText(rr.getUrlReference());
           } else {
-            x.ah(context.prefixLocalHref(rr.getWebPath())).addText(RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
+            x.ah(context.prefixLocalHref(rr.getWebPath())).addText(rendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
           }
         } else {
           Resource r = context.getContext().fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRulesBase(uri.getBase()));
           if (r != null && r.getWebPath() != null) { 
-              x.ah(context.prefixLocalHref(r.getWebPath())).addText(RendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));           
+              x.ah(context.prefixLocalHref(r.getWebPath())).addText(rendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));
           } else if (r != null) { 
-            x.ah(context.prefixLocalHref(v)).addText(RendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));           
+            x.ah(context.prefixLocalHref(v)).addText(rendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));
           } else { 
             String url = context.getResolver() != null ? context.getResolver().resolveUri(context, v) : null; 
             if (url != null) {           
@@ -1573,7 +1580,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         context.addAnchor(id);
         x.an(context.prefixAnchor(id));
       }
-      RendererFactory.factory(c, context.forContained()).setInner(true).buildNarrative(status, x, c);
+      rendererFactory.factory(c, context.forContained()).setInner(true).buildNarrative(status, x, c);
     }
   }
 
