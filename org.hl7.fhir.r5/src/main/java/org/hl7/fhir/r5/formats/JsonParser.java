@@ -35070,7 +35070,12 @@ public class JsonParser extends JsonParserBase {
     String t = json.get("resourceType").getAsString();
     if (Utilities.noString(t)) {
       throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
-    } else if (t.equals("Account")) {
+    }
+    Resource custom = parseOverridingCustomResource(t, json);
+    if (custom != null) {
+      return custom;
+    }
+    if (t.equals("Account")) {
       return parseAccount(json);
     } else if (t.equals("ActivityDefinition")) {
       return parseActivityDefinition(json);

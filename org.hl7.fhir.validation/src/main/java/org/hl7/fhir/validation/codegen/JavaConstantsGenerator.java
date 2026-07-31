@@ -19,6 +19,9 @@ public class JavaConstantsGenerator extends JavaBaseGenerator {
     StringBuilder rt = new StringBuilder();
     boolean first = true;
     for (StructureDefinition sd : definitions.getStructures().getSortedList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation()==TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
         if (first) first = false; else rt.append("|");
         rt.append(sd.getType());

@@ -83,6 +83,84 @@ public class JavaBaseGenerator extends OutputStreamWriter {
   }
 
 
+  /**
+   * Text values in generated code (comments, string literals, identifiers) are frequently drawn 
+   * from FHIR packages that the tooling did not author, and so must be treated as untrusted input. 
+   * The methods below neutralise three classes of problem before such text is embedded in java 
+   * source:
+   *   1. comment breakout - a value containing a comment delimiter escaping into class-level code
+   *   2. java unicode escapes - javac processes \\uXXXX sequences (even inside comments and string 
+   *      literals) before tokenising, so an unescaped backslash-u in untrusted text can smuggle in 
+   *      arbitrary characters (including the ones in 1 and 3)
+   *   3. Trojan Source (CVE-2021-42574) - bidirectional and other invisible/format control 
+   *      characters that make the source a human reviewer sees differ from what the compiler builds
+   */
+  protected static boolean isDangerousInvisibleChar(char c) {
+    // bidirectional formatting (embeddings, overrides, isolates, marks) 
+    if (c >= 0x202A && c <= 0x202E) return true; // LRE RLE PDF LRO RLO
+    if (c >= 0x2066 && c <= 0x2069) return true; // LRI RLI FSI PDI
+    if (c == 0x200E || c == 0x200F || c == 0x061C) return true; // LRM RLM ALM
+    // zero width and other joiners / invisible spacing
+    if (c == 0x200B || c == 0x200C || c == 0x200D) return true; // ZWSP ZWNJ ZWJ
+    if (c == 0x2060 || c == 0xFEFF) return true; // WORD JOINER, ZWNBSP / BOM
+    // anything else in the Unicode Format category, or a control character other than the plain 
+    // whitespace we handle explicitly
+    int type = Character.getType(c);
+    if (type == Character.FORMAT) return true;
+    if (type == Character.CONTROL && c != '\t' && c != '\r' && c != '\n') return true;
+    return false;
+  }
+
+  /**
+   * Escape a value for use inside a java string literal. Delegates to Utilities.escapeJava (which 
+   * escapes the backslash, quote, CR and LF - and so also defuses java unicode escapes, since the 
+   * backslash of any \\uXXXX is doubled), then converts any remaining bidirectional / invisible 
+   * control characters to explicit \\uXXXX escapes so the source file is plain ascii and cannot be 
+   * used to disguise the compiled content from a reviewer. The escapes round-trip to exactly the 
+   * same string at runtime
+   */
+  protected static String escapeJavaString(String s) {
+    String e = Utilities.escapeJava(s);
+    StringBuilder b = new StringBuilder();
+    for (int i = 0; i < e.length(); i++) {
+      char c = e.charAt(i);
+      if (isDangerousInvisibleChar(c)) {
+        b.append(String.format("\\u%04x", (int) c));
+      } else {
+        b.append(c);
+      }
+    }
+    return b.toString();
+  }
+
+  /**
+   * Neutralise a value for use inside a java comment (line or block). Line breaks and tabs are 
+   * collapsed to spaces (so the value cannot terminate a // comment or reshape a block comment), 
+   * bidirectional / invisible control characters are stripped (they cannot be \\uXXXX-escaped here, 
+   * because javac would translate the escape back to the character inside the comment), java 
+   * unicode escapes are broken by separating any backslash-u, and the comment delimiters are 
+   * defused last
+   */
+  protected static String sanitizeComment(String text) {
+    if (text == null) {
+      return "";
+    }
+    StringBuilder b = new StringBuilder();
+    for (int i = 0; i < text.length(); i++) {
+      char c = text.charAt(i);
+      if (c == '\r' || c == '\n' || c == '\t') {
+        b.append(' ');
+      } else if (isDangerousInvisibleChar(c)) {
+        // strip - see method doc
+      } else {
+        b.append(c);
+      }
+    }
+    return b.toString()
+      .replace("\\u", "\\ u").replace("\\U", "\\ U") // break any java unicode escape (\\uXXXX)
+      .replace("*/", "* /").replace("/*", "/ *");            // defuse comment delimiters
+  }
+
   public static boolean isJavaReservedWord(String word) {
     if (word.equals("abstract")) return true;   
     if (word.equals("assert")) return true;

@@ -54,13 +54,47 @@ import org.hl7.fhir.utilities.xml.IXMLWriter;
 
 public abstract class ParserBase extends FormatUtilities implements IParser {
 
-  protected static Map<String, IParserFactory> customResourceHandlers = new HashMap<>();
+  protected static Map<String, CustomResourceHandler> customResourceHandlers = new HashMap<>();
 
   public interface IParserFactory {
     public JsonParserBase composerJson(JsonCreator json);
     public JsonParserBase parserJson(boolean allowUnknownContent, boolean allowComments);
     public XmlParserBase composerXml(IXMLWriter xml);
     public XmlParserBase parserXml(boolean allowUnknownContent);
+  }
+
+  public static class CustomResourceHandler {
+    private final IParserFactory factory;
+    private final boolean overridesBase;
+
+    public CustomResourceHandler(IParserFactory factory, boolean overridesBase) {
+      super();
+      this.factory = factory;
+      this.overridesBase = overridesBase;
+    }
+
+    public IParserFactory getFactory() {
+      return factory;
+    }
+
+    /**
+     * if true, this handler takes precedence over any resource with the same name defined 
+     * in the base specification. If false, the handler is only used for resource names that 
+     * the base specification doesn't define
+     */
+    public boolean isOverridesBase() {
+      return overridesBase;
+    }
+  }
+
+  /**
+   * Register a parser for a custom (additional) resource. If overridesBase is true, the 
+   * custom resource takes precedence over any resource with the same name defined in the 
+   * base specification; otherwise the custom resource is only considered when the base 
+   * specification doesn't define the resource name
+   */
+  public static void registerCustomResource(String name, IParserFactory factory, boolean overridesBase) {
+    customResourceHandlers.put(name, new CustomResourceHandler(factory, overridesBase));
   }
   // -- implementation of variant type methods from the interface --------------------------------
   
@@ -255,7 +289,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     }
   }
 
-  public static Map<String, IParserFactory> getCustomResourceHandlers() {
+  public static Map<String, CustomResourceHandler> getCustomResourceHandlers() {
     return customResourceHandlers;
   }
 

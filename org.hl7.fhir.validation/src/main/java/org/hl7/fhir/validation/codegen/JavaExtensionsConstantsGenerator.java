@@ -21,7 +21,7 @@ public class JavaExtensionsConstantsGenerator extends JavaBaseGenerator {
   }
   
   public void generate(StructureDefinition sd, String name, String constName) throws Exception {  
-    src.append("  public static final String EXT_"+constName+" = \""+sd.getUrl()+"\"; // "+sd.getTitle()+"\r\n");
+    src.append("  public static final String EXT_"+constName+" = \""+escapeJavaString(sd.getUrl())+"\"; // "+sanitizeComment(sd.getTitle())+"\r\n");
   }
   
   public void finish() throws Exception {   

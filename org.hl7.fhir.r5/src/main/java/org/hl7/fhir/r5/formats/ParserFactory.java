@@ -58,6 +58,6 @@ public class ParserFactory {
   }
   
   public static void registerCustomResources() {
-    ToolsRegistration.register();
+    ToolsRegistration.register(false);
   }
 }

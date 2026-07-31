@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.tools;
+package org.hl7.fhir.r5.igs.testing;
 
 // generated
 
@@ -40,38 +40,28 @@ import org.hl7.fhir.r5.formats.ParserBase.IParserFactory;
 import org.hl7.fhir.r5.formats.XmlParserBase;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 
-public class ToolsParser {
+public class TestingParser {
 
-  /**
-   * Register the parsers for the resources in this package with the core parsers. 
-   * 
-   * If overridesBase is true, these resources take precedence over any resources with the 
-   * same names defined in the base specification; if it is false, they are only used for 
-   * resource names that the base specification doesn't define (which is the appropriate 
-   * choice for this package - nothing in it overrides the base specification). The parameter 
-   * is always present for consistency across the generated packages
-   */
-  public static void register(boolean overridesBase) {    
-    org.hl7.fhir.r5.formats.ParserBase.registerCustomResource("TestCases", new ToolsJsonParserFactory(), overridesBase);
+  public static void register() {    
 
   }
 
-  public static class ToolsJsonParserFactory implements IParserFactory {
+  public static class TestingJsonParserFactory implements IParserFactory {
     @Override
     public JsonParserBase composerJson(JsonCreator json) {
-      return new ToolsJsonParser(json);
+      return new TestingJsonParser(json);
     }
     @Override
     public JsonParserBase parserJson(boolean allowUnknownContent, boolean allowComments) {
-      return new ToolsJsonParser(allowUnknownContent, allowComments);
+      return new TestingJsonParser(allowUnknownContent, allowComments);
     }
     @Override
     public XmlParserBase composerXml(IXMLWriter xml) {
-      return new ToolsXmlParser(xml);
+      return new TestingXmlParser(xml);
     }
     @Override
     public XmlParserBase parserXml(boolean allowUnknownContent) {
-      return new ToolsXmlParser(allowUnknownContent);
+      return new TestingXmlParser(allowUnknownContent);
     }
   }
   

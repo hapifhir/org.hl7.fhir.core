@@ -19,6 +19,9 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class Definitions {
 
+  // marks structures loaded from the core package for ancestor analysis - they are not generated
+  public static final String CORE_MARKER = "java.codegen.core";
+
   private IWorkerContext context;
   
   public Definitions(IWorkerContext context) {

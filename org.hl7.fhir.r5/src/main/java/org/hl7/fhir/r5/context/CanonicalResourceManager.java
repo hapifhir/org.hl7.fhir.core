@@ -395,7 +395,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       String type = cr.proxy != null ? cr.proxy.getType() : cr.getResource().fhirType();
       String deriv = cr.proxy != null ? cr.proxy.getDerivation() : cr.getResource() instanceof StructureDefinition ? ((StructureDefinition) cr.getResource()).getDerivationElement().primitiveValue() : null;
       if ((Utilities.existsInList(type, "CodeSystem", "ValueSet") ||
-            "StructureDefinition".equals(type) && "specializes".equals(deriv)) && !cr.getUrl().startsWith("http://terminology.hl7.org")) {
+            "StructureDefinition".equals(type) && "specialization".equals(deriv)) && !cr.getUrl().startsWith("http://terminology.hl7.org")) {
         masterDefinitions.put(cr.getUrl(), cr);
       }
     }

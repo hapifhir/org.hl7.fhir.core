@@ -77,8 +77,8 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
 
   public void generateSimple(StructureDefinition sd, String name, String constName) throws Exception {
     src.append("// -- "+name+" -------------------------------------\r\n");
-    src.append("// "+sd.getVersionedUrl()+"\r\n");
-    src.append("// "+sd.getTitle()+"\r\n");
+    src.append("// "+sanitizeComment(sd.getVersionedUrl())+"\r\n");
+    src.append("// "+sanitizeComment(sd.getTitle())+"\r\n");
     src.append("\r\n");
     
     Set<String> contexts = new HashSet<>();

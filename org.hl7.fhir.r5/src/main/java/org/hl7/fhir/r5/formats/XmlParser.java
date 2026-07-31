@@ -30606,7 +30606,12 @@ public class XmlParser extends XmlParserBase {
   protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     if (xpp == null) {
       throw new IOException("xpp == null!");
-    } else if (xpp.getName().equals("Account")) {
+    }
+    Resource custom = parseOverridingCustomResource(xpp);
+    if (custom != null) {
+      return custom;
+    }
+    if (xpp.getName().equals("Account")) {
       return parseAccount(xpp);
     } else if (xpp.getName().equals("ActivityDefinition")) {
       return parseActivityDefinition(xpp);

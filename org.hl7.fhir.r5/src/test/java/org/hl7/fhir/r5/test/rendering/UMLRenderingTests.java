@@ -45,7 +45,7 @@ import org.xml.sax.SAXException;
 public class UMLRenderingTests {
 
   public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
-    ToolsRegistration.register();
+    ToolsRegistration.register(false);
     TestCases tests = (TestCases) new JsonParser().parse(TestingUtilities.loadTestResource("r5", "uml", "manifest.json"));
     List<Arguments> objects = new ArrayList<>();
     for (TestCasesSuiteComponent suite : tests.getSuiteList()) {

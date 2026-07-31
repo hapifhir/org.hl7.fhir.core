@@ -499,7 +499,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     if (text == null) {
       return "";
     }
-    return text.replace("*/", "* /").replace("/*", "/ *");
+    return sanitizeComment(text);
   }
 
   private void writeSearchParameterField(String name, JavaGenClass clss, boolean isAbstract, SearchParameter sp, String code, String[] theCompositeOf, List<SearchParameter> searchParams, String rn) throws IOException {
@@ -516,7 +516,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write("   * Path: <b>" + sanitizeJavadoc(sp.getExpression()) + "</b><br>\r\n");
     write("   * </p>\r\n");
     write("   */\r\n");
-    write("  @SearchParamDefinition(name=\"" + code + "\", path=\"" + Utilities.escapeJava(defaultString(sp.getExpression())) + "\", description=\""+Utilities.escapeJava(sp.getDescription())+"\", type=\""+sp.getType().toCode() + "\"");
+    write("  @SearchParamDefinition(name=\"" + escapeJavaString(code) + "\", path=\"" + escapeJavaString(defaultString(sp.getExpression())) + "\", description=\""+escapeJavaString(sp.getDescription())+"\", type=\""+sp.getType().toCode() + "\"");
     if (theCompositeOf != null && theCompositeOf.length > 0) {
       write(", compositeOf={");
       for (int i = 0; i < theCompositeOf.length; i++) {
@@ -760,7 +760,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 
   private void jdoc(String indent, String text) throws IOException {
     write(indent+"/**\r\n");
-		write(indent+" * "+text.replace("*/", "* /")+"\r\n");
+		write(indent+" * "+sanitizeComment(text)+"\r\n");
 		write(indent+" */\r\n");
   }
 
@@ -772,7 +772,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write(indent+"    super.listChildren(children);\r\n");
 	  for (ElementDefinition e : children) {
       if (!isInterface && !e.typeSummary().equals("xhtml")) {
-	      write(indent+"    children.add(new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+"));\r\n");
+	      write(indent+"    children.add(new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+"));\r\n");
       }
 	  }
 	  write(indent+"  }\r\n\r\n");  
@@ -782,11 +782,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ElementDefinition e : children) {
       if (!isInterface && !e.typeSummary().equals("xhtml")) {
         write(indent+"    case "+propId(e.getName())+": /*"+e.getName()+"*/ ");
-        write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+");\r\n");
+        write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+");\r\n");
         if (e.getName().endsWith("[x]")) {
           String n = e.getName().substring(0, e.getName().length()-3);
           write(indent+"    case "+propId(n)+": /*"+n+"*/ ");
-          write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
+          write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
           if (e.typeSummary().equals("*")) {
             // master list in datatypes.html
             for (String t : new String[] {
@@ -797,12 +797,12 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
                 }) {
               String tn = n + Utilities.capitalize(t);
               write(indent+"    case "+propId(tn)+": /*"+tn+"*/ ");
-              write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e, t)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
+              write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e, t)+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
             }
           } else for (TypeRefComponent tr : e.getType()) {
             String tn = n + Utilities.capitalize(checkConstraint(tr.getCode()));
             write(indent+"    case "+propId(tn)+": /*"+tn+"*/ ");
-            write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e, tr.getCode())+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
+            write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e, tr.getCode())+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
           }
         }
       }
@@ -858,6 +858,9 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
               tn.append("|");
             f = false;
             String stn = s.asStringValue().substring(40);
+            if (stn.contains("|")) { // remove any version specifier from the canonical
+              stn = stn.substring(0, stn.indexOf("|"));
+            }
             tn.append("Resource".equals(stn) ? "Any" : stn);
             //          }
           }
@@ -955,7 +958,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
             write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory().fromType(TypeConvertor.castToCode(value));\r\n");
             cn = "(Enumeration) value";
           } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !isContentReference(e)) {
-            StructureDefinition sd = definitions.getContext().fetchTypeDefinition(getContentElement(e));
+            StructureDefinition sd = definitions.getContext().fetchTypeDefinition(e.getTypeFirstRep().getCode());
             String tnn = checkConstraint(getTypeName(e));
             if (!isCoreType(sd) || sd.getKind() == StructureDefinitionKind.LOGICAL) {
               cn = "("+upFirst(tn)+") value";              
@@ -986,10 +989,6 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     if (!first)
       write(indent+"    return value;\r\n");
     write(indent+"  }\r\n\r\n");  
-  }
-
-  private String getContentElement(ElementDefinition e) {
-    return e.getContentReference() == null ? e.getPath() : e.getContentReference().substring(e.getContentReference().indexOf("#")+1);
   }
 
 
@@ -1336,7 +1335,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       el.append(cc);
       String definition = definitions.getCodeDefinition(c.getSystem(), c.getCode());
       write("        /**\r\n");
-      write("         * "+Utilities.escapeJava(definition)+"\r\n");
+      write("         * "+sanitizeComment(definition)+"\r\n");
       write("         */\r\n");      
 			write("        "+cc.toUpperCase()+", \r\n");
 		}
@@ -1353,7 +1352,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
 			String cc = Utilities.camelCase(c.getCode());
 			cc = makeConst(cc);
-			write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
+			write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
 			write("          return "+cc+";\r\n");
 		}		
     write("        if (Configuration.isAcceptInvalidEnums())\r\n");
@@ -1367,7 +1366,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
 			String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-			write("            case "+cc+": return \""+c.getCode()+"\";\r\n");
+			write("            case "+cc+": return \""+escapeJavaString(c.getCode())+"\";\r\n");
 		}   
     write("            case NULL: return null;\r\n");
 		write("            default: return \"?\";\r\n");
@@ -1379,7 +1378,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-      write("            case "+cc+": return \""+c.getSystem()+"\";\r\n");
+      write("            case "+cc+": return \""+escapeJavaString(c.getSystem())+"\";\r\n");
     }   
     write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
@@ -1392,7 +1391,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
       String definition = definitions.getCodeDefinition(c.getSystem(), c.getCode());
-      write("            case "+cc+": return \""+Utilities.escapeJava(definition)+"\";\r\n");
+      write("            case "+cc+": return \""+escapeJavaString(definition)+"\";\r\n");
     }   
     write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
@@ -1404,7 +1403,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-      write("            case "+cc+": return \""+Utilities.escapeJava(Utilities.noString(c.getDisplay()) ? c.getCode() : c.getDisplay())+"\";\r\n");
+      write("            case "+cc+": return \""+escapeJavaString(Utilities.noString(c.getDisplay()) ? c.getCode() : c.getDisplay())+"\";\r\n");
     }   
     write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
@@ -1424,7 +1423,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-      write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
+      write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
       write("          return "+tns+"."+cc+";\r\n");
     }   
     write("        throw new IllegalArgumentException(\"Unknown "+tns+" code '\"+codeString+\"'\");\r\n");
@@ -1440,7 +1439,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-      write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
+      write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
       write("          return new Enumeration<"+tns+">(this, "+tns+"."+cc+", code);\r\n");
     }   
     write("        throw new FHIRException(\"Unknown "+tns+" code '\"+codeString+\"'\");\r\n");
@@ -1766,7 +1765,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     childB.append(")\r\n");
     write(childB.toString());
     
-    write(indent+"@Description(shortDefinition=\""+Utilities.escapeJava(replaceTitle(rn, e.getShort()))+"\", formalDefinition=\""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\" )\r\n");
+    write(indent+"@Description(shortDefinition=\""+escapeJavaString(replaceTitle(rn, e.getShort()))+"\", formalDefinition=\""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\" )\r\n");
     
     if (e.getBinding() != null) {
       if (e.getBinding().getValueSet() != null && !Utilities.noString(e.getBinding().getValueSet())) {
@@ -1804,6 +1803,9 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         if (tr.isResourceReference()) {
           for (CanonicalType p : tr.getTargetProfile()) {
             String s = p.getValue().substring(40);
+            if (s.contains("|")) { // remove any version specifier from the canonical
+              s = s.substring(0, s.indexOf("|"));
+            }
             if (s.equalsIgnoreCase("Resource")) {
               b.append("Reference.class");
             } else {
@@ -1954,6 +1956,21 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  }
       write(indent+"  return this;\r\n");
 		  write(indent+"}\r\n\r\n");
+
+		  if (inh != null) {
+		    // the class we inherit from declares abstract accessors for this element using the classical 
+		    // naming style (no "List" suffix) - implement them, delegating to the List-style accessors
+		    jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
+		    write(indent+"@Override\r\n");
+		    write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
+		    write(indent+"  return get"+getTitle(getElementName(e.getName(), false))+"List();\r\n");
+		    write(indent+"}\r\n\r\n");
+		    jdoc(indent, "@return Returns a reference to <code>this</code> for easy method chaining");
+		    write(indent+"@Override\r\n");
+		    write(indent+"public " + className + " set"+getTitle(getElementName(e.getName(), false))+"(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + ") { \r\n");
+		    write(indent+"  return set"+getTitle(getElementName(e.getName(), false))+"List(the" + getTitle(getElementName(e.getName(), false)) + ");\r\n");
+		    write(indent+"}\r\n\r\n");
+		  }
 
 		  /*
 		   * hasXXX() for repeatable type
@@ -2483,6 +2500,17 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
       write(indent+"}\r\n");
 
+      // the class we inherit from declares abstract accessors for this element using the classical
+      // naming style (no "List" suffix) - implement them, delegating to the List-style accessors
+      write(indent+"@Override\r\n");
+      write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
+      write(indent+"  return get"+getTitle(getElementName(e.getName(), false))+"List();\r\n");
+      write(indent+"}\r\n");
+      write(indent+"@Override\r\n");
+      write(indent+"public " + className + " set"+getTitle(getElementName(e.getName(), false))+"(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + ") { \r\n");
+      write(indent+"  return set"+getTitle(getElementName(e.getName(), false))+"List(the" + getTitle(getElementName(e.getName(), false)) + ");\r\n");
+      write(indent+"}\r\n");
+
       /*
        * hasXXX() for repeatable type
        */
@@ -2511,7 +2539,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
          * hasXXX(foo) for repeatable primitive
          */
         jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
-        write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value); \r\n");
+        write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { \r\n");
         write(indent+"  return false;\r\n");
         write(indent+"}\r\n");
       } else {

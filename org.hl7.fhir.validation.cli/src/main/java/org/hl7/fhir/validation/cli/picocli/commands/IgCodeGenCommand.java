@@ -68,6 +68,18 @@ public class IgCodeGenCommand extends ValidationServiceCommand implements Callab
   )
   private String config;
 
+  @CommandLine.Option(
+    names = {"-test-package-name"},
+    description = "Java package name for a generated round-trip test class (optional; requires -test-output). The test fetches the source package(s) and checks that every example round trips json -> xml -> json"
+  )
+  private String testPackageName;
+
+  @CommandLine.Option(
+    names = {"-test-output"},
+    description = "Output directory for the generated round-trip test class (optional; requires -test-package-name)"
+  )
+  private String testOutput;
+
   @CommandLine.Parameters(
     description = "The IG package(s) to generate code for (e.g. hl7.fhir.uv.testing#current)",
     arity = "1..*"
@@ -76,8 +88,12 @@ public class IgCodeGenCommand extends ValidationServiceCommand implements Callab
 
   @Override
   public Integer call() {
+    if ((testPackageName == null) != (testOutput == null)) {
+      log.error("-test-package-name and -test-output must be provided together");
+      return 1;
+    }
     try {
-      new LogicalModelCodeGenerator().generate(packageName, output, config, packages);
+      new LogicalModelCodeGenerator().generate(packageName, output, config, packages, testPackageName, testOutput);
       log.info("Code generation completed successfully");
       return 0;
     } catch (Exception e) {

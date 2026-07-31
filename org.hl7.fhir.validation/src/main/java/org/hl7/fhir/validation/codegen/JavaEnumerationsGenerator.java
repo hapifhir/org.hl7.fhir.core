@@ -119,7 +119,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 	      el.append(cc);
 
 	      write("        /**\r\n");
-	      write("         * "+definitions.getCodeDefinition(c.getSystem(), c.getCode())+"\r\n");
+	      write("         * "+sanitizeComment(definitions.getCodeDefinition(c.getSystem(), c.getCode()))+"\r\n");
 	      write("         */\r\n");      
 				write("        "+cc.toUpperCase()+", \r\n");
 			}
@@ -136,7 +136,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
 				String cc = Utilities.camelCase(c.getCode());
 				cc = makeConst(cc);
-				write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
+				write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
 				write("          return "+cc+";\r\n");
 			}
 		write("        throw new FHIRException(\"Unknown "+name+" code '\"+codeString+\"'\");\r\n");
@@ -147,7 +147,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     write("                return false;\r\n");
     write("          return Utilities.existsInList(codeString");
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
-        write(", \""+c.getCode()+"\"");
+        write(", \""+escapeJavaString(c.getCode())+"\"");
     }
     write(");\r\n");
     write("        }\r\n"); 
@@ -157,7 +157,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
 				String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
-        write("            case "+cc+": return \""+c.getCode()+"\";\r\n");
+        write("            case "+cc+": return \""+escapeJavaString(c.getCode())+"\";\r\n");
 			}
     write("            case NULL: return null;\r\n");
 		write("            default: return \"?\";\r\n");
@@ -169,7 +169,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-      write("            case "+cc+": return \""+c.getSystem()+"\";\r\n");
+      write("            case "+cc+": return \""+escapeJavaString(c.getSystem())+"\";\r\n");
     }
     write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
@@ -181,7 +181,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
 	      String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
-	      write("            case "+cc+": return \""+Utilities.escapeJava(definitions.getCodeDefinition(c.getSystem(), c.getCode()))+"\";\r\n");
+	      write("            case "+cc+": return \""+escapeJavaString(definitions.getCodeDefinition(c.getSystem(), c.getCode()))+"\";\r\n");
 			}
     write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
@@ -193,7 +193,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
 	      String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
-	      write("            case "+cc+": return \""+Utilities.escapeJava(Utilities.noString(c.getDisplay()) ? c.getCode() : c.getDisplay())+"\";\r\n");
+	      write("            case "+cc+": return \""+escapeJavaString(Utilities.noString(c.getDisplay()) ? c.getCode() : c.getDisplay())+"\";\r\n");
 			}
     write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
@@ -219,7 +219,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
 	      String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
-	      write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
+	      write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
 	      write("          return "+name+"."+cc+";\r\n");
 			}
     write("        throw new IllegalArgumentException(\"Unknown "+name+" code '\"+codeString+\"'\");\r\n");
@@ -236,7 +236,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-      write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
+      write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
       write("          return new Enumeration<"+name+">(this, "+name+"."+cc+", code);\r\n");
     }   
     write("        throw new FHIRException(\"Unknown "+name+" code '\"+codeString+\"'\");\r\n");
@@ -245,7 +245,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
 	      String cc = Utilities.camelCase(c.getCode());
 	      cc = makeConst(cc);
-	      write("      if (code == "+name+"."+cc+")\r\n        return \""+c.getCode()+"\";\r\n");
+	      write("      if (code == "+name+"."+cc+")\r\n        return \""+escapeJavaString(c.getCode())+"\";\r\n");
     }
     write("      return \"?\";\r\n"); 
     write("      }\r\n");

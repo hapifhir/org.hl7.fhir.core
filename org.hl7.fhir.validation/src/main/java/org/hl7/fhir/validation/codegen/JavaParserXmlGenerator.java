@@ -64,19 +64,26 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     this.jname = jname;
   }
 
+  private String jpfx(Analysis analysis) {
+    // if the resource shadows a resource in the base model, the parse methods need a different name,
+    // because the base parser that this parser inherits from already has parse methods with those
+    // names, differing only by return type
+    return definitions.getContext().getResourceNames().contains(analysis.getName()) ? jname : "";
+  }
+
   public void seeClass(Analysis analysis) throws Exception {
     generateParser(analysis);
     generateComposer(analysis);
     if (!analysis.isAbstract()) {
-      pFrag.append( "    } else if (type.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getClassName()+"(xpp);\r\n");
+      pFrag.append( "    } else if (type.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getClassName()+"(xpp);\r\n");
       pCtype.append("    } else if (xpp.getName().equals(prefix+\""+analysis.getName()+"\")) {\r\n      return true;\r\n");
       if (analysis.getStructure().getKind() == StructureDefinitionKind.COMPLEXTYPE) {
-        pTP.append(   "    } else if (xpp.getName().equals(prefix+\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getClassName()+"(xpp);\r\n");
-        pT.append(    "    } else if (type.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getClassName()+"(xpp);\r\n");
+        pTP.append(   "    } else if (xpp.getName().equals(prefix+\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getClassName()+"(xpp);\r\n");
+        pT.append(    "    } else if (type.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getClassName()+"(xpp);\r\n");
         cType.append( "    } else if (type instanceof "+analysis.getClassName()+") {\r\n       compose"+analysis.getClassName()+"(prefix+\""+analysis.getName()+"\", ("+analysis.getClassName()+") type);\r\n");
       }
       if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
-        pRes.append("    } else if (xpp.getName().equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getClassName()+"(xpp);\r\n");
+        pRes.append("    } else if (xpp.getName().equals(\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getClassName()+"(xpp);\r\n");
         cRes.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+analysis.getName()+"\", ("+analysis.getClassName()+")resource);\r\n");
         cRN.append( "    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
       }
@@ -110,7 +117,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
   
   private void generateParser(Analysis analysis) throws Exception {
     if (analysis.getAncestor().getName().equals("Resource")) {
-      pRes.append("    } else if (xpp.getName().equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getClassName()+"(xpp);\r\n");
+      pRes.append("    } else if (xpp.getName().equals(\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getClassName()+"(xpp);\r\n");
       cRes.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+analysis.getName()+"\", ("+analysis.getClassName()+")resource);\r\n");
       cRN.append( "    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
     }
@@ -133,12 +140,13 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     String pfx = (ti.getDefn().isInlineType()) && !tn.startsWith(analysis.getClassName()) ? analysis.getClassName() : "";
 
     if (!analysis.isAbstract() || ti != analysis.getRootType()) {
-      parser.append("  protected "+stn+" parse"+pfx+tn+"(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
+      parser.append("  protected "+stn+" parse"+jpfx(analysis)+pfx+tn+"(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
       parser.append("    "+stn+" res = new "+stn+"();\r\n");      
       if (ti == analysis.getRootType() && analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
         parser.append("    parseResourceAttributes(xpp, res);\r\n");
-      } else {
-//        parser.append("    parseElementAttributes(xpp, res);\r\n");
+      } else if (Utilities.existsInList(ti.getAncestorName(), "Element", "BackboneElement", "DataType", "BackboneType")) {
+        // this type is an Element, so it has an id attribute (types based on Base - e.g. in some logical models - don't)
+        parser.append("    parseElementAttributes(xpp, res);\r\n");
       }
       for (ElementDefinition ed : ti.getChildren()) {
         if (ed.hasRepresentation(PropertyRepresentation.XMLATTR)) {
@@ -149,7 +157,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
       parser.append("    next(xpp);\r\n");
       parser.append("    int eventType = nextNoWhitespace(xpp);\r\n");
       parser.append("    while (eventType != XmlPullParser.END_TAG) {\r\n");
-      parser.append("    if (!parse"+pfx+tn+"Content(eventType, xpp, res)) // 1\r\n");
+      parser.append("    if (!parse"+jpfx(analysis)+pfx+tn+"Content(eventType, xpp, res)) // 1\r\n");
       parser.append("        unknownContent(xpp);\r\n");
       parser.append("      eventType = nextNoWhitespace(xpp);\r\n");
       parser.append("    }\r\n");
@@ -158,7 +166,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
       parser.append("    return res;\r\n");
       parser.append("  }\r\n\r\n");    
     }
-    parser.append("  protected boolean parse"+pfx+tn+"Content(int eventType, XmlPullParser xpp, "+stn+" res) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
+    parser.append("  protected boolean parse"+jpfx(analysis)+pfx+tn+"Content(int eventType, XmlPullParser xpp, "+stn+" res) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
     boolean first = true;
     for (ElementDefinition ed : ti.getChildren()) {
       if (!ed.hasRepresentation(PropertyRepresentation.XMLATTR)) {
@@ -203,7 +211,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     String pfx = (ti.getDefn().isInlineType()) && !tn.startsWith(analysis.getClassName()) ? analysis.getClassName() : "";
 
 
-    parser.append("  protected "+stn+" parse"+pfx+tn+"(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
+    parser.append("  protected "+stn+" parse"+jpfx(analysis)+pfx+tn+"(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
     parser.append("    String type = xpp.getAttributeValue(\"http://www.w3.org/2001/XMLSchema-instance\", \"type\");\r\n");      
     parser.append("    switch (type) {\r\n");            
     for (Entry<String, String> e : getConcreteDescendents(analysis, ti).entrySet()) {
@@ -254,9 +262,11 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
       if (ed.hasUserData("java.enum")) {
         EnumInfo ei = (EnumInfo) ed.getUserData("java.enum"); // getCodeListType(cd.getBinding());
         ValueSet vs = ei.getValueSet();
-        boolean enShared = vs.hasUserData("shared");
+        boolean enShared = vs.hasUserData("shared") || vs.hasUserData("java.core.enum");
         String en;
-        if (enShared) {
+        if (vs.hasUserData("java.core.enum")) {
+          en = "org.hl7.fhir.r5.model.Enumerations."+ei.getName();
+        } else if (vs.hasUserData("shared")) {
           en = "Enumerations."+ei.getName();
         } else {
           en = analysis.getClassName()+"."+ei.getName();
@@ -277,13 +287,13 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         else if (tn.contains("("))
           prsr = "parse"+tn+"(xpp)";
         else if (tn.startsWith(analysis.getName()) && !tn.equals(analysis.getClassName())/* && !definitions.hasType(tn)*/) {
-          prsr = "parse"+upFirst(tn)+"(xpp)";
+          prsr = "parse"+jpfx(analysis)+upFirst(tn)+"(xpp)";
         } else if (tn.equals("Resource") || tn.equals("DomainResource"))
           prsr = "parse"+upFirst(tn)+"Contained(xpp)";
         else if (isPrimitive(ed)) {
           prsr = "parse"+upFirst(tn.substring(0, tn.length()-4))+"(xpp)";            
         } else if ((ed.hasContentReference() || ed.isInlineType()) && !tn.startsWith(analysis.getClassName()) ) {
-          prsr = "parse"+analysis.getClassName()+upFirst(tn)+"(xpp)";
+          prsr = "parse"+jpfx(analysis)+analysis.getClassName()+upFirst(tn)+"(xpp)";
         } else {
           prsr = "parse"+upFirst(tn)+"(xpp)";
         }
@@ -327,8 +337,9 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     composer.append("    if (element != null) {\r\n");
     if (ti == analysis.getRootType() && analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
       composer.append("    composeResourceAttributes(element);\r\n");
-    } else {
-      // composer.append("    composeElementAttributes(element);\r\n");
+    } else if (Utilities.existsInList(ti.getAncestorName(), "Element", "BackboneElement", "DataType", "BackboneType")) {
+      // this type is an Element, so it has an id attribute (types based on Base - e.g. in some logical models - don't)
+      composer.append("      composeElementAttributes(element);\r\n");
     }
     for (ElementDefinition ed : ti.getChildren()) {
       if (ed.hasRepresentation(PropertyRepresentation.XMLATTR)) {
@@ -430,8 +441,10 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
       if (ed.hasUserData("java.enum")) {
         EnumInfo ei = (EnumInfo) ed.getUserData("java.enum");
         ValueSet vs = ei.getValueSet();
-        boolean enShared = vs.hasUserData("shared");
-        if (enShared) {
+        boolean enShared = vs.hasUserData("shared") || vs.hasUserData("java.core.enum");
+        if (vs.hasUserData("java.core.enum")) {
+          en = "org.hl7.fhir.r5.model.Enumerations."+ei.getName();
+        } else if (vs.hasUserData("shared")) {
           en = "Enumerations."+ei.getName();
         } else {
           en = analysis.getClassName()+"."+ei.getName();

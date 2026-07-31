@@ -60,6 +60,9 @@ public class JavaFactoryGenerator extends JavaBaseGenerator {
   private String genResourceFactory() {
     StringBuilder b = new StringBuilder();
     for (StructureDefinition sd : definitions.getStructures().getSortedList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
         String tn = ((TypeInfo) sd.getUserData("java.type.info")).getName();
         b.append("        if (\""+sd.getName()+"\".equals(name))\r\n");
@@ -73,6 +76,9 @@ public class JavaFactoryGenerator extends JavaBaseGenerator {
   private String genTypeFactory() {
     StringBuilder b = new StringBuilder();
     for (StructureDefinition sd : definitions.getStructures().getSortedList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
         String tn = ((TypeInfo) sd.getUserData("java.type.info")).getName();
         b.append("        if (\""+sd.getName()+"\".equals(name))\r\n");
@@ -86,6 +92,9 @@ public class JavaFactoryGenerator extends JavaBaseGenerator {
   private String genCaseFactory() {
     StringBuilder b = new StringBuilder();
     for (StructureDefinition sd : definitions.getStructures().getSortedList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
         String tn = ((TypeInfo) sd.getUserData("java.type.info")).getName();
         b.append("        case "+Integer.toString(sd.getName().hashCode())+": return new "+tn+"();\r\n");

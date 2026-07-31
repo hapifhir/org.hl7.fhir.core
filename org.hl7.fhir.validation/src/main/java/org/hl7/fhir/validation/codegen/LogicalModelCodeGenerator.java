@@ -59,6 +59,10 @@ public class LogicalModelCodeGenerator {
   }
 
   public void generate(String packageName, String folder, String cfgPath, List<String> packages) throws Exception {
+    generate(packageName, folder, cfgPath, packages, null, null);
+  }
+
+  public void generate(String packageName, String folder, String cfgPath, List<String> packages, String testPackageName, String testFolder) throws Exception {
     long start = System.currentTimeMillis();
     Map<String, AnalysisElementInfo> elementInfo = new HashMap<>();
     Set<String> genClassList = new HashSet<>();
@@ -75,17 +79,30 @@ public class LogicalModelCodeGenerator {
     IContextResourceLoader loader = ContextResourceLoaderFactory.makeLoader(npm.fhirVersion(), new NullLoaderKnowledgeProviderR5());
     SimpleWorkerContext context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm, loader, true);
     String version = context.getVersion();
+    NpmPackage coreNpm = npm;
+    IContextResourceLoader coreLoader = loader;
     context.connectToTSServer(new TerminologyClientFactory(FhirPublication.R5), "https://tx.fhir.org",
         "CodeGenerator", null, true);
     context.setExpansionParameters(new Parameters());
     
     Definitions master = new Definitions(context);
+    List<String> pids = new ArrayList<String>();
     for (String pid : packages) {    
       log.info("Load "+pid);
       npm = pcm.loadPackage(pid);    
+      pids.add(npm.name()+"#"+npm.version());
       loader = ContextResourceLoaderFactory.makeLoader(npm.fhirVersion(), new NullLoaderKnowledgeProviderR5());
       load(master, npm, loader); 
       context.loadFromPackage(npm, loader);
+    }
+    
+    log.info("Load core structures for ancestor analysis");
+    for (String t : coreNpm.listResources("StructureDefinition")) {
+      StructureDefinition csd = (StructureDefinition) load(coreNpm, t, coreLoader);
+      if (csd != null && !master.getStructures().has(csd.getUrl())) {
+        csd.setUserData(Definitions.CORE_MARKER, true);
+        master.getStructures().see(csd, null);
+      }
     }
     
 //    
@@ -116,16 +133,23 @@ public class LogicalModelCodeGenerator {
     JavaFactoryGenerator fgen = new JavaFactoryGenerator(ManagedFileAccess.outStream(Utilities.path(folder, "TypeFactory.java")), master, config, date, version, packageName);
     String jname = Utilities.capitalize(tail(packageName));
     JavaParserGenerator pgen = new JavaParserGenerator(ManagedFileAccess.outStream(Utilities.path(folder,  jname+"Parser.java")), master, config, date, version, packageName, jname);
+    pgen.setPackages(pids);
     JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(ManagedFileAccess.outStream(Utilities.path(folder,  jname+"JsonParser.java")), master, config, date, version, packageName, jname);
     JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(ManagedFileAccess.outStream(Utilities.path(folder, jname+"XmlParser.java")), master, config, date, version, packageName, jname);
 
     for (StructureDefinition sd : master.getStructures().getList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
         genClassList.add(Utilities.capitalize(sd.getType())+"Type");
       }
     }
 
     for (StructureDefinition sd : master.getStructures().getList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
           genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
@@ -133,6 +157,9 @@ public class LogicalModelCodeGenerator {
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
           genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
@@ -140,6 +167,9 @@ public class LogicalModelCodeGenerator {
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.RESOURCE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
           genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
@@ -147,6 +177,9 @@ public class LogicalModelCodeGenerator {
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.RESOURCE) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
           genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
@@ -154,6 +187,9 @@ public class LogicalModelCodeGenerator {
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.LOGICAL) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && sd.getAbstract()) {
           genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
@@ -161,6 +197,9 @@ public class LogicalModelCodeGenerator {
       }
     }
     for (StructureDefinition sd : master.getStructures().getList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.LOGICAL) {
         if (!Utilities.existsInList(sd.getName(), "Base", "PrimitiveType") && !sd.getName().contains(".") && !sd.getAbstract()) {
           genClassList.add(genClass(version, folder, date, config, packageName, npm, master, pgen, jgen, xgen, sd, elementInfo, context));
@@ -181,6 +220,9 @@ public class LogicalModelCodeGenerator {
     xgen.close();
     Map<String, StructureDefinition> extensions = new HashMap<>();
     for (StructureDefinition sd : master.getStructures().getList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (ProfileUtilities.isExtensionDefinition(sd)) {
         sd.setUserData("source", "core");
         extensions.put(sd.getUrl(), sd);
@@ -188,6 +230,20 @@ public class LogicalModelCodeGenerator {
     }
     JavaExtensionsGenerator exgen = new JavaExtensionsGenerator(folder, master, config, date, version, packageName, elementInfo, genClassList);
     exgen.generate(extensions);
+
+    if (testFolder != null) {
+      log.info(" .. TestCases");
+      List<String> resourceNames = new ArrayList<String>();
+      for (StructureDefinition sd : master.getStructures().getList()) {
+        if (!sd.hasUserData(Definitions.CORE_MARKER) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && 
+            sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract()) {
+          resourceNames.add(sd.getName());
+        }
+      }
+      FileUtilities.createDirectory(testFolder);
+      JavaTestCasesGenerator tcgen = new JavaTestCasesGenerator(ManagedFileAccess.outStream(Utilities.path(testFolder, jname+"RoundTripTests.java")), master, config, version, date, testPackageName);
+      tcgen.generate(jname, packageName, pids, resourceNames);
+    }
     log.info("Done ("+Long.toString(System.currentTimeMillis()-start)+"ms)");
     
   }
@@ -237,6 +293,9 @@ public class LogicalModelCodeGenerator {
   @SuppressWarnings("unchecked")
   private void markValueSets(Definitions defns, Configuration config) {
     for (StructureDefinition sd : defns.getStructures().getList()) {
+      if (sd.hasUserData(Definitions.CORE_MARKER)) {
+        continue;
+      }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.PRIMITIVETYPE && !sd.getName().contains(".")) {
         for (ElementDefinition ed : sd.getSnapshot().getElement()) {
           if (ed.hasBinding() && ed.getBinding().hasValueSet() && ed.getBinding().getStrength() == BindingStrength.REQUIRED) {
@@ -279,6 +338,7 @@ public class LogicalModelCodeGenerator {
     String name = javaName(sd.getName());
 
     log.info(" .. "+name);
+    analyseInterfaceAncestors(master, config, version, context, elementInfo, sd);
     Analyser jca = new Analyser(master, config, version, context);
     Analysis analysis = jca.analyse(sd, elementInfo);
     
@@ -290,6 +350,25 @@ public class LogicalModelCodeGenerator {
     xgen.seeClass(analysis);
     pgen.seeClass(analysis);
     return name;
+  }
+
+  private void analyseInterfaceAncestors(Definitions master, Configuration config, String version, IWorkerContext context, 
+      Map<String, AnalysisElementInfo> elementInfo, StructureDefinition sd) throws Exception {
+    if (!sd.hasBaseDefinition()) {
+      return;
+    }
+    StructureDefinition base = master.getStructures().get(sd.getBaseDefinition());
+    if (base == null) {
+      base = context.fetchTypeDefinition(sd.getBaseDefinition());
+    }
+    if (base == null) {
+      return;
+    }
+    analyseInterfaceAncestors(master, config, version, context, elementInfo, base);
+    if (base.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-interface") && !base.hasUserData("java.type.info")) {
+      log.info(" .. analyse ancestor "+base.getName());
+      new Analyser(master, config, version, context).analyse(base, elementInfo);
+    }
   }
 
   private String javaName(String name) {

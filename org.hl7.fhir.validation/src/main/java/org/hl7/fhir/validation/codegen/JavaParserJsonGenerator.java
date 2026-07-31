@@ -94,19 +94,26 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     this.jname = jname;
   }
 
+  private String jpfx(Analysis analysis) {
+    // if the resource shadows a resource in the base model, the parse methods need a different name,
+    // because the base parser that this parser inherits from already has parse methods with those
+    // names, differing only by return type
+    return definitions.getContext().getResourceNames().contains(analysis.getName()) ? jname : "";
+  }
+
   public void seeClass(Analysis analysis) throws Exception {
     generateParser(analysis);
     generateComposer(analysis);
     if (!analysis.isAbstract()) {
       if (analysis.getStructure().getKind() == StructureDefinitionKind.COMPLEXTYPE) {
-        pregt.append("    } else if (json.has(prefix+\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getRootType().getName()+"(getJObject(json, prefix+\""+analysis.getName()+"\"));\r\n");
-        pregt2.append("   } else if (type.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getName()+"(json);\r\n");
+        pregt.append("    } else if (json.has(prefix+\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getRootType().getName()+"(getJObject(json, prefix+\""+analysis.getName()+"\"));\r\n");
+        pregt2.append("   } else if (type.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getName()+"(json);\r\n");
         cregtn.append("    } else if (type instanceof "+analysis.getName()+") {\r\n       compose"+analysis.getName()+"(prefix+\""+analysis.getName()+"\", ("+analysis.getClassName()+") type);\r\n");
         cregti.append("    } else if (type instanceof "+analysis.getName()+") {\r\n       compose"+analysis.getName()+"Properties(("+analysis.getName()+") type);\r\n");
       }
       pregn.append("    if (json.has(prefix+\""+analysis.getName()+"\")) {\r\n      return true;\r\n    };\r\n");
       if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
-        pregf.append("    } else if (t.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getClassName()+"(json);\r\n");
+        pregf.append("    } else if (t.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getClassName()+"(json);\r\n");
         creg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+analysis.getName()+"\", ("+analysis.getClassName()+")resource);\r\n");
         cregn.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
       }
@@ -155,8 +162,8 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private void generateParser(Analysis analysis) throws Exception {
 
     if (analysis.getAncestor().getName().equals("Resource")) {
-      register.append("    org.hl7.fhir.r5.formats.JsonParser.customResourceHandlers.put(\""+analysis.getName()+"\", new "+jname+"JsonParserFactory());\r\n");
-      pregf.append("    } else if (t.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+analysis.getClassName()+"(json);\r\n");
+      register.append("    org.hl7.fhir.r5.formats.ParserBase.registerCustomResource(\""+analysis.getName()+"\", new "+jname+"JsonParserFactory(), overridesBase);\r\n");
+      pregf.append("    } else if (t.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getClassName()+"(json);\r\n");
       creg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+analysis.getName()+"\", ("+analysis.getClassName()+")resource);\r\n");
       cregn.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
     }
@@ -174,9 +181,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private void genInner(Analysis analysis, TypeInfo ti) throws IOException, Exception {
     String tn = ti.getName();
     String stn = (ti == analysis.getRootType() ? tn : analysis.getClassName()+"."+tn);
-    String pn = "parse"+tn;
-    if (stn.contains(".") && !pn.startsWith("parse"+analysis.getClassName())) {
-      pn = "parse"+analysis.getClassName()+tn;
+    String pn = "parse"+jpfx(analysis)+tn;
+    if (stn.contains(".") && !pn.startsWith("parse"+jpfx(analysis)+analysis.getClassName())) {
+      pn = "parse"+jpfx(analysis)+analysis.getClassName()+tn;
     }
     boolean bUseOwner = false;
 
@@ -258,9 +265,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private void genInnerAbstract(Analysis analysis, TypeInfo ti) throws IOException, Exception {
     String tn = analysis.getRootType().getName();
     String stn = (ti == analysis.getRootType() ? tn : analysis.getClassName()+"."+tn);
-    String pn = "parse"+tn;
-    if (stn.contains(".") && !pn.startsWith("parse"+analysis.getClassName())) {
-      pn = "parse"+analysis.getClassName()+tn;
+    String pn = "parse"+jpfx(analysis)+tn;
+    if (stn.contains(".") && !pn.startsWith("parse"+jpfx(analysis)+analysis.getClassName())) {
+      pn = "parse"+jpfx(analysis)+analysis.getClassName()+tn;
     }
     boolean bUseOwner = false;
     
@@ -309,7 +316,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       if (ed.hasUserData("java.enum")) {
         ei = (EnumInfo) ed.getUserData("java.enum"); // getCodeListType(cd.getBinding());
         ValueSet vs = ei.getValueSet();
-        if (vs.hasUserData("shared")) {
+        if (vs.hasUserData("java.core.enum")) {
+          en = "org.hl7.fhir.r5.model.Enumerations."+ei.getName();
+        } else if (vs.hasUserData("shared")) {
           en = "Enumerations."+ei.getName();
         } else {
           en = analysis.getClassName()+"."+ei.getName();
@@ -348,9 +357,10 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           if ((ed.isInlineType() || ed.hasContentReference()) && !pn.startsWith(analysis.getClassName())) {
             pn = analysis.getClassName()+pn;            
           }
-          prsr = "parse"+pn+"(getJObject(json, \""+name+"\"))";
-          aprsr = "parse"+pn+"(array.get(i).getAsJsonObject())";
-          anprsr = "parse"+pn+"(null)";
+          String jp = pn.startsWith(analysis.getClassName()) ? jpfx(analysis) : "";
+          prsr = "parse"+jp+pn+"(getJObject(json, \""+name+"\"))";
+          aprsr = "parse"+jp+pn+"(array.get(i).getAsJsonObject())";
+          anprsr = "parse"+jp+pn+"(null)";
         }
       }
 
@@ -467,14 +477,14 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     composer.append("  protected void compose"+tn+"(String name, "+stn+" element) throws IOException {\r\n");
     composer.append("    if (element != null) {\r\n");
     boolean isResource = ti == analysis.getRootType() && analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE;
-    if (ti.getAncestorName().equals("Resource")) {
+    if (isResource) {
       composer.append("      prop(\"resourceType\", \""+analysis.getName()+"\");\r\n");
     } else {
       composer.append("      open(name);\r\n");      
     }
 
     composer.append("      compose"+upFirst(tn).replace(".", "")+"Properties(element);\r\n");
-    if (!ti.getAncestorName().equals("Resource")) {
+    if (!isResource) {
       composer.append("      close();\r\n");
     }
     composer.append("    }\r\n");
@@ -537,8 +547,10 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       if (ed.hasUserData("java.enum")) {
         EnumInfo ei = (EnumInfo) ed.getUserData("java.enum"); // getCodeListType(cd.getBinding());
         ValueSet vs = ei.getValueSet();
-        enShared = vs.hasUserData("shared");
-        if (enShared) {
+        enShared = vs.hasUserData("shared") || vs.hasUserData("java.core.enum");
+        if (vs.hasUserData("java.core.enum")) {
+          en = "org.hl7.fhir.r5.model.Enumerations."+ei.getName();
+        } else if (vs.hasUserData("shared")) {
           en = "Enumerations."+ei.getName();
         } else {
           en = analysis.getClassName()+"."+ei.getName();
@@ -699,8 +711,10 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     String[] parts = en.split("\\.");
     if (parts.length == 1)
       return upFirst(parts[0]);
-    else
+    else if (parts.length == 2)
       return upFirst(parts[0])+'.'+upFirst(parts[1]);
+    else
+      return en; // already fully qualified
   }
 
   private String leaf(String tn) {

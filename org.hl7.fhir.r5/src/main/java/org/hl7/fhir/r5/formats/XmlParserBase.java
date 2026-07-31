@@ -222,7 +222,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
   protected boolean composeCustomResource(Resource resource) throws IOException {
     if (customResourceHandlers.containsKey(resource.fhirType())) {
-      customResourceHandlers.get(resource.fhirType()).composerXml(xml).composeResource(resource);
+      customResourceHandlers.get(resource.fhirType()).getFactory().composerXml(xml).composeResource(resource);
       return true;
     } else {
       return false;
@@ -231,10 +231,23 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
   protected Resource parseCustomResource(XmlPullParser xpp) throws FHIRFormatError, IOException, XmlPullParserException {
     if (customResourceHandlers.containsKey(xpp.getName())) {
-    return customResourceHandlers.get(xpp.getName()).parserXml(allowUnknownContent).parse(xpp);
-  } else {
-    return null;
+      return customResourceHandlers.get(xpp.getName()).getFactory().parserXml(allowUnknownContent).parse(xpp);
+    } else {
+      return null;
+    }
   }
+
+  /**
+   * called at the start of resource dispatch: parse using a custom resource handler that is 
+   * registered as overriding the base specification (returns null if there's no such handler)
+   */
+  protected Resource parseOverridingCustomResource(XmlPullParser xpp) throws FHIRFormatError, IOException, XmlPullParserException {
+    CustomResourceHandler handler = customResourceHandlers.get(xpp.getName());
+    if (handler != null && handler.isOverridesBase()) {
+      return handler.getFactory().parserXml(allowUnknownContent).parse(xpp);
+    } else {
+      return null;
+    }
   }
 
   
