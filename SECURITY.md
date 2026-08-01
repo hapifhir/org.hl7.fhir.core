@@ -53,8 +53,8 @@ fhir-sessions.json is available at: https://confluence.hl7.org/spaces/FHIR/pages
 
 ###  Network Access
 
-By default, ManagedWebAccess loads access policies from the fhir-settings.json file. Some of these settings can be 
-altered directly via static methods. 
+By default, ManagedWebAccess loads access policies from the fhir-settings.json file. Some of these settings can be
+altered directly via static methods.
 
 **Web Access**
 ```java
