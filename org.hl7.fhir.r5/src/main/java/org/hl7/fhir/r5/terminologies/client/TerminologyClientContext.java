@@ -237,9 +237,11 @@ public class TerminologyClientContext {
         txcaps = client.getTerminologyCapabilities();
 
         // we don't use these, and they pollute the cache
-        txcaps.setDate(null);
-        txcaps.setVersion(null);
-        txcaps.setImplementation(null);
+        if (txcaps != null) {
+          txcaps.setDate(null);
+          txcaps.setVersion(null);
+          txcaps.setImplementation(null);
+        }
 
         if (txCache != null) {
           try {
