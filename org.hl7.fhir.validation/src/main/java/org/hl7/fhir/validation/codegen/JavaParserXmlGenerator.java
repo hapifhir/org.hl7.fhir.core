@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.Extension;
@@ -337,6 +338,11 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
     composer.append("    if (element != null) {\r\n");
     if (ti == analysis.getRootType() && analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
       composer.append("    composeResourceAttributes(element);\r\n");
+      if (ExtensionUtilities.readBoolExtension(analysis.getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+        // additional resources carry their defining StructureDefinition as a root attribute, so the
+        // resource can round-trip through the object model without losing the type binding
+        composer.append("      xml.attribute(\"resourceDefinition\", \""+escapeJavaString(analysis.getStructure().getVersionedUrl())+"\");\r\n");
+      }
     } else if (Utilities.existsInList(ti.getAncestorName(), "Element", "BackboneElement", "DataType", "BackboneType")) {
       // this type is an Element, so it has an id attribute (types based on Base - e.g. in some logical models - don't)
       composer.append("      composeElementAttributes(element);\r\n");

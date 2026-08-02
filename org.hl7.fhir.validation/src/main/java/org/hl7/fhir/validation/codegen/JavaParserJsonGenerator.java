@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.Operation;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
@@ -479,6 +480,11 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     boolean isResource = ti == analysis.getRootType() && analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE;
     if (isResource) {
       composer.append("      prop(\"resourceType\", \""+analysis.getName()+"\");\r\n");
+      if (ExtensionUtilities.readBoolExtension(analysis.getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+        // additional resources carry their defining StructureDefinition, so the resource can round-trip
+        // through the object model (e.g. ObjectConverter) without losing the type binding
+        composer.append("      prop(\"resourceDefinition\", \""+escapeJavaString(analysis.getStructure().getVersionedUrl())+"\");\r\n");
+      }
     } else {
       composer.append("      open(name);\r\n");      
     }
