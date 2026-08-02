@@ -42,14 +42,14 @@ public class TestPlanRenderer extends ResourceRenderer {
 
     // a table of scopes (reference, and description if any)
     if (tp.has("scope")) {
-      x.para().b().tx("Scopes");
+      x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_SCOPES));
       List<ResourceWrapper> scopes = tp.children("scope");
       boolean desc = anyHasDescription(scopes);
       XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t.tr();
-      tr.td().b().tx("Reference");
+      tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_REFERENCE));
       if (desc) {
-        tr.td().b().tx("Description");
+        tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_DESCRIPTION));
       }
       for (ResourceWrapper scope : scopes) {
         tr = t.tr();
@@ -62,14 +62,14 @@ public class TestPlanRenderer extends ResourceRenderer {
 
     // a table of dependencies (reference, and description if any)
     if (tp.has("dependency")) {
-      x.para().b().tx("Dependencies");
+      x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_DEPENDENCIES));
       List<ResourceWrapper> deps = tp.children("dependency");
       boolean desc = anyHasDescription(deps);
       XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t.tr();
-      tr.td().b().tx("Reference");
+      tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_REFERENCE));
       if (desc) {
-        tr.td().b().tx("Description");
+        tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_DESCRIPTION));
       }
       for (ResourceWrapper dep : deps) {
         tr = t.tr();
@@ -82,14 +82,14 @@ public class TestPlanRenderer extends ResourceRenderer {
 
     // a table of modes (code, and description if any)
     if (tp.has("mode")) {
-      x.para().b().tx("Modes");
+      x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_MODES));
       List<ResourceWrapper> modes = tp.children("mode");
       boolean desc = anyHasDescription(modes);
       XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t.tr();
-      tr.td().b().tx("Code");
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
       if (desc) {
-        tr.td().b().tx("Description");
+        tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_DESCRIPTION));
       }
       for (ResourceWrapper mode : modes) {
         tr = t.tr();
@@ -102,12 +102,12 @@ public class TestPlanRenderer extends ResourceRenderer {
 
     // a table of global parameters
     if (tp.has("parameter")) {
-      x.para().b().tx("Parameters");
+      x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_PARAMETERS));
       XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t.tr();
-      tr.td().b().tx("Name");
-      tr.td().b().tx("Value");
-      tr.td().b().tx("Mode");
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NAME));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_VALUE));
+      tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_MODE));
       for (ResourceWrapper param : tp.children("parameter")) {
         tr = t.tr();
         tr.td().tx(param.primitiveValue("name"));
@@ -136,7 +136,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 
   private void renderSuite(RenderingStatus status, XhtmlNode x, ResourceWrapper suite, String number) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     // name as title
-    x.para().b().tx(number + " " + suite.primitiveValue("name"));
+    x.para().b().tx(number + " " + context.formatPhrase(RenderingContext.TEST_PLAN_IG_SUITE_LABEL, suite.primitiveValue("name")));
 
     // modes and description as a single paragraph, if present
     String mode = suite.primitiveValue("mode");
@@ -144,7 +144,7 @@ public class TestPlanRenderer extends ResourceRenderer {
     if (mode != null || description != null) {
       XhtmlNode p = x.para();
       if (mode != null) {
-        p.tx("Mode: " + mode);
+        p.tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_MODE_LABEL, mode));
         if (description != null) {
           p.tx(". ");
         }
@@ -156,7 +156,7 @@ public class TestPlanRenderer extends ResourceRenderer {
 
     // a table of inputs, if present
     if (suite.has("input")) {
-      renderInputTable(status, x, "Inputs", suite.children("input"));
+      renderInputTable(status, x, context.formatPhrase(RenderingContext.TEST_PLAN_IG_INPUTS), suite.children("input"));
     }
 
     // a table of tests, if present
@@ -181,16 +181,16 @@ public class TestPlanRenderer extends ResourceRenderer {
     XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = t.tr();
     if (hasName) {
-      tr.td().b().tx("Name");
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NAME));
     }
     if (hasFile) {
-      tr.td().b().tx("File");
+      tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_FILE));
     }
     if (hasResource) {
-      tr.td().b().tx("Resource");
+      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_RESOURCE));
     }
     if (hasMode) {
-      tr.td().b().tx("Mode");
+      tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_MODE));
     }
     for (ResourceWrapper input : inputs) {
       tr = t.tr();
@@ -213,25 +213,57 @@ public class TestPlanRenderer extends ResourceRenderer {
   }
 
   private void renderTestTable(RenderingStatus status, XhtmlNode x, List<ResourceWrapper> tests) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    x.para().b().tx("Tests");
+    x.para().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_TESTS));
+    // dynamic columns: an optional column is only shown if at least one test populates it (name is
+    // mandatory, so it is always shown)
+    boolean hasMode = anyHas(tests, "mode");
+    boolean hasDescription = anyHas(tests, "description");
+    boolean hasOperation = anyHas(tests, "operation");
+    boolean hasParameter = anyHas(tests, "parameter");
+    boolean hasInput = anyHas(tests, "input");
+    boolean hasExpected = anyHas(tests, "expected");
     XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = t.tr();
-    tr.td().b().tx("Name");
-    tr.td().b().tx("Mode");
-    tr.td().b().tx("Description");
-    tr.td().b().tx("Operation");
-    tr.td().b().tx("Parameters");
-    tr.td().b().tx("Input");
-    tr.td().b().tx("Expected");
+    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NAME));
+    if (hasMode) {
+      tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_MODE));
+    }
+    if (hasDescription) {
+      tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_DESCRIPTION));
+    }
+    if (hasOperation) {
+      tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_OPERATION));
+    }
+    if (hasParameter) {
+      tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_PARAMETERS));
+    }
+    if (hasInput) {
+      tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_INPUT));
+    }
+    if (hasExpected) {
+      tr.td().b().tx(context.formatPhrase(RenderingContext.TEST_PLAN_IG_EXPECTED));
+    }
     for (ResourceWrapper test : tests) {
       tr = t.tr();
       tr.td().tx(test.primitiveValue("name"));
-      tr.td().tx(test.primitiveValue("mode"));
-      tr.td().tx(test.primitiveValue("description"));
-      tr.td().tx(test.primitiveValue("operation"));
-      renderParameterCell(status, tr.td(), test.children("parameter"));
-      renderInputCell(status, tr.td(), test.children("input"));
-      renderInputCell(status, tr.td(), test.children("expected"));
+      if (hasMode) {
+        tr.td().tx(test.primitiveValue("mode"));
+      }
+      if (hasDescription) {
+        tr.td().tx(test.primitiveValue("description"));
+      }
+      if (hasOperation) {
+        tr.td().tx(test.primitiveValue("operation"));
+      }
+      if (hasParameter) {
+        renderParameterCell(status, tr.td(), test.children("parameter"));
+      }
+      if (hasInput) {
+        renderInputCell(status, tr.td(), test.children("input"));
+      }
+      if (hasExpected) {
+        renderInputCell(status, tr.td(), test.children("expected"));
+      }
       // assertions ignored for now
     }
   }
