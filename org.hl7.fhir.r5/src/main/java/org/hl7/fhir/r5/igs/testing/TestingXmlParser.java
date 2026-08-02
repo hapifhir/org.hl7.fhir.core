@@ -56,13 +56,13 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     this.xml = xml;
   }
 
-  protected TestPlan parseTestingTestPlan(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestPlan res = new TestPlan();
+  protected TestReport parseTestingTestReport(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport res = new TestReport();
     parseResourceAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestPlanContent(eventType, xpp, res)) // 1
+    if (!parseTestingTestReportContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -71,204 +71,52 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestingTestPlanContent(int eventType, XmlPullParser xpp, TestPlan res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("url")) {
-      res.setUrlElement(parseUri(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("identifier")) {
-      res.getIdentifierList().add(parseIdentifier(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("version")) {
-      res.setVersionElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "versionAlgorithm")) {
-      res.setVersionAlgorithm(parseType("versionAlgorithm", xpp));
+  protected boolean parseTestingTestReportContent(int eventType, XmlPullParser xpp, TestReport res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("identifier")) {
+      res.setIdentifier(parseIdentifier(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
       res.setNameElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("title")) {
-      res.setTitleElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("status")) {
-      res.setStatusElement(parseEnumeration(xpp, org.hl7.fhir.r5.model.Enumerations.PublicationStatus.NULL, new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory()));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("experimental")) {
-      res.setExperimentalElement(parseBoolean(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("date")) {
-      res.setDateElement(parseDateTime(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("publisher")) {
-      res.setPublisherElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("contact")) {
-      res.getContactList().add(parseContactDetail(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
       res.setDescriptionElement(parseMarkdown(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("useContext")) {
-      res.getUseContextList().add(parseUsageContext(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("jurisdiction")) {
-      res.getJurisdictionList().add(parseCodeableConcept(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("purpose")) {
-      res.setPurposeElement(parseMarkdown(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("copyright")) {
-      res.setCopyrightElement(parseMarkdown(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("copyrightLabel")) {
-      res.setCopyrightLabelElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("scope")) {
-      res.getScopeList().add(parseTestingTestPlanScopeComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("dependency")) {
-      res.getDependencyList().add(parseTestingTestPlanDependencyComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("runner")) {
-      res.setRunnerElement(parseUrl(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
-      res.getModeList().add(parseTestingTestPlanModeComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("status")) {
+      res.setStatusElement(parseEnumeration(xpp, TestReport.TestReportStatusValueSet.NULL, new TestReport.TestReportStatusValueSetEnumFactory()));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("testScript")) {
+      res.setTestScriptElement(parseCanonical(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("result")) {
+      res.setResultElement(parseEnumeration(xpp, TestReport.TestReportResultValueSet.NULL, new TestReport.TestReportResultValueSetEnumFactory()));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("score")) {
+      res.setScoreElement(parseDecimal(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("tester")) {
+      res.setTesterElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("issued")) {
+      res.setIssuedElement(parseDateTime(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("participant")) {
+      res.getParticipantList().add(parseTestingTestReportParticipantComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("parameter")) {
-      res.getParameterList().add(parseTestingTestPlanParameterComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("suite")) {
-      res.getSuiteList().add(parseTestingTestPlanSuiteComponent(xpp));
-    } else if (!parseCanonicalResourceContent(eventType, xpp, res)){ //2
-      return false;
-    }
-    return true;
-  }
-
-  protected TestPlan.TestPlanScopeComponent parseTestingTestPlanScopeComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestPlan.TestPlanScopeComponent res = new TestPlan.TestPlanScopeComponent();
-    next(xpp);
-    int eventType = nextNoWhitespace(xpp);
-    while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestPlanScopeComponentContent(eventType, xpp, res)) // 1
-        unknownContent(xpp);
-      eventType = nextNoWhitespace(xpp);
-    }
-    next(xpp);
-    parseElementClose(res);
-    return res;
-  }
-
-  protected boolean parseTestingTestPlanScopeComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanScopeComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("reference")) {
-      res.setReferenceElement(parseCanonical(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
-      res.setDescriptionElement(parseString(xpp));
-    } else if (!parseBaseContent(eventType, xpp, res)){ //2
-      return false;
-    }
-    return true;
-  }
-
-  protected TestPlan.TestPlanDependencyComponent parseTestingTestPlanDependencyComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestPlan.TestPlanDependencyComponent res = new TestPlan.TestPlanDependencyComponent();
-    next(xpp);
-    int eventType = nextNoWhitespace(xpp);
-    while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestPlanDependencyComponentContent(eventType, xpp, res)) // 1
-        unknownContent(xpp);
-      eventType = nextNoWhitespace(xpp);
-    }
-    next(xpp);
-    parseElementClose(res);
-    return res;
-  }
-
-  protected boolean parseTestingTestPlanDependencyComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanDependencyComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("reference")) {
-      res.setReferenceElement(parseCanonical(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
-      res.setDescriptionElement(parseString(xpp));
-    } else if (!parseBaseContent(eventType, xpp, res)){ //2
-      return false;
-    }
-    return true;
-  }
-
-  protected TestPlan.TestPlanModeComponent parseTestingTestPlanModeComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestPlan.TestPlanModeComponent res = new TestPlan.TestPlanModeComponent();
-    next(xpp);
-    int eventType = nextNoWhitespace(xpp);
-    while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestPlanModeComponentContent(eventType, xpp, res)) // 1
-        unknownContent(xpp);
-      eventType = nextNoWhitespace(xpp);
-    }
-    next(xpp);
-    parseElementClose(res);
-    return res;
-  }
-
-  protected boolean parseTestingTestPlanModeComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanModeComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("code")) {
-      res.setCodeElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
-      res.setDescriptionElement(parseString(xpp));
-    } else if (!parseBaseContent(eventType, xpp, res)){ //2
-      return false;
-    }
-    return true;
-  }
-
-  protected TestPlan.TestPlanParameterComponent parseTestingTestPlanParameterComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestPlan.TestPlanParameterComponent res = new TestPlan.TestPlanParameterComponent();
-    next(xpp);
-    int eventType = nextNoWhitespace(xpp);
-    while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestPlanParameterComponentContent(eventType, xpp, res)) // 1
-        unknownContent(xpp);
-      eventType = nextNoWhitespace(xpp);
-    }
-    next(xpp);
-    parseElementClose(res);
-    return res;
-  }
-
-  protected boolean parseTestingTestPlanParameterComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanParameterComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
-      res.setNameElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "value")) {
-      res.setValue(parseType("value", xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
-      res.setModeElement(parseCode(xpp));
-    } else if (!parseBaseContent(eventType, xpp, res)){ //2
-      return false;
-    }
-    return true;
-  }
-
-  protected TestPlan.TestPlanSuiteComponent parseTestingTestPlanSuiteComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestPlan.TestPlanSuiteComponent res = new TestPlan.TestPlanSuiteComponent();
-    next(xpp);
-    int eventType = nextNoWhitespace(xpp);
-    while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestPlanSuiteComponentContent(eventType, xpp, res)) // 1
-        unknownContent(xpp);
-      eventType = nextNoWhitespace(xpp);
-    }
-    next(xpp);
-    parseElementClose(res);
-    return res;
-  }
-
-  protected boolean parseTestingTestPlanSuiteComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanSuiteComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
-      res.setNameElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
-      res.setDescriptionElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
-      res.setModeElement(parseCode(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("input")) {
-      res.getInputList().add(parseTestingTestPlanSuiteInputComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("parameter")) {
-      res.getParameterList().add(parseTestingTestPlanParameterComponent(xpp));
+      res.getParameterList().add(parseTestingTestReportParameterComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("setup")) {
+      res.setSetup(parseTestingTestReportSetupComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("test")) {
-      res.getTestList().add(parseTestingTestPlanSuiteTestComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("suite")) {
-      res.getSuiteList().add(parseTestingTestPlanSuiteComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("plan")) {
-      res.getPlanList().add(parseReference(xpp));
-    } else if (!parseBaseContent(eventType, xpp, res)){ //2
+      res.getTestList().add(parseTestingTestReportTestComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("teardown")) {
+      res.setTeardown(parseTestingTestReportTeardownComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("presentedForm")) {
+      res.setPresentedForm(parseAttachment(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("log")) {
+      res.setLog(parseAttachment(xpp));
+    } else if (!parseDomainResourceContent(eventType, xpp, res)){ //2
       return false;
     }
     return true;
   }
 
-  protected TestPlan.TestPlanSuiteInputComponent parseTestingTestPlanSuiteInputComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestPlan.TestPlanSuiteInputComponent res = new TestPlan.TestPlanSuiteInputComponent();
+  protected TestReport.TestReportParticipantComponent parseTestingTestReportParticipantComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport.TestReportParticipantComponent res = new TestReport.TestReportParticipantComponent();
+    parseElementAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestPlanSuiteInputComponentContent(eventType, xpp, res)) // 1
+    if (!parseTestingTestReportParticipantComponentContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -277,27 +125,54 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestingTestPlanSuiteInputComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanSuiteInputComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+  protected boolean parseTestingTestReportParticipantComponentContent(int eventType, XmlPullParser xpp, TestReport.TestReportParticipantComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("type")) {
+      res.setTypeElement(parseEnumeration(xpp, TestReport.TestReportParticipantTypeValueSet.NULL, new TestReport.TestReportParticipantTypeValueSetEnumFactory()));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("uri")) {
+      res.setUriElement(parseUri(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("version")) {
+      res.setVersionElement(parseUri(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("display")) {
+      res.setDisplayElement(parseString(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
+      return false;
+    }
+    return true;
+  }
+
+  protected TestReport.TestReportParameterComponent parseTestingTestReportParameterComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport.TestReportParameterComponent res = new TestReport.TestReportParameterComponent();
+    parseElementAttributes(xpp, res);
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+    if (!parseTestingTestReportParameterComponentContent(eventType, xpp, res)) // 1
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
+  protected boolean parseTestingTestReportParameterComponentContent(int eventType, XmlPullParser xpp, TestReport.TestReportParameterComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
       res.setNameElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("file")) {
-      res.setFileElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("resource")) {
-      res.setResource(parseResourceContained(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
-      res.setModeElement(parseCode(xpp));
-    } else if (!parseBaseContent(eventType, xpp, res)){ //2
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("documentation")) {
+      res.setDocumentationElement(parseMarkdown(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
       return false;
     }
     return true;
   }
 
-  protected TestPlan.TestPlanSuiteTestComponent parseTestingTestPlanSuiteTestComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestPlan.TestPlanSuiteTestComponent res = new TestPlan.TestPlanSuiteTestComponent();
+  protected TestReport.TestReportSetupComponent parseTestingTestReportSetupComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport.TestReportSetupComponent res = new TestReport.TestReportSetupComponent();
+    parseElementAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestPlanSuiteTestComponentContent(eventType, xpp, res)) // 1
+    if (!parseTestingTestReportSetupComponentContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -306,35 +181,164 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestingTestPlanSuiteTestComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanSuiteTestComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+  protected boolean parseTestingTestReportSetupComponentContent(int eventType, XmlPullParser xpp, TestReport.TestReportSetupComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("action")) {
+      res.getActionList().add(parseTestingTestReportSetupActionComponent(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
+      return false;
+    }
+    return true;
+  }
+
+  protected TestReport.SetupActionComponent parseTestingTestReportSetupActionComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport.SetupActionComponent res = new TestReport.SetupActionComponent();
+    parseElementAttributes(xpp, res);
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+    if (!parseTestingTestReportSetupActionComponentContent(eventType, xpp, res)) // 1
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
+  protected boolean parseTestingTestReportSetupActionComponentContent(int eventType, XmlPullParser xpp, TestReport.SetupActionComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("operation")) {
+      res.setOperation(parseTestingTestReportSetupActionOperationComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("assert")) {
+      res.setAssert(parseTestingTestReportSetupActionAssertComponent(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
+      return false;
+    }
+    return true;
+  }
+
+  protected TestReport.SetupActionOperationComponent parseTestingTestReportSetupActionOperationComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport.SetupActionOperationComponent res = new TestReport.SetupActionOperationComponent();
+    parseElementAttributes(xpp, res);
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+    if (!parseTestingTestReportSetupActionOperationComponentContent(eventType, xpp, res)) // 1
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
+  protected boolean parseTestingTestReportSetupActionOperationComponentContent(int eventType, XmlPullParser xpp, TestReport.SetupActionOperationComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("result")) {
+      res.setResultElement(parseEnumeration(xpp, TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("message")) {
+      res.setMessageElement(parseMarkdown(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("detail")) {
+      res.setDetailElement(parseUri(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
+      return false;
+    }
+    return true;
+  }
+
+  protected TestReport.SetupActionAssertComponent parseTestingTestReportSetupActionAssertComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport.SetupActionAssertComponent res = new TestReport.SetupActionAssertComponent();
+    parseElementAttributes(xpp, res);
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+    if (!parseTestingTestReportSetupActionAssertComponentContent(eventType, xpp, res)) // 1
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
+  protected boolean parseTestingTestReportSetupActionAssertComponentContent(int eventType, XmlPullParser xpp, TestReport.SetupActionAssertComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("result")) {
+      res.setResultElement(parseEnumeration(xpp, TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("message")) {
+      res.setMessageElement(parseMarkdown(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("detail")) {
+      res.setDetailElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("requirement")) {
+      res.getRequirementList().add(parseTestingTestReportSetupActionAssertRequirementComponent(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
+      return false;
+    }
+    return true;
+  }
+
+  protected TestReport.SetupActionAssertRequirementComponent parseTestingTestReportSetupActionAssertRequirementComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport.SetupActionAssertRequirementComponent res = new TestReport.SetupActionAssertRequirementComponent();
+    parseElementAttributes(xpp, res);
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+    if (!parseTestingTestReportSetupActionAssertRequirementComponentContent(eventType, xpp, res)) // 1
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
+  protected boolean parseTestingTestReportSetupActionAssertRequirementComponentContent(int eventType, XmlPullParser xpp, TestReport.SetupActionAssertRequirementComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "link")) {
+      res.setLink(parseType("link", xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
+      return false;
+    }
+    return true;
+  }
+
+  protected TestReport.TestReportTestComponent parseTestingTestReportTestComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport.TestReportTestComponent res = new TestReport.TestReportTestComponent();
+    parseElementAttributes(xpp, res);
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+    if (!parseTestingTestReportTestComponentContent(eventType, xpp, res)) // 1
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
+  protected boolean parseTestingTestReportTestComponentContent(int eventType, XmlPullParser xpp, TestReport.TestReportTestComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
       res.setNameElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
       res.setDescriptionElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("operation")) {
-      res.setOperationElement(parseCode(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
-      res.setModeElement(parseCode(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("parameter")) {
-      res.getParameterList().add(parseTestingTestPlanParameterComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("input")) {
-      res.getInputList().add(parseTestingTestPlanSuiteInputComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("expected")) {
-      res.getExpectedList().add(parseTestingTestPlanSuiteInputComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("assertion")) {
-      res.getAssertionList().add(parseTestingTestPlanSuiteTestAssertionComponent(xpp));
-    } else if (!parseBaseContent(eventType, xpp, res)){ //2
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("result")) {
+      res.setResultElement(parseEnumeration(xpp, TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("period")) {
+      res.setPeriod(parsePeriod(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("action")) {
+      res.getActionList().add(parseTestingTestReportTestActionComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("log")) {
+      res.setLog(parseAttachment(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
       return false;
     }
     return true;
   }
 
-  protected TestPlan.TestPlanSuiteTestAssertionComponent parseTestingTestPlanSuiteTestAssertionComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestPlan.TestPlanSuiteTestAssertionComponent res = new TestPlan.TestPlanSuiteTestAssertionComponent();
+  protected TestReport.TestActionComponent parseTestingTestReportTestActionComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport.TestActionComponent res = new TestReport.TestActionComponent();
+    parseElementAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestPlanSuiteTestAssertionComponentContent(eventType, xpp, res)) // 1
+    if (!parseTestingTestReportTestActionComponentContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -343,18 +347,60 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestingTestPlanSuiteTestAssertionComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanSuiteTestAssertionComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("focus")) {
-      res.setFocusElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("severity")) {
-      res.setSeverityElement(parseCode(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("expression")) {
-      res.setExpression(parseExpression(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("human")) {
-      res.setHumanElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
-      res.setModeElement(parseCode(xpp));
-    } else if (!parseBaseContent(eventType, xpp, res)){ //2
+  protected boolean parseTestingTestReportTestActionComponentContent(int eventType, XmlPullParser xpp, TestReport.TestActionComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("operation")) {
+      res.setOperation(parseTestingTestReportSetupActionOperationComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("assert")) {
+      res.setAssert(parseTestingTestReportSetupActionAssertComponent(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
+      return false;
+    }
+    return true;
+  }
+
+  protected TestReport.TestReportTeardownComponent parseTestingTestReportTeardownComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport.TestReportTeardownComponent res = new TestReport.TestReportTeardownComponent();
+    parseElementAttributes(xpp, res);
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+    if (!parseTestingTestReportTeardownComponentContent(eventType, xpp, res)) // 1
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
+  protected boolean parseTestingTestReportTeardownComponentContent(int eventType, XmlPullParser xpp, TestReport.TestReportTeardownComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("action")) {
+      res.getActionList().add(parseTestingTestReportTeardownActionComponent(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
+      return false;
+    }
+    return true;
+  }
+
+  protected TestReport.TeardownActionComponent parseTestingTestReportTeardownActionComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestReport.TeardownActionComponent res = new TestReport.TeardownActionComponent();
+    parseElementAttributes(xpp, res);
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+    if (!parseTestingTestReportTeardownActionComponentContent(eventType, xpp, res)) // 1
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
+  protected boolean parseTestingTestReportTeardownActionComponentContent(int eventType, XmlPullParser xpp, TestReport.TeardownActionComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("operation")) {
+      res.setOperation(parseTestingTestReportSetupActionOperationComponent(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
       return false;
     }
     return true;
@@ -1132,13 +1178,13 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return true;
   }
 
-  protected TestReport parseTestingTestReport(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport res = new TestReport();
+  protected TestPlan parseTestingTestPlan(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestPlan res = new TestPlan();
     parseResourceAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportContent(eventType, xpp, res)) // 1
+    if (!parseTestingTestPlanContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -1147,52 +1193,66 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestingTestReportContent(int eventType, XmlPullParser xpp, TestReport res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("identifier")) {
-      res.setIdentifier(parseIdentifier(xpp));
+  protected boolean parseTestingTestPlanContent(int eventType, XmlPullParser xpp, TestPlan res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("url")) {
+      res.setUrlElement(parseUri(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("identifier")) {
+      res.getIdentifierList().add(parseIdentifier(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("version")) {
+      res.setVersionElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "versionAlgorithm")) {
+      res.setVersionAlgorithm(parseType("versionAlgorithm", xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
       res.setNameElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("title")) {
+      res.setTitleElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("status")) {
+      res.setStatusElement(parseEnumeration(xpp, org.hl7.fhir.r5.model.Enumerations.PublicationStatus.NULL, new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory()));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("experimental")) {
+      res.setExperimentalElement(parseBoolean(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("date")) {
+      res.setDateElement(parseDateTime(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("publisher")) {
+      res.setPublisherElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("contact")) {
+      res.getContactList().add(parseContactDetail(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
       res.setDescriptionElement(parseMarkdown(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("status")) {
-      res.setStatusElement(parseEnumeration(xpp, TestReport.TestReportStatusValueSet.NULL, new TestReport.TestReportStatusValueSetEnumFactory()));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("testScript")) {
-      res.setTestScriptElement(parseCanonical(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("result")) {
-      res.setResultElement(parseEnumeration(xpp, TestReport.TestReportResultValueSet.NULL, new TestReport.TestReportResultValueSetEnumFactory()));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("score")) {
-      res.setScoreElement(parseDecimal(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("tester")) {
-      res.setTesterElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("issued")) {
-      res.setIssuedElement(parseDateTime(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("participant")) {
-      res.getParticipantList().add(parseTestingTestReportParticipantComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("useContext")) {
+      res.getUseContextList().add(parseUsageContext(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("jurisdiction")) {
+      res.getJurisdictionList().add(parseCodeableConcept(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("purpose")) {
+      res.setPurposeElement(parseMarkdown(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("copyright")) {
+      res.setCopyrightElement(parseMarkdown(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("copyrightLabel")) {
+      res.setCopyrightLabelElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("scope")) {
+      res.getScopeList().add(parseTestingTestPlanScopeComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("dependency")) {
+      res.getDependencyList().add(parseTestingTestPlanDependencyComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("runner")) {
+      res.setRunnerElement(parseUrl(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
+      res.getModeList().add(parseTestingTestPlanModeComponent(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("parameter")) {
-      res.getParameterList().add(parseTestingTestReportParameterComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("setup")) {
-      res.setSetup(parseTestingTestReportSetupComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("test")) {
-      res.getTestList().add(parseTestingTestReportTestComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("teardown")) {
-      res.setTeardown(parseTestingTestReportTeardownComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("presentedForm")) {
-      res.setPresentedForm(parseAttachment(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("log")) {
-      res.setLog(parseAttachment(xpp));
-    } else if (!parseDomainResourceContent(eventType, xpp, res)){ //2
+      res.getParameterList().add(parseTestingTestPlanParameterComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("suite")) {
+      res.getSuiteList().add(parseTestingTestPlanSuiteComponent(xpp));
+    } else if (!parseCanonicalResourceContent(eventType, xpp, res)){ //2
       return false;
     }
     return true;
   }
 
-  protected TestReport.TestReportParticipantComponent parseTestingTestReportParticipantComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport.TestReportParticipantComponent res = new TestReport.TestReportParticipantComponent();
+  protected TestPlan.TestPlanScopeComponent parseTestingTestPlanScopeComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestPlan.TestPlanScopeComponent res = new TestPlan.TestPlanScopeComponent();
     parseElementAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportParticipantComponentContent(eventType, xpp, res)) // 1
+    if (!parseTestingTestPlanScopeComponentContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -1201,28 +1261,24 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestingTestReportParticipantComponentContent(int eventType, XmlPullParser xpp, TestReport.TestReportParticipantComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("type")) {
-      res.setTypeElement(parseEnumeration(xpp, TestReport.TestReportParticipantTypeValueSet.NULL, new TestReport.TestReportParticipantTypeValueSetEnumFactory()));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("uri")) {
-      res.setUriElement(parseUri(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("version")) {
-      res.setVersionElement(parseUri(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("display")) {
-      res.setDisplayElement(parseString(xpp));
+  protected boolean parseTestingTestPlanScopeComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanScopeComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("reference")) {
+      res.setReferenceElement(parseCanonical(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
+      res.setDescriptionElement(parseString(xpp));
     } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
       return false;
     }
     return true;
   }
 
-  protected TestReport.TestReportParameterComponent parseTestingTestReportParameterComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport.TestReportParameterComponent res = new TestReport.TestReportParameterComponent();
+  protected TestPlan.TestPlanDependencyComponent parseTestingTestPlanDependencyComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestPlan.TestPlanDependencyComponent res = new TestPlan.TestPlanDependencyComponent();
     parseElementAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportParameterComponentContent(eventType, xpp, res)) // 1
+    if (!parseTestingTestPlanDependencyComponentContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -1231,24 +1287,78 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestingTestReportParameterComponentContent(int eventType, XmlPullParser xpp, TestReport.TestReportParameterComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+  protected boolean parseTestingTestPlanDependencyComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanDependencyComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("reference")) {
+      res.setReferenceElement(parseCanonical(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
+      res.setDescriptionElement(parseString(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
+      return false;
+    }
+    return true;
+  }
+
+  protected TestPlan.TestPlanModeComponent parseTestingTestPlanModeComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestPlan.TestPlanModeComponent res = new TestPlan.TestPlanModeComponent();
+    parseElementAttributes(xpp, res);
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+    if (!parseTestingTestPlanModeComponentContent(eventType, xpp, res)) // 1
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
+  protected boolean parseTestingTestPlanModeComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanModeComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("code")) {
+      res.setCodeElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
+      res.setDescriptionElement(parseString(xpp));
+    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
+      return false;
+    }
+    return true;
+  }
+
+  protected TestPlan.TestPlanParameterComponent parseTestingTestPlanParameterComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestPlan.TestPlanParameterComponent res = new TestPlan.TestPlanParameterComponent();
+    parseElementAttributes(xpp, res);
+    next(xpp);
+    int eventType = nextNoWhitespace(xpp);
+    while (eventType != XmlPullParser.END_TAG) {
+    if (!parseTestingTestPlanParameterComponentContent(eventType, xpp, res)) // 1
+        unknownContent(xpp);
+      eventType = nextNoWhitespace(xpp);
+    }
+    next(xpp);
+    parseElementClose(res);
+    return res;
+  }
+
+  protected boolean parseTestingTestPlanParameterComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanParameterComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
       res.setNameElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("documentation")) {
-      res.setDocumentationElement(parseMarkdown(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "value")) {
+      res.setValue(parseType("value", xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
+      res.setModeElement(parseCode(xpp));
     } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
       return false;
     }
     return true;
   }
 
-  protected TestReport.TestReportSetupComponent parseTestingTestReportSetupComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport.TestReportSetupComponent res = new TestReport.TestReportSetupComponent();
+  protected TestPlan.TestPlanSuiteComponent parseTestingTestPlanSuiteComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestPlan.TestPlanSuiteComponent res = new TestPlan.TestPlanSuiteComponent();
     parseElementAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportSetupComponentContent(eventType, xpp, res)) // 1
+    if (!parseTestingTestPlanSuiteComponentContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -1257,164 +1367,36 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestingTestReportSetupComponentContent(int eventType, XmlPullParser xpp, TestReport.TestReportSetupComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("action")) {
-      res.getActionList().add(parseTestingTestReportSetupActionComponent(xpp));
-    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
-      return false;
-    }
-    return true;
-  }
-
-  protected TestReport.SetupActionComponent parseTestingTestReportSetupActionComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport.SetupActionComponent res = new TestReport.SetupActionComponent();
-    parseElementAttributes(xpp, res);
-    next(xpp);
-    int eventType = nextNoWhitespace(xpp);
-    while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportSetupActionComponentContent(eventType, xpp, res)) // 1
-        unknownContent(xpp);
-      eventType = nextNoWhitespace(xpp);
-    }
-    next(xpp);
-    parseElementClose(res);
-    return res;
-  }
-
-  protected boolean parseTestingTestReportSetupActionComponentContent(int eventType, XmlPullParser xpp, TestReport.SetupActionComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("operation")) {
-      res.setOperation(parseTestingTestReportSetupActionOperationComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("assert")) {
-      res.setAssert(parseTestingTestReportSetupActionAssertComponent(xpp));
-    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
-      return false;
-    }
-    return true;
-  }
-
-  protected TestReport.SetupActionOperationComponent parseTestingTestReportSetupActionOperationComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport.SetupActionOperationComponent res = new TestReport.SetupActionOperationComponent();
-    parseElementAttributes(xpp, res);
-    next(xpp);
-    int eventType = nextNoWhitespace(xpp);
-    while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportSetupActionOperationComponentContent(eventType, xpp, res)) // 1
-        unknownContent(xpp);
-      eventType = nextNoWhitespace(xpp);
-    }
-    next(xpp);
-    parseElementClose(res);
-    return res;
-  }
-
-  protected boolean parseTestingTestReportSetupActionOperationComponentContent(int eventType, XmlPullParser xpp, TestReport.SetupActionOperationComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("result")) {
-      res.setResultElement(parseEnumeration(xpp, TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("message")) {
-      res.setMessageElement(parseMarkdown(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("detail")) {
-      res.setDetailElement(parseUri(xpp));
-    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
-      return false;
-    }
-    return true;
-  }
-
-  protected TestReport.SetupActionAssertComponent parseTestingTestReportSetupActionAssertComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport.SetupActionAssertComponent res = new TestReport.SetupActionAssertComponent();
-    parseElementAttributes(xpp, res);
-    next(xpp);
-    int eventType = nextNoWhitespace(xpp);
-    while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportSetupActionAssertComponentContent(eventType, xpp, res)) // 1
-        unknownContent(xpp);
-      eventType = nextNoWhitespace(xpp);
-    }
-    next(xpp);
-    parseElementClose(res);
-    return res;
-  }
-
-  protected boolean parseTestingTestReportSetupActionAssertComponentContent(int eventType, XmlPullParser xpp, TestReport.SetupActionAssertComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("result")) {
-      res.setResultElement(parseEnumeration(xpp, TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("message")) {
-      res.setMessageElement(parseMarkdown(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("detail")) {
-      res.setDetailElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("requirement")) {
-      res.getRequirementList().add(parseTestingTestReportSetupActionAssertRequirementComponent(xpp));
-    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
-      return false;
-    }
-    return true;
-  }
-
-  protected TestReport.SetupActionAssertRequirementComponent parseTestingTestReportSetupActionAssertRequirementComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport.SetupActionAssertRequirementComponent res = new TestReport.SetupActionAssertRequirementComponent();
-    parseElementAttributes(xpp, res);
-    next(xpp);
-    int eventType = nextNoWhitespace(xpp);
-    while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportSetupActionAssertRequirementComponentContent(eventType, xpp, res)) // 1
-        unknownContent(xpp);
-      eventType = nextNoWhitespace(xpp);
-    }
-    next(xpp);
-    parseElementClose(res);
-    return res;
-  }
-
-  protected boolean parseTestingTestReportSetupActionAssertRequirementComponentContent(int eventType, XmlPullParser xpp, TestReport.SetupActionAssertRequirementComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "link")) {
-      res.setLink(parseType("link", xpp));
-    } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
-      return false;
-    }
-    return true;
-  }
-
-  protected TestReport.TestReportTestComponent parseTestingTestReportTestComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport.TestReportTestComponent res = new TestReport.TestReportTestComponent();
-    parseElementAttributes(xpp, res);
-    next(xpp);
-    int eventType = nextNoWhitespace(xpp);
-    while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportTestComponentContent(eventType, xpp, res)) // 1
-        unknownContent(xpp);
-      eventType = nextNoWhitespace(xpp);
-    }
-    next(xpp);
-    parseElementClose(res);
-    return res;
-  }
-
-  protected boolean parseTestingTestReportTestComponentContent(int eventType, XmlPullParser xpp, TestReport.TestReportTestComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+  protected boolean parseTestingTestPlanSuiteComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanSuiteComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
     if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
       res.setNameElement(parseString(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
       res.setDescriptionElement(parseString(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("result")) {
-      res.setResultElement(parseEnumeration(xpp, TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("period")) {
-      res.setPeriod(parsePeriod(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("action")) {
-      res.getActionList().add(parseTestingTestReportTestActionComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("log")) {
-      res.setLog(parseAttachment(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
+      res.setModeElement(parseCode(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("input")) {
+      res.getInputList().add(parseTestingTestPlanSuiteInputComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("parameter")) {
+      res.getParameterList().add(parseTestingTestPlanParameterComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("test")) {
+      res.getTestList().add(parseTestingTestPlanSuiteTestComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("suite")) {
+      res.getSuiteList().add(parseTestingTestPlanSuiteComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("plan")) {
+      res.getPlanList().add(parseReference(xpp));
     } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
       return false;
     }
     return true;
   }
 
-  protected TestReport.TestActionComponent parseTestingTestReportTestActionComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport.TestActionComponent res = new TestReport.TestActionComponent();
+  protected TestPlan.TestPlanSuiteInputComponent parseTestingTestPlanSuiteInputComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestPlan.TestPlanSuiteInputComponent res = new TestPlan.TestPlanSuiteInputComponent();
     parseElementAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportTestActionComponentContent(eventType, xpp, res)) // 1
+    if (!parseTestingTestPlanSuiteInputComponentContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -1423,24 +1405,28 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestingTestReportTestActionComponentContent(int eventType, XmlPullParser xpp, TestReport.TestActionComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("operation")) {
-      res.setOperation(parseTestingTestReportSetupActionOperationComponent(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("assert")) {
-      res.setAssert(parseTestingTestReportSetupActionAssertComponent(xpp));
+  protected boolean parseTestingTestPlanSuiteInputComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanSuiteInputComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
+      res.setNameElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("file")) {
+      res.setFileElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("resource")) {
+      res.setResource(parseResourceContained(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
+      res.setModeElement(parseCode(xpp));
     } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
       return false;
     }
     return true;
   }
 
-  protected TestReport.TestReportTeardownComponent parseTestingTestReportTeardownComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport.TestReportTeardownComponent res = new TestReport.TestReportTeardownComponent();
+  protected TestPlan.TestPlanSuiteTestComponent parseTestingTestPlanSuiteTestComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestPlan.TestPlanSuiteTestComponent res = new TestPlan.TestPlanSuiteTestComponent();
     parseElementAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportTeardownComponentContent(eventType, xpp, res)) // 1
+    if (!parseTestingTestPlanSuiteTestComponentContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -1449,22 +1435,36 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestingTestReportTeardownComponentContent(int eventType, XmlPullParser xpp, TestReport.TestReportTeardownComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("action")) {
-      res.getActionList().add(parseTestingTestReportTeardownActionComponent(xpp));
+  protected boolean parseTestingTestPlanSuiteTestComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanSuiteTestComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("name")) {
+      res.setNameElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("description")) {
+      res.setDescriptionElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("operation")) {
+      res.setOperationElement(parseCode(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
+      res.setModeElement(parseCode(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("parameter")) {
+      res.getParameterList().add(parseTestingTestPlanParameterComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("input")) {
+      res.getInputList().add(parseTestingTestPlanSuiteInputComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("expected")) {
+      res.getExpectedList().add(parseTestingTestPlanSuiteInputComponent(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("assertion")) {
+      res.getAssertionList().add(parseTestingTestPlanSuiteTestAssertionComponent(xpp));
     } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
       return false;
     }
     return true;
   }
 
-  protected TestReport.TeardownActionComponent parseTestingTestReportTeardownActionComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
-    TestReport.TeardownActionComponent res = new TestReport.TeardownActionComponent();
+  protected TestPlan.TestPlanSuiteTestAssertionComponent parseTestingTestPlanSuiteTestAssertionComponent(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
+    TestPlan.TestPlanSuiteTestAssertionComponent res = new TestPlan.TestPlanSuiteTestAssertionComponent();
     parseElementAttributes(xpp, res);
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
-    if (!parseTestingTestReportTeardownActionComponentContent(eventType, xpp, res)) // 1
+    if (!parseTestingTestPlanSuiteTestAssertionComponentContent(eventType, xpp, res)) // 1
         unknownContent(xpp);
       eventType = nextNoWhitespace(xpp);
     }
@@ -1473,9 +1473,17 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     return res;
   }
 
-  protected boolean parseTestingTestReportTeardownActionComponentContent(int eventType, XmlPullParser xpp, TestReport.TeardownActionComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
-    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("operation")) {
-      res.setOperation(parseTestingTestReportSetupActionOperationComponent(xpp));
+  protected boolean parseTestingTestPlanSuiteTestAssertionComponentContent(int eventType, XmlPullParser xpp, TestPlan.TestPlanSuiteTestAssertionComponent res) throws XmlPullParserException, IOException, FHIRFormatError {
+    if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("focus")) {
+      res.setFocusElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("severity")) {
+      res.setSeverityElement(parseCode(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("expression")) {
+      res.setExpression(parseExpression(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("human")) {
+      res.setHumanElement(parseString(xpp));
+    } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("mode")) {
+      res.setModeElement(parseCode(xpp));
     } else if (!parseBackboneElementContent(eventType, xpp, res)){ //2
       return false;
     }
@@ -1488,12 +1496,12 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     if (xpp == null) {
       throw new IOException("xpp == null!");
-    } else if (xpp.getName().equals("TestPlan")) {
-      return parseTestingTestPlan(xpp);
-    } else if (xpp.getName().equals("TestScript")) {
-      return parseTestingTestScript(xpp);
     } else if (xpp.getName().equals("TestReport")) {
       return parseTestingTestReport(xpp);
+    } else if (xpp.getName().equals("TestScript")) {
+      return parseTestingTestScript(xpp);
+    } else if (xpp.getName().equals("TestPlan")) {
+      return parseTestingTestPlan(xpp);
 
     } else {
       throw new FHIRFormatError("Unknown resource type "+xpp.getName()+"");
@@ -1607,12 +1615,12 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       throw new IOException("type == null!");
     } else if (xpp == null) {
       throw new IOException("xpp == null!");
-    } else if (type.equals("TestPlan")) {
-      return parseTestingTestPlan(xpp);
-    } else if (type.equals("TestScript")) {
-      return parseTestingTestScript(xpp);
     } else if (type.equals("TestReport")) {
       return parseTestingTestReport(xpp);
+    } else if (type.equals("TestScript")) {
+      return parseTestingTestScript(xpp);
+    } else if (type.equals("TestPlan")) {
+      return parseTestingTestPlan(xpp);
       
     } else if (type.equals("date")) {
       return parseDate(xpp);
@@ -1664,11 +1672,11 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       throw new IOException("prefix == null!");
     } else if (xpp == null) {
       throw new IOException("xpp == null!");
-    } else if (xpp.getName().equals(prefix+"TestPlan")) {
+    } else if (xpp.getName().equals(prefix+"TestReport")) {
       return true;
     } else if (xpp.getName().equals(prefix+"TestScript")) {
       return true;
-    } else if (xpp.getName().equals(prefix+"TestReport")) {
+    } else if (xpp.getName().equals(prefix+"TestPlan")) {
       return true;
 
     } else if (xpp.getName().equals(prefix+"Date")) {
@@ -1724,315 +1732,308 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
 
 //----------------- Composer -------------------------------------------------------------------------------------------
 
-  protected void composeTestPlan(String name, TestPlan element) throws IOException {
+  protected void composeTestReport(String name, TestReport element) throws IOException {
     if (element != null) {
     composeResourceAttributes(element);
+      xml.attribute("resourceDefinition", "http://hl7.org/fhir/StructureDefinition/TestReport|0.1.0-SNAPSHOT");
       xml.enter(FHIR_NS, name);
-      composeTestPlanElements(element);
+      composeTestReportElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestPlanElements(TestPlan element) throws IOException {
-    composeCanonicalResourceElements(element);
-    if (element.hasUrlElement()) {
-      composeUri("url", element.getUrlElement());
+  protected void composeTestReportElements(TestReport element) throws IOException {
+    composeDomainResourceElements(element);
+    if (element.hasIdentifier()) {
+      composeIdentifier("identifier", element.getIdentifier());
     }
-    if (element.hasIdentifier()) { 
-      for (Identifier e : element.getIdentifierList()) 
-          composeIdentifier("identifier", e); // a
-    }
-    if (element.hasVersionElement()) {
-      composeString("version", element.getVersionElement());
-    }
-    if (element.hasVersionAlgorithm()) {
-      composeType("versionAlgorithm", element.getVersionAlgorithm());
-    }    if (element.hasNameElement()) {
+    if (element.hasNameElement()) {
       composeString("name", element.getNameElement());
-    }
-    if (element.hasTitleElement()) {
-      composeString("title", element.getTitleElement());
-    }
-    if (element.hasStatusElement())
-      composeEnumeration("status", element.getStatusElement(), new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory());
-    if (element.hasExperimentalElement()) {
-      composeBoolean("experimental", element.getExperimentalElement());
-    }
-    if (element.hasDateElement()) {
-      composeDateTime("date", element.getDateElement());
-    }
-    if (element.hasPublisherElement()) {
-      composeString("publisher", element.getPublisherElement());
-    }
-    if (element.hasContact()) { 
-      for (ContactDetail e : element.getContactList()) 
-          composeContactDetail("contact", e); // a
     }
     if (element.hasDescriptionElement()) {
       composeMarkdown("description", element.getDescriptionElement());
     }
-    if (element.hasUseContext()) { 
-      for (UsageContext e : element.getUseContextList()) 
-          composeUsageContext("useContext", e); // a
+    if (element.hasStatusElement())
+      composeEnumeration("status", element.getStatusElement(), new TestReport.TestReportStatusValueSetEnumFactory());
+    if (element.hasTestScriptElement()) {
+      composeCanonical("testScript", element.getTestScriptElement());
     }
-    if (element.hasJurisdiction()) { 
-      for (CodeableConcept e : element.getJurisdictionList()) 
-          composeCodeableConcept("jurisdiction", e); // a
+    if (element.hasResultElement())
+      composeEnumeration("result", element.getResultElement(), new TestReport.TestReportResultValueSetEnumFactory());
+    if (element.hasScoreElement()) {
+      composeDecimal("score", element.getScoreElement());
     }
-    if (element.hasPurposeElement()) {
-      composeMarkdown("purpose", element.getPurposeElement());
+    if (element.hasTesterElement()) {
+      composeString("tester", element.getTesterElement());
     }
-    if (element.hasCopyrightElement()) {
-      composeMarkdown("copyright", element.getCopyrightElement());
+    if (element.hasIssuedElement()) {
+      composeDateTime("issued", element.getIssuedElement());
     }
-    if (element.hasCopyrightLabelElement()) {
-      composeString("copyrightLabel", element.getCopyrightLabelElement());
-    }
-    if (element.hasScope()) { 
-      for (TestPlan.TestPlanScopeComponent e : element.getScopeList()) 
-          composeTestPlanScopeComponent("scope", e); // a
-    }
-    if (element.hasDependency()) { 
-      for (TestPlan.TestPlanDependencyComponent e : element.getDependencyList()) 
-          composeTestPlanDependencyComponent("dependency", e); // a
-    }
-    if (element.hasRunnerElement()) {
-      composeUrl("runner", element.getRunnerElement());
-    }
-    if (element.hasMode()) { 
-      for (TestPlan.TestPlanModeComponent e : element.getModeList()) 
-          composeTestPlanModeComponent("mode", e); // a
+    if (element.hasParticipant()) { 
+      for (TestReport.TestReportParticipantComponent e : element.getParticipantList()) 
+          composeTestReportParticipantComponent("participant", e); // a
     }
     if (element.hasParameter()) { 
-      for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
-          composeTestPlanParameterComponent("parameter", e); // a
+      for (TestReport.TestReportParameterComponent e : element.getParameterList()) 
+          composeTestReportParameterComponent("parameter", e); // a
     }
-    if (element.hasSuite()) { 
-      for (TestPlan.TestPlanSuiteComponent e : element.getSuiteList()) 
-          composeTestPlanSuiteComponent("suite", e); // a
-    }
-  }
-
-  protected void composeTestPlanScopeComponent(String name, TestPlan.TestPlanScopeComponent element) throws IOException {
-    if (element != null) {
-      xml.enter(FHIR_NS, name);
-      composeTestPlanScopeComponentElements(element);
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
-
-  protected void composeTestPlanScopeComponentElements(TestPlan.TestPlanScopeComponent element) throws IOException {
-    composeBaseElements(element);
-    if (element.hasReferenceElement()) {
-      composeCanonical("reference", element.getReferenceElement());
-    }
-    if (element.hasDescriptionElement()) {
-      composeString("description", element.getDescriptionElement());
-    }
-  }
-
-  protected void composeTestPlanDependencyComponent(String name, TestPlan.TestPlanDependencyComponent element) throws IOException {
-    if (element != null) {
-      xml.enter(FHIR_NS, name);
-      composeTestPlanDependencyComponentElements(element);
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
-
-  protected void composeTestPlanDependencyComponentElements(TestPlan.TestPlanDependencyComponent element) throws IOException {
-    composeBaseElements(element);
-    if (element.hasReferenceElement()) {
-      composeCanonical("reference", element.getReferenceElement());
-    }
-    if (element.hasDescriptionElement()) {
-      composeString("description", element.getDescriptionElement());
-    }
-  }
-
-  protected void composeTestPlanModeComponent(String name, TestPlan.TestPlanModeComponent element) throws IOException {
-    if (element != null) {
-      xml.enter(FHIR_NS, name);
-      composeTestPlanModeComponentElements(element);
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
-
-  protected void composeTestPlanModeComponentElements(TestPlan.TestPlanModeComponent element) throws IOException {
-    composeBaseElements(element);
-    if (element.hasCodeElement()) {
-      composeString("code", element.getCodeElement());
-    }
-    if (element.hasDescriptionElement()) {
-      composeString("description", element.getDescriptionElement());
-    }
-  }
-
-  protected void composeTestPlanParameterComponent(String name, TestPlan.TestPlanParameterComponent element) throws IOException {
-    if (element != null) {
-      xml.enter(FHIR_NS, name);
-      composeTestPlanParameterComponentElements(element);
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
-
-  protected void composeTestPlanParameterComponentElements(TestPlan.TestPlanParameterComponent element) throws IOException {
-    composeBaseElements(element);
-    if (element.hasNameElement()) {
-      composeString("name", element.getNameElement());
-    }
-    if (element.hasValue()) {
-      composeType("value", element.getValue());
-    }    if (element.hasModeElement()) {
-      composeCode("mode", element.getModeElement());
-    }
-  }
-
-  protected void composeTestPlanSuiteComponent(String name, TestPlan.TestPlanSuiteComponent element) throws IOException {
-    if (element != null) {
-      xml.enter(FHIR_NS, name);
-      composeTestPlanSuiteComponentElements(element);
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
-
-  protected void composeTestPlanSuiteComponentElements(TestPlan.TestPlanSuiteComponent element) throws IOException {
-    composeBaseElements(element);
-    if (element.hasNameElement()) {
-      composeString("name", element.getNameElement());
-    }
-    if (element.hasDescriptionElement()) {
-      composeString("description", element.getDescriptionElement());
-    }
-    if (element.hasModeElement()) {
-      composeCode("mode", element.getModeElement());
-    }
-    if (element.hasInput()) { 
-      for (TestPlan.TestPlanSuiteInputComponent e : element.getInputList()) 
-          composeTestPlanSuiteInputComponent("input", e); // a
-    }
-    if (element.hasParameter()) { 
-      for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
-          composeTestPlanParameterComponent("parameter", e); // a
+    if (element.hasSetup()) {
+      composeTestReportSetupComponent("setup", element.getSetup());
     }
     if (element.hasTest()) { 
-      for (TestPlan.TestPlanSuiteTestComponent e : element.getTestList()) 
-          composeTestPlanSuiteTestComponent("test", e); // a
+      for (TestReport.TestReportTestComponent e : element.getTestList()) 
+          composeTestReportTestComponent("test", e); // a
     }
-    if (element.hasSuite()) { 
-      for (TestPlan.TestPlanSuiteComponent e : element.getSuiteList()) 
-          composeTestPlanSuiteComponent("suite", e); // a
+    if (element.hasTeardown()) {
+      composeTestReportTeardownComponent("teardown", element.getTeardown());
     }
-    if (element.hasPlan()) { 
-      for (Reference e : element.getPlanList()) 
-          composeReference("plan", e); // a
+    if (element.hasPresentedForm()) {
+      composeAttachment("presentedForm", element.getPresentedForm());
+    }
+    if (element.hasLog()) {
+      composeAttachment("log", element.getLog());
     }
   }
 
-  protected void composeTestPlanSuiteInputComponent(String name, TestPlan.TestPlanSuiteInputComponent element) throws IOException {
+  protected void composeTestReportParticipantComponent(String name, TestReport.TestReportParticipantComponent element) throws IOException {
     if (element != null) {
+      composeElementAttributes(element);
       xml.enter(FHIR_NS, name);
-      composeTestPlanSuiteInputComponentElements(element);
+      composeTestReportParticipantComponentElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestPlanSuiteInputComponentElements(TestPlan.TestPlanSuiteInputComponent element) throws IOException {
-    composeBaseElements(element);
+  protected void composeTestReportParticipantComponentElements(TestReport.TestReportParticipantComponent element) throws IOException {
+    composeBackboneElementElements(element);
+    if (element.hasTypeElement())
+      composeEnumeration("type", element.getTypeElement(), new TestReport.TestReportParticipantTypeValueSetEnumFactory());
+    if (element.hasUriElement()) {
+      composeUri("uri", element.getUriElement());
+    }
+    if (element.hasVersionElement()) {
+      composeUri("version", element.getVersionElement());
+    }
+    if (element.hasDisplayElement()) {
+      composeString("display", element.getDisplayElement());
+    }
+  }
+
+  protected void composeTestReportParameterComponent(String name, TestReport.TestReportParameterComponent element) throws IOException {
+    if (element != null) {
+      composeElementAttributes(element);
+      xml.enter(FHIR_NS, name);
+      composeTestReportParameterComponentElements(element);
+      composeElementClose(element);
+      xml.exit(FHIR_NS, name);
+    }
+  }
+
+  protected void composeTestReportParameterComponentElements(TestReport.TestReportParameterComponent element) throws IOException {
+    composeBackboneElementElements(element);
     if (element.hasNameElement()) {
       composeString("name", element.getNameElement());
     }
-    if (element.hasFileElement()) {
-      composeString("file", element.getFileElement());
-    }
-    if (element.hasResource()) {
-      xml.enter(FHIR_NS, "resource");
-      composeResource(element.getResource());
-      xml.exit(FHIR_NS, "resource");
-    }
-    if (element.hasModeElement()) {
-      composeCode("mode", element.getModeElement());
+    if (element.hasDocumentationElement()) {
+      composeMarkdown("documentation", element.getDocumentationElement());
     }
   }
 
-  protected void composeTestPlanSuiteTestComponent(String name, TestPlan.TestPlanSuiteTestComponent element) throws IOException {
+  protected void composeTestReportSetupComponent(String name, TestReport.TestReportSetupComponent element) throws IOException {
     if (element != null) {
+      composeElementAttributes(element);
       xml.enter(FHIR_NS, name);
-      composeTestPlanSuiteTestComponentElements(element);
+      composeTestReportSetupComponentElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestPlanSuiteTestComponentElements(TestPlan.TestPlanSuiteTestComponent element) throws IOException {
-    composeBaseElements(element);
+  protected void composeTestReportSetupComponentElements(TestReport.TestReportSetupComponent element) throws IOException {
+    composeBackboneElementElements(element);
+    if (element.hasAction()) { 
+      for (TestReport.SetupActionComponent e : element.getActionList()) 
+          composeTestReportSetupActionComponent("action", e); // a
+    }
+  }
+
+  protected void composeTestReportSetupActionComponent(String name, TestReport.SetupActionComponent element) throws IOException {
+    if (element != null) {
+      composeElementAttributes(element);
+      xml.enter(FHIR_NS, name);
+      composeTestReportSetupActionComponentElements(element);
+      composeElementClose(element);
+      xml.exit(FHIR_NS, name);
+    }
+  }
+
+  protected void composeTestReportSetupActionComponentElements(TestReport.SetupActionComponent element) throws IOException {
+    composeBackboneElementElements(element);
+    if (element.hasOperation()) {
+      composeTestReportSetupActionOperationComponent("operation", element.getOperation());
+    }
+    if (element.hasAssert()) {
+      composeTestReportSetupActionAssertComponent("assert", element.getAssert());
+    }
+  }
+
+  protected void composeTestReportSetupActionOperationComponent(String name, TestReport.SetupActionOperationComponent element) throws IOException {
+    if (element != null) {
+      composeElementAttributes(element);
+      xml.enter(FHIR_NS, name);
+      composeTestReportSetupActionOperationComponentElements(element);
+      composeElementClose(element);
+      xml.exit(FHIR_NS, name);
+    }
+  }
+
+  protected void composeTestReportSetupActionOperationComponentElements(TestReport.SetupActionOperationComponent element) throws IOException {
+    composeBackboneElementElements(element);
+    if (element.hasResultElement())
+      composeEnumeration("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory());
+    if (element.hasMessageElement()) {
+      composeMarkdown("message", element.getMessageElement());
+    }
+    if (element.hasDetailElement()) {
+      composeUri("detail", element.getDetailElement());
+    }
+  }
+
+  protected void composeTestReportSetupActionAssertComponent(String name, TestReport.SetupActionAssertComponent element) throws IOException {
+    if (element != null) {
+      composeElementAttributes(element);
+      xml.enter(FHIR_NS, name);
+      composeTestReportSetupActionAssertComponentElements(element);
+      composeElementClose(element);
+      xml.exit(FHIR_NS, name);
+    }
+  }
+
+  protected void composeTestReportSetupActionAssertComponentElements(TestReport.SetupActionAssertComponent element) throws IOException {
+    composeBackboneElementElements(element);
+    if (element.hasResultElement())
+      composeEnumeration("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory());
+    if (element.hasMessageElement()) {
+      composeMarkdown("message", element.getMessageElement());
+    }
+    if (element.hasDetailElement()) {
+      composeString("detail", element.getDetailElement());
+    }
+    if (element.hasRequirement()) { 
+      for (TestReport.SetupActionAssertRequirementComponent e : element.getRequirementList()) 
+          composeTestReportSetupActionAssertRequirementComponent("requirement", e); // a
+    }
+  }
+
+  protected void composeTestReportSetupActionAssertRequirementComponent(String name, TestReport.SetupActionAssertRequirementComponent element) throws IOException {
+    if (element != null) {
+      composeElementAttributes(element);
+      xml.enter(FHIR_NS, name);
+      composeTestReportSetupActionAssertRequirementComponentElements(element);
+      composeElementClose(element);
+      xml.exit(FHIR_NS, name);
+    }
+  }
+
+  protected void composeTestReportSetupActionAssertRequirementComponentElements(TestReport.SetupActionAssertRequirementComponent element) throws IOException {
+    composeBackboneElementElements(element);
+    if (element.hasLink()) {
+      composeType("link", element.getLink());
+    }  }
+
+  protected void composeTestReportTestComponent(String name, TestReport.TestReportTestComponent element) throws IOException {
+    if (element != null) {
+      composeElementAttributes(element);
+      xml.enter(FHIR_NS, name);
+      composeTestReportTestComponentElements(element);
+      composeElementClose(element);
+      xml.exit(FHIR_NS, name);
+    }
+  }
+
+  protected void composeTestReportTestComponentElements(TestReport.TestReportTestComponent element) throws IOException {
+    composeBackboneElementElements(element);
     if (element.hasNameElement()) {
       composeString("name", element.getNameElement());
     }
     if (element.hasDescriptionElement()) {
       composeString("description", element.getDescriptionElement());
     }
-    if (element.hasOperationElement()) {
-      composeCode("operation", element.getOperationElement());
+    if (element.hasResultElement())
+      composeEnumeration("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory());
+    if (element.hasPeriod()) {
+      composePeriod("period", element.getPeriod());
     }
-    if (element.hasModeElement()) {
-      composeCode("mode", element.getModeElement());
+    if (element.hasAction()) { 
+      for (TestReport.TestActionComponent e : element.getActionList()) 
+          composeTestReportTestActionComponent("action", e); // a
     }
-    if (element.hasParameter()) { 
-      for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
-          composeTestPlanParameterComponent("parameter", e); // a
-    }
-    if (element.hasInput()) { 
-      for (TestPlan.TestPlanSuiteInputComponent e : element.getInputList()) 
-          composeTestPlanSuiteInputComponent("input", e); // a
-    }
-    if (element.hasExpected()) { 
-      for (TestPlan.TestPlanSuiteInputComponent e : element.getExpectedList()) 
-          composeTestPlanSuiteInputComponent("expected", e); // a
-    }
-    if (element.hasAssertion()) { 
-      for (TestPlan.TestPlanSuiteTestAssertionComponent e : element.getAssertionList()) 
-          composeTestPlanSuiteTestAssertionComponent("assertion", e); // a
+    if (element.hasLog()) {
+      composeAttachment("log", element.getLog());
     }
   }
 
-  protected void composeTestPlanSuiteTestAssertionComponent(String name, TestPlan.TestPlanSuiteTestAssertionComponent element) throws IOException {
+  protected void composeTestReportTestActionComponent(String name, TestReport.TestActionComponent element) throws IOException {
     if (element != null) {
+      composeElementAttributes(element);
       xml.enter(FHIR_NS, name);
-      composeTestPlanSuiteTestAssertionComponentElements(element);
+      composeTestReportTestActionComponentElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestPlanSuiteTestAssertionComponentElements(TestPlan.TestPlanSuiteTestAssertionComponent element) throws IOException {
-    composeBaseElements(element);
-    if (element.hasFocusElement()) {
-      composeString("focus", element.getFocusElement());
+  protected void composeTestReportTestActionComponentElements(TestReport.TestActionComponent element) throws IOException {
+    composeBackboneElementElements(element);
+    if (element.hasOperation()) {
+      composeTestReportSetupActionOperationComponent("operation", element.getOperation());
     }
-    if (element.hasSeverityElement()) {
-      composeCode("severity", element.getSeverityElement());
+    if (element.hasAssert()) {
+      composeTestReportSetupActionAssertComponent("assert", element.getAssert());
     }
-    if (element.hasExpression()) {
-      composeExpression("expression", element.getExpression());
+  }
+
+  protected void composeTestReportTeardownComponent(String name, TestReport.TestReportTeardownComponent element) throws IOException {
+    if (element != null) {
+      composeElementAttributes(element);
+      xml.enter(FHIR_NS, name);
+      composeTestReportTeardownComponentElements(element);
+      composeElementClose(element);
+      xml.exit(FHIR_NS, name);
     }
-    if (element.hasHumanElement()) {
-      composeString("human", element.getHumanElement());
+  }
+
+  protected void composeTestReportTeardownComponentElements(TestReport.TestReportTeardownComponent element) throws IOException {
+    composeBackboneElementElements(element);
+    if (element.hasAction()) { 
+      for (TestReport.TeardownActionComponent e : element.getActionList()) 
+          composeTestReportTeardownActionComponent("action", e); // a
     }
-    if (element.hasModeElement()) {
-      composeCode("mode", element.getModeElement());
+  }
+
+  protected void composeTestReportTeardownActionComponent(String name, TestReport.TeardownActionComponent element) throws IOException {
+    if (element != null) {
+      composeElementAttributes(element);
+      xml.enter(FHIR_NS, name);
+      composeTestReportTeardownActionComponentElements(element);
+      composeElementClose(element);
+      xml.exit(FHIR_NS, name);
+    }
+  }
+
+  protected void composeTestReportTeardownActionComponentElements(TestReport.TeardownActionComponent element) throws IOException {
+    composeBackboneElementElements(element);
+    if (element.hasOperation()) {
+      composeTestReportSetupActionOperationComponent("operation", element.getOperation());
     }
   }
 
   protected void composeTestScript(String name, TestScript element) throws IOException {
     if (element != null) {
     composeResourceAttributes(element);
+      xml.attribute("resourceDefinition", "http://hl7.org/fhir/StructureDefinition/TestScript|0.1.0-SNAPSHOT");
       xml.enter(FHIR_NS, name);
       composeTestScriptElements(element);
       composeElementClose(element);
@@ -2768,227 +2769,190 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     }
   }
 
-  protected void composeTestReport(String name, TestReport element) throws IOException {
+  protected void composeTestPlan(String name, TestPlan element) throws IOException {
     if (element != null) {
     composeResourceAttributes(element);
+      xml.attribute("resourceDefinition", "http://hl7.org/fhir/StructureDefinition/TestPlan|0.1.0-SNAPSHOT");
       xml.enter(FHIR_NS, name);
-      composeTestReportElements(element);
+      composeTestPlanElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestReportElements(TestReport element) throws IOException {
-    composeDomainResourceElements(element);
-    if (element.hasIdentifier()) {
-      composeIdentifier("identifier", element.getIdentifier());
+  protected void composeTestPlanElements(TestPlan element) throws IOException {
+    composeCanonicalResourceElements(element);
+    if (element.hasUrlElement()) {
+      composeUri("url", element.getUrlElement());
     }
-    if (element.hasNameElement()) {
+    if (element.hasIdentifier()) { 
+      for (Identifier e : element.getIdentifierList()) 
+          composeIdentifier("identifier", e); // a
+    }
+    if (element.hasVersionElement()) {
+      composeString("version", element.getVersionElement());
+    }
+    if (element.hasVersionAlgorithm()) {
+      composeType("versionAlgorithm", element.getVersionAlgorithm());
+    }    if (element.hasNameElement()) {
       composeString("name", element.getNameElement());
+    }
+    if (element.hasTitleElement()) {
+      composeString("title", element.getTitleElement());
+    }
+    if (element.hasStatusElement())
+      composeEnumeration("status", element.getStatusElement(), new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory());
+    if (element.hasExperimentalElement()) {
+      composeBoolean("experimental", element.getExperimentalElement());
+    }
+    if (element.hasDateElement()) {
+      composeDateTime("date", element.getDateElement());
+    }
+    if (element.hasPublisherElement()) {
+      composeString("publisher", element.getPublisherElement());
+    }
+    if (element.hasContact()) { 
+      for (ContactDetail e : element.getContactList()) 
+          composeContactDetail("contact", e); // a
     }
     if (element.hasDescriptionElement()) {
       composeMarkdown("description", element.getDescriptionElement());
     }
-    if (element.hasStatusElement())
-      composeEnumeration("status", element.getStatusElement(), new TestReport.TestReportStatusValueSetEnumFactory());
-    if (element.hasTestScriptElement()) {
-      composeCanonical("testScript", element.getTestScriptElement());
+    if (element.hasUseContext()) { 
+      for (UsageContext e : element.getUseContextList()) 
+          composeUsageContext("useContext", e); // a
     }
-    if (element.hasResultElement())
-      composeEnumeration("result", element.getResultElement(), new TestReport.TestReportResultValueSetEnumFactory());
-    if (element.hasScoreElement()) {
-      composeDecimal("score", element.getScoreElement());
+    if (element.hasJurisdiction()) { 
+      for (CodeableConcept e : element.getJurisdictionList()) 
+          composeCodeableConcept("jurisdiction", e); // a
     }
-    if (element.hasTesterElement()) {
-      composeString("tester", element.getTesterElement());
+    if (element.hasPurposeElement()) {
+      composeMarkdown("purpose", element.getPurposeElement());
     }
-    if (element.hasIssuedElement()) {
-      composeDateTime("issued", element.getIssuedElement());
+    if (element.hasCopyrightElement()) {
+      composeMarkdown("copyright", element.getCopyrightElement());
     }
-    if (element.hasParticipant()) { 
-      for (TestReport.TestReportParticipantComponent e : element.getParticipantList()) 
-          composeTestReportParticipantComponent("participant", e); // a
+    if (element.hasCopyrightLabelElement()) {
+      composeString("copyrightLabel", element.getCopyrightLabelElement());
+    }
+    if (element.hasScope()) { 
+      for (TestPlan.TestPlanScopeComponent e : element.getScopeList()) 
+          composeTestPlanScopeComponent("scope", e); // a
+    }
+    if (element.hasDependency()) { 
+      for (TestPlan.TestPlanDependencyComponent e : element.getDependencyList()) 
+          composeTestPlanDependencyComponent("dependency", e); // a
+    }
+    if (element.hasRunnerElement()) {
+      composeUrl("runner", element.getRunnerElement());
+    }
+    if (element.hasMode()) { 
+      for (TestPlan.TestPlanModeComponent e : element.getModeList()) 
+          composeTestPlanModeComponent("mode", e); // a
     }
     if (element.hasParameter()) { 
-      for (TestReport.TestReportParameterComponent e : element.getParameterList()) 
-          composeTestReportParameterComponent("parameter", e); // a
+      for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
+          composeTestPlanParameterComponent("parameter", e); // a
     }
-    if (element.hasSetup()) {
-      composeTestReportSetupComponent("setup", element.getSetup());
-    }
-    if (element.hasTest()) { 
-      for (TestReport.TestReportTestComponent e : element.getTestList()) 
-          composeTestReportTestComponent("test", e); // a
-    }
-    if (element.hasTeardown()) {
-      composeTestReportTeardownComponent("teardown", element.getTeardown());
-    }
-    if (element.hasPresentedForm()) {
-      composeAttachment("presentedForm", element.getPresentedForm());
-    }
-    if (element.hasLog()) {
-      composeAttachment("log", element.getLog());
+    if (element.hasSuite()) { 
+      for (TestPlan.TestPlanSuiteComponent e : element.getSuiteList()) 
+          composeTestPlanSuiteComponent("suite", e); // a
     }
   }
 
-  protected void composeTestReportParticipantComponent(String name, TestReport.TestReportParticipantComponent element) throws IOException {
+  protected void composeTestPlanScopeComponent(String name, TestPlan.TestPlanScopeComponent element) throws IOException {
     if (element != null) {
       composeElementAttributes(element);
       xml.enter(FHIR_NS, name);
-      composeTestReportParticipantComponentElements(element);
+      composeTestPlanScopeComponentElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestReportParticipantComponentElements(TestReport.TestReportParticipantComponent element) throws IOException {
+  protected void composeTestPlanScopeComponentElements(TestPlan.TestPlanScopeComponent element) throws IOException {
     composeBackboneElementElements(element);
-    if (element.hasTypeElement())
-      composeEnumeration("type", element.getTypeElement(), new TestReport.TestReportParticipantTypeValueSetEnumFactory());
-    if (element.hasUriElement()) {
-      composeUri("uri", element.getUriElement());
+    if (element.hasReferenceElement()) {
+      composeCanonical("reference", element.getReferenceElement());
     }
-    if (element.hasVersionElement()) {
-      composeUri("version", element.getVersionElement());
-    }
-    if (element.hasDisplayElement()) {
-      composeString("display", element.getDisplayElement());
+    if (element.hasDescriptionElement()) {
+      composeString("description", element.getDescriptionElement());
     }
   }
 
-  protected void composeTestReportParameterComponent(String name, TestReport.TestReportParameterComponent element) throws IOException {
+  protected void composeTestPlanDependencyComponent(String name, TestPlan.TestPlanDependencyComponent element) throws IOException {
     if (element != null) {
       composeElementAttributes(element);
       xml.enter(FHIR_NS, name);
-      composeTestReportParameterComponentElements(element);
+      composeTestPlanDependencyComponentElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestReportParameterComponentElements(TestReport.TestReportParameterComponent element) throws IOException {
+  protected void composeTestPlanDependencyComponentElements(TestPlan.TestPlanDependencyComponent element) throws IOException {
+    composeBackboneElementElements(element);
+    if (element.hasReferenceElement()) {
+      composeCanonical("reference", element.getReferenceElement());
+    }
+    if (element.hasDescriptionElement()) {
+      composeString("description", element.getDescriptionElement());
+    }
+  }
+
+  protected void composeTestPlanModeComponent(String name, TestPlan.TestPlanModeComponent element) throws IOException {
+    if (element != null) {
+      composeElementAttributes(element);
+      xml.enter(FHIR_NS, name);
+      composeTestPlanModeComponentElements(element);
+      composeElementClose(element);
+      xml.exit(FHIR_NS, name);
+    }
+  }
+
+  protected void composeTestPlanModeComponentElements(TestPlan.TestPlanModeComponent element) throws IOException {
+    composeBackboneElementElements(element);
+    if (element.hasCodeElement()) {
+      composeString("code", element.getCodeElement());
+    }
+    if (element.hasDescriptionElement()) {
+      composeString("description", element.getDescriptionElement());
+    }
+  }
+
+  protected void composeTestPlanParameterComponent(String name, TestPlan.TestPlanParameterComponent element) throws IOException {
+    if (element != null) {
+      composeElementAttributes(element);
+      xml.enter(FHIR_NS, name);
+      composeTestPlanParameterComponentElements(element);
+      composeElementClose(element);
+      xml.exit(FHIR_NS, name);
+    }
+  }
+
+  protected void composeTestPlanParameterComponentElements(TestPlan.TestPlanParameterComponent element) throws IOException {
     composeBackboneElementElements(element);
     if (element.hasNameElement()) {
       composeString("name", element.getNameElement());
     }
-    if (element.hasDocumentationElement()) {
-      composeMarkdown("documentation", element.getDocumentationElement());
+    if (element.hasValue()) {
+      composeType("value", element.getValue());
+    }    if (element.hasModeElement()) {
+      composeCode("mode", element.getModeElement());
     }
   }
 
-  protected void composeTestReportSetupComponent(String name, TestReport.TestReportSetupComponent element) throws IOException {
+  protected void composeTestPlanSuiteComponent(String name, TestPlan.TestPlanSuiteComponent element) throws IOException {
     if (element != null) {
       composeElementAttributes(element);
       xml.enter(FHIR_NS, name);
-      composeTestReportSetupComponentElements(element);
+      composeTestPlanSuiteComponentElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestReportSetupComponentElements(TestReport.TestReportSetupComponent element) throws IOException {
-    composeBackboneElementElements(element);
-    if (element.hasAction()) { 
-      for (TestReport.SetupActionComponent e : element.getActionList()) 
-          composeTestReportSetupActionComponent("action", e); // a
-    }
-  }
-
-  protected void composeTestReportSetupActionComponent(String name, TestReport.SetupActionComponent element) throws IOException {
-    if (element != null) {
-      composeElementAttributes(element);
-      xml.enter(FHIR_NS, name);
-      composeTestReportSetupActionComponentElements(element);
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
-
-  protected void composeTestReportSetupActionComponentElements(TestReport.SetupActionComponent element) throws IOException {
-    composeBackboneElementElements(element);
-    if (element.hasOperation()) {
-      composeTestReportSetupActionOperationComponent("operation", element.getOperation());
-    }
-    if (element.hasAssert()) {
-      composeTestReportSetupActionAssertComponent("assert", element.getAssert());
-    }
-  }
-
-  protected void composeTestReportSetupActionOperationComponent(String name, TestReport.SetupActionOperationComponent element) throws IOException {
-    if (element != null) {
-      composeElementAttributes(element);
-      xml.enter(FHIR_NS, name);
-      composeTestReportSetupActionOperationComponentElements(element);
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
-
-  protected void composeTestReportSetupActionOperationComponentElements(TestReport.SetupActionOperationComponent element) throws IOException {
-    composeBackboneElementElements(element);
-    if (element.hasResultElement())
-      composeEnumeration("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory());
-    if (element.hasMessageElement()) {
-      composeMarkdown("message", element.getMessageElement());
-    }
-    if (element.hasDetailElement()) {
-      composeUri("detail", element.getDetailElement());
-    }
-  }
-
-  protected void composeTestReportSetupActionAssertComponent(String name, TestReport.SetupActionAssertComponent element) throws IOException {
-    if (element != null) {
-      composeElementAttributes(element);
-      xml.enter(FHIR_NS, name);
-      composeTestReportSetupActionAssertComponentElements(element);
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
-
-  protected void composeTestReportSetupActionAssertComponentElements(TestReport.SetupActionAssertComponent element) throws IOException {
-    composeBackboneElementElements(element);
-    if (element.hasResultElement())
-      composeEnumeration("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory());
-    if (element.hasMessageElement()) {
-      composeMarkdown("message", element.getMessageElement());
-    }
-    if (element.hasDetailElement()) {
-      composeString("detail", element.getDetailElement());
-    }
-    if (element.hasRequirement()) { 
-      for (TestReport.SetupActionAssertRequirementComponent e : element.getRequirementList()) 
-          composeTestReportSetupActionAssertRequirementComponent("requirement", e); // a
-    }
-  }
-
-  protected void composeTestReportSetupActionAssertRequirementComponent(String name, TestReport.SetupActionAssertRequirementComponent element) throws IOException {
-    if (element != null) {
-      composeElementAttributes(element);
-      xml.enter(FHIR_NS, name);
-      composeTestReportSetupActionAssertRequirementComponentElements(element);
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
-
-  protected void composeTestReportSetupActionAssertRequirementComponentElements(TestReport.SetupActionAssertRequirementComponent element) throws IOException {
-    composeBackboneElementElements(element);
-    if (element.hasLink()) {
-      composeType("link", element.getLink());
-    }  }
-
-  protected void composeTestReportTestComponent(String name, TestReport.TestReportTestComponent element) throws IOException {
-    if (element != null) {
-      composeElementAttributes(element);
-      xml.enter(FHIR_NS, name);
-      composeTestReportTestComponentElements(element);
-      composeElementClose(element);
-      xml.exit(FHIR_NS, name);
-    }
-  }
-
-  protected void composeTestReportTestComponentElements(TestReport.TestReportTestComponent element) throws IOException {
+  protected void composeTestPlanSuiteComponentElements(TestPlan.TestPlanSuiteComponent element) throws IOException {
     composeBackboneElementElements(element);
     if (element.hasNameElement()) {
       composeString("name", element.getNameElement());
@@ -2996,72 +2960,127 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     if (element.hasDescriptionElement()) {
       composeString("description", element.getDescriptionElement());
     }
-    if (element.hasResultElement())
-      composeEnumeration("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory());
-    if (element.hasPeriod()) {
-      composePeriod("period", element.getPeriod());
+    if (element.hasModeElement()) {
+      composeCode("mode", element.getModeElement());
     }
-    if (element.hasAction()) { 
-      for (TestReport.TestActionComponent e : element.getActionList()) 
-          composeTestReportTestActionComponent("action", e); // a
+    if (element.hasInput()) { 
+      for (TestPlan.TestPlanSuiteInputComponent e : element.getInputList()) 
+          composeTestPlanSuiteInputComponent("input", e); // a
     }
-    if (element.hasLog()) {
-      composeAttachment("log", element.getLog());
+    if (element.hasParameter()) { 
+      for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
+          composeTestPlanParameterComponent("parameter", e); // a
+    }
+    if (element.hasTest()) { 
+      for (TestPlan.TestPlanSuiteTestComponent e : element.getTestList()) 
+          composeTestPlanSuiteTestComponent("test", e); // a
+    }
+    if (element.hasSuite()) { 
+      for (TestPlan.TestPlanSuiteComponent e : element.getSuiteList()) 
+          composeTestPlanSuiteComponent("suite", e); // a
+    }
+    if (element.hasPlan()) { 
+      for (Reference e : element.getPlanList()) 
+          composeReference("plan", e); // a
     }
   }
 
-  protected void composeTestReportTestActionComponent(String name, TestReport.TestActionComponent element) throws IOException {
+  protected void composeTestPlanSuiteInputComponent(String name, TestPlan.TestPlanSuiteInputComponent element) throws IOException {
     if (element != null) {
       composeElementAttributes(element);
       xml.enter(FHIR_NS, name);
-      composeTestReportTestActionComponentElements(element);
+      composeTestPlanSuiteInputComponentElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestReportTestActionComponentElements(TestReport.TestActionComponent element) throws IOException {
+  protected void composeTestPlanSuiteInputComponentElements(TestPlan.TestPlanSuiteInputComponent element) throws IOException {
     composeBackboneElementElements(element);
-    if (element.hasOperation()) {
-      composeTestReportSetupActionOperationComponent("operation", element.getOperation());
+    if (element.hasNameElement()) {
+      composeString("name", element.getNameElement());
     }
-    if (element.hasAssert()) {
-      composeTestReportSetupActionAssertComponent("assert", element.getAssert());
+    if (element.hasFileElement()) {
+      composeString("file", element.getFileElement());
+    }
+    if (element.hasResource()) {
+      xml.enter(FHIR_NS, "resource");
+      composeResource(element.getResource());
+      xml.exit(FHIR_NS, "resource");
+    }
+    if (element.hasModeElement()) {
+      composeCode("mode", element.getModeElement());
     }
   }
 
-  protected void composeTestReportTeardownComponent(String name, TestReport.TestReportTeardownComponent element) throws IOException {
+  protected void composeTestPlanSuiteTestComponent(String name, TestPlan.TestPlanSuiteTestComponent element) throws IOException {
     if (element != null) {
       composeElementAttributes(element);
       xml.enter(FHIR_NS, name);
-      composeTestReportTeardownComponentElements(element);
+      composeTestPlanSuiteTestComponentElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestReportTeardownComponentElements(TestReport.TestReportTeardownComponent element) throws IOException {
+  protected void composeTestPlanSuiteTestComponentElements(TestPlan.TestPlanSuiteTestComponent element) throws IOException {
     composeBackboneElementElements(element);
-    if (element.hasAction()) { 
-      for (TestReport.TeardownActionComponent e : element.getActionList()) 
-          composeTestReportTeardownActionComponent("action", e); // a
+    if (element.hasNameElement()) {
+      composeString("name", element.getNameElement());
+    }
+    if (element.hasDescriptionElement()) {
+      composeString("description", element.getDescriptionElement());
+    }
+    if (element.hasOperationElement()) {
+      composeCode("operation", element.getOperationElement());
+    }
+    if (element.hasModeElement()) {
+      composeCode("mode", element.getModeElement());
+    }
+    if (element.hasParameter()) { 
+      for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
+          composeTestPlanParameterComponent("parameter", e); // a
+    }
+    if (element.hasInput()) { 
+      for (TestPlan.TestPlanSuiteInputComponent e : element.getInputList()) 
+          composeTestPlanSuiteInputComponent("input", e); // a
+    }
+    if (element.hasExpected()) { 
+      for (TestPlan.TestPlanSuiteInputComponent e : element.getExpectedList()) 
+          composeTestPlanSuiteInputComponent("expected", e); // a
+    }
+    if (element.hasAssertion()) { 
+      for (TestPlan.TestPlanSuiteTestAssertionComponent e : element.getAssertionList()) 
+          composeTestPlanSuiteTestAssertionComponent("assertion", e); // a
     }
   }
 
-  protected void composeTestReportTeardownActionComponent(String name, TestReport.TeardownActionComponent element) throws IOException {
+  protected void composeTestPlanSuiteTestAssertionComponent(String name, TestPlan.TestPlanSuiteTestAssertionComponent element) throws IOException {
     if (element != null) {
       composeElementAttributes(element);
       xml.enter(FHIR_NS, name);
-      composeTestReportTeardownActionComponentElements(element);
+      composeTestPlanSuiteTestAssertionComponentElements(element);
       composeElementClose(element);
       xml.exit(FHIR_NS, name);
     }
   }
 
-  protected void composeTestReportTeardownActionComponentElements(TestReport.TeardownActionComponent element) throws IOException {
+  protected void composeTestPlanSuiteTestAssertionComponentElements(TestPlan.TestPlanSuiteTestAssertionComponent element) throws IOException {
     composeBackboneElementElements(element);
-    if (element.hasOperation()) {
-      composeTestReportSetupActionOperationComponent("operation", element.getOperation());
+    if (element.hasFocusElement()) {
+      composeString("focus", element.getFocusElement());
+    }
+    if (element.hasSeverityElement()) {
+      composeCode("severity", element.getSeverityElement());
+    }
+    if (element.hasExpression()) {
+      composeExpression("expression", element.getExpression());
+    }
+    if (element.hasHumanElement()) {
+      composeString("human", element.getHumanElement());
+    }
+    if (element.hasModeElement()) {
+      composeCode("mode", element.getModeElement());
     }
   }
 
@@ -3071,12 +3090,12 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
   protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
       throw new IOException("resource == null");
-    } else if (resource instanceof TestPlan) {
-      composeTestPlan("TestPlan", (TestPlan)resource);
-    } else if (resource instanceof TestScript) {
-      composeTestScript("TestScript", (TestScript)resource);
     } else if (resource instanceof TestReport) {
       composeTestReport("TestReport", (TestReport)resource);
+    } else if (resource instanceof TestScript) {
+      composeTestScript("TestScript", (TestScript)resource);
+    } else if (resource instanceof TestPlan) {
+      composeTestPlan("TestPlan", (TestPlan)resource);
       
     } else {
       throw new Error("Unhandled resource type "+resource.getClass().getName());
@@ -3088,12 +3107,12 @@ public class TestingXmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       throw new IOException("name == null");
     } else if (resource == null) {
       throw new IOException("resource == null");
-    } else if (resource instanceof TestPlan) {
-      composeTestPlan(name, (TestPlan)resource);
-    } else if (resource instanceof TestScript) {
-      composeTestScript(name, (TestScript)resource);
     } else if (resource instanceof TestReport) {
       composeTestReport(name, (TestReport)resource);
+    } else if (resource instanceof TestScript) {
+      composeTestScript(name, (TestScript)resource);
+    } else if (resource instanceof TestPlan) {
+      composeTestPlan(name, (TestPlan)resource);
       
     } else {
       throw new Error("Unhandled resource type "+resource.getClass().getName());

@@ -4754,26 +4754,6 @@ public class TestReport extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>result</b>
-   * <p>
-   * Description: <b>The result disposition of the test execution</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestReport.result</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="result", path="TestReport.result", description="The result disposition of the test execution", type="token" )
-  public static final String SP_RESULT = "result";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>result</b>
-   * <p>
-   * Description: <b>The result disposition of the test execution</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestReport.result</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESULT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESULT);
-
- /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>An external identifier for the test report</b><br>
@@ -4794,6 +4774,26 @@ public class TestReport extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
+   * Search parameter: <b>tester</b>
+   * <p>
+   * Description: <b>The name of the testing organization</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestReport.tester</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="tester", path="TestReport.tester", description="The name of the testing organization", type="string" )
+  public static final String SP_TESTER = "tester";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>tester</b>
+   * <p>
+   * Description: <b>The name of the testing organization</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestReport.tester</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TESTER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TESTER);
+
+ /**
    * Search parameter: <b>issued</b>
    * <p>
    * Description: <b>The test report generation date</b><br>
@@ -4812,6 +4812,26 @@ public class TestReport extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam ISSUED = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_ISSUED);
+
+ /**
+   * Search parameter: <b>result</b>
+   * <p>
+   * Description: <b>The result disposition of the test execution</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestReport.result</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="result", path="TestReport.result", description="The result disposition of the test execution", type="token" )
+  public static final String SP_RESULT = "result";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>result</b>
+   * <p>
+   * Description: <b>The result disposition of the test execution</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestReport.result</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESULT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESULT);
 
  /**
    * Search parameter: <b>status</b>
@@ -4878,26 +4898,6 @@ public class TestReport extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.UriClientParam PARTICIPANT = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_PARTICIPANT);
-
- /**
-   * Search parameter: <b>tester</b>
-   * <p>
-   * Description: <b>The name of the testing organization</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestReport.tester</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="tester", path="TestReport.tester", description="The name of the testing organization", type="string" )
-  public static final String SP_TESTER = "tester";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>tester</b>
-   * <p>
-   * Description: <b>The name of the testing organization</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestReport.tester</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TESTER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TESTER);
 
 
 }

@@ -208,7 +208,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     if (!Utilities.noString(display)) {
       return display;
     }
-    return rendererFactory.factory(res.getResource(), context.forContained()).buildSummary(res.getResource());
+    return context.getRendererFactory().factory(res.getResource(), context.forContained()).buildSummary(res.getResource());
   }
 
   private String getResourceDescription(Resource res, String display) throws UnsupportedEncodingException, IOException {
@@ -218,7 +218,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     if (res instanceof CanonicalResource) {
       return ((CanonicalResource) res).present();
     }
-    return rendererFactory.factory(res, context.forContained()).buildSummary(wrap(res));
+    return context.getRendererFactory().factory(res, context.forContained()).buildSummary(wrap(res));
   }
 
   public void describe(XhtmlNode x, Library lib) {

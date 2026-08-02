@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.igs.testing.renderer;
+package org.hl7.fhir.r5.igs.testing.renderers;
 
 import org.hl7.fhir.r5.renderers.RendererFactory;
 

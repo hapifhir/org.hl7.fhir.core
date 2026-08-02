@@ -55,7 +55,7 @@ import ca.uhn.fhir.model.api.annotation.Block;
 public class TestPlan extends CanonicalResource {
 
     @Block()
-    public static class TestPlanScopeComponent extends LogicalBase {
+    public static class TestPlanScopeComponent extends BackboneElement {
         /**
          * A reference to what is being tested.
          */
@@ -306,7 +306,7 @@ public class TestPlan extends CanonicalResource {
   }
 
     @Block()
-    public static class TestPlanDependencyComponent extends LogicalBase {
+    public static class TestPlanDependencyComponent extends BackboneElement {
         /**
          * The test cases.
          */
@@ -561,7 +561,7 @@ public class TestPlan extends CanonicalResource {
   }
 
     @Block()
-    public static class TestPlanModeComponent extends LogicalBase {
+    public static class TestPlanModeComponent extends BackboneElement {
         /**
          * The code by which the mode is identified when passed to runner. This code is used to select which suite and tests are run, and which parameters and inputs are used. Codes are entirely at the descretion of the TestPlan, but typically 'advanced' or 'general' are the kind of codes that could be used.
          */
@@ -814,7 +814,7 @@ public class TestPlan extends CanonicalResource {
   }
 
     @Block()
-    public static class TestPlanParameterComponent extends LogicalBase {
+    public static class TestPlanParameterComponent extends BackboneElement {
         /**
          * Name for the parameter as defined by the runner definition.
          */
@@ -1290,7 +1290,7 @@ public class TestPlan extends CanonicalResource {
   }
 
     @Block()
-    public static class TestPlanSuiteComponent extends LogicalBase {
+    public static class TestPlanSuiteComponent extends BackboneElement {
         /**
          * The name by which this suite is known by in the test system. The name must be unique in the amongst the suites.
          */
@@ -1315,7 +1315,7 @@ public class TestPlan extends CanonicalResource {
         /**
          * The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner .
          */
-        @Child(name = "input", type = {Base.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "input", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Resources used in the tests in this suite", formalDefinition="The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner ." )
         protected List<TestPlanSuiteInputComponent> inputList;
 
@@ -1329,7 +1329,7 @@ public class TestPlan extends CanonicalResource {
         /**
          * An actual test in the test suite.
          */
-        @Child(name = "test", type = {Base.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "test", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="A test in the test suite", formalDefinition="An actual test in the test suite." )
         protected List<TestPlanSuiteTestComponent> testList;
 
@@ -1533,6 +1533,14 @@ public class TestPlan extends CanonicalResource {
           return false;
         }
 
+        public TestPlanSuiteInputComponent addInput() { //3a
+          TestPlanSuiteInputComponent t = new TestPlanSuiteInputComponent();
+          if (this.inputList == null)
+            this.inputList = new ArrayList<TestPlanSuiteInputComponent>();
+          this.inputList.add(t);
+          return t;
+        }
+
         public TestPlanSuiteComponent addInput(TestPlanSuiteInputComponent t) { //3b
           if (t == null)
             return this;
@@ -1540,6 +1548,16 @@ public class TestPlan extends CanonicalResource {
             this.inputList = new ArrayList<TestPlanSuiteInputComponent>();
           this.inputList.add(t);
           return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #input}, creating it if it does not already exist {3}
+         */
+        public TestPlanSuiteInputComponent getInputFirstRep() { 
+          if (getInputList().isEmpty()) {
+            addInput();
+          }
+          return getInputList().get(0);
         }
 
         /**
@@ -1621,6 +1639,14 @@ public class TestPlan extends CanonicalResource {
           return false;
         }
 
+        public TestPlanSuiteTestComponent addTest() { //3a
+          TestPlanSuiteTestComponent t = new TestPlanSuiteTestComponent();
+          if (this.testList == null)
+            this.testList = new ArrayList<TestPlanSuiteTestComponent>();
+          this.testList.add(t);
+          return t;
+        }
+
         public TestPlanSuiteComponent addTest(TestPlanSuiteTestComponent t) { //3b
           if (t == null)
             return this;
@@ -1628,6 +1654,16 @@ public class TestPlan extends CanonicalResource {
             this.testList = new ArrayList<TestPlanSuiteTestComponent>();
           this.testList.add(t);
           return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #test}, creating it if it does not already exist {3}
+         */
+        public TestPlanSuiteTestComponent getTestFirstRep() { 
+          if (getTestList().isEmpty()) {
+            addTest();
+          }
+          return getTestList().get(0);
         }
 
         /**
@@ -1741,9 +1777,9 @@ public class TestPlan extends CanonicalResource {
           children.add(new Property("name", "string", "The name by which this suite is known by in the test system. The name must be unique in the amongst the suites.", 0, 1, name));
           children.add(new Property("description", "string", "Description of what this suite does / why it was defined. This should explain to a tester what they should know when deciding which tests to run.", 0, 1, description));
           children.add(new Property("mode", "code", "If this mode is not passed to the runner, then this suite will not be run.", 0, 1, mode));
-          children.add(new Property("input", "Base", "The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner .", 0, java.lang.Integer.MAX_VALUE, inputList));
+          children.add(new Property("input", "", "The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner .", 0, java.lang.Integer.MAX_VALUE, inputList));
           children.add(new Property("parameter", "@TestPlan.parameter", "A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, parameterList));
-          children.add(new Property("test", "Base", "An actual test in the test suite.", 0, java.lang.Integer.MAX_VALUE, testList));
+          children.add(new Property("test", "", "An actual test in the test suite.", 0, java.lang.Integer.MAX_VALUE, testList));
           children.add(new Property("suite", "@TestPlan.suite", "A nested set of tests.", 0, java.lang.Integer.MAX_VALUE, suiteList));
           children.add(new Property("plan", "Reference(TestPlan)", "A nested set of test plans that run within the context of this suite. Typically, the runner must be the same in the nested test plans.", 0, java.lang.Integer.MAX_VALUE, planList));
         }
@@ -1754,9 +1790,9 @@ public class TestPlan extends CanonicalResource {
           case 3373707: /*name*/  return new Property("name", "string", "The name by which this suite is known by in the test system. The name must be unique in the amongst the suites.", 0, 1, name);
           case -1724546052: /*description*/  return new Property("description", "string", "Description of what this suite does / why it was defined. This should explain to a tester what they should know when deciding which tests to run.", 0, 1, description);
           case 3357091: /*mode*/  return new Property("mode", "code", "If this mode is not passed to the runner, then this suite will not be run.", 0, 1, mode);
-          case 100358090: /*input*/  return new Property("input", "Base", "The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner .", 0, java.lang.Integer.MAX_VALUE, inputList);
+          case 100358090: /*input*/  return new Property("input", "", "The resources used in the tests in this suite. How exactly they are used depends on the definition of the runner .", 0, java.lang.Integer.MAX_VALUE, inputList);
           case 1954460585: /*parameter*/  return new Property("parameter", "@TestPlan.parameter", "A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, parameterList);
-          case 3556498: /*test*/  return new Property("test", "Base", "An actual test in the test suite.", 0, java.lang.Integer.MAX_VALUE, testList);
+          case 3556498: /*test*/  return new Property("test", "", "An actual test in the test suite.", 0, java.lang.Integer.MAX_VALUE, testList);
           case 109795064: /*suite*/  return new Property("suite", "@TestPlan.suite", "A nested set of tests.", 0, java.lang.Integer.MAX_VALUE, suiteList);
           case 3443497: /*plan*/  return new Property("plan", "Reference(TestPlan)", "A nested set of test plans that run within the context of this suite. Typically, the runner must be the same in the nested test plans.", 0, java.lang.Integer.MAX_VALUE, planList);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1841,11 +1877,9 @@ public class TestPlan extends CanonicalResource {
         case 3373707:  return getNameElement();
         case -1724546052:  return getDescriptionElement();
         case 3357091:  return getModeElement();
-        case 100358090: /*div*/
-          throw new Error("Unable to make an instance of the abstract property 'input'");
+        case 100358090:  return addInput(); 
         case 1954460585:  return addParameter(); 
-        case 3556498: /*div*/
-          throw new Error("Unable to make an instance of the abstract property 'test'");
+        case 3556498:  return addTest(); 
         case 109795064:  return addSuite(); 
         case 3443497:  return addPlan(); 
         default: return super.makeProperty(hash, name);
@@ -1859,9 +1893,9 @@ public class TestPlan extends CanonicalResource {
         case 3373707: /*name*/ return new String[] {"string"};
         case -1724546052: /*description*/ return new String[] {"string"};
         case 3357091: /*mode*/ return new String[] {"code"};
-        case 100358090: /*input*/ return new String[] {"Base"};
+        case 100358090: /*input*/ return new String[] {};
         case 1954460585: /*parameter*/ return new String[] {"@TestPlan.parameter"};
-        case 3556498: /*test*/ return new String[] {"Base"};
+        case 3556498: /*test*/ return new String[] {};
         case 109795064: /*suite*/ return new String[] {"@TestPlan.suite"};
         case 3443497: /*plan*/ return new String[] {"Reference"};
         default: return super.getTypesForProperty(hash, name);
@@ -1974,7 +2008,7 @@ public class TestPlan extends CanonicalResource {
   }
 
     @Block()
-    public static class TestPlanSuiteInputComponent extends LogicalBase {
+    public static class TestPlanSuiteInputComponent extends BackboneElement {
         /**
          * A name that identifies this resource. The runner definition defines whether there must be a name, and what names there are.
          */
@@ -2337,7 +2371,7 @@ public class TestPlan extends CanonicalResource {
   }
 
     @Block()
-    public static class TestPlanSuiteTestComponent extends LogicalBase {
+    public static class TestPlanSuiteTestComponent extends BackboneElement {
         /**
          * The name by which this test is known by in the test system. The name must be unique in the suite.
          */
@@ -2390,7 +2424,7 @@ public class TestPlan extends CanonicalResource {
         /**
          * One or more assertions that can be executed against the output of the tests. These may be used with matchetypes to make rules about content the matchetypes leave open.
          */
-        @Child(name = "assertion", type = {Base.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "assertion", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Assertions that can be executed against the output of the tests", formalDefinition="One or more assertions that can be executed against the output of the tests. These may be used with matchetypes to make rules about content the matchetypes leave open." )
         protected List<TestPlanSuiteTestAssertionComponent> assertionList;
 
@@ -2788,6 +2822,14 @@ public class TestPlan extends CanonicalResource {
           return false;
         }
 
+        public TestPlanSuiteTestAssertionComponent addAssertion() { //3a
+          TestPlanSuiteTestAssertionComponent t = new TestPlanSuiteTestAssertionComponent();
+          if (this.assertionList == null)
+            this.assertionList = new ArrayList<TestPlanSuiteTestAssertionComponent>();
+          this.assertionList.add(t);
+          return t;
+        }
+
         public TestPlanSuiteTestComponent addAssertion(TestPlanSuiteTestAssertionComponent t) { //3b
           if (t == null)
             return this;
@@ -2795,6 +2837,16 @@ public class TestPlan extends CanonicalResource {
             this.assertionList = new ArrayList<TestPlanSuiteTestAssertionComponent>();
           this.assertionList.add(t);
           return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #assertion}, creating it if it does not already exist {3}
+         */
+        public TestPlanSuiteTestAssertionComponent getAssertionFirstRep() { 
+          if (getAssertionList().isEmpty()) {
+            addAssertion();
+          }
+          return getAssertionList().get(0);
         }
 
         protected void listChildren(List<Property> children) {
@@ -2806,7 +2858,7 @@ public class TestPlan extends CanonicalResource {
           children.add(new Property("parameter", "@TestPlan.parameter", "A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, parameterList));
           children.add(new Property("input", "@TestPlan.suite.input", "The resources used when executing this test. How exactly they are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, inputList));
           children.add(new Property("expected", "@TestPlan.suite.input", "Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner. How exactly it is used depends on the definition of the runner, but the expectation is that these are the expected output, to which the actual output is compared.", 0, java.lang.Integer.MAX_VALUE, expectedList));
-          children.add(new Property("assertion", "Base", "One or more assertions that can be executed against the output of the tests. These may be used with matchetypes to make rules about content the matchetypes leave open.", 0, java.lang.Integer.MAX_VALUE, assertionList));
+          children.add(new Property("assertion", "", "One or more assertions that can be executed against the output of the tests. These may be used with matchetypes to make rules about content the matchetypes leave open.", 0, java.lang.Integer.MAX_VALUE, assertionList));
         }
 
         @Override
@@ -2819,7 +2871,7 @@ public class TestPlan extends CanonicalResource {
           case 1954460585: /*parameter*/  return new Property("parameter", "@TestPlan.parameter", "A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, parameterList);
           case 100358090: /*input*/  return new Property("input", "@TestPlan.suite.input", "The resources used when executing this test. How exactly they are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, inputList);
           case -1935718728: /*expected*/  return new Property("expected", "@TestPlan.suite.input", "Resources expected as output from this test. Often, but not always, these resources are Matchetype resources. How exactly it is used depends on the definition of the runner. How exactly it is used depends on the definition of the runner, but the expectation is that these are the expected output, to which the actual output is compared.", 0, java.lang.Integer.MAX_VALUE, expectedList);
-          case 1314395906: /*assertion*/  return new Property("assertion", "Base", "One or more assertions that can be executed against the output of the tests. These may be used with matchetypes to make rules about content the matchetypes leave open.", 0, java.lang.Integer.MAX_VALUE, assertionList);
+          case 1314395906: /*assertion*/  return new Property("assertion", "", "One or more assertions that can be executed against the output of the tests. These may be used with matchetypes to make rules about content the matchetypes leave open.", 0, java.lang.Integer.MAX_VALUE, assertionList);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -2906,8 +2958,7 @@ public class TestPlan extends CanonicalResource {
         case 1954460585:  return addParameter(); 
         case 100358090:  return addInput(); 
         case -1935718728:  return addExpected(); 
-        case 1314395906: /*div*/
-          throw new Error("Unable to make an instance of the abstract property 'assertion'");
+        case 1314395906:  return addAssertion(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -2923,7 +2974,7 @@ public class TestPlan extends CanonicalResource {
         case 1954460585: /*parameter*/ return new String[] {"@TestPlan.parameter"};
         case 100358090: /*input*/ return new String[] {"@TestPlan.suite.input"};
         case -1935718728: /*expected*/ return new String[] {"@TestPlan.suite.input"};
-        case 1314395906: /*assertion*/ return new String[] {"Base"};
+        case 1314395906: /*assertion*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -3030,7 +3081,7 @@ public class TestPlan extends CanonicalResource {
   }
 
     @Block()
-    public static class TestPlanSuiteTestAssertionComponent extends LogicalBase {
+    public static class TestPlanSuiteTestAssertionComponent extends BackboneElement {
         /**
          * Resources expected as output from this test. Often, but not always, these resources are Matchetype resources.
          */
@@ -3593,14 +3644,14 @@ public class TestPlan extends CanonicalResource {
     /**
      * The scope indicates what kind of systems these test cases are intended to test.
      */
-    @Child(name = "scope", type = {Base.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "scope", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The scope - what these test cases are testing", formalDefinition="The scope indicates what kind of systems these test cases are intended to test." )
     protected List<TestPlanScopeComponent> scopeList;
 
     /**
      * Another set of test cases that must be passed before these test cases are meaningful to execute. These test cases prove functionality that these tests require to execute.
      */
-    @Child(name = "dependency", type = {Base.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "dependency", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Test cases that must be passed before these test cases are meaningful to execute", formalDefinition="Another set of test cases that must be passed before these test cases are meaningful to execute. These test cases prove functionality that these tests require to execute." )
     protected List<TestPlanDependencyComponent> dependencyList;
 
@@ -3614,21 +3665,21 @@ public class TestPlan extends CanonicalResource {
     /**
      * A mode that can be passed to a runner running these these tests, that affects test content and influences how the tests are executed or evaulated (or even if they run).
      */
-    @Child(name = "mode", type = {Base.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "mode", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A mode that can be passed to runner - affects test content", formalDefinition="A mode that can be passed to a runner running these these tests, that affects test content and influences how the tests are executed or evaulated (or even if they run)." )
     protected List<TestPlanModeComponent> modeList;
 
     /**
      * A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner.
      */
-    @Child(name = "parameter", type = {Base.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "parameter", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Parameter defined for all tests", formalDefinition="A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner." )
     protected List<TestPlanParameterComponent> parameterList;
 
     /**
      * A suite of tests that all share a common set up, and can be executed as a group.
      */
-    @Child(name = "suite", type = {Base.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "suite", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="A suite of tests that share a common set up", formalDefinition="A suite of tests that all share a common set up, and can be executed as a group." )
     protected List<TestPlanSuiteComponent> suiteList;
 
@@ -4583,6 +4634,14 @@ public class TestPlan extends CanonicalResource {
       return false;
     }
 
+    public TestPlanScopeComponent addScope() { //3a
+      TestPlanScopeComponent t = new TestPlanScopeComponent();
+      if (this.scopeList == null)
+        this.scopeList = new ArrayList<TestPlanScopeComponent>();
+      this.scopeList.add(t);
+      return t;
+    }
+
     public TestPlan addScope(TestPlanScopeComponent t) { //3b
       if (t == null)
         return this;
@@ -4590,6 +4649,16 @@ public class TestPlan extends CanonicalResource {
         this.scopeList = new ArrayList<TestPlanScopeComponent>();
       this.scopeList.add(t);
       return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #scope}, creating it if it does not already exist {3}
+     */
+    public TestPlanScopeComponent getScopeFirstRep() { 
+      if (getScopeList().isEmpty()) {
+        addScope();
+      }
+      return getScopeList().get(0);
     }
 
     /**
@@ -4618,6 +4687,14 @@ public class TestPlan extends CanonicalResource {
       return false;
     }
 
+    public TestPlanDependencyComponent addDependency() { //3a
+      TestPlanDependencyComponent t = new TestPlanDependencyComponent();
+      if (this.dependencyList == null)
+        this.dependencyList = new ArrayList<TestPlanDependencyComponent>();
+      this.dependencyList.add(t);
+      return t;
+    }
+
     public TestPlan addDependency(TestPlanDependencyComponent t) { //3b
       if (t == null)
         return this;
@@ -4625,6 +4702,16 @@ public class TestPlan extends CanonicalResource {
         this.dependencyList = new ArrayList<TestPlanDependencyComponent>();
       this.dependencyList.add(t);
       return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #dependency}, creating it if it does not already exist {3}
+     */
+    public TestPlanDependencyComponent getDependencyFirstRep() { 
+      if (getDependencyList().isEmpty()) {
+        addDependency();
+      }
+      return getDependencyList().get(0);
     }
 
     /**
@@ -4698,6 +4785,14 @@ public class TestPlan extends CanonicalResource {
       return false;
     }
 
+    public TestPlanModeComponent addMode() { //3a
+      TestPlanModeComponent t = new TestPlanModeComponent();
+      if (this.modeList == null)
+        this.modeList = new ArrayList<TestPlanModeComponent>();
+      this.modeList.add(t);
+      return t;
+    }
+
     public TestPlan addMode(TestPlanModeComponent t) { //3b
       if (t == null)
         return this;
@@ -4705,6 +4800,16 @@ public class TestPlan extends CanonicalResource {
         this.modeList = new ArrayList<TestPlanModeComponent>();
       this.modeList.add(t);
       return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #mode}, creating it if it does not already exist {3}
+     */
+    public TestPlanModeComponent getModeFirstRep() { 
+      if (getModeList().isEmpty()) {
+        addMode();
+      }
+      return getModeList().get(0);
     }
 
     /**
@@ -4733,6 +4838,14 @@ public class TestPlan extends CanonicalResource {
       return false;
     }
 
+    public TestPlanParameterComponent addParameter() { //3a
+      TestPlanParameterComponent t = new TestPlanParameterComponent();
+      if (this.parameterList == null)
+        this.parameterList = new ArrayList<TestPlanParameterComponent>();
+      this.parameterList.add(t);
+      return t;
+    }
+
     public TestPlan addParameter(TestPlanParameterComponent t) { //3b
       if (t == null)
         return this;
@@ -4740,6 +4853,16 @@ public class TestPlan extends CanonicalResource {
         this.parameterList = new ArrayList<TestPlanParameterComponent>();
       this.parameterList.add(t);
       return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #parameter}, creating it if it does not already exist {3}
+     */
+    public TestPlanParameterComponent getParameterFirstRep() { 
+      if (getParameterList().isEmpty()) {
+        addParameter();
+      }
+      return getParameterList().get(0);
     }
 
     /**
@@ -4768,6 +4891,14 @@ public class TestPlan extends CanonicalResource {
       return false;
     }
 
+    public TestPlanSuiteComponent addSuite() { //3a
+      TestPlanSuiteComponent t = new TestPlanSuiteComponent();
+      if (this.suiteList == null)
+        this.suiteList = new ArrayList<TestPlanSuiteComponent>();
+      this.suiteList.add(t);
+      return t;
+    }
+
     public TestPlan addSuite(TestPlanSuiteComponent t) { //3b
       if (t == null)
         return this;
@@ -4775,6 +4906,16 @@ public class TestPlan extends CanonicalResource {
         this.suiteList = new ArrayList<TestPlanSuiteComponent>();
       this.suiteList.add(t);
       return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #suite}, creating it if it does not already exist {3}
+     */
+    public TestPlanSuiteComponent getSuiteFirstRep() { 
+      if (getSuiteList().isEmpty()) {
+        addSuite();
+      }
+      return getSuiteList().get(0);
     }
 
       protected void listChildren(List<Property> children) {
@@ -4796,12 +4937,12 @@ public class TestPlan extends CanonicalResource {
         children.add(new Property("purpose", "markdown", "Explanation of why this test plan is needed and why it has been designed as it has.", 0, 1, purpose));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the test plan and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the test plan. The short copyright declaration (e.g. (c) '2015+ xyz organization' should be sent in the copyrightLabel element.", 0, 1, copyright));
         children.add(new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel));
-        children.add(new Property("scope", "Base", "The scope indicates what kind of systems these test cases are intended to test.", 0, java.lang.Integer.MAX_VALUE, scopeList));
-        children.add(new Property("dependency", "Base", "Another set of test cases that must be passed before these test cases are meaningful to execute. These test cases prove functionality that these tests require to execute.", 0, java.lang.Integer.MAX_VALUE, dependencyList));
+        children.add(new Property("scope", "", "The scope indicates what kind of systems these test cases are intended to test.", 0, java.lang.Integer.MAX_VALUE, scopeList));
+        children.add(new Property("dependency", "", "Another set of test cases that must be passed before these test cases are meaningful to execute. These test cases prove functionality that these tests require to execute.", 0, java.lang.Integer.MAX_VALUE, dependencyList));
         children.add(new Property("runner", "url", "URL of documentation that explains how a runner would read these tests, and use them to actually test out a tool.", 0, 1, runner));
-        children.add(new Property("mode", "Base", "A mode that can be passed to a runner running these these tests, that affects test content and influences how the tests are executed or evaulated (or even if they run).", 0, java.lang.Integer.MAX_VALUE, modeList));
-        children.add(new Property("parameter", "Base", "A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, parameterList));
-        children.add(new Property("suite", "Base", "A suite of tests that all share a common set up, and can be executed as a group.", 0, java.lang.Integer.MAX_VALUE, suiteList));
+        children.add(new Property("mode", "", "A mode that can be passed to a runner running these these tests, that affects test content and influences how the tests are executed or evaulated (or even if they run).", 0, java.lang.Integer.MAX_VALUE, modeList));
+        children.add(new Property("parameter", "", "A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, parameterList));
+        children.add(new Property("suite", "", "A suite of tests that all share a common set up, and can be executed as a group.", 0, java.lang.Integer.MAX_VALUE, suiteList));
       }
 
       @Override
@@ -4827,12 +4968,12 @@ public class TestPlan extends CanonicalResource {
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explanation of why this test plan is needed and why it has been designed as it has.", 0, 1, purpose);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the test plan and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the test plan. The short copyright declaration (e.g. (c) '2015+ xyz organization' should be sent in the copyrightLabel element.", 0, 1, copyright);
         case 765157229: /*copyrightLabel*/  return new Property("copyrightLabel", "string", "A short string (<50 characters), suitable for inclusion in a page footer that identifies the copyright holder, effective period, and optionally whether rights are resctricted. (e.g. 'All rights reserved', 'Some rights reserved').", 0, 1, copyrightLabel);
-        case 109264468: /*scope*/  return new Property("scope", "Base", "The scope indicates what kind of systems these test cases are intended to test.", 0, java.lang.Integer.MAX_VALUE, scopeList);
-        case -26291381: /*dependency*/  return new Property("dependency", "Base", "Another set of test cases that must be passed before these test cases are meaningful to execute. These test cases prove functionality that these tests require to execute.", 0, java.lang.Integer.MAX_VALUE, dependencyList);
+        case 109264468: /*scope*/  return new Property("scope", "", "The scope indicates what kind of systems these test cases are intended to test.", 0, java.lang.Integer.MAX_VALUE, scopeList);
+        case -26291381: /*dependency*/  return new Property("dependency", "", "Another set of test cases that must be passed before these test cases are meaningful to execute. These test cases prove functionality that these tests require to execute.", 0, java.lang.Integer.MAX_VALUE, dependencyList);
         case -919806160: /*runner*/  return new Property("runner", "url", "URL of documentation that explains how a runner would read these tests, and use them to actually test out a tool.", 0, 1, runner);
-        case 3357091: /*mode*/  return new Property("mode", "Base", "A mode that can be passed to a runner running these these tests, that affects test content and influences how the tests are executed or evaulated (or even if they run).", 0, java.lang.Integer.MAX_VALUE, modeList);
-        case 1954460585: /*parameter*/  return new Property("parameter", "Base", "A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, parameterList);
-        case 109795064: /*suite*/  return new Property("suite", "Base", "A suite of tests that all share a common set up, and can be executed as a group.", 0, java.lang.Integer.MAX_VALUE, suiteList);
+        case 3357091: /*mode*/  return new Property("mode", "", "A mode that can be passed to a runner running these these tests, that affects test content and influences how the tests are executed or evaulated (or even if they run).", 0, java.lang.Integer.MAX_VALUE, modeList);
+        case 1954460585: /*parameter*/  return new Property("parameter", "", "A parameter passed to the runner when executing tests. Which parameters are valid, and how exactly the parameter is used are used depends on the definition of the runner.", 0, java.lang.Integer.MAX_VALUE, parameterList);
+        case 109795064: /*suite*/  return new Property("suite", "", "A suite of tests that all share a common set up, and can be executed as a group.", 0, java.lang.Integer.MAX_VALUE, suiteList);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -5022,17 +5163,12 @@ public class TestPlan extends CanonicalResource {
         case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
         case 765157229:  return getCopyrightLabelElement();
-        case 109264468: /*div*/
-          throw new Error("Unable to make an instance of the abstract property 'scope'");
-        case -26291381: /*div*/
-          throw new Error("Unable to make an instance of the abstract property 'dependency'");
+        case 109264468:  return addScope(); 
+        case -26291381:  return addDependency(); 
         case -919806160:  return getRunnerElement();
-        case 3357091: /*div*/
-          throw new Error("Unable to make an instance of the abstract property 'mode'");
-        case 1954460585: /*div*/
-          throw new Error("Unable to make an instance of the abstract property 'parameter'");
-        case 109795064: /*div*/
-          throw new Error("Unable to make an instance of the abstract property 'suite'");
+        case 3357091:  return addMode(); 
+        case 1954460585:  return addParameter(); 
+        case 109795064:  return addSuite(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -5058,12 +5194,12 @@ public class TestPlan extends CanonicalResource {
         case -220463842: /*purpose*/ return new String[] {"markdown"};
         case 1522889671: /*copyright*/ return new String[] {"markdown"};
         case 765157229: /*copyrightLabel*/ return new String[] {"string"};
-        case 109264468: /*scope*/ return new String[] {"Base"};
-        case -26291381: /*dependency*/ return new String[] {"Base"};
+        case 109264468: /*scope*/ return new String[] {};
+        case -26291381: /*dependency*/ return new String[] {};
         case -919806160: /*runner*/ return new String[] {"url"};
-        case 3357091: /*mode*/ return new String[] {"Base"};
-        case 1954460585: /*parameter*/ return new String[] {"Base"};
-        case 109795064: /*suite*/ return new String[] {"Base"};
+        case 3357091: /*mode*/ return new String[] {};
+        case 1954460585: /*parameter*/ return new String[] {};
+        case 109795064: /*suite*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -5276,6 +5412,158 @@ public class TestPlan extends CanonicalResource {
    }
 
  /**
+   * Search parameter: <b>context-quantity</b>
+   * <p>
+   * Description: <b>A quantity- or range-valued use context assigned to the test script</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-quantity", path="(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))", description="A quantity- or range-valued use context assigned to the test script", type="quantity" )
+  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
+   * <p>
+   * Description: <b>A quantity- or range-valued use context assigned to the test script</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
+
+ /**
+   * Search parameter: <b>dependency</b>
+   * <p>
+   * Description: <b>URL contained in TestPlan.dependency.reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>TestPlan.dependency.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="dependency", path="TestPlan.dependency.reference", description="URL contained in TestPlan.dependency.reference", type="reference" )
+  public static final String SP_DEPENDENCY = "dependency";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>dependency</b>
+   * <p>
+   * Description: <b>URL contained in TestPlan.dependency.reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>TestPlan.dependency.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEPENDENCY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEPENDENCY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>TestPlan:dependency</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEPENDENCY = new ca.uhn.fhir.model.api.Include("TestPlan:dependency").toLocked();
+
+ /**
+   * Search parameter: <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the test script</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.jurisdiction</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="jurisdiction", path="TestPlan.jurisdiction", description="Intended jurisdiction for the test script", type="token" )
+  public static final String SP_JURISDICTION = "jurisdiction";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the test script</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.jurisdiction</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="TestPlan.title", description="The human-friendly name of the test script", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the test plan</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestPlan.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="TestPlan.url", description="The uri that identifies the test plan", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the test plan</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestPlan.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The current status of the test plan</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="TestPlan.status", description="The current status of the test plan", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The current status of the test plan</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>scope</b>
+   * <p>
+   * Description: <b>URL contained in TestPlan.scope.reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>TestPlan.scope.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="scope", path="TestPlan.scope.reference", description="URL contained in TestPlan.scope.reference", type="reference" )
+  public static final String SP_SCOPE = "scope";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>scope</b>
+   * <p>
+   * Description: <b>URL contained in TestPlan.scope.reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>TestPlan.scope.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SCOPE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SCOPE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>TestPlan:scope</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SCOPE = new ca.uhn.fhir.model.api.Include("TestPlan:scope").toLocked();
+
+ /**
    * Search parameter: <b>context-type-value</b>
    * <p>
    * Description: <b>A use context type and value assigned to the test script</b><br>
@@ -5316,150 +5604,24 @@ public class TestPlan extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
 
  /**
-   * Search parameter: <b>identifier</b>
+   * Search parameter: <b>context</b>
    * <p>
-   * Description: <b>An identifier for the test plan</b><br>
+   * Description: <b>A use context assigned to the test script</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>TestPlan.identifier</b><br>
+   * Path: <b>(TestPlan.useContext.value.ofType(CodeableConcept))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="TestPlan.identifier", description="An identifier for the test plan", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
+  @SearchParamDefinition(name="context", path="(TestPlan.useContext.value.ofType(CodeableConcept))", description="A use context assigned to the test script", type="token" )
+  public static final String SP_CONTEXT = "context";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
    * <p>
-   * Description: <b>An identifier for the test plan</b><br>
+   * Description: <b>A use context assigned to the test script</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>TestPlan.identifier</b><br>
+   * Path: <b>(TestPlan.useContext.value.ofType(CodeableConcept))</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>runner</b>
-   * <p>
-   * Description: <b>Reference to the runner for the test case</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestPlan.runner</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="runner", path="TestPlan.runner", description="Reference to the runner for the test case", type="uri" )
-  public static final String SP_RUNNER = "runner";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>runner</b>
-   * <p>
-   * Description: <b>Reference to the runner for the test case</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestPlan.runner</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam RUNNER = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_RUNNER);
-
- /**
-   * Search parameter: <b>version</b>
-   * <p>
-   * Description: <b>The business version of the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.version</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="version", path="TestPlan.version", description="The business version of the test script", type="token" )
-  public static final String SP_VERSION = "version";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
-   * <p>
-   * Description: <b>The business version of the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.version</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the test plan</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestPlan.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="TestPlan.url", description="The uri that identifies the test plan", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the test plan</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestPlan.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>date</b>
-   * <p>
-   * Description: <b>The test script publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>TestPlan.date</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="date", path="TestPlan.date", description="The test script publication date", type="date" )
-  public static final String SP_DATE = "date";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>date</b>
-   * <p>
-   * Description: <b>The test script publication date</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>TestPlan.date</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the test script</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>TestPlan.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="TestPlan.useContext", description="A use context type and quantity- or range-based value assigned to the test script", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the test script</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>TestPlan.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>dependency</b>
-   * <p>
-   * Description: <b>URL contained in TestPlan.dependency.reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>TestPlan.dependency.reference</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="dependency", path="TestPlan.dependency.reference", description="URL contained in TestPlan.dependency.reference", type="reference" )
-  public static final String SP_DEPENDENCY = "dependency";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>dependency</b>
-   * <p>
-   * Description: <b>URL contained in TestPlan.dependency.reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>TestPlan.dependency.reference</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEPENDENCY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEPENDENCY);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>TestPlan:dependency</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEPENDENCY = new ca.uhn.fhir.model.api.Include("TestPlan:dependency").toLocked();
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
 
  /**
    * Search parameter: <b>description</b>
@@ -5482,64 +5644,104 @@ public class TestPlan extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
 
  /**
-   * Search parameter: <b>jurisdiction</b>
+   * Search parameter: <b>publisher</b>
    * <p>
-   * Description: <b>Intended jurisdiction for the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.jurisdiction</b><br>
+   * Description: <b>Name of the publisher of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.publisher</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="jurisdiction", path="TestPlan.jurisdiction", description="Intended jurisdiction for the test script", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
+  @SearchParamDefinition(name="publisher", path="TestPlan.publisher", description="Name of the publisher of the test script", type="string" )
+  public static final String SP_PUBLISHER = "publisher";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
+   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
    * <p>
-   * Description: <b>Intended jurisdiction for the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.jurisdiction</b><br>
+   * Description: <b>Name of the publisher of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.publisher</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
 
  /**
-   * Search parameter: <b>status</b>
+   * Search parameter: <b>runner</b>
    * <p>
-   * Description: <b>The current status of the test plan</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.status</b><br>
+   * Description: <b>Reference to the runner for the test case</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestPlan.runner</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="TestPlan.status", description="The current status of the test plan", type="token" )
-  public static final String SP_STATUS = "status";
+  @SearchParamDefinition(name="runner", path="TestPlan.runner", description="Reference to the runner for the test case", type="uri" )
+  public static final String SP_RUNNER = "runner";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <b>Fluent Client</b> search parameter constant for <b>runner</b>
    * <p>
-   * Description: <b>The current status of the test plan</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.status</b><br>
+   * Description: <b>Reference to the runner for the test case</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestPlan.runner</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam RUNNER = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_RUNNER);
 
  /**
-   * Search parameter: <b>title</b>
+   * Search parameter: <b>experimental</b>
    * <p>
-   * Description: <b>The human-friendly name of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.title</b><br>
+   * Description: <b>Whether the TestPlan is experimental</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.experimental</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="title", path="TestPlan.title", description="The human-friendly name of the test script", type="string" )
-  public static final String SP_TITLE = "title";
+  @SearchParamDefinition(name="experimental", path="TestPlan.experimental", description="Whether the TestPlan is experimental", type="token" )
+  public static final String SP_EXPERIMENTAL = "experimental";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <b>Fluent Client</b> search parameter constant for <b>experimental</b>
    * <p>
-   * Description: <b>The human-friendly name of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.title</b><br>
+   * Description: <b>Whether the TestPlan is experimental</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.experimental</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXPERIMENTAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXPERIMENTAL);
+
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the test script</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>TestPlan.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="TestPlan.useContext", description="A use context type and quantity- or range-based value assigned to the test script", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the test script</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>TestPlan.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>An identifier for the test plan</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="TestPlan.identifier", description="An identifier for the test plan", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>An identifier for the test plan</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>name</b>
@@ -5562,110 +5764,44 @@ public class TestPlan extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
  /**
-   * Search parameter: <b>context</b>
+   * Search parameter: <b>version</b>
    * <p>
-   * Description: <b>A use context assigned to the test script</b><br>
+   * Description: <b>The business version of the test script</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(TestPlan.useContext.value.ofType(CodeableConcept))</b><br>
+   * Path: <b>TestPlan.version</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context", path="(TestPlan.useContext.value.ofType(CodeableConcept))", description="A use context assigned to the test script", type="token" )
-  public static final String SP_CONTEXT = "context";
+  @SearchParamDefinition(name="version", path="TestPlan.version", description="The business version of the test script", type="token" )
+  public static final String SP_VERSION = "version";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <b>Fluent Client</b> search parameter constant for <b>version</b>
    * <p>
-   * Description: <b>A use context assigned to the test script</b><br>
+   * Description: <b>The business version of the test script</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>(TestPlan.useContext.value.ofType(CodeableConcept))</b><br>
+   * Path: <b>TestPlan.version</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
  /**
-   * Search parameter: <b>context-quantity</b>
+   * Search parameter: <b>date</b>
    * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the test script</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))</b><br>
+   * Description: <b>The test script publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>TestPlan.date</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context-quantity", path="(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))", description="A quantity- or range-valued use context assigned to the test script", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
+  @SearchParamDefinition(name="date", path="TestPlan.date", description="The test script publication date", type="date" )
+  public static final String SP_DATE = "date";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
+   * <b>Fluent Client</b> search parameter constant for <b>date</b>
    * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the test script</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))</b><br>
+   * Description: <b>The test script publication date</b><br>
+   * Type: <b>date</b><br>
+   * Path: <b>TestPlan.date</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
-
- /**
-   * Search parameter: <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.publisher</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="publisher", path="TestPlan.publisher", description="Name of the publisher of the test script", type="string" )
-  public static final String SP_PUBLISHER = "publisher";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.publisher</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
-
- /**
-   * Search parameter: <b>scope</b>
-   * <p>
-   * Description: <b>URL contained in TestPlan.scope.reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>TestPlan.scope.reference</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="scope", path="TestPlan.scope.reference", description="URL contained in TestPlan.scope.reference", type="reference" )
-  public static final String SP_SCOPE = "scope";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>scope</b>
-   * <p>
-   * Description: <b>URL contained in TestPlan.scope.reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>TestPlan.scope.reference</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SCOPE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SCOPE);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>TestPlan:scope</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SCOPE = new ca.uhn.fhir.model.api.Include("TestPlan:scope").toLocked();
-
- /**
-   * Search parameter: <b>experimental</b>
-   * <p>
-   * Description: <b>Whether the TestPlan is experimental</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.experimental</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="experimental", path="TestPlan.experimental", description="Whether the TestPlan is experimental", type="token" )
-  public static final String SP_EXPERIMENTAL = "experimental";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>experimental</b>
-   * <p>
-   * Description: <b>Whether the TestPlan is experimental</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.experimental</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXPERIMENTAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXPERIMENTAL);
+  public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
 
 
 }

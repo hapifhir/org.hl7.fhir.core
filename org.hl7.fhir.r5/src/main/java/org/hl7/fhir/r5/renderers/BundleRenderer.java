@@ -126,7 +126,7 @@ public class BundleRenderer extends ResourceRenderer {
             XhtmlNode xn = r.getNarrative();
             if (xn == null || xn.isEmpty()) {
               xn = new XhtmlNode(NodeType.Element, "div");
-              ResourceRenderer rr = rendererFactory.factory(r, context);
+              ResourceRenderer rr = context.getRendererFactory().factory(r, context);
               try {
                 rr.buildNarrative(new RenderingStatus(), xn, r);
               } catch (Exception e) {
@@ -190,7 +190,7 @@ public class BundleRenderer extends ResourceRenderer {
         if (subject.hasNarrative()) {
           sec.addChildren(subject.getNarrative());        
         } else {
-          rendererFactory.factory(subject, context).buildNarrative(status, sec, subject);
+          context.getRendererFactory().factory(subject, context).buildNarrative(status, sec, subject);
         }
       } else {
         sec.para().b().tx("Unable to resolve subject '"+displayReference(subjects.get(i))+"'");
@@ -393,7 +393,7 @@ public class BundleRenderer extends ResourceRenderer {
   public boolean canRender(Bundle b) {
     for (BundleEntryComponent be : b.getEntry()) {
       if (be.hasResource()) {          
-        ResourceRenderer rr = rendererFactory.factory(be.getResource(), context);
+        ResourceRenderer rr = context.getRendererFactory().factory(be.getResource(), context);
         if (!rr.canRender(be.getResource())) {
           return false;
         }

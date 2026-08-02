@@ -747,6 +747,7 @@ public class I18nConstants {
   public static final String SD_SPECIALIZED_TYPE_MATCHES = "SD_SPECIALIZED_TYPE_MATCHES";
   public static final String SD_TABLE_PROHIBITED = "SD_TABLE_PROHIBITED";
   public static final String SD_TABLE_REQUIRED = "SD_TABLE_REQUIRED";
+  public static final String SD_TYPE_ADDITIONAL_UNCHECKABLE = "SD_TYPE_ADDITIONAL_UNCHECKABLE";
   public static final String SD_TYPE_MISSING = "SD_TYPE_MISSING";
   public static final String SD_TYPE_NOT_DERIVED = "SD_TYPE_NOT_DERIVED";
   public static final String SD_TYPE_NOT_LOCAL = "SD_TYPE_NOT_LOCAL";
