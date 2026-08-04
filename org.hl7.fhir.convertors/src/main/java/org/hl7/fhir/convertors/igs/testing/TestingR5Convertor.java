@@ -1,6 +1,7 @@
-package org.hl7.fhir.convertors.ig.testing;
+package org.hl7.fhir.convertors.igs.testing;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
+import org.hl7.fhir.convertors.igs.VersionConvertorIGBase;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.igs.testing.TestReport;
@@ -39,7 +40,33 @@ import org.hl7.fhir.r5.igs.testing.TestScript.TestScriptScopeComponent;
 // Adapted from org.hl7.fhir.convertors...TestReport40_50, retargeted to org.hl7.fhir.r5.igs.testing.
 // R6-only elements (TestReport: documentation, log, parameter, period, presentedForm, version;
 // assert.requirement) have no R4 representation and are dropped when converting to R4.
-public class TestingR5Converter {
+public class TestingR5Convertor extends VersionConvertorIGBase {
+
+  @Override
+  public boolean handlesR5ToR5(String s) {
+    switch (s) {
+      case "TestReport":
+      case "TestPlan":
+      case "TestScript":
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  @Override
+  public Resource convertR5ToR5(Resource source) {
+    switch (source.fhirType() ) {
+      case "TestReport":
+        return convertTestReport((org.hl7.fhir.r5.igs.testing.TestReport) source);
+      case "TestPlan":
+        return convertTestPlan((org.hl7.fhir.r5.igs.testing.TestPlan) source);
+      case "TestScript":
+        return convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) source);
+      default:
+        return source;
+    }
+  }
 
   // r5 -> r5: the two models share the r5 datatypes, so elements are copied (not converted). These
   // mirror the copyDomainResource / copyBackboneElement / copyElement used by the 40_50 framework.

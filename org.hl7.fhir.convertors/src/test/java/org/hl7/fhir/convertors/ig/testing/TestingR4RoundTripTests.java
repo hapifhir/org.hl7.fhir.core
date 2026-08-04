@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.igs.testing.TestingR4Convertor;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.igs.testing.TestingJsonParser;
 import org.hl7.fhir.r5.model.Resource;
@@ -101,14 +102,14 @@ public class TestingR4RoundTripTests {
     ConversionContext40_50.INSTANCE.init(vc, r1.fhirType());
     try {
       if (r1 instanceof org.hl7.fhir.r5.igs.testing.TestScript) {
-        org.hl7.fhir.r4.model.TestScript r4 = TestingR4Converter.convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) r1);
-        return TestingR4Converter.convertTestScript(r4);
+        org.hl7.fhir.r4.model.TestScript r4 = TestingR4Convertor.convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) r1);
+        return TestingR4Convertor.convertTestScript(r4);
       } else if (r1 instanceof org.hl7.fhir.r5.igs.testing.TestReport) {
-        org.hl7.fhir.r4.model.TestReport r4 = TestingR4Converter.convertTestReport((org.hl7.fhir.r5.igs.testing.TestReport) r1);
-        return TestingR4Converter.convertTestReport(r4);
+        org.hl7.fhir.r4.model.TestReport r4 = TestingR4Convertor.convertTestReport((org.hl7.fhir.r5.igs.testing.TestReport) r1);
+        return TestingR4Convertor.convertTestReport(r4);
       } else if (r1 instanceof org.hl7.fhir.r5.igs.testing.TestPlan) {
-        org.hl7.fhir.r4.model.Basic r4 = TestingR4Converter.convertTestPlan((org.hl7.fhir.r5.igs.testing.TestPlan) r1);
-        return TestingR4Converter.convertTestPlan(r4);
+        org.hl7.fhir.r4.model.Basic r4 = TestingR4Convertor.convertTestPlan((org.hl7.fhir.r5.igs.testing.TestPlan) r1);
+        return TestingR4Convertor.convertTestPlan(r4);
       } else {
         throw new IllegalStateException("Unexpected resource type: " + r1.fhirType());
       }

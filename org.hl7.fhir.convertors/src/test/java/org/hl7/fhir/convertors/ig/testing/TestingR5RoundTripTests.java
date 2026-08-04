@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import org.hl7.fhir.convertors.igs.testing.TestingR5Convertor;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.igs.testing.TestingJsonParser;
 import org.hl7.fhir.r5.model.Resource;
@@ -96,14 +97,14 @@ public class TestingR5RoundTripTests {
 
   private Resource convertToR5AndBack(Resource r1) {
     if (r1 instanceof org.hl7.fhir.r5.igs.testing.TestScript) {
-      org.hl7.fhir.r5.model.TestScript r5 = TestingR5Converter.convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) r1);
-      return TestingR5Converter.convertTestScript(r5);
+      org.hl7.fhir.r5.model.TestScript r5 = TestingR5Convertor.convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) r1);
+      return TestingR5Convertor.convertTestScript(r5);
     } else if (r1 instanceof org.hl7.fhir.r5.igs.testing.TestReport) {
-      org.hl7.fhir.r5.model.TestReport r5 = TestingR5Converter.convertTestReport((org.hl7.fhir.r5.igs.testing.TestReport) r1);
-      return TestingR5Converter.convertTestReport(r5);
+      org.hl7.fhir.r5.model.TestReport r5 = TestingR5Convertor.convertTestReport((org.hl7.fhir.r5.igs.testing.TestReport) r1);
+      return TestingR5Convertor.convertTestReport(r5);
     } else if (r1 instanceof org.hl7.fhir.r5.igs.testing.TestPlan) {
-      org.hl7.fhir.r5.model.Basic r5 = TestingR5Converter.convertTestPlan((org.hl7.fhir.r5.igs.testing.TestPlan) r1);
-      return TestingR5Converter.convertTestPlan(r5);
+      org.hl7.fhir.r5.model.Basic r5 = TestingR5Convertor.convertTestPlan((org.hl7.fhir.r5.igs.testing.TestPlan) r1);
+      return TestingR5Convertor.convertTestPlan(r5);
     } else {
       throw new IllegalStateException("Unexpected resource type: " + r1.fhirType());
     }

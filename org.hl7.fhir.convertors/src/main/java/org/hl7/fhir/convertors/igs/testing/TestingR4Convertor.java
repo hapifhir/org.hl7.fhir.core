@@ -1,6 +1,8 @@
-package org.hl7.fhir.convertors.ig.testing;
+package org.hl7.fhir.convertors.igs.testing;
 
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
+import org.hl7.fhir.convertors.conv40_50.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.Expression40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
@@ -12,6 +14,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.Enumerations40_50;
+import org.hl7.fhir.convertors.igs.VersionConvertorIGBase;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -29,6 +32,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.igs.testing.TestScript;
 import org.hl7.fhir.r5.igs.testing.TestScript.TestScriptScopeComponent;
+import org.hl7.fhir.r5.model.Resource;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -62,7 +66,35 @@ import org.hl7.fhir.r5.igs.testing.TestScript.TestScriptScopeComponent;
 // Adapted from org.hl7.fhir.convertors...TestReport40_50, retargeted to org.hl7.fhir.r5.igs.testing.
 // R6-only elements (TestReport: documentation, log, parameter, period, presentedForm, version;
 // assert.requirement) have no R4 representation and are dropped when converting to R4.
-public class TestingR4Converter {
+public class TestingR4Convertor extends VersionConvertorIGBase {
+
+  @Override
+  public boolean handlesR5ToR4(String s) {
+    switch (s) {
+      case "TestReport":
+      case "TestPlan":
+      case "TestScript":
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  @Override
+  public org.hl7.fhir.r4.model.Resource convertR5ToR4(Resource source) {
+    VersionConvertor_40_50 vc = new VersionConvertor_40_50(new BaseAdvisor_40_50());
+    ConversionContext40_50.INSTANCE.init(vc, source.fhirType());
+    switch (source.fhirType() ) {
+      case "TestReport":
+        return convertTestReport((org.hl7.fhir.r5.igs.testing.TestReport) source);
+      case "TestPlan":
+        return convertTestPlan((org.hl7.fhir.r5.igs.testing.TestPlan) source);
+      case "TestScript":
+        return convertTestScript((org.hl7.fhir.r5.igs.testing.TestScript) source);
+      default:
+        return null;
+    }
+  }
 
   public static org.hl7.fhir.r5.igs.testing.TestReport convertTestReport(org.hl7.fhir.r4.model.TestReport src) throws FHIRException {
     if (src == null)
