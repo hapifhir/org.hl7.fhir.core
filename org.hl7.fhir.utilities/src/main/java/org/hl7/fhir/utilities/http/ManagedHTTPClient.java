@@ -88,6 +88,41 @@ public class ManagedHTTPClient {
   private final OkHttpClient baseClient;
   private final OkHttpClient nonPublicAddressRejectingClient;
 
+  /**
+   * The single {@link OkHttpClient} every client built by this class is derived from, via
+   * {@link OkHttpClient#newBuilder()}.
+   * <p>
+   * This exists so that connections are pooled and reused. A {@link ManagedHTTPClient} is
+   * constructed per request by both {@link ManagedFhirWebAccessor#httpCall(HTTPRequest)} and
+   * {@link ManagedWebAccessor}, so building each one's {@link OkHttpClient} with
+   * {@code new OkHttpClient.Builder()} gave every request its own {@link okhttp3.ConnectionPool}.
+   * A pool that is never consulted again cannot hand its connection to the next request, so each
+   * request paid a fresh TCP and TLS handshake, and each just-used socket sat idle in an
+   * unreachable pool until its 5 minute keep-alive expired - accumulating as CLOSE-WAIT once the
+   * server timed it out first. Deriving from a shared client means the pool, dispatcher and
+   * SSL socket factory are shared, which is what OkHttp requires for connection reuse: those are
+   * part of the {@code Address} that pooled connections are keyed by.
+   * <p>
+   * Only connection infrastructure is shared. Timeouts and interceptors are still applied
+   * per instance in {@link #buildBaseClient()} - neither participates in {@code Address}
+   * equality, so they do not prevent reuse. Interceptors in particular must NOT be hoisted
+   * here: {@link RetryInterceptor} holds a per-request retry counter that it never resets.
+   */
+  private static final OkHttpClient SHARED_CLIENT = new OkHttpClient.Builder()
+    .proxyAuthenticator(new ProxyAuthenticator())
+    .dns(Dns.SYSTEM)
+    .followRedirects(false)
+    .followSslRedirects(false)
+    .build();
+
+  /**
+   * Shared because {@code Address} equality - and therefore connection reuse - compares the
+   * {@link Dns} by identity for implementations that do not override {@code equals}. A new
+   * instance per client would put every request on its own pool key even with a shared pool.
+   * {@link NonPublicAddressRejectingDns} is stateless, so sharing one is safe.
+   */
+  private static final Dns SHARED_NON_PUBLIC_ADDRESS_REJECTING_DNS = new NonPublicAddressRejectingDns();
+
   @Builder
   private ManagedHTTPClient(Long timeout,
                             TimeUnit timeoutUnit,
@@ -112,15 +147,11 @@ public class ManagedHTTPClient {
    * @return An OkHTTPClient configured from our settings, but with no additional protocol or network blocking.
    */
   private OkHttpClient buildBaseClient() {
-    OkHttpClient.Builder builder = new OkHttpClient.Builder()
-      .proxyAuthenticator(new ProxyAuthenticator())
-      .dns(Dns.SYSTEM)
+    OkHttpClient.Builder builder = SHARED_CLIENT.newBuilder()
       .addInterceptor(new RetryInterceptor(retries))
       .connectTimeout(timeout, timeoutUnit)
       .writeTimeout(timeout, timeoutUnit)
-      .readTimeout(timeout, timeoutUnit)
-      .followRedirects(false)
-      .followSslRedirects(false);
+      .readTimeout(timeout, timeoutUnit);
     if (logger != null) {
       builder.addInterceptor(new LoggingInterceptor(logger));
     }
@@ -135,7 +166,7 @@ public class ManagedHTTPClient {
    */
   private OkHttpClient buildNonPublicAddressRejectingClient(OkHttpClient baseClient) {
     OkHttpClient.Builder builder = baseClient.newBuilder()
-      .dns(new NonPublicAddressRejectingDns());
+      .dns(SHARED_NON_PUBLIC_ADDRESS_REJECTING_DNS);
     return builder.build();
   }
 
