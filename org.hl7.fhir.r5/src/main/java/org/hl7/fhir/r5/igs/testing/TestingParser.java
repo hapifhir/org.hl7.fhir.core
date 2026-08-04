@@ -63,9 +63,9 @@ public class TestingParser {
    * overridesBase
    */
   public static void register(org.hl7.fhir.r5.formats.CustomResourceRegistry registry, boolean overridesBase) {    
-    registry.registerCustomResource("TestReport", new TestingJsonParserFactory(), overridesBase);
-    registry.registerCustomResource("TestScript", new TestingJsonParserFactory(), overridesBase);
     registry.registerCustomResource("TestPlan", new TestingJsonParserFactory(), overridesBase);
+    registry.registerCustomResource("TestScript", new TestingJsonParserFactory(), overridesBase);
+    registry.registerCustomResource("TestReport", new TestingJsonParserFactory(), overridesBase);
 
   }
 
@@ -76,7 +76,7 @@ public class TestingParser {
    * agree with the generated code
    */
   public static String[] packages() {    
-    return new String[] { "hl7.fhir.uv.testing#current" };
+    return new String[] { "hl7.fhir.uv.testing#0.1.0-snapshot1" };
   }
 
   public static class TestingJsonParserFactory implements IParserFactory {

@@ -5412,130 +5412,24 @@ public class TestPlan extends CanonicalResource {
    }
 
  /**
-   * Search parameter: <b>context-quantity</b>
+   * Search parameter: <b>context-type</b>
    * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the test script</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-quantity", path="(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))", description="A quantity- or range-valued use context assigned to the test script", type="quantity" )
-  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
-   * <p>
-   * Description: <b>A quantity- or range-valued use context assigned to the test script</b><br>
-   * Type: <b>quantity</b><br>
-   * Path: <b>(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
-
- /**
-   * Search parameter: <b>dependency</b>
-   * <p>
-   * Description: <b>URL contained in TestPlan.dependency.reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>TestPlan.dependency.reference</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="dependency", path="TestPlan.dependency.reference", description="URL contained in TestPlan.dependency.reference", type="reference" )
-  public static final String SP_DEPENDENCY = "dependency";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>dependency</b>
-   * <p>
-   * Description: <b>URL contained in TestPlan.dependency.reference</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>TestPlan.dependency.reference</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEPENDENCY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEPENDENCY);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>TestPlan:dependency</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEPENDENCY = new ca.uhn.fhir.model.api.Include("TestPlan:dependency").toLocked();
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the test script</b><br>
+   * Description: <b>A type of use context assigned to the test script</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>TestPlan.jurisdiction</b><br>
+   * Path: <b>TestPlan.useContext.code</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="jurisdiction", path="TestPlan.jurisdiction", description="Intended jurisdiction for the test script", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
+  @SearchParamDefinition(name="context-type", path="TestPlan.useContext.code", description="A type of use context assigned to the test script", type="token" )
+  public static final String SP_CONTEXT_TYPE = "context-type";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
    * <p>
-   * Description: <b>Intended jurisdiction for the test script</b><br>
+   * Description: <b>A type of use context assigned to the test script</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>TestPlan.jurisdiction</b><br>
+   * Path: <b>TestPlan.useContext.code</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
-
- /**
-   * Search parameter: <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.title</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="title", path="TestPlan.title", description="The human-friendly name of the test script", type="string" )
-  public static final String SP_TITLE = "title";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>title</b>
-   * <p>
-   * Description: <b>The human-friendly name of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.title</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
-
- /**
-   * Search parameter: <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the test plan</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestPlan.url</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="url", path="TestPlan.url", description="The uri that identifies the test plan", type="uri" )
-  public static final String SP_URL = "url";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>url</b>
-   * <p>
-   * Description: <b>The uri that identifies the test plan</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestPlan.url</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>The current status of the test plan</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="TestPlan.status", description="The current status of the test plan", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>The current status of the test plan</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
 
  /**
    * Search parameter: <b>scope</b>
@@ -5564,204 +5458,24 @@ public class TestPlan extends CanonicalResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SCOPE = new ca.uhn.fhir.model.api.Include("TestPlan:scope").toLocked();
 
  /**
-   * Search parameter: <b>context-type-value</b>
+   * Search parameter: <b>context-quantity</b>
    * <p>
-   * Description: <b>A use context type and value assigned to the test script</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>TestPlan.useContext</b><br>
+   * Description: <b>A quantity- or range-valued use context assigned to the test script</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="context-type-value", path="TestPlan.useContext", description="A use context type and value assigned to the test script", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
+  @SearchParamDefinition(name="context-quantity", path="(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))", description="A quantity- or range-valued use context assigned to the test script", type="quantity" )
+  public static final String SP_CONTEXT_QUANTITY = "context-quantity";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
+   * <b>Fluent Client</b> search parameter constant for <b>context-quantity</b>
    * <p>
-   * Description: <b>A use context type and value assigned to the test script</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>TestPlan.useContext</b><br>
+   * Description: <b>A quantity- or range-valued use context assigned to the test script</b><br>
+   * Type: <b>quantity</b><br>
+   * Path: <b>(TestPlan.useContext.value.ofType(Quantity)) | (TestPlan.useContext.value.ofType(Range))</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
-   * Search parameter: <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.useContext.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type", path="TestPlan.useContext.code", description="A type of use context assigned to the test script", type="token" )
-  public static final String SP_CONTEXT_TYPE = "context-type";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type</b>
-   * <p>
-   * Description: <b>A type of use context assigned to the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.useContext.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(TestPlan.useContext.value.ofType(CodeableConcept))</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(TestPlan.useContext.value.ofType(CodeableConcept))", description="A use context assigned to the test script", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the test script</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(TestPlan.useContext.value.ofType(CodeableConcept))</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
-
- /**
-   * Search parameter: <b>description</b>
-   * <p>
-   * Description: <b>The description of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.description</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="description", path="TestPlan.description", description="The description of the test script", type="string" )
-  public static final String SP_DESCRIPTION = "description";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>description</b>
-   * <p>
-   * Description: <b>The description of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.description</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.publisher</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="publisher", path="TestPlan.publisher", description="Name of the publisher of the test script", type="string" )
-  public static final String SP_PUBLISHER = "publisher";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
-   * <p>
-   * Description: <b>Name of the publisher of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.publisher</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
-
- /**
-   * Search parameter: <b>runner</b>
-   * <p>
-   * Description: <b>Reference to the runner for the test case</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestPlan.runner</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="runner", path="TestPlan.runner", description="Reference to the runner for the test case", type="uri" )
-  public static final String SP_RUNNER = "runner";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>runner</b>
-   * <p>
-   * Description: <b>Reference to the runner for the test case</b><br>
-   * Type: <b>uri</b><br>
-   * Path: <b>TestPlan.runner</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.UriClientParam RUNNER = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_RUNNER);
-
- /**
-   * Search parameter: <b>experimental</b>
-   * <p>
-   * Description: <b>Whether the TestPlan is experimental</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.experimental</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="experimental", path="TestPlan.experimental", description="Whether the TestPlan is experimental", type="token" )
-  public static final String SP_EXPERIMENTAL = "experimental";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>experimental</b>
-   * <p>
-   * Description: <b>Whether the TestPlan is experimental</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.experimental</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXPERIMENTAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXPERIMENTAL);
-
- /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the test script</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>TestPlan.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="TestPlan.useContext", description="A use context type and quantity- or range-based value assigned to the test script", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the test script</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>TestPlan.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>An identifier for the test plan</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="TestPlan.identifier", description="An identifier for the test plan", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>An identifier for the test plan</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>TestPlan.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>Computationally friendly name of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.name</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="name", path="TestPlan.name", description="Computationally friendly name of the test script", type="string" )
-  public static final String SP_NAME = "name";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
-   * <p>
-   * Description: <b>Computationally friendly name of the test script</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>TestPlan.name</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+  public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
 
  /**
    * Search parameter: <b>version</b>
@@ -5784,6 +5498,232 @@ public class TestPlan extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
  /**
+   * Search parameter: <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the test script</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.jurisdiction</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="jurisdiction", path="TestPlan.jurisdiction", description="Intended jurisdiction for the test script", type="token" )
+  public static final String SP_JURISDICTION = "jurisdiction";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
+   * <p>
+   * Description: <b>Intended jurisdiction for the test script</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.jurisdiction</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>An identifier for the test plan</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="TestPlan.identifier", description="An identifier for the test plan", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>An identifier for the test plan</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>dependency</b>
+   * <p>
+   * Description: <b>URL contained in TestPlan.dependency.reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>TestPlan.dependency.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="dependency", path="TestPlan.dependency.reference", description="URL contained in TestPlan.dependency.reference", type="reference" )
+  public static final String SP_DEPENDENCY = "dependency";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>dependency</b>
+   * <p>
+   * Description: <b>URL contained in TestPlan.dependency.reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>TestPlan.dependency.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEPENDENCY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEPENDENCY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>TestPlan:dependency</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEPENDENCY = new ca.uhn.fhir.model.api.Include("TestPlan:dependency").toLocked();
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>Computationally friendly name of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="TestPlan.name", description="Computationally friendly name of the test script", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>Computationally friendly name of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
+ /**
+   * Search parameter: <b>description</b>
+   * <p>
+   * Description: <b>The description of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.description</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="description", path="TestPlan.description", description="The description of the test script", type="string" )
+  public static final String SP_DESCRIPTION = "description";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>description</b>
+   * <p>
+   * Description: <b>The description of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.description</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
+
+ /**
+   * Search parameter: <b>experimental</b>
+   * <p>
+   * Description: <b>Whether the TestPlan is experimental</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.experimental</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="experimental", path="TestPlan.experimental", description="Whether the TestPlan is experimental", type="token" )
+  public static final String SP_EXPERIMENTAL = "experimental";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>experimental</b>
+   * <p>
+   * Description: <b>Whether the TestPlan is experimental</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.experimental</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EXPERIMENTAL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EXPERIMENTAL);
+
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the test plan</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestPlan.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="TestPlan.url", description="The uri that identifies the test plan", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the test plan</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestPlan.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
+ /**
+   * Search parameter: <b>runner</b>
+   * <p>
+   * Description: <b>Reference to the runner for the test case</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestPlan.runner</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="runner", path="TestPlan.runner", description="Reference to the runner for the test case", type="uri" )
+  public static final String SP_RUNNER = "runner";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>runner</b>
+   * <p>
+   * Description: <b>Reference to the runner for the test case</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>TestPlan.runner</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam RUNNER = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_RUNNER);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The current status of the test plan</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="TestPlan.status", description="The current status of the test plan", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The current status of the test plan</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>TestPlan.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
+   * Search parameter: <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the test script</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>TestPlan.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-value", path="TestPlan.useContext", description="A use context type and value assigned to the test script", type="composite", compositeOf={"context-type", "context"} )
+  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the test script</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>TestPlan.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
+
+ /**
+   * Search parameter: <b>publisher</b>
+   * <p>
+   * Description: <b>Name of the publisher of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.publisher</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="publisher", path="TestPlan.publisher", description="Name of the publisher of the test script", type="string" )
+  public static final String SP_PUBLISHER = "publisher";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>publisher</b>
+   * <p>
+   * Description: <b>Name of the publisher of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.publisher</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
+
+ /**
    * Search parameter: <b>date</b>
    * <p>
    * Description: <b>The test script publication date</b><br>
@@ -5802,6 +5742,66 @@ public class TestPlan extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the test script</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(TestPlan.useContext.value.ofType(CodeableConcept))</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context", path="(TestPlan.useContext.value.ofType(CodeableConcept))", description="A use context assigned to the test script", type="token" )
+  public static final String SP_CONTEXT = "context";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the test script</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(TestPlan.useContext.value.ofType(CodeableConcept))</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+
+ /**
+   * Search parameter: <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.title</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="title", path="TestPlan.title", description="The human-friendly name of the test script", type="string" )
+  public static final String SP_TITLE = "title";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>title</b>
+   * <p>
+   * Description: <b>The human-friendly name of the test script</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>TestPlan.title</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
+
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the test script</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>TestPlan.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="TestPlan.useContext", description="A use context type and quantity- or range-based value assigned to the test script", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the test script</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>TestPlan.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
 
 
 }

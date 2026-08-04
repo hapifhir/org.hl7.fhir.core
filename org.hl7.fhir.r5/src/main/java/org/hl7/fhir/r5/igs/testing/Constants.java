@@ -39,9 +39,9 @@ public class Constants {
   public final static String LOCAL_REF_REGEX = "(TestPlan|TestReport|TestScript)\\\\/[A-Za-z0-9\\\\-\\\\.]{1,64}";
   public final static String NS_SYSTEM_TYPE = "http://hl7.org/fhirpath/System.";
 
-  public final static String VERSION = "0.1.0-SNAPSHOT";
+  public final static String VERSION = "0.1.0-snapshot1";
   public final static String VERSION_BASE = "0.1.0";
   public final static String VERSION_MM = "0.1";
-  public final static String DATE = "Sat, Aug 1, 2026 08:22+1000";
+  public final static String DATE = "Wed, Aug 5, 2026 06:35+1000";
   public final static String URI_REGEX = "((http|https):\\/\\/([A-Za-z0-9\\\\\\.\\:\\%\\$\\-]*\\/)*?)?(TestPlan|TestReport|TestScript)\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
 }

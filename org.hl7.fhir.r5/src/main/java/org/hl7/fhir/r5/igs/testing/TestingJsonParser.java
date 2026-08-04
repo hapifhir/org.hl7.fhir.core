@@ -67,232 +67,219 @@ public class TestingJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
     String t = json.get("resourceType").getAsString();
     if (Utilities.noString(t)) {
       throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
-    } else if (t.equals("TestReport")) {
-      return parseTestingTestReport(json);
-    } else if (t.equals("TestScript")) {
-      return parseTestingTestScript(json);
     } else if (t.equals("TestPlan")) {
       return parseTestingTestPlan(json);
+    } else if (t.equals("TestScript")) {
+      return parseTestingTestScript(json);
+    } else if (t.equals("TestReport")) {
+      return parseTestingTestReport(json);
 
     } else {
       throw new FHIRFormatError("Unknown/Unrecognised resource type '"+t+"' (in property 'resourceType')");
     }
   }
 
-  protected TestReport parseTestingTestReport(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport res = new TestReport();
-    parseTestingTestReportProperties(json, res);
+  protected TestPlan parseTestingTestPlan(JsonObject json) throws IOException, FHIRFormatError {
+    TestPlan res = new TestPlan();
+    parseTestingTestPlanProperties(json, res);
     return res;
   }
 
-  protected void parseTestingTestReportProperties(JsonObject json, TestReport res) throws IOException, FHIRFormatError {
-    parseDomainResourceProperties(json, res);
-    if (json.has("identifier"))
-      res.setIdentifier(parseIdentifier(getJObject(json, "identifier")));
+  protected void parseTestingTestPlanProperties(JsonObject json, TestPlan res) throws IOException, FHIRFormatError {
+    parseCanonicalResourceProperties(json, res);
+    if (json.has("url"))
+      res.setUrlElement(parseUri(json.get("url").getAsString()));
+    if (json.has("_url"))
+      parseElementProperties(getJObject(json, "_url"), res.getUrlElement());
+    if (json.has("identifier")) {
+      JsonArray array = getJArray(json, "identifier");
+      for (int i = 0; i < array.size(); i++) {
+        res.getIdentifierList().add(parseIdentifier(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("version"))
+      res.setVersionElement(parseString(json.get("version").getAsString()));
+    if (json.has("_version"))
+      parseElementProperties(getJObject(json, "_version"), res.getVersionElement());
+    DataType versionAlgorithm = parseType("versionAlgorithm", json);
+    if (versionAlgorithm != null)
+      res.setVersionAlgorithm(versionAlgorithm);
     if (json.has("name"))
       res.setNameElement(parseString(json.get("name").getAsString()));
     if (json.has("_name"))
       parseElementProperties(getJObject(json, "_name"), res.getNameElement());
+    if (json.has("title"))
+      res.setTitleElement(parseString(json.get("title").getAsString()));
+    if (json.has("_title"))
+      parseElementProperties(getJObject(json, "_title"), res.getTitleElement());
+    if (json.has("status"))
+      res.setStatusElement(parseEnumeration(json.get("status").getAsString(), org.hl7.fhir.r5.model.Enumerations.PublicationStatus.NULL, new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory()));
+    if (json.has("_status"))
+      parseElementProperties(getJObject(json, "_status"), res.getStatusElement());
+    if (json.has("experimental"))
+      res.setExperimentalElement(parseBoolean(json.get("experimental").getAsBoolean()));
+    if (json.has("_experimental"))
+      parseElementProperties(getJObject(json, "_experimental"), res.getExperimentalElement());
+    if (json.has("date"))
+      res.setDateElement(parseDateTime(json.get("date").getAsString()));
+    if (json.has("_date"))
+      parseElementProperties(getJObject(json, "_date"), res.getDateElement());
+    if (json.has("publisher"))
+      res.setPublisherElement(parseString(json.get("publisher").getAsString()));
+    if (json.has("_publisher"))
+      parseElementProperties(getJObject(json, "_publisher"), res.getPublisherElement());
+    if (json.has("contact")) {
+      JsonArray array = getJArray(json, "contact");
+      for (int i = 0; i < array.size(); i++) {
+        res.getContactList().add(parseContactDetail(array.get(i).getAsJsonObject()));
+      }
+    };
     if (json.has("description"))
       res.setDescriptionElement(parseMarkdown(json.get("description").getAsString()));
     if (json.has("_description"))
       parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
-    if (json.has("status"))
-      res.setStatusElement(parseEnumeration(json.get("status").getAsString(), TestReport.TestReportStatusValueSet.NULL, new TestReport.TestReportStatusValueSetEnumFactory()));
-    if (json.has("_status"))
-      parseElementProperties(getJObject(json, "_status"), res.getStatusElement());
-    if (json.has("testScript"))
-      res.setTestScriptElement(parseCanonical(json.get("testScript").getAsString()));
-    if (json.has("_testScript"))
-      parseElementProperties(getJObject(json, "_testScript"), res.getTestScriptElement());
-    if (json.has("result"))
-      res.setResultElement(parseEnumeration(json.get("result").getAsString(), TestReport.TestReportResultValueSet.NULL, new TestReport.TestReportResultValueSetEnumFactory()));
-    if (json.has("_result"))
-      parseElementProperties(getJObject(json, "_result"), res.getResultElement());
-    if (json.has("score"))
-      res.setScoreElement(parseDecimal(json.get("score").getAsBigDecimal()));
-    if (json.has("_score"))
-      parseElementProperties(getJObject(json, "_score"), res.getScoreElement());
-    if (json.has("tester"))
-      res.setTesterElement(parseString(json.get("tester").getAsString()));
-    if (json.has("_tester"))
-      parseElementProperties(getJObject(json, "_tester"), res.getTesterElement());
-    if (json.has("issued"))
-      res.setIssuedElement(parseDateTime(json.get("issued").getAsString()));
-    if (json.has("_issued"))
-      parseElementProperties(getJObject(json, "_issued"), res.getIssuedElement());
-    if (json.has("participant")) {
-      JsonArray array = getJArray(json, "participant");
+    if (json.has("useContext")) {
+      JsonArray array = getJArray(json, "useContext");
       for (int i = 0; i < array.size(); i++) {
-        res.getParticipantList().add(parseTestingTestReportParticipantComponent(array.get(i).getAsJsonObject()));
+        res.getUseContextList().add(parseUsageContext(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("jurisdiction")) {
+      JsonArray array = getJArray(json, "jurisdiction");
+      for (int i = 0; i < array.size(); i++) {
+        res.getJurisdictionList().add(parseCodeableConcept(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("purpose"))
+      res.setPurposeElement(parseMarkdown(json.get("purpose").getAsString()));
+    if (json.has("_purpose"))
+      parseElementProperties(getJObject(json, "_purpose"), res.getPurposeElement());
+    if (json.has("copyright"))
+      res.setCopyrightElement(parseMarkdown(json.get("copyright").getAsString()));
+    if (json.has("_copyright"))
+      parseElementProperties(getJObject(json, "_copyright"), res.getCopyrightElement());
+    if (json.has("copyrightLabel"))
+      res.setCopyrightLabelElement(parseString(json.get("copyrightLabel").getAsString()));
+    if (json.has("_copyrightLabel"))
+      parseElementProperties(getJObject(json, "_copyrightLabel"), res.getCopyrightLabelElement());
+    if (json.has("scope")) {
+      JsonArray array = getJArray(json, "scope");
+      for (int i = 0; i < array.size(); i++) {
+        res.getScopeList().add(parseTestingTestPlanScopeComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("dependency")) {
+      JsonArray array = getJArray(json, "dependency");
+      for (int i = 0; i < array.size(); i++) {
+        res.getDependencyList().add(parseTestingTestPlanDependencyComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("runner"))
+      res.setRunnerElement(parseUrl(json.get("runner").getAsString()));
+    if (json.has("_runner"))
+      parseElementProperties(getJObject(json, "_runner"), res.getRunnerElement());
+    if (json.has("mode")) {
+      JsonArray array = getJArray(json, "mode");
+      for (int i = 0; i < array.size(); i++) {
+        res.getModeList().add(parseTestingTestPlanModeComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("parameter")) {
       JsonArray array = getJArray(json, "parameter");
       for (int i = 0; i < array.size(); i++) {
-        res.getParameterList().add(parseTestingTestReportParameterComponent(array.get(i).getAsJsonObject()));
+        res.getParameterList().add(parseTestingTestPlanParameterComponent(array.get(i).getAsJsonObject()));
       }
     };
-    if (json.has("setup"))
-      res.setSetup(parseTestingTestReportSetupComponent(getJObject(json, "setup")));
-    if (json.has("test")) {
-      JsonArray array = getJArray(json, "test");
+    if (json.has("suite")) {
+      JsonArray array = getJArray(json, "suite");
       for (int i = 0; i < array.size(); i++) {
-        res.getTestList().add(parseTestingTestReportTestComponent(array.get(i).getAsJsonObject()));
+        res.getSuiteList().add(parseTestingTestPlanSuiteComponent(array.get(i).getAsJsonObject()));
       }
     };
-    if (json.has("teardown"))
-      res.setTeardown(parseTestingTestReportTeardownComponent(getJObject(json, "teardown")));
-    if (json.has("presentedForm"))
-      res.setPresentedForm(parseAttachment(getJObject(json, "presentedForm")));
-    if (json.has("log"))
-      res.setLog(parseAttachment(getJObject(json, "log")));
   }
 
-  protected TestReport.TestReportParticipantComponent parseTestingTestReportParticipantComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport.TestReportParticipantComponent res = new TestReport.TestReportParticipantComponent();
-    parseTestingTestReportParticipantComponentProperties(json, res);
+  protected TestPlan.TestPlanScopeComponent parseTestingTestPlanScopeComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestPlan.TestPlanScopeComponent res = new TestPlan.TestPlanScopeComponent();
+    parseTestingTestPlanScopeComponentProperties(json, res);
     return res;
   }
 
-  protected void parseTestingTestReportParticipantComponentProperties(JsonObject json, TestReport.TestReportParticipantComponent res) throws IOException, FHIRFormatError {
+  protected void parseTestingTestPlanScopeComponentProperties(JsonObject json, TestPlan.TestPlanScopeComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    if (json.has("type"))
-      res.setTypeElement(parseEnumeration(json.get("type").getAsString(), TestReport.TestReportParticipantTypeValueSet.NULL, new TestReport.TestReportParticipantTypeValueSetEnumFactory()));
-    if (json.has("_type"))
-      parseElementProperties(getJObject(json, "_type"), res.getTypeElement());
-    if (json.has("uri"))
-      res.setUriElement(parseUri(json.get("uri").getAsString()));
-    if (json.has("_uri"))
-      parseElementProperties(getJObject(json, "_uri"), res.getUriElement());
-    if (json.has("version"))
-      res.setVersionElement(parseUri(json.get("version").getAsString()));
-    if (json.has("_version"))
-      parseElementProperties(getJObject(json, "_version"), res.getVersionElement());
-    if (json.has("display"))
-      res.setDisplayElement(parseString(json.get("display").getAsString()));
-    if (json.has("_display"))
-      parseElementProperties(getJObject(json, "_display"), res.getDisplayElement());
+    if (json.has("reference"))
+      res.setReferenceElement(parseCanonical(json.get("reference").getAsString()));
+    if (json.has("_reference"))
+      parseElementProperties(getJObject(json, "_reference"), res.getReferenceElement());
+    if (json.has("description"))
+      res.setDescriptionElement(parseString(json.get("description").getAsString()));
+    if (json.has("_description"))
+      parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
   }
 
-  protected TestReport.TestReportParameterComponent parseTestingTestReportParameterComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport.TestReportParameterComponent res = new TestReport.TestReportParameterComponent();
-    parseTestingTestReportParameterComponentProperties(json, res);
+  protected TestPlan.TestPlanDependencyComponent parseTestingTestPlanDependencyComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestPlan.TestPlanDependencyComponent res = new TestPlan.TestPlanDependencyComponent();
+    parseTestingTestPlanDependencyComponentProperties(json, res);
     return res;
   }
 
-  protected void parseTestingTestReportParameterComponentProperties(JsonObject json, TestReport.TestReportParameterComponent res) throws IOException, FHIRFormatError {
+  protected void parseTestingTestPlanDependencyComponentProperties(JsonObject json, TestPlan.TestPlanDependencyComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    if (json.has("reference"))
+      res.setReferenceElement(parseCanonical(json.get("reference").getAsString()));
+    if (json.has("_reference"))
+      parseElementProperties(getJObject(json, "_reference"), res.getReferenceElement());
+    if (json.has("description"))
+      res.setDescriptionElement(parseString(json.get("description").getAsString()));
+    if (json.has("_description"))
+      parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
+  }
+
+  protected TestPlan.TestPlanModeComponent parseTestingTestPlanModeComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestPlan.TestPlanModeComponent res = new TestPlan.TestPlanModeComponent();
+    parseTestingTestPlanModeComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestPlanModeComponentProperties(JsonObject json, TestPlan.TestPlanModeComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    if (json.has("code"))
+      res.setCodeElement(parseString(json.get("code").getAsString()));
+    if (json.has("_code"))
+      parseElementProperties(getJObject(json, "_code"), res.getCodeElement());
+    if (json.has("description"))
+      res.setDescriptionElement(parseString(json.get("description").getAsString()));
+    if (json.has("_description"))
+      parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
+  }
+
+  protected TestPlan.TestPlanParameterComponent parseTestingTestPlanParameterComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestPlan.TestPlanParameterComponent res = new TestPlan.TestPlanParameterComponent();
+    parseTestingTestPlanParameterComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestPlanParameterComponentProperties(JsonObject json, TestPlan.TestPlanParameterComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
     if (json.has("name"))
       res.setNameElement(parseString(json.get("name").getAsString()));
     if (json.has("_name"))
       parseElementProperties(getJObject(json, "_name"), res.getNameElement());
-    if (json.has("documentation"))
-      res.setDocumentationElement(parseMarkdown(json.get("documentation").getAsString()));
-    if (json.has("_documentation"))
-      parseElementProperties(getJObject(json, "_documentation"), res.getDocumentationElement());
+    DataType value = parseType("value", json);
+    if (value != null)
+      res.setValue(value);
+    if (json.has("mode"))
+      res.setModeElement(parseCode(json.get("mode").getAsString()));
+    if (json.has("_mode"))
+      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
   }
 
-  protected TestReport.TestReportSetupComponent parseTestingTestReportSetupComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport.TestReportSetupComponent res = new TestReport.TestReportSetupComponent();
-    parseTestingTestReportSetupComponentProperties(json, res);
+  protected TestPlan.TestPlanSuiteComponent parseTestingTestPlanSuiteComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestPlan.TestPlanSuiteComponent res = new TestPlan.TestPlanSuiteComponent();
+    parseTestingTestPlanSuiteComponentProperties(json, res);
     return res;
   }
 
-  protected void parseTestingTestReportSetupComponentProperties(JsonObject json, TestReport.TestReportSetupComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    if (json.has("action")) {
-      JsonArray array = getJArray(json, "action");
-      for (int i = 0; i < array.size(); i++) {
-        res.getActionList().add(parseTestingTestReportSetupActionComponent(array.get(i).getAsJsonObject()));
-      }
-    };
-  }
-
-  protected TestReport.SetupActionComponent parseTestingTestReportSetupActionComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport.SetupActionComponent res = new TestReport.SetupActionComponent();
-    parseTestingTestReportSetupActionComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestReportSetupActionComponentProperties(JsonObject json, TestReport.SetupActionComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    if (json.has("operation"))
-      res.setOperation(parseTestingTestReportSetupActionOperationComponent(getJObject(json, "operation")));
-    if (json.has("assert"))
-      res.setAssert(parseTestingTestReportSetupActionAssertComponent(getJObject(json, "assert")));
-  }
-
-  protected TestReport.SetupActionOperationComponent parseTestingTestReportSetupActionOperationComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport.SetupActionOperationComponent res = new TestReport.SetupActionOperationComponent();
-    parseTestingTestReportSetupActionOperationComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestReportSetupActionOperationComponentProperties(JsonObject json, TestReport.SetupActionOperationComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    if (json.has("result"))
-      res.setResultElement(parseEnumeration(json.get("result").getAsString(), TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
-    if (json.has("_result"))
-      parseElementProperties(getJObject(json, "_result"), res.getResultElement());
-    if (json.has("message"))
-      res.setMessageElement(parseMarkdown(json.get("message").getAsString()));
-    if (json.has("_message"))
-      parseElementProperties(getJObject(json, "_message"), res.getMessageElement());
-    if (json.has("detail"))
-      res.setDetailElement(parseUri(json.get("detail").getAsString()));
-    if (json.has("_detail"))
-      parseElementProperties(getJObject(json, "_detail"), res.getDetailElement());
-  }
-
-  protected TestReport.SetupActionAssertComponent parseTestingTestReportSetupActionAssertComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport.SetupActionAssertComponent res = new TestReport.SetupActionAssertComponent();
-    parseTestingTestReportSetupActionAssertComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestReportSetupActionAssertComponentProperties(JsonObject json, TestReport.SetupActionAssertComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    if (json.has("result"))
-      res.setResultElement(parseEnumeration(json.get("result").getAsString(), TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
-    if (json.has("_result"))
-      parseElementProperties(getJObject(json, "_result"), res.getResultElement());
-    if (json.has("message"))
-      res.setMessageElement(parseMarkdown(json.get("message").getAsString()));
-    if (json.has("_message"))
-      parseElementProperties(getJObject(json, "_message"), res.getMessageElement());
-    if (json.has("detail"))
-      res.setDetailElement(parseString(json.get("detail").getAsString()));
-    if (json.has("_detail"))
-      parseElementProperties(getJObject(json, "_detail"), res.getDetailElement());
-    if (json.has("requirement")) {
-      JsonArray array = getJArray(json, "requirement");
-      for (int i = 0; i < array.size(); i++) {
-        res.getRequirementList().add(parseTestingTestReportSetupActionAssertRequirementComponent(array.get(i).getAsJsonObject()));
-      }
-    };
-  }
-
-  protected TestReport.SetupActionAssertRequirementComponent parseTestingTestReportSetupActionAssertRequirementComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport.SetupActionAssertRequirementComponent res = new TestReport.SetupActionAssertRequirementComponent();
-    parseTestingTestReportSetupActionAssertRequirementComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestReportSetupActionAssertRequirementComponentProperties(JsonObject json, TestReport.SetupActionAssertRequirementComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    DataType link = parseType("link", json);
-    if (link != null)
-      res.setLink(link);
-  }
-
-  protected TestReport.TestReportTestComponent parseTestingTestReportTestComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport.TestReportTestComponent res = new TestReport.TestReportTestComponent();
-    parseTestingTestReportTestComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestReportTestComponentProperties(JsonObject json, TestReport.TestReportTestComponent res) throws IOException, FHIRFormatError {
+  protected void parseTestingTestPlanSuiteComponentProperties(JsonObject json, TestPlan.TestPlanSuiteComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
     if (json.has("name"))
       res.setNameElement(parseString(json.get("name").getAsString()));
@@ -302,62 +289,142 @@ public class TestingJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       res.setDescriptionElement(parseString(json.get("description").getAsString()));
     if (json.has("_description"))
       parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
-    if (json.has("result"))
-      res.setResultElement(parseEnumeration(json.get("result").getAsString(), TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
-    if (json.has("_result"))
-      parseElementProperties(getJObject(json, "_result"), res.getResultElement());
-    if (json.has("period"))
-      res.setPeriod(parsePeriod(getJObject(json, "period")));
-    if (json.has("action")) {
-      JsonArray array = getJArray(json, "action");
+    if (json.has("mode"))
+      res.setModeElement(parseCode(json.get("mode").getAsString()));
+    if (json.has("_mode"))
+      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
+    if (json.has("input")) {
+      JsonArray array = getJArray(json, "input");
       for (int i = 0; i < array.size(); i++) {
-        res.getActionList().add(parseTestingTestReportTestActionComponent(array.get(i).getAsJsonObject()));
+        res.getInputList().add(parseTestingTestPlanSuiteInputComponent(array.get(i).getAsJsonObject()));
       }
     };
-    if (json.has("log"))
-      res.setLog(parseAttachment(getJObject(json, "log")));
-  }
-
-  protected TestReport.TestActionComponent parseTestingTestReportTestActionComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport.TestActionComponent res = new TestReport.TestActionComponent();
-    parseTestingTestReportTestActionComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestReportTestActionComponentProperties(JsonObject json, TestReport.TestActionComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    if (json.has("operation"))
-      res.setOperation(parseTestingTestReportSetupActionOperationComponent(getJObject(json, "operation")));
-    if (json.has("assert"))
-      res.setAssert(parseTestingTestReportSetupActionAssertComponent(getJObject(json, "assert")));
-  }
-
-  protected TestReport.TestReportTeardownComponent parseTestingTestReportTeardownComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport.TestReportTeardownComponent res = new TestReport.TestReportTeardownComponent();
-    parseTestingTestReportTeardownComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestReportTeardownComponentProperties(JsonObject json, TestReport.TestReportTeardownComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    if (json.has("action")) {
-      JsonArray array = getJArray(json, "action");
+    if (json.has("parameter")) {
+      JsonArray array = getJArray(json, "parameter");
       for (int i = 0; i < array.size(); i++) {
-        res.getActionList().add(parseTestingTestReportTeardownActionComponent(array.get(i).getAsJsonObject()));
+        res.getParameterList().add(parseTestingTestPlanParameterComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("test")) {
+      JsonArray array = getJArray(json, "test");
+      for (int i = 0; i < array.size(); i++) {
+        res.getTestList().add(parseTestingTestPlanSuiteTestComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("suite")) {
+      JsonArray array = getJArray(json, "suite");
+      for (int i = 0; i < array.size(); i++) {
+        res.getSuiteList().add(parseTestingTestPlanSuiteComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("plan")) {
+      JsonArray array = getJArray(json, "plan");
+      for (int i = 0; i < array.size(); i++) {
+        res.getPlanList().add(parseReference(array.get(i).getAsJsonObject()));
       }
     };
   }
 
-  protected TestReport.TeardownActionComponent parseTestingTestReportTeardownActionComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestReport.TeardownActionComponent res = new TestReport.TeardownActionComponent();
-    parseTestingTestReportTeardownActionComponentProperties(json, res);
+  protected TestPlan.TestPlanSuiteInputComponent parseTestingTestPlanSuiteInputComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestPlan.TestPlanSuiteInputComponent res = new TestPlan.TestPlanSuiteInputComponent();
+    parseTestingTestPlanSuiteInputComponentProperties(json, res);
     return res;
   }
 
-  protected void parseTestingTestReportTeardownActionComponentProperties(JsonObject json, TestReport.TeardownActionComponent res) throws IOException, FHIRFormatError {
+  protected void parseTestingTestPlanSuiteInputComponentProperties(JsonObject json, TestPlan.TestPlanSuiteInputComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
+    if (json.has("name"))
+      res.setNameElement(parseString(json.get("name").getAsString()));
+    if (json.has("_name"))
+      parseElementProperties(getJObject(json, "_name"), res.getNameElement());
+    if (json.has("file"))
+      res.setFileElement(parseString(json.get("file").getAsString()));
+    if (json.has("_file"))
+      parseElementProperties(getJObject(json, "_file"), res.getFileElement());
+    if (json.has("resource"))
+      res.setResource(parseResource(getJObject(json, "resource")));
+    if (json.has("mode"))
+      res.setModeElement(parseCode(json.get("mode").getAsString()));
+    if (json.has("_mode"))
+      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
+  }
+
+  protected TestPlan.TestPlanSuiteTestComponent parseTestingTestPlanSuiteTestComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestPlan.TestPlanSuiteTestComponent res = new TestPlan.TestPlanSuiteTestComponent();
+    parseTestingTestPlanSuiteTestComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestPlanSuiteTestComponentProperties(JsonObject json, TestPlan.TestPlanSuiteTestComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    if (json.has("name"))
+      res.setNameElement(parseString(json.get("name").getAsString()));
+    if (json.has("_name"))
+      parseElementProperties(getJObject(json, "_name"), res.getNameElement());
+    if (json.has("description"))
+      res.setDescriptionElement(parseString(json.get("description").getAsString()));
+    if (json.has("_description"))
+      parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
     if (json.has("operation"))
-      res.setOperation(parseTestingTestReportSetupActionOperationComponent(getJObject(json, "operation")));
+      res.setOperationElement(parseCode(json.get("operation").getAsString()));
+    if (json.has("_operation"))
+      parseElementProperties(getJObject(json, "_operation"), res.getOperationElement());
+    if (json.has("mode"))
+      res.setModeElement(parseCode(json.get("mode").getAsString()));
+    if (json.has("_mode"))
+      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
+    if (json.has("parameter")) {
+      JsonArray array = getJArray(json, "parameter");
+      for (int i = 0; i < array.size(); i++) {
+        res.getParameterList().add(parseTestingTestPlanParameterComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("input")) {
+      JsonArray array = getJArray(json, "input");
+      for (int i = 0; i < array.size(); i++) {
+        res.getInputList().add(parseTestingTestPlanSuiteInputComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("expected")) {
+      JsonArray array = getJArray(json, "expected");
+      for (int i = 0; i < array.size(); i++) {
+        res.getExpectedList().add(parseTestingTestPlanSuiteInputComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+    if (json.has("assertion")) {
+      JsonArray array = getJArray(json, "assertion");
+      for (int i = 0; i < array.size(); i++) {
+        res.getAssertionList().add(parseTestingTestPlanSuiteTestAssertionComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+  }
+
+  protected TestPlan.TestPlanSuiteTestAssertionComponent parseTestingTestPlanSuiteTestAssertionComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestPlan.TestPlanSuiteTestAssertionComponent res = new TestPlan.TestPlanSuiteTestAssertionComponent();
+    parseTestingTestPlanSuiteTestAssertionComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestPlanSuiteTestAssertionComponentProperties(JsonObject json, TestPlan.TestPlanSuiteTestAssertionComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    if (json.has("focus"))
+      res.setFocusElement(parseString(json.get("focus").getAsString()));
+    if (json.has("_focus"))
+      parseElementProperties(getJObject(json, "_focus"), res.getFocusElement());
+    if (json.has("severity"))
+      res.setSeverityElement(parseCode(json.get("severity").getAsString()));
+    if (json.has("_severity"))
+      parseElementProperties(getJObject(json, "_severity"), res.getSeverityElement());
+    if (json.has("expression"))
+      res.setExpression(parseExpression(getJObject(json, "expression")));
+    if (json.has("human"))
+      res.setHumanElement(parseString(json.get("human").getAsString()));
+    if (json.has("_human"))
+      parseElementProperties(getJObject(json, "_human"), res.getHumanElement());
+    if (json.has("mode"))
+      res.setModeElement(parseCode(json.get("mode").getAsString()));
+    if (json.has("_mode"))
+      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
   }
 
   protected TestScript parseTestingTestScript(JsonObject json) throws IOException, FHIRFormatError {
@@ -1194,283 +1261,220 @@ public class TestingJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       res.setAssert(parseTestingTestScriptSetupActionAssertComponent(getJObject(json, "assert")));
   }
 
-  protected TestPlan parseTestingTestPlan(JsonObject json) throws IOException, FHIRFormatError {
-    TestPlan res = new TestPlan();
-    parseTestingTestPlanProperties(json, res);
+  protected TestReport parseTestingTestReport(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport res = new TestReport();
+    parseTestingTestReportProperties(json, res);
     return res;
   }
 
-  protected void parseTestingTestPlanProperties(JsonObject json, TestPlan res) throws IOException, FHIRFormatError {
-    parseCanonicalResourceProperties(json, res);
-    if (json.has("url"))
-      res.setUrlElement(parseUri(json.get("url").getAsString()));
-    if (json.has("_url"))
-      parseElementProperties(getJObject(json, "_url"), res.getUrlElement());
-    if (json.has("identifier")) {
-      JsonArray array = getJArray(json, "identifier");
-      for (int i = 0; i < array.size(); i++) {
-        res.getIdentifierList().add(parseIdentifier(array.get(i).getAsJsonObject()));
-      }
-    };
-    if (json.has("version"))
-      res.setVersionElement(parseString(json.get("version").getAsString()));
-    if (json.has("_version"))
-      parseElementProperties(getJObject(json, "_version"), res.getVersionElement());
-    DataType versionAlgorithm = parseType("versionAlgorithm", json);
-    if (versionAlgorithm != null)
-      res.setVersionAlgorithm(versionAlgorithm);
+  protected void parseTestingTestReportProperties(JsonObject json, TestReport res) throws IOException, FHIRFormatError {
+    parseDomainResourceProperties(json, res);
+    if (json.has("identifier"))
+      res.setIdentifier(parseIdentifier(getJObject(json, "identifier")));
     if (json.has("name"))
       res.setNameElement(parseString(json.get("name").getAsString()));
     if (json.has("_name"))
       parseElementProperties(getJObject(json, "_name"), res.getNameElement());
-    if (json.has("title"))
-      res.setTitleElement(parseString(json.get("title").getAsString()));
-    if (json.has("_title"))
-      parseElementProperties(getJObject(json, "_title"), res.getTitleElement());
-    if (json.has("status"))
-      res.setStatusElement(parseEnumeration(json.get("status").getAsString(), org.hl7.fhir.r5.model.Enumerations.PublicationStatus.NULL, new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory()));
-    if (json.has("_status"))
-      parseElementProperties(getJObject(json, "_status"), res.getStatusElement());
-    if (json.has("experimental"))
-      res.setExperimentalElement(parseBoolean(json.get("experimental").getAsBoolean()));
-    if (json.has("_experimental"))
-      parseElementProperties(getJObject(json, "_experimental"), res.getExperimentalElement());
-    if (json.has("date"))
-      res.setDateElement(parseDateTime(json.get("date").getAsString()));
-    if (json.has("_date"))
-      parseElementProperties(getJObject(json, "_date"), res.getDateElement());
-    if (json.has("publisher"))
-      res.setPublisherElement(parseString(json.get("publisher").getAsString()));
-    if (json.has("_publisher"))
-      parseElementProperties(getJObject(json, "_publisher"), res.getPublisherElement());
-    if (json.has("contact")) {
-      JsonArray array = getJArray(json, "contact");
-      for (int i = 0; i < array.size(); i++) {
-        res.getContactList().add(parseContactDetail(array.get(i).getAsJsonObject()));
-      }
-    };
     if (json.has("description"))
       res.setDescriptionElement(parseMarkdown(json.get("description").getAsString()));
     if (json.has("_description"))
       parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
-    if (json.has("useContext")) {
-      JsonArray array = getJArray(json, "useContext");
+    if (json.has("status"))
+      res.setStatusElement(parseEnumeration(json.get("status").getAsString(), TestReport.TestReportStatusValueSet.NULL, new TestReport.TestReportStatusValueSetEnumFactory()));
+    if (json.has("_status"))
+      parseElementProperties(getJObject(json, "_status"), res.getStatusElement());
+    if (json.has("testScript"))
+      res.setTestScriptElement(parseCanonical(json.get("testScript").getAsString()));
+    if (json.has("_testScript"))
+      parseElementProperties(getJObject(json, "_testScript"), res.getTestScriptElement());
+    if (json.has("result"))
+      res.setResultElement(parseEnumeration(json.get("result").getAsString(), TestReport.TestReportResultValueSet.NULL, new TestReport.TestReportResultValueSetEnumFactory()));
+    if (json.has("_result"))
+      parseElementProperties(getJObject(json, "_result"), res.getResultElement());
+    if (json.has("score"))
+      res.setScoreElement(parseDecimal(json.get("score").getAsBigDecimal()));
+    if (json.has("_score"))
+      parseElementProperties(getJObject(json, "_score"), res.getScoreElement());
+    if (json.has("tester"))
+      res.setTesterElement(parseString(json.get("tester").getAsString()));
+    if (json.has("_tester"))
+      parseElementProperties(getJObject(json, "_tester"), res.getTesterElement());
+    if (json.has("issued"))
+      res.setIssuedElement(parseDateTime(json.get("issued").getAsString()));
+    if (json.has("_issued"))
+      parseElementProperties(getJObject(json, "_issued"), res.getIssuedElement());
+    if (json.has("participant")) {
+      JsonArray array = getJArray(json, "participant");
       for (int i = 0; i < array.size(); i++) {
-        res.getUseContextList().add(parseUsageContext(array.get(i).getAsJsonObject()));
-      }
-    };
-    if (json.has("jurisdiction")) {
-      JsonArray array = getJArray(json, "jurisdiction");
-      for (int i = 0; i < array.size(); i++) {
-        res.getJurisdictionList().add(parseCodeableConcept(array.get(i).getAsJsonObject()));
-      }
-    };
-    if (json.has("purpose"))
-      res.setPurposeElement(parseMarkdown(json.get("purpose").getAsString()));
-    if (json.has("_purpose"))
-      parseElementProperties(getJObject(json, "_purpose"), res.getPurposeElement());
-    if (json.has("copyright"))
-      res.setCopyrightElement(parseMarkdown(json.get("copyright").getAsString()));
-    if (json.has("_copyright"))
-      parseElementProperties(getJObject(json, "_copyright"), res.getCopyrightElement());
-    if (json.has("copyrightLabel"))
-      res.setCopyrightLabelElement(parseString(json.get("copyrightLabel").getAsString()));
-    if (json.has("_copyrightLabel"))
-      parseElementProperties(getJObject(json, "_copyrightLabel"), res.getCopyrightLabelElement());
-    if (json.has("scope")) {
-      JsonArray array = getJArray(json, "scope");
-      for (int i = 0; i < array.size(); i++) {
-        res.getScopeList().add(parseTestingTestPlanScopeComponent(array.get(i).getAsJsonObject()));
-      }
-    };
-    if (json.has("dependency")) {
-      JsonArray array = getJArray(json, "dependency");
-      for (int i = 0; i < array.size(); i++) {
-        res.getDependencyList().add(parseTestingTestPlanDependencyComponent(array.get(i).getAsJsonObject()));
-      }
-    };
-    if (json.has("runner"))
-      res.setRunnerElement(parseUrl(json.get("runner").getAsString()));
-    if (json.has("_runner"))
-      parseElementProperties(getJObject(json, "_runner"), res.getRunnerElement());
-    if (json.has("mode")) {
-      JsonArray array = getJArray(json, "mode");
-      for (int i = 0; i < array.size(); i++) {
-        res.getModeList().add(parseTestingTestPlanModeComponent(array.get(i).getAsJsonObject()));
+        res.getParticipantList().add(parseTestingTestReportParticipantComponent(array.get(i).getAsJsonObject()));
       }
     };
     if (json.has("parameter")) {
       JsonArray array = getJArray(json, "parameter");
       for (int i = 0; i < array.size(); i++) {
-        res.getParameterList().add(parseTestingTestPlanParameterComponent(array.get(i).getAsJsonObject()));
+        res.getParameterList().add(parseTestingTestReportParameterComponent(array.get(i).getAsJsonObject()));
       }
     };
-    if (json.has("suite")) {
-      JsonArray array = getJArray(json, "suite");
-      for (int i = 0; i < array.size(); i++) {
-        res.getSuiteList().add(parseTestingTestPlanSuiteComponent(array.get(i).getAsJsonObject()));
-      }
-    };
-  }
-
-  protected TestPlan.TestPlanScopeComponent parseTestingTestPlanScopeComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestPlan.TestPlanScopeComponent res = new TestPlan.TestPlanScopeComponent();
-    parseTestingTestPlanScopeComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestPlanScopeComponentProperties(JsonObject json, TestPlan.TestPlanScopeComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    if (json.has("reference"))
-      res.setReferenceElement(parseCanonical(json.get("reference").getAsString()));
-    if (json.has("_reference"))
-      parseElementProperties(getJObject(json, "_reference"), res.getReferenceElement());
-    if (json.has("description"))
-      res.setDescriptionElement(parseString(json.get("description").getAsString()));
-    if (json.has("_description"))
-      parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
-  }
-
-  protected TestPlan.TestPlanDependencyComponent parseTestingTestPlanDependencyComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestPlan.TestPlanDependencyComponent res = new TestPlan.TestPlanDependencyComponent();
-    parseTestingTestPlanDependencyComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestPlanDependencyComponentProperties(JsonObject json, TestPlan.TestPlanDependencyComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    if (json.has("reference"))
-      res.setReferenceElement(parseCanonical(json.get("reference").getAsString()));
-    if (json.has("_reference"))
-      parseElementProperties(getJObject(json, "_reference"), res.getReferenceElement());
-    if (json.has("description"))
-      res.setDescriptionElement(parseString(json.get("description").getAsString()));
-    if (json.has("_description"))
-      parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
-  }
-
-  protected TestPlan.TestPlanModeComponent parseTestingTestPlanModeComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestPlan.TestPlanModeComponent res = new TestPlan.TestPlanModeComponent();
-    parseTestingTestPlanModeComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestPlanModeComponentProperties(JsonObject json, TestPlan.TestPlanModeComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    if (json.has("code"))
-      res.setCodeElement(parseString(json.get("code").getAsString()));
-    if (json.has("_code"))
-      parseElementProperties(getJObject(json, "_code"), res.getCodeElement());
-    if (json.has("description"))
-      res.setDescriptionElement(parseString(json.get("description").getAsString()));
-    if (json.has("_description"))
-      parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
-  }
-
-  protected TestPlan.TestPlanParameterComponent parseTestingTestPlanParameterComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestPlan.TestPlanParameterComponent res = new TestPlan.TestPlanParameterComponent();
-    parseTestingTestPlanParameterComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestPlanParameterComponentProperties(JsonObject json, TestPlan.TestPlanParameterComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    if (json.has("name"))
-      res.setNameElement(parseString(json.get("name").getAsString()));
-    if (json.has("_name"))
-      parseElementProperties(getJObject(json, "_name"), res.getNameElement());
-    DataType value = parseType("value", json);
-    if (value != null)
-      res.setValue(value);
-    if (json.has("mode"))
-      res.setModeElement(parseCode(json.get("mode").getAsString()));
-    if (json.has("_mode"))
-      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
-  }
-
-  protected TestPlan.TestPlanSuiteComponent parseTestingTestPlanSuiteComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestPlan.TestPlanSuiteComponent res = new TestPlan.TestPlanSuiteComponent();
-    parseTestingTestPlanSuiteComponentProperties(json, res);
-    return res;
-  }
-
-  protected void parseTestingTestPlanSuiteComponentProperties(JsonObject json, TestPlan.TestPlanSuiteComponent res) throws IOException, FHIRFormatError {
-    parseBackboneElementProperties(json, res);
-    if (json.has("name"))
-      res.setNameElement(parseString(json.get("name").getAsString()));
-    if (json.has("_name"))
-      parseElementProperties(getJObject(json, "_name"), res.getNameElement());
-    if (json.has("description"))
-      res.setDescriptionElement(parseString(json.get("description").getAsString()));
-    if (json.has("_description"))
-      parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
-    if (json.has("mode"))
-      res.setModeElement(parseCode(json.get("mode").getAsString()));
-    if (json.has("_mode"))
-      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
-    if (json.has("input")) {
-      JsonArray array = getJArray(json, "input");
-      for (int i = 0; i < array.size(); i++) {
-        res.getInputList().add(parseTestingTestPlanSuiteInputComponent(array.get(i).getAsJsonObject()));
-      }
-    };
-    if (json.has("parameter")) {
-      JsonArray array = getJArray(json, "parameter");
-      for (int i = 0; i < array.size(); i++) {
-        res.getParameterList().add(parseTestingTestPlanParameterComponent(array.get(i).getAsJsonObject()));
-      }
-    };
+    if (json.has("setup"))
+      res.setSetup(parseTestingTestReportSetupComponent(getJObject(json, "setup")));
     if (json.has("test")) {
       JsonArray array = getJArray(json, "test");
       for (int i = 0; i < array.size(); i++) {
-        res.getTestList().add(parseTestingTestPlanSuiteTestComponent(array.get(i).getAsJsonObject()));
+        res.getTestList().add(parseTestingTestReportTestComponent(array.get(i).getAsJsonObject()));
       }
     };
-    if (json.has("suite")) {
-      JsonArray array = getJArray(json, "suite");
-      for (int i = 0; i < array.size(); i++) {
-        res.getSuiteList().add(parseTestingTestPlanSuiteComponent(array.get(i).getAsJsonObject()));
-      }
-    };
-    if (json.has("plan")) {
-      JsonArray array = getJArray(json, "plan");
-      for (int i = 0; i < array.size(); i++) {
-        res.getPlanList().add(parseReference(array.get(i).getAsJsonObject()));
-      }
-    };
+    if (json.has("teardown"))
+      res.setTeardown(parseTestingTestReportTeardownComponent(getJObject(json, "teardown")));
+    if (json.has("presentedForm"))
+      res.setPresentedForm(parseAttachment(getJObject(json, "presentedForm")));
+    if (json.has("log"))
+      res.setLog(parseAttachment(getJObject(json, "log")));
   }
 
-  protected TestPlan.TestPlanSuiteInputComponent parseTestingTestPlanSuiteInputComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestPlan.TestPlanSuiteInputComponent res = new TestPlan.TestPlanSuiteInputComponent();
-    parseTestingTestPlanSuiteInputComponentProperties(json, res);
+  protected TestReport.TestReportParticipantComponent parseTestingTestReportParticipantComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport.TestReportParticipantComponent res = new TestReport.TestReportParticipantComponent();
+    parseTestingTestReportParticipantComponentProperties(json, res);
     return res;
   }
 
-  protected void parseTestingTestPlanSuiteInputComponentProperties(JsonObject json, TestPlan.TestPlanSuiteInputComponent res) throws IOException, FHIRFormatError {
+  protected void parseTestingTestReportParticipantComponentProperties(JsonObject json, TestReport.TestReportParticipantComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    if (json.has("type"))
+      res.setTypeElement(parseEnumeration(json.get("type").getAsString(), TestReport.TestReportParticipantTypeValueSet.NULL, new TestReport.TestReportParticipantTypeValueSetEnumFactory()));
+    if (json.has("_type"))
+      parseElementProperties(getJObject(json, "_type"), res.getTypeElement());
+    if (json.has("uri"))
+      res.setUriElement(parseUri(json.get("uri").getAsString()));
+    if (json.has("_uri"))
+      parseElementProperties(getJObject(json, "_uri"), res.getUriElement());
+    if (json.has("version"))
+      res.setVersionElement(parseUri(json.get("version").getAsString()));
+    if (json.has("_version"))
+      parseElementProperties(getJObject(json, "_version"), res.getVersionElement());
+    if (json.has("display"))
+      res.setDisplayElement(parseString(json.get("display").getAsString()));
+    if (json.has("_display"))
+      parseElementProperties(getJObject(json, "_display"), res.getDisplayElement());
+  }
+
+  protected TestReport.TestReportParameterComponent parseTestingTestReportParameterComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport.TestReportParameterComponent res = new TestReport.TestReportParameterComponent();
+    parseTestingTestReportParameterComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestReportParameterComponentProperties(JsonObject json, TestReport.TestReportParameterComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
     if (json.has("name"))
       res.setNameElement(parseString(json.get("name").getAsString()));
     if (json.has("_name"))
       parseElementProperties(getJObject(json, "_name"), res.getNameElement());
-    if (json.has("file"))
-      res.setFileElement(parseString(json.get("file").getAsString()));
-    if (json.has("_file"))
-      parseElementProperties(getJObject(json, "_file"), res.getFileElement());
-    if (json.has("resource"))
-      res.setResource(parseResource(getJObject(json, "resource")));
-    if (json.has("mode"))
-      res.setModeElement(parseCode(json.get("mode").getAsString()));
-    if (json.has("_mode"))
-      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
+    if (json.has("documentation"))
+      res.setDocumentationElement(parseMarkdown(json.get("documentation").getAsString()));
+    if (json.has("_documentation"))
+      parseElementProperties(getJObject(json, "_documentation"), res.getDocumentationElement());
   }
 
-  protected TestPlan.TestPlanSuiteTestComponent parseTestingTestPlanSuiteTestComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestPlan.TestPlanSuiteTestComponent res = new TestPlan.TestPlanSuiteTestComponent();
-    parseTestingTestPlanSuiteTestComponentProperties(json, res);
+  protected TestReport.TestReportSetupComponent parseTestingTestReportSetupComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport.TestReportSetupComponent res = new TestReport.TestReportSetupComponent();
+    parseTestingTestReportSetupComponentProperties(json, res);
     return res;
   }
 
-  protected void parseTestingTestPlanSuiteTestComponentProperties(JsonObject json, TestPlan.TestPlanSuiteTestComponent res) throws IOException, FHIRFormatError {
+  protected void parseTestingTestReportSetupComponentProperties(JsonObject json, TestReport.TestReportSetupComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    if (json.has("action")) {
+      JsonArray array = getJArray(json, "action");
+      for (int i = 0; i < array.size(); i++) {
+        res.getActionList().add(parseTestingTestReportSetupActionComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+  }
+
+  protected TestReport.SetupActionComponent parseTestingTestReportSetupActionComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport.SetupActionComponent res = new TestReport.SetupActionComponent();
+    parseTestingTestReportSetupActionComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestReportSetupActionComponentProperties(JsonObject json, TestReport.SetupActionComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    if (json.has("operation"))
+      res.setOperation(parseTestingTestReportSetupActionOperationComponent(getJObject(json, "operation")));
+    if (json.has("assert"))
+      res.setAssert(parseTestingTestReportSetupActionAssertComponent(getJObject(json, "assert")));
+  }
+
+  protected TestReport.SetupActionOperationComponent parseTestingTestReportSetupActionOperationComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport.SetupActionOperationComponent res = new TestReport.SetupActionOperationComponent();
+    parseTestingTestReportSetupActionOperationComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestReportSetupActionOperationComponentProperties(JsonObject json, TestReport.SetupActionOperationComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    if (json.has("result"))
+      res.setResultElement(parseEnumeration(json.get("result").getAsString(), TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
+    if (json.has("_result"))
+      parseElementProperties(getJObject(json, "_result"), res.getResultElement());
+    if (json.has("message"))
+      res.setMessageElement(parseMarkdown(json.get("message").getAsString()));
+    if (json.has("_message"))
+      parseElementProperties(getJObject(json, "_message"), res.getMessageElement());
+    if (json.has("detail"))
+      res.setDetailElement(parseUri(json.get("detail").getAsString()));
+    if (json.has("_detail"))
+      parseElementProperties(getJObject(json, "_detail"), res.getDetailElement());
+  }
+
+  protected TestReport.SetupActionAssertComponent parseTestingTestReportSetupActionAssertComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport.SetupActionAssertComponent res = new TestReport.SetupActionAssertComponent();
+    parseTestingTestReportSetupActionAssertComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestReportSetupActionAssertComponentProperties(JsonObject json, TestReport.SetupActionAssertComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    if (json.has("result"))
+      res.setResultElement(parseEnumeration(json.get("result").getAsString(), TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
+    if (json.has("_result"))
+      parseElementProperties(getJObject(json, "_result"), res.getResultElement());
+    if (json.has("message"))
+      res.setMessageElement(parseMarkdown(json.get("message").getAsString()));
+    if (json.has("_message"))
+      parseElementProperties(getJObject(json, "_message"), res.getMessageElement());
+    if (json.has("detail"))
+      res.setDetailElement(parseString(json.get("detail").getAsString()));
+    if (json.has("_detail"))
+      parseElementProperties(getJObject(json, "_detail"), res.getDetailElement());
+    if (json.has("requirement")) {
+      JsonArray array = getJArray(json, "requirement");
+      for (int i = 0; i < array.size(); i++) {
+        res.getRequirementList().add(parseTestingTestReportSetupActionAssertRequirementComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+  }
+
+  protected TestReport.SetupActionAssertRequirementComponent parseTestingTestReportSetupActionAssertRequirementComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport.SetupActionAssertRequirementComponent res = new TestReport.SetupActionAssertRequirementComponent();
+    parseTestingTestReportSetupActionAssertRequirementComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestReportSetupActionAssertRequirementComponentProperties(JsonObject json, TestReport.SetupActionAssertRequirementComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    DataType link = parseType("link", json);
+    if (link != null)
+      res.setLink(link);
+  }
+
+  protected TestReport.TestReportTestComponent parseTestingTestReportTestComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport.TestReportTestComponent res = new TestReport.TestReportTestComponent();
+    parseTestingTestReportTestComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestReportTestComponentProperties(JsonObject json, TestReport.TestReportTestComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
     if (json.has("name"))
       res.setNameElement(parseString(json.get("name").getAsString()));
@@ -1480,66 +1484,62 @@ public class TestingJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       res.setDescriptionElement(parseString(json.get("description").getAsString()));
     if (json.has("_description"))
       parseElementProperties(getJObject(json, "_description"), res.getDescriptionElement());
-    if (json.has("operation"))
-      res.setOperationElement(parseCode(json.get("operation").getAsString()));
-    if (json.has("_operation"))
-      parseElementProperties(getJObject(json, "_operation"), res.getOperationElement());
-    if (json.has("mode"))
-      res.setModeElement(parseCode(json.get("mode").getAsString()));
-    if (json.has("_mode"))
-      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
-    if (json.has("parameter")) {
-      JsonArray array = getJArray(json, "parameter");
+    if (json.has("result"))
+      res.setResultElement(parseEnumeration(json.get("result").getAsString(), TestReport.TestReportActionResultValueSet.NULL, new TestReport.TestReportActionResultValueSetEnumFactory()));
+    if (json.has("_result"))
+      parseElementProperties(getJObject(json, "_result"), res.getResultElement());
+    if (json.has("period"))
+      res.setPeriod(parsePeriod(getJObject(json, "period")));
+    if (json.has("action")) {
+      JsonArray array = getJArray(json, "action");
       for (int i = 0; i < array.size(); i++) {
-        res.getParameterList().add(parseTestingTestPlanParameterComponent(array.get(i).getAsJsonObject()));
+        res.getActionList().add(parseTestingTestReportTestActionComponent(array.get(i).getAsJsonObject()));
       }
     };
-    if (json.has("input")) {
-      JsonArray array = getJArray(json, "input");
-      for (int i = 0; i < array.size(); i++) {
-        res.getInputList().add(parseTestingTestPlanSuiteInputComponent(array.get(i).getAsJsonObject()));
-      }
-    };
-    if (json.has("expected")) {
-      JsonArray array = getJArray(json, "expected");
-      for (int i = 0; i < array.size(); i++) {
-        res.getExpectedList().add(parseTestingTestPlanSuiteInputComponent(array.get(i).getAsJsonObject()));
-      }
-    };
-    if (json.has("assertion")) {
-      JsonArray array = getJArray(json, "assertion");
-      for (int i = 0; i < array.size(); i++) {
-        res.getAssertionList().add(parseTestingTestPlanSuiteTestAssertionComponent(array.get(i).getAsJsonObject()));
-      }
-    };
+    if (json.has("log"))
+      res.setLog(parseAttachment(getJObject(json, "log")));
   }
 
-  protected TestPlan.TestPlanSuiteTestAssertionComponent parseTestingTestPlanSuiteTestAssertionComponent(JsonObject json) throws IOException, FHIRFormatError {
-    TestPlan.TestPlanSuiteTestAssertionComponent res = new TestPlan.TestPlanSuiteTestAssertionComponent();
-    parseTestingTestPlanSuiteTestAssertionComponentProperties(json, res);
+  protected TestReport.TestActionComponent parseTestingTestReportTestActionComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport.TestActionComponent res = new TestReport.TestActionComponent();
+    parseTestingTestReportTestActionComponentProperties(json, res);
     return res;
   }
 
-  protected void parseTestingTestPlanSuiteTestAssertionComponentProperties(JsonObject json, TestPlan.TestPlanSuiteTestAssertionComponent res) throws IOException, FHIRFormatError {
+  protected void parseTestingTestReportTestActionComponentProperties(JsonObject json, TestReport.TestActionComponent res) throws IOException, FHIRFormatError {
     parseBackboneElementProperties(json, res);
-    if (json.has("focus"))
-      res.setFocusElement(parseString(json.get("focus").getAsString()));
-    if (json.has("_focus"))
-      parseElementProperties(getJObject(json, "_focus"), res.getFocusElement());
-    if (json.has("severity"))
-      res.setSeverityElement(parseCode(json.get("severity").getAsString()));
-    if (json.has("_severity"))
-      parseElementProperties(getJObject(json, "_severity"), res.getSeverityElement());
-    if (json.has("expression"))
-      res.setExpression(parseExpression(getJObject(json, "expression")));
-    if (json.has("human"))
-      res.setHumanElement(parseString(json.get("human").getAsString()));
-    if (json.has("_human"))
-      parseElementProperties(getJObject(json, "_human"), res.getHumanElement());
-    if (json.has("mode"))
-      res.setModeElement(parseCode(json.get("mode").getAsString()));
-    if (json.has("_mode"))
-      parseElementProperties(getJObject(json, "_mode"), res.getModeElement());
+    if (json.has("operation"))
+      res.setOperation(parseTestingTestReportSetupActionOperationComponent(getJObject(json, "operation")));
+    if (json.has("assert"))
+      res.setAssert(parseTestingTestReportSetupActionAssertComponent(getJObject(json, "assert")));
+  }
+
+  protected TestReport.TestReportTeardownComponent parseTestingTestReportTeardownComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport.TestReportTeardownComponent res = new TestReport.TestReportTeardownComponent();
+    parseTestingTestReportTeardownComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestReportTeardownComponentProperties(JsonObject json, TestReport.TestReportTeardownComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    if (json.has("action")) {
+      JsonArray array = getJArray(json, "action");
+      for (int i = 0; i < array.size(); i++) {
+        res.getActionList().add(parseTestingTestReportTeardownActionComponent(array.get(i).getAsJsonObject()));
+      }
+    };
+  }
+
+  protected TestReport.TeardownActionComponent parseTestingTestReportTeardownActionComponent(JsonObject json) throws IOException, FHIRFormatError {
+    TestReport.TeardownActionComponent res = new TestReport.TeardownActionComponent();
+    parseTestingTestReportTeardownActionComponentProperties(json, res);
+    return res;
+  }
+
+  protected void parseTestingTestReportTeardownActionComponentProperties(JsonObject json, TestReport.TeardownActionComponent res) throws IOException, FHIRFormatError {
+    parseBackboneElementProperties(json, res);
+    if (json.has("operation"))
+      res.setOperation(parseTestingTestReportSetupActionOperationComponent(getJObject(json, "operation")));
   }
 
 
@@ -1548,245 +1548,219 @@ public class TestingJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
 // -- compose ---------------------------------------------------------------------------------------------------------------------
 
 
-  protected void composeTestReport(String name, TestReport element) throws IOException {
+  protected void composeTestPlan(String name, TestPlan element) throws IOException {
     if (element != null) {
-      prop("resourceType", "TestReport");
-      prop("resourceDefinition", "http://hl7.org/fhir/StructureDefinition/TestReport|0.1.0-SNAPSHOT");
-      composeTestReportProperties(element);
+      prop("resourceType", "TestPlan");
+      prop("resourceDefinition", "http://hl7.org/fhir/StructureDefinition/TestPlan|0.1.0-snapshot1");
+      composeTestPlanProperties(element);
     }
   }
 
-  protected void composeTestReportProperties(TestReport element) throws IOException {
-    composeDomainResourceProperties(element);
+  protected void composeTestPlanProperties(TestPlan element) throws IOException {
+    composeCanonicalResourceProperties(element);
+      if (element.hasUrlElement()) {
+        composeUriCore("url", element.getUrlElement(), false);
+        composeUriExtras("url", element.getUrlElement(), false);
+      }
       if (element.hasIdentifier()) {
-        composeIdentifier("identifier", element.getIdentifier());
+        openArray("identifier");
+        for (Identifier e : element.getIdentifierList()) 
+          composeIdentifier(null, e);
+        closeArray();
+      };
+      if (element.hasVersionElement()) {
+        composeStringCore("version", element.getVersionElement(), false);
+        composeStringExtras("version", element.getVersionElement(), false);
+      }
+      if (element.hasVersionAlgorithm()) {
+        composeType("versionAlgorithm", element.getVersionAlgorithm());
       }
       if (element.hasNameElement()) {
         composeStringCore("name", element.getNameElement(), false);
         composeStringExtras("name", element.getNameElement(), false);
       }
+      if (element.hasTitleElement()) {
+        composeStringCore("title", element.getTitleElement(), false);
+        composeStringExtras("title", element.getTitleElement(), false);
+      }
+      if (element.hasStatusElement()) {
+        composeEnumerationCore("status", element.getStatusElement(), new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory(), false);
+        composeEnumerationExtras("status", element.getStatusElement(), new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory(), false);
+      }
+      if (element.hasExperimentalElement()) {
+        composeBooleanCore("experimental", element.getExperimentalElement(), false);
+        composeBooleanExtras("experimental", element.getExperimentalElement(), false);
+      }
+      if (element.hasDateElement()) {
+        composeDateTimeCore("date", element.getDateElement(), false);
+        composeDateTimeExtras("date", element.getDateElement(), false);
+      }
+      if (element.hasPublisherElement()) {
+        composeStringCore("publisher", element.getPublisherElement(), false);
+        composeStringExtras("publisher", element.getPublisherElement(), false);
+      }
+      if (element.hasContact()) {
+        openArray("contact");
+        for (ContactDetail e : element.getContactList()) 
+          composeContactDetail(null, e);
+        closeArray();
+      };
       if (element.hasDescriptionElement()) {
         composeMarkdownCore("description", element.getDescriptionElement(), false);
         composeMarkdownExtras("description", element.getDescriptionElement(), false);
       }
-      if (element.hasStatusElement()) {
-        composeEnumerationCore("status", element.getStatusElement(), new TestReport.TestReportStatusValueSetEnumFactory(), false);
-        composeEnumerationExtras("status", element.getStatusElement(), new TestReport.TestReportStatusValueSetEnumFactory(), false);
+      if (element.hasUseContext()) {
+        openArray("useContext");
+        for (UsageContext e : element.getUseContextList()) 
+          composeUsageContext(null, e);
+        closeArray();
+      };
+      if (element.hasJurisdiction()) {
+        openArray("jurisdiction");
+        for (CodeableConcept e : element.getJurisdictionList()) 
+          composeCodeableConcept(null, e);
+        closeArray();
+      };
+      if (element.hasPurposeElement()) {
+        composeMarkdownCore("purpose", element.getPurposeElement(), false);
+        composeMarkdownExtras("purpose", element.getPurposeElement(), false);
       }
-      if (element.hasTestScriptElement()) {
-        composeCanonicalCore("testScript", element.getTestScriptElement(), false);
-        composeCanonicalExtras("testScript", element.getTestScriptElement(), false);
+      if (element.hasCopyrightElement()) {
+        composeMarkdownCore("copyright", element.getCopyrightElement(), false);
+        composeMarkdownExtras("copyright", element.getCopyrightElement(), false);
       }
-      if (element.hasResultElement()) {
-        composeEnumerationCore("result", element.getResultElement(), new TestReport.TestReportResultValueSetEnumFactory(), false);
-        composeEnumerationExtras("result", element.getResultElement(), new TestReport.TestReportResultValueSetEnumFactory(), false);
+      if (element.hasCopyrightLabelElement()) {
+        composeStringCore("copyrightLabel", element.getCopyrightLabelElement(), false);
+        composeStringExtras("copyrightLabel", element.getCopyrightLabelElement(), false);
       }
-      if (element.hasScoreElement()) {
-        composeDecimalCore("score", element.getScoreElement(), false);
-        composeDecimalExtras("score", element.getScoreElement(), false);
+      if (element.hasScope()) {
+        openArray("scope");
+        for (TestPlan.TestPlanScopeComponent e : element.getScopeList()) 
+          composeTestPlanScopeComponent(null, e);
+        closeArray();
+      };
+      if (element.hasDependency()) {
+        openArray("dependency");
+        for (TestPlan.TestPlanDependencyComponent e : element.getDependencyList()) 
+          composeTestPlanDependencyComponent(null, e);
+        closeArray();
+      };
+      if (element.hasRunnerElement()) {
+        composeUrlCore("runner", element.getRunnerElement(), false);
+        composeUrlExtras("runner", element.getRunnerElement(), false);
       }
-      if (element.hasTesterElement()) {
-        composeStringCore("tester", element.getTesterElement(), false);
-        composeStringExtras("tester", element.getTesterElement(), false);
-      }
-      if (element.hasIssuedElement()) {
-        composeDateTimeCore("issued", element.getIssuedElement(), false);
-        composeDateTimeExtras("issued", element.getIssuedElement(), false);
-      }
-      if (element.hasParticipant()) {
-        openArray("participant");
-        for (TestReport.TestReportParticipantComponent e : element.getParticipantList()) 
-          composeTestReportParticipantComponent(null, e);
+      if (element.hasMode()) {
+        openArray("mode");
+        for (TestPlan.TestPlanModeComponent e : element.getModeList()) 
+          composeTestPlanModeComponent(null, e);
         closeArray();
       };
       if (element.hasParameter()) {
         openArray("parameter");
-        for (TestReport.TestReportParameterComponent e : element.getParameterList()) 
-          composeTestReportParameterComponent(null, e);
+        for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
+          composeTestPlanParameterComponent(null, e);
         closeArray();
       };
-      if (element.hasSetup()) {
-        composeTestReportSetupComponent("setup", element.getSetup());
-      }
-      if (element.hasTest()) {
-        openArray("test");
-        for (TestReport.TestReportTestComponent e : element.getTestList()) 
-          composeTestReportTestComponent(null, e);
+      if (element.hasSuite()) {
+        openArray("suite");
+        for (TestPlan.TestPlanSuiteComponent e : element.getSuiteList()) 
+          composeTestPlanSuiteComponent(null, e);
         closeArray();
       };
-      if (element.hasTeardown()) {
-        composeTestReportTeardownComponent("teardown", element.getTeardown());
-      }
-      if (element.hasPresentedForm()) {
-        composeAttachment("presentedForm", element.getPresentedForm());
-      }
-      if (element.hasLog()) {
-        composeAttachment("log", element.getLog());
-      }
   }
 
-  protected void composeTestReportParticipantComponent(String name, TestReport.TestReportParticipantComponent element) throws IOException {
+  protected void composeTestPlanScopeComponent(String name, TestPlan.TestPlanScopeComponent element) throws IOException {
     if (element != null) {
       open(name);
-      composeTestReportParticipantComponentProperties(element);
+      composeTestPlanScopeComponentProperties(element);
       close();
     }
   }
 
-  protected void composeTestReportParticipantComponentProperties(TestReport.TestReportParticipantComponent element) throws IOException {
+  protected void composeTestPlanScopeComponentProperties(TestPlan.TestPlanScopeComponent element) throws IOException {
     composeBackboneElementProperties(element);
-      if (element.hasTypeElement()) {
-        composeEnumerationCore("type", element.getTypeElement(), new TestReport.TestReportParticipantTypeValueSetEnumFactory(), false);
-        composeEnumerationExtras("type", element.getTypeElement(), new TestReport.TestReportParticipantTypeValueSetEnumFactory(), false);
+      if (element.hasReferenceElement()) {
+        composeCanonicalCore("reference", element.getReferenceElement(), false);
+        composeCanonicalExtras("reference", element.getReferenceElement(), false);
       }
-      if (element.hasUriElement()) {
-        composeUriCore("uri", element.getUriElement(), false);
-        composeUriExtras("uri", element.getUriElement(), false);
-      }
-      if (element.hasVersionElement()) {
-        composeUriCore("version", element.getVersionElement(), false);
-        composeUriExtras("version", element.getVersionElement(), false);
-      }
-      if (element.hasDisplayElement()) {
-        composeStringCore("display", element.getDisplayElement(), false);
-        composeStringExtras("display", element.getDisplayElement(), false);
+      if (element.hasDescriptionElement()) {
+        composeStringCore("description", element.getDescriptionElement(), false);
+        composeStringExtras("description", element.getDescriptionElement(), false);
       }
   }
 
-  protected void composeTestReportParameterComponent(String name, TestReport.TestReportParameterComponent element) throws IOException {
+  protected void composeTestPlanDependencyComponent(String name, TestPlan.TestPlanDependencyComponent element) throws IOException {
     if (element != null) {
       open(name);
-      composeTestReportParameterComponentProperties(element);
+      composeTestPlanDependencyComponentProperties(element);
       close();
     }
   }
 
-  protected void composeTestReportParameterComponentProperties(TestReport.TestReportParameterComponent element) throws IOException {
+  protected void composeTestPlanDependencyComponentProperties(TestPlan.TestPlanDependencyComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasReferenceElement()) {
+        composeCanonicalCore("reference", element.getReferenceElement(), false);
+        composeCanonicalExtras("reference", element.getReferenceElement(), false);
+      }
+      if (element.hasDescriptionElement()) {
+        composeStringCore("description", element.getDescriptionElement(), false);
+        composeStringExtras("description", element.getDescriptionElement(), false);
+      }
+  }
+
+  protected void composeTestPlanModeComponent(String name, TestPlan.TestPlanModeComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeTestPlanModeComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeTestPlanModeComponentProperties(TestPlan.TestPlanModeComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasCodeElement()) {
+        composeStringCore("code", element.getCodeElement(), false);
+        composeStringExtras("code", element.getCodeElement(), false);
+      }
+      if (element.hasDescriptionElement()) {
+        composeStringCore("description", element.getDescriptionElement(), false);
+        composeStringExtras("description", element.getDescriptionElement(), false);
+      }
+  }
+
+  protected void composeTestPlanParameterComponent(String name, TestPlan.TestPlanParameterComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeTestPlanParameterComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeTestPlanParameterComponentProperties(TestPlan.TestPlanParameterComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasNameElement()) {
         composeStringCore("name", element.getNameElement(), false);
         composeStringExtras("name", element.getNameElement(), false);
       }
-      if (element.hasDocumentationElement()) {
-        composeMarkdownCore("documentation", element.getDocumentationElement(), false);
-        composeMarkdownExtras("documentation", element.getDocumentationElement(), false);
+      if (element.hasValue()) {
+        composeType("value", element.getValue());
+      }
+      if (element.hasModeElement()) {
+        composeCodeCore("mode", element.getModeElement(), false);
+        composeCodeExtras("mode", element.getModeElement(), false);
       }
   }
 
-  protected void composeTestReportSetupComponent(String name, TestReport.TestReportSetupComponent element) throws IOException {
+  protected void composeTestPlanSuiteComponent(String name, TestPlan.TestPlanSuiteComponent element) throws IOException {
     if (element != null) {
       open(name);
-      composeTestReportSetupComponentProperties(element);
+      composeTestPlanSuiteComponentProperties(element);
       close();
     }
   }
 
-  protected void composeTestReportSetupComponentProperties(TestReport.TestReportSetupComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasAction()) {
-        openArray("action");
-        for (TestReport.SetupActionComponent e : element.getActionList()) 
-          composeSetupActionComponent(null, e);
-        closeArray();
-      };
-  }
-
-  protected void composeSetupActionComponent(String name, TestReport.SetupActionComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeSetupActionComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeSetupActionComponentProperties(TestReport.SetupActionComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasOperation()) {
-        composeSetupActionOperationComponent("operation", element.getOperation());
-      }
-      if (element.hasAssert()) {
-        composeSetupActionAssertComponent("assert", element.getAssert());
-      }
-  }
-
-  protected void composeSetupActionOperationComponent(String name, TestReport.SetupActionOperationComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeSetupActionOperationComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeSetupActionOperationComponentProperties(TestReport.SetupActionOperationComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasResultElement()) {
-        composeEnumerationCore("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
-        composeEnumerationExtras("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
-      }
-      if (element.hasMessageElement()) {
-        composeMarkdownCore("message", element.getMessageElement(), false);
-        composeMarkdownExtras("message", element.getMessageElement(), false);
-      }
-      if (element.hasDetailElement()) {
-        composeUriCore("detail", element.getDetailElement(), false);
-        composeUriExtras("detail", element.getDetailElement(), false);
-      }
-  }
-
-  protected void composeSetupActionAssertComponent(String name, TestReport.SetupActionAssertComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeSetupActionAssertComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeSetupActionAssertComponentProperties(TestReport.SetupActionAssertComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasResultElement()) {
-        composeEnumerationCore("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
-        composeEnumerationExtras("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
-      }
-      if (element.hasMessageElement()) {
-        composeMarkdownCore("message", element.getMessageElement(), false);
-        composeMarkdownExtras("message", element.getMessageElement(), false);
-      }
-      if (element.hasDetailElement()) {
-        composeStringCore("detail", element.getDetailElement(), false);
-        composeStringExtras("detail", element.getDetailElement(), false);
-      }
-      if (element.hasRequirement()) {
-        openArray("requirement");
-        for (TestReport.SetupActionAssertRequirementComponent e : element.getRequirementList()) 
-          composeSetupActionAssertRequirementComponent(null, e);
-        closeArray();
-      };
-  }
-
-  protected void composeSetupActionAssertRequirementComponent(String name, TestReport.SetupActionAssertRequirementComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeSetupActionAssertRequirementComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeSetupActionAssertRequirementComponentProperties(TestReport.SetupActionAssertRequirementComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasLink()) {
-        composeType("link", element.getLink());
-      }
-  }
-
-  protected void composeTestReportTestComponent(String name, TestReport.TestReportTestComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeTestReportTestComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeTestReportTestComponentProperties(TestReport.TestReportTestComponent element) throws IOException {
+  protected void composeTestPlanSuiteComponentProperties(TestPlan.TestPlanSuiteComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasNameElement()) {
         composeStringCore("name", element.getNameElement(), false);
@@ -1796,79 +1770,158 @@ public class TestingJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
         composeStringCore("description", element.getDescriptionElement(), false);
         composeStringExtras("description", element.getDescriptionElement(), false);
       }
-      if (element.hasResultElement()) {
-        composeEnumerationCore("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
-        composeEnumerationExtras("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
+      if (element.hasModeElement()) {
+        composeCodeCore("mode", element.getModeElement(), false);
+        composeCodeExtras("mode", element.getModeElement(), false);
       }
-      if (element.hasPeriod()) {
-        composePeriod("period", element.getPeriod());
-      }
-      if (element.hasAction()) {
-        openArray("action");
-        for (TestReport.TestActionComponent e : element.getActionList()) 
-          composeTestActionComponent(null, e);
+      if (element.hasInput()) {
+        openArray("input");
+        for (TestPlan.TestPlanSuiteInputComponent e : element.getInputList()) 
+          composeTestPlanSuiteInputComponent(null, e);
         closeArray();
       };
-      if (element.hasLog()) {
-        composeAttachment("log", element.getLog());
-      }
-  }
-
-  protected void composeTestActionComponent(String name, TestReport.TestActionComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeTestActionComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeTestActionComponentProperties(TestReport.TestActionComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasOperation()) {
-        composeSetupActionOperationComponent("operation", element.getOperation());
-      }
-      if (element.hasAssert()) {
-        composeSetupActionAssertComponent("assert", element.getAssert());
-      }
-  }
-
-  protected void composeTestReportTeardownComponent(String name, TestReport.TestReportTeardownComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeTestReportTeardownComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeTestReportTeardownComponentProperties(TestReport.TestReportTeardownComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasAction()) {
-        openArray("action");
-        for (TestReport.TeardownActionComponent e : element.getActionList()) 
-          composeTeardownActionComponent(null, e);
+      if (element.hasParameter()) {
+        openArray("parameter");
+        for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
+          composeTestPlanParameterComponent(null, e);
+        closeArray();
+      };
+      if (element.hasTest()) {
+        openArray("test");
+        for (TestPlan.TestPlanSuiteTestComponent e : element.getTestList()) 
+          composeTestPlanSuiteTestComponent(null, e);
+        closeArray();
+      };
+      if (element.hasSuite()) {
+        openArray("suite");
+        for (TestPlan.TestPlanSuiteComponent e : element.getSuiteList()) 
+          composeTestPlanSuiteComponent(null, e);
+        closeArray();
+      };
+      if (element.hasPlan()) {
+        openArray("plan");
+        for (Reference e : element.getPlanList()) 
+          composeReference(null, e);
         closeArray();
       };
   }
 
-  protected void composeTeardownActionComponent(String name, TestReport.TeardownActionComponent element) throws IOException {
+  protected void composeTestPlanSuiteInputComponent(String name, TestPlan.TestPlanSuiteInputComponent element) throws IOException {
     if (element != null) {
       open(name);
-      composeTeardownActionComponentProperties(element);
+      composeTestPlanSuiteInputComponentProperties(element);
       close();
     }
   }
 
-  protected void composeTeardownActionComponentProperties(TestReport.TeardownActionComponent element) throws IOException {
+  protected void composeTestPlanSuiteInputComponentProperties(TestPlan.TestPlanSuiteInputComponent element) throws IOException {
     composeBackboneElementProperties(element);
-      if (element.hasOperation()) {
-        composeSetupActionOperationComponent("operation", element.getOperation());
+      if (element.hasNameElement()) {
+        composeStringCore("name", element.getNameElement(), false);
+        composeStringExtras("name", element.getNameElement(), false);
+      }
+      if (element.hasFileElement()) {
+        composeStringCore("file", element.getFileElement(), false);
+        composeStringExtras("file", element.getFileElement(), false);
+      }
+        if (element.hasResource()) {
+          open("resource");
+          composeResource(element.getResource());
+          close();
+        }
+      if (element.hasModeElement()) {
+        composeCodeCore("mode", element.getModeElement(), false);
+        composeCodeExtras("mode", element.getModeElement(), false);
+      }
+  }
+
+  protected void composeTestPlanSuiteTestComponent(String name, TestPlan.TestPlanSuiteTestComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeTestPlanSuiteTestComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeTestPlanSuiteTestComponentProperties(TestPlan.TestPlanSuiteTestComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasNameElement()) {
+        composeStringCore("name", element.getNameElement(), false);
+        composeStringExtras("name", element.getNameElement(), false);
+      }
+      if (element.hasDescriptionElement()) {
+        composeStringCore("description", element.getDescriptionElement(), false);
+        composeStringExtras("description", element.getDescriptionElement(), false);
+      }
+      if (element.hasOperationElement()) {
+        composeCodeCore("operation", element.getOperationElement(), false);
+        composeCodeExtras("operation", element.getOperationElement(), false);
+      }
+      if (element.hasModeElement()) {
+        composeCodeCore("mode", element.getModeElement(), false);
+        composeCodeExtras("mode", element.getModeElement(), false);
+      }
+      if (element.hasParameter()) {
+        openArray("parameter");
+        for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
+          composeTestPlanParameterComponent(null, e);
+        closeArray();
+      };
+      if (element.hasInput()) {
+        openArray("input");
+        for (TestPlan.TestPlanSuiteInputComponent e : element.getInputList()) 
+          composeTestPlanSuiteInputComponent(null, e);
+        closeArray();
+      };
+      if (element.hasExpected()) {
+        openArray("expected");
+        for (TestPlan.TestPlanSuiteInputComponent e : element.getExpectedList()) 
+          composeTestPlanSuiteInputComponent(null, e);
+        closeArray();
+      };
+      if (element.hasAssertion()) {
+        openArray("assertion");
+        for (TestPlan.TestPlanSuiteTestAssertionComponent e : element.getAssertionList()) 
+          composeTestPlanSuiteTestAssertionComponent(null, e);
+        closeArray();
+      };
+  }
+
+  protected void composeTestPlanSuiteTestAssertionComponent(String name, TestPlan.TestPlanSuiteTestAssertionComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeTestPlanSuiteTestAssertionComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeTestPlanSuiteTestAssertionComponentProperties(TestPlan.TestPlanSuiteTestAssertionComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasFocusElement()) {
+        composeStringCore("focus", element.getFocusElement(), false);
+        composeStringExtras("focus", element.getFocusElement(), false);
+      }
+      if (element.hasSeverityElement()) {
+        composeCodeCore("severity", element.getSeverityElement(), false);
+        composeCodeExtras("severity", element.getSeverityElement(), false);
+      }
+      if (element.hasExpression()) {
+        composeExpression("expression", element.getExpression());
+      }
+      if (element.hasHumanElement()) {
+        composeStringCore("human", element.getHumanElement(), false);
+        composeStringExtras("human", element.getHumanElement(), false);
+      }
+      if (element.hasModeElement()) {
+        composeCodeCore("mode", element.getModeElement(), false);
+        composeCodeExtras("mode", element.getModeElement(), false);
       }
   }
 
   protected void composeTestScript(String name, TestScript element) throws IOException {
     if (element != null) {
       prop("resourceType", "TestScript");
-      prop("resourceDefinition", "http://hl7.org/fhir/StructureDefinition/TestScript|0.1.0-SNAPSHOT");
+      prop("resourceDefinition", "http://hl7.org/fhir/StructureDefinition/TestScript|0.1.0-snapshot1");
       composeTestScriptProperties(element);
     }
   }
@@ -2741,302 +2794,245 @@ public class TestingJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
       }
   }
 
-  protected void composeTestPlan(String name, TestPlan element) throws IOException {
+  protected void composeTestReport(String name, TestReport element) throws IOException {
     if (element != null) {
-      prop("resourceType", "TestPlan");
-      prop("resourceDefinition", "http://hl7.org/fhir/StructureDefinition/TestPlan|0.1.0-SNAPSHOT");
-      composeTestPlanProperties(element);
+      prop("resourceType", "TestReport");
+      prop("resourceDefinition", "http://hl7.org/fhir/StructureDefinition/TestReport|0.1.0-snapshot1");
+      composeTestReportProperties(element);
     }
   }
 
-  protected void composeTestPlanProperties(TestPlan element) throws IOException {
-    composeCanonicalResourceProperties(element);
-      if (element.hasUrlElement()) {
-        composeUriCore("url", element.getUrlElement(), false);
-        composeUriExtras("url", element.getUrlElement(), false);
-      }
+  protected void composeTestReportProperties(TestReport element) throws IOException {
+    composeDomainResourceProperties(element);
       if (element.hasIdentifier()) {
-        openArray("identifier");
-        for (Identifier e : element.getIdentifierList()) 
-          composeIdentifier(null, e);
-        closeArray();
-      };
-      if (element.hasVersionElement()) {
-        composeStringCore("version", element.getVersionElement(), false);
-        composeStringExtras("version", element.getVersionElement(), false);
-      }
-      if (element.hasVersionAlgorithm()) {
-        composeType("versionAlgorithm", element.getVersionAlgorithm());
+        composeIdentifier("identifier", element.getIdentifier());
       }
       if (element.hasNameElement()) {
         composeStringCore("name", element.getNameElement(), false);
         composeStringExtras("name", element.getNameElement(), false);
       }
-      if (element.hasTitleElement()) {
-        composeStringCore("title", element.getTitleElement(), false);
-        composeStringExtras("title", element.getTitleElement(), false);
-      }
-      if (element.hasStatusElement()) {
-        composeEnumerationCore("status", element.getStatusElement(), new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory(), false);
-        composeEnumerationExtras("status", element.getStatusElement(), new org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory(), false);
-      }
-      if (element.hasExperimentalElement()) {
-        composeBooleanCore("experimental", element.getExperimentalElement(), false);
-        composeBooleanExtras("experimental", element.getExperimentalElement(), false);
-      }
-      if (element.hasDateElement()) {
-        composeDateTimeCore("date", element.getDateElement(), false);
-        composeDateTimeExtras("date", element.getDateElement(), false);
-      }
-      if (element.hasPublisherElement()) {
-        composeStringCore("publisher", element.getPublisherElement(), false);
-        composeStringExtras("publisher", element.getPublisherElement(), false);
-      }
-      if (element.hasContact()) {
-        openArray("contact");
-        for (ContactDetail e : element.getContactList()) 
-          composeContactDetail(null, e);
-        closeArray();
-      };
       if (element.hasDescriptionElement()) {
         composeMarkdownCore("description", element.getDescriptionElement(), false);
         composeMarkdownExtras("description", element.getDescriptionElement(), false);
       }
-      if (element.hasUseContext()) {
-        openArray("useContext");
-        for (UsageContext e : element.getUseContextList()) 
-          composeUsageContext(null, e);
-        closeArray();
-      };
-      if (element.hasJurisdiction()) {
-        openArray("jurisdiction");
-        for (CodeableConcept e : element.getJurisdictionList()) 
-          composeCodeableConcept(null, e);
-        closeArray();
-      };
-      if (element.hasPurposeElement()) {
-        composeMarkdownCore("purpose", element.getPurposeElement(), false);
-        composeMarkdownExtras("purpose", element.getPurposeElement(), false);
+      if (element.hasStatusElement()) {
+        composeEnumerationCore("status", element.getStatusElement(), new TestReport.TestReportStatusValueSetEnumFactory(), false);
+        composeEnumerationExtras("status", element.getStatusElement(), new TestReport.TestReportStatusValueSetEnumFactory(), false);
       }
-      if (element.hasCopyrightElement()) {
-        composeMarkdownCore("copyright", element.getCopyrightElement(), false);
-        composeMarkdownExtras("copyright", element.getCopyrightElement(), false);
+      if (element.hasTestScriptElement()) {
+        composeCanonicalCore("testScript", element.getTestScriptElement(), false);
+        composeCanonicalExtras("testScript", element.getTestScriptElement(), false);
       }
-      if (element.hasCopyrightLabelElement()) {
-        composeStringCore("copyrightLabel", element.getCopyrightLabelElement(), false);
-        composeStringExtras("copyrightLabel", element.getCopyrightLabelElement(), false);
+      if (element.hasResultElement()) {
+        composeEnumerationCore("result", element.getResultElement(), new TestReport.TestReportResultValueSetEnumFactory(), false);
+        composeEnumerationExtras("result", element.getResultElement(), new TestReport.TestReportResultValueSetEnumFactory(), false);
       }
-      if (element.hasScope()) {
-        openArray("scope");
-        for (TestPlan.TestPlanScopeComponent e : element.getScopeList()) 
-          composeTestPlanScopeComponent(null, e);
-        closeArray();
-      };
-      if (element.hasDependency()) {
-        openArray("dependency");
-        for (TestPlan.TestPlanDependencyComponent e : element.getDependencyList()) 
-          composeTestPlanDependencyComponent(null, e);
-        closeArray();
-      };
-      if (element.hasRunnerElement()) {
-        composeUrlCore("runner", element.getRunnerElement(), false);
-        composeUrlExtras("runner", element.getRunnerElement(), false);
+      if (element.hasScoreElement()) {
+        composeDecimalCore("score", element.getScoreElement(), false);
+        composeDecimalExtras("score", element.getScoreElement(), false);
       }
-      if (element.hasMode()) {
-        openArray("mode");
-        for (TestPlan.TestPlanModeComponent e : element.getModeList()) 
-          composeTestPlanModeComponent(null, e);
+      if (element.hasTesterElement()) {
+        composeStringCore("tester", element.getTesterElement(), false);
+        composeStringExtras("tester", element.getTesterElement(), false);
+      }
+      if (element.hasIssuedElement()) {
+        composeDateTimeCore("issued", element.getIssuedElement(), false);
+        composeDateTimeExtras("issued", element.getIssuedElement(), false);
+      }
+      if (element.hasParticipant()) {
+        openArray("participant");
+        for (TestReport.TestReportParticipantComponent e : element.getParticipantList()) 
+          composeTestReportParticipantComponent(null, e);
         closeArray();
       };
       if (element.hasParameter()) {
         openArray("parameter");
-        for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
-          composeTestPlanParameterComponent(null, e);
+        for (TestReport.TestReportParameterComponent e : element.getParameterList()) 
+          composeTestReportParameterComponent(null, e);
         closeArray();
       };
-      if (element.hasSuite()) {
-        openArray("suite");
-        for (TestPlan.TestPlanSuiteComponent e : element.getSuiteList()) 
-          composeTestPlanSuiteComponent(null, e);
-        closeArray();
-      };
-  }
-
-  protected void composeTestPlanScopeComponent(String name, TestPlan.TestPlanScopeComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeTestPlanScopeComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeTestPlanScopeComponentProperties(TestPlan.TestPlanScopeComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasReferenceElement()) {
-        composeCanonicalCore("reference", element.getReferenceElement(), false);
-        composeCanonicalExtras("reference", element.getReferenceElement(), false);
+      if (element.hasSetup()) {
+        composeTestReportSetupComponent("setup", element.getSetup());
       }
-      if (element.hasDescriptionElement()) {
-        composeStringCore("description", element.getDescriptionElement(), false);
-        composeStringExtras("description", element.getDescriptionElement(), false);
-      }
-  }
-
-  protected void composeTestPlanDependencyComponent(String name, TestPlan.TestPlanDependencyComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeTestPlanDependencyComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeTestPlanDependencyComponentProperties(TestPlan.TestPlanDependencyComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasReferenceElement()) {
-        composeCanonicalCore("reference", element.getReferenceElement(), false);
-        composeCanonicalExtras("reference", element.getReferenceElement(), false);
-      }
-      if (element.hasDescriptionElement()) {
-        composeStringCore("description", element.getDescriptionElement(), false);
-        composeStringExtras("description", element.getDescriptionElement(), false);
-      }
-  }
-
-  protected void composeTestPlanModeComponent(String name, TestPlan.TestPlanModeComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeTestPlanModeComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeTestPlanModeComponentProperties(TestPlan.TestPlanModeComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasCodeElement()) {
-        composeStringCore("code", element.getCodeElement(), false);
-        composeStringExtras("code", element.getCodeElement(), false);
-      }
-      if (element.hasDescriptionElement()) {
-        composeStringCore("description", element.getDescriptionElement(), false);
-        composeStringExtras("description", element.getDescriptionElement(), false);
-      }
-  }
-
-  protected void composeTestPlanParameterComponent(String name, TestPlan.TestPlanParameterComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeTestPlanParameterComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeTestPlanParameterComponentProperties(TestPlan.TestPlanParameterComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasNameElement()) {
-        composeStringCore("name", element.getNameElement(), false);
-        composeStringExtras("name", element.getNameElement(), false);
-      }
-      if (element.hasValue()) {
-        composeType("value", element.getValue());
-      }
-      if (element.hasModeElement()) {
-        composeCodeCore("mode", element.getModeElement(), false);
-        composeCodeExtras("mode", element.getModeElement(), false);
-      }
-  }
-
-  protected void composeTestPlanSuiteComponent(String name, TestPlan.TestPlanSuiteComponent element) throws IOException {
-    if (element != null) {
-      open(name);
-      composeTestPlanSuiteComponentProperties(element);
-      close();
-    }
-  }
-
-  protected void composeTestPlanSuiteComponentProperties(TestPlan.TestPlanSuiteComponent element) throws IOException {
-    composeBackboneElementProperties(element);
-      if (element.hasNameElement()) {
-        composeStringCore("name", element.getNameElement(), false);
-        composeStringExtras("name", element.getNameElement(), false);
-      }
-      if (element.hasDescriptionElement()) {
-        composeStringCore("description", element.getDescriptionElement(), false);
-        composeStringExtras("description", element.getDescriptionElement(), false);
-      }
-      if (element.hasModeElement()) {
-        composeCodeCore("mode", element.getModeElement(), false);
-        composeCodeExtras("mode", element.getModeElement(), false);
-      }
-      if (element.hasInput()) {
-        openArray("input");
-        for (TestPlan.TestPlanSuiteInputComponent e : element.getInputList()) 
-          composeTestPlanSuiteInputComponent(null, e);
-        closeArray();
-      };
-      if (element.hasParameter()) {
-        openArray("parameter");
-        for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
-          composeTestPlanParameterComponent(null, e);
-        closeArray();
-      };
       if (element.hasTest()) {
         openArray("test");
-        for (TestPlan.TestPlanSuiteTestComponent e : element.getTestList()) 
-          composeTestPlanSuiteTestComponent(null, e);
+        for (TestReport.TestReportTestComponent e : element.getTestList()) 
+          composeTestReportTestComponent(null, e);
         closeArray();
       };
-      if (element.hasSuite()) {
-        openArray("suite");
-        for (TestPlan.TestPlanSuiteComponent e : element.getSuiteList()) 
-          composeTestPlanSuiteComponent(null, e);
-        closeArray();
-      };
-      if (element.hasPlan()) {
-        openArray("plan");
-        for (Reference e : element.getPlanList()) 
-          composeReference(null, e);
-        closeArray();
-      };
+      if (element.hasTeardown()) {
+        composeTestReportTeardownComponent("teardown", element.getTeardown());
+      }
+      if (element.hasPresentedForm()) {
+        composeAttachment("presentedForm", element.getPresentedForm());
+      }
+      if (element.hasLog()) {
+        composeAttachment("log", element.getLog());
+      }
   }
 
-  protected void composeTestPlanSuiteInputComponent(String name, TestPlan.TestPlanSuiteInputComponent element) throws IOException {
+  protected void composeTestReportParticipantComponent(String name, TestReport.TestReportParticipantComponent element) throws IOException {
     if (element != null) {
       open(name);
-      composeTestPlanSuiteInputComponentProperties(element);
+      composeTestReportParticipantComponentProperties(element);
       close();
     }
   }
 
-  protected void composeTestPlanSuiteInputComponentProperties(TestPlan.TestPlanSuiteInputComponent element) throws IOException {
+  protected void composeTestReportParticipantComponentProperties(TestReport.TestReportParticipantComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasTypeElement()) {
+        composeEnumerationCore("type", element.getTypeElement(), new TestReport.TestReportParticipantTypeValueSetEnumFactory(), false);
+        composeEnumerationExtras("type", element.getTypeElement(), new TestReport.TestReportParticipantTypeValueSetEnumFactory(), false);
+      }
+      if (element.hasUriElement()) {
+        composeUriCore("uri", element.getUriElement(), false);
+        composeUriExtras("uri", element.getUriElement(), false);
+      }
+      if (element.hasVersionElement()) {
+        composeUriCore("version", element.getVersionElement(), false);
+        composeUriExtras("version", element.getVersionElement(), false);
+      }
+      if (element.hasDisplayElement()) {
+        composeStringCore("display", element.getDisplayElement(), false);
+        composeStringExtras("display", element.getDisplayElement(), false);
+      }
+  }
+
+  protected void composeTestReportParameterComponent(String name, TestReport.TestReportParameterComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeTestReportParameterComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeTestReportParameterComponentProperties(TestReport.TestReportParameterComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasNameElement()) {
         composeStringCore("name", element.getNameElement(), false);
         composeStringExtras("name", element.getNameElement(), false);
       }
-      if (element.hasFileElement()) {
-        composeStringCore("file", element.getFileElement(), false);
-        composeStringExtras("file", element.getFileElement(), false);
-      }
-        if (element.hasResource()) {
-          open("resource");
-          composeResource(element.getResource());
-          close();
-        }
-      if (element.hasModeElement()) {
-        composeCodeCore("mode", element.getModeElement(), false);
-        composeCodeExtras("mode", element.getModeElement(), false);
+      if (element.hasDocumentationElement()) {
+        composeMarkdownCore("documentation", element.getDocumentationElement(), false);
+        composeMarkdownExtras("documentation", element.getDocumentationElement(), false);
       }
   }
 
-  protected void composeTestPlanSuiteTestComponent(String name, TestPlan.TestPlanSuiteTestComponent element) throws IOException {
+  protected void composeTestReportSetupComponent(String name, TestReport.TestReportSetupComponent element) throws IOException {
     if (element != null) {
       open(name);
-      composeTestPlanSuiteTestComponentProperties(element);
+      composeTestReportSetupComponentProperties(element);
       close();
     }
   }
 
-  protected void composeTestPlanSuiteTestComponentProperties(TestPlan.TestPlanSuiteTestComponent element) throws IOException {
+  protected void composeTestReportSetupComponentProperties(TestReport.TestReportSetupComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasAction()) {
+        openArray("action");
+        for (TestReport.SetupActionComponent e : element.getActionList()) 
+          composeSetupActionComponent(null, e);
+        closeArray();
+      };
+  }
+
+  protected void composeSetupActionComponent(String name, TestReport.SetupActionComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeSetupActionComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeSetupActionComponentProperties(TestReport.SetupActionComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasOperation()) {
+        composeSetupActionOperationComponent("operation", element.getOperation());
+      }
+      if (element.hasAssert()) {
+        composeSetupActionAssertComponent("assert", element.getAssert());
+      }
+  }
+
+  protected void composeSetupActionOperationComponent(String name, TestReport.SetupActionOperationComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeSetupActionOperationComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeSetupActionOperationComponentProperties(TestReport.SetupActionOperationComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasResultElement()) {
+        composeEnumerationCore("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
+        composeEnumerationExtras("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
+      }
+      if (element.hasMessageElement()) {
+        composeMarkdownCore("message", element.getMessageElement(), false);
+        composeMarkdownExtras("message", element.getMessageElement(), false);
+      }
+      if (element.hasDetailElement()) {
+        composeUriCore("detail", element.getDetailElement(), false);
+        composeUriExtras("detail", element.getDetailElement(), false);
+      }
+  }
+
+  protected void composeSetupActionAssertComponent(String name, TestReport.SetupActionAssertComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeSetupActionAssertComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeSetupActionAssertComponentProperties(TestReport.SetupActionAssertComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasResultElement()) {
+        composeEnumerationCore("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
+        composeEnumerationExtras("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
+      }
+      if (element.hasMessageElement()) {
+        composeMarkdownCore("message", element.getMessageElement(), false);
+        composeMarkdownExtras("message", element.getMessageElement(), false);
+      }
+      if (element.hasDetailElement()) {
+        composeStringCore("detail", element.getDetailElement(), false);
+        composeStringExtras("detail", element.getDetailElement(), false);
+      }
+      if (element.hasRequirement()) {
+        openArray("requirement");
+        for (TestReport.SetupActionAssertRequirementComponent e : element.getRequirementList()) 
+          composeSetupActionAssertRequirementComponent(null, e);
+        closeArray();
+      };
+  }
+
+  protected void composeSetupActionAssertRequirementComponent(String name, TestReport.SetupActionAssertRequirementComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeSetupActionAssertRequirementComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeSetupActionAssertRequirementComponentProperties(TestReport.SetupActionAssertRequirementComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasLink()) {
+        composeType("link", element.getLink());
+      }
+  }
+
+  protected void composeTestReportTestComponent(String name, TestReport.TestReportTestComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeTestReportTestComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeTestReportTestComponentProperties(TestReport.TestReportTestComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasNameElement()) {
         composeStringCore("name", element.getNameElement(), false);
@@ -3046,68 +3042,72 @@ public class TestingJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
         composeStringCore("description", element.getDescriptionElement(), false);
         composeStringExtras("description", element.getDescriptionElement(), false);
       }
-      if (element.hasOperationElement()) {
-        composeCodeCore("operation", element.getOperationElement(), false);
-        composeCodeExtras("operation", element.getOperationElement(), false);
+      if (element.hasResultElement()) {
+        composeEnumerationCore("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
+        composeEnumerationExtras("result", element.getResultElement(), new TestReport.TestReportActionResultValueSetEnumFactory(), false);
       }
-      if (element.hasModeElement()) {
-        composeCodeCore("mode", element.getModeElement(), false);
-        composeCodeExtras("mode", element.getModeElement(), false);
+      if (element.hasPeriod()) {
+        composePeriod("period", element.getPeriod());
       }
-      if (element.hasParameter()) {
-        openArray("parameter");
-        for (TestPlan.TestPlanParameterComponent e : element.getParameterList()) 
-          composeTestPlanParameterComponent(null, e);
+      if (element.hasAction()) {
+        openArray("action");
+        for (TestReport.TestActionComponent e : element.getActionList()) 
+          composeTestActionComponent(null, e);
         closeArray();
       };
-      if (element.hasInput()) {
-        openArray("input");
-        for (TestPlan.TestPlanSuiteInputComponent e : element.getInputList()) 
-          composeTestPlanSuiteInputComponent(null, e);
-        closeArray();
-      };
-      if (element.hasExpected()) {
-        openArray("expected");
-        for (TestPlan.TestPlanSuiteInputComponent e : element.getExpectedList()) 
-          composeTestPlanSuiteInputComponent(null, e);
-        closeArray();
-      };
-      if (element.hasAssertion()) {
-        openArray("assertion");
-        for (TestPlan.TestPlanSuiteTestAssertionComponent e : element.getAssertionList()) 
-          composeTestPlanSuiteTestAssertionComponent(null, e);
-        closeArray();
-      };
+      if (element.hasLog()) {
+        composeAttachment("log", element.getLog());
+      }
   }
 
-  protected void composeTestPlanSuiteTestAssertionComponent(String name, TestPlan.TestPlanSuiteTestAssertionComponent element) throws IOException {
+  protected void composeTestActionComponent(String name, TestReport.TestActionComponent element) throws IOException {
     if (element != null) {
       open(name);
-      composeTestPlanSuiteTestAssertionComponentProperties(element);
+      composeTestActionComponentProperties(element);
       close();
     }
   }
 
-  protected void composeTestPlanSuiteTestAssertionComponentProperties(TestPlan.TestPlanSuiteTestAssertionComponent element) throws IOException {
+  protected void composeTestActionComponentProperties(TestReport.TestActionComponent element) throws IOException {
     composeBackboneElementProperties(element);
-      if (element.hasFocusElement()) {
-        composeStringCore("focus", element.getFocusElement(), false);
-        composeStringExtras("focus", element.getFocusElement(), false);
+      if (element.hasOperation()) {
+        composeSetupActionOperationComponent("operation", element.getOperation());
       }
-      if (element.hasSeverityElement()) {
-        composeCodeCore("severity", element.getSeverityElement(), false);
-        composeCodeExtras("severity", element.getSeverityElement(), false);
+      if (element.hasAssert()) {
+        composeSetupActionAssertComponent("assert", element.getAssert());
       }
-      if (element.hasExpression()) {
-        composeExpression("expression", element.getExpression());
-      }
-      if (element.hasHumanElement()) {
-        composeStringCore("human", element.getHumanElement(), false);
-        composeStringExtras("human", element.getHumanElement(), false);
-      }
-      if (element.hasModeElement()) {
-        composeCodeCore("mode", element.getModeElement(), false);
-        composeCodeExtras("mode", element.getModeElement(), false);
+  }
+
+  protected void composeTestReportTeardownComponent(String name, TestReport.TestReportTeardownComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeTestReportTeardownComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeTestReportTeardownComponentProperties(TestReport.TestReportTeardownComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasAction()) {
+        openArray("action");
+        for (TestReport.TeardownActionComponent e : element.getActionList()) 
+          composeTeardownActionComponent(null, e);
+        closeArray();
+      };
+  }
+
+  protected void composeTeardownActionComponent(String name, TestReport.TeardownActionComponent element) throws IOException {
+    if (element != null) {
+      open(name);
+      composeTeardownActionComponentProperties(element);
+      close();
+    }
+  }
+
+  protected void composeTeardownActionComponentProperties(TestReport.TeardownActionComponent element) throws IOException {
+    composeBackboneElementProperties(element);
+      if (element.hasOperation()) {
+        composeSetupActionOperationComponent("operation", element.getOperation());
       }
   }
 
@@ -3117,12 +3117,12 @@ public class TestingJsonParser extends org.hl7.fhir.r5.formats.JsonParser {
   protected void composeResource(Resource resource) throws IOException {
     if (resource == null) {
       throw new Error("Unhandled resource type "+resource.getClass().getName());
-    } else if (resource instanceof TestReport) {
-      composeTestReport("TestReport", (TestReport)resource);
-    } else if (resource instanceof TestScript) {
-      composeTestScript("TestScript", (TestScript)resource);
     } else if (resource instanceof TestPlan) {
       composeTestPlan("TestPlan", (TestPlan)resource);
+    } else if (resource instanceof TestScript) {
+      composeTestScript("TestScript", (TestScript)resource);
+    } else if (resource instanceof TestReport) {
+      composeTestReport("TestReport", (TestReport)resource);
  
     } else
       throw new Error("Unhandled resource type "+resource.getClass().getName());
