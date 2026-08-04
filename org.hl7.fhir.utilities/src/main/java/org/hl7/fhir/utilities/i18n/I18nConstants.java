@@ -911,6 +911,7 @@ public class I18nConstants {
   public static final String THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE = "This__cannot_be_parsed_as_a_FHIR_object_no_namespace";
   public static final String TX_GENERAL_CC_ERROR_MESSAGE = "TX_GENERAL_CC_ERROR_MESSAGE";
   public static final String TX_SERVER_NO_BATCH_RESPONSE = "TX_SERVER_NO_BATCH_RESPONSE";
+  public static final String TX_SERVER_BATCH_RESPONSE_INCOMPLETE = "TX_SERVER_BATCH_RESPONSE_INCOMPLETE";
   public static final String TYPE_CHECKS_PATTERN_CC = "TYPE_CHECKS_PATTERN_CC";
   public static final String TYPE_CHECKS_PATTERN_CC_US = "TYPE_CHECKS_PATTERN_CC_US"; 
   public static final String TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT = "type_on_first_differential_element";

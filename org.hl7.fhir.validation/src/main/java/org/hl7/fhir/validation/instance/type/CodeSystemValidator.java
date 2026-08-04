@@ -15,8 +15,11 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
@@ -26,6 +29,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
@@ -109,6 +113,31 @@ public class CodeSystemValidator extends BaseValidator {
   }
 
   private static final String VS_PROP_STATUS = null;
+
+  /**
+   * How many supplement concepts to validate in a single server call. Matches ValueSetValidator.
+   */
+  private static final int VALIDATION_BATCH_SIZE = 300;
+
+  /**
+   * A code to validate, paired with the location of the concept it came from, so that the result of a
+   * batched validation can still be reported against the individual concept that produced it.
+   */
+  public static class CSCodingValidationRequest extends CodingValidationRequest {
+
+    private final NodeStack stack;
+
+    public CSCodingValidationRequest(NodeStack stack, Coding coding) {
+      super(coding);
+      this.stack = stack;
+    }
+
+    public NodeStack getStack() {
+      return stack;
+    }
+
+  }
+
   private Set<String> propertyCodes = new HashSet<String>();
   private boolean noDisplayWarningDone;
   private boolean noDefinitionWarningDone;
@@ -190,15 +219,21 @@ public class CodeSystemValidator extends BaseValidator {
 
             }
             List<Element> concepts = cs.getChildrenByName("concept");
+            CanonicalPair suppCanonical = new CanonicalPair(supp);
+            List<CSCodingValidationRequest> suppBatch = new ArrayList<>();
             int ce = 0;
             for (Element concept : concepts) {
               NodeStack nstack = stack.push(concept, ce, null, null);
               if (ce == 0) {
-                rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);            
+                rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);
               }
-              ok = validateSupplementConcept(errors, concept, nstack, supp, options) && ok;
+              String code = concept.getChildValue("code");
+              if (!Utilities.noString(code) && !noTerminologyChecks) {
+                suppBatch.add(new CSCodingValidationRequest(nstack, new Coding(suppCanonical.getUrl(), suppCanonical.getVersion(), code, null)));
+              }
               ce++;
-            }    
+            }
+            ok = validateSupplementConcepts(errors, suppBatch, supp, options) && ok;
           } else {
             if (cs.hasChildren("concept")) {
               warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_CANT_CHECK, supp);
@@ -847,16 +882,67 @@ public class CodeSystemValidator extends BaseValidator {
     return false;
   }
 
-  private boolean validateSupplementConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String supp, ValidationOptions options) {
-    String code = concept.getChildValue("code");
-    if (!Utilities.noString(code) && !noTerminologyChecks) {
-      var canonical = new CanonicalPair(supp);
-      org.hl7.fhir.r5.terminologies.utilities.ValidationResult res = context.validateCode(options, canonical.getUrl(), canonical.getVersion(), code, null);
-      return rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), res.isOk(), I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, code);
-    } else {
+  /**
+   * Validate the concepts in a supplement against the code system being supplemented.
+   * <p>
+   * Supplements routinely carry hundreds or thousands of concepts, and validating them one code at a time
+   * costs one server round trip each. Where the server supports batch validation we send them in batches
+   * instead. Each concept keeps its own request object (and so its own NodeStack and its own
+   * ValidationResult), so every concept is still reported individually against its own location.
+   */
+  private boolean validateSupplementConcepts(List<ValidationMessage> errors, List<CSCodingValidationRequest> batch, String supp, ValidationOptions options) {
+    if (batch.isEmpty()) {
       return true;
     }
+    boolean ok = true;
+    boolean useBatch = canUseBatchValidation(supp);
+    for (int i = 0; i < batch.size(); i += VALIDATION_BATCH_SIZE) {
+      List<CSCodingValidationRequest> slice = batch.subList(i, Math.min(i + VALIDATION_BATCH_SIZE, batch.size()));
+      if (useBatch) {
+        try {
+          context.validateCodeBatchCS(options, slice);
+        } catch (Exception e) {
+          // the batch call failed as a whole (e.g. the server rejected the batch). Rather than lose the
+          // diagnostics for every concept in the slice, fall back to validating them one at a time
+          validateSupplementConceptsIndividually(slice, options);
+        }
+      } else {
+        validateSupplementConceptsIndividually(slice, options);
+      }
+      for (CSCodingValidationRequest cv : slice) {
+        ValidationResult res = cv.getResult();
+        ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), res != null && res.isOk(),
+            I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, cv.getCoding().getCode()) && ok;
+      }
+    }
+    return ok;
+  }
 
+  private void validateSupplementConceptsIndividually(List<CSCodingValidationRequest> slice, ValidationOptions options) {
+    for (CSCodingValidationRequest cv : slice) {
+      if (!cv.hasResult()) {
+        try {
+          cv.setResult(context.validateCode(options, cv.getCoding(), null));
+        } catch (Exception e) {
+          cv.setResult(new ValidationResult(IssueSeverity.ERROR, e.getMessage(), null));
+        }
+      }
+    }
+  }
+
+  /**
+   * Batch validation is only used where the server advertises that it passes the batch test cases;
+   * otherwise we quietly fall back to validating each code on its own.
+   */
+  private boolean canUseBatchValidation(String supp) {
+    try {
+      CanonicalPair canonical = new CanonicalPair(supp);
+      IWorkerContext.SystemSupportInformation txInfo = context.getTxSupportInfo(canonical.getUrl(), canonical.getVersion());
+      return txInfo.getTestVersion() != null
+          && VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR);
+    } catch (Exception e) {
+      return false;
+    }
   }
 
   private int countConcepts(Element cs) {

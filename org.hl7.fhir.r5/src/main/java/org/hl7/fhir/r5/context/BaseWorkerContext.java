@@ -1211,6 +1211,26 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean passVS) {
+    validateCodeBatch(options, codes, vs, passVS, false);
+  }
+
+  /**
+   * Validate a batch of codes against the code systems they name, without reference to any value set.
+   * <p>
+   * This is the batch equivalent of {@link #validateCode(ValidationOptions, String, String, String, String)}:
+   * it asks "is this code valid in this code system", not "is this code in this value set". It therefore
+   * uses CodeSystem/$batch-validate-code, mirroring the way {@link #validateOnServer2} chooses
+   * CodeSystem/$validate-code when no value set is in play.
+   *
+   * @param options controls the validation process
+   * @param codes   the codes to validate; each request carries its own result, so callers can report per-code diagnostics
+   */
+  @Override
+  public void validateCodeBatchCS(ValidationOptions options, List<? extends CodingValidationRequest> codes) {
+    validateCodeBatch(options, codes, null, false, true);
+  }
+
+  private void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean passVS, boolean csBatch) {
     if (options == null) {
       options = ValidationOptions.defaults();
     }
@@ -1282,10 +1302,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     if (items.size() > 0) {
       TerminologyClientContext tc = terminologyClientManager.chooseServer(vs, systems, false, findValidationLanguage(options));
-      Parameters resp = processBatch(tc, batch, systems, items.size());
+      Parameters resp = processBatch(tc, batch, systems, items.size(), csBatch);
       List<ParametersParameterComponent> validations = resp.getParameters("validation");
       for (int i = 0; i < items.size(); i++) {
         CodingValidationRequest t = items.get(i);
+        if (i >= validations.size()) {
+          // the server returned fewer results than we asked about. We can't tell which ones are missing,
+          // so rather than silently mis-attributing results to the wrong codes, every code we have no
+          // answer for gets its own error
+          t.setResult(new ValidationResult(IssueSeverity.ERROR,
+              formatMessage(I18nConstants.TX_SERVER_BATCH_RESPONSE_INCOMPLETE, validations.size(), items.size()), TerminologyServiceErrorClass.SERVER_ERROR, null)
+              .setTxLink(txLog == null ? null : txLog.getLastId()));
+          continue;
+        }
         ParametersParameterComponent r = validations.get(i);
 
         if (r.getResource() instanceof Parameters) {
@@ -1300,7 +1329,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  private Parameters processBatch(TerminologyClientContext tc, Parameters batch, Set<String> systems, int size) {
+  private Parameters processBatch(TerminologyClientContext tc, Parameters batch, Set<String> systems, int size, boolean csBatch) {
     txLog("$batch validate for " + size + " codes on systems " + systems.toString());
     if (terminologyClientManager == null) {
       throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
@@ -1308,7 +1337,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (txLog != null) {
       txLog.clearLastId();
     }
-    Parameters resp = tc.getClient().batchValidateVS(batch);
+    Parameters resp = csBatch ? tc.getClient().batchValidateCS(batch) : tc.getClient().batchValidateVS(batch);
     if (resp == null) {
       throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_NO_BATCH_RESPONSE));
     }

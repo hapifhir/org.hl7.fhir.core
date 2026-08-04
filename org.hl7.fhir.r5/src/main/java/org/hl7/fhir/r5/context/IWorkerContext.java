@@ -790,6 +790,21 @@ public interface IWorkerContext {
   public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean passVS);
 
   /**
+   * Batch validate codes against the code systems they name, with no value set involved - reduce latency
+   * and do a bunch of codes in a single server call. Each is the same as a
+   * validateCode(options, system, version, code, display).
+   *
+   * Unlike validateCodeBatch, this uses CodeSystem/$batch-validate-code, so it asks whether each code is
+   * valid in its code system rather than whether it is a member of some value set.
+   *
+   * Results are set on the individual requests, so callers retain per-code diagnostics.
+   *
+   * @param options
+   * @param codes
+   */
+  public void validateCodeBatchCS(ValidationOptions options, List<? extends CodingValidationRequest> codes);
+
+  /**
    * Validate the actual terminology resource itself on the appropriate terminology server
    *
    * (used for ECL validation)
