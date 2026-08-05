@@ -128,11 +128,17 @@ public class NPMPackageGenerator {
   private String igVersion;
   private String indexdb;
 
+  private final List<String> dependencyWarnings = new ArrayList<>();
+
+  /** Package-private so NPMPackageGeneratorTest can assert what was reported. */
+  List<String> getDependencyWarnings() {
+    return dependencyWarnings;
+  }
+
 
   public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, Map<String, String> relatedIgs, boolean notForPublication) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
-    validateDependencies(ig);
     start();
     List<String> fhirVersion = new ArrayList<>();
     for (Enumeration<FHIRVersion> v : ig.getFhirVersion())
@@ -143,7 +149,6 @@ public class NPMPackageGenerator {
   public NPMPackageGenerator(String pid, String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, Map<String, String> relatedIgs, boolean notForPublication, String fhirVersion) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
-    validateDependencies(ig);
     start();
     List<String> fhirVersions = new ArrayList<>();
     fhirVersions.add(fhirVersion);
@@ -168,7 +173,6 @@ public class NPMPackageGenerator {
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, List<String> fhirVersion, Map<String, String> relatedIgs, boolean notForPublication) throws FHIRException, IOException {
     super();
     this.destFile = destFile;
-    validateDependencies(ig);
     start();
     buildPackageJson(ig.getPackageId(), canonical, kind, url, date, ig, fhirVersion, notForPublication, relatedIgs);
   }
@@ -204,16 +208,6 @@ public class NPMPackageGenerator {
     try {
       addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));
     } catch (UnsupportedEncodingException e) {
-    }
-  }
-
-  private void validateDependencies(ImplementationGuide ig) {
-    List<ImplementationGuideDependsOnComponent> dependsOn = ig.getDependsOn();
-    for (int i = 0; i < dependsOn.size(); i++) {
-      ImplementationGuideDependsOnComponent d = dependsOn.get(i);
-      if (!d.hasVersion()) {
-        log.warn(missingVersionMessage(ig, i, d));
-      }
     }
   }
 
@@ -262,8 +256,12 @@ public class NPMPackageGenerator {
       vl.add(new JsonString(v));
     }
     
+    // dep is nullable: a CORE package writes no dependencies object, but the dependsOn loop below
+    // still has to run for it, because reporting a versionless dependsOn is independent of whether
+    // anything is emitted. Hoisting the loop out keeps this fold behaviour-neutral.
+    JsonObject dep = null;
     if (kind != PackageType.CORE) {
-      JsonObject dep = new JsonObject();
+      dep = new JsonObject();
       npm.add("dependencies", dep);
       for (String v : fhirVersion) { 
         String vp = packageForVersion(v);
@@ -271,23 +269,28 @@ public class NPMPackageGenerator {
           dep.add(vp, v);
         }
       }
-      for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
+    }
+    List<ImplementationGuideDependsOnComponent> dependsOn = ig.getDependsOn();
+    for (int i = 0; i < dependsOn.size(); i++) {
+      ImplementationGuideDependsOnComponent d = dependsOn.get(i);
         if (d.hasExtension(ExtensionDefinitions.EXT_IGDEP_NO_SAVE)) {
           // ignore dependencies that are marked as "no save" - these are used for validation but not for package generation
           continue;
         }
-        if (!d.hasVersion()) {
-          // Already reported by validateDependencies. Emitting it would write a JsonNull value,
-          // and for a core packageId it would collide with the auto-added dependency above
-          // (JsonObject.add rejects duplicate keys).
-          continue;
-        }
-        if (d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)) {
-          dep.add(d.getId() + "@npm:" + d.getPackageId(), d.getVersion());          
-        } else {
-          dep.add(d.getPackageId(), d.getVersion());
-        }
+      if (!d.hasVersion()) {
+        // Emitting it would write a JsonNull value, and for a core packageId it would collide
+        // with the auto-added dependency above (JsonObject.add rejects duplicate keys).
+        dependencyWarnings.add(missingVersionMessage(ig, i, d));
+        continue;
       }
+      if (d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)) {
+        dep.add(d.getId() + "@npm:" + d.getPackageId(), d.getVersion());          
+      } else {
+        dep.add(d.getPackageId(), d.getVersion());
+      }
+    }
+    for (String w : dependencyWarnings) {
+      log.warn(w);
     }
     if (ig.hasPublisher()) {
       npm.add("author", ig.getPublisher());
