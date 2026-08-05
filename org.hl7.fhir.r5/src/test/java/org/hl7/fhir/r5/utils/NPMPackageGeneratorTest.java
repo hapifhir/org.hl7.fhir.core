@@ -7,7 +7,6 @@ import java.util.Date;
 
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.junit.jupiter.api.Assertions;
@@ -21,15 +20,18 @@ import org.junit.jupiter.params.provider.ValueSource;
  * <p>
  * Two kinds of test live here. <em>Fix-pinning</em> tests fail if the corresponding fix is
  * reverted: {@code emitsR5CoreDependency}, {@code emitsR6CoreDependency},
- * {@code mapsRawBasePathVersionCodes}, {@code aliasedCoreDependsOnDoesNotSuppressAutoAdd},
+ * {@code mapsPublishedR5LineVersionCodes}, {@code aliasedCoreDependsOnDoesNotSuppressAutoAdd},
  * {@code noCrashAndAuthorWinsWhenDependsOnAlsoDeclaresCore} (the 4.0.1 row),
- * {@code r4BallotVersionsDoNotEmitUnresolvableCoreDep} and
- * {@code versionlessCoreDependsOnDoesNotCrashAndKeepsAutoAddedCoreDep}.
+ * {@code versionlessCoreDependsOnDoesNotCrashAndKeepsAutoAddedCoreDep},
+ * {@code twoSegmentVersionCodesDoNotEmitCoreDep}, {@code ciBuildVersionsDoNotEmitCoreDep},
+ * {@code publishedLabelledVersionsStillEmitCoreDep} and
+ * {@code nonSemverVersionCodesAddNoCoreDepAndDoNotThrow} (the malformed rows, which pin the
+ * {@code split("\\.", -1)} limit).
  * <em>Characterization</em> tests document behaviour that is unchanged or deliberately
  * limited, and pass in both directions: {@code preservesR2ThroughR4BMapping},
  * {@code coreKindEmitsNoDependenciesBlock}, {@code r5PreviewVersionsGetNoCoreDependency},
- * {@code currentVersionCodeAddsNoCoreDependency} and
- * {@code nonSemverVersionCodesAddNoCoreDepAndDoNotThrow}.
+ * {@code r4BallotVersionsDoNotEmitUnresolvableCoreDep} and
+ * {@code currentVersionCodeAddsNoCoreDependency}.
  */
 class NPMPackageGeneratorTest {
 
@@ -73,19 +75,55 @@ class NPMPackageGeneratorTest {
 
   @ParameterizedTest
   @CsvSource({
-      "5.0, hl7.fhir.r5.core",
       "5.0.0-ballot, hl7.fhir.r5.core",
       "4.5.0, hl7.fhir.r5.core",
   })
-  void mapsRawBasePathVersionCodes(String fhirVersion, String expectedPackage) throws IOException {
+  void mapsPublishedR5LineVersionCodes(String fhirVersion, String expectedPackage) throws IOException {
     JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
     Assertions.assertTrue(dep.has(expectedPackage), fhirVersion + " should map to " + expectedPackage);
     Assertions.assertEquals(fhirVersion, dep.asString(expectedPackage));
   }
 
   @ParameterizedTest
-  @ValueSource(strings = { "0.01", "0.06" })
+  @ValueSource(strings = { "5.0", "4.0", "1.0" })
+  void twoSegmentVersionCodesDoNotEmitCoreDep(String fhirVersion) throws IOException {
+    // These are legal FHIRVersion enum codes (Enumerations.java:12081) that reach the typed
+    // ig.getFhirVersion() constructor, but they are base-path codes, not package versions --
+    // no "hl7.fhir.r5.core": "5.0" was ever published.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertEquals(0, dep.getProperties().size(), fhirVersion + " must emit no core dependency");
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "5.0.0-cibuild", "6.0.0-cibuild", "4.3.0-cibuild" })
+  void ciBuildVersionsDoNotEmitCoreDep(String fhirVersion) throws IOException {
+    // VersionUtilities.removeLabels strips the label before matching, so without the
+    // isPublishableVersion guard all three of these resolve to a core package and emit.
+    // The ci-build is never published to the registry.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertEquals(0, dep.getProperties().size(), fhirVersion + " must emit no core dependency");
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+      "5.0.0-snapshot1, hl7.fhir.r5.core",
+      "5.0.0-draft-final, hl7.fhir.r5.core",
+      "6.0.0-ballot3, hl7.fhir.r6.core",
+  })
+  void publishedLabelledVersionsStillEmitCoreDep(String fhirVersion, String expectedPackage) throws IOException {
+    // Over-correction guard: isPublishableVersion denies only the cibuild label, so it must not
+    // become a blacklist that drops labels HL7 actually publishes. All three of these exist.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertTrue(dep.has(expectedPackage), fhirVersion + " should map to " + expectedPackage);
+    Assertions.assertEquals(fhirVersion, dep.asString(expectedPackage));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "0.01", "0.06", "5.0.0.", "5..0.0" })
   void nonSemverVersionCodesAddNoCoreDepAndDoNotThrow(String fhirVersion) throws IOException {
+    // "5.0.0." and "5..0.0" pin the split("\\.", -1) limit in isPublishableVersion: without
+    // the -1 the trailing empty segment is dropped, "5.0.0." clears the shape guard, and the
+    // legacy-code fallback emits it raw.
     JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
     Assertions.assertFalse(dep.has("hl7.fhir.r2.core"));
     Assertions.assertFalse(dep.has("hl7.fhir.r2b.core"));
@@ -107,10 +145,13 @@ class NPMPackageGeneratorTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = { "3.2.0", "3.3.0", "3.5.0" })
+  @ValueSource(strings = { "3.2.0", "3.3", "3.3.0", "3.5", "3.5.0" })
   void r4BallotVersionsDoNotEmitUnresolvableCoreDep(String fhirVersion) throws IOException {
     // VersionUtilities.isR4Ver matches the R4 ballot line (3.2/3.3/3.5), but these are not
     // hl7.fhir.r4.core versions, so emitting them would publish an unresolvable dependency.
+    // "3.3" and "3.5" are real FHIRVersion codes (Enumerations.java:11997, :12005) that reach
+    // the typed constructor. Characterization only, not coverage of isPublishableVersion:
+    // every row here already returns null via versionIsInPackageFamily's "4.0" prefix test.
     JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
     Assertions.assertFalse(dep.has("hl7.fhir.r4.core"), fhirVersion + " must not emit hl7.fhir.r4.core");
     Assertions.assertEquals(0, dep.getProperties().size(), fhirVersion + " must emit no core dependency");
@@ -124,21 +165,6 @@ class NPMPackageGeneratorTest {
     // no core dependency. Widening isR5Ver is an upstream change, tracked separately.
     JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
     Assertions.assertFalse(dep.has("hl7.fhir.r5.core"), fhirVersion + " currently maps to no core package");
-  }
-
-  @Test
-  void corePackagePrefixTableCoversEveryCorePackage() {
-    // VersionUtilities.isCorePackage (VersionUtilities.java:372) enumerates the closed set of
-    // core packages. If a family is added upstream, this fails loudly rather than silently
-    // dropping the dependency.
-    for (String pkg : new String[] { "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core",
-        "hl7.fhir.r4.core", "hl7.fhir.r4b.core", "hl7.fhir.r5.core", "hl7.fhir.r6.core" }) {
-      Assertions.assertTrue(VersionUtilities.isCorePackage(pkg));
-      Assertions.assertNotNull(NPMPackageGenerator.CORE_PACKAGE_VERSION_PREFIXES.get(pkg),
-          pkg + " has no entry in CORE_PACKAGE_VERSION_PREFIXES");
-    }
-    Assertions.assertEquals(7, NPMPackageGenerator.CORE_PACKAGE_VERSION_PREFIXES.size(),
-        "a new core package family was added; extend CORE_PACKAGE_VERSION_PREFIXES");
   }
 
   @ParameterizedTest

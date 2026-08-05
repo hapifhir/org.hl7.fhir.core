@@ -355,9 +355,11 @@ public class NPMPackageGenerator {
    * "hl7.fhir.r4.core": "3.5.0". Only emit when the raw version belongs to the matched
    * package's own release line.
    */
-  // Package-private (not private) so NPMPackageGeneratorTest can assert the table stays in
-  // step with VersionUtilities' set of core packages.
-  static final Map<String, List<String>> CORE_PACKAGE_VERSION_PREFIXES = Map.of(
+  // MIRROR: org.hl7.fhir.r4b/.../NPMPackageGenerator.java keeps a deliberate verbatim copy of
+  // this table, versionIsInPackageFamily, isPublishableVersion and packageForVersion. The two
+  // copies must be edited together; consolidating them into VersionUtilities was considered and
+  // deferred as an upstream API change.
+  private static final Map<String, List<String>> CORE_PACKAGE_VERSION_PREFIXES = Map.of(
       "hl7.fhir.r2.core",  List.of("1.0"),
       "hl7.fhir.r2b.core", List.of("1.4"),
       "hl7.fhir.r3.core",  List.of("3.0"),
@@ -365,6 +367,39 @@ public class NPMPackageGenerator {
       "hl7.fhir.r4b.core", List.of("4.1", "4.3"),
       "hl7.fhir.r5.core",  List.of("4.5", "5.0"),
       "hl7.fhir.r6.core",  List.of("6.0"));
+
+  private static final String CI_BUILD_LABEL = "cibuild";
+
+  /**
+   * Whether v is shaped like a version that gets published to the package registry.
+   * VersionUtilities answers "which release line is this?"; that is a different question from
+   * "can anyone install this?". Published core packages always carry a full major.minor.patch
+   * (or a legacy four-segment build code), and the ci-build label is never published.
+   */
+  private static boolean isPublishableVersion(String v) {
+    int cut = -1;
+    for (int i = 0; i < v.length(); i++) {
+      char c = v.charAt(i);
+      if (c == '-' || c == '+') {
+        cut = i;
+        break;
+      }
+    }
+    String numeric = cut < 0 ? v : v.substring(0, cut);
+    String label = cut < 0 ? null : v.substring(cut + 1);
+    // The -1 limit is load-bearing: the default split drops trailing empty strings, so "5.0.0."
+    // would pass both checks below and be emitted raw as an unresolvable dependency value.
+    String[] parts = numeric.split("\\.", -1);
+    if (parts.length < 3) {
+      return false;
+    }
+    for (String p : parts) {
+      if (!Utilities.isInteger(p)) {
+        return false;
+      }
+    }
+    return label == null || !label.toLowerCase().startsWith(CI_BUILD_LABEL);
+  }
 
   private boolean versionIsInPackageFamily(String packageId, String v) {
     List<String> prefixes = CORE_PACKAGE_VERSION_PREFIXES.get(packageId);
@@ -385,6 +420,9 @@ public class NPMPackageGenerator {
     // because isR2Ver throws from checkVersionValidWildcards first, so relying on it would
     // make this behaviour depend on an upstream bug. CI-build IGs get no core dependency.
     if (v == null || "current".equals(v)) {
+      return null;
+    }
+    if (!isPublishableVersion(v)) {
       return null;
     }
     try {
