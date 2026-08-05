@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
 
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -156,19 +155,51 @@ class NPMPackageGeneratorTest {
   }
 
   @Test
-  void rejectsExplicitDependencyWithoutVersion() {
+  void versionlessDependsOnIsWarnedAndOmittedNotRejected() throws IOException {
     ImplementationGuide ig = minimalIg();
     ImplementationGuideDependsOnComponent d = ig.addDependsOn();
-    String dependencyUri = "http://example.org/fhir/ImplementationGuide/example-dependency";
-    d.setUri(dependencyUri);
+    d.setUri("http://example.org/fhir/ImplementationGuide/example-dependency");
     d.setPackageId("example.fhir.dependency");
+    JsonObject dep = dependencies(ig, PackageType.CONFORMANCE, "5.0.0");
+    Assertions.assertTrue(dep.has("hl7.fhir.r5.core"));
+    Assertions.assertFalse(dep.has("example.fhir.dependency"),
+        "a versionless dependsOn must not be emitted with a null version");
+  }
 
-    FHIRException exception = Assertions.assertThrows(FHIRException.class,
-        () -> dependencies(ig, PackageType.CONFORMANCE, "5.0.0"));
+  @Test
+  void versionlessCoreDependsOnDoesNotCrashAndKeepsAutoAddedCoreDep() throws IOException {
+    ImplementationGuide ig = minimalIg();
+    ImplementationGuideDependsOnComponent d = ig.addDependsOn();
+    d.setUri("http://hl7.org/fhir/R5");
+    d.setPackageId("hl7.fhir.r5.core");
+    JsonObject dep = dependencies(ig, PackageType.CONFORMANCE, "5.0.0");
+    Assertions.assertTrue(dep.has("hl7.fhir.r5.core"));
+    Assertions.assertEquals("5.0.0", dep.asString("hl7.fhir.r5.core"));
+  }
 
-    Assertions.assertTrue(exception.getMessage().contains("missing a required version"));
-    Assertions.assertTrue(exception.getMessage().contains("example.fhir.dependency"));
-    Assertions.assertTrue(exception.getMessage().contains(dependencyUri));
+  @Test
+  void missingVersionMessageNamesIgAndDependencyIdentity() {
+    ImplementationGuide ig = minimalIg();
+    ImplementationGuideDependsOnComponent both = new ImplementationGuideDependsOnComponent();
+    both.setPackageId("example.fhir.dependency");
+    both.setUri("http://example.org/fhir/ImplementationGuide/example-dependency");
+    String m = NPMPackageGenerator.missingVersionMessage(ig, 0, both);
+    Assertions.assertTrue(m.contains(PID));
+    Assertions.assertTrue(m.contains("dependsOn[0]"));
+    Assertions.assertTrue(m.contains("example.fhir.dependency"));
+    Assertions.assertTrue(m.contains("http://example.org/fhir/ImplementationGuide/example-dependency"));
+    Assertions.assertTrue(m.contains("missing a required version"));
+
+    ImplementationGuideDependsOnComponent uriOnly = new ImplementationGuideDependsOnComponent();
+    uriOnly.setUri("http://example.org/fhir/ig");
+    String u = NPMPackageGenerator.missingVersionMessage(ig, 1, uriOnly);
+    Assertions.assertTrue(u.contains("dependsOn[1]"));
+    Assertions.assertTrue(u.contains("http://example.org/fhir/ig"));
+    Assertions.assertFalse(u.contains("null"), "absent packageId must not render as null");
+
+    String n = NPMPackageGenerator.missingVersionMessage(ig, 2, new ImplementationGuideDependsOnComponent());
+    Assertions.assertTrue(n.contains("dependsOn[2]"));
+    Assertions.assertFalse(n.contains("null"), "absent identifiers must not render as null");
   }
 
   @Test
