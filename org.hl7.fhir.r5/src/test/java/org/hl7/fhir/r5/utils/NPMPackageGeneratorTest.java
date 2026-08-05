@@ -16,6 +16,21 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+/**
+ * Tests for {@link NPMPackageGenerator}'s package.json generation.
+ * <p>
+ * Two kinds of test live here. <em>Fix-pinning</em> tests fail if the corresponding fix is
+ * reverted: {@code emitsR5CoreDependency}, {@code emitsR6CoreDependency},
+ * {@code mapsRawBasePathVersionCodes}, {@code aliasedCoreDependsOnDoesNotSuppressAutoAdd},
+ * {@code noCrashAndAuthorWinsWhenDependsOnAlsoDeclaresCore} (the 4.0.1 row),
+ * {@code r4BallotVersionsDoNotEmitUnresolvableCoreDep} and
+ * {@code versionlessCoreDependsOnDoesNotCrashAndKeepsAutoAddedCoreDep}.
+ * <em>Characterization</em> tests document behaviour that is unchanged or deliberately
+ * limited, and pass in both directions: {@code preservesR2ThroughR4BMapping},
+ * {@code coreKindEmitsNoDependenciesBlock}, {@code r5PreviewVersionsGetNoCoreDependency},
+ * {@code currentVersionCodeAddsNoCoreDependency} and
+ * {@code nonSemverVersionCodesAddNoCoreDepAndDoNotThrow}.
+ */
 class NPMPackageGeneratorTest {
 
   private static final String CANONICAL = "http://example.org/fhir/test";
@@ -140,18 +155,23 @@ class NPMPackageGeneratorTest {
     Assertions.assertEquals(fhirVersion, dep.asString(expectedPackage));
   }
 
-  @Test
-  void noCrashAndAuthorWinsWhenDependsOnAlsoDeclaresCore() throws IOException {
+  @ParameterizedTest
+  @CsvSource({
+      "5.0.0, hl7.fhir.r5.core, http://hl7.org/fhir/R5, 5.0.0-ballot",
+      "4.0.1, hl7.fhir.r4.core, http://hl7.org/fhir/R4, 4.0.0",
+  })
+  void noCrashAndAuthorWinsWhenDependsOnAlsoDeclaresCore(String fhirVersion, String corePackage,
+      String uri, String authorVersion) throws IOException {
     ImplementationGuide ig = minimalIg();
     ImplementationGuideDependsOnComponent d = ig.addDependsOn();
-    d.setUri("http://hl7.org/fhir/R5");
-    d.setPackageId("hl7.fhir.r5.core");
-    d.setVersion("5.0.0-ballot");
-    JsonObject dep = dependencies(ig, PackageType.CONFORMANCE, "5.0.0");
-    Assertions.assertTrue(dep.has("hl7.fhir.r5.core"));
-    // The author-declared dependsOn version wins; the auto-add is suppressed
-    // so JsonObject.add is never called twice for the same key (no crash).
-    Assertions.assertEquals("5.0.0-ballot", dep.asString("hl7.fhir.r5.core"));
+    d.setUri(uri);
+    d.setPackageId(corePackage);
+    d.setVersion(authorVersion);
+    JsonObject dep = dependencies(ig, PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertTrue(dep.has(corePackage));
+    // The author-declared dependsOn version wins; the auto-add is suppressed so
+    // JsonObject.add is never called twice for the same key (no duplicate-key crash).
+    Assertions.assertEquals(authorVersion, dep.asString(corePackage));
   }
 
   @Test
