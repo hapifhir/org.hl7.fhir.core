@@ -8,6 +8,7 @@ import java.util.Date;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.junit.jupiter.api.Assertions;
@@ -69,7 +70,7 @@ class NPMPackageGeneratorTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = { "current", "0.01", "0.06" })
+  @ValueSource(strings = { "0.01", "0.06" })
   void nonSemverVersionCodesAddNoCoreDepAndDoNotThrow(String fhirVersion) throws IOException {
     JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
     Assertions.assertFalse(dep.has("hl7.fhir.r2.core"));
@@ -79,6 +80,51 @@ class NPMPackageGeneratorTest {
     Assertions.assertFalse(dep.has("hl7.fhir.r4b.core"));
     Assertions.assertFalse(dep.has("hl7.fhir.r5.core"));
     Assertions.assertFalse(dep.has("hl7.fhir.r6.core"));
+  }
+
+  @Test
+  void currentVersionCodeAddsNoCoreDependency() throws IOException {
+    // "current" is rejected by SemverParser, so it never reaches VersionUtilities'
+    // "current" -> hl7.fhir.r5.core branch (VersionUtilities.java:169-171, unreachable).
+    // NPMPackageGenerator pins "no core dep" explicitly so this does not silently flip if
+    // VersionUtilities is ever reordered.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, "current");
+    Assertions.assertFalse(dep.has("hl7.fhir.r5.core"));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "3.2.0", "3.3.0", "3.5.0" })
+  void r4BallotVersionsDoNotEmitUnresolvableCoreDep(String fhirVersion) throws IOException {
+    // VersionUtilities.isR4Ver matches the R4 ballot line (3.2/3.3/3.5), but these are not
+    // hl7.fhir.r4.core versions, so emitting them would publish an unresolvable dependency.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertFalse(dep.has("hl7.fhir.r4.core"), fhirVersion + " must not emit hl7.fhir.r4.core");
+    Assertions.assertEquals(0, dep.getProperties().size(), fhirVersion + " must emit no core dependency");
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "4.2.0", "4.4.0", "4.6.0" })
+  void r5PreviewVersionsGetNoCoreDependency(String fhirVersion) throws IOException {
+    // Known gap, deliberately pinned: VersionUtilities.isR5Ver matches only 4.5* and 5.0*,
+    // so the 4.2/4.4/4.6 R5 preview codes -- all legal FHIRVersion enum members -- still get
+    // no core dependency. Widening isR5Ver is an upstream change, tracked separately.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertFalse(dep.has("hl7.fhir.r5.core"), fhirVersion + " currently maps to no core package");
+  }
+
+  @Test
+  void corePackagePrefixTableCoversEveryCorePackage() {
+    // VersionUtilities.isCorePackage (VersionUtilities.java:372) enumerates the closed set of
+    // core packages. If a family is added upstream, this fails loudly rather than silently
+    // dropping the dependency.
+    for (String pkg : new String[] { "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core",
+        "hl7.fhir.r4.core", "hl7.fhir.r4b.core", "hl7.fhir.r5.core", "hl7.fhir.r6.core" }) {
+      Assertions.assertTrue(VersionUtilities.isCorePackage(pkg));
+      Assertions.assertNotNull(NPMPackageGenerator.CORE_PACKAGE_VERSION_PREFIXES.get(pkg),
+          pkg + " has no entry in CORE_PACKAGE_VERSION_PREFIXES");
+    }
+    Assertions.assertEquals(7, NPMPackageGenerator.CORE_PACKAGE_VERSION_PREFIXES.size(),
+        "a new core package family was added; extend CORE_PACKAGE_VERSION_PREFIXES");
   }
 
   @ParameterizedTest

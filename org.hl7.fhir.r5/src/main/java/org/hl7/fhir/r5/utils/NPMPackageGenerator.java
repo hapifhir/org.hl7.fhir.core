@@ -338,12 +338,49 @@ public class NPMPackageGenerator {
   }
 
 
+  /**
+   * Version-line prefixes actually published for each FHIR core package.
+   * VersionUtilities deliberately maps pre-ballot lines onto the *following* release's
+   * package (e.g. isR4Ver matches 3.2/3.3/3.5), but this class writes the raw version as
+   * the dependency value, so an unguarded mapping yields unresolvable entries such as
+   * "hl7.fhir.r4.core": "3.5.0". Only emit when the raw version belongs to the matched
+   * package's own release line.
+   */
+  // Package-private (not private) so NPMPackageGeneratorTest can assert the table stays in
+  // step with VersionUtilities' set of core packages.
+  static final Map<String, List<String>> CORE_PACKAGE_VERSION_PREFIXES = Map.of(
+      "hl7.fhir.r2.core",  List.of("1.0"),
+      "hl7.fhir.r2b.core", List.of("1.4"),
+      "hl7.fhir.r3.core",  List.of("3.0"),
+      "hl7.fhir.r4.core",  List.of("4.0"),
+      "hl7.fhir.r4b.core", List.of("4.1", "4.3"),
+      "hl7.fhir.r5.core",  List.of("4.5", "5.0"),
+      "hl7.fhir.r6.core",  List.of("6.0"));
+
+  private boolean versionIsInPackageFamily(String packageId, String v) {
+    List<String> prefixes = CORE_PACKAGE_VERSION_PREFIXES.get(packageId);
+    if (prefixes == null) {
+      return false;
+    }
+    for (String prefix : prefixes) {
+      if (v.startsWith(prefix)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private String packageForVersion(String v) {
-    if (v == null) {
+    // "current" is handled here rather than left to VersionUtilities: that helper's
+    // "current" -> hl7.fhir.r5.core branch (VersionUtilities.java:169-171) is unreachable
+    // because isR2Ver throws from checkVersionValidWildcards first, so relying on it would
+    // make this behaviour depend on an upstream bug. CI-build IGs get no core dependency.
+    if (v == null || "current".equals(v)) {
       return null;
     }
     try {
-      return VersionUtilities.packageForVersion(v);
+      String vp = VersionUtilities.packageForVersion(v);
+      return vp != null && versionIsInPackageFamily(vp, v) ? vp : null;
     } catch (FHIRException e) {
       // non-semver fhirVersion codes (e.g. "current", "0.01") -> no core dep,
       // matching the old startsWith-based helper's behavior.
