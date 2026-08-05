@@ -412,6 +412,21 @@ public class NPMPackageGenerator {
     return false;
   }
 
+  /**
+   * The prefixes are mutually exclusive major.minor pairs, so at most one entry can match and
+   * the (unordered) Map.of iteration order does not affect the result.
+   */
+  private String packageFromVersionPrefix(String v) {
+    for (Map.Entry<String, List<String>> e : CORE_PACKAGE_VERSION_PREFIXES.entrySet()) {
+      for (String prefix : e.getValue()) {
+        if (v.startsWith(prefix)) {
+          return e.getKey();
+        }
+      }
+    }
+    return null;
+  }
+
   private String packageForVersion(String v) {
     // "current" is handled here rather than left to VersionUtilities: that helper's
     // "current" -> hl7.fhir.r5.core branch (VersionUtilities.java:169-171) is unreachable
@@ -427,9 +442,12 @@ public class NPMPackageGenerator {
       String vp = VersionUtilities.packageForVersion(v);
       return vp != null && versionIsInPackageFamily(vp, v) ? vp : null;
     } catch (FHIRException e) {
-      // non-semver fhirVersion codes (e.g. "current", "0.01") -> no core dep,
-      // matching the old startsWith-based helper's behavior.
-      return null;
+      // Non-semver strings that get this far have already cleared isPublishableVersion, so the
+      // only ones that reach here are the historical four-segment FHIR build codes such as
+      // 3.0.1.11917, which were published and which the pre-change startsWith helper mapped.
+      // Everything else that used to land here ("0.01", "0.06", "current") is now rejected
+      // before the try.
+      return packageFromVersionPrefix(v);
     }
   }
 

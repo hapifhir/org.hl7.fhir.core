@@ -24,7 +24,8 @@ import org.junit.jupiter.params.provider.ValueSource;
  * {@code noCrashAndAuthorWinsWhenDependsOnAlsoDeclaresCore} (the 4.0.1 row),
  * {@code versionlessCoreDependsOnDoesNotCrashAndKeepsAutoAddedCoreDep},
  * {@code twoSegmentVersionCodesDoNotEmitCoreDep}, {@code ciBuildVersionsDoNotEmitCoreDep},
- * {@code publishedLabelledVersionsStillEmitCoreDep} and
+ * {@code publishedLabelledVersionsStillEmitCoreDep},
+ * {@code fourSegmentLegacyVersionCodes} and
  * {@code nonSemverVersionCodesAddNoCoreDepAndDoNotThrow} (the malformed rows, which pin the
  * {@code split("\\.", -1)} limit).
  * <em>Characterization</em> tests document behaviour that is unchanged or deliberately
@@ -132,6 +133,22 @@ class NPMPackageGeneratorTest {
     Assertions.assertFalse(dep.has("hl7.fhir.r4b.core"));
     Assertions.assertFalse(dep.has("hl7.fhir.r5.core"));
     Assertions.assertFalse(dep.has("hl7.fhir.r6.core"));
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+      "3.0.1.11917, hl7.fhir.r3.core",
+      "1.0.2.7202, hl7.fhir.r2.core",
+  })
+  void fourSegmentLegacyVersionCodes(String fhirVersion, String expectedPackage) throws IOException {
+    // These legacy four-segment build codes were published, so they map again -- via the
+    // packageFromVersionPrefix fallback in the FHIRException catch, since SemverParser rejects
+    // a fourth dot-segment. Emitting the raw non-semver string is a deliberate deviation from
+    // strict semver: it fails visibly later in processing rather than silently going missing,
+    // which is the tradeoff chosen over maintaining a table of valid published versions.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertTrue(dep.has(expectedPackage), fhirVersion + " should map to " + expectedPackage);
+    Assertions.assertEquals(fhirVersion, dep.asString(expectedPackage));
   }
 
   @Test
