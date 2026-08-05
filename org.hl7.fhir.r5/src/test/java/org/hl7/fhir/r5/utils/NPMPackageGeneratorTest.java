@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
+import java.util.List;
 
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
@@ -33,6 +34,12 @@ import org.junit.jupiter.params.provider.ValueSource;
  * {@code coreKindEmitsNoDependenciesBlock}, {@code r5PreviewVersionsGetNoCoreDependency},
  * {@code r4BallotVersionsDoNotEmitUnresolvableCoreDep} and
  * {@code currentVersionCodeAddsNoCoreDependency}.
+ * <p>
+ * {@code versionlessDependsOnCollectsOneMessagePerVersionlessEntry},
+ * {@code coreKindStillReportsMissingVersions} and
+ * {@code multipleFhirVersionsInSameFamilyEmitOneCoreDep} pin the single-traversal dependency
+ * reporting: the warning list, the hoist that keeps CORE packages reporting, and the
+ * duplicate-key de-dupe branch respectively.
  */
 class NPMPackageGeneratorTest {
 
@@ -53,11 +60,32 @@ class NPMPackageGeneratorTest {
    * has no dependencies block, e.g. for a CORE package).
    */
   private JsonObject dependencies(ImplementationGuide ig, PackageType kind, String fhirVersion) throws IOException {
+    return generatorFor(ig, kind, fhirVersion).getPackageJ().getJsonObject("dependencies");
+  }
+
+  private NPMPackageGenerator generatorFor(ImplementationGuide ig, PackageType kind, String fhirVersion)
+      throws IOException {
     Path destFile = Files.createTempFile("npmgen-test", ".tgz");
     destFile.toFile().deleteOnExit();
-    NPMPackageGenerator gen = new NPMPackageGenerator(PID, destFile.toString(), CANONICAL, WEB, kind, ig, new Date(),
+    return new NPMPackageGenerator(PID, destFile.toString(), CANONICAL, WEB, kind, ig, new Date(),
         null, false, fhirVersion);
-    return gen.getPackageJ().getJsonObject("dependencies");
+  }
+
+  private NPMPackageGenerator generatorFor(ImplementationGuide ig, PackageType kind, List<String> fhirVersions)
+      throws IOException {
+    Path destFile = Files.createTempFile("npmgen-test", ".tgz");
+    destFile.toFile().deleteOnExit();
+    return new NPMPackageGenerator(destFile.toString(), CANONICAL, WEB, kind, ig, new Date(),
+        fhirVersions, null, false);
+  }
+
+  /** An IG whose dependsOn list is versionless, versioned, versionless (in that order). */
+  private ImplementationGuide igWithTwoVersionlessDependsOn() {
+    ImplementationGuide ig = minimalIg();
+    ig.addDependsOn().setUri("http://example.org/fhir/a").setPackageId("example.a");
+    ig.addDependsOn().setUri("http://example.org/fhir/b").setPackageId("example.b").setVersion("1.0.0");
+    ig.addDependsOn().setUri("http://example.org/fhir/c").setPackageId("example.c");
+    return ig;
   }
 
   @Test
@@ -237,6 +265,37 @@ class NPMPackageGeneratorTest {
     d.setPackageId("hl7.fhir.r5.core");
     JsonObject dep = dependencies(ig, PackageType.CONFORMANCE, "5.0.0");
     Assertions.assertTrue(dep.has("hl7.fhir.r5.core"));
+    Assertions.assertEquals("5.0.0", dep.asString("hl7.fhir.r5.core"));
+  }
+
+  @Test
+  void versionlessDependsOnCollectsOneMessagePerVersionlessEntry() throws IOException {
+    NPMPackageGenerator gen = generatorFor(igWithTwoVersionlessDependsOn(), PackageType.CONFORMANCE, "5.0.0");
+    List<String> warnings = gen.getDependencyWarnings();
+    Assertions.assertEquals(2, warnings.size(), "one message per versionless dependsOn entry");
+    Assertions.assertTrue(warnings.get(0).contains("dependsOn[0]"));
+    Assertions.assertTrue(warnings.get(0).contains("example.a"));
+    Assertions.assertTrue(warnings.get(1).contains("dependsOn[2]"));
+    Assertions.assertTrue(warnings.get(1).contains("example.c"));
+  }
+
+  @Test
+  void coreKindStillReportsMissingVersions() throws IOException {
+    // Regression guard for the hoist: the dependsOn loop deliberately runs for CORE packages too,
+    // because reporting is independent of whether a dependencies object is written. If the loop is
+    // ever moved back inside the kind != CORE block, CORE packages stop reporting and this fails.
+    NPMPackageGenerator gen = generatorFor(igWithTwoVersionlessDependsOn(), PackageType.CORE, "5.0.0");
+    Assertions.assertEquals(2, gen.getDependencyWarnings().size());
+    Assertions.assertNull(gen.getPackageJ().getJsonObject("dependencies"));
+  }
+
+  @Test
+  void multipleFhirVersionsInSameFamilyEmitOneCoreDep() throws IOException {
+    // Both versions map to hl7.fhir.r5.core; without the !dep.has(vp) guard the second
+    // JsonObject.add throws JsonException: Name '...' already exists. First one wins.
+    NPMPackageGenerator gen = generatorFor(minimalIg(), PackageType.CONFORMANCE,
+        List.of("5.0.0", "5.0.0-ballot"));
+    JsonObject dep = gen.getPackageJ().getJsonObject("dependencies");
     Assertions.assertEquals("5.0.0", dep.asString("hl7.fhir.r5.core"));
   }
 
