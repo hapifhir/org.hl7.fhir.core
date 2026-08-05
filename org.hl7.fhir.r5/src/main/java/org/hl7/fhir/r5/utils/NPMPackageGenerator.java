@@ -207,32 +207,33 @@ public class NPMPackageGenerator {
     }
   }
 
-  private void validateDependencies(ImplementationGuide ig) throws FHIRException {
-    for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
+  private void validateDependencies(ImplementationGuide ig) {
+    List<ImplementationGuideDependsOnComponent> dependsOn = ig.getDependsOn();
+    for (int i = 0; i < dependsOn.size(); i++) {
+      ImplementationGuideDependsOnComponent d = dependsOn.get(i);
       if (!d.hasVersion()) {
-        String identity = d.hasPackageId() ? d.getPackageId() + " (" + d.getUri() + ")" : d.getUri();
-        throw new FHIRException("ImplementationGuide dependency " + identity + " is missing a required version");
+        log.warn(missingVersionMessage(ig, i, d));
       }
     }
+  }
+
+  static String missingVersionMessage(ImplementationGuide ig, int index, ImplementationGuideDependsOnComponent d) {
+    StringBuilder msg = new StringBuilder("ImplementationGuide ")
+        .append(ig.getPackageId())
+        .append(": dependsOn[").append(index).append("]");
+    if (d.hasPackageId()) {
+      msg.append(' ').append(d.getPackageId());
+    }
+    if (d.hasUri()) {
+      msg.append(" (").append(d.getUri()).append(')');
+    }
+    return msg.append(" is missing a required version; it will be omitted from the generated package.json").toString();
   }
 
   private void buildPackageJson(String pid, String canonical, PackageType kind, String web, Date date, ImplementationGuide ig, List<String> fhirVersion, boolean notForPublication, Map<String, String> relatedIgs) throws FHIRException, IOException {
     String dtHuman = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(date);
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
 
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    if (!ig.hasPackageId()) {
-      b.append("packageId");
-    }
-    if (!ig.hasVersion()) {
-      b.append("version");
-    }
-    if (!ig.hasFhirVersion()) {
-      b.append("fhirVersion");
-    }
-    if (!ig.hasLicense()) {
-      b.append("license");
-    }
     JsonObject npm = new JsonObject();
     npm.add("name", pid);
     npm.add("version", ig.getVersion());
@@ -271,12 +272,20 @@ public class NPMPackageGenerator {
         }
       }
       for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
-        if (!d.hasExtension(ExtensionDefinitions.EXT_IGDEP_NO_SAVE)) {
-          if (d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)) {
-            dep.add(d.getId() + "@npm:" + d.getPackageId(), d.getVersion());
-          } else {
-            dep.add(d.getPackageId(), d.getVersion());
-          }
+        if (d.hasExtension(ExtensionDefinitions.EXT_IGDEP_NO_SAVE)) {
+          // ignore dependencies that are marked as "no save" - these are used for validation but not for package generation
+          continue;
+        }
+        if (!d.hasVersion()) {
+          // Already reported by validateDependencies. Emitting it would write a JsonNull value,
+          // and for a core packageId it would collide with the auto-added dependency above
+          // (JsonObject.add rejects duplicate keys).
+          continue;
+        }
+        if (d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)) {
+          dep.add(d.getId() + "@npm:" + d.getPackageId(), d.getVersion());          
+        } else {
+          dep.add(d.getPackageId(), d.getVersion());
         }
       }
     }
