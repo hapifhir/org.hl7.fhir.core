@@ -358,10 +358,14 @@ public class NPMPackageGenerator {
    * "hl7.fhir.r4.core": "3.5.0". Only emit when the raw version belongs to the matched
    * package's own release line.
    */
-  // MIRROR: org.hl7.fhir.r4b/.../NPMPackageGenerator.java keeps a deliberate verbatim copy of
-  // this table, versionIsInPackageFamily, isPublishableVersion and packageForVersion. The two
-  // copies must be edited together; consolidating them into VersionUtilities was considered and
-  // deferred as an upstream API change.
+  // MIRROR: org.hl7.fhir.r4b/.../NPMPackageGenerator.java keeps a deliberate verbatim copy of this
+  // class's version-mapping and dependency-loop region -- this table, versionIsInPackageFamily,
+  // isPublishableVersion, packageFromVersionPrefix, packageForVersion, missingVersionMessage and
+  // the dependsOn traversal. The two must be edited together; consolidating them into
+  // VersionUtilities was considered and deferred as an upstream API change. dependsOnDeclaresPackage
+  // below is deliberately r5-only: r4b has no UserDataNames.IG_DEP_ALIASED concept and Gson's
+  // JsonObject is last-write-wins, so a versioned core dependsOn already overwrites the auto-add
+  // there and the author still wins.
   private static final Map<String, List<String>> CORE_PACKAGE_VERSION_PREFIXES = Map.of(
       "hl7.fhir.r2.core",  List.of("1.0"),
       "hl7.fhir.r2b.core", List.of("1.4"),
