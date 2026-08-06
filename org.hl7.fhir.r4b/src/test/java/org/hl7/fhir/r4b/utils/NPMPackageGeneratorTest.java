@@ -27,6 +27,17 @@ import com.google.gson.JsonObject;
  * Gson's {@link JsonObject}, not the {@code org.hl7.fhir.utilities.json.model} one, so
  * {@code size()} replaces {@code getProperties().size()} and {@code addProperty(k, null)} stores
  * {@code JsonNull} rather than rejecting the write.
+ * <p>
+ * <em>Fix-pinning</em> tests here: {@code mapsCoreVersionsToPackages},
+ * {@code malformedAndUnpublishedVersionsDoNotEmitCoreDep},
+ * {@code fourSegmentLegacyVersionCodes},
+ * {@code versionlessCoreDependsOnDoesNotDropAutoAddedCoreDep},
+ * {@code wildcardFhirVersionsEmitCoreDependencyVerbatim} (the wildcard regression) and
+ * {@code wildcardCiBuildVersionsDoNotEmitCoreDep}.
+ * <em>Characterization</em>: {@code minorLevelWildcardsStillEmitNoCoreDep}.
+ * {@code wildcardR5AndR6VersionsEmitCoreDependency} is in neither group -- those two rows are
+ * <em>not</em> master-consistent, being the composition of this branch's r5/r6 mapping fix with
+ * the wildcard carve-out.
  */
 class NPMPackageGeneratorTest {
 
@@ -89,6 +100,58 @@ class NPMPackageGeneratorTest {
     JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
     Assertions.assertTrue(dep.has(expectedPackage), fhirVersion + " should map to " + expectedPackage);
     Assertions.assertEquals(fhirVersion, dep.get(expectedPackage).getAsString());
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+      "4.0.x, hl7.fhir.r4.core",
+      "4.0.*, hl7.fhir.r4.core",
+      "1.0.x, hl7.fhir.r2.core",
+      "4.3.x, hl7.fhir.r4b.core",
+  })
+  void wildcardFhirVersionsEmitCoreDependencyVerbatim(String fhirVersion, String expectedPackage)
+      throws IOException {
+    // The reported regression, mirrored from r5. Every row here is master-consistent: master
+    // emitted the wildcard verbatim and the publishable-shape gate swallowed it.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertTrue(dep.has(expectedPackage), fhirVersion + " should map to " + expectedPackage);
+    Assertions.assertEquals(fhirVersion, dep.get(expectedPackage).getAsString(),
+        "the wildcard must be emitted verbatim, not normalized");
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+      "5.0.x, hl7.fhir.r5.core",
+      "6.0.x, hl7.fhir.r6.core",
+  })
+  void wildcardR5AndR6VersionsEmitCoreDependency(String fhirVersion, String expectedPackage)
+      throws IOException {
+    // Kept separate from the rows above because these two are NOT master-consistent: master
+    // mapped no 5.0 or 6.0 line, so it emitted nothing. They are the composition of this
+    // branch's r5/r6 mapping fix with the wildcard carve-out.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertTrue(dep.has(expectedPackage), fhirVersion + " should map to " + expectedPackage);
+    Assertions.assertEquals(fhirVersion, dep.get(expectedPackage).getAsString());
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "4.x", "*" })
+  void minorLevelWildcardsStillEmitNoCoreDep(String fhirVersion) throws IOException {
+    // Characterization: master dropped both too. "*" never clears isSemVerWithWildcards, which
+    // requires an integer major (VersionUtilities.java:480); "4.x" clears the gate and is
+    // dropped further down, because VersionUtilities.packageForVersion matches on a literal
+    // major.minor prefix and returns null.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertEquals(0, dep.size(), fhirVersion + " must emit no core dependency");
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "5.0.x-cibuild" })
+  void wildcardCiBuildVersionsDoNotEmitCoreDep(String fhirVersion) throws IOException {
+    // Not vacuous: this clears both versionHasWildcards and isSemVerWithWildcards, so the only
+    // thing rejecting it is the !hasCiBuildLabel(v) clause in isResolvableWildcardVersion.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertEquals(0, dep.size(), fhirVersion + " must emit no core dependency");
   }
 
   @Test

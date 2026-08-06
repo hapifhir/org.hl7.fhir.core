@@ -317,7 +317,8 @@ public class NPMPackageGenerator {
    */
   // MIRROR: this class is a deliberate verbatim copy of org.hl7.fhir.r5/.../NPMPackageGenerator's
   // version-mapping and dependency-loop region -- this table, versionIsInPackageFamily,
-  // isPublishableVersion, packageFromVersionPrefix, packageForVersion, missingVersionMessage and
+  // isPublishableVersion, labelStart, hasCiBuildLabel, isResolvableWildcardVersion,
+  // packageFromVersionPrefix, packageForVersion, missingVersionMessage and
   // the dependsOn traversal. The two must be edited together; consolidating them into
   // VersionUtilities was considered and deferred as an upstream API change. dependsOnDeclaresPackage
   // is deliberately r5-only: r4b has no UserDataNames.IG_DEP_ALIASED concept and Gson's
@@ -341,16 +342,8 @@ public class NPMPackageGenerator {
    * (or a legacy four-segment build code), and the ci-build label is never published.
    */
   private static boolean isPublishableVersion(String v) {
-    int cut = -1;
-    for (int i = 0; i < v.length(); i++) {
-      char c = v.charAt(i);
-      if (c == '-' || c == '+') {
-        cut = i;
-        break;
-      }
-    }
+    int cut = labelStart(v);
     String numeric = cut < 0 ? v : v.substring(0, cut);
-    String label = cut < 0 ? null : v.substring(cut + 1);
     // The -1 limit is load-bearing: the default split drops trailing empty strings, so "5.0.0."
     // would pass both checks below and be emitted raw as an unresolvable dependency value.
     String[] parts = numeric.split("\\.", -1);
@@ -362,7 +355,44 @@ public class NPMPackageGenerator {
         return false;
       }
     }
-    return label == null || !label.toLowerCase().startsWith(CI_BUILD_LABEL);
+    return !hasCiBuildLabel(v);
+  }
+
+  /** Index of the first pre-release/build label separator in v, or -1 when it has none. */
+  private static int labelStart(String v) {
+    for (int i = 0; i < v.length(); i++) {
+      char c = v.charAt(i);
+      if (c == '-' || c == '+') {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  private static boolean hasCiBuildLabel(String v) {
+    int cut = labelStart(v);
+    return cut >= 0 && v.substring(cut + 1).toLowerCase().startsWith(CI_BUILD_LABEL);
+  }
+
+  /**
+   * Master emitted a wildcard FHIR version verbatim -- "4.0.x" produced
+   * "hl7.fhir.r4.core": "4.0.x", which is a resolvable npm range
+   * (PackageCacheTests.java:51-52) -- so the publishable-shape gate must not swallow it.
+   * Which wildcard forms are legal is VersionUtilities' question, not this class's, so
+   * delegate rather than pattern-match here. Two-segment codes such as "4.0" are still
+   * dropped: isSemVerWithWildcards accepts them, but versionHasWildcards does not, and it is
+   * the wildcard that makes the difference -- "4.0.x" resolves end-to-end while "4.0" does
+   * not (VersionUtilities.versionMatches is exact-arity; VersionUtilitiesTest.java:480-481).
+   * A bare "x" or "*" is dropped by isSemVerWithWildcards, which requires an integer major
+   * (VersionUtilities.java:480); a minor-level "4.x" is dropped further down, because
+   * VersionUtilities.packageForVersion matches on a literal major.minor prefix and returns
+   * null. The ci-build exclusion is repeated because a wildcard version never reaches
+   * isPublishableVersion.
+   */
+  private static boolean isResolvableWildcardVersion(String v) {
+    return VersionUtilities.versionHasWildcards(v)
+        && VersionUtilities.isSemVerWithWildcards(v)
+        && !hasCiBuildLabel(v);
   }
 
   private boolean versionIsInPackageFamily(String packageId, String v) {
@@ -401,7 +431,7 @@ public class NPMPackageGenerator {
     if (v == null || "current".equals(v)) {
       return null;
     }
-    if (!isPublishableVersion(v)) {
+    if (!isPublishableVersion(v) && !isResolvableWildcardVersion(v)) {
       return null;
     }
     try {
@@ -410,9 +440,10 @@ public class NPMPackageGenerator {
     } catch (FHIRException e) {
       // Non-semver strings that get this far have already cleared isPublishableVersion, so the
       // only ones that reach here are the historical four-segment FHIR build codes such as
-      // 3.0.1.11917, which were published and which the pre-change startsWith helper mapped.
-      // Everything else that used to land here ("0.01", "0.06", "current") is now rejected
-      // before the try.
+      // 3.0.1.11917, which were published and which the pre-change startsWith helper mapped --
+      // plus, in principle, a wildcard admitted by isResolvableWildcardVersion, which the same
+      // prefix table resolves to the same package id. Everything else that used to land here
+      // ("0.01", "0.06", "current") is now rejected before the try.
       return packageFromVersionPrefix(v);
     }
   }

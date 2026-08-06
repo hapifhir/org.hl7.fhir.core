@@ -26,14 +26,21 @@ import org.junit.jupiter.params.provider.ValueSource;
  * {@code versionlessCoreDependsOnDoesNotCrashAndKeepsAutoAddedCoreDep},
  * {@code twoSegmentVersionCodesDoNotEmitCoreDep}, {@code ciBuildVersionsDoNotEmitCoreDep},
  * {@code publishedLabelledVersionsStillEmitCoreDep},
- * {@code fourSegmentLegacyVersionCodes} and
+ * {@code fourSegmentLegacyVersionCodes},
+ * {@code wildcardFhirVersionsEmitCoreDependencyVerbatim} (the wildcard regression),
+ * {@code wildcardCiBuildVersionsDoNotEmitCoreDep} and
  * {@code nonSemverVersionCodesAddNoCoreDepAndDoNotThrow} (the malformed rows, which pin the
  * {@code split("\\.", -1)} limit).
  * <em>Characterization</em> tests document behaviour that is unchanged or deliberately
  * limited, and pass in both directions: {@code preservesR2ThroughR4BMapping},
  * {@code coreKindEmitsNoDependenciesBlock}, {@code r5PreviewVersionsGetNoCoreDependency},
- * {@code r4BallotVersionsDoNotEmitUnresolvableCoreDep} and
+ * {@code r4BallotVersionsDoNotEmitUnresolvableCoreDep},
+ * {@code minorLevelWildcardsStillEmitNoCoreDep} and
  * {@code currentVersionCodeAddsNoCoreDependency}.
+ * <p>
+ * {@code wildcardR5AndR6VersionsEmitCoreDependency} is in neither group: those two rows are
+ * <em>not</em> master-consistent, being the composition of this branch's r5/r6 mapping fix with
+ * the wildcard carve-out, and are named separately so a reviewer can see that.
  * <p>
  * {@code versionlessDependsOnCollectsOneMessagePerVersionlessEntry},
  * {@code coreKindStillReportsMissingVersions} and
@@ -177,6 +184,68 @@ class NPMPackageGeneratorTest {
     JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
     Assertions.assertTrue(dep.has(expectedPackage), fhirVersion + " should map to " + expectedPackage);
     Assertions.assertEquals(fhirVersion, dep.asString(expectedPackage));
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+      "4.0.x, hl7.fhir.r4.core",
+      "4.0.X, hl7.fhir.r4.core",
+      "4.0.*, hl7.fhir.r4.core",
+      "1.0.x, hl7.fhir.r2.core",
+      "1.4.x, hl7.fhir.r2b.core",
+      "3.0.x, hl7.fhir.r3.core",
+      "4.3.x, hl7.fhir.r4b.core",
+  })
+  void wildcardFhirVersionsEmitCoreDependencyVerbatim(String fhirVersion, String expectedPackage)
+      throws IOException {
+    // The reported regression. Master emitted a wildcard verbatim -- "4.0.x" produced
+    // "hl7.fhir.r4.core": "4.0.x" -- and the publishable-shape gate swallowed it, because a
+    // wildcard segment is not an integer. Every row here is master-consistent, so this test
+    // fails if isResolvableWildcardVersion is reverted.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertTrue(dep.has(expectedPackage), fhirVersion + " should map to " + expectedPackage);
+    Assertions.assertEquals(fhirVersion, dep.asString(expectedPackage),
+        "the wildcard must be emitted verbatim, not normalized");
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+      "5.0.x, hl7.fhir.r5.core",
+      "6.0.x, hl7.fhir.r6.core",
+  })
+  void wildcardR5AndR6VersionsEmitCoreDependency(String fhirVersion, String expectedPackage)
+      throws IOException {
+    // Deliberately separate from the rows above, because these two are NOT master-consistent:
+    // master mapped no 5.0 or 6.0 line at all, so it emitted nothing here. These rows are the
+    // composition of this branch's headline r5/r6 mapping fix with the wildcard carve-out, not
+    // a separate decision. Flagged for reviewers rather than hidden among the restored rows.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertTrue(dep.has(expectedPackage), fhirVersion + " should map to " + expectedPackage);
+    Assertions.assertEquals(fhirVersion, dep.asString(expectedPackage));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "4.x", "5.x", "x.x.x", "x", "*" })
+  void minorLevelWildcardsStillEmitNoCoreDep(String fhirVersion) throws IOException {
+    // Characterization, not a new rule: master dropped all of these too ("4.x".startsWith("4.0")
+    // is false). Two distinct mechanisms are at work. "x", "*" and "x.x.x" never clear
+    // isSemVerWithWildcards, which requires an integer major (VersionUtilities.java:480). "4.x"
+    // and "5.x" do clear the gate and are dropped further down instead, because
+    // VersionUtilities.packageForVersion matches on a literal major.minor prefix and returns
+    // null -- versionIsInPackageFamily is never reached when vp is null.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertEquals(0, dep.getProperties().size(), fhirVersion + " must emit no core dependency");
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = { "5.0.x-cibuild", "4.0.x-cibuild" })
+  void wildcardCiBuildVersionsDoNotEmitCoreDep(String fhirVersion) throws IOException {
+    // Not vacuous: both rows clear versionHasWildcards and isSemVerWithWildcards, so the only
+    // thing rejecting them is the !hasCiBuildLabel(v) clause in isResolvableWildcardVersion.
+    // A wildcard version never reaches isPublishableVersion, so that clause cannot be dropped
+    // on the assumption the other gate still covers it.
+    JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
+    Assertions.assertEquals(0, dep.getProperties().size(), fhirVersion + " must emit no core dependency");
   }
 
   @Test
