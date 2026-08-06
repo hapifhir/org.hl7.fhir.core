@@ -276,16 +276,23 @@ public class NPMPackageGenerator {
     for (int i = 0; i < dependsOn.size(); i++) {
       ImplementationGuideDependsOnComponent d = dependsOn.get(i);
       if (!d.hasVersion()) {
-        // Emitting it would write a JsonNull value, and for a core packageId it would collide
-        // with the auto-added dependency above (JsonObject.add rejects duplicate keys).
         dependencyWarnings.add(missingVersionMessage(ig, i, d));
-        continue;
       }
       if (dep != null) {
-        if (d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)) {
-          dep.add(d.getId()+"@npm:"+d.getPackageId(), d.getVersion());          
-        } else {
-          dep.add(d.getPackageId(), d.getVersion());
+        String key = d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)
+            ? d.getId() + "@npm:" + d.getPackageId()
+            : d.getPackageId();
+        if (d.hasVersion()) {
+          dep.add(key, d.getVersion());
+        } else if (d.hasPackageId() && !dep.has(key) && !dependsOnDeclaresPackage(ig, key)) {
+          // Master wrote the key with a JSON null and downstream tooling may key off its
+          // presence, so the output shape is preserved deliberately. The three guards are new
+          // and are not master-consistent on purpose -- each one is a master crash: without
+          // hasPackageId, add() throws "Name is null" (JsonObject.java:82); without has(), it
+          // throws on a key the auto-add already took (JsonObject.java:33-35); without
+          // dependsOnDeclaresPackage, a *later* versioned entry for the same packageId throws
+          // on the duplicate. In all three cases the more complete declaration wins.
+          dep.addNull(key);
         }
       }
     }

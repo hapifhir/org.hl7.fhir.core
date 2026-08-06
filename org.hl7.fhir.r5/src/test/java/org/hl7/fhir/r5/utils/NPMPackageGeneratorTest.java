@@ -9,6 +9,7 @@ import java.util.List;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
 import org.hl7.fhir.utilities.json.model.JsonObject;
+import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,11 @@ import org.junit.jupiter.params.provider.ValueSource;
  * {@code multipleFhirVersionsInSameFamilyEmitOneCoreDep} pin the single-traversal dependency
  * reporting: the warning list, the hoist that keeps CORE packages reporting, and the
  * duplicate-key de-dupe branch respectively.
+ * <p>
+ * {@code versionlessDependsOnIsWarnedAndEmittedAsJsonNull} pins master's output shape for a
+ * versionless {@code dependsOn}. {@code versionlessDependsOnWithNoPackageIdIsWarnedAndWritesNoKey}
+ * and {@code versionlessThenVersionedDependsOnKeepsTheVersion} pin the two guards on that write
+ * that are deliberately <em>not</em> master-consistent: master threw in both cases.
  */
 class NPMPackageGeneratorTest {
 
@@ -315,15 +321,52 @@ class NPMPackageGeneratorTest {
   }
 
   @Test
-  void versionlessDependsOnIsWarnedAndOmittedNotRejected() throws IOException {
+  void versionlessDependsOnIsWarnedAndEmittedAsJsonNull() throws IOException {
     ImplementationGuide ig = minimalIg();
     ImplementationGuideDependsOnComponent d = ig.addDependsOn();
     d.setUri("http://example.org/fhir/ImplementationGuide/example-dependency");
     d.setPackageId("example.fhir.dependency");
-    JsonObject dep = dependencies(ig, PackageType.CONFORMANCE, "5.0.0");
+    NPMPackageGenerator gen = generatorFor(ig, PackageType.CONFORMANCE, "5.0.0");
+    JsonObject dep = gen.getPackageJ().getJsonObject("dependencies");
     Assertions.assertTrue(dep.has("hl7.fhir.r5.core"));
-    Assertions.assertFalse(dep.has("example.fhir.dependency"),
-        "a versionless dependsOn must not be emitted with a null version");
+    Assertions.assertEquals("5.0.0", dep.asString("hl7.fhir.r5.core"));
+    // Master wrote the key with a JSON null and downstream tooling may key off its presence,
+    // so the output shape is preserved. The warning fires independently of the write.
+    Assertions.assertTrue(dep.hasNull("example.fhir.dependency"),
+        "a versionless dependsOn must be emitted with a JSON null version");
+    Assertions.assertEquals(1, gen.getDependencyWarnings().size());
+    Assertions.assertTrue(JsonParser.compose(gen.getPackageJ(), true).contains("example.fhir.dependency"),
+        "the key must survive serialization, not just exist in memory");
+  }
+
+  @Test
+  void versionlessDependsOnWithNoPackageIdIsWarnedAndWritesNoKey() throws IOException {
+    // Master threw JsonException ("Name is null") here. The hasPackageId() guard is a deliberate
+    // improvement over master, not a restoration of it.
+    ImplementationGuide ig = minimalIg();
+    ig.addDependsOn().setUri("http://example.org/fhir/ImplementationGuide/uri-only");
+    NPMPackageGenerator gen = Assertions.assertDoesNotThrow(
+        () -> generatorFor(ig, PackageType.CONFORMANCE, "5.0.0"));
+    JsonObject dep = gen.getPackageJ().getJsonObject("dependencies");
+    Assertions.assertEquals(1, dep.getProperties().size(), "only the auto-added core dep");
+    Assertions.assertTrue(dep.has("hl7.fhir.r5.core"));
+    Assertions.assertEquals(1, gen.getDependencyWarnings().size());
+  }
+
+  @Test
+  void versionlessThenVersionedDependsOnKeepsTheVersion() throws IOException {
+    // The versionless entry comes first, so without dependsOnDeclaresPackage the null write
+    // takes the key and the later versioned add throws on the duplicate -- which is exactly
+    // what master did. The more complete declaration must win instead.
+    ImplementationGuide ig = minimalIg();
+    ig.addDependsOn().setUri("http://example.org/fhir/dup").setPackageId("example.dup");
+    ig.addDependsOn().setUri("http://example.org/fhir/dup").setPackageId("example.dup").setVersion("1.0.0");
+    NPMPackageGenerator gen = Assertions.assertDoesNotThrow(
+        () -> generatorFor(ig, PackageType.CONFORMANCE, "5.0.0"));
+    JsonObject dep = gen.getPackageJ().getJsonObject("dependencies");
+    Assertions.assertEquals("1.0.0", dep.asString("example.dup"));
+    Assertions.assertFalse(dep.hasNull("example.dup"));
+    Assertions.assertEquals(1, gen.getDependencyWarnings().size());
   }
 
   @Test

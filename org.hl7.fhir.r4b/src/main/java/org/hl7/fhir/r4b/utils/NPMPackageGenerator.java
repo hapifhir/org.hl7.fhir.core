@@ -72,6 +72,7 @@ import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -240,14 +241,21 @@ public class NPMPackageGenerator {
     for (int i = 0; i < dependsOn.size(); i++) {
       ImplementationGuideDependsOnComponent d = dependsOn.get(i);
       if (!d.hasVersion()) {
-        // Gson stores addProperty(key, null) as JsonNull, and the serializer below has
-        // serializeNulls off, so emitting it would drop the key from package.json entirely --
-        // taking the auto-added core dependency with it when the packageId is a core package.
         dependencyWarnings.add(missingVersionMessage(ig, i, d));
-        continue;
       }
       if (dep != null) {
-        dep.addProperty(d.getPackageId(), d.getVersion());
+        String key = d.getPackageId();
+        if (d.hasVersion()) {
+          dep.addProperty(key, d.getVersion());
+        } else if (d.hasPackageId() && !dep.has(key)) {
+          // Mirrors r5. Gson is last-write-wins, so the has() guard is what stops the null from
+          // replacing an auto-added core dependency; hasPackageId stops a null-key NPE
+          // (LinkedTreeMap rejects null keys) that master hit on a uri-only dependsOn. r5's third
+          // guard, dependsOnDeclaresPackage, is deliberately absent here: r5 throws on a duplicate
+          // key, whereas a later versioned entry simply overwrites this JsonNull, which is the
+          // outcome that guard exists to produce.
+          dep.add(key, JsonNull.INSTANCE);
+        }
       }
     }
     for (String w : dependencyWarnings) {
