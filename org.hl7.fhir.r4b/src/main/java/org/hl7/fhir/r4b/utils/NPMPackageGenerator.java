@@ -195,22 +195,22 @@ public class NPMPackageGenerator {
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
 
     JsonObject npm = new JsonObject();
-    npm.addProperty("name", ig.getPackageId());
-    npm.addProperty("version", ig.getVersion());
+    addIfNotNull(npm, "name", ig.getPackageId());
+    addIfNotNull(npm, "version", ig.getVersion());
     igVersion = ig.getVersion();
     npm.addProperty("tools-version", ToolsVersion.TOOLS_VERSION);
-    npm.addProperty("type", kind.getCode());
+    addIfNotNull(npm, "type", kind.getCode());
     npm.addProperty("date", dt);
     if (ig.hasLicense()) {
-      npm.addProperty("license", ig.getLicense().toCode());
+      addIfNotNull(npm, "license", ig.getLicense().toCode());
     }
-    npm.addProperty("canonical", canonical);
+    addIfNotNull(npm, "canonical", canonical);
     if (notForPublication) {
       npm.addProperty("notForPublication", true);
     }
-    npm.addProperty("url", web);
+    addIfNotNull(npm, "url", web);
     if (ig.hasTitle()) {
-      npm.addProperty("title", ig.getTitle());
+      addIfNotNull(npm, "title", ig.getTitle());
     }
     if (ig.hasDescription()) {
       npm.addProperty("description", ig.getDescription() + " (built " + dtHuman + timezone() + ")");
@@ -254,7 +254,7 @@ public class NPMPackageGenerator {
       log.warn(w);
     }
     if (ig.hasPublisher()) {
-      npm.addProperty("author", ig.getPublisher());
+      addIfNotNull(npm, "author", ig.getPublisher());
     }
     JsonArray m = new JsonArray();
     for (ContactDetail t : ig.getContact()) {
@@ -263,7 +263,7 @@ public class NPMPackageGenerator {
       if (t.hasName() && (email != null || url != null)) {
         JsonObject md = new JsonObject();
         m.add(md);
-        md.addProperty("name", t.getName());
+        addIfNotNull(md, "name", t.getName());
         if (email != null)
           md.addProperty("email", email);
         if (url != null)
@@ -273,12 +273,12 @@ public class NPMPackageGenerator {
     if (m.size() > 0)
       npm.add("maintainers", m);
     if (ig.getManifest().hasRendering())
-      npm.addProperty("homepage", ig.getManifest().getRendering());
+      addIfNotNull(npm, "homepage", ig.getManifest().getRendering());
     JsonObject dir = new JsonObject();
     npm.add("directories", dir);
     dir.addProperty("lib", "package");
     dir.addProperty("example", "example");
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    Gson gson = packageJsonGson();
     String json = gson.toJson(npm);
     try {
       addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));
@@ -292,6 +292,31 @@ public class NPMPackageGenerator {
     packageManifest.addProperty("date", dt);
     packageManifest.addProperty("name", ig.getPackageId());
 
+  }
+
+  /**
+   * Writes name only when value is non-null. Guarding on the value rather than on the model's
+   * hasX() is deliberate: hasX() means "element present and non-empty", which is still true
+   * for a primitive carrying only an extension, and ImplementationGuide's license enum returns
+   * null from toCode() for its NULL literal. With serializeNulls enabled below, a presence-only
+   * guard would let those serialize as JSON nulls and widen this class's output beyond the one
+   * intended dependency key.
+   */
+  private static void addIfNotNull(JsonObject o, String name, String value) {
+    if (value != null) {
+      o.addProperty(name, value);
+    }
+  }
+
+  /**
+   * The serializer for the generated package.json. serializeNulls is on so that a versionless
+   * dependsOn keeps master's "some.pkg": null output shape; every string-valued property above
+   * is written through addIfNotNull, so the blast radius is that one key. Deliberately not
+   * shared with the other two GsonBuilder sites in this class.
+   * Package-private so NPMPackageGeneratorTest serializes exactly the way production does.
+   */
+  static Gson packageJsonGson() {
+    return new GsonBuilder().setPrettyPrinting().serializeNulls().create();
   }
 
   static String missingVersionMessage(ImplementationGuide ig, int index, ImplementationGuideDependsOnComponent d) {
