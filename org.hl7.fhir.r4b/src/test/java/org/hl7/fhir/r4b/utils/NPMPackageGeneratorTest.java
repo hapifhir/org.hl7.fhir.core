@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.hl7.fhir.r4b.model.ContactDetail;
 import org.hl7.fhir.r4b.model.ContactPoint.ContactPointSystem;
@@ -15,6 +16,8 @@ import org.hl7.fhir.r4b.model.StringType;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -34,6 +37,7 @@ import com.google.gson.JsonObject;
  * <p>
  * <em>Fix-pinning</em> tests here: {@code mapsCoreVersionsToPackages},
  * {@code malformedAndUnpublishedVersionsDoNotEmitCoreDep},
+ * {@code ciBuildLabelDetectionIsLocaleIndependent},
  * {@code fourSegmentLegacyVersionCodes},
  * {@code versionlessCoreDependsOnDoesNotDropAutoAddedCoreDep},
  * {@code wildcardFhirVersionsEmitCoreDependencyVerbatim} (the wildcard regression) and
@@ -91,13 +95,31 @@ class NPMPackageGeneratorTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = { "5.0", "5.0.0-cibuild", "5.0.0." })
+  @ValueSource(strings = { "5.0", "5.0.0-cibuild", "5.0.0.", "5.0.0-CIBUILD" })
   void malformedAndUnpublishedVersionsDoNotEmitCoreDep(String fhirVersion) throws IOException {
     // "5.0" fails the segment count, "5.0.0-cibuild" fails on the label, and "5.0.0." pins the
     // split("\\.", -1) limit -- without it the trailing empty segment is dropped and the value
     // is emitted raw by the legacy-code fallback.
     JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, fhirVersion);
     Assertions.assertEquals(0, dep.size(), fhirVersion + " must emit no core dependency");
+  }
+
+  @Test
+  @ResourceLock(Resources.LOCALE)
+  void ciBuildLabelDetectionIsLocaleIndependent() throws IOException {
+    // The uppercase row above passes with or without the fix, so it pins nothing on its own.
+    // Only forcing a Turkish default locale exercises the bug: "CIBUILD".toLowerCase() there
+    // yields a dotless i, which does not match CI_BUILD_LABEL, so the version clears
+    // isPublishableVersion and an unpublished ci-build gets emitted as a dependency.
+    Locale previous = Locale.getDefault();
+    try {
+      Locale.setDefault(Locale.forLanguageTag("tr-TR"));
+      JsonObject dep = dependencies(minimalIg(), PackageType.CONFORMANCE, "5.0.0-CIBUILD");
+      Assertions.assertEquals(0, dep.size(),
+          "an uppercase ci-build label must be rejected under a Turkish-locale JVM too");
+    } finally {
+      Locale.setDefault(previous);
+    }
   }
 
   @ParameterizedTest
@@ -158,7 +180,7 @@ class NPMPackageGeneratorTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = { "5.0.x-cibuild" })
+  @ValueSource(strings = { "5.0.x-cibuild", "5.0.x-CIBUILD" })
   void wildcardCiBuildVersionsDoNotEmitCoreDep(String fhirVersion) throws IOException {
     // Not vacuous: this clears both versionHasWildcards and isSemVerWithWildcards, so the only
     // thing rejecting it is the !hasCiBuildLabel(v) clause in isResolvableWildcardVersion.
