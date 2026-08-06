@@ -4,4 +4,4 @@
 
 ## Other code changes
 
-* Fixed setting ManagedWebAccess from fhir-settings.json
+* no changes
