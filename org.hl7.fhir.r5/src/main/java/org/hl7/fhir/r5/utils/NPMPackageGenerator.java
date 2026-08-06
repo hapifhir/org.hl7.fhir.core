@@ -495,12 +495,18 @@ public class NPMPackageGenerator {
       String vp = VersionUtilities.packageForVersion(v);
       return vp != null && versionIsInPackageFamily(vp, v) ? vp : null;
     } catch (FHIRException e) {
-      // Non-semver strings that get this far have already cleared isPublishableVersion, so the
-      // only ones that reach here are the historical four-segment FHIR build codes such as
-      // 3.0.1.11917, which were published and which the pre-change startsWith helper mapped --
-      // plus, in principle, a wildcard admitted by isResolvableWildcardVersion, which the same
-      // prefix table resolves to the same package id. Everything else that used to land here
-      // ("0.01", "0.06", "current") is now rejected before the try.
+      // Measured, not assumed. Three kinds of input reach this catch. (1) The historical
+      // four-segment FHIR build codes such as 3.0.1.11917 -- published, and the case this
+      // fallback exists for. (2) Versions whose numeric head clears isPublishableVersion but
+      // whose label tail SemverParser rejects: an empty label ("1.0.2-", "1.0.2+"), a
+      // non-alphanumeric one ("1.0.2-!!!", "1.0.2-+"), or a leading-zero numeric one ("1.0.2-01").
+      // (3) Leading-zero numeric heads such as "01.0.2", whose segments are all integers.
+      // Emitting the raw string for (2) is a deliberate tradeoff, the same one already accepted
+      // for (1): an unresolvable version fails loudly at npm-install time rather than the
+      // dependency silently going missing. An input matching no prefix emits nothing at all --
+      // "01.0.2" reaches here, but the table has no "01.0" entry, so this returns null.
+      // Wildcards do not reach here: SemverParser accepts "4.0.x" and "4.0.*", so the versions
+      // isResolvableWildcardVersion admits return from the try above instead.
       return packageFromVersionPrefix(v);
     }
   }
