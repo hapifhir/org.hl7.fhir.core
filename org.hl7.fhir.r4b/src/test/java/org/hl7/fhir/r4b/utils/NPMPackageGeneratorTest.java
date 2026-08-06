@@ -42,6 +42,14 @@ import com.google.gson.JsonObject;
  * {@code wildcardR5AndR6VersionsEmitCoreDependency} is in neither group -- those two rows are
  * <em>not</em> master-consistent, being the composition of this branch's r5/r6 mapping fix with
  * the wildcard carve-out.
+ * <p>
+ * {@code absentOptionalPropertiesAreOmittedNotSerializedAsNull} and
+ * {@code fullyPopulatedIgSerializesNoNullValues} bound the blast radius of {@code serializeNulls}
+ * on the package.json writer. {@code versionlessNonCoreDependsOnIsEmittedAsJsonNull} pins
+ * master's output shape for a versionless {@code dependsOn}, while
+ * {@code versionlessDependsOnWithNoPackageIdIsWarnedAndWritesNoKey} and
+ * {@code versionlessThenVersionedDependsOnKeepsTheVersion} pin the guards on that write which
+ * are deliberately <em>not</em> master-consistent: master NPE'd or clobbered in those cases.
  */
 class NPMPackageGeneratorTest {
 
@@ -229,13 +237,51 @@ class NPMPackageGeneratorTest {
   }
 
   @Test
-  void versionlessNonCoreDependsOnIsOmitted() throws IOException {
+  void versionlessNonCoreDependsOnIsEmittedAsJsonNull() throws IOException {
     ImplementationGuide ig = minimalIg();
     ig.addDependsOn().setUri("http://example.org/fhir/dep").setPackageId("example.fhir.dep");
-    JsonObject dep = dependencies(ig, PackageType.CONFORMANCE, "5.0.0");
+    NPMPackageGenerator gen = generatorFor(ig, PackageType.CONFORMANCE, "5.0.0");
+    JsonObject dep = gen.getPackageJ().getAsJsonObject("dependencies");
     Assertions.assertTrue(dep.has("hl7.fhir.r5.core"));
-    Assertions.assertFalse(dep.has("example.fhir.dep"),
-        "a versionless dependsOn must not be emitted with a null version");
+    Assertions.assertEquals("5.0.0", dep.get("hl7.fhir.r5.core").getAsString());
+    // Master wrote the key with a JSON null and downstream tooling may key off its presence,
+    // so the output shape is preserved. Phase 2's serializeNulls is what makes it survive here.
+    Assertions.assertTrue(dep.get("example.fhir.dep").isJsonNull(),
+        "a versionless dependsOn must be emitted with a JSON null version");
+    Assertions.assertEquals(1, gen.getDependencyWarnings().size());
+    String json = NPMPackageGenerator.packageJsonGson().toJson(gen.getPackageJ());
+    Assertions.assertTrue(json.contains("example.fhir.dep"),
+        "the key must survive serialization, not just exist in memory");
+  }
+
+  @Test
+  void versionlessDependsOnWithNoPackageIdIsWarnedAndWritesNoKey() throws IOException {
+    // Master NPE'd here -- LinkedTreeMap rejects null keys. The hasPackageId() guard is a
+    // deliberate improvement over master, not a restoration of it.
+    ImplementationGuide ig = minimalIg();
+    ig.addDependsOn().setUri("http://example.org/fhir/ImplementationGuide/uri-only");
+    NPMPackageGenerator gen = Assertions.assertDoesNotThrow(
+        () -> generatorFor(ig, PackageType.CONFORMANCE, "5.0.0"));
+    JsonObject dep = gen.getPackageJ().getAsJsonObject("dependencies");
+    Assertions.assertEquals(1, dep.size(), "only the auto-added core dep");
+    Assertions.assertTrue(dep.has("hl7.fhir.r5.core"));
+    Assertions.assertEquals(1, gen.getDependencyWarnings().size());
+  }
+
+  @Test
+  void versionlessThenVersionedDependsOnKeepsTheVersion() throws IOException {
+    // Mirrors r5, but passes here for a different reason: Gson is last-write-wins, so the later
+    // versioned entry simply overwrites the JsonNull. r5 needs dependsOnDeclaresPackage to reach
+    // the same outcome because its JsonObject throws on a duplicate key. Master threw here too.
+    ImplementationGuide ig = minimalIg();
+    ig.addDependsOn().setUri("http://example.org/fhir/dup").setPackageId("example.dup");
+    ig.addDependsOn().setUri("http://example.org/fhir/dup").setPackageId("example.dup").setVersion("1.0.0");
+    NPMPackageGenerator gen = Assertions.assertDoesNotThrow(
+        () -> generatorFor(ig, PackageType.CONFORMANCE, "5.0.0"));
+    JsonObject dep = gen.getPackageJ().getAsJsonObject("dependencies");
+    Assertions.assertFalse(dep.get("example.dup").isJsonNull());
+    Assertions.assertEquals("1.0.0", dep.get("example.dup").getAsString());
+    Assertions.assertEquals(1, gen.getDependencyWarnings().size());
   }
 
   @Test
