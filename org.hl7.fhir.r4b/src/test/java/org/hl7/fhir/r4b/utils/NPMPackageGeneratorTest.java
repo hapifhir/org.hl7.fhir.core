@@ -6,7 +6,12 @@ import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 
+import org.hl7.fhir.r4b.model.ContactDetail;
+import org.hl7.fhir.r4b.model.ContactPoint.ContactPointSystem;
+import org.hl7.fhir.r4b.model.CodeType;
 import org.hl7.fhir.r4b.model.ImplementationGuide;
+import org.hl7.fhir.r4b.model.ImplementationGuide.SPDXLicense;
+import org.hl7.fhir.r4b.model.StringType;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,7 +19,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 /**
@@ -164,12 +168,64 @@ class NPMPackageGeneratorTest {
     Assertions.assertFalse(dep.get("hl7.fhir.r5.core").isJsonNull());
     Assertions.assertEquals("5.0.0", dep.get("hl7.fhir.r5.core").getAsString());
     // ...and this is the symptom that actually reaches users: the production serializer is
-    // new GsonBuilder().setPrettyPrinting().create() (NPMPackageGenerator.buildPackageJson) with
-    // serializeNulls off, so a JsonNull value omits the key from package.json entirely. If
-    // production ever gains serializeNulls(), this copy must move with it.
-    String json = new GsonBuilder().setPrettyPrinting().create().toJson(gen.getPackageJ());
+    // NPMPackageGenerator.packageJsonGson(), and a JsonNull value under this key would push the
+    // auto-added core dependency out of package.json. The factory is package-private precisely
+    // so this test cannot drift from the serializer production actually uses.
+    String json = NPMPackageGenerator.packageJsonGson().toJson(gen.getPackageJ());
     Assertions.assertTrue(json.contains("hl7.fhir.r5.core"),
         "the auto-added core dependency must survive serialization, not just exist in memory");
+  }
+
+  @Test
+  void absentOptionalPropertiesAreOmittedNotSerializedAsNull() throws IOException {
+    // serializeNulls is on, so a presence-only guard would turn every unset optional into a
+    // JSON null. addIfNotNull guards by value instead, so they stay absent entirely. The
+    // quoted tokens below do not collide with "tools-version" or "fhirVersions": neither has a
+    // quote immediately before the matched text.
+    ImplementationGuide ig = new ImplementationGuide();
+    Path destFile = Files.createTempFile("npmgen-test", ".tgz");
+    destFile.toFile().deleteOnExit();
+    NPMPackageGenerator gen = new NPMPackageGenerator(destFile.toString(), null, null,
+        PackageType.CONFORMANCE, ig, new Date(), List.of("5.0.0"), false);
+    String json = NPMPackageGenerator.packageJsonGson().toJson(gen.getPackageJ());
+    Assertions.assertFalse(json.contains("\"name\""), "an unset packageId must not be written");
+    Assertions.assertFalse(json.contains("\"version\""), "an unset version must not be written");
+    Assertions.assertFalse(json.contains("\"canonical\""), "a null canonical must not be written");
+    Assertions.assertFalse(json.contains("\"url\""), "a null web url must not be written");
+  }
+
+  @Test
+  void fullyPopulatedIgSerializesNoNullValues() throws IOException {
+    // The real blast-radius guard for serializeNulls. The title is deliberately a StringType
+    // carrying only an extension: hasTitle() is true (Element.isEmpty() is false once an
+    // extension is present) while getTitle() is null, which is exactly the presence-vs-value
+    // gap addIfNotNull closes. Without the helper that property serializes as "title": null.
+    // If any string-valued property in buildPackageJson ever escapes the helper, this fails.
+    // The dependsOn entry is deliberately versioned: a versionless one legitimately produces
+    // ": null", which is the one key the serializer change exists to allow.
+    ImplementationGuide ig = minimalIg();
+    ig.setLicense(SPDXLicense.CC0_1_0);
+    StringType extensionOnlyTitle = new StringType();
+    extensionOnlyTitle.addExtension("http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+        new CodeType("unknown"));
+    ig.setTitleElement(extensionOnlyTitle);
+    ig.setDescription("A test IG");
+    ig.setPublisher("Example Publisher");
+    ContactDetail c = ig.addContact();
+    c.setName("Example Contact");
+    c.addTelecom().setSystem(ContactPointSystem.EMAIL).setValue("test@example.org");
+    c.addTelecom().setSystem(ContactPointSystem.URL).setValue("http://example.org/contact");
+    ig.getManifest().setRendering("http://example.org/rendering");
+    ig.addDependsOn().setUri("http://example.org/fhir/dep").setPackageId("example.dep").setVersion("1.0.0");
+    Path destFile = Files.createTempFile("npmgen-test", ".tgz");
+    destFile.toFile().deleteOnExit();
+    NPMPackageGenerator gen = new NPMPackageGenerator(destFile.toString(), CANONICAL, WEB,
+        PackageType.CONFORMANCE, ig, new Date(), List.of("5.0.0"), true);
+    Assertions.assertTrue(ig.hasTitle(), "the extension-only title must still satisfy hasTitle()");
+    Assertions.assertNull(ig.getTitle(), "...while its value is null -- otherwise this test is vacuous");
+    String json = NPMPackageGenerator.packageJsonGson().toJson(gen.getPackageJ());
+    Assertions.assertFalse(json.contains(": null"),
+        "no property may serialize as a JSON null: " + json);
   }
 
   @Test
