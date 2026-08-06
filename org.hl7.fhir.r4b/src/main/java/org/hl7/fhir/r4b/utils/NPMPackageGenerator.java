@@ -379,6 +379,8 @@ public class NPMPackageGenerator {
     String numeric = cut < 0 ? v : v.substring(0, cut);
     // The -1 limit is load-bearing: the default split drops trailing empty strings, so "5.0.0."
     // would pass both checks below and be emitted raw as an unresolvable dependency value.
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //fixed literal-dot pattern, no user-supplied regex
     String[] parts = numeric.split("\\.", -1);
     if (parts.length < 3) {
       return false;
