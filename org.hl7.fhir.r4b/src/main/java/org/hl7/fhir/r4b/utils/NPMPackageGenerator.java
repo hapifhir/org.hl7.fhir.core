@@ -406,7 +406,10 @@ public class NPMPackageGenerator {
 
   private static boolean hasCiBuildLabel(String v) {
     int cut = labelStart(v);
-    return cut >= 0 && v.substring(cut + 1).toLowerCase().startsWith(CI_BUILD_LABEL);
+    // Locale.ROOT: CI_BUILD_LABEL is an ASCII keyword, and a tr/az default locale would
+    // lower-case "CIBUILD" to "cibuild" with a dotless i and let an unpublished ci-build
+    // version through as publishable.
+    return cut >= 0 && v.substring(cut + 1).toLowerCase(Locale.ROOT).startsWith(CI_BUILD_LABEL);
   }
 
   /**
