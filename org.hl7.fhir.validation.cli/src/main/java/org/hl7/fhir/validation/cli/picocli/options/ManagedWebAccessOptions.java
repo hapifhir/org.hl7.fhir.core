@@ -21,13 +21,21 @@ public class ManagedWebAccessOptions {
     arity = "1"
   )
   @With
-  public boolean ssrfProtectionEnabled = true;
+  public Boolean ssrfProtectionEnabled;
 
+  /**
+   * A few of these options collide, so the order in which they are applied is important.
+   * Settings from fhir-settings.json are always loaded first, followed by any settings from the command-line that
+   * should override them.
+   */
   public void applyOptions() {
+    ManagedWebAccess.loadFromFHIRSettings();
     if (noHttpAccess) {
       ManagedWebAccess.setAccessPolicy(ManagedWebAccess.WebAccessPolicy.PROHIBITED);
     }
-    ManagedWebAccess.setSsrfProtectionEnabled(ssrfProtectionEnabled);
+    if (ssrfProtectionEnabled != null) {
+       ManagedWebAccess.setSsrfProtectionEnabled(ssrfProtectionEnabled);
+    }
   }
 
   public ManagedWebAccessOptions () {
