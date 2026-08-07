@@ -28,6 +28,7 @@ import java.util.Set;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.apache.commons.io.IOUtils;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -52,6 +53,10 @@ class ValidationServiceTests {
   final String DUMMY_OUTPUT = "dummyOutput";
 
   final String DUMMY_SV = "1.2.3";
+
+  final String DUMMY_SESSION_ID = "dummySessionId";
+
+  final String EXPANSION_PARAMETERS_CONTENT = "{\"resourceType\":\"Parameters\",\"parameter\":[{\"name\":\"displayLanguage\",\"valueCode\":\"en-US\"}]}";
 
   @DisplayName("Test validation session persists in session cache")
   @Test
@@ -132,6 +137,70 @@ class ValidationServiceTests {
     } else {
       return inputStream;
     }
+  }
+
+  @Test
+  @DisplayName("Test that inline expansion parameters are applied to the session validation engine")
+  void expansionParametersAreLoadedFromRequest() throws Exception {
+    ValidationEngine validationEngine = mock(ValidationEngine.class);
+    ValidationService validationService = new ValidationService(cacheHolding(validationEngine));
+
+    ValidationRequest request = expansionParametersRequest()
+      .setExpansionParameters(new FileInfo("exp-params.json", EXPANSION_PARAMETERS_CONTENT, "json"));
+
+    validationService.validateSources(request);
+
+    verify(validationEngine).loadExpansionParameters(
+      eq(EXPANSION_PARAMETERS_CONTENT.getBytes(StandardCharsets.UTF_8)),
+      eq("exp-params.json"),
+      eq("json"));
+  }
+
+  @Test
+  @DisplayName("Test that a request without expansion parameters leaves those already set on the session untouched")
+  void expansionParametersAreNotResetWhenAbsentFromRequest() throws Exception {
+    ValidationEngine validationEngine = mock(ValidationEngine.class);
+    ValidationService validationService = new ValidationService(cacheHolding(validationEngine));
+
+    validationService.validateSources(expansionParametersRequest());
+
+    verify(validationEngine, never()).loadExpansionParameters(any(byte[].class), anyString(), anyString());
+    verify(validationEngine, never()).loadExpansionParameters(anyString());
+  }
+
+  @Test
+  @DisplayName("Test that expansion parameters with no content are reported rather than failing obscurely")
+  void expansionParametersWithoutContentAreRejected() {
+    ValidationEngine validationEngine = mock(ValidationEngine.class);
+    ValidationService validationService = new ValidationService(cacheHolding(validationEngine));
+
+    ValidationRequest request = expansionParametersRequest()
+      .setExpansionParameters(new FileInfo("exp-params.json", null, "json"));
+
+    FHIRException e = assertThrows(FHIRException.class, () -> validationService.validateSources(request));
+
+    assertTrue(e.getMessage().contains("fileContent"), e.getMessage());
+  }
+
+  /**
+   * A cache that already holds the given engine for {@link #DUMMY_SESSION_ID}, so that validateSources reuses it
+   * rather than building a real one.
+   */
+  private SessionCache cacheHolding(ValidationEngine validationEngine) {
+    SessionCache sessionCache = mock(SessionCache.class);
+    when(sessionCache.sessionExists(DUMMY_SESSION_ID)).thenReturn(true);
+    when(sessionCache.fetchSessionValidatorEngine(DUMMY_SESSION_ID)).thenReturn(validationEngine);
+    return sessionCache;
+  }
+
+  /**
+   * A request against an existing session with nothing to validate, so that only the engine setup performed by
+   * validateSources is exercised.
+   */
+  private ValidationRequest expansionParametersRequest() {
+    return new ValidationRequest()
+      .setValidationEngineParameters(new ValidationEngineParameters())
+      .setSessionId(DUMMY_SESSION_ID);
   }
 
   @Test

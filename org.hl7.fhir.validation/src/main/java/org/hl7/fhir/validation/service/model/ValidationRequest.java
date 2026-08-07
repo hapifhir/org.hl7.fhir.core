@@ -67,6 +67,36 @@ public class ValidationRequest {
     return this;
   }
 
+  @JsonProperty("expansionParameters")
+  @SerializedName("expansionParameters")
+  private
+  FileInfo expansionParameters;
+
+  /**
+   * The expansion parameters to use for this validation, supplied as inline content so that callers with no access to
+   * the validator's filesystem can provide them. This is the remote equivalent of
+   * {@link InstanceValidatorParameters#getExpansionParameters()}, which names a file on the local filesystem and is
+   * only honoured by the command line validator.
+   * <p>
+   * These are applied to the validation engine associated with this request's session. Because that engine is cached
+   * and reused, a subsequent request that reuses the same sessionId without setting this field retains the expansion
+   * parameters applied previously.
+   *
+   * @return the expansion parameters content, or null if none were supplied
+   */
+  @SerializedName("expansionParameters")
+  @JsonProperty("expansionParameters")
+  public FileInfo getExpansionParameters() {
+    return expansionParameters;
+  }
+
+  @SerializedName("expansionParameters")
+  @JsonProperty("expansionParameters")
+  public ValidationRequest setExpansionParameters(FileInfo expansionParameters) {
+    this.expansionParameters = expansionParameters;
+    return this;
+  }
+
   @JsonProperty("sources")
   @SerializedName("sources")
   private
