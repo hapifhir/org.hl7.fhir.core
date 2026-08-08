@@ -779,6 +779,8 @@ public class Utilities {
   }
 
 
+  /** Escapes special characters in a Java string: \n \r " and \
+   */
   public static String escapeJava(String doco) {
     if (doco == null)
       return "";
@@ -997,7 +999,30 @@ public class Utilities {
     return b.toString();
   }
 
-
+  /** escape a string based on FHIRPaths encoding rules */
+  public static String escapeFhirPathString(String s) {
+    if (s == null) {
+      return "";
+    }
+    StringBuilder b = new StringBuilder(s.length());
+    for (char c : s.toCharArray()) {
+      switch (c) {
+        case '\\': b.append("\\\\"); break;
+        case '\'': b.append("\\'"); break;
+        case '\r': b.append("\\r"); break;
+        case '\n': b.append("\\n"); break;
+        case '\t': b.append("\\t"); break;
+        case ' ': b.append(" "); break;
+        default:
+          if ((c == '\r' || c == '\n') || isWhitespace(c) || c < 32) { 
+            b.append("\\u");
+            b.append(Utilities.padLeft(Integer.toHexString(c), '0', 4));
+          } else
+            b.append(c);
+      }
+    }
+    return b.toString();
+  }
   public static String escapeJson(String value) {
     return escapeJson(value, true);
   }
@@ -1021,7 +1046,7 @@ public class Utilities {
       else if (c == ' ')
         b.append(" ");
       else if ((c == '\r' || c == '\n') || (isWhitespace(c) && escapeUnicodeWhitespace)) { 
-        b.append("\\u"+Utilities.padLeft(Integer.toHexString(c), '0', 4));
+        b.append("\\u" + Utilities.padLeft(Integer.toHexString(c), '0', 4));
       } else if (((int) c) < 32)
         b.append("\\u" + Utilities.padLeft(Integer.toHexString(c), '0', 4));
       else
@@ -1917,7 +1942,7 @@ public class Utilities {
 
 
   public static boolean isTxFhirOrgServer(String s) {
-    return Utilities.startsWithInList(s.replace("https://", "http://"), FhirSettings.getTxFhirProduction(), FhirSettings.getTxFhirDevelopment(), FhirSettings.getTxFhirLocal());
+    return Utilities.startsWithInList(s.replace("http://", "https://"), FhirSettings.getTxFhirProduction(), FhirSettings.getTxFhirDevelopment(), FhirSettings.getTxFhirLocal());
   }
 
   public static String[] splitLines(String txt) {
@@ -2038,26 +2063,6 @@ public class Utilities {
       }
     }
     return false;
-  }
-
-  /**
-   *
-   * Don't use me.
-   *
-   * @deprecated this was transiently used internally, is no longer, and should not be in use.
-   */
-  @Deprecated(since="2026-04-10")
-  public static String extractByRegex(String input, String regex) {
-    @SuppressWarnings("checkstyle:patternUsage")
-    //caller-provided; no internal callers in this project
-    Pattern pattern = Pattern.compile(regex);
-    Matcher matcher = pattern.matcher(input);
-
-    StringBuilder result = new StringBuilder();
-    while (matcher.find()) {
-      result.append(matcher.group(1)); 
-    }
-    return result.length() == 0 ? null : result.toString(); 
   }
 
   public static String getDirectoryForURL(String url) {

@@ -202,7 +202,9 @@ public class BasePolicyAdvisorForFullValidation implements IValidationPolicyAdvi
 
   @Override
   public boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
-    return false;
+    // delegate to the deprecated 2-arg method so that subclasses that override it
+    // (written before the message arguments were added) still work
+    return isSuppressMessageId(path, messageId);
   }
 
   @Override

@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminologyCacheDirectory;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalMatchers.and;
@@ -20,9 +21,12 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -132,7 +136,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that conversion works when a single source is set and the -output param is set")
-  public void convertSingleSource() throws Exception {
+  void convertSingleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -144,7 +148,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that conversion throws an Exception when no -output or -outputSuffix params are set")
-  public void convertSingleSourceNoOutput() {
+  void convertSingleSourceNoOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -156,7 +160,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that conversion throws an Exception when multiple sources are set and an -output param is set")
-  public void convertMultipleSourceOnlyOutput() {
+  void convertMultipleSourceOnlyOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -167,7 +171,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that conversion works when multiple sources are set and an output suffix parameter is set")
-  public void convertMultipleSource() throws Exception {
+  void convertMultipleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -180,7 +184,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that snapshot generation works when a single source is set and the -output param is set")
-  public void generateSnapshotSingleSource() throws Exception {
+  void generateSnapshotSingleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -195,7 +199,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that snapshot generation throws an Exception when no -output or -outputSuffix params are set")
-  public void generateSnapshotSingleSourceNoOutput() {
+  void generateSnapshotSingleSourceNoOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -205,7 +209,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that snapshot generation throws an Exception when multiple sources are set and an -output param is set")
-  public void generateSnapshotMultipleSourceOnlyOutput() {
+  void generateSnapshotMultipleSourceOnlyOutput() {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -216,7 +220,7 @@ class ValidationServiceTests {
 
   @Test
   @DisplayName("Test that snapshot generation works when multiple sources are set and an output suffix parameter is set")
-  public void generateSnapshotMultipleSource() throws Exception {
+  void generateSnapshotMultipleSource() throws Exception {
     SessionCache sessionCache = mock(SessionCache.class);
     ValidationService validationService = new ValidationService(sessionCache);
     ValidationEngine validationEngine = mock(ValidationEngine.class);
@@ -271,7 +275,7 @@ class ValidationServiceTests {
   }
 
   @Test
-  public void buildValidationEngineDisableDefaultResourceFetcherTest() throws IOException, URISyntaxException {
+  void buildValidationEngineDisableDefaultResourceFetcherTest() throws IOException, URISyntaxException {
     final TimeTracker timeTracker = mock(TimeTracker.class);
     final SimpleWorkerContext workerContext = mock(SimpleWorkerContext.class);
 
@@ -316,5 +320,49 @@ class ValidationServiceTests {
     };
   }
 
+  @Test
+  void testSsrfBlockedThroughValidatesources() throws Exception {
+    final String canary = "SENTINEL-CANARY-7f3a";
+    MockWebServer server = new MockWebServer();
+    try {
+      server.start();
 
+      String manifestUrl = server.url("/manifest").toString();
+      String internalSecretUrl = server.url("/internal-secret").toString();
+
+      String manifest = "{\"files\":[{\"contentType\":\"application/smart-health-card\","
+        + "\"location\":\"" + internalSecretUrl + "\"}]}";
+      server.enqueue(new MockResponse()
+        .addHeader("Content-Type", "application/json")
+        .setBody(manifest));
+      server.enqueue(new MockResponse()
+        .setBody(canary));
+      // Point the shlink at a non-public (loopback) address — the SSRF guard in
+      // ManagedWebAccess.throwExceptionIfNotPublicUrl fires before any connection
+      // is attempted, which is the behaviour we want to observe through the service.
+
+      String key = "A".repeat(43);
+      String json = "{\"url\":\"" + manifestUrl + "\",\"key\":\"" + key + "\"}";
+      String b64 = Base64.getUrlEncoder().withoutPadding()
+        .encodeToString(json.getBytes(StandardCharsets.UTF_8));
+      String shlink = "shlink:/" + b64;
+
+      TestingUtilities.injectCorePackageLoader();
+      ValidationService service = new ValidationService();
+      ValidationRequest request = new ValidationRequest()
+        .setValidationEngineParameters(new ValidationEngineParameters()
+          .setTxServer(FhirSettings.getTxFhirDevelopment())
+          .setTxCache(getTerminologyCacheDirectory("validationService")))
+        .setFilesToValidate(List.of(
+          new FileInfo().setFileName("shl.txt").setFileContent(shlink).setFileType(null)));
+
+      ValidationResponse response = service.validateSources(request);
+      for (ValidationOutcome validationOutcome : response.getOutcomes()) {
+        assertThat(validationOutcome.getFileInfo().getFileContent()).doesNotContain(canary);
+      }
+    }
+    finally {
+      server.shutdown();
+    }
+  }
 }

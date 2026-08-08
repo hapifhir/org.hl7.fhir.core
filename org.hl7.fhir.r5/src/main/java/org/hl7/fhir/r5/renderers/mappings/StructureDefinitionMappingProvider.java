@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.renderers.mappings;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
@@ -99,6 +101,47 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
     }
   }
 
+  @Override
+  public int valueCount() {
+    int count = 0;
+    if (reverse) {
+      // a row has content if some element in dest maps to it, so collect all the targets
+      // of the mappings in dest, and then count the elements in sd that match one of them
+      Set<String> targets = new HashSet<>();
+      for (ElementDefinition ed : dest.getSnapshot().getElement()) {
+        for (ElementDefinitionMappingComponent m : ed.getMapping()) {
+          if (m.hasIdentity() && m.getIdentity().equals(map.getIdentity())) {
+            @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+            //single literal character split
+            String[] maps = (m.getMap() == null ? "" : m.getMap()).split("\\,");
+            for (String s : maps) {
+              String tgt = processMap(s);
+              if (tgt != null) {
+                targets.add(tgt);
+              }
+            }
+          }
+        }
+      }
+      for (ElementDefinition element : sd.getSnapshot().getElement()) {
+        if (targets.contains(element.getId()) || targets.contains(element.getPath())) {
+          count++;
+        }
+      }
+    } else {
+      // a row has content if the element has a mapping for this identity with a map or a comment
+      for (ElementDefinition element : sd.getSnapshot().getElement()) {
+        for (ElementDefinitionMappingComponent m : element.getMapping()) {
+          if (m.hasIdentity() && m.getIdentity().equals(map.getIdentity()) && (m.hasMap() || m.hasComment())) {
+            count++;
+            break;
+          }
+        }
+      }
+    }
+    return count;
+  }
+
   private String processMap(String s) {
     if (s.contains(":")) {
       String l = s.substring(0, s.indexOf(":"));
@@ -144,17 +187,19 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
       if (dest != null && dest.getSnapshot().getElementById(l) != null) {
         x.ah(ref()+"#"+l, l).tx(r);
       } else {
-        x.tx(r);        
+        x.tx(r);
       }
     } else {
+      // what's going on here is that if it happens to be FHIRPath, and we can strip this down to a path reference
+      // we do, and make it a link, but it's not an error if we can't
       try {
         ExpressionNode exp = fpe.parse(s);
         stripFunctions(exp);
         String p = exp.toString();
-        if (dest.getSnapshot().getElementById(p) != null) {
+        if (dest != null && dest.getSnapshot().getElementById(p) != null) {
           x.ah(ref()+"#"+p, p).tx(s);
         } else {
-          x.tx(s);        
+          x.tx(s);
         }
       } catch (Exception e) {
         x.tx(s);

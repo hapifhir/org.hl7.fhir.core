@@ -1,6 +1,5 @@
 package org.hl7.fhir.r4.utils.sql;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
@@ -16,12 +15,9 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.IWorkerContext;
-import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
-import org.hl7.fhir.r4.utils.sql.Runner;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonNull;
@@ -47,14 +43,14 @@ public class SqlOnFhirRunnerTests {
   private static Map<String, JsonObject> testFiles = new HashMap<>();
 
   @BeforeAll
-  public static void setUp() throws Exception {
+  static void setUp() throws Exception {
     context = TestingUtilities.context();
     reportGenerator = new TestReportGenerator();
     loadTestFiles();
   }
 
   @AfterAll
-  public static void tearDown() {
+  static void tearDown() {
     reportGenerator.writeReport("target/sof-test-report.json");
   }
 
@@ -97,7 +93,7 @@ public class SqlOnFhirRunnerTests {
   @ParameterizedTest(name = "{0}: {1}")
   @MethodSource("testCases")
   @DisplayName("SQL on FHIR Runner Test")
-  public void testRunner(String fileName, String testName, JsonObject testFile, JsonObject test) throws Exception {
+  void testRunner(String fileName, String testName, JsonObject testFile, JsonObject test) throws Exception {
     log.info("Running test: {} - {}", fileName, testName);
 
     TestResult result = new TestResult();

@@ -20,8 +20,6 @@ import java.util.Locale;
 @Slf4j
 public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
-
-
   @CommandLine.ArgGroup(validate = false, heading = "Validation Engine Options%n")
   ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();
 
@@ -101,7 +99,6 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
     log.info("Loading");
     final String definitions = "dev".equals(validationEngineOptions.fhirVersion) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationEngineOptions.fhirVersion) + "#" + VersionUtilities.getCurrentVersion(validationEngineOptions.fhirVersion);
-
     return getValidationService().initializeValidator(validationEngineParameters, instanceValidatorParameters, definitions, timeTracker, sources);
   }
 }

@@ -237,7 +237,7 @@ public class NarrativeGenerationTests {
   @BeforeAll
   static void setUp() throws IOException {
     var simpleContext = TestingUtilities.getSharedWorkerContext("5.0.0");
-    simpleContext.connectToTSServer(new TerminologyClientR5.TerminologyClientR5Factory(), "http://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    simpleContext.connectToTSServer(new TerminologyClientR5.TerminologyClientR5Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
     context = simpleContext;
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     NpmPackage ips = pcm.loadPackage("hl7.fhir.uv.ips#1.1.0");

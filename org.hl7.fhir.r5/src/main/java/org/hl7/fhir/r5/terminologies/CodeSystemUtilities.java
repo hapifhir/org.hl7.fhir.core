@@ -564,7 +564,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static void markStatus(@Nonnull CodeSystem cs, String wg, StandardsStatus status, String fmm, String normativeVersion) throws FHIRException {
+  public static void markStatus(@Nonnull CodeSystem cs, String wg, StandardsStatus status, String fmm, String normativeVersion, String thisVersion) throws FHIRException {
     if (wg != null) {
       if (!ExtensionUtilities.hasExtension(cs, ExtensionDefinitions.EXT_WORKGROUP) || 
           (Utilities.existsInList(ExtensionUtilities.readStringExtension(cs, ExtensionDefinitions.EXT_WORKGROUP), "fhir", "vocab") && !Utilities.existsInList(wg, "fhir", "vocab"))) {
@@ -574,7 +574,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     if (status != null) {
       StandardsStatus ss = ExtensionUtilities.getStandardsStatus(cs);
       if (ss == null || ss.isLowerThan(status)) 
-        ExtensionUtilities.setStandardsStatus(cs, status, normativeVersion);
+        ExtensionUtilities.setStandardsStatus(cs, status, normativeVersion, thisVersion);
       if (status == StandardsStatus.NORMATIVE) {
         cs.setStatus(PublicationStatus.ACTIVE);
       }

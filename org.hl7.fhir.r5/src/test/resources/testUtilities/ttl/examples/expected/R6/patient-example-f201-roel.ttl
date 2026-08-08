@@ -63,8 +63,8 @@
      fhir:country [ fhir:v "NLD" ]
   ] ) ; # Indicates that the individual is not deceased, ISO 3166 3 letter code
   fhir:maritalStatus [
+     a sct:36629006 ;
      fhir:coding ( [
-       a sct:36629006 ;
        fhir:system [
          fhir:v "http://snomed.info/sct"^^xsd:anyURI ;
          fhir:l <http://snomed.info/sct>
@@ -92,8 +92,8 @@
   ] ) ; # 
   fhir:contact ( [
      fhir:relationship ( [
+       a sct:127850001 ;
        fhir:coding ( [
-         a sct:127850001 ;
          fhir:system [
            fhir:v "http://snomed.info/sct"^^xsd:anyURI ;
            fhir:l <http://snomed.info/sct>

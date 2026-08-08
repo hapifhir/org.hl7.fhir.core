@@ -46,9 +46,9 @@ public class LangRegenerateCommand extends ValidationServiceCommand implements C
 
   @CommandLine.Parameters(
     index = "2",
-    description = "Path to local copy of Pascal FHIR Server repository (https://github.com/HealthIntersections/fhirserver)"
+    description = "Path to local copy of FHIRsmith repository (https://github.com/HealthIntersections/fhirsmith)"
   )
-  private String pascalPath;
+  private String javascriptPath;
 
   @Override
   public Integer call() {
@@ -58,9 +58,9 @@ public class LangRegenerateCommand extends ValidationServiceCommand implements C
       log.info("Executing language regeneration with POGenerator");
       log.info("  Core: " + corePath);
       log.info("  IGPub: " + igpubPath);
-      log.info("  Pascal: " + pascalPath);
+      log.info("  FHIRsmith: " + javascriptPath);
 
-      new POGenerator().execute(corePath, igpubPath, pascalPath);
+      new POGenerator().execute(corePath, igpubPath, javascriptPath);
 
       log.info("Language regeneration completed successfully");
       return 0;
@@ -74,7 +74,7 @@ public class LangRegenerateCommand extends ValidationServiceCommand implements C
   private void validatePaths() throws IOException {
     validatePath(corePath, "FHIR HAPI core", "https://github.com/hapifhir/org.hl7.fhir.core");
     validatePath(igpubPath, "IG Publisher", "https://github.com/HL7/fhir-ig-publisher");
-    validatePath(pascalPath, "Pascal FHIR Server", "https://github.com/HealthIntersections/fhirserver");
+    validatePath(javascriptPath, "FHIRsmith", "https://github.com/HealthIntersections/fhirsmith");
   }
 
   private void validatePath(String path, String repoName, String repoUrl) throws IOException {

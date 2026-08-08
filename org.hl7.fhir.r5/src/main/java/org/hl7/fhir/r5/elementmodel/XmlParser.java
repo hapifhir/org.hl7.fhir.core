@@ -46,10 +46,14 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.SourceLocator;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.xpath.XPathException;
+
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -167,10 +171,9 @@ public class XmlParser extends ParserBase {
         doc = builder.parse(stream);
       }
     } catch (Exception e) {
-      if (e.getMessage().contains("lineNumber:") && e.getMessage().contains("columnNumber:")) {
-        int line = Utilities.parseInt(extractVal(e.getMessage(), "lineNumber"), 0); 
-        int col = Utilities.parseInt(extractVal(e.getMessage(), "columnNumber"), 0); 
-        logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, line, col, "(xml)", IssueType.INVALID, e.getMessage().substring(e.getMessage().lastIndexOf(";")+1).trim(), IssueSeverity.FATAL);
+
+      if (e instanceof TransformerException transformerException) {
+        logTransformerException(e, transformerException, focusFragment);
       } else {
         logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, 0, 0, "(xml)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
       }
@@ -182,6 +185,28 @@ public class XmlParser extends ParserBase {
     List<ValidatedFragment> res = new ArrayList<>();
     res.add(focusFragment);
     return res;
+  }
+
+  private void logTransformerException(Exception e, TransformerException transformerException, ValidatedFragment focusFragment) {
+    SourceLocator locator = transformerException.getLocator();
+    final int line;
+    final int col;
+    if (locator != null) {
+      line = locator.getLineNumber();
+      col = locator.getColumnNumber();
+    } else {
+      line = 0;
+      col = 0;
+    }
+
+    final String message;
+    final String xmlParserBoilerPlate = "Error reported by XML parser:";
+    if (e.getMessage().contains(xmlParserBoilerPlate)) {
+      message = e.getMessage().substring(e.getMessage().indexOf(xmlParserBoilerPlate) + xmlParserBoilerPlate.length()).trim();
+    } else {
+      message = e.getMessage();
+    }
+    logError(focusFragment.getErrors(), ValidationMessage.NO_RULE_DATE, line, col, "(xml)", IssueType.INVALID, message, IssueSeverity.FATAL);
   }
 
 

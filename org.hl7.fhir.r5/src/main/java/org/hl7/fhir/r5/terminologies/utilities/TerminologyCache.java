@@ -944,7 +944,7 @@ public class TerminologyCache {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"diagnostics\" : \""+Utilities.escapeJson(ce.v.getDiagnostics()).trim()+"\"");
           }
-          if (ce.v.getUnknownSystems() != null) {
+          if (ce.v.getUnknownSystems() != null && ce.v.getUnknownSystems().size() > 0) {
             if (first) first = false; else sw.write(",\r\n");
             sw.write("  \"unknown-systems\" : \""+Utilities.escapeJson(CommaSeparatedStringBuilder.join(",", ce.v.getUnknownSystems())).trim()+"\"");
           }
@@ -1300,15 +1300,15 @@ public class TerminologyCache {
 //    servers.put("http://local.fhir.org/r4", "tx.fhir.org");
 //    servers.put("http://local.fhir.org/r5", "tx.fhir.org");
 //
-//    servers.put("http://tx-dev.fhir.org/r2", "tx.fhir.org");
-//    servers.put("http://tx-dev.fhir.org/r3", "tx.fhir.org");
-//    servers.put("http://tx-dev.fhir.org/r4", "tx.fhir.org");
-//    servers.put("http://tx-dev.fhir.org/r5", "tx.fhir.org");
+//    servers.put("https://tx-dev.fhir.org/r2", "tx.fhir.org");
+//    servers.put("https://tx-dev.fhir.org/r3", "tx.fhir.org");
+//    servers.put("https://tx-dev.fhir.org/r4", "tx.fhir.org");
+//    servers.put("https://tx-dev.fhir.org/r5", "tx.fhir.org");
 
-    servers.put("http://tx.fhir.org/r2", "tx.fhir.org");
-    servers.put("http://tx.fhir.org/r3", "tx.fhir.org");
-    servers.put("http://tx.fhir.org/r4", "tx.fhir.org");
-    servers.put("http://tx.fhir.org/r5", "tx.fhir.org");
+    servers.put("https://tx.fhir.org/r2", "tx.fhir.org");
+    servers.put("https://tx.fhir.org/r3", "tx.fhir.org");
+    servers.put("https://tx.fhir.org/r4", "tx.fhir.org");
+    servers.put("https://tx.fhir.org/r5", "tx.fhir.org");
 
     return servers;
   }

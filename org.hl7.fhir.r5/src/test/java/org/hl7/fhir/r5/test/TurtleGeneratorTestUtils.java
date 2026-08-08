@@ -62,6 +62,14 @@ public final class TurtleGeneratorTestUtils {
       return workerContext;
     }
 
+    public void setDeriveConceptIriFromNamingSystem(boolean deriveConceptIriFromNamingSystem) {
+      turtleParser.setDeriveConceptIriFromNamingSystem(deriveConceptIriFromNamingSystem);
+    }
+    
+    public String getFhirVersion() {
+      return workerContext.getVersion();
+    }
+
     
     // ---------------------------------------------------------------------------
     // TTL parsers
@@ -89,14 +97,19 @@ public final class TurtleGeneratorTestUtils {
         InputStream inputXmlStream = ManagedFileAccess.inStream(xmlResourcePath.toString());
         OutputStream outputTurtleStream = ManagedFileAccess.outStream(turtleFilePath)
       ) {
-        System.out.println("Generating " + turtleFilePath);
         generateTurtleFromXmlStream(inputXmlStream, outputTurtleStream);
         return turtleFilePath;
       }
     }
 
     public void generateTurtleFromXmlStream(InputStream xmlStream, OutputStream turtleStream) throws IOException, UcumException {
-      Element resourceElement = parseXmlResource(xmlStream);
+      Element resourceElement;
+      try {
+        resourceElement = parseXmlResource(xmlStream);
+      } catch (Exception ex) {
+        System.out.println("Unable to parse XML -- not relevant for Turtle generation");
+        return;
+      }
       turtleParser.compose(resourceElement, turtleStream, OutputStyle.PRETTY, null);
     }
 

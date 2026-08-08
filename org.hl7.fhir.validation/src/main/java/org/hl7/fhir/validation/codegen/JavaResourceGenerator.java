@@ -491,6 +491,17 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 ////
 //  }
 
+  /**
+   * SearchParameters are loaded from external FHIR packages, so their text fields are untrusted.
+   * Neutralise comment delimiters so a value cannot break out of a Javadoc comment into class-level code.
+   */
+  private static String sanitizeJavadoc(String text) {
+    if (text == null) {
+      return "";
+    }
+    return text.replace("*/", "* /").replace("/*", "/ *");
+  }
+
   private void writeSearchParameterField(String name, JavaGenClass clss, boolean isAbstract, SearchParameter sp, String code, String[] theCompositeOf, List<SearchParameter> searchParams, String rn) throws IOException {
     String constName = cleanSpName(code).toUpperCase();
     
@@ -500,12 +511,12 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write(" /**\r\n"); 
     write("   * Search parameter: <b>" + code + "</b>\r\n"); 
     write("   * <p>\r\n");
-    write("   * Description: <b>" + sp.getDescription() + "</b><br>\r\n"); 
+    write("   * Description: <b>" + sanitizeJavadoc(sp.getDescription()) + "</b><br>\r\n");
     write("   * Type: <b>"+ sp.getType().toCode() + "</b><br>\r\n");
-    write("   * Path: <b>" + sp.getExpression() + "</b><br>\r\n"); 
+    write("   * Path: <b>" + sanitizeJavadoc(sp.getExpression()) + "</b><br>\r\n");
     write("   * </p>\r\n");
     write("   */\r\n");
-    write("  @SearchParamDefinition(name=\"" + code + "\", path=\"" + defaultString(sp.getExpression()) + "\", description=\""+Utilities.escapeJava(sp.getDescription())+"\", type=\""+sp.getType().toCode() + "\"");
+    write("  @SearchParamDefinition(name=\"" + code + "\", path=\"" + Utilities.escapeJava(defaultString(sp.getExpression())) + "\", description=\""+Utilities.escapeJava(sp.getDescription())+"\", type=\""+sp.getType().toCode() + "\"");
     if (theCompositeOf != null && theCompositeOf.length > 0) {
       write(", compositeOf={");
       for (int i = 0; i < theCompositeOf.length; i++) {
@@ -577,11 +588,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
      * Client parameter ([name])
      */
     write(" /**\r\n"); 
-    write("   * <b>Fluent Client</b> search parameter constant for <b>" + code + "</b>\r\n"); 
+    write("   * <b>Fluent Client</b> search parameter constant for <b>" + code + "</b>\r\n");
     write("   * <p>\r\n");
-    write("   * Description: <b>" + sp.getDescription() + "</b><br>\r\n"); 
+    write("   * Description: <b>" + sanitizeJavadoc(sp.getDescription()) + "</b><br>\r\n");
     write("   * Type: <b>"+ sp.getType().toCode() + "</b><br>\r\n");
-    write("   * Path: <b>" + sp.getExpression() + "</b><br>\r\n"); 
+    write("   * Path: <b>" + sanitizeJavadoc(sp.getExpression()) + "</b><br>\r\n");
     write("   * </p>\r\n");
     write("   */\r\n");
     write("  public static final ca.uhn.fhir.rest.gclient." + upFirst(sp.getType().toCode()) + "ClientParam" + genericTypes + " " + constName + " = new ca.uhn.fhir.rest.gclient." + upFirst(sp.getType().toCode()) + "ClientParam" + genericTypes + "(SP_" + constName + ");\r\n\r\n"); 
@@ -801,13 +812,27 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write(indent+"  }\r\n\r\n");  
   }
 	
+  private boolean isContentReference(ElementDefinition e) {
+    // in the past, content references were represented as a type with the code @{path}, but
+    // now they come as {url}#{path} in ElementDefinition.contentReference (and we don't care
+    // about the url - it's always a reference to the structure definition being processed)
+    if (e.hasContentReference()) {
+      return true;
+    }
+    if (e.getType().size() > 0) {
+      String s = e.getType().get(0).getCode();
+      return s != null && s.contains("#");
+    }
+    return false;
+  }
+
   private String resolvedTypeCode(ElementDefinition e) {
     return resolvedTypeCode(e, null);
   }
   
   private String resolvedTypeCode(ElementDefinition e, String tf) {
     if (e.hasContentReference()) {
-      return e.getContentReference().replace("#",  "@");
+      return "@"+e.getContentReference().substring(e.getContentReference().indexOf("#")+1);
     }
     StringBuilder tn = new StringBuilder();
     boolean first = true;
@@ -929,8 +954,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           } else if (tn.contains("Enumeration<")) { // enumeration
             write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory().fromType(TypeConvertor.castToCode(value));\r\n");
             cn = "(Enumeration) value";
-          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !e.getType().get(0).getCode().startsWith("@")) {
-            StructureDefinition sd = definitions.getContext().fetchTypeDefinition(e.getTypeFirstRep().getCode());
+          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !isContentReference(e)) {
+            StructureDefinition sd = definitions.getContext().fetchTypeDefinition(getContentElement(e));
             String tnn = checkConstraint(getTypeName(e));
             if (!isCoreType(sd) || sd.getKind() == StructureDefinitionKind.LOGICAL) {
               cn = "("+upFirst(tn)+") value";              
@@ -944,7 +969,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
                 cn = cn.replace("Type(", "(");
               }
             }
-          } else if (e.getType().size() > 0 && !e.getType().get(0).getCode().startsWith("@")) { 
+          } else if (e.getType().size() > 0 && !isContentReference(e)) { 
             cn = "TypeConvertor.castToType(value)";
           }
         }
@@ -961,6 +986,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     if (!first)
       write(indent+"    return value;\r\n");
     write(indent+"  }\r\n\r\n");  
+  }
+
+  private String getContentElement(ElementDefinition e) {
+    return e.getContentReference() == null ? e.getPath() : e.getContentReference().substring(e.getContentReference().indexOf("#")+1);
   }
 
 
@@ -982,7 +1011,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           } if (tn.contains("Enumeration<")) { // enumeration
             write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory().fromType(TypeConvertor.castToCode(value));\r\n");
             cn = "(Enumeration) value";
-          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !e.getType().get(0).getName().startsWith("@")) { 
+          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !isContentReference(e)) { 
             StructureDefinition sd = definitions.getContext().fetchTypeDefinition(e.getTypeFirstRep().getCode());
             String tnn = checkConstraint(getTypeName(e));
             if (!isCoreType(sd) || sd.getKind() == StructureDefinitionKind.LOGICAL) {
@@ -997,7 +1026,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
               }
               cn = "TypeConvertor.castTo"+upFirst(tnn)+"(value)";
             }
-          } else if (e.getType().size() > 0 && !e.getType().get(0).getCode().startsWith("@")) { 
+          } else if (e.getType().size() > 0 && !isContentReference(e)) { 
             cn = "TypeConvertor.castToType(value)";
           }
         }
@@ -1050,7 +1079,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         String name = e.getName().replace("[x]", "");
         write(indent+"    case "+propId(name)+": /*"+name+"*/ ");
         if (e.hasContentReference()) {
-          write("return new String[] {\""+e.getContentReference().replace("#", "@")+"\"};\r\n");
+          write("return new String[] {\"@"+e.getContentReference().substring(e.getContentReference().indexOf("#")+1)+"\"};\r\n");
         } else {
           write("return new String[] {"+asCommaText(e.getType())+"};\r\n");
         }

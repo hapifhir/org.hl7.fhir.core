@@ -434,23 +434,23 @@ public class ExpressionNode {
       if (constant == null) {
         b.append("{}");
       } else if (constant instanceof StringType) {
-        b.append("'" + Utilities.escapeJson(constant.primitiveValue()) + "'");
+        b.append("'" + Utilities.escapeFhirPathString(constant.primitiveValue()) + "'");
       } else if (constant instanceof Quantity) {
         Quantity q = (Quantity) constant;
-        b.append(Utilities.escapeJson(q.hasValue() ? q.getValue().toPlainString() : ""));
+        b.append(q.hasValue() ? q.getValue().toPlainString() : "");
         if (q.hasUnit() || q.hasCode()) {
           b.append(" '");
           if (q.hasUnit()) {
-            b.append(Utilities.escapeJson(q.getUnit()));
+            b.append(Utilities.escapeFhirPathString(q.getUnit()));
           } else {
-            b.append(Utilities.escapeJson(q.getCode()));
+            b.append(Utilities.escapeFhirPathString(q.getCode()));
           }
           b.append("'");
         }
       } else if (constant.primitiveValue() != null) {
-        b.append(Utilities.escapeJson(constant.primitiveValue()));
+        b.append(Utilities.escapeFhirPathString(constant.primitiveValue()));
       } else {
-        b.append(Utilities.escapeJson(constant.toString()));
+        b.append(Utilities.escapeFhirPathString(constant.toString()));
       }
 			break;
 		case Group:

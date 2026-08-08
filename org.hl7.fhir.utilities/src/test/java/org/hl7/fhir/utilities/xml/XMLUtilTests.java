@@ -103,7 +103,7 @@ public class XMLUtilTests {
     transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
     XPathException e = assertThrows(XPathException.class, () -> transformer.transform(new DOMSource(document), new StreamResult(sw)));
-    assertThat(e.getMessage()).contains("URIs using protocol file are not permitted");
+    assertThat(e.getMessage()).contains("Access to URI", "has been prohibited");
   }
 
   @SuppressWarnings("checkstyle:saxParserFactoryNewInstance")

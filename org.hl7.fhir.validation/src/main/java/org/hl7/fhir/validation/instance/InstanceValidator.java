@@ -254,6 +254,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           return null;
         }
       }
+      if (!(appContext instanceof ValidationContext)) {
+        // the FHIRPath engine now consults the host services for implicit constant names during type
+        // checking, using whatever appInfo the caller supplied; if it isn't a ValidationContext, there
+        // are no constants to resolve (and returning null beats a ClassCastException swallowed into
+        // a validation message)
+        return null;
+      }
       ValidationContext c = (ValidationContext) appContext;
       if (externalHostServices != null)
         return externalHostServices.resolveConstantType(engine, c.getAppContext(), name, mode);
@@ -3200,7 +3207,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
-  private boolean checkPrimitive(ValidationContext valContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, StructureDefinition profile, NodeStack node, NodeStack parentNode, Element resource) throws FHIRException {
+  private boolean checkPrimitive(ValidationContext valContext, List<ValidationMessage> errors, String path, String type, ElementDefinition context, Element e, StructureDefinition profile,
+                                 NodeStack node, NodeStack parentNode, Element resource) throws FHIRException {
     boolean ok = true;
 
     // sanity check. The only children allowed are id and extension, but value might slip through in some circumstances. 
@@ -3330,7 +3338,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (securityChecks) {
           ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_ERROR) && ok;
         } else if (!"markdown".equals(type)){
-          hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
+          if (parentNode == null || parentNode.getElement() == null || !"Extension".equals(parentNode.getElement().fhirType()) ||
+              !ExtensionDefinitions.EXT_XHTML_RENDERING.equals(parentNode.getElement().getNamedChildValue("url"))) {
+            hint(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, !HTMLUtilities.containsHtmlTags(e.primitiveValue()), I18nConstants.SECURITY_STRING_CONTENT_WARNING);
+          }
         }
       }
 
@@ -4093,7 +4104,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return false;
     }
     
-    if (Utilities.existsInList(eurl, "http://hl7.org/fhir/tools/StructureDefinition/ig-page-name")) {
+    if (Utilities.existsInList(eurl, "http://hl7.org/fhir/tools/StructureDefinition/ig-page-name", ExtensionDefinitions.EXT_WEB_SOURCE_OLD, ExtensionDefinitions.EXT_WEB_SOURCE_NEW)) {
       return true;
     }
     if ("Extension.value[x]".equals(context.getBase().getPath())) {
@@ -4123,7 +4134,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           "Coding.system",
           "ImplementationGuide.definition.page.source[x]", "ImplementationGuide.definition.page.name",  "ImplementationGuide.definition.page.name[x]",
           "Requirements.statement.satisfiedBy", "Bundle.entry.request.url",
-          "Attachment.url",
+          "Attachment.url", "Endpoint.address",
           "CapabilityStatement.implementation.url",
           "StructureDefinition.type", "ElementDefinition.fixed[x]", "ElementDefinition.pattern[x]", "ImplementationGuide.dependsOn.uri", "StructureDefinition.mapping.uri",
           "MessageHeader.source.endpoint", "MessageHeader.source.endpoint[x]", "MessageHeader.destination.endpoint", "MessageHeader.destination.endpoint[x]",
@@ -4133,7 +4144,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return Utilities.existsInList(context.getBase().getPath(),
           "Extension.url", // extension urls are validated elsewhere
          "ImplementationGuide.definition.page.source[x]", "ImplementationGuide.definition.page.name", "ImplementationGuide.definition.page.name[x]",
-         "Requirements.statement.satisfiedBy", "Bundle.entry.request.url", 
+         "Requirements.statement.satisfiedBy", "Bundle.entry.request.url",  "Endpoint.address",
          "StructureDefinition.type", "ElementDefinition.fixed[x]", "ElementDefinition.pattern[x]"
          );
     }

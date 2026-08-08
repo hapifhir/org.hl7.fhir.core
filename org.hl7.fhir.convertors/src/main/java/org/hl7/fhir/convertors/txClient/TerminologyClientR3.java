@@ -125,7 +125,7 @@ public class TerminologyClientR3 implements ITerminologyClient {
   @Override
   public Parameters cacheControl(CacheControlMode mode, Parameters body) throws FHIRException, IOException {
     org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertorFactory_30_50.convertResource(body == null ? new Parameters() : body);
-    org.hl7.fhir.dstu3.model.Parameters r = client.operateSystem("cache-control", "mode=" + mode, p2);
+    org.hl7.fhir.dstu3.model.Parameters r = client.operateSystem("cache-control", "mode=" + mode.toCode(), p2);
     return (Parameters) VersionConvertorFactory_30_50.convertResource(r);
   }
 

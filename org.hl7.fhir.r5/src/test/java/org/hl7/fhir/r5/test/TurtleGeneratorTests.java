@@ -2,16 +2,20 @@ package org.hl7.fhir.r5.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,11 +23,18 @@ import java.util.stream.Collectors;
 
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.ParserBase;
 import org.hl7.fhir.r5.elementmodel.ParserBase.IdRenderingPolicy;
 import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.elementmodel.TurtleParserR6;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.NamingSystem;
+import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
+import org.hl7.fhir.r5.model.NamingSystem.NamingSystemType;
+import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
+import org.hl7.fhir.r5.test.TurtleGeneratorTestUtils.ParserContext;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.turtle.Turtle;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -51,6 +62,10 @@ public class TurtleGeneratorTests {
   private static TurtleGeneratorTestUtils.ParserContext r6Parsers;
   private static final String R4_VERSION = "4.0.1";
   private static final String R6_VERSION = "6.0.0";
+  private static final String TEST_CODE_SYSTEM = "http://example.org/fhir/CodeSystem/test";
+  private static final String TEST_IRI_STEM = "http://example.org/rdf/";
+  private static final String TEST_CODE = "test-code";
+  private static final String TEST_CONCEPT_IRI = "a <http://example.org/rdf/test-code>";
 
   private static final Path ROOT_TEST_PATH = Paths.get("testUtilities");
   private static final Path DEFAULT_EXPECTED_XML_DIR = ROOT_TEST_PATH.resolve("xml/examples/expected");
@@ -212,6 +227,7 @@ public class TurtleGeneratorTests {
     parser.setupValidation(ValidationPolicy.EVERYTHING);
     parser.setIdPolicy(IdRenderingPolicy.None);
     parser.setShowDecorations(true);
+    parser.setDeriveConceptIriFromNamingSystem(true);
 
     Method r6ParserMethod = TurtleParser.class.getDeclaredMethod("r6Parser");
     r6ParserMethod.setAccessible(true);
@@ -220,6 +236,7 @@ public class TurtleGeneratorTests {
     assertThat(delegate.getPolicy()).isEqualTo(ValidationPolicy.EVERYTHING);
     assertThat(delegate.getIdPolicy()).isEqualTo(IdRenderingPolicy.None);
     assertThat(delegate.isShowDecorations()).isTrue();
+    assertThat(delegate.isDeriveConceptIriFromNamingSystem()).isTrue();
   }
 
   /**
@@ -250,6 +267,103 @@ public class TurtleGeneratorTests {
         .isEmpty();
   }
 
+  @Test
+  void testR6CodeableConceptUsesBuiltInConceptIriByDefault() throws Exception {
+    ParserContext builtInParserContext = ParserContext.fromWorkerContext(TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R6_VERSION));
+    String builtInTurtle = generateObservationCodeableConcept(builtInParserContext, "http://loinc.org", "8867-4");
+    assertThat(builtInTurtle).contains("@prefix loinc: <https://loinc.org/rdf/> .");
+    assertThat(builtInTurtle).contains("a loinc:8867-4");
+  }
+
+  @Test
+  void testR6StructureDefinitionPatternCodeableConceptIsNotDecorated() throws IOException, UcumException {
+    IWorkerContext r6context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("6.0.0");
+    TurtleGeneratorTestUtils.ParserContext parserContext = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(r6context);
+    String xml = """
+        <StructureDefinition xmlns="http://hl7.org/fhir">
+          <url value="http://example.org/StructureDefinition/body-weight"/>
+          <name value="BodyWeight"/>
+          <status value="active"/>
+          <kind value="resource"/>
+          <abstract value="false"/>
+          <type value="Observation"/>
+          <derivation value="constraint"/>
+          <differential>
+            <element>
+              <id value="Observation.code"/>
+              <path value="Observation.code"/>
+              <patternCodeableConcept>
+                <coding>
+                  <system value="http://loinc.org"/>
+                  <code value="29463-7"/>
+                </coding>
+              </patternCodeableConcept>
+            </element>
+          </differential>
+        </StructureDefinition>
+        """;
+
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    parserContext.generateTurtleFromXmlStream(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), output);
+    String turtle = output.toString(StandardCharsets.UTF_8);
+
+    assertThat(turtle).doesNotContain("a loinc:");
+    assertThat(turtle).doesNotContain("@prefix loinc:");
+    // Coding itself must still be emitted
+    assertThat(turtle).contains("29463-7");
+  }
+
+  @Disabled("Not critical")
+  @Test
+  void testSharedWorkerContextProvidesLoincNamingSystem() {
+    NamingSystem namingSystem = NamingSystemUtilities.getNamingSystem(TestingUtilities.getSharedWorkerContext(), "http://loinc.org");
+
+    assertThat(namingSystem).isNotNull();
+    assertThat(namingSystem.getUniqueId()).anySatisfy(uniqueId -> {
+      assertThat(uniqueId.getType()).isEqualTo(NamingSystemIdentifierType.IRISTEM);
+      assertThat(uniqueId.getValue()).endsWith("loinc.org/rdf/");
+    });
+  }
+
+  @Disabled("NamingSystem-derived concept IRIs are opt-in and not enabled by default")
+  @Test
+  void testR6CodeableConceptCanDeriveConceptIriFromNamingSystemWhenEnabled() throws Exception {
+    ParserContext parserContext = ParserContext.fromWorkerContext(r6ContextWithTestNamingSystem());
+    String defaultTurtle = generateObservationCodeableConcept(parserContext, TEST_CODE_SYSTEM, TEST_CODE);
+    assertThat(defaultTurtle).doesNotContain(TEST_CONCEPT_IRI);
+
+    parserContext.setDeriveConceptIriFromNamingSystem(true);
+    String optInTurtle = generateObservationCodeableConcept(parserContext, TEST_CODE_SYSTEM, TEST_CODE);
+    assertThat(optInTurtle).contains(TEST_CONCEPT_IRI);
+  }
+
+  private IWorkerContext r6ContextWithTestNamingSystem() throws Exception {
+    IWorkerContext context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R6_VERSION);
+    NamingSystem namingSystem = new NamingSystem("TestCodeSystem", PublicationStatus.ACTIVE, NamingSystemType.CODESYSTEM, new Date(),
+        new NamingSystem.NamingSystemUniqueIdComponent(NamingSystemIdentifierType.URI, TEST_CODE_SYSTEM));
+    namingSystem.setUrl("http://example.org/fhir/NamingSystem/test-code-system");
+    namingSystem.addUniqueId(new NamingSystem.NamingSystemUniqueIdComponent(NamingSystemIdentifierType.IRISTEM, TEST_IRI_STEM));
+    ((SimpleWorkerContext) context).cacheResource(namingSystem);
+    return context;
+  }
+
+  private String generateObservationCodeableConcept(ParserContext parserContext, String system, String code) throws IOException, UcumException {
+    String xml = """
+        <Observation xmlns="http://hl7.org/fhir">
+          <status value="final"/>
+          <code>
+            <coding>
+              <system value="%s"/>
+              <code value="%s"/>
+            </coding>
+          </code>
+        </Observation>
+        """.formatted(system, code);
+
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    parserContext.generateTurtleFromXmlStream(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), output);
+    return output.toString(StandardCharsets.UTF_8);
+  }
 
   @Disabled("TODO this doesn't pass due to some FHIR URLs containing vertical bars |, which are allowed in XSD 1.1 but not XSD 1.0")
   @Test
@@ -257,19 +371,36 @@ public class TurtleGeneratorTests {
     testStructureDefinitionGeneration("Encounter");
   }
 
+  @Disabled("Run manually for testing with XML resources generated from FHIR specification publishing library")
+  @Test
+  public void testPublishedXmlExamplesR5() throws IOException, UcumException {
+    testPublishedXmlExamples(r5Parsers);
+  }
 
   @Disabled("Run manually for testing with XML resources generated from FHIR specification publishing library")
   @Test
-  public void testPublishedXmlExamples() throws IOException, UcumException {
+  public void testPublishedXmlExamplesR4() throws IOException, UcumException {
+    testPublishedXmlExamples(getVersionOverrideParsers(R4_VERSION));
+  }
+
+  @Disabled("Run manually for testing with XML resources generated from FHIR specification publishing library")
+  @Test
+  public void testPublishedXmlExamplesR6() throws IOException, UcumException {
+    testPublishedXmlExamples(getVersionOverrideParsers(R6_VERSION));
+  }
+
+  private void testPublishedXmlExamples(TurtleGeneratorTestUtils.ParserContext parserContext) throws IOException, UcumException {
     System.out.println("Using input XML directory: " + inputXmlDirectory);
-    System.out.println("Using output Turtle directory: " + outputTurtleDirectory);
+    var examplesOutputDirectory = outputTurtleDirectory.resolve("all-examples-" + parserContext.getFhirVersion());
+    Files.createDirectories(examplesOutputDirectory);
+    System.out.println("Using output Turtle directory: " + examplesOutputDirectory);
     int success = 0;
     var failures = new ArrayList<String>();
     try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(inputXmlDirectory, "*.xml")) {
       for (Path xml : dirStream) {
-        if (xml == null || Files.isDirectory(xml)) continue;
+        if (xml == null || xml.toString().endsWith("diff.xml") || Files.isDirectory(xml)) continue;
         try {
-          testInstanceGeneration(xml);
+          testInstanceGeneration(parserContext, xml, examplesOutputDirectory);
           success++;
         } catch (Exception e) {
           System.out.println("Failed to generate Turtle for " + xml.getFileName() + ": " + e.getMessage());
@@ -346,9 +477,9 @@ public class TurtleGeneratorTests {
     }
   }
 
-  private String testInstanceGeneration(Path resourcePath) throws IOException, UcumException {
-    var generatedTurtlePath = parsers.generateTurtleFromXmlResourcePath(resourcePath, outputTurtleDirectory);
-    parsers.parseGeneratedTurtle(generatedTurtlePath);
+  private String testInstanceGeneration(ParserContext parserContext, Path resourcePath, Path outputDirectory) throws IOException, UcumException {
+    var generatedTurtlePath = parserContext.generateTurtleFromXmlResourcePath(resourcePath, outputDirectory);
+    parserContext.parseGeneratedTurtle(generatedTurtlePath);
     return generatedTurtlePath;
   }
 

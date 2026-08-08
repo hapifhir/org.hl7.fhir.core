@@ -10,6 +10,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -21,6 +22,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
+import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,6 +70,11 @@ public class TerminologyClientContextTests {
     return p;
   }
 
+  /** Matches the START_CACHE request body: Parameters with sealed=false. */
+  private static org.mockito.ArgumentMatcher<Parameters> sealedFalseBody() {
+    return p -> p != null && p.hasParameter("sealed") && "false".equals(p.getParameterValue("sealed").primitiveValue());
+  }
+
   private ITerminologyClient baseMock(CapabilityStatement cs) throws IOException {
     ITerminologyClient client = mock(ITerminologyClient.class);
     when(client.getAddress()).thenReturn("http://tx.example.org/r5");
@@ -80,14 +87,14 @@ public class TerminologyClientContextTests {
   @Test
   public void serverAdvertisesCacheControl_startsCacheAndSetsHeader() throws IOException {
     ITerminologyClient client = baseMock(capabilityStatement(true));
-    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), isNull())).thenReturn(cacheIdResponse(CACHE_ID));
+    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), argThat(sealedFalseBody()))).thenReturn(cacheIdResponse(CACHE_ID));
     ILoggingService logger = mock(ILoggingService.class);
 
     TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, logger);
 
     assertEquals(CACHE_ID, ctx.getCacheId(), "the server-issued cache-id should be stored");
     assertTrue(ctx.usingCache(), "caching should be engaged");
-    verify(client).cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), isNull());
+    verify(client).cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), argThat(sealedFalseBody()));
     verify(client).addClientHeader(argThat(h ->
       TerminologyClientContext.CACHE_ID_HEADER.equals(h.getName()) && CACHE_ID.equals(h.getValue())));
   }
@@ -121,7 +128,7 @@ public class TerminologyClientContextTests {
   @Test
   public void startFails_cachingOffAndLogged() throws IOException {
     ITerminologyClient client = baseMock(capabilityStatement(true));
-    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), isNull())).thenThrow(new FHIRException("server unavailable"));
+    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), argThat(sealedFalseBody()))).thenThrow(new FHIRException("server unavailable"));
     ILoggingService logger = mock(ILoggingService.class);
 
     TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, logger);
@@ -135,7 +142,7 @@ public class TerminologyClientContextTests {
   @Test
   public void startReturnsNoCacheId_cachingOffAndLogged() throws IOException {
     ITerminologyClient client = baseMock(capabilityStatement(true));
-    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), isNull())).thenReturn(new Parameters()); // no cache-id parameter
+    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), argThat(sealedFalseBody()))).thenReturn(new Parameters()); // no cache-id parameter
     ILoggingService logger = mock(ILoggingService.class);
 
     TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, logger);
@@ -146,30 +153,87 @@ public class TerminologyClientContextTests {
   }
 
   @Test
-  public void endCache_releasesAndClears() throws IOException {
+  public void shutdown_releasesOwnedCache() throws IOException {
     ITerminologyClient client = baseMock(capabilityStatement(true));
-    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), isNull())).thenReturn(cacheIdResponse(CACHE_ID));
+    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), argThat(sealedFalseBody()))).thenReturn(cacheIdResponse(CACHE_ID));
     when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.END_CACHE), isNull())).thenReturn(new Parameters());
     ILoggingService logger = mock(ILoggingService.class);
 
     TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, logger);
     assertEquals(CACHE_ID, ctx.getCacheId());
 
-    ctx.endCache();
+    ctx.shutdown();
 
     verify(client).cacheControl(eq(ITerminologyClient.CacheControlMode.END_CACHE), isNull());
-    assertNull(ctx.getCacheId(), "cache-id should be cleared after end");
+    assertNull(ctx.getCacheId(), "no cache-id should be reported after shutdown");
     assertFalse(ctx.usingCache());
   }
 
   @Test
-  public void endCache_noActiveCache_isNoOp() throws IOException {
+  public void shutdown_isIdempotent_releasesOnlyOnce() throws IOException {
+    ITerminologyClient client = baseMock(capabilityStatement(true));
+    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), argThat(sealedFalseBody()))).thenReturn(cacheIdResponse(CACHE_ID));
+    when(client.cacheControl(eq(ITerminologyClient.CacheControlMode.END_CACHE), isNull())).thenReturn(new Parameters());
+    ILoggingService logger = mock(ILoggingService.class);
+
+    TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, logger);
+
+    ctx.shutdown();
+    ctx.shutdown(); // reached from best-effort teardown paths; must be a safe no-op
+
+    verify(client, times(1)).cacheControl(eq(ITerminologyClient.CacheControlMode.END_CACHE), isNull());
+    assertNull(ctx.getCacheId());
+    assertFalse(ctx.usingCache());
+  }
+
+  @Test
+  public void shutdown_noActiveCache_isNoOp() throws IOException {
     ITerminologyClient client = baseMock(capabilityStatement(false)); // no cache started
     ILoggingService logger = mock(ILoggingService.class);
     TerminologyClientContext ctx = new TerminologyClientContext(client, null, true, logger);
 
-    ctx.endCache();
+    ctx.shutdown();
 
     verify(client, never()).cacheControl(eq(ITerminologyClient.CacheControlMode.END_CACHE), any());
+  }
+
+  /**
+   * When a second context wraps a client that already carries a cache-id header
+   * (the IG publisher's version comparators reuse the master client for their
+   * per-version contexts), it must adopt that cache rather than starting a second
+   * one. Starting again appended a second X-Cache-Id header, which the server
+   * reads as one unknown id ("id1, id2") and rejects with CACHE_ID_UNKNOWN.
+   */
+  @Test
+  public void sharedClientWithExistingCacheId_adoptsInsteadOfStartingSecondCache() throws IOException {
+    ITerminologyClient client = baseMock(capabilityStatement(true));
+    when(client.getClientHeaders()).thenReturn(java.util.Collections.singletonList(
+      new HTTPHeader(TerminologyClientContext.CACHE_ID_HEADER, CACHE_ID)));
+    ILoggingService logger = mock(ILoggingService.class);
+
+    TerminologyClientContext ctx = new TerminologyClientContext(client, null, false, logger);
+
+    assertEquals(CACHE_ID, ctx.getCacheId(), "the existing cache-id should be adopted");
+    assertTrue(ctx.usingCache());
+    verify(client, never()).cacheControl(eq(ITerminologyClient.CacheControlMode.START_CACHE), any());
+    verify(client, never()).addClientHeader(any());
+  }
+
+  @Test
+  public void adoptedCache_isNotReleasedByShutdown() throws IOException {
+    ITerminologyClient client = baseMock(capabilityStatement(true));
+    when(client.getClientHeaders()).thenReturn(java.util.Collections.singletonList(
+      new HTTPHeader(TerminologyClientContext.CACHE_ID_HEADER, CACHE_ID)));
+    ILoggingService logger = mock(ILoggingService.class);
+
+    TerminologyClientContext ctx = new TerminologyClientContext(client, null, false, logger);
+    assertEquals(CACHE_ID, ctx.getCacheId());
+
+    ctx.shutdown();
+
+    // the owning context may still be using the cache; the adopter must not end it
+    verify(client, never()).cacheControl(eq(ITerminologyClient.CacheControlMode.END_CACHE), any());
+    assertNull(ctx.getCacheId(), "the adopter no longer reports the cache after shutdown");
+    assertFalse(ctx.usingCache());
   }
 }

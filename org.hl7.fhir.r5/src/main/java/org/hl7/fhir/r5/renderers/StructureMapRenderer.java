@@ -87,8 +87,21 @@ public class StructureMapRenderer extends TerminologyRenderer {
     if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
       renderMetadata(x, "url", map.getUrlElement());
       renderMetadata(x, "name", map.getNameElement());
-      renderMetadata(x, "title", map.getTitleElement());
-      renderMetadata(x, "status", map.getStatusElement());      
+      if (map.hasTitle()) {
+        renderMetadata(x, "title", map.getTitleElement());
+      }
+      renderMetadata(x, "status", map.getStatusElement());
+      if (map.hasDescription() && !map.getDescription().equals(map.getTitle())) {
+        renderDescriptionMetadata(x, map.getDescription());
+      }
+      if (map.hasExperimental()) {
+        XhtmlNode c = x.color(COLOR_METADATA);
+        c.tx("/// ");
+        c.b().tx("experimental");
+        c.tx(" = ");
+        x.color(COLOR_CONST).tx(Boolean.toString(map.getExperimental()));
+        x.tx("\r\n");
+      }
       x.tx("\r\n");
     } else {
       x.b().tx("map");
@@ -105,8 +118,40 @@ public class StructureMapRenderer extends TerminologyRenderer {
     renderConceptMaps(x, map);
     renderUses(x, map);
     renderImports(x, map);
+    renderConsts(x, map);
     for (StructureMapGroupComponent g : map.getGroup())
       renderGroup(x, g);
+  }
+
+  // Mirrors StructureMapUtilities: use the triple-quoted markdown form when the
+  // description spans multiple lines so the source remains human-readable. Falls
+  // back to the single-line escaped form when: the description has no line breaks;
+  // it contains """ (which cannot be represented inside a verbatim triple-quoted
+  // block); or it ends with a " (which would be greedily merged into the closing
+  // """ by the parser).
+  private void renderDescriptionMetadata(XhtmlNode x, String desc) {
+    XhtmlNode c = x.color(COLOR_METADATA);
+    c.tx("/// ");
+    c.b().tx("description");
+    c.tx(" = ");
+    if ((desc.indexOf('\n') >= 0 || desc.indexOf('\r') >= 0) && !desc.contains("\"\"\"") && !desc.endsWith("\"")) {
+      x.color(COLOR_CONST).tx("\"\"\"" + desc + "\"\"\"");
+    } else {
+      x.color(COLOR_CONST).tx("'" + Utilities.escapeFhirPathString(desc) + "'");
+    }
+    x.tx("\r\n");
+  }
+
+  private void renderConsts(XhtmlNode x, StructureMap map) {
+    for (StructureMap.StructureMapConstComponent c : map.getConst()) {
+      x.b().tx("let ");
+      x.color(COLOR_VARIABLE).tx(c.getName());
+      x.color(COLOR_SYNTAX).tx(" = ");
+      x.tx(c.getValue());
+      x.color(COLOR_SYNTAX).tx(";\r\n");
+    }
+    if (map.hasConst())
+      x.tx("\r\n");
   }
 
   private void renderMetadata(XhtmlNode x, String name, DataType value) {
@@ -125,7 +170,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       if (Utilities.existsInList(v, "true", "false") || Utilities.isDecimal(v, true)) {
         x.color(COLOR_CONST).tx(v);
       } else {
-        x.color(COLOR_CONST).tx("'"+v+"'");
+        x.color(COLOR_CONST).tx("'" + Utilities.escapeFhirPathString(v) + "'");
       }
       x.tx("\r\n");
     }
@@ -256,6 +301,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
 
   private void renderUses(XhtmlNode x,StructureMap map) {
     for (StructureMapStructureComponent s : map.getStructure()) {
+      if (s.hasDocumentation()) {
+        renderMultilineDoco(x, s.getDocumentation(), 0, null);
+      }
       x.b().tx("uses");
       x.color(COLOR_SYNTAX).tx(" \"");
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, s.getUrl(), ExtensionUtilities.getVersionResolutionRules(s.getUrlElement()));
@@ -272,7 +320,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
       }
       x.b().tx("as ");
       x.b().tx(s.getMode().toCode());
-      renderDoco(x, s.getDocumentation(), false, null);
+      // Same-line trailing `//` comment captured in formatCommentsPost is
+      // emitted after the mode keyword, mirroring how renderRule handles
+      // trailing-on-`;` comments.
+      if (s.hasFormatCommentPost()) {
+        renderDoco(x, s.getFormatCommentsPost().get(0), false, null);
+      }
       x.tx("\r\n");
     }
     if (map.hasStructure())
@@ -343,9 +396,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       }
     }
     x.color(COLOR_SYNTAX).tx(" {\r\n");
-    for (StructureMapGroupRuleComponent r : g.getRule()) {
-      renderRule(x, g, r, 2);
-    }
+    renderRules(x, g, g.getRule(), 2);
     if (g.hasFormatCommentPost()) {
       renderMultilineDoco(x, g.getFormatCommentsPost(), 0, scanVariables(g, null));
     }
@@ -356,10 +407,134 @@ public class StructureMapRenderer extends TerminologyRenderer {
     return null;
   }
 
+  // === Simple Form: Identity Transform batch detection ===============================
+  // Mirrors StructureMapUtilities. Runs of consecutive sibling rules that look like
+  // simple identity rules (`s.x -> t.x;`) sharing source/target context and a common
+  // `<prefix> + makeId(element)` name shape are re-emitted as the compact batch form
+  // `s -> t: e1, e2, e3 ["prefix"];`. See StructureMapUtilities for the full rationale.
+
+  private static boolean isSimpleIdentityRule(StructureMapGroupRuleComponent r) {
+    if (r.getSource().size() != 1 || r.getTarget().size() != 1)
+      return false;
+    if (r.hasRule() || r.hasDependent())
+      return false;
+    StructureMapGroupRuleSourceComponent s = r.getSourceFirstRep();
+    StructureMapGroupRuleTargetComponent t = r.getTargetFirstRep();
+    if (!s.hasContext() || !s.hasElement())
+      return false;
+    if (!t.hasContext() || !t.hasElement())
+      return false;
+    if (s.hasType() || s.hasMin() || s.hasListMode() || s.hasDefaultValue()
+        || s.hasCondition() || s.hasCheck() || s.hasLogMessage())
+      return false;
+    if (!t.getParameter().isEmpty() || !t.getListMode().isEmpty())
+      return false;
+    // Accept the executable simple-form shape (vvv variable on both sides plus
+    // a CREATE transform on target with no params) as well as the bare shape.
+    // Mirrors StructureMapUtilities.isSimpleIdentityRule.
+    if (s.hasVariable() && !StructureMapUtilities.AUTO_VAR_NAME.equals(s.getVariable()))
+      return false;
+    if (t.hasVariable() && !StructureMapUtilities.AUTO_VAR_NAME.equals(t.getVariable()))
+      return false;
+    if (t.hasTransform() && t.getTransform() != StructureMapTransform.CREATE)
+      return false;
+    return s.getElement().equals(t.getElement());
+  }
+
+  private static String identityBatchPrefix(StructureMapGroupRuleComponent r) {
+    if (!isSimpleIdentityRule(r) || !r.hasName())
+      return null;
+    String suffix = Utilities.makeId(r.getSourceFirstRep().getElement());
+    String name = r.getName();
+    if (suffix.isEmpty() || !name.endsWith(suffix))
+      return null;
+    String prefix = name.substring(0, name.length() - suffix.length());
+    // A bare name (no prefix) is not a batch — it's an unprefixed singly-written
+    // rule that happens to share the simple-identity shape. Mirrors
+    // StructureMapUtilities.identityBatchPrefix.
+    if (prefix.isEmpty())
+      return null;
+    return prefix;
+  }
+
+  private static int detectIdentityBatchEnd(List<StructureMapGroupRuleComponent> rules, int start) {
+    StructureMapGroupRuleComponent first = rules.get(start);
+    String prefix = identityBatchPrefix(first);
+    if (prefix == null)
+      return start;
+    String srcCtx = first.getSourceFirstRep().getContext();
+    String tgtCtx = first.getTargetFirstRep().getContext();
+    int end = start;
+    for (int j = start + 1; j < rules.size(); j++) {
+      StructureMapGroupRuleComponent r = rules.get(j);
+      if (r.hasDocumentation() || r.hasFormatCommentPost() || r.hasFormatCommentPre())
+        break;
+      String p = identityBatchPrefix(r);
+      if (p == null || !prefix.equals(p))
+        break;
+      if (!srcCtx.equals(r.getSourceFirstRep().getContext())
+          || !tgtCtx.equals(r.getTargetFirstRep().getContext()))
+        break;
+      end = j;
+    }
+    return end;
+  }
+
+  private void renderIdentityBatch(XhtmlNode x, StructureMapGroupComponent g,
+      List<StructureMapGroupRuleComponent> rules, int start, int end, int indent) {
+    StructureMapGroupRuleComponent first = rules.get(start);
+    Collection<String> tokens = scanVariables(g, first);
+    if (first.hasFormatCommentPre()) {
+      renderMultilineDoco(x, first.getFormatCommentsPre(), indent, tokens);
+    }
+    if (first.hasDocumentation()) {
+      renderMultilineDoco(x, first.getDocumentation(), indent, tokens);
+    }
+    for (int i = 0; i < indent; i++)
+      x.tx(" ");
+    x.tx(first.getSourceFirstRep().getContext());
+    x.color(COLOR_SYNTAX).b().tx(" -> ");
+    x.tx(first.getTargetFirstRep().getContext());
+    x.color(COLOR_SYNTAX).tx(": ");
+    for (int j = start; j <= end; j++) {
+      if (j > start)
+        x.color(COLOR_SYNTAX).tx(", ");
+      x.tx(rules.get(j).getSourceFirstRep().getElement());
+    }
+    String prefix = identityBatchPrefix(first);
+    if (prefix != null && !StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME.equals(prefix)) {
+      x.tx(" ");
+      x.i().tx("\"" + prefix + "\"");
+    }
+    x.color(COLOR_SYNTAX).tx(";");
+    if (first.hasFormatCommentPost()) {
+      renderDoco(x, first.getFormatCommentsPost().get(0), false, tokens);
+    }
+    x.tx("\r\n");
+  }
+
+  private void renderRules(XhtmlNode x, StructureMapGroupComponent g,
+      List<StructureMapGroupRuleComponent> rules, int indent) {
+    int i = 0;
+    while (i < rules.size()) {
+      int end = detectIdentityBatchEnd(rules, i);
+      if (end > i) {
+        renderIdentityBatch(x, g, rules, i, end, indent);
+        i = end + 1;
+      } else {
+        renderRule(x, g, rules.get(i), indent);
+        i++;
+      }
+    }
+  }
+
   private void renderRule(XhtmlNode x, StructureMapGroupComponent g, StructureMapGroupRuleComponent r, int indent) {
     Collection<String> tokens = scanVariables(g, r);
     if (r.hasFormatCommentPre()) {
       renderMultilineDoco(x, r.getFormatCommentsPre(), indent, tokens);
+    }
+    if (r.hasDocumentation()) {
+      renderMultilineDoco(x, r.getDocumentation(), indent, tokens);
     }
     for (int i = 0; i < indent; i++)
       x.tx(" ");
@@ -398,9 +573,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
     if (r.hasRule()) {
       x.b().tx(" then");
       x.color(COLOR_SYNTAX).tx(" {\r\n");
-      for (StructureMapGroupRuleComponent ir : r.getRule()) {
-        renderRule(x, g, ir, indent + 2);
-      }
+      renderRules(x, g, r.getRule(), indent + 2);
       for (int i = 0; i < indent; i++)
         x.tx(" ");
       x.color(COLOR_SYNTAX).tx("}");
@@ -442,13 +615,10 @@ public class StructureMapRenderer extends TerminologyRenderer {
       }
     }
     x.color(COLOR_SYNTAX).tx(";");
-    if (r.hasDocumentation()) {
-      renderDoco(x, r.getDocumentation(), false, null);
+    if (r.hasFormatCommentPost()) {
+      renderDoco(x, r.getFormatCommentsPost().get(0), false, tokens);
     }
     x.tx("\r\n");
-    if (r.hasFormatCommentPost()) {
-      renderMultilineDoco(x, r.getFormatCommentsPost(), indent, tokens);
-    }
   }
 
   private Collection<String> scanVariables(StructureMapGroupComponent g, StructureMapGroupRuleComponent r) {
@@ -506,17 +676,17 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.color(COLOR_SYNTAX).tx(")");
     } else if (rs.hasElement()) {
       x.tx(".");
-      x.tx(rs.getElement());
+      x.tx(StructureMapUtilities.renderElementName(rs.getElement()));
     }
     if (rs.hasType()) {
       x.color(COLOR_SYNTAX).tx(" : ");
       x.tx(rs.getType());
-      if (rs.hasMin()) {
-        x.tx(" ");
-        x.tx(rs.getMin());
-        x.color(COLOR_SYNTAX).tx("..");
-        x.tx(rs.getMax());
-      }
+    }
+    if (rs.hasMin()) {
+      x.tx(" ");
+      x.tx(rs.getMin());
+      x.color(COLOR_SYNTAX).tx("..");
+      x.tx(rs.getMax());
     }
 
     if (rs.hasListMode()) {
@@ -525,7 +695,9 @@ public class StructureMapRenderer extends TerminologyRenderer {
     }
     if (rs.hasDefaultValue()) {
       x.b().tx(" default ");
-      x.tx("\"" + Utilities.escapeJson(rs.getDefaultValue()) + "\"");
+      x.color(COLOR_SYNTAX).tx("(");
+      x.tx(rs.getDefaultValue());
+      x.color(COLOR_SYNTAX).tx(")");
     }
     if (!abbreviate && rs.hasVariable()) {
       x.b().tx(" as ");
@@ -533,15 +705,21 @@ public class StructureMapRenderer extends TerminologyRenderer {
     }
     if (rs.hasCondition()) {
       x.b().tx(" where ");
+      x.color(COLOR_SYNTAX).tx("(");
       x.tx(rs.getCondition());
+      x.color(COLOR_SYNTAX).tx(")");
     }
     if (rs.hasCheck()) {
       x.b().tx(" check ");
+      x.color(COLOR_SYNTAX).tx("(");
       x.tx(rs.getCheck());
+      x.color(COLOR_SYNTAX).tx(")");
     }
     if (rs.hasLogMessage()) {
       x.b().tx(" log ");
+      x.color(COLOR_SYNTAX).tx("(");
       x.tx(rs.getLogMessage());
+      x.color(COLOR_SYNTAX).tx(")");
     }
   }
   
@@ -550,7 +728,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       x.tx(rt.getContext());
       if (rt.hasElement()) {
         x.tx(".");
-        x.tx(rt.getElement());
+        x.tx(StructureMapUtilities.renderElementName(rt.getElement()));
       }
     }
     if (!abbreviate && rt.hasTransform()) {
@@ -609,7 +787,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
       else if (rtp.hasValueIntegerType())
         x.color(COLOR_CONST).tx(rtp.getValueIntegerType().asStringValue());
       else
-        x.color(COLOR_CONST).tx("'" + Utilities.escapeJava(rtp.getValueStringType().asStringValue()) + "'");
+        x.color(COLOR_CONST).tx("'" + Utilities.escapeFhirPathString(rtp.getValueStringType().asStringValue()) + "'");
     } catch (FHIRException e) {
       e.printStackTrace();
       x.tx("error!");

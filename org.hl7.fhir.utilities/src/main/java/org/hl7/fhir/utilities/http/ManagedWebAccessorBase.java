@@ -29,4 +29,8 @@ public abstract class ManagedWebAccessorBase<B extends ManagedWebAccessorBase<B>
     this.userAgent = userAgent;
     this.httpAuthHeaderProvider = httpAuthHeaderProvider;
   }
+
+  protected boolean isSSRFProtectionEnabled() {
+    return ManagedWebAccess.isSsrfProtectionEnabled();
+  }
 }

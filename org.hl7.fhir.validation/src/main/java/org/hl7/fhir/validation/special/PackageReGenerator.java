@@ -761,7 +761,7 @@ public class PackageReGenerator {
         log.info("Load FHIR from "+core.name()+"#"+core.version());
         SimpleWorkerContext ctxt = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(core);
         TerminologyClientFactory factory = new TerminologyClientFactory(ctxt.getVersion());
-        ctxt.connectToTSServer(factory, "http://tx.fhir.org", ctxt.getUserAgent(), null, true);
+        ctxt.connectToTSServer(factory, "https://tx.fhir.org", ctxt.getUserAgent(), null, true);
         var loader = new IgLoader(pcm, ctxt, ctxt.getVersion());
         loader.loadPackage(tho, true);
         loader.loadPackage(npm, true);
