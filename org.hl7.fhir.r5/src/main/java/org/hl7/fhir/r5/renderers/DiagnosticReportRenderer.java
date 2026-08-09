@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
@@ -55,7 +56,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     XhtmlNode tr;
     if (dr.has("subject")) { 
       tr = tbl.tr(); 
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_SUBJ)); 
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.GENERAL_SUBJ)); 
       populateSubjectSummary(status, tr.td(), dr.child("subject")); 
     } 
 
@@ -63,13 +64,13 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     ResourceWrapper iss = null;
     if (dr.has("effective[x]")) { 
       tr = tbl.tr(); 
-      tr.td().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_WHEN));
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_WHEN));
       eff = dr.child("effective[x]");
       renderDataType(status, tr.td(), eff); 
     } 
     if (dr.has("issued")) { 
       tr = tbl.tr(); 
-      tr.td().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REP)); 
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_REP)); 
       iss = dr.child("issued");
       renderDataType(status, tr.td(), iss); 
     } 
@@ -79,7 +80,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     addTableRow(status, tbl, dr, RenderingContext.GENERAL_REQUEST, "request");
     addTableRow(status, tbl, dr, RenderingContext.DIAG_REP_REND_FORM, "presentedForm");
 
-    x.para().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REPDET));
+    x.para().b().tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_REPDET));
 
     List<ResourceWrapper> items = dr.children("result"); 
     if (!items.isEmpty()) { 
@@ -97,7 +98,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     } 
 
     if (dr.hasMN("conclusionCode", "codedDiagnosis")) {
-      x.para().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_CODECON));
+      x.para().b().tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_CODECON));
       addListRows(status, x.ul(), dr, RenderingContext.DIAG_REP_REND_CODECON, "conclusionCode", "codedDiagnosis"); 
     }
     
@@ -136,10 +137,10 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
 
   public String displayDiagnosticReport(ResourceWrapper dr) {
     ResourceWrapper c = dr.child("code");
-    String cd = c == null ? context.formatPhrase(RenderingContext.DIAG_REP_UNSPECIFIED_CODE) : displayCodeableConcept(c);
+    String cd = c == null ? context.formatPhrase(RenderingI18nContext.DIAG_REP_UNSPECIFIED_CODE) : displayCodeableConcept(c);
     ResourceWrapper s = dr.child("subject");
-    String sd = s == null ? context.formatPhrase(RenderingContext.DIAG_REP_UNSPECIFIED_SUBJECT) : displayReference(s);
-    return context.formatPhrase(RenderingContext.DIAG_REP_SUMMARY, cd, sd);
+    String sd = s == null ? context.formatPhrase(RenderingI18nContext.DIAG_REP_UNSPECIFIED_SUBJECT) : displayReference(s);
+    return context.formatPhrase(RenderingI18nContext.DIAG_REP_SUMMARY, cd, sd);
   } 
 
   @Override 
@@ -151,11 +152,11 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
   private void populateSubjectSummary(RenderingStatus status, XhtmlNode container, ResourceWrapper subject) throws UnsupportedEncodingException, FHIRException, IOException, EOperationOutcome { 
     ResourceWithReference r = resolveReference(subject); 
     if (r == null) 
-      container.tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_UNABLE)); 
+      container.tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_UNABLE)); 
     else if (r.getResource().fhirType().equals("Patient")) 
       generatePatientSummary(status, container, r.getResource()); 
     else 
-      container.tx(context.formatPhrase(RenderingContext.GENERAL_TODO)); 
+      container.tx(context.formatPhrase(RenderingI18nContext.GENERAL_TODO)); 
   } 
 
   private void generatePatientSummary(RenderingStatus status, XhtmlNode c, ResourceWrapper r) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome { 
@@ -195,22 +196,22 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     if (issued) cs++; 
     if (effectiveTime) cs++; 
     XhtmlNode tr = tbl.tr(); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE)); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_VALUE)); 
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_CODE)); 
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_VALUE)); 
     if (refRange) { 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REFRAN)); 
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_REFRAN)); 
     } 
     if (flags) { 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_FLAGS)); 
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_FLAGS)); 
     } 
     if (note) { 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_NOTE)); 
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_NOTE)); 
     } 
     if (effectiveTime) { 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_WHEN)); 
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_WHEN)); 
     } 
     if (issued) { 
-      tr.td().b().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_REP)); 
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_REP)); 
     } 
     for (ObservationNode o : observations) { 
       addObservationToTable(status, tbl, o, 0, Integer.toString(cs), refRange, flags, note, effectiveTime, issued, eff, iss); 
@@ -315,13 +316,13 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     XhtmlNode tr = tbl.tr(); 
     if (o.resolution == null) { 
       XhtmlNode td = tr.td().colspan(cs); 
-      td.i().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_NOTRES, o.ref)); 
+      td.i().tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_NOTRES, o.ref)); 
     } else { 
       if (o.resolution.getResource() != null) { 
         addObservationToTable(status, tr, o.resolution.getResource(), i, o.resolution.getWebPath(), refRange, flags, note, effectiveTime, issued, eff, iss); 
       } else { 
         XhtmlNode td = tr.td().colspan(cs); 
-        td.i().tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_OBS)); 
+        td.i().tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_OBS)); 
       } 
       if (o.contained != null) { 
         for (ObservationNode c : o.contained) { 
@@ -350,7 +351,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
       renderDataType(status, td, obs.child("value[x]")); 
     } else if (obs.has("dataAbsentReason")) { 
       XhtmlNode span = td.span("color: maroon", "Error"); 
-      span.tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_ERR) + " "); 
+      span.tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_ERR) + " "); 
       renderDataType(status, span.b(), obs.child("dataAbsentReason")); 
     } 
 
@@ -391,7 +392,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
           ResourceWrapper pwrA = v.child("age");  
           if (!pwrF.isEmpty() || pwrA != null) { 
             boolean firstA = true; 
-            td.tx(" "+ (context.formatPhrase(RenderingContext.DIAG_REP_REND_FOR)) + " "); 
+            td.tx(" "+ (context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_FOR)) + " "); 
             if (!pwrF.isEmpty()) { 
               for (ResourceWrapper va : pwrF) { 
                 if (firstA) firstA = false; else td.tx(", "); 
@@ -400,7 +401,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
             } 
             if (pwrA != null) { 
               if (firstA) firstA = false; else td.tx(", "); 
-              td.tx(context.formatPhrase(RenderingContext.DIAG_REP_REND_AGE) + " "); 
+              td.tx(context.formatPhrase(RenderingI18nContext.DIAG_REP_REND_AGE) + " "); 
               renderDataType(status, td, pwrA); 
             } 
           } 

@@ -289,7 +289,7 @@ public class RenderingContext extends RenderingI18nContext {
   private IHostApplicationServices services;
   private ITypeParser parser;
 
-  @Getter @Setter private RendererFactory rendererFactory;
+  @Getter private final RendererFactory rendererFactory;
 
   // i18n related fields
   private boolean secondaryLang; // true if this is not the primary language for the resource

@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -168,7 +169,7 @@ public class FeatureDefinitionRenderer extends ResourceRenderer {
     Row r = gen.new Row(); 
     rows.add(r); 
 
-    r.setIcon("icon_vd_view.png", context.formatPhrase(RenderingContext.QUEST_ROOT)); 
+    r.setIcon("icon_vd_view.png", context.formatPhrase(RenderingI18nContext.QUEST_ROOT)); 
     r.getCells().add(gen.new Cell(null, null, vd.primitiveValue("name"), null, null)); 
     r.getCells().add(gen.new Cell(null, null, "", null, null)); 
     r.getCells().add(gen.new Cell(null, null, vd.primitiveValue("resource"), null, null)); 
