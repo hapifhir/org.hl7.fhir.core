@@ -87,19 +87,21 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private StringBuilder cregti = new StringBuilder();
   private List<TypeSpecifier> typeSpecifiers  = new ArrayList<>();
   FHIRPathEngine fpe;
-  private String jname;
+  private String javaPackageName;
 
-  public JavaParserJsonGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String packageName, String jname) throws UnsupportedEncodingException {
+  public JavaParserJsonGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String packageName, String javaPackageName) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, packageName);
     fpe = new FHIRPathEngine(definitions.getContext());
-    this.jname = jname;
+    this.javaPackageName = javaPackageName;
   }
 
-  private String jpfx(Analysis analysis) {
-    // if the resource shadows a resource in the base model, the parse methods need a different name,
-    // because the base parser that this parser inherits from already has parse methods with those
-    // names, differing only by return type
-    return definitions.getContext().getResourceNames().contains(analysis.getName()) ? jname : "";
+  /**
+   *  if the resource shadows a resource in the base model, the parse methods need a different name,
+   *  because the base parser that this parser inherits from already has parse methods with those
+   *  names, differing only by return type
+   */
+  private String javaParserPrefix(Analysis analysis) {
+    return definitions.getContext().getResourceNames().contains(analysis.getName()) ? javaPackageName : "";
   }
 
   public void seeClass(Analysis analysis) throws Exception {
@@ -107,15 +109,15 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     generateComposer(analysis);
     if (!analysis.isAbstract()) {
       if (analysis.getStructure().getKind() == StructureDefinitionKind.COMPLEXTYPE) {
-        pregt.append("    } else if (json.has(prefix+\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getRootType().getName()+"(getJObject(json, prefix+\""+analysis.getName()+"\"));\r\n");
-        pregt2.append("   } else if (type.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getName()+"(json);\r\n");
-        cregtn.append("    } else if (type instanceof "+analysis.getName()+") {\r\n       compose"+analysis.getName()+"(prefix+\""+analysis.getName()+"\", ("+analysis.getClassName()+") type);\r\n");
+        pregt.append("    } else if (json.has(prefix+\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return parse"+javaParserPrefix(analysis)+analysis.getRootType().getName()+"(getJObject(json, prefix+\""+escapeJavaString(analysis.getName())+"\"));\r\n");
+        pregt2.append("   } else if (type.equals(\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return parse"+javaParserPrefix(analysis)+analysis.getName()+"(json);\r\n");
+        cregtn.append("    } else if (type instanceof "+analysis.getName()+") {\r\n       compose"+analysis.getName()+"(prefix+\""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+") type);\r\n");
         cregti.append("    } else if (type instanceof "+analysis.getName()+") {\r\n       compose"+analysis.getName()+"Properties(("+analysis.getName()+") type);\r\n");
       }
-      pregn.append("    if (json.has(prefix+\""+analysis.getName()+"\")) {\r\n      return true;\r\n    };\r\n");
+      pregn.append("    if (json.has(prefix+\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return true;\r\n    };\r\n");
       if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
-        pregf.append("    } else if (t.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getClassName()+"(json);\r\n");
-        creg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+analysis.getName()+"\", ("+analysis.getClassName()+")resource);\r\n");
+        pregf.append("    } else if (t.equals(\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return parse"+javaParserPrefix(analysis)+analysis.getClassName()+"(json);\r\n");
+        creg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+")resource);\r\n");
         cregn.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
       }
     }
@@ -127,8 +129,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     template = template.replace("{{pid}}", packageName);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
 
-    template = template.replace("{{jname}}", jname);
+    template = template.replace("{{jname}}", javaPackageName);
     template = template.replace("{{parser}}", parser.toString());
     template = template.replace("{{register}}", register.toString());
     template = template.replace("{{parse-resource}}", pregf.toString());
@@ -163,9 +166,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private void generateParser(Analysis analysis) throws Exception {
 
     if (analysis.getAncestor().getName().equals("Resource")) {
-      register.append("    registry.registerCustomResource(\""+analysis.getName()+"\", new "+jname+"JsonParserFactory(), overridesBase);\r\n");
-      pregf.append("    } else if (t.equals(\""+analysis.getName()+"\")) {\r\n      return parse"+jpfx(analysis)+analysis.getClassName()+"(json);\r\n");
-      creg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+analysis.getName()+"\", ("+analysis.getClassName()+")resource);\r\n");
+      register.append("    registry.registerCustomResource(\""+escapeJavaString(analysis.getName())+"\", new "+javaPackageName+"JsonParserFactory(), overridesBase);\r\n");
+      pregf.append("    } else if (t.equals(\""+escapeJavaString(analysis.getName())+"\")) {\r\n      return parse"+javaParserPrefix(analysis)+analysis.getClassName()+"(json);\r\n");
+      creg.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(\""+escapeJavaString(analysis.getName())+"\", ("+analysis.getClassName()+")resource);\r\n");
       cregn.append("    } else if (resource instanceof "+analysis.getClassName()+") {\r\n      compose"+analysis.getClassName()+"(name, ("+analysis.getClassName()+")resource);\r\n");
     }
     if (analysis.isAbstract()) {
@@ -182,9 +185,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private void genInner(Analysis analysis, TypeInfo ti) throws IOException, Exception {
     String tn = ti.getName();
     String stn = (ti == analysis.getRootType() ? tn : analysis.getClassName()+"."+tn);
-    String pn = "parse"+jpfx(analysis)+tn;
-    if (stn.contains(".") && !pn.startsWith("parse"+jpfx(analysis)+analysis.getClassName())) {
-      pn = "parse"+jpfx(analysis)+analysis.getClassName()+tn;
+    String pn = "parse"+javaParserPrefix(analysis)+tn;
+    if (stn.contains(".") && !pn.startsWith("parse"+javaParserPrefix(analysis)+analysis.getClassName())) {
+      pn = "parse"+javaParserPrefix(analysis)+analysis.getClassName()+tn;
     }
     boolean bUseOwner = false;
 
@@ -217,7 +220,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       parser.append("    }\r\n");
     }
     
-    parser.append("    throw new FHIRFormatError(\"Unable to parse "+ts.resName+": The content does not meet any of the type specifiers\");\r\n");
+    parser.append("    throw new FHIRFormatError(\"Unable to parse "+escapeJavaString(ts.resName)+": The content does not meet any of the type specifiers\");\r\n");
     parser.append("  }\r\n\r\n");
   }
 
@@ -228,7 +231,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       if ("%resource".equals(node.getConstant().primitiveValue())) {
         b.append("resource");
       } else {
-        b.append("\""+node.getConstant().primitiveValue()+"\"");
+        b.append("\""+escapeJavaString(node.getConstant().primitiveValue())+"\"");
       }
       break;
     case Function:
@@ -238,7 +241,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       throw new Error("Not done yet");
 //      break;
     case Name:
-      b.append("get(\""+node.getName()+"\").getAsString()");
+      b.append("get(\""+escapeJavaString(node.getName())+"\").getAsString()");
       break;
     case Unary:
       throw new Error("Not done yet");
@@ -266,9 +269,9 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
   private void genInnerAbstract(Analysis analysis, TypeInfo ti) throws IOException, Exception {
     String tn = analysis.getRootType().getName();
     String stn = (ti == analysis.getRootType() ? tn : analysis.getClassName()+"."+tn);
-    String pn = "parse"+jpfx(analysis)+tn;
-    if (stn.contains(".") && !pn.startsWith("parse"+jpfx(analysis)+analysis.getClassName())) {
-      pn = "parse"+jpfx(analysis)+analysis.getClassName()+tn;
+    String pn = "parse"+javaParserPrefix(analysis)+tn;
+    if (stn.contains(".") && !pn.startsWith("parse"+javaParserPrefix(analysis)+analysis.getClassName())) {
+      pn = "parse"+javaParserPrefix(analysis)+analysis.getClassName()+tn;
     }
     boolean bUseOwner = false;
     
@@ -278,7 +281,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     parser.append("    String type = json.get(\"_type\").getAsString();\r\n");  
     parser.append("    switch (type) {\r\n");            
     for (Entry<String, String> e : getConcreteDescendents(analysis, ti).entrySet()) {
-      parser.append("    case \""+e.getKey()+"\": return parse"+e.getValue()+"(json);\r\n");      
+      parser.append("    case \""+escapeJavaString(e.getKey())+"\": return parse"+e.getValue()+"(json);\r\n");      
     }
     parser.append("    default: throw new FHIRException(\"Unsupported type '\"+type+\"'\");\r\n");      
     parser.append("    }\r\n");    
@@ -305,7 +308,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     } else if (name.endsWith("[x]") || name.equals("[type]")) {
       String en = name.endsWith("[x]") && !name.equals("[x]") ? name.replace("[x]", "") : "value";
       String pfx = name.endsWith("[x]") ? name.replace("[x]", "") : "";
-      parser.append("    DataType "+getElementName(en, false)+" = parseType(\""+en+"\", json);\r\n");
+      parser.append("    DataType "+getElementName(en, false)+" = parseType(\""+escapeJavaString(en)+"\", json);\r\n");
       parser.append("    if ("+getElementName(en, false)+" != null)\r\n");
       parser.append("      res.set"+upFirst(getElementName(en, false))+"("+getElementName(en, false)+");\r\n");
     } else {
@@ -358,7 +361,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           if ((ed.isInlineType() || ed.hasContentReference()) && !pn.startsWith(analysis.getClassName())) {
             pn = analysis.getClassName()+pn;            
           }
-          String jp = pn.startsWith(analysis.getClassName()) ? jpfx(analysis) : "";
+          String jp = pn.startsWith(analysis.getClassName()) ? javaParserPrefix(analysis) : "";
           prsr = "parse"+jp+pn+"(getJObject(json, \""+name+"\"))";
           aprsr = "parse"+jp+pn+"(array.get(i).getAsJsonObject())";
           anprsr = "parse"+jp+pn+"(null)";
@@ -367,8 +370,8 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
 
       if (ed.unbounded()) {
         if (isPrimitive(ed.typeSummary()) || ed.typeSummary().startsWith("canonical(")) {
-          parser.append("    if (json.has(\""+name+"\")) {\r\n");
-          parser.append("      JsonArray array = getJArray(json, \""+name+"\");\r\n");
+          parser.append("    if (json.has(\""+escapeJavaString(name)+"\")) {\r\n");
+          parser.append("      JsonArray array = getJArray(json, \""+escapeJavaString(name)+"\");\r\n");
           parser.append("      for (int i = 0; i < array.size(); i++) {\r\n");
           parser.append("        if (array.get(i).isJsonNull()) {\r\n");
           if (en == null) {
@@ -382,8 +385,8 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           parser.append("        }\r\n");
           parser.append("      }\r\n");
           parser.append("    };\r\n");
-          parser.append("    if (json.has(\"_"+name+"\")) {\r\n");
-          parser.append("      JsonArray array = getJArray(json, \"_"+name+"\");\r\n");
+          parser.append("    if (json.has(\"_"+escapeJavaString(name)+"\")) {\r\n");
+          parser.append("      JsonArray array = getJArray(json, \"_"+escapeJavaString(name)+"\");\r\n");
           parser.append("      for (int i = 0; i < array.size(); i++) {\r\n");
           parser.append("        if (i == res.get"+upFirst(name)+"List().size())\r\n");
           parser.append("          res.get"+upFirst(name)+"List().add("+anprsr+");\r\n");
@@ -392,28 +395,28 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           parser.append("      }\r\n");
           parser.append("    };\r\n");
         } else {
-          parser.append("    if (json.has(\""+name+"\")) {\r\n");
-          parser.append("      JsonArray array = getJArray(json, \""+name+"\");\r\n");
+          parser.append("    if (json.has(\""+escapeJavaString(name)+"\")) {\r\n");
+          parser.append("      JsonArray array = getJArray(json, \""+escapeJavaString(name)+"\");\r\n");
           parser.append("      for (int i = 0; i < array.size(); i++) {\r\n");
           parser.append("        res.get"+upFirst(getElementName(name, false))+"List().add("+aprsr+");\r\n");
           parser.append("      }\r\n");
           parser.append("    };\r\n");
         }
       } else if (inh != null && inh.unbounded()){
-        parser.append("    if (json.has(\""+name+"\"))\r\n");
+        parser.append("    if (json.has(\""+escapeJavaString(name)+"\"))\r\n");
         if ((isPrimitive(ed.typeSummary()) || ed.typeSummary().startsWith("canonical(")) && !tn.equals("XhtmlNode")) {
           parser.append("      res.add"+upFirst(getElementName(name, false))+"Element("+prsr+");\r\n");
-          parser.append("    if (json.has(\"_"+name+"\"))\r\n");
-          parser.append("      parseElementProperties(getJObject(json, \"_"+name+"\"), res.get"+upFirst(getElementName(name, false))+"ElementFirstRep());\r\n");
+          parser.append("    if (json.has(\"_"+escapeJavaString(name)+"\"))\r\n");
+          parser.append("      parseElementProperties(getJObject(json, \"_"+escapeJavaString(name)+"\"), res.get"+upFirst(getElementName(name, false))+"ElementFirstRep());\r\n");
         } else {
           parser.append("      res.add"+upFirst(getElementName(name, false))+"("+prsr+");\r\n");
         }        
       } else {
-        parser.append("    if (json.has(\""+name+"\"))\r\n");
+        parser.append("    if (json.has(\""+escapeJavaString(name)+"\"))\r\n");
         if ((isPrimitive(ed.typeSummary()) || ed.typeSummary().startsWith("canonical(")) && !tn.equals("XhtmlNode")) {
           parser.append("      res.set"+upFirst(getElementName(name, false))+"Element("+prsr+");\r\n");
-          parser.append("    if (json.has(\"_"+name+"\"))\r\n");
-          parser.append("      parseElementProperties(getJObject(json, \"_"+name+"\"), res.get"+upFirst(getElementName(name, false))+"Element());\r\n");
+          parser.append("    if (json.has(\"_"+escapeJavaString(name)+"\"))\r\n");
+          parser.append("      parseElementProperties(getJObject(json, \"_"+escapeJavaString(name)+"\"), res.get"+upFirst(getElementName(name, false))+"Element());\r\n");
         } else {
           parser.append("      res.set"+upFirst(getElementName(name, false))+"("+prsr+");\r\n");
         }
@@ -447,7 +450,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     composer.append("      prop(\"_type\", element.fhirType());\r\n");
     composer.append("      switch (element.fhirType()) {\r\n");            
     for (Entry<String, String> e : getConcreteDescendents(analysis, ti).entrySet()) {
-      composer.append("      case \""+e.getKey()+"\":\r\n");      
+      composer.append("      case \""+escapeJavaString(e.getKey())+"\":\r\n");      
       composer.append("        compose"+e.getValue()+"Properties(("+e.getValue()+") element);\r\n");      
       composer.append("        close();\r\n");      
       composer.append("        break;\r\n");      
@@ -479,7 +482,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     composer.append("    if (element != null) {\r\n");
     boolean isResource = ti == analysis.getRootType() && analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE;
     if (isResource) {
-      composer.append("      prop(\"resourceType\", \""+analysis.getName()+"\");\r\n");
+      composer.append("      prop(\"resourceType\", \""+escapeJavaString(analysis.getName())+"\");\r\n");
       if (ExtensionUtilities.readBoolExtension(analysis.getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
         // additional resources carry their defining StructureDefinition, so the resource can round-trip
         // through the object model (e.g. ObjectConverter) without losing the type binding
@@ -520,7 +523,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     }
     
     composer.append("    } else {\r\n");
-    composer.append("      throw new FHIRFormatError(\"Unable to compose "+ts.resName+": Unexpected type \"+element.getClass().getName());\r\n"); 
+    composer.append("      throw new FHIRFormatError(\"Unable to compose "+escapeJavaString(ts.resName)+": Unexpected type \"+element.getClass().getName());\r\n"); 
     composer.append("    }\r\n");
     composer.append("  }\r\n");
     composer.append("\r\n");
@@ -543,7 +546,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       String en = name.endsWith("[x]") && !name.equals("[x]") ? name.replace("[x]", "") : "value";
       String pfx = name.endsWith("[x]") ? name.replace("[x]", "") : "";
       composer.append("      if (element.has"+upFirst(en)+"()) {\r\n");
-      composer.append("        composeType(\""+pfx+"\", element.get"+upFirst(en)+"());\r\n");
+      composer.append("        composeType(\""+escapeJavaString(pfx)+"\", element.get"+upFirst(en)+"());\r\n");
       composer.append("      }\r\n");
     } else {
       String tn = ed.getUserString("java.type");
@@ -618,19 +621,19 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
 
           if (isPrimitive(ed) || ed.typeSummary().startsWith("canonical(")) {
             composer.append("        if (anyHasValue(element.get"+upFirst(getElementName(name, false))+"List())) {\r\n");
-            composer.append("          openArray(\""+name+"\");\r\n");
+            composer.append("          openArray(\""+escapeJavaString(name)+"\");\r\n");
             composer.append("          for ("+(tn.contains("(") ? stn : upFirst(tn))+" e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
             composer.append("            "+comp+"Core(null, e, e != element.get"+upFirst(getElementName(name, false))+"List().get(element.get"+upFirst(getElementName(name, false))+"List().size()-1));\r\n");
             composer.append("          closeArray();\r\n");
             composer.append("        }\r\n");
             composer.append("        if (anyHasExtras(element.get"+upFirst(getElementName(name, false))+"List())) {\r\n");
-            composer.append("          openArray(\"_"+name+"\");\r\n");
+            composer.append("          openArray(\"_"+escapeJavaString(name)+"\");\r\n");
             composer.append("          for ("+(stn.contains("(") ? stn : upFirst(stn))+" e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
             composer.append("            "+comp+"Extras(null, e, true);\r\n");
             composer.append("          closeArray();\r\n");
             composer.append("        }\r\n");
           } else if (ed.typeSummary().equals("Resource")){
-            composer.append("        openArray(\""+name+"\");\r\n");
+            composer.append("        openArray(\""+escapeJavaString(name)+"\");\r\n");
             composer.append("        for ("+(stn.contains("(") ? tn : upFirst(tn))+" e : element.get"+upFirst(getElementName(name, false))+"List()) {\r\n");
             composer.append("          open(null);\r\n");
             composer.append("          "+comp+"(e);\r\n");
@@ -639,7 +642,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
             composer.append("        closeArray();\r\n");
 
           } else {
-            composer.append("        openArray(\""+name+"\");\r\n");
+            composer.append("        openArray(\""+escapeJavaString(name)+"\");\r\n");
             if (stn.contains(".") || !stn.contains("Component")) {
               composer.append("        for ("+(stn.contains("(") ? stn : upFirst(stn))+" e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
             } else {
@@ -649,12 +652,12 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
             composer.append("        closeArray();\r\n");
           }
         } else {
-          composer.append("        openArray(\""+name+"\");\r\n");
+          composer.append("        openArray(\""+escapeJavaString(name)+"\");\r\n");
           composer.append("        for (Enumeration<"+prepEnumName(en)+"> e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
           composer.append("          composeEnumerationCore(null, e, new "+prepEnumName(en)+"EnumFactory(), true);\r\n");
           composer.append("        closeArray();\r\n");
           composer.append("        if (anyHasExtras(element.get"+upFirst(getElementName(name, false))+"())) {\r\n");
-          composer.append("          openArray(\"_"+name+"\");\r\n");
+          composer.append("          openArray(\"_"+escapeJavaString(name)+"\");\r\n");
           composer.append("          for (Enumeration<"+prepEnumName(en)+"> e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
           composer.append("            composeEnumerationExtras(null, e, new "+prepEnumName(en)+"EnumFactory(), true);\r\n");
           composer.append("          closeArray();\r\n");
@@ -664,24 +667,24 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       } else if (en != null) {
         composer.append("      if (element.has"+upFirst(getElementName(name, false))+"Element()) {\r\n");
         if (enShared) {
-          composer.append("        composeEnumerationCore(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
-          composer.append("        composeEnumerationExtras(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
+          composer.append("        composeEnumerationCore(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
+          composer.append("        composeEnumerationExtras(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
         } else {
-          composer.append("        composeEnumerationCore(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
-          composer.append("        composeEnumerationExtras(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
+          composer.append("        composeEnumerationCore(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
+          composer.append("        composeEnumerationExtras(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
         }
         composer.append("      }\r\n");
         //composer.append("        composeString(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"().toCode());\r\n");
       } else if (ed.typeSummary().equals("Resource")){
         composer.append("        if (element.has"+upFirst(getElementName(name, false))+"()) {\r\n");
-        composer.append("          open(\""+name+"\");\r\n");
+        composer.append("          open(\""+escapeJavaString(name)+"\");\r\n");
         composer.append("          "+comp+"(element.get"+upFirst(getElementName(name, false))+"());\r\n");
         composer.append("          close();\r\n");
         composer.append("        }\r\n");
       } else if (!"xhtml".equals(ed.typeSummary()) && (isPrimitive(ed) || ed.typeSummary().startsWith("canonical("))) {
         composer.append("      if (element.has"+upFirst(getElementName(name, false))+"Element()) {\r\n");
-        composer.append("        "+comp+"Core(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"Element(), false);\r\n");
-        composer.append("        "+comp+"Extras(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"Element(), false);\r\n");
+        composer.append("        "+comp+"Core(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), false);\r\n");
+        composer.append("        "+comp+"Extras(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), false);\r\n");
         composer.append("      }\r\n");
       } else if (tn.equals("xhtml")) {
         composer.append("      if (element.has"+upFirst(getElementName(name, false))+"()) {\r\n");
@@ -689,18 +692,18 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         composer.append("        if (node.getNsDecl() == null) {\r\n");
         composer.append("          node.attribute(\"xmlns\", XHTML_NS);\r\n");
         composer.append("        }\r\n");
-        composer.append("        "+comp+"(\""+name+"\", node);\r\n");
+        composer.append("        "+comp+"(\""+escapeJavaString(name)+"\", node);\r\n");
         composer.append("      }\r\n");
       } else if (inh != null && inh.unbounded()){
         composer.append("      if (element.has"+upFirst(getElementName(name, false))+"()) {\r\n");
-        composer.append("        "+comp+"(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"FirstRep());\r\n");
+        composer.append("        "+comp+"(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"FirstRep());\r\n");
         composer.append("      }\r\n");
       } else {
         if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) {
           typeSpecifiers.add(new TypeSpecifier(comp, tn, ed));
         }
         composer.append("      if (element.has"+upFirst(getElementName(name, false))+"()) {\r\n");
-        composer.append("        "+comp+"(\""+name+"\", element.get"+upFirst(getElementName(name, false))+"());\r\n");
+        composer.append("        "+comp+"(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"());\r\n");
         composer.append("      }\r\n");
       }
     }

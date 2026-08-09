@@ -19,8 +19,9 @@ public class JavaTestCasesGenerator extends JavaBaseGenerator {
   public void generate(String jname, String modelPackageName, List<String> pids, List<String> resourceNames) throws IOException {
     String cn = jname+"RoundTripTests";
 
-    write("package "+packageName+";\r\n");
+    write(startVMarkValue());
     write("\r\n");
+    write("package "+packageName+";\r\n");
     startMark(version, genDate);
     write("import java.io.IOException;\r\n");
     write("import java.nio.charset.StandardCharsets;\r\n");
@@ -48,19 +49,20 @@ public class JavaTestCasesGenerator extends JavaBaseGenerator {
     write(" * parsed from json, composed to xml, parsed back from the xml, composed back to json,\r\n");
     write(" * and then the two json representations are compared\r\n");
     write(" */\r\n");
+    write(generatedAnnotationValue()+"\r\n");
     write("public class "+cn+" {\r\n");
     write("\r\n");
     write("  private static final String[] PACKAGES = {");
     boolean first = true;
     for (String pid : pids) {
-      write((first ? "" : ", ")+"\""+pid+"\"");
+      write((first ? "" : ", ")+"\""+escapeJavaString(pid)+"\"");
       first = false;
     }
     write("};\r\n");
     write("  private static final String[] RESOURCE_TYPES = {");
     first = true;
     for (String n : resourceNames) {
-      write((first ? "" : ", ")+"\""+n+"\"");
+      write((first ? "" : ", ")+"\""+escapeJavaString(n)+"\"");
       first = false;
     }
     write("};\r\n");
@@ -70,11 +72,11 @@ public class JavaTestCasesGenerator extends JavaBaseGenerator {
     write("    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();\r\n");
     write("    for (String pid : PACKAGES) {\r\n");
     write("      NpmPackage npm = pcm.loadPackage(pid);\r\n");
-    write("      for (String fn : npm.list(\"example\")) {\r\n");
-    write("        if (fn.endsWith(\".json\") && fn.contains(\"-\")) {\r\n");
-    write("          String rt = fn.substring(0, fn.indexOf(\"-\"));\r\n");
-    write("          if (Utilities.existsInList(rt, RESOURCE_TYPES)) {\r\n");
-    write("            objects.add(Arguments.of(pid+\"/\"+fn, pid, fn));\r\n");
+    write("      for (String filename : npm.list(\"example\")) {\r\n");
+    write("        if (filename.endsWith(\".json\") && filename.contains(\"-\")) {\r\n");
+    write("          String resourceType = filename.substring(0, filename.indexOf(\"-\"));\r\n");
+    write("          if (Utilities.existsInList(resourceType, RESOURCE_TYPES)) {\r\n");
+    write("            objects.add(Arguments.of(pid+\"/\"+filename, pid, filename));\r\n");
     write("          }\r\n");
     write("        }\r\n");
     write("      }\r\n");
@@ -86,17 +88,20 @@ public class JavaTestCasesGenerator extends JavaBaseGenerator {
     write("  @MethodSource(\"data\")\r\n");
     write("  public void testRoundTrip(String name, String pid, String filename) throws IOException {\r\n");
     write("    NpmPackage npm = new FilesystemPackageCacheManager.Builder().build().loadPackage(pid);\r\n");
-    write("    byte[] source = FileUtilities.streamToBytes(npm.load(\"example\", filename));\r\n");
+    write("    byte[] sourceJson = FileUtilities.streamToBytes(npm.load(\"example\", filename));\r\n");
     write("\r\n");
-    write("    Resource r1 = new "+jname+"JsonParser(true, true).parse(source);\r\n");
-    write("    String json1 = new "+jname+"JsonParser(true, true).composeString(r1);\r\n");
+    write("    // what the example says, as parsed from the package\r\n");
+    write("    Resource expected = new "+jname+"JsonParser(true, true).parse(sourceJson);\r\n");
+    write("    String expectedJson = new "+jname+"JsonParser(true, true).composeString(expected);\r\n");
     write("\r\n");
-    write("    String xml = new "+jname+"XmlParser(true).composeString(r1);\r\n");
-    write("    Resource r2 = new "+jname+"XmlParser(true).parse(xml.getBytes(StandardCharsets.UTF_8));\r\n");
+    write("    // the same content after a trip out to xml and back\r\n");
+    write("    String intermediateXml = new "+jname+"XmlParser(true).composeString(expected);\r\n");
+    write("    Resource actual = new "+jname+"XmlParser(true).parse(intermediateXml.getBytes(StandardCharsets.UTF_8));\r\n");
+    write("    String actualJson = new "+jname+"JsonParser(true, true).composeString(actual);\r\n");
     write("\r\n");
-    write("    String json2 = new "+jname+"JsonParser(true, true).composeString(r2);\r\n");
-    write("    assertTrue(r1.equalsDeep(r2), \"resources differ after round trip json -> xml -> json:\\r\\n\"+json1+\"\\r\\n----\\r\\n\"+json2);\r\n");
-    write("    assertEquals(json1, json2, \"json differs after round trip json -> xml -> json\");\r\n");
+    write("    assertTrue(expected.equalsDeep(actual), name+\": resources differ after round trip json -> xml -> json\"\r\n");
+    write("        +\"\\r\\nexpected:\\r\\n\"+expectedJson+\"\\r\\nactual:\\r\\n\"+actualJson+\"\\r\\nintermediate xml:\\r\\n\"+intermediateXml);\r\n");
+    write("    assertEquals(expectedJson, actualJson, name+\": json differs after round trip json -> xml -> json\");\r\n");
     write("  }\r\n");
     write("\r\n");
     write("}");

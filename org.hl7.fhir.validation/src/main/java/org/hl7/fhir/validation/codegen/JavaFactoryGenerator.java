@@ -48,6 +48,7 @@ public class JavaFactoryGenerator extends JavaBaseGenerator {
     template = template.replace("{{pid}}", packageName);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
     template = template.replace("{{resource-factory}}", genResourceFactory());
     template = template.replace("{{type-factory}}", genTypeFactory());
     template = template.replace("{{case-factory}}", genCaseFactory());
@@ -65,7 +66,7 @@ public class JavaFactoryGenerator extends JavaBaseGenerator {
       }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
         String tn = ((TypeInfo) sd.getUserData("java.type.info")).getName();
-        b.append("        if (\""+sd.getName()+"\".equals(name))\r\n");
+        b.append("        if (\""+escapeJavaString(sd.getName())+"\".equals(name))\r\n");
         b.append("            return new "+tn+"();\r\n");
       }
     }
@@ -81,7 +82,7 @@ public class JavaFactoryGenerator extends JavaBaseGenerator {
       }
       if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
         String tn = ((TypeInfo) sd.getUserData("java.type.info")).getName();
-        b.append("        if (\""+sd.getName()+"\".equals(name))\r\n");
+        b.append("        if (\""+escapeJavaString(sd.getName())+"\".equals(name))\r\n");
         b.append("            return new "+tn+"();\r\n");
       }
     }

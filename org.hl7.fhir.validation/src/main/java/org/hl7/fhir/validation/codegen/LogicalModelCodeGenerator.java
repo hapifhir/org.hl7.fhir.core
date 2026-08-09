@@ -96,6 +96,8 @@ public class LogicalModelCodeGenerator {
       context.loadFromPackage(npm, loader);
     }
     
+    master.getPackages().addAll(pids);
+
     log.info("Load core structures for ancestor analysis");
     for (String t : coreNpm.listResources("StructureDefinition")) {
       StructureDefinition csd = (StructureDefinition) load(coreNpm, t, coreLoader);
@@ -137,7 +139,7 @@ public class LogicalModelCodeGenerator {
     JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(ManagedFileAccess.outStream(Utilities.path(folder,  jname+"JsonParser.java")), master, config, date, version, packageName, jname);
     JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(ManagedFileAccess.outStream(Utilities.path(folder, jname+"XmlParser.java")), master, config, date, version, packageName, jname);
 
-    for (StructureDefinition sd : master.getStructures().getList()) {
+    for (StructureDefinition sd : sortedStructures(master)) {
       if (sd.hasUserData(Definitions.CORE_MARKER)) {
         continue;
       }
@@ -146,7 +148,7 @@ public class LogicalModelCodeGenerator {
       }
     }
 
-    for (StructureDefinition sd : master.getStructures().getList()) {
+    for (StructureDefinition sd : sortedStructures(master)) {
       if (sd.hasUserData(Definitions.CORE_MARKER)) {
         continue;
       }
@@ -156,7 +158,7 @@ public class LogicalModelCodeGenerator {
         }
       }
     }
-    for (StructureDefinition sd : master.getStructures().getList()) {
+    for (StructureDefinition sd : sortedStructures(master)) {
       if (sd.hasUserData(Definitions.CORE_MARKER)) {
         continue;
       }
@@ -166,7 +168,7 @@ public class LogicalModelCodeGenerator {
         }
       }
     }
-    for (StructureDefinition sd : master.getStructures().getList()) {
+    for (StructureDefinition sd : sortedStructures(master)) {
       if (sd.hasUserData(Definitions.CORE_MARKER)) {
         continue;
       }
@@ -176,7 +178,7 @@ public class LogicalModelCodeGenerator {
         }
       }
     }
-    for (StructureDefinition sd : master.getStructures().getList()) {
+    for (StructureDefinition sd : sortedStructures(master)) {
       if (sd.hasUserData(Definitions.CORE_MARKER)) {
         continue;
       }
@@ -186,7 +188,7 @@ public class LogicalModelCodeGenerator {
         }
       }
     }
-    for (StructureDefinition sd : master.getStructures().getList()) {
+    for (StructureDefinition sd : sortedStructures(master)) {
       if (sd.hasUserData(Definitions.CORE_MARKER)) {
         continue;
       }
@@ -196,7 +198,7 @@ public class LogicalModelCodeGenerator {
         }
       }
     }
-    for (StructureDefinition sd : master.getStructures().getList()) {
+    for (StructureDefinition sd : sortedStructures(master)) {
       if (sd.hasUserData(Definitions.CORE_MARKER)) {
         continue;
       }
@@ -219,7 +221,7 @@ public class LogicalModelCodeGenerator {
     xgen.generate();
     xgen.close();
     Map<String, StructureDefinition> extensions = new HashMap<>();
-    for (StructureDefinition sd : master.getStructures().getList()) {
+    for (StructureDefinition sd : sortedStructures(master)) {
       if (sd.hasUserData(Definitions.CORE_MARKER)) {
         continue;
       }
@@ -234,7 +236,7 @@ public class LogicalModelCodeGenerator {
     if (testFolder != null) {
       log.info(" .. TestCases");
       List<String> resourceNames = new ArrayList<String>();
-      for (StructureDefinition sd : master.getStructures().getList()) {
+      for (StructureDefinition sd : sortedStructures(master)) {
         if (!sd.hasUserData(Definitions.CORE_MARKER) && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && 
             sd.getKind() == StructureDefinitionKind.RESOURCE && !sd.getAbstract()) {
           resourceNames.add(sd.getName());
@@ -330,11 +332,32 @@ public class LogicalModelCodeGenerator {
   }
 
 
+  /**
+   * The structures to generate from, in a fixed alphabetical order.
+   * <p>
+   * Generation order is not just cosmetic: the parser, factory and registration generators
+   * accumulate a block per class in the order the classes are generated, so taking the structures
+   * in load order makes those files come out differently from one run to the next, for no reason
+   * other than what order the definitions happened to arrive in. That turns every regeneration into
+   * a large and meaningless diff. Sorting on name, with the url as a tie break so that two
+   * structures of the same name still have a stable order
+   */
+  private List<StructureDefinition> sortedStructures(Definitions master) {
+    List<StructureDefinition> list = new ArrayList<>(master.getStructures().getList());
+    list.sort((a, b) -> {
+      int c = a.getName().compareTo(b.getName());
+      return c != 0 ? c : a.getUrl().compareTo(b.getUrl());
+    });
+    return list;
+  }
+
   public String genClass(String version, String dest, String date, Configuration config, String jid, NpmPackage npm, Definitions master,
 
       JavaParserGenerator pgen, 
       JavaParserJsonGenerator jgen, JavaParserXmlGenerator xgen, StructureDefinition sd, Map<String, AnalysisElementInfo> elementInfo, IWorkerContext context)
       throws Exception, IOException, UnsupportedEncodingException, FileNotFoundException {
+    // this is both the generated class name and the name of the file it is written to
+    JavaBaseGenerator.checkJavaIdentifier(sd.getName(), "the name of "+sd.getVersionedUrl());
     String name = javaName(sd.getName());
 
     log.info(" .. "+name);

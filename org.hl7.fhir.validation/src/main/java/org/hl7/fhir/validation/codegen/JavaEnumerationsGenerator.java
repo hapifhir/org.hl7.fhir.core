@@ -56,13 +56,15 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
   }
   
 	public void generate() throws Exception {		
+    write(startVMarkValue());
+    write("\r\n");
 		write("package "+packageName+";\r\n");
     startMark(version, genDate);
-    write("\r\n");
     write("import org.hl7.fhir.instance.model.api.*;\r\n");
     write("import org.hl7.fhir.exceptions.FHIRException;\r\n");
     write("\r\n");
 
+    write(generatedAnnotationValue()+"\r\n");
     write("public class Enumerations {\r\n");
     write("\r\n");
     write("// In here: \r\n");
@@ -73,9 +75,9 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     Collections.sort(names);
     for (String n : names) {
       ValueSet vs = enums.get(n);
-      write("//   "+n+": "+vs.getDescription());
+      write("//   "+sanitizeComment(n)+": "+sanitizeComment(vs.getDescription()));
       if (vs.hasUserData("usages")) {
-        write(vs.getUserData("usages").toString());
+        write(sanitizeComment(vs.getUserData("usages").toString()));
       } else {
         write("?null?");        
       }
@@ -139,7 +141,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 				write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
 				write("          return "+cc+";\r\n");
 			}
-		write("        throw new FHIRException(\"Unknown "+name+" code '\"+codeString+\"'\");\r\n");
+		write("        throw new FHIRException(\"Unknown "+escapeJavaString(name)+" code '\"+codeString+\"'\");\r\n");
 		write("        }\r\n");	
 
     write("        public static boolean isValidCode(String codeString) {\r\n");
@@ -222,7 +224,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 	      write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
 	      write("          return "+name+"."+cc+";\r\n");
 			}
-    write("        throw new IllegalArgumentException(\"Unknown "+name+" code '\"+codeString+\"'\");\r\n");
+    write("        throw new IllegalArgumentException(\"Unknown "+escapeJavaString(name)+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
     write("\r\n");
     write("        public Enumeration<"+name+"> fromType(PrimitiveType<?> code) throws FHIRException {\r\n");
@@ -239,7 +241,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
       write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
       write("          return new Enumeration<"+name+">(this, "+name+"."+cc+", code);\r\n");
     }   
-    write("        throw new FHIRException(\"Unknown "+name+" code '\"+codeString+\"'\");\r\n");
+    write("        throw new FHIRException(\"Unknown "+escapeJavaString(name)+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
     write("    public String toCode("+name+" code) {\r\n");
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {

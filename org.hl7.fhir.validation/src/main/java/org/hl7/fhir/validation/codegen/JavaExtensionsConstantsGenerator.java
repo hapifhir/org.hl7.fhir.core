@@ -30,6 +30,7 @@ public class JavaExtensionsConstantsGenerator extends JavaBaseGenerator {
     template = template.replace("{{pid}}", packageName);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
 
     template = template.replace("{{consts}}", src.toString());
     template = template.replace("{{mod}}", genMod());
@@ -54,7 +55,7 @@ public class JavaExtensionsConstantsGenerator extends JavaBaseGenerator {
   }
 
   public void seeModifier(StructureDefinition sd) {
-    mod.append("\"" + sd.getUrl()+"\"");
+    mod.append("\"" + escapeJavaString(sd.getUrl())+"\"");
   }
   
 }

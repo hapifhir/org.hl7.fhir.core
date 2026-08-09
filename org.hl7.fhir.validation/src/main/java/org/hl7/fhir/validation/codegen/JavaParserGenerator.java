@@ -60,6 +60,7 @@ public class JavaParserGenerator extends JavaBaseGenerator {
     template = template.replace("{{pid}}", packageName);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
 
     template = template.replace("{{jname}}", jname);
     template = template.replace("{{register}}", register.toString());
@@ -68,7 +69,7 @@ public class JavaParserGenerator extends JavaBaseGenerator {
       if (p.length() > 0) {
         p.append(", ");
       }
-      p.append("\""+pid+"\"");
+      p.append("\""+escapeJavaString(pid)+"\"");
     }
     template = template.replace("{{packages}}", p.toString());
 
@@ -82,7 +83,7 @@ public class JavaParserGenerator extends JavaBaseGenerator {
     if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE && !analysis.isAbstract()) {
       // whether the registration overrides resources with the same names in the base specification
       // is the choice of the application performing the registration
-      register.append("    registry.registerCustomResource(\""+analysis.getName()+"\", new "+jname+"JsonParserFactory(), overridesBase);\r\n");
+      register.append("    registry.registerCustomResource(\""+escapeJavaString(analysis.getName())+"\", new "+jname+"JsonParserFactory(), overridesBase);\r\n");
     }
   }
 
