@@ -4162,7 +4162,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else {
         
         return Utilities.existsInList(ext, 
-            ExtensionDefinitions.EXT_TEXT_LINK  // we're going to check that elsewhere
+            ExtensionDefinitions.EXT_TEXT_LINK,  // we're going to check that elsewhere
+            "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-namespaceUri" // we don't need to check this one
             );
       }
     }
@@ -5921,7 +5922,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         fullUrl = entry.getChildValue(FULL_URL);
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //Regex sourced from Constants.URI_REGEX; known constant for FHIR REST URL format
-        boolean fullUrlMatchesUri = fullUrl.matches(org.hl7.fhir.r5.tools.Constants.URI_REGEX);
+        boolean fullUrlMatchesUri = fullUrl.matches(Constants.URI_REGEX);
         if (!fullUrlMatchesUri && !Utilities.existsInList(type, "transaction", "batch") && !Utilities.isAbsoluteUrl(ref) && applyR5BundleRelativePolicy()) {
           stop.set(true);
         } else {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
@@ -86,8 +87,10 @@ public class ImplementationGuideValidator extends BaseValidator {
       if (uri != null && packageId != null && (fetchedIgDependency == null || !fetchedIgDependency.hasUserData(UserDataNames.IG_FAKE))) {
         String pid = pcm.getPackageId(uri);
         String canonical = pcm.getPackageUrl(packageId);
-        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), pid == null || pid.equals(packageId) || packageId.startsWith(pid+"."+VersionUtilities.getNameForVersion(context.getVersion()).toLowerCase()), I18nConstants.IG_DEPENDENCY_CLASH_PACKAGEID, uri, pid, packageId) && ok;
-        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), canonical == null || canonical.equals(uri) || uri.startsWith(Utilities.pathURL(canonical, "ImplementationGuide")), I18nConstants.IG_DEPENDENCY_CLASH_CANONICAL, packageId, canonical, uri) && ok;
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(),
+          pid == null || pid.equals(packageId) || packageId.startsWith(pid+"."+ getVersionSuffix()), I18nConstants.IG_DEPENDENCY_CLASH_PACKAGEID, uri, pid, packageId) && ok;
+        ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(),
+          canonical == null || canonical.equals(uri) || uri.startsWith(Utilities.pathURL(canonical, "ImplementationGuide")), I18nConstants.IG_DEPENDENCY_CLASH_CANONICAL, packageId, canonical, uri) && ok;
       }
       if (packageId == null && ok) {
         packageId = pcm.getPackageId(uri);
@@ -106,7 +109,7 @@ public class ImplementationGuideValidator extends BaseValidator {
               if (Utilities.existsInList(packageId, "hl7.fhir.uv.extensions", "hl7.fhir.uv.tools", "hl7.terminology")) {
                 ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_ERROR, CommaSeparatedStringBuilder.join(",", fvl), packageId+"#"+version, pver, 
                     packageId+"."+VersionUtilities.getNameForVersion(fvl.get(0)).toLowerCase()) && ok;                           
-              } else {
+              } else if (!(VersionUtilities.isR5Ver(pver) && VersionUtilities.isR6Ver(fvl.get(0)))) {
                 warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_WARNING, CommaSeparatedStringBuilder.join(",", fvl), packageId+"#"+version, pver);
               }
             }
@@ -135,6 +138,15 @@ public class ImplementationGuideValidator extends BaseValidator {
       warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), version != null, I18nConstants.IG_DEPENDENCY_EXCEPTION, e.getMessage());
     }
     return ok;
+  }
+
+  private @NonNull String getVersionSuffix() {
+    // This is a workaround for the fact that R6 is not fully defined at this time.
+    String version = context.getVersion();
+    if (version.startsWith("6.")) {
+      version = "5.0.0";
+    }
+    return VersionUtilities.getNameForVersion(version).toLowerCase();
   }
 
   public static boolean isMoreThanXMonthsAgo(LocalDate date, int months) {
