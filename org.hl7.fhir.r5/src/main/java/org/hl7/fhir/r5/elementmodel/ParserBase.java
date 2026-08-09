@@ -193,7 +193,7 @@ public abstract class ParserBase {
   	  // master-aware fast path: when a resource name resolves to the FHIR canonical URL, prefer the
   	  // master (overriding) definition an incubator IG may have loaded, rather than whichever of the
   	  // base and the override the iteration below reaches first (see additional-resources-r5.md)
-  	  if (ns == null || ns.equals(FormatUtilities.FHIR_NS)) {
+  	  if (ns.equals(FormatUtilities.FHIR_NS)) {
   	    StructureDefinition baseSd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/"+name);
   	    if (baseSd != null && baseSd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !ExtensionUtilities.hasAnyOfExtensions(baseSd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED)) {
   	      return baseSd;
@@ -202,10 +202,10 @@ public abstract class ParserBase {
   	  for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
   	    if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/de-")) {
   	      String type = urlTail(sd.getType());
-          if(name.equals(type) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ExtensionUtilities.hasAnyOfExtensions(sd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))
+          if(name.equals(type) && (ns.equals(FormatUtilities.FHIR_NS)) && !ExtensionUtilities.hasAnyOfExtensions(sd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED))
   	        return sd;
   	      String sns = ExtensionUtilities.readStringExtension(sd, ExtensionDefinitions.EXT_XML_NAMESPACE, ExtensionDefinitions.EXT_XML_NAMESPACE_DEPRECATED);
-  	      if ((name.equals(type) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
+  	      if ((name.equals(type) || name.equals(sd.getName())) && ns.equals(sns))
   	        return sd;
   	    }
   	  }

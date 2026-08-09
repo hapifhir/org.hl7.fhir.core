@@ -74141,7 +74141,7 @@ public class JsonParser extends JsonParserBase {
       composeVerificationResult("VerificationResult", (VerificationResult)resource);
     } else if (resource instanceof VisionPrescription) {
       composeVisionPrescription("VisionPrescription", (VisionPrescription)resource);
-    } else if (!customCompose(resource)) {
+    } else if (!customComposeResource(resource)) {
       throw new Error("Unhandled resource type: "+resource.getClass().getName());
     }
   }
@@ -74465,7 +74465,7 @@ public class JsonParser extends JsonParserBase {
       composeVerificationResult(name, (VerificationResult)resource);
     } else if (resource instanceof VisionPrescription) {
       composeVisionPrescription(name, (VisionPrescription)resource);
-    } else if (!customCompose(name, resource)) {
+    } else if (!customComposeResource(name, resource)) {
        throw new Error("Unhandled resource type : "+resource.getClass().getName());
     }
   }
