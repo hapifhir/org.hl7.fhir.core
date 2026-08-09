@@ -1,10 +1,8 @@
+{{startMark}}
 package {{pid}};
-
-// generated
 
 {{license}}
 
-{{startMark}}
 
 import org.hl7.fhir.r5.formats.JsonCreator;
 import org.hl7.fhir.r5.formats.JsonParserBase;
@@ -12,6 +10,7 @@ import org.hl7.fhir.r5.formats.ParserBase.IParserFactory;
 import org.hl7.fhir.r5.formats.XmlParserBase;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 
+{{generated}}
 public class {{jname}}Parser {
 
   /**

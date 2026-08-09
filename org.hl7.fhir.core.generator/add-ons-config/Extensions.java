@@ -1,3 +1,4 @@
+{{startMark}}
 package {{pid}};
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -6,13 +7,11 @@ import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import java.util.List;
 import java.math.BigDecimal;
 
-// generated
-
 {{license}}
 
-{{startMark}}
 
 
+{{generated}}
 public class Extensions {
   
 {{code}}

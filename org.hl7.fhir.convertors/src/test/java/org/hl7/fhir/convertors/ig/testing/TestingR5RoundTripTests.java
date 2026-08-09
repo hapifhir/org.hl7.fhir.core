@@ -31,8 +31,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * converter shares the R5 datatypes with the IG model, so it copies (rather than converts) elements
  * and needs no {@code ConversionContext40_50}; the calls are plain static invocations.
  * <p/>
- * TestPlan is excluded: the R5 converter does not (yet) handle it.
- * <p/>
  * When a round trip is not deeply equal, the (pretty printed) original and round-tripped resources
  * are written to [tmp]/conversions/expected/&lt;file&gt; and [tmp]/conversions/actual/&lt;file&gt;
  * so the difference can be inspected.

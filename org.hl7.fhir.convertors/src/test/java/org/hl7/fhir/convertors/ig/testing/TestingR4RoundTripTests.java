@@ -30,8 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * TestReport example in the Testing IG is parsed into the IG (org.hl7.fhir.r5.igs.testing) model,
  * converted to R4 and back again, and the result is required to be deeply equal to the original.
  * <p/>
- * TestPlan is excluded: it has no R4 representation (there is no R4 TestPlan) and no R4 converter.
- * <p/>
  * When a round trip is not deeply equal, the (pretty printed) original and round-tripped resources
  * are written to [tmp]/conversions/expected/&lt;file&gt; and [tmp]/conversions/actual/&lt;file&gt;
  * so the difference can be inspected.

@@ -1,10 +1,8 @@
+{{startMark}}
 package {{pid}};
-
-// generated
 
 {{license}}
 
-{{startMark}}
 
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.formats.*;
@@ -16,6 +14,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import java.io.IOException;
 import java.util.Enumeration;
 
+{{generated}}
 public class {{jname}}XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
 
   public {{jname}}XmlParser(boolean allowUnknownContent) {
