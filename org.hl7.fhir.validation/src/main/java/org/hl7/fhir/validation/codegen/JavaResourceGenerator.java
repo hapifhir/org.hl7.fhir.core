@@ -281,7 +281,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		// Write resource fields which can be used as constants in client code
 		// to refer to standard search params
 		Set<String> spcodes = new HashSet<>();
-		for (SearchParameter sp : analysis.getSearchParams()) {
+		// generate search parameter constants in a stable (alphabetical by code)
+		// order so the generated source does not churn between runs
+		List<SearchParameter> sortedSearchParams = new ArrayList<>(analysis.getSearchParams());
+		Collections.sort(sortedSearchParams, (a, b) -> a.getCode().compareTo(b.getCode()));
+		for (SearchParameter sp : sortedSearchParams) {
 		  String code = sp.getCode();
 		  if (!spcodes.contains(code)) {
 		    spcodes.add(code);
@@ -306,7 +310,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		         * static binding to the individual possibilities. AFAIK this is only
 		         * used right now in Observation (e.g. for code-value-[x]) 
 		         */
-		        for (SearchParameter nextCandidate : analysis.getSearchParams()) {
+		        for (SearchParameter nextCandidate : sortedSearchParams) {
 		          if (nextCandidate.getCode().startsWith(partialCode)) {
 		            String nextCompositeCode = rootCode + "-" + nextCandidate.getCode();
 		            String[] compositeOf = new String[] { rootCode, nextCandidate.getCode() };
