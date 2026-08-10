@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.CodeSystemRenderer;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.ValueSetRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
@@ -918,12 +919,12 @@ public class ValueSetComparer extends CanonicalResourceComparer {
 
 
   public XhtmlNode renderUnion(ValueSetComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
-    ValueSetRenderer vsr = new ValueSetRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    ValueSetRenderer vsr = new ValueSetRenderer(new RenderingContext(session.getContextLeft(), new RendererFactory(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
     return vsr.buildNarrative(ResourceWrapper.forResource(vsr.getContext(), comp.union));
   }
 
   public XhtmlNode renderIntersection(ValueSetComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
-    ValueSetRenderer vsr = new ValueSetRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    ValueSetRenderer vsr = new ValueSetRenderer(new RenderingContext(session.getContextLeft(), new RendererFactory(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
     return vsr.buildNarrative(ResourceWrapper.forResource(vsr.getContext(), comp.intersection));
   }
   

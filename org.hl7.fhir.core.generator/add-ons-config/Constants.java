@@ -1,19 +1,15 @@
+{{startMark}}
 package {{pid}};
-
-// generated
 
 {{license}}
 
-{{startMark}}
-
+{{generated}}
 public class Constants {
 
-  public final static String LOCAL_REF_REGEX = "({{rt}})\\\\/[A-Za-z0-9\\\\-\\\\.]{1,64}";
-  public final static String NS_SYSTEM_TYPE = "http://hl7.org/fhirpath/System.";
-
-  public final static String VERSION = "{{version}}";
-  public final static String VERSION_BASE = "{{version-base}}";
-  public final static String VERSION_MM = "{{version-mm}}";
+  public static final String VERSION_MAJOR_MINOR = {{version-mm-expr}};
+  public static final String VERSION_MAJOR_MINOR_PATCH = {{version-mmp-expr}};
+  public static final String VERSION = {{version-expr}};
+  public static final String VERSION_BASE = VERSION_MAJOR_MINOR_PATCH;
+  public static final String VERSION_MM = VERSION_MAJOR_MINOR;
   public final static String DATE = "{{date}}";
-  public final static String URI_REGEX = "((http|https):\\/\\/([A-Za-z0-9\\\\\\.\\:\\%\\$\\-]*\\/)*?)?({{rt}})\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
 }

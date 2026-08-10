@@ -570,10 +570,10 @@ public class SnapShotGenerationXTests {
       throw e;
     }
     if (output.getDifferential().hasElement()) {
-      RenderingContext rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+      RenderingContext rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
       rc.setDestDir(makeTempDir());
       rc.setProfileUtilities(new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), null, new TestPKP()));
-      RendererFactory.factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
+      new RendererFactory().factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
     }
     if (!fail) {
       String folder = Utilities.path("[tmp]", "snapshotX");

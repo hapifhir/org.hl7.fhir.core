@@ -76,9 +76,9 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
   }
 
   public void generateSimple(StructureDefinition sd, String name, String constName) throws Exception {
-    src.append("// -- "+name+" -------------------------------------\r\n");
-    src.append("// "+sd.getVersionedUrl()+"\r\n");
-    src.append("// "+sd.getTitle()+"\r\n");
+    src.append("// -- "+sanitizeComment(name)+" -------------------------------------\r\n");
+    src.append("// "+sanitizeComment(sd.getVersionedUrl())+"\r\n");
+    src.append("// "+sanitizeComment(sd.getTitle())+"\r\n");
     src.append("\r\n");
     
     Set<String> contexts = new HashSet<>();
@@ -250,6 +250,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
     template = template.replace("{{pid}}", packageName);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
 
     template = template.replace("{{code}}", src.toString());
 

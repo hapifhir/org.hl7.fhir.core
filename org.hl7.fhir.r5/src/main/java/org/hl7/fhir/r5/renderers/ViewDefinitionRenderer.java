@@ -8,6 +8,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -157,10 +158,10 @@ public class ViewDefinitionRenderer extends ResourceRenderer {
     } else { 
       model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "help16.png")); 
     }  
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Item"), (context.formatPhrase(RenderingContext.QUEST_LINK)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Coll"), (context.formatPhrase(RenderingContext.QUEST_TEXTFOR)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Type"), (context.formatPhrase(RenderingContext.QUEST_TIMES)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Description"), (context.formatPhrase(RenderingContext.QUEST_TYPE_ITEM)), null, 0)); 
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Item"), (context.formatPhrase(RenderingI18nContext.QUEST_LINK)), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Coll"), (context.formatPhrase(RenderingI18nContext.QUEST_TEXTFOR)), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Type"), (context.formatPhrase(RenderingI18nContext.QUEST_TIMES)), null, 0));
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Description"), (context.formatPhrase(RenderingI18nContext.QUEST_TYPE_ITEM)), null, 0));
  
     // first we add a root for the questionaire itself 
     Row row = addViewRoot(gen, model.getRows(), vd); 
@@ -238,7 +239,7 @@ public class ViewDefinitionRenderer extends ResourceRenderer {
     Row r = gen.new Row(); 
     rows.add(r); 
 
-    r.setIcon("icon_vd_view.png", context.formatPhrase(RenderingContext.QUEST_ROOT)); 
+    r.setIcon("icon_vd_view.png", context.formatPhrase(RenderingI18nContext.QUEST_ROOT));
     r.getCells().add(gen.new Cell(null, null, vd.primitiveValue("name"), null, null)); 
     r.getCells().add(gen.new Cell(null, null, "", null, null)); 
     r.getCells().add(gen.new Cell(null, null, vd.primitiveValue("resource"), null, null)); 

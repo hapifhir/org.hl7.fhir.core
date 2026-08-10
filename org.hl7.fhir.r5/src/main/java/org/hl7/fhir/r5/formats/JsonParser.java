@@ -62,6 +62,16 @@ public class JsonParser extends JsonParserBase {
     setAllowComments(allowComments);
   }
 
+  public JsonParser(CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+  }
+
+  public JsonParser(boolean allowUnknownContent, boolean allowComments, CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+    setAllowUnknownContent(allowUnknownContent);
+    setAllowComments(allowComments);
+  }
+
   protected void parseBaseProperties(JsonObject json, Base res) throws IOException, FHIRFormatError {
     // nothing
   }
@@ -35070,7 +35080,12 @@ public class JsonParser extends JsonParserBase {
     String t = json.get("resourceType").getAsString();
     if (Utilities.noString(t)) {
       throw new FHIRFormatError("Unable to find resource type - maybe not a FHIR resource?");
-    } else if (t.equals("Account")) {
+    }
+    Resource custom = parseOverridingCustomResource(t, json);
+    if (custom != null) {
+      return custom;
+    }
+    if (t.equals("Account")) {
       return parseAccount(json);
     } else if (t.equals("ActivityDefinition")) {
       return parseActivityDefinition(json);
@@ -74126,7 +74141,7 @@ public class JsonParser extends JsonParserBase {
       composeVerificationResult("VerificationResult", (VerificationResult)resource);
     } else if (resource instanceof VisionPrescription) {
       composeVisionPrescription("VisionPrescription", (VisionPrescription)resource);
-    } else if (!customCompose(resource)) {
+    } else if (!customComposeResource(resource)) {
       throw new Error("Unhandled resource type: "+resource.getClass().getName());
     }
   }
@@ -74450,7 +74465,7 @@ public class JsonParser extends JsonParserBase {
       composeVerificationResult(name, (VerificationResult)resource);
     } else if (resource instanceof VisionPrescription) {
       composeVisionPrescription(name, (VisionPrescription)resource);
-    } else if (!customCompose(name, resource)) {
+    } else if (!customComposeResource(name, resource)) {
        throw new Error("Unhandled resource type : "+resource.getClass().getName());
     }
   }
