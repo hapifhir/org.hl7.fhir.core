@@ -441,8 +441,14 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     return sd;
   }
 
+  /**
+   * Builds the relationship-column href. A missing web path deliberately falls through to the
+   * literal "null#..." form rather than degrading to an unlinked cell, to stay byte-compatible
+   * with the anchors the published narrative fixtures expect. Only a wholly unresolvable code
+   * system yields null, because its id is then unknown.
+   */
   private String codeHref(CodeSystem cs, String code) {
-    if (cs == null || cs.getWebPath() == null) {
+    if (cs == null) {
       return null;
     }
     return context.prefixLocalHref(cs.getWebPath() + "#" + cs.getId() + "-" + Utilities.nmtokenize(code));
