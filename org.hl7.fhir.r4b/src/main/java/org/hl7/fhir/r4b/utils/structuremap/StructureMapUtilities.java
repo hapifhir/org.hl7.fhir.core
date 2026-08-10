@@ -1834,7 +1834,8 @@ public class StructureMapUtilities {
           res.setUserData("profile", tgt.getUserData("profile"));
         return res;
       case COPY:
-        return getParam(vars, tgt.getParameter().get(0));
+        Base val = getParam(vars, tgt.getParameter().get(0));
+        return val != null ? val.copy() : val;
       case EVALUATE:
         ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
         if (expr == null) {
