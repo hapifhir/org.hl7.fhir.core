@@ -36,8 +36,8 @@ class RegexTimeoutTests {
 
       @AfterAll
       static void afterAll() throws InterruptedException {
-        // We need a tiny amount of delay here. Interruption is introduced as regexs process chars, which is fast, but
-        // not instantaneous.
+        // RegexTimeout enforces its timeout on the calling thread and creates no worker threads, so no threads
+        // should linger. The brief delay just gives any unrelated pooled threads a chance to settle before the check.
         Thread.sleep(100);
         Set<Thread> threadsAfter = Thread.getAllStackTraces().keySet();
         if (threadsAfter.size() != threadsBefore.size())
