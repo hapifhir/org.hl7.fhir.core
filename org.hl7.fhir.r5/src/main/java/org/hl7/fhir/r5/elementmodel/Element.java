@@ -62,14 +62,9 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.utilities.ElementDecoration;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.NamedItemList;
 import org.hl7.fhir.utilities.NamedItemList.NamedItem;
-import org.hl7.fhir.utilities.SourceLocation;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;

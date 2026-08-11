@@ -30,15 +30,24 @@ POSSIBILITY OF SUCH DAMAGE.
 
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 
 public class JavaParserGenerator extends JavaBaseGenerator {
 
   private StringBuilder register = new StringBuilder();
   private String jname;
+  private List<String> packages = new ArrayList<>();
 
   public JavaParserGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String packageName, String jname) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, packageName);
     this.jname = jname;
+  }
+
+  public void setPackages(List<String> packages) {
+    this.packages = packages;
   }
 
   public void seeClass(Analysis analysis) throws Exception {
@@ -51,9 +60,18 @@ public class JavaParserGenerator extends JavaBaseGenerator {
     template = template.replace("{{pid}}", packageName);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
 
     template = template.replace("{{jname}}", jname);
     template = template.replace("{{register}}", register.toString());
+    StringBuilder p = new StringBuilder();
+    for (String pid : packages) {
+      if (p.length() > 0) {
+        p.append(", ");
+      }
+      p.append("\""+escapeJavaString(pid)+"\"");
+    }
+    template = template.replace("{{packages}}", p.toString());
 
     write(template);
     flush();
@@ -62,8 +80,10 @@ public class JavaParserGenerator extends JavaBaseGenerator {
   
 
   private void generateParser(Analysis analysis) throws Exception {
-    if (analysis.getAncestor().getName().equals("Resource")) {
-      register.append("    org.hl7.fhir.r5.formats.JsonParser.getCustomResourceHandlers().put(\""+analysis.getName()+"\", new "+jname+"JsonParserFactory());\r\n");
+    if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE && !analysis.isAbstract()) {
+      // whether the registration overrides resources with the same names in the base specification
+      // is the choice of the application performing the registration
+      register.append("    registry.registerCustomResource(\""+escapeJavaString(analysis.getName())+"\", new "+jname+"JsonParserFactory(), overridesBase);\r\n");
     }
   }
 

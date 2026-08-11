@@ -3839,6 +3839,36 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return null;
   }
 
+  private static final String ADDITIONAL_RESOURCES_REGISTRY = "https://fhir.github.io/ig-registry/additional-resources.json";
+  private boolean additionalResourcesTried = false;
+  private Set<String> additionalResourceNames = null; // null = registry not (successfully) read; otherwise the approved additional resource names
+  private boolean additionalResourcesWarned = false;
+
+  /**
+   * The approved additional resources from the ig-registry - resource type names that are legal even
+   * though they are not defined in the base specification. Loaded once, lazily; returns null if the
+   * registry could not be read (in which case the caller cannot tell whether an unknown type is a
+   * valid additional resource).
+   */
+  private Set<String> getApprovedAdditionalResourceNames() {
+    if (!additionalResourcesTried) {
+      additionalResourcesTried = true;
+      try {
+        JsonObject json = org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl(ADDITIONAL_RESOURCES_REGISTRY);
+        Set<String> names = new HashSet<>();
+        for (JsonObject concept : json.getJsonObjects("concept")) {
+          if (concept.has("code")) {
+            names.add(concept.asString("code"));
+          }
+        }
+        additionalResourceNames = names;
+      } catch (Exception ex) {
+        additionalResourceNames = null;
+      }
+    }
+    return additionalResourceNames;
+  }
+
   private boolean checkTypeValue(List<ValidationMessage> errors, String path, Element e, Element sd) {
     String v = e.primitiveValue();
     if (v == null) {
@@ -3868,7 +3898,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           return true;
         }
       } else {
-        return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, tok, I18nConstants.SD_TYPE_NOT_LOCAL, v);
+        Set<String> additional = getApprovedAdditionalResourceNames();
+        if (additional != null && additional.contains(v)) {
+          // v is an approved additional resource (defined in an IG, not the base spec) - not an error
+          return true;
+        }
+        if (additional == null && !additionalResourcesWarned) {
+          // could not read the approved-additional-resources registry, so we cannot verify that v is
+          // not a valid additional resource. Warn once; the error below may be a false positive
+          additionalResourcesWarned = true;
+          warning(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.SD_TYPE_ADDITIONAL_UNCHECKABLE, ADDITIONAL_RESOURCES_REGISTRY);
+        }
+        return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, additionalResourceNames.contains(tok), I18nConstants.SD_TYPE_NOT_LOCAL, v);
       }
     }
   }
@@ -4121,7 +4162,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else {
         
         return Utilities.existsInList(ext, 
-            ExtensionDefinitions.EXT_TEXT_LINK  // we're going to check that elsewhere
+            ExtensionDefinitions.EXT_TEXT_LINK,  // we're going to check that elsewhere
+            "http://hl7.org/fhir/uv/cql/StructureDefinition/cql-namespaceUri" // we don't need to check this one
             );
       }
     }
@@ -5880,7 +5922,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         fullUrl = entry.getChildValue(FULL_URL);
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //Regex sourced from Constants.URI_REGEX; known constant for FHIR REST URL format
-        boolean fullUrlMatchesUri = fullUrl.matches(org.hl7.fhir.r5.tools.Constants.URI_REGEX);
+        boolean fullUrlMatchesUri = fullUrl.matches(Constants.URI_REGEX);
         if (!fullUrlMatchesUri && !Utilities.existsInList(type, "transaction", "batch") && !Utilities.isAbsoluteUrl(ref) && applyR5BundleRelativePolicy()) {
           stop.set(true);
         } else {

@@ -2,11 +2,9 @@
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
   "url" : "http://tx-dev.fhir.org/r5/TerminologyCapabilities/tx",
-  "version" : "0.10.1",
   "name" : "FHIRTerminologyServer",
   "title" : "FHIR Terminology Server",
   "status" : "active",
-  "date" : "2026-07-30T05:13:56.517Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",

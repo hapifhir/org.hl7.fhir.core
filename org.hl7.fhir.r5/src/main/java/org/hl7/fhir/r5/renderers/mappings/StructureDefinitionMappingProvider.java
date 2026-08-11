@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer.Column;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.utilities.SourceLocation;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class StructureDefinitionMappingProvider extends ModelMappingProvider {
@@ -36,7 +37,14 @@ public class StructureDefinitionMappingProvider extends ModelMappingProvider {
 
   @Override
   public Column makeColumn(String id) {
-    return new Column(id, map.getName(), dest == null ? "??" : dest.present(), null);
+    if (dest != null) {
+      return new Column(id, map.getName(), dest.present(), dest.getWebPath());
+    } else {
+      // no known StructureDefinition for this mapping - all we have is what's in the mapping declaration itself
+      String hint = map.hasComment() ? map.getComment() : map.hasUri() ? map.getUri() : map.getName();
+      String link = map.hasUri() && Utilities.isAbsoluteUrlLinkable(map.getUri()) ? map.getUri() : null;
+      return new Column(id, map.getName(), hint, link);
+    }
   }
 
   @Override

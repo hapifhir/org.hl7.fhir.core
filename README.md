@@ -45,6 +45,13 @@ The following is an overview of modules used in this project:
 * **org.fhir.fhir.validation**: The FHIR Java validator (note: based on R5 internally, but validates all the above versions)
 * **org.fhir.fhir.validation.cli**: Holder project for releasing the FHIR validator as a single fat jar
 
+## Additional Resources
+
+The R5 object model can be extended with *additional resources* - resources defined by an incubator IG
+rather than the base specification (for example the resources in the FHIR Testing IG). See
+[Registering Additional Resources in R5](additional-resources-r5.md) for how to generate code for them,
+register them with the parsers, and load their definitions into the worker context.
+
 ## Internationalization
 
 This project implements internationalization for its user tools and utilities for several locales using a combination of [GNU PO](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html) and [Java Properties](https://docs.oracle.com/javase/tutorial/i18n/resbundle/propfile.html) files.

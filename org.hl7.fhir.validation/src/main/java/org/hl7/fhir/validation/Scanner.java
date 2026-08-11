@@ -254,9 +254,9 @@ public class Scanner {
   }
 
   protected void generateScanOutputItem(ScanOutputItem item, String filename) throws IOException, FHIRException, EOperationOutcome {
-    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    RenderingContext rc = new RenderingContext(getContext(), new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setNoSlowLookup(true);
-    RendererFactory.factory(item.getOutcome(), rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), item.getOutcome()));
+    new RendererFactory().factory(item.getOutcome(), rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), item.getOutcome()));
     String s = new XhtmlComposer(XhtmlComposer.HTML).compose(item.getOutcome().getText().getDiv());
 
     String title = item.getTitle();
@@ -308,8 +308,8 @@ public class Scanner {
   protected OperationOutcome exceptionToOutcome(Exception ex) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
     op.addIssue().setCode(OperationOutcome.IssueType.EXCEPTION).setSeverity(OperationOutcome.IssueSeverity.FATAL).getDetails().setText(ex.getMessage());
-    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
-    RendererFactory.factory(op, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), op));
+    RenderingContext rc = new RenderingContext(getContext(), new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    new RendererFactory().factory(op, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), op));
     return op;
   }
 

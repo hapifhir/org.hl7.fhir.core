@@ -864,6 +864,9 @@ public class XmlParser extends ParserBase {
     if (schemaPath != null) {
       xml.setSchemaLocation(FormatUtilities.FHIR_NS, Utilities.pathURL(schemaPath, e.fhirType()+".xsd"));
     }
+    if (ExtensionUtilities.readBoolExtension(e.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+      xml.attribute("resourceDefinition", e.getProperty().getStructure().getVersionedUrl());
+    }
     composeElement(xml, e, e.getType(), true);
     xml.end();
   }
