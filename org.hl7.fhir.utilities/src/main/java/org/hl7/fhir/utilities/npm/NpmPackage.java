@@ -459,19 +459,6 @@ public class NpmPackage {
     return retVal;
   }
 
-  public static NpmPackage stub(String npmid, String npmver, String npmCanonical, String npmName, String npmfv) {
-    NpmPackage retVal = new NpmPackage();
-    retVal.npm = new JsonObject();
-    retVal.npm.set("name", npmid);
-    retVal.npm.set("version", npmver);
-    retVal.npm.set("canonical", npmCanonical);
-    retVal.npm.set("title", npmName);
-    JsonObject fv = new JsonObject();
-    retVal.npm.set("dependencies", fv);
-    fv.set(VersionUtilities.packageForVersion(npmfv), npmfv);
-    return retVal;
-  }
-
   /**
    * Factory method that starts a new empty package using the given PackageGenerator to create the manifest
    */
@@ -1179,8 +1166,7 @@ public class NpmPackage {
       return npm.asString("version");
     else if (
         Utilities.existsInList(npm.asString("type"), "fhir.core", "fhir.examples") &&
-        Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r2.", "hl7.fhir.r2b.", "hl7.fhir.r3.", 
-             "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.")) {
+        Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r3.", "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.", "hl7.fhir.r6.")) {
       return npm.asString("version");
     } else {
       JsonObject dep = null;
