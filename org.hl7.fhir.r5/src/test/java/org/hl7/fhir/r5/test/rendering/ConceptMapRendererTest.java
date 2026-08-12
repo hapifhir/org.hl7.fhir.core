@@ -121,14 +121,14 @@ class ConceptMapRendererTest {
       ExtensionUtilities.setCodeExtensionMod(tgt, ExtensionDefinitions.EXT_OLD_CONCEPTMAP_EQUIVALENCE, legacyEquivalenceCode);
     }
 
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setLocale(new java.util.Locale("en", "AU"));
     rc.setTimeZoneId(ZoneId.of("Australia/Sydney"));
     rc.setProfileUtilities(new ProfileUtilities(rc.getContext(), null, new TestProfileKnowledgeProvider(rc.getContext())));
     rc.setTesting(true);
 
-    XhtmlNode x = RendererFactory.factory(cm, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), cm));
+    XhtmlNode x = new RendererFactory().factory(cm, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), cm));
     return new XhtmlComposer(false, true).compose(x);
   }
 }
