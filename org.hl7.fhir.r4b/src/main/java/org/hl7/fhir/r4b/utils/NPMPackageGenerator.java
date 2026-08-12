@@ -42,6 +42,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -59,10 +60,10 @@ import org.hl7.fhir.r4b.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r4b.model.ImplementationGuide;
 import org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
 import org.hl7.fhir.r4b.utils.NPMPackageGenerator.Category;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -71,6 +72,7 @@ import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -113,10 +115,22 @@ public class NPMPackageGenerator {
   private BufferedOutputStream bufferedOutputStream;
   private GzipCompressorOutputStream gzipOutputStream;
   private JsonObject packageJ;
+
+  public JsonObject getPackageJ() {
+    return packageJ;
+  }
+
   private JsonObject packageManifest;
   private NpmPackageIndexBuilder indexer;
   private String igVersion;
   private String indexdb;
+
+  private final List<String> dependencyWarnings = new ArrayList<>();
+
+  /** Package-private so NPMPackageGeneratorTest can assert what was reported. */
+  List<String> getDependencyWarnings() {
+    return dependencyWarnings;
+  }
 
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig,
       Date date, boolean notForPublication) throws FHIRException, IOException {
@@ -181,42 +195,23 @@ public class NPMPackageGenerator {
     String dtHuman = new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(date);
     String dt = new SimpleDateFormat("yyyyMMddHHmmss").format(date);
 
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    if (!ig.hasPackageId()) {
-      b.append("packageId");
-    }
-    if (!ig.hasVersion()) {
-      b.append("version");
-    }
-    if (!ig.hasFhirVersion()) {
-      b.append("fhirVersion");
-    }
-    if (!ig.hasLicense()) {
-      b.append("license");
-    }
-    for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
-      if (!d.hasVersion()) {
-        b.append("dependsOn.version(" + d.getUri() + ")");
-      }
-    }
-
     JsonObject npm = new JsonObject();
-    npm.addProperty("name", ig.getPackageId());
-    npm.addProperty("version", ig.getVersion());
+    addIfNotNull(npm, "name", ig.getPackageId());
+    addIfNotNull(npm, "version", ig.getVersion());
     igVersion = ig.getVersion();
     npm.addProperty("tools-version", ToolsVersion.TOOLS_VERSION);
-    npm.addProperty("type", kind.getCode());
+    addIfNotNull(npm, "type", kind.getCode());
     npm.addProperty("date", dt);
     if (ig.hasLicense()) {
-      npm.addProperty("license", ig.getLicense().toCode());
+      addIfNotNull(npm, "license", ig.getLicense().toCode());
     }
-    npm.addProperty("canonical", canonical);
+    addIfNotNull(npm, "canonical", canonical);
     if (notForPublication) {
       npm.addProperty("notForPublication", true);
     }
-    npm.addProperty("url", web);
+    addIfNotNull(npm, "url", web);
     if (ig.hasTitle()) {
-      npm.addProperty("title", ig.getTitle());
+      addIfNotNull(npm, "title", ig.getTitle());
     }
     if (ig.hasDescription()) {
       npm.addProperty("description", ig.getDescription() + " (built " + dtHuman + timezone() + ")");
@@ -228,21 +223,46 @@ public class NPMPackageGenerator {
       vl.add(new JsonPrimitive(v));
     }
 
+    // dep is nullable: a CORE package writes no dependencies object, but the dependsOn loop below
+    // still has to run for it, because reporting a versionless dependsOn is independent of whether
+    // anything is emitted. Hoisting the loop out keeps this fold behaviour-neutral.
+    JsonObject dep = null;
     if (kind != PackageType.CORE) {
-      JsonObject dep = new JsonObject();
+      dep = new JsonObject();
       npm.add("dependencies", dep);
       for (String v : fhirVersion) {
         String vp = packageForVersion(v);
-        if (vp != null) {
+        if (vp != null && !dep.has(vp)) {
           dep.addProperty(vp, v);
         }
       }
-      for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
-        dep.addProperty(d.getPackageId(), d.getVersion());
+    }
+    List<ImplementationGuideDependsOnComponent> dependsOn = ig.getDependsOn();
+    for (int i = 0; i < dependsOn.size(); i++) {
+      ImplementationGuideDependsOnComponent d = dependsOn.get(i);
+      if (!d.hasVersion()) {
+        dependencyWarnings.add(missingVersionMessage(ig, i, d));
+      }
+      if (dep != null) {
+        String key = d.getPackageId();
+        if (d.hasVersion()) {
+          dep.addProperty(key, d.getVersion());
+        } else if (d.hasPackageId() && !dep.has(key)) {
+          // Mirrors r5. Gson is last-write-wins, so the has() guard is what stops the null from
+          // replacing an auto-added core dependency; hasPackageId stops a null-key NPE
+          // (LinkedTreeMap rejects null keys) that master hit on a uri-only dependsOn. r5's third
+          // guard, dependsOnDeclaresPackage, is deliberately absent here: r5 throws on a duplicate
+          // key, whereas a later versioned entry simply overwrites this JsonNull, which is the
+          // outcome that guard exists to produce.
+          dep.add(key, JsonNull.INSTANCE);
+        }
       }
     }
+    for (String w : dependencyWarnings) {
+      log.warn(w);
+    }
     if (ig.hasPublisher()) {
-      npm.addProperty("author", ig.getPublisher());
+      addIfNotNull(npm, "author", ig.getPublisher());
     }
     JsonArray m = new JsonArray();
     for (ContactDetail t : ig.getContact()) {
@@ -251,7 +271,7 @@ public class NPMPackageGenerator {
       if (t.hasName() && (email != null || url != null)) {
         JsonObject md = new JsonObject();
         m.add(md);
-        md.addProperty("name", t.getName());
+        addIfNotNull(md, "name", t.getName());
         if (email != null)
           md.addProperty("email", email);
         if (url != null)
@@ -261,12 +281,12 @@ public class NPMPackageGenerator {
     if (m.size() > 0)
       npm.add("maintainers", m);
     if (ig.getManifest().hasRendering())
-      npm.addProperty("homepage", ig.getManifest().getRendering());
+      addIfNotNull(npm, "homepage", ig.getManifest().getRendering());
     JsonObject dir = new JsonObject();
     npm.add("directories", dir);
     dir.addProperty("lib", "package");
     dir.addProperty("example", "example");
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    Gson gson = packageJsonGson();
     String json = gson.toJson(npm);
     try {
       addFile(Category.RESOURCE, "package.json", json.getBytes("UTF-8"));
@@ -282,20 +302,194 @@ public class NPMPackageGenerator {
 
   }
 
-  private String packageForVersion(String v) {
-    if (v == null)
-      return null;
-    if (v.startsWith("1.0"))
-      return "hl7.fhir.r2.core";
-    if (v.startsWith("1.4"))
-      return "hl7.fhir.r2b.core";
-    if (v.startsWith("3.0"))
-      return "hl7.fhir.r3.core";
-    if (v.startsWith("4.0"))
-      return "hl7.fhir.r4.core";
-    if (v.startsWith("4.1") || v.startsWith("4.3"))
-      return "hl7.fhir.r4b.core";
+  /**
+   * Writes name only when value is non-null. Guarding on the value rather than on the model's
+   * hasX() is deliberate: hasX() means "element present and non-empty", which is still true
+   * for a primitive carrying only an extension, and ImplementationGuide's license enum returns
+   * null from toCode() for its NULL literal. With serializeNulls enabled below, a presence-only
+   * guard would let those serialize as JSON nulls and widen this class's output beyond the one
+   * intended dependency key.
+   */
+  private static void addIfNotNull(JsonObject o, String name, String value) {
+    if (value != null) {
+      o.addProperty(name, value);
+    }
+  }
+
+  /**
+   * The serializer for the generated package.json. serializeNulls is on so that a versionless
+   * dependsOn keeps master's "some.pkg": null output shape; every string-valued property above
+   * is written through addIfNotNull, so the blast radius is that one key. Deliberately not
+   * shared with the other two GsonBuilder sites in this class.
+   * Package-private so NPMPackageGeneratorTest serializes exactly the way production does.
+   */
+  static Gson packageJsonGson() {
+    return new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+  }
+
+  static String missingVersionMessage(ImplementationGuide ig, int index, ImplementationGuideDependsOnComponent d) {
+    StringBuilder msg = new StringBuilder("ImplementationGuide ")
+        .append(ig.getPackageId())
+        .append(": dependsOn[").append(index).append("]");
+    if (d.hasPackageId()) {
+      msg.append(' ').append(d.getPackageId());
+    }
+    if (d.hasUri()) {
+      msg.append(" (").append(d.getUri()).append(')');
+    }
+    return msg.append(" is missing a required version; it will be omitted from the generated package.json").toString();
+  }
+
+  /**
+   * Version-line prefixes actually published for each FHIR core package.
+   * VersionUtilities deliberately maps pre-ballot lines onto the *following* release's
+   * package (e.g. isR4Ver matches 3.2/3.3/3.5), but this class writes the raw version as
+   * the dependency value, so an unguarded mapping yields unresolvable entries such as
+   * "hl7.fhir.r4.core": "3.5.0". Only emit when the raw version belongs to the matched
+   * package's own release line.
+   */
+  // MIRROR: this class is a deliberate verbatim copy of org.hl7.fhir.r5/.../NPMPackageGenerator's
+  // version-mapping and dependency-loop region -- this table, versionIsInPackageFamily,
+  // isPublishableVersion, labelStart, hasCiBuildLabel, isResolvableWildcardVersion,
+  // packageFromVersionPrefix, packageForVersion, missingVersionMessage and
+  // the dependsOn traversal. The two must be edited together; consolidating them into
+  // VersionUtilities was considered and deferred as an upstream API change. dependsOnDeclaresPackage
+  // is deliberately r5-only: r4b has no UserDataNames.IG_DEP_ALIASED concept and Gson's
+  // JsonObject is last-write-wins, so a versioned core dependsOn already overwrites the auto-add
+  // here and the author still wins.
+  private static final Map<String, List<String>> CORE_PACKAGE_VERSION_PREFIXES = Map.of(
+      "hl7.fhir.r2.core",  List.of("1.0"),
+      "hl7.fhir.r2b.core", List.of("1.4"),
+      "hl7.fhir.r3.core",  List.of("3.0"),
+      "hl7.fhir.r4.core",  List.of("4.0"),
+      "hl7.fhir.r4b.core", List.of("4.1", "4.3"),
+      "hl7.fhir.r5.core",  List.of("4.5", "5.0"),
+      "hl7.fhir.r6.core",  List.of("6.0"));
+
+  private static final String CI_BUILD_LABEL = "cibuild";
+
+  /**
+   * Whether v is shaped like a version that gets published to the package registry.
+   * VersionUtilities answers "which release line is this?"; that is a different question from
+   * "can anyone install this?". Published core packages always carry a full major.minor.patch
+   * (or a legacy four-segment build code), and the ci-build label is never published.
+   */
+  private static boolean isPublishableVersion(String v) {
+    int cut = labelStart(v);
+    String numeric = cut < 0 ? v : v.substring(0, cut);
+    // The -1 limit is load-bearing: the default split drops trailing empty strings, so "5.0.0."
+    // would pass both checks below and be emitted raw as an unresolvable dependency value.
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //fixed literal-dot pattern, no user-supplied regex
+    String[] parts = numeric.split("\\.", -1);
+    if (parts.length < 3) {
+      return false;
+    }
+    for (String p : parts) {
+      if (!Utilities.isInteger(p)) {
+        return false;
+      }
+    }
+    return !hasCiBuildLabel(v);
+  }
+
+  /** Index of the first pre-release/build label separator in v, or -1 when it has none. */
+  private static int labelStart(String v) {
+    for (int i = 0; i < v.length(); i++) {
+      char c = v.charAt(i);
+      if (c == '-' || c == '+') {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  private static boolean hasCiBuildLabel(String v) {
+    int cut = labelStart(v);
+    // Locale.ROOT: CI_BUILD_LABEL is an ASCII keyword, and a tr/az default locale would
+    // lower-case "CIBUILD" to "cibuild" with a dotless i and let an unpublished ci-build
+    // version through as publishable.
+    return cut >= 0 && v.substring(cut + 1).toLowerCase(Locale.ROOT).startsWith(CI_BUILD_LABEL);
+  }
+
+  /**
+   * Master emitted a wildcard FHIR version verbatim -- "4.0.x" produced
+   * "hl7.fhir.r4.core": "4.0.x", which is a resolvable npm range
+   * (PackageCacheTests.java:51-52) -- so the publishable-shape gate must not swallow it.
+   * Which wildcard forms are legal is VersionUtilities' question, not this class's, so
+   * delegate rather than pattern-match here. Two-segment codes such as "4.0" are still
+   * dropped: isSemVerWithWildcards accepts them, but versionHasWildcards does not, and it is
+   * the wildcard that makes the difference -- "4.0.x" resolves end-to-end while "4.0" does
+   * not (VersionUtilities.versionMatches is exact-arity; VersionUtilitiesTest.java:480-481).
+   * A bare "x" or "*" is dropped by isSemVerWithWildcards, which requires an integer major
+   * (VersionUtilities.java:480); a minor-level "4.x" is dropped further down, because
+   * VersionUtilities.packageForVersion matches on a literal major.minor prefix and returns
+   * null. The ci-build exclusion is repeated because a wildcard version never reaches
+   * isPublishableVersion.
+   */
+  private static boolean isResolvableWildcardVersion(String v) {
+    return VersionUtilities.versionHasWildcards(v)
+        && VersionUtilities.isSemVerWithWildcards(v)
+        && !hasCiBuildLabel(v);
+  }
+
+  private boolean versionIsInPackageFamily(String packageId, String v) {
+    List<String> prefixes = CORE_PACKAGE_VERSION_PREFIXES.get(packageId);
+    if (prefixes == null) {
+      return false;
+    }
+    for (String prefix : prefixes) {
+      if (v.startsWith(prefix)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * The prefixes are mutually exclusive major.minor pairs, so at most one entry can match and
+   * the (unordered) Map.of iteration order does not affect the result.
+   */
+  private String packageFromVersionPrefix(String v) {
+    for (Map.Entry<String, List<String>> e : CORE_PACKAGE_VERSION_PREFIXES.entrySet()) {
+      for (String prefix : e.getValue()) {
+        if (v.startsWith(prefix)) {
+          return e.getKey();
+        }
+      }
+    }
     return null;
+  }
+
+  private String packageForVersion(String v) {
+    // "current" is handled here rather than left to VersionUtilities: that helper's
+    // "current" -> hl7.fhir.r5.core branch (VersionUtilities.java:169-171) is unreachable
+    // because isR2Ver throws from checkVersionValidWildcards first, so relying on it would
+    // make this behaviour depend on an upstream bug. CI-build IGs get no core dependency.
+    if (v == null || "current".equals(v)) {
+      return null;
+    }
+    if (!isPublishableVersion(v) && !isResolvableWildcardVersion(v)) {
+      return null;
+    }
+    try {
+      String vp = VersionUtilities.packageForVersion(v);
+      return vp != null && versionIsInPackageFamily(vp, v) ? vp : null;
+    } catch (FHIRException e) {
+      // Measured, not assumed. Three kinds of input reach this catch. (1) The historical
+      // four-segment FHIR build codes such as 3.0.1.11917 -- published, and the case this
+      // fallback exists for. (2) Versions whose numeric head clears isPublishableVersion but
+      // whose label tail SemverParser rejects: an empty label ("1.0.2-", "1.0.2+"), a
+      // non-alphanumeric one ("1.0.2-!!!", "1.0.2-+"), or a leading-zero numeric one ("1.0.2-01").
+      // (3) Leading-zero numeric heads such as "01.0.2", whose segments are all integers.
+      // Emitting the raw string for (2) is a deliberate tradeoff, the same one already accepted
+      // for (1): an unresolvable version fails loudly at npm-install time rather than the
+      // dependency silently going missing. An input matching no prefix emits nothing at all --
+      // "01.0.2" reaches here, but the table has no "01.0" entry, so this returns null.
+      // Wildcards do not reach here: SemverParser accepts "4.0.x" and "4.0.*", so the versions
+      // isResolvableWildcardVersion admits return from the try above instead.
+      return packageFromVersionPrefix(v);
+    }
   }
 
   private String timezone() {
