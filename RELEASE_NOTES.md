@@ -19,3 +19,5 @@
 * Testing IG Convertors
 * refactor parser and render registration in R5 code
 * update resource generation code
+* COPY in StructureMapUtilities.runTransform update to return a clone
+* Share the HTTP connection pool across ManagedHTTPClient instances
