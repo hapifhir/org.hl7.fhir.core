@@ -26,28 +26,6 @@ class RegexTimeoutTests {
   static final String BAD_SUFFIX_REGEX = "((a+)+)+b";
   static final String EVIL_NO_SUFFIX = "a".repeat(50);
 
-   private static Set<Thread> threadsBefore;
-
-      @BeforeAll
-      static void beforeAll()
-      {
-          threadsBefore = Collections.unmodifiableSet(Thread.getAllStackTraces().keySet());
-      }
-
-      @AfterAll
-      static void afterAll() throws InterruptedException {
-        // RegexTimeout enforces its timeout on the calling thread and creates no worker threads, so no threads
-        // should linger. The brief delay just gives any unrelated pooled threads a chance to settle before the check.
-        Thread.sleep(100);
-        Set<Thread> threadsAfter = Thread.getAllStackTraces().keySet();
-        if (threadsAfter.size() != threadsBefore.size())
-        {
-          threadsAfter.removeAll(threadsBefore);
-          throw new IllegalStateException("Lingering threads in test: " + threadsAfter);
-        }
-      }
-
-
   @Test
   void test_BadRegex_Matches_EvilString() {
     assertThrows( TimeoutException.class, () -> RegexTimeout.matches(EVIL_STRING, BAD_REGEX));

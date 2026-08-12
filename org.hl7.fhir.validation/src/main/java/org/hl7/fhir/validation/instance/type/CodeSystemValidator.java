@@ -932,7 +932,7 @@ public class CodeSystemValidator extends BaseValidator {
   private boolean executeSupplementBatch(List<ValidationMessage> errors, List<CSCodingValidationRequest> batch, String supp, ValidationOptions options) {
     boolean ok = true;
     if (!batch.isEmpty()) {
-      context.validateCodeBatch(options, batch, null, false);
+      context.validateCodeBatch(options, batch, null);
       for (CSCodingValidationRequest cv : batch) {
         ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(),
             I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, cv.getCoding().getCode()) && ok;

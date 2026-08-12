@@ -533,7 +533,7 @@ public class ValueSetValidator extends BaseValidator {
       if (warning(errors, "2025-07-07", IssueType.NOTSUPPORTED, baseStack,  txInfo.getTestVersion() != null && VersionUtilities.isThisOrLater(TerminologyClientContext.TX_BATCH_VERSION, txInfo.getTestVersion(), VersionUtilities.VersionPrecision.MINOR), I18nConstants.VALUESET_TXVER_BATCH_NOT_SUPPORTED, (txInfo.getTestVersion() == null ? "Not Known" : txInfo.getTestVersion()), system+(version == null ? "" : "|"+version), txInfo.getServer())) {
         long t = System.currentTimeMillis();
         log.debug("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
-        context.validateCodeBatch(txOptions(baseStack, vss), batch, null, false);
+        context.validateCodeBatch(txOptions(baseStack, vss), batch, null);
         log.debug("  :   .. "+(System.currentTimeMillis()-t)+"ms");
         for (VSCodingValidationRequest cv : batch) {
           if (version == null) {

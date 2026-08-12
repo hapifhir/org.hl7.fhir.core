@@ -66,15 +66,15 @@ public class BaseDataTableProvider {
     if (tk == null) {
       return null;
     }
-    String sf = systemFilter(system);
+    String optionalSystemPredicate = systemFilter(system);
     if (ek != null) {
-      String sql = "select ValueData from TestValues where ElementKey = "+ek+" and TypeKey = "+tk+sf+(testing ? " ORDER BY ValueKey" : " ORDER BY RANDOM() LIMIT 1" );
+      String sql = "select ValueData from TestValues where ElementKey = "+ek+" and TypeKey = "+tk+optionalSystemPredicate+(testing ? " ORDER BY ValueKey" : " ORDER BY RANDOM() LIMIT 1" );
       ResultSet rs = connection.createStatement().executeQuery(sql);
       if (rs.next()) {
         return parse(rs.getString(1));
       }
     }
-    String sql = "select ValueData from TestValues where TypeKey = "+tk+sf+(testing ? " ORDER BY ValueKey" : " ORDER BY RANDOM() LIMIT 1" );
+    String sql = "select ValueData from TestValues where TypeKey = "+tk+optionalSystemPredicate+(testing ? " ORDER BY ValueKey" : " ORDER BY RANDOM() LIMIT 1" );
     ResultSet rs = connection.createStatement().executeQuery(sql);
     if (rs.next()) {
       return parse(rs.getString(1));

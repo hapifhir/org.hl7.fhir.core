@@ -201,7 +201,7 @@ public class ConceptMapValidator extends BaseValidator {
       } else if (!noTerminologyChecks) {
         try {
           long t = System.currentTimeMillis();
-          context.validateCodeBatch(ValidationOptions.defaults(), batch, null, false);
+          context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
           log.debug("  :   .. "+(System.currentTimeMillis()-t)+"ms");
           for (CMCodingValidationRequest cv : batch) {
             if (cv.getResult().getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
