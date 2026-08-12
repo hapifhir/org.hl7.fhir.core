@@ -1210,7 +1210,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
 
   @Override
-  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean passVS) {
+  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean notUsed) {
     if (options == null) {
       options = ValidationOptions.defaults();
     }
@@ -1263,9 +1263,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Set<String> systems = findRelevantSystems(vs);
     ValueSet lastvs = null;
     if (vs != null) {
-      if (passVS) {
-        batch.addParameter().setName("tx-resource").setResource(vs);
-      }
       batch.addParameter("url", vs.getUrl());
     }
     List<CodingValidationRequest> items = new ArrayList<>();
@@ -1289,6 +1286,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         ParametersParameterComponent r = validations.get(i);
 
         if (r.getResource() instanceof Parameters) {
+          checkBatchResultMatches(tc, t, (Parameters) r.getResource(), i);
           t.setResult(processValidationResult((Parameters) r.getResource(), null, tc.getAddress()));
           if (txCache != null) {
             txCache.cacheValidation(t.getCacheToken(), t.getResult(), TerminologyCache.PERMANENT);
@@ -1297,6 +1295,34 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           t.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(r.getResource()), null).setTxLink(txLog == null ? null : txLog.getLastId()));
         }
       }
+    }
+  }
+
+  /**
+   * Batch results are matched to the requests by position, so a server that returns them in the wrong
+   * order would silently give each code another code's answer - and that answer would then be cached
+   * against the wrong code. Servers that support batch validation are tested to echo the system and code
+   * of each item, so we check them, and refuse the whole batch rather than mis-attribute any of it.
+   */
+  private void checkBatchResultMatches(TerminologyClientContext tc, CodingValidationRequest req, Parameters result, int index) {
+    String system = null;
+    String code = null;
+    for (ParametersParameterComponent p : result.getParameter()) {
+      if (p.hasValue()) {
+        if ("system".equals(p.getName())) {
+          system = p.getValue().primitiveValue();
+        } else if ("code".equals(p.getName())) {
+          code = p.getValue().primitiveValue();
+        }
+      }
+    }
+    Coding coding = req.getCoding();
+    // the system is only checked when we asked with one - with inferSystem, the server picks it
+    boolean mismatch = (code != null && !code.equals(coding.getCode()))
+        || (system != null && coding.hasSystem() && !system.equals(coding.getSystem()));
+    if (mismatch) {
+      throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_BATCH_RESPONSE_MISMATCH, tc.getAddress(), index,
+          (system == null ? "" : system + "#") + code, coding.getSystem() + "#" + coding.getCode()));
     }
   }
 
@@ -1311,6 +1337,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Parameters resp = tc.getClient().batchValidateVS(batch);
     if (resp == null) {
       throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_NO_BATCH_RESPONSE));
+    }
+    int count = resp.getParameters("validation").size();
+    if (count != size) {
+      throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_BATCH_RESPONSE_SIZE, tc.getAddress(), count, size));
     }
     return resp;
   }

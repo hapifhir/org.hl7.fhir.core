@@ -64,7 +64,6 @@ public class ConceptMapValidator extends BaseValidator {
 
   }
 
-  private static final int TOO_MANY_CODES_TO_VALIDATE = 500;
   
   public static class PropertyDefinition {
     private final String type;
@@ -196,8 +195,9 @@ public class ConceptMapValidator extends BaseValidator {
     }
     
     if (!batch.isEmpty()) {
-      if (batch.size() > TOO_MANY_CODES_TO_VALIDATE) {
-        ok = hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CONCEPTMAP_VS_TOO_MANY_CODES, batch.size()) && ok;
+      int codeLimit = settings.getCodeSystemValidationSizeLimit();
+      if (codeLimit > 0 && batch.size() > codeLimit) {
+        ok = hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CONCEPTMAP_VS_TOO_MANY_CODES, batch.size(), codeLimit) && ok;
       } else if (!noTerminologyChecks) {
         try {
           long t = System.currentTimeMillis();

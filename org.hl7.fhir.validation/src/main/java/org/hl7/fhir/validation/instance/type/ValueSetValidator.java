@@ -168,7 +168,6 @@ public class ValueSetValidator extends BaseValidator {
     Boolean, Integer, Decimal, Code, DateTime, Coding, CodeList, String
   }
 
-  private static final int TOO_MANY_CODES_TO_VALIDATE = 1000;
   private static final int VALIDATION_BATCH_SIZE = 300;
 
 
@@ -460,10 +459,9 @@ public class ValueSetValidator extends BaseValidator {
           int cc = 0;
           List<VSCodingValidationRequest> batch = new ArrayList<>();
           boolean first = true;
-          if (concepts.size() > TOO_MANY_CODES_TO_VALIDATE) {
-            hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, concepts.size());
-          } else if (!((InstanceValidator) parent).isValidateValueSetCodesOnTxServer()) {
-            hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NOT_VALIDATING, concepts.size());
+          int codeLimit = settings.getCodeSystemValidationSizeLimit();
+          if (codeLimit > 0 && concepts.size() > codeLimit) {
+            hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_TOO_MANY_CODES, concepts.size(), codeLimit);
           } else if (context.isNoTerminologyServer()) {
             hint(errors, "2023-09-06", IssueType.BUSINESSRULE, stack, false, I18nConstants.VALUESET_INC_NO_SERVER, concepts.size());
           } else {

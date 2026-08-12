@@ -2809,3 +2809,122 @@ v: {
 
 }
 -------------------------------------------------------------------------------------
+{"code" : {
+  "system" : "http://terminology.hl7.org/CodeSystem/designation-usage",
+  "code" : "display"
+}, "url": "http://hl7.org/fhir/ValueSet/designation-use", "version": "5.0.0", "langs":"en-US", "useServer":"true", "useClient":"true", "guessSystem":"false", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "code" : "display",
+  "system" : "http://terminology.hl7.org/CodeSystem/designation-usage",
+  "severity" : "error",
+  "error" : "A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/designation-usage' could not be found, so the code cannot be validated; The provided code 'http://terminology.hl7.org/CodeSystem/designation-usage#display' was not found in the value set 'http://hl7.org/fhir/ValueSet/designation-use|5.0.0'",
+  "class" : "UNKNOWN",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "Local Error: The local terminology server cannot handle this request. Server Error: A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/designation-usage' could not be found, so the code cannot be validated; The provided code 'http://terminology.hl7.org/CodeSystem/designation-usage#display' was not found in the value set 'http://hl7.org/fhir/ValueSet/designation-use|5.0.0'",
+  "unknown-systems" : "http://terminology.hl7.org/CodeSystem/designation-usage",
+  "issues" : {
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "UNKNOWN_CODESYSTEM"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "not-found",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-found"
+      }],
+      "text" : "A definition for CodeSystem 'http://terminology.hl7.org/CodeSystem/designation-usage' could not be found, so the code cannot be validated"
+    },
+    "expression" : ["Coding.system"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-server",
+      "valueUrl" : "https://tx-dev.fhir.org/r5"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "not-in-vs"
+      }],
+      "text" : "The provided code 'http://terminology.hl7.org/CodeSystem/designation-usage#display' was not found in the value set 'http://hl7.org/fhir/ValueSet/designation-use|5.0.0'"
+    },
+    "expression" : ["Coding.code"]
+  }]
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "fr"
+}, "url": "urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "French",
+  "code" : "fr",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a|1: Analysing urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a|1 for validation purposes\n1ms urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a|1: Prepare include[0]: \"(urn:ietf:bcp:47)\"\n2ms urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a|1: CodeSystem found: \"urn:ietf:bcp:47|null\"\n2ms urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a|1: Validate \"[undefined#fr (\"undefined\")]\" and infer system\n2ms urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a|1: Check \"undefined#fr\"\n2ms urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a|1: Inferred CodeSystem = \"urn:ietf:bcp:47\"\n2ms urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a|1: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n2ms urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a|1: check code in (urn:ietf:bcp:47) at \n2ms urn:uuid:7c3d53fd-706f-4514-ad92-c9412bd1923a|1: Code \"fr\" found in urn:ietf:bcp:47|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
+{"code" : {
+  "code" : "fr"
+}, "url": "urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f", "version": "1", "langs":"en-US", "useServer":"true", "useClient":"false", "guessSystem":"true", "noAbstract":"false", "activeOnly":"false", "membershipOnly":"false", "displayWarningMode":"false", "versionFlexible":"false", "profile": {
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "profile-url",
+    "valueString" : "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"
+  },
+  {
+    "name" : "defaultDisplayLanguage",
+    "valueCode" : "en-US"
+  }]
+}}####
+v: {
+  "display" : "French",
+  "code" : "fr",
+  "system" : "urn:ietf:bcp:47",
+  "server" : "https://tx-dev.fhir.org/r5",
+  "diagnostics" : "0ms tx-op\n1ms urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f|1: Analysing urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f|1 for validation purposes\n1ms urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f|1: Parameters: disp-lang=en-US, generate-narrative\n1ms urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f|1: Prepare include[0]: \"(urn:ietf:bcp:47)\"\n1ms urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f|1: CodeSystem found: \"urn:ietf:bcp:47|null\"\n1ms urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f|1: Validate \"[undefined#fr (\"undefined\")]\" and infer system\n1ms urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f|1: Check \"undefined#fr\"\n2ms urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f|1: Inferred CodeSystem = \"urn:ietf:bcp:47\"\n2ms urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f|1: CodeSystem found: urn:ietf:bcp:47|null for urn:ietf:bcp:47\n2ms urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f|1: check code in (urn:ietf:bcp:47) at \n2ms urn:uuid:20b73734-92fe-41b3-b8b3-8f1071dc179f|1: Code \"fr\" found in urn:ietf:bcp:47|null",
+  "issues" : {
+  "resourceType" : "OperationOutcome"
+}
+
+}
+-------------------------------------------------------------------------------------
