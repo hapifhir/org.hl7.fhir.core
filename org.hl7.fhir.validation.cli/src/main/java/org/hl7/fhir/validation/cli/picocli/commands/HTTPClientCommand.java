@@ -280,6 +280,9 @@ public class HTTPClientCommand implements Callable<Integer> {
     if (instanceValidatorOptions.validationTimeout != null && instanceValidatorOptions.validationTimeout > 0) {
       uriBuilder.addParameter(ParamNames.VALIDATION_TIMEOUT, String.valueOf(instanceValidatorOptions.validationTimeout));
     }
+    if (instanceValidatorOptions.codeSystemValidationSizeLimit != null) {
+      uriBuilder.addParameter(ParamNames.CODESYSTEM_VALIDATION_SIZE_LIMIT, String.valueOf(instanceValidatorOptions.codeSystemValidationSizeLimit));
+    }
 
     // extensions - list, values may be URIs; addParameter handles percent-encoding
     if (instanceValidatorOptions.extensions != null) {

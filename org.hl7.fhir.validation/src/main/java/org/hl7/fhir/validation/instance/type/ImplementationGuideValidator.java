@@ -58,7 +58,7 @@ public class ImplementationGuideValidator extends BaseValidator {
     return ok;
   }
 
-  private boolean checkDependency(List<ValidationMessage> errors, Element ig, NodeStack stack, Element dependency, List<String> fvl) {
+  private boolean checkDependency(List<ValidationMessage> errors, Element ig, NodeStack stack, Element dependency, List<String> fhirVersionList) {
     boolean ok = true;
     String uri = dependency.getNamedChildValue("uri");
     String packageId = dependency.getNamedChildValue("packageId");
@@ -103,14 +103,14 @@ public class ImplementationGuideValidator extends BaseValidator {
         ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), validPackageVersion, I18nConstants.IG_DEPENDENCY_INVALID_PACKAGE_VERSION, version) && ok;
         NpmPackage npm = pcm.loadPackage(packageId, version);
         if (warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), npm != null, I18nConstants.IG_DEPENDENCY_PACKAGE_UNKNOWN, packageId+"#"+version)) {
-          if (!fvl.isEmpty()) {
+          if (!fhirVersionList.isEmpty()) {
             String pver = npm.fhirVersion();
-            if (!VersionUtilities.versionMatchesList(pver, fvl)) {
+            if (!VersionUtilities.versionMatchesList(pver, fhirVersionList)) {
               if (Utilities.existsInList(packageId, "hl7.fhir.uv.extensions", "hl7.fhir.uv.tools", "hl7.terminology")) {
-                ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_ERROR, CommaSeparatedStringBuilder.join(",", fvl), packageId+"#"+version, pver, 
-                    packageId+"."+VersionUtilities.getNameForVersion(fvl.get(0)).toLowerCase()) && ok;                           
-              } else if (!(VersionUtilities.isR5Ver(pver) && VersionUtilities.isR6Ver(fvl.get(0)))) {
-                warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_WARNING, CommaSeparatedStringBuilder.join(",", fvl), packageId+"#"+version, pver);
+                ok = rule(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_ERROR, CommaSeparatedStringBuilder.join(",", fhirVersionList), packageId+"#"+version, pver,
+                    packageId+"."+VersionUtilities.getNameForVersion(fhirVersionList.get(0)).toLowerCase()) && ok;
+              } else if (!(VersionUtilities.isR5Ver(pver) && VersionUtilities.isR6Ver(fhirVersionList.get(0)))) {
+                warning(errors, "2024-06-13", IssueType.BUSINESSRULE, dependency.line(), dependency.col(), stack.getLiteralPath(), false, I18nConstants.IG_DEPENDENCY_VERSION_WARNING, CommaSeparatedStringBuilder.join(",", fhirVersionList), packageId+"#"+version, pver);
               }
             }
           }

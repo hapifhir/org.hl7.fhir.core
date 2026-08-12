@@ -588,7 +588,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private ProfileUtilities profileUtilities;
   private boolean crumbTrails;
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
-  private boolean validateValueSetCodesOnTxServer = true;
   private QuestionnaireMode questionnaireMode;
   private Map<String, CanonicalResourceLookupResult> crLookups = new HashMap<>();
   private boolean logProgress;
@@ -660,6 +659,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     setUnknownCodeSystemsCauseErrors(parameters.isUnknownCodeSystemsCauseErrors());
     setNoExperimentalContent(parameters.isNoExperimentalContent());
     setCheckIPSCodes(parameters.isCheckIPSCodes());
+    getSettings().setCodeSystemValidationSizeLimit(parameters.getCodeSystemValidationSizeLimit());
     setMaxMessages(parameters.getMaxValidationMessages());
     setTimeout(parameters.getTimeout());
 
@@ -9150,16 +9150,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   @Override
   public List<BundleValidationRule> getBundleValidationRules() {
     return bundleValidationRules ;
-  }
-
-  @Override
-  public boolean isValidateValueSetCodesOnTxServer() {
-    return validateValueSetCodesOnTxServer;
-  }
-
-  @Override
-  public void setValidateValueSetCodesOnTxServer(boolean value) {
-    this.validateValueSetCodesOnTxServer = value;    
   }
 
   public boolean isNoCheckAggregation() {

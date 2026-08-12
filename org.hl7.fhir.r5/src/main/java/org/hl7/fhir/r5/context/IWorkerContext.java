@@ -780,14 +780,92 @@ public interface IWorkerContext {
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs, ValidationContextCarrier ctxt);
 
   /**
-   * Batch validate code - reduce latency and do a bunch of codes in a single server call.
-   * Each is the same as a validateCode
+   * Validate a batch of codes in a single round trip to the terminology server, instead of one round
+   * trip per code.
+   * <p>
+   * Nothing is returned. Each result is set on the request it belongs to, and the caller reads it back
+   * with {@link CodingValidationRequest#getResult()} once this returns. Callers that need to tie a
+   * result back to something in their own world - a location in a resource, say - subclass
+   * {@link CodingValidationRequest} and carry that context on the subclass.
+   * <p>
+   * Each code is resolved in three passes: from the terminology cache, then locally where this context
+   * knows the code system, and finally on the terminology server for whatever is left. Only the third
+   * pass costs a round trip, so a warm cache or a locally known code system can mean no server call at
+   * all. Results from the server are cached permanently; results derived locally are cached for this
+   * session only.
+   * <p>
+   * Requests that already carry a result when this is called are left alone, so the same list can be
+   * passed in more than once - anything already answered is not asked about again.
+   * <p>
+   * Neither the size of the batch nor duplicates within it are managed here. A code that appears twice
+   * is asked about twice, and breaking a long list into batches of a size the server will accept is the
+   * caller's job.
    *
-   * @param options
-   * @param codes
-   * @param vs
+   * @param options controls how the codes are validated, and whether the client and the server may be
+   *          used at all - see {@link ValidationOptions#isUseClient()} and
+   *          {@link ValidationOptions#isUseServer()}. May be null, in which case
+   *          {@link ValidationOptions#defaults()} applies. The options are part of the cache key, so
+   *          results are not shared between calls that pass different options.
+   * @param codes the codes to validate. Each request carries its own result, so every code keeps its own
+   *          diagnostics. Every request is given a result unless this method throws.
+   * @param vs the value set to validate the codes against - "is this code in this value set". May be
+   *          null to ask only "is this code valid in its own code system", which is the batch equivalent
+   *          of {@link #validateCode(ValidationOptions, Coding, ValueSet)} with a null value set.
+   *          <p>
+   *          Note that where the single code path uses CodeSystem/$validate-code when there is no value
+   *          set, this method always uses ValueSet/$batch-validate-code, and simply omits the url
+   *          parameter when vs is null.
+   * @param notUsed not used - pass null. This was once a flag doing something, but no caller ever set it, and it did not make sense.
+   *          The parameter is retained only so that the signature of this interface does not change.
+   *
+   * @throws FHIRException if no terminology server is available, or the server returns no response to
+   *           the batch
    */
-  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean passVS);
+  @Deprecated(since="2026-03-10") public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean notUsed);
+
+  /**
+   * Validate a batch of codes in a single round trip to the terminology server, instead of one round
+   * trip per code.
+   * <p>
+   * Nothing is returned. Each result is set on the request it belongs to, and the caller reads it back
+   * with {@link CodingValidationRequest#getResult()} once this returns. Callers that need to tie a
+   * result back to something in their own world - a location in a resource, say - subclass
+   * {@link CodingValidationRequest} and carry that context on the subclass.
+   * <p>
+   * Each code is resolved in three passes: from the terminology cache, then locally where this context
+   * knows the code system, and finally on the terminology server for whatever is left. Only the third
+   * pass costs a round trip, so a warm cache or a locally known code system can mean no server call at
+   * all. Results from the server are cached permanently; results derived locally are cached for this
+   * session only.
+   * <p>
+   * Requests that already carry a result when this is called are left alone, so the same list can be
+   * passed in more than once - anything already answered is not asked about again.
+   * <p>
+   * Neither the size of the batch nor duplicates within it are managed here. A code that appears twice
+   * is asked about twice, and breaking a long list into batches of a size the server will accept is the
+   * caller's job.
+   *
+   * @param options controls how the codes are validated, and whether the client and the server may be
+   *          used at all - see {@link ValidationOptions#isUseClient()} and
+   *          {@link ValidationOptions#isUseServer()}. May be null, in which case
+   *          {@link ValidationOptions#defaults()} applies. The options are part of the cache key, so
+   *          results are not shared between calls that pass different options.
+   * @param codes the codes to validate. Each request carries its own result, so every code keeps its own
+   *          diagnostics. Every request is given a result unless this method throws.
+   * @param vs the value set to validate the codes against - "is this code in this value set". May be
+   *          null to ask only "is this code valid in its own code system", which is the batch equivalent
+   *          of {@link #validateCode(ValidationOptions, Coding, ValueSet)} with a null value set.
+   *          <p>
+   *          Note that where the single code path uses CodeSystem/$validate-code when there is no value
+   *          set, this method always uses ValueSet/$batch-validate-code, and simply omits the url
+   *          parameter when vs is null.
+   *
+   * @throws FHIRException if no terminology server is available, or the server returns no response to
+   *           the batch
+   */
+  default public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs) {
+    validateCodeBatch(options, codes, vs, false);
+  }
 
   /**
    * Validate the actual terminology resource itself on the appropriate terminology server

@@ -10,6 +10,7 @@ import org.hl7.fhir.r5.utils.validation.constants.IdStatus;
 import org.hl7.fhir.utilities.validation.ValidationOptions.R5BundleRelativeReferencePolicy;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.ValidationTimeout;
+import org.hl7.fhir.validation.ValidatorSettings;
 import org.hl7.fhir.validation.service.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
@@ -56,6 +57,7 @@ public class InstanceValidatorParameters {
     this.checkDisplay = instanceValidatorParameters.checkDisplay;
     this.resourceIdRule = instanceValidatorParameters.resourceIdRule;
     this.maxValidationMessages = instanceValidatorParameters.getMaxValidationMessages();
+    this.codeSystemValidationSizeLimit = instanceValidatorParameters.codeSystemValidationSizeLimit;
   }
 
   @JsonProperty("assumeValidRestReferences")
@@ -574,6 +576,23 @@ public class InstanceValidatorParameters {
     return this;
   }
 
+  @JsonProperty("codeSystemValidationSizeLimit")
+  @SerializedName("codeSystemValidationSizeLimit")
+  private int codeSystemValidationSizeLimit = ValidatorSettings.DEFAULT_CODESYSTEM_VALIDATION_SIZE_LIMIT;
+
+  @SerializedName("codeSystemValidationSizeLimit")
+  @JsonProperty("codeSystemValidationSizeLimit")
+  public int getCodeSystemValidationSizeLimit() {
+    return codeSystemValidationSizeLimit;
+  }
+
+  @SerializedName("codeSystemValidationSizeLimit")
+  @JsonProperty("codeSystemValidationSizeLimit")
+  public InstanceValidatorParameters setCodeSystemValidationSizeLimit(int codeSystemValidationSizeLimit) {
+    this.codeSystemValidationSizeLimit = codeSystemValidationSizeLimit;
+    return this;
+  }
+
   @SerializedName("timeout")
   @JsonProperty("timeout")
   @Getter
@@ -657,12 +676,13 @@ public class InstanceValidatorParameters {
       && timeout == that.timeout
       && Objects.equals(checkDisplay, that.checkDisplay)
       && Objects.equals(resourceIdRule, that.resourceIdRule)
-      && Objects.equals(maxValidationMessages, that.maxValidationMessages);
+      && Objects.equals(maxValidationMessages, that.maxValidationMessages)
+      && codeSystemValidationSizeLimit == that.codeSystemValidationSizeLimit;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, timeout, checkDisplay, resourceIdRule,maxValidationMessages);
+    return Objects.hash(assumeValidRestReferences, hintAboutNonMustSupport, htmlOutput, outputStyle, r5BundleRelativeReferencePolicy, extensions, wantInvariantsInMessages, noInvariants, questionnaireMode, unknownCodeSystemsCauseErrors, level, bestPracticeLevel, forPublication, htmlInMarkdownCheck, noUnicodeBiDiControlChars, crumbTrails, showMessageIds, allowExampleUrls, showMessagesFromReferences, securityChecks, noExperimentalContent, showTerminologyRouting, expansionParameters, profiles, doImplicitFHIRPathStringConversion, allowDoubleQuotesInFHIRPath, checkIPSCodes, bundleValidationRules, jurisdiction, timeout, checkDisplay, resourceIdRule,maxValidationMessages, codeSystemValidationSizeLimit);
   }
 
   @Override
@@ -701,6 +721,7 @@ public class InstanceValidatorParameters {
       ", checkDisplay=" + checkDisplay +
       ", resourceIdRule=" + resourceIdRule +
       ", maxValidationMessages=" + maxValidationMessages +
+      ", codeSystemValidationSizeLimit=" + codeSystemValidationSizeLimit +
       '}';
   }
 }

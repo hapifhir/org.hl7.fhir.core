@@ -224,7 +224,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     osw.flush();
   }
 
-  protected boolean customComposeResource(Resource resource) throws IOException {
+  protected boolean composeCustomResource(Resource resource) throws IOException {
     if (customResourceRegistry.has(resource.fhirType())) {
       JsonParserBase composer = customResourceRegistry.get(resource.fhirType()).getFactory().composerJson(json);
       composer.setCustomResourceRegistry(customResourceRegistry);
@@ -235,7 +235,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     }
   }
 
-  protected boolean customComposeResource(String name, Resource resource) {
+  protected boolean composeCustomResource(String name, Resource resource) {
     if (customResourceRegistry.has(resource.fhirType())) {
       throw new Error("Not sorted yet");
       // customResourceHandlers.get(resource.fhirType()).parser().composeResource(name, resource);

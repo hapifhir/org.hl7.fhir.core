@@ -111,6 +111,7 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_SUPP_HIERARCHY_MEANING = "CODESYSTEM_CS_SUPP_HIERARCHY_MEANING";
   public static final String CODESYSTEM_CS_SUPP_INVALID_CODE = "CODESYSTEM_CS_SUPP_INVALID_CODE";
   public static final String CODESYSTEM_CS_SUPP_NO_SUPP = "CODESYSTEM_CS_SUPP_NO_SUPP";
+  public static final String CODESYSTEM_CS_SUPP_TOO_MANY_CODES = "CODESYSTEM_CS_SUPP_TOO_MANY_CODES";
   public static final String CODESYSTEM_CS_UNK_EXPANSION = "CODESYSTEM_CS_UNK_EXPANSION";
   public static final String CODESYSTEM_CS_VS_EXP_MISMATCH = "CODESYSTEM_CS_VS_EXP_MISMATCH";
   public static final String CODESYSTEM_CS_VS_INCLUDEDETAILS = "CodeSystem_CS_VS_IncludeDetails";
@@ -912,6 +913,8 @@ public class I18nConstants {
   public static final String THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE = "This__cannot_be_parsed_as_a_FHIR_object_no_namespace";
   public static final String TX_GENERAL_CC_ERROR_MESSAGE = "TX_GENERAL_CC_ERROR_MESSAGE";
   public static final String TX_SERVER_NO_BATCH_RESPONSE = "TX_SERVER_NO_BATCH_RESPONSE";
+  public static final String TX_SERVER_BATCH_RESPONSE_SIZE = "TX_SERVER_BATCH_RESPONSE_SIZE";
+  public static final String TX_SERVER_BATCH_RESPONSE_MISMATCH = "TX_SERVER_BATCH_RESPONSE_MISMATCH";
   public static final String TYPE_CHECKS_PATTERN_CC = "TYPE_CHECKS_PATTERN_CC";
   public static final String TYPE_CHECKS_PATTERN_CC_US = "TYPE_CHECKS_PATTERN_CC_US"; 
   public static final String TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT = "type_on_first_differential_element";
@@ -1208,7 +1211,6 @@ public class I18nConstants {
   public static final String VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2 = "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2";
   public static final String VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_3 = "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_3";
   public static final String VALUESET_INC_TOO_MANY_CODES = "VALUESET_INC_TOO_MANY_CODES";
-  public static final String VALUESET_INC_NOT_VALIDATING = "VALUESET_INC_NOT_VALIDATING";
   public static final String VALUESET_INC_NO_SERVER = "VALUESET_INC_NO_SERVER";
   public static final String VALUESET_INC_NO_BATCH_ON_SERVER = "VALUESET_INC_NO_BATCH_ON_SERVER";
   public static final String VALUESET_INC_CS_NO_SUPPORT = "VALUESET_INC_CS_NO_SUPPORT";

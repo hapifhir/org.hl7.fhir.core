@@ -260,4 +260,14 @@ public class InstanceValidatorOptions {
     arity = "1")
   @With
   public String resourceIdRule = null;
+
+  @CommandLine.Option(names = {"-codesystem-validation-size-limit"},
+    description = """
+      The maximum number of codes that will be checked against a code system for a single ValueSet include, ConceptMap group, or CodeSystem supplement (default 1000).
+      Checking a code costs a terminology server round trip, so where a resource carries more codes than this, none of them are checked and a hint is issued instead.
+      Use 0 for no limit.
+      """,
+    arity = "1")
+  @With
+  public Integer codeSystemValidationSizeLimit = null;
 }

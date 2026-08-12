@@ -124,6 +124,9 @@ public class InstanceValidatorOptionsConvertor {
     if (options.validationTimeout != 0) {
       instanceValidatorParameters.setTimeout(new ValidationTimeout(options.validationTimeout, "CLI option " + OptionUtilities.getFirstNameForField(InstanceValidatorOptions.class, "validationTimeout")));
     }
+    if (options.codeSystemValidationSizeLimit != null) {
+      instanceValidatorParameters.setCodeSystemValidationSizeLimit(options.codeSystemValidationSizeLimit);
+    }
 
     if (options.checkDisplay != null) {
       instanceValidatorParameters.setCheckDisplay(parseCheckDisplayOption(options.checkDisplay));

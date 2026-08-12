@@ -102,7 +102,7 @@ public class CodingsObserver extends BaseValidator {
 
     ValueSet vsTemp = new ValueSet();
     vsTemp.setUrl("http://terminology.hl7.org/ValueSet/snomed-intl-ips");
-    context.validateCodeBatch(null, serverList, vsTemp, false);
+    context.validateCodeBatch(null, serverList, vsTemp);
     // #FIXME
     Map<String, String> results = new HashMap<>();
     
