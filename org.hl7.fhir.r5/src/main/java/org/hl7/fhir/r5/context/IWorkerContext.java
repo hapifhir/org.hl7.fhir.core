@@ -864,7 +864,7 @@ public interface IWorkerContext {
    *           the batch
    */
   default public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs) {
-    validateCodeBatch(options, codes, vs);
+    validateCodeBatch(options, codes, vs, false);
   }
 
   /**
