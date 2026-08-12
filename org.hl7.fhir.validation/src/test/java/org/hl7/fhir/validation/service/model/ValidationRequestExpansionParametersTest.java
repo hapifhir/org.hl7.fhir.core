@@ -22,7 +22,6 @@ class ValidationRequestExpansionParametersTest {
 
   interface Serializer {
     String toJson(ValidationRequest request);
-
     ValidationRequest fromJson(String json);
   }
 

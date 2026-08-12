@@ -174,8 +174,14 @@ public class ValidationService {
     /* This must happen before any file is validated: getValidator() applies the locale to the worker context, which
        augments whatever expansion parameters are in place with a display language. Applying these afterwards would
        discard that.
+    */
+    /*
+       TODO: This engine is cached and reused. Subsequent requests that reuse the same sessionId without setting this
+       field retain the expansion parameters applied previously. Clients may be able to validate sources more efficiently
+       by excluding expansion parameters in requests to cached sessions.
      */
     if (request.getExpansionParameters() != null) {
+
       final FileInfo expansionParameters = request.getExpansionParameters();
       if (expansionParameters.getFileContent() == null) {
         throw new FHIRException("Expansion parameters were supplied without any fileContent.");

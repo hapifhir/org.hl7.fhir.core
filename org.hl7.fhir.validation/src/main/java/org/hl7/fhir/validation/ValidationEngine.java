@@ -1581,10 +1581,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
 
   /**
    * Parses a Parameters resource from serialized content. When fileType identifies the format, only that parser is
-   * tried, so that a malformed file reports the error for the format the caller actually intended. Otherwise xml is
-   * tried first, then json.
+   * used. Otherwise, xml parsing is attempted first, then json, and the first successful parse is used.
    */
-  static Parameters parseExpansionParameters(byte[] content, String name, String fileType) {
+  public static Parameters parseExpansionParameters(byte[] content, String name, String fileType) {
     final FhirFormat format = fileType == null ? null : FhirFormat.getFhirFormat(fileType);
 
     if (format == FhirFormat.XML || format == FhirFormat.JSON) {

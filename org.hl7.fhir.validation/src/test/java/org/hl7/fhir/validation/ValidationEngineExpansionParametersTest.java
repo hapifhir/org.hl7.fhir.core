@@ -63,14 +63,24 @@ class ValidationEngineExpansionParametersTest {
     assertTrue(e.getMessage().contains("json"), e.getMessage());
   }
 
-  @DisplayName("When the fileType names a format, only that format is reported as failing")
+  @DisplayName("When the fileType names a format, only that format is reported as failing (xml)")
   @Test
-  void declaredFormatIsTheOnlyOneTried() {
+  void declaredFormatIsTheOnlyOneTriedXml() {
     FHIRException e = assertThrows(FHIRException.class,
       () -> ValidationEngine.parseExpansionParameters(bytes(JSON_CONTENT), "exp-params.xml", "xml"));
 
     assertTrue(e.getMessage().contains("exp-params.xml"), e.getMessage());
     assertTrue(e.getMessage().contains("as xml"), e.getMessage());
+  }
+
+  @DisplayName("When the fileType names a format, only that format is reported as failing (json)")
+  @Test
+  void declaredFormatIsTheOnlyOneTriedJson() {
+    FHIRException e = assertThrows(FHIRException.class,
+      () -> ValidationEngine.parseExpansionParameters(bytes(XML_CONTENT), "exp-params.json", "json"));
+
+    assertTrue(e.getMessage().contains("exp-params.json"), e.getMessage());
+    assertTrue(e.getMessage().contains("as json"), e.getMessage());
   }
 
   @DisplayName("A file on the local filesystem is read and handed to the content based overload")
