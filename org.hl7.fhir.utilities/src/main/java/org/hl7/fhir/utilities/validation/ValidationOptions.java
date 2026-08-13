@@ -1,8 +1,6 @@
 package org.hl7.fhir.utilities.validation;
 
 import lombok.Getter;
-import lombok.Setter;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
@@ -82,7 +80,7 @@ public class ValidationOptions {
   @Getter
   private boolean noAbstract = false;
 
-  @Getter @Setter private Object externalSource;
+  @Getter private Object externalSource;
   
   public ValidationOptions() { this(FhirPublication.R5); }
 
@@ -283,7 +281,12 @@ public class ValidationOptions {
     this.exampleOK = exampleOK;
     return this;
   }
-  
+
+  public ValidationOptions setExternalSource(Object externalSource) {
+    this.externalSource = externalSource;
+    return this;
+  }
+
   public ValidationOptions withExampleOK() {
     ValidationOptions n = this.copy();
     return n.setExampleOK(true);
@@ -295,6 +298,7 @@ public class ValidationOptions {
       r5BundleRelativeReferencePolicy = R5BundleRelativeReferencePolicy.DEFAULT;
     } 
     this.r5BundleRelativeReferencePolicy = r5BundleRelativeReferencePolicy;
+    return this;
   }
 
   public ValidationOptions withR5BundleRelativeReferencePolicy(R5BundleRelativeReferencePolicy r5BundleRelativeReferencePolicy) {
