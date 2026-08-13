@@ -21,7 +21,7 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.Terminology
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -79,11 +79,6 @@ public class TerminologyClientManager {
     return factory;
   }
 
-  public interface ITerminologyClientFactory {
-    ITerminologyClient makeClient(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException;
-    String getVersion();
-  }
-  
   public class InternalLogEvent {
     private boolean error;
     private String message;

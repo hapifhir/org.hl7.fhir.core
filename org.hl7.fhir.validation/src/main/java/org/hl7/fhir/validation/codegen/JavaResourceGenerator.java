@@ -55,6 +55,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.TypesUtilities;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -1313,7 +1314,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  tn = "Enumeration<"+tn+">";
 		}
 		ValueSet vs = e.getValueSet();
-		ValueSet vse = (ValueSet) vs.getUserData("expansion");
+		ValueSet vse = (ValueSet) vs.getUserData(UserDataNames.EXPANSION);
 		if (vs.hasUserData("shared")) {
 		  return;
 		}
