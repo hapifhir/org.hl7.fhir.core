@@ -75,10 +75,7 @@ import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.apache.commons.lang3.Validate;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.ByteProvider;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -103,6 +100,7 @@ import org.hl7.fhir.utilities.regex.RegexUtils;
  */
 @Slf4j
 public class NpmPackage {
+
 
   public interface ITransformingLoader {
 
@@ -1168,8 +1166,7 @@ public class NpmPackage {
       return npm.asString("version");
     else if (
         Utilities.existsInList(npm.asString("type"), "fhir.core", "fhir.examples") &&
-        Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r2.", "hl7.fhir.r2b.", "hl7.fhir.r3.", 
-             "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.")) {
+        Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r3.", "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.", "hl7.fhir.r6.")) {
       return npm.asString("version");
     } else {
       JsonObject dep = null;
@@ -1177,7 +1174,8 @@ public class NpmPackage {
         dep = npm.getJsonObject("dependencies");
         if (dep != null) {
           for (JsonProperty e : dep.getProperties()) {
-            if (Utilities.existsInList(e.getName(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core"))
+            if (Utilities.existsInList(e.getName(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core",
+              "hl7.fhir.r4.core", "hl7.fhir.r4b.core", "hl7.fhir.r5.core",  "hl7.fhir.r6.core"))
               return e.getValue().asString();
             if (Utilities.existsInList(e.getName(), "hl7.fhir.core")) // while all packages are updated
               return e.getValue().asString();

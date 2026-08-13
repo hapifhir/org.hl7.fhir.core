@@ -507,4 +507,45 @@ public class ManagedHTTPClientTest {
     }
   }
 
+  @Nested
+  class ConnectionReuse {
+
+    /**
+     * Callers construct a {@link ManagedHTTPClient} per request (see
+     * {@link ManagedFhirWebAccessor#httpCall(HTTPRequest)} and {@link ManagedWebAccessor}), so
+     * separately-built clients must still share a connection pool. When they did not, every
+     * request paid a fresh TCP + TLS handshake and left its socket to rot in an unreachable pool
+     * until the keep-alive expired, which showed up as an ever-growing pile of CLOSE-WAIT sockets
+     * against a terminology server.
+     * <p>
+     * MockWebServer numbers requests within a connection: a sequence number of 0 means the request
+     * opened a new connection. If the pool is shared, only the very first request should be 0.
+     */
+    @Test
+    void separatelyBuiltClientsReuseTheSameConnection() throws IOException, InterruptedException {
+      int requestCount = 5;
+      for (int i = 0; i < requestCount; i++) {
+        server.enqueue(new MockResponse().setBody("Monkeys").setResponseCode(200));
+      }
+      String url = server.url("some/path").url().toString();
+
+      for (int i = 0; i < requestCount; i++) {
+        // A new client each time, exactly as the per-request callers do.
+        ManagedHTTPClient client = ManagedHTTPClient.builder().ssrfProtectionEnabled(false).build();
+        assertThat(client.get(url, "application/json").getCode()).isEqualTo(200);
+      }
+
+      assertThat(server.getRequestCount()).isEqualTo(requestCount);
+      int newConnections = 0;
+      for (int i = 0; i < requestCount; i++) {
+        if (server.takeRequest().getSequenceNumber() == 0) {
+          newConnections++;
+        }
+      }
+      assertThat(newConnections)
+        .as("every request opened its own connection - the connection pool is not being shared")
+        .isEqualTo(1);
+    }
+  }
+
 }

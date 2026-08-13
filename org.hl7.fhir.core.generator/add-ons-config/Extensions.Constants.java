@@ -1,13 +1,12 @@
+{{startMark}}
 package {{pid}};
 
 import org.hl7.fhir.utilities.Utilities;
 
-// generated
-
 {{license}}
 
-{{startMark}}
 
+{{generated}}
 public class ExtensionConstants {
   
 {{consts}}

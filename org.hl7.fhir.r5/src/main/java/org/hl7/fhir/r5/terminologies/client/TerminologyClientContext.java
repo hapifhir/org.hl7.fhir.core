@@ -235,6 +235,14 @@ public class TerminologyClientContext {
       }
       if (txcaps == null) {
         txcaps = client.getTerminologyCapabilities();
+
+        // we don't use these, and they pollute the cache
+        if (txcaps != null) {
+          txcaps.setDate(null);
+          txcaps.setVersion(null);
+          txcaps.setImplementation(null);
+        }
+
         if (txCache != null) {
           try {
             txCache.cacheTerminologyCapabilities(getAddress(), txcaps);

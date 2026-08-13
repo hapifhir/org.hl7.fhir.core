@@ -44,14 +44,14 @@ public class ConsentRendererTest {
     consent.addManager(new Reference("Organization/example-manager"));
     consent.setDecision(ConsentProvisionType.PERMIT);
 
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setLocale(new java.util.Locale("en", "AU"));
     rc.setTimeZoneId(ZoneId.of("Australia/Sydney"));
     rc.setProfileUtilities(new ProfileUtilities(rc.getContext(), null, new TestProfileKnowledgeProvider(rc.getContext())));
     rc.setTesting(true);
 
-    XhtmlNode x = RendererFactory.factory(consent, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), consent));
+    XhtmlNode x = new RendererFactory().factory(consent, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), consent));
     String html = new XhtmlComposer(false, true).compose(x);
 
     assertFalse(html.contains("<title"), "Narrative XHTML must not contain a <title> element (violates txt-1 constraint), but found one in: " + html);
@@ -69,14 +69,14 @@ public class ConsentRendererTest {
     Consent.ProvisionComponent provision = consent.getProvisionFirstRep();
     provision.addPurpose().setSystem("http://example.org").setCode("test");
 
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]", "narrative"));
     rc.setLocale(new java.util.Locale("en", "AU"));
     rc.setTimeZoneId(ZoneId.of("Australia/Sydney"));
     rc.setProfileUtilities(new ProfileUtilities(rc.getContext(), null, new TestProfileKnowledgeProvider(rc.getContext())));
     rc.setTesting(true);
 
-    XhtmlNode x = RendererFactory.factory(consent, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), consent));
+    XhtmlNode x = new RendererFactory().factory(consent, rc).buildNarrative(ResourceWrapper.forResource(rc.getContextUtilities(), consent));
     String html = new XhtmlComposer(false, true).compose(x);
 
     assertFalse(html.contains("QuestionnaireRoot"), "Consent narrative should not reference QuestionnaireRoot, but found it in: " + html);
