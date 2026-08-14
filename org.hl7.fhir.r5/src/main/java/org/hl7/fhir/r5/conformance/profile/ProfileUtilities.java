@@ -766,7 +766,7 @@ public class ProfileUtilities {
       checkNotGenerating(sdb, "an extension base");
       generateSnapshot(sdb, base, base.getUrl(), (sdb.hasWebPath()) ? Utilities.extractBaseUrl(sdb.getWebPath()) : webUrl, base.getName());
     }
-    fixTypeOfResourceId(base);
+    base = fixTypeOfResourceId(base);
     if (base.hasExtension(ExtensionDefinitions.EXT_TYPE_PARAMETER)) {
       checkTypeParameters(base, derived);
     }
@@ -1287,10 +1287,22 @@ public class ProfileUtilities {
     return (i < list.size() - 1) && list.get(i + 1).getPath().startsWith(ed.getPath()+".");
   }
 
-  private void fixTypeOfResourceId(StructureDefinition base) {
+  private StructureDefinition fixTypeOfResourceId(StructureDefinition base) {
     if (base.getKind() == StructureDefinitionKind.RESOURCE && (base.getFhirVersion() == null || VersionUtilities.isR4Plus(base.getFhirVersion().toCode()))) {
+      base = copyBaseWithUserData(base);
       fixTypeOfResourceId(base.getSnapshot().getElement());
       fixTypeOfResourceId(base.getDifferential().getElement());      
+    }
+    return base;
+  }
+
+  private StructureDefinition copyBaseWithUserData(StructureDefinition base) {
+    boolean oldCopyUserData = Base.isCopyUserData();
+    Base.setCopyUserData(true);
+    try {
+      return base.copy();
+    } finally {
+      Base.setCopyUserData(oldCopyUserData);
     }
   }
 
