@@ -97,7 +97,7 @@ public class TerminologyClientManagerEcosystemTest {
     });
   }
 
-  private static class TestFactory implements TerminologyClientManager.ITerminologyClientFactory {
+  private static class TestFactory implements ITerminologyClientFactory {
     @Override
     public ITerminologyClient makeClient(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException {
       return makeFakeClient(url);

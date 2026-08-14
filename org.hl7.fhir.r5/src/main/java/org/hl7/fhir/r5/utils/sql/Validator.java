@@ -1,7 +1,6 @@
 package org.hl7.fhir.r5.utils.sql;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +13,6 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
-import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.Base64BinaryType;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -35,8 +33,7 @@ import org.hl7.fhir.r5.model.UnsignedIntType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.UrlType;
 import org.hl7.fhir.r5.model.UuidType;
-import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.r5.utils.sql.Validator.TrueFalseOrUnknown;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;

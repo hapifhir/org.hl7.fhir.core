@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -62,6 +63,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     startMark(version, genDate);
     write("import org.hl7.fhir.instance.model.api.*;\r\n");
     write("import org.hl7.fhir.exceptions.FHIRException;\r\n");
+    write("import org.hl7.fhir.utilities.Utilities;\r\n");
     write("\r\n");
 
     write(generatedAnnotationValue()+"\r\n");
@@ -87,7 +89,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     write("\r\n");
     for (String n : names) {
       ValueSet vs = enums.get(n);
-      generateEnum(n, (ValueSet) vs.getUserData("expansion"));
+      generateEnum(n, (ValueSet) vs.getUserData(UserDataNames.EXPANSION));
 		}
 		write("\r\n");
 		write("}\r\n");
@@ -98,7 +100,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 	private Map<String, ValueSet> scanForEnums() {
 	  Map<String, ValueSet> res = new HashMap<>();
     for (ValueSet vs : definitions.getValuesets().getSortedList()) {
-      if (vs.hasUserData("shared") && vs.hasUserData("expansion")) {
+      if (vs.hasUserData("shared") && vs.hasUserData(UserDataNames.EXPANSION)) {
         res.put(getCodeListType(vs.getName()), vs);
       }
     }

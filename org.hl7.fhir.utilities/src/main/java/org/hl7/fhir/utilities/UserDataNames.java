@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.utils;
+package org.hl7.fhir.utilities;
 
 // other than render_src_package, all these are intended to be made consistent in format, using
 // the standard format scope-name-name where scope is one of 
@@ -162,4 +162,5 @@ public class UserDataNames {
   public static final String CS_SUPPLEMENT_LIST = "CS_SUPPLEMENT_LIST";
   public static final String CONTAINED_RESOURCE = "CONTAINED_RESOURCE";
   public static final String CACHED_UUID = "CACHED_UUID";
+  public static final String EXPANSION = "expansion";
 }
