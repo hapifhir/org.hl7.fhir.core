@@ -34,15 +34,15 @@ public class ValidationOptions {
 
   private AcceptLanguageHeader langs = null;
   /**
-   *  true (which is default) means that the validator will use the server if it needs to for this request
-   *  (There are a few corner cases where you want to turn this off?)
+   *  true (default) means that the validator will try to resolve the terminology using a server if it needs to for this
+   *  request. (There are a few use cases, both in the code and externally where this is needed)
    */
   @Getter
   private boolean useServer = true;
 
   /**
-   *  True means that the validator will try to resolve the terminology request locally with the resources at hand
-   *  There have been a few corner case code systems where the local code system from THO is wrong
+   *  true (default) means that the validator will try to resolve the terminology request locally with the resources at
+   *  hand (There are a few use cases, both in the code and externally where this is needed)
    */
   @Getter
   private boolean useClient = true;
@@ -57,14 +57,15 @@ public class ValidationOptions {
   private boolean displayWarningMode = false;
   private boolean vsAsUrl;
   /**
-   *  Don't know exactly what this does -Grieve
+   *  If the version requested has to match the version actually found, or not. It's used for e.g. display, where you
+   *  pass a version in, because you have one, but you don't mind getting a display from a different version instead
    */
   @Getter
   private boolean versionFlexible = true;
   @Getter
   private boolean useValueSetDisplays;
   /**
-   *  if the language is other than english, should the validator accept english as well? -Grieve
+   *  If true and the language is other than english, the validator will accept english as well
    */
   @Getter
   private boolean englishOk = true;
@@ -117,7 +118,8 @@ public class ValidationOptions {
 
 
   /**
-   * Don't know what this does -Grieve
+   * If true tells the engine to pass the ValueSet to the server as a URL rather than the whole VS.
+   * (But I don't remember why this exists now -Grieve)
    */
   public boolean getVsAsUrl() {
     return vsAsUrl;
