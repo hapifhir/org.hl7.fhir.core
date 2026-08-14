@@ -1,11 +1,12 @@
-package org.hl7.fhir.{{jid}}.model;
+{{startMark}}
+package org.hl7.fhir.{{jid}}.core;
 
 {{license}}
 
-{{startMark}}
   
 import org.hl7.fhir.exceptions.FHIRException;
 
+{{generated}}
 public class ResourceFactory extends Factory {
 
     public static Resource createResource(String name) throws FHIRException {

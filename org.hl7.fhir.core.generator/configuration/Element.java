@@ -14,7 +14,7 @@
     Extension ex = new Extension();
     ex.setUrl(url);
     ex.setValue(value);
-    getExtension().add(ex);    
+    getExtensionList().add(ex);    
   }
 
  
@@ -29,7 +29,7 @@
    public Extension getExtensionByUrl(String theUrl) {
      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
      ArrayList<Extension> retVal = new ArrayList<Extension>();
-     for (Extension next : getExtension()) {
+     for (Extension next : getExtensionList()) {
        if (theUrl.equals(next.getUrl())) {
          retVal.add(next);
        }
@@ -50,9 +50,9 @@
     * @param theUrl The URL. Must not be blank or null.
     */
    public void removeExtension(String theUrl) {
-     for (int i = getExtension().size()-1; i >= 0; i--) {
-       if (theUrl.equals(getExtension().get(i).getUrl()))
-         getExtension().remove(i);
+     for (int i = getExtensionList().size()-1; i >= 0; i--) {
+       if (theUrl.equals(getExtensionList().get(i).getUrl()))
+         getExtensionList().remove(i);
      }
    }
    
@@ -88,7 +88,7 @@
    public List<Extension> getExtensionsByUrl(String theUrl) {
      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
      ArrayList<Extension> retVal = new ArrayList<Extension>();
-     for (Extension next : getExtension()) {
+     for (Extension next : getExtensionList()) {
        if (theUrl.equals(next.getUrl())) {
          retVal.add(next);
        }
@@ -127,9 +127,38 @@
 
 
   public StandardsStatus getStandardsStatus() {
-    return ToolingExtensions.getStandardsStatus(this);
+    return ExtensionUtilities.getStandardsStatus(this);
   }
   
   public void setStandardsStatus(StandardsStatus status) {
-    ToolingExtensions.setStandardsStatus(this, status, null);
+    ExtensionUtilities.setStandardsStatus(this, status, null, null);
+  }
+
+   public FhirPublication getFHIRPublicationVersion() {
+     return FhirPublication.R6;
+   }
+
+
+   public void copyExtensions(org.hl7.fhir.model.core.Element src, String... urls) {
+     for (Extension e : src.getExtensionList()) {
+       if (Utilities.existsInList(e.getUrl(), urls)) {
+         addExtension(e.copy());
+       }
+     }
+   }
+
+   public void copyNewExtensions(org.hl7.fhir.model.core.Element src, String... urls) {
+     for (Extension e : src.getExtensionList()) {
+       if (Utilities.existsInList(e.getUrl(), urls) && !hasExtension(e.getUrl())) {
+         addExtension(e.copy());
+       }
+     }
+   }
+
+   
+
+  // required to implement the HAPI cross-version interface IBaseHasExtensions (fixed method name)
+  @Override
+  public List<Extension> getExtension() {
+    return getExtensionList();
   }

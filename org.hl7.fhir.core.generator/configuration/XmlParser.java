@@ -1,19 +1,20 @@
-package org.hl7.fhir.{{jid}}.formats;
+{{startMark}}
+package org.hl7.fhir.{{jid}}.core.formats;
 
 // generated
 
 {{license}}
 
-{{startMark}}
 
-import org.hl7.fhir.{{jid}}.model.*;
-import org.hl7.fhir.{{jid}}.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.{{jid}}.core.*;
+import org.hl7.fhir.{{jid}}.core.Enumerations.FHIRVersion;
 import org.xmlpull.v1.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.FHIRException;
 import java.io.IOException;
 
+{{generated}}
 public class XmlParser extends XmlParserBase {
 
   public XmlParser() {

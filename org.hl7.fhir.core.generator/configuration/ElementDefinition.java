@@ -25,7 +25,7 @@
   
   public String typeSummary() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    for (TypeRefComponent tr : getType()) {
+    for (TypeRefComponent tr : getTypeList()) {
       if (tr.hasCode())
         b.append(tr.getWorkingCode());
     }
@@ -34,7 +34,7 @@
   
   public String typeSummaryVB() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|");
-    for (TypeRefComponent tr : getType()) {
+    for (TypeRefComponent tr : getTypeList()) {
       if (tr.hasCode())
         b.append(tr.getWorkingCode());
     }
@@ -42,12 +42,12 @@
   }
   
   public TypeRefComponent getType(String code) {
-    for (TypeRefComponent tr : getType()) 
+    for (TypeRefComponent tr : getTypeList()) 
       if (tr.getCode().equals(code))
         return tr;
     TypeRefComponent tr = new TypeRefComponent();
     tr.setCode(code);
-    type.add(tr);
+    typeList.add(tr);
     return tr;
   }
 
@@ -68,7 +68,7 @@
   }
 
   public boolean hasCondition(IdType id) {
-    for (IdType c : getCondition()) {
+    for (IdType c : getConditionList()) {
       if (c.primitiveValue().equals(id.primitiveValue()))
         return true;
     }
@@ -76,7 +76,7 @@
   }
 
   public boolean hasConstraint(String key) {
-    for (ElementDefinitionConstraintComponent c : getConstraint()) {
+    for (ElementDefinitionConstraintComponent c : getConstraintList()) {
       if (c.getKey().equals(key))
         return true;
     }
@@ -84,7 +84,7 @@
   }
 
   public boolean hasCode(Coding c) {
-    for (Coding t : getCode()) {
+    for (Coding t : getCodeList()) {
       if (t.getSystem().equals(c.getSystem()) && t.getCode().equals(c.getCode()))
         return true;
     }
@@ -112,7 +112,7 @@
   }
 
   public boolean isInlineType() {
-    return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
+    return getTypeList().size() == 1 && Utilities.existsInList(getTypeList().get(0).getCode(), "Element", "BackboneElement");
   }  
 
 

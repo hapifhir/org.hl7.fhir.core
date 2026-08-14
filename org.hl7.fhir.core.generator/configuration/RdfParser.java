@@ -1,20 +1,21 @@
-package org.hl7.fhir.{{jid}}.formats;
+{{startMark}}
+package org.hl7.fhir.{{jid}}.core.formats;
 
 
 // generated
 
 {{license}}
 
-{{startMark}}
 
-import org.hl7.fhir.{{jid}}.model.*;
-import org.hl7.fhir.{{jid}}.model.StringType;
+import org.hl7.fhir.{{jid}}.core.*;
+import org.hl7.fhir.{{jid}}.core.StringType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.turtle.Turtle.*;
 import java.io.IOException;
 
+{{generated}}
 public class RdfParser extends RdfParserBase {
 
   public RdfParser() {

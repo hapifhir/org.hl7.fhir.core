@@ -1,12 +1,12 @@
-package org.hl7.fhir.{{jid}}.formats;
+{{startMark}}
+package org.hl7.fhir.{{jid}}.core.formats;
 
 // generated
 
 {{license}}
 
-{{startMark}}
 
-import org.hl7.fhir.{{jid}}.model.*;
+import org.hl7.fhir.{{jid}}.core.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -17,6 +17,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import java.io.IOException;
 
+{{generated}}
 public class JsonParser extends JsonParserBase {
 
   public JsonParser() {

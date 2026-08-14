@@ -22,6 +22,9 @@ public class JavaConstantsGenerator extends JavaBaseGenerator {
     for (StructureDefinition sd : definitions.getStructures().getSortedList()) {
       if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation()==TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
         if (first) first = false; else rt.append("|");
+        // substituted into {{rt}}, which the Constants template uses inside a regex alternation - 
+        // neither java-string nor regex escaping applies, so the value is validated instead
+        checkJavaIdentifier(sd.getType(), "the type of "+sd.getVersionedUrl());
         rt.append(sd.getType());
         version = sd.getVersion();
       }
@@ -31,6 +34,7 @@ public class JavaConstantsGenerator extends JavaBaseGenerator {
     template = template.replace("{{jid}}", jid);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
 
     template = template.replace("{{rt}}", rt.toString());
     template = template.replace("{{version}}", version);

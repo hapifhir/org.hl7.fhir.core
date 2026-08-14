@@ -1,11 +1,12 @@
-package org.hl7.fhir.{{jid}}.model;
+{{startMark}}
+package org.hl7.fhir.{{jid}}.core;
 
 // generated
 
 {{license}}
 
-{{startMark}}
 
+{{generated}}
 public class Constants {
 
   public final static String LOCAL_REF_REGEX = "({{rt}})\\\\/[A-Za-z0-9\\\\-\\\\.]{1,64}";

@@ -1,7 +1,6 @@
 package org.hl7.fhir.core.generator.engine;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
@@ -51,7 +51,7 @@ public class JavaCoreGenerator {
     if (args.length != 3) {
       System.out.println("Usage: invoke with 3 command line parameters to generate HAPI R5 code");
       System.out.println("1: fhir version to generate from (e.g. 4.2.0 or 'current'");
-      System.out.println("2: project directory to read java-adorment from - e.g. C:\\work\\org.hl7.fhir\\org.hl7.fhir.core\\org.hl7.fhir.r5");
+      System.out.println("2: project directory to read java-adorment from - e.g. /Users/grahame/work/core/org.hl7.fhir.core.generator/configuration");
       System.out.println("3: project directory to generate code into - e.g. C:\\work\\org.hl7.fhir\\org.hl7.fhir.core\\org.hl7.fhir.r5.new");
     } else {
       String version = args[0];
@@ -69,8 +69,8 @@ public class JavaCoreGenerator {
     String ap = Utilities.path(src);
     System.out.println("Load Configuration from "+ap);
     Configuration config = new Configuration(ap);
-    String pid = VersionUtilities.isR4BVer(version) ? "r4b" : "r5";
-    String jid = VersionUtilities.isR4BVer(version) ? "r4b" : "r5";
+    String pid = "r6";
+    String jid = "model"; // the output package family: org.hl7.fhir.model.core / .formats / .extensions / .utilities
     Date ddate = new Date();
     String date = config.DATE_FORMAT().format(ddate);
     
@@ -79,6 +79,7 @@ public class JavaCoreGenerator {
     System.out.println("Load hl7.fhir."+pid+".core");
     NpmPackage npm = pcm.loadPackage("hl7.fhir."+pid+".core", version);
     Definitions master = VersionUtilities.isR4BVer(version) ? DefinitionsLoaderR4B.load(npm) : DefinitionsLoaderR5.load(npm); 
+    master.getPackages().add(npm.name()+"#"+npm.version());
     master.fix();
     markValueSets(master, config);
     
@@ -90,19 +91,19 @@ public class JavaCoreGenerator {
     
     System.out.println("Generate Model in "+dest);   
     System.out.println(" .. Constants");
-    JavaConstantsGenerator cgen = new JavaConstantsGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", jid, "model", "Constants.java")), master, config, date, npm.version(), jid);
+    JavaConstantsGenerator cgen = new JavaConstantsGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", "model", "core", "Constants.java")), master, config, date, npm.version(), jid);
     cgen.generate();
     cgen.close();
     System.out.println(" .. Enumerations");
-    JavaEnumerationsGenerator egen = new JavaEnumerationsGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", jid, "model", "Enumerations.java")), master, config, date, npm.version(), jid);
+    JavaEnumerationsGenerator egen = new JavaEnumerationsGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", "model", "core", "Enumerations.java")), master, config, date, npm.version(), jid);
     egen.generate();
     egen.close();
     
-    JavaFactoryGenerator fgen = new JavaFactoryGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", jid, "model", "ResourceFactory.java")), master, config, date, npm.version(), jid);
-    JavaTypeGenerator tgen = new JavaTypeGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", jid, "model", "ResourceType.java")), master, config, date, npm.version(), jid);
-    JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", jid, "formats", "JsonParser.java")), master, config, date, npm.version(), jid);
-    JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", jid, "formats", "XmlParser.java")), master, config, date, npm.version(), jid);
-    JavaParserRdfGenerator rgen = new JavaParserRdfGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", jid, "formats", "RdfParser.java")), master, config, date, npm.version(), jid);
+    JavaFactoryGenerator fgen = new JavaFactoryGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", "model", "core", "ResourceFactory.java")), master, config, date, npm.version(), jid);
+    JavaTypeGenerator tgen = new JavaTypeGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", "model", "core", "ResourceType.java")), master, config, date, npm.version(), jid);
+    JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", "model", "core", "formats", "JsonParser.java")), master, config, date, npm.version(), jid);
+    JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", "model", "core", "formats", "XmlParser.java")), master, config, date, npm.version(), jid);
+    JavaParserRdfGenerator rgen = new JavaParserRdfGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", "model", "core", "formats", "RdfParser.java")), master, config, date, npm.version(), jid);
     
     if (VersionUtilities.isR4BVer(version)) {
       StructureDefinition sd = master.getStructures().get("http://hl7.org/fhir/StructureDefinition/Element");
@@ -181,6 +182,7 @@ public class JavaCoreGenerator {
       Map<String, StructureDefinition> extensions, String id, String source) throws IOException {
     NpmPackage npm;
     npm = pcm.loadPackage(id);
+    master.getPackages().add(npm.name()+"#"+npm.version());
     for (String p : npm.listResources("StructureDefinition", "ValueSet", "CodeSystem")) {
       CanonicalResource cr = (CanonicalResource) new JsonParser().parse(npm.load(p));
       cr.setUserData("source", source);
@@ -200,13 +202,15 @@ public class JavaCoreGenerator {
   public String genClass(String version, String dest, String date, Configuration config, String jid, NpmPackage npm, Definitions master,
       JavaParserJsonGenerator jgen, JavaParserXmlGenerator xgen, JavaParserRdfGenerator rgen, StructureDefinition sd, Map<String, AnalysisElementInfo> elementInfo)
       throws Exception, IOException, UnsupportedEncodingException, FileNotFoundException {
+    // the name comes from the loaded package and becomes the output file name
+    org.hl7.fhir.core.generator.codegen.JavaBaseGenerator.checkJavaIdentifier(sd.getName(), "the name of "+sd.getVersionedUrl());
     String name = javaName(sd.getName());
 
     System.out.println(" .. "+name);
     Analyser jca = new Analyser(master, config, version);
     Analysis analysis = jca.analyse(sd, elementInfo);
     
-    String fn = Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", jid, "model", name+".java");
+    String fn = Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", "model", "core", name+".java");
     JavaResourceGenerator gen = new JavaResourceGenerator(ManagedFileAccess.outStream(fn), master, config, date, npm.version(), jid);
     gen.generate(analysis); 
     gen.close();
@@ -260,7 +264,7 @@ public class JavaCoreGenerator {
     for (ValueSet vs: master.getValuesets().getList()) {
       ValueSet vse = expansions.getValuesets().get(vs.getUrl());
       if (vse != null) {
-        vs.setUserData("expansion", vse);
+        vs.setUserData(UserDataNames.EXPANSION, vse);
       }
     }    
   }

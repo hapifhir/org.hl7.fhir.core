@@ -25,7 +25,7 @@
   
 
   public String oid() {
-    for (Identifier id : getIdentifier()) {
+    for (Identifier id : getIdentifierList()) {
       if (id.getValue().startsWith("urn:oid:")) {
         return id.getValue().substring(8);
       }
@@ -34,7 +34,7 @@
   }
 
   public String getOid() {
-    for (Identifier id : getIdentifier()) {
+    for (Identifier id : getIdentifierList()) {
       if ("urn:ietf:rfc:3986".equals(id.getSystem()) && id.hasValue() && id.getValue().startsWith("urn:oid:")) {
         return id.getValue().substring(8);
       }

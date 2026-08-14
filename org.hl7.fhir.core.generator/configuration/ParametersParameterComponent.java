@@ -10,7 +10,7 @@ public String toString() {
       s = s + "["+getResource().fhirType()+"]";
     } else {
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-      for (ParametersParameterComponent p : getPart()) {
+      for (ParametersParameterComponent p : getPartList()) {
         b.append(p.getName());
       }
       s = s + "{"+b.toString()+"}";
