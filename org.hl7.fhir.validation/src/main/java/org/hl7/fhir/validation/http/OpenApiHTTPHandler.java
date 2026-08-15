@@ -39,8 +39,8 @@ class OpenApiHTTPHandler implements HttpHandler {
     "  ],\n" +
     "  \"paths\": {\n" +
 
-    // /validateResource
-    "    \"/validateResource\": {\n" +
+    // /validate
+    "    \"/validate\": {\n" +
     "      \"post\": {\n" +
     "        \"tags\": [\"Validation\"],\n" +
     "        \"summary\": \"Validate a FHIR resource\",\n" +
@@ -171,8 +171,8 @@ class OpenApiHTTPHandler implements HttpHandler {
     "      }\n" +
     "    },\n" +
 
-    // /loadIG
-    "    \"/loadIG\": {\n" +
+    // /loadIg
+    "    \"/loadIg\": {\n" +
     "      \"post\": {\n" +
     "        \"tags\": [\"Configuration\"],\n" +
     "        \"summary\": \"Load an Implementation Guide\",\n" +
@@ -272,7 +272,7 @@ class OpenApiHTTPHandler implements HttpHandler {
     "      \"post\": {\n" +
     "        \"tags\": [\"StructureMap\"],\n" +
     "        \"summary\": \"Apply a StructureMap transformation\",\n" +
-    "        \"description\": \"Applies a StructureMap transformation to a FHIR resource. The map must already be loaded (e.g. via /loadIG or part of base spec).\",\n" +
+    "        \"description\": \"Applies a StructureMap transformation to a FHIR resource. The map must already be loaded (e.g. via /loadIg or part of base spec).\",\n" +
     "        \"parameters\": [\n" +
     "          { \"name\": \"map\", \"in\": \"query\", \"required\": true, \"description\": \"Canonical URL of the StructureMap to apply\", \"schema\": { \"type\": \"string\" } }\n" +
     "        ],\n" +
@@ -324,7 +324,7 @@ class OpenApiHTTPHandler implements HttpHandler {
     "      \"get\": {\n" +
     "        \"tags\": [\"StructureMap\"],\n" +
     "        \"summary\": \"Fetch and compile a StructureMap\",\n" +
-    "        \"description\": \"Fetches a StructureMap by its canonical URL and returns the compiled resource. The map must be loaded in the engine (e.g. via /loadIG).\",\n" +
+    "        \"description\": \"Fetches a StructureMap by its canonical URL and returns the compiled resource. The map must be loaded in the engine (e.g. via /loadIg).\",\n" +
     "        \"parameters\": [\n" +
     "          { \"name\": \"url\", \"in\": \"query\", \"required\": true, \"description\": \"Canonical URL of the StructureMap\", \"schema\": { \"type\": \"string\" } }\n" +
     "        ],\n" +
