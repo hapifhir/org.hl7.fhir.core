@@ -1,5 +1,6 @@
 package org.hl7.fhir.model.utilities;
 
+import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.model.core.ConceptMap.SourceElementComponent;
@@ -193,7 +194,7 @@ public class ConceptMapUtilities {
   }
 
   public static ConceptMap invert(ConceptMap src, String id, String url, String name, boolean collate) {
-    ConceptMap dst = src.copy();
+    ConceptMap dst = src.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA));
     dst.setId(id);
     dst.setUrl(url);
     dst.setName(name);
@@ -248,7 +249,7 @@ public class ConceptMapUtilities {
   }
 
   public static ConceptMap collapse(String id, String url, boolean cumulative, ConceptMap src, ConceptMap... sequence) {
-    ConceptMap res = src.copy();
+    ConceptMap res = src.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA));
     res.setId(id);
     res.setUrl(url);
 
@@ -296,7 +297,7 @@ public class ConceptMapUtilities {
             if (cumulative) {
               for (SourceElementComponent et : gt.getElementList()) {
                 if (!processed.contains(et)) {
-                  gd.addElement(et.copy());
+                  gd.addElement(et.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA)));
                 }
               }
             }

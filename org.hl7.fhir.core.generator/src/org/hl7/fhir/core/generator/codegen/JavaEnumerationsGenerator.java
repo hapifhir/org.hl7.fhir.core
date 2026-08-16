@@ -66,6 +66,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     write("import org.hl7.fhir.instance.model.api.*;\r\n");
     write("import org.hl7.fhir.exceptions.FHIRException;\r\n");
     write("import org.hl7.fhir.utilities.Utilities;\r\n");
+    write("import org.hl7.fhir.model.*;\r\n");
     write("\r\n");
 
     write(generatedAnnotationValue()+"\r\n");
@@ -218,6 +219,13 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 
 		
 		write("  public static class "+name+"EnumFactory implements EnumFactory<"+name+"> {\r\n");
+		write("    private final IModelContext modelContext;\r\n");
+		write("    public "+name+"EnumFactory(IModelContext context) {\r\n");
+		write("      this.modelContext = context;\r\n");
+		write("    }\r\n");
+		write("    public "+name+"EnumFactory() {\r\n");
+		write("      this(null);\r\n");
+		write("    }\r\n");
 		write("    public "+name+" fromCode(String codeString) throws IllegalArgumentException {\r\n");
 		
 		write("      if (codeString == null || \"\".equals(codeString))\r\n");
@@ -236,15 +244,15 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     write("          if (code == null)\r\n");
     write("            return null;\r\n");
     write("          if (code.isEmpty())\r\n");
-    write("            return new Enumeration<"+name+">(this, "+name+".NULL, code);\r\n");
+    write("            return new Enumeration<"+name+">(modelContext, this, "+name+".NULL, code);\r\n");
     write("          String codeString = ((PrimitiveType) code).asStringValue();\r\n");
     write("          if (codeString == null || \"\".equals(codeString))\r\n");
-    write("            return new Enumeration<"+name+">(this, "+name+".NULL, code);\r\n");
+    write("            return new Enumeration<"+name+">(modelContext, this, "+name+".NULL, code);\r\n");
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
       write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
-      write("          return new Enumeration<"+name+">(this, "+name+"."+cc+", code);\r\n");
+      write("          return new Enumeration<"+name+">(modelContext, this, "+name+"."+cc+", code);\r\n");
     }   
     write("        throw new FHIRException(\"Unknown "+escapeJavaString(name)+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 

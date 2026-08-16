@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import java.net.URI;
 
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
@@ -55,16 +60,37 @@ public class CanonicalType extends UriType {
 
 	/**
 	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public CanonicalType(String theValue) {
-		super(theValue);
+	public CanonicalType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
+
+  /**
+   * Constructor
+   */
+  public CanonicalType(IModelContext context, String theValue) {
+    super(context, theValue);
+  }
+
+  /**
+   * Constructor
+   */
+  public CanonicalType(String theValue) {
+    super(theValue);
+  }
 
 	/**
 	 * Constructor
 	 */
+	public CanonicalType(IModelContext context, URI theValue) {
+		super(context, theValue);
+	}
+
 	public CanonicalType(URI theValue) {
-		super(theValue);
+	  this((IModelContext) null, theValue);
 	}
 
   public static boolean matches(String canonical, String url, String version) {
@@ -82,9 +108,9 @@ public class CanonicalType extends UriType {
 	 * Constructor
 	 */
 	@Override
-	public CanonicalType copy() {
-		CanonicalType ret = new CanonicalType(getValue());
-    copyValues(ret);
+	public CanonicalType copy(EnumSet<CopyObjectOptions> options) {
+		CanonicalType ret = new CanonicalType(modelContext, getValue());
+    copyValues(ret, options);
     return ret;
 	}
 

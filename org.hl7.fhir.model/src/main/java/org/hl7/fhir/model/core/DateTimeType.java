@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import org.apache.commons.lang3.time.DateUtils;
@@ -68,64 +73,133 @@ public class DateTimeType extends BaseDateTimeType {
 	}
 
 	/**
-	 * Create a new DateTimeDt with seconds precision and the local time zone
-	 */
-	public DateTimeType(Date theDate) {
-		super(theDate, DEFAULT_PRECISION, TimeZone.getDefault());
-	}
-
-	/**
-	 * Constructor which accepts a date value and a precision value. Valid precisions values for this type are:
-	 * <ul>
-	 * <li>{@link TemporalPrecisionEnum#YEAR}
-	 * <li>{@link TemporalPrecisionEnum#MONTH}
-	 * <li>{@link TemporalPrecisionEnum#DAY}
-	 * <li>{@link TemporalPrecisionEnum#SECOND}
-	 * <li>{@link TemporalPrecisionEnum#MILLI}
-	 * </ul>
-	 * 
-	 * @throws DataFormatException
-	 *             If the specified precision is not allowed for this type
-	 */
-	public DateTimeType(Date theDate, TemporalPrecisionEnum thePrecision) {
-		super(theDate, thePrecision, TimeZone.getDefault());
-	}
-
-	/**
-	 * Create a new instance using a string date/time
-	 * 
-	 * @throws DataFormatException
-	 *             If the specified precision is not allowed for this type
-	 */
-	public DateTimeType(String theValue) {
-		super(theValue);
-	}
-
-	/**
-	 * Constructor which accepts a date value, precision value, and time zone. Valid precisions values for this type
-	 * are:
-	 * <ul>
-	 * <li>{@link TemporalPrecisionEnum#YEAR}
-	 * <li>{@link TemporalPrecisionEnum#MONTH}
-	 * <li>{@link TemporalPrecisionEnum#DAY}
-	 * <li>{@link TemporalPrecisionEnum#SECOND}
-	 * <li>{@link TemporalPrecisionEnum#MILLI}
-	 * </ul>
-	 */
-	public DateTimeType(Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
-		super(theDate, thePrecision, theTimezone);
-	}
-
-	/**
 	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public DateTimeType(Calendar theCalendar) {
-		if (theCalendar != null) {
-			setValue(theCalendar.getTime());
-			setPrecision(DEFAULT_PRECISION);
-			setTimeZone(theCalendar.getTimeZone());
-		}
+	public DateTimeType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
+
+  /**
+   * Create a new DateTimeDt with seconds precision and the local time zone
+   */
+  public DateTimeType(IModelContext context, Date theDate) {
+    super(context, theDate, DEFAULT_PRECISION, TimeZone.getDefault());
+  }
+  /**
+   * Create a new DateTimeDt with seconds precision and the local time zone
+   */
+  public DateTimeType(Date theDate) {
+    super(theDate, DEFAULT_PRECISION, TimeZone.getDefault());
+  }
+
+  /**
+   * Constructor which accepts a date value and a precision value. Valid precisions values for this type are:
+   * <ul>
+   * <li>{@link TemporalPrecisionEnum#YEAR}
+   * <li>{@link TemporalPrecisionEnum#MONTH}
+   * <li>{@link TemporalPrecisionEnum#DAY}
+   * <li>{@link TemporalPrecisionEnum#SECOND}
+   * <li>{@link TemporalPrecisionEnum#MILLI}
+   * </ul>
+   *
+   * @throws DataFormatException
+   *             If the specified precision is not allowed for this type
+   */
+  public DateTimeType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision) {
+    super(context, theDate, thePrecision, TimeZone.getDefault());
+  }
+
+  /**
+   * Constructor which accepts a date value and a precision value. Valid precisions values for this type are:
+   * <ul>
+   * <li>{@link TemporalPrecisionEnum#YEAR}
+   * <li>{@link TemporalPrecisionEnum#MONTH}
+   * <li>{@link TemporalPrecisionEnum#DAY}
+   * <li>{@link TemporalPrecisionEnum#SECOND}
+   * <li>{@link TemporalPrecisionEnum#MILLI}
+   * </ul>
+   *
+   * @throws DataFormatException
+   *             If the specified precision is not allowed for this type
+   */
+  public DateTimeType(Date theDate, TemporalPrecisionEnum thePrecision) {
+    super(theDate, thePrecision, TimeZone.getDefault());
+  }
+
+  /**
+   * Create a new instance using a string date/time
+   *
+   * @throws DataFormatException
+   *             If the specified precision is not allowed for this type
+   */
+  public DateTimeType(IModelContext context, String theValue) {
+    super(context, theValue);
+  }
+
+  /**
+   * Create a new instance using a string date/time
+   *
+   * @throws DataFormatException
+   *             If the specified precision is not allowed for this type
+   */
+  public DateTimeType(String theValue) {
+    super(theValue);
+  }
+
+  /**
+   * Constructor which accepts a date value, precision value, and time zone. Valid precisions values for this type
+   * are:
+   * <ul>
+   * <li>{@link TemporalPrecisionEnum#YEAR}
+   * <li>{@link TemporalPrecisionEnum#MONTH}
+   * <li>{@link TemporalPrecisionEnum#DAY}
+   * <li>{@link TemporalPrecisionEnum#SECOND}
+   * <li>{@link TemporalPrecisionEnum#MILLI}
+   * </ul>
+   */
+  public DateTimeType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
+    super(context, theDate, thePrecision, theTimezone);
+  }
+
+  /**
+   * Constructor which accepts a date value, precision value, and time zone. Valid precisions values for this type
+   * are:
+   * <ul>
+   * <li>{@link TemporalPrecisionEnum#YEAR}
+   * <li>{@link TemporalPrecisionEnum#MONTH}
+   * <li>{@link TemporalPrecisionEnum#DAY}
+   * <li>{@link TemporalPrecisionEnum#SECOND}
+   * <li>{@link TemporalPrecisionEnum#MILLI}
+   * </ul>
+   */
+  public DateTimeType(Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
+    super(theDate, thePrecision, theTimezone);
+  }
+
+  /**
+   * Constructor
+   */
+  public DateTimeType(IModelContext context, Calendar theCalendar) {
+    this.modelContext = context;
+    if (theCalendar != null) {
+      setValue(theCalendar.getTime());
+      setPrecision(DEFAULT_PRECISION);
+      setTimeZone(theCalendar.getTimeZone());
+    }
+  }
+  /**
+   * Constructor
+   */
+  public DateTimeType(Calendar theCalendar) {
+    if (theCalendar != null) {
+      setValue(theCalendar.getTime());
+      setPrecision(DEFAULT_PRECISION);
+      setTimeZone(theCalendar.getTimeZone());
+    }
+  }
 
 	@Override
 	boolean isPrecisionAllowed(TemporalPrecisionEnum thePrecision) {
@@ -160,9 +234,9 @@ public class DateTimeType extends BaseDateTimeType {
 	}
 
 	@Override
-	public DateTimeType copy() {
-		DateTimeType ret = new DateTimeType(getValueAsString());
-    copyValues(ret);
+	public DateTimeType copy(EnumSet<CopyObjectOptions> options) {
+		DateTimeType ret = new DateTimeType(modelContext, getValueAsString());
+    copyValues(ret, options);
     return ret;
 	}
 

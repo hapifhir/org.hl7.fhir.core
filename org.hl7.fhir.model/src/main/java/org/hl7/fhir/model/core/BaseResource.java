@@ -35,8 +35,7 @@ import org.hl7.fhir.instance.model.api.IIdType;
 
 import ca.uhn.fhir.context.FhirVersionEnum;
 import ca.uhn.fhir.model.api.IElement;
-import org.hl7.fhir.model.core.Base;
-import org.hl7.fhir.model.core.IdType;
+import org.hl7.fhir.model.Base;
 import org.hl7.fhir.utilities.FhirPublication;
 
 public abstract class BaseResource extends Base implements IAnyResource, IElement {

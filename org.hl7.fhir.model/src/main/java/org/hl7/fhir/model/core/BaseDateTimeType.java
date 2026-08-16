@@ -30,6 +30,9 @@ package org.hl7.fhir.model.core;
  */
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base;
+
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.parser.DataFormatException;
 import org.apache.commons.lang3.StringUtils;
@@ -68,6 +71,28 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   /**
    * Constructor
    *
+   * @param context the model context this object belongs to - all objects in a tree must share the same context
+   */
+  public BaseDateTimeType(IModelContext context) {
+    this();
+    this.modelContext = context;
+  }
+
+  /**
+   * Constructor
+   *
+   * @throws IllegalArgumentException
+   *            If the specified precision is not allowed for this type
+   */
+  public BaseDateTimeType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision) {
+    this.modelContext = context;
+    setValue(theDate, thePrecision);
+    validatePrecisionAndThrowIllegalArgumentException();
+  }
+
+  /**
+   * Constructor
+   *
    * @throws IllegalArgumentException
    *            If the specified precision is not allowed for this type
    */
@@ -79,9 +104,30 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   /**
    * Constructor
    */
+  public BaseDateTimeType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimeZone) {
+    this(context, theDate, thePrecision);
+    setTimeZone(theTimeZone);
+    validatePrecisionAndThrowIllegalArgumentException();
+  }
+
+  /**
+   * Constructor
+   */
   public BaseDateTimeType(Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimeZone) {
     this(theDate, thePrecision);
     setTimeZone(theTimeZone);
+    validatePrecisionAndThrowIllegalArgumentException();
+  }
+
+  /**
+   * Constructor
+   *
+   * @throws IllegalArgumentException
+   *            If the specified precision is not allowed for this type
+   */
+  public BaseDateTimeType(IModelContext context, String theString) {
+    this.modelContext = context;
+    setValueAsString(theString);
     validatePrecisionAndThrowIllegalArgumentException();
   }
 
@@ -1091,8 +1137,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
         return null;
       }
     } else {
-      BaseDateTimeType left = (BaseDateTimeType) this.copy();
-      BaseDateTimeType right = (BaseDateTimeType) theOther.copy();
+      BaseDateTimeType left = (BaseDateTimeType) this.copy(Base.COPY_NOTHING);
+      BaseDateTimeType right = (BaseDateTimeType) theOther.copy(Base.COPY_NOTHING);
       if (left.hasTimezone() && left.getPrecision().ordinal() > TemporalPrecisionEnum.DAY.ordinal()) {
         left.setTimeZoneZulu(true);
       }
@@ -1127,7 +1173,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   private BaseDateTimeType getHighEdge() {
-    BaseDateTimeType result = (BaseDateTimeType) copy();
+    BaseDateTimeType result = (BaseDateTimeType) copy(Base.COPY_NOTHING);
     switch (getPrecision()) {
       case DAY:
         result.add(Calendar.DATE, 1);

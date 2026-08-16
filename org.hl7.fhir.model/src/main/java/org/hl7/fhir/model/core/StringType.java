@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -54,11 +59,28 @@ public class StringType extends PrimitiveType<String> {
 	}
 
 	/**
-	 * Create a new String
+	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public StringType(String theValue) {
-		setValue(theValue);
+	public StringType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
+
+  /**
+   * Create a new String
+   */
+  public StringType(String theValue) {
+    setValue(theValue);
+  }
+  /**
+   * Create a new String
+   */
+  public StringType(IModelContext context, String theValue) {
+    this.modelContext = context;
+    setValue(theValue);
+  }
 
 	/**
 	 * Returns the value of this StringType, or an empty string ("") if the
@@ -89,9 +111,9 @@ public class StringType extends PrimitiveType<String> {
 	}
 
 	@Override
-	public StringType copy() {
+	public StringType copy(EnumSet<CopyObjectOptions> options) {
 		StringType ret = new StringType(getValue());
-    copyValues(ret);
+    copyValues(ret, options);
     return ret;
 	}
 

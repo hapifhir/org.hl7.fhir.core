@@ -39,6 +39,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -1999,7 +2000,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (ParametersParameterComponent pp : expansionParameters.get().getParameter()) {
       if ("defaultDisplayLanguage".equals(pp.getName())) {
         defLang = pp.getValue().primitiveValue();
-      } else if (!pin.hasParameter(pp.getName())) {
+      } else if (!pin.hasParameter(pp.getName()) || isMultiInstanceParameter(pp.getName())) {
         pin.addParameter(pp);
       } else if ("displayLanguage".equals(pp.getName())) {
         pin.setParameter(pp);
@@ -2013,6 +2014,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       pin.addParameter("mode", "lenient-display-validation");
     }
     pin.addParameter("diagnostics", true);
+  }
+
+  private static final Set<String> MULTI_INSTANCE_PARAMETERS = new HashSet<>(Arrays.asList(
+      "useSupplement", "force-system-version", "property", "filterProperty", "exclude-system", "system-version", 
+      "check-system-version", "default-valueset-version", "check-valueset-version", "force-valueset-version", "tx-resource"));
+
+  private boolean isMultiInstanceParameter(String name) {
+    return MULTI_INSTANCE_PARAMETERS.contains(name);
   }
 
   private void addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {

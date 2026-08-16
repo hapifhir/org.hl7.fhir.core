@@ -31,6 +31,12 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.BaseList;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -92,33 +98,89 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
 
 	/**
 	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public Enumeration(EnumFactory<T> theEnumFactory) {
-		if (theEnumFactory == null)
-			throw new IllegalArgumentException("An enumeration factory must be provided");
-		myEnumFactory = theEnumFactory;
+	public Enumeration(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
 
-	/**
-	 * Constructor
-	 */
-	public Enumeration(EnumFactory<T> theEnumFactory, String theValue) {
-		if (theEnumFactory == null)
-			throw new IllegalArgumentException("An enumeration factory must be provided");
-		myEnumFactory = theEnumFactory;
-		setValueAsString(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public Enumeration(EnumFactory<T> theEnumFactory) {
+    if (theEnumFactory == null)
+      throw new IllegalArgumentException("An enumeration factory must be provided");
+    myEnumFactory = theEnumFactory;
+  }
 
-	/**
-	 * Constructor
-	 */
-	public Enumeration(EnumFactory<T> theEnumFactory, T theValue) {
-		if (theEnumFactory == null)
-			throw new IllegalArgumentException("An enumeration factory must be provided");
-		myEnumFactory = theEnumFactory;
-		setValue(theValue);
-	}
-	
+  /**
+   * Constructor
+   */
+  public Enumeration(IModelContext context, EnumFactory<T> theEnumFactory) {
+    this.modelContext = context;
+    if (theEnumFactory == null)
+      throw new IllegalArgumentException("An enumeration factory must be provided");
+    myEnumFactory = theEnumFactory;
+  }
+
+
+  /**
+   * Constructor
+   */
+  public Enumeration(IModelContext context, EnumFactory<T> theEnumFactory, String theValue) {
+    this.modelContext = context;
+    if (theEnumFactory == null)
+      throw new IllegalArgumentException("An enumeration factory must be provided");
+    myEnumFactory = theEnumFactory;
+    setValueAsString(theValue);
+  }
+
+  /**
+   * Constructor
+   */
+  public Enumeration(IModelContext context, EnumFactory<T> theEnumFactory, T theValue) {
+    this.modelContext = context;
+    if (theEnumFactory == null)
+      throw new IllegalArgumentException("An enumeration factory must be provided");
+    myEnumFactory = theEnumFactory;
+    setValue(theValue);
+  }
+
+  /**
+   * Constructor
+   */
+  public Enumeration(EnumFactory<T> theEnumFactory, String theValue) {
+    if (theEnumFactory == null)
+      throw new IllegalArgumentException("An enumeration factory must be provided");
+    myEnumFactory = theEnumFactory;
+    setValueAsString(theValue);
+  }
+
+  /**
+   * Constructor
+   */
+  public Enumeration(EnumFactory<T> theEnumFactory, T theValue) {
+    if (theEnumFactory == null)
+      throw new IllegalArgumentException("An enumeration factory must be provided");
+    myEnumFactory = theEnumFactory;
+    setValue(theValue);
+  }
+
+  /**
+   * Constructor
+   */
+  public Enumeration(IModelContext context, EnumFactory<T> theEnumFactory, T theValue, Element source) {
+    this.modelContext = context;
+    if (theEnumFactory == null)
+      throw new IllegalArgumentException("An enumeration factory must be provided");
+    myEnumFactory = theEnumFactory;
+    setValue(theValue);
+    setId(source.getId());
+    getExtension().addAll(source.getExtension());
+  }
+
   /**
    * Constructor
    */
@@ -134,7 +196,8 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
   /**
    * Constructor
    */
-  public Enumeration(EnumFactory<T> theEnumFactory, CodeType source) {
+  public Enumeration(IModelContext context, EnumFactory<T> theEnumFactory, CodeType source) {
+    this.modelContext = context;
     if (theEnumFactory == null)
       throw new IllegalArgumentException("An enumeration factory must be provided");
     myEnumFactory = theEnumFactory;
@@ -143,15 +206,17 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
     getExtension().addAll(source.getExtension());
   }
 
+  public Enumeration(EnumFactory<T> theEnumFactory, CodeType source) {
+    this((IModelContext) null, theEnumFactory, source);
+  }
+
   @Override
-  public Enumeration<T> copy() {
-    Enumeration dst= new Enumeration(this.myEnumFactory);
+  public Enumeration<T> copy(EnumSet<CopyObjectOptions> options) {
+    Enumeration dst= new Enumeration(modelContext, this.myEnumFactory);
     dst.setValueAsString(asStringValue()); // string based, not value based, so a CUSTOM value (where the real code lives in the string) survives the copy
     //Copy the Extension
     if (extensionList != null) {
-      dst.extensionList = new ArrayList<>();
-      for (Extension i : extensionList)
-        dst.extensionList.add(i.copy());
+//      dst.extensionList = new BaseList<>(dst).copyFrom(extensionList, options);
     };
     return dst;
   }

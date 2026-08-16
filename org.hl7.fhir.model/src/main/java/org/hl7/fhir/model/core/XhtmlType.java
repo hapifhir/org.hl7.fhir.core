@@ -31,10 +31,14 @@ package org.hl7.fhir.model.core;
 
 
 
-import java.io.IOException;
-import java.util.List;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
+import java.util.*;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.Property;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -44,13 +48,29 @@ public class XhtmlType extends PrimitiveType<String> {
 
   private Narrative place;
   
-  public XhtmlType(Narrative place) {
+  public XhtmlType(IModelContext context, Narrative place) {
     super();
+
+    this.modelContext = context;
     this.place = place;
+  }
+
+  public XhtmlType(Narrative place) {
+    this((IModelContext) null, place);
   }
 
   public XhtmlType() {
     // "<div xmlns=\""+FormatUtilities.XHTML_NS+"\"></div>"
+  }
+
+  /**
+   * Constructor
+   *
+   * @param context the model context this object belongs to - all objects in a tree must share the same context
+   */
+  public XhtmlType(IModelContext context) {
+    this();
+    this.modelContext = context;
   }
 
   @Override
@@ -72,7 +92,7 @@ public class XhtmlType extends PrimitiveType<String> {
   }
 
   @Override
-  public PrimitiveType<String> copy() {
+  public PrimitiveType<String> copy(EnumSet<CopyObjectOptions> options) {
     return null;
   }
 
@@ -85,7 +105,7 @@ public class XhtmlType extends PrimitiveType<String> {
   }
 
   @Override
-  public Base setProperty(int hash, String name, Base value) throws FHIRException {
+  public Base setProperty(String name, Base value) throws FHIRException {
     if ("value".equals(name)) {
       if (value instanceof StringType) {
         // div is already generated with getValue, we cannot just overwrite it
@@ -95,14 +115,14 @@ public class XhtmlType extends PrimitiveType<String> {
       }
       return value;
     } else
-      return super.setProperty(hash, name, value);
+      return super.setProperty(name, value);
   }
 
   @Override
-  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+  public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
     if ("value".equals(name))
       return new Base[] {this};
-    return super.getProperty(hash, name, checkValid);
+    return super.getNamedValue(name, checkValid);
   }
 
   @Override

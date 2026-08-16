@@ -70,7 +70,7 @@ public class Immunization40_N {
     if (src.hasPrimarySource())
       tgt.setPrimarySourceElement(Boolean40_N.convertBoolean(src.getPrimarySourceElement()));
     if (src.hasReportOrigin())
-      tgt.setInformationSource(new CodeableReference(CodeableConcept40_N.convertCodeableConcept(src.getReportOrigin())));
+      tgt.setInformationSource(new CodeableReference().setConcept(CodeableConcept40_N.convertCodeableConcept(src.getReportOrigin())));
     if (src.hasLocation())
       tgt.setLocation(Reference40_N.convertReference(src.getLocation()));
     if (src.hasManufacturer())
@@ -290,7 +290,7 @@ public class Immunization40_N {
     if (src.hasDate())
       tgt.setDateElement(DateTime40_N.convertDateTime(src.getDateElement()));
     if (src.hasDetail())
-      tgt.setManifestation(new CodeableReference(Reference40_N.convertReference(src.getDetail())));
+      tgt.setManifestation(new CodeableReference().setReference(Reference40_N.convertReference(src.getDetail())));
     if (src.hasReported())
       tgt.setReportedElement(Boolean40_N.convertBoolean(src.getReportedElement()));
     return tgt;

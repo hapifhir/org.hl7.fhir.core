@@ -30,6 +30,10 @@ package org.hl7.fhir.model.core;
  */
 
 
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import ca.uhn.fhir.model.api.IElement;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -54,7 +58,7 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
 		return myStringValue;
 	}
 
-	public abstract DataType copy();
+	public abstract DataType copy(EnumSet<CopyObjectOptions> options);
 
 	/**
 	 * Subclasses must override to convert a "coerced" value into an encoded one.
@@ -169,10 +173,6 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
 		return getClass().getSimpleName() + "[" + asStringValue() + "]";
 	}
 
-	protected DataType typedCopy() {
-		return copy();
-	}
-
 	protected void updateStringValue() {
 		if (myCoercedValue == null) {
 			myStringValue = null;
@@ -188,16 +188,6 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
 	}
 
   @Override
-  public Base setProperty(int hash, String name, Base value) throws FHIRException {
-    switch (hash) {
-    case 111972721: // value
-      setValueAsString(value.toString()); 
-      return value;
-    default: return super.setProperty(hash, name, value);
-    }
-  }
-
-  @Override
   public Base setProperty(String name, Base value) throws FHIRException {
     if (name.equals("value"))
       setValueAsString(value.toString()); 
@@ -208,39 +198,32 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
 
   @Override
   public void removeChild(String name, Base value) throws FHIRException {
-    if (name.equals("value"))
-      setValueAsString(value.toString()); 
-    else
+    if (name.equals("value")) {
+      if (value == null || value == this) {
+        setValueAsString(null);
+      }
+    } else
       super.removeChild(name, value);
     
   }
 
   @Override
-  public Base makeProperty(int hash, String name) throws FHIRException {
-    if (hash == 111972721) {
+  public Base makeProperty(String name) throws FHIRException {
+    if ("value".equals(name)) {
       return this; 
     } else
-      return super.makeProperty(hash, name);
-
+      return super.makeProperty(name);
   }
 
 
   @Override
-  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-    if (hash == 111972721) {
+  public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
+    if (name.equals("value")) {
       Base[] b = new Base[1];
-      b[0] = new StringType(getValueAsString());
+      b[0] = new StringType(modelContext, getValueAsString());
       return b;
     } else
-      return super.getProperty(hash, name, checkValid);
-  }
-
-  public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-    if (name.equals("value"))
-      return new String[] {fhirType(), "string"}; 
-    else
-      return super.getTypesForProperty(hash, name);
-
+      return super.getNamedValue(name, checkValid);
   }
 
   /*

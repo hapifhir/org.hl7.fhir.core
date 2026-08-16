@@ -3,7 +3,8 @@ package org.hl7.fhir.{{jid}}.core;
 
 {{license}}
 
-  
+
+import org.hl7.fhir.model.*;
 import org.hl7.fhir.exceptions.FHIRException;
 
 {{generated}}

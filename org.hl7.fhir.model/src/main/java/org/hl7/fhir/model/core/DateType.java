@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import org.apache.commons.lang3.Validate;
@@ -70,10 +75,24 @@ public class DateType extends BaseDateTimeType {
 	}
 
 	/**
+	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
+	 */
+	public DateType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
+	}
+
+	/**
 	 * Constructor which accepts a date value and uses the {@link #DEFAULT_PRECISION} for this type
 	 */
+	public DateType(IModelContext context, Date theDate) {
+		super(context, theDate, DEFAULT_PRECISION);
+	}
+
 	public DateType(Date theDate) {
-		super(theDate, DEFAULT_PRECISION);
+	  this((IModelContext) null, theDate);
 	}
 
 	/**
@@ -87,26 +106,44 @@ public class DateType extends BaseDateTimeType {
 	 * @throws ca.uhn.fhir.parser.DataFormatException
 	 *             If the specified precision is not allowed for this type
 	 */
-	public DateType(Date theDate, TemporalPrecisionEnum thePrecision) {
-		super(theDate, thePrecision);
+	public DateType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision) {
+		super(context, theDate, thePrecision);
 	}
 
-	/**
-	 * Constructor which accepts a date as a string in FHIR format
-	 *
-	 * @throws ca.uhn.fhir.parser.DataFormatException
-	 *             If the precision in the date string is not allowed for this type
-	 */
-	public DateType(String theDate) {
-		super(theDate);
+	public DateType(Date theDate, TemporalPrecisionEnum thePrecision) {
+	  this((IModelContext) null, theDate, thePrecision);
 	}
+
+  /**
+   * Constructor which accepts a date as a string in FHIR format
+   *
+   * @throws ca.uhn.fhir.parser.DataFormatException
+   *             If the precision in the date string is not allowed for this type
+   */
+  public DateType(IModelContext context, String theDate) {
+    super(context, theDate);
+  }
+
+  /**
+   * Constructor which accepts a date as a string in FHIR format
+   *
+   * @throws ca.uhn.fhir.parser.DataFormatException
+   *             If the precision in the date string is not allowed for this type
+   */
+  public DateType(String theDate) {
+    super(theDate);
+  }
 
 	/**
 	 * Constructor which accepts a date value and uses the {@link #DEFAULT_PRECISION} for this type.
 	 */
-	public DateType(Calendar theCalendar) {
-		super(theCalendar.getTime(), DEFAULT_PRECISION);
+	public DateType(IModelContext context, Calendar theCalendar) {
+		super(context, theCalendar.getTime(), DEFAULT_PRECISION);
 		setTimeZone(theCalendar.getTimeZone());
+	}
+
+	public DateType(Calendar theCalendar) {
+	  this((IModelContext) null, theCalendar);
 	}
 
 	/**
@@ -120,8 +157,12 @@ public class DateType extends BaseDateTimeType {
 	 * @param theMonth The month, e.g. 0 for January
 	 * @param theDay The day (1 indexed) e.g. 1 for the first day of the month
 	 */
+	public DateType(IModelContext context, int theYear, int theMonth, int theDay) {
+		this(context, toCalendarZulu(theYear, theMonth, theDay));
+	}
+
 	public DateType(int theYear, int theMonth, int theDay) {
-		this(toCalendarZulu(theYear, theMonth, theDay));
+	  this((IModelContext) null, theYear, theMonth, theDay);
 	}
 
 	private static GregorianCalendar toCalendarZulu(int theYear, int theMonth, int theDay) {
@@ -160,9 +201,9 @@ public class DateType extends BaseDateTimeType {
 	}
 
 	@Override
-	public DateType copy() {
-		DateType ret = new DateType(getValueAsString());
-    copyValues(ret);
+	public DateType copy(EnumSet<CopyObjectOptions> options) {
+		DateType ret = new DateType(modelContext, getValueAsString());
+    copyValues(ret, options);
     return ret;
 	}
 	

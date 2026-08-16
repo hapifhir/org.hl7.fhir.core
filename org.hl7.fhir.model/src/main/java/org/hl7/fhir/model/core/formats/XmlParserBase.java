@@ -59,9 +59,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
  */
 
+import org.hl7.fhir.model.IModelContext;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IIdType;
+import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.utilities.formats.IParser;
 import org.hl7.fhir.utilities.Utilities;
@@ -77,7 +79,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * General parser for XML content. You instantiate an XmlParser of these, but you 
@@ -86,6 +88,11 @@ import java.util.List;
  * The two classes are separated to keep generated and manually maintained code apart.
  */
 public abstract class XmlParserBase extends ParserBase implements IParser {
+
+  public XmlParserBase(IModelContext modelContext) {
+    super(modelContext);
+  }
+
 
 
   protected XmlParserBase() {
@@ -194,6 +201,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	 * @ 
 	 */
 	public void compose(OutputStream stream, String rootName, DataType type)  throws IOException {
+		type.assertModelContext(modelContext);
 		xml = new XMLWriter(stream, "UTF-8");
 		xml.setPretty(style == OutputStyle.PRETTY);
 		xml.start();
@@ -204,6 +212,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
 	@Override
 	public void compose(OutputStream stream, DataType type, String rootName)  throws IOException {
+		type.assertModelContext(modelContext);
 		xml = new XMLWriter(stream, "UTF-8");
 		xml.setPretty(style == OutputStyle.PRETTY);
 		xml.start();
@@ -431,6 +440,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 	}
 
 	public void compose(IXMLWriter writer, Resource resource, boolean htmlPretty)  throws IOException   {
+		resource.assertModelContext(modelContext);
 		this.htmlPretty = htmlPretty;
 		xml = writer;
 		xml.setDefaultNamespace(FHIR_NS);

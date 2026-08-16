@@ -140,7 +140,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
     boolean bUseOwner = false;
 
     parser.append("  protected "+stn+" "+pn+"(JsonObject json) throws IOException, FHIRFormatError {\r\n");
-    parser.append("    "+stn+" res = new "+stn+"();\r\n");
+    parser.append("    "+stn+" res = new "+stn+"(modelContext);\r\n");
     parser.append("    "+pn+"Properties(json, res);\r\n");
     parser.append("    return res;\r\n");
     parser.append("  }\r\n\r\n");
@@ -193,10 +193,10 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         } else {
           en = analysis.getClassName()+"."+ei.getName();
         }
-        prsr = "parseEnumeration(json.get(\""+name+"\").getAsString(), "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory())"; // en+".fromCode(parseString(xpp))";
-        aprsr = "parseEnumeration(array.get(i).getAsString(), "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory())"; // en+".fromCode(parseString(xpp))";
-        anprsr = "parseEnumeration(null, "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory())"; // en+".fromCode(parseString(xpp))";
-        // parseEnumeration(xpp, Narratived.NarrativeStatus.additional, new Narratived.NarrativeStatusEnumFactory())
+        prsr = "parseEnumeration(json.get(\""+name+"\").getAsString(), "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory(modelContext))"; // en+".fromCode(parseString(xpp))";
+        aprsr = "parseEnumeration(array.get(i).getAsString(), "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory(modelContext))"; // en+".fromCode(parseString(xpp))";
+        anprsr = "parseEnumeration(null, "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory(modelContext))"; // en+".fromCode(parseString(xpp))";
+        // parseEnumeration(xpp, Narratived.NarrativeStatus.additional, new Narratived.NarrativeStatusEnumFactory(modelContext))
       } else {
         if (name.equals("extension")) {
           name = "extension";
@@ -239,7 +239,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           if (en == null) {
             parser.append("          res.get"+upFirst(name)+"List().add(new "+tn+"Type());\r\n");
           } else {
-            parser.append("          res.get"+upFirst(name)+"List().add(new Enumeration<"+en+">(new "+en+"EnumFactory(), "+en+".NULL));\r\n");
+            parser.append("          res.get"+upFirst(name)+"List().add(new Enumeration<"+en+">(modelContext, new "+en+"EnumFactory(modelContext), "+en+".NULL));\r\n");
           }
 
           parser.append("        } else {;\r\n");
@@ -461,12 +461,12 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
         } else {
           composer.append("        openArray(\""+escapeJavaString(name)+"\");\r\n");
           composer.append("        for (Enumeration<"+prepEnumName(en)+"> e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
-          composer.append("          composeEnumerationCore(null, e, new "+prepEnumName(en)+"EnumFactory(), true);\r\n");
+          composer.append("          composeEnumerationCore(null, e, new "+prepEnumName(en)+"EnumFactory(modelContext), true);\r\n");
           composer.append("        closeArray();\r\n");
           composer.append("        if (anyHasExtras(element.get"+upFirst(getElementName(name, false))+"List())) {\r\n");
           composer.append("          openArray(\"_"+escapeJavaString(name)+"\");\r\n");
           composer.append("          for (Enumeration<"+prepEnumName(en)+"> e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
-          composer.append("            composeEnumerationExtras(null, e, new "+prepEnumName(en)+"EnumFactory(), true);\r\n");
+          composer.append("            composeEnumerationExtras(null, e, new "+prepEnumName(en)+"EnumFactory(modelContext), true);\r\n");
           composer.append("          closeArray();\r\n");
           composer.append("        }\r\n");
         }
@@ -474,11 +474,11 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       } else if (en != null) {
         composer.append("      if (element.has"+upFirst(getElementName(name, false))+"Element()) {\r\n");
         if (enShared) {
-          composer.append("        composeEnumerationCore(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
-          composer.append("        composeEnumerationExtras(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
+          composer.append("        composeEnumerationCore(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(modelContext), false);\r\n");
+          composer.append("        composeEnumerationExtras(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(modelContext), false);\r\n");
         } else {
-          composer.append("        composeEnumerationCore(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
-          composer.append("        composeEnumerationExtras(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(), false);\r\n");
+          composer.append("        composeEnumerationCore(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(modelContext), false);\r\n");
+          composer.append("        composeEnumerationExtras(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+prepEnumName(en)+"EnumFactory(modelContext), false);\r\n");
         }
         composer.append("      }\r\n");
         //composer.append("        composeString(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"().toCode());\r\n");

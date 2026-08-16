@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import org.hl7.fhir.instance.model.api.IBaseBooleanDatatype;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -48,20 +53,52 @@ public class BooleanType extends PrimitiveType<Boolean> implements IBaseBooleanD
 		super();
 	}
 
-	public BooleanType(boolean theBoolean) {
+	/**
+	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
+	 */
+	public BooleanType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
+	}
+
+  public BooleanType(IModelContext context, boolean theBoolean) {
+    super();
+
+    this.modelContext = context;
+    setValue(theBoolean);
+  }
+
+  public BooleanType(boolean theBoolean) {
+    super();
+
+    setValue(theBoolean);
+  }
+
+	public BooleanType(IModelContext context, Boolean theBoolean) {
 		super();
+
+		this.modelContext = context;
 		setValue(theBoolean);
 	}
 
 	public BooleanType(Boolean theBoolean) {
-		super();
-		setValue(theBoolean);
+	  this((IModelContext) null, theBoolean);
 	}
 
-	public BooleanType(String value) {
-		super();
-		setValueAsString(value);
-	}
+  public BooleanType(IModelContext context, String value) {
+    super();
+
+    this.modelContext = context;
+    setValueAsString(value);
+  }
+
+  public BooleanType(String value) {
+    super();
+
+    setValueAsString(value);
+  }
 
 	/**
 	 * Returns the value of this type as a primitive boolean.
@@ -74,9 +111,9 @@ public class BooleanType extends PrimitiveType<Boolean> implements IBaseBooleanD
 		return getValue().booleanValue();
 	}
 
-	public BooleanType copy() {
-		BooleanType ret = new BooleanType(getValue());
-    copyValues(ret);
+	public BooleanType copy(EnumSet<CopyObjectOptions> options) {
+		BooleanType ret = new BooleanType(modelContext, getValue());
+    copyValues(ret, options);
     return ret;
 	}
 

@@ -33,6 +33,7 @@ package org.hl7.fhir.model.utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
 import org.hl7.fhir.model.core.*;
@@ -802,7 +803,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
   }
 
   public static CodeSystem mergeSupplements(@Nonnull CodeSystem cs, @Nonnull List<CodeSystem> supplements) {
-    CodeSystem ret = cs.copy();
+    CodeSystem ret = cs.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA));
     ret.setUserData(UserDataNames.CS_SUPPLEMENT_LIST, supplements);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (CodeSystem sup : supplements) {
@@ -821,10 +822,10 @@ public class CodeSystemUtilities extends TerminologyUtilities {
       ConceptDefinitionComponent def = CodeSystemUtilities.findCode(cs.getConceptList(), fdef.getCode());
       if (def != null) {
         for (Extension ext : def.getExtension()) {
-          fdef.addExtension(ext.copy());
+          fdef.addExtension(ext.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA)));
         }
         for (ConceptDefinitionDesignationComponent d : def.getDesignationList()) {
-          fdef.addDesignation(d.copy());
+          fdef.addDesignation(d.copy(EnumSet.of(Base.CopyObjectOptions.USER_DATA)));
         }
         for (ConceptPropertyComponent p : def.getPropertyList()) {
           PropertyComponent pd = CodeSystemUtilities.getPropertyDefinition(cs, p);

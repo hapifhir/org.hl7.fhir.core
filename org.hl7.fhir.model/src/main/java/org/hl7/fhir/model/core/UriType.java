@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -55,22 +60,44 @@ public class UriType extends PrimitiveType<String> {
 
 	/**
 	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public UriType(String theValue) {
-		setValueAsString(theValue);
+	public UriType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
+
+  /**
+   * Constructor
+   */
+  public UriType(String theValue) {
+    setValueAsString(theValue);
+  }
+  /**
+   * Constructor
+   */
+  public UriType(IModelContext context, String theValue) {
+    this.modelContext = context;
+    setValueAsString(theValue);
+  }
 
 	/**
 	 * Constructor
 	 */
-	public UriType(URI theValue) {
+	public UriType(IModelContext context, URI theValue) {
+    this.modelContext = context;
 		setValue(theValue.toString());
 	}
 
+	public UriType(URI theValue) {
+	  this((IModelContext) null, theValue);
+	}
+
 	@Override
-	public UriType copy() {
+	public UriType copy(EnumSet<CopyObjectOptions> options) {
 		UriType ret = new UriType(getValue());
-    copyValues(ret);
+    copyValues(ret, options);
     return ret;
 	}
 

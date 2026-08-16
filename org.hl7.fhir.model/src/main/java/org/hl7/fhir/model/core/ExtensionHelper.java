@@ -1,7 +1,7 @@
 package org.hl7.fhir.model.core;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

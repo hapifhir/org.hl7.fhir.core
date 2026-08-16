@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 import java.net.URI;
@@ -49,6 +54,34 @@ public class UuidType extends UriType {
 
   /**
    * Constructor
+   *
+   * @param context the model context this object belongs to - all objects in a tree must share the same context
+   */
+  public UuidType(IModelContext context) {
+    this();
+    this.modelContext = context;
+  }
+
+  /**
+   * Constructor
+   */
+  public UuidType(IModelContext context, String theValue) {
+    super(context, theValue);
+  }
+
+  /**
+   * Constructor
+   */
+  public UuidType(IModelContext context, URI theValue) {
+    super(context, theValue);
+  }
+
+  public UuidType(URI theValue) {
+    this((IModelContext) null, theValue);
+  }
+
+  /**
+   * Constructor
    */
   public UuidType(String theValue) {
     super(theValue);
@@ -57,17 +90,10 @@ public class UuidType extends UriType {
   /**
    * Constructor
    */
-  public UuidType(URI theValue) {
-    super(theValue);
-  }
-
-  /**
-   * Constructor
-   */
   @Override
-  public UuidType copy() {
-    UuidType ret = new UuidType(getValue());
-    copyValues(ret);
+  public UuidType copy(EnumSet<CopyObjectOptions> options) {
+    UuidType ret = new UuidType(modelContext, getValue());
+    copyValues(ret, options);
     return ret;
   }
 

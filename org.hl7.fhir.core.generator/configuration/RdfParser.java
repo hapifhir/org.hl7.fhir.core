@@ -1,12 +1,9 @@
 {{startMark}}
 package org.hl7.fhir.{{jid}}.core.formats;
 
-
-// generated
-
 {{license}}
 
-
+import org.hl7.fhir.model.*;
 import org.hl7.fhir.{{jid}}.core.*;
 import org.hl7.fhir.{{jid}}.core.StringType;
 import org.hl7.fhir.utilities.Utilities;
@@ -18,12 +15,12 @@ import java.io.IOException;
 {{generated}}
 public class RdfParser extends RdfParserBase {
 
-  public RdfParser() {
-    super();
+  public RdfParser(IModelContext modelContext) {
+    super(modelContext);
   }
 
-  public RdfParser(boolean allowUnknownContent) {
-    super();
+  public RdfParser(IModelContext modelContext, boolean allowUnknownContent) {
+    super(modelContext);
     setAllowUnknownContent(allowUnknownContent);
   }
 

@@ -47,7 +47,7 @@
         return tr;
     TypeRefComponent tr = new TypeRefComponent();
     tr.setCode(code);
-    typeList.add(tr);
+    getTypeList().add(tr);
     return tr;
   }
 
@@ -55,8 +55,9 @@
   public static final boolean NOT_IN_SUMMARY = false;
   public static final boolean IS_MODIFIER = true;
   public static final boolean IS_IN_SUMMARY = true;
-  public ElementDefinition(boolean defaults, boolean modifier, boolean inSummary) {
+  public ElementDefinition(IModelContext context, boolean defaults, boolean modifier, boolean inSummary) {
     super();
+    this.modelContext = context;
     if (defaults) {
       setIsModifier(modifier);
       setIsSummary(inSummary);

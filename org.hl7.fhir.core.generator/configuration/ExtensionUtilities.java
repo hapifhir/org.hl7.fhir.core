@@ -3,19 +3,14 @@ package org.hl7.fhir.{{jid}}.extensions;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.*;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
-import java.math.BigDecimal;
-import java.util.Map;
-import java.util.Set;
-import java.util.Iterator;
+import java.util.*;
+import java.math.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -1058,7 +1053,7 @@ public class ExtensionUtilities {
 
   public static boolean usesExtension(String url, Base base) {
     if ("Extension".equals(base.fhirType())) {
-      Property p = base.getNamedProperty("url");
+      Property p = base.getNamedProperty("url", false);
       for (Base b : p.getValues()) {
         if (url.equals(b.primitiveValue())) {
           return true;
@@ -1066,7 +1061,7 @@ public class ExtensionUtilities {
       }
     }
 
-    for (Property p : base.children() ) {
+    for (Property p : base.getChildren() ) {
       for (Base v : p.getValues()) {
         if (usesExtension(url, v)) {
           return true;
@@ -1417,7 +1412,7 @@ public class ExtensionUtilities {
     if (element instanceof BackboneElement) {
       res = ((BackboneElement) element).getModifierExtensionList().removeIf(ex -> !exceptions.contains(ex.getUrl())) || res;
     }
-    for (Property p : element.children()) {
+    for (Property p : element.getChildren()) {
       for (Base v : p.getValues()) {
         if (v instanceof Element) {
           res = stripExtensions((Element) v, exceptions) || res;
@@ -1439,7 +1434,7 @@ public class ExtensionUtilities {
       res = ((DomainResource) resource).getExtensionList().removeIf(ex -> !exceptions.contains(ex.getUrl())) ||
         ((DomainResource) resource).getModifierExtensionList().removeIf(ex -> !exceptions.contains(ex.getUrl()));
     }
-    for (Property p : resource.children()) {
+    for (Property p : resource.getChildren()) {
       for (Base v : p.getValues()) {
         if (v instanceof Element) {
           res = stripExtensions((Element) v, exceptions) || res;
@@ -1455,7 +1450,7 @@ public class ExtensionUtilities {
     if (source != null && dest != null) {
       for (Extension ex : source) {
         if (Utilities.existsInList(ex.getUrl(), urls)) {
-          dest.add(ex.copy());
+          dest.add(ex.copy(Base.COPY_DATA));
         }
       }
     }

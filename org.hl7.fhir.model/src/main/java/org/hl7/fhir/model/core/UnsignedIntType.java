@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
@@ -54,8 +59,19 @@ public class UnsignedIntType extends IntegerType {
 
 	/**
 	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public UnsignedIntType(int theInteger) {
+	public UnsignedIntType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
+	}
+
+	/**
+	 * Constructor
+	 */
+	public UnsignedIntType(IModelContext context, int theInteger) {
+    this.modelContext = context;
 		setValue(theInteger);
 	}
 
@@ -67,9 +83,29 @@ public class UnsignedIntType extends IntegerType {
 	 * @throws IllegalArgumentException
 	 *             If the string is not a valid integer representation
 	 */
-	public UnsignedIntType(String theIntegerAsString) {
+	public UnsignedIntType(IModelContext context, String theIntegerAsString) {
+    this.modelContext = context;
 		setValueAsString(theIntegerAsString);
 	}
+
+  /**
+   * Constructor
+   */
+  public UnsignedIntType(int theInteger) {
+    setValue(theInteger);
+  }
+
+  /**
+   * Constructor
+   *
+   * @param theIntegerAsString
+   *            A string representation of an integer
+   * @throws IllegalArgumentException
+   *             If the string is not a valid integer representation
+   */
+  public UnsignedIntType(String theIntegerAsString) {
+    setValueAsString(theIntegerAsString);
+  }
 
 	/**
 	 * Constructor
@@ -77,7 +113,8 @@ public class UnsignedIntType extends IntegerType {
 	 * @param theValue The value
 	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
 	 */
-	public UnsignedIntType(Long theValue) {
+	public UnsignedIntType(IModelContext context, Long theValue) {
+    this.modelContext = context;
 	    if (theValue < 0 || theValue > java.lang.Integer.MAX_VALUE) {
 	        throw new IllegalArgumentException
 	            (theValue + " cannot be cast to int without changing its value.");
@@ -87,11 +124,15 @@ public class UnsignedIntType extends IntegerType {
 	    }
 	}
 
+	public UnsignedIntType(Long theValue) {
+	  this((IModelContext) null, theValue);
+	}
+
 	@Override
-	public UnsignedIntType copy() {
+	public UnsignedIntType copy(EnumSet<CopyObjectOptions> options) {
 		Integer value = getValue();
-    UnsignedIntType ret = value == null ? new UnsignedIntType() : new UnsignedIntType(value.intValue());
-    copyValues(ret);
+    UnsignedIntType ret = value == null ? new UnsignedIntType() : new UnsignedIntType(modelContext, value.intValue());
+    copyValues(ret, options);
     return ret;
 	}
 

@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
@@ -50,22 +55,50 @@ public class Integer64Type extends PrimitiveType<Long> /* implements IBaseIntege
 
 	/**
 	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public Integer64Type(long theInteger) {
-		setValue(theInteger);
+	public Integer64Type(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
 
 	/**
 	 * Constructor
-	 * 
-	 * @param theIntegerAsString
-	 *            A string representation of an integer
-	 * @throws IllegalArgumentException
-	 *             If the string is not a valid integer representation
 	 */
-	public Integer64Type(String theIntegerAsString) {
-		setValueAsString(theIntegerAsString);
+	public Integer64Type(IModelContext context, long theInteger) {
+    this.modelContext = context;
+		setValue(theInteger);
 	}
+
+	public Integer64Type(long theInteger) {
+	  this((IModelContext) null, theInteger);
+	}
+
+  /**
+   * Constructor
+   *
+   * @param theIntegerAsString
+   *            A string representation of an integer
+   * @throws IllegalArgumentException
+   *             If the string is not a valid integer representation
+   */
+  public Integer64Type(IModelContext context, String theIntegerAsString) {
+    this.modelContext = context;
+    setValueAsString(theIntegerAsString);
+  }
+
+  /**
+   * Constructor
+   *
+   * @param theIntegerAsString
+   *            A string representation of an integer
+   * @throws IllegalArgumentException
+   *             If the string is not a valid integer representation
+   */
+  public Integer64Type(String theIntegerAsString) {
+    setValueAsString(theIntegerAsString);
+  }
 
 	/**
 	 * Constructor
@@ -73,10 +106,15 @@ public class Integer64Type extends PrimitiveType<Long> /* implements IBaseIntege
 	 * @param theValue The value
 	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
 	 */
-	public Integer64Type(Long theValue) {
+	public Integer64Type(IModelContext context, Long theValue) {
+    this.modelContext = context;
 	    if(theValue!=null) {
 	    	setValue(theValue);
 	    }
+	}
+
+	public Integer64Type(Long theValue) {
+	  this((IModelContext) null, theValue);
 	}
 
 	@Override
@@ -94,9 +132,9 @@ public class Integer64Type extends PrimitiveType<Long> /* implements IBaseIntege
 	}
 
 	@Override
-	public Integer64Type copy() {
-		Integer64Type ret = new Integer64Type(getValue());
-    copyValues(ret);
+	public Integer64Type copy(EnumSet<CopyObjectOptions> options) {
+		Integer64Type ret = new Integer64Type(modelContext, getValue());
+    copyValues(ret, options);
     return ret;
 	}
 

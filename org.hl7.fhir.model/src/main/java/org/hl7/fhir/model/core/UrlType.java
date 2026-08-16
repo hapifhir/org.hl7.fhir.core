@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import java.net.URI;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -52,25 +57,46 @@ public class UrlType extends UriType {
 
 	/**
 	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public UrlType(String theValue) {
-		super(theValue);
+	public UrlType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
+
+  /**
+   * Constructor
+   */
+  public UrlType(IModelContext context, String theValue) {
+    super(context, theValue);
+  }
+
+  /**
+   * Constructor
+   */
+  public UrlType(String theValue) {
+    super(theValue);
+  }
 
 	/**
 	 * Constructor
 	 */
+	public UrlType(IModelContext context, URI theValue) {
+		super(context, theValue);
+	}
+
 	public UrlType(URI theValue) {
-		super(theValue);
+	  this((IModelContext) null, theValue);
 	}
 
 	/**
 	 * Constructor
 	 */
 	@Override
-	public UrlType copy() {
-		UrlType ret = new UrlType(getValue());
-    copyValues(ret);
+	public UrlType copy(EnumSet<CopyObjectOptions> options) {
+		UrlType ret = new UrlType(modelContext, getValue());
+    copyValues(ret, options);
     return ret;
 	}
 

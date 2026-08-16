@@ -34,36 +34,56 @@ package org.hl7.fhir.model.core;
 
 // Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
 
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
-import org.hl7.fhir.model.core.Quantity;
+import org.hl7.fhir.model.IModelContext;
 
 /**
  * A measured amount (or an amount that can potentially be measured). Note that measured amounts include amounts that are not precisely quantified, including amounts involving arbitrary units and floating currencies.
  */
 @DatatypeDef(name="SimpleQuantity", profileOf= Quantity.class)
 public class SimpleQuantity extends Quantity {
+  public SimpleQuantity() {
+  }
 
-    private static final long serialVersionUID = 1069574054L;
+  public SimpleQuantity(IModelContext context) {
+    super(context);
+  }
 
-      public SimpleQuantity copy() {
-        SimpleQuantity dst = new SimpleQuantity();
-        copyValues(dst);
+  public SimpleQuantity(IModelContext context, double theValue) {
+    super(context, theValue);
+  }
+
+  public SimpleQuantity(IModelContext context, long theValue) {
+    super(context, theValue);
+  }
+
+  public SimpleQuantity(IModelContext context, Enumerations.QuantityComparator theComparator, double theValue, String theSystem, String theCode, String theUnit) {
+    super(context, theComparator, theValue, theSystem, theCode, theUnit);
+  }
+
+  public SimpleQuantity(IModelContext context, Enumerations.QuantityComparator theComparator, long theValue, String theSystem, String theCode, String theUnit) {
+    super(context, theComparator, theValue, theSystem, theCode, theUnit);
+  }
+
+  private static final long serialVersionUID = 1069574054L;
+
+      public SimpleQuantity copy(EnumSet<CopyObjectOptions> options) {
+        SimpleQuantity dst = new SimpleQuantity(this.modelContext);
+        copyValues(dst, options);
         return dst;
       }
 
-      public void copyValues(SimpleQuantity dst) {
-        super.copyValues(dst);
-        dst.value = value == null ? null : value.copy();
-        dst.comparator = comparator == null ? null : comparator.copy();
-        dst.unit = unit == null ? null : unit.copy();
-        dst.system = system == null ? null : system.copy();
-        dst.code = code == null ? null : code.copy();
-      }
-
-      protected SimpleQuantity typedCopy() {
-        return copy();
+      public void copyValues(SimpleQuantity dst, EnumSet<CopyObjectOptions> options) {
+        super.copyValues(dst, options);
+        dst.value = value == null ? null : value.copy(options);
+        dst.comparator = comparator == null ? null : comparator.copy(options);
+        dst.unit = unit == null ? null : unit.copy(options);
+        dst.system = system == null ? null : system.copy(options);
+        dst.code = code == null ? null : code.copy(options);
       }
 
       @Override

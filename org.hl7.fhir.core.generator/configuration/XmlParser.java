@@ -1,11 +1,10 @@
 {{startMark}}
 package org.hl7.fhir.{{jid}}.core.formats;
 
-// generated
-
 {{license}}
 
 
+import org.hl7.fhir.model.*;
 import org.hl7.fhir.{{jid}}.core.*;
 import org.hl7.fhir.{{jid}}.core.Enumerations.FHIRVersion;
 import org.xmlpull.v1.*;
@@ -17,12 +16,12 @@ import java.io.IOException;
 {{generated}}
 public class XmlParser extends XmlParserBase {
 
-  public XmlParser() {
-    super();
+  public XmlParser(IModelContext modelContext) {
+    super(modelContext);
   }
 
-  public XmlParser(boolean allowUnknownContent) {
-    super();
+  public XmlParser(IModelContext modelContext, boolean allowUnknownContent) {
+    super(modelContext);
     setAllowUnknownContent(allowUnknownContent);
   }
 
@@ -32,7 +31,7 @@ public class XmlParser extends XmlParserBase {
 
   @SuppressWarnings("unchecked")
   protected <E extends Enum<E>> Enumeration<E> parseEnumeration(XmlPullParser xpp, E item, EnumFactory e) throws XmlPullParserException, IOException, FHIRFormatError {
-    Enumeration<E> res = new Enumeration<E>(e);
+    Enumeration<E> res = new Enumeration<E>(modelContext, e);
     parseElementAttributes(xpp, res);
     res.setValue((E) e.fromCode(xpp.getAttributeValue(null, "value")));
     next(xpp);

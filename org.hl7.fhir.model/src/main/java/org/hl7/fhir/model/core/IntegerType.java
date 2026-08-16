@@ -30,6 +30,11 @@ package org.hl7.fhir.model.core;
  */
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import org.hl7.fhir.instance.model.api.IBaseIntegerDatatype;
 
@@ -46,6 +51,16 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
    */
   public IntegerType() {
     // nothing
+  }
+
+  /**
+   * Constructor
+   *
+   * @param context the model context this object belongs to - all objects in a tree must share the same context
+   */
+  public IntegerType(IModelContext context) {
+    this();
+    this.modelContext = context;
   }
 
   /**
@@ -74,11 +89,39 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
 
   /**
    * Constructor
+   */
+  public IntegerType(IModelContext context, int theInteger) {
+    this.modelContext = context;
+    setValue(theInteger);
+  }
+
+  /**
+   * Constructor
+   */
+  public IntegerType(IModelContext context, Integer theInteger) {
+    this.modelContext = context;
+    setValue(theInteger);
+  }
+
+  /**
+   * Constructor
+   *
+   * @param theIntegerAsString A string representation of an integer
+   * @throws IllegalArgumentException If the string is not a valid integer representation
+   */
+  public IntegerType(IModelContext context, String theIntegerAsString) {
+    this.modelContext = context;
+    setValueAsString(theIntegerAsString);
+  }
+
+  /**
+   * Constructor
    *
    * @param theValue The value
    * @throws IllegalArgumentException If the value is too large to fit in a signed integer
    */
-  public IntegerType(Long theValue) {
+  public IntegerType(IModelContext context, Long theValue) {
+    this.modelContext = context;
     if (theValue < java.lang.Integer.MIN_VALUE || theValue > java.lang.Integer.MAX_VALUE) {
       throw new IllegalArgumentException
         (theValue + " cannot be cast to int without changing its value.");
@@ -86,6 +129,10 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
     if (theValue != null) {
       setValue((int) theValue.longValue());
     }
+  }
+
+  public IntegerType(Long theValue) {
+    this((IModelContext) null, theValue);
   }
 
   @Override
@@ -103,10 +150,10 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
   }
 
   @Override
-  public IntegerType copy() {
+  public IntegerType copy(EnumSet<CopyObjectOptions> options) {
     Integer value = getValue();
-    IntegerType ret = value == null ? new IntegerType() : new IntegerType(value.intValue());
-    copyValues(ret);
+    IntegerType ret = value == null ? new IntegerType() : new IntegerType(modelContext, value.intValue());
+    copyValues(ret, options);
     return ret;
   }
 

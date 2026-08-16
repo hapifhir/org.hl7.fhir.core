@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -47,9 +52,24 @@ public class MarkdownType extends StringType implements Comparable<MarkdownType>
 		super();
 	}
 
-	public MarkdownType(String theCode) {
-		setValue(theCode);
+	/**
+	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
+	 */
+	public MarkdownType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
+
+  public MarkdownType(IModelContext context, String theCode) {
+    this.modelContext = context;
+    setValue(theCode);
+  }
+
+  public MarkdownType(String theCode) {
+    setValue(theCode);
+  }
 
 	public int compareTo(MarkdownType theCode) {
 		if (theCode == null) {
@@ -69,9 +89,9 @@ public class MarkdownType extends StringType implements Comparable<MarkdownType>
 	}
 
 	@Override
-	public MarkdownType copy() {
-		MarkdownType ret = new MarkdownType(getValue());
-    copyValues(ret);
+	public MarkdownType copy(EnumSet<CopyObjectOptions> options) {
+		MarkdownType ret = new MarkdownType(modelContext ,getValue());
+    copyValues(ret, options);
     return ret;
 	}
 

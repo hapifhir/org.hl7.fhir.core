@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
 /**
@@ -53,22 +58,53 @@ public class PositiveIntType extends IntegerType {
 
 	/**
 	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public PositiveIntType(int theInteger) {
-		setValue(theInteger);
+	public PositiveIntType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
 
-	/**
-	 * Constructor
-	 * 
-	 * @param theIntegerAsString
-	 *            A string representation of an integer
-	 * @throws IllegalArgumentException
-	 *             If the string is not a valid integer representation
-	 */
-	public PositiveIntType(String theIntegerAsString) {
-		setValueAsString(theIntegerAsString);
-	}
+  /**
+   * Constructor
+   */
+  public PositiveIntType(IModelContext context, int theInteger) {
+    this.modelContext = context;
+    setValue(theInteger);
+  }
+
+  /**
+   * Constructor
+   *
+   * @param theIntegerAsString
+   *            A string representation of an integer
+   * @throws IllegalArgumentException
+   *             If the string is not a valid integer representation
+   */
+  public PositiveIntType(IModelContext context, String theIntegerAsString) {
+    this.modelContext = context;
+    setValueAsString(theIntegerAsString);
+  }
+
+  /**
+   * Constructor
+   */
+  public PositiveIntType(int theInteger) {
+    setValue(theInteger);
+  }
+
+  /**
+   * Constructor
+   *
+   * @param theIntegerAsString
+   *            A string representation of an integer
+   * @throws IllegalArgumentException
+   *             If the string is not a valid integer representation
+   */
+  public PositiveIntType(String theIntegerAsString) {
+    setValueAsString(theIntegerAsString);
+  }
 
 	/**
 	 * Constructor
@@ -76,7 +112,8 @@ public class PositiveIntType extends IntegerType {
 	 * @param theValue The value
 	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
 	 */
-	public PositiveIntType(Long theValue) {
+	public PositiveIntType(IModelContext context, Long theValue) {
+    this.modelContext = context;
 	    if (theValue < 1 || theValue > java.lang.Integer.MAX_VALUE) {
 	        throw new IllegalArgumentException
 	            (theValue + " cannot be cast to int without changing its value.");
@@ -86,10 +123,14 @@ public class PositiveIntType extends IntegerType {
 	    }
 	}
 
+	public PositiveIntType(Long theValue) {
+	  this((IModelContext) null, theValue);
+	}
+
 	@Override
-	public PositiveIntType copy() {
-    PositiveIntType ret = getValue() == null ? new PositiveIntType() : new PositiveIntType(getValue());
-    copyValues(ret);
+	public PositiveIntType copy(EnumSet<CopyObjectOptions> options) {
+    PositiveIntType ret = getValue() == null ? new PositiveIntType() : new PositiveIntType(modelContext, getValue());
+    copyValues(ret, options);
     return ret;
 	}
 

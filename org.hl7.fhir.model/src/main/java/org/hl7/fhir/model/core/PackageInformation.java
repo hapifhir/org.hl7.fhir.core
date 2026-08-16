@@ -2,7 +2,7 @@ package org.hl7.fhir.model.core;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import lombok.Getter;
 import lombok.Setter;

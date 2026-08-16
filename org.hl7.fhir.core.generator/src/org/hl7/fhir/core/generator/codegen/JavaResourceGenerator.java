@@ -101,14 +101,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     boolean he = hasSharedEnums(analysis.getStructure().getSnapshot().getElement());
     boolean hn = hasNestedTypes(analysis.getStructure().getSnapshot().getElement());
     if (hl || hh || hd || he) {
-      if (hl) {
-        write("import java.util.ArrayList;\r\n");
-        write("import java.util.Date;\r\n");
-        write("import java.util.List;\r\n");
-      } else {
-        write("import java.util.Date;\r\n");
+      write("import java.util.*;\r\n");
 
-      }
       if (hh) {
         write("import org.hl7.fhir.utilities.xhtml.NodeType;\r\n");
         write("import org.hl7.fhir.utilities.xhtml.XhtmlNode;\r\n");
@@ -127,6 +121,9 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         write("import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;\r\n");
       }
     }
+    write("import java.util.EnumSet;\r\n");
+    write("import org.hl7.fhir.model.*;\r\n");
+    write("import org.hl7.fhir."+jid+".Base.CopyObjectOptions;\r\n");
     write("import org.hl7.fhir.exceptions.FHIRException;\r\n");
     write("import org.hl7.fhir.instance.model.api.ICompositeType;\r\n");
     if (clss == JavaGenClass.Resource) {
@@ -225,11 +222,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  }
 
 		  generateChildrenRegister(analysis, ti, "    ");
-		  generatePropertyGetterId(analysis, ti, "    ");
-		  generatePropertySetterId(analysis, ti, "    ");
+		  generateNamedValueGetter(analysis, ti, "    ");
 		  generatePropertySetterName(analysis, ti, "    ");
+		  generateRemoveChild(analysis, ti, "    ");
 		  generatePropertyMaker(analysis, ti, "    ");
-		  generatePropertyTypeGetter(analysis, ti, "    ");
 		  generateChildAdder(analysis, ti, "    ");
 		}
 		generateFhirType(analysis.getName());
@@ -245,6 +241,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 //      }
 
 		generateCopy(analysis, ti, false);
+		generateSetModelContext(analysis, ti, "    ");
     if (hasChildren) {
 		  generateEquals(analysis, ti, false);
 		  generateIsEmpty(analysis, ti, false);
@@ -636,7 +633,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write(    "     * @param theCode The {@link #setCode(String) code}\r\n" );
       write(    "     * @param theDisplay The {@link #setDisplay(String) human readable display}\r\n"); 
       write(    "     */\r\n" );
-      write(    "      public Coding(String theSystem, String theCode, String theDisplay) {\r\n"); 
+      write(    "      public Coding(IModelContext context, String theSystem, String theCode, String theDisplay) {\r\n"); 
+      write(    "        this.modelContext = context;\r\n");
       write(    "        setSystem(theSystem);\r\n");
       write(    "        setCode(theCode);\r\n");
       write(    "        setDisplay(theDisplay);\r\n"); 
@@ -646,7 +644,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("    /**\r\n"); 
           write("     * Constructor\r\n"); 
           write("     */\r\n"); 
-          write("    public Extension(String theUrl, IBaseDatatype theValue) {\r\n"); 
+          write("    public Extension(IModelContext context, String theUrl, IBaseDatatype theValue) {\r\n"); 
+          write("      this.modelContext = context;\r\n");
           write("      setUrl(theUrl);\r\n"); 
           write("      setValue(theValue);\r\n"); 
           write("    }\r\n"); 
@@ -657,8 +656,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("     * \r\n"); 
           write("     * @param theReference The given reference string (e.g. \"Patient/123\" or \"http://example.com/Patient/123\")\r\n"); 
           write("     */\r\n"); 
-          write("    public Reference(String theReference) {\r\n"); 
-          write("      super(theReference);\r\n"); 
+          write("    public Reference(IModelContext context, String theReference) {\r\n"); 
+          write("      super(context, theReference);\r\n"); 
           write("    }\r\n"); 
           write("\r\n"); 
           write("    /**\r\n"); 
@@ -666,8 +665,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("     * \r\n"); 
           write("     * @param theReference The given reference as an IdType (e.g. \"Patient/123\" or \"http://example.com/Patient/123\")\r\n"); 
           write("     */\r\n"); 
-          write("    public Reference(IIdType theReference) {\r\n"); 
-          write("      super(theReference);\r\n"); 
+          write("    public Reference(IModelContext context, IIdType theReference) {\r\n"); 
+          write("      super(context, theReference);\r\n"); 
           write("    }\r\n"); 
           write("\r\n"); 
           write("    /**\r\n"); 
@@ -675,8 +674,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("     * \r\n"); 
           write("     * @param theResource The resource represented by this reference\r\n"); 
           write("     */\r\n"); 
-          write("    public Reference(IAnyResource theResource) {\r\n"); 
-          write("      super(theResource);\r\n"); 
+          write("    public Reference(IModelContext context, IAnyResource theResource) {\r\n"); 
+          write("      super(context, theResource);\r\n"); 
           write("    }\r\n"); 
           write("\r\n");
     } else if ("Quantity".equals(theName)) {
@@ -685,7 +684,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("   * \r\n"); 
           write("   * @param theValue The {@link #setValue(double) value}\r\n"); 
           write("   */\r\n"); 
-          write("  public Quantity(double theValue) {\r\n"); 
+          write("  public Quantity(IModelContext context, double theValue) {\r\n"); 
+          write("    this.modelContext = context;\r\n");
           write("    setValue(theValue);\r\n"); 
           write("  }\r\n"); 
           write("\r\n"); 
@@ -694,7 +694,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("   * \r\n"); 
           write("   * @param theValue The {@link #setValue(long) value}\r\n"); 
           write("   */\r\n"); 
-          write("  public Quantity(long theValue) {\r\n"); 
+          write("  public Quantity(IModelContext context, long theValue) {\r\n"); 
+          write("    this.modelContext = context;\r\n");
           write("    setValue(theValue);\r\n"); 
           write("  }\r\n"); 
           write("  \r\n"); 
@@ -707,7 +708,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("   * @param theCode The {@link #setCode(String)} (the code for the units}\r\n"); 
           write("   * @param theUnit The {@link #setUnit(String)} (the human readable display name for the units}\r\n"); 
           write("   */\r\n"); 
-          write("  public Quantity(QuantityComparator theComparator, double theValue, String theSystem, String theCode, String theUnit) {\r\n"); 
+          write("  public Quantity(IModelContext context, QuantityComparator theComparator, double theValue, String theSystem, String theCode, String theUnit) {\r\n"); 
+          write("    this.modelContext = context;\r\n");
           write("    setValue(theValue);\r\n"); 
           write("    setComparator(theComparator);\r\n"); 
           write("    setSystem(theSystem);\r\n"); 
@@ -724,7 +726,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("   * @param theCode The {@link #setCode(String)} (the code for the units}\r\n"); 
           write("   * @param theUnit The {@link #setUnit(String)} (the human readable display name for the units}\r\n"); 
           write("   */\r\n"); 
-          write("  public Quantity(QuantityComparator theComparator, long theValue, String theSystem, String theCode, String theUnit) {\r\n"); 
+          write("  public Quantity(IModelContext context, QuantityComparator theComparator, long theValue, String theSystem, String theCode, String theUnit) {\r\n"); 
+          write("    this.modelContext = context;\r\n");
           write("    setValue(theValue);\r\n"); 
           write("    setComparator(theComparator);\r\n"); 
           write("    setSystem(theSystem);\r\n"); 
@@ -785,15 +788,15 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 	  }
 	  write(indent+"  }\r\n\r\n");  
     write(indent+"  @Override\r\n");
-    write(indent+"  public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {\r\n");
-    write(indent+"    switch (_hash) {\r\n");
+    write(indent+"  public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {\r\n");
+    write(indent+"    switch (_name) {\r\n");
     for (ElementDefinition e : children) {
       if (!isInterface && !e.typeSummary().equals("xhtml")) {
-        write(indent+"    case "+propId(e.getName())+": /*"+e.getName()+"*/ ");
+        write(indent+"    case \""+escapeJavaString(e.getName())+"\": ");
         write(" return new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+");\r\n");
         if (e.getName().endsWith("[x]")) {
           String n = e.getName().substring(0, e.getName().length()-3);
-          write(indent+"    case "+propId(n)+": /*"+n+"*/ ");
+          write(indent+"    case \""+escapeJavaString(n)+"\": ");
           write(" return new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+");\r\n");
           if (e.typeSummary().equals("*")) {
             // master list in datatypes.html
@@ -804,18 +807,18 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
                 "Signature", "Timing", "Dosage"
                 }) {
               String tn = n + Utilities.capitalize(t);
-              write(indent+"    case "+propId(tn)+": /*"+tn+"*/ ");
+              write(indent+"    case \""+escapeJavaString(tn)+"\": ");
               write(" return new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e, t))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+");\r\n");
             }
           } else for (TypeRefComponent tr : e.getType()) {
             String tn = n + Utilities.capitalize(checkConstraint(tr.getCode()));
-            write(indent+"    case "+propId(tn)+": /*"+tn+"*/ ");
+            write(indent+"    case \""+escapeJavaString(tn)+"\": ");
             write(" return new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e, tr.getCode()))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+");\r\n");
           }
         }
       }
     }
-    write(indent+"    default: return super.getNamedProperty(_hash, _name, _checkValid);\r\n");
+    write(indent+"    default: return super.getNamedProperty(_name, _checkValid);\r\n");
     write(indent+"    }\r\n\r\n");  
     write(indent+"  }\r\n\r\n");  
   }
@@ -868,8 +871,8 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   List<ElementDefinition> inheritedChildren = ti.getInheritedChildren();
   
     write(indent+"  @Override\r\n");
-    write(indent+"  public Base makeProperty(int hash, String name) throws FHIRException {\r\n");
-    write(indent+"    switch (hash) {\r\n");
+    write(indent+"  public Base makeProperty(String name) throws FHIRException {\r\n");
+    write(indent+"    switch (name) {\r\n");
     for (ElementDefinition e : children) {
       if (!isInterface) { 
         ElementDefinition inh = inheritedChildren == null ? null : matchingInheritedElement(inheritedChildren, e, analysis.getName());
@@ -877,22 +880,22 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         if (!e.typeSummary().equals("xhtml")) {
           genPropMaker(indent, e, tn, e.getName(), inh);
         } else {
-          write(indent+"    case "+propId("div")+": /*div*/\r\n");
+          write(indent+"    case \"div\":\r\n");
           write("          if (div == null)\r\n");
           write("            div = new XhtmlNode(NodeType.Element, \"div\");\r\n");
-          write("          return new StringType(new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this.div));\r\n");
+          write("          return new StringType(modelContext, new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this.div));\r\n");
         }
         if (e.getName().endsWith("[x]"))
           genPropMaker(indent, e, tn, e.getName().replace("[x]", ""), inh);
       }
     }
-    write(indent+"    default: return super.makeProperty(hash, name);\r\n");
+    write(indent+"    default: return super.makeProperty(name);\r\n");
     write(indent+"    }\r\n\r\n");  
     write(indent+"  }\r\n\r\n");  
   }
 
   private void genPropMaker(String indent, ElementDefinition e, String tn, String elementname, ElementDefinition inh) throws IOException {
-    write(indent+"    case "+propId(elementname)+": ");
+    write(indent+"    case \""+escapeJavaString(elementname)+"\": ");
     String name = e.getName().replace("[x]", "");
     if (isPrimitive(e.typeSummary()) || (e.getType().size() == 1 && e.typeSummary().startsWith("canonical("))) {
       if (e.unbounded())
@@ -921,19 +924,18 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     for (ElementDefinition e : children) {
       if (!isInterface) { 
         String tn = e.getUserString("java.type");
-        if (first) 
-          write(indent+"    ");
-        else
-          write(indent+"    } else ");
+        if (first) {
+          write(indent+"    switch (name) {\r\n");
+        }
         first = false;
-        write(           "if (name.equals(\""+escapeJavaString(e.getName())+"\")) {\r\n");
+        write(indent+"    case \""+escapeJavaString(e.getName())+"\":\r\n");
         String name = e.getName().replace("[x]", "");
         String cn = "("+tn+") value";
         if (!Utilities.existsInList(e.typeSummary(), "Element", "BackboneElement")) {
           if (e.typeSummary().equals("xhtml")) {
             cn = "TypeConvertor.castToXhtml(value)";
           } else if (tn.contains("Enumeration<")) { // enumeration
-            write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory().fromType(TypeConvertor.castToCode(value));\r\n");
+            write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory(modelContext).fromType(TypeConvertor.castToCode(value));\r\n");
             cn = "(Enumeration) value";
           } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !e.getType().get(0).getCode().startsWith("@")) { 
             cn = "TypeConvertor.castTo"+upFirst(checkConstraint(e.getType().get(0).getWorkingCode()))+"(value)";
@@ -945,115 +947,88 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           write(indent+"      this.get"+upFirst(getElementName(name, false))+"List().add("+cn+");\r\n");
         } else {
           write(indent+"      this."+getElementName(name, true)+" = "+cn+"; // "+tn+"\r\n");
-        }
-      }
-    }
-    if (!first)
-      write(indent+"    } else\r\n");
-    write(indent+"      return super.setProperty(name, value);\r\n");
-    if (!first)
-      write(indent+"    return value;\r\n");
-    write(indent+"  }\r\n\r\n");  
-  }
-
-  private void generatePropertySetterId(Analysis analysis, TypeInfo ti, String indent) throws Exception {
-    List<ElementDefinition> children = ti.getChildren();
-    boolean isInterface = analysis.isInterface();
-    write(indent+"  @Override\r\n");
-    write(indent+"  public Base setProperty(int hash, String name, Base value) throws FHIRException {\r\n");
-    write(indent+"    switch (hash) {\r\n");
-    for (ElementDefinition e : children) {
-      if (!isInterface) { 
-        String tn = e.getUserString("java.type");
-        String name = e.getName().replace("[x]", "");
-        write(indent+"    case "+propId(name)+": // "+name+"\r\n");
-        String cn = "("+tn+") value";
-        if (!Utilities.existsInList(e.typeSummary(), "Element", "BackboneElement")) {
-          if (e.typeSummary().equals("xhtml")) {
-            cn = "TypeConvertor.castToXhtml(value)";
-          } if (tn.contains("Enumeration<")) { // enumeration
-            write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory().fromType(TypeConvertor.castToCode(value));\r\n");
-            cn = "(Enumeration) value";
-          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !e.getType().get(0).getName().startsWith("@")) { 
-            cn = "TypeConvertor.castTo"+upFirst(checkConstraint(e.getType().get(0).getWorkingCode()))+"(value)";
-          } else if (e.getType().size() > 0 && !e.getType().get(0).getCode().startsWith("@")) { 
-            cn = "TypeConvertor.castToType(value)";
+          if (!e.typeSummary().equals("xhtml")) {
+            write(indent+"      if (this."+getElementName(name, true)+" != null) {\r\n");
+            write(indent+"        this."+getElementName(name, true)+".setModelContext(this.modelContext);\r\n");
+            write(indent+"      }\r\n");
           }
-        }
-        if (e.unbounded()) {
-          write(indent+"      this.get"+upFirst(getElementName(name, false))+"List().add("+cn+"); // "+tn+"\r\n");
-        } else {
-          write(indent+"      this."+getElementName(name, true)+" = "+cn+"; // "+tn+"\r\n");
         }
         write(indent+"      return value;\r\n");
       }
     }
-    write(indent+"    default: return super.setProperty(hash, name, value);\r\n");
-    write(indent+"    }\r\n\r\n");  
+    if (!first) {
+      write(indent+"    default:\r\n");
+      write(indent+"      return super.setProperty(name, value);\r\n");
+      write(indent+"    }\r\n");
+    } else {
+      write(indent+"    return super.setProperty(name, value);\r\n");
+    }
     write(indent+"  }\r\n\r\n");  
   }
 
-  private void generatePropertyGetterId(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+  private void generateRemoveChild(Analysis analysis, TypeInfo ti, String indent) throws Exception {
     List<ElementDefinition> children = ti.getChildren();
     boolean isInterface = analysis.isInterface();
     write(indent+"  @Override\r\n");
-    write(indent+"  public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {\r\n");
-    write(indent+"    switch (hash) {\r\n");
+    write(indent+"  public void removeChild(String name, Base value) throws FHIRException {\r\n");
+    boolean first = true;
+    for (ElementDefinition e : children) {
+      if (!isInterface) { 
+        if (first) {
+          write(indent+"    switch (name) {\r\n");
+        }
+        first = false;
+        write(indent+"    case \""+escapeJavaString(e.getName())+"\":\r\n");
+        String name = e.getName().replace("[x]", "");
+        if (e.unbounded()) {
+          write(indent+"      this.get"+upFirst(getElementName(name, false))+"List().remove(value);\r\n");
+        } else if (e.typeSummary().equals("xhtml")) {
+          // an XhtmlNode is not a Base, so no identity check is possible (and the property 
+          // machinery only ever exposes it as a wrapped StringType) - just clear it
+          write(indent+"      this."+getElementName(name, true)+" = null;\r\n");
+        } else {
+          // same semantics as List.remove: only remove what was asked for (null = clear regardless)
+          String fn = getElementName(name, true);
+          write(indent+"      if (value == null || value == this."+fn+") {\r\n");
+          write(indent+"        this."+fn+" = null;\r\n");
+          write(indent+"      }\r\n");
+        }
+        write(indent+"      return;\r\n");
+      }
+    }
+    if (!first) {
+      write(indent+"    default:\r\n");
+      write(indent+"      super.removeChild(name, value);\r\n");
+      write(indent+"    }\r\n");
+    } else {
+      write(indent+"    super.removeChild(name, value);\r\n");
+    }
+    write(indent+"  }\r\n\r\n");  
+  }
+
+  private void generateNamedValueGetter(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+    List<ElementDefinition> children = ti.getChildren();
+    boolean isInterface = analysis.isInterface();
+    write(indent+"  @Override\r\n");
+    write(indent+"  public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {\r\n");
+    write(indent+"    switch (name) {\r\n");
     for (ElementDefinition e : children) {
       if (!isInterface) { 
         String tn = e.getUserString("java.type");
         String name = e.getName().replace("[x]", "");
-        write(indent+"    case "+propId(name)+": /*"+name+"*/ ");
+        write(indent+"    case \""+escapeJavaString(name)+"\": ");
         if (e.unbounded()) {
           write("return this."+getElementName(name, true)+"List == null ? new Base[0] : this."+getElementName(name, true)+"List.toArray(new Base[this."+getElementName(name, true)+"List.size()]); // "+tn+"\r\n");
         } else if (e.typeSummary().equals("xhtml")) {
-          write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {new StringType(new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this."+getElementName(name, true)+"))}; // "+tn+"\r\n");
+          write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {new StringType(modelContext, new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this."+getElementName(name, true)+"))}; // "+tn+"\r\n");
         } else {
           write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {this."+getElementName(name, true)+"}; // "+tn+"\r\n");
         }
       }
     }
-    write(indent+"    default: return super.getProperty(hash, name, checkValid);\r\n");
+    write(indent+"    default: return super.getNamedValue(name, checkValid);\r\n");
     write(indent+"    }\r\n\r\n");  
     write(indent+"  }\r\n\r\n");  
-  }
-
-  private void generatePropertyTypeGetter(Analysis analysis, TypeInfo ti, String indent) throws Exception {
-    List<ElementDefinition> children = ti.getChildren();
-    boolean isInterface = analysis.isInterface();
-    write(indent+"  @Override\r\n");
-    write(indent+"  public String[] getTypesForProperty(int hash, String name) throws FHIRException {\r\n");
-    write(indent+"    switch (hash) {\r\n");
-    for (ElementDefinition e : children) {
-      if (!isInterface) { 
-        String name = e.getName().replace("[x]", "");
-        write(indent+"    case "+propId(name)+": /*"+name+"*/ ");
-        if (e.hasContentReference()) {
-          write("return new String[] {\""+e.getContentReference().replace("#", "@")+"\"};\r\n");
-        } else {
-          write("return new String[] {"+asCommaText(e.getType())+"};\r\n");
-        }
-      }
-    }
-    write(indent+"    default: return super.getTypesForProperty(hash, name);\r\n");
-    write(indent+"    }\r\n\r\n");  
-    write(indent+"  }\r\n\r\n");  
-  }
-
-  private String asCommaText(List<TypeRefComponent> types) {
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    Set<String> tset = new HashSet<String>();
-    for (TypeRefComponent t : types) {
-      if (!Utilities.existsInList(t.getWorkingCode(),  "Element", "BackboneElement") && !tset.contains(t.getName())) {
-        b.append("\""+escapeJavaString(t.getName())+"\"");
-        tset.add(t.getName());
-      }
-    }
-    return b.toString();
-  }
-
-  private String propId(String name) {
-    return Integer.toString(name.hashCode());
   }
 
   private void generateChildAdder(Analysis analysis, TypeInfo ti, String indent) throws Exception {
@@ -1110,7 +1085,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     else if (e.unbounded()) {
       write(indent+"      return add"+upFirst(getElementName(name, false))+"();\r\n");
     } else {
-      write(indent+"      this."+getElementName(name, true)+" = new "+tn+"();\r\n");
+      write(indent+"      this."+getElementName(name, true)+" = new "+tn+"(this.modelContext);\r\n");
       write(indent+"      return this."+getElementName(name, true)+";\r\n");
     }
     write(indent+"    }\r\n");
@@ -1137,15 +1112,33 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   }
 
   private void generateConstructor(String className, List<ElementDefinition> params, String indent) throws IOException {
+    if (params.isEmpty()) {
+      // two constructors: no arguments, and just the model context
+      write(indent+"/**\r\n");
+      write(indent+" * Constructor\r\n");
+      write(indent+" */\r\n");
+      write(indent+"  public "+className+"() {\r\n");
+      write(indent+"    super();\r\n");
+      write(indent+"  }\r\n\r\n");
+      write(indent+"/**\r\n");
+      write(indent+" * Constructor\r\n");
+      write(indent+" *\r\n");
+      write(indent+" * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)\r\n");
+      write(indent+" */\r\n");
+      write(indent+"  public "+className+"(IModelContext context) {\r\n");
+      write(indent+"    super();\r\n");
+      write(indent+"    this.modelContext = context;\r\n");
+      write(indent+"  }\r\n\r\n");
+      return;
+    }
     write(indent+"/**\r\n");
     write(indent+" * Constructor\r\n");
+    write(indent+" *\r\n");
+    write(indent+" * @param context the model context this object belongs to (may be null)\r\n");
     write(indent+" */\r\n");
-    write(indent+"  public "+className+"(");
-    boolean first = true;
+    write(indent+"  public "+className+"(IModelContext context");
     for (ElementDefinition e : params) {
-      if (!first)
-        write(", ");
-      first = false;
+      write(", ");
       String tn = e.getUserString("java.type");
       if (definitions.hasPrimitiveType(e.typeSummary()) && !e.hasUserData("java.enum")) {
         if ("xhtml".equals(e.typeSummary())) {
@@ -1162,6 +1155,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     }
     write(") {\r\n");
     write(indent+"    super();\r\n");
+    write(indent+"    this.modelContext = context;\r\n");
     for (ElementDefinition e : params) {
       String en = getElementName(e.getName(), true);
       if (e.unbounded()) {
@@ -1356,6 +1350,13 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 
 		
 		write("  public static class "+tns+"EnumFactory implements EnumFactory<"+tns+"> {\r\n");
+		write("    private final IModelContext modelContext;\r\n");
+		write("    public "+tns+"EnumFactory(IModelContext context) {\r\n");
+		write("      this.modelContext = context;\r\n");
+		write("    }\r\n");
+		write("    public "+tns+"EnumFactory() {\r\n");
+		write("      this(null);\r\n");
+		write("    }\r\n");
 		write("    public "+tns+" fromCode(String codeString) throws IllegalArgumentException {\r\n");
 		
 		write("      if (codeString == null || \"\".equals(codeString))\r\n");
@@ -1373,15 +1374,15 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     write("          if (code == null)\r\n");
     write("            return null;\r\n");
     write("          if (code.isEmpty())\r\n");
-    write("            return new Enumeration<"+tns+">(this, "+tns+".NULL, code);\r\n");
+    write("            return new Enumeration<"+tns+">(modelContext, this, "+tns+".NULL, code);\r\n");
     write("          String codeString = ((PrimitiveType) code).asStringValue();\r\n");
     write("          if (codeString == null || \"\".equals(codeString))\r\n");
-    write("            return new Enumeration<"+tns+">(this, "+tns+".NULL, code);\r\n");
+    write("            return new Enumeration<"+tns+">(modelContext, this, "+tns+".NULL, code);\r\n");
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
       write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
-      write("          return new Enumeration<"+tns+">(this, "+tns+"."+cc+", code);\r\n");
+      write("          return new Enumeration<"+tns+">(modelContext, this, "+tns+"."+cc+", code);\r\n");
     }   
     write("        throw new FHIRException(\"Unknown "+escapeJavaString(tns)+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
@@ -1434,13 +1435,13 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		}
 
     generateChildrenRegister(analysis, ti,"      ");
-    generatePropertyGetterId(analysis, ti,"    ");
-    generatePropertySetterId(analysis, ti,"    ");
+    generateNamedValueGetter(analysis, ti,"    ");
     generatePropertySetterName(analysis, ti,"    ");
+    generateRemoveChild(analysis, ti,"    ");
     generatePropertyMaker(analysis, ti,"    ");
-    generatePropertyTypeGetter(analysis, ti,"    ");
     generateChildAdder(analysis, ti,"    ");
     generateCopy(analysis, ti, true);
+    generateSetModelContext(analysis, ti, "    ");
     generateEquals(analysis, ti, true);
     generateIsEmpty(analysis, ti, true);
     generateFhirType(e.getPath());
@@ -1543,17 +1544,17 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 	      
 	  
 	  if (isAbstract) {
-      write("      public abstract "+tn+" copy();\r\n\r\n");
-      write("      public void copyValues("+tn+" dst) {\r\n");
-      write("        super.copyValues(dst);\r\n");
+      write("      public abstract "+tn+" copy(EnumSet<CopyObjectOptions> options);\r\n\r\n");
+      write("      public void copyValues("+tn+" dst, EnumSet<CopyObjectOptions> options) {\r\n");
+      write("        super.copyValues(dst, options);\r\n");
 	  } else {
-      write("      public "+tn+" copy() {\r\n");
-      write("        "+tn+" dst = new "+tn+"();\r\n");
-      write("        copyValues(dst);\r\n");
+      write("      public "+tn+" copy(EnumSet<CopyObjectOptions> options) {\r\n");
+      write("        "+tn+" dst = new "+tn+"(this.modelContext);\r\n");
+      write("        copyValues(dst, options);\r\n");
       write("        return dst;\r\n");
       write("      }\r\n\r\n");
-      write("      public void copyValues("+tn+" dst) {\r\n");
-      write("        super.copyValues(dst);\r\n");
+      write("      public void copyValues("+tn+" dst, EnumSet<CopyObjectOptions> options) {\r\n");
+      write("        super.copyValues(dst, options);\r\n");
 	  }
     for (ElementDefinition c : children) {
       if (!isInterface) {
@@ -1562,23 +1563,61 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 	        name = name + "List";
 	        String ctn = c.getUserString("java.type");
 	        write("        if ("+name+" != null) {\r\n");
-	        write("          dst."+name+" = new ArrayList<"+ctn+">();\r\n");
-	        write("          for ("+ctn+" i : "+name+")\r\n");
-	        write("            dst."+name+".add(i.copy());\r\n");
+	        write("          dst."+name+" = new BaseList<"+ctn+">(dst).copyFrom("+name+", options);\r\n");
 	        write("        };\r\n");
 	      } else {
 	        if (name.endsWith("[x]"))
 	          name = name.substring(0, name.length()-3);
-	        write("        dst."+name+" = "+name+" == null ? null : "+name+".copy();\r\n");
+	        if (c.typeSummary().equals("xhtml")) {
+	          // XhtmlNode lives in utilities and knows nothing of CopyObjectOptions
+	          write("        dst."+name+" = "+name+" == null ? null : "+name+".copy();\r\n");
+	        } else {
+	          write("        dst."+name+" = "+name+" == null ? null : "+name+".copy(options);\r\n");
+	        }
 	      }
 	    }
 	  }
     write("      }\r\n\r\n");
-    if (!owner && !isAbstract) {
-      write("      protected "+tn+" typedCopy() {\r\n");
-      write("        return copy();\r\n");
-      write("      }\r\n\r\n");      
+  }
+
+  private void generateSetModelContext(Analysis analysis, TypeInfo ti, String indent) throws Exception {
+    List<ElementDefinition> children = ti.getChildren();
+    if (analysis.isInterface()) {
+      return;
     }
+    boolean any = false;
+    for (ElementDefinition e : children) {
+      if (!e.typeSummary().equals("xhtml")) {
+        any = true;
+      }
+    }
+    if (!any) {
+      return;
+    }
+    write(indent+"  @Override\r\n");
+    write(indent+"  public void setModelContext(IModelContext context) {\r\n");
+    write(indent+"    if (this.modelContext == context) {\r\n");
+    write(indent+"      return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext\r\n");
+    write(indent+"    }\r\n");
+    write(indent+"    super.setModelContext(context);\r\n");
+    for (ElementDefinition e : children) {
+      if (!e.typeSummary().equals("xhtml")) {
+        String name = getElementName(e.getName().replace("[x]", ""), true);
+        if (e.unbounded()) {
+          String ctn = e.getUserString("java.type");
+          write(indent+"    if (this."+name+"List != null) {\r\n");
+          write(indent+"      for ("+ctn+" i : this."+name+"List) {\r\n");
+          write(indent+"        i.setModelContext(context);\r\n");
+          write(indent+"      }\r\n");
+          write(indent+"    }\r\n");
+        } else {
+          write(indent+"    if (this."+name+" != null) {\r\n");
+          write(indent+"      this."+name+".setModelContext(context);\r\n");
+          write(indent+"    }\r\n");
+        }
+      }
+    }
+    write(indent+"  }\r\n\r\n");
   }
 
   private void generateIsEmpty(Analysis analysis, TypeInfo ti, boolean owner) throws Exception {
@@ -1853,7 +1892,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         write(indent+"  return list;\r\n");
 		  } else {
 		    write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+listGenericType+">();\r\n");
+		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new BaseList<"+listGenericType+">(this);\r\n");
 		    write(indent+"  return this."+getElementName(e.getName(), true)+"List;\r\n");
 		  }
 		  write(indent+"}\r\n\r\n");
@@ -1868,11 +1907,16 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         write(indent+"    this."+getElementName(e.getName(), true)+" = null;\r\n");
         write(indent+"  } else if (the" + getTitle(getElementName(e.getName(), false)) + "List" + ".size() == 1) {\r\n");
         write(indent+"    this."+getElementName(e.getName(), true)+" = the" + getTitle(getElementName(e.getName(), false)) + "List" + ".get(0);\r\n");
+        write(indent+"    if (this."+getElementName(e.getName(), true)+" != null) {\r\n");
+        write(indent+"      this."+getElementName(e.getName(), true)+".setModelContext(this.modelContext);\r\n");
+        write(indent+"    }\r\n");
         write(indent+"  } else {\r\n");
         write(indent+"    throw new Error(\"Cannot have more than one "+escapeJavaString(e.getPath())+"\");\r\n");
         write(indent+"  }\r\n");
 		  } else {
-		    write(indent+"  this."+getElementName(e.getName(), true)+"List = the" + getTitle(getElementName(e.getName(), false)) + "List" + ";\r\n");
+		    // copy into an owned list (stamping every element) rather than aliasing the caller's list, 
+		    // which would let later additions bypass the model-context enforcement
+		    write(indent+"  this."+getElementName(e.getName(), true)+"List = new BaseList<"+listGenericType+">(this, the" + getTitle(getElementName(e.getName(), false)) + "List" + ");\r\n");
 		  }
       write(indent+"  return this;\r\n");
 		  write(indent+"}\r\n\r\n");
@@ -1908,9 +1952,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           write(indent+"  }\r\n");
           write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
 		    } else {
-  		    write(indent+"  "+tn+" t = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
+  		    write(indent+"  "+tn+" t = new "+tn+"("+( tn.startsWith("Enum") ? "modelContext, new "+tn.substring(12, tn.length()-1)+"EnumFactory(modelContext)" : "modelContext")+");\r\n");
   		    write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-  		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+  		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new BaseList<"+tn+">(this);\r\n");
   		    write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
   		    write(indent+"  return t;\r\n");
 		    }
@@ -1922,10 +1966,10 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		     */
 		    jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
 		    write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { //1\r\n");
-		    write(indent+"  "+tn+" t = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
+		    write(indent+"  "+tn+" t = new "+tn+"("+( tn.startsWith("Enum") ? "modelContext, new "+tn.substring(12, tn.length()-1)+"EnumFactory(modelContext)" : "modelContext")+");\r\n");
 		    write(indent+"  t.setValue(value);\r\n");
 		    write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		    write(indent+"    this."+getElementName(e.getName(), true)+"List = new BaseList<"+tn+">(this);\r\n");
 		    write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		    write(indent+"  return this;\r\n");
 		    write(indent+"}\r\n");
@@ -1966,7 +2010,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		        } else {
 		          write(indent+"  "+tn+" t = new "+tn+"();\r\n");
 		          write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-		          write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		          write(indent+"    this."+getElementName(e.getName(), true)+"List = new BaseList<"+tn+">(this);\r\n");
 		          write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		          write(indent+"  return t;\r\n");
 		        }
@@ -1987,7 +2031,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		        write(indent+"  if (t == null)\r\n");
 		        write(indent+"    return this;\r\n");
 		        write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-		        write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		        write(indent+"    this."+getElementName(e.getName(), true)+"List = new BaseList<"+tn+">(this);\r\n");
 		        write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		      }
           write(indent+"  return this;\r\n");
@@ -2001,7 +2045,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		      write(indent+"  if (t == null)\r\n");
 		      write(indent+"    return this;\r\n");
 		      write(indent+"  if (this."+getElementName(e.getName(), true)+"List == null)\r\n");
-		      write(indent+"    this."+getElementName(e.getName(), true)+"List = new ArrayList<"+tn+">();\r\n");
+		      write(indent+"    this."+getElementName(e.getName(), true)+"List = new BaseList<"+tn+">(this);\r\n");
 		      write(indent+"  this."+getElementName(e.getName(), true)+"List.add(t);\r\n");
 		      write(indent+"  return this;\r\n");
 		      write(indent+"}\r\n");
@@ -2046,7 +2090,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           write(indent+"    if (Configuration.errorOnAutoCreate())\r\n");
           write(indent+"      throw new Error(\"Attempt to auto-create "+escapeJavaString(className)+"."+escapeJavaString(getElementName(e.getName(), true))+"\");\r\n");
           write(indent+"    else if (Configuration.doAutoCreate())\r\n");
-          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+"); // bb\r\n");
+          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "modelContext, new "+tn.substring(12, tn.length()-1)+"EnumFactory(modelContext)" : "modelContext")+"); // bb\r\n");
           write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
           write(indent+"}\r\n");
         } else { 
@@ -2055,7 +2099,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           write(indent+"    if (Configuration.errorOnAutoCreate())\r\n");
           write(indent+"      throw new Error(\"Attempt to auto-create "+escapeJavaString(className)+"."+escapeJavaString(getElementName(e.getName(), true))+"\");\r\n");
           write(indent+"    else if (Configuration.doAutoCreate())\r\n");
-          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+"); // bb\r\n");
+          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "modelContext, new "+tn.substring(12, tn.length()-1)+"EnumFactory(modelContext)" : "modelContext")+"); // bb\r\n");
           write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
           write(indent+"}\r\n");
         }
@@ -2071,6 +2115,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         write("\r\n");
         jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
         write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"Element("+tn+" value) { \r\n");
+        write(indent+"  if (value != null) {\r\n");
+        write(indent+"    value.setModelContext(this.modelContext);\r\n");
+        write(indent+"  }\r\n");
         write(indent+"  this."+getElementName(e.getName(), true)+" = value;\r\n");
         write(indent+"  return this;\r\n");
         write(indent+"}\r\n");
@@ -2108,7 +2155,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 //          write(indent+"    this."+getElementName(e.getName(), true)+" = null;\r\n");
 //          write(indent+"  else {\r\n");
 //          write(indent+"    if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-//          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
+//          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "modelContext, new "+tn.substring(12, tn.length()-1)+"EnumFactory(modelContext)" : "modelContext")+");\r\n");
 //          write(indent+"    this."+getElementName(e.getName(), true)+".setValue("+(tn.startsWith("Enum") ? tn.substring(12, tn.length()-1)+".fromCode(value)" : "value")+");\r\n");
 //          write(indent+"  }\r\n");
 //          write(indent+"  return this;\r\n");
@@ -2128,7 +2175,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           if ("XhtmlNode".equals(tn))
             write(indent+"      this."+getElementName(e.getName(), true)+" = new XhtmlNode(NodeType.Element, \"div\"); // cc.1\r\n");
           else
-          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"(); // cc\r\n");
+          write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"(this.modelContext); // cc\r\n");
         }
         write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
         write(indent+"}\r\n");
@@ -2167,6 +2214,12 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           }
           write("))\r\n");
           write(indent+"    throw new FHIRException(\"Not the right type for "+escapeJavaString(e.getPath())+": \"+value.fhirType());\r\n");         
+        }
+        if (!"XhtmlNode".equals(tn)) {
+          // an XhtmlNode is not a Base, so it doesn't carry a model context
+          write(indent+"  if (value != null) {\r\n");
+          write(indent+"    value.setModelContext(this.modelContext);\r\n");
+          write(indent+"  }\r\n");
         }
         write(indent+"  this."+getElementName(e.getName(), true)+" = value;\r\n");
         write(indent+"  return this;\r\n");
@@ -2313,7 +2366,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     jdoc(indent, "@param value "+replaceTitle(rn, e.getDefinition()));
     write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { \r\n");
     if ("long".equals(simpleType) || "double".equals(simpleType)) {
-      write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
+      write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "modelContext, new "+tn.substring(12, tn.length()-1)+"EnumFactory(modelContext)" : "modelContext")+");\r\n");
       write(indent+"    this."+getElementName(e.getName(), true)+".setValue(value);\r\n");      
     } else {
       if (e.getMin() == 0 && !tn.equals("IntegerType") && !tn.equals("PositiveIntType") && !tn.equals("UnsignedIntType") && !tn.equals("BooleanType")) {
@@ -2325,7 +2378,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         write(indent+"  else {\r\n");
       }
       write(indent+"    if (this."+getElementName(e.getName(), true)+" == null)\r\n");
-      write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+");\r\n");
+      write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "modelContext, new "+tn.substring(12, tn.length()-1)+"EnumFactory(modelContext)" : "modelContext")+");\r\n");
       write(indent+"    this."+getElementName(e.getName(), true)+".setValue(value);\r\n");
       if (e.getMin() == 0 && !tn.equals("IntegerType") && !tn.equals("PositiveIntType") && !tn.equals("UnsignedIntType") && !tn.equals("BooleanType")) {
         write(indent+"  }\r\n");

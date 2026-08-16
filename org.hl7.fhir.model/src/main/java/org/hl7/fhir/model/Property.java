@@ -1,4 +1,4 @@
-package org.hl7.fhir.model.core;
+package org.hl7.fhir.model;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -30,20 +30,16 @@ package org.hl7.fhir.model.core;
  */
 
 
-import org.hl7.fhir.utilities.MergedList.IMatcher;
+import org.hl7.fhir.model.core.StructureDefinition;import org.hl7.fhir.utilities.MergedList.IMatcher;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * A child element or property defined by the FHIR specification
  * This class is defined as a helper class when iterating the 
  * children of an element in a generic fashion
- * 
- * At present, iteration is only based on the specification, but 
- * this may be changed to allow profile based expression at a
- * later date
- * 
+ *
  * note: there's no point in creating one of these classes outside this package
  */
 public class Property {
@@ -79,10 +75,13 @@ public class Property {
 	private int minCardinality;
 	
 	/** 
-	 * The maximum allowed cardinality - 1 or MAX_INT when based on the specification
+	 * The maximum allowed cardinality - 0, 1 or MAX_INT when based on the specification
+   *
+   * maximum cardinality will be 0 when a property is not supported by the version in use
+   * e.g. depending on which version of FHIR is in used
 	 */
 	private int maxCardinality;
-	
+
 	/**
 	 * The actual elements that exist on this instance
 	 */
@@ -91,7 +90,7 @@ public class Property {
 	/**
 	 * For run time, if/once a property is hooked up to it's definition
 	 */
-	private StructureDefinition structure; 
+	private StructureDefinition structure;
 
 	/**
 	 * Internal constructor

@@ -36,6 +36,7 @@ package org.hl7.fhir.model.core.formats;
 
 import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.model.core.DataType;
 import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.model.utilities.formats.FormatUtilities;
@@ -44,6 +45,7 @@ import org.hl7.fhir.model.utilities.formats.JsonCreator;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -55,6 +57,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class ParserBase extends FormatUtilities implements IParser {
+
+  protected IModelContext modelContext;
+
+  public ParserBase(@Nonnull IModelContext modelContext) {
+    if (modelContext == null) {
+      throw new IllegalArgumentException("modelContext must not be null for a new instance of the "+getClass().getName());
+    }
+    this.modelContext = modelContext;
+  }
 
   /**
    * the registry of custom resource parsers/composers this parser consults. Defaults to the 

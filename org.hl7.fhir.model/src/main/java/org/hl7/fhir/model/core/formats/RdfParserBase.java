@@ -30,7 +30,9 @@ package org.hl7.fhir.model.core.formats;
  */
 
 
+import org.hl7.fhir.model.IModelContext;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.utilities.formats.IParser;
 import org.hl7.fhir.utilities.turtle.Turtle;
@@ -44,6 +46,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public abstract class RdfParserBase extends ParserBase implements IParser {
+
+  public RdfParserBase(IModelContext modelContext) {
+    super(modelContext);
+  }
+
 
 	protected abstract void composeResource(Complex complex, Resource resource) throws IOException;
 
@@ -71,6 +78,7 @@ public abstract class RdfParserBase extends ParserBase implements IParser {
 
 	@Override
 	public void compose(OutputStream stream, Resource resource) throws IOException {
+		resource.assertModelContext(modelContext);
 	  Turtle ttl = new Turtle();
 		//      ttl.setFormat(FFormat);
 		ttl.prefix("fhir", "http://hl7.org/fhir/");
@@ -95,6 +103,7 @@ public abstract class RdfParserBase extends ParserBase implements IParser {
 
 	@Override
 	public void compose(OutputStream stream, DataType type, String rootName) throws IOException {
+		type.assertModelContext(modelContext);
 		throw new Error("Not supported in RDF");  
 	}
 

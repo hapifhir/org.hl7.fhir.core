@@ -1,5 +1,10 @@
 package org.hl7.fhir.model.core;
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -141,6 +146,29 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   }
 
   /**
+   * Constructor
+   *
+   * @param context the model context this object belongs to - all objects in a tree must share the same context
+   */
+  public IdType(IModelContext context) {
+    this();
+    this.modelContext = context;
+  }
+
+  /**
+   * Create a new ID, using a BigDecimal input. Uses
+   * {@link BigDecimal#toPlainString()} to generate the string representation.
+   */
+  public IdType(IModelContext context, BigDecimal thePid) {
+    this.modelContext = context;
+    if (thePid != null) {
+      setValue(toPlainStringWithNpeThrowIfNeeded(thePid));
+    } else {
+      setValue(null);
+    }
+  }
+
+  /**
    * Create a new ID, using a BigDecimal input. Uses
    * {@link BigDecimal#toPlainString()} to generate the string representation.
    */
@@ -155,8 +183,20 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   /**
    * Create a new ID using a long
    */
-  public IdType(long theId) {
+  public IdType(IModelContext context, long theId) {
+    this.modelContext = context;
     setValue(Long.toString(theId));
+  }
+
+  public IdType(long theId) {
+    this((IModelContext) null, theId);
+  }
+
+  /**
+   * Create a new ID using a long
+   */
+  public IdType(String theId) {
+    setValue(theId);
   }
 
   /**
@@ -173,7 +213,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * regex: [a-z0-9\-\.]{1,36}
    * </p>
    */
-  public IdType(String theValue) {
+  public IdType(IModelContext context, String theValue) {
+    this.modelContext = context;
     setValue(theValue);
   }
 
@@ -183,8 +224,12 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * @param theResourceType The resource type (e.g. "Patient")
    * @param theIdPart       The ID (e.g. "123")
    */
+  public IdType(IModelContext context, String theResourceType, BigDecimal theIdPart) {
+    this(context, theResourceType, toPlainStringWithNpeThrowIfNeeded(theIdPart));
+  }
+
   public IdType(String theResourceType, BigDecimal theIdPart) {
-    this(theResourceType, toPlainStringWithNpeThrowIfNeeded(theIdPart));
+    this((IModelContext) null, theResourceType, theIdPart);
   }
 
   /**
@@ -193,8 +238,12 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * @param theResourceType The resource type (e.g. "Patient")
    * @param theIdPart       The ID (e.g. "123")
    */
+  public IdType(IModelContext context, String theResourceType, Long theIdPart) {
+    this(context, theResourceType, toPlainStringWithNpeThrowIfNeeded(theIdPart));
+  }
+
   public IdType(String theResourceType, Long theIdPart) {
-    this(theResourceType, toPlainStringWithNpeThrowIfNeeded(theIdPart));
+    this((IModelContext) null, theResourceType, theIdPart);
   }
 
   /**
@@ -203,8 +252,12 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * @param theResourceType The resource type (e.g. "Patient")
    * @param theId           The ID (e.g. "123")
    */
+  public IdType(IModelContext context, String theResourceType, String theId) {
+    this(context, theResourceType, theId, null);
+  }
+
   public IdType(String theResourceType, String theId) {
-    this(theResourceType, theId, null);
+    this((IModelContext) null, theResourceType, theId);
   }
 
   /**
@@ -214,8 +267,12 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * @param theId           The ID (e.g. "123")
    * @param theVersionId    The version ID ("e.g. "456")
    */
+  public IdType(IModelContext context, String theResourceType, String theId, String theVersionId) {
+    this(context, null, theResourceType, theId, theVersionId);
+  }
+
   public IdType(String theResourceType, String theId, String theVersionId) {
-    this(null, theResourceType, theId, theVersionId);
+    this((IModelContext) null, theResourceType, theId, theVersionId);
   }
 
   /**
@@ -226,7 +283,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * @param theId           The ID (e.g. "123")
    * @param theVersionId    The version ID ("e.g. "456")
    */
-  public IdType(String theBaseUrl, String theResourceType, String theId, String theVersionId) {
+  public IdType(IModelContext context, String theBaseUrl, String theResourceType, String theId, String theVersionId) {
+    this.modelContext = context;
     myBaseUrl = theBaseUrl;
     myResourceType = theResourceType;
     myUnqualifiedId = theId;
@@ -237,25 +295,34 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
     }
   }
 
+  public IdType(String theBaseUrl, String theResourceType, String theId, String theVersionId) {
+    this((IModelContext) null, theBaseUrl, theResourceType, theId, theVersionId);
+  }
+
   /**
    * Creates an ID based on a given URL
    */
-  public IdType(UriType theUrl) {
+  public IdType(IModelContext context, UriType theUrl) {
+    this.modelContext = context;
     setValue(theUrl.getValueAsString());
+  }
+
+  public IdType(UriType theUrl) {
+    this((IModelContext) null, theUrl);
   }
 
   public void applyTo(IBaseResource theResouce) {
     if (theResouce == null) {
       throw new NullPointerException("theResource can not be null");
     } else {
-      theResouce.setId(new IdType(getValue()));
+      theResouce.setId(new IdType(modelContext, getValue()));
     }
   }
 
   @Override
-  public IdType copy() {
-    IdType ret = new IdType(getValue());
-    copyValues(ret);
+  public IdType copy(EnumSet<CopyObjectOptions> options) {
+    IdType ret = new IdType(modelContext, getValue());
+    copyValues(ret, options);
     return ret;
   }
 
@@ -658,33 +725,33 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   @Override
   public IdType toUnqualified() {
     if (isLocal() || isUrn()) {
-      return new IdType(getValueAsString());
+      return new IdType(modelContext, getValueAsString());
     }
-    return new IdType(getResourceType(), getIdPart(), getVersionIdPart());
+    return new IdType(modelContext, getResourceType(), getIdPart(), getVersionIdPart());
   }
 
   @Override
   public IdType toUnqualifiedVersionless() {
     if (isLocal() || isUrn()) {
-      return new IdType(getValueAsString());
+      return new IdType(modelContext, getValueAsString());
     }
-    return new IdType(getResourceType(), getIdPart());
+    return new IdType(modelContext, getResourceType(), getIdPart());
   }
 
   @Override
   public IdType toVersionless() {
     if (isLocal() || isUrn()) {
-      return new IdType(getValueAsString());
+      return new IdType(modelContext, getValueAsString());
     }
-    return new IdType(getBaseUrl(), getResourceType(), getIdPart(), null);
+    return new IdType(modelContext, getBaseUrl(), getResourceType(), getIdPart(), null);
   }
 
   @Override
   public IdType withResourceType(String theResourceName) {
     if (isLocal() || isUrn()) {
-      return new IdType(getValueAsString());
+      return new IdType(modelContext, getValueAsString());
     }
-    return new IdType(theResourceName, getIdPart(), getVersionIdPart());
+    return new IdType(modelContext, theResourceName, getIdPart(), getVersionIdPart());
   }
 
   /**
@@ -702,9 +769,9 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   @Override
   public IdType withServerBase(String theServerBase, String theResourceType) {
     if (isLocal() || isUrn()) {
-      return new IdType(getValueAsString());
+      return new IdType(modelContext, getValueAsString());
     }
-    return new IdType(theServerBase, theResourceType, getIdPart(), getVersionIdPart());
+    return new IdType(modelContext, theServerBase, theResourceType, getIdPart(), getVersionIdPart());
   }
 
   /**
@@ -722,7 +789,7 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
     }
 
     if (isLocal() || isUrn()) {
-      return new IdType(getValueAsString());
+      return new IdType(modelContext, getValueAsString());
     }
 
     String existingValue = getValue();

@@ -30,6 +30,11 @@ package org.hl7.fhir.model.core;
  */
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import org.hl7.fhir.instance.model.api.IAnyResource;
 import org.hl7.fhir.instance.model.api.IBaseReference;
 import org.hl7.fhir.instance.model.api.IBaseResource;
@@ -43,11 +48,17 @@ public abstract class BaseReference extends DataType implements IBaseReference, 
      */
     private transient IBaseResource resource;
 
-	public BaseReference(String theReference) {
-    	setReference(theReference);
-	}
+  public BaseReference(IModelContext context, String theReference) {
+    this.modelContext = context;
+    setReference(theReference);
+  }
 
-    public BaseReference(IIdType theReference) {
+  public BaseReference(String theReference) {
+    setReference(theReference);
+  }
+
+    public BaseReference(IModelContext context, IIdType theReference) {
+    this.modelContext = context;
     	if (theReference != null) {
     		setReference(theReference.getValue());
     	} else {
@@ -55,11 +66,30 @@ public abstract class BaseReference extends DataType implements IBaseReference, 
     	}
     }
 
-	public BaseReference(IAnyResource theResource) {
+    public BaseReference(IIdType theReference) {
+      this((IModelContext) null, theReference);
+    }
+
+	public BaseReference(IModelContext context, IAnyResource theResource) {
+    this.modelContext = context;
 		resource = theResource;
 	}
 
+	public BaseReference(IAnyResource theResource) {
+	  this((IModelContext) null, theResource);
+	}
+
 	public BaseReference() {
+	}
+
+	/**
+	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
+	 */
+	public BaseReference(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
 
 	/**
@@ -94,8 +124,8 @@ public abstract class BaseReference extends DataType implements IBaseReference, 
 	}
 
   @Override
-  public void copyValues(Element dst) {
-    super.copyValues(dst);
+  public void copyValues(Element dst, EnumSet<CopyObjectOptions> options) {
+    super.copyValues(dst, options);
     if (resource != null && dst instanceof BaseReference) {
       ((BaseReference) dst).setResource(resource);
     }

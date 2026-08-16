@@ -4,14 +4,20 @@ public boolean hasCoding(String system, String code) {
         return true;
     }
     return false;
-  } 
+  }
+
+  public CodeableConcept(IModelContext context, Coding code) {
+    super();
+    this.modelContext = context;
+    addCoding(code);
+  }
 
   public CodeableConcept(Coding code) {
     super();
     addCoding(code);
   }
-  
-  
+
+
   public boolean matches(CodeableConcept other) {
     for (Coding c : other.getCodingList()) {
       if (hasCoding(c.getSystem(), c.getCode())) {
@@ -57,7 +63,7 @@ public boolean hasCoding(String system, String code) {
         }
       }
       if (!done) {
-       res.getCodingList().add(c.copy());
+       res.getCodingList().add(c.copy(Base.COPY_DATA));
       }
     }
     for (Coding c : r.getCodingList()) {

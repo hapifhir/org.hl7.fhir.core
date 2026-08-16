@@ -59,10 +59,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+import org.hl7.fhir.model.IModelContext;
 import com.google.gson.*;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IIdType;
+import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.utilities.formats.IParser;
 import org.hl7.fhir.model.utilities.formats.JsonCreator;
@@ -80,7 +82,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.*;
 
 /**
  * General parser for JSON content. You instantiate an JsonParser of these, but you 
@@ -89,6 +91,11 @@ import java.util.List;
  * The two classes are separated to keep generated and manually maintained code apart.
  */
 public abstract class JsonParserBase extends ParserBase implements IParser {
+
+  public JsonParserBase(IModelContext modelContext) {
+    super(modelContext);
+  }
+
 
   protected JsonParserBase() {
     super();
@@ -196,6 +203,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
    */
   @Override
   public void compose(OutputStream stream, Resource resource) throws IOException {
+    resource.assertModelContext(modelContext);
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
     if (style == OutputStyle.CANONICAL) {
       json = new JsonCreatorCanonical(osw);
@@ -263,12 +271,14 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
    * @throws IOException 
    */
   public void compose(JsonCreator writer, Resource resource) throws IOException {
+    resource.assertModelContext(modelContext);
     json = writer;
     composeResource(resource);
   }
   
   @Override
   public void compose(OutputStream stream, DataType type, String rootName) throws IOException {
+    type.assertModelContext(modelContext);
     OutputStreamWriter osw = new OutputStreamWriter(stream, "UTF-8");
     if (style == OutputStyle.CANONICAL) {
       json = new JsonCreatorCanonical(osw);

@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import ca.uhn.fhir.model.api.IElement;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.parser.DataFormatException;
@@ -59,13 +64,40 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
     super();
   }
 
+  /**
+   * Constructor
+   *
+   * @param context the model context this object belongs to - all objects in a tree must share the same context
+   */
+  public Base64BinaryType(IModelContext context) {
+    this();
+    this.modelContext = context;
+  }
+
+  public Base64BinaryType(IModelContext context, byte[] theBytes) {
+    super();
+
+    this.modelContext = context;
+    setValue(theBytes);
+  }
+
+  public Base64BinaryType(IModelContext context, String theValue) {
+    super();
+
+    this.modelContext = context;
+    // Null values still result in non-null instance being created
+    setValueAsString(theValue);
+  }
+
   public Base64BinaryType(byte[] theBytes) {
     super();
+
     setValue(theBytes);
   }
 
   public Base64BinaryType(String theValue) {
     super();
+
     // Null values still result in non-null instance being created
     setValueAsString(theValue);
   }
@@ -86,13 +118,8 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
   }
 
   @Override
-  public Base64BinaryType copy() {
-    return new Base64BinaryType(getValue());
-  }
-
-  @Override
-  protected DataType typedCopy() {
-    return copy();
+  public Base64BinaryType copy(EnumSet<CopyObjectOptions> options) {
+    return new Base64BinaryType(modelContext, getValue());
   }
 
   public String fhirType() {

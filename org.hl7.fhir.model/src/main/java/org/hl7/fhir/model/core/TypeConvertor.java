@@ -3,6 +3,7 @@ package org.hl7.fhir.model.core;
 import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.Base;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;

@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 import org.hl7.fhir.utilities.Utilities;
@@ -50,9 +55,31 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
 		super();
 	}
 
-	public CodeType(String theCode) {
-		setValue(theCode);
+	/**
+	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
+	 */
+	public CodeType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
+
+  public CodeType(IModelContext context, String theCode) {
+    this.modelContext = context;
+    setValue(theCode);
+  }
+
+  public CodeType(String theCode) {
+    setValue(theCode);
+  }
+
+  public CodeType(IModelContext context, String theCode, Element source) {
+    this.modelContext = context;
+    setValue(theCode);
+    setId(source.getId());
+    getExtension().addAll(source.getExtension());
+  }
 
   public CodeType(String theCode, Element source) {
     setValue(theCode);
@@ -83,9 +110,9 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
 	}
 
 	@Override
-	public CodeType copy() {
-		CodeType ret = new CodeType(getValue());
-    copyValues(ret);
+	public CodeType copy(EnumSet<CopyObjectOptions> options) {
+		CodeType ret = new CodeType(modelContext, getValue());
+    copyValues(ret, options);
     return ret;
 	}
 

@@ -121,7 +121,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
 
     if (!analysis.isAbstract() || ti != analysis.getRootType()) {
       parser.append("  protected "+stn+" parse"+pfx+tn+"(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {\r\n");
-      parser.append("    "+stn+" res = new "+stn+"();\r\n");      
+      parser.append("    "+stn+" res = new "+stn+"(modelContext);\r\n");      
       if (ti == analysis.getRootType() && analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE) {
         parser.append("    parseResourceAttributes(xpp, res);\r\n");
       } else {
@@ -210,8 +210,8 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         } else {
           en = analysis.getClassName()+"."+ei.getName();
         }
-        prsr = "parseEnumeration(xpp, "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory())"; // en+".fromCode(parseString(xpp))";
-        // parseEnumeration(xpp, Narrative.NarrativeStatus.additional, new Narrative.NarrativeStatusEnumFactory())
+        prsr = "parseEnumeration(xpp, "+en+".NULL, new "+en.substring(0, en.indexOf("."))+"."+en.substring(en.indexOf(".")+1)+"EnumFactory(modelContext))"; // en+".fromCode(parseString(xpp))";
+        // parseEnumeration(xpp, Narrative.NarrativeStatus.additional, new Narrative.NarrativeStatusEnumFactory(modelContext))
       } else {   
         String tn = ed.getUserString("java.type");
         if (name.equals("extension")) {
@@ -371,7 +371,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         if (en != null) {
           composer.append("      if (element.has"+upFirst(getElementName(name, false))+"()) \r\n");
           composer.append("        for (Enumeration<"+en+"> e : element.get"+upFirst(getElementName(name, false))+"List()) \r\n");
-          composer.append("          composeEnumeration(\""+escapeJavaString(name)+"\", e, new "+en+"EnumFactory());\r\n");
+          composer.append("          composeEnumeration(\""+escapeJavaString(name)+"\", e, new "+en+"EnumFactory(modelContext));\r\n");
         } else {
           String stn = ed.isInlineType() || ed.hasContentReference() ? analysis.getClassName()+"."+tn : tn;
 //          String pfx = ed.isInlineType() || ed.hasContentReference() ? analysis.getClassName() : "";
@@ -391,7 +391,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         }
       } else if (en != null) {
         composer.append("    if (element.has"+upFirst(getElementName(name, false))+"Element())\r\n"); 
-        composer.append("      composeEnumeration(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+en+"EnumFactory());\r\n");
+        composer.append("      composeEnumeration(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element(), new "+en+"EnumFactory(modelContext));\r\n");
       } else if (!"xhtml".equals(ed.typeSummary()) && (isJavaPrimitive(ed) || ed.typeSummary().startsWith("canonical("))) {
         composer.append("    if (element.has"+upFirst(getElementName(name, false))+"Element()) {\r\n");
         composer.append("      "+comp+"(\""+escapeJavaString(name)+"\", element.get"+upFirst(getElementName(name, false))+"Element());\r\n");

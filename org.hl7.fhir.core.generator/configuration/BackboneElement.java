@@ -71,7 +71,7 @@
     super.copyExtensions(src,urls);
     for (Extension e : src.getModifierExtensionList()) {
       if (Utilities.existsInList(e.getUrl(), urls)) {
-        addModifierExtension(e.copy());
+        addModifierExtension(e.copy(Base.COPY_DATA));
       }
     }
   }

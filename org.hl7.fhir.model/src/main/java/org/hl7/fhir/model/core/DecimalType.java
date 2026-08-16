@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -57,15 +62,27 @@ public class DecimalType extends PrimitiveType<BigDecimal> implements Comparable
 
 	/**
 	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public DecimalType(BigDecimal theValue) {
+	public DecimalType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
+	}
+
+	/**
+	 * Constructor
+	 */
+	public DecimalType(IModelContext context, BigDecimal theValue) {
+    this.modelContext = context;
 		setValue(theValue);
 	}
 
 	/**
 	 * Constructor
 	 */
-	public DecimalType(double theValue) {
+	public DecimalType(IModelContext context, double theValue) {
+    this.modelContext = context;
 		// Use the valueOf here because the constructor gives wacky precision
 		// changes due to the floating point conversion
 		setValue(BigDecimal.valueOf(theValue));
@@ -74,16 +91,48 @@ public class DecimalType extends PrimitiveType<BigDecimal> implements Comparable
 	/**
 	 * Constructor
 	 */
-	public DecimalType(long theValue) {
+	public DecimalType(IModelContext context, long theValue) {
+    this.modelContext = context;
 		setValue(theValue);
 	}
 
-	/**
-	 * Constructor
-	 */
-	public DecimalType(String theValue) {
-		setValueAsString(theValue);
-	}
+  /**
+   * Constructor
+   */
+  public DecimalType(IModelContext context, String theValue) {
+    this.modelContext = context;
+    setValueAsString(theValue);
+  }
+
+  /**
+   * Constructor
+   */
+  public DecimalType(BigDecimal theValue) {
+    setValue(theValue);
+  }
+
+  /**
+   * Constructor
+   */
+  public DecimalType(double theValue) {
+    // Use the valueOf here because the constructor gives wacky precision
+    // changes due to the floating point conversion
+    setValue(BigDecimal.valueOf(theValue));
+  }
+
+  /**
+   * Constructor
+   */
+  public DecimalType(long theValue) {
+    setValue(theValue);
+  }
+
+  /**
+   * Constructor
+   */
+  public DecimalType(String theValue) {
+    setValueAsString(theValue);
+  }
 
 	@Override
 	public int compareTo(DecimalType theObj) {
@@ -177,9 +226,9 @@ public class DecimalType extends PrimitiveType<BigDecimal> implements Comparable
   }
 
 	@Override
-	public DecimalType copy() {
-		DecimalType ret = new DecimalType(getValue());
-    copyValues(ret);
+	public DecimalType copy(EnumSet<CopyObjectOptions> options) {
+		DecimalType ret = new DecimalType(modelContext, getValue());
+    copyValues(ret, options);
     return ret;
 	}
 

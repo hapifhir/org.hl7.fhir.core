@@ -31,6 +31,11 @@ package org.hl7.fhir.model.core;
 
 
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import java.net.URI;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
@@ -52,25 +57,47 @@ public class OidType extends UriType {
 
 	/**
 	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public OidType(String theValue) {
-		super(theValue);
+	public OidType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
 
-	/**
+  /**
+   * Constructor
+   */
+  public OidType(IModelContext context, String theValue) {
+    super(context, theValue);
+  }
+
+
+  /**
+   * Constructor
+   */
+  public OidType(String theValue) {
+    super(theValue);
+  }
+
+  /**
 	 * Constructor
 	 */
+	public OidType(IModelContext context, URI theValue) {
+		super(context, theValue);
+	}
+
 	public OidType(URI theValue) {
-		super(theValue);
+	  this((IModelContext) null, theValue);
 	}
 
 	/**
 	 * Constructor
 	 */
 	@Override
-	public OidType copy() {
+	public OidType copy(EnumSet<CopyObjectOptions> options) {
 		OidType ret = new OidType(getValue());
-    copyValues(ret);
+    copyValues(ret, options);
     return ret;
 	}
 

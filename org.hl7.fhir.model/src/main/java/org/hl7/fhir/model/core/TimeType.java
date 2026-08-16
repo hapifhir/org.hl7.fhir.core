@@ -1,5 +1,10 @@
 package org.hl7.fhir.model.core;
 
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.Base.CopyObjectOptions;
+import org.hl7.fhir.model.Base;
+import java.util.EnumSet;
+
 import java.util.Calendar;
 
 import org.hl7.fhir.utilities.Utilities;
@@ -55,15 +60,33 @@ public class TimeType extends PrimitiveType<String> {
 	public TimeType() {
 		// nothing
 	}
-	
+
 	/**
 	 * Constructor
+	 *
+	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public TimeType(String theValue) {
-		setValue(theValue);
+	public TimeType(IModelContext context) {
+	  this();
+	  this.modelContext = context;
 	}
 
-	@Override
+  /**
+   * Constructor
+   */
+  public TimeType(IModelContext context, String theValue) {
+    this.modelContext = context;
+    setValue(theValue);
+  }
+
+  /**
+   * Constructor
+   */
+  public TimeType(String theValue) {
+    setValue(theValue);
+  }
+
+  @Override
 	protected String parse(String theValue) {
 		return theValue;
 	}
@@ -74,9 +97,9 @@ public class TimeType extends PrimitiveType<String> {
 	}
 
 	@Override
-	public TimeType copy() {
-		TimeType ret = new TimeType(getValue());
-    copyValues(ret);
+	public TimeType copy(EnumSet<CopyObjectOptions> options) {
+		TimeType ret = new TimeType(modelContext, getValue());
+    copyValues(ret, options);
     return ret;
 	}
 

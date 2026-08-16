@@ -142,7 +142,7 @@
    public void copyExtensions(org.hl7.fhir.model.core.Element src, String... urls) {
      for (Extension e : src.getExtensionList()) {
        if (Utilities.existsInList(e.getUrl(), urls)) {
-         addExtension(e.copy());
+         addExtension(e.copy(Base.COPY_DATA));
        }
      }
    }
@@ -150,7 +150,7 @@
    public void copyNewExtensions(org.hl7.fhir.model.core.Element src, String... urls) {
      for (Extension e : src.getExtensionList()) {
        if (Utilities.existsInList(e.getUrl(), urls) && !hasExtension(e.getUrl())) {
-         addExtension(e.copy());
+         addExtension(e.copy(Base.COPY_DATA));
        }
      }
    }
