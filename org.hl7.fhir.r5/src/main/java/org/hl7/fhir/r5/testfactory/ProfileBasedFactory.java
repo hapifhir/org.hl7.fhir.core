@@ -42,7 +42,7 @@ import org.hl7.fhir.r5.testfactory.TestDataFactory.DataTable;
 import org.hl7.fhir.r5.testfactory.dataprovider.BaseDataTableProvider;
 import org.hl7.fhir.r5.testfactory.dataprovider.TableDataProvider;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
@@ -54,7 +54,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
  *  see https://build.fhir.org/ig/FHIR/ig-guidance/testfactory.html for doco
  *  
  */
-@MarkedToMoveToAdjunctPackage
+
 public class ProfileBasedFactory {
 
   private BaseDataTableProvider baseData;

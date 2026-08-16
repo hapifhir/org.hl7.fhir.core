@@ -12,11 +12,11 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.utils.CodingUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.regex.RegexTimeout;
 import org.hl7.fhir.utilities.Utilities;
 
-@MarkedToMoveToAdjunctPackage
+
 public class PropertyFilter extends ConceptFilter {
 
   private ConceptSetFilterComponent filter;

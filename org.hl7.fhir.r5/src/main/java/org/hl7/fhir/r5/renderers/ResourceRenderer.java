@@ -32,7 +32,7 @@ import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
@@ -41,7 +41,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public abstract class ResourceRenderer extends DataRenderer {
 
   private static final String EXT_NS_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url";

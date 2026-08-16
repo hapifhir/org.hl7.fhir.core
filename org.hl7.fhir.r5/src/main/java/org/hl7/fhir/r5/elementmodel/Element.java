@@ -79,7 +79,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * @author Grahame Grieve
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 public class Element extends Base implements NamedItem {
 
   public class SliceDefinition {

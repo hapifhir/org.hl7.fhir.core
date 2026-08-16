@@ -123,7 +123,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  * @author Grahame
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ProfileUtilities {
 

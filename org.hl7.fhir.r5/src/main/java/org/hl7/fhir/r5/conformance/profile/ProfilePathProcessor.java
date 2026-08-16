@@ -35,7 +35,7 @@ import lombok.Getter;
 import lombok.With;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ProfilePathProcessor {
 

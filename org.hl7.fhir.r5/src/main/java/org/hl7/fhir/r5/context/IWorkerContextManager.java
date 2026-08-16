@@ -4,7 +4,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.IPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-@MarkedToMoveToAdjunctPackage
+
 public interface IWorkerContextManager {
 
   interface IPackageLoadingTracker {
