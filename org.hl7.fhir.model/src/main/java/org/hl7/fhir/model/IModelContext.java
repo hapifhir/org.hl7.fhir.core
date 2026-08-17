@@ -7,8 +7,14 @@ package org.hl7.fhir.model;
  */
 public interface IModelContext {
   /**
-   * This returns the version that is in use - a draft version of R6 or more recent
+   * This returns the main/core version that is in use - a draft version of R6 or more recent
    * @return
    */
   public String getVersion();
+
+  /**
+   * Handle to a class that holds information about the support for the FHIR standard in this
+   * @return
+   */
+  public ModelContextInformation getContextInformation();
 }

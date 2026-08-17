@@ -105,9 +105,9 @@ public class HealthcareService extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public HealthcareServiceEligibilityComponent(IModelContext context) {
+      public HealthcareServiceEligibilityComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -478,22 +478,22 @@ public class HealthcareService extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 
@@ -720,9 +720,9 @@ public class HealthcareService extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public HealthcareService(IModelContext context) {
+    public HealthcareService(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -2381,111 +2381,111 @@ public class HealthcareService extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.active != null) {
-          this.active.setModelContext(context);
+          this.active.setModelContext(modelContext);
         }
         if (this.providedBy != null) {
-          this.providedBy.setModelContext(context);
+          this.providedBy.setModelContext(modelContext);
         }
         if (this.offeredInList != null) {
           for (Reference i : this.offeredInList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.specialtyList != null) {
           for (CodeableConcept i : this.specialtyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.locationList != null) {
           for (Reference i : this.locationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
         if (this.extraDetails != null) {
-          this.extraDetails.setModelContext(context);
+          this.extraDetails.setModelContext(modelContext);
         }
         if (this.photo != null) {
-          this.photo.setModelContext(context);
+          this.photo.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ExtendedContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.coverageAreaList != null) {
           for (Reference i : this.coverageAreaList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.serviceProvisionCodeList != null) {
           for (CodeableConcept i : this.serviceProvisionCodeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.eligibilityList != null) {
           for (HealthcareServiceEligibilityComponent i : this.eligibilityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.programList != null) {
           for (CodeableConcept i : this.programList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.characteristicList != null) {
           for (CodeableConcept i : this.characteristicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.communicationList != null) {
           for (CodeableConcept i : this.communicationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.referralMethodList != null) {
           for (CodeableConcept i : this.referralMethodList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.referralRequired != null) {
-          this.referralRequired.setModelContext(context);
+          this.referralRequired.setModelContext(modelContext);
         }
         if (this.appointmentRequired != null) {
-          this.appointmentRequired.setModelContext(context);
+          this.appointmentRequired.setModelContext(modelContext);
         }
         if (this.availability != null) {
-          this.availability.setModelContext(context);
+          this.availability.setModelContext(modelContext);
         }
         if (this.endpointList != null) {
           for (Reference i : this.endpointList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2531,8 +2531,8 @@ public class HealthcareService extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.HealthcareService;
+  public String getResourceType() {
+    return "HealthcareService";
    }
 
  /**

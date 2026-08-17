@@ -131,8 +131,8 @@ public class Observation extends DomainResource {
 
   public static class TriggeredBytypeEnumFactory implements EnumFactory<TriggeredBytype> {
     private final IModelContext modelContext;
-    public TriggeredBytypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public TriggeredBytypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public TriggeredBytypeEnumFactory() {
       this(null);
@@ -217,9 +217,9 @@ public class Observation extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ObservationTriggeredByComponent(IModelContext context) {
+      public ObservationTriggeredByComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -227,9 +227,9 @@ public class Observation extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ObservationTriggeredByComponent(IModelContext context, Reference observation, TriggeredBytype type) {
+      public ObservationTriggeredByComponent(IModelContext modelContext, Reference observation, TriggeredBytype type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setObservation(observation);
         this.setType(type);
       }
@@ -481,19 +481,19 @@ public class Observation extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.observation != null) {
-          this.observation.setModelContext(context);
+          this.observation.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.reason != null) {
-          this.reason.setModelContext(context);
+          this.reason.setModelContext(modelContext);
         }
       }
 
@@ -598,9 +598,9 @@ public class Observation extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ObservationReferenceRangeComponent(IModelContext context) {
+      public ObservationReferenceRangeComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1039,33 +1039,33 @@ public class Observation extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.low != null) {
-          this.low.setModelContext(context);
+          this.low.setModelContext(modelContext);
         }
         if (this.high != null) {
-          this.high.setModelContext(context);
+          this.high.setModelContext(modelContext);
         }
         if (this.normalValue != null) {
-          this.normalValue.setModelContext(context);
+          this.normalValue.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.appliesToList != null) {
           for (CodeableConcept i : this.appliesToList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.age != null) {
-          this.age.setModelContext(context);
+          this.age.setModelContext(modelContext);
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
       }
 
@@ -1157,9 +1157,9 @@ public class Observation extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ObservationComponentComponent(IModelContext context) {
+      public ObservationComponentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1167,9 +1167,9 @@ public class Observation extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ObservationComponentComponent(IModelContext context, CodeableConcept code) {
+      public ObservationComponentComponent(IModelContext modelContext, CodeableConcept code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -1748,28 +1748,28 @@ public class Observation extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.dataAbsentReason != null) {
-          this.dataAbsentReason.setModelContext(context);
+          this.dataAbsentReason.setModelContext(modelContext);
         }
         if (this.interpretationList != null) {
           for (CodeableConcept i : this.interpretationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.referenceRangeList != null) {
           for (ObservationReferenceRangeComponent i : this.referenceRangeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2042,9 +2042,9 @@ public class Observation extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Observation(IModelContext context) {
+    public Observation(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2052,9 +2052,9 @@ public class Observation extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Observation(IModelContext context, ObservationStatus status, CodeableConcept code) {
+    public Observation(IModelContext modelContext, ObservationStatus status, CodeableConcept code) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setCode(code);
     }
@@ -4262,131 +4262,131 @@ public class Observation extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.triggeredByList != null) {
           for (ObservationTriggeredByComponent i : this.triggeredByList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.partOfList != null) {
           for (Reference i : this.partOfList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReason != null) {
-          this.statusReason.setModelContext(context);
+          this.statusReason.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.focusList != null) {
           for (Reference i : this.focusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.organizer != null) {
-          this.organizer.setModelContext(context);
+          this.organizer.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.effective != null) {
-          this.effective.setModelContext(context);
+          this.effective.setModelContext(modelContext);
         }
         if (this.issued != null) {
-          this.issued.setModelContext(context);
+          this.issued.setModelContext(modelContext);
         }
         if (this.performerList != null) {
           for (Reference i : this.performerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.dataAbsentReason != null) {
-          this.dataAbsentReason.setModelContext(context);
+          this.dataAbsentReason.setModelContext(modelContext);
         }
         if (this.interpretationList != null) {
           for (CodeableConcept i : this.interpretationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.contextList != null) {
           for (CodeableReference i : this.contextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.bodySite != null) {
-          this.bodySite.setModelContext(context);
+          this.bodySite.setModelContext(modelContext);
         }
         if (this.bodyStructureList != null) {
           for (CodeableReference i : this.bodyStructureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.method != null) {
-          this.method.setModelContext(context);
+          this.method.setModelContext(modelContext);
         }
         if (this.specimen != null) {
-          this.specimen.setModelContext(context);
+          this.specimen.setModelContext(modelContext);
         }
         if (this.device != null) {
-          this.device.setModelContext(context);
+          this.device.setModelContext(modelContext);
         }
         if (this.supportingDeviceList != null) {
           for (CodeableReference i : this.supportingDeviceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.referenceRangeList != null) {
           for (ObservationReferenceRangeComponent i : this.referenceRangeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.hasMemberList != null) {
           for (Reference i : this.hasMemberList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.derivedFromList != null) {
           for (Reference i : this.derivedFromList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.componentList != null) {
           for (ObservationComponentComponent i : this.componentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4434,8 +4434,8 @@ public class Observation extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Observation;
+  public String getResourceType() {
+    return "Observation";
    }
 
  /**

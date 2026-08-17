@@ -161,8 +161,8 @@ public class CompartmentDefinition extends CanonicalResource {
 
   public static class CompartmentTypeEnumFactory implements EnumFactory<CompartmentType> {
     private final IModelContext modelContext;
-    public CompartmentTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public CompartmentTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public CompartmentTypeEnumFactory() {
       this(null);
@@ -1928,8 +1928,8 @@ public class CompartmentDefinition extends CanonicalResource {
 
   public static class ExtendedResourceTypesEnumFactory implements EnumFactory<ExtendedResourceTypes> {
     private final IModelContext modelContext;
-    public ExtendedResourceTypesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ExtendedResourceTypesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ExtendedResourceTypesEnumFactory() {
       this(null);
@@ -2999,9 +2999,9 @@ public class CompartmentDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CompartmentDefinitionResourceComponent(IModelContext context) {
+      public CompartmentDefinitionResourceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3009,9 +3009,9 @@ public class CompartmentDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CompartmentDefinitionResourceComponent(IModelContext context, ExtendedResourceTypes code) {
+      public CompartmentDefinitionResourceComponent(IModelContext modelContext, ExtendedResourceTypes code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -3363,24 +3363,24 @@ public class CompartmentDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.paramList != null) {
           for (StringType i : this.paramList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.startParam != null) {
-          this.startParam.setModelContext(context);
+          this.startParam.setModelContext(modelContext);
         }
         if (this.endParam != null) {
-          this.endParam.setModelContext(context);
+          this.endParam.setModelContext(modelContext);
         }
       }
 
@@ -3547,9 +3547,9 @@ public class CompartmentDefinition extends CanonicalResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public CompartmentDefinition(IModelContext context) {
+    public CompartmentDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -3557,9 +3557,9 @@ public class CompartmentDefinition extends CanonicalResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public CompartmentDefinition(IModelContext context, String url, String name, PublicationStatus status, CompartmentType code, boolean search) {
+    public CompartmentDefinition(IModelContext modelContext, String url, String name, PublicationStatus status, CompartmentType code, boolean search) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setUrl(url);
       this.setName(name);
       this.setStatus(status);
@@ -4894,63 +4894,63 @@ public class CompartmentDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.search != null) {
-          this.search.setModelContext(context);
+          this.search.setModelContext(modelContext);
         }
         if (this.resourceList != null) {
           for (CompartmentDefinitionResourceComponent i : this.resourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4992,8 +4992,8 @@ public class CompartmentDefinition extends CanonicalResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.CompartmentDefinition;
+  public String getResourceType() {
+    return "CompartmentDefinition";
    }
 
  /**

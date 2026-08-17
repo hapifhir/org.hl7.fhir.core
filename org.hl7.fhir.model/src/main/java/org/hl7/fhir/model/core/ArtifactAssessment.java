@@ -151,8 +151,8 @@ public class ArtifactAssessment extends DomainResource {
 
   public static class ArtifactAssessmentDispositionEnumFactory implements EnumFactory<ArtifactAssessmentDisposition> {
     private final IModelContext modelContext;
-    public ArtifactAssessmentDispositionEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ArtifactAssessmentDispositionEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ArtifactAssessmentDispositionEnumFactory() {
       this(null);
@@ -352,8 +352,8 @@ public class ArtifactAssessment extends DomainResource {
 
   public static class ArtifactAssessmentWorkflowStatusEnumFactory implements EnumFactory<ArtifactAssessmentWorkflowStatus> {
     private final IModelContext modelContext;
-    public ArtifactAssessmentWorkflowStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ArtifactAssessmentWorkflowStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ArtifactAssessmentWorkflowStatusEnumFactory() {
       this(null);
@@ -473,9 +473,9 @@ public class ArtifactAssessment extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ArtifactAssessmentRelatesToComponent(IModelContext context) {
+      public ArtifactAssessmentRelatesToComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -483,9 +483,9 @@ public class ArtifactAssessment extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ArtifactAssessmentRelatesToComponent(IModelContext context, CodeableConcept type, DataType target) {
+      public ArtifactAssessmentRelatesToComponent(IModelContext modelContext, CodeableConcept type, DataType target) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setTarget(target);
       }
@@ -740,16 +740,16 @@ public class ArtifactAssessment extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.target != null) {
-          this.target.setModelContext(context);
+          this.target.setModelContext(modelContext);
         }
       }
 
@@ -865,9 +865,9 @@ public class ArtifactAssessment extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ArtifactAssessmentContentComponent(IModelContext context) {
+      public ArtifactAssessmentContentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1516,46 +1516,46 @@ public class ArtifactAssessment extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.summary != null) {
-          this.summary.setModelContext(context);
+          this.summary.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.classifierList != null) {
           for (CodeableConcept i : this.classifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
         if (this.authorList != null) {
           for (Reference i : this.authorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.pathList != null) {
           for (UriType i : this.pathList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatesToList != null) {
           for (ArtifactAssessmentRelatesToComponent i : this.relatesToList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.freeToShare != null) {
-          this.freeToShare.setModelContext(context);
+          this.freeToShare.setModelContext(modelContext);
         }
         if (this.componentList != null) {
           for (ArtifactAssessmentContentComponent i : this.componentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1696,9 +1696,9 @@ public class ArtifactAssessment extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ArtifactAssessment(IModelContext context) {
+    public ArtifactAssessment(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1706,9 +1706,9 @@ public class ArtifactAssessment extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ArtifactAssessment(IModelContext context, DataType artifact) {
+    public ArtifactAssessment(IModelContext modelContext, DataType artifact) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setArtifact(artifact);
     }
 
@@ -2657,52 +2657,52 @@ public class ArtifactAssessment extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.citeAs != null) {
-          this.citeAs.setModelContext(context);
+          this.citeAs.setModelContext(modelContext);
         }
         if (this.artifact != null) {
-          this.artifact.setModelContext(context);
+          this.artifact.setModelContext(modelContext);
         }
         if (this.relatesToList != null) {
           for (ArtifactAssessmentRelatesToComponent i : this.relatesToList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.approvalDate != null) {
-          this.approvalDate.setModelContext(context);
+          this.approvalDate.setModelContext(modelContext);
         }
         if (this.lastReviewDate != null) {
-          this.lastReviewDate.setModelContext(context);
+          this.lastReviewDate.setModelContext(modelContext);
         }
         if (this.contentList != null) {
           for (ArtifactAssessmentContentComponent i : this.contentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.workflowStatus != null) {
-          this.workflowStatus.setModelContext(context);
+          this.workflowStatus.setModelContext(modelContext);
         }
         if (this.disposition != null) {
-          this.disposition.setModelContext(context);
+          this.disposition.setModelContext(modelContext);
         }
       }
 
@@ -2741,8 +2741,8 @@ public class ArtifactAssessment extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.ArtifactAssessment;
+  public String getResourceType() {
+    return "ArtifactAssessment";
    }
 
  /**

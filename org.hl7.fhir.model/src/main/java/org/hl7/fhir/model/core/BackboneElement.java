@@ -85,9 +85,9 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public BackboneElement(IModelContext context) {
+    public BackboneElement(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -221,14 +221,14 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.modifierExtensionList != null) {
           for (Extension i : this.modifierExtensionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }

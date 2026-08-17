@@ -129,8 +129,8 @@ public class Address extends DataType implements ICompositeType {
 
   public static class AddressTypeEnumFactory implements EnumFactory<AddressType> {
     private final IModelContext modelContext;
-    public AddressTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AddressTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AddressTypeEnumFactory() {
       this(null);
@@ -268,8 +268,8 @@ public class Address extends DataType implements ICompositeType {
 
   public static class AddressUseEnumFactory implements EnumFactory<AddressUse> {
     private final IModelContext modelContext;
-    public AddressUseEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AddressUseEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AddressUseEnumFactory() {
       this(null);
@@ -414,9 +414,9 @@ public class Address extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Address(IModelContext context) {
+    public Address(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1179,42 +1179,42 @@ public class Address extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.use != null) {
-          this.use.setModelContext(context);
+          this.use.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
         if (this.lineList != null) {
           for (StringType i : this.lineList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.city != null) {
-          this.city.setModelContext(context);
+          this.city.setModelContext(modelContext);
         }
         if (this.district != null) {
-          this.district.setModelContext(context);
+          this.district.setModelContext(modelContext);
         }
         if (this.state != null) {
-          this.state.setModelContext(context);
+          this.state.setModelContext(modelContext);
         }
         if (this.postalCode != null) {
-          this.postalCode.setModelContext(context);
+          this.postalCode.setModelContext(modelContext);
         }
         if (this.country != null) {
-          this.country.setModelContext(context);
+          this.country.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 

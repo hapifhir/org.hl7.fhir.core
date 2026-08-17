@@ -6,9 +6,9 @@ public boolean hasCoding(String system, String code) {
     return false;
   }
 
-  public CodeableConcept(IModelContext context, Coding code) {
+  public CodeableConcept(IModelContext modelContext, Coding code) {
     super();
-    this.modelContext = context;
+    this.modelContext = modelContext;
     addCoding(code);
   }
 

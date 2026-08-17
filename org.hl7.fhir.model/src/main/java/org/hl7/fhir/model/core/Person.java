@@ -141,8 +141,8 @@ public class Person extends DomainResource {
 
   public static class IdentityAssuranceLevelEnumFactory implements EnumFactory<IdentityAssuranceLevel> {
     private final IModelContext modelContext;
-    public IdentityAssuranceLevelEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public IdentityAssuranceLevelEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public IdentityAssuranceLevelEnumFactory() {
       this(null);
@@ -226,9 +226,9 @@ public class Person extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PersonCommunicationComponent(IModelContext context) {
+      public PersonCommunicationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -236,9 +236,9 @@ public class Person extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PersonCommunicationComponent(IModelContext context, CodeableConcept language) {
+      public PersonCommunicationComponent(IModelContext modelContext, CodeableConcept language) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setLanguage(language);
       }
 
@@ -417,16 +417,16 @@ public class Person extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.language != null) {
-          this.language.setModelContext(context);
+          this.language.setModelContext(modelContext);
         }
         if (this.preferred != null) {
-          this.preferred.setModelContext(context);
+          this.preferred.setModelContext(modelContext);
         }
       }
 
@@ -492,9 +492,9 @@ public class Person extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PersonLinkComponent(IModelContext context) {
+      public PersonLinkComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -502,9 +502,9 @@ public class Person extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PersonLinkComponent(IModelContext context, Reference target) {
+      public PersonLinkComponent(IModelContext modelContext, Reference target) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setTarget(target);
       }
 
@@ -688,16 +688,16 @@ public class Person extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.target != null) {
-          this.target.setModelContext(context);
+          this.target.setModelContext(modelContext);
         }
         if (this.assurance != null) {
-          this.assurance.setModelContext(context);
+          this.assurance.setModelContext(modelContext);
         }
       }
 
@@ -839,9 +839,9 @@ public class Person extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Person(IModelContext context) {
+    public Person(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1779,62 +1779,62 @@ public class Person extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.active != null) {
-          this.active.setModelContext(context);
+          this.active.setModelContext(modelContext);
         }
         if (this.nameList != null) {
           for (HumanName i : this.nameList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.telecomList != null) {
           for (ContactPoint i : this.telecomList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.gender != null) {
-          this.gender.setModelContext(context);
+          this.gender.setModelContext(modelContext);
         }
         if (this.birthDate != null) {
-          this.birthDate.setModelContext(context);
+          this.birthDate.setModelContext(modelContext);
         }
         if (this.deceased != null) {
-          this.deceased.setModelContext(context);
+          this.deceased.setModelContext(modelContext);
         }
         if (this.addressList != null) {
           for (Address i : this.addressList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.maritalStatus != null) {
-          this.maritalStatus.setModelContext(context);
+          this.maritalStatus.setModelContext(modelContext);
         }
         if (this.photoList != null) {
           for (Attachment i : this.photoList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.communicationList != null) {
           for (PersonCommunicationComponent i : this.communicationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.managingOrganization != null) {
-          this.managingOrganization.setModelContext(context);
+          this.managingOrganization.setModelContext(modelContext);
         }
         if (this.linkList != null) {
           for (PersonLinkComponent i : this.linkList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1872,8 +1872,8 @@ public class Person extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Person;
+  public String getResourceType() {
+    return "Person";
    }
 
  /**

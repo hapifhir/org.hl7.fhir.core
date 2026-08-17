@@ -142,8 +142,8 @@ public class Narrative extends BaseNarrative implements INarrative {
 
   public static class NarrativeStatusEnumFactory implements EnumFactory<NarrativeStatus> {
     private final IModelContext modelContext;
-    public NarrativeStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public NarrativeStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public NarrativeStatusEnumFactory() {
       this(null);
@@ -225,9 +225,9 @@ public class Narrative extends BaseNarrative implements INarrative {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Narrative(IModelContext context) {
+    public Narrative(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -235,9 +235,9 @@ public class Narrative extends BaseNarrative implements INarrative {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Narrative(IModelContext context, NarrativeStatus status, XhtmlNode div) {
+    public Narrative(IModelContext modelContext, NarrativeStatus status, XhtmlNode div) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setDiv(div);
     }
@@ -412,13 +412,13 @@ public class Narrative extends BaseNarrative implements INarrative {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
       }
 

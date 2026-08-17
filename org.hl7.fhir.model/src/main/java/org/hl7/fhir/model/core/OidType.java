@@ -60,16 +60,16 @@ public class OidType extends UriType {
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public OidType(IModelContext context) {
+	public OidType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
   /**
    * Constructor
    */
-  public OidType(IModelContext context, String theValue) {
-    super(context, theValue);
+  public OidType(IModelContext modelContext, String theValue) {
+    super(modelContext, theValue);
   }
 
 
@@ -83,8 +83,8 @@ public class OidType extends UriType {
   /**
 	 * Constructor
 	 */
-	public OidType(IModelContext context, URI theValue) {
-		super(context, theValue);
+	public OidType(IModelContext modelContext, URI theValue) {
+		super(modelContext, theValue);
 	}
 
 	public OidType(URI theValue) {

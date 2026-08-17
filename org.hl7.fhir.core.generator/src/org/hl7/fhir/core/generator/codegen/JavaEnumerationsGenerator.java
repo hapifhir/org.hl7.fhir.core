@@ -220,8 +220,8 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 		
 		write("  public static class "+name+"EnumFactory implements EnumFactory<"+name+"> {\r\n");
 		write("    private final IModelContext modelContext;\r\n");
-		write("    public "+name+"EnumFactory(IModelContext context) {\r\n");
-		write("      this.modelContext = context;\r\n");
+		write("    public "+name+"EnumFactory(IModelContext modelContext) {\r\n");
+		write("      this.modelContext = modelContext;\r\n");
 		write("    }\r\n");
 		write("    public "+name+"EnumFactory() {\r\n");
 		write("      this(null);\r\n");

@@ -79,16 +79,16 @@ public class InstantType extends BaseDateTimeType {
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public InstantType(IModelContext context) {
+	public InstantType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
 	/**
 	 * Create a new DateTimeDt
 	 */
-	public InstantType(IModelContext context, Calendar theCalendar) {
-		super(context, theCalendar.getTime(), DEFAULT_PRECISION, theCalendar.getTimeZone());
+	public InstantType(IModelContext modelContext, Calendar theCalendar) {
+		super(modelContext, theCalendar.getTime(), DEFAULT_PRECISION, theCalendar.getTimeZone());
 	}
 
 	public InstantType(Calendar theCalendar) {
@@ -101,8 +101,8 @@ public class InstantType extends BaseDateTimeType {
    * @throws DataFormatException
    *             If the specified precision is not allowed for this type
    */
-  public InstantType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
-    super(context, theDate, thePrecision, theTimezone);
+  public InstantType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
+    super(modelContext, theDate, thePrecision, theTimezone);
   }
 
   /**
@@ -122,8 +122,8 @@ public class InstantType extends BaseDateTimeType {
 	 * a DateTime with only a year, and this constructor will convert to an InstantDt with 
 	 * milliseconds precision).
 	 */
-	public InstantType(IModelContext context, BaseDateTimeType theDateTime) {
-    this.modelContext = context;
+	public InstantType(IModelContext modelContext, BaseDateTimeType theDateTime) {
+    this.modelContext = modelContext;
 		// Do not call super(foo) here, we don't want to trigger a DataFormatException
 		setValue(theDateTime.getValue());
 		setPrecision(DEFAULT_PRECISION);
@@ -137,8 +137,8 @@ public class InstantType extends BaseDateTimeType {
 	/**
 	 * Create a new DateTimeDt with the given date/time and {@link TemporalPrecisionEnum#MILLI} precision
 	 */
-	public InstantType(IModelContext context, Date theDate) {
-		super(context, theDate, DEFAULT_PRECISION, TimeZone.getDefault());
+	public InstantType(IModelContext modelContext, Date theDate) {
+		super(modelContext, theDate, DEFAULT_PRECISION, TimeZone.getDefault());
 	}
 
 	public InstantType(Date theDate) {
@@ -153,8 +153,8 @@ public class InstantType extends BaseDateTimeType {
    * <li>{@link TemporalPrecisionEnum#MILLI}
    * </ul>
    */
-  public InstantType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision) {
-    this.modelContext = context;
+  public InstantType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision) {
+    this.modelContext = modelContext;
     setValue(theDate);
     setPrecision(thePrecision);
     setTimeZone(TimeZone.getDefault());
@@ -182,8 +182,8 @@ public class InstantType extends BaseDateTimeType {
    *            format according to the FHIR specification
    * @throws DataFormatException
    */
-  public InstantType(IModelContext context, String theString) {
-    super(context, theString);
+  public InstantType(IModelContext modelContext, String theString) {
+    super(modelContext, theString);
   }
 
   /**

@@ -69,22 +69,22 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context
    */
-  public Base64BinaryType(IModelContext context) {
+  public Base64BinaryType(IModelContext modelContext) {
     this();
-    this.modelContext = context;
+    this.modelContext = modelContext;
   }
 
-  public Base64BinaryType(IModelContext context, byte[] theBytes) {
+  public Base64BinaryType(IModelContext modelContext, byte[] theBytes) {
     super();
 
-    this.modelContext = context;
+    this.modelContext = modelContext;
     setValue(theBytes);
   }
 
-  public Base64BinaryType(IModelContext context, String theValue) {
+  public Base64BinaryType(IModelContext modelContext, String theValue) {
     super();
 
-    this.modelContext = context;
+    this.modelContext = modelContext;
     // Null values still result in non-null instance being created
     setValueAsString(theValue);
   }

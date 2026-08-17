@@ -181,9 +181,9 @@ public class PaymentNotice extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public PaymentNotice(IModelContext context) {
+    public PaymentNotice(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -191,9 +191,9 @@ public class PaymentNotice extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public PaymentNotice(IModelContext context, FinancialResourceStatusCodes status, Date created, Reference recipient, Money amount) {
+    public PaymentNotice(IModelContext modelContext, FinancialResourceStatusCodes status, Date created, Reference recipient, Money amount) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setCreated(created);
       this.setRecipient(recipient);
@@ -1104,59 +1104,59 @@ public class PaymentNotice extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReason != null) {
-          this.statusReason.setModelContext(context);
+          this.statusReason.setModelContext(modelContext);
         }
         if (this.request != null) {
-          this.request.setModelContext(context);
+          this.request.setModelContext(modelContext);
         }
         if (this.response != null) {
-          this.response.setModelContext(context);
+          this.response.setModelContext(modelContext);
         }
         if (this.created != null) {
-          this.created.setModelContext(context);
+          this.created.setModelContext(modelContext);
         }
         if (this.reporter != null) {
-          this.reporter.setModelContext(context);
+          this.reporter.setModelContext(modelContext);
         }
         if (this.payment != null) {
-          this.payment.setModelContext(context);
+          this.payment.setModelContext(modelContext);
         }
         if (this.paymentDate != null) {
-          this.paymentDate.setModelContext(context);
+          this.paymentDate.setModelContext(modelContext);
         }
         if (this.claimIdentifierList != null) {
           for (Identifier i : this.claimIdentifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.payee != null) {
-          this.payee.setModelContext(context);
+          this.payee.setModelContext(modelContext);
         }
         if (this.recipient != null) {
-          this.recipient.setModelContext(context);
+          this.recipient.setModelContext(modelContext);
         }
         if (this.patient != null) {
-          this.patient.setModelContext(context);
+          this.patient.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
         if (this.paymentStatus != null) {
-          this.paymentStatus.setModelContext(context);
+          this.paymentStatus.setModelContext(modelContext);
         }
       }
 
@@ -1193,8 +1193,8 @@ public class PaymentNotice extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.PaymentNotice;
+  public String getResourceType() {
+    return "PaymentNotice";
    }
 
  /**

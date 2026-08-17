@@ -131,8 +131,8 @@ public class Coverage extends DomainResource {
 
   public static class KindEnumFactory implements EnumFactory<Kind> {
     private final IModelContext modelContext;
-    public KindEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public KindEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public KindEnumFactory() {
       this(null);
@@ -209,9 +209,9 @@ public class Coverage extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CoveragePaymentByComponent(IModelContext context) {
+      public CoveragePaymentByComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -219,9 +219,9 @@ public class Coverage extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CoveragePaymentByComponent(IModelContext context, Reference party) {
+      public CoveragePaymentByComponent(IModelContext modelContext, Reference party) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setParty(party);
       }
 
@@ -404,16 +404,16 @@ public class Coverage extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.party != null) {
-          this.party.setModelContext(context);
+          this.party.setModelContext(modelContext);
         }
         if (this.responsibility != null) {
-          this.responsibility.setModelContext(context);
+          this.responsibility.setModelContext(modelContext);
         }
       }
 
@@ -494,9 +494,9 @@ public class Coverage extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ClassComponent(IModelContext context) {
+      public ClassComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -504,9 +504,9 @@ public class Coverage extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ClassComponent(IModelContext context, CodeableConcept type) {
+      public ClassComponent(IModelContext modelContext, CodeableConcept type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -783,22 +783,22 @@ public class Coverage extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
       }
 
@@ -905,9 +905,9 @@ public class Coverage extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CostToBeneficiaryComponent(IModelContext context) {
+      public CostToBeneficiaryComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1357,32 +1357,32 @@ public class Coverage extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.category != null) {
-          this.category.setModelContext(context);
+          this.category.setModelContext(modelContext);
         }
         if (this.network != null) {
-          this.network.setModelContext(context);
+          this.network.setModelContext(modelContext);
         }
         if (this.unit != null) {
-          this.unit.setModelContext(context);
+          this.unit.setModelContext(modelContext);
         }
         if (this.term != null) {
-          this.term.setModelContext(context);
+          this.term.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.exceptionList != null) {
           for (ExceptionComponent i : this.exceptionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1452,9 +1452,9 @@ public class Coverage extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ExceptionComponent(IModelContext context) {
+      public ExceptionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1462,9 +1462,9 @@ public class Coverage extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ExceptionComponent(IModelContext context, CodeableConcept type) {
+      public ExceptionComponent(IModelContext modelContext, CodeableConcept type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -1623,16 +1623,16 @@ public class Coverage extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 
@@ -1818,9 +1818,9 @@ public class Coverage extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Coverage(IModelContext context) {
+    public Coverage(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1828,9 +1828,9 @@ public class Coverage extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Coverage(IModelContext context, FinancialResourceStatusCodes status, Kind kind, Reference beneficiary) {
+    public Coverage(IModelContext modelContext, FinancialResourceStatusCodes status, Kind kind, Reference beneficiary) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setKind(kind);
       this.setBeneficiary(beneficiary);
@@ -3011,77 +3011,77 @@ public class Coverage extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReason != null) {
-          this.statusReason.setModelContext(context);
+          this.statusReason.setModelContext(modelContext);
         }
         if (this.kind != null) {
-          this.kind.setModelContext(context);
+          this.kind.setModelContext(modelContext);
         }
         if (this.paymentByList != null) {
           for (CoveragePaymentByComponent i : this.paymentByList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.policyHolder != null) {
-          this.policyHolder.setModelContext(context);
+          this.policyHolder.setModelContext(modelContext);
         }
         if (this.subscriber != null) {
-          this.subscriber.setModelContext(context);
+          this.subscriber.setModelContext(modelContext);
         }
         if (this.subscriberIdList != null) {
           for (Identifier i : this.subscriberIdList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.beneficiary != null) {
-          this.beneficiary.setModelContext(context);
+          this.beneficiary.setModelContext(modelContext);
         }
         if (this.dependent != null) {
-          this.dependent.setModelContext(context);
+          this.dependent.setModelContext(modelContext);
         }
         if (this.relationship != null) {
-          this.relationship.setModelContext(context);
+          this.relationship.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.insurer != null) {
-          this.insurer.setModelContext(context);
+          this.insurer.setModelContext(modelContext);
         }
         if (this.class_List != null) {
           for (ClassComponent i : this.class_List) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.order != null) {
-          this.order.setModelContext(context);
+          this.order.setModelContext(modelContext);
         }
         if (this.network != null) {
-          this.network.setModelContext(context);
+          this.network.setModelContext(modelContext);
         }
         if (this.costToBeneficiaryList != null) {
           for (CostToBeneficiaryComponent i : this.costToBeneficiaryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subrogation != null) {
-          this.subrogation.setModelContext(context);
+          this.subrogation.setModelContext(modelContext);
         }
       }
 
@@ -3121,8 +3121,8 @@ public class Coverage extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Coverage;
+  public String getResourceType() {
+    return "Coverage";
    }
 
  /**

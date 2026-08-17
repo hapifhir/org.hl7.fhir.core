@@ -99,9 +99,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ResearchStudyLabelComponent(IModelContext context) {
+      public ResearchStudyLabelComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -354,19 +354,19 @@ public class ResearchStudy extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.language != null) {
-          this.language.setModelContext(context);
+          this.language.setModelContext(modelContext);
         }
       }
 
@@ -433,9 +433,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ResearchStudyRelatesToComponent(IModelContext context) {
+      public ResearchStudyRelatesToComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -443,9 +443,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ResearchStudyRelatesToComponent(IModelContext context, CodeableConcept type, DataType target) {
+      public ResearchStudyRelatesToComponent(IModelContext modelContext, CodeableConcept type, DataType target) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setTarget(target);
       }
@@ -700,16 +700,16 @@ public class ResearchStudy extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.target != null) {
-          this.target.setModelContext(context);
+          this.target.setModelContext(modelContext);
         }
       }
 
@@ -797,9 +797,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ResearchStudyAssociatedPartyComponent(IModelContext context) {
+      public ResearchStudyAssociatedPartyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -807,9 +807,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ResearchStudyAssociatedPartyComponent(IModelContext context, CodeableConcept role) {
+      public ResearchStudyAssociatedPartyComponent(IModelContext modelContext, CodeableConcept role) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setRole(role);
       }
 
@@ -1177,29 +1177,29 @@ public class ResearchStudy extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.role != null) {
-          this.role.setModelContext(context);
+          this.role.setModelContext(modelContext);
         }
         if (this.periodList != null) {
           for (Period i : this.periodList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.classifierList != null) {
           for (CodeableConcept i : this.classifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.party != null) {
-          this.party.setModelContext(context);
+          this.party.setModelContext(modelContext);
         }
       }
 
@@ -1274,9 +1274,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ResearchStudyProgressStatusComponent(IModelContext context) {
+      public ResearchStudyProgressStatusComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1284,9 +1284,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ResearchStudyProgressStatusComponent(IModelContext context, CodeableConcept state) {
+      public ResearchStudyProgressStatusComponent(IModelContext modelContext, CodeableConcept state) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setState(state);
       }
 
@@ -1512,19 +1512,19 @@ public class ResearchStudy extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.state != null) {
-          this.state.setModelContext(context);
+          this.state.setModelContext(modelContext);
         }
         if (this.actual != null) {
-          this.actual.setModelContext(context);
+          this.actual.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 
@@ -1611,9 +1611,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ResearchStudyRecruitmentComponent(IModelContext context) {
+      public ResearchStudyRecruitmentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1976,25 +1976,25 @@ public class ResearchStudy extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.targetNumber != null) {
-          this.targetNumber.setModelContext(context);
+          this.targetNumber.setModelContext(modelContext);
         }
         if (this.actualNumber != null) {
-          this.actualNumber.setModelContext(context);
+          this.actualNumber.setModelContext(modelContext);
         }
         if (this.eligibility != null) {
-          this.eligibility.setModelContext(context);
+          this.eligibility.setModelContext(modelContext);
         }
         if (this.actualGroup != null) {
-          this.actualGroup.setModelContext(context);
+          this.actualGroup.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
       }
 
@@ -2091,9 +2091,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ResearchStudyComparisonGroupComponent(IModelContext context) {
+      public ResearchStudyComparisonGroupComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2527,28 +2527,28 @@ public class ResearchStudy extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.targetNumber != null) {
-          this.targetNumber.setModelContext(context);
+          this.targetNumber.setModelContext(modelContext);
         }
         if (this.actualNumber != null) {
-          this.actualNumber.setModelContext(context);
+          this.actualNumber.setModelContext(modelContext);
         }
         if (this.eligibility != null) {
-          this.eligibility.setModelContext(context);
+          this.eligibility.setModelContext(modelContext);
         }
         if (this.observedGroup != null) {
-          this.observedGroup.setModelContext(context);
+          this.observedGroup.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
       }
 
@@ -2632,9 +2632,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ResearchStudyObjectiveComponent(IModelContext context) {
+      public ResearchStudyObjectiveComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2956,23 +2956,23 @@ public class ResearchStudy extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.outcomeMeasureList != null) {
           for (ResearchStudyObjectiveOutcomeMeasureComponent i : this.outcomeMeasureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3098,9 +3098,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ResearchStudyObjectiveOutcomeMeasureComponent(IModelContext context) {
+      public ResearchStudyObjectiveOutcomeMeasureComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3108,9 +3108,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ResearchStudyObjectiveOutcomeMeasureComponent(IModelContext context, Reference endpoint) {
+      public ResearchStudyObjectiveOutcomeMeasureComponent(IModelContext modelContext, Reference endpoint) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setEndpoint(endpoint);
       }
 
@@ -3715,41 +3715,41 @@ public class ResearchStudy extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.endpoint != null) {
-          this.endpoint.setModelContext(context);
+          this.endpoint.setModelContext(modelContext);
         }
         if (this.population != null) {
-          this.population.setModelContext(context);
+          this.population.setModelContext(modelContext);
         }
         if (this.intervention != null) {
-          this.intervention.setModelContext(context);
+          this.intervention.setModelContext(modelContext);
         }
         if (this.comparator != null) {
-          this.comparator.setModelContext(context);
+          this.comparator.setModelContext(modelContext);
         }
         if (this.summaryMeasure != null) {
-          this.summaryMeasure.setModelContext(context);
+          this.summaryMeasure.setModelContext(modelContext);
         }
         if (this.endpointAnalysisPlan != null) {
-          this.endpointAnalysisPlan.setModelContext(context);
+          this.endpointAnalysisPlan.setModelContext(modelContext);
         }
         if (this.eventHandlingList != null) {
           for (ResearchStudyObjectiveOutcomeMeasureEventHandlingComponent i : this.eventHandlingList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3835,9 +3835,9 @@ public class ResearchStudy extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ResearchStudyObjectiveOutcomeMeasureEventHandlingComponent(IModelContext context) {
+      public ResearchStudyObjectiveOutcomeMeasureEventHandlingComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -4113,22 +4113,22 @@ public class ResearchStudy extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.event != null) {
-          this.event.setModelContext(context);
+          this.event.setModelContext(modelContext);
         }
         if (this.group != null) {
-          this.group.setModelContext(context);
+          this.group.setModelContext(modelContext);
         }
         if (this.handling != null) {
-          this.handling.setModelContext(context);
+          this.handling.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
       }
 
@@ -4413,9 +4413,9 @@ public class ResearchStudy extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ResearchStudy(IModelContext context) {
+    public ResearchStudy(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -4423,9 +4423,9 @@ public class ResearchStudy extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ResearchStudy(IModelContext context, PublicationStatus status) {
+    public ResearchStudy(IModelContext modelContext, PublicationStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -6630,143 +6630,143 @@ public class ResearchStudy extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.labelList != null) {
           for (ResearchStudyLabelComponent i : this.labelList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.protocolList != null) {
           for (Reference i : this.protocolList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.partOfList != null) {
           for (Reference i : this.partOfList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.citeAs != null) {
-          this.citeAs.setModelContext(context);
+          this.citeAs.setModelContext(modelContext);
         }
         if (this.relatesToList != null) {
           for (ResearchStudyRelatesToComponent i : this.relatesToList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.purposeTypeList != null) {
           for (CodeableConcept i : this.purposeTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.phase != null) {
-          this.phase.setModelContext(context);
+          this.phase.setModelContext(modelContext);
         }
         if (this.studyDesignList != null) {
           for (CodeableConcept i : this.studyDesignList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.focusList != null) {
           for (CodeableReference i : this.focusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.conditionList != null) {
           for (CodeableConcept i : this.conditionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.keywordList != null) {
           for (CodeableConcept i : this.keywordList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.regionList != null) {
           for (CodeableConcept i : this.regionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.descriptionSummary != null) {
-          this.descriptionSummary.setModelContext(context);
+          this.descriptionSummary.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.siteList != null) {
           for (Reference i : this.siteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.classifierList != null) {
           for (CodeableConcept i : this.classifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.associatedPartyList != null) {
           for (ResearchStudyAssociatedPartyComponent i : this.associatedPartyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.progressStatusList != null) {
           for (ResearchStudyProgressStatusComponent i : this.progressStatusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.whyStopped != null) {
-          this.whyStopped.setModelContext(context);
+          this.whyStopped.setModelContext(modelContext);
         }
         if (this.recruitment != null) {
-          this.recruitment.setModelContext(context);
+          this.recruitment.setModelContext(modelContext);
         }
         if (this.comparisonGroupList != null) {
           for (ResearchStudyComparisonGroupComponent i : this.comparisonGroupList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.objectiveList != null) {
           for (ResearchStudyObjectiveComponent i : this.objectiveList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.resultList != null) {
           for (Reference i : this.resultList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -6817,8 +6817,8 @@ public class ResearchStudy extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.ResearchStudy;
+  public String getResourceType() {
+    return "ResearchStudy";
    }
 
  /**

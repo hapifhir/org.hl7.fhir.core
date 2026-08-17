@@ -55,9 +55,9 @@
   public static final boolean NOT_IN_SUMMARY = false;
   public static final boolean IS_MODIFIER = true;
   public static final boolean IS_IN_SUMMARY = true;
-  public ElementDefinition(IModelContext context, boolean defaults, boolean modifier, boolean inSummary) {
+  public ElementDefinition(IModelContext modelContext, boolean defaults, boolean modifier, boolean inSummary) {
     super();
-    this.modelContext = context;
+    this.modelContext = modelContext;
     if (defaults) {
       setIsModifier(modifier);
       setIsSummary(inSummary);

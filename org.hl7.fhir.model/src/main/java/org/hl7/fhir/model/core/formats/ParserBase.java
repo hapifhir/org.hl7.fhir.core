@@ -42,6 +42,7 @@ import org.hl7.fhir.model.core.Resource;
 import org.hl7.fhir.model.utilities.formats.FormatUtilities;
 import org.hl7.fhir.model.utilities.formats.IParser;
 import org.hl7.fhir.model.utilities.formats.JsonCreator;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 
@@ -67,47 +68,11 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     this.modelContext = modelContext;
   }
 
-  /**
-   * the registry of custom resource parsers/composers this parser consults. Defaults to the 
-   * process-wide CustomResourceRegistry.GLOBAL; a caller can scope a parser to a different set 
-   * of custom resources by passing a registry to the constructor, or via 
-   * setCustomResourceRegistry / withCustomResourceRegistry
-   */
-  protected CustomResourceRegistry customResourceRegistry;
-
-  protected ParserBase() {
-    this.customResourceRegistry = CustomResourceRegistry.GLOBAL;
-  }
-
-  protected ParserBase(CustomResourceRegistry customResourceRegistry) {
-    this.customResourceRegistry = customResourceRegistry == null ? CustomResourceRegistry.GLOBAL : customResourceRegistry;
-  }
-
-  /**
-   * Set the registry of custom resources this parser consults (null resets it to the global 
-   * registry). This is instance-level state, so it does not affect any other parser
-   */
-  public void setCustomResourceRegistry(CustomResourceRegistry customResourceRegistry) {
-    this.customResourceRegistry = customResourceRegistry == null ? CustomResourceRegistry.GLOBAL : customResourceRegistry;
-  }
-
-  /**
-   * fluent variant of setCustomResourceRegistry
-   */
-  public ParserBase withCustomResourceRegistry(CustomResourceRegistry customResourceRegistry) {
-    setCustomResourceRegistry(customResourceRegistry);
-    return this;
-  }
-
-  public CustomResourceRegistry getCustomResourceRegistry() {
-    return customResourceRegistry;
-  }
-
   public interface IParserFactory {
-    public JsonParserBase composerJson(JsonCreator json);
-    public JsonParserBase parserJson(boolean allowUnknownContent, boolean allowComments);
-    public XmlParserBase composerXml(IXMLWriter xml);
-    public XmlParserBase parserXml(boolean allowUnknownContent);
+    public JsonParserBase composerJson(IModelContext modelContext, JsonCreator json);
+    public JsonParserBase parserJson(IModelContext modelContext, boolean allowUnknownContent, boolean allowComments);
+    public XmlParserBase composerXml(IModelContext modelContext, IXMLWriter xml);
+    public XmlParserBase parserXml(IModelContext modelContext, boolean allowUnknownContent);
   }
 
   public static class CustomResourceHandler {

@@ -48,10 +48,10 @@ public class XhtmlType extends PrimitiveType<String> {
 
   private Narrative place;
   
-  public XhtmlType(IModelContext context, Narrative place) {
+  public XhtmlType(IModelContext modelContext, Narrative place) {
     super();
 
-    this.modelContext = context;
+    this.modelContext = modelContext;
     this.place = place;
   }
 
@@ -68,9 +68,9 @@ public class XhtmlType extends PrimitiveType<String> {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context
    */
-  public XhtmlType(IModelContext context) {
+  public XhtmlType(IModelContext modelContext) {
     this();
-    this.modelContext = context;
+    this.modelContext = modelContext;
   }
 
   @Override

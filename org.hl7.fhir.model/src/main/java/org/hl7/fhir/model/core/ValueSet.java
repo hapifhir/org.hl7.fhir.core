@@ -111,9 +111,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ValueSetComposeComponent(IModelContext context) {
+      public ValueSetComposeComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -121,9 +121,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ValueSetComposeComponent(IModelContext context, ConceptSetComponent include) {
+      public ValueSetComposeComponent(IModelContext modelContext, ConceptSetComponent include) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.addInclude(include);
       }
 
@@ -541,30 +541,30 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.lockedDate != null) {
-          this.lockedDate.setModelContext(context);
+          this.lockedDate.setModelContext(modelContext);
         }
         if (this.inactive != null) {
-          this.inactive.setModelContext(context);
+          this.inactive.setModelContext(modelContext);
         }
         if (this.includeList != null) {
           for (ConceptSetComponent i : this.includeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.excludeList != null) {
           for (ConceptSetComponent i : this.excludeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (StringType i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -662,9 +662,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConceptSetComponent(IModelContext context) {
+      public ConceptSetComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1156,34 +1156,34 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.system != null) {
-          this.system.setModelContext(context);
+          this.system.setModelContext(modelContext);
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.conceptList != null) {
           for (ConceptReferenceComponent i : this.conceptList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.filterList != null) {
           for (ConceptSetFilterComponent i : this.filterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.valueSetList != null) {
           for (CanonicalType i : this.valueSetList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
       }
 
@@ -1271,9 +1271,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConceptReferenceComponent(IModelContext context) {
+      public ConceptReferenceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1281,9 +1281,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ConceptReferenceComponent(IModelContext context, String code) {
+      public ConceptReferenceComponent(IModelContext modelContext, String code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -1555,20 +1555,20 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.display != null) {
-          this.display.setModelContext(context);
+          this.display.setModelContext(modelContext);
         }
         if (this.designationList != null) {
           for (ConceptReferenceDesignationComponent i : this.designationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1653,9 +1653,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConceptReferenceDesignationComponent(IModelContext context) {
+      public ConceptReferenceDesignationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1663,9 +1663,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ConceptReferenceDesignationComponent(IModelContext context, String value) {
+      public ConceptReferenceDesignationComponent(IModelContext modelContext, String value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setValue(value);
       }
 
@@ -1984,24 +1984,24 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.language != null) {
-          this.language.setModelContext(context);
+          this.language.setModelContext(modelContext);
         }
         if (this.use != null) {
-          this.use.setModelContext(context);
+          this.use.setModelContext(modelContext);
         }
         if (this.additionalUseList != null) {
           for (Coding i : this.additionalUseList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -2083,9 +2083,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConceptSetFilterComponent(IModelContext context) {
+      public ConceptSetFilterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2093,9 +2093,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ConceptSetFilterComponent(IModelContext context, String property, FilterOperator op) {
+      public ConceptSetFilterComponent(IModelContext modelContext, String property, FilterOperator op) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setProperty(property);
         this.setOp(op);
       }
@@ -2436,23 +2436,23 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.property != null) {
-          this.property.setModelContext(context);
+          this.property.setModelContext(modelContext);
         }
         if (this.op != null) {
-          this.op.setModelContext(context);
+          this.op.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.filterList != null) {
           for (ConceptSetFilterComponent i : this.filterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2563,9 +2563,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ValueSetExpansionComponent(IModelContext context) {
+      public ValueSetExpansionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2573,9 +2573,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ValueSetExpansionComponent(IModelContext context, Date timestamp) {
+      public ValueSetExpansionComponent(IModelContext modelContext, Date timestamp) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setTimestamp(timestamp);
       }
 
@@ -3190,39 +3190,39 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifier != null) {
-          this.identifier.setModelContext(context);
+          this.identifier.setModelContext(modelContext);
         }
         if (this.next != null) {
-          this.next.setModelContext(context);
+          this.next.setModelContext(modelContext);
         }
         if (this.timestamp != null) {
-          this.timestamp.setModelContext(context);
+          this.timestamp.setModelContext(modelContext);
         }
         if (this.total != null) {
-          this.total.setModelContext(context);
+          this.total.setModelContext(modelContext);
         }
         if (this.offset != null) {
-          this.offset.setModelContext(context);
+          this.offset.setModelContext(modelContext);
         }
         if (this.parameterList != null) {
           for (ValueSetExpansionParameterComponent i : this.parameterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (ValueSetExpansionPropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.containsList != null) {
           for (ValueSetExpansionContainsComponent i : this.containsList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3293,9 +3293,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ValueSetExpansionParameterComponent(IModelContext context) {
+      public ValueSetExpansionParameterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3303,9 +3303,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ValueSetExpansionParameterComponent(IModelContext context, String name) {
+      public ValueSetExpansionParameterComponent(IModelContext modelContext, String name) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
       }
 
@@ -3619,16 +3619,16 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -3693,9 +3693,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ValueSetExpansionPropertyComponent(IModelContext context) {
+      public ValueSetExpansionPropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3703,9 +3703,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ValueSetExpansionPropertyComponent(IModelContext context, String code) {
+      public ValueSetExpansionPropertyComponent(IModelContext modelContext, String code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -3908,16 +3908,16 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.uri != null) {
-          this.uri.setModelContext(context);
+          this.uri.setModelContext(modelContext);
         }
       }
 
@@ -4031,9 +4031,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ValueSetExpansionContainsComponent(IModelContext context) {
+      public ValueSetExpansionContainsComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -4722,42 +4722,42 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.system != null) {
-          this.system.setModelContext(context);
+          this.system.setModelContext(modelContext);
         }
         if (this.abstract_ != null) {
-          this.abstract_.setModelContext(context);
+          this.abstract_.setModelContext(modelContext);
         }
         if (this.inactive != null) {
-          this.inactive.setModelContext(context);
+          this.inactive.setModelContext(modelContext);
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.display != null) {
-          this.display.setModelContext(context);
+          this.display.setModelContext(modelContext);
         }
         if (this.designationList != null) {
           for (ConceptReferenceDesignationComponent i : this.designationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (ConceptPropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.containsList != null) {
           for (ValueSetExpansionContainsComponent i : this.containsList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4836,9 +4836,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConceptPropertyComponent(IModelContext context) {
+      public ConceptPropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -4846,9 +4846,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ConceptPropertyComponent(IModelContext context, String code, DataType value) {
+      public ConceptPropertyComponent(IModelContext modelContext, String code, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setValue(value);
       }
@@ -5232,20 +5232,20 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.subPropertyList != null) {
           for (ConceptSubPropertyComponent i : this.subPropertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -5313,9 +5313,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConceptSubPropertyComponent(IModelContext context) {
+      public ConceptSubPropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -5323,9 +5323,9 @@ public class ValueSet extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ConceptSubPropertyComponent(IModelContext context, String code, DataType value) {
+      public ConceptSubPropertyComponent(IModelContext modelContext, String code, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setValue(value);
       }
@@ -5640,16 +5640,16 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -5905,9 +5905,9 @@ public class ValueSet extends MetadataResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ValueSet(IModelContext context) {
+    public ValueSet(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -5915,9 +5915,9 @@ public class ValueSet extends MetadataResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ValueSet(IModelContext context, PublicationStatus status) {
+    public ValueSet(IModelContext modelContext, PublicationStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -7990,117 +7990,117 @@ public class ValueSet extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.immutable != null) {
-          this.immutable.setModelContext(context);
+          this.immutable.setModelContext(modelContext);
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.approvalDate != null) {
-          this.approvalDate.setModelContext(context);
+          this.approvalDate.setModelContext(modelContext);
         }
         if (this.lastReviewDate != null) {
-          this.lastReviewDate.setModelContext(context);
+          this.lastReviewDate.setModelContext(modelContext);
         }
         if (this.effectivePeriod != null) {
-          this.effectivePeriod.setModelContext(context);
+          this.effectivePeriod.setModelContext(modelContext);
         }
         if (this.topicList != null) {
           for (CodeableConcept i : this.topicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.authorList != null) {
           for (ContactDetail i : this.authorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.editorList != null) {
           for (ContactDetail i : this.editorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reviewerList != null) {
           for (ContactDetail i : this.reviewerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.endorserList != null) {
           for (ContactDetail i : this.endorserList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatedArtifactList != null) {
           for (RelatedArtifact i : this.relatedArtifactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.compose != null) {
-          this.compose.setModelContext(context);
+          this.compose.setModelContext(modelContext);
         }
         if (this.expansion != null) {
-          this.expansion.setModelContext(context);
+          this.expansion.setModelContext(modelContext);
         }
       }
 
@@ -8149,8 +8149,8 @@ public class ValueSet extends MetadataResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.ValueSet;
+  public String getResourceType() {
+    return "ValueSet";
    }
 
  /**

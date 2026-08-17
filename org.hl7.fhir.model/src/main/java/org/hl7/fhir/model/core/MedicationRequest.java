@@ -181,8 +181,8 @@ public class MedicationRequest extends DomainResource {
 
   public static class MedicationRequestIntentEnumFactory implements EnumFactory<MedicationRequestIntent> {
     private final IModelContext modelContext;
-    public MedicationRequestIntentEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public MedicationRequestIntentEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public MedicationRequestIntentEnumFactory() {
       this(null);
@@ -390,8 +390,8 @@ public class MedicationRequest extends DomainResource {
 
   public static class MedicationrequestStatusEnumFactory implements EnumFactory<MedicationrequestStatus> {
     private final IModelContext modelContext;
-    public MedicationrequestStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public MedicationrequestStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public MedicationrequestStatusEnumFactory() {
       this(null);
@@ -562,9 +562,9 @@ public class MedicationRequest extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicationRequestDispenseRequestComponent(IModelContext context) {
+      public MedicationRequestDispenseRequestComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1140,42 +1140,42 @@ public class MedicationRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.initialFill != null) {
-          this.initialFill.setModelContext(context);
+          this.initialFill.setModelContext(modelContext);
         }
         if (this.dispenseInterval != null) {
-          this.dispenseInterval.setModelContext(context);
+          this.dispenseInterval.setModelContext(modelContext);
         }
         if (this.validityPeriod != null) {
-          this.validityPeriod.setModelContext(context);
+          this.validityPeriod.setModelContext(modelContext);
         }
         if (this.numberOfRepeatsAllowed != null) {
-          this.numberOfRepeatsAllowed.setModelContext(context);
+          this.numberOfRepeatsAllowed.setModelContext(modelContext);
         }
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
         if (this.expectedSupplyDuration != null) {
-          this.expectedSupplyDuration.setModelContext(context);
+          this.expectedSupplyDuration.setModelContext(modelContext);
         }
         if (this.dispenser != null) {
-          this.dispenser.setModelContext(context);
+          this.dispenser.setModelContext(modelContext);
         }
         if (this.dispenserInstructionList != null) {
           for (CodeableConcept i : this.dispenserInstructionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.doseAdministrationAid != null) {
-          this.doseAdministrationAid.setModelContext(context);
+          this.doseAdministrationAid.setModelContext(modelContext);
         }
         if (this.destination != null) {
-          this.destination.setModelContext(context);
+          this.destination.setModelContext(modelContext);
         }
       }
 
@@ -1247,9 +1247,9 @@ public class MedicationRequest extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicationRequestDispenseRequestInitialFillComponent(IModelContext context) {
+      public MedicationRequestDispenseRequestInitialFillComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1407,16 +1407,16 @@ public class MedicationRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
         if (this.duration != null) {
-          this.duration.setModelContext(context);
+          this.duration.setModelContext(modelContext);
         }
       }
 
@@ -1483,9 +1483,9 @@ public class MedicationRequest extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicationRequestSubstitutionComponent(IModelContext context) {
+      public MedicationRequestSubstitutionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1493,9 +1493,9 @@ public class MedicationRequest extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MedicationRequestSubstitutionComponent(IModelContext context, DataType allowed) {
+      public MedicationRequestSubstitutionComponent(IModelContext modelContext, DataType allowed) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setAllowed(allowed);
       }
 
@@ -1689,16 +1689,16 @@ public class MedicationRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.allowed != null) {
-          this.allowed.setModelContext(context);
+          this.allowed.setModelContext(modelContext);
         }
         if (this.reason != null) {
-          this.reason.setModelContext(context);
+          this.reason.setModelContext(modelContext);
         }
       }
 
@@ -1980,9 +1980,9 @@ public class MedicationRequest extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public MedicationRequest(IModelContext context) {
+    public MedicationRequest(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1990,9 +1990,9 @@ public class MedicationRequest extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public MedicationRequest(IModelContext context, MedicationrequestStatus status, MedicationRequestIntent intent, CodeableReference medication, Reference subject) {
+    public MedicationRequest(IModelContext modelContext, MedicationrequestStatus status, MedicationRequestIntent intent, CodeableReference medication, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setIntent(intent);
       this.setMedication(medication);
@@ -4021,127 +4021,127 @@ public class MedicationRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.priorPrescription != null) {
-          this.priorPrescription.setModelContext(context);
+          this.priorPrescription.setModelContext(modelContext);
         }
         if (this.groupIdentifier != null) {
-          this.groupIdentifier.setModelContext(context);
+          this.groupIdentifier.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReason != null) {
-          this.statusReason.setModelContext(context);
+          this.statusReason.setModelContext(modelContext);
         }
         if (this.statusChanged != null) {
-          this.statusChanged.setModelContext(context);
+          this.statusChanged.setModelContext(modelContext);
         }
         if (this.intent != null) {
-          this.intent.setModelContext(context);
+          this.intent.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.doNotPerform != null) {
-          this.doNotPerform.setModelContext(context);
+          this.doNotPerform.setModelContext(modelContext);
         }
         if (this.medication != null) {
-          this.medication.setModelContext(context);
+          this.medication.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.informationSourceList != null) {
           for (Reference i : this.informationSourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.supportingInformationList != null) {
           for (Reference i : this.supportingInformationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.authoredOn != null) {
-          this.authoredOn.setModelContext(context);
+          this.authoredOn.setModelContext(modelContext);
         }
         if (this.requester != null) {
-          this.requester.setModelContext(context);
+          this.requester.setModelContext(modelContext);
         }
         if (this.isRecordOfRequest != null) {
-          this.isRecordOfRequest.setModelContext(context);
+          this.isRecordOfRequest.setModelContext(modelContext);
         }
         if (this.performerType != null) {
-          this.performerType.setModelContext(context);
+          this.performerType.setModelContext(modelContext);
         }
         if (this.performerList != null) {
           for (Reference i : this.performerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.deviceList != null) {
           for (CodeableReference i : this.deviceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.recorder != null) {
-          this.recorder.setModelContext(context);
+          this.recorder.setModelContext(modelContext);
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.courseOfTherapyType != null) {
-          this.courseOfTherapyType.setModelContext(context);
+          this.courseOfTherapyType.setModelContext(modelContext);
         }
         if (this.insuranceList != null) {
           for (Reference i : this.insuranceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.effectiveTiming != null) {
-          this.effectiveTiming.setModelContext(context);
+          this.effectiveTiming.setModelContext(modelContext);
         }
         if (this.dosageInstruction != null) {
-          this.dosageInstruction.setModelContext(context);
+          this.dosageInstruction.setModelContext(modelContext);
         }
         if (this.dispenseRequest != null) {
-          this.dispenseRequest.setModelContext(context);
+          this.dispenseRequest.setModelContext(modelContext);
         }
         if (this.substitution != null) {
-          this.substitution.setModelContext(context);
+          this.substitution.setModelContext(modelContext);
         }
         if (this.eventHistoryList != null) {
           for (Reference i : this.eventHistoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4194,8 +4194,8 @@ public class MedicationRequest extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.MedicationRequest;
+  public String getResourceType() {
+    return "MedicationRequest";
    }
 
  /**

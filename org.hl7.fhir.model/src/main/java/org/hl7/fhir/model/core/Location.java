@@ -122,8 +122,8 @@ public class Location extends DomainResource {
 
   public static class LocationModeEnumFactory implements EnumFactory<LocationMode> {
     private final IModelContext modelContext;
-    public LocationModeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public LocationModeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public LocationModeEnumFactory() {
       this(null);
@@ -235,8 +235,8 @@ public class Location extends DomainResource {
 
   public static class LocationStatusEnumFactory implements EnumFactory<LocationStatus> {
     private final IModelContext modelContext;
-    public LocationStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public LocationStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public LocationStatusEnumFactory() {
       this(null);
@@ -320,9 +320,9 @@ public class Location extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public LocationPositionComponent(IModelContext context) {
+      public LocationPositionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -330,9 +330,9 @@ public class Location extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public LocationPositionComponent(IModelContext context, BigDecimal longitude, BigDecimal latitude) {
+      public LocationPositionComponent(IModelContext modelContext, BigDecimal longitude, BigDecimal latitude) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setLongitude(longitude);
         this.setLatitude(latitude);
       }
@@ -657,19 +657,19 @@ public class Location extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.longitude != null) {
-          this.longitude.setModelContext(context);
+          this.longitude.setModelContext(modelContext);
         }
         if (this.latitude != null) {
-          this.latitude.setModelContext(context);
+          this.latitude.setModelContext(modelContext);
         }
         if (this.altitude != null) {
-          this.altitude.setModelContext(context);
+          this.altitude.setModelContext(modelContext);
         }
       }
 
@@ -861,9 +861,9 @@ public class Location extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Location(IModelContext context) {
+    public Location(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -2107,82 +2107,82 @@ public class Location extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.operationalStatus != null) {
-          this.operationalStatus.setModelContext(context);
+          this.operationalStatus.setModelContext(modelContext);
         }
         if (this.codeList != null) {
           for (CodeableConcept i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.aliasList != null) {
           for (StringType i : this.aliasList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.mode != null) {
-          this.mode.setModelContext(context);
+          this.mode.setModelContext(modelContext);
         }
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.contactList != null) {
           for (ExtendedContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.address != null) {
-          this.address.setModelContext(context);
+          this.address.setModelContext(modelContext);
         }
         if (this.form != null) {
-          this.form.setModelContext(context);
+          this.form.setModelContext(modelContext);
         }
         if (this.position != null) {
-          this.position.setModelContext(context);
+          this.position.setModelContext(modelContext);
         }
         if (this.managingOrganization != null) {
-          this.managingOrganization.setModelContext(context);
+          this.managingOrganization.setModelContext(modelContext);
         }
         if (this.partOf != null) {
-          this.partOf.setModelContext(context);
+          this.partOf.setModelContext(modelContext);
         }
         if (this.characteristicList != null) {
           for (CodeableConcept i : this.characteristicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.hoursOfOperation != null) {
-          this.hoursOfOperation.setModelContext(context);
+          this.hoursOfOperation.setModelContext(modelContext);
         }
         if (this.virtualServiceList != null) {
           for (VirtualServiceDetail i : this.virtualServiceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.endpointList != null) {
           for (Reference i : this.endpointList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2224,8 +2224,8 @@ public class Location extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Location;
+  public String getResourceType() {
+    return "Location";
    }
 
  /**

@@ -141,8 +141,8 @@ public class FamilyMemberHistory extends DomainResource {
 
   public static class FamilyHistoryStatusEnumFactory implements EnumFactory<FamilyHistoryStatus> {
     private final IModelContext modelContext;
-    public FamilyHistoryStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public FamilyHistoryStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public FamilyHistoryStatusEnumFactory() {
       this(null);
@@ -248,9 +248,9 @@ public class FamilyMemberHistory extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public FamilyMemberHistoryConditionComponent(IModelContext context) {
+      public FamilyMemberHistoryConditionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -258,9 +258,9 @@ public class FamilyMemberHistory extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public FamilyMemberHistoryConditionComponent(IModelContext context, CodeableConcept code) {
+      public FamilyMemberHistoryConditionComponent(IModelContext modelContext, CodeableConcept code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -677,26 +677,26 @@ public class FamilyMemberHistory extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.outcome != null) {
-          this.outcome.setModelContext(context);
+          this.outcome.setModelContext(modelContext);
         }
         if (this.contributedToDeath != null) {
-          this.contributedToDeath.setModelContext(context);
+          this.contributedToDeath.setModelContext(modelContext);
         }
         if (this.onset != null) {
-          this.onset.setModelContext(context);
+          this.onset.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -787,9 +787,9 @@ public class FamilyMemberHistory extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public FamilyMemberHistoryProcedureComponent(IModelContext context) {
+      public FamilyMemberHistoryProcedureComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -797,9 +797,9 @@ public class FamilyMemberHistory extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public FamilyMemberHistoryProcedureComponent(IModelContext context, CodeableConcept code) {
+      public FamilyMemberHistoryProcedureComponent(IModelContext modelContext, CodeableConcept code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -1236,26 +1236,26 @@ public class FamilyMemberHistory extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.outcome != null) {
-          this.outcome.setModelContext(context);
+          this.outcome.setModelContext(modelContext);
         }
         if (this.contributedToDeath != null) {
-          this.contributedToDeath.setModelContext(context);
+          this.contributedToDeath.setModelContext(modelContext);
         }
         if (this.performed != null) {
-          this.performed.setModelContext(context);
+          this.performed.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1431,9 +1431,9 @@ public class FamilyMemberHistory extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public FamilyMemberHistory(IModelContext context) {
+    public FamilyMemberHistory(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1441,9 +1441,9 @@ public class FamilyMemberHistory extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public FamilyMemberHistory(IModelContext context, FamilyHistoryStatus status, Reference patient, CodeableConcept relationship) {
+    public FamilyMemberHistory(IModelContext modelContext, FamilyHistoryStatus status, Reference patient, CodeableConcept relationship) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setPatient(patient);
       this.setRelationship(relationship);
@@ -2698,70 +2698,70 @@ public class FamilyMemberHistory extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.dataAbsentReason != null) {
-          this.dataAbsentReason.setModelContext(context);
+          this.dataAbsentReason.setModelContext(modelContext);
         }
         if (this.patient != null) {
-          this.patient.setModelContext(context);
+          this.patient.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.recorder != null) {
-          this.recorder.setModelContext(context);
+          this.recorder.setModelContext(modelContext);
         }
         if (this.asserter != null) {
-          this.asserter.setModelContext(context);
+          this.asserter.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.relationship != null) {
-          this.relationship.setModelContext(context);
+          this.relationship.setModelContext(modelContext);
         }
         if (this.sex != null) {
-          this.sex.setModelContext(context);
+          this.sex.setModelContext(modelContext);
         }
         if (this.born != null) {
-          this.born.setModelContext(context);
+          this.born.setModelContext(modelContext);
         }
         if (this.age != null) {
-          this.age.setModelContext(context);
+          this.age.setModelContext(modelContext);
         }
         if (this.deceased != null) {
-          this.deceased.setModelContext(context);
+          this.deceased.setModelContext(modelContext);
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.conditionList != null) {
           for (FamilyMemberHistoryConditionComponent i : this.conditionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.procedureList != null) {
           for (FamilyMemberHistoryProcedureComponent i : this.procedureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2800,8 +2800,8 @@ public class FamilyMemberHistory extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.FamilyMemberHistory;
+  public String getResourceType() {
+    return "FamilyMemberHistory";
    }
 
  /**

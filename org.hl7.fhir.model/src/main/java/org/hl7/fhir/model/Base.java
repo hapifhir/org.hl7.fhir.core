@@ -101,14 +101,14 @@ public abstract class Base implements Serializable, IBase, IElement {
    * since the tree may be in a mixed state - which also makes it listChildren()-slow, so it is 
    * a migration operation, not a hot path
    */
-  public void changeModelContext(IModelContext context) {
-    this.modelContext = context;
+  public void changeModelContext(IModelContext modelContext) {
+    this.modelContext = modelContext;
     List<Property> children = new ArrayList<Property>();
     listChildren(children);
     for (Property c : children) {
       for (Base b : c.getValues()) {
         if (b != null) {
-          b.changeModelContext(context);
+          b.changeModelContext(modelContext);
         }
       }
     }
@@ -148,8 +148,8 @@ public abstract class Base implements Serializable, IBase, IElement {
     }
   }
 
-  private static String describeContext(IModelContext context) {
-    return context == null ? "no context" : context.getClass().getSimpleName()+"@"+Integer.toHexString(System.identityHashCode(context));
+  private static String describeContext(IModelContext modelContext) {
+    return modelContext == null ? "no context" : modelContext.getClass().getSimpleName()+"@"+Integer.toHexString(System.identityHashCode(modelContext));
   }
 
   /**

@@ -35,7 +35,7 @@ java -jar validator_cli.jar ig-codegen \
 * the trailing arguments are the package id(s) to generate from. Only R4 and R5 are supported.
 
 `<Jname>` is the capitalised last segment of the package name, so `org.hl7.fhir.r5.igs.testing`
-produces `TestingParser`, `TestingJsonParser`, `TestingXmlParser`, etc.
+produces `TestingRegistration`, `TestingJsonParser`, `TestingXmlParser`, etc.
 
 ## 2. Register the parsers
 
@@ -49,11 +49,11 @@ parsers. Registration is a choice the *application* makes, so the register metho
 
 ```java
 // register globally: every parser in the process now understands these resources
-TestingParser.register(true);
+TestingRegistration.register(true);
 
 // or register into a scoped registry: only parsers given this registry are affected
 CustomResourceRegistry registry = new CustomResourceRegistry();
-TestingParser.register(registry, true);
+TestingRegistration.register(registry, true);
 
 Resource r = new JsonParser(registry).parse(source);        // sees the custom resources
 Resource s = new JsonParser().parse(source);                // does not (uses the global registry)
@@ -77,7 +77,7 @@ context knows about the resources' *definitions*. The `StructureDefinition`, `Co
 `<Jname>Parser.packages()` returns the versioned package id(s) the code was generated from:
 
 ```java
-for (String pid : TestingParser.packages()) {
+for (String pid : TestingRegistration.packages()) {
   NpmPackage npm = pcm.loadPackage(pid);
   IContextResourceLoader loader = ...;
   context.loadFromPackage(npm, loader, true);   // load as a "master" package

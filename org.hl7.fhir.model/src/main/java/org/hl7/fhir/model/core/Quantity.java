@@ -109,9 +109,9 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Quantity(IModelContext context) {
+    public Quantity(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
  /**
@@ -119,8 +119,8 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
    * 
    * @param theValue The {@link #setValue(double) value}
    */
-  public Quantity(IModelContext context, double theValue) {
-    this.modelContext = context;
+  public Quantity(IModelContext modelContext, double theValue) {
+    this.modelContext = modelContext;
     setValue(theValue);
   }
 
@@ -129,8 +129,8 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
    * 
    * @param theValue The {@link #setValue(long) value}
    */
-  public Quantity(IModelContext context, long theValue) {
-    this.modelContext = context;
+  public Quantity(IModelContext modelContext, long theValue) {
+    this.modelContext = modelContext;
     setValue(theValue);
   }
   
@@ -143,8 +143,8 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
    * @param theCode The {@link #setCode(String)} (the code for the units}
    * @param theUnit The {@link #setUnit(String)} (the human readable display name for the units}
    */
-  public Quantity(IModelContext context, QuantityComparator theComparator, double theValue, String theSystem, String theCode, String theUnit) {
-    this.modelContext = context;
+  public Quantity(IModelContext modelContext, QuantityComparator theComparator, double theValue, String theSystem, String theCode, String theUnit) {
+    this.modelContext = modelContext;
     setValue(theValue);
     setComparator(theComparator);
     setSystem(theSystem);
@@ -161,8 +161,8 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
    * @param theCode The {@link #setCode(String)} (the code for the units}
    * @param theUnit The {@link #setUnit(String)} (the human readable display name for the units}
    */
-  public Quantity(IModelContext context, QuantityComparator theComparator, long theValue, String theSystem, String theCode, String theUnit) {
-    this.modelContext = context;
+  public Quantity(IModelContext modelContext, QuantityComparator theComparator, long theValue, String theSystem, String theCode, String theUnit) {
+    this.modelContext = modelContext;
     setValue(theValue);
     setComparator(theComparator);
     setSystem(theSystem);
@@ -609,25 +609,25 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.comparator != null) {
-          this.comparator.setModelContext(context);
+          this.comparator.setModelContext(modelContext);
         }
         if (this.unit != null) {
-          this.unit.setModelContext(context);
+          this.unit.setModelContext(modelContext);
         }
         if (this.system != null) {
-          this.system.setModelContext(context);
+          this.system.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
       }
 

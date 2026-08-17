@@ -73,9 +73,9 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context
    */
-  public BaseDateTimeType(IModelContext context) {
+  public BaseDateTimeType(IModelContext modelContext) {
     this();
-    this.modelContext = context;
+    this.modelContext = modelContext;
   }
 
   /**
@@ -84,8 +84,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    * @throws IllegalArgumentException
    *            If the specified precision is not allowed for this type
    */
-  public BaseDateTimeType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision) {
-    this.modelContext = context;
+  public BaseDateTimeType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision) {
+    this.modelContext = modelContext;
     setValue(theDate, thePrecision);
     validatePrecisionAndThrowIllegalArgumentException();
   }
@@ -104,8 +104,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   /**
    * Constructor
    */
-  public BaseDateTimeType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimeZone) {
-    this(context, theDate, thePrecision);
+  public BaseDateTimeType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimeZone) {
+    this(modelContext, theDate, thePrecision);
     setTimeZone(theTimeZone);
     validatePrecisionAndThrowIllegalArgumentException();
   }
@@ -125,8 +125,8 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    * @throws IllegalArgumentException
    *            If the specified precision is not allowed for this type
    */
-  public BaseDateTimeType(IModelContext context, String theString) {
-    this.modelContext = context;
+  public BaseDateTimeType(IModelContext modelContext, String theString) {
+    this.modelContext = modelContext;
     setValueAsString(theString);
     validatePrecisionAndThrowIllegalArgumentException();
   }

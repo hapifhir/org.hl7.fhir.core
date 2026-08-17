@@ -121,8 +121,8 @@ public class OperationDefinition extends CanonicalResource {
 
   public static class OperationKindEnumFactory implements EnumFactory<OperationKind> {
     private final IModelContext modelContext;
-    public OperationKindEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public OperationKindEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public OperationKindEnumFactory() {
       this(null);
@@ -234,8 +234,8 @@ public class OperationDefinition extends CanonicalResource {
 
   public static class OperationParameterScopeEnumFactory implements EnumFactory<OperationParameterScope> {
     private final IModelContext modelContext;
-    public OperationParameterScopeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public OperationParameterScopeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public OperationParameterScopeEnumFactory() {
       this(null);
@@ -353,8 +353,8 @@ public class OperationDefinition extends CanonicalResource {
 
   public static class OperationSynchronicityControlEnumFactory implements EnumFactory<OperationSynchronicityControl> {
     private final IModelContext modelContext;
-    public OperationSynchronicityControlEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public OperationSynchronicityControlEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public OperationSynchronicityControlEnumFactory() {
       this(null);
@@ -513,9 +513,9 @@ public class OperationDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public OperationDefinitionParameterComponent(IModelContext context) {
+      public OperationDefinitionParameterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -523,9 +523,9 @@ public class OperationDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public OperationDefinitionParameterComponent(IModelContext context, String name, OperationParameterUse use, int min, String max) {
+      public OperationDefinitionParameterComponent(IModelContext modelContext, String name, OperationParameterUse use, int min, String max) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
         this.setUse(use);
         this.setMin(min);
@@ -1494,58 +1494,58 @@ public class OperationDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.use != null) {
-          this.use.setModelContext(context);
+          this.use.setModelContext(modelContext);
         }
         if (this.scopeList != null) {
           for (Enumeration<OperationParameterScope> i : this.scopeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.min != null) {
-          this.min.setModelContext(context);
+          this.min.setModelContext(modelContext);
         }
         if (this.max != null) {
-          this.max.setModelContext(context);
+          this.max.setModelContext(modelContext);
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.allowedTypeList != null) {
           for (Enumeration<FHIRTypes> i : this.allowedTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.targetProfileList != null) {
           for (CanonicalType i : this.targetProfileList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.searchType != null) {
-          this.searchType.setModelContext(context);
+          this.searchType.setModelContext(modelContext);
         }
         if (this.binding != null) {
-          this.binding.setModelContext(context);
+          this.binding.setModelContext(modelContext);
         }
         if (this.referencedFromList != null) {
           for (OperationDefinitionParameterReferencedFromComponent i : this.referencedFromList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.partList != null) {
           for (OperationDefinitionParameterComponent i : this.partList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1621,9 +1621,9 @@ public class OperationDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public OperationDefinitionParameterBindingComponent(IModelContext context) {
+      public OperationDefinitionParameterBindingComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1631,9 +1631,9 @@ public class OperationDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public OperationDefinitionParameterBindingComponent(IModelContext context, BindingStrength strength, String valueSet) {
+      public OperationDefinitionParameterBindingComponent(IModelContext modelContext, BindingStrength strength, String valueSet) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setStrength(strength);
         this.setValueSet(valueSet);
       }
@@ -1834,16 +1834,16 @@ public class OperationDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.strength != null) {
-          this.strength.setModelContext(context);
+          this.strength.setModelContext(modelContext);
         }
         if (this.valueSet != null) {
-          this.valueSet.setModelContext(context);
+          this.valueSet.setModelContext(modelContext);
         }
       }
 
@@ -1908,9 +1908,9 @@ public class OperationDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public OperationDefinitionParameterReferencedFromComponent(IModelContext context) {
+      public OperationDefinitionParameterReferencedFromComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1918,9 +1918,9 @@ public class OperationDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public OperationDefinitionParameterReferencedFromComponent(IModelContext context, String source) {
+      public OperationDefinitionParameterReferencedFromComponent(IModelContext modelContext, String source) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setSource(source);
       }
 
@@ -2123,16 +2123,16 @@ public class OperationDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.source != null) {
-          this.source.setModelContext(context);
+          this.source.setModelContext(modelContext);
         }
         if (this.sourceId != null) {
-          this.sourceId.setModelContext(context);
+          this.sourceId.setModelContext(modelContext);
         }
       }
 
@@ -2197,9 +2197,9 @@ public class OperationDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public OperationDefinitionOverloadComponent(IModelContext context) {
+      public OperationDefinitionOverloadComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2411,18 +2411,18 @@ public class OperationDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.parameterNameList != null) {
           for (StringType i : this.parameterNameList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
       }
 
@@ -2697,9 +2697,9 @@ public class OperationDefinition extends CanonicalResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public OperationDefinition(IModelContext context) {
+    public OperationDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2707,9 +2707,9 @@ public class OperationDefinition extends CanonicalResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public OperationDefinition(IModelContext context, String name, PublicationStatus status, OperationKind kind, String code, boolean system, boolean type, boolean instance) {
+    public OperationDefinition(IModelContext modelContext, String name, PublicationStatus status, OperationKind kind, String code, boolean system, boolean type, boolean instance) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setName(name);
       this.setStatus(status);
       this.setKind(kind);
@@ -4958,116 +4958,116 @@ public class OperationDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.kind != null) {
-          this.kind.setModelContext(context);
+          this.kind.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.affectsState != null) {
-          this.affectsState.setModelContext(context);
+          this.affectsState.setModelContext(modelContext);
         }
         if (this.synchronicity != null) {
-          this.synchronicity.setModelContext(context);
+          this.synchronicity.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
         if (this.base != null) {
-          this.base.setModelContext(context);
+          this.base.setModelContext(modelContext);
         }
         if (this.resourceList != null) {
           for (UriType i : this.resourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.system != null) {
-          this.system.setModelContext(context);
+          this.system.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.instance != null) {
-          this.instance.setModelContext(context);
+          this.instance.setModelContext(modelContext);
         }
         if (this.inputProfile != null) {
-          this.inputProfile.setModelContext(context);
+          this.inputProfile.setModelContext(modelContext);
         }
         if (this.outputProfile != null) {
-          this.outputProfile.setModelContext(context);
+          this.outputProfile.setModelContext(modelContext);
         }
         if (this.parameterList != null) {
           for (OperationDefinitionParameterComponent i : this.parameterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.overloadList != null) {
           for (OperationDefinitionOverloadComponent i : this.overloadList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -5122,8 +5122,8 @@ public class OperationDefinition extends CanonicalResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.OperationDefinition;
+  public String getResourceType() {
+    return "OperationDefinition";
    }
 
  /**

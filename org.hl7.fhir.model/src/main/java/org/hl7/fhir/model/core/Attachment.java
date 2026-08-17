@@ -166,9 +166,9 @@ public class Attachment extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Attachment(IModelContext context) {
+    public Attachment(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1157,49 +1157,49 @@ public class Attachment extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.contentType != null) {
-          this.contentType.setModelContext(context);
+          this.contentType.setModelContext(modelContext);
         }
         if (this.language != null) {
-          this.language.setModelContext(context);
+          this.language.setModelContext(modelContext);
         }
         if (this.data != null) {
-          this.data.setModelContext(context);
+          this.data.setModelContext(modelContext);
         }
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.size != null) {
-          this.size.setModelContext(context);
+          this.size.setModelContext(modelContext);
         }
         if (this.hash != null) {
-          this.hash.setModelContext(context);
+          this.hash.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.creation != null) {
-          this.creation.setModelContext(context);
+          this.creation.setModelContext(modelContext);
         }
         if (this.height != null) {
-          this.height.setModelContext(context);
+          this.height.setModelContext(modelContext);
         }
         if (this.width != null) {
-          this.width.setModelContext(context);
+          this.width.setModelContext(modelContext);
         }
         if (this.frames != null) {
-          this.frames.setModelContext(context);
+          this.frames.setModelContext(modelContext);
         }
         if (this.duration != null) {
-          this.duration.setModelContext(context);
+          this.duration.setModelContext(modelContext);
         }
         if (this.pages != null) {
-          this.pages.setModelContext(context);
+          this.pages.setModelContext(modelContext);
         }
       }
 

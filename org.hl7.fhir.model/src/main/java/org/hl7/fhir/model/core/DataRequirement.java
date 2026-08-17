@@ -119,8 +119,8 @@ public class DataRequirement extends DataType implements ICompositeType {
 
   public static class SortDirectionEnumFactory implements EnumFactory<SortDirection> {
     private final IModelContext modelContext;
-    public SortDirectionEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SortDirectionEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SortDirectionEnumFactory() {
       this(null);
@@ -272,8 +272,8 @@ public class DataRequirement extends DataType implements ICompositeType {
 
   public static class ValueFilterComparatorEnumFactory implements EnumFactory<ValueFilterComparator> {
     private final IModelContext modelContext;
-    public ValueFilterComparatorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ValueFilterComparatorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ValueFilterComparatorEnumFactory() {
       this(null);
@@ -388,9 +388,9 @@ public class DataRequirement extends DataType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DataRequirementCodeFilterComponent(IModelContext context) {
+      public DataRequirementCodeFilterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -736,23 +736,23 @@ public class DataRequirement extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.path != null) {
-          this.path.setModelContext(context);
+          this.path.setModelContext(modelContext);
         }
         if (this.searchParam != null) {
-          this.searchParam.setModelContext(context);
+          this.searchParam.setModelContext(modelContext);
         }
         if (this.valueSet != null) {
-          this.valueSet.setModelContext(context);
+          this.valueSet.setModelContext(modelContext);
         }
         if (this.codeList != null) {
           for (Coding i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -828,9 +828,9 @@ public class DataRequirement extends DataType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DataRequirementDateFilterComponent(IModelContext context) {
+      public DataRequirementDateFilterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1138,19 +1138,19 @@ public class DataRequirement extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.path != null) {
-          this.path.setModelContext(context);
+          this.path.setModelContext(modelContext);
         }
         if (this.searchParam != null) {
-          this.searchParam.setModelContext(context);
+          this.searchParam.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -1232,9 +1232,9 @@ public class DataRequirement extends DataType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DataRequirementValueFilterComponent(IModelContext context) {
+      public DataRequirementValueFilterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1694,22 +1694,22 @@ public class DataRequirement extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.path != null) {
-          this.path.setModelContext(context);
+          this.path.setModelContext(modelContext);
         }
         if (this.searchParam != null) {
-          this.searchParam.setModelContext(context);
+          this.searchParam.setModelContext(modelContext);
         }
         if (this.comparator != null) {
-          this.comparator.setModelContext(context);
+          this.comparator.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -1778,9 +1778,9 @@ public class DataRequirement extends DataType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DataRequirementSortComponent(IModelContext context) {
+      public DataRequirementSortComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1788,9 +1788,9 @@ public class DataRequirement extends DataType implements ICompositeType {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DataRequirementSortComponent(IModelContext context, String path, SortDirection direction) {
+      public DataRequirementSortComponent(IModelContext modelContext, String path, SortDirection direction) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setPath(path);
         this.setDirection(direction);
       }
@@ -1991,16 +1991,16 @@ public class DataRequirement extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.path != null) {
-          this.path.setModelContext(context);
+          this.path.setModelContext(modelContext);
         }
         if (this.direction != null) {
-          this.direction.setModelContext(context);
+          this.direction.setModelContext(modelContext);
         }
       }
 
@@ -2114,9 +2114,9 @@ public class DataRequirement extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public DataRequirement(IModelContext context) {
+    public DataRequirement(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2124,9 +2124,9 @@ public class DataRequirement extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public DataRequirement(IModelContext context, FHIRTypes type) {
+    public DataRequirement(IModelContext modelContext, FHIRTypes type) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setType(type);
     }
 
@@ -2843,48 +2843,48 @@ public class DataRequirement extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.profileList != null) {
           for (CanonicalType i : this.profileList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.mustSupportList != null) {
           for (StringType i : this.mustSupportList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.codeFilterList != null) {
           for (DataRequirementCodeFilterComponent i : this.codeFilterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.dateFilterList != null) {
           for (DataRequirementDateFilterComponent i : this.dateFilterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.valueFilterList != null) {
           for (DataRequirementValueFilterComponent i : this.valueFilterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.limit != null) {
-          this.limit.setModelContext(context);
+          this.limit.setModelContext(modelContext);
         }
         if (this.sortList != null) {
           for (DataRequirementSortComponent i : this.sortList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }

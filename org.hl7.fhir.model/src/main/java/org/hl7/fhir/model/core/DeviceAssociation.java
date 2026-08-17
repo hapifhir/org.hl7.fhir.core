@@ -141,8 +141,8 @@ public class DeviceAssociation extends DomainResource {
 
   public static class DeviceAssociationStatusCodesEnumFactory implements EnumFactory<DeviceAssociationStatusCodes> {
     private final IModelContext modelContext;
-    public DeviceAssociationStatusCodesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public DeviceAssociationStatusCodesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public DeviceAssociationStatusCodesEnumFactory() {
       this(null);
@@ -284,9 +284,9 @@ public class DeviceAssociation extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public DeviceAssociation(IModelContext context) {
+    public DeviceAssociation(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -294,9 +294,9 @@ public class DeviceAssociation extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public DeviceAssociation(IModelContext context, Reference device, CodeableConcept relationship, DeviceAssociationStatusCodes status, Reference subject) {
+    public DeviceAssociation(IModelContext modelContext, Reference device, CodeableConcept relationship, DeviceAssociationStatusCodes status, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setDevice(device);
       this.setRelationship(relationship);
       this.setStatus(status);
@@ -904,44 +904,44 @@ public class DeviceAssociation extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.device != null) {
-          this.device.setModelContext(context);
+          this.device.setModelContext(modelContext);
         }
         if (this.relationship != null) {
-          this.relationship.setModelContext(context);
+          this.relationship.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReason != null) {
-          this.statusReason.setModelContext(context);
+          this.statusReason.setModelContext(modelContext);
         }
         if (this.relationshipStatus != null) {
-          this.relationshipStatus.setModelContext(context);
+          this.relationshipStatus.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.focus != null) {
-          this.focus.setModelContext(context);
+          this.focus.setModelContext(modelContext);
         }
         if (this.bodyStructureList != null) {
           for (CodeableReference i : this.bodyStructureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 
@@ -976,8 +976,8 @@ public class DeviceAssociation extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.DeviceAssociation;
+  public String getResourceType() {
+    return "DeviceAssociation";
    }
 
  /**

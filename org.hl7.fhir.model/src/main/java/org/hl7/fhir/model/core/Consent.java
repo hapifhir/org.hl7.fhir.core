@@ -141,8 +141,8 @@ public class Consent extends DomainResource {
 
   public static class ConsentDataMeaningEnumFactory implements EnumFactory<ConsentDataMeaning> {
     private final IModelContext modelContext;
-    public ConsentDataMeaningEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ConsentDataMeaningEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ConsentDataMeaningEnumFactory() {
       this(null);
@@ -256,8 +256,8 @@ public class Consent extends DomainResource {
 
   public static class ConsentProvisionTypeEnumFactory implements EnumFactory<ConsentProvisionType> {
     private final IModelContext modelContext;
-    public ConsentProvisionTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ConsentProvisionTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ConsentProvisionTypeEnumFactory() {
       this(null);
@@ -399,8 +399,8 @@ public class Consent extends DomainResource {
 
   public static class ConsentStateEnumFactory implements EnumFactory<ConsentState> {
     private final IModelContext modelContext;
-    public ConsentStateEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ConsentStateEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ConsentStateEnumFactory() {
       this(null);
@@ -495,9 +495,9 @@ public class Consent extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConsentPolicyBasisComponent(IModelContext context) {
+      public ConsentPolicyBasisComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -679,16 +679,16 @@ public class Consent extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.reference != null) {
-          this.reference.setModelContext(context);
+          this.reference.setModelContext(modelContext);
         }
         if (this.uri != null) {
-          this.uri.setModelContext(context);
+          this.uri.setModelContext(modelContext);
         }
       }
 
@@ -775,9 +775,9 @@ public class Consent extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConsentVerificationComponent(IModelContext context) {
+      public ConsentVerificationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -785,9 +785,9 @@ public class Consent extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ConsentVerificationComponent(IModelContext context, boolean verified) {
+      public ConsentVerificationComponent(IModelContext modelContext, boolean verified) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setVerified(verified);
       }
 
@@ -1137,26 +1137,26 @@ public class Consent extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.verified != null) {
-          this.verified.setModelContext(context);
+          this.verified.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.verifiedBy != null) {
-          this.verifiedBy.setModelContext(context);
+          this.verifiedBy.setModelContext(modelContext);
         }
         if (this.verifiedWith != null) {
-          this.verifiedWith.setModelContext(context);
+          this.verifiedWith.setModelContext(modelContext);
         }
         if (this.dateList != null) {
           for (DateTimeType i : this.dateList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1293,9 +1293,9 @@ public class Consent extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ProvisionComponent(IModelContext context) {
+      public ProvisionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2074,60 +2074,60 @@ public class Consent extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.actorList != null) {
           for (ProvisionActorComponent i : this.actorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.actionList != null) {
           for (CodeableConcept i : this.actionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.securityLabelList != null) {
           for (Coding i : this.securityLabelList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purposeList != null) {
           for (Coding i : this.purposeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.documentTypeList != null) {
           for (Coding i : this.documentTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.resourceTypeList != null) {
           for (Coding i : this.resourceTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.codeList != null) {
           for (CodeableConcept i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.dataPeriod != null) {
-          this.dataPeriod.setModelContext(context);
+          this.dataPeriod.setModelContext(modelContext);
         }
         if (this.dataList != null) {
           for (ProvisionDataComponent i : this.dataList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.provisionList != null) {
           for (ProvisionComponent i : this.provisionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2200,9 +2200,9 @@ public class Consent extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ProvisionActorComponent(IModelContext context) {
+      public ProvisionActorComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2360,16 +2360,16 @@ public class Consent extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.role != null) {
-          this.role.setModelContext(context);
+          this.role.setModelContext(modelContext);
         }
         if (this.reference != null) {
-          this.reference.setModelContext(context);
+          this.reference.setModelContext(modelContext);
         }
       }
 
@@ -2435,9 +2435,9 @@ public class Consent extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ProvisionDataComponent(IModelContext context) {
+      public ProvisionDataComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2445,9 +2445,9 @@ public class Consent extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ProvisionDataComponent(IModelContext context, ConsentDataMeaning meaning, Reference reference) {
+      public ProvisionDataComponent(IModelContext modelContext, ConsentDataMeaning meaning, Reference reference) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setMeaning(meaning);
         this.setReference(reference);
       }
@@ -2628,16 +2628,16 @@ public class Consent extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.meaning != null) {
-          this.meaning.setModelContext(context);
+          this.meaning.setModelContext(modelContext);
         }
         if (this.reference != null) {
-          this.reference.setModelContext(context);
+          this.reference.setModelContext(modelContext);
         }
       }
 
@@ -2816,9 +2816,9 @@ public class Consent extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Consent(IModelContext context) {
+    public Consent(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2826,9 +2826,9 @@ public class Consent extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Consent(IModelContext context, ConsentState status) {
+    public Consent(IModelContext modelContext, ConsentState status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -4078,87 +4078,87 @@ public class Consent extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.grantorList != null) {
           for (Reference i : this.grantorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.granteeList != null) {
           for (Reference i : this.granteeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.managerList != null) {
           for (Reference i : this.managerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.controllerList != null) {
           for (Reference i : this.controllerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sourceAttachmentList != null) {
           for (Attachment i : this.sourceAttachmentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sourceReferenceList != null) {
           for (Reference i : this.sourceReferenceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.regulatoryBasisList != null) {
           for (CodeableConcept i : this.regulatoryBasisList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.policyBasis != null) {
-          this.policyBasis.setModelContext(context);
+          this.policyBasis.setModelContext(modelContext);
         }
         if (this.policyTextList != null) {
           for (Reference i : this.policyTextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.verificationList != null) {
           for (ConsentVerificationComponent i : this.verificationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.decision != null) {
-          this.decision.setModelContext(context);
+          this.decision.setModelContext(modelContext);
         }
         if (this.provisionList != null) {
           for (ProvisionComponent i : this.provisionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4200,8 +4200,8 @@ public class Consent extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Consent;
+  public String getResourceType() {
+    return "Consent";
    }
 
  /**

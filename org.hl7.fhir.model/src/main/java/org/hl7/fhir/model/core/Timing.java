@@ -370,8 +370,8 @@ public class Timing extends BackboneType implements ICompositeType {
 
   public static class EventTimingEnumFactory implements EnumFactory<EventTiming> {
     private final IModelContext modelContext;
-    public EventTimingEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public EventTimingEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public EventTimingEnumFactory() {
       this(null);
@@ -673,8 +673,8 @@ public class Timing extends BackboneType implements ICompositeType {
 
   public static class UnitsOfTimeEnumFactory implements EnumFactory<UnitsOfTime> {
     private final IModelContext modelContext;
-    public UnitsOfTimeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public UnitsOfTimeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public UnitsOfTimeEnumFactory() {
       this(null);
@@ -884,9 +884,9 @@ public class Timing extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TimingRepeatComponent(IModelContext context) {
+      public TimingRepeatComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2214,67 +2214,67 @@ public class Timing extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.bounds != null) {
-          this.bounds.setModelContext(context);
+          this.bounds.setModelContext(modelContext);
         }
         if (this.count != null) {
-          this.count.setModelContext(context);
+          this.count.setModelContext(modelContext);
         }
         if (this.countMax != null) {
-          this.countMax.setModelContext(context);
+          this.countMax.setModelContext(modelContext);
         }
         if (this.duration != null) {
-          this.duration.setModelContext(context);
+          this.duration.setModelContext(modelContext);
         }
         if (this.durationMax != null) {
-          this.durationMax.setModelContext(context);
+          this.durationMax.setModelContext(modelContext);
         }
         if (this.durationUnit != null) {
-          this.durationUnit.setModelContext(context);
+          this.durationUnit.setModelContext(modelContext);
         }
         if (this.frequency != null) {
-          this.frequency.setModelContext(context);
+          this.frequency.setModelContext(modelContext);
         }
         if (this.frequencyMax != null) {
-          this.frequencyMax.setModelContext(context);
+          this.frequencyMax.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.periodMax != null) {
-          this.periodMax.setModelContext(context);
+          this.periodMax.setModelContext(modelContext);
         }
         if (this.periodUnit != null) {
-          this.periodUnit.setModelContext(context);
+          this.periodUnit.setModelContext(modelContext);
         }
         if (this.startOffset != null) {
-          this.startOffset.setModelContext(context);
+          this.startOffset.setModelContext(modelContext);
         }
         if (this.endOffset != null) {
-          this.endOffset.setModelContext(context);
+          this.endOffset.setModelContext(modelContext);
         }
         if (this.dayOfWeekList != null) {
           for (Enumeration<DaysOfWeek> i : this.dayOfWeekList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.timeOfDayList != null) {
           for (TimeType i : this.timeOfDayList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.whenList != null) {
           for (Enumeration<EventTiming> i : this.whenList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.offset != null) {
-          this.offset.setModelContext(context);
+          this.offset.setModelContext(modelContext);
         }
       }
 
@@ -2359,9 +2359,9 @@ public class Timing extends BackboneType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Timing(IModelContext context) {
+    public Timing(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -2601,21 +2601,21 @@ public class Timing extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.eventList != null) {
           for (DateTimeType i : this.eventList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.repeat != null) {
-          this.repeat.setModelContext(context);
+          this.repeat.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
       }
 

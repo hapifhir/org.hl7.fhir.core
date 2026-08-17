@@ -66,16 +66,16 @@ public class TimeType extends PrimitiveType<String> {
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public TimeType(IModelContext context) {
+	public TimeType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
   /**
    * Constructor
    */
-  public TimeType(IModelContext context, String theValue) {
-    this.modelContext = context;
+  public TimeType(IModelContext modelContext, String theValue) {
+    this.modelContext = modelContext;
     setValue(theValue);
   }
 

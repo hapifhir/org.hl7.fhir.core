@@ -123,9 +123,9 @@ public class ParameterDefinition extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ParameterDefinition(IModelContext context) {
+    public ParameterDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -133,9 +133,9 @@ public class ParameterDefinition extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ParameterDefinition(IModelContext context, OperationParameterUse use, FHIRTypes type) {
+    public ParameterDefinition(IModelContext modelContext, OperationParameterUse use, FHIRTypes type) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setUse(use);
       this.setType(type);
     }
@@ -693,31 +693,31 @@ public class ParameterDefinition extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.use != null) {
-          this.use.setModelContext(context);
+          this.use.setModelContext(modelContext);
         }
         if (this.min != null) {
-          this.min.setModelContext(context);
+          this.min.setModelContext(modelContext);
         }
         if (this.max != null) {
-          this.max.setModelContext(context);
+          this.max.setModelContext(modelContext);
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.profile != null) {
-          this.profile.setModelContext(context);
+          this.profile.setModelContext(modelContext);
         }
       }
 

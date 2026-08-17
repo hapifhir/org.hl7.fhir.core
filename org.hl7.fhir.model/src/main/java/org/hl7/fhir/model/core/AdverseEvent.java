@@ -131,8 +131,8 @@ public class AdverseEvent extends DomainResource {
 
   public static class AdverseEventActualityEnumFactory implements EnumFactory<AdverseEventActuality> {
     private final IModelContext modelContext;
-    public AdverseEventActualityEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AdverseEventActualityEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AdverseEventActualityEnumFactory() {
       this(null);
@@ -260,8 +260,8 @@ public class AdverseEvent extends DomainResource {
 
   public static class AdverseEventStatusEnumFactory implements EnumFactory<AdverseEventStatus> {
     private final IModelContext modelContext;
-    public AdverseEventStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AdverseEventStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AdverseEventStatusEnumFactory() {
       this(null);
@@ -345,9 +345,9 @@ public class AdverseEvent extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AdverseEventParticipantComponent(IModelContext context) {
+      public AdverseEventParticipantComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -355,9 +355,9 @@ public class AdverseEvent extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AdverseEventParticipantComponent(IModelContext context, Reference actor) {
+      public AdverseEventParticipantComponent(IModelContext modelContext, Reference actor) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setActor(actor);
       }
 
@@ -516,16 +516,16 @@ public class AdverseEvent extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.function != null) {
-          this.function.setModelContext(context);
+          this.function.setModelContext(modelContext);
         }
         if (this.actor != null) {
-          this.actor.setModelContext(context);
+          this.actor.setModelContext(modelContext);
         }
       }
 
@@ -597,9 +597,9 @@ public class AdverseEvent extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AdverseEventSuspectEntityComponent(IModelContext context) {
+      public AdverseEventSuspectEntityComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -607,9 +607,9 @@ public class AdverseEvent extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AdverseEventSuspectEntityComponent(IModelContext context, CodeableReference instance) {
+      public AdverseEventSuspectEntityComponent(IModelContext modelContext, CodeableReference instance) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setInstance(instance);
       }
 
@@ -850,19 +850,19 @@ public class AdverseEvent extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.instance != null) {
-          this.instance.setModelContext(context);
+          this.instance.setModelContext(modelContext);
         }
         if (this.causality != null) {
-          this.causality.setModelContext(context);
+          this.causality.setModelContext(modelContext);
         }
         if (this.occurrence != null) {
-          this.occurrence.setModelContext(context);
+          this.occurrence.setModelContext(modelContext);
         }
       }
 
@@ -938,9 +938,9 @@ public class AdverseEvent extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AdverseEventSuspectEntityCausalityComponent(IModelContext context) {
+      public AdverseEventSuspectEntityCausalityComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1145,19 +1145,19 @@ public class AdverseEvent extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.assessmentMethod != null) {
-          this.assessmentMethod.setModelContext(context);
+          this.assessmentMethod.setModelContext(modelContext);
         }
         if (this.entityRelatedness != null) {
-          this.entityRelatedness.setModelContext(context);
+          this.entityRelatedness.setModelContext(modelContext);
         }
         if (this.author != null) {
-          this.author.setModelContext(context);
+          this.author.setModelContext(modelContext);
         }
       }
 
@@ -1387,9 +1387,9 @@ public class AdverseEvent extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public AdverseEvent(IModelContext context) {
+    public AdverseEvent(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1397,9 +1397,9 @@ public class AdverseEvent extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public AdverseEvent(IModelContext context, AdverseEventStatus status, AdverseEventActuality actuality, Reference subject) {
+    public AdverseEvent(IModelContext modelContext, AdverseEventStatus status, AdverseEventActuality actuality, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setActuality(actuality);
       this.setSubject(subject);
@@ -3008,105 +3008,105 @@ public class AdverseEvent extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.actuality != null) {
-          this.actuality.setModelContext(context);
+          this.actuality.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.effect != null) {
-          this.effect.setModelContext(context);
+          this.effect.setModelContext(modelContext);
         }
         if (this.detected != null) {
-          this.detected.setModelContext(context);
+          this.detected.setModelContext(modelContext);
         }
         if (this.recordedDate != null) {
-          this.recordedDate.setModelContext(context);
+          this.recordedDate.setModelContext(modelContext);
         }
         if (this.resultingEffectList != null) {
           for (CodeableReference i : this.resultingEffectList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.seriousness != null) {
-          this.seriousness.setModelContext(context);
+          this.seriousness.setModelContext(modelContext);
         }
         if (this.outcomeList != null) {
           for (CodeableConcept i : this.outcomeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.recorder != null) {
-          this.recorder.setModelContext(context);
+          this.recorder.setModelContext(modelContext);
         }
         if (this.participantList != null) {
           for (AdverseEventParticipantComponent i : this.participantList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.studyList != null) {
           for (Reference i : this.studyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.expectedInResearchStudy != null) {
-          this.expectedInResearchStudy.setModelContext(context);
+          this.expectedInResearchStudy.setModelContext(modelContext);
         }
         if (this.suspectEntityList != null) {
           for (AdverseEventSuspectEntityComponent i : this.suspectEntityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.contributingFactorList != null) {
           for (CodeableReference i : this.contributingFactorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.preventiveActionList != null) {
           for (CodeableReference i : this.preventiveActionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.mitigatingActionList != null) {
           for (CodeableReference i : this.mitigatingActionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.supportingInfoList != null) {
           for (CodeableReference i : this.supportingInfoList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3153,8 +3153,8 @@ public class AdverseEvent extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.AdverseEvent;
+  public String getResourceType() {
+    return "AdverseEvent";
    }
 
  /**

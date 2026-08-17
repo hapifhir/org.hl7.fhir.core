@@ -249,8 +249,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 
 		if (clss == JavaGenClass.Resource && !analysis.isAbstract()) {
 		  write("  @Override\r\n");
-		  write("  public ResourceType getResourceType() {\r\n");
-		  write("    return ResourceType."+analysis.getName()+";\r\n");
+		  write("  public String getResourceType() {\r\n");
+		  write("    return \""+escapeJavaString(analysis.getName())+"\";\r\n");
 		  write("   }\r\n");
 		  write("\r\n"); 
 		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
@@ -264,7 +264,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write("  public void setIdBase(String value) {\r\n");
       write("    setId(value);\r\n");
       write("  }\r\n");
-		  write("  public abstract ResourceType getResourceType();\r\n");
+		  write("  public abstract String getResourceType();\r\n");
 		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
       write("  @Override\r\n"); 
       write("  public String getIdBase() {\r\n"); 
@@ -633,8 +633,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write(    "     * @param theCode The {@link #setCode(String) code}\r\n" );
       write(    "     * @param theDisplay The {@link #setDisplay(String) human readable display}\r\n"); 
       write(    "     */\r\n" );
-      write(    "      public Coding(IModelContext context, String theSystem, String theCode, String theDisplay) {\r\n"); 
-      write(    "        this.modelContext = context;\r\n");
+      write(    "      public Coding(IModelContext modelContext, String theSystem, String theCode, String theDisplay) {\r\n"); 
+      write(    "        this.modelContext = modelContext;\r\n");
       write(    "        setSystem(theSystem);\r\n");
       write(    "        setCode(theCode);\r\n");
       write(    "        setDisplay(theDisplay);\r\n"); 
@@ -644,8 +644,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("    /**\r\n"); 
           write("     * Constructor\r\n"); 
           write("     */\r\n"); 
-          write("    public Extension(IModelContext context, String theUrl, IBaseDatatype theValue) {\r\n"); 
-          write("      this.modelContext = context;\r\n");
+          write("    public Extension(IModelContext modelContext, String theUrl, IBaseDatatype theValue) {\r\n"); 
+          write("      this.modelContext = modelContext;\r\n");
           write("      setUrl(theUrl);\r\n"); 
           write("      setValue(theValue);\r\n"); 
           write("    }\r\n"); 
@@ -656,8 +656,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("     * \r\n"); 
           write("     * @param theReference The given reference string (e.g. \"Patient/123\" or \"http://example.com/Patient/123\")\r\n"); 
           write("     */\r\n"); 
-          write("    public Reference(IModelContext context, String theReference) {\r\n"); 
-          write("      super(context, theReference);\r\n"); 
+          write("    public Reference(IModelContext modelContext, String theReference) {\r\n"); 
+          write("      super(modelContext, theReference);\r\n"); 
           write("    }\r\n"); 
           write("\r\n"); 
           write("    /**\r\n"); 
@@ -665,8 +665,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("     * \r\n"); 
           write("     * @param theReference The given reference as an IdType (e.g. \"Patient/123\" or \"http://example.com/Patient/123\")\r\n"); 
           write("     */\r\n"); 
-          write("    public Reference(IModelContext context, IIdType theReference) {\r\n"); 
-          write("      super(context, theReference);\r\n"); 
+          write("    public Reference(IModelContext modelContext, IIdType theReference) {\r\n"); 
+          write("      super(modelContext, theReference);\r\n"); 
           write("    }\r\n"); 
           write("\r\n"); 
           write("    /**\r\n"); 
@@ -674,8 +674,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("     * \r\n"); 
           write("     * @param theResource The resource represented by this reference\r\n"); 
           write("     */\r\n"); 
-          write("    public Reference(IModelContext context, IAnyResource theResource) {\r\n"); 
-          write("      super(context, theResource);\r\n"); 
+          write("    public Reference(IModelContext modelContext, IAnyResource theResource) {\r\n"); 
+          write("      super(modelContext, theResource);\r\n"); 
           write("    }\r\n"); 
           write("\r\n");
     } else if ("Quantity".equals(theName)) {
@@ -684,8 +684,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("   * \r\n"); 
           write("   * @param theValue The {@link #setValue(double) value}\r\n"); 
           write("   */\r\n"); 
-          write("  public Quantity(IModelContext context, double theValue) {\r\n"); 
-          write("    this.modelContext = context;\r\n");
+          write("  public Quantity(IModelContext modelContext, double theValue) {\r\n"); 
+          write("    this.modelContext = modelContext;\r\n");
           write("    setValue(theValue);\r\n"); 
           write("  }\r\n"); 
           write("\r\n"); 
@@ -694,8 +694,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("   * \r\n"); 
           write("   * @param theValue The {@link #setValue(long) value}\r\n"); 
           write("   */\r\n"); 
-          write("  public Quantity(IModelContext context, long theValue) {\r\n"); 
-          write("    this.modelContext = context;\r\n");
+          write("  public Quantity(IModelContext modelContext, long theValue) {\r\n"); 
+          write("    this.modelContext = modelContext;\r\n");
           write("    setValue(theValue);\r\n"); 
           write("  }\r\n"); 
           write("  \r\n"); 
@@ -708,8 +708,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("   * @param theCode The {@link #setCode(String)} (the code for the units}\r\n"); 
           write("   * @param theUnit The {@link #setUnit(String)} (the human readable display name for the units}\r\n"); 
           write("   */\r\n"); 
-          write("  public Quantity(IModelContext context, QuantityComparator theComparator, double theValue, String theSystem, String theCode, String theUnit) {\r\n"); 
-          write("    this.modelContext = context;\r\n");
+          write("  public Quantity(IModelContext modelContext, QuantityComparator theComparator, double theValue, String theSystem, String theCode, String theUnit) {\r\n"); 
+          write("    this.modelContext = modelContext;\r\n");
           write("    setValue(theValue);\r\n"); 
           write("    setComparator(theComparator);\r\n"); 
           write("    setSystem(theSystem);\r\n"); 
@@ -726,8 +726,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write("   * @param theCode The {@link #setCode(String)} (the code for the units}\r\n"); 
           write("   * @param theUnit The {@link #setUnit(String)} (the human readable display name for the units}\r\n"); 
           write("   */\r\n"); 
-          write("  public Quantity(IModelContext context, QuantityComparator theComparator, long theValue, String theSystem, String theCode, String theUnit) {\r\n"); 
-          write("    this.modelContext = context;\r\n");
+          write("  public Quantity(IModelContext modelContext, QuantityComparator theComparator, long theValue, String theSystem, String theCode, String theUnit) {\r\n"); 
+          write("    this.modelContext = modelContext;\r\n");
           write("    setValue(theValue);\r\n"); 
           write("    setComparator(theComparator);\r\n"); 
           write("    setSystem(theSystem);\r\n"); 
@@ -905,7 +905,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       else
         write(" return get"+upFirst(getElementName(name, false))+"Element();\r\n");
     } else if (e.typeSummary().equals("Resource") || e.typeSummary().equals("DomainResource")) {
-      write("throw new FHIRException(\"Cannot make property "+escapeJavaString(e.getName())+" as it is not a complex type\"); // "+tn+"\r\n");
+      write("throw new FHIRException(\"Cannot make property "+escapeJavaString(e.getName())+" as it is not a complex type\"); // "+sanitizeComment(tn)+"\r\n");
     } else if (e.unbounded()) {
       write(" return add"+upFirst(getElementName(name, false))+"(); \r\n");
     } else if (inh != null && inh.unbounded()) {
@@ -946,7 +946,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         if (e.unbounded()) {
           write(indent+"      this.get"+upFirst(getElementName(name, false))+"List().add("+cn+");\r\n");
         } else {
-          write(indent+"      this."+getElementName(name, true)+" = "+cn+"; // "+tn+"\r\n");
+          write(indent+"      this."+getElementName(name, true)+" = "+cn+"; // "+sanitizeComment(tn)+"\r\n");
           if (!e.typeSummary().equals("xhtml")) {
             write(indent+"      if (this."+getElementName(name, true)+" != null) {\r\n");
             write(indent+"        this."+getElementName(name, true)+".setModelContext(this.modelContext);\r\n");
@@ -1018,11 +1018,11 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         String name = e.getName().replace("[x]", "");
         write(indent+"    case \""+escapeJavaString(name)+"\": ");
         if (e.unbounded()) {
-          write("return this."+getElementName(name, true)+"List == null ? new Base[0] : this."+getElementName(name, true)+"List.toArray(new Base[this."+getElementName(name, true)+"List.size()]); // "+tn+"\r\n");
+          write("return this."+getElementName(name, true)+"List == null ? new Base[0] : this."+getElementName(name, true)+"List.toArray(new Base[this."+getElementName(name, true)+"List.size()]); // "+sanitizeComment(tn)+"\r\n");
         } else if (e.typeSummary().equals("xhtml")) {
-          write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {new StringType(modelContext, new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this."+getElementName(name, true)+"))}; // "+tn+"\r\n");
+          write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {new StringType(modelContext, new org.hl7.fhir.utilities.xhtml.XhtmlComposer(true).composeEx(this."+getElementName(name, true)+"))}; // "+sanitizeComment(tn)+"\r\n");
         } else {
-          write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {this."+getElementName(name, true)+"}; // "+tn+"\r\n");
+          write("return this."+getElementName(name, true)+" == null ? new Base[0] : new Base[] {this."+getElementName(name, true)+"}; // "+sanitizeComment(tn)+"\r\n");
         }
       }
     }
@@ -1125,9 +1125,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       write(indent+" *\r\n");
       write(indent+" * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)\r\n");
       write(indent+" */\r\n");
-      write(indent+"  public "+className+"(IModelContext context) {\r\n");
+      write(indent+"  public "+className+"(IModelContext modelContext) {\r\n");
       write(indent+"    super();\r\n");
-      write(indent+"    this.modelContext = context;\r\n");
+      write(indent+"    this.modelContext = modelContext;\r\n");
       write(indent+"  }\r\n\r\n");
       return;
     }
@@ -1136,7 +1136,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     write(indent+" *\r\n");
     write(indent+" * @param context the model context this object belongs to (may be null)\r\n");
     write(indent+" */\r\n");
-    write(indent+"  public "+className+"(IModelContext context");
+    write(indent+"  public "+className+"(IModelContext modelContext");
     for (ElementDefinition e : params) {
       write(", ");
       String tn = e.getUserString("java.type");
@@ -1155,7 +1155,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
     }
     write(") {\r\n");
     write(indent+"    super();\r\n");
-    write(indent+"    this.modelContext = context;\r\n");
+    write(indent+"    this.modelContext = modelContext;\r\n");
     for (ElementDefinition e : params) {
       String en = getElementName(e.getName(), true);
       if (e.unbounded()) {
@@ -1351,8 +1351,8 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		
 		write("  public static class "+tns+"EnumFactory implements EnumFactory<"+tns+"> {\r\n");
 		write("    private final IModelContext modelContext;\r\n");
-		write("    public "+tns+"EnumFactory(IModelContext context) {\r\n");
-		write("      this.modelContext = context;\r\n");
+		write("    public "+tns+"EnumFactory(IModelContext modelContext) {\r\n");
+		write("      this.modelContext = modelContext;\r\n");
 		write("    }\r\n");
 		write("    public "+tns+"EnumFactory() {\r\n");
 		write("      this(null);\r\n");
@@ -1595,11 +1595,11 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       return;
     }
     write(indent+"  @Override\r\n");
-    write(indent+"  public void setModelContext(IModelContext context) {\r\n");
-    write(indent+"    if (this.modelContext == context) {\r\n");
+    write(indent+"  public void setModelContext(IModelContext modelContext) {\r\n");
+    write(indent+"    if (this.modelContext == modelContext) {\r\n");
     write(indent+"      return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext\r\n");
     write(indent+"    }\r\n");
-    write(indent+"    super.setModelContext(context);\r\n");
+    write(indent+"    super.setModelContext(modelContext);\r\n");
     for (ElementDefinition e : children) {
       if (!e.typeSummary().equals("xhtml")) {
         String name = getElementName(e.getName().replace("[x]", ""), true);
@@ -1607,12 +1607,12 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
           String ctn = e.getUserString("java.type");
           write(indent+"    if (this."+name+"List != null) {\r\n");
           write(indent+"      for ("+ctn+" i : this."+name+"List) {\r\n");
-          write(indent+"        i.setModelContext(context);\r\n");
+          write(indent+"        i.setModelContext(modelContext);\r\n");
           write(indent+"      }\r\n");
           write(indent+"    }\r\n");
         } else {
           write(indent+"    if (this."+name+" != null) {\r\n");
-          write(indent+"      this."+name+".setModelContext(context);\r\n");
+          write(indent+"      this."+name+".setModelContext(modelContext);\r\n");
           write(indent+"    }\r\n");
         }
       }
@@ -1984,9 +1984,9 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
 		    write(indent+"    return false;\r\n");
 		    write(indent+"  for ("+tn+" v : this."+getElementName(e.getName(), true)+"List)\r\n");
 		    if (isJavaPrimitive(e) && !tn.startsWith("Enum")) // GG: not sure why this is different? 
-		      write(indent+"    if (v.getValue().equals(value)) // "+e.typeSummary()+"\r\n");
+		      write(indent+"    if (v.getValue().equals(value)) // "+sanitizeComment(e.typeSummary())+"\r\n");
 		    else
-		      write(indent+"    if (v.getValue().equals(value)) // "+e.typeSummary()+"\r\n");
+		      write(indent+"    if (v.getValue().equals(value)) // "+sanitizeComment(e.typeSummary())+"\r\n");
 		    write(indent+"      return true;\r\n");
 		    write(indent+"  return false;\r\n");
 		    write(indent+"}\r\n");
@@ -2442,7 +2442,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
        */
       jdoc(indent, "@return Returns a reference to <code>this</code> for easy method chaining");
       write(indent+"public " + className + " set"+getTitle(getElementName(e.getName(), false))+"List(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + "List" + ") { \r\n");
-      write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+      write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
       write(indent+"}\r\n");
 
       /*
@@ -2458,7 +2458,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
          */
         jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"Element(){//2 \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
         write(indent+"}\r\n");
 
         /*
@@ -2466,7 +2466,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
          */
         jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { //1\r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
         write(indent+"}\r\n");
 
         /*
@@ -2482,21 +2482,21 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
            * addXXX() for repeatable composite
            */
           write(indent+"public "+tn+" add"+getTitle(getElementName(e.getName(), false))+"() { //3\r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
           write(indent+"}\r\n");
 
           /*
            * addXXX(foo) for repeatable composite
            */
           write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3\r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
           write(indent+"}\r\n");
         } else {
           /*
            * addXXX(foo) for repeatable composite
            */
           write(indent+"public "+className+" add"+getTitle(getElementName(e.getName(), false))+"("+tn+" t) { //3\r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
           write(indent+"}\r\n");
         }
 
@@ -2506,7 +2506,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         if (!"DomainResource".equals(className)) {
           jdoc(indent, "@return The first repetition of repeating field {@link #"+getElementName(e.getName(), true)+"}, creating it if it does not already exist {2}");
           write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"FirstRep() { \r\n");
-          write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+          write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
           write(indent+"}\r\n");
         }
       }
@@ -2521,7 +2521,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         } else { 
           write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"Element() { \r\n");
         }
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\");\r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\");\r\n");
         write(indent+"}\r\n");
         write("\r\n");
 
@@ -2534,10 +2534,10 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         write("\r\n");
         jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+"). This is the underlying object with id, value and extensions. The accessor \"get"+getTitle(getElementName(e.getName(), false))+"\" gives direct access to the value");
         write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"Element("+tn+" value) { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
         write(indent+"}\r\n");
         write(indent+"public "+simpleType+" get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
         write(indent+"}\r\n");
         generateUnimplementedSetter(analysis, e, indent, className, tn, simpleType, analysis.getName());
 
@@ -2549,14 +2549,14 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
       } else {
         jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
         write(indent+"}\r\n");
         if (e.getType().size() > 1 && (tn.equals("DataType") || !tn.endsWith(".DataType"))) {
           for (TypeRefComponent t : e.getType()) {
             jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
             String ttn = getTypename(t);
             write(indent+"public "+ttn+" get"+getTitle(getElementName(e.getName(), false))+ttn+"() { \r\n");
-            write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+            write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
             write(indent+"}\r\n");
             write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+ttn+"() { \r\n");
             write(indent+"  return false;////K \r\n");
@@ -2568,7 +2568,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
         write(indent+"}\r\n");
         jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
         write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"("+tn+" value) { \r\n");
-        write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+        write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
         write(indent+"}\r\n");
         write("\r\n");
       }
@@ -2580,7 +2580,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   private void generateUnimplementedSetter(Analysis analysis, ElementDefinition e, String indent, String className, String tn, String simpleType, String rn) throws IOException {
     jdoc(indent, "@param value "+replaceTitle(rn, e.getDefinition()));
     write(indent+"public "+className+" set"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { \r\n");
-    write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
+    write(indent+"  throw new Error(\"The resource type \\\""+escapeJavaString(analysis.getName())+"\\\" does not implement the property \\\""+escapeJavaString(e.getName())+"\\\"\"); \r\n");
     write(indent+"}\r\n");
   }
 }

@@ -105,9 +105,9 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Reference(IModelContext context) {
+    public Reference(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -115,8 +115,8 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
      * 
      * @param theReference The given reference string (e.g. "Patient/123" or "http://example.com/Patient/123")
      */
-    public Reference(IModelContext context, String theReference) {
-      super(context, theReference);
+    public Reference(IModelContext modelContext, String theReference) {
+      super(modelContext, theReference);
     }
 
     /**
@@ -124,8 +124,8 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
      * 
      * @param theReference The given reference as an IdType (e.g. "Patient/123" or "http://example.com/Patient/123")
      */
-    public Reference(IModelContext context, IIdType theReference) {
-      super(context, theReference);
+    public Reference(IModelContext modelContext, IIdType theReference) {
+      super(modelContext, theReference);
     }
 
     /**
@@ -133,8 +133,8 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
      * 
      * @param theResource The resource represented by this reference
      */
-    public Reference(IModelContext context, IAnyResource theResource) {
-      super(context, theResource);
+    public Reference(IModelContext modelContext, IAnyResource theResource) {
+      super(modelContext, theResource);
     }
 
     /**
@@ -463,22 +463,22 @@ public class Reference extends BaseReference implements IBaseReference, IComposi
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.reference != null) {
-          this.reference.setModelContext(context);
+          this.reference.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.identifier != null) {
-          this.identifier.setModelContext(context);
+          this.identifier.setModelContext(modelContext);
         }
         if (this.display != null) {
-          this.display.setModelContext(context);
+          this.display.setModelContext(modelContext);
         }
       }
 

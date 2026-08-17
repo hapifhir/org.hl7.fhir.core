@@ -124,9 +124,9 @@ public class Signature extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Signature(IModelContext context) {
+    public Signature(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -642,33 +642,33 @@ public class Signature extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.typeList != null) {
           for (Coding i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.when != null) {
-          this.when.setModelContext(context);
+          this.when.setModelContext(modelContext);
         }
         if (this.who != null) {
-          this.who.setModelContext(context);
+          this.who.setModelContext(modelContext);
         }
         if (this.onBehalfOf != null) {
-          this.onBehalfOf.setModelContext(context);
+          this.onBehalfOf.setModelContext(modelContext);
         }
         if (this.targetFormat != null) {
-          this.targetFormat.setModelContext(context);
+          this.targetFormat.setModelContext(modelContext);
         }
         if (this.sigFormat != null) {
-          this.sigFormat.setModelContext(context);
+          this.sigFormat.setModelContext(modelContext);
         }
         if (this.data != null) {
-          this.data.setModelContext(context);
+          this.data.setModelContext(modelContext);
         }
       }
 

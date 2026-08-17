@@ -112,9 +112,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ExampleScenarioActorComponent(IModelContext context) {
+      public ExampleScenarioActorComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -122,9 +122,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ExampleScenarioActorComponent(IModelContext context, String key, String title) {
+      public ExampleScenarioActorComponent(IModelContext modelContext, String key, String title) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setKey(key);
         this.setTitle(title);
       }
@@ -538,25 +538,25 @@ public class ExampleScenario extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.key != null) {
-          this.key.setModelContext(context);
+          this.key.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
       }
 
@@ -676,9 +676,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ExampleScenarioInstanceComponent(IModelContext context) {
+      public ExampleScenarioInstanceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -686,9 +686,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ExampleScenarioInstanceComponent(IModelContext context, String key, Coding structureType, String title) {
+      public ExampleScenarioInstanceComponent(IModelContext modelContext, String key, Coding structureType, String title) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setKey(key);
         this.setStructureType(structureType);
         this.setTitle(title);
@@ -1345,40 +1345,40 @@ public class ExampleScenario extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.key != null) {
-          this.key.setModelContext(context);
+          this.key.setModelContext(modelContext);
         }
         if (this.structureType != null) {
-          this.structureType.setModelContext(context);
+          this.structureType.setModelContext(modelContext);
         }
         if (this.structureVersion != null) {
-          this.structureVersion.setModelContext(context);
+          this.structureVersion.setModelContext(modelContext);
         }
         if (this.structureProfile != null) {
-          this.structureProfile.setModelContext(context);
+          this.structureProfile.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.content != null) {
-          this.content.setModelContext(context);
+          this.content.setModelContext(modelContext);
         }
         if (this.versionList != null) {
           for (ExampleScenarioInstanceVersionComponent i : this.versionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.containedInstanceList != null) {
           for (ExampleScenarioInstanceContainedInstanceComponent i : this.containedInstanceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1464,9 +1464,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ExampleScenarioInstanceVersionComponent(IModelContext context) {
+      public ExampleScenarioInstanceVersionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1474,9 +1474,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ExampleScenarioInstanceVersionComponent(IModelContext context, String key, String title) {
+      public ExampleScenarioInstanceVersionComponent(IModelContext modelContext, String key, String title) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setKey(key);
         this.setTitle(title);
       }
@@ -1794,22 +1794,22 @@ public class ExampleScenario extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.key != null) {
-          this.key.setModelContext(context);
+          this.key.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.content != null) {
-          this.content.setModelContext(context);
+          this.content.setModelContext(modelContext);
         }
       }
 
@@ -1877,9 +1877,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ExampleScenarioInstanceContainedInstanceComponent(IModelContext context) {
+      public ExampleScenarioInstanceContainedInstanceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1887,9 +1887,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ExampleScenarioInstanceContainedInstanceComponent(IModelContext context, String instanceReference) {
+      public ExampleScenarioInstanceContainedInstanceComponent(IModelContext modelContext, String instanceReference) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setInstanceReference(instanceReference);
       }
 
@@ -2092,16 +2092,16 @@ public class ExampleScenario extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.instanceReference != null) {
-          this.instanceReference.setModelContext(context);
+          this.instanceReference.setModelContext(modelContext);
         }
         if (this.versionReference != null) {
-          this.versionReference.setModelContext(context);
+          this.versionReference.setModelContext(modelContext);
         }
       }
 
@@ -2190,9 +2190,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ExampleScenarioProcessComponent(IModelContext context) {
+      public ExampleScenarioProcessComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2200,9 +2200,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ExampleScenarioProcessComponent(IModelContext context, String title) {
+      public ExampleScenarioProcessComponent(IModelContext modelContext, String title) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setTitle(title);
       }
 
@@ -2616,26 +2616,26 @@ public class ExampleScenario extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.preConditions != null) {
-          this.preConditions.setModelContext(context);
+          this.preConditions.setModelContext(modelContext);
         }
         if (this.postConditions != null) {
-          this.postConditions.setModelContext(context);
+          this.postConditions.setModelContext(modelContext);
         }
         if (this.stepList != null) {
           for (ExampleScenarioProcessStepComponent i : this.stepList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2733,9 +2733,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ExampleScenarioProcessStepComponent(IModelContext context) {
+      public ExampleScenarioProcessStepComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -3171,30 +3171,30 @@ public class ExampleScenario extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.number != null) {
-          this.number.setModelContext(context);
+          this.number.setModelContext(modelContext);
         }
         if (this.process != null) {
-          this.process.setModelContext(context);
+          this.process.setModelContext(modelContext);
         }
         if (this.workflow != null) {
-          this.workflow.setModelContext(context);
+          this.workflow.setModelContext(modelContext);
         }
         if (this.operation != null) {
-          this.operation.setModelContext(context);
+          this.operation.setModelContext(modelContext);
         }
         if (this.alternativeList != null) {
           for (ExampleScenarioProcessStepAlternativeComponent i : this.alternativeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.pause != null) {
-          this.pause.setModelContext(context);
+          this.pause.setModelContext(modelContext);
         }
       }
 
@@ -3320,9 +3320,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ExampleScenarioProcessStepOperationComponent(IModelContext context) {
+      public ExampleScenarioProcessStepOperationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3330,9 +3330,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ExampleScenarioProcessStepOperationComponent(IModelContext context, String title) {
+      public ExampleScenarioProcessStepOperationComponent(IModelContext modelContext, String title) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setTitle(title);
       }
 
@@ -4023,40 +4023,40 @@ public class ExampleScenario extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.initiator != null) {
-          this.initiator.setModelContext(context);
+          this.initiator.setModelContext(modelContext);
         }
         if (this.receiver != null) {
-          this.receiver.setModelContext(context);
+          this.receiver.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.initiatorActive != null) {
-          this.initiatorActive.setModelContext(context);
+          this.initiatorActive.setModelContext(modelContext);
         }
         if (this.receiverActive != null) {
-          this.receiverActive.setModelContext(context);
+          this.receiverActive.setModelContext(modelContext);
         }
         if (this.request != null) {
-          this.request.setModelContext(context);
+          this.request.setModelContext(modelContext);
         }
         if (this.response != null) {
-          this.response.setModelContext(context);
+          this.response.setModelContext(modelContext);
         }
       }
 
@@ -4135,9 +4135,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ExampleScenarioProcessStepAlternativeComponent(IModelContext context) {
+      public ExampleScenarioProcessStepAlternativeComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -4145,9 +4145,9 @@ public class ExampleScenario extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ExampleScenarioProcessStepAlternativeComponent(IModelContext context, String title) {
+      public ExampleScenarioProcessStepAlternativeComponent(IModelContext modelContext, String title) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setTitle(title);
       }
 
@@ -4419,20 +4419,20 @@ public class ExampleScenario extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.stepList != null) {
           for (ExampleScenarioProcessStepComponent i : this.stepList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4627,9 +4627,9 @@ public class ExampleScenario extends CanonicalResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ExampleScenario(IModelContext context) {
+    public ExampleScenario(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -4637,9 +4637,9 @@ public class ExampleScenario extends CanonicalResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ExampleScenario(IModelContext context, PublicationStatus status) {
+    public ExampleScenario(IModelContext modelContext, PublicationStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -6119,83 +6119,83 @@ public class ExampleScenario extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.actorList != null) {
           for (ExampleScenarioActorComponent i : this.actorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.instanceList != null) {
           for (ExampleScenarioInstanceComponent i : this.instanceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.processList != null) {
           for (ExampleScenarioProcessComponent i : this.processList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -6239,8 +6239,8 @@ public class ExampleScenario extends CanonicalResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.ExampleScenario;
+  public String getResourceType() {
+    return "ExampleScenario";
    }
 
  /**

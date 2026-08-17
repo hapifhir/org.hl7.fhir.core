@@ -90,9 +90,9 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Extension(IModelContext context) {
+    public Extension(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -100,17 +100,17 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Extension(IModelContext context, String url) {
+    public Extension(IModelContext modelContext, String url) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setUrl(url);
     }
 
     /**
      * Constructor
      */
-    public Extension(IModelContext context, String theUrl, IBaseDatatype theValue) {
-      this.modelContext = context;
+    public Extension(IModelContext modelContext, String theUrl, IBaseDatatype theValue) {
+      this.modelContext = modelContext;
       setUrl(theUrl);
       setValue(theValue);
     }
@@ -1390,16 +1390,16 @@ public class Extension extends BaseExtension implements IBaseExtension<Extension
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 

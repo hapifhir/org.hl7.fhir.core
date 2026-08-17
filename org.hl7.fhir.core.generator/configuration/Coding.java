@@ -80,8 +80,8 @@
         return res;
       } 
             
-      public Coding(IModelContext context, String theSystem, String theVersion, String theCode, String theDisplay) {
-        this.modelContext = context;
+      public Coding(IModelContext modelContext, String theSystem, String theVersion, String theCode, String theDisplay) {
+        this.modelContext = modelContext;
         setSystem(theSystem);
         setVersion(theVersion);
         setCode(theCode);

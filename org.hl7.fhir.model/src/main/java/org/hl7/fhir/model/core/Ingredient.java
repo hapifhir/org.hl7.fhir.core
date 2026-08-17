@@ -131,8 +131,8 @@ public class Ingredient extends DomainResource {
 
   public static class IngredientManufacturerRoleEnumFactory implements EnumFactory<IngredientManufacturerRole> {
     private final IModelContext modelContext;
-    public IngredientManufacturerRoleEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public IngredientManufacturerRoleEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public IngredientManufacturerRoleEnumFactory() {
       this(null);
@@ -210,9 +210,9 @@ public class Ingredient extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public IngredientManufacturerComponent(IModelContext context) {
+      public IngredientManufacturerComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -220,9 +220,9 @@ public class Ingredient extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public IngredientManufacturerComponent(IModelContext context, Reference manufacturer) {
+      public IngredientManufacturerComponent(IModelContext modelContext, Reference manufacturer) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setManufacturer(manufacturer);
       }
 
@@ -406,16 +406,16 @@ public class Ingredient extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.role != null) {
-          this.role.setModelContext(context);
+          this.role.setModelContext(modelContext);
         }
         if (this.manufacturer != null) {
-          this.manufacturer.setModelContext(context);
+          this.manufacturer.setModelContext(modelContext);
         }
       }
 
@@ -481,9 +481,9 @@ public class Ingredient extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public IngredientSubstanceComponent(IModelContext context) {
+      public IngredientSubstanceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -491,9 +491,9 @@ public class Ingredient extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public IngredientSubstanceComponent(IModelContext context, CodeableReference code) {
+      public IngredientSubstanceComponent(IModelContext modelContext, CodeableReference code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -674,17 +674,17 @@ public class Ingredient extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.strengthList != null) {
           for (IngredientSubstanceStrengthComponent i : this.strengthList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -793,9 +793,9 @@ public class Ingredient extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public IngredientSubstanceStrengthComponent(IModelContext context) {
+      public IngredientSubstanceStrengthComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1501,37 +1501,37 @@ public class Ingredient extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.presentation != null) {
-          this.presentation.setModelContext(context);
+          this.presentation.setModelContext(modelContext);
         }
         if (this.textPresentation != null) {
-          this.textPresentation.setModelContext(context);
+          this.textPresentation.setModelContext(modelContext);
         }
         if (this.concentration != null) {
-          this.concentration.setModelContext(context);
+          this.concentration.setModelContext(modelContext);
         }
         if (this.textConcentration != null) {
-          this.textConcentration.setModelContext(context);
+          this.textConcentration.setModelContext(modelContext);
         }
         if (this.basis != null) {
-          this.basis.setModelContext(context);
+          this.basis.setModelContext(modelContext);
         }
         if (this.measurementPoint != null) {
-          this.measurementPoint.setModelContext(context);
+          this.measurementPoint.setModelContext(modelContext);
         }
         if (this.countryList != null) {
           for (CodeableConcept i : this.countryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.referenceStrengthList != null) {
           for (IngredientSubstanceStrengthReferenceStrengthComponent i : this.referenceStrengthList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1620,9 +1620,9 @@ public class Ingredient extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public IngredientSubstanceStrengthReferenceStrengthComponent(IModelContext context) {
+      public IngredientSubstanceStrengthReferenceStrengthComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1630,9 +1630,9 @@ public class Ingredient extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public IngredientSubstanceStrengthReferenceStrengthComponent(IModelContext context, CodeableReference substance, DataType strength) {
+      public IngredientSubstanceStrengthReferenceStrengthComponent(IModelContext modelContext, CodeableReference substance, DataType strength) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setSubstance(substance);
         this.setStrength(strength);
       }
@@ -1987,23 +1987,23 @@ public class Ingredient extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.substance != null) {
-          this.substance.setModelContext(context);
+          this.substance.setModelContext(modelContext);
         }
         if (this.strength != null) {
-          this.strength.setModelContext(context);
+          this.strength.setModelContext(modelContext);
         }
         if (this.measurementPoint != null) {
-          this.measurementPoint.setModelContext(context);
+          this.measurementPoint.setModelContext(modelContext);
         }
         if (this.countryList != null) {
           for (CodeableConcept i : this.countryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2128,9 +2128,9 @@ public class Ingredient extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Ingredient(IModelContext context) {
+    public Ingredient(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2138,9 +2138,9 @@ public class Ingredient extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Ingredient(IModelContext context, PublicationStatus status, CodeableConcept role, IngredientSubstanceComponent substance) {
+    public Ingredient(IModelContext modelContext, PublicationStatus status, CodeableConcept role, IngredientSubstanceComponent substance) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setRole(role);
       this.setSubstance(substance);
@@ -2835,48 +2835,48 @@ public class Ingredient extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.for_List != null) {
           for (Reference i : this.for_List) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.role != null) {
-          this.role.setModelContext(context);
+          this.role.setModelContext(modelContext);
         }
         if (this.functionList != null) {
           for (CodeableConcept i : this.functionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.group != null) {
-          this.group.setModelContext(context);
+          this.group.setModelContext(modelContext);
         }
         if (this.allergenicIndicator != null) {
-          this.allergenicIndicator.setModelContext(context);
+          this.allergenicIndicator.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
         if (this.manufacturerList != null) {
           for (IngredientManufacturerComponent i : this.manufacturerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.substance != null) {
-          this.substance.setModelContext(context);
+          this.substance.setModelContext(modelContext);
         }
       }
 
@@ -2912,8 +2912,8 @@ public class Ingredient extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Ingredient;
+  public String getResourceType() {
+    return "Ingredient";
    }
 
  /**

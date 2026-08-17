@@ -73,9 +73,9 @@ public abstract class CanonicalResource extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public CanonicalResource(IModelContext context) {
+    public CanonicalResource(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -83,9 +83,9 @@ public abstract class CanonicalResource extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public CanonicalResource(IModelContext context, PublicationStatus status) {
+    public CanonicalResource(IModelContext modelContext, PublicationStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 

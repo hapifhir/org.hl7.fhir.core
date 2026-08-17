@@ -37,6 +37,12 @@ public class JavaConstantsGenerator extends JavaBaseGenerator {
     template = template.replace("{{generated}}", generatedAnnotationValue());
 
     template = template.replace("{{rt}}", rt.toString());
+    // the first entry in the packages list is the core package these definitions were loaded from (id#version)
+    String packageName = definitions.getPackages().isEmpty() ? "" : definitions.getPackages().get(0);
+    if (packageName.contains("#")) {
+      packageName = packageName.substring(0, packageName.indexOf("#"));
+    }
+    template = template.replace("{{package-name}}", packageName);
     template = template.replace("{{version}}", version);
     template = template.replace("{{version-mm}}", VersionUtilities.getMajMin(version));
     template = template.replace("{{version-base}}", version.contains("-") ? version.substring(0, version.indexOf("-")) : version) ;

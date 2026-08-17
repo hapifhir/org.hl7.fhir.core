@@ -114,9 +114,9 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ExtendedContactDetail(IModelContext context) {
+    public ExtendedContactDetail(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -511,32 +511,32 @@ public class ExtendedContactDetail extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.nameList != null) {
           for (HumanName i : this.nameList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.telecomList != null) {
           for (ContactPoint i : this.telecomList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.address != null) {
-          this.address.setModelContext(context);
+          this.address.setModelContext(modelContext);
         }
         if (this.organization != null) {
-          this.organization.setModelContext(context);
+          this.organization.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 

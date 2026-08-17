@@ -141,8 +141,8 @@ public class CodeSystem extends MetadataResource {
 
   public static class CodeSystemHierarchyMeaningEnumFactory implements EnumFactory<CodeSystemHierarchyMeaning> {
     private final IModelContext modelContext;
-    public CodeSystemHierarchyMeaningEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public CodeSystemHierarchyMeaningEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public CodeSystemHierarchyMeaningEnumFactory() {
       this(null);
@@ -306,8 +306,8 @@ public class CodeSystem extends MetadataResource {
 
   public static class PropertyTypeEnumFactory implements EnumFactory<PropertyType> {
     private final IModelContext modelContext;
-    public PropertyTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public PropertyTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public PropertyTypeEnumFactory() {
       this(null);
@@ -423,9 +423,9 @@ public class CodeSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CodeSystemFilterComponent(IModelContext context) {
+      public CodeSystemFilterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -433,9 +433,9 @@ public class CodeSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CodeSystemFilterComponent(IModelContext context, String code, FilterOperator operator, String value) {
+      public CodeSystemFilterComponent(IModelContext modelContext, String code, FilterOperator operator, String value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.addOperator(operator);
         this.setValue(value);
@@ -785,24 +785,24 @@ public class CodeSystem extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.operatorList != null) {
           for (Enumeration<FilterOperator> i : this.operatorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -885,9 +885,9 @@ public class CodeSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PropertyComponent(IModelContext context) {
+      public PropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -895,9 +895,9 @@ public class CodeSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PropertyComponent(IModelContext context, String code, PropertyType type) {
+      public PropertyComponent(IModelContext modelContext, String code, PropertyType type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setType(type);
       }
@@ -1240,22 +1240,22 @@ public class CodeSystem extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.uri != null) {
-          this.uri.setModelContext(context);
+          this.uri.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
       }
 
@@ -1351,9 +1351,9 @@ public class CodeSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConceptDefinitionComponent(IModelContext context) {
+      public ConceptDefinitionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1361,9 +1361,9 @@ public class CodeSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ConceptDefinitionComponent(IModelContext context, String code) {
+      public ConceptDefinitionComponent(IModelContext modelContext, String code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -1844,33 +1844,33 @@ public class CodeSystem extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.display != null) {
-          this.display.setModelContext(context);
+          this.display.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.designationList != null) {
           for (ConceptDefinitionDesignationComponent i : this.designationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (ConceptPropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.conceptList != null) {
           for (ConceptDefinitionComponent i : this.conceptList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1963,9 +1963,9 @@ public class CodeSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConceptDefinitionDesignationComponent(IModelContext context) {
+      public ConceptDefinitionDesignationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1973,9 +1973,9 @@ public class CodeSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ConceptDefinitionDesignationComponent(IModelContext context, String value) {
+      public ConceptDefinitionDesignationComponent(IModelContext modelContext, String value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setValue(value);
       }
 
@@ -2294,24 +2294,24 @@ public class CodeSystem extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.language != null) {
-          this.language.setModelContext(context);
+          this.language.setModelContext(modelContext);
         }
         if (this.use != null) {
-          this.use.setModelContext(context);
+          this.use.setModelContext(modelContext);
         }
         if (this.additionalUseList != null) {
           for (Coding i : this.additionalUseList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -2378,9 +2378,9 @@ public class CodeSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConceptPropertyComponent(IModelContext context) {
+      public ConceptPropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2388,9 +2388,9 @@ public class CodeSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ConceptPropertyComponent(IModelContext context, String code, DataType value) {
+      public ConceptPropertyComponent(IModelContext modelContext, String code, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setValue(value);
       }
@@ -2705,16 +2705,16 @@ public class CodeSystem extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -3028,9 +3028,9 @@ public class CodeSystem extends MetadataResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public CodeSystem(IModelContext context) {
+    public CodeSystem(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -3038,9 +3038,9 @@ public class CodeSystem extends MetadataResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public CodeSystem(IModelContext context, PublicationStatus status, CodeSystemContentMode content) {
+    public CodeSystem(IModelContext modelContext, PublicationStatus status, CodeSystemContentMode content) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setContent(content);
     }
@@ -5710,146 +5710,146 @@ public class CodeSystem extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.approvalDate != null) {
-          this.approvalDate.setModelContext(context);
+          this.approvalDate.setModelContext(modelContext);
         }
         if (this.lastReviewDate != null) {
-          this.lastReviewDate.setModelContext(context);
+          this.lastReviewDate.setModelContext(modelContext);
         }
         if (this.effectivePeriod != null) {
-          this.effectivePeriod.setModelContext(context);
+          this.effectivePeriod.setModelContext(modelContext);
         }
         if (this.topicList != null) {
           for (CodeableConcept i : this.topicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.authorList != null) {
           for (ContactDetail i : this.authorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.editorList != null) {
           for (ContactDetail i : this.editorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reviewerList != null) {
           for (ContactDetail i : this.reviewerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.endorserList != null) {
           for (ContactDetail i : this.endorserList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatedArtifactList != null) {
           for (RelatedArtifact i : this.relatedArtifactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.caseSensitive != null) {
-          this.caseSensitive.setModelContext(context);
+          this.caseSensitive.setModelContext(modelContext);
         }
         if (this.valueSet != null) {
-          this.valueSet.setModelContext(context);
+          this.valueSet.setModelContext(modelContext);
         }
         if (this.hierarchyMeaning != null) {
-          this.hierarchyMeaning.setModelContext(context);
+          this.hierarchyMeaning.setModelContext(modelContext);
         }
         if (this.compositional != null) {
-          this.compositional.setModelContext(context);
+          this.compositional.setModelContext(modelContext);
         }
         if (this.versionNeeded != null) {
-          this.versionNeeded.setModelContext(context);
+          this.versionNeeded.setModelContext(modelContext);
         }
         if (this.content != null) {
-          this.content.setModelContext(context);
+          this.content.setModelContext(modelContext);
         }
         if (this.supplements != null) {
-          this.supplements.setModelContext(context);
+          this.supplements.setModelContext(modelContext);
         }
         if (this.count != null) {
-          this.count.setModelContext(context);
+          this.count.setModelContext(modelContext);
         }
         if (this.filterList != null) {
           for (CodeSystemFilterComponent i : this.filterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (PropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.conceptList != null) {
           for (ConceptDefinitionComponent i : this.conceptList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -5907,8 +5907,8 @@ public class CodeSystem extends MetadataResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.CodeSystem;
+  public String getResourceType() {
+    return "CodeSystem";
    }
 
  /**

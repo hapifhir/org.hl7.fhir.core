@@ -141,8 +141,8 @@ public class Encounter extends DomainResource {
 
   public static class EncounterLocationStatusEnumFactory implements EnumFactory<EncounterLocationStatus> {
     private final IModelContext modelContext;
-    public EncounterLocationStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public EncounterLocationStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public EncounterLocationStatusEnumFactory() {
       this(null);
@@ -326,8 +326,8 @@ public class Encounter extends DomainResource {
 
   public static class EncounterStatusEnumFactory implements EnumFactory<EncounterStatus> {
     private final IModelContext modelContext;
-    public EncounterStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public EncounterStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public EncounterStatusEnumFactory() {
       this(null);
@@ -448,9 +448,9 @@ public class Encounter extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public EncounterBusinessStatusComponent(IModelContext context) {
+      public EncounterBusinessStatusComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -458,9 +458,9 @@ public class Encounter extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public EncounterBusinessStatusComponent(IModelContext context, CodeableConcept code) {
+      public EncounterBusinessStatusComponent(IModelContext modelContext, CodeableConcept code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -690,19 +690,19 @@ public class Encounter extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.effectiveDate != null) {
-          this.effectiveDate.setModelContext(context);
+          this.effectiveDate.setModelContext(modelContext);
         }
       }
 
@@ -777,9 +777,9 @@ public class Encounter extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public EncounterParticipantComponent(IModelContext context) {
+      public EncounterParticipantComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1006,21 +1006,21 @@ public class Encounter extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.actor != null) {
-          this.actor.setModelContext(context);
+          this.actor.setModelContext(modelContext);
         }
       }
 
@@ -1089,9 +1089,9 @@ public class Encounter extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ReasonComponent(IModelContext context) {
+      public ReasonComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1293,19 +1293,19 @@ public class Encounter extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.useList != null) {
           for (CodeableConcept i : this.useList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.valueList != null) {
           for (CodeableReference i : this.valueList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1373,9 +1373,9 @@ public class Encounter extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DiagnosisComponent(IModelContext context) {
+      public DiagnosisComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1577,19 +1577,19 @@ public class Encounter extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.conditionList != null) {
           for (CodeableReference i : this.conditionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.useList != null) {
           for (CodeableConcept i : this.useList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1687,9 +1687,9 @@ public class Encounter extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public EncounterAdmissionComponent(IModelContext context) {
+      public EncounterAdmissionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2035,28 +2035,28 @@ public class Encounter extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.preAdmissionIdentifier != null) {
-          this.preAdmissionIdentifier.setModelContext(context);
+          this.preAdmissionIdentifier.setModelContext(modelContext);
         }
         if (this.origin != null) {
-          this.origin.setModelContext(context);
+          this.origin.setModelContext(modelContext);
         }
         if (this.admitSource != null) {
-          this.admitSource.setModelContext(context);
+          this.admitSource.setModelContext(modelContext);
         }
         if (this.reAdmission != null) {
-          this.reAdmission.setModelContext(context);
+          this.reAdmission.setModelContext(modelContext);
         }
         if (this.destination != null) {
-          this.destination.setModelContext(context);
+          this.destination.setModelContext(modelContext);
         }
         if (this.dischargeDisposition != null) {
-          this.dischargeDisposition.setModelContext(context);
+          this.dischargeDisposition.setModelContext(modelContext);
         }
       }
 
@@ -2141,9 +2141,9 @@ public class Encounter extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public EncounterLocationComponent(IModelContext context) {
+      public EncounterLocationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2151,9 +2151,9 @@ public class Encounter extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public EncounterLocationComponent(IModelContext context, Reference location) {
+      public EncounterLocationComponent(IModelContext modelContext, Reference location) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setLocation(location);
       }
 
@@ -2431,22 +2431,22 @@ public class Encounter extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.form != null) {
-          this.form.setModelContext(context);
+          this.form.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 
@@ -2709,9 +2709,9 @@ public class Encounter extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Encounter(IModelContext context) {
+    public Encounter(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2719,9 +2719,9 @@ public class Encounter extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Encounter(IModelContext context, EncounterStatus status) {
+    public Encounter(IModelContext modelContext, EncounterStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -4619,132 +4619,132 @@ public class Encounter extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.businessStatusList != null) {
           for (EncounterBusinessStatusComponent i : this.businessStatusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.class_List != null) {
           for (CodeableConcept i : this.class_List) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.serviceTypeList != null) {
           for (CodeableReference i : this.serviceTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.subjectStatus != null) {
-          this.subjectStatus.setModelContext(context);
+          this.subjectStatus.setModelContext(modelContext);
         }
         if (this.episodeOfCareList != null) {
           for (Reference i : this.episodeOfCareList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.careTeamList != null) {
           for (Reference i : this.careTeamList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.partOf != null) {
-          this.partOf.setModelContext(context);
+          this.partOf.setModelContext(modelContext);
         }
         if (this.serviceProvider != null) {
-          this.serviceProvider.setModelContext(context);
+          this.serviceProvider.setModelContext(modelContext);
         }
         if (this.participantList != null) {
           for (EncounterParticipantComponent i : this.participantList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.appointmentList != null) {
           for (Reference i : this.appointmentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.virtualServiceList != null) {
           for (VirtualServiceDetail i : this.virtualServiceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.actualPeriod != null) {
-          this.actualPeriod.setModelContext(context);
+          this.actualPeriod.setModelContext(modelContext);
         }
         if (this.plannedStartDate != null) {
-          this.plannedStartDate.setModelContext(context);
+          this.plannedStartDate.setModelContext(modelContext);
         }
         if (this.plannedEndDate != null) {
-          this.plannedEndDate.setModelContext(context);
+          this.plannedEndDate.setModelContext(modelContext);
         }
         if (this.length != null) {
-          this.length.setModelContext(context);
+          this.length.setModelContext(modelContext);
         }
         if (this.reasonList != null) {
           for (ReasonComponent i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.diagnosisList != null) {
           for (DiagnosisComponent i : this.diagnosisList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.accountList != null) {
           for (Reference i : this.accountList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.dietPreferenceList != null) {
           for (CodeableConcept i : this.dietPreferenceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.specialArrangementList != null) {
           for (CodeableConcept i : this.specialArrangementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.specialCourtesyList != null) {
           for (CodeableConcept i : this.specialCourtesyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.admission != null) {
-          this.admission.setModelContext(context);
+          this.admission.setModelContext(modelContext);
         }
         if (this.locationList != null) {
           for (EncounterLocationComponent i : this.locationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4793,8 +4793,8 @@ public class Encounter extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Encounter;
+  public String getResourceType() {
+    return "Encounter";
    }
 
  /**

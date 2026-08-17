@@ -11,7 +11,7 @@ import org.hl7.fhir.r5.formats.XmlParserBase;
 import org.hl7.fhir.utilities.xml.IXMLWriter;
 
 {{generated}}
-public class {{jname}}Parser {
+public class {{jname}}Registration {
 
   /**
    * Register the parsers for the resources in this package with the core parsers. 

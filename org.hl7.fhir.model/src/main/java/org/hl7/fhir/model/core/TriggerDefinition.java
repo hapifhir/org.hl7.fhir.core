@@ -189,8 +189,8 @@ public class TriggerDefinition extends DataType implements ICompositeType {
 
   public static class TriggerTypeEnumFactory implements EnumFactory<TriggerType> {
     private final IModelContext modelContext;
-    public TriggerTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public TriggerTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public TriggerTypeEnumFactory() {
       this(null);
@@ -337,9 +337,9 @@ public class TriggerDefinition extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public TriggerDefinition(IModelContext context) {
+    public TriggerDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -347,9 +347,9 @@ public class TriggerDefinition extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public TriggerDefinition(IModelContext context, TriggerType type) {
+    public TriggerDefinition(IModelContext modelContext, TriggerType type) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setType(type);
     }
 
@@ -894,33 +894,33 @@ public class TriggerDefinition extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subscriptionTopic != null) {
-          this.subscriptionTopic.setModelContext(context);
+          this.subscriptionTopic.setModelContext(modelContext);
         }
         if (this.timing != null) {
-          this.timing.setModelContext(context);
+          this.timing.setModelContext(modelContext);
         }
         if (this.dataList != null) {
           for (DataRequirement i : this.dataList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.condition != null) {
-          this.condition.setModelContext(context);
+          this.condition.setModelContext(modelContext);
         }
       }
 

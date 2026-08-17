@@ -152,8 +152,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
 
   public static class IssueSeverityEnumFactory implements EnumFactory<IssueSeverity> {
     private final IModelContext modelContext;
-    public IssueSeverityEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public IssueSeverityEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public IssueSeverityEnumFactory() {
       this(null);
@@ -583,8 +583,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
 
   public static class IssueTypeEnumFactory implements EnumFactory<IssueType> {
     private final IModelContext modelContext;
-    public IssueTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public IssueTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public IssueTypeEnumFactory() {
       this(null);
@@ -865,9 +865,9 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public OperationOutcomeIssueComponent(IModelContext context) {
+      public OperationOutcomeIssueComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -875,9 +875,9 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public OperationOutcomeIssueComponent(IModelContext context, IssueSeverity severity, IssueType code) {
+      public OperationOutcomeIssueComponent(IModelContext modelContext, IssueSeverity severity, IssueType code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setSeverity(severity);
         this.setCode(code);
       }
@@ -1274,26 +1274,26 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.severity != null) {
-          this.severity.setModelContext(context);
+          this.severity.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.details != null) {
-          this.details.setModelContext(context);
+          this.details.setModelContext(modelContext);
         }
         if (this.diagnostics != null) {
-          this.diagnostics.setModelContext(context);
+          this.diagnostics.setModelContext(modelContext);
         }
         if (this.expressionList != null) {
           for (StringType i : this.expressionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1390,9 +1390,9 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public OperationOutcome(IModelContext context) {
+    public OperationOutcome(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1400,9 +1400,9 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public OperationOutcome(IModelContext context, OperationOutcomeIssueComponent issue) {
+    public OperationOutcome(IModelContext modelContext, OperationOutcomeIssueComponent issue) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.addIssue(issue);
     }
 
@@ -1541,14 +1541,14 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.issueList != null) {
           for (OperationOutcomeIssueComponent i : this.issueList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1578,8 +1578,8 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.OperationOutcome;
+  public String getResourceType() {
+    return "OperationOutcome";
    }
 
 // Manual code (from Configuration.txt):

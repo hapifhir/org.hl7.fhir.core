@@ -130,9 +130,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PlanDefinitionGoalComponent(IModelContext context) {
+      public PlanDefinitionGoalComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -140,9 +140,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PlanDefinitionGoalComponent(IModelContext context, CodeableConcept description) {
+      public PlanDefinitionGoalComponent(IModelContext modelContext, CodeableConcept description) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setDescription(description);
       }
 
@@ -602,36 +602,36 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.category != null) {
-          this.category.setModelContext(context);
+          this.category.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.start != null) {
-          this.start.setModelContext(context);
+          this.start.setModelContext(modelContext);
         }
         if (this.addressesList != null) {
           for (CodeableConcept i : this.addressesList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.documentationList != null) {
           for (RelatedArtifact i : this.documentationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.targetList != null) {
           for (PlanDefinitionGoalTargetComponent i : this.targetList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -709,9 +709,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PlanDefinitionGoalTargetComponent(IModelContext context) {
+      public PlanDefinitionGoalTargetComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1051,19 +1051,19 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.measure != null) {
-          this.measure.setModelContext(context);
+          this.measure.setModelContext(modelContext);
         }
         if (this.detail != null) {
-          this.detail.setModelContext(context);
+          this.detail.setModelContext(modelContext);
         }
         if (this.due != null) {
-          this.due.setModelContext(context);
+          this.due.setModelContext(modelContext);
         }
       }
 
@@ -1136,9 +1136,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PlanDefinitionActorComponent(IModelContext context) {
+      public PlanDefinitionActorComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1146,9 +1146,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PlanDefinitionActorComponent(IModelContext context, PlanDefinitionActorOptionComponent option) {
+      public PlanDefinitionActorComponent(IModelContext modelContext, PlanDefinitionActorOptionComponent option) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.addOption(option);
       }
 
@@ -1424,20 +1424,20 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.optionList != null) {
           for (PlanDefinitionActorOptionComponent i : this.optionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1521,9 +1521,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PlanDefinitionActorOptionComponent(IModelContext context) {
+      public PlanDefinitionActorOptionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1824,22 +1824,22 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.typeCanonical != null) {
-          this.typeCanonical.setModelContext(context);
+          this.typeCanonical.setModelContext(modelContext);
         }
         if (this.typeReference != null) {
-          this.typeReference.setModelContext(context);
+          this.typeReference.setModelContext(modelContext);
         }
         if (this.role != null) {
-          this.role.setModelContext(context);
+          this.role.setModelContext(modelContext);
         }
       }
 
@@ -2113,9 +2113,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PlanDefinitionActionComponent(IModelContext context) {
+      public PlanDefinitionActionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -4343,121 +4343,121 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.prefix != null) {
-          this.prefix.setModelContext(context);
+          this.prefix.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.textEquivalent != null) {
-          this.textEquivalent.setModelContext(context);
+          this.textEquivalent.setModelContext(modelContext);
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.reasonList != null) {
           for (CodeableConcept i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.documentationList != null) {
           for (RelatedArtifact i : this.documentationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.goalIdList != null) {
           for (StringType i : this.goalIdList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.triggerList != null) {
           for (TriggerDefinition i : this.triggerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.conditionList != null) {
           for (PlanDefinitionActionConditionComponent i : this.conditionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.inputList != null) {
           for (PlanDefinitionActionInputComponent i : this.inputList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.outputList != null) {
           for (PlanDefinitionActionOutputComponent i : this.outputList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatedActionList != null) {
           for (PlanDefinitionActionRelatedActionComponent i : this.relatedActionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.timing != null) {
-          this.timing.setModelContext(context);
+          this.timing.setModelContext(modelContext);
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.participantList != null) {
           for (PlanDefinitionActionParticipantComponent i : this.participantList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.applicabilityBehavior != null) {
-          this.applicabilityBehavior.setModelContext(context);
+          this.applicabilityBehavior.setModelContext(modelContext);
         }
         if (this.groupingBehavior != null) {
-          this.groupingBehavior.setModelContext(context);
+          this.groupingBehavior.setModelContext(modelContext);
         }
         if (this.selectionBehavior != null) {
-          this.selectionBehavior.setModelContext(context);
+          this.selectionBehavior.setModelContext(modelContext);
         }
         if (this.requiredBehavior != null) {
-          this.requiredBehavior.setModelContext(context);
+          this.requiredBehavior.setModelContext(modelContext);
         }
         if (this.precheckBehavior != null) {
-          this.precheckBehavior.setModelContext(context);
+          this.precheckBehavior.setModelContext(modelContext);
         }
         if (this.cardinalityBehavior != null) {
-          this.cardinalityBehavior.setModelContext(context);
+          this.cardinalityBehavior.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.transform != null) {
-          this.transform.setModelContext(context);
+          this.transform.setModelContext(modelContext);
         }
         if (this.dynamicValueList != null) {
           for (PlanDefinitionActionDynamicValueComponent i : this.dynamicValueList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.actionList != null) {
           for (PlanDefinitionActionComponent i : this.actionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4547,9 +4547,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PlanDefinitionActionConditionComponent(IModelContext context) {
+      public PlanDefinitionActionConditionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -4557,9 +4557,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PlanDefinitionActionConditionComponent(IModelContext context, ActionConditionKind kind) {
+      public PlanDefinitionActionConditionComponent(IModelContext modelContext, ActionConditionKind kind) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setKind(kind);
       }
 
@@ -4739,16 +4739,16 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.kind != null) {
-          this.kind.setModelContext(context);
+          this.kind.setModelContext(modelContext);
         }
         if (this.expression != null) {
-          this.expression.setModelContext(context);
+          this.expression.setModelContext(modelContext);
         }
       }
 
@@ -4820,9 +4820,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PlanDefinitionActionInputComponent(IModelContext context) {
+      public PlanDefinitionActionInputComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -5075,19 +5075,19 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.requirement != null) {
-          this.requirement.setModelContext(context);
+          this.requirement.setModelContext(modelContext);
         }
         if (this.relatedData != null) {
-          this.relatedData.setModelContext(context);
+          this.relatedData.setModelContext(modelContext);
         }
       }
 
@@ -5161,9 +5161,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PlanDefinitionActionOutputComponent(IModelContext context) {
+      public PlanDefinitionActionOutputComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -5416,19 +5416,19 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.requirement != null) {
-          this.requirement.setModelContext(context);
+          this.requirement.setModelContext(modelContext);
         }
         if (this.relatedData != null) {
-          this.relatedData.setModelContext(context);
+          this.relatedData.setModelContext(modelContext);
         }
       }
 
@@ -5511,9 +5511,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PlanDefinitionActionRelatedActionComponent(IModelContext context) {
+      public PlanDefinitionActionRelatedActionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -5521,9 +5521,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PlanDefinitionActionRelatedActionComponent(IModelContext context, String targetId, ActionRelationshipType relationship) {
+      public PlanDefinitionActionRelatedActionComponent(IModelContext modelContext, String targetId, ActionRelationshipType relationship) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setTargetId(targetId);
         this.setRelationship(relationship);
       }
@@ -5878,22 +5878,22 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.targetId != null) {
-          this.targetId.setModelContext(context);
+          this.targetId.setModelContext(modelContext);
         }
         if (this.relationship != null) {
-          this.relationship.setModelContext(context);
+          this.relationship.setModelContext(modelContext);
         }
         if (this.endRelationship != null) {
-          this.endRelationship.setModelContext(context);
+          this.endRelationship.setModelContext(modelContext);
         }
         if (this.offset != null) {
-          this.offset.setModelContext(context);
+          this.offset.setModelContext(modelContext);
         }
       }
 
@@ -5993,9 +5993,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PlanDefinitionActionParticipantComponent(IModelContext context) {
+      public PlanDefinitionActionParticipantComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -6414,28 +6414,28 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.actorId != null) {
-          this.actorId.setModelContext(context);
+          this.actorId.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.typeCanonical != null) {
-          this.typeCanonical.setModelContext(context);
+          this.typeCanonical.setModelContext(modelContext);
         }
         if (this.typeReference != null) {
-          this.typeReference.setModelContext(context);
+          this.typeReference.setModelContext(modelContext);
         }
         if (this.role != null) {
-          this.role.setModelContext(context);
+          this.role.setModelContext(modelContext);
         }
         if (this.function != null) {
-          this.function.setModelContext(context);
+          this.function.setModelContext(modelContext);
         }
       }
 
@@ -6504,9 +6504,9 @@ public class PlanDefinition extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PlanDefinitionActionDynamicValueComponent(IModelContext context) {
+      public PlanDefinitionActionDynamicValueComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -6688,16 +6688,16 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.path != null) {
-          this.path.setModelContext(context);
+          this.path.setModelContext(modelContext);
         }
         if (this.expression != null) {
-          this.expression.setModelContext(context);
+          this.expression.setModelContext(modelContext);
         }
       }
 
@@ -6998,9 +6998,9 @@ public class PlanDefinition extends MetadataResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public PlanDefinition(IModelContext context) {
+    public PlanDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -7008,9 +7008,9 @@ public class PlanDefinition extends MetadataResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public PlanDefinition(IModelContext context, PublicationStatus status) {
+    public PlanDefinition(IModelContext modelContext, PublicationStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -9543,143 +9543,143 @@ public class PlanDefinition extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.subtitle != null) {
-          this.subtitle.setModelContext(context);
+          this.subtitle.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.usage != null) {
-          this.usage.setModelContext(context);
+          this.usage.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.approvalDate != null) {
-          this.approvalDate.setModelContext(context);
+          this.approvalDate.setModelContext(modelContext);
         }
         if (this.lastReviewDate != null) {
-          this.lastReviewDate.setModelContext(context);
+          this.lastReviewDate.setModelContext(modelContext);
         }
         if (this.effectivePeriod != null) {
-          this.effectivePeriod.setModelContext(context);
+          this.effectivePeriod.setModelContext(modelContext);
         }
         if (this.topicList != null) {
           for (CodeableConcept i : this.topicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.authorList != null) {
           for (ContactDetail i : this.authorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.editorList != null) {
           for (ContactDetail i : this.editorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reviewerList != null) {
           for (ContactDetail i : this.reviewerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.endorserList != null) {
           for (ContactDetail i : this.endorserList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatedArtifactList != null) {
           for (RelatedArtifact i : this.relatedArtifactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.libraryList != null) {
           for (CanonicalType i : this.libraryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.goalList != null) {
           for (PlanDefinitionGoalComponent i : this.goalList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.actorList != null) {
           for (PlanDefinitionActorComponent i : this.actorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.actionList != null) {
           for (PlanDefinitionActionComponent i : this.actionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.asNeeded != null) {
-          this.asNeeded.setModelContext(context);
+          this.asNeeded.setModelContext(modelContext);
         }
       }
 
@@ -9732,8 +9732,8 @@ public class PlanDefinition extends MetadataResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.PlanDefinition;
+  public String getResourceType() {
+    return "PlanDefinition";
    }
 
  /**

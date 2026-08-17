@@ -150,17 +150,17 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context
    */
-  public IdType(IModelContext context) {
+  public IdType(IModelContext modelContext) {
     this();
-    this.modelContext = context;
+    this.modelContext = modelContext;
   }
 
   /**
    * Create a new ID, using a BigDecimal input. Uses
    * {@link BigDecimal#toPlainString()} to generate the string representation.
    */
-  public IdType(IModelContext context, BigDecimal thePid) {
-    this.modelContext = context;
+  public IdType(IModelContext modelContext, BigDecimal thePid) {
+    this.modelContext = modelContext;
     if (thePid != null) {
       setValue(toPlainStringWithNpeThrowIfNeeded(thePid));
     } else {
@@ -183,8 +183,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   /**
    * Create a new ID using a long
    */
-  public IdType(IModelContext context, long theId) {
-    this.modelContext = context;
+  public IdType(IModelContext modelContext, long theId) {
+    this.modelContext = modelContext;
     setValue(Long.toString(theId));
   }
 
@@ -213,8 +213,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * regex: [a-z0-9\-\.]{1,36}
    * </p>
    */
-  public IdType(IModelContext context, String theValue) {
-    this.modelContext = context;
+  public IdType(IModelContext modelContext, String theValue) {
+    this.modelContext = modelContext;
     setValue(theValue);
   }
 
@@ -224,8 +224,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * @param theResourceType The resource type (e.g. "Patient")
    * @param theIdPart       The ID (e.g. "123")
    */
-  public IdType(IModelContext context, String theResourceType, BigDecimal theIdPart) {
-    this(context, theResourceType, toPlainStringWithNpeThrowIfNeeded(theIdPart));
+  public IdType(IModelContext modelContext, String theResourceType, BigDecimal theIdPart) {
+    this(modelContext, theResourceType, toPlainStringWithNpeThrowIfNeeded(theIdPart));
   }
 
   public IdType(String theResourceType, BigDecimal theIdPart) {
@@ -238,8 +238,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * @param theResourceType The resource type (e.g. "Patient")
    * @param theIdPart       The ID (e.g. "123")
    */
-  public IdType(IModelContext context, String theResourceType, Long theIdPart) {
-    this(context, theResourceType, toPlainStringWithNpeThrowIfNeeded(theIdPart));
+  public IdType(IModelContext modelContext, String theResourceType, Long theIdPart) {
+    this(modelContext, theResourceType, toPlainStringWithNpeThrowIfNeeded(theIdPart));
   }
 
   public IdType(String theResourceType, Long theIdPart) {
@@ -252,8 +252,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * @param theResourceType The resource type (e.g. "Patient")
    * @param theId           The ID (e.g. "123")
    */
-  public IdType(IModelContext context, String theResourceType, String theId) {
-    this(context, theResourceType, theId, null);
+  public IdType(IModelContext modelContext, String theResourceType, String theId) {
+    this(modelContext, theResourceType, theId, null);
   }
 
   public IdType(String theResourceType, String theId) {
@@ -267,8 +267,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * @param theId           The ID (e.g. "123")
    * @param theVersionId    The version ID ("e.g. "456")
    */
-  public IdType(IModelContext context, String theResourceType, String theId, String theVersionId) {
-    this(context, null, theResourceType, theId, theVersionId);
+  public IdType(IModelContext modelContext, String theResourceType, String theId, String theVersionId) {
+    this(modelContext, null, theResourceType, theId, theVersionId);
   }
 
   public IdType(String theResourceType, String theId, String theVersionId) {
@@ -283,8 +283,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
    * @param theId           The ID (e.g. "123")
    * @param theVersionId    The version ID ("e.g. "456")
    */
-  public IdType(IModelContext context, String theBaseUrl, String theResourceType, String theId, String theVersionId) {
-    this.modelContext = context;
+  public IdType(IModelContext modelContext, String theBaseUrl, String theResourceType, String theId, String theVersionId) {
+    this.modelContext = modelContext;
     myBaseUrl = theBaseUrl;
     myResourceType = theResourceType;
     myUnqualifiedId = theId;
@@ -302,8 +302,8 @@ public final class IdType extends UriType implements IPrimitiveType<String>, IId
   /**
    * Creates an ID based on a given URL
    */
-  public IdType(IModelContext context, UriType theUrl) {
-    this.modelContext = context;
+  public IdType(IModelContext modelContext, UriType theUrl) {
+    this.modelContext = modelContext;
     setValue(theUrl.getValueAsString());
   }
 

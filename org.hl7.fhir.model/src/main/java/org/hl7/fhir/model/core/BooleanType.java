@@ -58,15 +58,15 @@ public class BooleanType extends PrimitiveType<Boolean> implements IBaseBooleanD
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public BooleanType(IModelContext context) {
+	public BooleanType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
-  public BooleanType(IModelContext context, boolean theBoolean) {
+  public BooleanType(IModelContext modelContext, boolean theBoolean) {
     super();
 
-    this.modelContext = context;
+    this.modelContext = modelContext;
     setValue(theBoolean);
   }
 
@@ -76,10 +76,10 @@ public class BooleanType extends PrimitiveType<Boolean> implements IBaseBooleanD
     setValue(theBoolean);
   }
 
-	public BooleanType(IModelContext context, Boolean theBoolean) {
+	public BooleanType(IModelContext modelContext, Boolean theBoolean) {
 		super();
 
-		this.modelContext = context;
+		this.modelContext = modelContext;
 		setValue(theBoolean);
 	}
 
@@ -87,10 +87,10 @@ public class BooleanType extends PrimitiveType<Boolean> implements IBaseBooleanD
 	  this((IModelContext) null, theBoolean);
 	}
 
-  public BooleanType(IModelContext context, String value) {
+  public BooleanType(IModelContext modelContext, String value) {
     super();
 
-    this.modelContext = context;
+    this.modelContext = modelContext;
     setValueAsString(value);
   }
 

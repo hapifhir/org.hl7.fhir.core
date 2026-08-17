@@ -49,24 +49,24 @@ public class SimpleQuantity extends Quantity {
   public SimpleQuantity() {
   }
 
-  public SimpleQuantity(IModelContext context) {
-    super(context);
+  public SimpleQuantity(IModelContext modelContext) {
+    super(modelContext);
   }
 
-  public SimpleQuantity(IModelContext context, double theValue) {
-    super(context, theValue);
+  public SimpleQuantity(IModelContext modelContext, double theValue) {
+    super(modelContext, theValue);
   }
 
-  public SimpleQuantity(IModelContext context, long theValue) {
-    super(context, theValue);
+  public SimpleQuantity(IModelContext modelContext, long theValue) {
+    super(modelContext, theValue);
   }
 
-  public SimpleQuantity(IModelContext context, Enumerations.QuantityComparator theComparator, double theValue, String theSystem, String theCode, String theUnit) {
-    super(context, theComparator, theValue, theSystem, theCode, theUnit);
+  public SimpleQuantity(IModelContext modelContext, Enumerations.QuantityComparator theComparator, double theValue, String theSystem, String theCode, String theUnit) {
+    super(modelContext, theComparator, theValue, theSystem, theCode, theUnit);
   }
 
-  public SimpleQuantity(IModelContext context, Enumerations.QuantityComparator theComparator, long theValue, String theSystem, String theCode, String theUnit) {
-    super(context, theComparator, theValue, theSystem, theCode, theUnit);
+  public SimpleQuantity(IModelContext modelContext, Enumerations.QuantityComparator theComparator, long theValue, String theSystem, String theCode, String theUnit) {
+    super(modelContext, theComparator, theValue, theSystem, theCode, theUnit);
   }
 
   private static final long serialVersionUID = 1069574054L;

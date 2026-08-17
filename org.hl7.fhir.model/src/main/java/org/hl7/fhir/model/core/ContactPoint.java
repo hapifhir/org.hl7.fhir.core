@@ -169,8 +169,8 @@ public class ContactPoint extends DataType implements ICompositeType {
 
   public static class ContactPointSystemEnumFactory implements EnumFactory<ContactPointSystem> {
     private final IModelContext modelContext;
-    public ContactPointSystemEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ContactPointSystemEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ContactPointSystemEnumFactory() {
       this(null);
@@ -332,8 +332,8 @@ public class ContactPoint extends DataType implements ICompositeType {
 
   public static class ContactPointUseEnumFactory implements EnumFactory<ContactPointUse> {
     private final IModelContext modelContext;
-    public ContactPointUseEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ContactPointUseEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ContactPointUseEnumFactory() {
       this(null);
@@ -443,9 +443,9 @@ public class ContactPoint extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ContactPoint(IModelContext context) {
+    public ContactPoint(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -843,25 +843,25 @@ public class ContactPoint extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.system != null) {
-          this.system.setModelContext(context);
+          this.system.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.use != null) {
-          this.use.setModelContext(context);
+          this.use.setModelContext(modelContext);
         }
         if (this.rank != null) {
-          this.rank.setModelContext(context);
+          this.rank.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 

@@ -121,9 +121,9 @@ public class RiskAssessment extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public RiskAssessmentPredictionComponent(IModelContext context) {
+      public RiskAssessmentPredictionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -625,28 +625,28 @@ public class RiskAssessment extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.outcome != null) {
-          this.outcome.setModelContext(context);
+          this.outcome.setModelContext(modelContext);
         }
         if (this.probability != null) {
-          this.probability.setModelContext(context);
+          this.probability.setModelContext(modelContext);
         }
         if (this.qualitativeRisk != null) {
-          this.qualitativeRisk.setModelContext(context);
+          this.qualitativeRisk.setModelContext(modelContext);
         }
         if (this.relativeRisk != null) {
-          this.relativeRisk.setModelContext(context);
+          this.relativeRisk.setModelContext(modelContext);
         }
         if (this.when != null) {
-          this.when.setModelContext(context);
+          this.when.setModelContext(modelContext);
         }
         if (this.rationale != null) {
-          this.rationale.setModelContext(context);
+          this.rationale.setModelContext(modelContext);
         }
       }
 
@@ -814,9 +814,9 @@ public class RiskAssessment extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public RiskAssessment(IModelContext context) {
+    public RiskAssessment(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -824,9 +824,9 @@ public class RiskAssessment extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public RiskAssessment(IModelContext context, ObservationStatus status, Reference subject) {
+    public RiskAssessment(IModelContext modelContext, ObservationStatus status, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setSubject(subject);
     }
@@ -1839,67 +1839,67 @@ public class RiskAssessment extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOn != null) {
-          this.basedOn.setModelContext(context);
+          this.basedOn.setModelContext(modelContext);
         }
         if (this.parent != null) {
-          this.parent.setModelContext(context);
+          this.parent.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.method != null) {
-          this.method.setModelContext(context);
+          this.method.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.occurrence != null) {
-          this.occurrence.setModelContext(context);
+          this.occurrence.setModelContext(modelContext);
         }
         if (this.condition != null) {
-          this.condition.setModelContext(context);
+          this.condition.setModelContext(modelContext);
         }
         if (this.performer != null) {
-          this.performer.setModelContext(context);
+          this.performer.setModelContext(modelContext);
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basisList != null) {
           for (Reference i : this.basisList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.predictionList != null) {
           for (RiskAssessmentPredictionComponent i : this.predictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.mitigation != null) {
-          this.mitigation.setModelContext(context);
+          this.mitigation.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1936,8 +1936,8 @@ public class RiskAssessment extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.RiskAssessment;
+  public String getResourceType() {
+    return "RiskAssessment";
    }
 
  /**

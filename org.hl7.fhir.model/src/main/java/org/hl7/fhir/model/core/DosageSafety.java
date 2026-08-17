@@ -139,8 +139,8 @@ public class DosageSafety extends BackboneType implements ICompositeType {
 
   public static class DoseLimitScopeVSEnumFactory implements EnumFactory<DoseLimitScopeVS> {
     private final IModelContext modelContext;
-    public DoseLimitScopeVSEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public DoseLimitScopeVSEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public DoseLimitScopeVSEnumFactory() {
       this(null);
@@ -238,9 +238,9 @@ public class DosageSafety extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DosageSafetyDoseLimitComponent(IModelContext context) {
+      public DosageSafetyDoseLimitComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -248,9 +248,9 @@ public class DosageSafety extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DosageSafetyDoseLimitComponent(IModelContext context, DataType value, DoseLimitScopeVS scope) {
+      public DosageSafetyDoseLimitComponent(IModelContext modelContext, DataType value, DoseLimitScopeVS scope) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setValue(value);
         this.setScope(scope);
       }
@@ -604,22 +604,22 @@ public class DosageSafety extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.scope != null) {
-          this.scope.setModelContext(context);
+          this.scope.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
       }
 
@@ -684,9 +684,9 @@ public class DosageSafety extends BackboneType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public DosageSafety(IModelContext context) {
+    public DosageSafety(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -895,18 +895,18 @@ public class DosageSafety extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.doseLimitList != null) {
           for (DosageSafetyDoseLimitComponent i : this.doseLimitList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.ifExceeded != null) {
-          this.ifExceeded.setModelContext(context);
+          this.ifExceeded.setModelContext(modelContext);
         }
       }
 

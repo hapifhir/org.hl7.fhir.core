@@ -131,8 +131,8 @@ public class Immunization extends DomainResource {
 
   public static class ImmunizationStatusCodesEnumFactory implements EnumFactory<ImmunizationStatusCodes> {
     private final IModelContext modelContext;
-    public ImmunizationStatusCodesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ImmunizationStatusCodesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ImmunizationStatusCodesEnumFactory() {
       this(null);
@@ -210,9 +210,9 @@ public class Immunization extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImmunizationPerformerComponent(IModelContext context) {
+      public ImmunizationPerformerComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -220,9 +220,9 @@ public class Immunization extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImmunizationPerformerComponent(IModelContext context, Reference actor) {
+      public ImmunizationPerformerComponent(IModelContext modelContext, Reference actor) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setActor(actor);
       }
 
@@ -381,16 +381,16 @@ public class Immunization extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.function != null) {
-          this.function.setModelContext(context);
+          this.function.setModelContext(modelContext);
         }
         if (this.actor != null) {
-          this.actor.setModelContext(context);
+          this.actor.setModelContext(modelContext);
         }
       }
 
@@ -457,9 +457,9 @@ public class Immunization extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImmunizationProgramEligibilityComponent(IModelContext context) {
+      public ImmunizationProgramEligibilityComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -467,9 +467,9 @@ public class Immunization extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImmunizationProgramEligibilityComponent(IModelContext context, CodeableConcept program, CodeableConcept programStatus) {
+      public ImmunizationProgramEligibilityComponent(IModelContext modelContext, CodeableConcept program, CodeableConcept programStatus) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setProgram(program);
         this.setProgramStatus(programStatus);
       }
@@ -629,16 +629,16 @@ public class Immunization extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.program != null) {
-          this.program.setModelContext(context);
+          this.program.setModelContext(modelContext);
         }
         if (this.programStatus != null) {
-          this.programStatus.setModelContext(context);
+          this.programStatus.setModelContext(modelContext);
         }
       }
 
@@ -711,9 +711,9 @@ public class Immunization extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImmunizationReactionComponent(IModelContext context) {
+      public ImmunizationReactionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -962,19 +962,19 @@ public class Immunization extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.manifestation != null) {
-          this.manifestation.setModelContext(context);
+          this.manifestation.setModelContext(modelContext);
         }
         if (this.reported != null) {
-          this.reported.setModelContext(context);
+          this.reported.setModelContext(modelContext);
         }
       }
 
@@ -1063,9 +1063,9 @@ public class Immunization extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImmunizationProtocolAppliedComponent(IModelContext context) {
+      public ImmunizationProtocolAppliedComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1410,27 +1410,27 @@ public class Immunization extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.series != null) {
-          this.series.setModelContext(context);
+          this.series.setModelContext(modelContext);
         }
         if (this.authority != null) {
-          this.authority.setModelContext(context);
+          this.authority.setModelContext(modelContext);
         }
         if (this.targetDiseaseList != null) {
           for (CodeableConcept i : this.targetDiseaseList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.doseNumber != null) {
-          this.doseNumber.setModelContext(context);
+          this.doseNumber.setModelContext(modelContext);
         }
         if (this.seriesDoses != null) {
-          this.seriesDoses.setModelContext(context);
+          this.seriesDoses.setModelContext(modelContext);
         }
       }
 
@@ -1687,9 +1687,9 @@ public class Immunization extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Immunization(IModelContext context) {
+    public Immunization(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1697,9 +1697,9 @@ public class Immunization extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Immunization(IModelContext context, ImmunizationStatusCodes status, CodeableConcept vaccineCode, Reference patient, DataType occurrence) {
+    public Immunization(IModelContext modelContext, ImmunizationStatusCodes status, CodeableConcept vaccineCode, Reference patient, DataType occurrence) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setVaccineCode(vaccineCode);
       this.setPatient(patient);
@@ -3452,113 +3452,113 @@ public class Immunization extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReason != null) {
-          this.statusReason.setModelContext(context);
+          this.statusReason.setModelContext(modelContext);
         }
         if (this.vaccineCode != null) {
-          this.vaccineCode.setModelContext(context);
+          this.vaccineCode.setModelContext(modelContext);
         }
         if (this.administeredProduct != null) {
-          this.administeredProduct.setModelContext(context);
+          this.administeredProduct.setModelContext(modelContext);
         }
         if (this.manufacturer != null) {
-          this.manufacturer.setModelContext(context);
+          this.manufacturer.setModelContext(modelContext);
         }
         if (this.lotNumber != null) {
-          this.lotNumber.setModelContext(context);
+          this.lotNumber.setModelContext(modelContext);
         }
         if (this.expirationDate != null) {
-          this.expirationDate.setModelContext(context);
+          this.expirationDate.setModelContext(modelContext);
         }
         if (this.patient != null) {
-          this.patient.setModelContext(context);
+          this.patient.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.supportingInformationList != null) {
           for (Reference i : this.supportingInformationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.occurrence != null) {
-          this.occurrence.setModelContext(context);
+          this.occurrence.setModelContext(modelContext);
         }
         if (this.primarySource != null) {
-          this.primarySource.setModelContext(context);
+          this.primarySource.setModelContext(modelContext);
         }
         if (this.informationSource != null) {
-          this.informationSource.setModelContext(context);
+          this.informationSource.setModelContext(modelContext);
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.site != null) {
-          this.site.setModelContext(context);
+          this.site.setModelContext(modelContext);
         }
         if (this.route != null) {
-          this.route.setModelContext(context);
+          this.route.setModelContext(modelContext);
         }
         if (this.doseQuantity != null) {
-          this.doseQuantity.setModelContext(context);
+          this.doseQuantity.setModelContext(modelContext);
         }
         if (this.performerList != null) {
           for (ImmunizationPerformerComponent i : this.performerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.isSubpotent != null) {
-          this.isSubpotent.setModelContext(context);
+          this.isSubpotent.setModelContext(modelContext);
         }
         if (this.subpotentReasonList != null) {
           for (CodeableConcept i : this.subpotentReasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.programEligibilityList != null) {
           for (ImmunizationProgramEligibilityComponent i : this.programEligibilityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.fundingSource != null) {
-          this.fundingSource.setModelContext(context);
+          this.fundingSource.setModelContext(modelContext);
         }
         if (this.reactionList != null) {
           for (ImmunizationReactionComponent i : this.reactionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.protocolAppliedList != null) {
           for (ImmunizationProtocolAppliedComponent i : this.protocolAppliedList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3607,8 +3607,8 @@ public class Immunization extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Immunization;
+  public String getResourceType() {
+    return "Immunization";
    }
 
  /**

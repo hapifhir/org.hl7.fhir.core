@@ -151,8 +151,8 @@ public class Account extends DomainResource {
 
   public static class AccountStatusEnumFactory implements EnumFactory<AccountStatus> {
     private final IModelContext modelContext;
-    public AccountStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AccountStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AccountStatusEnumFactory() {
       this(null);
@@ -241,9 +241,9 @@ public class Account extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CoverageComponent(IModelContext context) {
+      public CoverageComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -251,9 +251,9 @@ public class Account extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CoverageComponent(IModelContext context, Reference coverage) {
+      public CoverageComponent(IModelContext modelContext, Reference coverage) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCoverage(coverage);
       }
 
@@ -432,16 +432,16 @@ public class Account extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.coverage != null) {
-          this.coverage.setModelContext(context);
+          this.coverage.setModelContext(modelContext);
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
       }
 
@@ -541,9 +541,9 @@ public class Account extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public GuarantorComponent(IModelContext context) {
+      public GuarantorComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -976,31 +976,31 @@ public class Account extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.party != null) {
-          this.party.setModelContext(context);
+          this.party.setModelContext(modelContext);
         }
         if (this.onHold != null) {
-          this.onHold.setModelContext(context);
+          this.onHold.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.account != null) {
-          this.account.setModelContext(context);
+          this.account.setModelContext(modelContext);
         }
         if (this.responsibility != null) {
-          this.responsibility.setModelContext(context);
+          this.responsibility.setModelContext(modelContext);
         }
         if (this.limit != null) {
-          this.limit.setModelContext(context);
+          this.limit.setModelContext(modelContext);
         }
         if (this.rank != null) {
-          this.rank.setModelContext(context);
+          this.rank.setModelContext(modelContext);
         }
       }
 
@@ -1098,9 +1098,9 @@ public class Account extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AccountDiagnosisComponent(IModelContext context) {
+      public AccountDiagnosisComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1108,9 +1108,9 @@ public class Account extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AccountDiagnosisComponent(IModelContext context, CodeableReference condition) {
+      public AccountDiagnosisComponent(IModelContext modelContext, CodeableReference condition) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCondition(condition);
       }
 
@@ -1565,31 +1565,31 @@ public class Account extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.sequence != null) {
-          this.sequence.setModelContext(context);
+          this.sequence.setModelContext(modelContext);
         }
         if (this.condition != null) {
-          this.condition.setModelContext(context);
+          this.condition.setModelContext(modelContext);
         }
         if (this.dateOfDiagnosis != null) {
-          this.dateOfDiagnosis.setModelContext(context);
+          this.dateOfDiagnosis.setModelContext(modelContext);
         }
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.onAdmission != null) {
-          this.onAdmission.setModelContext(context);
+          this.onAdmission.setModelContext(modelContext);
         }
         if (this.packageCodeList != null) {
           for (CodeableConcept i : this.packageCodeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1688,9 +1688,9 @@ public class Account extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AccountProcedureComponent(IModelContext context) {
+      public AccountProcedureComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1698,9 +1698,9 @@ public class Account extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AccountProcedureComponent(IModelContext context, CodeableReference code) {
+      public AccountProcedureComponent(IModelContext modelContext, CodeableReference code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -2157,33 +2157,33 @@ public class Account extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.sequence != null) {
-          this.sequence.setModelContext(context);
+          this.sequence.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.dateOfService != null) {
-          this.dateOfService.setModelContext(context);
+          this.dateOfService.setModelContext(modelContext);
         }
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.packageCodeList != null) {
           for (CodeableConcept i : this.packageCodeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.deviceList != null) {
           for (Reference i : this.deviceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2269,9 +2269,9 @@ public class Account extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AccountBalanceComponent(IModelContext context) {
+      public AccountBalanceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2279,9 +2279,9 @@ public class Account extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AccountBalanceComponent(IModelContext context, Money amount) {
+      public AccountBalanceComponent(IModelContext modelContext, Money amount) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setAmount(amount);
       }
 
@@ -2554,22 +2554,22 @@ public class Account extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.aggregate != null) {
-          this.aggregate.setModelContext(context);
+          this.aggregate.setModelContext(modelContext);
         }
         if (this.term != null) {
-          this.term.setModelContext(context);
+          this.term.setModelContext(modelContext);
         }
         if (this.estimate != null) {
-          this.estimate.setModelContext(context);
+          this.estimate.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
       }
 
@@ -2750,9 +2750,9 @@ public class Account extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Account(IModelContext context) {
+    public Account(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2760,9 +2760,9 @@ public class Account extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Account(IModelContext context, AccountStatus status) {
+    public Account(IModelContext modelContext, AccountStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -3947,80 +3947,80 @@ public class Account extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.billingStatus != null) {
-          this.billingStatus.setModelContext(context);
+          this.billingStatus.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.subjectList != null) {
           for (Reference i : this.subjectList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.servicePeriod != null) {
-          this.servicePeriod.setModelContext(context);
+          this.servicePeriod.setModelContext(modelContext);
         }
         if (this.coversList != null) {
           for (Reference i : this.coversList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.coverageList != null) {
           for (CoverageComponent i : this.coverageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.owner != null) {
-          this.owner.setModelContext(context);
+          this.owner.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.guarantorList != null) {
           for (GuarantorComponent i : this.guarantorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.diagnosisList != null) {
           for (AccountDiagnosisComponent i : this.diagnosisList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.procedureList != null) {
           for (AccountProcedureComponent i : this.procedureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.parent != null) {
-          this.parent.setModelContext(context);
+          this.parent.setModelContext(modelContext);
         }
         if (this.currency != null) {
-          this.currency.setModelContext(context);
+          this.currency.setModelContext(modelContext);
         }
         if (this.balanceList != null) {
           for (AccountBalanceComponent i : this.balanceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.calculatedAt != null) {
-          this.calculatedAt.setModelContext(context);
+          this.calculatedAt.setModelContext(modelContext);
         }
       }
 
@@ -4060,8 +4060,8 @@ public class Account extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Account;
+  public String getResourceType() {
+    return "Account";
    }
 
  /**

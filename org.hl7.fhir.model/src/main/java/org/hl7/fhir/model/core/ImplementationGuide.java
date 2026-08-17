@@ -141,8 +141,8 @@ public class ImplementationGuide extends CanonicalResource {
 
   public static class GuidePageGenerationEnumFactory implements EnumFactory<GuidePageGeneration> {
     private final IModelContext modelContext;
-    public GuidePageGenerationEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public GuidePageGenerationEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public GuidePageGenerationEnumFactory() {
       this(null);
@@ -3696,8 +3696,8 @@ public class ImplementationGuide extends CanonicalResource {
 
   public static class SPDXLicenseEnumFactory implements EnumFactory<SPDXLicense> {
     private final IModelContext modelContext;
-    public SPDXLicenseEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SPDXLicenseEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SPDXLicenseEnumFactory() {
       this(null);
@@ -5846,9 +5846,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImplementationGuideDependsOnComponent(IModelContext context) {
+      public ImplementationGuideDependsOnComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -5856,9 +5856,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImplementationGuideDependsOnComponent(IModelContext context, String uri) {
+      public ImplementationGuideDependsOnComponent(IModelContext modelContext, String uri) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setUri(uri);
       }
 
@@ -6203,22 +6203,22 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.uri != null) {
-          this.uri.setModelContext(context);
+          this.uri.setModelContext(modelContext);
         }
         if (this.packageId != null) {
-          this.packageId.setModelContext(context);
+          this.packageId.setModelContext(modelContext);
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.reason != null) {
-          this.reason.setModelContext(context);
+          this.reason.setModelContext(modelContext);
         }
       }
 
@@ -6287,9 +6287,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImplementationGuideGlobalComponent(IModelContext context) {
+      public ImplementationGuideGlobalComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -6297,9 +6297,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImplementationGuideGlobalComponent(IModelContext context, String type, String profile) {
+      public ImplementationGuideGlobalComponent(IModelContext modelContext, String type, String profile) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setProfile(profile);
       }
@@ -6499,16 +6499,16 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.profile != null) {
-          this.profile.setModelContext(context);
+          this.profile.setModelContext(modelContext);
         }
       }
 
@@ -6594,9 +6594,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImplementationGuideDefinitionComponent(IModelContext context) {
+      public ImplementationGuideDefinitionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -6983,32 +6983,32 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.groupingList != null) {
           for (ImplementationGuideDefinitionGroupingComponent i : this.groupingList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.resourceList != null) {
           for (ImplementationGuideDefinitionResourceComponent i : this.resourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.page != null) {
-          this.page.setModelContext(context);
+          this.page.setModelContext(modelContext);
         }
         if (this.parameterList != null) {
           for (ImplementationGuideDefinitionParameterComponent i : this.parameterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.templateList != null) {
           for (ImplementationGuideDefinitionTemplateComponent i : this.templateList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -7077,9 +7077,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImplementationGuideDefinitionGroupingComponent(IModelContext context) {
+      public ImplementationGuideDefinitionGroupingComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -7087,9 +7087,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImplementationGuideDefinitionGroupingComponent(IModelContext context, String name) {
+      public ImplementationGuideDefinitionGroupingComponent(IModelContext modelContext, String name) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
       }
 
@@ -7292,16 +7292,16 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
       }
 
@@ -7402,9 +7402,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImplementationGuideDefinitionResourceComponent(IModelContext context) {
+      public ImplementationGuideDefinitionResourceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -7412,9 +7412,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImplementationGuideDefinitionResourceComponent(IModelContext context, Reference reference) {
+      public ImplementationGuideDefinitionResourceComponent(IModelContext modelContext, Reference reference) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setReference(reference);
       }
 
@@ -7961,35 +7961,35 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.reference != null) {
-          this.reference.setModelContext(context);
+          this.reference.setModelContext(modelContext);
         }
         if (this.fhirVersionList != null) {
           for (Enumeration<FHIRVersion> i : this.fhirVersionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.isExample != null) {
-          this.isExample.setModelContext(context);
+          this.isExample.setModelContext(modelContext);
         }
         if (this.profileList != null) {
           for (CanonicalType i : this.profileList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.groupingId != null) {
-          this.groupingId.setModelContext(context);
+          this.groupingId.setModelContext(modelContext);
         }
       }
 
@@ -8082,9 +8082,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImplementationGuideDefinitionPageComponent(IModelContext context) {
+      public ImplementationGuideDefinitionPageComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -8092,9 +8092,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImplementationGuideDefinitionPageComponent(IModelContext context, String name, String title, GuidePageGeneration generation) {
+      public ImplementationGuideDefinitionPageComponent(IModelContext modelContext, String name, String title, GuidePageGeneration generation) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
         this.setTitle(title);
         this.setGeneration(generation);
@@ -8534,26 +8534,26 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.source != null) {
-          this.source.setModelContext(context);
+          this.source.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.generation != null) {
-          this.generation.setModelContext(context);
+          this.generation.setModelContext(modelContext);
         }
         if (this.pageList != null) {
           for (ImplementationGuideDefinitionPageComponent i : this.pageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -8623,9 +8623,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImplementationGuideDefinitionParameterComponent(IModelContext context) {
+      public ImplementationGuideDefinitionParameterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -8633,9 +8633,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImplementationGuideDefinitionParameterComponent(IModelContext context, Coding code, String value) {
+      public ImplementationGuideDefinitionParameterComponent(IModelContext modelContext, Coding code, String value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setValue(value);
       }
@@ -8815,16 +8815,16 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -8896,9 +8896,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImplementationGuideDefinitionTemplateComponent(IModelContext context) {
+      public ImplementationGuideDefinitionTemplateComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -8906,9 +8906,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImplementationGuideDefinitionTemplateComponent(IModelContext context, String code, String source) {
+      public ImplementationGuideDefinitionTemplateComponent(IModelContext modelContext, String code, String source) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setSource(source);
       }
@@ -9179,19 +9179,19 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.source != null) {
-          this.source.setModelContext(context);
+          this.source.setModelContext(modelContext);
         }
         if (this.scope != null) {
-          this.scope.setModelContext(context);
+          this.scope.setModelContext(modelContext);
         }
       }
 
@@ -9279,9 +9279,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImplementationGuideManifestComponent(IModelContext context) {
+      public ImplementationGuideManifestComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -9289,9 +9289,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImplementationGuideManifestComponent(IModelContext context, ManifestResourceComponent resource) {
+      public ImplementationGuideManifestComponent(IModelContext modelContext, ManifestResourceComponent resource) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.addResource(resource);
       }
 
@@ -9719,32 +9719,32 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.rendering != null) {
-          this.rendering.setModelContext(context);
+          this.rendering.setModelContext(modelContext);
         }
         if (this.resourceList != null) {
           for (ManifestResourceComponent i : this.resourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.pageList != null) {
           for (ManifestPageComponent i : this.pageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.imageList != null) {
           for (StringType i : this.imageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.otherList != null) {
           for (StringType i : this.otherList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -9828,9 +9828,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ManifestResourceComponent(IModelContext context) {
+      public ManifestResourceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -9838,9 +9838,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ManifestResourceComponent(IModelContext context, Reference reference) {
+      public ManifestResourceComponent(IModelContext modelContext, Reference reference) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setReference(reference);
       }
 
@@ -10167,24 +10167,24 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.reference != null) {
-          this.reference.setModelContext(context);
+          this.reference.setModelContext(modelContext);
         }
         if (this.isExample != null) {
-          this.isExample.setModelContext(context);
+          this.isExample.setModelContext(modelContext);
         }
         if (this.profileList != null) {
           for (CanonicalType i : this.profileList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relativePath != null) {
-          this.relativePath.setModelContext(context);
+          this.relativePath.setModelContext(modelContext);
         }
       }
 
@@ -10259,9 +10259,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ManifestPageComponent(IModelContext context) {
+      public ManifestPageComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -10269,9 +10269,9 @@ public class ImplementationGuide extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ManifestPageComponent(IModelContext context, String name) {
+      public ManifestPageComponent(IModelContext modelContext, String name) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
       }
 
@@ -10551,20 +10551,20 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.anchorList != null) {
           for (StringType i : this.anchorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -10790,9 +10790,9 @@ public class ImplementationGuide extends CanonicalResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ImplementationGuide(IModelContext context) {
+    public ImplementationGuide(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -10800,9 +10800,9 @@ public class ImplementationGuide extends CanonicalResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ImplementationGuide(IModelContext context, String url, String name, PublicationStatus status, String packageId, FHIRVersion fhirVersion) {
+    public ImplementationGuide(IModelContext modelContext, String url, String name, PublicationStatus status, String packageId, FHIRVersion fhirVersion) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setUrl(url);
       this.setName(name);
       this.setStatus(status);
@@ -12520,96 +12520,96 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.packageId != null) {
-          this.packageId.setModelContext(context);
+          this.packageId.setModelContext(modelContext);
         }
         if (this.license != null) {
-          this.license.setModelContext(context);
+          this.license.setModelContext(modelContext);
         }
         if (this.fhirVersionList != null) {
           for (Enumeration<FHIRVersion> i : this.fhirVersionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.dependsOnList != null) {
           for (ImplementationGuideDependsOnComponent i : this.dependsOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.globalList != null) {
           for (ImplementationGuideGlobalComponent i : this.globalList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.manifest != null) {
-          this.manifest.setModelContext(context);
+          this.manifest.setModelContext(modelContext);
         }
       }
 
@@ -12655,8 +12655,8 @@ public class ImplementationGuide extends CanonicalResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.ImplementationGuide;
+  public String getResourceType() {
+    return "ImplementationGuide";
    }
 
  /**

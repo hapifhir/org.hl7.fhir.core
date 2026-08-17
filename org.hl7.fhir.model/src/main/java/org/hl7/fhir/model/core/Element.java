@@ -92,9 +92,9 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Element(IModelContext context) {
+    public Element(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -299,17 +299,17 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.id != null) {
-          this.id.setModelContext(context);
+          this.id.setModelContext(modelContext);
         }
         if (this.extensionList != null) {
           for (Extension i : this.extensionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }

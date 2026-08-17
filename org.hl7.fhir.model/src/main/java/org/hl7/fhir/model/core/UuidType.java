@@ -57,23 +57,23 @@ public class UuidType extends UriType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context
    */
-  public UuidType(IModelContext context) {
+  public UuidType(IModelContext modelContext) {
     this();
-    this.modelContext = context;
+    this.modelContext = modelContext;
   }
 
   /**
    * Constructor
    */
-  public UuidType(IModelContext context, String theValue) {
-    super(context, theValue);
+  public UuidType(IModelContext modelContext, String theValue) {
+    super(modelContext, theValue);
   }
 
   /**
    * Constructor
    */
-  public UuidType(IModelContext context, URI theValue) {
-    super(context, theValue);
+  public UuidType(IModelContext modelContext, URI theValue) {
+    super(modelContext, theValue);
   }
 
   public UuidType(URI theValue) {

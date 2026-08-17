@@ -1911,8 +1911,8 @@ public class SearchParameter extends CanonicalResource {
 
   public static class SearchModifierAllCodesEnumFactory implements EnumFactory<SearchModifierAllCodes> {
     private final IModelContext modelContext;
-    public SearchModifierAllCodesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SearchModifierAllCodesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SearchModifierAllCodesEnumFactory() {
       this(null);
@@ -3098,8 +3098,8 @@ public class SearchParameter extends CanonicalResource {
 
   public static class SearchProcessingModeTypeEnumFactory implements EnumFactory<SearchProcessingModeType> {
     private final IModelContext modelContext;
-    public SearchProcessingModeTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SearchProcessingModeTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SearchProcessingModeTypeEnumFactory() {
       this(null);
@@ -3176,9 +3176,9 @@ public class SearchParameter extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SearchParameterComponentComponent(IModelContext context) {
+      public SearchParameterComponentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3186,9 +3186,9 @@ public class SearchParameter extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SearchParameterComponentComponent(IModelContext context, String definition, String expression) {
+      public SearchParameterComponentComponent(IModelContext modelContext, String definition, String expression) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setDefinition(definition);
         this.setExpression(expression);
       }
@@ -3388,16 +3388,16 @@ public class SearchParameter extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.expression != null) {
-          this.expression.setModelContext(context);
+          this.expression.setModelContext(modelContext);
         }
       }
 
@@ -3681,9 +3681,9 @@ public class SearchParameter extends CanonicalResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public SearchParameter(IModelContext context) {
+    public SearchParameter(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -3691,9 +3691,9 @@ public class SearchParameter extends CanonicalResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public SearchParameter(IModelContext context, String url, String name, PublicationStatus status, String description, String code, String base, SearchParamType type) {
+    public SearchParameter(IModelContext modelContext, String url, String name, PublicationStatus status, String description, String code, String base, SearchParamType type) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setUrl(url);
       this.setName(name);
       this.setStatus(status);
@@ -6047,127 +6047,127 @@ public class SearchParameter extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.derivedFrom != null) {
-          this.derivedFrom.setModelContext(context);
+          this.derivedFrom.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.aliasCodeList != null) {
           for (CodeType i : this.aliasCodeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.baseList != null) {
           for (UriType i : this.baseList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.expression != null) {
-          this.expression.setModelContext(context);
+          this.expression.setModelContext(modelContext);
         }
         if (this.processingMode != null) {
-          this.processingMode.setModelContext(context);
+          this.processingMode.setModelContext(modelContext);
         }
         if (this.constraint != null) {
-          this.constraint.setModelContext(context);
+          this.constraint.setModelContext(modelContext);
         }
         if (this.targetList != null) {
           for (UriType i : this.targetList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.multipleOr != null) {
-          this.multipleOr.setModelContext(context);
+          this.multipleOr.setModelContext(modelContext);
         }
         if (this.multipleAnd != null) {
-          this.multipleAnd.setModelContext(context);
+          this.multipleAnd.setModelContext(modelContext);
         }
         if (this.comparatorList != null) {
           for (Enumeration<SearchComparator> i : this.comparatorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.modifierList != null) {
           for (Enumeration<SearchModifierAllCodes> i : this.modifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.chainList != null) {
           for (StringType i : this.chainList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.componentList != null) {
           for (SearchParameterComponentComponent i : this.componentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -6223,8 +6223,8 @@ public class SearchParameter extends CanonicalResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.SearchParameter;
+  public String getResourceType() {
+    return "SearchParameter";
    }
 
  /**

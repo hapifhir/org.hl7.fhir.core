@@ -131,8 +131,8 @@ public class TerminologyCapabilities extends CanonicalResource {
 
   public static class CodeSearchSupportEnumFactory implements EnumFactory<CodeSearchSupport> {
     private final IModelContext modelContext;
-    public CodeSearchSupportEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public CodeSearchSupportEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public CodeSearchSupportEnumFactory() {
       this(null);
@@ -250,8 +250,8 @@ public class TerminologyCapabilities extends CanonicalResource {
 
   public static class GlobalLangPackSupportVSEnumFactory implements EnumFactory<GlobalLangPackSupportVS> {
     private final IModelContext modelContext;
-    public GlobalLangPackSupportVSEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public GlobalLangPackSupportVSEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public GlobalLangPackSupportVSEnumFactory() {
       this(null);
@@ -328,9 +328,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TerminologyCapabilitiesSoftwareComponent(IModelContext context) {
+      public TerminologyCapabilitiesSoftwareComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -338,9 +338,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TerminologyCapabilitiesSoftwareComponent(IModelContext context, String name) {
+      public TerminologyCapabilitiesSoftwareComponent(IModelContext modelContext, String name) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
       }
 
@@ -543,16 +543,16 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
       }
 
@@ -631,9 +631,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TerminologyCapabilitiesImplementationComponent(IModelContext context) {
+      public TerminologyCapabilitiesImplementationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -641,9 +641,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TerminologyCapabilitiesImplementationComponent(IModelContext context, String description) {
+      public TerminologyCapabilitiesImplementationComponent(IModelContext modelContext, String description) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setDescription(description);
       }
 
@@ -988,22 +988,22 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.fragmentSupport != null) {
-          this.fragmentSupport.setModelContext(context);
+          this.fragmentSupport.setModelContext(modelContext);
         }
         if (this.supplementSupport != null) {
-          this.supplementSupport.setModelContext(context);
+          this.supplementSupport.setModelContext(modelContext);
         }
       }
 
@@ -1101,9 +1101,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TerminologyCapabilitiesCodeSystemComponent(IModelContext context) {
+      public TerminologyCapabilitiesCodeSystemComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1605,32 +1605,32 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.uri != null) {
-          this.uri.setModelContext(context);
+          this.uri.setModelContext(modelContext);
         }
         if (this.supplementList != null) {
           for (CanonicalType i : this.supplementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.versionList != null) {
           for (TerminologyCapabilitiesCodeSystemVersionComponent i : this.versionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.content != null) {
-          this.content.setModelContext(context);
+          this.content.setModelContext(modelContext);
         }
         if (this.subsumption != null) {
-          this.subsumption.setModelContext(context);
+          this.subsumption.setModelContext(modelContext);
         }
       }
 
@@ -1743,9 +1743,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TerminologyCapabilitiesCodeSystemVersionComponent(IModelContext context) {
+      public TerminologyCapabilitiesCodeSystemVersionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2386,41 +2386,41 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.isDefault != null) {
-          this.isDefault.setModelContext(context);
+          this.isDefault.setModelContext(modelContext);
         }
         if (this.content != null) {
-          this.content.setModelContext(context);
+          this.content.setModelContext(modelContext);
         }
         if (this.supplementList != null) {
           for (CanonicalType i : this.supplementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.compositional != null) {
-          this.compositional.setModelContext(context);
+          this.compositional.setModelContext(modelContext);
         }
         if (this.languageList != null) {
           for (CodeType i : this.languageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.filterList != null) {
           for (TerminologyCapabilitiesCodeSystemVersionFilterComponent i : this.filterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (CodeType i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2493,9 +2493,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TerminologyCapabilitiesCodeSystemVersionFilterComponent(IModelContext context) {
+      public TerminologyCapabilitiesCodeSystemVersionFilterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2503,9 +2503,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TerminologyCapabilitiesCodeSystemVersionFilterComponent(IModelContext context, String code, String op) {
+      public TerminologyCapabilitiesCodeSystemVersionFilterComponent(IModelContext modelContext, String code, String op) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.addOp(op);
       }
@@ -2715,17 +2715,17 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.opList != null) {
           for (CodeType i : this.opList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2785,9 +2785,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TerminologyCapabilitiesSupplementsComponent(IModelContext context) {
+      public TerminologyCapabilitiesSupplementsComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2923,13 +2923,13 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.globals != null) {
-          this.globals.setModelContext(context);
+          this.globals.setModelContext(modelContext);
         }
       }
 
@@ -3015,9 +3015,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TerminologyCapabilitiesExpansionComponent(IModelContext context) {
+      public TerminologyCapabilitiesExpansionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -3422,27 +3422,27 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.hierarchical != null) {
-          this.hierarchical.setModelContext(context);
+          this.hierarchical.setModelContext(modelContext);
         }
         if (this.paging != null) {
-          this.paging.setModelContext(context);
+          this.paging.setModelContext(modelContext);
         }
         if (this.incomplete != null) {
-          this.incomplete.setModelContext(context);
+          this.incomplete.setModelContext(modelContext);
         }
         if (this.parameterList != null) {
           for (TerminologyCapabilitiesExpansionParameterComponent i : this.parameterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.textFilter != null) {
-          this.textFilter.setModelContext(context);
+          this.textFilter.setModelContext(modelContext);
         }
       }
 
@@ -3511,9 +3511,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TerminologyCapabilitiesExpansionParameterComponent(IModelContext context) {
+      public TerminologyCapabilitiesExpansionParameterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3521,9 +3521,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TerminologyCapabilitiesExpansionParameterComponent(IModelContext context, String name) {
+      public TerminologyCapabilitiesExpansionParameterComponent(IModelContext modelContext, String name) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
       }
 
@@ -3726,16 +3726,16 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
       }
 
@@ -3793,9 +3793,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TerminologyCapabilitiesValidateCodeComponent(IModelContext context) {
+      public TerminologyCapabilitiesValidateCodeComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3803,9 +3803,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TerminologyCapabilitiesValidateCodeComponent(IModelContext context, boolean translations) {
+      public TerminologyCapabilitiesValidateCodeComponent(IModelContext modelContext, boolean translations) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setTranslations(translations);
       }
 
@@ -3937,13 +3937,13 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.translations != null) {
-          this.translations.setModelContext(context);
+          this.translations.setModelContext(modelContext);
         }
       }
 
@@ -4001,9 +4001,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TerminologyCapabilitiesTranslationComponent(IModelContext context) {
+      public TerminologyCapabilitiesTranslationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -4011,9 +4011,9 @@ public class TerminologyCapabilities extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TerminologyCapabilitiesTranslationComponent(IModelContext context, boolean needsMap) {
+      public TerminologyCapabilitiesTranslationComponent(IModelContext modelContext, boolean needsMap) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setNeedsMap(needsMap);
       }
 
@@ -4145,13 +4145,13 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.needsMap != null) {
-          this.needsMap.setModelContext(context);
+          this.needsMap.setModelContext(modelContext);
         }
       }
 
@@ -4394,9 +4394,9 @@ public class TerminologyCapabilities extends CanonicalResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public TerminologyCapabilities(IModelContext context) {
+    public TerminologyCapabilities(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -4404,9 +4404,9 @@ public class TerminologyCapabilities extends CanonicalResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public TerminologyCapabilities(IModelContext context, PublicationStatus status, Date date, CapabilityStatementKind kind) {
+    public TerminologyCapabilities(IModelContext modelContext, PublicationStatus status, Date date, CapabilityStatementKind kind) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setDate(date);
       this.setKind(kind);
@@ -6235,101 +6235,101 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.kind != null) {
-          this.kind.setModelContext(context);
+          this.kind.setModelContext(modelContext);
         }
         if (this.software != null) {
-          this.software.setModelContext(context);
+          this.software.setModelContext(modelContext);
         }
         if (this.implementation != null) {
-          this.implementation.setModelContext(context);
+          this.implementation.setModelContext(modelContext);
         }
         if (this.lockedDate != null) {
-          this.lockedDate.setModelContext(context);
+          this.lockedDate.setModelContext(modelContext);
         }
         if (this.codeSystemList != null) {
           for (TerminologyCapabilitiesCodeSystemComponent i : this.codeSystemList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.supplements != null) {
-          this.supplements.setModelContext(context);
+          this.supplements.setModelContext(modelContext);
         }
         if (this.expansion != null) {
-          this.expansion.setModelContext(context);
+          this.expansion.setModelContext(modelContext);
         }
         if (this.codeSearch != null) {
-          this.codeSearch.setModelContext(context);
+          this.codeSearch.setModelContext(modelContext);
         }
         if (this.validateCode != null) {
-          this.validateCode.setModelContext(context);
+          this.validateCode.setModelContext(modelContext);
         }
         if (this.translation != null) {
-          this.translation.setModelContext(context);
+          this.translation.setModelContext(modelContext);
         }
       }
 
@@ -6377,8 +6377,8 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.TerminologyCapabilities;
+  public String getResourceType() {
+    return "TerminologyCapabilities";
    }
 
  /**

@@ -86,9 +86,9 @@ public class CodeableConcept extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public CodeableConcept(IModelContext context) {
+    public CodeableConcept(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -297,18 +297,18 @@ public class CodeableConcept extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.codingList != null) {
           for (Coding i : this.codingList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
       }
 
@@ -345,9 +345,9 @@ public boolean hasCoding(String system, String code) {
     return false;
   }
 
-  public CodeableConcept(IModelContext context, Coding code) {
+  public CodeableConcept(IModelContext modelContext, Coding code) {
     super();
-    this.modelContext = context;
+    this.modelContext = modelContext;
     addCoding(code);
   }
 

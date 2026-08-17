@@ -91,9 +91,9 @@ public class ServiceRequest extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ServiceRequestOrderDetailComponent(IModelContext context) {
+      public ServiceRequestOrderDetailComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -101,9 +101,9 @@ public class ServiceRequest extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ServiceRequestOrderDetailComponent(IModelContext context, ServiceRequestOrderDetailParameterComponent parameter) {
+      public ServiceRequestOrderDetailComponent(IModelContext modelContext, ServiceRequestOrderDetailParameterComponent parameter) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.addParameter(parameter);
       }
 
@@ -339,17 +339,17 @@ public class ServiceRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.parameterFocus != null) {
-          this.parameterFocus.setModelContext(context);
+          this.parameterFocus.setModelContext(modelContext);
         }
         if (this.parameterList != null) {
           for (ServiceRequestOrderDetailParameterComponent i : this.parameterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -418,9 +418,9 @@ public class ServiceRequest extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ServiceRequestOrderDetailParameterComponent(IModelContext context) {
+      public ServiceRequestOrderDetailParameterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -428,9 +428,9 @@ public class ServiceRequest extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ServiceRequestOrderDetailParameterComponent(IModelContext context, CodeableConcept code, DataType value) {
+      public ServiceRequestOrderDetailParameterComponent(IModelContext modelContext, CodeableConcept code, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setValue(value);
       }
@@ -725,16 +725,16 @@ public class ServiceRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -792,9 +792,9 @@ public class ServiceRequest extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ServiceRequestPatientInstructionComponent(IModelContext context) {
+      public ServiceRequestPatientInstructionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -940,13 +940,13 @@ public class ServiceRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.instruction != null) {
-          this.instruction.setModelContext(context);
+          this.instruction.setModelContext(modelContext);
         }
       }
 
@@ -1223,9 +1223,9 @@ public class ServiceRequest extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ServiceRequest(IModelContext context) {
+    public ServiceRequest(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1233,9 +1233,9 @@ public class ServiceRequest extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ServiceRequest(IModelContext context, RequestStatus status, RequestIntent intent, Reference subject) {
+    public ServiceRequest(IModelContext modelContext, RequestStatus status, RequestIntent intent, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setIntent(intent);
       this.setSubject(subject);
@@ -3379,136 +3379,136 @@ public class ServiceRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.replacesList != null) {
           for (Reference i : this.replacesList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.requisition != null) {
-          this.requisition.setModelContext(context);
+          this.requisition.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReasonList != null) {
           for (CodeableConcept i : this.statusReasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.intent != null) {
-          this.intent.setModelContext(context);
+          this.intent.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.doNotPerform != null) {
-          this.doNotPerform.setModelContext(context);
+          this.doNotPerform.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.orderDetailList != null) {
           for (ServiceRequestOrderDetailComponent i : this.orderDetailList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.focusList != null) {
           for (Reference i : this.focusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.occurrence != null) {
-          this.occurrence.setModelContext(context);
+          this.occurrence.setModelContext(modelContext);
         }
         if (this.asNeeded != null) {
-          this.asNeeded.setModelContext(context);
+          this.asNeeded.setModelContext(modelContext);
         }
         if (this.asNeededForList != null) {
           for (CodeableConcept i : this.asNeededForList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.authoredOn != null) {
-          this.authoredOn.setModelContext(context);
+          this.authoredOn.setModelContext(modelContext);
         }
         if (this.requester != null) {
-          this.requester.setModelContext(context);
+          this.requester.setModelContext(modelContext);
         }
         if (this.performerType != null) {
-          this.performerType.setModelContext(context);
+          this.performerType.setModelContext(modelContext);
         }
         if (this.performerList != null) {
           for (Reference i : this.performerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.locationList != null) {
           for (CodeableReference i : this.locationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.insuranceList != null) {
           for (Reference i : this.insuranceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.supportingInfoList != null) {
           for (CodeableReference i : this.supportingInfoList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.bodyStructureList != null) {
           for (CodeableReference i : this.bodyStructureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.patientInstructionList != null) {
           for (ServiceRequestPatientInstructionComponent i : this.patientInstructionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relevantHistoryList != null) {
           for (Reference i : this.relevantHistoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3558,8 +3558,8 @@ public class ServiceRequest extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.ServiceRequest;
+  public String getResourceType() {
+    return "ServiceRequest";
    }
 
  /**

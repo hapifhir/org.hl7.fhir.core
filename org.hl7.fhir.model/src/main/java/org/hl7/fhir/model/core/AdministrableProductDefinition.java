@@ -99,9 +99,9 @@ public class AdministrableProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AdministrableProductDefinitionPropertyComponent(IModelContext context) {
+      public AdministrableProductDefinitionPropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -109,9 +109,9 @@ public class AdministrableProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AdministrableProductDefinitionPropertyComponent(IModelContext context, CodeableConcept type) {
+      public AdministrableProductDefinitionPropertyComponent(IModelContext modelContext, CodeableConcept type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -472,19 +472,19 @@ public class AdministrableProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
       }
 
@@ -586,9 +586,9 @@ public class AdministrableProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AdministrableProductDefinitionRouteOfAdministrationComponent(IModelContext context) {
+      public AdministrableProductDefinitionRouteOfAdministrationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -596,9 +596,9 @@ public class AdministrableProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AdministrableProductDefinitionRouteOfAdministrationComponent(IModelContext context, CodeableConcept code) {
+      public AdministrableProductDefinitionRouteOfAdministrationComponent(IModelContext modelContext, CodeableConcept code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -1014,32 +1014,32 @@ public class AdministrableProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.firstDose != null) {
-          this.firstDose.setModelContext(context);
+          this.firstDose.setModelContext(modelContext);
         }
         if (this.maxSingleDose != null) {
-          this.maxSingleDose.setModelContext(context);
+          this.maxSingleDose.setModelContext(modelContext);
         }
         if (this.maxDosePerDay != null) {
-          this.maxDosePerDay.setModelContext(context);
+          this.maxDosePerDay.setModelContext(modelContext);
         }
         if (this.maxDosePerTreatmentPeriod != null) {
-          this.maxDosePerTreatmentPeriod.setModelContext(context);
+          this.maxDosePerTreatmentPeriod.setModelContext(modelContext);
         }
         if (this.maxTreatmentPeriod != null) {
-          this.maxTreatmentPeriod.setModelContext(context);
+          this.maxTreatmentPeriod.setModelContext(modelContext);
         }
         if (this.targetSpeciesList != null) {
           for (AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent i : this.targetSpeciesList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1110,9 +1110,9 @@ public class AdministrableProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent(IModelContext context) {
+      public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1120,9 +1120,9 @@ public class AdministrableProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent(IModelContext context, CodeableConcept code) {
+      public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesComponent(IModelContext modelContext, CodeableConcept code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -1303,17 +1303,17 @@ public class AdministrableProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.withdrawalPeriodList != null) {
           for (AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent i : this.withdrawalPeriodList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1389,9 +1389,9 @@ public class AdministrableProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent(IModelContext context) {
+      public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1399,9 +1399,9 @@ public class AdministrableProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent(IModelContext context, CodeableConcept tissue, Quantity value) {
+      public AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent(IModelContext modelContext, CodeableConcept tissue, Quantity value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setTissue(tissue);
         this.setValue(value);
       }
@@ -1632,19 +1632,19 @@ public class AdministrableProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.tissue != null) {
-          this.tissue.setModelContext(context);
+          this.tissue.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.supportingInformation != null) {
-          this.supportingInformation.setModelContext(context);
+          this.supportingInformation.setModelContext(modelContext);
         }
       }
 
@@ -1784,9 +1784,9 @@ public class AdministrableProductDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public AdministrableProductDefinition(IModelContext context) {
+    public AdministrableProductDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1794,9 +1794,9 @@ public class AdministrableProductDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public AdministrableProductDefinition(IModelContext context, PublicationStatus status, AdministrableProductDefinitionRouteOfAdministrationComponent routeOfAdministration) {
+    public AdministrableProductDefinition(IModelContext modelContext, PublicationStatus status, AdministrableProductDefinitionRouteOfAdministrationComponent routeOfAdministration) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.addRouteOfAdministration(routeOfAdministration);
     }
@@ -2630,59 +2630,59 @@ public class AdministrableProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.formOfList != null) {
           for (Reference i : this.formOfList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.administrableDoseForm != null) {
-          this.administrableDoseForm.setModelContext(context);
+          this.administrableDoseForm.setModelContext(modelContext);
         }
         if (this.unitOfPresentation != null) {
-          this.unitOfPresentation.setModelContext(context);
+          this.unitOfPresentation.setModelContext(modelContext);
         }
         if (this.producedFromList != null) {
           for (Reference i : this.producedFromList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.ingredientList != null) {
           for (CodeableConcept i : this.ingredientList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.device != null) {
-          this.device.setModelContext(context);
+          this.device.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.codeList != null) {
           for (Coding i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (AdministrableProductDefinitionPropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.routeOfAdministrationList != null) {
           for (AdministrableProductDefinitionRouteOfAdministrationComponent i : this.routeOfAdministrationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2719,8 +2719,8 @@ public class AdministrableProductDefinition extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.AdministrableProductDefinition;
+  public String getResourceType() {
+    return "AdministrableProductDefinition";
    }
 
  /**

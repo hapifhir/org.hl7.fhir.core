@@ -131,8 +131,8 @@ public class ListResource extends DomainResource {
 
   public static class ListModeEnumFactory implements EnumFactory<ListMode> {
     private final IModelContext modelContext;
-    public ListModeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ListModeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ListModeEnumFactory() {
       this(null);
@@ -250,8 +250,8 @@ public class ListResource extends DomainResource {
 
   public static class ListStatusEnumFactory implements EnumFactory<ListStatus> {
     private final IModelContext modelContext;
-    public ListStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ListStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ListStatusEnumFactory() {
       this(null);
@@ -343,9 +343,9 @@ public class ListResource extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ListResourceEntryComponent(IModelContext context) {
+      public ListResourceEntryComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -353,9 +353,9 @@ public class ListResource extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ListResourceEntryComponent(IModelContext context, Reference item) {
+      public ListResourceEntryComponent(IModelContext modelContext, Reference item) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setItem(item);
       }
 
@@ -652,22 +652,22 @@ public class ListResource extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.flag != null) {
-          this.flag.setModelContext(context);
+          this.flag.setModelContext(modelContext);
         }
         if (this.deleted != null) {
-          this.deleted.setModelContext(context);
+          this.deleted.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.item != null) {
-          this.item.setModelContext(context);
+          this.item.setModelContext(modelContext);
         }
       }
 
@@ -821,9 +821,9 @@ public class ListResource extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ListResource(IModelContext context) {
+    public ListResource(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -831,9 +831,9 @@ public class ListResource extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ListResource(IModelContext context, ListStatus status, ListMode mode) {
+    public ListResource(IModelContext modelContext, ListStatus status, ListMode mode) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setMode(mode);
     }
@@ -1762,62 +1762,62 @@ public class ListResource extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.mode != null) {
-          this.mode.setModelContext(context);
+          this.mode.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subjectList != null) {
           for (Reference i : this.subjectList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.source != null) {
-          this.source.setModelContext(context);
+          this.source.setModelContext(modelContext);
         }
         if (this.contributorList != null) {
           for (Reference i : this.contributorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.orderedBy != null) {
-          this.orderedBy.setModelContext(context);
+          this.orderedBy.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.entryList != null) {
           for (ListResourceEntryComponent i : this.entryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.emptyReason != null) {
-          this.emptyReason.setModelContext(context);
+          this.emptyReason.setModelContext(modelContext);
         }
       }
 
@@ -1854,8 +1854,8 @@ public class ListResource extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.List;
+  public String getResourceType() {
+    return "List";
    }
 
  /**

@@ -161,8 +161,8 @@ public class Slot extends DomainResource {
 
   public static class SlotStatusEnumFactory implements EnumFactory<SlotStatus> {
     private final IModelContext modelContext;
-    public SlotStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SlotStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SlotStatusEnumFactory() {
       this(null);
@@ -323,9 +323,9 @@ public class Slot extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Slot(IModelContext context) {
+    public Slot(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -333,9 +333,9 @@ public class Slot extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Slot(IModelContext context, Reference schedule, SlotStatus status, Date start, Date end) {
+    public Slot(IModelContext modelContext, Reference schedule, SlotStatus status, Date start, Date end) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setSchedule(schedule);
       this.setStatus(status);
       this.setStart(start);
@@ -1140,53 +1140,53 @@ public class Slot extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.serviceCategoryList != null) {
           for (CodeableConcept i : this.serviceCategoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.serviceTypeList != null) {
           for (CodeableReference i : this.serviceTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.specialtyList != null) {
           for (CodeableConcept i : this.specialtyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.appointmentTypeList != null) {
           for (CodeableConcept i : this.appointmentTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.schedule != null) {
-          this.schedule.setModelContext(context);
+          this.schedule.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.start != null) {
-          this.start.setModelContext(context);
+          this.start.setModelContext(modelContext);
         }
         if (this.end != null) {
-          this.end.setModelContext(context);
+          this.end.setModelContext(modelContext);
         }
         if (this.overbooked != null) {
-          this.overbooked.setModelContext(context);
+          this.overbooked.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
       }
 
@@ -1222,8 +1222,8 @@ public class Slot extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Slot;
+  public String getResourceType() {
+    return "Slot";
    }
 
  /**

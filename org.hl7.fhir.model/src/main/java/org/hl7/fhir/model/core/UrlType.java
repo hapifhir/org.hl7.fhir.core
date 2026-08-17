@@ -60,16 +60,16 @@ public class UrlType extends UriType {
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public UrlType(IModelContext context) {
+	public UrlType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
   /**
    * Constructor
    */
-  public UrlType(IModelContext context, String theValue) {
-    super(context, theValue);
+  public UrlType(IModelContext modelContext, String theValue) {
+    super(modelContext, theValue);
   }
 
   /**
@@ -82,8 +82,8 @@ public class UrlType extends UriType {
 	/**
 	 * Constructor
 	 */
-	public UrlType(IModelContext context, URI theValue) {
-		super(context, theValue);
+	public UrlType(IModelContext modelContext, URI theValue) {
+		super(modelContext, theValue);
 	}
 
 	public UrlType(URI theValue) {

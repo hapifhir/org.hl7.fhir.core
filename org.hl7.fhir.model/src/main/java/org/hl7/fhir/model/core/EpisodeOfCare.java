@@ -181,8 +181,8 @@ public class EpisodeOfCare extends DomainResource {
 
   public static class EpisodeOfCareStatusEnumFactory implements EnumFactory<EpisodeOfCareStatus> {
     private final IModelContext modelContext;
-    public EpisodeOfCareStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public EpisodeOfCareStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public EpisodeOfCareStatusEnumFactory() {
       this(null);
@@ -290,9 +290,9 @@ public class EpisodeOfCare extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public EpisodeOfCareStatusHistoryComponent(IModelContext context) {
+      public EpisodeOfCareStatusHistoryComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -300,9 +300,9 @@ public class EpisodeOfCare extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public EpisodeOfCareStatusHistoryComponent(IModelContext context, EpisodeOfCareStatus status, Period period) {
+      public EpisodeOfCareStatusHistoryComponent(IModelContext modelContext, EpisodeOfCareStatus status, Period period) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setStatus(status);
         this.setPeriod(period);
       }
@@ -483,16 +483,16 @@ public class EpisodeOfCare extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 
@@ -559,9 +559,9 @@ public class EpisodeOfCare extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ReasonComponent(IModelContext context) {
+      public ReasonComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -763,19 +763,19 @@ public class EpisodeOfCare extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.useList != null) {
           for (CodeableConcept i : this.useList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.valueList != null) {
           for (CodeableReference i : this.valueList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -843,9 +843,9 @@ public class EpisodeOfCare extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DiagnosisComponent(IModelContext context) {
+      public DiagnosisComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1047,19 +1047,19 @@ public class EpisodeOfCare extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.conditionList != null) {
           for (CodeableReference i : this.conditionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.useList != null) {
           for (CodeableConcept i : this.useList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1203,9 +1203,9 @@ public class EpisodeOfCare extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public EpisodeOfCare(IModelContext context) {
+    public EpisodeOfCare(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1213,9 +1213,9 @@ public class EpisodeOfCare extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public EpisodeOfCare(IModelContext context, EpisodeOfCareStatus status, Reference subject) {
+    public EpisodeOfCare(IModelContext modelContext, EpisodeOfCareStatus status, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setSubject(subject);
     }
@@ -2094,64 +2094,64 @@ public class EpisodeOfCare extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusHistoryList != null) {
           for (EpisodeOfCareStatusHistoryComponent i : this.statusHistoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reasonList != null) {
           for (ReasonComponent i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.diagnosisList != null) {
           for (DiagnosisComponent i : this.diagnosisList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.managingOrganization != null) {
-          this.managingOrganization.setModelContext(context);
+          this.managingOrganization.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.referralRequestList != null) {
           for (Reference i : this.referralRequestList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.careManager != null) {
-          this.careManager.setModelContext(context);
+          this.careManager.setModelContext(modelContext);
         }
         if (this.careTeamList != null) {
           for (Reference i : this.careTeamList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.accountList != null) {
           for (Reference i : this.accountList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2189,8 +2189,8 @@ public class EpisodeOfCare extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.EpisodeOfCare;
+  public String getResourceType() {
+    return "EpisodeOfCare";
    }
 
  /**

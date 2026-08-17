@@ -131,8 +131,8 @@ public class Subscription extends DomainResource {
 
   public static class SubscriptionPayloadContentEnumFactory implements EnumFactory<SubscriptionPayloadContent> {
     private final IModelContext modelContext;
-    public SubscriptionPayloadContentEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SubscriptionPayloadContentEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SubscriptionPayloadContentEnumFactory() {
       this(null);
@@ -241,9 +241,9 @@ public class Subscription extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubscriptionFilterByComponent(IModelContext context) {
+      public SubscriptionFilterByComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -251,9 +251,9 @@ public class Subscription extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubscriptionFilterByComponent(IModelContext context, String filterParameter, String value) {
+      public SubscriptionFilterByComponent(IModelContext modelContext, String filterParameter, String value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setFilterParameter(filterParameter);
         this.setValue(value);
       }
@@ -737,29 +737,29 @@ public class Subscription extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.resource != null) {
-          this.resource.setModelContext(context);
+          this.resource.setModelContext(modelContext);
         }
         if (this.filterParameter != null) {
-          this.filterParameter.setModelContext(context);
+          this.filterParameter.setModelContext(modelContext);
         }
         if (this.comparator != null) {
-          this.comparator.setModelContext(context);
+          this.comparator.setModelContext(modelContext);
         }
         if (this.modifier != null) {
-          this.modifier.setModelContext(context);
+          this.modifier.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.eventList != null) {
           for (CodeableConcept i : this.eventList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -830,9 +830,9 @@ public class Subscription extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubscriptionParameterComponent(IModelContext context) {
+      public SubscriptionParameterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -840,9 +840,9 @@ public class Subscription extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubscriptionParameterComponent(IModelContext context, String name, String value) {
+      public SubscriptionParameterComponent(IModelContext modelContext, String name, String value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
         this.setValue(value);
       }
@@ -1042,16 +1042,16 @@ public class Subscription extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -1223,9 +1223,9 @@ public class Subscription extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Subscription(IModelContext context) {
+    public Subscription(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1233,9 +1233,9 @@ public class Subscription extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Subscription(IModelContext context, SubscriptionStatusCodes status, String topic, Coding channelType) {
+    public Subscription(IModelContext modelContext, SubscriptionStatusCodes status, String topic, Coding channelType) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setTopic(topic);
       this.setChannelType(channelType);
@@ -2440,69 +2440,69 @@ public class Subscription extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.topic != null) {
-          this.topic.setModelContext(context);
+          this.topic.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactPoint i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.end != null) {
-          this.end.setModelContext(context);
+          this.end.setModelContext(modelContext);
         }
         if (this.managingEntity != null) {
-          this.managingEntity.setModelContext(context);
+          this.managingEntity.setModelContext(modelContext);
         }
         if (this.reason != null) {
-          this.reason.setModelContext(context);
+          this.reason.setModelContext(modelContext);
         }
         if (this.filterByList != null) {
           for (SubscriptionFilterByComponent i : this.filterByList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.channelType != null) {
-          this.channelType.setModelContext(context);
+          this.channelType.setModelContext(modelContext);
         }
         if (this.endpoint != null) {
-          this.endpoint.setModelContext(context);
+          this.endpoint.setModelContext(modelContext);
         }
         if (this.parameterList != null) {
           for (SubscriptionParameterComponent i : this.parameterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.heartbeatPeriod != null) {
-          this.heartbeatPeriod.setModelContext(context);
+          this.heartbeatPeriod.setModelContext(modelContext);
         }
         if (this.timeout != null) {
-          this.timeout.setModelContext(context);
+          this.timeout.setModelContext(modelContext);
         }
         if (this.contentType != null) {
-          this.contentType.setModelContext(context);
+          this.contentType.setModelContext(modelContext);
         }
         if (this.content != null) {
-          this.content.setModelContext(context);
+          this.content.setModelContext(modelContext);
         }
         if (this.maxCount != null) {
-          this.maxCount.setModelContext(context);
+          this.maxCount.setModelContext(modelContext);
         }
       }
 
@@ -2543,8 +2543,8 @@ public class Subscription extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Subscription;
+  public String getResourceType() {
+    return "Subscription";
    }
 
  /**

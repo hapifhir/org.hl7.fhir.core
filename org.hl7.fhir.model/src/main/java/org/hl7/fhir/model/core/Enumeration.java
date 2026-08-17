@@ -101,9 +101,9 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public Enumeration(IModelContext context) {
+	public Enumeration(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
   /**
@@ -118,8 +118,8 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
   /**
    * Constructor
    */
-  public Enumeration(IModelContext context, EnumFactory<T> theEnumFactory) {
-    this.modelContext = context;
+  public Enumeration(IModelContext modelContext, EnumFactory<T> theEnumFactory) {
+    this.modelContext = modelContext;
     if (theEnumFactory == null)
       throw new IllegalArgumentException("An enumeration factory must be provided");
     myEnumFactory = theEnumFactory;
@@ -129,8 +129,8 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
   /**
    * Constructor
    */
-  public Enumeration(IModelContext context, EnumFactory<T> theEnumFactory, String theValue) {
-    this.modelContext = context;
+  public Enumeration(IModelContext modelContext, EnumFactory<T> theEnumFactory, String theValue) {
+    this.modelContext = modelContext;
     if (theEnumFactory == null)
       throw new IllegalArgumentException("An enumeration factory must be provided");
     myEnumFactory = theEnumFactory;
@@ -140,8 +140,8 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
   /**
    * Constructor
    */
-  public Enumeration(IModelContext context, EnumFactory<T> theEnumFactory, T theValue) {
-    this.modelContext = context;
+  public Enumeration(IModelContext modelContext, EnumFactory<T> theEnumFactory, T theValue) {
+    this.modelContext = modelContext;
     if (theEnumFactory == null)
       throw new IllegalArgumentException("An enumeration factory must be provided");
     myEnumFactory = theEnumFactory;
@@ -171,8 +171,8 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
   /**
    * Constructor
    */
-  public Enumeration(IModelContext context, EnumFactory<T> theEnumFactory, T theValue, Element source) {
-    this.modelContext = context;
+  public Enumeration(IModelContext modelContext, EnumFactory<T> theEnumFactory, T theValue, Element source) {
+    this.modelContext = modelContext;
     if (theEnumFactory == null)
       throw new IllegalArgumentException("An enumeration factory must be provided");
     myEnumFactory = theEnumFactory;
@@ -196,8 +196,8 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
   /**
    * Constructor
    */
-  public Enumeration(IModelContext context, EnumFactory<T> theEnumFactory, CodeType source) {
-    this.modelContext = context;
+  public Enumeration(IModelContext modelContext, EnumFactory<T> theEnumFactory, CodeType source) {
+    this.modelContext = modelContext;
     if (theEnumFactory == null)
       throw new IllegalArgumentException("An enumeration factory must be provided");
     myEnumFactory = theEnumFactory;

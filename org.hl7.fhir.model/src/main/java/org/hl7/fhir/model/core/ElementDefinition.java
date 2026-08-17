@@ -235,8 +235,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 
   public static class AdditionalBindingPurposeVSEnumFactory implements EnumFactory<AdditionalBindingPurposeVS> {
     private final IModelContext modelContext;
-    public AdditionalBindingPurposeVSEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AdditionalBindingPurposeVSEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AdditionalBindingPurposeVSEnumFactory() {
       this(null);
@@ -414,8 +414,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 
   public static class AggregationModeEnumFactory implements EnumFactory<AggregationMode> {
     private final IModelContext modelContext;
-    public AggregationModeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AggregationModeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AggregationModeEnumFactory() {
       this(null);
@@ -523,8 +523,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 
   public static class ConstraintSeverityEnumFactory implements EnumFactory<ConstraintSeverity> {
     private final IModelContext modelContext;
-    public ConstraintSeverityEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ConstraintSeverityEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ConstraintSeverityEnumFactory() {
       this(null);
@@ -666,8 +666,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 
   public static class DiscriminatorTypeEnumFactory implements EnumFactory<DiscriminatorType> {
     private final IModelContext modelContext;
-    public DiscriminatorTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public DiscriminatorTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public DiscriminatorTypeEnumFactory() {
       this(null);
@@ -823,8 +823,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 
   public static class PropertyRepresentationEnumFactory implements EnumFactory<PropertyRepresentation> {
     private final IModelContext modelContext;
-    public PropertyRepresentationEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public PropertyRepresentationEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public PropertyRepresentationEnumFactory() {
       this(null);
@@ -954,8 +954,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 
   public static class ReferenceVersionRulesEnumFactory implements EnumFactory<ReferenceVersionRules> {
     private final IModelContext modelContext;
-    public ReferenceVersionRulesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ReferenceVersionRulesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ReferenceVersionRulesEnumFactory() {
       this(null);
@@ -1073,8 +1073,8 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 
   public static class SlicingRulesEnumFactory implements EnumFactory<SlicingRules> {
     private final IModelContext modelContext;
-    public SlicingRulesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SlicingRulesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SlicingRulesEnumFactory() {
       this(null);
@@ -1166,9 +1166,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ElementDefinitionSlicingComponent(IModelContext context) {
+      public ElementDefinitionSlicingComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1176,9 +1176,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ElementDefinitionSlicingComponent(IModelContext context, SlicingRules rules) {
+      public ElementDefinitionSlicingComponent(IModelContext modelContext, SlicingRules rules) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setRules(rules);
       }
 
@@ -1518,24 +1518,24 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.discriminatorList != null) {
           for (ElementDefinitionSlicingDiscriminatorComponent i : this.discriminatorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.ordered != null) {
-          this.ordered.setModelContext(context);
+          this.ordered.setModelContext(modelContext);
         }
         if (this.rules != null) {
-          this.rules.setModelContext(context);
+          this.rules.setModelContext(modelContext);
         }
       }
 
@@ -1604,9 +1604,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ElementDefinitionSlicingDiscriminatorComponent(IModelContext context) {
+      public ElementDefinitionSlicingDiscriminatorComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1614,9 +1614,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ElementDefinitionSlicingDiscriminatorComponent(IModelContext context, DiscriminatorType type, String path) {
+      public ElementDefinitionSlicingDiscriminatorComponent(IModelContext modelContext, DiscriminatorType type, String path) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setPath(path);
       }
@@ -1817,16 +1817,16 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.path != null) {
-          this.path.setModelContext(context);
+          this.path.setModelContext(modelContext);
         }
       }
 
@@ -1898,9 +1898,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ElementDefinitionBaseComponent(IModelContext context) {
+      public ElementDefinitionBaseComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1908,9 +1908,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ElementDefinitionBaseComponent(IModelContext context, String path, int min, String max) {
+      public ElementDefinitionBaseComponent(IModelContext modelContext, String path, int min, String max) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setPath(path);
         this.setMin(min);
         this.setMax(max);
@@ -2178,19 +2178,19 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.path != null) {
-          this.path.setModelContext(context);
+          this.path.setModelContext(modelContext);
         }
         if (this.min != null) {
-          this.min.setModelContext(context);
+          this.min.setModelContext(modelContext);
         }
         if (this.max != null) {
-          this.max.setModelContext(context);
+          this.max.setModelContext(modelContext);
         }
       }
 
@@ -2281,9 +2281,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TypeRefComponent(IModelContext context) {
+      public TypeRefComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2291,9 +2291,9 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TypeRefComponent(IModelContext context, String code) {
+      public TypeRefComponent(IModelContext modelContext, String code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -2729,31 +2729,31 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.profileList != null) {
           for (CanonicalType i : this.profileList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.targetProfileList != null) {
           for (CanonicalType i : this.targetProfileList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.aggregationList != null) {
           for (Enumeration<AggregationMode> i : this.aggregationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.versioning != null) {
-          this.versioning.setModelContext(context);
+          this.versioning.setModelContext(modelContext);
         }
       }
 
@@ -2906,9 +2906,9 @@ public boolean hasTarget() {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ElementDefinitionExampleComponent(IModelContext context) {
+      public ElementDefinitionExampleComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2916,9 +2916,9 @@ public boolean hasTarget() {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ElementDefinitionExampleComponent(IModelContext context, String label, DataType value) {
+      public ElementDefinitionExampleComponent(IModelContext modelContext, String label, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setLabel(label);
         this.setValue(value);
       }
@@ -4193,16 +4193,16 @@ public boolean hasTarget() {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.label != null) {
-          this.label.setModelContext(context);
+          this.label.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -4303,9 +4303,9 @@ public boolean hasTarget() {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ElementDefinitionConstraintComponent(IModelContext context) {
+      public ElementDefinitionConstraintComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -4313,9 +4313,9 @@ public boolean hasTarget() {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ElementDefinitionConstraintComponent(IModelContext context, String key, ConstraintSeverity severity, String human) {
+      public ElementDefinitionConstraintComponent(IModelContext modelContext, String key, ConstraintSeverity severity, String human) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setKey(key);
         this.setSeverity(severity);
         this.setHuman(human);
@@ -4864,31 +4864,31 @@ public boolean hasTarget() {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.key != null) {
-          this.key.setModelContext(context);
+          this.key.setModelContext(modelContext);
         }
         if (this.requirements != null) {
-          this.requirements.setModelContext(context);
+          this.requirements.setModelContext(modelContext);
         }
         if (this.severity != null) {
-          this.severity.setModelContext(context);
+          this.severity.setModelContext(modelContext);
         }
         if (this.suppress != null) {
-          this.suppress.setModelContext(context);
+          this.suppress.setModelContext(modelContext);
         }
         if (this.human != null) {
-          this.human.setModelContext(context);
+          this.human.setModelContext(modelContext);
         }
         if (this.expression != null) {
-          this.expression.setModelContext(context);
+          this.expression.setModelContext(modelContext);
         }
         if (this.source != null) {
-          this.source.setModelContext(context);
+          this.source.setModelContext(modelContext);
         }
       }
 
@@ -4973,9 +4973,9 @@ public boolean hasTarget() {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ElementDefinitionBindingComponent(IModelContext context) {
+      public ElementDefinitionBindingComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -4983,9 +4983,9 @@ public boolean hasTarget() {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ElementDefinitionBindingComponent(IModelContext context, BindingStrength strength) {
+      public ElementDefinitionBindingComponent(IModelContext modelContext, BindingStrength strength) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setStrength(strength);
       }
 
@@ -5329,23 +5329,23 @@ public boolean hasTarget() {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.strength != null) {
-          this.strength.setModelContext(context);
+          this.strength.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.valueSet != null) {
-          this.valueSet.setModelContext(context);
+          this.valueSet.setModelContext(modelContext);
         }
         if (this.additionalList != null) {
           for (ElementDefinitionBindingAdditionalComponent i : this.additionalList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -5451,9 +5451,9 @@ public boolean hasTarget() {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ElementDefinitionBindingAdditionalComponent(IModelContext context) {
+      public ElementDefinitionBindingAdditionalComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -5461,9 +5461,9 @@ public boolean hasTarget() {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ElementDefinitionBindingAdditionalComponent(IModelContext context, AdditionalBindingPurposeVS purpose, String valueSet) {
+      public ElementDefinitionBindingAdditionalComponent(IModelContext modelContext, AdditionalBindingPurposeVS purpose, String valueSet) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setPurpose(purpose);
         this.setValueSet(valueSet);
       }
@@ -6013,33 +6013,33 @@ public boolean hasTarget() {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.key != null) {
-          this.key.setModelContext(context);
+          this.key.setModelContext(modelContext);
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.valueSet != null) {
-          this.valueSet.setModelContext(context);
+          this.valueSet.setModelContext(modelContext);
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
         if (this.shortDoco != null) {
-          this.shortDoco.setModelContext(context);
+          this.shortDoco.setModelContext(modelContext);
         }
         if (this.usageList != null) {
           for (UsageContext i : this.usageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.any != null) {
-          this.any.setModelContext(context);
+          this.any.setModelContext(modelContext);
         }
       }
 
@@ -6124,9 +6124,9 @@ public boolean hasTarget() {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ElementDefinitionMappingComponent(IModelContext context) {
+      public ElementDefinitionMappingComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -6134,9 +6134,9 @@ public boolean hasTarget() {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ElementDefinitionMappingComponent(IModelContext context, String identity, String map) {
+      public ElementDefinitionMappingComponent(IModelContext modelContext, String identity, String map) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setIdentity(identity);
         this.setMap(map);
       }
@@ -6478,22 +6478,22 @@ public boolean hasTarget() {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identity != null) {
-          this.identity.setModelContext(context);
+          this.identity.setModelContext(modelContext);
         }
         if (this.language != null) {
-          this.language.setModelContext(context);
+          this.language.setModelContext(modelContext);
         }
         if (this.map != null) {
-          this.map.setModelContext(context);
+          this.map.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
       }
 
@@ -6799,9 +6799,9 @@ public boolean hasTarget() {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ElementDefinition(IModelContext context) {
+    public ElementDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -6809,9 +6809,9 @@ public boolean hasTarget() {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ElementDefinition(IModelContext context, String path) {
+    public ElementDefinition(IModelContext modelContext, String path) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setPath(path);
     }
 
@@ -12903,135 +12903,135 @@ public boolean hasTarget() {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.path != null) {
-          this.path.setModelContext(context);
+          this.path.setModelContext(modelContext);
         }
         if (this.representationList != null) {
           for (Enumeration<PropertyRepresentation> i : this.representationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sliceName != null) {
-          this.sliceName.setModelContext(context);
+          this.sliceName.setModelContext(modelContext);
         }
         if (this.sliceIsConstraining != null) {
-          this.sliceIsConstraining.setModelContext(context);
+          this.sliceIsConstraining.setModelContext(modelContext);
         }
         if (this.label != null) {
-          this.label.setModelContext(context);
+          this.label.setModelContext(modelContext);
         }
         if (this.codeList != null) {
           for (Coding i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.slicing != null) {
-          this.slicing.setModelContext(context);
+          this.slicing.setModelContext(modelContext);
         }
         if (this.short_ != null) {
-          this.short_.setModelContext(context);
+          this.short_.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
         if (this.requirements != null) {
-          this.requirements.setModelContext(context);
+          this.requirements.setModelContext(modelContext);
         }
         if (this.aliasList != null) {
           for (StringType i : this.aliasList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.min != null) {
-          this.min.setModelContext(context);
+          this.min.setModelContext(modelContext);
         }
         if (this.max != null) {
-          this.max.setModelContext(context);
+          this.max.setModelContext(modelContext);
         }
         if (this.base != null) {
-          this.base.setModelContext(context);
+          this.base.setModelContext(modelContext);
         }
         if (this.contentReference != null) {
-          this.contentReference.setModelContext(context);
+          this.contentReference.setModelContext(modelContext);
         }
         if (this.typeList != null) {
           for (TypeRefComponent i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.defaultValue != null) {
-          this.defaultValue.setModelContext(context);
+          this.defaultValue.setModelContext(modelContext);
         }
         if (this.meaningWhenMissing != null) {
-          this.meaningWhenMissing.setModelContext(context);
+          this.meaningWhenMissing.setModelContext(modelContext);
         }
         if (this.orderMeaning != null) {
-          this.orderMeaning.setModelContext(context);
+          this.orderMeaning.setModelContext(modelContext);
         }
         if (this.fixed != null) {
-          this.fixed.setModelContext(context);
+          this.fixed.setModelContext(modelContext);
         }
         if (this.pattern != null) {
-          this.pattern.setModelContext(context);
+          this.pattern.setModelContext(modelContext);
         }
         if (this.exampleList != null) {
           for (ElementDefinitionExampleComponent i : this.exampleList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.minValue != null) {
-          this.minValue.setModelContext(context);
+          this.minValue.setModelContext(modelContext);
         }
         if (this.maxValue != null) {
-          this.maxValue.setModelContext(context);
+          this.maxValue.setModelContext(modelContext);
         }
         if (this.maxLength != null) {
-          this.maxLength.setModelContext(context);
+          this.maxLength.setModelContext(modelContext);
         }
         if (this.conditionList != null) {
           for (IdType i : this.conditionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.constraintList != null) {
           for (ElementDefinitionConstraintComponent i : this.constraintList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.mustHaveValue != null) {
-          this.mustHaveValue.setModelContext(context);
+          this.mustHaveValue.setModelContext(modelContext);
         }
         if (this.valueAlternativesList != null) {
           for (CanonicalType i : this.valueAlternativesList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.mustSupport != null) {
-          this.mustSupport.setModelContext(context);
+          this.mustSupport.setModelContext(modelContext);
         }
         if (this.isModifier != null) {
-          this.isModifier.setModelContext(context);
+          this.isModifier.setModelContext(modelContext);
         }
         if (this.isModifierReason != null) {
-          this.isModifierReason.setModelContext(context);
+          this.isModifierReason.setModelContext(modelContext);
         }
         if (this.isSummary != null) {
-          this.isSummary.setModelContext(context);
+          this.isSummary.setModelContext(modelContext);
         }
         if (this.binding != null) {
-          this.binding.setModelContext(context);
+          this.binding.setModelContext(modelContext);
         }
         if (this.mappingList != null) {
           for (ElementDefinitionMappingComponent i : this.mappingList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -13148,9 +13148,9 @@ public boolean hasTarget() {
   public static final boolean NOT_IN_SUMMARY = false;
   public static final boolean IS_MODIFIER = true;
   public static final boolean IS_IN_SUMMARY = true;
-  public ElementDefinition(IModelContext context, boolean defaults, boolean modifier, boolean inSummary) {
+  public ElementDefinition(IModelContext modelContext, boolean defaults, boolean modifier, boolean inSummary) {
     super();
-    this.modelContext = context;
+    this.modelContext = modelContext;
     if (defaults) {
       setIsModifier(modifier);
       setIsSummary(inSummary);

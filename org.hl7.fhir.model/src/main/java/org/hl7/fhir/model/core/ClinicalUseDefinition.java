@@ -151,8 +151,8 @@ public class ClinicalUseDefinition extends DomainResource {
 
   public static class ClinicalUseDefinitionTypeEnumFactory implements EnumFactory<ClinicalUseDefinitionType> {
     private final IModelContext modelContext;
-    public ClinicalUseDefinitionTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ClinicalUseDefinitionTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ClinicalUseDefinitionTypeEnumFactory() {
       this(null);
@@ -259,9 +259,9 @@ public class ClinicalUseDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ClinicalUseDefinitionUndesirableEffectComponent(IModelContext context) {
+      public ClinicalUseDefinitionUndesirableEffectComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -535,23 +535,23 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.symptomConditionEffect != null) {
-          this.symptomConditionEffect.setModelContext(context);
+          this.symptomConditionEffect.setModelContext(modelContext);
         }
         if (this.classification != null) {
-          this.classification.setModelContext(context);
+          this.classification.setModelContext(modelContext);
         }
         if (this.frequencyOfOccurrence != null) {
-          this.frequencyOfOccurrence.setModelContext(context);
+          this.frequencyOfOccurrence.setModelContext(modelContext);
         }
         if (this.managementList != null) {
           for (CodeableConcept i : this.managementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -666,9 +666,9 @@ public class ClinicalUseDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ClinicalUseDefinitionIndicationComponent(IModelContext context) {
+      public ClinicalUseDefinitionIndicationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1231,41 +1231,41 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.diseaseSymptomProcedure != null) {
-          this.diseaseSymptomProcedure.setModelContext(context);
+          this.diseaseSymptomProcedure.setModelContext(modelContext);
         }
         if (this.diseaseStatus != null) {
-          this.diseaseStatus.setModelContext(context);
+          this.diseaseStatus.setModelContext(modelContext);
         }
         if (this.comorbidityList != null) {
           for (CodeableReference i : this.comorbidityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.intendedEffectList != null) {
           for (CodeableReference i : this.intendedEffectList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.duration != null) {
-          this.duration.setModelContext(context);
+          this.duration.setModelContext(modelContext);
         }
         if (this.undesirableEffectList != null) {
           for (ClinicalUseDefinitionUndesirableEffectComponent i : this.undesirableEffectList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.applicability != null) {
-          this.applicability.setModelContext(context);
+          this.applicability.setModelContext(modelContext);
         }
         if (this.otherTherapyList != null) {
           for (ClinicalUseDefinitionIndicationOtherTherapyComponent i : this.otherTherapyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1339,9 +1339,9 @@ public class ClinicalUseDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ClinicalUseDefinitionIndicationOtherTherapyComponent(IModelContext context) {
+      public ClinicalUseDefinitionIndicationOtherTherapyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1349,9 +1349,9 @@ public class ClinicalUseDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ClinicalUseDefinitionIndicationOtherTherapyComponent(IModelContext context, CodeableConcept relationshipType, CodeableReference treatment) {
+      public ClinicalUseDefinitionIndicationOtherTherapyComponent(IModelContext modelContext, CodeableConcept relationshipType, CodeableReference treatment) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setRelationshipType(relationshipType);
         this.setTreatment(treatment);
       }
@@ -1511,16 +1511,16 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.relationshipType != null) {
-          this.relationshipType.setModelContext(context);
+          this.relationshipType.setModelContext(modelContext);
         }
         if (this.treatment != null) {
-          this.treatment.setModelContext(context);
+          this.treatment.setModelContext(modelContext);
         }
       }
 
@@ -1626,9 +1626,9 @@ public class ClinicalUseDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ClinicalUseDefinitionContraindicationComponent(IModelContext context) {
+      public ClinicalUseDefinitionContraindicationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2109,38 +2109,38 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.diseaseSymptomProcedure != null) {
-          this.diseaseSymptomProcedure.setModelContext(context);
+          this.diseaseSymptomProcedure.setModelContext(modelContext);
         }
         if (this.diseaseStatus != null) {
-          this.diseaseStatus.setModelContext(context);
+          this.diseaseStatus.setModelContext(modelContext);
         }
         if (this.comorbidityList != null) {
           for (CodeableReference i : this.comorbidityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.indicationList != null) {
           for (ClinicalUseDefinitionIndicationComponent i : this.indicationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.applicability != null) {
-          this.applicability.setModelContext(context);
+          this.applicability.setModelContext(modelContext);
         }
         if (this.managementList != null) {
           for (CodeableConcept i : this.managementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.otherTherapyList != null) {
           for (ClinicalUseDefinitionIndicationOtherTherapyComponent i : this.otherTherapyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2244,9 +2244,9 @@ public class ClinicalUseDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ClinicalUseDefinitionInteractionComponent(IModelContext context) {
+      public ClinicalUseDefinitionInteractionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2636,32 +2636,32 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.interactantList != null) {
           for (ClinicalUseDefinitionInteractionInteractantComponent i : this.interactantList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.effect != null) {
-          this.effect.setModelContext(context);
+          this.effect.setModelContext(modelContext);
         }
         if (this.incidence != null) {
-          this.incidence.setModelContext(context);
+          this.incidence.setModelContext(modelContext);
         }
         if (this.managementList != null) {
           for (CodeableConcept i : this.managementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.severity != null) {
-          this.severity.setModelContext(context);
+          this.severity.setModelContext(modelContext);
         }
       }
 
@@ -2731,9 +2731,9 @@ public class ClinicalUseDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ClinicalUseDefinitionInteractionInteractantComponent(IModelContext context) {
+      public ClinicalUseDefinitionInteractionInteractantComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2741,9 +2741,9 @@ public class ClinicalUseDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ClinicalUseDefinitionInteractionInteractantComponent(IModelContext context, DataType item) {
+      public ClinicalUseDefinitionInteractionInteractantComponent(IModelContext modelContext, DataType item) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setItem(item);
       }
 
@@ -2937,16 +2937,16 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.item != null) {
-          this.item.setModelContext(context);
+          this.item.setModelContext(modelContext);
         }
         if (this.route != null) {
-          this.route.setModelContext(context);
+          this.route.setModelContext(modelContext);
         }
       }
 
@@ -3012,9 +3012,9 @@ public class ClinicalUseDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ClinicalUseDefinitionWarningComponent(IModelContext context) {
+      public ClinicalUseDefinitionWarningComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -3196,16 +3196,16 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
       }
 
@@ -3342,9 +3342,9 @@ public class ClinicalUseDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ClinicalUseDefinition(IModelContext context) {
+    public ClinicalUseDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -3352,9 +3352,9 @@ public class ClinicalUseDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ClinicalUseDefinition(IModelContext context, ClinicalUseDefinitionType type, CodeableReference subject) {
+    public ClinicalUseDefinition(IModelContext modelContext, ClinicalUseDefinitionType type, CodeableReference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setType(type);
       this.addSubject(subject);
     }
@@ -4128,56 +4128,56 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subjectList != null) {
           for (CodeableReference i : this.subjectList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.undesirableEffect != null) {
-          this.undesirableEffect.setModelContext(context);
+          this.undesirableEffect.setModelContext(modelContext);
         }
         if (this.indication != null) {
-          this.indication.setModelContext(context);
+          this.indication.setModelContext(modelContext);
         }
         if (this.contraindication != null) {
-          this.contraindication.setModelContext(context);
+          this.contraindication.setModelContext(modelContext);
         }
         if (this.interaction != null) {
-          this.interaction.setModelContext(context);
+          this.interaction.setModelContext(modelContext);
         }
         if (this.populationList != null) {
           for (Reference i : this.populationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.libraryList != null) {
           for (CanonicalType i : this.libraryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.warning != null) {
-          this.warning.setModelContext(context);
+          this.warning.setModelContext(modelContext);
         }
       }
 
@@ -4212,8 +4212,8 @@ public class ClinicalUseDefinition extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.ClinicalUseDefinition;
+  public String getResourceType() {
+    return "ClinicalUseDefinition";
    }
 
  /**

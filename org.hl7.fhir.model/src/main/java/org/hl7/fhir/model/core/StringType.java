@@ -63,9 +63,9 @@ public class StringType extends PrimitiveType<String> {
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public StringType(IModelContext context) {
+	public StringType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
   /**
@@ -77,8 +77,8 @@ public class StringType extends PrimitiveType<String> {
   /**
    * Create a new String
    */
-  public StringType(IModelContext context, String theValue) {
-    this.modelContext = context;
+  public StringType(IModelContext modelContext, String theValue) {
+    this.modelContext = modelContext;
     setValue(theValue);
   }
 

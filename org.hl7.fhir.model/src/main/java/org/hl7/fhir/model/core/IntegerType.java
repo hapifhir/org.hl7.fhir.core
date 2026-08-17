@@ -58,9 +58,9 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context
    */
-  public IntegerType(IModelContext context) {
+  public IntegerType(IModelContext modelContext) {
     this();
-    this.modelContext = context;
+    this.modelContext = modelContext;
   }
 
   /**
@@ -90,16 +90,16 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
   /**
    * Constructor
    */
-  public IntegerType(IModelContext context, int theInteger) {
-    this.modelContext = context;
+  public IntegerType(IModelContext modelContext, int theInteger) {
+    this.modelContext = modelContext;
     setValue(theInteger);
   }
 
   /**
    * Constructor
    */
-  public IntegerType(IModelContext context, Integer theInteger) {
-    this.modelContext = context;
+  public IntegerType(IModelContext modelContext, Integer theInteger) {
+    this.modelContext = modelContext;
     setValue(theInteger);
   }
 
@@ -109,8 +109,8 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
    * @param theIntegerAsString A string representation of an integer
    * @throws IllegalArgumentException If the string is not a valid integer representation
    */
-  public IntegerType(IModelContext context, String theIntegerAsString) {
-    this.modelContext = context;
+  public IntegerType(IModelContext modelContext, String theIntegerAsString) {
+    this.modelContext = modelContext;
     setValueAsString(theIntegerAsString);
   }
 
@@ -120,8 +120,8 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
    * @param theValue The value
    * @throws IllegalArgumentException If the value is too large to fit in a signed integer
    */
-  public IntegerType(IModelContext context, Long theValue) {
-    this.modelContext = context;
+  public IntegerType(IModelContext modelContext, Long theValue) {
+    this.modelContext = modelContext;
     if (theValue < java.lang.Integer.MIN_VALUE || theValue > java.lang.Integer.MAX_VALUE) {
       throw new IllegalArgumentException
         (theValue + " cannot be cast to int without changing its value.");

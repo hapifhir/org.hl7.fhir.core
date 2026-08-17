@@ -71,9 +71,9 @@ public class Distance extends Quantity implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Distance(IModelContext context) {
+    public Distance(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   public String fhirType() {

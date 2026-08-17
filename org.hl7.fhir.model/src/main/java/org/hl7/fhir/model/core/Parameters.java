@@ -106,9 +106,9 @@ public class Parameters extends Resource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ParametersParameterComponent(IModelContext context) {
+      public ParametersParameterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -116,9 +116,9 @@ public class Parameters extends Resource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ParametersParameterComponent(IModelContext context, String name) {
+      public ParametersParameterComponent(IModelContext modelContext, String name) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
       }
 
@@ -1502,23 +1502,23 @@ public class Parameters extends Resource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.resource != null) {
-          this.resource.setModelContext(context);
+          this.resource.setModelContext(modelContext);
         }
         if (this.partList != null) {
           for (ParametersParameterComponent i : this.partList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1598,9 +1598,9 @@ public String toString() {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Parameters(IModelContext context) {
+    public Parameters(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1738,14 +1738,14 @@ public String toString() {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.parameterList != null) {
           for (ParametersParameterComponent i : this.parameterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1775,8 +1775,8 @@ public String toString() {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Parameters;
+  public String getResourceType() {
+    return "Parameters";
    }
 
 // Manual code (from Configuration.txt):

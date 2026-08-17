@@ -58,16 +58,16 @@ public class Integer64Type extends PrimitiveType<Long> /* implements IBaseIntege
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public Integer64Type(IModelContext context) {
+	public Integer64Type(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
 	/**
 	 * Constructor
 	 */
-	public Integer64Type(IModelContext context, long theInteger) {
-    this.modelContext = context;
+	public Integer64Type(IModelContext modelContext, long theInteger) {
+    this.modelContext = modelContext;
 		setValue(theInteger);
 	}
 
@@ -83,8 +83,8 @@ public class Integer64Type extends PrimitiveType<Long> /* implements IBaseIntege
    * @throws IllegalArgumentException
    *             If the string is not a valid integer representation
    */
-  public Integer64Type(IModelContext context, String theIntegerAsString) {
-    this.modelContext = context;
+  public Integer64Type(IModelContext modelContext, String theIntegerAsString) {
+    this.modelContext = modelContext;
     setValueAsString(theIntegerAsString);
   }
 
@@ -106,8 +106,8 @@ public class Integer64Type extends PrimitiveType<Long> /* implements IBaseIntege
 	 * @param theValue The value
 	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
 	 */
-	public Integer64Type(IModelContext context, Long theValue) {
-    this.modelContext = context;
+	public Integer64Type(IModelContext modelContext, Long theValue) {
+    this.modelContext = modelContext;
 	    if(theValue!=null) {
 	    	setValue(theValue);
 	    }

@@ -151,8 +151,8 @@ public class AppointmentResponse extends DomainResource {
 
   public static class AppointmentResponseStatusEnumFactory implements EnumFactory<AppointmentResponseStatus> {
     private final IModelContext modelContext;
-    public AppointmentResponseStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AppointmentResponseStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AppointmentResponseStatusEnumFactory() {
       this(null);
@@ -311,9 +311,9 @@ public class AppointmentResponse extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public AppointmentResponse(IModelContext context) {
+    public AppointmentResponse(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -321,9 +321,9 @@ public class AppointmentResponse extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public AppointmentResponse(IModelContext context, Reference appointment, AppointmentResponseStatus participantStatus) {
+    public AppointmentResponse(IModelContext modelContext, Reference appointment, AppointmentResponseStatus participantStatus) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setAppointment(appointment);
       this.setParticipantStatus(participantStatus);
     }
@@ -1179,50 +1179,50 @@ public class AppointmentResponse extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.appointment != null) {
-          this.appointment.setModelContext(context);
+          this.appointment.setModelContext(modelContext);
         }
         if (this.proposedNewTime != null) {
-          this.proposedNewTime.setModelContext(context);
+          this.proposedNewTime.setModelContext(modelContext);
         }
         if (this.start != null) {
-          this.start.setModelContext(context);
+          this.start.setModelContext(modelContext);
         }
         if (this.end != null) {
-          this.end.setModelContext(context);
+          this.end.setModelContext(modelContext);
         }
         if (this.participantTypeList != null) {
           for (CodeableConcept i : this.participantTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.actor != null) {
-          this.actor.setModelContext(context);
+          this.actor.setModelContext(modelContext);
         }
         if (this.participantStatus != null) {
-          this.participantStatus.setModelContext(context);
+          this.participantStatus.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
         if (this.recurring != null) {
-          this.recurring.setModelContext(context);
+          this.recurring.setModelContext(modelContext);
         }
         if (this.occurrenceDate != null) {
-          this.occurrenceDate.setModelContext(context);
+          this.occurrenceDate.setModelContext(modelContext);
         }
         if (this.recurrenceId != null) {
-          this.recurrenceId.setModelContext(context);
+          this.recurrenceId.setModelContext(modelContext);
         }
       }
 
@@ -1261,8 +1261,8 @@ public class AppointmentResponse extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.AppointmentResponse;
+  public String getResourceType() {
+    return "AppointmentResponse";
    }
 
  /**

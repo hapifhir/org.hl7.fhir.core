@@ -111,9 +111,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public BiologicallyDerivedProductCollectionComponent(IModelContext context) {
+      public BiologicallyDerivedProductCollectionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -447,25 +447,25 @@ public class BiologicallyDerivedProduct extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.collector != null) {
-          this.collector.setModelContext(context);
+          this.collector.setModelContext(modelContext);
         }
         if (this.sourcePatient != null) {
-          this.sourcePatient.setModelContext(context);
+          this.sourcePatient.setModelContext(modelContext);
         }
         if (this.sourceOrganization != null) {
-          this.sourceOrganization.setModelContext(context);
+          this.sourceOrganization.setModelContext(modelContext);
         }
         if (this.collected != null) {
-          this.collected.setModelContext(context);
+          this.collected.setModelContext(modelContext);
         }
         if (this.procedure != null) {
-          this.procedure.setModelContext(context);
+          this.procedure.setModelContext(modelContext);
         }
       }
 
@@ -534,9 +534,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public BiologicallyDerivedProductPropertyComponent(IModelContext context) {
+      public BiologicallyDerivedProductPropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -544,9 +544,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public BiologicallyDerivedProductPropertyComponent(IModelContext context, CodeableConcept type, DataType value) {
+      public BiologicallyDerivedProductPropertyComponent(IModelContext modelContext, CodeableConcept type, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setValue(value);
       }
@@ -881,16 +881,16 @@ public class BiologicallyDerivedProduct extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -1040,9 +1040,9 @@ public class BiologicallyDerivedProduct extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public BiologicallyDerivedProduct(IModelContext context) {
+    public BiologicallyDerivedProduct(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1971,65 +1971,65 @@ public class BiologicallyDerivedProduct extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.productCategoryList != null) {
           for (CodeableConcept i : this.productCategoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.productCode != null) {
-          this.productCode.setModelContext(context);
+          this.productCode.setModelContext(modelContext);
         }
         if (this.parentList != null) {
           for (Reference i : this.parentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.requestList != null) {
           for (Reference i : this.requestList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.therapyIdentifierList != null) {
           for (Identifier i : this.therapyIdentifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.biologicalSourceEvent != null) {
-          this.biologicalSourceEvent.setModelContext(context);
+          this.biologicalSourceEvent.setModelContext(modelContext);
         }
         if (this.processingFacilityList != null) {
           for (Reference i : this.processingFacilityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.division != null) {
-          this.division.setModelContext(context);
+          this.division.setModelContext(modelContext);
         }
         if (this.productStatus != null) {
-          this.productStatus.setModelContext(context);
+          this.productStatus.setModelContext(modelContext);
         }
         if (this.expirationDate != null) {
-          this.expirationDate.setModelContext(context);
+          this.expirationDate.setModelContext(modelContext);
         }
         if (this.collection != null) {
-          this.collection.setModelContext(context);
+          this.collection.setModelContext(modelContext);
         }
         if (this.storageTempRequirements != null) {
-          this.storageTempRequirements.setModelContext(context);
+          this.storageTempRequirements.setModelContext(modelContext);
         }
         if (this.propertyList != null) {
           for (BiologicallyDerivedProductPropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2070,8 +2070,8 @@ public class BiologicallyDerivedProduct extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.BiologicallyDerivedProduct;
+  public String getResourceType() {
+    return "BiologicallyDerivedProduct";
    }
 
  /**

@@ -137,9 +137,9 @@ public class BodyStructure extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public BodyStructureIncludedStructureComponent(IModelContext context) {
+      public BodyStructureIncludedStructureComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -147,9 +147,9 @@ public class BodyStructure extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public BodyStructureIncludedStructureComponent(IModelContext context, CodeableConcept structure) {
+      public BodyStructureIncludedStructureComponent(IModelContext modelContext, CodeableConcept structure) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setStructure(structure);
       }
 
@@ -722,45 +722,45 @@ public class BodyStructure extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.structure != null) {
-          this.structure.setModelContext(context);
+          this.structure.setModelContext(modelContext);
         }
         if (this.laterality != null) {
-          this.laterality.setModelContext(context);
+          this.laterality.setModelContext(modelContext);
         }
         if (this.bodyLandmarkOrientationList != null) {
           for (BodyStructureIncludedStructureBodyLandmarkOrientationComponent i : this.bodyLandmarkOrientationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.spatialReferenceList != null) {
           for (Reference i : this.spatialReferenceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.imageList != null) {
           for (Attachment i : this.imageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.qualifierList != null) {
           for (CodeableConcept i : this.qualifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.morphologyList != null) {
           for (CodeableConcept i : this.morphologyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.originList != null) {
           for (CodeableConcept i : this.originList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -848,9 +848,9 @@ public class BodyStructure extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public BodyStructureIncludedStructureBodyLandmarkOrientationComponent(IModelContext context) {
+      public BodyStructureIncludedStructureBodyLandmarkOrientationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1190,29 +1190,29 @@ public class BodyStructure extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.landmarkDescriptionList != null) {
           for (CodeableConcept i : this.landmarkDescriptionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.clockFacePositionList != null) {
           for (CodeableConcept i : this.clockFacePositionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.distanceFromLandmarkList != null) {
           for (BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent i : this.distanceFromLandmarkList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.surfaceOrientationList != null) {
           for (CodeableConcept i : this.surfaceOrientationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1282,9 +1282,9 @@ public class BodyStructure extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent(IModelContext context) {
+      public BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmarkComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1486,19 +1486,19 @@ public class BodyStructure extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.deviceList != null) {
           for (CodeableReference i : this.deviceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.valueList != null) {
           for (Quantity i : this.valueList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1598,9 +1598,9 @@ public class BodyStructure extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public BodyStructure(IModelContext context) {
+    public BodyStructure(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1608,9 +1608,9 @@ public class BodyStructure extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public BodyStructure(IModelContext context, BodyStructureIncludedStructureComponent includedStructure) {
+    public BodyStructure(IModelContext modelContext, BodyStructureIncludedStructureComponent includedStructure) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.addIncludedStructure(includedStructure);
     }
 
@@ -2141,39 +2141,39 @@ public class BodyStructure extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.active != null) {
-          this.active.setModelContext(context);
+          this.active.setModelContext(modelContext);
         }
         if (this.includedStructureList != null) {
           for (BodyStructureIncludedStructureComponent i : this.includedStructureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.excludedStructureList != null) {
           for (BodyStructureIncludedStructureComponent i : this.excludedStructureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.imageList != null) {
           for (Attachment i : this.imageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.patient != null) {
-          this.patient.setModelContext(context);
+          this.patient.setModelContext(modelContext);
         }
       }
 
@@ -2206,8 +2206,8 @@ public class BodyStructure extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.BodyStructure;
+  public String getResourceType() {
+    return "BodyStructure";
    }
 
  /**

@@ -66,10 +66,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.*;
-import org.hl7.fhir.model.utilities.formats.IParser;
-import org.hl7.fhir.model.utilities.formats.JsonCreator;
-import org.hl7.fhir.model.utilities.formats.JsonCreatorCanonical;
-import org.hl7.fhir.model.utilities.formats.JsonCreatorDirect;
+import org.hl7.fhir.model.utilities.formats.*;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
@@ -96,14 +93,6 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
     super(modelContext);
   }
 
-
-  protected JsonParserBase() {
-    super();
-  }
-
-  protected JsonParserBase(CustomResourceRegistry customResourceRegistry) {
-    super(customResourceRegistry);
-  }
 
   @Override
   public ParserType getType() {
@@ -220,9 +209,9 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   }
 
   protected boolean composeCustomResource(Resource resource) throws IOException {
-    if (customResourceRegistry.has(resource.fhirType())) {
-      JsonParserBase composer = customResourceRegistry.get(resource.fhirType()).getFactory().composerJson(json);
-      composer.setCustomResourceRegistry(customResourceRegistry);
+    CustomResourceHandler handler = modelContext.getContextInformation().getHandler(resource.fhirType());
+    if (handler != null) {
+      JsonParserBase composer = handler.getFactory().composerJson(modelContext, json);
       composer.composeResource(resource);
       return true;
     } else {
@@ -231,7 +220,7 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   }
 
   protected boolean composeCustomResource(String name, Resource resource) {
-    if (customResourceRegistry.has(resource.fhirType())) {
+    if (modelContext.getContextInformation().getHandler(resource.fhirType()) != null) {
       throw new Error("Not sorted yet");
       // customResourceHandlers.get(resource.fhirType()).parser().composeResource(name, resource);
       // return true;
@@ -241,9 +230,9 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
   }
 
   protected Resource parseCustomResource(String t, JsonObject json) throws FHIRFormatError, IOException {
-    if (customResourceRegistry.has(t)) {
-      JsonParserBase parser = customResourceRegistry.get(t).getFactory().parserJson(allowUnknownContent, allowComments);
-      parser.setCustomResourceRegistry(customResourceRegistry);
+    CustomResourceHandler handler = modelContext.getContextInformation().getHandler(t);
+    if (handler != null) {
+      JsonParserBase parser = handler.getFactory().parserJson(modelContext, allowUnknownContent, allowComments);
       return parser.parse(json);
     } else {
       return null;
@@ -255,10 +244,9 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
    * registered as overriding the base specification (returns null if there's no such handler)
    */
   protected Resource parseOverridingCustomResource(String t, JsonObject json) throws FHIRFormatError, IOException {
-    CustomResourceHandler handler = customResourceRegistry.get(t);
+    CustomResourceHandler handler = modelContext.getContextInformation().getHandler(t);
     if (handler != null && handler.isOverridesBase()) {
-      JsonParserBase parser = handler.getFactory().parserJson(allowUnknownContent, allowComments);
-      parser.setCustomResourceRegistry(customResourceRegistry);
+      JsonParserBase parser = handler.getFactory().parserJson(modelContext, allowUnknownContent, allowComments);
       return parser.parse(json);
     } else {
       return null;

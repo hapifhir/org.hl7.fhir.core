@@ -91,9 +91,9 @@ public class EvidenceVariable extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public EvidenceVariableRelatesToComponent(IModelContext context) {
+      public EvidenceVariableRelatesToComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -101,9 +101,9 @@ public class EvidenceVariable extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public EvidenceVariableRelatesToComponent(IModelContext context, CodeableConcept type, DataType target) {
+      public EvidenceVariableRelatesToComponent(IModelContext modelContext, CodeableConcept type, DataType target) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setTarget(target);
       }
@@ -358,16 +358,16 @@ public class EvidenceVariable extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.target != null) {
-          this.target.setModelContext(context);
+          this.target.setModelContext(modelContext);
         }
       }
 
@@ -433,9 +433,9 @@ public class EvidenceVariable extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public EvidenceVariableDefinitionModifierComponent(IModelContext context) {
+      public EvidenceVariableDefinitionModifierComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -443,9 +443,9 @@ public class EvidenceVariable extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public EvidenceVariableDefinitionModifierComponent(IModelContext context, CodeableConcept code, DataType value) {
+      public EvidenceVariableDefinitionModifierComponent(IModelContext modelContext, CodeableConcept code, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setValue(value);
       }
@@ -780,16 +780,16 @@ public class EvidenceVariable extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -854,9 +854,9 @@ public class EvidenceVariable extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public EvidenceVariableCategoryComponent(IModelContext context) {
+      public EvidenceVariableCategoryComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1113,16 +1113,16 @@ public class EvidenceVariable extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -1202,9 +1202,9 @@ public class EvidenceVariable extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public EvidenceVariableDataStorageComponent(IModelContext context) {
+      public EvidenceVariableDataStorageComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1526,23 +1526,23 @@ public class EvidenceVariable extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.datatype != null) {
-          this.datatype.setModelContext(context);
+          this.datatype.setModelContext(modelContext);
         }
         if (this.path != null) {
-          this.path.setModelContext(context);
+          this.path.setModelContext(modelContext);
         }
         if (this.delimiter != null) {
-          this.delimiter.setModelContext(context);
+          this.delimiter.setModelContext(modelContext);
         }
         if (this.componentList != null) {
           for (EvidenceVariableDataStorageComponent i : this.componentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1682,9 +1682,9 @@ public class EvidenceVariable extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public EvidenceVariableConstraintComponent(IModelContext context) {
+      public EvidenceVariableConstraintComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2420,46 +2420,46 @@ public class EvidenceVariable extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.conditional != null) {
-          this.conditional.setModelContext(context);
+          this.conditional.setModelContext(modelContext);
         }
         if (this.minimumQuantity != null) {
-          this.minimumQuantity.setModelContext(context);
+          this.minimumQuantity.setModelContext(modelContext);
         }
         if (this.maximumQuantity != null) {
-          this.maximumQuantity.setModelContext(context);
+          this.maximumQuantity.setModelContext(modelContext);
         }
         if (this.earliestDateTime != null) {
-          this.earliestDateTime.setModelContext(context);
+          this.earliestDateTime.setModelContext(modelContext);
         }
         if (this.latestDateTime != null) {
-          this.latestDateTime.setModelContext(context);
+          this.latestDateTime.setModelContext(modelContext);
         }
         if (this.minimumStringLength != null) {
-          this.minimumStringLength.setModelContext(context);
+          this.minimumStringLength.setModelContext(modelContext);
         }
         if (this.maximumStringLength != null) {
-          this.maximumStringLength.setModelContext(context);
+          this.maximumStringLength.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.expression != null) {
-          this.expression.setModelContext(context);
+          this.expression.setModelContext(modelContext);
         }
         if (this.expectedValueSet != null) {
-          this.expectedValueSet.setModelContext(context);
+          this.expectedValueSet.setModelContext(modelContext);
         }
         if (this.expectedUnitsValueSet != null) {
-          this.expectedUnitsValueSet.setModelContext(context);
+          this.expectedUnitsValueSet.setModelContext(modelContext);
         }
         if (this.anyValueAllowed != null) {
-          this.anyValueAllowed.setModelContext(context);
+          this.anyValueAllowed.setModelContext(modelContext);
         }
       }
 
@@ -2812,9 +2812,9 @@ public class EvidenceVariable extends MetadataResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public EvidenceVariable(IModelContext context) {
+    public EvidenceVariable(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -5726,166 +5726,166 @@ public class EvidenceVariable extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.shortTitle != null) {
-          this.shortTitle.setModelContext(context);
+          this.shortTitle.setModelContext(modelContext);
         }
         if (this.citeAs != null) {
-          this.citeAs.setModelContext(context);
+          this.citeAs.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.authorList != null) {
           for (ContactDetail i : this.authorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.recorderList != null) {
           for (ContactDetail i : this.recorderList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.editorList != null) {
           for (ContactDetail i : this.editorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reviewerList != null) {
           for (ContactDetail i : this.reviewerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.endorserList != null) {
           for (ContactDetail i : this.endorserList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.approvalDate != null) {
-          this.approvalDate.setModelContext(context);
+          this.approvalDate.setModelContext(modelContext);
         }
         if (this.lastReviewDate != null) {
-          this.lastReviewDate.setModelContext(context);
+          this.lastReviewDate.setModelContext(modelContext);
         }
         if (this.effectivePeriod != null) {
-          this.effectivePeriod.setModelContext(context);
+          this.effectivePeriod.setModelContext(modelContext);
         }
         if (this.relatesToList != null) {
           for (EvidenceVariableRelatesToComponent i : this.relatesToList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.actual != null) {
-          this.actual.setModelContext(context);
+          this.actual.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.definitionModifierList != null) {
           for (EvidenceVariableDefinitionModifierComponent i : this.definitionModifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.handling != null) {
-          this.handling.setModelContext(context);
+          this.handling.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (EvidenceVariableCategoryComponent i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.conditional != null) {
-          this.conditional.setModelContext(context);
+          this.conditional.setModelContext(modelContext);
         }
         if (this.classifierList != null) {
           for (CodeableConcept i : this.classifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.dataStorageList != null) {
           for (EvidenceVariableDataStorageComponent i : this.dataStorageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.timing != null) {
-          this.timing.setModelContext(context);
+          this.timing.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.constraintList != null) {
           for (EvidenceVariableConstraintComponent i : this.constraintList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.missingDataMeaningList != null) {
           for (CodeableConcept i : this.missingDataMeaningList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.unacceptableDataHandlingList != null) {
           for (CodeableConcept i : this.unacceptableDataHandlingList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -5943,8 +5943,8 @@ public class EvidenceVariable extends MetadataResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.EvidenceVariable;
+  public String getResourceType() {
+    return "EvidenceVariable";
    }
 
  /**

@@ -183,9 +183,9 @@ public class PractitionerRole extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public PractitionerRole(IModelContext context) {
+    public PractitionerRole(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1201,72 +1201,72 @@ public class PractitionerRole extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.active != null) {
-          this.active.setModelContext(context);
+          this.active.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.practitioner != null) {
-          this.practitioner.setModelContext(context);
+          this.practitioner.setModelContext(modelContext);
         }
         if (this.organization != null) {
-          this.organization.setModelContext(context);
+          this.organization.setModelContext(modelContext);
         }
         if (this.codeList != null) {
           for (CodeableConcept i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.display != null) {
-          this.display.setModelContext(context);
+          this.display.setModelContext(modelContext);
         }
         if (this.specialtyList != null) {
           for (CodeableConcept i : this.specialtyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.locationList != null) {
           for (Reference i : this.locationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.healthcareServiceList != null) {
           for (Reference i : this.healthcareServiceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.contactList != null) {
           for (ExtendedContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.characteristicList != null) {
           for (CodeableConcept i : this.characteristicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.communicationList != null) {
           for (CodeableConcept i : this.communicationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.availability != null) {
-          this.availability.setModelContext(context);
+          this.availability.setModelContext(modelContext);
         }
         if (this.endpointList != null) {
           for (Reference i : this.endpointList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1304,8 +1304,8 @@ public class PractitionerRole extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.PractitionerRole;
+  public String getResourceType() {
+    return "PractitionerRole";
    }
 
  /**

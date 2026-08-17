@@ -63,16 +63,16 @@ public class CanonicalType extends UriType {
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public CanonicalType(IModelContext context) {
+	public CanonicalType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
   /**
    * Constructor
    */
-  public CanonicalType(IModelContext context, String theValue) {
-    super(context, theValue);
+  public CanonicalType(IModelContext modelContext, String theValue) {
+    super(modelContext, theValue);
   }
 
   /**
@@ -85,8 +85,8 @@ public class CanonicalType extends UriType {
 	/**
 	 * Constructor
 	 */
-	public CanonicalType(IModelContext context, URI theValue) {
-		super(context, theValue);
+	public CanonicalType(IModelContext modelContext, URI theValue) {
+		super(modelContext, theValue);
 	}
 
 	public CanonicalType(URI theValue) {

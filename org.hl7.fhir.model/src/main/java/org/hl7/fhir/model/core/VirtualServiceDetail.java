@@ -108,9 +108,9 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public VirtualServiceDetail(IModelContext context) {
+    public VirtualServiceDetail(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -563,27 +563,27 @@ public class VirtualServiceDetail extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.channelType != null) {
-          this.channelType.setModelContext(context);
+          this.channelType.setModelContext(modelContext);
         }
         if (this.address != null) {
-          this.address.setModelContext(context);
+          this.address.setModelContext(modelContext);
         }
         if (this.additionalInfoList != null) {
           for (UrlType i : this.additionalInfoList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.maxParticipants != null) {
-          this.maxParticipants.setModelContext(context);
+          this.maxParticipants.setModelContext(modelContext);
         }
         if (this.sessionKey != null) {
-          this.sessionKey.setModelContext(context);
+          this.sessionKey.setModelContext(modelContext);
         }
       }
 

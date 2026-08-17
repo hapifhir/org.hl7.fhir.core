@@ -121,8 +121,8 @@ public class SubscriptionTopic extends CanonicalResource {
 
   public static class CriteriaNotExistsBehaviorEnumFactory implements EnumFactory<CriteriaNotExistsBehavior> {
     private final IModelContext modelContext;
-    public CriteriaNotExistsBehaviorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public CriteriaNotExistsBehaviorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public CriteriaNotExistsBehaviorEnumFactory() {
       this(null);
@@ -234,8 +234,8 @@ public class SubscriptionTopic extends CanonicalResource {
 
   public static class InteractionTriggerEnumFactory implements EnumFactory<InteractionTrigger> {
     private final IModelContext modelContext;
-    public InteractionTriggerEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public InteractionTriggerEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public InteractionTriggerEnumFactory() {
       this(null);
@@ -357,9 +357,9 @@ public class SubscriptionTopic extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubscriptionTopicTriggerComponent(IModelContext context) {
+      public SubscriptionTopicTriggerComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -367,9 +367,9 @@ public class SubscriptionTopic extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubscriptionTopicTriggerComponent(IModelContext context, String resource) {
+      public SubscriptionTopicTriggerComponent(IModelContext modelContext, String resource) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setResource(resource);
       }
 
@@ -953,39 +953,39 @@ public class SubscriptionTopic extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.resource != null) {
-          this.resource.setModelContext(context);
+          this.resource.setModelContext(modelContext);
         }
         if (this.supportedInteractionList != null) {
           for (Enumeration<InteractionTrigger> i : this.supportedInteractionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.queryCriteria != null) {
-          this.queryCriteria.setModelContext(context);
+          this.queryCriteria.setModelContext(modelContext);
         }
         if (this.fhirPathCriteria != null) {
-          this.fhirPathCriteria.setModelContext(context);
+          this.fhirPathCriteria.setModelContext(modelContext);
         }
         if (this.event != null) {
-          this.event.setModelContext(context);
+          this.event.setModelContext(modelContext);
         }
         if (this.canFilterByList != null) {
           for (SubscriptionTopicTriggerCanFilterByComponent i : this.canFilterByList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.notificationShapeList != null) {
           for (SubscriptionTopicTriggerNotificationShapeComponent i : this.notificationShapeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1081,9 +1081,9 @@ public class SubscriptionTopic extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubscriptionTopicTriggerQueryCriteriaComponent(IModelContext context) {
+      public SubscriptionTopicTriggerQueryCriteriaComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1500,25 +1500,25 @@ public class SubscriptionTopic extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.previous != null) {
-          this.previous.setModelContext(context);
+          this.previous.setModelContext(modelContext);
         }
         if (this.resultForCreate != null) {
-          this.resultForCreate.setModelContext(context);
+          this.resultForCreate.setModelContext(modelContext);
         }
         if (this.current != null) {
-          this.current.setModelContext(context);
+          this.current.setModelContext(modelContext);
         }
         if (this.resultForDelete != null) {
-          this.resultForDelete.setModelContext(context);
+          this.resultForDelete.setModelContext(modelContext);
         }
         if (this.requireBoth != null) {
-          this.requireBoth.setModelContext(context);
+          this.requireBoth.setModelContext(modelContext);
         }
       }
 
@@ -1619,9 +1619,9 @@ public class SubscriptionTopic extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubscriptionTopicTriggerCanFilterByComponent(IModelContext context) {
+      public SubscriptionTopicTriggerCanFilterByComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1629,9 +1629,9 @@ public class SubscriptionTopic extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubscriptionTopicTriggerCanFilterByComponent(IModelContext context, String filterParameter) {
+      public SubscriptionTopicTriggerCanFilterByComponent(IModelContext modelContext, String filterParameter) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setFilterParameter(filterParameter);
       }
 
@@ -2132,31 +2132,31 @@ public class SubscriptionTopic extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.resource != null) {
-          this.resource.setModelContext(context);
+          this.resource.setModelContext(modelContext);
         }
         if (this.filterParameter != null) {
-          this.filterParameter.setModelContext(context);
+          this.filterParameter.setModelContext(modelContext);
         }
         if (this.filterDefinition != null) {
-          this.filterDefinition.setModelContext(context);
+          this.filterDefinition.setModelContext(modelContext);
         }
         if (this.comparatorList != null) {
           for (Enumeration<SearchComparator> i : this.comparatorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.modifierList != null) {
           for (Enumeration<SearchModifierCode> i : this.modifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2244,9 +2244,9 @@ public class SubscriptionTopic extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubscriptionTopicTriggerNotificationShapeComponent(IModelContext context) {
+      public SubscriptionTopicTriggerNotificationShapeComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2254,9 +2254,9 @@ public class SubscriptionTopic extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubscriptionTopicTriggerNotificationShapeComponent(IModelContext context, String resource) {
+      public SubscriptionTopicTriggerNotificationShapeComponent(IModelContext modelContext, String resource) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setResource(resource);
       }
 
@@ -2611,27 +2611,27 @@ public class SubscriptionTopic extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.resource != null) {
-          this.resource.setModelContext(context);
+          this.resource.setModelContext(modelContext);
         }
         if (this.includeList != null) {
           for (StringType i : this.includeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.revIncludeList != null) {
           for (StringType i : this.revIncludeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatedQueryList != null) {
           for (SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent i : this.relatedQueryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2701,9 +2701,9 @@ public class SubscriptionTopic extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent(IModelContext context) {
+      public SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2711,9 +2711,9 @@ public class SubscriptionTopic extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent(IModelContext context, String query) {
+      public SubscriptionTopicTriggerNotificationShapeRelatedQueryComponent(IModelContext modelContext, String query) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setQuery(query);
       }
 
@@ -2892,16 +2892,16 @@ public class SubscriptionTopic extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.queryType != null) {
-          this.queryType.setModelContext(context);
+          this.queryType.setModelContext(modelContext);
         }
         if (this.query != null) {
-          this.query.setModelContext(context);
+          this.query.setModelContext(modelContext);
         }
       }
 
@@ -3107,9 +3107,9 @@ public class SubscriptionTopic extends CanonicalResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public SubscriptionTopic(IModelContext context) {
+    public SubscriptionTopic(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -3117,9 +3117,9 @@ public class SubscriptionTopic extends CanonicalResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public SubscriptionTopic(IModelContext context, String url, PublicationStatus status) {
+    public SubscriptionTopic(IModelContext modelContext, String url, PublicationStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setUrl(url);
       this.setStatus(status);
     }
@@ -4724,87 +4724,87 @@ public class SubscriptionTopic extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.derivedFromList != null) {
           for (CanonicalType i : this.derivedFromList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.approvalDate != null) {
-          this.approvalDate.setModelContext(context);
+          this.approvalDate.setModelContext(modelContext);
         }
         if (this.lastReviewDate != null) {
-          this.lastReviewDate.setModelContext(context);
+          this.lastReviewDate.setModelContext(modelContext);
         }
         if (this.effectivePeriod != null) {
-          this.effectivePeriod.setModelContext(context);
+          this.effectivePeriod.setModelContext(modelContext);
         }
         if (this.triggerList != null) {
           for (SubscriptionTopicTriggerComponent i : this.triggerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4851,8 +4851,8 @@ public class SubscriptionTopic extends CanonicalResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.SubscriptionTopic;
+  public String getResourceType() {
+    return "SubscriptionTopic";
    }
 
  /**

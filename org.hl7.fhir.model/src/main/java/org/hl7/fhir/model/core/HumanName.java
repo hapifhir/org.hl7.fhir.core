@@ -171,8 +171,8 @@ public class HumanName extends DataType implements ICompositeType {
 
   public static class NameUseEnumFactory implements EnumFactory<NameUse> {
     private final IModelContext modelContext;
-    public NameUseEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public NameUseEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public NameUseEnumFactory() {
       this(null);
@@ -307,9 +307,9 @@ public class HumanName extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public HumanName(IModelContext context) {
+    public HumanName(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -870,37 +870,37 @@ public class HumanName extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.use != null) {
-          this.use.setModelContext(context);
+          this.use.setModelContext(modelContext);
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
         if (this.family != null) {
-          this.family.setModelContext(context);
+          this.family.setModelContext(modelContext);
         }
         if (this.givenList != null) {
           for (StringType i : this.givenList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.prefixList != null) {
           for (StringType i : this.prefixList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.suffixList != null) {
           for (StringType i : this.suffixList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 

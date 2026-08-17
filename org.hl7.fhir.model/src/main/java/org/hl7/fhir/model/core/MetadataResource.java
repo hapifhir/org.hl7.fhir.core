@@ -72,9 +72,9 @@ public abstract class MetadataResource extends CanonicalResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public MetadataResource(IModelContext context) {
+    public MetadataResource(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**

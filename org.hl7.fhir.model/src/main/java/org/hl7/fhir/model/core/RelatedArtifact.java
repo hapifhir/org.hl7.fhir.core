@@ -189,8 +189,8 @@ public class RelatedArtifact extends DataType implements ICompositeType {
 
   public static class RelatedArtifactTypeEnumFactory implements EnumFactory<RelatedArtifactType> {
     private final IModelContext modelContext;
-    public RelatedArtifactTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public RelatedArtifactTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public RelatedArtifactTypeEnumFactory() {
       this(null);
@@ -344,9 +344,9 @@ public class RelatedArtifact extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public RelatedArtifact(IModelContext context) {
+    public RelatedArtifact(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -354,9 +354,9 @@ public class RelatedArtifact extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public RelatedArtifact(IModelContext context, RelatedArtifactType type) {
+    public RelatedArtifact(IModelContext modelContext, RelatedArtifactType type) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setType(type);
     }
 
@@ -943,34 +943,34 @@ public class RelatedArtifact extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.label != null) {
-          this.label.setModelContext(context);
+          this.label.setModelContext(modelContext);
         }
         if (this.display != null) {
-          this.display.setModelContext(context);
+          this.display.setModelContext(modelContext);
         }
         if (this.citation != null) {
-          this.citation.setModelContext(context);
+          this.citation.setModelContext(modelContext);
         }
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.document != null) {
-          this.document.setModelContext(context);
+          this.document.setModelContext(modelContext);
         }
         if (this.resource != null) {
-          this.resource.setModelContext(context);
+          this.resource.setModelContext(modelContext);
         }
         if (this.resourceReference != null) {
-          this.resourceReference.setModelContext(context);
+          this.resourceReference.setModelContext(modelContext);
         }
       }
 

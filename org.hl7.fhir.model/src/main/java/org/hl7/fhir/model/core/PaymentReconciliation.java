@@ -131,8 +131,8 @@ public class PaymentReconciliation extends DomainResource {
 
   public static class NoteTypeEnumFactory implements EnumFactory<NoteType> {
     private final IModelContext modelContext;
-    public NoteTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public NoteTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public NoteTypeEnumFactory() {
       this(null);
@@ -260,8 +260,8 @@ public class PaymentReconciliation extends DomainResource {
 
   public static class PaymentOutcomeEnumFactory implements EnumFactory<PaymentOutcome> {
     private final IModelContext modelContext;
-    public PaymentOutcomeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public PaymentOutcomeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public PaymentOutcomeEnumFactory() {
       this(null);
@@ -436,9 +436,9 @@ public class PaymentReconciliation extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PaymentReconciliationAllocationComponent(IModelContext context) {
+      public PaymentReconciliationAllocationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1316,56 +1316,56 @@ public class PaymentReconciliation extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifier != null) {
-          this.identifier.setModelContext(context);
+          this.identifier.setModelContext(modelContext);
         }
         if (this.predecessor != null) {
-          this.predecessor.setModelContext(context);
+          this.predecessor.setModelContext(modelContext);
         }
         if (this.target != null) {
-          this.target.setModelContext(context);
+          this.target.setModelContext(modelContext);
         }
         if (this.targetItem != null) {
-          this.targetItem.setModelContext(context);
+          this.targetItem.setModelContext(modelContext);
         }
         if (this.characteristics != null) {
-          this.characteristics.setModelContext(context);
+          this.characteristics.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.account != null) {
-          this.account.setModelContext(context);
+          this.account.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.submitter != null) {
-          this.submitter.setModelContext(context);
+          this.submitter.setModelContext(modelContext);
         }
         if (this.response != null) {
-          this.response.setModelContext(context);
+          this.response.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.responsible != null) {
-          this.responsible.setModelContext(context);
+          this.responsible.setModelContext(modelContext);
         }
         if (this.payee != null) {
-          this.payee.setModelContext(context);
+          this.payee.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
         if (this.noteNumberList != null) {
           for (PositiveIntType i : this.noteNumberList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1453,9 +1453,9 @@ public class PaymentReconciliation extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public NotesComponent(IModelContext context) {
+      public NotesComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1776,22 +1776,22 @@ public class PaymentReconciliation extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.class_ != null) {
-          this.class_.setModelContext(context);
+          this.class_.setModelContext(modelContext);
         }
         if (this.number != null) {
-          this.number.setModelContext(context);
+          this.number.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
       }
 
@@ -2060,9 +2060,9 @@ public class PaymentReconciliation extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public PaymentReconciliation(IModelContext context) {
+    public PaymentReconciliation(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2070,9 +2070,9 @@ public class PaymentReconciliation extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public PaymentReconciliation(IModelContext context, CodeableConcept type, FinancialResourceStatusCodes status, Date created, Date date) {
+    public PaymentReconciliation(IModelContext modelContext, CodeableConcept type, FinancialResourceStatusCodes status, Date created, Date date) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setType(type);
       this.setStatus(status);
       this.setCreated(created);
@@ -3899,105 +3899,105 @@ public class PaymentReconciliation extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReason != null) {
-          this.statusReason.setModelContext(context);
+          this.statusReason.setModelContext(modelContext);
         }
         if (this.kind != null) {
-          this.kind.setModelContext(context);
+          this.kind.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.created != null) {
-          this.created.setModelContext(context);
+          this.created.setModelContext(modelContext);
         }
         if (this.enterer != null) {
-          this.enterer.setModelContext(context);
+          this.enterer.setModelContext(modelContext);
         }
         if (this.issuerType != null) {
-          this.issuerType.setModelContext(context);
+          this.issuerType.setModelContext(modelContext);
         }
         if (this.paymentIssuer != null) {
-          this.paymentIssuer.setModelContext(context);
+          this.paymentIssuer.setModelContext(modelContext);
         }
         if (this.request != null) {
-          this.request.setModelContext(context);
+          this.request.setModelContext(modelContext);
         }
         if (this.requestor != null) {
-          this.requestor.setModelContext(context);
+          this.requestor.setModelContext(modelContext);
         }
         if (this.outcome != null) {
-          this.outcome.setModelContext(context);
+          this.outcome.setModelContext(modelContext);
         }
         if (this.disposition != null) {
-          this.disposition.setModelContext(context);
+          this.disposition.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.method != null) {
-          this.method.setModelContext(context);
+          this.method.setModelContext(modelContext);
         }
         if (this.cardBrand != null) {
-          this.cardBrand.setModelContext(context);
+          this.cardBrand.setModelContext(modelContext);
         }
         if (this.accountNumber != null) {
-          this.accountNumber.setModelContext(context);
+          this.accountNumber.setModelContext(modelContext);
         }
         if (this.expirationDate != null) {
-          this.expirationDate.setModelContext(context);
+          this.expirationDate.setModelContext(modelContext);
         }
         if (this.processor != null) {
-          this.processor.setModelContext(context);
+          this.processor.setModelContext(modelContext);
         }
         if (this.referenceNumber != null) {
-          this.referenceNumber.setModelContext(context);
+          this.referenceNumber.setModelContext(modelContext);
         }
         if (this.authorization != null) {
-          this.authorization.setModelContext(context);
+          this.authorization.setModelContext(modelContext);
         }
         if (this.tenderedAmount != null) {
-          this.tenderedAmount.setModelContext(context);
+          this.tenderedAmount.setModelContext(modelContext);
         }
         if (this.returnedAmount != null) {
-          this.returnedAmount.setModelContext(context);
+          this.returnedAmount.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
         if (this.paymentIdentifier != null) {
-          this.paymentIdentifier.setModelContext(context);
+          this.paymentIdentifier.setModelContext(modelContext);
         }
         if (this.allocationList != null) {
           for (PaymentReconciliationAllocationComponent i : this.allocationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.formCode != null) {
-          this.formCode.setModelContext(context);
+          this.formCode.setModelContext(modelContext);
         }
         if (this.processNoteList != null) {
           for (NotesComponent i : this.processNoteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4047,8 +4047,8 @@ public class PaymentReconciliation extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.PaymentReconciliation;
+  public String getResourceType() {
+    return "PaymentReconciliation";
    }
 
  /**

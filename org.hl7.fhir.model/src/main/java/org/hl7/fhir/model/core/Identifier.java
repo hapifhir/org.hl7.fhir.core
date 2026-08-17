@@ -149,8 +149,8 @@ public class Identifier extends DataType implements ICompositeType {
 
   public static class IdentifierUseEnumFactory implements EnumFactory<IdentifierUse> {
     private final IModelContext modelContext;
-    public IdentifierUseEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public IdentifierUseEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public IdentifierUseEnumFactory() {
       this(null);
@@ -267,9 +267,9 @@ public class Identifier extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Identifier(IModelContext context) {
+    public Identifier(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -693,28 +693,28 @@ public class Identifier extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.use != null) {
-          this.use.setModelContext(context);
+          this.use.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.system != null) {
-          this.system.setModelContext(context);
+          this.system.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.assigner != null) {
-          this.assigner.setModelContext(context);
+          this.assigner.setModelContext(modelContext);
         }
       }
 

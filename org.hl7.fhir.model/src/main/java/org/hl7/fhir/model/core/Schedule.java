@@ -140,9 +140,9 @@ public class Schedule extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Schedule(IModelContext context) {
+    public Schedule(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -150,9 +150,9 @@ public class Schedule extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Schedule(IModelContext context, Reference actor) {
+    public Schedule(IModelContext modelContext, Reference actor) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.addActor(actor);
     }
 
@@ -823,47 +823,47 @@ public class Schedule extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.active != null) {
-          this.active.setModelContext(context);
+          this.active.setModelContext(modelContext);
         }
         if (this.serviceCategoryList != null) {
           for (CodeableConcept i : this.serviceCategoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.serviceTypeList != null) {
           for (CodeableReference i : this.serviceTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.specialtyList != null) {
           for (CodeableConcept i : this.specialtyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.actorList != null) {
           for (Reference i : this.actorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.planningHorizon != null) {
-          this.planningHorizon.setModelContext(context);
+          this.planningHorizon.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
       }
 
@@ -898,8 +898,8 @@ public class Schedule extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Schedule;
+  public String getResourceType() {
+    return "Schedule";
    }
 
  /**

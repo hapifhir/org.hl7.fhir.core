@@ -103,9 +103,9 @@ public class Availability extends DataType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AvailabilityAvailableTimeComponent(IModelContext context) {
+      public AvailabilityAvailableTimeComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -456,24 +456,24 @@ public class Availability extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.daysOfWeekList != null) {
           for (Enumeration<DaysOfWeek> i : this.daysOfWeekList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.allDay != null) {
-          this.allDay.setModelContext(context);
+          this.allDay.setModelContext(modelContext);
         }
         if (this.availableStartTime != null) {
-          this.availableStartTime.setModelContext(context);
+          this.availableStartTime.setModelContext(modelContext);
         }
         if (this.availableEndTime != null) {
-          this.availableEndTime.setModelContext(context);
+          this.availableEndTime.setModelContext(modelContext);
         }
       }
 
@@ -543,9 +543,9 @@ public class Availability extends DataType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AvailabilityNotAvailableTimeComponent(IModelContext context) {
+      public AvailabilityNotAvailableTimeComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -727,16 +727,16 @@ public class Availability extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.during != null) {
-          this.during.setModelContext(context);
+          this.during.setModelContext(modelContext);
         }
       }
 
@@ -806,9 +806,9 @@ public class Availability extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Availability(IModelContext context) {
+    public Availability(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1062,22 +1062,22 @@ public class Availability extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.availableTimeList != null) {
           for (AvailabilityAvailableTimeComponent i : this.availableTimeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.notAvailableTimeList != null) {
           for (AvailabilityNotAvailableTimeComponent i : this.notAvailableTimeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }

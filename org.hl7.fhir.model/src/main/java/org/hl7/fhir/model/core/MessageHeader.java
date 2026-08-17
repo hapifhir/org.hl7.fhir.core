@@ -131,8 +131,8 @@ public class MessageHeader extends DomainResource {
 
   public static class ResponseTypeEnumFactory implements EnumFactory<ResponseType> {
     private final IModelContext modelContext;
-    public ResponseTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ResponseTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ResponseTypeEnumFactory() {
       this(null);
@@ -216,9 +216,9 @@ public class MessageHeader extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MessageDestinationComponent(IModelContext context) {
+      public MessageDestinationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -482,19 +482,19 @@ public class MessageHeader extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.endpoint != null) {
-          this.endpoint.setModelContext(context);
+          this.endpoint.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.receiver != null) {
-          this.receiver.setModelContext(context);
+          this.receiver.setModelContext(modelContext);
         }
       }
 
@@ -589,9 +589,9 @@ public class MessageHeader extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MessageSourceComponent(IModelContext context) {
+      public MessageSourceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1044,28 +1044,28 @@ public class MessageHeader extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.endpoint != null) {
-          this.endpoint.setModelContext(context);
+          this.endpoint.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.software != null) {
-          this.software.setModelContext(context);
+          this.software.setModelContext(modelContext);
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.contact != null) {
-          this.contact.setModelContext(context);
+          this.contact.setModelContext(modelContext);
         }
         if (this.sender != null) {
-          this.sender.setModelContext(context);
+          this.sender.setModelContext(modelContext);
         }
       }
 
@@ -1142,9 +1142,9 @@ public class MessageHeader extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MessageHeaderResponseComponent(IModelContext context) {
+      public MessageHeaderResponseComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1152,9 +1152,9 @@ public class MessageHeader extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MessageHeaderResponseComponent(IModelContext context, Identifier identifier, ResponseType code) {
+      public MessageHeaderResponseComponent(IModelContext modelContext, Identifier identifier, ResponseType code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setIdentifier(identifier);
         this.setCode(code);
       }
@@ -1382,19 +1382,19 @@ public class MessageHeader extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifier != null) {
-          this.identifier.setModelContext(context);
+          this.identifier.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.details != null) {
-          this.details.setModelContext(context);
+          this.details.setModelContext(modelContext);
         }
       }
 
@@ -1496,9 +1496,9 @@ public class MessageHeader extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public MessageHeader(IModelContext context) {
+    public MessageHeader(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1506,9 +1506,9 @@ public class MessageHeader extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public MessageHeader(IModelContext context, DataType event, MessageSourceComponent source) {
+    public MessageHeader(IModelContext modelContext, DataType event, MessageSourceComponent source) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setEvent(event);
       this.setSource(source);
     }
@@ -2031,35 +2031,35 @@ public class MessageHeader extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.event != null) {
-          this.event.setModelContext(context);
+          this.event.setModelContext(modelContext);
         }
         if (this.destinationList != null) {
           for (MessageDestinationComponent i : this.destinationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.source != null) {
-          this.source.setModelContext(context);
+          this.source.setModelContext(modelContext);
         }
         if (this.reason != null) {
-          this.reason.setModelContext(context);
+          this.reason.setModelContext(modelContext);
         }
         if (this.response != null) {
-          this.response.setModelContext(context);
+          this.response.setModelContext(modelContext);
         }
         if (this.focusList != null) {
           for (Reference i : this.focusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
       }
 
@@ -2091,8 +2091,8 @@ public class MessageHeader extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.MessageHeader;
+  public String getResourceType() {
+    return "MessageHeader";
    }
 
  /**

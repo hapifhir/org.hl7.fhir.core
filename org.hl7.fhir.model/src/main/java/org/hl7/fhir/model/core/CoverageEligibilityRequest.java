@@ -141,8 +141,8 @@ public class CoverageEligibilityRequest extends DomainResource {
 
   public static class EligibilityRequestPurposeEnumFactory implements EnumFactory<EligibilityRequestPurpose> {
     private final IModelContext modelContext;
-    public EligibilityRequestPurposeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public EligibilityRequestPurposeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public EligibilityRequestPurposeEnumFactory() {
       this(null);
@@ -226,9 +226,9 @@ public class CoverageEligibilityRequest extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CoverageEligibilityRequestEventComponent(IModelContext context) {
+      public CoverageEligibilityRequestEventComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -236,9 +236,9 @@ public class CoverageEligibilityRequest extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CoverageEligibilityRequestEventComponent(IModelContext context, CodeableConcept type, DataType when) {
+      public CoverageEligibilityRequestEventComponent(IModelContext modelContext, CodeableConcept type, DataType when) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setWhen(when);
       }
@@ -433,16 +433,16 @@ public class CoverageEligibilityRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.when != null) {
-          this.when.setModelContext(context);
+          this.when.setModelContext(modelContext);
         }
       }
 
@@ -514,9 +514,9 @@ public class CoverageEligibilityRequest extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SupportingInformationComponent(IModelContext context) {
+      public SupportingInformationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -524,9 +524,9 @@ public class CoverageEligibilityRequest extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SupportingInformationComponent(IModelContext context, int sequence, Reference information) {
+      public SupportingInformationComponent(IModelContext modelContext, int sequence, Reference information) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setSequence(sequence);
         this.setInformation(information);
       }
@@ -773,19 +773,19 @@ public class CoverageEligibilityRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.sequence != null) {
-          this.sequence.setModelContext(context);
+          this.sequence.setModelContext(modelContext);
         }
         if (this.information != null) {
-          this.information.setModelContext(context);
+          this.information.setModelContext(modelContext);
         }
         if (this.appliesToAll != null) {
-          this.appliesToAll.setModelContext(context);
+          this.appliesToAll.setModelContext(modelContext);
         }
       }
 
@@ -860,9 +860,9 @@ public class CoverageEligibilityRequest extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public InsuranceComponent(IModelContext context) {
+      public InsuranceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -870,9 +870,9 @@ public class CoverageEligibilityRequest extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public InsuranceComponent(IModelContext context, Reference coverage) {
+      public InsuranceComponent(IModelContext modelContext, Reference coverage) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCoverage(coverage);
       }
 
@@ -1122,19 +1122,19 @@ public class CoverageEligibilityRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.focal != null) {
-          this.focal.setModelContext(context);
+          this.focal.setModelContext(modelContext);
         }
         if (this.coverage != null) {
-          this.coverage.setModelContext(context);
+          this.coverage.setModelContext(modelContext);
         }
         if (this.businessArrangement != null) {
-          this.businessArrangement.setModelContext(context);
+          this.businessArrangement.setModelContext(modelContext);
         }
       }
 
@@ -1261,9 +1261,9 @@ public class CoverageEligibilityRequest extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DetailsComponent(IModelContext context) {
+      public DetailsComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1893,47 +1893,47 @@ public class CoverageEligibilityRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.supportingInfoSequenceList != null) {
           for (PositiveIntType i : this.supportingInfoSequenceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.category != null) {
-          this.category.setModelContext(context);
+          this.category.setModelContext(modelContext);
         }
         if (this.productOrService != null) {
-          this.productOrService.setModelContext(context);
+          this.productOrService.setModelContext(modelContext);
         }
         if (this.modifierList != null) {
           for (CodeableConcept i : this.modifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.provider != null) {
-          this.provider.setModelContext(context);
+          this.provider.setModelContext(modelContext);
         }
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
         if (this.unitPrice != null) {
-          this.unitPrice.setModelContext(context);
+          this.unitPrice.setModelContext(modelContext);
         }
         if (this.facility != null) {
-          this.facility.setModelContext(context);
+          this.facility.setModelContext(modelContext);
         }
         if (this.diagnosisList != null) {
           for (DiagnosisComponent i : this.diagnosisList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.detailList != null) {
           for (Reference i : this.detailList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1999,9 +1999,9 @@ public class CoverageEligibilityRequest extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DiagnosisComponent(IModelContext context) {
+      public DiagnosisComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2112,13 +2112,13 @@ public class CoverageEligibilityRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.diagnosis != null) {
-          this.diagnosis.setModelContext(context);
+          this.diagnosis.setModelContext(modelContext);
         }
       }
 
@@ -2282,9 +2282,9 @@ public class CoverageEligibilityRequest extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public CoverageEligibilityRequest(IModelContext context) {
+    public CoverageEligibilityRequest(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2292,9 +2292,9 @@ public class CoverageEligibilityRequest extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public CoverageEligibilityRequest(IModelContext context, FinancialResourceStatusCodes status, EligibilityRequestPurpose purpose, Reference patient, Date created, Reference insurer) {
+    public CoverageEligibilityRequest(IModelContext modelContext, FinancialResourceStatusCodes status, EligibilityRequestPurpose purpose, Reference patient, Date created, Reference insurer) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.addPurpose(purpose);
       this.setPatient(patient);
@@ -3361,69 +3361,69 @@ public class CoverageEligibilityRequest extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReason != null) {
-          this.statusReason.setModelContext(context);
+          this.statusReason.setModelContext(modelContext);
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.purposeList != null) {
           for (Enumeration<EligibilityRequestPurpose> i : this.purposeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.patient != null) {
-          this.patient.setModelContext(context);
+          this.patient.setModelContext(modelContext);
         }
         if (this.eventList != null) {
           for (CoverageEligibilityRequestEventComponent i : this.eventList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.serviced != null) {
-          this.serviced.setModelContext(context);
+          this.serviced.setModelContext(modelContext);
         }
         if (this.created != null) {
-          this.created.setModelContext(context);
+          this.created.setModelContext(modelContext);
         }
         if (this.enterer != null) {
-          this.enterer.setModelContext(context);
+          this.enterer.setModelContext(modelContext);
         }
         if (this.provider != null) {
-          this.provider.setModelContext(context);
+          this.provider.setModelContext(modelContext);
         }
         if (this.insurer != null) {
-          this.insurer.setModelContext(context);
+          this.insurer.setModelContext(modelContext);
         }
         if (this.facility != null) {
-          this.facility.setModelContext(context);
+          this.facility.setModelContext(modelContext);
         }
         if (this.supportingInfoList != null) {
           for (SupportingInformationComponent i : this.supportingInfoList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.insuranceList != null) {
           for (InsuranceComponent i : this.insuranceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.itemList != null) {
           for (DetailsComponent i : this.itemList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3462,8 +3462,8 @@ public class CoverageEligibilityRequest extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.CoverageEligibilityRequest;
+  public String getResourceType() {
+    return "CoverageEligibilityRequest";
    }
 
  /**

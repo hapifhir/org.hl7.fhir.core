@@ -151,8 +151,8 @@ public class CareTeam extends DomainResource {
 
   public static class CareTeamStatusEnumFactory implements EnumFactory<CareTeamStatus> {
     private final IModelContext modelContext;
-    public CareTeamStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public CareTeamStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public CareTeamStatusEnumFactory() {
       this(null);
@@ -263,9 +263,9 @@ public class CareTeam extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CareTeamParticipantComponent(IModelContext context) {
+      public CareTeamParticipantComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -621,26 +621,26 @@ public class CareTeam extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.role != null) {
-          this.role.setModelContext(context);
+          this.role.setModelContext(modelContext);
         }
         if (this.member != null) {
-          this.member.setModelContext(context);
+          this.member.setModelContext(modelContext);
         }
         if (this.onBehalfOf != null) {
-          this.onBehalfOf.setModelContext(context);
+          this.onBehalfOf.setModelContext(modelContext);
         }
         if (this.effective != null) {
-          this.effective.setModelContext(context);
+          this.effective.setModelContext(modelContext);
         }
         if (this.supportingInfoList != null) {
           for (Reference i : this.supportingInfoList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -773,9 +773,9 @@ public class CareTeam extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public CareTeam(IModelContext context) {
+    public CareTeam(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1564,56 +1564,56 @@ public class CareTeam extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.participantList != null) {
           for (CareTeamParticipantComponent i : this.participantList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.managingOrganizationList != null) {
           for (Reference i : this.managingOrganizationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.telecomList != null) {
           for (ContactPoint i : this.telecomList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1649,8 +1649,8 @@ public class CareTeam extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.CareTeam;
+  public String getResourceType() {
+    return "CareTeam";
    }
 
  /**

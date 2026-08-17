@@ -131,8 +131,8 @@ public class Substance extends DomainResource {
 
   public static class FHIRSubstanceStatusEnumFactory implements EnumFactory<FHIRSubstanceStatus> {
     private final IModelContext modelContext;
-    public FHIRSubstanceStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public FHIRSubstanceStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public FHIRSubstanceStatusEnumFactory() {
       this(null);
@@ -245,9 +245,9 @@ public class Substance extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Substance(IModelContext context) {
+    public Substance(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -255,9 +255,9 @@ public class Substance extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Substance(IModelContext context, CodeableReference code) {
+    public Substance(IModelContext modelContext, CodeableReference code) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setCode(code);
     }
 
@@ -773,35 +773,35 @@ public class Substance extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.expiry != null) {
-          this.expiry.setModelContext(context);
+          this.expiry.setModelContext(modelContext);
         }
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
       }
 
@@ -834,8 +834,8 @@ public class Substance extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Substance;
+  public String getResourceType() {
+    return "Substance";
    }
 
  /**

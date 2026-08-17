@@ -162,8 +162,8 @@ public class ImagingSelection extends DomainResource {
 
   public static class ImagingSelection2DGraphicTypeEnumFactory implements EnumFactory<ImagingSelection2DGraphicType> {
     private final IModelContext modelContext;
-    public ImagingSelection2DGraphicTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ImagingSelection2DGraphicTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ImagingSelection2DGraphicTypeEnumFactory() {
       this(null);
@@ -339,8 +339,8 @@ public class ImagingSelection extends DomainResource {
 
   public static class ImagingSelection3DGraphicTypeEnumFactory implements EnumFactory<ImagingSelection3DGraphicType> {
     private final IModelContext modelContext;
-    public ImagingSelection3DGraphicTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ImagingSelection3DGraphicTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ImagingSelection3DGraphicTypeEnumFactory() {
       this(null);
@@ -492,8 +492,8 @@ public class ImagingSelection extends DomainResource {
 
   public static class ImagingSelectionStatusEnumFactory implements EnumFactory<ImagingSelectionStatus> {
     private final IModelContext modelContext;
-    public ImagingSelectionStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ImagingSelectionStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ImagingSelectionStatusEnumFactory() {
       this(null);
@@ -577,9 +577,9 @@ public class ImagingSelection extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImagingSelectionPerformerComponent(IModelContext context) {
+      public ImagingSelectionPerformerComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -587,9 +587,9 @@ public class ImagingSelection extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImagingSelectionPerformerComponent(IModelContext context, Reference actor) {
+      public ImagingSelectionPerformerComponent(IModelContext modelContext, Reference actor) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setActor(actor);
       }
 
@@ -748,16 +748,16 @@ public class ImagingSelection extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.function != null) {
-          this.function.setModelContext(context);
+          this.function.setModelContext(modelContext);
         }
         if (this.actor != null) {
-          this.actor.setModelContext(context);
+          this.actor.setModelContext(modelContext);
         }
       }
 
@@ -871,9 +871,9 @@ public class ImagingSelection extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImagingSelectionInstanceComponent(IModelContext context) {
+      public ImagingSelectionInstanceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -881,9 +881,9 @@ public class ImagingSelection extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImagingSelectionInstanceComponent(IModelContext context, String uid) {
+      public ImagingSelectionInstanceComponent(IModelContext modelContext, String uid) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setUid(uid);
       }
 
@@ -1607,48 +1607,48 @@ public class ImagingSelection extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.uid != null) {
-          this.uid.setModelContext(context);
+          this.uid.setModelContext(modelContext);
         }
         if (this.number != null) {
-          this.number.setModelContext(context);
+          this.number.setModelContext(modelContext);
         }
         if (this.sopClass != null) {
-          this.sopClass.setModelContext(context);
+          this.sopClass.setModelContext(modelContext);
         }
         if (this.frameNumberList != null) {
           for (PositiveIntType i : this.frameNumberList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.referencedContentItemIdentifierList != null) {
           for (PositiveIntType i : this.referencedContentItemIdentifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.segmentNumberList != null) {
           for (PositiveIntType i : this.segmentNumberList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.regionOfInterestList != null) {
           for (PositiveIntType i : this.regionOfInterestList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.waveFormChannelList != null) {
           for (PositiveIntType i : this.waveFormChannelList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.imageRegion2DList != null) {
           for (ImageRegion2DComponent i : this.imageRegion2DList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1724,9 +1724,9 @@ public class ImagingSelection extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImageRegion2DComponent(IModelContext context) {
+      public ImageRegion2DComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1734,9 +1734,9 @@ public class ImagingSelection extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImageRegion2DComponent(IModelContext context, ImagingSelection2DGraphicType regionType, BigDecimal coordinate) {
+      public ImageRegion2DComponent(IModelContext modelContext, ImagingSelection2DGraphicType regionType, BigDecimal coordinate) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setRegionType(regionType);
         this.addCoordinate(coordinate);
       }
@@ -1947,17 +1947,17 @@ public class ImagingSelection extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.regionType != null) {
-          this.regionType.setModelContext(context);
+          this.regionType.setModelContext(modelContext);
         }
         if (this.coordinateList != null) {
           for (DecimalType i : this.coordinateList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2027,9 +2027,9 @@ public class ImagingSelection extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ImageRegion3DComponent(IModelContext context) {
+      public ImageRegion3DComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2037,9 +2037,9 @@ public class ImagingSelection extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ImageRegion3DComponent(IModelContext context, ImagingSelection3DGraphicType regionType, BigDecimal coordinate) {
+      public ImageRegion3DComponent(IModelContext modelContext, ImagingSelection3DGraphicType regionType, BigDecimal coordinate) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setRegionType(regionType);
         this.addCoordinate(coordinate);
       }
@@ -2250,17 +2250,17 @@ public class ImagingSelection extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.regionType != null) {
-          this.regionType.setModelContext(context);
+          this.regionType.setModelContext(modelContext);
         }
         if (this.coordinateList != null) {
           for (DecimalType i : this.coordinateList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2451,9 +2451,9 @@ public class ImagingSelection extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ImagingSelection(IModelContext context) {
+    public ImagingSelection(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2461,9 +2461,9 @@ public class ImagingSelection extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ImagingSelection(IModelContext context, ImagingSelectionStatus status, CodeableConcept code) {
+    public ImagingSelection(IModelContext modelContext, ImagingSelectionStatus status, CodeableConcept code) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setCode(code);
     }
@@ -3762,84 +3762,84 @@ public class ImagingSelection extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.modality != null) {
-          this.modality.setModelContext(context);
+          this.modality.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.issued != null) {
-          this.issued.setModelContext(context);
+          this.issued.setModelContext(modelContext);
         }
         if (this.performerList != null) {
           for (ImagingSelectionPerformerComponent i : this.performerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.derivedFrom != null) {
-          this.derivedFrom.setModelContext(context);
+          this.derivedFrom.setModelContext(modelContext);
         }
         if (this.studyUid != null) {
-          this.studyUid.setModelContext(context);
+          this.studyUid.setModelContext(modelContext);
         }
         if (this.seriesUid != null) {
-          this.seriesUid.setModelContext(context);
+          this.seriesUid.setModelContext(modelContext);
         }
         if (this.seriesNumber != null) {
-          this.seriesNumber.setModelContext(context);
+          this.seriesNumber.setModelContext(modelContext);
         }
         if (this.frameOfReferenceUid != null) {
-          this.frameOfReferenceUid.setModelContext(context);
+          this.frameOfReferenceUid.setModelContext(modelContext);
         }
         if (this.bodySiteList != null) {
           for (CodeableReference i : this.bodySiteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.focusList != null) {
           for (Reference i : this.focusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.endpointList != null) {
           for (Reference i : this.endpointList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.instanceList != null) {
           for (ImagingSelectionInstanceComponent i : this.instanceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.imageRegion3DList != null) {
           for (ImageRegion3DComponent i : this.imageRegion3DList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3882,8 +3882,8 @@ public class ImagingSelection extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.ImagingSelection;
+  public String getResourceType() {
+    return "ImagingSelection";
    }
 
  /**

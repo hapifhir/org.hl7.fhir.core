@@ -151,8 +151,8 @@ public class DetectedIssue extends DomainResource {
 
   public static class DetectedIssueStatusEnumFactory implements EnumFactory<DetectedIssueStatus> {
     private final IModelContext modelContext;
-    public DetectedIssueStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public DetectedIssueStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public DetectedIssueStatusEnumFactory() {
       this(null);
@@ -242,9 +242,9 @@ public class DetectedIssue extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DetectedIssueEvidenceComponent(IModelContext context) {
+      public DetectedIssueEvidenceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -446,19 +446,19 @@ public class DetectedIssue extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.codeList != null) {
           for (CodeableConcept i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.detailList != null) {
           for (Reference i : this.detailList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -539,9 +539,9 @@ public class DetectedIssue extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DetectedIssueMitigationComponent(IModelContext context) {
+      public DetectedIssueMitigationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -549,9 +549,9 @@ public class DetectedIssue extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DetectedIssueMitigationComponent(IModelContext context, CodeableConcept action) {
+      public DetectedIssueMitigationComponent(IModelContext modelContext, CodeableConcept action) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setAction(action);
       }
 
@@ -850,23 +850,23 @@ public class DetectedIssue extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.action != null) {
-          this.action.setModelContext(context);
+          this.action.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.author != null) {
-          this.author.setModelContext(context);
+          this.author.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1052,9 +1052,9 @@ public class DetectedIssue extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public DetectedIssue(IModelContext context) {
+    public DetectedIssue(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1062,9 +1062,9 @@ public class DetectedIssue extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public DetectedIssue(IModelContext context, DetectedIssueStatus status) {
+    public DetectedIssue(IModelContext modelContext, DetectedIssueStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -2236,75 +2236,75 @@ public class DetectedIssue extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.severity != null) {
-          this.severity.setModelContext(context);
+          this.severity.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.identified != null) {
-          this.identified.setModelContext(context);
+          this.identified.setModelContext(modelContext);
         }
         if (this.author != null) {
-          this.author.setModelContext(context);
+          this.author.setModelContext(modelContext);
         }
         if (this.implicatedList != null) {
           for (Reference i : this.implicatedList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.evidenceList != null) {
           for (DetectedIssueEvidenceComponent i : this.evidenceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.detail != null) {
-          this.detail.setModelContext(context);
+          this.detail.setModelContext(modelContext);
         }
         if (this.reference != null) {
-          this.reference.setModelContext(context);
+          this.reference.setModelContext(modelContext);
         }
         if (this.qualityOfEvidence != null) {
-          this.qualityOfEvidence.setModelContext(context);
+          this.qualityOfEvidence.setModelContext(modelContext);
         }
         if (this.expectedOnsetType != null) {
-          this.expectedOnsetType.setModelContext(context);
+          this.expectedOnsetType.setModelContext(modelContext);
         }
         if (this.medicationClassList != null) {
           for (CodeableConcept i : this.medicationClassList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.managementCode != null) {
-          this.managementCode.setModelContext(context);
+          this.managementCode.setModelContext(modelContext);
         }
         if (this.mitigationList != null) {
           for (DetectedIssueMitigationComponent i : this.mitigationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2345,8 +2345,8 @@ public class DetectedIssue extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.DetectedIssue;
+  public String getResourceType() {
+    return "DetectedIssue";
    }
 
  /**

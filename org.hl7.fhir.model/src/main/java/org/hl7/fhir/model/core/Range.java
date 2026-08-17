@@ -85,9 +85,9 @@ public class Range extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Range(IModelContext context) {
+    public Range(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -250,16 +250,16 @@ public class Range extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.low != null) {
-          this.low.setModelContext(context);
+          this.low.setModelContext(modelContext);
         }
         if (this.high != null) {
-          this.high.setModelContext(context);
+          this.high.setModelContext(modelContext);
         }
       }
 

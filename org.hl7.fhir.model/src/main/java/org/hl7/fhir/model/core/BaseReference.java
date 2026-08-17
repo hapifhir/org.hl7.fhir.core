@@ -48,8 +48,8 @@ public abstract class BaseReference extends DataType implements IBaseReference, 
      */
     private transient IBaseResource resource;
 
-  public BaseReference(IModelContext context, String theReference) {
-    this.modelContext = context;
+  public BaseReference(IModelContext modelContext, String theReference) {
+    this.modelContext = modelContext;
     setReference(theReference);
   }
 
@@ -57,8 +57,8 @@ public abstract class BaseReference extends DataType implements IBaseReference, 
     setReference(theReference);
   }
 
-    public BaseReference(IModelContext context, IIdType theReference) {
-    this.modelContext = context;
+    public BaseReference(IModelContext modelContext, IIdType theReference) {
+    this.modelContext = modelContext;
     	if (theReference != null) {
     		setReference(theReference.getValue());
     	} else {
@@ -70,8 +70,8 @@ public abstract class BaseReference extends DataType implements IBaseReference, 
       this((IModelContext) null, theReference);
     }
 
-	public BaseReference(IModelContext context, IAnyResource theResource) {
-    this.modelContext = context;
+	public BaseReference(IModelContext modelContext, IAnyResource theResource) {
+    this.modelContext = modelContext;
 		resource = theResource;
 	}
 
@@ -87,9 +87,9 @@ public abstract class BaseReference extends DataType implements IBaseReference, 
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public BaseReference(IModelContext context) {
+	public BaseReference(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
 	/**

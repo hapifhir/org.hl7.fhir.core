@@ -85,9 +85,9 @@ public class CodeableReference extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public CodeableReference(IModelContext context) {
+    public CodeableReference(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -250,16 +250,16 @@ public class CodeableReference extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.concept != null) {
-          this.concept.setModelContext(context);
+          this.concept.setModelContext(modelContext);
         }
         if (this.reference != null) {
-          this.reference.setModelContext(context);
+          this.reference.setModelContext(modelContext);
         }
       }
 
@@ -289,15 +289,15 @@ public class CodeableReference extends DataType implements ICompositeType {
 
 // Manual code (from Configuration.txt):
 
-public CodeableReference(IModelContext context, CodeableConcept cc) {
+public CodeableReference(IModelContext modelContext, CodeableConcept cc) {
   super();
-  this.modelContext = context;
+  this.modelContext = modelContext;
   setConcept(cc);
 }
 
-public CodeableReference(IModelContext context, Reference ref) {
+public CodeableReference(IModelContext modelContext, Reference ref) {
   super();
-  this.modelContext = context;
+  this.modelContext = modelContext;
   setReference(ref);
 }
 

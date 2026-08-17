@@ -161,8 +161,8 @@ public class QuestionnaireResponse extends DomainResource {
 
   public static class QuestionnaireResponseStatusEnumFactory implements EnumFactory<QuestionnaireResponseStatus> {
     private final IModelContext modelContext;
-    public QuestionnaireResponseStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public QuestionnaireResponseStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public QuestionnaireResponseStatusEnumFactory() {
       this(null);
@@ -278,9 +278,9 @@ public class QuestionnaireResponse extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public QuestionnaireResponseItemComponent(IModelContext context) {
+      public QuestionnaireResponseItemComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -288,9 +288,9 @@ public class QuestionnaireResponse extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public QuestionnaireResponseItemComponent(IModelContext context, String linkId) {
+      public QuestionnaireResponseItemComponent(IModelContext modelContext, String linkId) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setLinkId(linkId);
       }
 
@@ -708,30 +708,30 @@ public class QuestionnaireResponse extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.definitionList != null) {
           for (UriType i : this.definitionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
         if (this.answerList != null) {
           for (QuestionnaireResponseItemAnswerComponent i : this.answerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.itemList != null) {
           for (QuestionnaireResponseItemComponent i : this.itemList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -802,9 +802,9 @@ public class QuestionnaireResponse extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public QuestionnaireResponseItemAnswerComponent(IModelContext context) {
+      public QuestionnaireResponseItemAnswerComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -812,9 +812,9 @@ public class QuestionnaireResponse extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public QuestionnaireResponseItemAnswerComponent(IModelContext context, DataType value) {
+      public QuestionnaireResponseItemAnswerComponent(IModelContext modelContext, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setValue(value);
       }
 
@@ -1230,17 +1230,17 @@ public class QuestionnaireResponse extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.itemList != null) {
           for (QuestionnaireResponseItemComponent i : this.itemList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1368,9 +1368,9 @@ public class QuestionnaireResponse extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public QuestionnaireResponse(IModelContext context) {
+    public QuestionnaireResponse(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1378,9 +1378,9 @@ public class QuestionnaireResponse extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public QuestionnaireResponse(IModelContext context, String questionnaire, QuestionnaireResponseStatus status) {
+    public QuestionnaireResponse(IModelContext modelContext, String questionnaire, QuestionnaireResponseStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setQuestionnaire(questionnaire);
       this.setStatus(status);
     }
@@ -2121,50 +2121,50 @@ public class QuestionnaireResponse extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.partOfList != null) {
           for (Reference i : this.partOfList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.questionnaire != null) {
-          this.questionnaire.setModelContext(context);
+          this.questionnaire.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.authored != null) {
-          this.authored.setModelContext(context);
+          this.authored.setModelContext(modelContext);
         }
         if (this.author != null) {
-          this.author.setModelContext(context);
+          this.author.setModelContext(modelContext);
         }
         if (this.source != null) {
-          this.source.setModelContext(context);
+          this.source.setModelContext(modelContext);
         }
         if (this.itemList != null) {
           for (QuestionnaireResponseItemComponent i : this.itemList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2201,8 +2201,8 @@ public class QuestionnaireResponse extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.QuestionnaireResponse;
+  public String getResourceType() {
+    return "QuestionnaireResponse";
    }
 
  /**

@@ -141,8 +141,8 @@ public class DeviceAlert extends DomainResource {
 
   public static class DeviceAlertStatusCodesEnumFactory implements EnumFactory<DeviceAlertStatusCodes> {
     private final IModelContext modelContext;
-    public DeviceAlertStatusCodesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public DeviceAlertStatusCodesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public DeviceAlertStatusCodesEnumFactory() {
       this(null);
@@ -233,9 +233,9 @@ public class DeviceAlert extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DeviceAlertDerivedFromComponent(IModelContext context) {
+      public DeviceAlertDerivedFromComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -243,9 +243,9 @@ public class DeviceAlert extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DeviceAlertDerivedFromComponent(IModelContext context, Reference observation) {
+      public DeviceAlertDerivedFromComponent(IModelContext modelContext, Reference observation) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setObservation(observation);
       }
 
@@ -451,19 +451,19 @@ public class DeviceAlert extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.observation != null) {
-          this.observation.setModelContext(context);
+          this.observation.setModelContext(modelContext);
         }
         if (this.component != null) {
-          this.component.setModelContext(context);
+          this.component.setModelContext(modelContext);
         }
         if (this.limit != null) {
-          this.limit.setModelContext(context);
+          this.limit.setModelContext(modelContext);
         }
       }
 
@@ -570,9 +570,9 @@ public class DeviceAlert extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DeviceAlertSignalComponent(IModelContext context) {
+      public DeviceAlertSignalComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -580,9 +580,9 @@ public class DeviceAlert extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DeviceAlertSignalComponent(IModelContext context, CodeableConcept activationState) {
+      public DeviceAlertSignalComponent(IModelContext modelContext, CodeableConcept activationState) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setActivationState(activationState);
       }
 
@@ -1020,35 +1020,35 @@ public class DeviceAlert extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.activationState != null) {
-          this.activationState.setModelContext(context);
+          this.activationState.setModelContext(modelContext);
         }
         if (this.presence != null) {
-          this.presence.setModelContext(context);
+          this.presence.setModelContext(modelContext);
         }
         if (this.annunciator != null) {
-          this.annunciator.setModelContext(context);
+          this.annunciator.setModelContext(modelContext);
         }
         if (this.manifestation != null) {
-          this.manifestation.setModelContext(context);
+          this.manifestation.setModelContext(modelContext);
         }
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 
@@ -1224,9 +1224,9 @@ public class DeviceAlert extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public DeviceAlert(IModelContext context) {
+    public DeviceAlert(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1234,9 +1234,9 @@ public class DeviceAlert extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public DeviceAlert(IModelContext context, DeviceAlertStatusCodes status, CodeableConcept code, Reference subject, Period occurrence) {
+    public DeviceAlert(IModelContext modelContext, DeviceAlertStatusCodes status, CodeableConcept code, Reference subject, Period occurrence) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setCode(code);
       this.setSubject(subject);
@@ -2283,70 +2283,70 @@ public class DeviceAlert extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.procedureList != null) {
           for (Reference i : this.procedureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.occurrence != null) {
-          this.occurrence.setModelContext(context);
+          this.occurrence.setModelContext(modelContext);
         }
         if (this.device != null) {
-          this.device.setModelContext(context);
+          this.device.setModelContext(modelContext);
         }
         if (this.acknowledged != null) {
-          this.acknowledged.setModelContext(context);
+          this.acknowledged.setModelContext(modelContext);
         }
         if (this.acknowledgedBy != null) {
-          this.acknowledgedBy.setModelContext(context);
+          this.acknowledgedBy.setModelContext(modelContext);
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.derivedFromList != null) {
           for (DeviceAlertDerivedFromComponent i : this.derivedFromList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.label != null) {
-          this.label.setModelContext(context);
+          this.label.setModelContext(modelContext);
         }
         if (this.signalList != null) {
           for (DeviceAlertSignalComponent i : this.signalList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2386,8 +2386,8 @@ public class DeviceAlert extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.DeviceAlert;
+  public String getResourceType() {
+    return "DeviceAlert";
    }
 
  /**

@@ -181,8 +181,8 @@ public class Endpoint extends DomainResource {
 
   public static class EndpointStatusEnumFactory implements EnumFactory<EndpointStatus> {
     private final IModelContext modelContext;
-    public EndpointStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public EndpointStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public EndpointStatusEnumFactory() {
       this(null);
@@ -305,9 +305,9 @@ public class Endpoint extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public EndpointPayloadComponent(IModelContext context) {
+      public EndpointPayloadComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -671,29 +671,29 @@ public class Endpoint extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.mimeTypeList != null) {
           for (CodeType i : this.mimeTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.profileCanonicalList != null) {
           for (CanonicalType i : this.profileCanonicalList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.profileUriList != null) {
           for (UriType i : this.profileUriList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -841,9 +841,9 @@ public class Endpoint extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Endpoint(IModelContext context) {
+    public Endpoint(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -851,9 +851,9 @@ public class Endpoint extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Endpoint(IModelContext context, EndpointStatus status, CodeableConcept connectionType, String address) {
+    public Endpoint(IModelContext modelContext, EndpointStatus status, CodeableConcept connectionType, String address) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.addConnectionType(connectionType);
       this.setAddress(address);
@@ -1765,60 +1765,60 @@ public class Endpoint extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.connectionTypeList != null) {
           for (CodeableConcept i : this.connectionTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.environmentTypeList != null) {
           for (CodeableConcept i : this.environmentTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.managingOrganization != null) {
-          this.managingOrganization.setModelContext(context);
+          this.managingOrganization.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactPoint i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.availability != null) {
-          this.availability.setModelContext(context);
+          this.availability.setModelContext(modelContext);
         }
         if (this.payloadList != null) {
           for (EndpointPayloadComponent i : this.payloadList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.address != null) {
-          this.address.setModelContext(context);
+          this.address.setModelContext(modelContext);
         }
         if (this.headerList != null) {
           for (StringType i : this.headerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1856,8 +1856,8 @@ public class Endpoint extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Endpoint;
+  public String getResourceType() {
+    return "Endpoint";
    }
 
  /**

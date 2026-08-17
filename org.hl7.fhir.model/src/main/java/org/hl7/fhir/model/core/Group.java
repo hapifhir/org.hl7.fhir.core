@@ -151,8 +151,8 @@ public class Group extends CanonicalResource {
 
   public static class GroupCharacteristicCombinationEnumFactory implements EnumFactory<GroupCharacteristicCombination> {
     private final IModelContext modelContext;
-    public GroupCharacteristicCombinationEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public GroupCharacteristicCombinationEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public GroupCharacteristicCombinationEnumFactory() {
       this(null);
@@ -282,8 +282,8 @@ public class Group extends CanonicalResource {
 
   public static class GroupMembershipBasisEnumFactory implements EnumFactory<GroupMembershipBasis> {
     private final IModelContext modelContext;
-    public GroupMembershipBasisEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public GroupMembershipBasisEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public GroupMembershipBasisEnumFactory() {
       this(null);
@@ -531,8 +531,8 @@ public class Group extends CanonicalResource {
 
   public static class GroupTypeEnumFactory implements EnumFactory<GroupType> {
     private final IModelContext modelContext;
-    public GroupTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public GroupTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public GroupTypeEnumFactory() {
       this(null);
@@ -760,9 +760,9 @@ public class Group extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public GroupCharacteristicComponent(IModelContext context) {
+      public GroupCharacteristicComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -770,9 +770,9 @@ public class Group extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public GroupCharacteristicComponent(IModelContext context, CodeableConcept code, DataType value, boolean exclude) {
+      public GroupCharacteristicComponent(IModelContext modelContext, CodeableConcept code, DataType value, boolean exclude) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setValue(value);
         this.setExclude(exclude);
@@ -1696,49 +1696,49 @@ public class Group extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.exclude != null) {
-          this.exclude.setModelContext(context);
+          this.exclude.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.methodList != null) {
           for (CodeableConcept i : this.methodList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.formula != null) {
-          this.formula.setModelContext(context);
+          this.formula.setModelContext(modelContext);
         }
         if (this.determiner != null) {
-          this.determiner.setModelContext(context);
+          this.determiner.setModelContext(modelContext);
         }
         if (this.offset != null) {
-          this.offset.setModelContext(context);
+          this.offset.setModelContext(modelContext);
         }
         if (this.instances != null) {
-          this.instances.setModelContext(context);
+          this.instances.setModelContext(modelContext);
         }
         if (this.duration != null) {
-          this.duration.setModelContext(context);
+          this.duration.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.relativeTimeList != null) {
           for (RelativeTime i : this.relativeTimeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1825,9 +1825,9 @@ public class Group extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public GroupMemberComponent(IModelContext context) {
+      public GroupMemberComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1835,9 +1835,9 @@ public class Group extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public GroupMemberComponent(IModelContext context, Reference entity) {
+      public GroupMemberComponent(IModelContext modelContext, Reference entity) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setEntity(entity);
       }
 
@@ -2132,24 +2132,24 @@ public class Group extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.entity != null) {
-          this.entity.setModelContext(context);
+          this.entity.setModelContext(modelContext);
         }
         if (this.involvementList != null) {
           for (CodeableConcept i : this.involvementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.inactive != null) {
-          this.inactive.setModelContext(context);
+          this.inactive.setModelContext(modelContext);
         }
       }
 
@@ -2381,9 +2381,9 @@ public class Group extends CanonicalResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Group(IModelContext context) {
+    public Group(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -4207,94 +4207,94 @@ public class Group extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.membership != null) {
-          this.membership.setModelContext(context);
+          this.membership.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
         if (this.managingEntity != null) {
-          this.managingEntity.setModelContext(context);
+          this.managingEntity.setModelContext(modelContext);
         }
         if (this.combinationMethod != null) {
-          this.combinationMethod.setModelContext(context);
+          this.combinationMethod.setModelContext(modelContext);
         }
         if (this.combinationThreshold != null) {
-          this.combinationThreshold.setModelContext(context);
+          this.combinationThreshold.setModelContext(modelContext);
         }
         if (this.characteristicList != null) {
           for (GroupCharacteristicComponent i : this.characteristicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.memberList != null) {
           for (GroupMemberComponent i : this.memberList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4344,8 +4344,8 @@ public class Group extends CanonicalResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Group;
+  public String getResourceType() {
+    return "Group";
    }
 
  /**

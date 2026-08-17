@@ -141,8 +141,8 @@ public class Device extends DomainResource {
 
   public static class FHIRDeviceStatusEnumFactory implements EnumFactory<FHIRDeviceStatus> {
     private final IModelContext modelContext;
-    public FHIRDeviceStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public FHIRDeviceStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public FHIRDeviceStatusEnumFactory() {
       this(null);
@@ -306,8 +306,8 @@ public class Device extends DomainResource {
 
   public static class UDIEntryTypeEnumFactory implements EnumFactory<UDIEntryType> {
     private final IModelContext modelContext;
-    public UDIEntryTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public UDIEntryTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public UDIEntryTypeEnumFactory() {
       this(null);
@@ -444,9 +444,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DeviceUdiCarrierComponent(IModelContext context) {
+      public DeviceUdiCarrierComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -454,9 +454,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DeviceUdiCarrierComponent(IModelContext context, String deviceIdentifier, String issuer) {
+      public DeviceUdiCarrierComponent(IModelContext modelContext, String deviceIdentifier, String issuer) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setDeviceIdentifier(deviceIdentifier);
         this.setIssuer(issuer);
       }
@@ -1012,31 +1012,31 @@ public class Device extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.deviceIdentifier != null) {
-          this.deviceIdentifier.setModelContext(context);
+          this.deviceIdentifier.setModelContext(modelContext);
         }
         if (this.deviceIdentifierSystem != null) {
-          this.deviceIdentifierSystem.setModelContext(context);
+          this.deviceIdentifierSystem.setModelContext(modelContext);
         }
         if (this.issuer != null) {
-          this.issuer.setModelContext(context);
+          this.issuer.setModelContext(modelContext);
         }
         if (this.jurisdiction != null) {
-          this.jurisdiction.setModelContext(context);
+          this.jurisdiction.setModelContext(modelContext);
         }
         if (this.carrierAIDC != null) {
-          this.carrierAIDC.setModelContext(context);
+          this.carrierAIDC.setModelContext(modelContext);
         }
         if (this.carrierHRF != null) {
-          this.carrierHRF.setModelContext(context);
+          this.carrierHRF.setModelContext(modelContext);
         }
         if (this.entryType != null) {
-          this.entryType.setModelContext(context);
+          this.entryType.setModelContext(modelContext);
         }
       }
 
@@ -1114,9 +1114,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DeviceNameComponent(IModelContext context) {
+      public DeviceNameComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1124,9 +1124,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DeviceNameComponent(IModelContext context, String value, CodeableConcept type) {
+      public DeviceNameComponent(IModelContext modelContext, String value, CodeableConcept type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setValue(value);
         this.setType(type);
       }
@@ -1373,19 +1373,19 @@ public class Device extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.display != null) {
-          this.display.setModelContext(context);
+          this.display.setModelContext(modelContext);
         }
       }
 
@@ -1466,9 +1466,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DeviceDeviceVersionComponent(IModelContext context) {
+      public DeviceDeviceVersionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1476,9 +1476,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DeviceDeviceVersionComponent(IModelContext context, String value) {
+      public DeviceDeviceVersionComponent(IModelContext modelContext, String value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setValue(value);
       }
 
@@ -1775,22 +1775,22 @@ public class Device extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.component != null) {
-          this.component.setModelContext(context);
+          this.component.setModelContext(modelContext);
         }
         if (this.installDate != null) {
-          this.installDate.setModelContext(context);
+          this.installDate.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -1866,9 +1866,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DeviceConformsToComponent(IModelContext context) {
+      public DeviceConformsToComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1876,9 +1876,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DeviceConformsToComponent(IModelContext context, CodeableConcept specification) {
+      public DeviceConformsToComponent(IModelContext modelContext, CodeableConcept specification) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setSpecification(specification);
       }
 
@@ -2108,19 +2108,19 @@ public class Device extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.category != null) {
-          this.category.setModelContext(context);
+          this.category.setModelContext(modelContext);
         }
         if (this.specification != null) {
-          this.specification.setModelContext(context);
+          this.specification.setModelContext(modelContext);
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
       }
 
@@ -2188,9 +2188,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DevicePropertyComponent(IModelContext context) {
+      public DevicePropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2198,9 +2198,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DevicePropertyComponent(IModelContext context, CodeableConcept type, DataType value) {
+      public DevicePropertyComponent(IModelContext modelContext, CodeableConcept type, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setValue(value);
       }
@@ -2495,16 +2495,16 @@ public class Device extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -2570,9 +2570,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DeviceAdditiveComponent(IModelContext context) {
+      public DeviceAdditiveComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2580,9 +2580,9 @@ public class Device extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DeviceAdditiveComponent(IModelContext context, CodeableReference type) {
+      public DeviceAdditiveComponent(IModelContext modelContext, CodeableReference type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -2741,16 +2741,16 @@ public class Device extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
       }
 
@@ -2979,9 +2979,9 @@ public class Device extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Device(IModelContext context) {
+    public Device(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -4706,109 +4706,109 @@ public class Device extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.udiCarrierList != null) {
           for (DeviceUdiCarrierComponent i : this.udiCarrierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.availabilityStatus != null) {
-          this.availabilityStatus.setModelContext(context);
+          this.availabilityStatus.setModelContext(modelContext);
         }
         if (this.biologicalSourceEvent != null) {
-          this.biologicalSourceEvent.setModelContext(context);
+          this.biologicalSourceEvent.setModelContext(modelContext);
         }
         if (this.manufacturer != null) {
-          this.manufacturer.setModelContext(context);
+          this.manufacturer.setModelContext(modelContext);
         }
         if (this.manufactureDate != null) {
-          this.manufactureDate.setModelContext(context);
+          this.manufactureDate.setModelContext(modelContext);
         }
         if (this.expirationDate != null) {
-          this.expirationDate.setModelContext(context);
+          this.expirationDate.setModelContext(modelContext);
         }
         if (this.lotNumber != null) {
-          this.lotNumber.setModelContext(context);
+          this.lotNumber.setModelContext(modelContext);
         }
         if (this.serialNumber != null) {
-          this.serialNumber.setModelContext(context);
+          this.serialNumber.setModelContext(modelContext);
         }
         if (this.nameList != null) {
           for (DeviceNameComponent i : this.nameList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.modelNumber != null) {
-          this.modelNumber.setModelContext(context);
+          this.modelNumber.setModelContext(modelContext);
         }
         if (this.partNumber != null) {
-          this.partNumber.setModelContext(context);
+          this.partNumber.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.deviceVersionList != null) {
           for (DeviceDeviceVersionComponent i : this.deviceVersionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.conformsToList != null) {
           for (DeviceConformsToComponent i : this.conformsToList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (DevicePropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.additiveList != null) {
           for (DeviceAdditiveComponent i : this.additiveList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.contactList != null) {
           for (ContactPoint i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.safetyList != null) {
           for (CodeableConcept i : this.safetyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.parent != null) {
-          this.parent.setModelContext(context);
+          this.parent.setModelContext(modelContext);
         }
       }
 
@@ -4855,8 +4855,8 @@ public class Device extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Device;
+  public String getResourceType() {
+    return "Device";
    }
 
  /**

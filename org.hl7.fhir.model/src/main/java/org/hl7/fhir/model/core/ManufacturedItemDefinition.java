@@ -91,9 +91,9 @@ public class ManufacturedItemDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ManufacturedItemDefinitionPropertyComponent(IModelContext context) {
+      public ManufacturedItemDefinitionPropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -101,9 +101,9 @@ public class ManufacturedItemDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ManufacturedItemDefinitionPropertyComponent(IModelContext context, CodeableConcept type) {
+      public ManufacturedItemDefinitionPropertyComponent(IModelContext modelContext, CodeableConcept type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -417,16 +417,16 @@ public class ManufacturedItemDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -519,9 +519,9 @@ public class ManufacturedItemDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ManufacturedItemDefinitionComponentComponent(IModelContext context) {
+      public ManufacturedItemDefinitionComponentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -529,9 +529,9 @@ public class ManufacturedItemDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ManufacturedItemDefinitionComponentComponent(IModelContext context, CodeableConcept type) {
+      public ManufacturedItemDefinitionComponentComponent(IModelContext modelContext, CodeableConcept type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -988,37 +988,37 @@ public class ManufacturedItemDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.functionList != null) {
           for (CodeableConcept i : this.functionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.amountList != null) {
           for (Quantity i : this.amountList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.constituentList != null) {
           for (ManufacturedItemDefinitionComponentConstituentComponent i : this.constituentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (ManufacturedItemDefinitionPropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.componentList != null) {
           for (ManufacturedItemDefinitionComponentComponent i : this.componentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1101,9 +1101,9 @@ public class ManufacturedItemDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ManufacturedItemDefinitionComponentConstituentComponent(IModelContext context) {
+      public ManufacturedItemDefinitionComponentConstituentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1443,29 +1443,29 @@ public class ManufacturedItemDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.amountList != null) {
           for (Quantity i : this.amountList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.locationList != null) {
           for (CodeableConcept i : this.locationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.functionList != null) {
           for (CodeableConcept i : this.functionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.hasIngredientList != null) {
           for (CodeableReference i : this.hasIngredientList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1592,9 +1592,9 @@ public class ManufacturedItemDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ManufacturedItemDefinition(IModelContext context) {
+    public ManufacturedItemDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1602,9 +1602,9 @@ public class ManufacturedItemDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ManufacturedItemDefinition(IModelContext context, PublicationStatus status, CodeableConcept manufacturedDoseForm) {
+    public ManufacturedItemDefinition(IModelContext modelContext, PublicationStatus status, CodeableConcept manufacturedDoseForm) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setManufacturedDoseForm(manufacturedDoseForm);
     }
@@ -2322,51 +2322,51 @@ public class ManufacturedItemDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.manufacturedDoseForm != null) {
-          this.manufacturedDoseForm.setModelContext(context);
+          this.manufacturedDoseForm.setModelContext(modelContext);
         }
         if (this.unitOfPresentation != null) {
-          this.unitOfPresentation.setModelContext(context);
+          this.unitOfPresentation.setModelContext(modelContext);
         }
         if (this.manufacturerList != null) {
           for (Reference i : this.manufacturerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.marketingStatusList != null) {
           for (MarketingStatus i : this.marketingStatusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.ingredientList != null) {
           for (CodeableConcept i : this.ingredientList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (ManufacturedItemDefinitionPropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.componentList != null) {
           for (ManufacturedItemDefinitionComponentComponent i : this.componentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2403,8 +2403,8 @@ public class ManufacturedItemDefinition extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.ManufacturedItemDefinition;
+  public String getResourceType() {
+    return "ManufacturedItemDefinition";
    }
 
  /**

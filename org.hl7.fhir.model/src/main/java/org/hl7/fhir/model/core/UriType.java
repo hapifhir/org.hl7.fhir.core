@@ -63,9 +63,9 @@ public class UriType extends PrimitiveType<String> {
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public UriType(IModelContext context) {
+	public UriType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
   /**
@@ -77,16 +77,16 @@ public class UriType extends PrimitiveType<String> {
   /**
    * Constructor
    */
-  public UriType(IModelContext context, String theValue) {
-    this.modelContext = context;
+  public UriType(IModelContext modelContext, String theValue) {
+    this.modelContext = modelContext;
     setValueAsString(theValue);
   }
 
 	/**
 	 * Constructor
 	 */
-	public UriType(IModelContext context, URI theValue) {
-    this.modelContext = context;
+	public UriType(IModelContext modelContext, URI theValue) {
+    this.modelContext = modelContext;
 		setValue(theValue.toString());
 	}
 

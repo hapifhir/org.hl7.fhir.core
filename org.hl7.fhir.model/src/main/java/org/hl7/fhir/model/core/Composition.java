@@ -106,9 +106,9 @@ public class Composition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CompositionParticipantComponent(IModelContext context) {
+      public CompositionParticipantComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -116,9 +116,9 @@ public class Composition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CompositionParticipantComponent(IModelContext context, CodeableConcept type, Reference party) {
+      public CompositionParticipantComponent(IModelContext modelContext, CodeableConcept type, Reference party) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.addType(type);
         this.setParty(party);
       }
@@ -416,26 +416,26 @@ public class Composition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.functionList != null) {
           for (CodeableConcept i : this.functionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.time != null) {
-          this.time.setModelContext(context);
+          this.time.setModelContext(modelContext);
         }
         if (this.party != null) {
-          this.party.setModelContext(context);
+          this.party.setModelContext(modelContext);
         }
       }
 
@@ -504,9 +504,9 @@ public class Composition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CompositionClassificationComponent(IModelContext context) {
+      public CompositionClassificationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -686,17 +686,17 @@ public class Composition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.classifierList != null) {
           for (CodeableReference i : this.classifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -770,9 +770,9 @@ public class Composition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CompositionAttesterComponent(IModelContext context) {
+      public CompositionAttesterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -780,9 +780,9 @@ public class Composition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CompositionAttesterComponent(IModelContext context, CodeableConcept mode) {
+      public CompositionAttesterComponent(IModelContext modelContext, CodeableConcept mode) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setMode(mode);
       }
 
@@ -1012,19 +1012,19 @@ public class Composition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.mode != null) {
-          this.mode.setModelContext(context);
+          this.mode.setModelContext(modelContext);
         }
         if (this.time != null) {
-          this.time.setModelContext(context);
+          this.time.setModelContext(modelContext);
         }
         if (this.party != null) {
-          this.party.setModelContext(context);
+          this.party.setModelContext(modelContext);
         }
       }
 
@@ -1091,9 +1091,9 @@ public class Composition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CompositionRelatesToComponent(IModelContext context) {
+      public CompositionRelatesToComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1101,9 +1101,9 @@ public class Composition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CompositionRelatesToComponent(IModelContext context, CodeableConcept type, DataType target) {
+      public CompositionRelatesToComponent(IModelContext modelContext, CodeableConcept type, DataType target) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setTarget(target);
       }
@@ -1358,16 +1358,16 @@ public class Composition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.target != null) {
-          this.target.setModelContext(context);
+          this.target.setModelContext(modelContext);
         }
       }
 
@@ -1433,9 +1433,9 @@ public class Composition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CompositionEventComponent(IModelContext context) {
+      public CompositionEventComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1615,17 +1615,17 @@ public class Composition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.detailList != null) {
           for (CodeableReference i : this.detailList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1750,9 +1750,9 @@ public class Composition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SectionComponent(IModelContext context) {
+      public SectionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2398,47 +2398,47 @@ public class Composition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.authorList != null) {
           for (Reference i : this.authorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.focus != null) {
-          this.focus.setModelContext(context);
+          this.focus.setModelContext(modelContext);
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.orderedBy != null) {
-          this.orderedBy.setModelContext(context);
+          this.orderedBy.setModelContext(modelContext);
         }
         if (this.entryList != null) {
           for (Reference i : this.entryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.emptyReason != null) {
-          this.emptyReason.setModelContext(context);
+          this.emptyReason.setModelContext(modelContext);
         }
         if (this.sectionList != null) {
           for (SectionComponent i : this.sectionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2656,9 +2656,9 @@ public class Composition extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Composition(IModelContext context) {
+    public Composition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2666,9 +2666,9 @@ public class Composition extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Composition(IModelContext context, CompositionStatus status, CodeableConcept type, Date date) {
+    public Composition(IModelContext modelContext, CompositionStatus status, CodeableConcept type, Date date) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setType(type);
       this.setDate(date);
@@ -4266,106 +4266,106 @@ public class Composition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.consentList != null) {
           for (Reference i : this.consentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subjectList != null) {
           for (Reference i : this.subjectList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.authorList != null) {
           for (Reference i : this.authorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.participantList != null) {
           for (CompositionParticipantComponent i : this.participantList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.classificationList != null) {
           for (CompositionClassificationComponent i : this.classificationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.attesterList != null) {
           for (CompositionAttesterComponent i : this.attesterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.custodian != null) {
-          this.custodian.setModelContext(context);
+          this.custodian.setModelContext(modelContext);
         }
         if (this.relatesToList != null) {
           for (CompositionRelatesToComponent i : this.relatesToList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.eventList != null) {
           for (CompositionEventComponent i : this.eventList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sectionList != null) {
           for (SectionComponent i : this.sectionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4409,8 +4409,8 @@ public class Composition extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Composition;
+  public String getResourceType() {
+    return "Composition";
    }
 
  /**

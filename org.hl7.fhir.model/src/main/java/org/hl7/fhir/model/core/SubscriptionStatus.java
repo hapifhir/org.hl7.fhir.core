@@ -151,8 +151,8 @@ public class SubscriptionStatus extends DomainResource {
 
   public static class SubscriptionNotificationTypeEnumFactory implements EnumFactory<SubscriptionNotificationType> {
     private final IModelContext modelContext;
-    public SubscriptionNotificationTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SubscriptionNotificationTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SubscriptionNotificationTypeEnumFactory() {
       this(null);
@@ -276,9 +276,9 @@ public class SubscriptionStatus extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubscriptionStatusNotificationEventComponent(IModelContext context) {
+      public SubscriptionStatusNotificationEventComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -286,9 +286,9 @@ public class SubscriptionStatus extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubscriptionStatusNotificationEventComponent(IModelContext context, long eventNumber) {
+      public SubscriptionStatusNotificationEventComponent(IModelContext modelContext, long eventNumber) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setEventNumber(eventNumber);
       }
 
@@ -813,38 +813,38 @@ public class SubscriptionStatus extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.eventNumber != null) {
-          this.eventNumber.setModelContext(context);
+          this.eventNumber.setModelContext(modelContext);
         }
         if (this.triggerEventList != null) {
           for (CodeableConcept i : this.triggerEventList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.timestamp != null) {
-          this.timestamp.setModelContext(context);
+          this.timestamp.setModelContext(modelContext);
         }
         if (this.focus != null) {
-          this.focus.setModelContext(context);
+          this.focus.setModelContext(modelContext);
         }
         if (this.additionalContextList != null) {
           for (Reference i : this.additionalContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatedQueryList != null) {
           for (SubscriptionStatusNotificationEventRelatedQueryComponent i : this.relatedQueryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.authorizationHintList != null) {
           for (SubscriptionStatusNotificationEventAuthorizationHintComponent i : this.authorizationHintList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -916,9 +916,9 @@ public class SubscriptionStatus extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubscriptionStatusNotificationEventRelatedQueryComponent(IModelContext context) {
+      public SubscriptionStatusNotificationEventRelatedQueryComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -926,9 +926,9 @@ public class SubscriptionStatus extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubscriptionStatusNotificationEventRelatedQueryComponent(IModelContext context, String query) {
+      public SubscriptionStatusNotificationEventRelatedQueryComponent(IModelContext modelContext, String query) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setQuery(query);
       }
 
@@ -1107,16 +1107,16 @@ public class SubscriptionStatus extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.queryType != null) {
-          this.queryType.setModelContext(context);
+          this.queryType.setModelContext(modelContext);
         }
         if (this.query != null) {
-          this.query.setModelContext(context);
+          this.query.setModelContext(modelContext);
         }
       }
 
@@ -1181,9 +1181,9 @@ public class SubscriptionStatus extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubscriptionStatusNotificationEventAuthorizationHintComponent(IModelContext context) {
+      public SubscriptionStatusNotificationEventAuthorizationHintComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1191,9 +1191,9 @@ public class SubscriptionStatus extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubscriptionStatusNotificationEventAuthorizationHintComponent(IModelContext context, Coding authorizationType) {
+      public SubscriptionStatusNotificationEventAuthorizationHintComponent(IModelContext modelContext, Coding authorizationType) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setAuthorizationType(authorizationType);
       }
 
@@ -1376,16 +1376,16 @@ public class SubscriptionStatus extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.authorizationType != null) {
-          this.authorizationType.setModelContext(context);
+          this.authorizationType.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -1487,9 +1487,9 @@ public class SubscriptionStatus extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public SubscriptionStatus(IModelContext context) {
+    public SubscriptionStatus(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1497,9 +1497,9 @@ public class SubscriptionStatus extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public SubscriptionStatus(IModelContext context, SubscriptionNotificationType type, Reference subscription) {
+    public SubscriptionStatus(IModelContext modelContext, SubscriptionNotificationType type, Reference subscription) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setType(type);
       this.setSubscription(subscription);
     }
@@ -2032,34 +2032,34 @@ public class SubscriptionStatus extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.eventsSinceSubscriptionStart != null) {
-          this.eventsSinceSubscriptionStart.setModelContext(context);
+          this.eventsSinceSubscriptionStart.setModelContext(modelContext);
         }
         if (this.notificationEventList != null) {
           for (SubscriptionStatusNotificationEventComponent i : this.notificationEventList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subscription != null) {
-          this.subscription.setModelContext(context);
+          this.subscription.setModelContext(modelContext);
         }
         if (this.topic != null) {
-          this.topic.setModelContext(context);
+          this.topic.setModelContext(modelContext);
         }
         if (this.errorList != null) {
           for (CodeableConcept i : this.errorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2093,8 +2093,8 @@ public class SubscriptionStatus extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.SubscriptionStatus;
+  public String getResourceType() {
+    return "SubscriptionStatus";
    }
 
 

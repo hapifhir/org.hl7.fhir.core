@@ -92,9 +92,9 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ProductShelfLife(IModelContext context) {
+    public ProductShelfLife(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -361,20 +361,20 @@ public class ProductShelfLife extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.specialPrecautionsForStorageList != null) {
           for (CodeableConcept i : this.specialPrecautionsForStorageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }

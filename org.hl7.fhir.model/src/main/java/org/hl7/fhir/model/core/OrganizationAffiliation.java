@@ -152,9 +152,9 @@ public class OrganizationAffiliation extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public OrganizationAffiliation(IModelContext context) {
+    public OrganizationAffiliation(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -914,56 +914,56 @@ public class OrganizationAffiliation extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.active != null) {
-          this.active.setModelContext(context);
+          this.active.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.organization != null) {
-          this.organization.setModelContext(context);
+          this.organization.setModelContext(modelContext);
         }
         if (this.participatingOrganization != null) {
-          this.participatingOrganization.setModelContext(context);
+          this.participatingOrganization.setModelContext(modelContext);
         }
         if (this.codeList != null) {
           for (CodeableConcept i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.specialtyList != null) {
           for (CodeableConcept i : this.specialtyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.locationList != null) {
           for (Reference i : this.locationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.healthcareServiceList != null) {
           for (Reference i : this.healthcareServiceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.contactList != null) {
           for (ExtendedContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.endpointList != null) {
           for (Reference i : this.endpointList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1000,8 +1000,8 @@ public class OrganizationAffiliation extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.OrganizationAffiliation;
+  public String getResourceType() {
+    return "OrganizationAffiliation";
    }
 
  /**

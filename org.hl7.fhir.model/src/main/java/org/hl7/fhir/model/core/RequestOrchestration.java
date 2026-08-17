@@ -281,9 +281,9 @@ public class RequestOrchestration extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public RequestOrchestrationActionComponent(IModelContext context) {
+      public RequestOrchestrationActionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2372,113 +2372,113 @@ public class RequestOrchestration extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.prefix != null) {
-          this.prefix.setModelContext(context);
+          this.prefix.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.textEquivalent != null) {
-          this.textEquivalent.setModelContext(context);
+          this.textEquivalent.setModelContext(modelContext);
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.codeList != null) {
           for (CodeableConcept i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.documentationList != null) {
           for (RelatedArtifact i : this.documentationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.goalList != null) {
           for (Reference i : this.goalList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.conditionList != null) {
           for (RequestOrchestrationActionConditionComponent i : this.conditionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.inputList != null) {
           for (RequestOrchestrationActionInputComponent i : this.inputList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.outputList != null) {
           for (RequestOrchestrationActionOutputComponent i : this.outputList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatedActionList != null) {
           for (RequestOrchestrationActionRelatedActionComponent i : this.relatedActionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.timing != null) {
-          this.timing.setModelContext(context);
+          this.timing.setModelContext(modelContext);
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.participantList != null) {
           for (RequestOrchestrationActionParticipantComponent i : this.participantList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.applicabilityBehavior != null) {
-          this.applicabilityBehavior.setModelContext(context);
+          this.applicabilityBehavior.setModelContext(modelContext);
         }
         if (this.groupingBehavior != null) {
-          this.groupingBehavior.setModelContext(context);
+          this.groupingBehavior.setModelContext(modelContext);
         }
         if (this.selectionBehavior != null) {
-          this.selectionBehavior.setModelContext(context);
+          this.selectionBehavior.setModelContext(modelContext);
         }
         if (this.requiredBehavior != null) {
-          this.requiredBehavior.setModelContext(context);
+          this.requiredBehavior.setModelContext(modelContext);
         }
         if (this.precheckBehavior != null) {
-          this.precheckBehavior.setModelContext(context);
+          this.precheckBehavior.setModelContext(modelContext);
         }
         if (this.cardinalityBehavior != null) {
-          this.cardinalityBehavior.setModelContext(context);
+          this.cardinalityBehavior.setModelContext(modelContext);
         }
         if (this.resource != null) {
-          this.resource.setModelContext(context);
+          this.resource.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.transform != null) {
-          this.transform.setModelContext(context);
+          this.transform.setModelContext(modelContext);
         }
         if (this.dynamicValueList != null) {
           for (RequestOrchestrationActionDynamicValueComponent i : this.dynamicValueList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.actionList != null) {
           for (RequestOrchestrationActionComponent i : this.actionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2567,9 +2567,9 @@ public class RequestOrchestration extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public RequestOrchestrationActionConditionComponent(IModelContext context) {
+      public RequestOrchestrationActionConditionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2577,9 +2577,9 @@ public class RequestOrchestration extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public RequestOrchestrationActionConditionComponent(IModelContext context, ActionConditionKind kind) {
+      public RequestOrchestrationActionConditionComponent(IModelContext modelContext, ActionConditionKind kind) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setKind(kind);
       }
 
@@ -2759,16 +2759,16 @@ public class RequestOrchestration extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.kind != null) {
-          this.kind.setModelContext(context);
+          this.kind.setModelContext(modelContext);
         }
         if (this.expression != null) {
-          this.expression.setModelContext(context);
+          this.expression.setModelContext(modelContext);
         }
       }
 
@@ -2840,9 +2840,9 @@ public class RequestOrchestration extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public RequestOrchestrationActionInputComponent(IModelContext context) {
+      public RequestOrchestrationActionInputComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -3095,19 +3095,19 @@ public class RequestOrchestration extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.requirement != null) {
-          this.requirement.setModelContext(context);
+          this.requirement.setModelContext(modelContext);
         }
         if (this.relatedData != null) {
-          this.relatedData.setModelContext(context);
+          this.relatedData.setModelContext(modelContext);
         }
       }
 
@@ -3181,9 +3181,9 @@ public class RequestOrchestration extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public RequestOrchestrationActionOutputComponent(IModelContext context) {
+      public RequestOrchestrationActionOutputComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -3436,19 +3436,19 @@ public class RequestOrchestration extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.requirement != null) {
-          this.requirement.setModelContext(context);
+          this.requirement.setModelContext(modelContext);
         }
         if (this.relatedData != null) {
-          this.relatedData.setModelContext(context);
+          this.relatedData.setModelContext(modelContext);
         }
       }
 
@@ -3531,9 +3531,9 @@ public class RequestOrchestration extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public RequestOrchestrationActionRelatedActionComponent(IModelContext context) {
+      public RequestOrchestrationActionRelatedActionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3541,9 +3541,9 @@ public class RequestOrchestration extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public RequestOrchestrationActionRelatedActionComponent(IModelContext context, String targetId, ActionRelationshipType relationship) {
+      public RequestOrchestrationActionRelatedActionComponent(IModelContext modelContext, String targetId, ActionRelationshipType relationship) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setTargetId(targetId);
         this.setRelationship(relationship);
       }
@@ -3898,22 +3898,22 @@ public class RequestOrchestration extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.targetId != null) {
-          this.targetId.setModelContext(context);
+          this.targetId.setModelContext(modelContext);
         }
         if (this.relationship != null) {
-          this.relationship.setModelContext(context);
+          this.relationship.setModelContext(modelContext);
         }
         if (this.endRelationship != null) {
-          this.endRelationship.setModelContext(context);
+          this.endRelationship.setModelContext(modelContext);
         }
         if (this.offset != null) {
-          this.offset.setModelContext(context);
+          this.offset.setModelContext(modelContext);
         }
       }
 
@@ -4013,9 +4013,9 @@ public class RequestOrchestration extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public RequestOrchestrationActionParticipantComponent(IModelContext context) {
+      public RequestOrchestrationActionParticipantComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -4445,28 +4445,28 @@ public class RequestOrchestration extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.typeCanonical != null) {
-          this.typeCanonical.setModelContext(context);
+          this.typeCanonical.setModelContext(modelContext);
         }
         if (this.typeReference != null) {
-          this.typeReference.setModelContext(context);
+          this.typeReference.setModelContext(modelContext);
         }
         if (this.role != null) {
-          this.role.setModelContext(context);
+          this.role.setModelContext(modelContext);
         }
         if (this.function != null) {
-          this.function.setModelContext(context);
+          this.function.setModelContext(modelContext);
         }
         if (this.actor != null) {
-          this.actor.setModelContext(context);
+          this.actor.setModelContext(modelContext);
         }
       }
 
@@ -4534,9 +4534,9 @@ public class RequestOrchestration extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public RequestOrchestrationActionDynamicValueComponent(IModelContext context) {
+      public RequestOrchestrationActionDynamicValueComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -4718,16 +4718,16 @@ public class RequestOrchestration extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.path != null) {
-          this.path.setModelContext(context);
+          this.path.setModelContext(modelContext);
         }
         if (this.expression != null) {
-          this.expression.setModelContext(context);
+          this.expression.setModelContext(modelContext);
         }
       }
 
@@ -4907,9 +4907,9 @@ public class RequestOrchestration extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public RequestOrchestration(IModelContext context) {
+    public RequestOrchestration(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -4917,9 +4917,9 @@ public class RequestOrchestration extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public RequestOrchestration(IModelContext context, RequestStatus status, RequestIntent intent) {
+    public RequestOrchestration(IModelContext modelContext, RequestStatus status, RequestIntent intent) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setIntent(intent);
     }
@@ -6141,81 +6141,81 @@ public class RequestOrchestration extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.instantiatesCanonicalList != null) {
           for (CanonicalType i : this.instantiatesCanonicalList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.instantiatesUriList != null) {
           for (UriType i : this.instantiatesUriList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.replacesList != null) {
           for (Reference i : this.replacesList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.groupIdentifier != null) {
-          this.groupIdentifier.setModelContext(context);
+          this.groupIdentifier.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.intent != null) {
-          this.intent.setModelContext(context);
+          this.intent.setModelContext(modelContext);
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.authoredOn != null) {
-          this.authoredOn.setModelContext(context);
+          this.authoredOn.setModelContext(modelContext);
         }
         if (this.author != null) {
-          this.author.setModelContext(context);
+          this.author.setModelContext(modelContext);
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.goalList != null) {
           for (Reference i : this.goalList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.actionList != null) {
           for (RequestOrchestrationActionComponent i : this.actionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -6257,8 +6257,8 @@ public class RequestOrchestration extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.RequestOrchestration;
+  public String getResourceType() {
+    return "RequestOrchestration";
    }
 
  /**

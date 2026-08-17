@@ -105,9 +105,9 @@ public class Procedure extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ProcedurePerformerComponent(IModelContext context) {
+      public ProcedurePerformerComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -115,9 +115,9 @@ public class Procedure extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ProcedurePerformerComponent(IModelContext context, Reference actor) {
+      public ProcedurePerformerComponent(IModelContext modelContext, Reference actor) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setActor(actor);
       }
 
@@ -370,22 +370,22 @@ public class Procedure extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.function != null) {
-          this.function.setModelContext(context);
+          this.function.setModelContext(modelContext);
         }
         if (this.actor != null) {
-          this.actor.setModelContext(context);
+          this.actor.setModelContext(modelContext);
         }
         if (this.onBehalfOf != null) {
-          this.onBehalfOf.setModelContext(context);
+          this.onBehalfOf.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
       }
 
@@ -453,9 +453,9 @@ public class Procedure extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ProcedureFocalDeviceComponent(IModelContext context) {
+      public ProcedureFocalDeviceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -463,9 +463,9 @@ public class Procedure extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ProcedureFocalDeviceComponent(IModelContext context, Reference manipulated) {
+      public ProcedureFocalDeviceComponent(IModelContext modelContext, Reference manipulated) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setManipulated(manipulated);
       }
 
@@ -624,16 +624,16 @@ public class Procedure extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.action != null) {
-          this.action.setModelContext(context);
+          this.action.setModelContext(modelContext);
         }
         if (this.manipulated != null) {
-          this.manipulated.setModelContext(context);
+          this.manipulated.setModelContext(modelContext);
         }
       }
 
@@ -874,9 +874,9 @@ public class Procedure extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Procedure(IModelContext context) {
+    public Procedure(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -884,9 +884,9 @@ public class Procedure extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Procedure(IModelContext context, EventStatus status, Reference subject) {
+    public Procedure(IModelContext modelContext, EventStatus status, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setSubject(subject);
     }
@@ -2704,117 +2704,117 @@ public class Procedure extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.partOfList != null) {
           for (Reference i : this.partOfList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReason != null) {
-          this.statusReason.setModelContext(context);
+          this.statusReason.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.focus != null) {
-          this.focus.setModelContext(context);
+          this.focus.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.occurrence != null) {
-          this.occurrence.setModelContext(context);
+          this.occurrence.setModelContext(modelContext);
         }
         if (this.recorded != null) {
-          this.recorded.setModelContext(context);
+          this.recorded.setModelContext(modelContext);
         }
         if (this.recorder != null) {
-          this.recorder.setModelContext(context);
+          this.recorder.setModelContext(modelContext);
         }
         if (this.reported != null) {
-          this.reported.setModelContext(context);
+          this.reported.setModelContext(modelContext);
         }
         if (this.performerList != null) {
           for (ProcedurePerformerComponent i : this.performerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.bodyStructureList != null) {
           for (CodeableReference i : this.bodyStructureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.outcomeList != null) {
           for (CodeableReference i : this.outcomeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reportList != null) {
           for (Reference i : this.reportList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.complicationList != null) {
           for (CodeableReference i : this.complicationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.followUpList != null) {
           for (CodeableReference i : this.followUpList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.focalDeviceList != null) {
           for (ProcedureFocalDeviceComponent i : this.focalDeviceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.usedList != null) {
           for (CodeableReference i : this.usedList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.supportingInfoList != null) {
           for (Reference i : this.supportingInfoList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2859,8 +2859,8 @@ public class Procedure extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Procedure;
+  public String getResourceType() {
+    return "Procedure";
    }
 
  /**

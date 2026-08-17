@@ -131,8 +131,8 @@ public class Goal extends DomainResource {
 
   public static class GoalAcceptStatusEnumFactory implements EnumFactory<GoalAcceptStatus> {
     private final IModelContext modelContext;
-    public GoalAcceptStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public GoalAcceptStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public GoalAcceptStatusEnumFactory() {
       this(null);
@@ -320,8 +320,8 @@ public class Goal extends DomainResource {
 
   public static class GoalLifecycleStatusEnumFactory implements EnumFactory<GoalLifecycleStatus> {
     private final IModelContext modelContext;
-    public GoalLifecycleStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public GoalLifecycleStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public GoalLifecycleStatusEnumFactory() {
       this(null);
@@ -449,9 +449,9 @@ public class Goal extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public GoalAcceptanceComponent(IModelContext context) {
+      public GoalAcceptanceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -459,9 +459,9 @@ public class Goal extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public GoalAcceptanceComponent(IModelContext context, Reference participant) {
+      public GoalAcceptanceComponent(IModelContext modelContext, Reference participant) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setParticipant(participant);
       }
 
@@ -692,19 +692,19 @@ public class Goal extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.participant != null) {
-          this.participant.setModelContext(context);
+          this.participant.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
       }
 
@@ -779,9 +779,9 @@ public class Goal extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public GoalTargetComponent(IModelContext context) {
+      public GoalTargetComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1156,19 +1156,19 @@ public class Goal extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.measure != null) {
-          this.measure.setModelContext(context);
+          this.measure.setModelContext(modelContext);
         }
         if (this.detail != null) {
-          this.detail.setModelContext(context);
+          this.detail.setModelContext(modelContext);
         }
         if (this.due != null) {
-          this.due.setModelContext(context);
+          this.due.setModelContext(modelContext);
         }
       }
 
@@ -1344,9 +1344,9 @@ public class Goal extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Goal(IModelContext context) {
+    public Goal(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1354,9 +1354,9 @@ public class Goal extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Goal(IModelContext context, GoalLifecycleStatus lifecycleStatus, CodeableConcept description, Reference subject) {
+    public Goal(IModelContext modelContext, GoalLifecycleStatus lifecycleStatus, CodeableConcept description, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setLifecycleStatus(lifecycleStatus);
       this.setDescription(description);
       this.setSubject(subject);
@@ -2481,74 +2481,74 @@ public class Goal extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.lifecycleStatus != null) {
-          this.lifecycleStatus.setModelContext(context);
+          this.lifecycleStatus.setModelContext(modelContext);
         }
         if (this.lifecycleStatusReasonList != null) {
           for (CodeableConcept i : this.lifecycleStatusReasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.achievementStatus != null) {
-          this.achievementStatus.setModelContext(context);
+          this.achievementStatus.setModelContext(modelContext);
         }
         if (this.achievementStatusDate != null) {
-          this.achievementStatusDate.setModelContext(context);
+          this.achievementStatusDate.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.continuous != null) {
-          this.continuous.setModelContext(context);
+          this.continuous.setModelContext(modelContext);
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.start != null) {
-          this.start.setModelContext(context);
+          this.start.setModelContext(modelContext);
         }
         if (this.acceptanceList != null) {
           for (GoalAcceptanceComponent i : this.acceptanceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.targetList != null) {
           for (GoalTargetComponent i : this.targetList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.recorder != null) {
-          this.recorder.setModelContext(context);
+          this.recorder.setModelContext(modelContext);
         }
         if (this.source != null) {
-          this.source.setModelContext(context);
+          this.source.setModelContext(modelContext);
         }
         if (this.addressesList != null) {
           for (Reference i : this.addressesList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2589,8 +2589,8 @@ public class Goal extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Goal;
+  public String getResourceType() {
+    return "Goal";
    }
 
  /**

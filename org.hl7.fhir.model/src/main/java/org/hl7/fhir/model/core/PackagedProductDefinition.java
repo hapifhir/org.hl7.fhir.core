@@ -92,9 +92,9 @@ public class PackagedProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PackagedProductDefinitionLegalStatusOfSupplyComponent(IModelContext context) {
+      public PackagedProductDefinitionLegalStatusOfSupplyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -252,16 +252,16 @@ public class PackagedProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.jurisdiction != null) {
-          this.jurisdiction.setModelContext(context);
+          this.jurisdiction.setModelContext(modelContext);
         }
       }
 
@@ -392,9 +392,9 @@ public class PackagedProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PackagedProductDefinitionPackagingComponent(IModelContext context) {
+      public PackagedProductDefinitionPackagingComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1191,58 +1191,58 @@ public class PackagedProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.componentPart != null) {
-          this.componentPart.setModelContext(context);
+          this.componentPart.setModelContext(modelContext);
         }
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
         if (this.materialList != null) {
           for (CodeableConcept i : this.materialList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.alternateMaterialList != null) {
           for (CodeableConcept i : this.alternateMaterialList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.shelfLifeStorageList != null) {
           for (ProductShelfLife i : this.shelfLifeStorageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.manufacturerList != null) {
           for (Reference i : this.manufacturerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (PackagedProductDefinitionPackagingPropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.containedItemList != null) {
           for (PackagedProductDefinitionPackagingContainedItemComponent i : this.containedItemList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.packagingList != null) {
           for (PackagedProductDefinitionPackagingComponent i : this.packagingList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1316,9 +1316,9 @@ public class PackagedProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PackagedProductDefinitionPackagingPropertyComponent(IModelContext context) {
+      public PackagedProductDefinitionPackagingPropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1326,9 +1326,9 @@ public class PackagedProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PackagedProductDefinitionPackagingPropertyComponent(IModelContext context, CodeableConcept type) {
+      public PackagedProductDefinitionPackagingPropertyComponent(IModelContext modelContext, CodeableConcept type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -1582,16 +1582,16 @@ public class PackagedProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -1656,9 +1656,9 @@ public class PackagedProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PackagedProductDefinitionPackagingContainedItemComponent(IModelContext context) {
+      public PackagedProductDefinitionPackagingContainedItemComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1666,9 +1666,9 @@ public class PackagedProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PackagedProductDefinitionPackagingContainedItemComponent(IModelContext context, CodeableReference item) {
+      public PackagedProductDefinitionPackagingContainedItemComponent(IModelContext modelContext, CodeableReference item) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setItem(item);
       }
 
@@ -1827,16 +1827,16 @@ public class PackagedProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.item != null) {
-          this.item.setModelContext(context);
+          this.item.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
       }
 
@@ -1992,9 +1992,9 @@ public class PackagedProductDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public PackagedProductDefinition(IModelContext context) {
+    public PackagedProductDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -3036,70 +3036,70 @@ public class PackagedProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.packageForList != null) {
           for (Reference i : this.packageForList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusDate != null) {
-          this.statusDate.setModelContext(context);
+          this.statusDate.setModelContext(modelContext);
         }
         if (this.containedItemQuantityList != null) {
           for (Quantity i : this.containedItemQuantityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.legalStatusOfSupplyList != null) {
           for (PackagedProductDefinitionLegalStatusOfSupplyComponent i : this.legalStatusOfSupplyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.marketingStatusList != null) {
           for (MarketingStatus i : this.marketingStatusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.copackagedIndicator != null) {
-          this.copackagedIndicator.setModelContext(context);
+          this.copackagedIndicator.setModelContext(modelContext);
         }
         if (this.manufacturerList != null) {
           for (Reference i : this.manufacturerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.attachedDocumentList != null) {
           for (Reference i : this.attachedDocumentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.packaging != null) {
-          this.packaging.setModelContext(context);
+          this.packaging.setModelContext(modelContext);
         }
         if (this.characteristicList != null) {
           for (PackagedProductDefinitionPackagingPropertyComponent i : this.characteristicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3139,8 +3139,8 @@ public class PackagedProductDefinition extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.PackagedProductDefinition;
+  public String getResourceType() {
+    return "PackagedProductDefinition";
    }
 
  /**

@@ -115,9 +115,9 @@ public class RelativeTime extends BackboneType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public RelativeTime(IModelContext context) {
+    public RelativeTime(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -575,28 +575,28 @@ public class RelativeTime extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.contextReference != null) {
-          this.contextReference.setModelContext(context);
+          this.contextReference.setModelContext(modelContext);
         }
         if (this.contextDefinition != null) {
-          this.contextDefinition.setModelContext(context);
+          this.contextDefinition.setModelContext(modelContext);
         }
         if (this.contextPath != null) {
-          this.contextPath.setModelContext(context);
+          this.contextPath.setModelContext(modelContext);
         }
         if (this.contextCode != null) {
-          this.contextCode.setModelContext(context);
+          this.contextCode.setModelContext(modelContext);
         }
         if (this.offset != null) {
-          this.offset.setModelContext(context);
+          this.offset.setModelContext(modelContext);
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
       }
 

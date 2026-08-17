@@ -71,9 +71,9 @@ public class Count extends Quantity implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Count(IModelContext context) {
+    public Count(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   public String fhirType() {

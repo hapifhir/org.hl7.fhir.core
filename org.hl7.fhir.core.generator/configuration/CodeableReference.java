@@ -1,13 +1,13 @@
 
-public CodeableReference(IModelContext context, CodeableConcept cc) {
+public CodeableReference(IModelContext modelContext, CodeableConcept cc) {
   super();
-  this.modelContext = context;
+  this.modelContext = modelContext;
   setConcept(cc);
 }
 
-public CodeableReference(IModelContext context, Reference ref) {
+public CodeableReference(IModelContext modelContext, Reference ref) {
   super();
-  this.modelContext = context;
+  this.modelContext = modelContext;
   setReference(ref);
 }
 

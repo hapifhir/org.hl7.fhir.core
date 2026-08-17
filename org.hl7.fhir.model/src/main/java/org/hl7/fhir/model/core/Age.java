@@ -71,9 +71,9 @@ public class Age extends Quantity implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Age(IModelContext context) {
+    public Age(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   public String fhirType() {

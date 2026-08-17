@@ -121,8 +121,8 @@ public class Questionnaire extends MetadataResource {
 
   public static class EnableWhenBehaviorEnumFactory implements EnumFactory<EnableWhenBehavior> {
     private final IModelContext modelContext;
-    public EnableWhenBehaviorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public EnableWhenBehaviorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public EnableWhenBehaviorEnumFactory() {
       this(null);
@@ -234,8 +234,8 @@ public class Questionnaire extends MetadataResource {
 
   public static class QuestionnaireAnswerConstraintEnumFactory implements EnumFactory<QuestionnaireAnswerConstraint> {
     private final IModelContext modelContext;
-    public QuestionnaireAnswerConstraintEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public QuestionnaireAnswerConstraintEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public QuestionnaireAnswerConstraintEnumFactory() {
       this(null);
@@ -343,8 +343,8 @@ public class Questionnaire extends MetadataResource {
 
   public static class QuestionnaireItemDisabledDisplayEnumFactory implements EnumFactory<QuestionnaireItemDisabledDisplay> {
     private final IModelContext modelContext;
-    public QuestionnaireItemDisabledDisplayEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public QuestionnaireItemDisabledDisplayEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public QuestionnaireItemDisabledDisplayEnumFactory() {
       this(null);
@@ -496,8 +496,8 @@ public class Questionnaire extends MetadataResource {
 
   public static class QuestionnaireItemOperatorEnumFactory implements EnumFactory<QuestionnaireItemOperator> {
     private final IModelContext modelContext;
-    public QuestionnaireItemOperatorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public QuestionnaireItemOperatorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public QuestionnaireItemOperatorEnumFactory() {
       this(null);
@@ -759,8 +759,8 @@ public class Questionnaire extends MetadataResource {
 
   public static class QuestionnaireItemTypeUsableEnumFactory implements EnumFactory<QuestionnaireItemTypeUsable> {
     private final IModelContext modelContext;
-    public QuestionnaireItemTypeUsableEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public QuestionnaireItemTypeUsableEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public QuestionnaireItemTypeUsableEnumFactory() {
       this(null);
@@ -1026,9 +1026,9 @@ public class Questionnaire extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public QuestionnaireItemComponent(IModelContext context) {
+      public QuestionnaireItemComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1036,9 +1036,9 @@ public class Questionnaire extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public QuestionnaireItemComponent(IModelContext context, String linkId, QuestionnaireItemTypeUsable type) {
+      public QuestionnaireItemComponent(IModelContext modelContext, String linkId, QuestionnaireItemTypeUsable type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setLinkId(linkId);
         this.setType(type);
       }
@@ -2358,75 +2358,75 @@ public class Questionnaire extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.definitionList != null) {
           for (UriType i : this.definitionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.codeList != null) {
           for (Coding i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.prefix != null) {
-          this.prefix.setModelContext(context);
+          this.prefix.setModelContext(modelContext);
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.enableWhenList != null) {
           for (QuestionnaireItemEnableWhenComponent i : this.enableWhenList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.enableBehavior != null) {
-          this.enableBehavior.setModelContext(context);
+          this.enableBehavior.setModelContext(modelContext);
         }
         if (this.disabledDisplay != null) {
-          this.disabledDisplay.setModelContext(context);
+          this.disabledDisplay.setModelContext(modelContext);
         }
         if (this.required != null) {
-          this.required.setModelContext(context);
+          this.required.setModelContext(modelContext);
         }
         if (this.repeats != null) {
-          this.repeats.setModelContext(context);
+          this.repeats.setModelContext(modelContext);
         }
         if (this.readOnly != null) {
-          this.readOnly.setModelContext(context);
+          this.readOnly.setModelContext(modelContext);
         }
         if (this.maxLength != null) {
-          this.maxLength.setModelContext(context);
+          this.maxLength.setModelContext(modelContext);
         }
         if (this.answerConstraint != null) {
-          this.answerConstraint.setModelContext(context);
+          this.answerConstraint.setModelContext(modelContext);
         }
         if (this.answerValueSet != null) {
-          this.answerValueSet.setModelContext(context);
+          this.answerValueSet.setModelContext(modelContext);
         }
         if (this.answerOptionList != null) {
           for (QuestionnaireItemAnswerOptionComponent i : this.answerOptionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.initialList != null) {
           for (QuestionnaireItemInitialComponent i : this.initialList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.itemList != null) {
           for (QuestionnaireItemComponent i : this.itemList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2553,9 +2553,9 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public QuestionnaireItemEnableWhenComponent(IModelContext context) {
+      public QuestionnaireItemEnableWhenComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2563,9 +2563,9 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public QuestionnaireItemEnableWhenComponent(IModelContext context, String question, QuestionnaireItemOperator operator, DataType answer) {
+      public QuestionnaireItemEnableWhenComponent(IModelContext modelContext, String question, QuestionnaireItemOperator operator, DataType answer) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setQuestion(question);
         this.setOperator(operator);
         this.setAnswer(answer);
@@ -3049,19 +3049,19 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.question != null) {
-          this.question.setModelContext(context);
+          this.question.setModelContext(modelContext);
         }
         if (this.operator != null) {
-          this.operator.setModelContext(context);
+          this.operator.setModelContext(modelContext);
         }
         if (this.answer != null) {
-          this.answer.setModelContext(context);
+          this.answer.setModelContext(modelContext);
         }
       }
 
@@ -3129,9 +3129,9 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public QuestionnaireItemAnswerOptionComponent(IModelContext context) {
+      public QuestionnaireItemAnswerOptionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3139,9 +3139,9 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public QuestionnaireItemAnswerOptionComponent(IModelContext context, DataType value) {
+      public QuestionnaireItemAnswerOptionComponent(IModelContext modelContext, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setValue(value);
       }
 
@@ -3515,16 +3515,16 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.initialSelected != null) {
-          this.initialSelected.setModelContext(context);
+          this.initialSelected.setModelContext(modelContext);
         }
       }
 
@@ -3584,9 +3584,9 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public QuestionnaireItemInitialComponent(IModelContext context) {
+      public QuestionnaireItemInitialComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3594,9 +3594,9 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public QuestionnaireItemInitialComponent(IModelContext context, DataType value) {
+      public QuestionnaireItemInitialComponent(IModelContext modelContext, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setValue(value);
       }
 
@@ -3943,13 +3943,13 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -4171,9 +4171,9 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Questionnaire(IModelContext context) {
+    public Questionnaire(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -4181,9 +4181,9 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Questionnaire(IModelContext context, PublicationStatus status) {
+    public Questionnaire(IModelContext modelContext, PublicationStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -6148,97 +6148,97 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.derivedFromList != null) {
           for (CanonicalType i : this.derivedFromList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.subjectTypeList != null) {
           for (CodeType i : this.subjectTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.approvalDate != null) {
-          this.approvalDate.setModelContext(context);
+          this.approvalDate.setModelContext(modelContext);
         }
         if (this.lastReviewDate != null) {
-          this.lastReviewDate.setModelContext(context);
+          this.lastReviewDate.setModelContext(modelContext);
         }
         if (this.effectivePeriod != null) {
-          this.effectivePeriod.setModelContext(context);
+          this.effectivePeriod.setModelContext(modelContext);
         }
         if (this.codeList != null) {
           for (Coding i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.itemList != null) {
           for (QuestionnaireItemComponent i : this.itemList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -6288,8 +6288,8 @@ public QuestionnaireItemComponent getQuestion(String linkId) {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Questionnaire;
+  public String getResourceType() {
+    return "Questionnaire";
    }
 
  /**

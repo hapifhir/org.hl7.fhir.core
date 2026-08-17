@@ -1,4 +1,4 @@
-package org.hl7.fhir.model.core;
+package org.hl7.fhir.model;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -37,6 +37,7 @@ import java.text.ParseException;
 import java.util.UUID;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.model.core.Narrative.NarrativeStatus;
 import org.hl7.fhir.utilities.Utilities;

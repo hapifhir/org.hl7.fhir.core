@@ -161,8 +161,8 @@ public class GuidanceResponse extends DomainResource {
 
   public static class GuidanceResponseStatusEnumFactory implements EnumFactory<GuidanceResponseStatus> {
     private final IModelContext modelContext;
-    public GuidanceResponseStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public GuidanceResponseStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public GuidanceResponseStatusEnumFactory() {
       this(null);
@@ -371,9 +371,9 @@ public class GuidanceResponse extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public GuidanceResponse(IModelContext context) {
+    public GuidanceResponse(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -381,9 +381,9 @@ public class GuidanceResponse extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public GuidanceResponse(IModelContext context, DataType module, GuidanceResponseStatus status) {
+    public GuidanceResponse(IModelContext modelContext, DataType module, GuidanceResponseStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setModule(module);
       this.setStatus(status);
     }
@@ -1554,77 +1554,77 @@ public class GuidanceResponse extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.requestIdentifier != null) {
-          this.requestIdentifier.setModelContext(context);
+          this.requestIdentifier.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.module != null) {
-          this.module.setModelContext(context);
+          this.module.setModelContext(modelContext);
         }
         if (this.topicList != null) {
           for (CodeableConcept i : this.topicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.occurrenceDateTime != null) {
-          this.occurrenceDateTime.setModelContext(context);
+          this.occurrenceDateTime.setModelContext(modelContext);
         }
         if (this.performer != null) {
-          this.performer.setModelContext(context);
+          this.performer.setModelContext(modelContext);
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.evaluationMessageList != null) {
           for (Reference i : this.evaluationMessageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.inputParameters != null) {
-          this.inputParameters.setModelContext(context);
+          this.inputParameters.setModelContext(modelContext);
         }
         if (this.outputParameters != null) {
-          this.outputParameters.setModelContext(context);
+          this.outputParameters.setModelContext(modelContext);
         }
         if (this.indicator != null) {
-          this.indicator.setModelContext(context);
+          this.indicator.setModelContext(modelContext);
         }
         if (this.resultList != null) {
           for (Reference i : this.resultList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.dataRequirementList != null) {
           for (DataRequirement i : this.dataRequirementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1665,8 +1665,8 @@ public class GuidanceResponse extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.GuidanceResponse;
+  public String getResourceType() {
+    return "GuidanceResponse";
    }
 
  /**

@@ -60,13 +60,13 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public CodeType(IModelContext context) {
+	public CodeType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
-  public CodeType(IModelContext context, String theCode) {
-    this.modelContext = context;
+  public CodeType(IModelContext modelContext, String theCode) {
+    this.modelContext = modelContext;
     setValue(theCode);
   }
 
@@ -74,8 +74,8 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
     setValue(theCode);
   }
 
-  public CodeType(IModelContext context, String theCode, Element source) {
-    this.modelContext = context;
+  public CodeType(IModelContext modelContext, String theCode, Element source) {
+    this.modelContext = modelContext;
     setValue(theCode);
     setId(source.getId());
     getExtension().addAll(source.getExtension());

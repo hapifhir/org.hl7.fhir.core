@@ -211,8 +211,8 @@ public class DiagnosticReport extends DomainResource {
 
   public static class DiagnosticReportStatusEnumFactory implements EnumFactory<DiagnosticReportStatus> {
     private final IModelContext modelContext;
-    public DiagnosticReportStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public DiagnosticReportStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public DiagnosticReportStatusEnumFactory() {
       this(null);
@@ -338,9 +338,9 @@ public class DiagnosticReport extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DiagnosticReportSupportingInfoComponent(IModelContext context) {
+      public DiagnosticReportSupportingInfoComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -348,9 +348,9 @@ public class DiagnosticReport extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DiagnosticReportSupportingInfoComponent(IModelContext context, CodeableConcept type, Reference reference) {
+      public DiagnosticReportSupportingInfoComponent(IModelContext modelContext, CodeableConcept type, Reference reference) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setReference(reference);
       }
@@ -510,16 +510,16 @@ public class DiagnosticReport extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.reference != null) {
-          this.reference.setModelContext(context);
+          this.reference.setModelContext(modelContext);
         }
       }
 
@@ -584,9 +584,9 @@ public class DiagnosticReport extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DiagnosticReportMediaComponent(IModelContext context) {
+      public DiagnosticReportMediaComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -594,9 +594,9 @@ public class DiagnosticReport extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DiagnosticReportMediaComponent(IModelContext context, Reference link) {
+      public DiagnosticReportMediaComponent(IModelContext modelContext, Reference link) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setLink(link);
       }
 
@@ -779,16 +779,16 @@ public class DiagnosticReport extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
         if (this.link != null) {
-          this.link.setModelContext(context);
+          this.link.setModelContext(modelContext);
         }
       }
 
@@ -1031,9 +1031,9 @@ public class DiagnosticReport extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public DiagnosticReport(IModelContext context) {
+    public DiagnosticReport(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1041,9 +1041,9 @@ public class DiagnosticReport extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public DiagnosticReport(IModelContext context, DiagnosticReportStatus status, CodeableConcept code) {
+    public DiagnosticReport(IModelContext modelContext, DiagnosticReportStatus status, CodeableConcept code) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setCode(code);
     }
@@ -2861,125 +2861,125 @@ public class DiagnosticReport extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReason != null) {
-          this.statusReason.setModelContext(context);
+          this.statusReason.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.relatesToList != null) {
           for (RelatedArtifact i : this.relatesToList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.effective != null) {
-          this.effective.setModelContext(context);
+          this.effective.setModelContext(modelContext);
         }
         if (this.issued != null) {
-          this.issued.setModelContext(context);
+          this.issued.setModelContext(modelContext);
         }
         if (this.procedureList != null) {
           for (Reference i : this.procedureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.performerList != null) {
           for (Reference i : this.performerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.resultsInterpreterList != null) {
           for (Reference i : this.resultsInterpreterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.specimenList != null) {
           for (Reference i : this.specimenList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.resultList != null) {
           for (Reference i : this.resultList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.studyList != null) {
           for (Reference i : this.studyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.supportingInfoList != null) {
           for (DiagnosticReportSupportingInfoComponent i : this.supportingInfoList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.mediaList != null) {
           for (DiagnosticReportMediaComponent i : this.mediaList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.composition != null) {
-          this.composition.setModelContext(context);
+          this.composition.setModelContext(modelContext);
         }
         if (this.conclusion != null) {
-          this.conclusion.setModelContext(context);
+          this.conclusion.setModelContext(modelContext);
         }
         if (this.conclusionCodeList != null) {
           for (CodeableReference i : this.conclusionCodeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.recommendationList != null) {
           for (CodeableReference i : this.recommendationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.presentedFormList != null) {
           for (Attachment i : this.presentedFormList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.communicationList != null) {
           for (Reference i : this.communicationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.comparison != null) {
-          this.comparison.setModelContext(context);
+          this.comparison.setModelContext(modelContext);
         }
       }
 
@@ -3025,8 +3025,8 @@ public class DiagnosticReport extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.DiagnosticReport;
+  public String getResourceType() {
+    return "DiagnosticReport";
    }
 
  /**

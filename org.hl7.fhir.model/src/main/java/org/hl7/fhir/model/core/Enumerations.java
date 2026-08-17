@@ -148,8 +148,8 @@ public class Enumerations {
 
   public static class ActionApplicabilityBehaviorEnumFactory implements EnumFactory<ActionApplicabilityBehavior> {
     private final IModelContext modelContext;
-    public ActionApplicabilityBehaviorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ActionApplicabilityBehaviorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ActionApplicabilityBehaviorEnumFactory() {
       this(null);
@@ -254,8 +254,8 @@ public class Enumerations {
 
   public static class ActionCardinalityBehaviorEnumFactory implements EnumFactory<ActionCardinalityBehavior> {
     private final IModelContext modelContext;
-    public ActionCardinalityBehaviorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ActionCardinalityBehaviorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ActionCardinalityBehaviorEnumFactory() {
       this(null);
@@ -370,8 +370,8 @@ public class Enumerations {
 
   public static class ActionConditionKindEnumFactory implements EnumFactory<ActionConditionKind> {
     private final IModelContext modelContext;
-    public ActionConditionKindEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ActionConditionKindEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ActionConditionKindEnumFactory() {
       this(null);
@@ -492,8 +492,8 @@ public class Enumerations {
 
   public static class ActionGroupingBehaviorEnumFactory implements EnumFactory<ActionGroupingBehavior> {
     private final IModelContext modelContext;
-    public ActionGroupingBehaviorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ActionGroupingBehaviorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ActionGroupingBehaviorEnumFactory() {
       this(null);
@@ -684,8 +684,8 @@ public class Enumerations {
 
   public static class ActionParticipantTypeEnumFactory implements EnumFactory<ActionParticipantType> {
     private final IModelContext modelContext;
-    public ActionParticipantTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ActionParticipantTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ActionParticipantTypeEnumFactory() {
       this(null);
@@ -838,8 +838,8 @@ public class Enumerations {
 
   public static class ActionPrecheckBehaviorEnumFactory implements EnumFactory<ActionPrecheckBehavior> {
     private final IModelContext modelContext;
-    public ActionPrecheckBehaviorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ActionPrecheckBehaviorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ActionPrecheckBehaviorEnumFactory() {
       this(null);
@@ -1014,8 +1014,8 @@ public class Enumerations {
 
   public static class ActionRelationshipTypeEnumFactory implements EnumFactory<ActionRelationshipType> {
     private final IModelContext modelContext;
-    public ActionRelationshipTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ActionRelationshipTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ActionRelationshipTypeEnumFactory() {
       this(null);
@@ -1172,8 +1172,8 @@ public class Enumerations {
 
   public static class ActionRequiredBehaviorEnumFactory implements EnumFactory<ActionRequiredBehavior> {
     private final IModelContext modelContext;
-    public ActionRequiredBehaviorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ActionRequiredBehaviorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ActionRequiredBehaviorEnumFactory() {
       this(null);
@@ -1324,8 +1324,8 @@ public class Enumerations {
 
   public static class ActionSelectionBehaviorEnumFactory implements EnumFactory<ActionSelectionBehavior> {
     private final IModelContext modelContext;
-    public ActionSelectionBehaviorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ActionSelectionBehaviorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ActionSelectionBehaviorEnumFactory() {
       this(null);
@@ -1474,8 +1474,8 @@ public class Enumerations {
 
   public static class ActorDefinitionActorTypeEnumFactory implements EnumFactory<ActorDefinitionActorType> {
     private final IModelContext modelContext;
-    public ActorDefinitionActorTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ActorDefinitionActorTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ActorDefinitionActorTypeEnumFactory() {
       this(null);
@@ -1612,8 +1612,8 @@ public class Enumerations {
 
   public static class AdministrativeGenderEnumFactory implements EnumFactory<AdministrativeGender> {
     private final IModelContext modelContext;
-    public AdministrativeGenderEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AdministrativeGenderEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AdministrativeGenderEnumFactory() {
       this(null);
@@ -6560,8 +6560,8 @@ public class Enumerations {
 
   public static class AllLanguagesEnumFactory implements EnumFactory<AllLanguages> {
     private final IModelContext modelContext;
-    public AllLanguagesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AllLanguagesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AllLanguagesEnumFactory() {
       this(null);
@@ -9594,8 +9594,8 @@ public class Enumerations {
 
   public static class BindingStrengthEnumFactory implements EnumFactory<BindingStrength> {
     private final IModelContext modelContext;
-    public BindingStrengthEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public BindingStrengthEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public BindingStrengthEnumFactory() {
       this(null);
@@ -9728,8 +9728,8 @@ public class Enumerations {
 
   public static class CapabilityStatementKindEnumFactory implements EnumFactory<CapabilityStatementKind> {
     private final IModelContext modelContext;
-    public CapabilityStatementKindEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public CapabilityStatementKindEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public CapabilityStatementKindEnumFactory() {
       this(null);
@@ -9860,8 +9860,8 @@ public class Enumerations {
 
   public static class ClaimProcessingCodesEnumFactory implements EnumFactory<ClaimProcessingCodes> {
     private final IModelContext modelContext;
-    public ClaimProcessingCodesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ClaimProcessingCodesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ClaimProcessingCodesEnumFactory() {
       this(null);
@@ -10008,8 +10008,8 @@ public class Enumerations {
 
   public static class CodeSystemContentModeEnumFactory implements EnumFactory<CodeSystemContentMode> {
     private final IModelContext modelContext;
-    public CodeSystemContentModeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public CodeSystemContentModeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public CodeSystemContentModeEnumFactory() {
       this(null);
@@ -10222,8 +10222,8 @@ public class Enumerations {
 
   public static class CompositionStatusEnumFactory implements EnumFactory<CompositionStatus> {
     private final IModelContext modelContext;
-    public CompositionStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public CompositionStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public CompositionStatusEnumFactory() {
       this(null);
@@ -10412,8 +10412,8 @@ public class Enumerations {
 
   public static class ConceptMapRelationshipEnumFactory implements EnumFactory<ConceptMapRelationship> {
     private final IModelContext modelContext;
-    public ConceptMapRelationshipEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ConceptMapRelationshipEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ConceptMapRelationshipEnumFactory() {
       this(null);
@@ -12336,8 +12336,8 @@ public class Enumerations {
 
   public static class CurrenciesEnumFactory implements EnumFactory<Currencies> {
     private final IModelContext modelContext;
-    public CurrenciesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public CurrenciesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public CurrenciesEnumFactory() {
       this(null);
@@ -13572,8 +13572,8 @@ public class Enumerations {
 
   public static class DaysOfWeekEnumFactory implements EnumFactory<DaysOfWeek> {
     private final IModelContext modelContext;
-    public DaysOfWeekEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public DaysOfWeekEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public DaysOfWeekEnumFactory() {
       this(null);
@@ -13768,8 +13768,8 @@ public class Enumerations {
 
   public static class EventStatusEnumFactory implements EnumFactory<EventStatus> {
     private final IModelContext modelContext;
-    public EventStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public EventStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public EventStatusEnumFactory() {
       this(null);
@@ -15850,8 +15850,8 @@ public class Enumerations {
 
   public static class FHIRTypesEnumFactory implements EnumFactory<FHIRTypes> {
     private final IModelContext modelContext;
-    public FHIRTypesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public FHIRTypesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public FHIRTypesEnumFactory() {
       this(null);
@@ -17757,8 +17757,8 @@ public class Enumerations {
 
   public static class FHIRVersionEnumFactory implements EnumFactory<FHIRVersion> {
     private final IModelContext modelContext;
-    public FHIRVersionEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public FHIRVersionEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public FHIRVersionEnumFactory() {
       this(null);
@@ -18335,8 +18335,8 @@ public class Enumerations {
 
   public static class FilterOperatorEnumFactory implements EnumFactory<FilterOperator> {
     private final IModelContext modelContext;
-    public FilterOperatorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public FilterOperatorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public FilterOperatorEnumFactory() {
       this(null);
@@ -18521,8 +18521,8 @@ public class Enumerations {
 
   public static class FinancialResourceStatusCodesEnumFactory implements EnumFactory<FinancialResourceStatusCodes> {
     private final IModelContext modelContext;
-    public FinancialResourceStatusCodesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public FinancialResourceStatusCodesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public FinancialResourceStatusCodesEnumFactory() {
       this(null);
@@ -18739,8 +18739,8 @@ public class Enumerations {
 
   public static class ObservationStatusEnumFactory implements EnumFactory<ObservationStatus> {
     private final IModelContext modelContext;
-    public ObservationStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ObservationStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ObservationStatusEnumFactory() {
       this(null);
@@ -18905,8 +18905,8 @@ public class Enumerations {
 
   public static class OperationParameterUseEnumFactory implements EnumFactory<OperationParameterUse> {
     private final IModelContext modelContext;
-    public OperationParameterUseEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public OperationParameterUseEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public OperationParameterUseEnumFactory() {
       this(null);
@@ -19031,8 +19031,8 @@ public class Enumerations {
 
   public static class PublicationStatusEnumFactory implements EnumFactory<PublicationStatus> {
     private final IModelContext modelContext;
-    public PublicationStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public PublicationStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public PublicationStatusEnumFactory() {
       this(null);
@@ -19189,8 +19189,8 @@ public class Enumerations {
 
   public static class QuantityComparatorEnumFactory implements EnumFactory<QuantityComparator> {
     private final IModelContext modelContext;
-    public QuantityComparatorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public QuantityComparatorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public QuantityComparatorEnumFactory() {
       this(null);
@@ -19409,8 +19409,8 @@ public class Enumerations {
 
   public static class RequestIntentEnumFactory implements EnumFactory<RequestIntent> {
     private final IModelContext modelContext;
-    public RequestIntentEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public RequestIntentEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public RequestIntentEnumFactory() {
       this(null);
@@ -19589,8 +19589,8 @@ public class Enumerations {
 
   public static class RequestPriorityEnumFactory implements EnumFactory<RequestPriority> {
     private final IModelContext modelContext;
-    public RequestPriorityEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public RequestPriorityEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public RequestPriorityEnumFactory() {
       this(null);
@@ -19767,8 +19767,8 @@ public class Enumerations {
 
   public static class RequestStatusEnumFactory implements EnumFactory<RequestStatus> {
     private final IModelContext modelContext;
-    public RequestStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public RequestStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public RequestStatusEnumFactory() {
       this(null);
@@ -19979,8 +19979,8 @@ public class Enumerations {
 
   public static class SearchComparatorEnumFactory implements EnumFactory<SearchComparator> {
     private final IModelContext modelContext;
-    public SearchComparatorEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SearchComparatorEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SearchComparatorEnumFactory() {
       this(null);
@@ -20257,8 +20257,8 @@ public class Enumerations {
 
   public static class SearchModifierCodeEnumFactory implements EnumFactory<SearchModifierCode> {
     private final IModelContext modelContext;
-    public SearchModifierCodeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SearchModifierCodeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SearchModifierCodeEnumFactory() {
       this(null);
@@ -20521,8 +20521,8 @@ public class Enumerations {
 
   public static class SearchParamTypeEnumFactory implements EnumFactory<SearchParamType> {
     private final IModelContext modelContext;
-    public SearchParamTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SearchParamTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SearchParamTypeEnumFactory() {
       this(null);
@@ -20705,8 +20705,8 @@ public class Enumerations {
 
   public static class SubscriptionStatusCodesEnumFactory implements EnumFactory<SubscriptionStatusCodes> {
     private final IModelContext modelContext;
-    public SubscriptionStatusCodesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SubscriptionStatusCodesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SubscriptionStatusCodesEnumFactory() {
       this(null);
@@ -20839,8 +20839,8 @@ public class Enumerations {
 
   public static class UseEnumFactory implements EnumFactory<Use> {
     private final IModelContext modelContext;
-    public UseEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public UseEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public UseEnumFactory() {
       this(null);

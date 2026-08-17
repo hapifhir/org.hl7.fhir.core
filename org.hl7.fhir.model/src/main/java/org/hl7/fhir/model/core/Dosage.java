@@ -96,9 +96,9 @@ public class Dosage extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DosageDoseAndRateComponent(IModelContext context) {
+      public DosageDoseAndRateComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -433,19 +433,19 @@ public class Dosage extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.dose != null) {
-          this.dose.setModelContext(context);
+          this.dose.setModelContext(modelContext);
         }
         if (this.rate != null) {
-          this.rate.setModelContext(context);
+          this.rate.setModelContext(modelContext);
         }
       }
 
@@ -584,9 +584,9 @@ public class Dosage extends BackboneType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Dosage(IModelContext context) {
+    public Dosage(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1375,54 +1375,54 @@ public class Dosage extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.conditionList != null) {
           for (DosageCondition i : this.conditionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
         if (this.additionalInstructionList != null) {
           for (CodeableConcept i : this.additionalInstructionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.patientInstruction != null) {
-          this.patientInstruction.setModelContext(context);
+          this.patientInstruction.setModelContext(modelContext);
         }
         if (this.timing != null) {
-          this.timing.setModelContext(context);
+          this.timing.setModelContext(modelContext);
         }
         if (this.asNeeded != null) {
-          this.asNeeded.setModelContext(context);
+          this.asNeeded.setModelContext(modelContext);
         }
         if (this.asNeededForList != null) {
           for (CodeableConcept i : this.asNeededForList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.site != null) {
-          this.site.setModelContext(context);
+          this.site.setModelContext(modelContext);
         }
         if (this.route != null) {
-          this.route.setModelContext(context);
+          this.route.setModelContext(modelContext);
         }
         if (this.method != null) {
-          this.method.setModelContext(context);
+          this.method.setModelContext(modelContext);
         }
         if (this.doseAndRateList != null) {
           for (DosageDoseAndRateComponent i : this.doseAndRateList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.safety != null) {
-          this.safety.setModelContext(context);
+          this.safety.setModelContext(modelContext);
         }
       }
 

@@ -131,8 +131,8 @@ public class NutritionProduct extends DomainResource {
 
   public static class NutritionProductStatusEnumFactory implements EnumFactory<NutritionProductStatus> {
     private final IModelContext modelContext;
-    public NutritionProductStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public NutritionProductStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public NutritionProductStatusEnumFactory() {
       this(null);
@@ -210,9 +210,9 @@ public class NutritionProduct extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public NutritionProductNutrientComponent(IModelContext context) {
+      public NutritionProductNutrientComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -220,9 +220,9 @@ public class NutritionProduct extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public NutritionProductNutrientComponent(IModelContext context, CodeableReference item) {
+      public NutritionProductNutrientComponent(IModelContext modelContext, CodeableReference item) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setItem(item);
       }
 
@@ -416,16 +416,16 @@ public class NutritionProduct extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.item != null) {
-          this.item.setModelContext(context);
+          this.item.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
       }
 
@@ -498,9 +498,9 @@ public class NutritionProduct extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public NutritionProductIngredientComponent(IModelContext context) {
+      public NutritionProductIngredientComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -508,9 +508,9 @@ public class NutritionProduct extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public NutritionProductIngredientComponent(IModelContext context, CodeableReference item) {
+      public NutritionProductIngredientComponent(IModelContext modelContext, CodeableReference item) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setItem(item);
       }
 
@@ -771,19 +771,19 @@ public class NutritionProduct extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.item != null) {
-          this.item.setModelContext(context);
+          this.item.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
         if (this.allergen != null) {
-          this.allergen.setModelContext(context);
+          this.allergen.setModelContext(modelContext);
         }
       }
 
@@ -850,9 +850,9 @@ public class NutritionProduct extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public NutritionProductCharacteristicComponent(IModelContext context) {
+      public NutritionProductCharacteristicComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -860,9 +860,9 @@ public class NutritionProduct extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public NutritionProductCharacteristicComponent(IModelContext context, CodeableConcept type, DataType value) {
+      public NutritionProductCharacteristicComponent(IModelContext modelContext, CodeableConcept type, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setValue(value);
       }
@@ -1137,16 +1137,16 @@ public class NutritionProduct extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -1246,9 +1246,9 @@ public class NutritionProduct extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public NutritionProductInstanceComponent(IModelContext context) {
+      public NutritionProductInstanceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1759,33 +1759,33 @@ public class NutritionProduct extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.lotNumber != null) {
-          this.lotNumber.setModelContext(context);
+          this.lotNumber.setModelContext(modelContext);
         }
         if (this.expiry != null) {
-          this.expiry.setModelContext(context);
+          this.expiry.setModelContext(modelContext);
         }
         if (this.useBy != null) {
-          this.useBy.setModelContext(context);
+          this.useBy.setModelContext(modelContext);
         }
         if (this.biologicalSourceEvent != null) {
-          this.biologicalSourceEvent.setModelContext(context);
+          this.biologicalSourceEvent.setModelContext(modelContext);
         }
       }
 
@@ -1919,9 +1919,9 @@ public class NutritionProduct extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public NutritionProduct(IModelContext context) {
+    public NutritionProduct(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -2710,56 +2710,56 @@ public class NutritionProduct extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.manufacturerList != null) {
           for (Reference i : this.manufacturerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.nutrientList != null) {
           for (NutritionProductNutrientComponent i : this.nutrientList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.ingredientSummary != null) {
-          this.ingredientSummary.setModelContext(context);
+          this.ingredientSummary.setModelContext(modelContext);
         }
         if (this.ingredientList != null) {
           for (NutritionProductIngredientComponent i : this.ingredientList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.energy != null) {
-          this.energy.setModelContext(context);
+          this.energy.setModelContext(modelContext);
         }
         if (this.characteristicList != null) {
           for (NutritionProductCharacteristicComponent i : this.characteristicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.instanceList != null) {
           for (NutritionProductInstanceComponent i : this.instanceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2796,8 +2796,8 @@ public class NutritionProduct extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.NutritionProduct;
+  public String getResourceType() {
+    return "NutritionProduct";
    }
 
  /**

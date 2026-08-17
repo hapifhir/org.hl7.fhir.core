@@ -144,9 +144,9 @@ public class SampledData extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public SampledData(IModelContext context) {
+    public SampledData(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -154,9 +154,9 @@ public class SampledData extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public SampledData(IModelContext context, Quantity origin, String intervalUnit, int dimensions) {
+    public SampledData(IModelContext modelContext, Quantity origin, String intervalUnit, int dimensions) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setOrigin(origin);
       this.setIntervalUnit(intervalUnit);
       this.setDimensions(dimensions);
@@ -978,40 +978,40 @@ public class SampledData extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.origin != null) {
-          this.origin.setModelContext(context);
+          this.origin.setModelContext(modelContext);
         }
         if (this.interval != null) {
-          this.interval.setModelContext(context);
+          this.interval.setModelContext(modelContext);
         }
         if (this.intervalUnit != null) {
-          this.intervalUnit.setModelContext(context);
+          this.intervalUnit.setModelContext(modelContext);
         }
         if (this.factor != null) {
-          this.factor.setModelContext(context);
+          this.factor.setModelContext(modelContext);
         }
         if (this.lowerLimit != null) {
-          this.lowerLimit.setModelContext(context);
+          this.lowerLimit.setModelContext(modelContext);
         }
         if (this.upperLimit != null) {
-          this.upperLimit.setModelContext(context);
+          this.upperLimit.setModelContext(modelContext);
         }
         if (this.dimensions != null) {
-          this.dimensions.setModelContext(context);
+          this.dimensions.setModelContext(modelContext);
         }
         if (this.codeMap != null) {
-          this.codeMap.setModelContext(context);
+          this.codeMap.setModelContext(modelContext);
         }
         if (this.offsets != null) {
-          this.offsets.setModelContext(context);
+          this.offsets.setModelContext(modelContext);
         }
         if (this.data != null) {
-          this.data.setModelContext(context);
+          this.data.setModelContext(modelContext);
         }
       }
 

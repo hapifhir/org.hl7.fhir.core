@@ -62,16 +62,16 @@ public class UnsignedIntType extends IntegerType {
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public UnsignedIntType(IModelContext context) {
+	public UnsignedIntType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
 	/**
 	 * Constructor
 	 */
-	public UnsignedIntType(IModelContext context, int theInteger) {
-    this.modelContext = context;
+	public UnsignedIntType(IModelContext modelContext, int theInteger) {
+    this.modelContext = modelContext;
 		setValue(theInteger);
 	}
 
@@ -83,8 +83,8 @@ public class UnsignedIntType extends IntegerType {
 	 * @throws IllegalArgumentException
 	 *             If the string is not a valid integer representation
 	 */
-	public UnsignedIntType(IModelContext context, String theIntegerAsString) {
-    this.modelContext = context;
+	public UnsignedIntType(IModelContext modelContext, String theIntegerAsString) {
+    this.modelContext = modelContext;
 		setValueAsString(theIntegerAsString);
 	}
 
@@ -113,8 +113,8 @@ public class UnsignedIntType extends IntegerType {
 	 * @param theValue The value
 	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
 	 */
-	public UnsignedIntType(IModelContext context, Long theValue) {
-    this.modelContext = context;
+	public UnsignedIntType(IModelContext modelContext, Long theValue) {
+    this.modelContext = modelContext;
 	    if (theValue < 0 || theValue > java.lang.Integer.MAX_VALUE) {
 	        throw new IllegalArgumentException
 	            (theValue + " cannot be cast to int without changing its value.");

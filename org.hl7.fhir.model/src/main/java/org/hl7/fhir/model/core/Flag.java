@@ -131,8 +131,8 @@ public class Flag extends DomainResource {
 
   public static class FlagStatusEnumFactory implements EnumFactory<FlagStatus> {
     private final IModelContext modelContext;
-    public FlagStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public FlagStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public FlagStatusEnumFactory() {
       this(null);
@@ -259,9 +259,9 @@ public class Flag extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Flag(IModelContext context) {
+    public Flag(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -269,9 +269,9 @@ public class Flag extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Flag(IModelContext context, CodeableConcept code, Reference subject) {
+    public Flag(IModelContext modelContext, CodeableConcept code, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setCode(code);
       this.setSubject(subject);
     }
@@ -856,42 +856,42 @@ public class Flag extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.author != null) {
-          this.author.setModelContext(context);
+          this.author.setModelContext(modelContext);
         }
         if (this.supportingInfoList != null) {
           for (Reference i : this.supportingInfoList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -925,8 +925,8 @@ public class Flag extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Flag;
+  public String getResourceType() {
+    return "Flag";
    }
 
  /**

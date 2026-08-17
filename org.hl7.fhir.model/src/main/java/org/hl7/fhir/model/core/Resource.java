@@ -104,9 +104,9 @@ public abstract class Resource extends BaseResource implements IAnyResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Resource(IModelContext context) {
+    public Resource(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -431,22 +431,22 @@ public abstract class Resource extends BaseResource implements IAnyResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.id != null) {
-          this.id.setModelContext(context);
+          this.id.setModelContext(modelContext);
         }
         if (this.meta != null) {
-          this.meta.setModelContext(context);
+          this.meta.setModelContext(modelContext);
         }
         if (this.implicitRules != null) {
-          this.implicitRules.setModelContext(context);
+          this.implicitRules.setModelContext(modelContext);
         }
         if (this.language != null) {
-          this.language.setModelContext(context);
+          this.language.setModelContext(modelContext);
         }
       }
 
@@ -487,7 +487,7 @@ public abstract class Resource extends BaseResource implements IAnyResource {
   public void setIdBase(String value) {
     setId(value);
   }
-  public abstract ResourceType getResourceType();
+  public abstract String getResourceType();
   
   public String getLanguage(String defValue) {
     return hasLanguage() ? getLanguage() : defValue;

@@ -191,8 +191,8 @@ public class Task extends DomainResource {
 
   public static class TaskIntentEnumFactory implements EnumFactory<TaskIntent> {
     private final IModelContext modelContext;
-    public TaskIntentEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public TaskIntentEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public TaskIntentEnumFactory() {
       this(null);
@@ -446,8 +446,8 @@ public class Task extends DomainResource {
 
   public static class TaskStatusEnumFactory implements EnumFactory<TaskStatus> {
     private final IModelContext modelContext;
-    public TaskStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public TaskStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public TaskStatusEnumFactory() {
       this(null);
@@ -577,9 +577,9 @@ public class Task extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TaskFocusComponent(IModelContext context) {
+      public TaskFocusComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -587,9 +587,9 @@ public class Task extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TaskFocusComponent(IModelContext context, DataType value) {
+      public TaskFocusComponent(IModelContext modelContext, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setValue(value);
       }
 
@@ -736,13 +736,13 @@ public class Task extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -808,9 +808,9 @@ public class Task extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TaskPerformerComponent(IModelContext context) {
+      public TaskPerformerComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -818,9 +818,9 @@ public class Task extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TaskPerformerComponent(IModelContext context, Reference actor) {
+      public TaskPerformerComponent(IModelContext modelContext, Reference actor) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setActor(actor);
       }
 
@@ -979,16 +979,16 @@ public class Task extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.function != null) {
-          this.function.setModelContext(context);
+          this.function.setModelContext(modelContext);
         }
         if (this.actor != null) {
-          this.actor.setModelContext(context);
+          this.actor.setModelContext(modelContext);
         }
       }
 
@@ -1060,9 +1060,9 @@ public class Task extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TaskRestrictionComponent(IModelContext context) {
+      public TaskRestrictionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1309,20 +1309,20 @@ public class Task extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.repetitions != null) {
-          this.repetitions.setModelContext(context);
+          this.repetitions.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.recipientList != null) {
           for (Reference i : this.recipientList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1391,9 +1391,9 @@ public class Task extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TaskInputComponent(IModelContext context) {
+      public TaskInputComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1401,9 +1401,9 @@ public class Task extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TaskInputComponent(IModelContext context, CodeableConcept type, DataType value) {
+      public TaskInputComponent(IModelContext modelContext, CodeableConcept type, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setValue(value);
       }
@@ -2658,16 +2658,16 @@ public class Task extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -2733,9 +2733,9 @@ public class Task extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TaskOutputComponent(IModelContext context) {
+      public TaskOutputComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2743,9 +2743,9 @@ public class Task extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TaskOutputComponent(IModelContext context, CodeableConcept type, DataType value) {
+      public TaskOutputComponent(IModelContext modelContext, CodeableConcept type, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setValue(value);
       }
@@ -4000,16 +4000,16 @@ public class Task extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -4283,9 +4283,9 @@ public class Task extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Task(IModelContext context) {
+    public Task(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -4293,9 +4293,9 @@ public class Task extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Task(IModelContext context, TaskStatus status, TaskIntent intent) {
+    public Task(IModelContext modelContext, TaskStatus status, TaskIntent intent) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setIntent(intent);
     }
@@ -6268,128 +6268,128 @@ public class Task extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.groupIdentifier != null) {
-          this.groupIdentifier.setModelContext(context);
+          this.groupIdentifier.setModelContext(modelContext);
         }
         if (this.partOfList != null) {
           for (Reference i : this.partOfList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReasonList != null) {
           for (CodeableReference i : this.statusReasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.businessStatus != null) {
-          this.businessStatus.setModelContext(context);
+          this.businessStatus.setModelContext(modelContext);
         }
         if (this.intent != null) {
-          this.intent.setModelContext(context);
+          this.intent.setModelContext(modelContext);
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.doNotPerform != null) {
-          this.doNotPerform.setModelContext(context);
+          this.doNotPerform.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.focusList != null) {
           for (TaskFocusComponent i : this.focusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.for_ != null) {
-          this.for_.setModelContext(context);
+          this.for_.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.requestedPeriod != null) {
-          this.requestedPeriod.setModelContext(context);
+          this.requestedPeriod.setModelContext(modelContext);
         }
         if (this.executionPeriod != null) {
-          this.executionPeriod.setModelContext(context);
+          this.executionPeriod.setModelContext(modelContext);
         }
         if (this.authoredOn != null) {
-          this.authoredOn.setModelContext(context);
+          this.authoredOn.setModelContext(modelContext);
         }
         if (this.lastModified != null) {
-          this.lastModified.setModelContext(context);
+          this.lastModified.setModelContext(modelContext);
         }
         if (this.requester != null) {
-          this.requester.setModelContext(context);
+          this.requester.setModelContext(modelContext);
         }
         if (this.requestedPerformerList != null) {
           for (CodeableReference i : this.requestedPerformerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.owner != null) {
-          this.owner.setModelContext(context);
+          this.owner.setModelContext(modelContext);
         }
         if (this.performerList != null) {
           for (TaskPerformerComponent i : this.performerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.insuranceList != null) {
           for (Reference i : this.insuranceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relevantHistoryList != null) {
           for (Reference i : this.relevantHistoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.restriction != null) {
-          this.restriction.setModelContext(context);
+          this.restriction.setModelContext(modelContext);
         }
         if (this.inputList != null) {
           for (TaskInputComponent i : this.inputList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.outputList != null) {
           for (TaskOutputComponent i : this.outputList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -6440,8 +6440,8 @@ public class Task extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Task;
+  public String getResourceType() {
+    return "Task";
    }
 
  /**

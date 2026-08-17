@@ -98,9 +98,9 @@ public class Condition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConditionStageComponent(IModelContext context) {
+      public ConditionStageComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -327,21 +327,21 @@ public class Condition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.summary != null) {
-          this.summary.setModelContext(context);
+          this.summary.setModelContext(modelContext);
         }
         if (this.assessmentList != null) {
           for (Reference i : this.assessmentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
       }
 
@@ -518,9 +518,9 @@ public class Condition extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Condition(IModelContext context) {
+    public Condition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -528,9 +528,9 @@ public class Condition extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Condition(IModelContext context, CodeableConcept clinicalStatus, Reference subject) {
+    public Condition(IModelContext modelContext, CodeableConcept clinicalStatus, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setClinicalStatus(clinicalStatus);
       this.setSubject(subject);
     }
@@ -1746,72 +1746,72 @@ public class Condition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.clinicalStatus != null) {
-          this.clinicalStatus.setModelContext(context);
+          this.clinicalStatus.setModelContext(modelContext);
         }
         if (this.verificationStatus != null) {
-          this.verificationStatus.setModelContext(context);
+          this.verificationStatus.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.severity != null) {
-          this.severity.setModelContext(context);
+          this.severity.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.bodyStructureList != null) {
           for (CodeableReference i : this.bodyStructureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.onset != null) {
-          this.onset.setModelContext(context);
+          this.onset.setModelContext(modelContext);
         }
         if (this.abatement != null) {
-          this.abatement.setModelContext(context);
+          this.abatement.setModelContext(modelContext);
         }
         if (this.recordedDate != null) {
-          this.recordedDate.setModelContext(context);
+          this.recordedDate.setModelContext(modelContext);
         }
         if (this.recorder != null) {
-          this.recorder.setModelContext(context);
+          this.recorder.setModelContext(modelContext);
         }
         if (this.asserter != null) {
-          this.asserter.setModelContext(context);
+          this.asserter.setModelContext(modelContext);
         }
         if (this.stageList != null) {
           for (ConditionStageComponent i : this.stageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.evidenceList != null) {
           for (CodeableReference i : this.evidenceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1850,8 +1850,8 @@ public class Condition extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Condition;
+  public String getResourceType() {
+    return "Condition";
    }
 
  /**

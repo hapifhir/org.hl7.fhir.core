@@ -121,8 +121,8 @@ public class Specimen extends DomainResource {
 
   public static class SpecimenCombinedEnumFactory implements EnumFactory<SpecimenCombined> {
     private final IModelContext modelContext;
-    public SpecimenCombinedEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SpecimenCombinedEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SpecimenCombinedEnumFactory() {
       this(null);
@@ -244,8 +244,8 @@ public class Specimen extends DomainResource {
 
   public static class SpecimenStatusEnumFactory implements EnumFactory<SpecimenStatus> {
     private final IModelContext modelContext;
-    public SpecimenStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SpecimenStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SpecimenStatusEnumFactory() {
       this(null);
@@ -329,9 +329,9 @@ public class Specimen extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SpecimenFeatureComponent(IModelContext context) {
+      public SpecimenFeatureComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -339,9 +339,9 @@ public class Specimen extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SpecimenFeatureComponent(IModelContext context, CodeableConcept type, String description) {
+      public SpecimenFeatureComponent(IModelContext modelContext, CodeableConcept type, String description) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setDescription(description);
       }
@@ -521,16 +521,16 @@ public class Specimen extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
       }
 
@@ -648,9 +648,9 @@ public class Specimen extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SpecimenCollectionComponent(IModelContext context) {
+      public SpecimenCollectionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1229,39 +1229,39 @@ public class Specimen extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.collector != null) {
-          this.collector.setModelContext(context);
+          this.collector.setModelContext(modelContext);
         }
         if (this.collected != null) {
-          this.collected.setModelContext(context);
+          this.collected.setModelContext(modelContext);
         }
         if (this.duration != null) {
-          this.duration.setModelContext(context);
+          this.duration.setModelContext(modelContext);
         }
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
         if (this.method != null) {
-          this.method.setModelContext(context);
+          this.method.setModelContext(modelContext);
         }
         if (this.device != null) {
-          this.device.setModelContext(context);
+          this.device.setModelContext(modelContext);
         }
         if (this.procedure != null) {
-          this.procedure.setModelContext(context);
+          this.procedure.setModelContext(modelContext);
         }
         if (this.bodyStructureList != null) {
           for (CodeableReference i : this.bodyStructureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.fastingStatus != null) {
-          this.fastingStatus.setModelContext(context);
+          this.fastingStatus.setModelContext(modelContext);
         }
       }
 
@@ -1360,9 +1360,9 @@ public class Specimen extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SpecimenProcessingComponent(IModelContext context) {
+      public SpecimenProcessingComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1809,30 +1809,30 @@ public class Specimen extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.method != null) {
-          this.method.setModelContext(context);
+          this.method.setModelContext(modelContext);
         }
         if (this.performer != null) {
-          this.performer.setModelContext(context);
+          this.performer.setModelContext(modelContext);
         }
         if (this.device != null) {
-          this.device.setModelContext(context);
+          this.device.setModelContext(modelContext);
         }
         if (this.additiveList != null) {
           for (SpecimenProcessingAdditiveComponent i : this.additiveList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.time != null) {
-          this.time.setModelContext(context);
+          this.time.setModelContext(modelContext);
         }
       }
 
@@ -1901,9 +1901,9 @@ public class Specimen extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SpecimenProcessingAdditiveComponent(IModelContext context) {
+      public SpecimenProcessingAdditiveComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1911,9 +1911,9 @@ public class Specimen extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SpecimenProcessingAdditiveComponent(IModelContext context, CodeableReference type) {
+      public SpecimenProcessingAdditiveComponent(IModelContext modelContext, CodeableReference type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -2072,16 +2072,16 @@ public class Specimen extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.quantity != null) {
-          this.quantity.setModelContext(context);
+          this.quantity.setModelContext(modelContext);
         }
       }
 
@@ -2147,9 +2147,9 @@ public class Specimen extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SpecimenContainerComponent(IModelContext context) {
+      public SpecimenContainerComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2157,9 +2157,9 @@ public class Specimen extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SpecimenContainerComponent(IModelContext context, CodeableReference device) {
+      public SpecimenContainerComponent(IModelContext modelContext, CodeableReference device) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setDevice(device);
       }
 
@@ -2318,16 +2318,16 @@ public class Specimen extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.device != null) {
-          this.device.setModelContext(context);
+          this.device.setModelContext(modelContext);
         }
         if (this.specimenQuantity != null) {
-          this.specimenQuantity.setModelContext(context);
+          this.specimenQuantity.setModelContext(modelContext);
         }
       }
 
@@ -2494,9 +2494,9 @@ public class Specimen extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Specimen(IModelContext context) {
+    public Specimen(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -3589,75 +3589,75 @@ public class Specimen extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.focus != null) {
-          this.focus.setModelContext(context);
+          this.focus.setModelContext(modelContext);
         }
         if (this.receivedTime != null) {
-          this.receivedTime.setModelContext(context);
+          this.receivedTime.setModelContext(modelContext);
         }
         if (this.parentList != null) {
           for (Reference i : this.parentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.requestList != null) {
           for (Reference i : this.requestList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.combined != null) {
-          this.combined.setModelContext(context);
+          this.combined.setModelContext(modelContext);
         }
         if (this.roleList != null) {
           for (CodeableConcept i : this.roleList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.featureList != null) {
           for (SpecimenFeatureComponent i : this.featureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.collection != null) {
-          this.collection.setModelContext(context);
+          this.collection.setModelContext(modelContext);
         }
         if (this.processingList != null) {
           for (SpecimenProcessingComponent i : this.processingList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.containerList != null) {
           for (SpecimenContainerComponent i : this.containerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.conditionList != null) {
           for (CodeableConcept i : this.conditionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3697,8 +3697,8 @@ public class Specimen extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Specimen;
+  public String getResourceType() {
+    return "Specimen";
    }
 
  /**

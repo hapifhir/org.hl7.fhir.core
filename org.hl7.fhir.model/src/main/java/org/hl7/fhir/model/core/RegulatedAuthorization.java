@@ -113,9 +113,9 @@ public class RegulatedAuthorization extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public RegulatedAuthorizationCaseComponent(IModelContext context) {
+      public RegulatedAuthorizationCaseComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -493,28 +493,28 @@ public class RegulatedAuthorization extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.applicationList != null) {
           for (RegulatedAuthorizationCaseComponent i : this.applicationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -676,9 +676,9 @@ public class RegulatedAuthorization extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public RegulatedAuthorization(IModelContext context) {
+    public RegulatedAuthorization(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1632,67 +1632,67 @@ public class RegulatedAuthorization extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subjectList != null) {
           for (Reference i : this.subjectList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.regionList != null) {
           for (CodeableConcept i : this.regionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusDate != null) {
-          this.statusDate.setModelContext(context);
+          this.statusDate.setModelContext(modelContext);
         }
         if (this.validityPeriod != null) {
-          this.validityPeriod.setModelContext(context);
+          this.validityPeriod.setModelContext(modelContext);
         }
         if (this.indicationList != null) {
           for (CodeableReference i : this.indicationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.intendedUse != null) {
-          this.intendedUse.setModelContext(context);
+          this.intendedUse.setModelContext(modelContext);
         }
         if (this.basisList != null) {
           for (CodeableConcept i : this.basisList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.holder != null) {
-          this.holder.setModelContext(context);
+          this.holder.setModelContext(modelContext);
         }
         if (this.regulator != null) {
-          this.regulator.setModelContext(context);
+          this.regulator.setModelContext(modelContext);
         }
         if (this.attachedDocumentList != null) {
           for (Reference i : this.attachedDocumentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.case_ != null) {
-          this.case_.setModelContext(context);
+          this.case_.setModelContext(modelContext);
         }
       }
 
@@ -1730,8 +1730,8 @@ public class RegulatedAuthorization extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.RegulatedAuthorization;
+  public String getResourceType() {
+    return "RegulatedAuthorization";
    }
 
  /**

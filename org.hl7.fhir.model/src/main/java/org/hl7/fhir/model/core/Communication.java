@@ -83,9 +83,9 @@ public class Communication extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CommunicationPayloadComponent(IModelContext context) {
+      public CommunicationPayloadComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -93,9 +93,9 @@ public class Communication extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CommunicationPayloadComponent(IModelContext context, DataType content) {
+      public CommunicationPayloadComponent(IModelContext modelContext, DataType content) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setContent(content);
       }
 
@@ -282,13 +282,13 @@ public class Communication extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.content != null) {
-          this.content.setModelContext(context);
+          this.content.setModelContext(modelContext);
         }
       }
 
@@ -484,9 +484,9 @@ public class Communication extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Communication(IModelContext context) {
+    public Communication(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -494,9 +494,9 @@ public class Communication extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Communication(IModelContext context, EventStatus status) {
+    public Communication(IModelContext modelContext, EventStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -1842,91 +1842,91 @@ public class Communication extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.partOfList != null) {
           for (Reference i : this.partOfList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.inResponseToList != null) {
           for (Reference i : this.inResponseToList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReason != null) {
-          this.statusReason.setModelContext(context);
+          this.statusReason.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.mediumList != null) {
           for (CodeableConcept i : this.mediumList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.topic != null) {
-          this.topic.setModelContext(context);
+          this.topic.setModelContext(modelContext);
         }
         if (this.aboutList != null) {
           for (Reference i : this.aboutList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.sent != null) {
-          this.sent.setModelContext(context);
+          this.sent.setModelContext(modelContext);
         }
         if (this.received != null) {
-          this.received.setModelContext(context);
+          this.received.setModelContext(modelContext);
         }
         if (this.recipientList != null) {
           for (Reference i : this.recipientList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sender != null) {
-          this.sender.setModelContext(context);
+          this.sender.setModelContext(modelContext);
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.payloadList != null) {
           for (CommunicationPayloadComponent i : this.payloadList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1967,8 +1967,8 @@ public class Communication extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Communication;
+  public String getResourceType() {
+    return "Communication";
    }
 
  /**

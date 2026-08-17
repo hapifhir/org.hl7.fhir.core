@@ -150,8 +150,8 @@ public class MonetaryComponent extends DataType implements ICompositeType {
 
   public static class PriceComponentTypeEnumFactory implements EnumFactory<PriceComponentType> {
     private final IModelContext modelContext;
-    public PriceComponentTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public PriceComponentTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public PriceComponentTypeEnumFactory() {
       this(null);
@@ -253,9 +253,9 @@ public class MonetaryComponent extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public MonetaryComponent(IModelContext context) {
+    public MonetaryComponent(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -263,9 +263,9 @@ public class MonetaryComponent extends DataType implements ICompositeType {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public MonetaryComponent(IModelContext context, PriceComponentType type) {
+    public MonetaryComponent(IModelContext modelContext, PriceComponentType type) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setType(type);
     }
 
@@ -586,22 +586,22 @@ public class MonetaryComponent extends DataType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.factor != null) {
-          this.factor.setModelContext(context);
+          this.factor.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
       }
 

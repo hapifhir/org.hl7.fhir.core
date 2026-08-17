@@ -97,9 +97,9 @@ public class Binary extends BaseBinary implements IBaseBinary {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Binary(IModelContext context) {
+    public Binary(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -107,9 +107,9 @@ public class Binary extends BaseBinary implements IBaseBinary {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Binary(IModelContext context, String contentType) {
+    public Binary(IModelContext modelContext, String contentType) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setContentType(contentType);
     }
 
@@ -364,19 +364,19 @@ public class Binary extends BaseBinary implements IBaseBinary {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.contentType != null) {
-          this.contentType.setModelContext(context);
+          this.contentType.setModelContext(modelContext);
         }
         if (this.securityContext != null) {
-          this.securityContext.setModelContext(context);
+          this.securityContext.setModelContext(modelContext);
         }
         if (this.data != null) {
-          this.data.setModelContext(context);
+          this.data.setModelContext(modelContext);
         }
       }
 
@@ -407,8 +407,8 @@ public class Binary extends BaseBinary implements IBaseBinary {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Binary;
+  public String getResourceType() {
+    return "Binary";
    }
 
 // Manual code (from Configuration.txt):

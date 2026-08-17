@@ -57,13 +57,13 @@ public class MarkdownType extends StringType implements Comparable<MarkdownType>
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public MarkdownType(IModelContext context) {
+	public MarkdownType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
-  public MarkdownType(IModelContext context, String theCode) {
-    this.modelContext = context;
+  public MarkdownType(IModelContext modelContext, String theCode) {
+    this.modelContext = modelContext;
     setValue(theCode);
   }
 

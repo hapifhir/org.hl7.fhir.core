@@ -203,8 +203,8 @@ public class Bundle extends Resource implements IBaseBundle {
 
   public static class BundleTypeEnumFactory implements EnumFactory<BundleType> {
     private final IModelContext modelContext;
-    public BundleTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public BundleTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public BundleTypeEnumFactory() {
       this(null);
@@ -394,8 +394,8 @@ public class Bundle extends Resource implements IBaseBundle {
 
   public static class HTTPVerbEnumFactory implements EnumFactory<HTTPVerb> {
     private final IModelContext modelContext;
-    public HTTPVerbEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public HTTPVerbEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public HTTPVerbEnumFactory() {
       this(null);
@@ -1701,8 +1701,8 @@ public class Bundle extends Resource implements IBaseBundle {
 
   public static class LinkRelationTypesEnumFactory implements EnumFactory<LinkRelationTypes> {
     private final IModelContext modelContext;
-    public LinkRelationTypesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public LinkRelationTypesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public LinkRelationTypesEnumFactory() {
       this(null);
@@ -2522,8 +2522,8 @@ public class Bundle extends Resource implements IBaseBundle {
 
   public static class SearchEntryModeEnumFactory implements EnumFactory<SearchEntryMode> {
     private final IModelContext modelContext;
-    public SearchEntryModeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SearchEntryModeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SearchEntryModeEnumFactory() {
       this(null);
@@ -2601,9 +2601,9 @@ public class Bundle extends Resource implements IBaseBundle {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public BundleLinkComponent(IModelContext context) {
+      public BundleLinkComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2611,9 +2611,9 @@ public class Bundle extends Resource implements IBaseBundle {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public BundleLinkComponent(IModelContext context, LinkRelationTypes relation, String url) {
+      public BundleLinkComponent(IModelContext modelContext, LinkRelationTypes relation, String url) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setRelation(relation);
         this.setUrl(url);
       }
@@ -2814,16 +2814,16 @@ public class Bundle extends Resource implements IBaseBundle {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.relation != null) {
-          this.relation.setModelContext(context);
+          this.relation.setModelContext(modelContext);
         }
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
       }
 
@@ -2916,9 +2916,9 @@ public class Bundle extends Resource implements IBaseBundle {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public BundleEntryComponent(IModelContext context) {
+      public BundleEntryComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -3304,30 +3304,30 @@ public class Bundle extends Resource implements IBaseBundle {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkList != null) {
           for (BundleLinkComponent i : this.linkList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.fullUrl != null) {
-          this.fullUrl.setModelContext(context);
+          this.fullUrl.setModelContext(modelContext);
         }
         if (this.resource != null) {
-          this.resource.setModelContext(context);
+          this.resource.setModelContext(modelContext);
         }
         if (this.search != null) {
-          this.search.setModelContext(context);
+          this.search.setModelContext(modelContext);
         }
         if (this.request != null) {
-          this.request.setModelContext(context);
+          this.request.setModelContext(modelContext);
         }
         if (this.response != null) {
-          this.response.setModelContext(context);
+          this.response.setModelContext(modelContext);
         }
       }
 
@@ -3445,9 +3445,9 @@ public class Bundle extends Resource implements IBaseBundle {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public BundleEntrySearchComponent(IModelContext context) {
+      public BundleEntrySearchComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -3672,16 +3672,16 @@ public class Bundle extends Resource implements IBaseBundle {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.mode != null) {
-          this.mode.setModelContext(context);
+          this.mode.setModelContext(modelContext);
         }
         if (this.score != null) {
-          this.score.setModelContext(context);
+          this.score.setModelContext(modelContext);
         }
       }
 
@@ -3775,9 +3775,9 @@ public class Bundle extends Resource implements IBaseBundle {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public BundleEntryRequestComponent(IModelContext context) {
+      public BundleEntryRequestComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3785,9 +3785,9 @@ public class Bundle extends Resource implements IBaseBundle {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public BundleEntryRequestComponent(IModelContext context, HTTPVerb method, String url) {
+      public BundleEntryRequestComponent(IModelContext modelContext, HTTPVerb method, String url) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setMethod(method);
         this.setUrl(url);
       }
@@ -4272,28 +4272,28 @@ public class Bundle extends Resource implements IBaseBundle {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.method != null) {
-          this.method.setModelContext(context);
+          this.method.setModelContext(modelContext);
         }
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.ifNoneMatch != null) {
-          this.ifNoneMatch.setModelContext(context);
+          this.ifNoneMatch.setModelContext(modelContext);
         }
         if (this.ifModifiedSince != null) {
-          this.ifModifiedSince.setModelContext(context);
+          this.ifModifiedSince.setModelContext(modelContext);
         }
         if (this.ifMatch != null) {
-          this.ifMatch.setModelContext(context);
+          this.ifMatch.setModelContext(modelContext);
         }
         if (this.ifNoneExist != null) {
-          this.ifNoneExist.setModelContext(context);
+          this.ifNoneExist.setModelContext(modelContext);
         }
       }
 
@@ -4384,9 +4384,9 @@ public class Bundle extends Resource implements IBaseBundle {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public BundleEntryResponseComponent(IModelContext context) {
+      public BundleEntryResponseComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -4394,9 +4394,9 @@ public class Bundle extends Resource implements IBaseBundle {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public BundleEntryResponseComponent(IModelContext context, String status) {
+      public BundleEntryResponseComponent(IModelContext modelContext, String status) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setStatus(status);
       }
 
@@ -4782,25 +4782,25 @@ public class Bundle extends Resource implements IBaseBundle {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.etag != null) {
-          this.etag.setModelContext(context);
+          this.etag.setModelContext(modelContext);
         }
         if (this.lastModified != null) {
-          this.lastModified.setModelContext(context);
+          this.lastModified.setModelContext(modelContext);
         }
         if (this.outcome != null) {
-          this.outcome.setModelContext(context);
+          this.outcome.setModelContext(modelContext);
         }
       }
 
@@ -4902,9 +4902,9 @@ public class Bundle extends Resource implements IBaseBundle {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Bundle(IModelContext context) {
+    public Bundle(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -4912,9 +4912,9 @@ public class Bundle extends Resource implements IBaseBundle {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Bundle(IModelContext context, BundleType type) {
+    public Bundle(IModelContext modelContext, BundleType type) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setType(type);
     }
 
@@ -5416,35 +5416,35 @@ public class Bundle extends Resource implements IBaseBundle {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifier != null) {
-          this.identifier.setModelContext(context);
+          this.identifier.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.timestamp != null) {
-          this.timestamp.setModelContext(context);
+          this.timestamp.setModelContext(modelContext);
         }
         if (this.total != null) {
-          this.total.setModelContext(context);
+          this.total.setModelContext(modelContext);
         }
         if (this.linkList != null) {
           for (BundleLinkComponent i : this.linkList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.entryList != null) {
           for (BundleEntryComponent i : this.entryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.issues != null) {
-          this.issues.setModelContext(context);
+          this.issues.setModelContext(modelContext);
         }
       }
 
@@ -5477,8 +5477,8 @@ public class Bundle extends Resource implements IBaseBundle {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Bundle;
+  public String getResourceType() {
+    return "Bundle";
    }
 
  /**

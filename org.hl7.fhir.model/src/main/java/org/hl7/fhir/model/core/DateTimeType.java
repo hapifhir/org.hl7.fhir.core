@@ -77,16 +77,16 @@ public class DateTimeType extends BaseDateTimeType {
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public DateTimeType(IModelContext context) {
+	public DateTimeType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
   /**
    * Create a new DateTimeDt with seconds precision and the local time zone
    */
-  public DateTimeType(IModelContext context, Date theDate) {
-    super(context, theDate, DEFAULT_PRECISION, TimeZone.getDefault());
+  public DateTimeType(IModelContext modelContext, Date theDate) {
+    super(modelContext, theDate, DEFAULT_PRECISION, TimeZone.getDefault());
   }
   /**
    * Create a new DateTimeDt with seconds precision and the local time zone
@@ -108,8 +108,8 @@ public class DateTimeType extends BaseDateTimeType {
    * @throws DataFormatException
    *             If the specified precision is not allowed for this type
    */
-  public DateTimeType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision) {
-    super(context, theDate, thePrecision, TimeZone.getDefault());
+  public DateTimeType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision) {
+    super(modelContext, theDate, thePrecision, TimeZone.getDefault());
   }
 
   /**
@@ -135,8 +135,8 @@ public class DateTimeType extends BaseDateTimeType {
    * @throws DataFormatException
    *             If the specified precision is not allowed for this type
    */
-  public DateTimeType(IModelContext context, String theValue) {
-    super(context, theValue);
+  public DateTimeType(IModelContext modelContext, String theValue) {
+    super(modelContext, theValue);
   }
 
   /**
@@ -160,8 +160,8 @@ public class DateTimeType extends BaseDateTimeType {
    * <li>{@link TemporalPrecisionEnum#MILLI}
    * </ul>
    */
-  public DateTimeType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
-    super(context, theDate, thePrecision, theTimezone);
+  public DateTimeType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision, TimeZone theTimezone) {
+    super(modelContext, theDate, thePrecision, theTimezone);
   }
 
   /**
@@ -182,8 +182,8 @@ public class DateTimeType extends BaseDateTimeType {
   /**
    * Constructor
    */
-  public DateTimeType(IModelContext context, Calendar theCalendar) {
-    this.modelContext = context;
+  public DateTimeType(IModelContext modelContext, Calendar theCalendar) {
+    this.modelContext = modelContext;
     if (theCalendar != null) {
       setValue(theCalendar.getTime());
       setPrecision(DEFAULT_PRECISION);

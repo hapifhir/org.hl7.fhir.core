@@ -132,8 +132,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
 
   public static class ConditionalDeleteStatusEnumFactory implements EnumFactory<ConditionalDeleteStatus> {
     private final IModelContext modelContext;
-    public ConditionalDeleteStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ConditionalDeleteStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ConditionalDeleteStatusEnumFactory() {
       this(null);
@@ -261,8 +261,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
 
   public static class ConditionalReadStatusEnumFactory implements EnumFactory<ConditionalReadStatus> {
     private final IModelContext modelContext;
-    public ConditionalReadStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ConditionalReadStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ConditionalReadStatusEnumFactory() {
       this(null);
@@ -376,8 +376,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
 
   public static class DocumentModeEnumFactory implements EnumFactory<DocumentMode> {
     private final IModelContext modelContext;
-    public DocumentModeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public DocumentModeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public DocumentModeEnumFactory() {
       this(null);
@@ -479,8 +479,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
 
   public static class EventCapabilityModeEnumFactory implements EnumFactory<EventCapabilityMode> {
     private final IModelContext modelContext;
-    public EventCapabilityModeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public EventCapabilityModeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public EventCapabilityModeEnumFactory() {
       this(null);
@@ -612,8 +612,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
 
   public static class PatchMimeTypesEnumFactory implements EnumFactory<PatchMimeTypes> {
     private final IModelContext modelContext;
-    public PatchMimeTypesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public PatchMimeTypesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public PatchMimeTypesEnumFactory() {
       this(null);
@@ -763,8 +763,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
 
   public static class ReferenceHandlingPolicyEnumFactory implements EnumFactory<ReferenceHandlingPolicy> {
     private final IModelContext modelContext;
-    public ReferenceHandlingPolicyEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ReferenceHandlingPolicyEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ReferenceHandlingPolicyEnumFactory() {
       this(null);
@@ -894,8 +894,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
 
   public static class ResourceVersionPolicyEnumFactory implements EnumFactory<ResourceVersionPolicy> {
     private final IModelContext modelContext;
-    public ResourceVersionPolicyEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ResourceVersionPolicyEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ResourceVersionPolicyEnumFactory() {
       this(null);
@@ -1003,8 +1003,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
 
   public static class RestfulCapabilityModeEnumFactory implements EnumFactory<RestfulCapabilityMode> {
     private final IModelContext modelContext;
-    public RestfulCapabilityModeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public RestfulCapabilityModeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public RestfulCapabilityModeEnumFactory() {
       this(null);
@@ -1126,8 +1126,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
 
   public static class SystemRestfulInteractionEnumFactory implements EnumFactory<SystemRestfulInteraction> {
     private final IModelContext modelContext;
-    public SystemRestfulInteractionEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SystemRestfulInteractionEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SystemRestfulInteractionEnumFactory() {
       this(null);
@@ -1381,8 +1381,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
 
   public static class TypeRestfulInteractionEnumFactory implements EnumFactory<TypeRestfulInteraction> {
     private final IModelContext modelContext;
-    public TypeRestfulInteractionEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public TypeRestfulInteractionEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public TypeRestfulInteractionEnumFactory() {
       this(null);
@@ -1544,9 +1544,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CapabilityStatementSoftwareComponent(IModelContext context) {
+      public CapabilityStatementSoftwareComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1554,9 +1554,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CapabilityStatementSoftwareComponent(IModelContext context, String name) {
+      public CapabilityStatementSoftwareComponent(IModelContext modelContext, String name) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
       }
 
@@ -1830,19 +1830,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.releaseDate != null) {
-          this.releaseDate.setModelContext(context);
+          this.releaseDate.setModelContext(modelContext);
         }
       }
 
@@ -1917,9 +1917,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CapabilityStatementImplementationComponent(IModelContext context) {
+      public CapabilityStatementImplementationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1927,9 +1927,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CapabilityStatementImplementationComponent(IModelContext context, String description) {
+      public CapabilityStatementImplementationComponent(IModelContext modelContext, String description) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setDescription(description);
       }
 
@@ -2179,19 +2179,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.custodian != null) {
-          this.custodian.setModelContext(context);
+          this.custodian.setModelContext(modelContext);
         }
       }
 
@@ -2301,9 +2301,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CapabilityStatementRestComponent(IModelContext context) {
+      public CapabilityStatementRestComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2311,9 +2311,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CapabilityStatementRestComponent(IModelContext context, RestfulCapabilityMode mode) {
+      public CapabilityStatementRestComponent(IModelContext modelContext, RestfulCapabilityMode mode) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setMode(mode);
       }
 
@@ -2917,43 +2917,43 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.mode != null) {
-          this.mode.setModelContext(context);
+          this.mode.setModelContext(modelContext);
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
         if (this.security != null) {
-          this.security.setModelContext(context);
+          this.security.setModelContext(modelContext);
         }
         if (this.resourceList != null) {
           for (CapabilityStatementRestResourceComponent i : this.resourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.interactionList != null) {
           for (SystemInteractionComponent i : this.interactionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.searchParamList != null) {
           for (CapabilityStatementRestResourceSearchParamComponent i : this.searchParamList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.operationList != null) {
           for (CapabilityStatementRestResourceOperationComponent i : this.operationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.compartmentList != null) {
           for (CanonicalType i : this.compartmentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3032,9 +3032,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CapabilityStatementRestSecurityComponent(IModelContext context) {
+      public CapabilityStatementRestSecurityComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -3305,21 +3305,21 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.cors != null) {
-          this.cors.setModelContext(context);
+          this.cors.setModelContext(modelContext);
         }
         if (this.serviceList != null) {
           for (CodeableConcept i : this.serviceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
       }
 
@@ -3510,9 +3510,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CapabilityStatementRestResourceComponent(IModelContext context) {
+      public CapabilityStatementRestResourceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3520,9 +3520,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CapabilityStatementRestResourceComponent(IModelContext context, String type) {
+      public CapabilityStatementRestResourceComponent(IModelContext modelContext, String type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -4934,80 +4934,80 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.profile != null) {
-          this.profile.setModelContext(context);
+          this.profile.setModelContext(modelContext);
         }
         if (this.supportedProfileList != null) {
           for (CanonicalType i : this.supportedProfileList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
         if (this.interactionList != null) {
           for (ResourceInteractionComponent i : this.interactionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.versioning != null) {
-          this.versioning.setModelContext(context);
+          this.versioning.setModelContext(modelContext);
         }
         if (this.readHistory != null) {
-          this.readHistory.setModelContext(context);
+          this.readHistory.setModelContext(modelContext);
         }
         if (this.updateCreate != null) {
-          this.updateCreate.setModelContext(context);
+          this.updateCreate.setModelContext(modelContext);
         }
         if (this.conditionalCreate != null) {
-          this.conditionalCreate.setModelContext(context);
+          this.conditionalCreate.setModelContext(modelContext);
         }
         if (this.conditionalRead != null) {
-          this.conditionalRead.setModelContext(context);
+          this.conditionalRead.setModelContext(modelContext);
         }
         if (this.conditionalUpdate != null) {
-          this.conditionalUpdate.setModelContext(context);
+          this.conditionalUpdate.setModelContext(modelContext);
         }
         if (this.conditionalPatch != null) {
-          this.conditionalPatch.setModelContext(context);
+          this.conditionalPatch.setModelContext(modelContext);
         }
         if (this.conditionalDelete != null) {
-          this.conditionalDelete.setModelContext(context);
+          this.conditionalDelete.setModelContext(modelContext);
         }
         if (this.referencePolicyList != null) {
           for (Enumeration<ReferenceHandlingPolicy> i : this.referencePolicyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.searchIncludeList != null) {
           for (StringType i : this.searchIncludeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.searchRevIncludeList != null) {
           for (StringType i : this.searchRevIncludeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.searchParamList != null) {
           for (CapabilityStatementRestResourceSearchParamComponent i : this.searchParamList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.operationList != null) {
           for (CapabilityStatementRestResourceOperationComponent i : this.operationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -5094,9 +5094,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ResourceInteractionComponent(IModelContext context) {
+      public ResourceInteractionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -5104,9 +5104,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ResourceInteractionComponent(IModelContext context, TypeRestfulInteraction code) {
+      public ResourceInteractionComponent(IModelContext modelContext, TypeRestfulInteraction code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -5310,16 +5310,16 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
       }
 
@@ -5399,9 +5399,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CapabilityStatementRestResourceSearchParamComponent(IModelContext context) {
+      public CapabilityStatementRestResourceSearchParamComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -5409,9 +5409,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CapabilityStatementRestResourceSearchParamComponent(IModelContext context, String name, SearchParamType type) {
+      public CapabilityStatementRestResourceSearchParamComponent(IModelContext modelContext, String name, SearchParamType type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
         this.setType(type);
       }
@@ -5754,22 +5754,22 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
       }
 
@@ -5844,9 +5844,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CapabilityStatementRestResourceOperationComponent(IModelContext context) {
+      public CapabilityStatementRestResourceOperationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -5854,9 +5854,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CapabilityStatementRestResourceOperationComponent(IModelContext context, String name, String definition) {
+      public CapabilityStatementRestResourceOperationComponent(IModelContext modelContext, String name, String definition) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
         this.setDefinition(definition);
       }
@@ -6127,19 +6127,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
       }
 
@@ -6208,9 +6208,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SystemInteractionComponent(IModelContext context) {
+      public SystemInteractionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -6218,9 +6218,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SystemInteractionComponent(IModelContext context, SystemRestfulInteraction code) {
+      public SystemInteractionComponent(IModelContext modelContext, SystemRestfulInteraction code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -6424,16 +6424,16 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
       }
 
@@ -6512,9 +6512,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CapabilityStatementMessagingComponent(IModelContext context) {
+      public CapabilityStatementMessagingComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -6854,25 +6854,25 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.endpointList != null) {
           for (CapabilityStatementMessagingEndpointComponent i : this.endpointList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reliableCache != null) {
-          this.reliableCache.setModelContext(context);
+          this.reliableCache.setModelContext(modelContext);
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
         if (this.supportedMessageList != null) {
           for (CapabilityStatementMessagingSupportedMessageComponent i : this.supportedMessageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -6943,9 +6943,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CapabilityStatementMessagingEndpointComponent(IModelContext context) {
+      public CapabilityStatementMessagingEndpointComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -6953,9 +6953,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CapabilityStatementMessagingEndpointComponent(IModelContext context, Coding protocol, String address) {
+      public CapabilityStatementMessagingEndpointComponent(IModelContext modelContext, Coding protocol, String address) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setProtocol(protocol);
         this.setAddress(address);
       }
@@ -7135,16 +7135,16 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.protocol != null) {
-          this.protocol.setModelContext(context);
+          this.protocol.setModelContext(modelContext);
         }
         if (this.address != null) {
-          this.address.setModelContext(context);
+          this.address.setModelContext(modelContext);
         }
       }
 
@@ -7210,9 +7210,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CapabilityStatementMessagingSupportedMessageComponent(IModelContext context) {
+      public CapabilityStatementMessagingSupportedMessageComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -7220,9 +7220,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CapabilityStatementMessagingSupportedMessageComponent(IModelContext context, EventCapabilityMode mode, String definition) {
+      public CapabilityStatementMessagingSupportedMessageComponent(IModelContext modelContext, EventCapabilityMode mode, String definition) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setMode(mode);
         this.setDefinition(definition);
       }
@@ -7423,16 +7423,16 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.mode != null) {
-          this.mode.setModelContext(context);
+          this.mode.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
       }
 
@@ -7505,9 +7505,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CapabilityStatementDocumentComponent(IModelContext context) {
+      public CapabilityStatementDocumentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -7515,9 +7515,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public CapabilityStatementDocumentComponent(IModelContext context, DocumentMode mode, String profile) {
+      public CapabilityStatementDocumentComponent(IModelContext modelContext, DocumentMode mode, String profile) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setMode(mode);
         this.setProfile(profile);
       }
@@ -7789,19 +7789,19 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.mode != null) {
-          this.mode.setModelContext(context);
+          this.mode.setModelContext(modelContext);
         }
         if (this.documentation != null) {
-          this.documentation.setModelContext(context);
+          this.documentation.setModelContext(modelContext);
         }
         if (this.profile != null) {
-          this.profile.setModelContext(context);
+          this.profile.setModelContext(modelContext);
         }
       }
 
@@ -8078,9 +8078,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public CapabilityStatement(IModelContext context) {
+    public CapabilityStatement(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -8088,9 +8088,9 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public CapabilityStatement(IModelContext context, PublicationStatus status, Date date, CapabilityStatementKind kind, FHIRVersion fhirVersion, String format) {
+    public CapabilityStatement(IModelContext modelContext, PublicationStatus status, Date date, CapabilityStatementKind kind, FHIRVersion fhirVersion, String format) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setDate(date);
       this.setKind(kind);
@@ -10340,130 +10340,130 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.actorDefinitionList != null) {
           for (CanonicalType i : this.actorDefinitionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.kind != null) {
-          this.kind.setModelContext(context);
+          this.kind.setModelContext(modelContext);
         }
         if (this.instantiatesList != null) {
           for (CanonicalType i : this.instantiatesList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.importsList != null) {
           for (CanonicalType i : this.importsList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.software != null) {
-          this.software.setModelContext(context);
+          this.software.setModelContext(modelContext);
         }
         if (this.implementation != null) {
-          this.implementation.setModelContext(context);
+          this.implementation.setModelContext(modelContext);
         }
         if (this.fhirVersion != null) {
-          this.fhirVersion.setModelContext(context);
+          this.fhirVersion.setModelContext(modelContext);
         }
         if (this.formatList != null) {
           for (CodeType i : this.formatList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.patchFormatList != null) {
           for (Enumeration<PatchMimeTypes> i : this.patchFormatList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.acceptLanguageList != null) {
           for (CodeType i : this.acceptLanguageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.implementationGuideList != null) {
           for (CanonicalType i : this.implementationGuideList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.restList != null) {
           for (CapabilityStatementRestComponent i : this.restList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.messagingList != null) {
           for (CapabilityStatementMessagingComponent i : this.messagingList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.documentList != null) {
           for (CapabilityStatementDocumentComponent i : this.documentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -10519,8 +10519,8 @@ public class CapabilityStatement extends CanonicalResource implements IBaseConfo
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.CapabilityStatement;
+  public String getResourceType() {
+    return "CapabilityStatement";
    }
 
  /**

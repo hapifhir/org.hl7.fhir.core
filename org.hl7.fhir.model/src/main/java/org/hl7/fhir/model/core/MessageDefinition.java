@@ -131,8 +131,8 @@ public class MessageDefinition extends CanonicalResource {
 
   public static class MessageSignificanceCategoryEnumFactory implements EnumFactory<MessageSignificanceCategory> {
     private final IModelContext modelContext;
-    public MessageSignificanceCategoryEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public MessageSignificanceCategoryEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public MessageSignificanceCategoryEnumFactory() {
       this(null);
@@ -260,8 +260,8 @@ public class MessageDefinition extends CanonicalResource {
 
   public static class MessageheaderResponseRequestEnumFactory implements EnumFactory<MessageheaderResponseRequest> {
     private final IModelContext modelContext;
-    public MessageheaderResponseRequestEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public MessageheaderResponseRequestEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public MessageheaderResponseRequestEnumFactory() {
       this(null);
@@ -359,9 +359,9 @@ public class MessageDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MessageDefinitionFocusComponent(IModelContext context) {
+      public MessageDefinitionFocusComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -369,9 +369,9 @@ public class MessageDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MessageDefinitionFocusComponent(IModelContext context, String code, int min) {
+      public MessageDefinitionFocusComponent(IModelContext modelContext, String code, int min) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setMin(min);
       }
@@ -713,22 +713,22 @@ public class MessageDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.profile != null) {
-          this.profile.setModelContext(context);
+          this.profile.setModelContext(modelContext);
         }
         if (this.min != null) {
-          this.min.setModelContext(context);
+          this.min.setModelContext(modelContext);
         }
         if (this.max != null) {
-          this.max.setModelContext(context);
+          this.max.setModelContext(modelContext);
         }
       }
 
@@ -796,9 +796,9 @@ public class MessageDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MessageDefinitionAllowedResponseComponent(IModelContext context) {
+      public MessageDefinitionAllowedResponseComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -806,9 +806,9 @@ public class MessageDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MessageDefinitionAllowedResponseComponent(IModelContext context, String message) {
+      public MessageDefinitionAllowedResponseComponent(IModelContext modelContext, String message) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setMessage(message);
       }
 
@@ -1011,16 +1011,16 @@ public class MessageDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.message != null) {
-          this.message.setModelContext(context);
+          this.message.setModelContext(modelContext);
         }
         if (this.situation != null) {
-          this.situation.setModelContext(context);
+          this.situation.setModelContext(modelContext);
         }
       }
 
@@ -1250,9 +1250,9 @@ public class MessageDefinition extends CanonicalResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public MessageDefinition(IModelContext context) {
+    public MessageDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1260,9 +1260,9 @@ public class MessageDefinition extends CanonicalResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public MessageDefinition(IModelContext context, PublicationStatus status, Date date, DataType event) {
+    public MessageDefinition(IModelContext modelContext, PublicationStatus status, Date date, DataType event) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setDate(date);
       this.setEvent(event);
@@ -3122,100 +3122,100 @@ public class MessageDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.replacesList != null) {
           for (CanonicalType i : this.replacesList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.base != null) {
-          this.base.setModelContext(context);
+          this.base.setModelContext(modelContext);
         }
         if (this.parentList != null) {
           for (CanonicalType i : this.parentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.event != null) {
-          this.event.setModelContext(context);
+          this.event.setModelContext(modelContext);
         }
         if (this.category != null) {
-          this.category.setModelContext(context);
+          this.category.setModelContext(modelContext);
         }
         if (this.focusList != null) {
           for (MessageDefinitionFocusComponent i : this.focusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.responseRequired != null) {
-          this.responseRequired.setModelContext(context);
+          this.responseRequired.setModelContext(modelContext);
         }
         if (this.allowedResponseList != null) {
           for (MessageDefinitionAllowedResponseComponent i : this.allowedResponseList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3264,8 +3264,8 @@ public class MessageDefinition extends CanonicalResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.MessageDefinition;
+  public String getResourceType() {
+    return "MessageDefinition";
    }
 
  /**

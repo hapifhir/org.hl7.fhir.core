@@ -209,8 +209,8 @@ public class DosageCondition extends BackboneType implements ICompositeType {
 
   public static class ComparisonOperationVSEnumFactory implements EnumFactory<ComparisonOperationVS> {
     private final IModelContext modelContext;
-    public ComparisonOperationVSEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ComparisonOperationVSEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ComparisonOperationVSEnumFactory() {
       this(null);
@@ -357,9 +357,9 @@ public class DosageCondition extends BackboneType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public DosageCondition(IModelContext context) {
+    public DosageCondition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -367,9 +367,9 @@ public class DosageCondition extends BackboneType implements ICompositeType {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public DosageCondition(IModelContext context, CodeableConcept code) {
+    public DosageCondition(IModelContext modelContext, CodeableConcept code) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setCode(code);
     }
 
@@ -1818,25 +1818,25 @@ public class DosageCondition extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.details != null) {
-          this.details.setModelContext(context);
+          this.details.setModelContext(modelContext);
         }
         if (this.operation != null) {
-          this.operation.setModelContext(context);
+          this.operation.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.text != null) {
-          this.text.setModelContext(context);
+          this.text.setModelContext(modelContext);
         }
       }
 

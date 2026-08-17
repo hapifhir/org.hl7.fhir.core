@@ -151,8 +151,8 @@ public class ConceptMap extends MetadataResource {
 
   public static class ConceptMapAttributeTypeEnumFactory implements EnumFactory<ConceptMapAttributeType> {
     private final IModelContext modelContext;
-    public ConceptMapAttributeTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ConceptMapAttributeTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ConceptMapAttributeTypeEnumFactory() {
       this(null);
@@ -282,8 +282,8 @@ public class ConceptMap extends MetadataResource {
 
   public static class ConceptMapGroupUnmappedModeEnumFactory implements EnumFactory<ConceptMapGroupUnmappedMode> {
     private final IModelContext modelContext;
-    public ConceptMapGroupUnmappedModeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ConceptMapGroupUnmappedModeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ConceptMapGroupUnmappedModeEnumFactory() {
       this(null);
@@ -441,8 +441,8 @@ public class ConceptMap extends MetadataResource {
 
   public static class ConceptMapPropertyTypeEnumFactory implements EnumFactory<ConceptMapPropertyType> {
     private final IModelContext modelContext;
-    public ConceptMapPropertyTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ConceptMapPropertyTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ConceptMapPropertyTypeEnumFactory() {
       this(null);
@@ -565,9 +565,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PropertyComponent(IModelContext context) {
+      public PropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -575,9 +575,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PropertyComponent(IModelContext context, String code, ConceptMapPropertyType type) {
+      public PropertyComponent(IModelContext modelContext, String code, ConceptMapPropertyType type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setType(type);
       }
@@ -991,25 +991,25 @@ public class ConceptMap extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.uri != null) {
-          this.uri.setModelContext(context);
+          this.uri.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.system != null) {
-          this.system.setModelContext(context);
+          this.system.setModelContext(modelContext);
         }
       }
 
@@ -1092,9 +1092,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AdditionalAttributeComponent(IModelContext context) {
+      public AdditionalAttributeComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1102,9 +1102,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AdditionalAttributeComponent(IModelContext context, String code, ConceptMapAttributeType type) {
+      public AdditionalAttributeComponent(IModelContext modelContext, String code, ConceptMapAttributeType type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setType(type);
       }
@@ -1447,22 +1447,22 @@ public class ConceptMap extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.uri != null) {
-          this.uri.setModelContext(context);
+          this.uri.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
       }
 
@@ -1544,9 +1544,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConceptMapGroupComponent(IModelContext context) {
+      public ConceptMapGroupComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1554,9 +1554,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ConceptMapGroupComponent(IModelContext context, SourceElementComponent element) {
+      public ConceptMapGroupComponent(IModelContext modelContext, SourceElementComponent element) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.addElement(element);
       }
 
@@ -1879,24 +1879,24 @@ public class ConceptMap extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.source != null) {
-          this.source.setModelContext(context);
+          this.source.setModelContext(modelContext);
         }
         if (this.target != null) {
-          this.target.setModelContext(context);
+          this.target.setModelContext(modelContext);
         }
         if (this.elementList != null) {
           for (SourceElementComponent i : this.elementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.unmapped != null) {
-          this.unmapped.setModelContext(context);
+          this.unmapped.setModelContext(modelContext);
         }
       }
 
@@ -2003,9 +2003,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SourceElementComponent(IModelContext context) {
+      public SourceElementComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2489,29 +2489,29 @@ public class ConceptMap extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.display != null) {
-          this.display.setModelContext(context);
+          this.display.setModelContext(modelContext);
         }
         if (this.valueSet != null) {
-          this.valueSet.setModelContext(context);
+          this.valueSet.setModelContext(modelContext);
         }
         if (this.noMap != null) {
-          this.noMap.setModelContext(context);
+          this.noMap.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
         if (this.targetList != null) {
           for (TargetElementComponent i : this.targetList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2633,9 +2633,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public TargetElementComponent(IModelContext context) {
+      public TargetElementComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2643,9 +2643,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public TargetElementComponent(IModelContext context, ConceptMapRelationship relationship) {
+      public TargetElementComponent(IModelContext modelContext, ConceptMapRelationship relationship) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setRelationship(relationship);
       }
 
@@ -3269,39 +3269,39 @@ public class ConceptMap extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.display != null) {
-          this.display.setModelContext(context);
+          this.display.setModelContext(modelContext);
         }
         if (this.valueSet != null) {
-          this.valueSet.setModelContext(context);
+          this.valueSet.setModelContext(modelContext);
         }
         if (this.relationship != null) {
-          this.relationship.setModelContext(context);
+          this.relationship.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
         if (this.propertyList != null) {
           for (MappingPropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.dependsOnList != null) {
           for (OtherElementComponent i : this.dependsOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.productList != null) {
           for (OtherElementComponent i : this.productList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3372,9 +3372,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MappingPropertyComponent(IModelContext context) {
+      public MappingPropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3382,9 +3382,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MappingPropertyComponent(IModelContext context, String code, DataType value) {
+      public MappingPropertyComponent(IModelContext modelContext, String code, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setValue(value);
       }
@@ -3699,16 +3699,16 @@ public class ConceptMap extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -3780,9 +3780,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public OtherElementComponent(IModelContext context) {
+      public OtherElementComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3790,9 +3790,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public OtherElementComponent(IModelContext context, String attribute) {
+      public OtherElementComponent(IModelContext modelContext, String attribute) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setAttribute(attribute);
       }
 
@@ -4137,19 +4137,19 @@ public class ConceptMap extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.attribute != null) {
-          this.attribute.setModelContext(context);
+          this.attribute.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.valueSet != null) {
-          this.valueSet.setModelContext(context);
+          this.valueSet.setModelContext(modelContext);
         }
       }
 
@@ -4253,9 +4253,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ConceptMapGroupUnmappedComponent(IModelContext context) {
+      public ConceptMapGroupUnmappedComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -4263,9 +4263,9 @@ public class ConceptMap extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ConceptMapGroupUnmappedComponent(IModelContext context, ConceptMapGroupUnmappedMode mode) {
+      public ConceptMapGroupUnmappedComponent(IModelContext modelContext, ConceptMapGroupUnmappedMode mode) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setMode(mode);
       }
 
@@ -4825,31 +4825,31 @@ public class ConceptMap extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.mode != null) {
-          this.mode.setModelContext(context);
+          this.mode.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.display != null) {
-          this.display.setModelContext(context);
+          this.display.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
         if (this.valueSet != null) {
-          this.valueSet.setModelContext(context);
+          this.valueSet.setModelContext(modelContext);
         }
         if (this.relationship != null) {
-          this.relationship.setModelContext(context);
+          this.relationship.setModelContext(modelContext);
         }
         if (this.otherMap != null) {
-          this.otherMap.setModelContext(context);
+          this.otherMap.setModelContext(modelContext);
         }
       }
 
@@ -5132,9 +5132,9 @@ public class ConceptMap extends MetadataResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ConceptMap(IModelContext context) {
+    public ConceptMap(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -5142,9 +5142,9 @@ public class ConceptMap extends MetadataResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ConceptMap(IModelContext context, PublicationStatus status) {
+    public ConceptMap(IModelContext modelContext, PublicationStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -7505,133 +7505,133 @@ public class ConceptMap extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.approvalDate != null) {
-          this.approvalDate.setModelContext(context);
+          this.approvalDate.setModelContext(modelContext);
         }
         if (this.lastReviewDate != null) {
-          this.lastReviewDate.setModelContext(context);
+          this.lastReviewDate.setModelContext(modelContext);
         }
         if (this.effectivePeriod != null) {
-          this.effectivePeriod.setModelContext(context);
+          this.effectivePeriod.setModelContext(modelContext);
         }
         if (this.topicList != null) {
           for (CodeableConcept i : this.topicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.authorList != null) {
           for (ContactDetail i : this.authorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.editorList != null) {
           for (ContactDetail i : this.editorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reviewerList != null) {
           for (ContactDetail i : this.reviewerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.endorserList != null) {
           for (ContactDetail i : this.endorserList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatedArtifactList != null) {
           for (RelatedArtifact i : this.relatedArtifactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (PropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.additionalAttributeList != null) {
           for (AdditionalAttributeComponent i : this.additionalAttributeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.allowedRelationshipList != null) {
           for (Enumeration<ConceptMapRelationship> i : this.allowedRelationshipList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sourceScope != null) {
-          this.sourceScope.setModelContext(context);
+          this.sourceScope.setModelContext(modelContext);
         }
         if (this.targetScope != null) {
-          this.targetScope.setModelContext(context);
+          this.targetScope.setModelContext(modelContext);
         }
         if (this.groupList != null) {
           for (ConceptMapGroupComponent i : this.groupList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -7683,8 +7683,8 @@ public class ConceptMap extends MetadataResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.ConceptMap;
+  public String getResourceType() {
+    return "ConceptMap";
    }
 
  /**

@@ -61,16 +61,16 @@ public class PositiveIntType extends IntegerType {
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public PositiveIntType(IModelContext context) {
+	public PositiveIntType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
   /**
    * Constructor
    */
-  public PositiveIntType(IModelContext context, int theInteger) {
-    this.modelContext = context;
+  public PositiveIntType(IModelContext modelContext, int theInteger) {
+    this.modelContext = modelContext;
     setValue(theInteger);
   }
 
@@ -82,8 +82,8 @@ public class PositiveIntType extends IntegerType {
    * @throws IllegalArgumentException
    *             If the string is not a valid integer representation
    */
-  public PositiveIntType(IModelContext context, String theIntegerAsString) {
-    this.modelContext = context;
+  public PositiveIntType(IModelContext modelContext, String theIntegerAsString) {
+    this.modelContext = modelContext;
     setValueAsString(theIntegerAsString);
   }
 
@@ -112,8 +112,8 @@ public class PositiveIntType extends IntegerType {
 	 * @param theValue The value
 	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
 	 */
-	public PositiveIntType(IModelContext context, Long theValue) {
-    this.modelContext = context;
+	public PositiveIntType(IModelContext modelContext, Long theValue) {
+    this.modelContext = modelContext;
 	    if (theValue < 1 || theValue > java.lang.Integer.MAX_VALUE) {
 	        throw new IllegalArgumentException
 	            (theValue + " cannot be cast to int without changing its value.");

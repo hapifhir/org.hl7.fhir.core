@@ -106,9 +106,9 @@ public class NutritionIntake extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public NutritionIntakeNutritionItemComponent(IModelContext context) {
+      public NutritionIntakeNutritionItemComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -404,25 +404,25 @@ public class NutritionIntake extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.nutritionProduct != null) {
-          this.nutritionProduct.setModelContext(context);
+          this.nutritionProduct.setModelContext(modelContext);
         }
         if (this.consumedItemList != null) {
           for (NutritionIntakeNutritionItemConsumedItemComponent i : this.consumedItemList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.notConsumedItemList != null) {
           for (NutritionIntakeNutritionItemNotConsumedItemComponent i : this.notConsumedItemList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -505,9 +505,9 @@ public class NutritionIntake extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public NutritionIntakeNutritionItemConsumedItemComponent(IModelContext context) {
+      public NutritionIntakeNutritionItemConsumedItemComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -816,23 +816,23 @@ public class NutritionIntake extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.schedule != null) {
-          this.schedule.setModelContext(context);
+          this.schedule.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
         if (this.rate != null) {
-          this.rate.setModelContext(context);
+          this.rate.setModelContext(modelContext);
         }
         if (this.totalIntakeList != null) {
           for (NutritionIntakeNutritionItemConsumedItemTotalIntakeComponent i : this.totalIntakeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -908,9 +908,9 @@ public class NutritionIntake extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public NutritionIntakeNutritionItemConsumedItemTotalIntakeComponent(IModelContext context) {
+      public NutritionIntakeNutritionItemConsumedItemTotalIntakeComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -918,9 +918,9 @@ public class NutritionIntake extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public NutritionIntakeNutritionItemConsumedItemTotalIntakeComponent(IModelContext context, CodeableReference nutrient, Quantity amount) {
+      public NutritionIntakeNutritionItemConsumedItemTotalIntakeComponent(IModelContext modelContext, CodeableReference nutrient, Quantity amount) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setNutrient(nutrient);
         this.setAmount(amount);
       }
@@ -1127,19 +1127,19 @@ public class NutritionIntake extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.nutrient != null) {
-          this.nutrient.setModelContext(context);
+          this.nutrient.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
         if (this.energy != null) {
-          this.energy.setModelContext(context);
+          this.energy.setModelContext(modelContext);
         }
       }
 
@@ -1214,9 +1214,9 @@ public class NutritionIntake extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public NutritionIntakeNutritionItemNotConsumedItemComponent(IModelContext context) {
+      public NutritionIntakeNutritionItemNotConsumedItemComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1421,19 +1421,19 @@ public class NutritionIntake extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.reason != null) {
-          this.reason.setModelContext(context);
+          this.reason.setModelContext(modelContext);
         }
         if (this.schedule != null) {
-          this.schedule.setModelContext(context);
+          this.schedule.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
       }
 
@@ -1501,9 +1501,9 @@ public class NutritionIntake extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public NutritionIntakePerformerComponent(IModelContext context) {
+      public NutritionIntakePerformerComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1511,9 +1511,9 @@ public class NutritionIntake extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public NutritionIntakePerformerComponent(IModelContext context, Reference actor) {
+      public NutritionIntakePerformerComponent(IModelContext modelContext, Reference actor) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setActor(actor);
       }
 
@@ -1672,16 +1672,16 @@ public class NutritionIntake extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.function != null) {
-          this.function.setModelContext(context);
+          this.function.setModelContext(modelContext);
         }
         if (this.actor != null) {
-          this.actor.setModelContext(context);
+          this.actor.setModelContext(modelContext);
         }
       }
 
@@ -1853,9 +1853,9 @@ public class NutritionIntake extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public NutritionIntake(IModelContext context) {
+    public NutritionIntake(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1863,9 +1863,9 @@ public class NutritionIntake extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public NutritionIntake(IModelContext context, EventStatus status, Reference subject) {
+    public NutritionIntake(IModelContext modelContext, EventStatus status, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setSubject(subject);
     }
@@ -3048,78 +3048,78 @@ public class NutritionIntake extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.partOfList != null) {
           for (Reference i : this.partOfList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusReasonList != null) {
           for (CodeableConcept i : this.statusReasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.occurrence != null) {
-          this.occurrence.setModelContext(context);
+          this.occurrence.setModelContext(modelContext);
         }
         if (this.recorded != null) {
-          this.recorded.setModelContext(context);
+          this.recorded.setModelContext(modelContext);
         }
         if (this.reported != null) {
-          this.reported.setModelContext(context);
+          this.reported.setModelContext(modelContext);
         }
         if (this.nutritionItemList != null) {
           for (NutritionIntakeNutritionItemComponent i : this.nutritionItemList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.performerList != null) {
           for (NutritionIntakePerformerComponent i : this.performerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.derivedFromList != null) {
           for (Reference i : this.derivedFromList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3158,8 +3158,8 @@ public class NutritionIntake extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.NutritionIntake;
+  public String getResourceType() {
+    return "NutritionIntake";
    }
 
  /**

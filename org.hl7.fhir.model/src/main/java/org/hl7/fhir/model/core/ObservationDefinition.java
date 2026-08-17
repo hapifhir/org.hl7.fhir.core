@@ -211,8 +211,8 @@ public class ObservationDefinition extends DomainResource {
 
   public static class ObservationDataTypeEnumFactory implements EnumFactory<ObservationDataType> {
     private final IModelContext modelContext;
-    public ObservationDataTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ObservationDataTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ObservationDataTypeEnumFactory() {
       this(null);
@@ -378,8 +378,8 @@ public class ObservationDefinition extends DomainResource {
 
   public static class ObservationRangeCategoryEnumFactory implements EnumFactory<ObservationRangeCategory> {
     private final IModelContext modelContext;
-    public ObservationRangeCategoryEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ObservationRangeCategoryEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ObservationRangeCategoryEnumFactory() {
       this(null);
@@ -538,9 +538,9 @@ public class ObservationDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ObservationDefinitionQualifiedValueComponent(IModelContext context) {
+      public ObservationDefinitionQualifiedValueComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1429,52 +1429,52 @@ public class ObservationDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.context != null) {
-          this.context.setModelContext(context);
+          this.context.setModelContext(modelContext);
         }
         if (this.appliesToList != null) {
           for (CodeableConcept i : this.appliesToList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sexParameterForClinicalUse != null) {
-          this.sexParameterForClinicalUse.setModelContext(context);
+          this.sexParameterForClinicalUse.setModelContext(modelContext);
         }
         if (this.age != null) {
-          this.age.setModelContext(context);
+          this.age.setModelContext(modelContext);
         }
         if (this.gestationalAge != null) {
-          this.gestationalAge.setModelContext(context);
+          this.gestationalAge.setModelContext(modelContext);
         }
         if (this.condition != null) {
-          this.condition.setModelContext(context);
+          this.condition.setModelContext(modelContext);
         }
         if (this.rangeCategory != null) {
-          this.rangeCategory.setModelContext(context);
+          this.rangeCategory.setModelContext(modelContext);
         }
         if (this.range != null) {
-          this.range.setModelContext(context);
+          this.range.setModelContext(modelContext);
         }
         if (this.validCodedValueSet != null) {
-          this.validCodedValueSet.setModelContext(context);
+          this.validCodedValueSet.setModelContext(modelContext);
         }
         if (this.normalCodedValueSet != null) {
-          this.normalCodedValueSet.setModelContext(context);
+          this.normalCodedValueSet.setModelContext(modelContext);
         }
         if (this.abnormalCodedValueSet != null) {
-          this.abnormalCodedValueSet.setModelContext(context);
+          this.abnormalCodedValueSet.setModelContext(modelContext);
         }
         if (this.criticalCodedValueSet != null) {
-          this.criticalCodedValueSet.setModelContext(context);
+          this.criticalCodedValueSet.setModelContext(modelContext);
         }
         if (this.interpretationList != null) {
           for (CodeableConcept i : this.interpretationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1568,9 +1568,9 @@ public class ObservationDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ObservationDefinitionComponentComponent(IModelContext context) {
+      public ObservationDefinitionComponentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1578,9 +1578,9 @@ public class ObservationDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ObservationDefinitionComponentComponent(IModelContext context, CodeableConcept code) {
+      public ObservationDefinitionComponentComponent(IModelContext modelContext, CodeableConcept code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -1908,27 +1908,27 @@ public class ObservationDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.permittedDataTypeList != null) {
           for (Enumeration<ObservationDataType> i : this.permittedDataTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.permittedUnitList != null) {
           for (Coding i : this.permittedUnitList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.qualifiedValueList != null) {
           for (ObservationDefinitionQualifiedValueComponent i : this.qualifiedValueList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2258,9 +2258,9 @@ public class ObservationDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public ObservationDefinition(IModelContext context) {
+    public ObservationDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2268,9 +2268,9 @@ public class ObservationDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public ObservationDefinition(IModelContext context, PublicationStatus status, CodeableConcept code) {
+    public ObservationDefinition(IModelContext modelContext, PublicationStatus status, CodeableConcept code) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setCode(code);
     }
@@ -4947,155 +4947,155 @@ public class ObservationDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.approvalDate != null) {
-          this.approvalDate.setModelContext(context);
+          this.approvalDate.setModelContext(modelContext);
         }
         if (this.lastReviewDate != null) {
-          this.lastReviewDate.setModelContext(context);
+          this.lastReviewDate.setModelContext(modelContext);
         }
         if (this.effectivePeriod != null) {
-          this.effectivePeriod.setModelContext(context);
+          this.effectivePeriod.setModelContext(modelContext);
         }
         if (this.derivedFromCanonicalList != null) {
           for (CanonicalType i : this.derivedFromCanonicalList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.derivedFromUriList != null) {
           for (UriType i : this.derivedFromUriList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subjectList != null) {
           for (CodeableConcept i : this.subjectList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.performerType != null) {
-          this.performerType.setModelContext(context);
+          this.performerType.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.permittedDataTypeList != null) {
           for (Enumeration<ObservationDataType> i : this.permittedDataTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.multipleResultsAllowed != null) {
-          this.multipleResultsAllowed.setModelContext(context);
+          this.multipleResultsAllowed.setModelContext(modelContext);
         }
         if (this.bodyStructureList != null) {
           for (CodeableReference i : this.bodyStructureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.method != null) {
-          this.method.setModelContext(context);
+          this.method.setModelContext(modelContext);
         }
         if (this.specimenList != null) {
           for (Reference i : this.specimenList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.device != null) {
-          this.device.setModelContext(context);
+          this.device.setModelContext(modelContext);
         }
         if (this.supportingDeviceList != null) {
           for (CodeableReference i : this.supportingDeviceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.preferredReportName != null) {
-          this.preferredReportName.setModelContext(context);
+          this.preferredReportName.setModelContext(modelContext);
         }
         if (this.permittedUnitList != null) {
           for (Coding i : this.permittedUnitList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.qualifiedValueList != null) {
           for (ObservationDefinitionQualifiedValueComponent i : this.qualifiedValueList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.hasMemberList != null) {
           for (Reference i : this.hasMemberList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.componentList != null) {
           for (ObservationDefinitionComponentComponent i : this.componentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -5154,8 +5154,8 @@ public class ObservationDefinition extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.ObservationDefinition;
+  public String getResourceType() {
+    return "ObservationDefinition";
    }
 
  /**

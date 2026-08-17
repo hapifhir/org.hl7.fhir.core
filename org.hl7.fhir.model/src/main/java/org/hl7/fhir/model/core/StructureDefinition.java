@@ -131,8 +131,8 @@ public class StructureDefinition extends CanonicalResource {
 
   public static class ExtensionContextTypeEnumFactory implements EnumFactory<ExtensionContextType> {
     private final IModelContext modelContext;
-    public ExtensionContextTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ExtensionContextTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ExtensionContextTypeEnumFactory() {
       this(null);
@@ -260,8 +260,8 @@ public class StructureDefinition extends CanonicalResource {
 
   public static class StructureDefinitionKindEnumFactory implements EnumFactory<StructureDefinitionKind> {
     private final IModelContext modelContext;
-    public StructureDefinitionKindEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public StructureDefinitionKindEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public StructureDefinitionKindEnumFactory() {
       this(null);
@@ -375,8 +375,8 @@ public class StructureDefinition extends CanonicalResource {
 
   public static class TypeDerivationRuleEnumFactory implements EnumFactory<TypeDerivationRule> {
     private final IModelContext modelContext;
-    public TypeDerivationRuleEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public TypeDerivationRuleEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public TypeDerivationRuleEnumFactory() {
       this(null);
@@ -461,9 +461,9 @@ public class StructureDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StructureDefinitionMappingComponent(IModelContext context) {
+      public StructureDefinitionMappingComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -471,9 +471,9 @@ public class StructureDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public StructureDefinitionMappingComponent(IModelContext context, String identity) {
+      public StructureDefinitionMappingComponent(IModelContext modelContext, String identity) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setIdentity(identity);
       }
 
@@ -818,22 +818,22 @@ public class StructureDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identity != null) {
-          this.identity.setModelContext(context);
+          this.identity.setModelContext(modelContext);
         }
         if (this.uri != null) {
-          this.uri.setModelContext(context);
+          this.uri.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
       }
 
@@ -902,9 +902,9 @@ public class StructureDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StructureDefinitionContextComponent(IModelContext context) {
+      public StructureDefinitionContextComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -912,9 +912,9 @@ public class StructureDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public StructureDefinitionContextComponent(IModelContext context, ExtensionContextType type, String expression) {
+      public StructureDefinitionContextComponent(IModelContext modelContext, ExtensionContextType type, String expression) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setExpression(expression);
       }
@@ -1115,16 +1115,16 @@ public class StructureDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.expression != null) {
-          this.expression.setModelContext(context);
+          this.expression.setModelContext(modelContext);
         }
       }
 
@@ -1182,9 +1182,9 @@ public class StructureDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StructureDefinitionSnapshotComponent(IModelContext context) {
+      public StructureDefinitionSnapshotComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1192,9 +1192,9 @@ public class StructureDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public StructureDefinitionSnapshotComponent(IModelContext context, ElementDefinition element) {
+      public StructureDefinitionSnapshotComponent(IModelContext modelContext, ElementDefinition element) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.addElement(element);
       }
 
@@ -1328,14 +1328,14 @@ public class StructureDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.elementList != null) {
           for (ElementDefinition i : this.elementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1422,9 +1422,9 @@ public class StructureDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StructureDefinitionDifferentialComponent(IModelContext context) {
+      public StructureDefinitionDifferentialComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1432,9 +1432,9 @@ public class StructureDefinition extends CanonicalResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public StructureDefinitionDifferentialComponent(IModelContext context, ElementDefinition element) {
+      public StructureDefinitionDifferentialComponent(IModelContext modelContext, ElementDefinition element) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.addElement(element);
       }
 
@@ -1568,14 +1568,14 @@ public class StructureDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.elementList != null) {
           for (ElementDefinition i : this.elementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1836,9 +1836,9 @@ public class StructureDefinition extends CanonicalResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public StructureDefinition(IModelContext context) {
+    public StructureDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1846,9 +1846,9 @@ public class StructureDefinition extends CanonicalResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public StructureDefinition(IModelContext context, String url, String name, PublicationStatus status, StructureDefinitionKind kind, boolean abstract_, String type) {
+    public StructureDefinition(IModelContext modelContext, String url, String name, PublicationStatus status, StructureDefinitionKind kind, boolean abstract_, String type) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setUrl(url);
       this.setName(name);
       this.setStatus(status);
@@ -3913,113 +3913,113 @@ public class StructureDefinition extends CanonicalResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.keywordList != null) {
           for (Coding i : this.keywordList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.fhirVersion != null) {
-          this.fhirVersion.setModelContext(context);
+          this.fhirVersion.setModelContext(modelContext);
         }
         if (this.mappingList != null) {
           for (StructureDefinitionMappingComponent i : this.mappingList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.kind != null) {
-          this.kind.setModelContext(context);
+          this.kind.setModelContext(modelContext);
         }
         if (this.abstract_ != null) {
-          this.abstract_.setModelContext(context);
+          this.abstract_.setModelContext(modelContext);
         }
         if (this.contextList != null) {
           for (StructureDefinitionContextComponent i : this.contextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.contextInvariantList != null) {
           for (StringType i : this.contextInvariantList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.baseDefinition != null) {
-          this.baseDefinition.setModelContext(context);
+          this.baseDefinition.setModelContext(modelContext);
         }
         if (this.derivation != null) {
-          this.derivation.setModelContext(context);
+          this.derivation.setModelContext(modelContext);
         }
         if (this.snapshot != null) {
-          this.snapshot.setModelContext(context);
+          this.snapshot.setModelContext(modelContext);
         }
         if (this.differential != null) {
-          this.differential.setModelContext(context);
+          this.differential.setModelContext(modelContext);
         }
       }
 
@@ -4069,8 +4069,8 @@ public class StructureDefinition extends CanonicalResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.StructureDefinition;
+  public String getResourceType() {
+    return "StructureDefinition";
    }
 
  /**

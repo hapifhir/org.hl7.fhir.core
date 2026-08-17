@@ -161,8 +161,8 @@ public class Provenance extends DomainResource {
 
   public static class ProvenanceEntityRoleEnumFactory implements EnumFactory<ProvenanceEntityRole> {
     private final IModelContext modelContext;
-    public ProvenanceEntityRoleEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ProvenanceEntityRoleEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ProvenanceEntityRoleEnumFactory() {
       this(null);
@@ -273,9 +273,9 @@ public class Provenance extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ProvenanceAgentComponent(IModelContext context) {
+      public ProvenanceAgentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -283,9 +283,9 @@ public class Provenance extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ProvenanceAgentComponent(IModelContext context, Reference who) {
+      public ProvenanceAgentComponent(IModelContext modelContext, Reference who) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setWho(who);
       }
 
@@ -560,24 +560,24 @@ public class Provenance extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.roleList != null) {
           for (CodeableConcept i : this.roleList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.who != null) {
-          this.who.setModelContext(context);
+          this.who.setModelContext(modelContext);
         }
         if (this.onBehalfOf != null) {
-          this.onBehalfOf.setModelContext(context);
+          this.onBehalfOf.setModelContext(modelContext);
         }
       }
 
@@ -652,9 +652,9 @@ public class Provenance extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public ProvenanceEntityComponent(IModelContext context) {
+      public ProvenanceEntityComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -662,9 +662,9 @@ public class Provenance extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public ProvenanceEntityComponent(IModelContext context, ProvenanceEntityRole role, Reference what) {
+      public ProvenanceEntityComponent(IModelContext modelContext, ProvenanceEntityRole role, Reference what) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setRole(role);
         this.setWhat(what);
       }
@@ -914,20 +914,20 @@ public class Provenance extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.role != null) {
-          this.role.setModelContext(context);
+          this.role.setModelContext(modelContext);
         }
         if (this.what != null) {
-          this.what.setModelContext(context);
+          this.what.setModelContext(modelContext);
         }
         if (this.agentList != null) {
           for (ProvenanceAgentComponent i : this.agentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1078,9 +1078,9 @@ public class Provenance extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Provenance(IModelContext context) {
+    public Provenance(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1088,9 +1088,9 @@ public class Provenance extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Provenance(IModelContext context, Reference target, ProvenanceAgentComponent agent) {
+    public Provenance(IModelContext modelContext, Reference target, ProvenanceAgentComponent agent) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.addTarget(target);
       this.addAgent(agent);
     }
@@ -2064,65 +2064,65 @@ public class Provenance extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.targetList != null) {
           for (Reference i : this.targetList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.occurred != null) {
-          this.occurred.setModelContext(context);
+          this.occurred.setModelContext(modelContext);
         }
         if (this.recorded != null) {
-          this.recorded.setModelContext(context);
+          this.recorded.setModelContext(modelContext);
         }
         if (this.policyList != null) {
           for (UriType i : this.policyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.location != null) {
-          this.location.setModelContext(context);
+          this.location.setModelContext(modelContext);
         }
         if (this.authorizationList != null) {
           for (CodeableConcept i : this.authorizationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.why != null) {
-          this.why.setModelContext(context);
+          this.why.setModelContext(modelContext);
         }
         if (this.activity != null) {
-          this.activity.setModelContext(context);
+          this.activity.setModelContext(modelContext);
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.patient != null) {
-          this.patient.setModelContext(context);
+          this.patient.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.agentList != null) {
           for (ProvenanceAgentComponent i : this.agentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.entityList != null) {
           for (ProvenanceEntityComponent i : this.entityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.signatureList != null) {
           for (Signature i : this.signatureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2160,8 +2160,8 @@ public class Provenance extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Provenance;
+  public String getResourceType() {
+    return "Provenance";
    }
 
  /**

@@ -161,8 +161,8 @@ public class NamingSystem extends MetadataResource {
 
   public static class NamingSystemIdentifierTypeEnumFactory implements EnumFactory<NamingSystemIdentifierType> {
     private final IModelContext modelContext;
-    public NamingSystemIdentifierTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public NamingSystemIdentifierTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public NamingSystemIdentifierTypeEnumFactory() {
       this(null);
@@ -298,8 +298,8 @@ public class NamingSystem extends MetadataResource {
 
   public static class NamingSystemTypeEnumFactory implements EnumFactory<NamingSystemType> {
     private final IModelContext modelContext;
-    public NamingSystemTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public NamingSystemTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public NamingSystemTypeEnumFactory() {
       this(null);
@@ -405,9 +405,9 @@ public class NamingSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public NamingSystemUniqueIdComponent(IModelContext context) {
+      public NamingSystemUniqueIdComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -415,9 +415,9 @@ public class NamingSystem extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public NamingSystemUniqueIdComponent(IModelContext context, NamingSystemIdentifierType type, String value) {
+      public NamingSystemUniqueIdComponent(IModelContext modelContext, NamingSystemIdentifierType type, String value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
         this.setValue(value);
       }
@@ -870,28 +870,28 @@ public class NamingSystem extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.preferred != null) {
-          this.preferred.setModelContext(context);
+          this.preferred.setModelContext(modelContext);
         }
         if (this.comment != null) {
-          this.comment.setModelContext(context);
+          this.comment.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.authoritative != null) {
-          this.authoritative.setModelContext(context);
+          this.authoritative.setModelContext(modelContext);
         }
       }
 
@@ -1167,9 +1167,9 @@ public class NamingSystem extends MetadataResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public NamingSystem(IModelContext context) {
+    public NamingSystem(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1177,9 +1177,9 @@ public class NamingSystem extends MetadataResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public NamingSystem(IModelContext context, String name, PublicationStatus status, NamingSystemType kind, Date date, NamingSystemUniqueIdComponent uniqueId) {
+    public NamingSystem(IModelContext modelContext, String name, PublicationStatus status, NamingSystemType kind, Date date, NamingSystemUniqueIdComponent uniqueId) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setName(name);
       this.setStatus(status);
       this.setKind(kind);
@@ -3377,124 +3377,124 @@ public class NamingSystem extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.kind != null) {
-          this.kind.setModelContext(context);
+          this.kind.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.responsible != null) {
-          this.responsible.setModelContext(context);
+          this.responsible.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.approvalDate != null) {
-          this.approvalDate.setModelContext(context);
+          this.approvalDate.setModelContext(modelContext);
         }
         if (this.lastReviewDate != null) {
-          this.lastReviewDate.setModelContext(context);
+          this.lastReviewDate.setModelContext(modelContext);
         }
         if (this.effectivePeriod != null) {
-          this.effectivePeriod.setModelContext(context);
+          this.effectivePeriod.setModelContext(modelContext);
         }
         if (this.topicList != null) {
           for (CodeableConcept i : this.topicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.authorList != null) {
           for (ContactDetail i : this.authorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.editorList != null) {
           for (ContactDetail i : this.editorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reviewerList != null) {
           for (ContactDetail i : this.reviewerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.endorserList != null) {
           for (ContactDetail i : this.endorserList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatedArtifactList != null) {
           for (RelatedArtifact i : this.relatedArtifactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.usage != null) {
-          this.usage.setModelContext(context);
+          this.usage.setModelContext(modelContext);
         }
         if (this.uniqueIdList != null) {
           for (NamingSystemUniqueIdComponent i : this.uniqueIdList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3546,8 +3546,8 @@ public class NamingSystem extends MetadataResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.NamingSystem;
+  public String getResourceType() {
+    return "NamingSystem";
    }
 
  /**

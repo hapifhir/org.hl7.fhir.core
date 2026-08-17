@@ -131,8 +131,8 @@ public class AllergyIntolerance extends DomainResource {
 
   public static class AllergyIntoleranceCriticalityEnumFactory implements EnumFactory<AllergyIntoleranceCriticality> {
     private final IModelContext modelContext;
-    public AllergyIntoleranceCriticalityEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AllergyIntoleranceCriticalityEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AllergyIntoleranceCriticalityEnumFactory() {
       this(null);
@@ -250,8 +250,8 @@ public class AllergyIntolerance extends DomainResource {
 
   public static class AllergyIntoleranceSeverityEnumFactory implements EnumFactory<AllergyIntoleranceSeverity> {
     private final IModelContext modelContext;
-    public AllergyIntoleranceSeverityEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AllergyIntoleranceSeverityEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AllergyIntoleranceSeverityEnumFactory() {
       this(null);
@@ -367,9 +367,9 @@ public class AllergyIntolerance extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AllergyIntoleranceReactionComponent(IModelContext context) {
+      public AllergyIntoleranceReactionComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -377,9 +377,9 @@ public class AllergyIntolerance extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AllergyIntoleranceReactionComponent(IModelContext context, CodeableReference manifestation) {
+      public AllergyIntoleranceReactionComponent(IModelContext modelContext, CodeableReference manifestation) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.addManifestation(manifestation);
       }
 
@@ -890,34 +890,34 @@ public class AllergyIntolerance extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.substance != null) {
-          this.substance.setModelContext(context);
+          this.substance.setModelContext(modelContext);
         }
         if (this.manifestationList != null) {
           for (CodeableReference i : this.manifestationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.onset != null) {
-          this.onset.setModelContext(context);
+          this.onset.setModelContext(modelContext);
         }
         if (this.severity != null) {
-          this.severity.setModelContext(context);
+          this.severity.setModelContext(modelContext);
         }
         if (this.exposureRoute != null) {
-          this.exposureRoute.setModelContext(context);
+          this.exposureRoute.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1090,9 +1090,9 @@ public class AllergyIntolerance extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public AllergyIntolerance(IModelContext context) {
+    public AllergyIntolerance(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1100,9 +1100,9 @@ public class AllergyIntolerance extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public AllergyIntolerance(IModelContext context, Reference patient) {
+    public AllergyIntolerance(IModelContext modelContext, Reference patient) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setPatient(patient);
     }
 
@@ -2180,65 +2180,65 @@ public class AllergyIntolerance extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.clinicalStatus != null) {
-          this.clinicalStatus.setModelContext(context);
+          this.clinicalStatus.setModelContext(modelContext);
         }
         if (this.verificationStatus != null) {
-          this.verificationStatus.setModelContext(context);
+          this.verificationStatus.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.criticality != null) {
-          this.criticality.setModelContext(context);
+          this.criticality.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.patient != null) {
-          this.patient.setModelContext(context);
+          this.patient.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.onset != null) {
-          this.onset.setModelContext(context);
+          this.onset.setModelContext(modelContext);
         }
         if (this.recordedDate != null) {
-          this.recordedDate.setModelContext(context);
+          this.recordedDate.setModelContext(modelContext);
         }
         if (this.recorder != null) {
-          this.recorder.setModelContext(context);
+          this.recorder.setModelContext(modelContext);
         }
         if (this.asserter != null) {
-          this.asserter.setModelContext(context);
+          this.asserter.setModelContext(modelContext);
         }
         if (this.lastOccurrence != null) {
-          this.lastOccurrence.setModelContext(context);
+          this.lastOccurrence.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reactionList != null) {
           for (AllergyIntoleranceReactionComponent i : this.reactionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2278,8 +2278,8 @@ public class AllergyIntolerance extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.AllergyIntolerance;
+  public String getResourceType() {
+    return "AllergyIntolerance";
    }
 
  /**

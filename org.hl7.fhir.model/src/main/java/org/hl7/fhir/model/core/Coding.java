@@ -108,9 +108,9 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Coding(IModelContext context) {
+    public Coding(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -120,8 +120,8 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
      * @param theCode The {@link #setCode(String) code}
      * @param theDisplay The {@link #setDisplay(String) human readable display}
      */
-      public Coding(IModelContext context, String theSystem, String theCode, String theDisplay) {
-        this.modelContext = context;
+      public Coding(IModelContext modelContext, String theSystem, String theCode, String theDisplay) {
+        this.modelContext = modelContext;
         setSystem(theSystem);
         setCode(theCode);
         setDisplay(theDisplay);
@@ -543,25 +543,25 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.system != null) {
-          this.system.setModelContext(context);
+          this.system.setModelContext(modelContext);
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.display != null) {
-          this.display.setModelContext(context);
+          this.display.setModelContext(modelContext);
         }
         if (this.userSelected != null) {
-          this.userSelected.setModelContext(context);
+          this.userSelected.setModelContext(modelContext);
         }
       }
 
@@ -675,8 +675,8 @@ public class Coding extends DataType implements IBaseCoding, ICompositeType, ICo
         return res;
       } 
             
-      public Coding(IModelContext context, String theSystem, String theVersion, String theCode, String theDisplay) {
-        this.modelContext = context;
+      public Coding(IModelContext modelContext, String theSystem, String theVersion, String theCode, String theDisplay) {
+        this.modelContext = modelContext;
         setSystem(theSystem);
         setVersion(theVersion);
         setCode(theCode);

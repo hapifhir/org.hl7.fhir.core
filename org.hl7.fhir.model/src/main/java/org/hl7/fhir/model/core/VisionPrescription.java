@@ -142,8 +142,8 @@ public class VisionPrescription extends DomainResource {
 
   public static class VisionBaseEnumFactory implements EnumFactory<VisionBase> {
     private final IModelContext modelContext;
-    public VisionBaseEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public VisionBaseEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public VisionBaseEnumFactory() {
       this(null);
@@ -257,8 +257,8 @@ public class VisionPrescription extends DomainResource {
 
   public static class VisionEyesEnumFactory implements EnumFactory<VisionEyes> {
     private final IModelContext modelContext;
-    public VisionEyesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public VisionEyesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public VisionEyesEnumFactory() {
       this(null);
@@ -415,9 +415,9 @@ public class VisionPrescription extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public VisionPrescriptionLensSpecificationComponent(IModelContext context) {
+      public VisionPrescriptionLensSpecificationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -425,9 +425,9 @@ public class VisionPrescription extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public VisionPrescriptionLensSpecificationComponent(IModelContext context, CodeableConcept product, VisionEyes eye) {
+      public VisionPrescriptionLensSpecificationComponent(IModelContext modelContext, CodeableConcept product, VisionEyes eye) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setProduct(product);
         this.setEye(eye);
       }
@@ -1536,55 +1536,55 @@ public class VisionPrescription extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.product != null) {
-          this.product.setModelContext(context);
+          this.product.setModelContext(modelContext);
         }
         if (this.eye != null) {
-          this.eye.setModelContext(context);
+          this.eye.setModelContext(modelContext);
         }
         if (this.sphere != null) {
-          this.sphere.setModelContext(context);
+          this.sphere.setModelContext(modelContext);
         }
         if (this.cylinder != null) {
-          this.cylinder.setModelContext(context);
+          this.cylinder.setModelContext(modelContext);
         }
         if (this.axis != null) {
-          this.axis.setModelContext(context);
+          this.axis.setModelContext(modelContext);
         }
         if (this.prismList != null) {
           for (PrismComponent i : this.prismList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.add != null) {
-          this.add.setModelContext(context);
+          this.add.setModelContext(modelContext);
         }
         if (this.power != null) {
-          this.power.setModelContext(context);
+          this.power.setModelContext(modelContext);
         }
         if (this.backCurve != null) {
-          this.backCurve.setModelContext(context);
+          this.backCurve.setModelContext(modelContext);
         }
         if (this.diameter != null) {
-          this.diameter.setModelContext(context);
+          this.diameter.setModelContext(modelContext);
         }
         if (this.duration != null) {
-          this.duration.setModelContext(context);
+          this.duration.setModelContext(modelContext);
         }
         if (this.color != null) {
-          this.color.setModelContext(context);
+          this.color.setModelContext(modelContext);
         }
         if (this.brand != null) {
-          this.brand.setModelContext(context);
+          this.brand.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1660,9 +1660,9 @@ public class VisionPrescription extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PrismComponent(IModelContext context) {
+      public PrismComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1670,9 +1670,9 @@ public class VisionPrescription extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PrismComponent(IModelContext context, BigDecimal amount, VisionBase base) {
+      public PrismComponent(IModelContext modelContext, BigDecimal amount, VisionBase base) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setAmount(amount);
         this.setBase(base);
       }
@@ -1891,16 +1891,16 @@ public class VisionPrescription extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
         if (this.base != null) {
-          this.base.setModelContext(context);
+          this.base.setModelContext(modelContext);
         }
       }
 
@@ -2043,9 +2043,9 @@ public class VisionPrescription extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public VisionPrescription(IModelContext context) {
+    public VisionPrescription(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2053,9 +2053,9 @@ public class VisionPrescription extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public VisionPrescription(IModelContext context, FinancialResourceStatusCodes status, RequestIntent intent, Date created, Reference patient, Date dateWritten, Reference prescriber, VisionPrescriptionLensSpecificationComponent lensSpecification) {
+    public VisionPrescription(IModelContext modelContext, FinancialResourceStatusCodes status, RequestIntent intent, Date created, Reference patient, Date dateWritten, Reference prescriber, VisionPrescriptionLensSpecificationComponent lensSpecification) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setIntent(intent);
       this.setCreated(created);
@@ -2939,54 +2939,54 @@ public class VisionPrescription extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.groupIdentifier != null) {
-          this.groupIdentifier.setModelContext(context);
+          this.groupIdentifier.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.intent != null) {
-          this.intent.setModelContext(context);
+          this.intent.setModelContext(modelContext);
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.created != null) {
-          this.created.setModelContext(context);
+          this.created.setModelContext(modelContext);
         }
         if (this.patient != null) {
-          this.patient.setModelContext(context);
+          this.patient.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.dateWritten != null) {
-          this.dateWritten.setModelContext(context);
+          this.dateWritten.setModelContext(modelContext);
         }
         if (this.effectiveEndDate != null) {
-          this.effectiveEndDate.setModelContext(context);
+          this.effectiveEndDate.setModelContext(modelContext);
         }
         if (this.prescriber != null) {
-          this.prescriber.setModelContext(context);
+          this.prescriber.setModelContext(modelContext);
         }
         if (this.lensSpecificationList != null) {
           for (VisionPrescriptionLensSpecificationComponent i : this.lensSpecificationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3025,8 +3025,8 @@ public class VisionPrescription extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.VisionPrescription;
+  public String getResourceType() {
+    return "VisionPrescription";
    }
 
  /**

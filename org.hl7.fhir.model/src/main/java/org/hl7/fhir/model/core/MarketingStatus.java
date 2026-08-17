@@ -106,9 +106,9 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public MarketingStatus(IModelContext context) {
+    public MarketingStatus(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -116,9 +116,9 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public MarketingStatus(IModelContext context, CodeableConcept status) {
+    public MarketingStatus(IModelContext modelContext, CodeableConcept status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -447,25 +447,25 @@ public class MarketingStatus extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.country != null) {
-          this.country.setModelContext(context);
+          this.country.setModelContext(modelContext);
         }
         if (this.jurisdiction != null) {
-          this.jurisdiction.setModelContext(context);
+          this.jurisdiction.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.dateRange != null) {
-          this.dateRange.setModelContext(context);
+          this.dateRange.setModelContext(modelContext);
         }
         if (this.restoreDate != null) {
-          this.restoreDate.setModelContext(context);
+          this.restoreDate.setModelContext(modelContext);
         }
       }
 

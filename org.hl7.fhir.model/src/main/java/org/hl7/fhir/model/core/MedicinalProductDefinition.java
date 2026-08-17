@@ -91,9 +91,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicinalProductDefinitionContactComponent(IModelContext context) {
+      public MedicinalProductDefinitionContactComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -101,9 +101,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MedicinalProductDefinitionContactComponent(IModelContext context, Reference contact) {
+      public MedicinalProductDefinitionContactComponent(IModelContext modelContext, Reference contact) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setContact(contact);
       }
 
@@ -262,16 +262,16 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.contact != null) {
-          this.contact.setModelContext(context);
+          this.contact.setModelContext(modelContext);
         }
       }
 
@@ -351,9 +351,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicinalProductDefinitionNameComponent(IModelContext context) {
+      public MedicinalProductDefinitionNameComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -361,9 +361,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MedicinalProductDefinitionNameComponent(IModelContext context, String productName) {
+      public MedicinalProductDefinitionNameComponent(IModelContext modelContext, String productName) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setProductName(productName);
       }
 
@@ -680,25 +680,25 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.productName != null) {
-          this.productName.setModelContext(context);
+          this.productName.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.partList != null) {
           for (MedicinalProductDefinitionNamePartComponent i : this.partList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.usageList != null) {
           for (MedicinalProductDefinitionNameUsageComponent i : this.usageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -767,9 +767,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicinalProductDefinitionNamePartComponent(IModelContext context) {
+      public MedicinalProductDefinitionNamePartComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -777,9 +777,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MedicinalProductDefinitionNamePartComponent(IModelContext context, String part, CodeableConcept type) {
+      public MedicinalProductDefinitionNamePartComponent(IModelContext modelContext, String part, CodeableConcept type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setPart(part);
         this.setType(type);
       }
@@ -959,16 +959,16 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.part != null) {
-          this.part.setModelContext(context);
+          this.part.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
       }
 
@@ -1043,9 +1043,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicinalProductDefinitionNameUsageComponent(IModelContext context) {
+      public MedicinalProductDefinitionNameUsageComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1053,9 +1053,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MedicinalProductDefinitionNameUsageComponent(IModelContext context, CodeableConcept country) {
+      public MedicinalProductDefinitionNameUsageComponent(IModelContext modelContext, CodeableConcept country) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCountry(country);
       }
 
@@ -1261,19 +1261,19 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.country != null) {
-          this.country.setModelContext(context);
+          this.country.setModelContext(modelContext);
         }
         if (this.jurisdiction != null) {
-          this.jurisdiction.setModelContext(context);
+          this.jurisdiction.setModelContext(modelContext);
         }
         if (this.language != null) {
-          this.language.setModelContext(context);
+          this.language.setModelContext(modelContext);
         }
       }
 
@@ -1341,9 +1341,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicinalProductDefinitionCrossReferenceComponent(IModelContext context) {
+      public MedicinalProductDefinitionCrossReferenceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1351,9 +1351,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MedicinalProductDefinitionCrossReferenceComponent(IModelContext context, CodeableReference product) {
+      public MedicinalProductDefinitionCrossReferenceComponent(IModelContext modelContext, CodeableReference product) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setProduct(product);
       }
 
@@ -1512,16 +1512,16 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.product != null) {
-          this.product.setModelContext(context);
+          this.product.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
       }
 
@@ -1602,9 +1602,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicinalProductDefinitionOperationComponent(IModelContext context) {
+      public MedicinalProductDefinitionOperationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1878,24 +1878,24 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.effectiveDate != null) {
-          this.effectiveDate.setModelContext(context);
+          this.effectiveDate.setModelContext(modelContext);
         }
         if (this.organizationList != null) {
           for (Reference i : this.organizationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.confidentialityIndicator != null) {
-          this.confidentialityIndicator.setModelContext(context);
+          this.confidentialityIndicator.setModelContext(modelContext);
         }
       }
 
@@ -1963,9 +1963,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicinalProductDefinitionCharacteristicComponent(IModelContext context) {
+      public MedicinalProductDefinitionCharacteristicComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1973,9 +1973,9 @@ public class MedicinalProductDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MedicinalProductDefinitionCharacteristicComponent(IModelContext context, CodeableConcept type) {
+      public MedicinalProductDefinitionCharacteristicComponent(IModelContext modelContext, CodeableConcept type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -2289,16 +2289,16 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -2564,9 +2564,9 @@ public class MedicinalProductDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public MedicinalProductDefinition(IModelContext context) {
+    public MedicinalProductDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -2574,9 +2574,9 @@ public class MedicinalProductDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public MedicinalProductDefinition(IModelContext context, MedicinalProductDefinitionNameComponent name) {
+    public MedicinalProductDefinition(IModelContext modelContext, MedicinalProductDefinitionNameComponent name) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.addName(name);
     }
 
@@ -4501,132 +4501,132 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.domain != null) {
-          this.domain.setModelContext(context);
+          this.domain.setModelContext(modelContext);
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusDate != null) {
-          this.statusDate.setModelContext(context);
+          this.statusDate.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.combinedPharmaceuticalDoseForm != null) {
-          this.combinedPharmaceuticalDoseForm.setModelContext(context);
+          this.combinedPharmaceuticalDoseForm.setModelContext(modelContext);
         }
         if (this.routeList != null) {
           for (CodeableConcept i : this.routeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.indication != null) {
-          this.indication.setModelContext(context);
+          this.indication.setModelContext(modelContext);
         }
         if (this.legalStatusOfSupply != null) {
-          this.legalStatusOfSupply.setModelContext(context);
+          this.legalStatusOfSupply.setModelContext(modelContext);
         }
         if (this.additionalMonitoringIndicator != null) {
-          this.additionalMonitoringIndicator.setModelContext(context);
+          this.additionalMonitoringIndicator.setModelContext(modelContext);
         }
         if (this.specialMeasuresList != null) {
           for (CodeableConcept i : this.specialMeasuresList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.pediatricUseIndicator != null) {
-          this.pediatricUseIndicator.setModelContext(context);
+          this.pediatricUseIndicator.setModelContext(modelContext);
         }
         if (this.classificationList != null) {
           for (CodeableConcept i : this.classificationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.marketingStatusList != null) {
           for (MarketingStatus i : this.marketingStatusList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.packagedMedicinalProductList != null) {
           for (CodeableConcept i : this.packagedMedicinalProductList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.comprisedOfList != null) {
           for (Reference i : this.comprisedOfList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.ingredientList != null) {
           for (CodeableConcept i : this.ingredientList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.impurityList != null) {
           for (CodeableReference i : this.impurityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.attachedDocumentList != null) {
           for (Reference i : this.attachedDocumentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.masterFileList != null) {
           for (Reference i : this.masterFileList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.contactList != null) {
           for (MedicinalProductDefinitionContactComponent i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.clinicalTrialList != null) {
           for (Reference i : this.clinicalTrialList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.codeList != null) {
           for (Coding i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.nameList != null) {
           for (MedicinalProductDefinitionNameComponent i : this.nameList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.crossReferenceList != null) {
           for (MedicinalProductDefinitionCrossReferenceComponent i : this.crossReferenceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.operationList != null) {
           for (MedicinalProductDefinitionOperationComponent i : this.operationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.characteristicList != null) {
           for (MedicinalProductDefinitionCharacteristicComponent i : this.characteristicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4676,8 +4676,8 @@ public class MedicinalProductDefinition extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.MedicinalProductDefinition;
+  public String getResourceType() {
+    return "MedicinalProductDefinition";
    }
 
  /**

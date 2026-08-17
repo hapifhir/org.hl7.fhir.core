@@ -141,8 +141,8 @@ public class DeviceMetric extends DomainResource {
 
   public static class DeviceMetricOperationalStatusEnumFactory implements EnumFactory<DeviceMetricOperationalStatus> {
     private final IModelContext modelContext;
-    public DeviceMetricOperationalStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public DeviceMetricOperationalStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public DeviceMetricOperationalStatusEnumFactory() {
       this(null);
@@ -276,8 +276,8 @@ public class DeviceMetric extends DomainResource {
 
   public static class DeviceMetricStatusEnumFactory implements EnumFactory<DeviceMetricStatus> {
     private final IModelContext modelContext;
-    public DeviceMetricStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public DeviceMetricStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public DeviceMetricStatusEnumFactory() {
       this(null);
@@ -369,9 +369,9 @@ public class DeviceMetric extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DeviceMetricCalibrationComponent(IModelContext context) {
+      public DeviceMetricCalibrationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -600,19 +600,19 @@ public class DeviceMetric extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.state != null) {
-          this.state.setModelContext(context);
+          this.state.setModelContext(modelContext);
         }
         if (this.time != null) {
-          this.time.setModelContext(context);
+          this.time.setModelContext(modelContext);
         }
       }
 
@@ -746,9 +746,9 @@ public class DeviceMetric extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public DeviceMetric(IModelContext context) {
+    public DeviceMetric(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -756,9 +756,9 @@ public class DeviceMetric extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public DeviceMetric(IModelContext context, DeviceMetricStatus status, CodeableConcept category, CodeableConcept type, Reference device) {
+    public DeviceMetric(IModelContext modelContext, DeviceMetricStatus status, CodeableConcept category, CodeableConcept type, Reference device) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setCategory(category);
       this.setType(type);
@@ -1438,46 +1438,46 @@ public class DeviceMetric extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.operationalStatus != null) {
-          this.operationalStatus.setModelContext(context);
+          this.operationalStatus.setModelContext(modelContext);
         }
         if (this.category != null) {
-          this.category.setModelContext(context);
+          this.category.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.device != null) {
-          this.device.setModelContext(context);
+          this.device.setModelContext(modelContext);
         }
         if (this.unit != null) {
-          this.unit.setModelContext(context);
+          this.unit.setModelContext(modelContext);
         }
         if (this.color != null) {
-          this.color.setModelContext(context);
+          this.color.setModelContext(modelContext);
         }
         if (this.measurementFrequency != null) {
-          this.measurementFrequency.setModelContext(context);
+          this.measurementFrequency.setModelContext(modelContext);
         }
         if (this.availability != null) {
-          this.availability.setModelContext(context);
+          this.availability.setModelContext(modelContext);
         }
         if (this.calibrationList != null) {
           for (DeviceMetricCalibrationComponent i : this.calibrationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1515,8 +1515,8 @@ public class DeviceMetric extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.DeviceMetric;
+  public String getResourceType() {
+    return "DeviceMetric";
    }
 
  /**

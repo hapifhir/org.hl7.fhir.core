@@ -117,9 +117,9 @@ public class Meta extends DataType implements IBaseMetaType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Meta(IModelContext context) {
+    public Meta(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -616,33 +616,33 @@ public class Meta extends DataType implements IBaseMetaType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.versionId != null) {
-          this.versionId.setModelContext(context);
+          this.versionId.setModelContext(modelContext);
         }
         if (this.lastUpdated != null) {
-          this.lastUpdated.setModelContext(context);
+          this.lastUpdated.setModelContext(modelContext);
         }
         if (this.source != null) {
-          this.source.setModelContext(context);
+          this.source.setModelContext(modelContext);
         }
         if (this.profileList != null) {
           for (CanonicalType i : this.profileList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.securityList != null) {
           for (Coding i : this.securityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.tagList != null) {
           for (Coding i : this.tagList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }

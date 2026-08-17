@@ -141,8 +141,8 @@ public class DocumentReference extends DomainResource {
 
   public static class DocumentReferenceStatusEnumFactory implements EnumFactory<DocumentReferenceStatus> {
     private final IModelContext modelContext;
-    public DocumentReferenceStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public DocumentReferenceStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public DocumentReferenceStatusEnumFactory() {
       this(null);
@@ -226,9 +226,9 @@ public class DocumentReference extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DocumentReferenceRelatedComponent(IModelContext context) {
+      public DocumentReferenceRelatedComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -236,9 +236,9 @@ public class DocumentReference extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DocumentReferenceRelatedComponent(IModelContext context, Reference target) {
+      public DocumentReferenceRelatedComponent(IModelContext modelContext, Reference target) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setTarget(target);
       }
 
@@ -397,16 +397,16 @@ public class DocumentReference extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.target != null) {
-          this.target.setModelContext(context);
+          this.target.setModelContext(modelContext);
         }
       }
 
@@ -479,9 +479,9 @@ public class DocumentReference extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DocumentReferenceAttesterComponent(IModelContext context) {
+      public DocumentReferenceAttesterComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -489,9 +489,9 @@ public class DocumentReference extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DocumentReferenceAttesterComponent(IModelContext context, CodeableConcept mode) {
+      public DocumentReferenceAttesterComponent(IModelContext modelContext, CodeableConcept mode) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setMode(mode);
       }
 
@@ -721,19 +721,19 @@ public class DocumentReference extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.mode != null) {
-          this.mode.setModelContext(context);
+          this.mode.setModelContext(modelContext);
         }
         if (this.time != null) {
-          this.time.setModelContext(context);
+          this.time.setModelContext(modelContext);
         }
         if (this.party != null) {
-          this.party.setModelContext(context);
+          this.party.setModelContext(modelContext);
         }
       }
 
@@ -800,9 +800,9 @@ public class DocumentReference extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DocumentReferenceRelatesToComponent(IModelContext context) {
+      public DocumentReferenceRelatesToComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -810,9 +810,9 @@ public class DocumentReference extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DocumentReferenceRelatesToComponent(IModelContext context, CodeableConcept code, Reference target) {
+      public DocumentReferenceRelatesToComponent(IModelContext modelContext, CodeableConcept code, Reference target) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setTarget(target);
       }
@@ -972,16 +972,16 @@ public class DocumentReference extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.target != null) {
-          this.target.setModelContext(context);
+          this.target.setModelContext(modelContext);
         }
       }
 
@@ -1046,9 +1046,9 @@ public class DocumentReference extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DocumentReferenceContentComponent(IModelContext context) {
+      public DocumentReferenceContentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1056,9 +1056,9 @@ public class DocumentReference extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DocumentReferenceContentComponent(IModelContext context, Attachment attachment) {
+      public DocumentReferenceContentComponent(IModelContext modelContext, Attachment attachment) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setAttachment(attachment);
       }
 
@@ -1239,17 +1239,17 @@ public class DocumentReference extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.attachment != null) {
-          this.attachment.setModelContext(context);
+          this.attachment.setModelContext(modelContext);
         }
         if (this.profileList != null) {
           for (DocumentReferenceContentProfileComponent i : this.profileList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1310,9 +1310,9 @@ public class DocumentReference extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DocumentReferenceContentProfileComponent(IModelContext context) {
+      public DocumentReferenceContentProfileComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1320,9 +1320,9 @@ public class DocumentReference extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DocumentReferenceContentProfileComponent(IModelContext context, DataType value) {
+      public DocumentReferenceContentProfileComponent(IModelContext modelContext, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setValue(value);
       }
 
@@ -1489,13 +1489,13 @@ public class DocumentReference extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -1722,9 +1722,9 @@ public class DocumentReference extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public DocumentReference(IModelContext context) {
+    public DocumentReference(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -1732,9 +1732,9 @@ public class DocumentReference extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public DocumentReference(IModelContext context, DocumentReferenceStatus status, DocumentReferenceContentComponent content) {
+    public DocumentReference(IModelContext modelContext, DocumentReferenceStatus status, DocumentReferenceContentComponent content) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.addContent(content);
     }
@@ -3337,107 +3337,107 @@ public class DocumentReference extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.docStatus != null) {
-          this.docStatus.setModelContext(context);
+          this.docStatus.setModelContext(modelContext);
         }
         if (this.modalityList != null) {
           for (CodeableConcept i : this.modalityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.contextList != null) {
           for (Reference i : this.contextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.eventList != null) {
           for (CodeableReference i : this.eventList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatedList != null) {
           for (DocumentReferenceRelatedComponent i : this.relatedList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.bodyStructureList != null) {
           for (CodeableReference i : this.bodyStructureList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.facilityType != null) {
-          this.facilityType.setModelContext(context);
+          this.facilityType.setModelContext(modelContext);
         }
         if (this.practiceSetting != null) {
-          this.practiceSetting.setModelContext(context);
+          this.practiceSetting.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.authorList != null) {
           for (Reference i : this.authorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.attesterList != null) {
           for (DocumentReferenceAttesterComponent i : this.attesterList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.custodian != null) {
-          this.custodian.setModelContext(context);
+          this.custodian.setModelContext(modelContext);
         }
         if (this.relatesToList != null) {
           for (DocumentReferenceRelatesToComponent i : this.relatesToList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.securityLabelList != null) {
           for (CodeableConcept i : this.securityLabelList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.contentList != null) {
           for (DocumentReferenceContentComponent i : this.contentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3482,8 +3482,8 @@ public class DocumentReference extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.DocumentReference;
+  public String getResourceType() {
+    return "DocumentReference";
    }
 
  /**

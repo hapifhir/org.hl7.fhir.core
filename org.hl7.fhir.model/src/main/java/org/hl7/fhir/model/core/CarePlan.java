@@ -151,8 +151,8 @@ public class CarePlan extends DomainResource {
 
   public static class CarePlanIntentEnumFactory implements EnumFactory<CarePlanIntent> {
     private final IModelContext modelContext;
-    public CarePlanIntentEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public CarePlanIntentEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public CarePlanIntentEnumFactory() {
       this(null);
@@ -249,9 +249,9 @@ public class CarePlan extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public CarePlanActivityComponent(IModelContext context) {
+      public CarePlanActivityComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -500,23 +500,23 @@ public class CarePlan extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.performedActivityList != null) {
           for (CodeableReference i : this.performedActivityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.progressList != null) {
           for (Annotation i : this.progressList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.plannedActivityReference != null) {
-          this.plannedActivityReference.setModelContext(context);
+          this.plannedActivityReference.setModelContext(modelContext);
         }
       }
 
@@ -718,9 +718,9 @@ public class CarePlan extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public CarePlan(IModelContext context) {
+    public CarePlan(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -728,9 +728,9 @@ public class CarePlan extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public CarePlan(IModelContext context, RequestStatus status, CarePlanIntent intent, Reference subject) {
+    public CarePlan(IModelContext modelContext, RequestStatus status, CarePlanIntent intent, Reference subject) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setIntent(intent);
       this.setSubject(subject);
@@ -2167,96 +2167,96 @@ public class CarePlan extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.replacesList != null) {
           for (Reference i : this.replacesList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.partOfList != null) {
           for (Reference i : this.partOfList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.intent != null) {
-          this.intent.setModelContext(context);
+          this.intent.setModelContext(modelContext);
         }
         if (this.categoryList != null) {
           for (CodeableConcept i : this.categoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.encounter != null) {
-          this.encounter.setModelContext(context);
+          this.encounter.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.created != null) {
-          this.created.setModelContext(context);
+          this.created.setModelContext(modelContext);
         }
         if (this.custodian != null) {
-          this.custodian.setModelContext(context);
+          this.custodian.setModelContext(modelContext);
         }
         if (this.contributorList != null) {
           for (Reference i : this.contributorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.careTeamList != null) {
           for (Reference i : this.careTeamList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.addressesList != null) {
           for (CodeableReference i : this.addressesList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.supportingInfoList != null) {
           for (Reference i : this.supportingInfoList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.goalList != null) {
           for (Reference i : this.goalList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.activityList != null) {
           for (CarePlanActivityComponent i : this.activityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2298,8 +2298,8 @@ public class CarePlan extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.CarePlan;
+  public String getResourceType() {
+    return "CarePlan";
    }
 
  /**

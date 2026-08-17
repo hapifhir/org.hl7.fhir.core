@@ -86,9 +86,9 @@ public abstract class RdfParserBase extends ParserBase implements IParser {
 		Section section = ttl.section("resource");
 		Subject subject;
 		if (url != null) 
-			subject = section.triple("<"+url+">", "a", "fhir:"+resource.getResourceType().toString());
+			subject = section.triple("<"+url+">", "a", "fhir:"+resource.getResourceType());
 		else
-			subject = section.triple("[]", "a", "fhir:"+resource.getResourceType().toString());
+			subject = section.triple("[]", "a", "fhir:"+resource.getResourceType());
 
 		composeResource(subject, resource);
 		try {

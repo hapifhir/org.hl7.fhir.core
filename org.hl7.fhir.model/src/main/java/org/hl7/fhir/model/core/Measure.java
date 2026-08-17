@@ -92,9 +92,9 @@ public class Measure extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MeasureTermComponent(IModelContext context) {
+      public MeasureTermComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -276,16 +276,16 @@ public class Measure extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
       }
 
@@ -477,9 +477,9 @@ public class Measure extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MeasureGroupComponent(IModelContext context) {
+      public MeasureGroupComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1776,78 +1776,78 @@ public class Measure extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.basis != null) {
-          this.basis.setModelContext(context);
+          this.basis.setModelContext(modelContext);
         }
         if (this.basisRequirementList != null) {
           for (DataRequirement i : this.basisRequirementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.scoring != null) {
-          this.scoring.setModelContext(context);
+          this.scoring.setModelContext(modelContext);
         }
         if (this.scoringUnit != null) {
-          this.scoringUnit.setModelContext(context);
+          this.scoringUnit.setModelContext(modelContext);
         }
         if (this.scoringPrecision != null) {
-          this.scoringPrecision.setModelContext(context);
+          this.scoringPrecision.setModelContext(modelContext);
         }
         if (this.compositeScoring != null) {
-          this.compositeScoring.setModelContext(context);
+          this.compositeScoring.setModelContext(modelContext);
         }
         if (this.componentList != null) {
           for (MeasureGroupComponentComponent i : this.componentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.rateAggregation != null) {
-          this.rateAggregation.setModelContext(context);
+          this.rateAggregation.setModelContext(modelContext);
         }
         if (this.improvementNotation != null) {
-          this.improvementNotation.setModelContext(context);
+          this.improvementNotation.setModelContext(modelContext);
         }
         if (this.improvementNotationGuidance != null) {
-          this.improvementNotationGuidance.setModelContext(context);
+          this.improvementNotationGuidance.setModelContext(modelContext);
         }
         if (this.libraryList != null) {
           for (CanonicalType i : this.libraryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.populationList != null) {
           for (MeasureGroupPopulationComponent i : this.populationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.stratifierList != null) {
           for (MeasureGroupStratifierComponent i : this.stratifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1934,9 +1934,9 @@ public class Measure extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MeasureGroupComponentComponent(IModelContext context) {
+      public MeasureGroupComponentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2231,19 +2231,19 @@ public class Measure extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.measure != null) {
-          this.measure.setModelContext(context);
+          this.measure.setModelContext(modelContext);
         }
         if (this.groupId != null) {
-          this.groupId.setModelContext(context);
+          this.groupId.setModelContext(modelContext);
         }
         if (this.weight != null) {
-          this.weight.setModelContext(context);
+          this.weight.setModelContext(modelContext);
         }
       }
 
@@ -2355,9 +2355,9 @@ public class Measure extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MeasureGroupPopulationComponent(IModelContext context) {
+      public MeasureGroupPopulationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2893,34 +2893,34 @@ public class Measure extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.criteria != null) {
-          this.criteria.setModelContext(context);
+          this.criteria.setModelContext(modelContext);
         }
         if (this.groupDefinition != null) {
-          this.groupDefinition.setModelContext(context);
+          this.groupDefinition.setModelContext(modelContext);
         }
         if (this.inputPopulationId != null) {
-          this.inputPopulationId.setModelContext(context);
+          this.inputPopulationId.setModelContext(modelContext);
         }
         if (this.aggregateMethod != null) {
-          this.aggregateMethod.setModelContext(context);
+          this.aggregateMethod.setModelContext(modelContext);
         }
       }
 
@@ -3026,9 +3026,9 @@ public class Measure extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MeasureGroupStratifierComponent(IModelContext context) {
+      public MeasureGroupStratifierComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -3515,32 +3515,32 @@ public class Measure extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.criteria != null) {
-          this.criteria.setModelContext(context);
+          this.criteria.setModelContext(modelContext);
         }
         if (this.groupDefinition != null) {
-          this.groupDefinition.setModelContext(context);
+          this.groupDefinition.setModelContext(modelContext);
         }
         if (this.componentList != null) {
           for (MeasureGroupStratifierComponentComponent i : this.componentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3646,9 +3646,9 @@ public class Measure extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MeasureGroupStratifierComponentComponent(IModelContext context) {
+      public MeasureGroupStratifierComponentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -4137,31 +4137,31 @@ public class Measure extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.criteria != null) {
-          this.criteria.setModelContext(context);
+          this.criteria.setModelContext(modelContext);
         }
         if (this.groupDefinition != null) {
-          this.groupDefinition.setModelContext(context);
+          this.groupDefinition.setModelContext(modelContext);
         }
         if (this.valueSet != null) {
-          this.valueSet.setModelContext(context);
+          this.valueSet.setModelContext(modelContext);
         }
         if (this.unit != null) {
-          this.unit.setModelContext(context);
+          this.unit.setModelContext(modelContext);
         }
       }
 
@@ -4267,9 +4267,9 @@ public class Measure extends MetadataResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MeasureSupplementalDataComponent(IModelContext context) {
+      public MeasureSupplementalDataComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -4277,9 +4277,9 @@ public class Measure extends MetadataResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MeasureSupplementalDataComponent(IModelContext context, Expression criteria) {
+      public MeasureSupplementalDataComponent(IModelContext modelContext, Expression criteria) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCriteria(criteria);
       }
 
@@ -4791,33 +4791,33 @@ public class Measure extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.usageList != null) {
           for (CodeableConcept i : this.usageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.criteria != null) {
-          this.criteria.setModelContext(context);
+          this.criteria.setModelContext(modelContext);
         }
         if (this.valueSet != null) {
-          this.valueSet.setModelContext(context);
+          this.valueSet.setModelContext(modelContext);
         }
         if (this.unit != null) {
-          this.unit.setModelContext(context);
+          this.unit.setModelContext(modelContext);
         }
       }
 
@@ -5149,9 +5149,9 @@ public class Measure extends MetadataResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Measure(IModelContext context) {
+    public Measure(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -5159,9 +5159,9 @@ public class Measure extends MetadataResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Measure(IModelContext context, PublicationStatus status) {
+    public Measure(IModelContext modelContext, PublicationStatus status) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
     }
 
@@ -7947,154 +7947,154 @@ public class Measure extends MetadataResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.url != null) {
-          this.url.setModelContext(context);
+          this.url.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.versionAlgorithm != null) {
-          this.versionAlgorithm.setModelContext(context);
+          this.versionAlgorithm.setModelContext(modelContext);
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.subtitle != null) {
-          this.subtitle.setModelContext(context);
+          this.subtitle.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.experimental != null) {
-          this.experimental.setModelContext(context);
+          this.experimental.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.publisher != null) {
-          this.publisher.setModelContext(context);
+          this.publisher.setModelContext(modelContext);
         }
         if (this.contactList != null) {
           for (ContactDetail i : this.contactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.useContextList != null) {
           for (UsageContext i : this.useContextList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.purpose != null) {
-          this.purpose.setModelContext(context);
+          this.purpose.setModelContext(modelContext);
         }
         if (this.usage != null) {
-          this.usage.setModelContext(context);
+          this.usage.setModelContext(modelContext);
         }
         if (this.copyright != null) {
-          this.copyright.setModelContext(context);
+          this.copyright.setModelContext(modelContext);
         }
         if (this.copyrightLabel != null) {
-          this.copyrightLabel.setModelContext(context);
+          this.copyrightLabel.setModelContext(modelContext);
         }
         if (this.approvalDate != null) {
-          this.approvalDate.setModelContext(context);
+          this.approvalDate.setModelContext(modelContext);
         }
         if (this.lastReviewDate != null) {
-          this.lastReviewDate.setModelContext(context);
+          this.lastReviewDate.setModelContext(modelContext);
         }
         if (this.effectivePeriod != null) {
-          this.effectivePeriod.setModelContext(context);
+          this.effectivePeriod.setModelContext(modelContext);
         }
         if (this.reportingFrequency != null) {
-          this.reportingFrequency.setModelContext(context);
+          this.reportingFrequency.setModelContext(modelContext);
         }
         if (this.topicList != null) {
           for (CodeableConcept i : this.topicList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.authorList != null) {
           for (ContactDetail i : this.authorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.editorList != null) {
           for (ContactDetail i : this.editorList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.reviewerList != null) {
           for (ContactDetail i : this.reviewerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.endorserList != null) {
           for (ContactDetail i : this.endorserList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relatedArtifactList != null) {
           for (RelatedArtifact i : this.relatedArtifactList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.libraryList != null) {
           for (CanonicalType i : this.libraryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.disclaimer != null) {
-          this.disclaimer.setModelContext(context);
+          this.disclaimer.setModelContext(modelContext);
         }
         if (this.riskAdjustment != null) {
-          this.riskAdjustment.setModelContext(context);
+          this.riskAdjustment.setModelContext(modelContext);
         }
         if (this.rateAggregation != null) {
-          this.rateAggregation.setModelContext(context);
+          this.rateAggregation.setModelContext(modelContext);
         }
         if (this.rationale != null) {
-          this.rationale.setModelContext(context);
+          this.rationale.setModelContext(modelContext);
         }
         if (this.clinicalRecommendationStatement != null) {
-          this.clinicalRecommendationStatement.setModelContext(context);
+          this.clinicalRecommendationStatement.setModelContext(modelContext);
         }
         if (this.termList != null) {
           for (MeasureTermComponent i : this.termList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.groupList != null) {
           for (MeasureGroupComponent i : this.groupList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.supplementalDataList != null) {
           for (MeasureSupplementalDataComponent i : this.supplementalDataList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -8155,8 +8155,8 @@ public class Measure extends MetadataResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Measure;
+  public String getResourceType() {
+    return "Measure";
    }
 
  /**

@@ -131,8 +131,8 @@ public class MeasureReport extends DomainResource {
 
   public static class MeasureReportStatusEnumFactory implements EnumFactory<MeasureReportStatus> {
     private final IModelContext modelContext;
-    public MeasureReportStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public MeasureReportStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public MeasureReportStatusEnumFactory() {
       this(null);
@@ -270,8 +270,8 @@ public class MeasureReport extends DomainResource {
 
   public static class MeasureReportTypeEnumFactory implements EnumFactory<MeasureReportType> {
     private final IModelContext modelContext;
-    public MeasureReportTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public MeasureReportTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public MeasureReportTypeEnumFactory() {
       this(null);
@@ -391,8 +391,8 @@ public class MeasureReport extends DomainResource {
 
   public static class SubmitDataUpdateTypeEnumFactory implements EnumFactory<SubmitDataUpdateType> {
     private final IModelContext modelContext;
-    public SubmitDataUpdateTypeEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public SubmitDataUpdateTypeEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public SubmitDataUpdateTypeEnumFactory() {
       this(null);
@@ -552,9 +552,9 @@ public class MeasureReport extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MeasureReportGroupComponent(IModelContext context) {
+      public MeasureReportGroupComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1595,55 +1595,55 @@ public class MeasureReport extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.calculatedDate != null) {
-          this.calculatedDate.setModelContext(context);
+          this.calculatedDate.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.scoring != null) {
-          this.scoring.setModelContext(context);
+          this.scoring.setModelContext(modelContext);
         }
         if (this.compositeScoring != null) {
-          this.compositeScoring.setModelContext(context);
+          this.compositeScoring.setModelContext(modelContext);
         }
         if (this.improvementNotation != null) {
-          this.improvementNotation.setModelContext(context);
+          this.improvementNotation.setModelContext(modelContext);
         }
         if (this.improvementNotationGuidance != null) {
-          this.improvementNotationGuidance.setModelContext(context);
+          this.improvementNotationGuidance.setModelContext(modelContext);
         }
         if (this.populationList != null) {
           for (MeasureReportGroupPopulationComponent i : this.populationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.measureScore != null) {
-          this.measureScore.setModelContext(context);
+          this.measureScore.setModelContext(modelContext);
         }
         if (this.stratifierList != null) {
           for (MeasureReportGroupStratifierComponent i : this.stratifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1768,9 +1768,9 @@ public class MeasureReport extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MeasureReportGroupPopulationComponent(IModelContext context) {
+      public MeasureReportGroupPopulationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2371,39 +2371,39 @@ public class MeasureReport extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.count != null) {
-          this.count.setModelContext(context);
+          this.count.setModelContext(modelContext);
         }
         if (this.countQuantity != null) {
-          this.countQuantity.setModelContext(context);
+          this.countQuantity.setModelContext(modelContext);
         }
         if (this.subjectResults != null) {
-          this.subjectResults.setModelContext(context);
+          this.subjectResults.setModelContext(modelContext);
         }
         if (this.subjectReportList != null) {
           for (Reference i : this.subjectReportList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subjects != null) {
-          this.subjects.setModelContext(context);
+          this.subjects.setModelContext(modelContext);
         }
       }
 
@@ -2495,9 +2495,9 @@ public class MeasureReport extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MeasureReportGroupStratifierComponent(IModelContext context) {
+      public MeasureReportGroupStratifierComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2890,26 +2890,26 @@ public class MeasureReport extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.title != null) {
-          this.title.setModelContext(context);
+          this.title.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.stratumList != null) {
           for (StratifierGroupComponent i : this.stratumList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2994,9 +2994,9 @@ public class MeasureReport extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StratifierGroupComponent(IModelContext context) {
+      public StratifierGroupComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -3582,26 +3582,26 @@ public class MeasureReport extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
         if (this.componentList != null) {
           for (StratifierGroupComponentComponent i : this.componentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.populationList != null) {
           for (StratifierGroupPopulationComponent i : this.populationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.measureScore != null) {
-          this.measureScore.setModelContext(context);
+          this.measureScore.setModelContext(modelContext);
         }
       }
 
@@ -3684,9 +3684,9 @@ public class MeasureReport extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StratifierGroupComponentComponent(IModelContext context) {
+      public StratifierGroupComponentComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3694,9 +3694,9 @@ public class MeasureReport extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public StratifierGroupComponentComponent(IModelContext context, CodeableConcept code, DataType value) {
+      public StratifierGroupComponentComponent(IModelContext modelContext, CodeableConcept code, DataType value) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
         this.setValue(value);
       }
@@ -4133,22 +4133,22 @@ public class MeasureReport extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -4251,9 +4251,9 @@ public class MeasureReport extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StratifierGroupPopulationComponent(IModelContext context) {
+      public StratifierGroupPopulationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -4712,33 +4712,33 @@ public class MeasureReport extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.linkId != null) {
-          this.linkId.setModelContext(context);
+          this.linkId.setModelContext(modelContext);
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.count != null) {
-          this.count.setModelContext(context);
+          this.count.setModelContext(modelContext);
         }
         if (this.countQuantity != null) {
-          this.countQuantity.setModelContext(context);
+          this.countQuantity.setModelContext(modelContext);
         }
         if (this.subjectResults != null) {
-          this.subjectResults.setModelContext(context);
+          this.subjectResults.setModelContext(modelContext);
         }
         if (this.subjectReportList != null) {
           for (Reference i : this.subjectReportList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subjects != null) {
-          this.subjects.setModelContext(context);
+          this.subjects.setModelContext(modelContext);
         }
       }
 
@@ -4914,9 +4914,9 @@ public class MeasureReport extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public MeasureReport(IModelContext context) {
+    public MeasureReport(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -4924,9 +4924,9 @@ public class MeasureReport extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public MeasureReport(IModelContext context, MeasureReportStatus status, Period period) {
+    public MeasureReport(IModelContext modelContext, MeasureReportStatus status, Period period) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.setPeriod(period);
     }
@@ -6025,70 +6025,70 @@ public class MeasureReport extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.category != null) {
-          this.category.setModelContext(context);
+          this.category.setModelContext(modelContext);
         }
         if (this.messages != null) {
-          this.messages.setModelContext(context);
+          this.messages.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.dataUpdateType != null) {
-          this.dataUpdateType.setModelContext(context);
+          this.dataUpdateType.setModelContext(modelContext);
         }
         if (this.measure != null) {
-          this.measure.setModelContext(context);
+          this.measure.setModelContext(modelContext);
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
         if (this.reporter != null) {
-          this.reporter.setModelContext(context);
+          this.reporter.setModelContext(modelContext);
         }
         if (this.reportingVendor != null) {
-          this.reportingVendor.setModelContext(context);
+          this.reportingVendor.setModelContext(modelContext);
         }
         if (this.locationList != null) {
           for (Reference i : this.locationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.inputParameters != null) {
-          this.inputParameters.setModelContext(context);
+          this.inputParameters.setModelContext(modelContext);
         }
         if (this.groupList != null) {
           for (MeasureReportGroupComponent i : this.groupList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.supplementalDataList != null) {
           for (Reference i : this.supplementalDataList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.evaluatedResourceList != null) {
           for (Reference i : this.evaluatedResourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -6129,8 +6129,8 @@ public class MeasureReport extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.MeasureReport;
+  public String getResourceType() {
+    return "MeasureReport";
    }
 
  /**

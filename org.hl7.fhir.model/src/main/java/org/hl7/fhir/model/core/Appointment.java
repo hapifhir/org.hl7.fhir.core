@@ -211,8 +211,8 @@ public class Appointment extends DomainResource {
 
   public static class AppointmentStatusEnumFactory implements EnumFactory<AppointmentStatus> {
     private final IModelContext modelContext;
-    public AppointmentStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public AppointmentStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public AppointmentStatusEnumFactory() {
       this(null);
@@ -388,8 +388,8 @@ public class Appointment extends DomainResource {
 
   public static class ParticipationStatusEnumFactory implements EnumFactory<ParticipationStatus> {
     private final IModelContext modelContext;
-    public ParticipationStatusEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public ParticipationStatusEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public ParticipationStatusEnumFactory() {
       this(null);
@@ -533,8 +533,8 @@ public class Appointment extends DomainResource {
 
   public static class WeekOfMonthEnumFactory implements EnumFactory<WeekOfMonth> {
     private final IModelContext modelContext;
-    public WeekOfMonthEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public WeekOfMonthEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public WeekOfMonthEnumFactory() {
       this(null);
@@ -646,9 +646,9 @@ public class Appointment extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AppointmentParticipantComponent(IModelContext context) {
+      public AppointmentParticipantComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1014,27 +1014,27 @@ public class Appointment extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.typeList != null) {
           for (CodeableConcept i : this.typeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.actor != null) {
-          this.actor.setModelContext(context);
+          this.actor.setModelContext(modelContext);
         }
         if (this.required != null) {
-          this.required.setModelContext(context);
+          this.required.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
       }
 
@@ -1159,9 +1159,9 @@ public class Appointment extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AppointmentRecurrenceTemplateComponent(IModelContext context) {
+      public AppointmentRecurrenceTemplateComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1169,9 +1169,9 @@ public class Appointment extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AppointmentRecurrenceTemplateComponent(IModelContext context, CodeableConcept recurrenceType) {
+      public AppointmentRecurrenceTemplateComponent(IModelContext modelContext, CodeableConcept recurrenceType) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setRecurrenceType(recurrenceType);
       }
 
@@ -1840,45 +1840,45 @@ public class Appointment extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.timezone != null) {
-          this.timezone.setModelContext(context);
+          this.timezone.setModelContext(modelContext);
         }
         if (this.recurrenceType != null) {
-          this.recurrenceType.setModelContext(context);
+          this.recurrenceType.setModelContext(modelContext);
         }
         if (this.lastOccurrenceDate != null) {
-          this.lastOccurrenceDate.setModelContext(context);
+          this.lastOccurrenceDate.setModelContext(modelContext);
         }
         if (this.occurrenceCount != null) {
-          this.occurrenceCount.setModelContext(context);
+          this.occurrenceCount.setModelContext(modelContext);
         }
         if (this.occurrenceDateList != null) {
           for (DateType i : this.occurrenceDateList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.weeklyTemplate != null) {
-          this.weeklyTemplate.setModelContext(context);
+          this.weeklyTemplate.setModelContext(modelContext);
         }
         if (this.monthlyTemplate != null) {
-          this.monthlyTemplate.setModelContext(context);
+          this.monthlyTemplate.setModelContext(modelContext);
         }
         if (this.yearlyTemplate != null) {
-          this.yearlyTemplate.setModelContext(context);
+          this.yearlyTemplate.setModelContext(modelContext);
         }
         if (this.excludingDateList != null) {
           for (DateType i : this.excludingDateList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.excludingRecurrenceIdList != null) {
           for (PositiveIntType i : this.excludingRecurrenceIdList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1954,9 +1954,9 @@ public class Appointment extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AppointmentRecurrenceTemplateWeeklyTemplateComponent(IModelContext context) {
+      public AppointmentRecurrenceTemplateWeeklyTemplateComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1964,9 +1964,9 @@ public class Appointment extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AppointmentRecurrenceTemplateWeeklyTemplateComponent(IModelContext context, DaysOfWeek daysOfWeek) {
+      public AppointmentRecurrenceTemplateWeeklyTemplateComponent(IModelContext modelContext, DaysOfWeek daysOfWeek) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.addDaysOfWeek(daysOfWeek);
       }
 
@@ -2176,18 +2176,18 @@ public class Appointment extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.daysOfWeekList != null) {
           for (Enumeration<DaysOfWeek> i : this.daysOfWeekList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.weekInterval != null) {
-          this.weekInterval.setModelContext(context);
+          this.weekInterval.setModelContext(modelContext);
         }
       }
 
@@ -2271,9 +2271,9 @@ public class Appointment extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AppointmentRecurrenceTemplateMonthlyTemplateComponent(IModelContext context) {
+      public AppointmentRecurrenceTemplateMonthlyTemplateComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2281,9 +2281,9 @@ public class Appointment extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AppointmentRecurrenceTemplateMonthlyTemplateComponent(IModelContext context, int monthInterval) {
+      public AppointmentRecurrenceTemplateMonthlyTemplateComponent(IModelContext modelContext, int monthInterval) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setMonthInterval(monthInterval);
       }
 
@@ -2626,22 +2626,22 @@ public class Appointment extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.dayOfMonth != null) {
-          this.dayOfMonth.setModelContext(context);
+          this.dayOfMonth.setModelContext(modelContext);
         }
         if (this.nthWeekOfMonth != null) {
-          this.nthWeekOfMonth.setModelContext(context);
+          this.nthWeekOfMonth.setModelContext(modelContext);
         }
         if (this.dayOfWeek != null) {
-          this.dayOfWeek.setModelContext(context);
+          this.dayOfWeek.setModelContext(modelContext);
         }
         if (this.monthInterval != null) {
-          this.monthInterval.setModelContext(context);
+          this.monthInterval.setModelContext(modelContext);
         }
       }
 
@@ -2704,9 +2704,9 @@ public class Appointment extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public AppointmentRecurrenceTemplateYearlyTemplateComponent(IModelContext context) {
+      public AppointmentRecurrenceTemplateYearlyTemplateComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -2714,9 +2714,9 @@ public class Appointment extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public AppointmentRecurrenceTemplateYearlyTemplateComponent(IModelContext context, int yearInterval) {
+      public AppointmentRecurrenceTemplateYearlyTemplateComponent(IModelContext modelContext, int yearInterval) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setYearInterval(yearInterval);
       }
 
@@ -2848,13 +2848,13 @@ public class Appointment extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.yearInterval != null) {
-          this.yearInterval.setModelContext(context);
+          this.yearInterval.setModelContext(modelContext);
         }
       }
 
@@ -3136,9 +3136,9 @@ public class Appointment extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Appointment(IModelContext context) {
+    public Appointment(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -3146,9 +3146,9 @@ public class Appointment extends DomainResource {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public Appointment(IModelContext context, AppointmentStatus status, AppointmentParticipantComponent participant) {
+    public Appointment(IModelContext modelContext, AppointmentStatus status, AppointmentParticipantComponent participant) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setStatus(status);
       this.addParticipant(participant);
     }
@@ -5298,139 +5298,139 @@ public class Appointment extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.cancellationReason != null) {
-          this.cancellationReason.setModelContext(context);
+          this.cancellationReason.setModelContext(modelContext);
         }
         if (this.class_List != null) {
           for (CodeableConcept i : this.class_List) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.serviceCategoryList != null) {
           for (CodeableConcept i : this.serviceCategoryList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.serviceTypeList != null) {
           for (CodeableReference i : this.serviceTypeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.specialtyList != null) {
           for (CodeableConcept i : this.specialtyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.appointmentType != null) {
-          this.appointmentType.setModelContext(context);
+          this.appointmentType.setModelContext(modelContext);
         }
         if (this.reasonList != null) {
           for (CodeableReference i : this.reasonList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.priority != null) {
-          this.priority.setModelContext(context);
+          this.priority.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.replacesList != null) {
           for (Reference i : this.replacesList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.virtualServiceList != null) {
           for (VirtualServiceDetail i : this.virtualServiceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.supportingInformationList != null) {
           for (Reference i : this.supportingInformationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.previousAppointment != null) {
-          this.previousAppointment.setModelContext(context);
+          this.previousAppointment.setModelContext(modelContext);
         }
         if (this.originatingAppointment != null) {
-          this.originatingAppointment.setModelContext(context);
+          this.originatingAppointment.setModelContext(modelContext);
         }
         if (this.start != null) {
-          this.start.setModelContext(context);
+          this.start.setModelContext(modelContext);
         }
         if (this.end != null) {
-          this.end.setModelContext(context);
+          this.end.setModelContext(modelContext);
         }
         if (this.minutesDuration != null) {
-          this.minutesDuration.setModelContext(context);
+          this.minutesDuration.setModelContext(modelContext);
         }
         if (this.requestedPeriodList != null) {
           for (Period i : this.requestedPeriodList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.slotList != null) {
           for (Reference i : this.slotList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.accountList != null) {
           for (Reference i : this.accountList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.created != null) {
-          this.created.setModelContext(context);
+          this.created.setModelContext(modelContext);
         }
         if (this.cancellationDate != null) {
-          this.cancellationDate.setModelContext(context);
+          this.cancellationDate.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.patientInstructionList != null) {
           for (CodeableReference i : this.patientInstructionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.basedOnList != null) {
           for (Reference i : this.basedOnList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subject != null) {
-          this.subject.setModelContext(context);
+          this.subject.setModelContext(modelContext);
         }
         if (this.participantList != null) {
           for (AppointmentParticipantComponent i : this.participantList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.recurrenceId != null) {
-          this.recurrenceId.setModelContext(context);
+          this.recurrenceId.setModelContext(modelContext);
         }
         if (this.occurrenceChanged != null) {
-          this.occurrenceChanged.setModelContext(context);
+          this.occurrenceChanged.setModelContext(modelContext);
         }
         if (this.recurrenceTemplateList != null) {
           for (AppointmentRecurrenceTemplateComponent i : this.recurrenceTemplateList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -5483,8 +5483,8 @@ public class Appointment extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Appointment;
+  public String getResourceType() {
+    return "Appointment";
    }
 
  /**

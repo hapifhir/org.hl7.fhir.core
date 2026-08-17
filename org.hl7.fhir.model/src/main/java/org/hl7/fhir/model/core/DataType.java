@@ -75,9 +75,9 @@ public abstract class DataType extends Element implements IBaseDatatype, IElemen
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public DataType(IModelContext context) {
+    public DataType(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   public String fhirType() {

@@ -131,8 +131,8 @@ public class Medication extends DomainResource {
 
   public static class MedicationStatusCodesEnumFactory implements EnumFactory<MedicationStatusCodes> {
     private final IModelContext modelContext;
-    public MedicationStatusCodesEnumFactory(IModelContext context) {
-      this.modelContext = context;
+    public MedicationStatusCodesEnumFactory(IModelContext modelContext) {
+      this.modelContext = modelContext;
     }
     public MedicationStatusCodesEnumFactory() {
       this(null);
@@ -209,9 +209,9 @@ public class Medication extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicationPackageSizeComponent(IModelContext context) {
+      public MedicationPackageSizeComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -369,16 +369,16 @@ public class Medication extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.numberOfItems != null) {
-          this.numberOfItems.setModelContext(context);
+          this.numberOfItems.setModelContext(modelContext);
         }
         if (this.amountPerItem != null) {
-          this.amountPerItem.setModelContext(context);
+          this.amountPerItem.setModelContext(modelContext);
         }
       }
 
@@ -462,9 +462,9 @@ public class Medication extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicationIngredientComponent(IModelContext context) {
+      public MedicationIngredientComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -472,9 +472,9 @@ public class Medication extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public MedicationIngredientComponent(IModelContext context, CodeableReference item) {
+      public MedicationIngredientComponent(IModelContext modelContext, CodeableReference item) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setItem(item);
       }
 
@@ -802,22 +802,22 @@ public class Medication extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.item != null) {
-          this.item.setModelContext(context);
+          this.item.setModelContext(modelContext);
         }
         if (this.isActive != null) {
-          this.isActive.setModelContext(context);
+          this.isActive.setModelContext(modelContext);
         }
         if (this.role != null) {
-          this.role.setModelContext(context);
+          this.role.setModelContext(modelContext);
         }
         if (this.strength != null) {
-          this.strength.setModelContext(context);
+          this.strength.setModelContext(modelContext);
         }
       }
 
@@ -891,9 +891,9 @@ public class Medication extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public MedicationInstanceComponent(IModelContext context) {
+      public MedicationInstanceComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1168,21 +1168,21 @@ public class Medication extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.lotNumber != null) {
-          this.lotNumber.setModelContext(context);
+          this.lotNumber.setModelContext(modelContext);
         }
         if (this.expirationDate != null) {
-          this.expirationDate.setModelContext(context);
+          this.expirationDate.setModelContext(modelContext);
         }
       }
 
@@ -1300,9 +1300,9 @@ public class Medication extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Medication(IModelContext context) {
+    public Medication(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1863,41 +1863,41 @@ public class Medication extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.marketingAuthorizationHolder != null) {
-          this.marketingAuthorizationHolder.setModelContext(context);
+          this.marketingAuthorizationHolder.setModelContext(modelContext);
         }
         if (this.doseForm != null) {
-          this.doseForm.setModelContext(context);
+          this.doseForm.setModelContext(modelContext);
         }
         if (this.packageSize != null) {
-          this.packageSize.setModelContext(context);
+          this.packageSize.setModelContext(modelContext);
         }
         if (this.ingredientList != null) {
           for (MedicationIngredientComponent i : this.ingredientList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.instance != null) {
-          this.instance.setModelContext(context);
+          this.instance.setModelContext(modelContext);
         }
         if (this.definition != null) {
-          this.definition.setModelContext(context);
+          this.definition.setModelContext(modelContext);
         }
       }
 
@@ -1931,8 +1931,8 @@ public class Medication extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Medication;
+  public String getResourceType() {
+    return "Medication";
    }
 
  /**

@@ -113,9 +113,9 @@ public class Practitioner extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PractitionerQualificationComponent(IModelContext context) {
+      public PractitionerQualificationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -123,9 +123,9 @@ public class Practitioner extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PractitionerQualificationComponent(IModelContext context, CodeableConcept code) {
+      public PractitionerQualificationComponent(IModelContext modelContext, CodeableConcept code) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setCode(code);
       }
 
@@ -447,27 +447,27 @@ public class Practitioner extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.period != null) {
-          this.period.setModelContext(context);
+          this.period.setModelContext(modelContext);
         }
         if (this.issuer != null) {
-          this.issuer.setModelContext(context);
+          this.issuer.setModelContext(modelContext);
         }
       }
 
@@ -535,9 +535,9 @@ public class Practitioner extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public PractitionerCommunicationComponent(IModelContext context) {
+      public PractitionerCommunicationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -545,9 +545,9 @@ public class Practitioner extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public PractitionerCommunicationComponent(IModelContext context, CodeableConcept language) {
+      public PractitionerCommunicationComponent(IModelContext modelContext, CodeableConcept language) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setLanguage(language);
       }
 
@@ -726,16 +726,16 @@ public class Practitioner extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.language != null) {
-          this.language.setModelContext(context);
+          this.language.setModelContext(modelContext);
         }
         if (this.preferred != null) {
-          this.preferred.setModelContext(context);
+          this.preferred.setModelContext(modelContext);
         }
       }
 
@@ -862,9 +862,9 @@ public class Practitioner extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public Practitioner(IModelContext context) {
+    public Practitioner(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -1708,56 +1708,56 @@ public class Practitioner extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.active != null) {
-          this.active.setModelContext(context);
+          this.active.setModelContext(modelContext);
         }
         if (this.nameList != null) {
           for (HumanName i : this.nameList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.telecomList != null) {
           for (ContactPoint i : this.telecomList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.gender != null) {
-          this.gender.setModelContext(context);
+          this.gender.setModelContext(modelContext);
         }
         if (this.birthDate != null) {
-          this.birthDate.setModelContext(context);
+          this.birthDate.setModelContext(modelContext);
         }
         if (this.deceased != null) {
-          this.deceased.setModelContext(context);
+          this.deceased.setModelContext(modelContext);
         }
         if (this.addressList != null) {
           for (Address i : this.addressList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.photoList != null) {
           for (Attachment i : this.photoList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.qualificationList != null) {
           for (PractitionerQualificationComponent i : this.qualificationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.communicationList != null) {
           for (PractitionerCommunicationComponent i : this.communicationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1794,8 +1794,8 @@ public class Practitioner extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.Practitioner;
+  public String getResourceType() {
+    return "Practitioner";
    }
 
  /**

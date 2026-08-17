@@ -65,24 +65,24 @@ public class DecimalType extends PrimitiveType<BigDecimal> implements Comparable
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public DecimalType(IModelContext context) {
+	public DecimalType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
 	/**
 	 * Constructor
 	 */
-	public DecimalType(IModelContext context, BigDecimal theValue) {
-    this.modelContext = context;
+	public DecimalType(IModelContext modelContext, BigDecimal theValue) {
+    this.modelContext = modelContext;
 		setValue(theValue);
 	}
 
 	/**
 	 * Constructor
 	 */
-	public DecimalType(IModelContext context, double theValue) {
-    this.modelContext = context;
+	public DecimalType(IModelContext modelContext, double theValue) {
+    this.modelContext = modelContext;
 		// Use the valueOf here because the constructor gives wacky precision
 		// changes due to the floating point conversion
 		setValue(BigDecimal.valueOf(theValue));
@@ -91,16 +91,16 @@ public class DecimalType extends PrimitiveType<BigDecimal> implements Comparable
 	/**
 	 * Constructor
 	 */
-	public DecimalType(IModelContext context, long theValue) {
-    this.modelContext = context;
+	public DecimalType(IModelContext modelContext, long theValue) {
+    this.modelContext = modelContext;
 		setValue(theValue);
 	}
 
   /**
    * Constructor
    */
-  public DecimalType(IModelContext context, String theValue) {
-    this.modelContext = context;
+  public DecimalType(IModelContext modelContext, String theValue) {
+    this.modelContext = modelContext;
     setValueAsString(theValue);
   }
 

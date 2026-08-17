@@ -108,9 +108,9 @@ public class DosageDetails extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public DosageDetailsStepComponent(IModelContext context) {
+      public DosageDetailsStepComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -118,9 +118,9 @@ public class DosageDetails extends BackboneType implements ICompositeType {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public DosageDetailsStepComponent(IModelContext context, Dosage component) {
+      public DosageDetailsStepComponent(IModelContext modelContext, Dosage component) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.addComponent(component);
       }
 
@@ -462,27 +462,27 @@ public class DosageDetails extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.start != null) {
-          this.start.setModelContext(context);
+          this.start.setModelContext(modelContext);
         }
         if (this.end != null) {
-          this.end.setModelContext(context);
+          this.end.setModelContext(modelContext);
         }
         if (this.count != null) {
-          this.count.setModelContext(context);
+          this.count.setModelContext(modelContext);
         }
         if (this.componentList != null) {
           for (Dosage i : this.componentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.safety != null) {
-          this.safety.setModelContext(context);
+          this.safety.setModelContext(modelContext);
         }
       }
 
@@ -554,9 +554,9 @@ public class DosageDetails extends BackboneType implements ICompositeType {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public DosageDetails(IModelContext context) {
+    public DosageDetails(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
   /**
@@ -564,9 +564,9 @@ public class DosageDetails extends BackboneType implements ICompositeType {
    *
    * @param context the model context this object belongs to (may be null)
    */
-    public DosageDetails(IModelContext context, String renderedInstruction) {
+    public DosageDetails(IModelContext modelContext, String renderedInstruction) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
       this.setRenderedInstruction(renderedInstruction);
     }
 
@@ -819,21 +819,21 @@ public class DosageDetails extends BackboneType implements ICompositeType {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.renderedInstruction != null) {
-          this.renderedInstruction.setModelContext(context);
+          this.renderedInstruction.setModelContext(modelContext);
         }
         if (this.stepList != null) {
           for (DosageDetailsStepComponent i : this.stepList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.safety != null) {
-          this.safety.setModelContext(context);
+          this.safety.setModelContext(modelContext);
         }
       }
 

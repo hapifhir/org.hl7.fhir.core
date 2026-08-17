@@ -79,16 +79,16 @@ public class DateType extends BaseDateTimeType {
 	 *
 	 * @param context the model context this object belongs to - all objects in a tree must share the same context
 	 */
-	public DateType(IModelContext context) {
+	public DateType(IModelContext modelContext) {
 	  this();
-	  this.modelContext = context;
+	  this.modelContext = modelContext;
 	}
 
 	/**
 	 * Constructor which accepts a date value and uses the {@link #DEFAULT_PRECISION} for this type
 	 */
-	public DateType(IModelContext context, Date theDate) {
-		super(context, theDate, DEFAULT_PRECISION);
+	public DateType(IModelContext modelContext, Date theDate) {
+		super(modelContext, theDate, DEFAULT_PRECISION);
 	}
 
 	public DateType(Date theDate) {
@@ -106,8 +106,8 @@ public class DateType extends BaseDateTimeType {
 	 * @throws ca.uhn.fhir.parser.DataFormatException
 	 *             If the specified precision is not allowed for this type
 	 */
-	public DateType(IModelContext context, Date theDate, TemporalPrecisionEnum thePrecision) {
-		super(context, theDate, thePrecision);
+	public DateType(IModelContext modelContext, Date theDate, TemporalPrecisionEnum thePrecision) {
+		super(modelContext, theDate, thePrecision);
 	}
 
 	public DateType(Date theDate, TemporalPrecisionEnum thePrecision) {
@@ -120,8 +120,8 @@ public class DateType extends BaseDateTimeType {
    * @throws ca.uhn.fhir.parser.DataFormatException
    *             If the precision in the date string is not allowed for this type
    */
-  public DateType(IModelContext context, String theDate) {
-    super(context, theDate);
+  public DateType(IModelContext modelContext, String theDate) {
+    super(modelContext, theDate);
   }
 
   /**
@@ -137,8 +137,8 @@ public class DateType extends BaseDateTimeType {
 	/**
 	 * Constructor which accepts a date value and uses the {@link #DEFAULT_PRECISION} for this type.
 	 */
-	public DateType(IModelContext context, Calendar theCalendar) {
-		super(context, theCalendar.getTime(), DEFAULT_PRECISION);
+	public DateType(IModelContext modelContext, Calendar theCalendar) {
+		super(modelContext, theCalendar.getTime(), DEFAULT_PRECISION);
 		setTimeZone(theCalendar.getTimeZone());
 	}
 
@@ -157,8 +157,8 @@ public class DateType extends BaseDateTimeType {
 	 * @param theMonth The month, e.g. 0 for January
 	 * @param theDay The day (1 indexed) e.g. 1 for the first day of the month
 	 */
-	public DateType(IModelContext context, int theYear, int theMonth, int theDay) {
-		this(context, toCalendarZulu(theYear, theMonth, theDay));
+	public DateType(IModelContext modelContext, int theYear, int theMonth, int theDay) {
+		this(modelContext, toCalendarZulu(theYear, theMonth, theDay));
 	}
 
 	public DateType(int theYear, int theMonth, int theDay) {

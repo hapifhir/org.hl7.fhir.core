@@ -66,6 +66,7 @@ import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.utilities.formats.IParser;
+import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
@@ -94,14 +95,6 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
   }
 
 
-
-  protected XmlParserBase() {
-    super();
-  }
-
-  protected XmlParserBase(CustomResourceRegistry customResourceRegistry) {
-    super(customResourceRegistry);
-  }
 
 	@Override
 	public ParserType getType() {
@@ -223,9 +216,9 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
 
   protected boolean composeCustomResource(Resource resource) throws IOException {
-    if (customResourceRegistry.has(resource.fhirType())) {
-      XmlParserBase composer = customResourceRegistry.get(resource.fhirType()).getFactory().composerXml(xml);
-      composer.setCustomResourceRegistry(customResourceRegistry);
+    CustomResourceHandler handler = modelContext.getContextInformation().getHandler(resource.fhirType());
+    if (handler != null) {
+      XmlParserBase composer = handler.getFactory().composerXml(modelContext, xml);
       composer.composeResource(resource);
       return true;
     } else {
@@ -234,9 +227,9 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
   }
 
   protected Resource parseCustomResource(XmlPullParser xpp) throws FHIRFormatError, IOException, XmlPullParserException {
-    if (customResourceRegistry.has(xpp.getName())) {
-      XmlParserBase parser = customResourceRegistry.get(xpp.getName()).getFactory().parserXml(allowUnknownContent);
-      parser.setCustomResourceRegistry(customResourceRegistry);
+    CustomResourceHandler handler = modelContext.getContextInformation().getHandler(xpp.getName());
+    if (handler != null) {
+      XmlParserBase parser = handler.getFactory().parserXml(modelContext, allowUnknownContent);
       return parser.parse(xpp);
     } else {
       return null;
@@ -248,10 +241,9 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
    * registered as overriding the base specification (returns null if there's no such handler)
    */
   protected Resource parseOverridingCustomResource(XmlPullParser xpp) throws FHIRFormatError, IOException, XmlPullParserException {
-    CustomResourceHandler handler = customResourceRegistry.get(xpp.getName());
+    CustomResourceHandler handler = modelContext.getContextInformation().getHandler(xpp.getName());
     if (handler != null && handler.isOverridesBase()) {
-      XmlParserBase parser = handler.getFactory().parserXml(allowUnknownContent);
-      parser.setCustomResourceRegistry(customResourceRegistry);
+      XmlParserBase parser = handler.getFactory().parserXml(modelContext, allowUnknownContent);
       return parser.parse(xpp);
     } else {
       return null;
@@ -506,7 +498,7 @@ public abstract class XmlParserBase extends ParserBase implements IParser {
 
 	protected void composeDomainResource(String name, DomainResource res) throws IOException  {
 		xml.enter(FHIR_NS, name);
-		composeResource(res.getResourceType().toString(), res);
+		composeResource(res.getResourceType(), res);
 		xml.exit(FHIR_NS, name);
 	}
 

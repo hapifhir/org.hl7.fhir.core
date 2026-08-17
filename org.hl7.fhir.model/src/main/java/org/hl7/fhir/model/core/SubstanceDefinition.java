@@ -135,9 +135,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionMoietyComponent(IModelContext context) {
+      public SubstanceDefinitionMoietyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -682,36 +682,36 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.role != null) {
-          this.role.setModelContext(context);
+          this.role.setModelContext(modelContext);
         }
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.stereochemistry != null) {
-          this.stereochemistry.setModelContext(context);
+          this.stereochemistry.setModelContext(modelContext);
         }
         if (this.opticalActivity != null) {
-          this.opticalActivity.setModelContext(context);
+          this.opticalActivity.setModelContext(modelContext);
         }
         if (this.molecularFormula != null) {
-          this.molecularFormula.setModelContext(context);
+          this.molecularFormula.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
         if (this.measurementType != null) {
-          this.measurementType.setModelContext(context);
+          this.measurementType.setModelContext(modelContext);
         }
       }
 
@@ -797,9 +797,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionCharacterizationComponent(IModelContext context) {
+      public SubstanceDefinitionCharacterizationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -1097,23 +1097,23 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.technique != null) {
-          this.technique.setModelContext(context);
+          this.technique.setModelContext(modelContext);
         }
         if (this.form != null) {
-          this.form.setModelContext(context);
+          this.form.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.fileList != null) {
           for (Attachment i : this.fileList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -1182,9 +1182,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionPropertyComponent(IModelContext context) {
+      public SubstanceDefinitionPropertyComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1192,9 +1192,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubstanceDefinitionPropertyComponent(IModelContext context, CodeableConcept type) {
+      public SubstanceDefinitionPropertyComponent(IModelContext modelContext, CodeableConcept type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -1468,16 +1468,16 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.value != null) {
-          this.value.setModelContext(context);
+          this.value.setModelContext(modelContext);
         }
       }
 
@@ -1551,9 +1551,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionMolecularWeightComponent(IModelContext context) {
+      public SubstanceDefinitionMolecularWeightComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -1561,9 +1561,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubstanceDefinitionMolecularWeightComponent(IModelContext context, Quantity amount) {
+      public SubstanceDefinitionMolecularWeightComponent(IModelContext modelContext, Quantity amount) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setAmount(amount);
       }
 
@@ -1769,19 +1769,19 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.method != null) {
-          this.method.setModelContext(context);
+          this.method.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
       }
 
@@ -1892,9 +1892,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionStructureComponent(IModelContext context) {
+      public SubstanceDefinitionStructureComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2448,39 +2448,39 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.stereochemistry != null) {
-          this.stereochemistry.setModelContext(context);
+          this.stereochemistry.setModelContext(modelContext);
         }
         if (this.opticalActivity != null) {
-          this.opticalActivity.setModelContext(context);
+          this.opticalActivity.setModelContext(modelContext);
         }
         if (this.molecularFormula != null) {
-          this.molecularFormula.setModelContext(context);
+          this.molecularFormula.setModelContext(modelContext);
         }
         if (this.molecularFormulaByMoiety != null) {
-          this.molecularFormulaByMoiety.setModelContext(context);
+          this.molecularFormulaByMoiety.setModelContext(modelContext);
         }
         if (this.molecularWeight != null) {
-          this.molecularWeight.setModelContext(context);
+          this.molecularWeight.setModelContext(modelContext);
         }
         if (this.techniqueList != null) {
           for (CodeableConcept i : this.techniqueList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sourceDocumentList != null) {
           for (Reference i : this.sourceDocumentList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.representationList != null) {
           for (SubstanceDefinitionStructureRepresentationComponent i : this.representationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -2569,9 +2569,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionStructureRepresentationComponent(IModelContext context) {
+      public SubstanceDefinitionStructureRepresentationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -2847,22 +2847,22 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.representation != null) {
-          this.representation.setModelContext(context);
+          this.representation.setModelContext(modelContext);
         }
         if (this.format != null) {
-          this.format.setModelContext(context);
+          this.format.setModelContext(modelContext);
         }
         if (this.document != null) {
-          this.document.setModelContext(context);
+          this.document.setModelContext(modelContext);
         }
       }
 
@@ -2951,9 +2951,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionCodeComponent(IModelContext context) {
+      public SubstanceDefinitionCodeComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -3320,28 +3320,28 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.statusDate != null) {
-          this.statusDate.setModelContext(context);
+          this.statusDate.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sourceList != null) {
           for (Reference i : this.sourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -3477,9 +3477,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionNameComponent(IModelContext context) {
+      public SubstanceDefinitionNameComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -3487,9 +3487,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubstanceDefinitionNameComponent(IModelContext context, String name) {
+      public SubstanceDefinitionNameComponent(IModelContext modelContext, String name) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setName(name);
       }
 
@@ -4265,56 +4265,56 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.name != null) {
-          this.name.setModelContext(context);
+          this.name.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.preferred != null) {
-          this.preferred.setModelContext(context);
+          this.preferred.setModelContext(modelContext);
         }
         if (this.languageList != null) {
           for (CodeableConcept i : this.languageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.domainList != null) {
           for (CodeableConcept i : this.domainList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.jurisdictionList != null) {
           for (CodeableConcept i : this.jurisdictionList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.synonymList != null) {
           for (SubstanceDefinitionNameComponent i : this.synonymList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.translationList != null) {
           for (SubstanceDefinitionNameComponent i : this.translationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.officialList != null) {
           for (SubstanceDefinitionNameOfficialComponent i : this.officialList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sourceList != null) {
           for (Reference i : this.sourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -4396,9 +4396,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionNameOfficialComponent(IModelContext context) {
+      public SubstanceDefinitionNameOfficialComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -4627,19 +4627,19 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.authority != null) {
-          this.authority.setModelContext(context);
+          this.authority.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.date != null) {
-          this.date.setModelContext(context);
+          this.date.setModelContext(modelContext);
         }
       }
 
@@ -4768,9 +4768,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionRelationshipComponent(IModelContext context) {
+      public SubstanceDefinitionRelationshipComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
     /**
@@ -4778,9 +4778,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to (may be null)
      */
-      public SubstanceDefinitionRelationshipComponent(IModelContext context, CodeableConcept type) {
+      public SubstanceDefinitionRelationshipComponent(IModelContext modelContext, CodeableConcept type) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
         this.setType(type);
       }
 
@@ -5487,41 +5487,41 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.substanceDefinition != null) {
-          this.substanceDefinition.setModelContext(context);
+          this.substanceDefinition.setModelContext(modelContext);
         }
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.isDefining != null) {
-          this.isDefining.setModelContext(context);
+          this.isDefining.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
         if (this.comparator != null) {
-          this.comparator.setModelContext(context);
+          this.comparator.setModelContext(modelContext);
         }
         if (this.measurementType != null) {
-          this.measurementType.setModelContext(context);
+          this.measurementType.setModelContext(modelContext);
         }
         if (this.interaction != null) {
-          this.interaction.setModelContext(context);
+          this.interaction.setModelContext(modelContext);
         }
         if (this.organism != null) {
-          this.organism.setModelContext(context);
+          this.organism.setModelContext(modelContext);
         }
         if (this.organismType != null) {
-          this.organismType.setModelContext(context);
+          this.organismType.setModelContext(modelContext);
         }
         if (this.sourceList != null) {
           for (Reference i : this.sourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -5619,9 +5619,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionSourceMaterialComponent(IModelContext context) {
+      public SubstanceDefinitionSourceMaterialComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -5942,26 +5942,26 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.genus != null) {
-          this.genus.setModelContext(context);
+          this.genus.setModelContext(modelContext);
         }
         if (this.species != null) {
-          this.species.setModelContext(context);
+          this.species.setModelContext(modelContext);
         }
         if (this.part != null) {
-          this.part.setModelContext(context);
+          this.part.setModelContext(modelContext);
         }
         if (this.countryOfOriginList != null) {
           for (CodeableConcept i : this.countryOfOriginList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -6067,9 +6067,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionNucleicAcidComponent(IModelContext context) {
+      public SubstanceDefinitionNucleicAcidComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -6572,36 +6572,36 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.sequenceType != null) {
-          this.sequenceType.setModelContext(context);
+          this.sequenceType.setModelContext(modelContext);
         }
         if (this.numberOfSubunits != null) {
-          this.numberOfSubunits.setModelContext(context);
+          this.numberOfSubunits.setModelContext(modelContext);
         }
         if (this.areaOfHybridisation != null) {
-          this.areaOfHybridisation.setModelContext(context);
+          this.areaOfHybridisation.setModelContext(modelContext);
         }
         if (this.oligoNucleotideType != null) {
-          this.oligoNucleotideType.setModelContext(context);
+          this.oligoNucleotideType.setModelContext(modelContext);
         }
         if (this.subunitList != null) {
           for (SubstanceDefinitionNucleicAcidSubunitComponent i : this.subunitList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.geneList != null) {
           for (SubstanceDefinitionNucleicAcidGeneComponent i : this.geneList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.geneElementList != null) {
           for (SubstanceDefinitionNucleicAcidGeneElementComponent i : this.geneElementList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -6717,9 +6717,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionNucleicAcidSubunitComponent(IModelContext context) {
+      public SubstanceDefinitionNucleicAcidSubunitComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -7267,37 +7267,37 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.subunit != null) {
-          this.subunit.setModelContext(context);
+          this.subunit.setModelContext(modelContext);
         }
         if (this.sequence != null) {
-          this.sequence.setModelContext(context);
+          this.sequence.setModelContext(modelContext);
         }
         if (this.length != null) {
-          this.length.setModelContext(context);
+          this.length.setModelContext(modelContext);
         }
         if (this.sequenceAttachment != null) {
-          this.sequenceAttachment.setModelContext(context);
+          this.sequenceAttachment.setModelContext(modelContext);
         }
         if (this.fivePrime != null) {
-          this.fivePrime.setModelContext(context);
+          this.fivePrime.setModelContext(modelContext);
         }
         if (this.threePrime != null) {
-          this.threePrime.setModelContext(context);
+          this.threePrime.setModelContext(modelContext);
         }
         if (this.linkageList != null) {
           for (SubstanceDefinitionNucleicAcidSubunitLinkageComponent i : this.linkageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sugarList != null) {
           for (SubstanceDefinitionNucleicAcidSubunitSugarComponent i : this.sugarList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -7375,9 +7375,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionNucleicAcidSubunitLinkageComponent(IModelContext context) {
+      public SubstanceDefinitionNucleicAcidSubunitLinkageComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -7630,19 +7630,19 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.connectivity != null) {
-          this.connectivity.setModelContext(context);
+          this.connectivity.setModelContext(modelContext);
         }
         if (this.substance != null) {
-          this.substance.setModelContext(context);
+          this.substance.setModelContext(modelContext);
         }
         if (this.residueSite != null) {
-          this.residueSite.setModelContext(context);
+          this.residueSite.setModelContext(modelContext);
         }
       }
 
@@ -7710,9 +7710,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionNucleicAcidSubunitSugarComponent(IModelContext context) {
+      public SubstanceDefinitionNucleicAcidSubunitSugarComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -7894,16 +7894,16 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.substance != null) {
-          this.substance.setModelContext(context);
+          this.substance.setModelContext(modelContext);
         }
         if (this.residueSite != null) {
-          this.residueSite.setModelContext(context);
+          this.residueSite.setModelContext(modelContext);
         }
       }
 
@@ -7977,9 +7977,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionNucleicAcidGeneComponent(IModelContext context) {
+      public SubstanceDefinitionNucleicAcidGeneComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -8206,20 +8206,20 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.sequenceOrigin != null) {
-          this.sequenceOrigin.setModelContext(context);
+          this.sequenceOrigin.setModelContext(modelContext);
         }
         if (this.gene != null) {
-          this.gene.setModelContext(context);
+          this.gene.setModelContext(modelContext);
         }
         if (this.sourceList != null) {
           for (Reference i : this.sourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -8295,9 +8295,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionNucleicAcidGeneElementComponent(IModelContext context) {
+      public SubstanceDefinitionNucleicAcidGeneElementComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -8524,20 +8524,20 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.element != null) {
-          this.element.setModelContext(context);
+          this.element.setModelContext(modelContext);
         }
         if (this.sourceList != null) {
           for (Reference i : this.sourceList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -8636,9 +8636,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionPolymerComponent(IModelContext context) {
+      public SubstanceDefinitionPolymerComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -9074,33 +9074,33 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.class_ != null) {
-          this.class_.setModelContext(context);
+          this.class_.setModelContext(modelContext);
         }
         if (this.geometry != null) {
-          this.geometry.setModelContext(context);
+          this.geometry.setModelContext(modelContext);
         }
         if (this.copolymerConnectivityList != null) {
           for (CodeableConcept i : this.copolymerConnectivityList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.modification != null) {
-          this.modification.setModelContext(context);
+          this.modification.setModelContext(modelContext);
         }
         if (this.monomerSetList != null) {
           for (SubstanceDefinitionPolymerMonomerSetComponent i : this.monomerSetList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.repeatList != null) {
           for (SubstanceDefinitionPolymerRepeatComponent i : this.repeatList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -9170,9 +9170,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionPolymerMonomerSetComponent(IModelContext context) {
+      public SubstanceDefinitionPolymerMonomerSetComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -9352,17 +9352,17 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.ratioType != null) {
-          this.ratioType.setModelContext(context);
+          this.ratioType.setModelContext(modelContext);
         }
         if (this.startingMaterialList != null) {
           for (SubstanceDefinitionPolymerMonomerSetStartingMaterialComponent i : this.startingMaterialList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -9446,9 +9446,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionPolymerMonomerSetStartingMaterialComponent(IModelContext context) {
+      public SubstanceDefinitionPolymerMonomerSetStartingMaterialComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -9720,22 +9720,22 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.code != null) {
-          this.code.setModelContext(context);
+          this.code.setModelContext(modelContext);
         }
         if (this.category != null) {
-          this.category.setModelContext(context);
+          this.category.setModelContext(modelContext);
         }
         if (this.isDefining != null) {
-          this.isDefining.setModelContext(context);
+          this.isDefining.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
       }
 
@@ -9810,9 +9810,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionPolymerRepeatComponent(IModelContext context) {
+      public SubstanceDefinitionPolymerRepeatComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -10063,20 +10063,20 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.averageMolecularFormula != null) {
-          this.averageMolecularFormula.setModelContext(context);
+          this.averageMolecularFormula.setModelContext(modelContext);
         }
         if (this.repeatUnitAmountType != null) {
-          this.repeatUnitAmountType.setModelContext(context);
+          this.repeatUnitAmountType.setModelContext(modelContext);
         }
         if (this.repeatUnitList != null) {
           for (SubstanceDefinitionPolymerRepeatRepeatUnitComponent i : this.repeatUnitList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -10166,9 +10166,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionPolymerRepeatRepeatUnitComponent(IModelContext context) {
+      public SubstanceDefinitionPolymerRepeatRepeatUnitComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -10555,28 +10555,28 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.unit != null) {
-          this.unit.setModelContext(context);
+          this.unit.setModelContext(modelContext);
         }
         if (this.orientation != null) {
-          this.orientation.setModelContext(context);
+          this.orientation.setModelContext(modelContext);
         }
         if (this.amount != null) {
-          this.amount.setModelContext(context);
+          this.amount.setModelContext(modelContext);
         }
         if (this.degreeOfPolymerisationList != null) {
           for (SubstanceDefinitionPolymerRepeatRepeatUnitDegreeOfPolymerisationComponent i : this.degreeOfPolymerisationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.structuralRepresentationList != null) {
           for (SubstanceDefinitionStructureRepresentationComponent i : this.structuralRepresentationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
       }
@@ -10660,9 +10660,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionPolymerRepeatRepeatUnitDegreeOfPolymerisationComponent(IModelContext context) {
+      public SubstanceDefinitionPolymerRepeatRepeatUnitDegreeOfPolymerisationComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -10974,22 +10974,22 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.type != null) {
-          this.type.setModelContext(context);
+          this.type.setModelContext(modelContext);
         }
         if (this.average != null) {
-          this.average.setModelContext(context);
+          this.average.setModelContext(modelContext);
         }
         if (this.low != null) {
-          this.low.setModelContext(context);
+          this.low.setModelContext(modelContext);
         }
         if (this.high != null) {
-          this.high.setModelContext(context);
+          this.high.setModelContext(modelContext);
         }
       }
 
@@ -11087,9 +11087,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionProteinComponent(IModelContext context) {
+      public SubstanceDefinitionProteinComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -11529,34 +11529,34 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.sequenceType != null) {
-          this.sequenceType.setModelContext(context);
+          this.sequenceType.setModelContext(modelContext);
         }
         if (this.numberOfSubunits != null) {
-          this.numberOfSubunits.setModelContext(context);
+          this.numberOfSubunits.setModelContext(modelContext);
         }
         if (this.disulfideLinkageList != null) {
           for (StringType i : this.disulfideLinkageList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.subunitList != null) {
           for (SubstanceDefinitionProteinSubunitComponent i : this.subunitList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.geneList != null) {
           for (SubstanceDefinitionNucleicAcidGeneComponent i : this.geneList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.modificationType != null) {
-          this.modificationType.setModelContext(context);
+          this.modificationType.setModelContext(modelContext);
         }
       }
 
@@ -11654,9 +11654,9 @@ public class SubstanceDefinition extends DomainResource {
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public SubstanceDefinitionProteinSubunitComponent(IModelContext context) {
+      public SubstanceDefinitionProteinSubunitComponent(IModelContext modelContext) {
         super();
-        this.modelContext = context;
+        this.modelContext = modelContext;
       }
 
         /**
@@ -12066,28 +12066,28 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.subunit != null) {
-          this.subunit.setModelContext(context);
+          this.subunit.setModelContext(modelContext);
         }
         if (this.sequence != null) {
-          this.sequence.setModelContext(context);
+          this.sequence.setModelContext(modelContext);
         }
         if (this.length != null) {
-          this.length.setModelContext(context);
+          this.length.setModelContext(modelContext);
         }
         if (this.sequenceAttachment != null) {
-          this.sequenceAttachment.setModelContext(context);
+          this.sequenceAttachment.setModelContext(modelContext);
         }
         if (this.nTerminalModification != null) {
-          this.nTerminalModification.setModelContext(context);
+          this.nTerminalModification.setModelContext(modelContext);
         }
         if (this.cTerminalModification != null) {
-          this.cTerminalModification.setModelContext(context);
+          this.cTerminalModification.setModelContext(modelContext);
         }
       }
 
@@ -12305,9 +12305,9 @@ public class SubstanceDefinition extends DomainResource {
    *
    * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
    */
-    public SubstanceDefinition(IModelContext context) {
+    public SubstanceDefinition(IModelContext modelContext) {
       super();
-      this.modelContext = context;
+      this.modelContext = modelContext;
     }
 
     /**
@@ -13791,105 +13791,105 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       @Override
-      public void setModelContext(IModelContext context) {
-        if (this.modelContext == context) {
+      public void setModelContext(IModelContext modelContext) {
+        if (this.modelContext == modelContext) {
           return; // fast no-op; a subtree whose root has the context is assumed consistent - see Base.setModelContext
         }
-        super.setModelContext(context);
+        super.setModelContext(modelContext);
         if (this.identifierList != null) {
           for (Identifier i : this.identifierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.version != null) {
-          this.version.setModelContext(context);
+          this.version.setModelContext(modelContext);
         }
         if (this.status != null) {
-          this.status.setModelContext(context);
+          this.status.setModelContext(modelContext);
         }
         if (this.classificationList != null) {
           for (CodeableConcept i : this.classificationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.domain != null) {
-          this.domain.setModelContext(context);
+          this.domain.setModelContext(modelContext);
         }
         if (this.gradeList != null) {
           for (CodeableConcept i : this.gradeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.glycosylationType != null) {
-          this.glycosylationType.setModelContext(context);
+          this.glycosylationType.setModelContext(modelContext);
         }
         if (this.description != null) {
-          this.description.setModelContext(context);
+          this.description.setModelContext(modelContext);
         }
         if (this.noteList != null) {
           for (Annotation i : this.noteList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.manufacturerList != null) {
           for (Reference i : this.manufacturerList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.supplierList != null) {
           for (Reference i : this.supplierList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.moietyList != null) {
           for (SubstanceDefinitionMoietyComponent i : this.moietyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.characterizationList != null) {
           for (SubstanceDefinitionCharacterizationComponent i : this.characterizationList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.propertyList != null) {
           for (SubstanceDefinitionPropertyComponent i : this.propertyList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.molecularWeightList != null) {
           for (SubstanceDefinitionMolecularWeightComponent i : this.molecularWeightList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.structure != null) {
-          this.structure.setModelContext(context);
+          this.structure.setModelContext(modelContext);
         }
         if (this.codeList != null) {
           for (SubstanceDefinitionCodeComponent i : this.codeList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.nameList != null) {
           for (SubstanceDefinitionNameComponent i : this.nameList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.relationshipList != null) {
           for (SubstanceDefinitionRelationshipComponent i : this.relationshipList) {
-            i.setModelContext(context);
+            i.setModelContext(modelContext);
           }
         }
         if (this.sourceMaterial != null) {
-          this.sourceMaterial.setModelContext(context);
+          this.sourceMaterial.setModelContext(modelContext);
         }
         if (this.nucleicAcid != null) {
-          this.nucleicAcid.setModelContext(context);
+          this.nucleicAcid.setModelContext(modelContext);
         }
         if (this.polymer != null) {
-          this.polymer.setModelContext(context);
+          this.polymer.setModelContext(modelContext);
         }
         if (this.protein != null) {
-          this.protein.setModelContext(context);
+          this.protein.setModelContext(modelContext);
         }
       }
 
@@ -13931,8 +13931,8 @@ public class SubstanceDefinition extends DomainResource {
       }
 
   @Override
-  public ResourceType getResourceType() {
-    return ResourceType.SubstanceDefinition;
+  public String getResourceType() {
+    return "SubstanceDefinition";
    }
 
  /**
