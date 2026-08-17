@@ -444,6 +444,69 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     * 
     * @param theUrl The URL. Must not be blank or null.
     */
+   /**
+    * Returns an extension if one (and only one) matches one of the given URLs.
+    * 
+    * Note: BackboneElements override this to look in matching Modifier Extensions too
+    * 
+    * @param theUrls One or more URLs to match. Must not be blank or null.
+    * @return the matching extension, or null
+    */
+   public Extension getExtensionByUrl(String... theUrls) {
+     ArrayList<Extension> retVal = new ArrayList<Extension>();
+     for (Extension next : getExtensionList()) {
+       if (Utilities.existsInList(next.getUrl(), theUrls)) {
+         retVal.add(next);
+       }
+     }
+     if (retVal.size() == 0)
+       return null;
+     else {
+       org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+String.join(",", theUrls)+" must have only one match");
+       return retVal.get(0);
+     }
+   }
+
+   /**
+    * Returns true if this element has an extension that matches one of the given URLs.
+    * 
+    * Note: BackboneElements override this to check Modifier Extensions too
+    */
+   public boolean hasExtension(String... theUrls) {
+     for (Extension next : getExtensionList()) {
+       if (Utilities.existsInList(next.getUrl(), theUrls)) {
+         return true;
+       }
+     }
+     return false;
+   }
+
+   /**
+    * Returns true if this element has the given extension (by deep comparison)
+    */
+   public boolean hasExtension(Extension ext) {
+     if (hasExtension()) {
+       for (Extension t : getExtensionList()) {
+         if (Base.compareDeep(t, ext, false)) {
+           return true;
+         }
+       }
+     }
+     return false;
+   }
+
+   /**
+    * Returns the value as a string of the first extension found for any of the given URLs (in the order given)
+    */
+   public String getExtensionString(String... theUrls) throws FHIRException {
+     for (String url : theUrls) {
+       if (hasExtension(url)) {
+         return getExtensionString(url);
+       }
+     }
+     return null;
+   }
+
    public boolean hasExtension(String theUrl) {
      return !getExtensionsByUrl(theUrl).isEmpty(); 
    }

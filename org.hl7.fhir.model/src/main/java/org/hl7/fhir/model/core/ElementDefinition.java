@@ -1571,6 +1571,39 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
 
   }
 
+// Additional Code from ElementDefinitionSlicingComponent.java:
+
+  public String summary() {
+    StringBuilder b = new StringBuilder();
+    if (!hasRulesElement() && !hasOrdered() && !hasDiscriminator()) {
+      return "(no slicing)";
+    }
+    if (hasRulesElement() || hasOrdered()) {
+      if (hasRulesElement() && hasOrdered()) {
+        b.append((getOrdered() ? "ordered" : "unordered")+" and " +getRules().toCode()+", by");
+      } else if (hasRules()) {
+        b.append(getRules().toCode()+", by");
+      } else if (getOrdered()) {
+        b.append("ordered, by");
+      } else {
+        b.append("unordered, by");            
+      }
+    } 
+    boolean first = true;
+    for (ElementDefinitionSlicingDiscriminatorComponent d : getDiscriminatorList()) {
+      if (first) {
+        first = false;
+      } else {
+        b.append(",");
+      }
+      b.append(" ");
+      b.append(d.getType().toCode());
+      b.append("=");
+      b.append(d.getPath());
+    }
+    return b.toString();
+  }
+
   }
 
     @Block()
@@ -5381,6 +5414,18 @@ public boolean hasTarget() {
   public String fhirType() {
     return "ElementDefinition.binding";
 
+  }
+
+// Additional Code from ElementDefinitionBindingComponent.java:
+  public boolean hasAdditional(ElementDefinitionBindingAdditionalComponent ab) {
+    if (hasAdditional()) {
+      for (ElementDefinitionBindingAdditionalComponent t : getAdditionalList()) {
+        if (Base.compareDeep(t, ab, false)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   }
@@ -13201,6 +13246,14 @@ public boolean hasTarget() {
     return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
   }
 
+  public boolean repeats() {
+    return !Utilities.existsInList(getMax(), "0", "1");
+  }
+
+  public int getMaxAsInt() {
+    return "*".equals(getMax()) ? Integer.MAX_VALUE : Integer.parseInt(getMax());
+  }
+
   public boolean isMandatory() {
     return getMin() > 0;
   }
@@ -13229,6 +13282,12 @@ public boolean hasTarget() {
   public boolean isRequired() { 
     return getMin() == 1; 
   }
+
+
+  public String getIdOrPath() {
+    return hasId() ? getId() : getPath();
+  }
+
 
 // end addition
 

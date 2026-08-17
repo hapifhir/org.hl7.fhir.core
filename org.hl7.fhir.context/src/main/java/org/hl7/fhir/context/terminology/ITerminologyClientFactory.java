@@ -1,4 +1,4 @@
-package org.hl7.fhir.context.terminology.client;
+package org.hl7.fhir.context.terminology;
 
 import org.hl7.fhir.utilities.ToolingClientLogger;
 

@@ -1,14 +1,15 @@
-package org.hl7.fhir.r5.terminologies.utilities;
+package org.hl7.fhir.context.terminology;
 
-import java.util.*;
-
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.utilities.UserDataNames;
+import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.model.core.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+
+import java.util.*;
 
 public class ValidationResult {
   private ConceptDefinitionComponent definition;
@@ -36,7 +37,7 @@ public class ValidationResult {
   }
 
   public ValidationResult(ValidationResult validationResult) {
-    this.definition = validationResult.definition == null ? null : validationResult.definition.copy();
+    this.definition = validationResult.definition == null ? null : validationResult.definition.copy(Base.COPY_DATA);
     this.preferredDisplay = validationResult.preferredDisplay;
     this.system = validationResult.system;
     this.version = validationResult.version;
@@ -49,10 +50,10 @@ public class ValidationResult {
     this.diagnostics = validationResult.diagnostics;
     if (validationResult.issues != null) {
       for (OperationOutcomeIssueComponent issue : validationResult.issues) {
-        this.issues.add(issue.copy());
+        this.issues.add(issue.copy(Base.COPY_DATA));
       }
     }
-    this.codeableConcept = validationResult.codeableConcept == null ? null : validationResult.codeableConcept.copy();
+    this.codeableConcept = validationResult.codeableConcept == null ? null : validationResult.codeableConcept.copy(Base.COPY_DATA);
     this.unknownSystems = validationResult.unknownSystems == null ? null : new HashSet<>(validationResult.unknownSystems);
     this.inactive = validationResult.inactive;
     this.status = validationResult.status;
@@ -346,20 +347,12 @@ public class ValidationResult {
   public void trimPath(String prefix) {
     if (issues != null) {
       for (OperationOutcomeIssueComponent iss : issues) {
-        for (int i = iss.getLocation().size() -1; i >= 0; i--) {
-          var s = iss.getLocation().get(i).primitiveValue();
+        for (int i = iss.getExpressionList().size() -1; i >= 0; i--) {
+          var s = iss.getExpressionList().get(i).primitiveValue();
           if (prefix.equals(s)) {
-            iss.getLocation().remove(i);
+            iss.getExpressionList().remove(i);
           } else if (s.startsWith(prefix+".")) {
-            iss.getLocation().get(i).setValueAsString(s.substring(prefix.length()+1));                
-          }            
-        }
-        for (int i = iss.getExpression().size() -1; i >= 0; i--) {
-          var s = iss.getExpression().get(i).primitiveValue();
-          if (prefix.equals(s)) {
-            iss.getExpression().remove(i);
-          } else if (s.startsWith(prefix+".")) {
-            iss.getExpression().get(i).setValueAsString(s.substring(prefix.length()+1));                
+            iss.getExpressionList().get(i).setValueAsString(s.substring(prefix.length()+1));
           }            
         }
       }
@@ -506,7 +499,7 @@ public class ValidationResult {
       }
       if (issues != null && !issues.isEmpty()) {
         OperationOutcome oo = new OperationOutcome();
-        oo.getIssue().addAll(issues);
+        oo.getIssueList().addAll(issues);
         p.addParameter().setName("issues").setResource(oo);
       }
       return p;

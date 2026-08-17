@@ -1,17 +1,12 @@
-package org.hl7.fhir.r5.utils.xver;
+package org.hl7.fhir.context.xver;
 
+import org.hl7.fhir.context.context.IWorkerContext;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition.ExtensionContextType;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.UriType;
 
+import org.hl7.fhir.model.core.ElementDefinition;
+import org.hl7.fhir.model.core.Enumerations;
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.UriType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonElement;
@@ -90,19 +85,19 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
     }
     sd.setUrl(url);
     sd.setVersion(context.getVersion());
-    sd.setFhirVersion(FHIRVersion.fromCode(context.getVersion()));
-    sd.setKind(StructureDefinitionKind.COMPLEXTYPE);
+    sd.setFhirVersion(Enumerations.FHIRVersion.fromCode(context.getVersion()));
+    sd.setKind(StructureDefinition.StructureDefinitionKind.COMPLEXTYPE);
     sd.setType("Extension");
-    sd.setDerivation(TypeDerivationRule.CONSTRAINT);
+    sd.setDerivation(StructureDefinition.TypeDerivationRule.CONSTRAINT);
     sd.setName("Extension-"+verSource+"-"+e);
     sd.setTitle("Extension Definition for "+e+" for Version "+verSource);
-    sd.setStatus(PublicationStatus.ACTIVE);
+    sd.setStatus(Enumerations.PublicationStatus.ACTIVE);
     sd.setExperimental(false);
     sd.setDate(new Date());
     sd.setPublisher("FHIR Project");
     sd.setPurpose("Defined so the validator can validate cross version extensions (see http://hl7.org/fhir/versions.html#extensions)");
     sd.setAbstract(false);
-    sd.addContext().setType(ExtensionContextType.ELEMENT).setExpression(head(e));
+    sd.addContext().setType(StructureDefinition.ExtensionContextType.ELEMENT).setExpression(head(e));
     sd.setBaseDefinition("http://hl7.org/fhir/StructureDefinition/Extension");
     if (path.has("types")) {
       sd.getDifferential().addElement().setPath("Extension.extension").setMax("0");
@@ -123,8 +118,8 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
       throw new FHIRException("Internal error - attempt to define extension for "+url+" when it is invalid");
     }
     if (path.has("modifier") && path.asBoolean("modifier")) {
-      ElementDefinition baseDef = new ElementDefinition("Extension");
-      sd.getDifferential().getElement().add(0, baseDef);
+      ElementDefinition baseDef = new ElementDefinition(context,"Extension");
+      sd.getDifferential().getElementList().add(0, baseDef);
       baseDef.setIsModifier(true);
     }
     return sd;
@@ -161,7 +156,7 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
       if (!s.startsWith("!")) {
         if (s.contains("(")) {
           String t = s.substring(0, s.indexOf("("));
-          TypeRefComponent tr = val.addType().setCode(translateDataType(verTarget, t));
+          ElementDefinition.TypeRefComponent tr = val.addType().setCode(translateDataType(verTarget, t));
           if (hasTargets(tr.getCode()) ) {
             s = s.substring(t.length()+1);
             @SuppressWarnings("checkstyle:stringImplicitPatternUsage")

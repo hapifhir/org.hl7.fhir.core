@@ -61,6 +61,8 @@ import  org.hl7.fhir.instance.model.api.IBaseHasModifierExtensions;
 import  org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import  org.hl7.fhir.utilities.StandardsStatus;
 import  org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.utilities.Utilities;
+
 /**
  * A resource that includes narrative, extensions, and contained resources.
  */
@@ -481,6 +483,20 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
 
 
 
+  public boolean hasExtension(String... theUrls) {
+    for (Extension next : getModifierExtensionList()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        return true;
+      }
+    }
+    for (Extension next : getExtensionList()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public boolean hasExtension(String url) {
     for (Extension e : getExtensionList())
       if (url.equals(e.getUrl()))
@@ -607,6 +623,23 @@ public void checkNoModifiers(String noun, String verb) throws FHIRException {
       throw new FHIRException("Extension '" + theUrl + "' could not be converted to a string");
     return ext.get(0).getValue().primitiveValue();
   }
+
+  public List<Extension> getExtensionsByUrl(String... theUrls) {
+    ArrayList<Extension> retVal = new ArrayList<>();
+
+    for (Extension next : getExtension()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        retVal.add(next);
+      }
+    }
+    for (Extension next : getModifierExtension()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        retVal.add(next);
+      }
+    }
+    return java.util.Collections.unmodifiableList(retVal);
+  }
+
 
   public String getExtensionString(String... theUrls) throws FHIRException {
     for (String url : theUrls) {

@@ -37,6 +37,8 @@ package org.hl7.fhir.model.core;
   */
 
 import java.util.*;
+
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -1607,6 +1609,20 @@ public class StructureDefinition extends CanonicalResource {
   public String fhirType() {
     return "StructureDefinition.differential";
 
+  }
+
+// Additional Code from StructureDefinitionDifferentialComponent.java:
+
+  public ElementDefinition getElementByPath(String path) {
+    if (path == null) {
+      return null;
+    }
+    for (ElementDefinition ed : getElementList()) {
+      if (path.equals(ed.getPath()) || (path+"[x]").equals(ed.getPath())) {
+        return ed;
+      }
+    }
+    return null;
   }
 
   }
@@ -4690,6 +4706,28 @@ public String describeType() {
 
   public void setGeneratingSnapshot(boolean generatingSnapshot) {
     this.generatingSnapshot = generatingSnapshot;
+  }
+
+  public String getBaseDefinitionNoVersion() {
+    String bd = getBaseDefinition();
+    if (bd != null && bd.contains("|")) {
+      bd = bd.substring(0, bd.indexOf("|"));
+    }
+    return bd;
+  }
+
+  private List<String> baseDefinitions;
+  public List<String> getBaseDefinitions() {
+    if (baseDefinitions == null) {
+      baseDefinitions = new ArrayList<>();
+      baseDefinitions.add(getBaseDefinition());
+      for (Extension ex : getExtensionsByUrl(ExtensionDefinitions.EXT_ADDITIONAL_BASE)) {
+        if (ex.hasValue() && ex.getValue().hasPrimitiveValue()) {
+          baseDefinitions.add(ex.getValue().primitiveValue());
+        }
+      }
+    }
+    return baseDefinitions;
   }
 
 // end addition

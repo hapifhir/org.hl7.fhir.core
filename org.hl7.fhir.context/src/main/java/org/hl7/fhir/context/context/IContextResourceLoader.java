@@ -1,13 +1,12 @@
-package org.hl7.fhir.context;
+package org.hl7.fhir.context.context;
 
 import com.google.gson.JsonSyntaxException;
+import org.hl7.fhir.context.terminology.ITerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.model.core.Bundle;
 import org.hl7.fhir.model.core.CodeSystem;
 import org.hl7.fhir.model.core.Resource;
-import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 
@@ -16,7 +15,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
-@MarkedToMoveToAdjunctPackage
 public interface IContextResourceLoader {
   /** 
    * @return List of the resource types that should be loaded
@@ -115,11 +113,4 @@ public interface IContextResourceLoader {
    */
   Set<String> reviewActualTypes(Set<String> types);
 
-  /**
-   * let's the loader change the identified type (e.g. when loading converted Basic resources)
-   *  
-   * @param types
-   * @return
-   */
-  PackageResourceLoader editInfo(PackageResourceLoader pri);
 }

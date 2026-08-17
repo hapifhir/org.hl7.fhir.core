@@ -1,10 +1,9 @@
-package org.hl7.fhir.r5.utils.xver;
+package org.hl7.fhir.context.xver;
 
+import org.hl7.fhir.context.context.IWorkerContext;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
-
+import org.hl7.fhir.model.core.StructureDefinition;
+import org.hl7.fhir.model.core.VersionResolutionRules;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -43,7 +42,7 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
         return XVerExtensionStatus.BadVersion;
       }
     }
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, url, VersionResolutionRules.defaultRule());
     if (sd == null) {
       // well, it's not an approved extension, but why? We're going to look in the old
       // version stuff to see whether it's a valid element or not - it'll affect the return value.
@@ -84,7 +83,7 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
 
   @Override
   public StructureDefinition getDefinition(String url) {
-    return context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
+    return context.fetchResource(StructureDefinition.class, url, VersionResolutionRules.defaultRule());
   }
 }
 

@@ -1,12 +1,9 @@
-package org.hl7.fhir.r5.utils.xver;
+package org.hl7.fhir.context.xver;
 
-import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
-
+import org.hl7.fhir.context.context.IWorkerContext;
+import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.json.model.JsonObject;
 
 
 public abstract class XVerExtensionManager {

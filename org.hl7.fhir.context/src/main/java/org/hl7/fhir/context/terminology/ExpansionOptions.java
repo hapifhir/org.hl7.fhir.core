@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.context;
+package org.hl7.fhir.context.terminology;
 
 import lombok.Getter;
 import lombok.Setter;

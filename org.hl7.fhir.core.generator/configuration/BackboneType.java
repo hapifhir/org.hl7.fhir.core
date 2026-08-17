@@ -6,6 +6,24 @@
   }
 
 
+  public boolean hasExtension(String... theUrls) {
+    for (Extension next : getModifierExtensionList()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        return true;
+      }
+    }
+    return super.hasExtension(theUrls);
+  }
+
+  public boolean hasExtension(Extension ext) {
+    for (Extension t : getModifierExtensionList()) {
+      if (Base.compareDeep(t, ext, false)) {
+        return true;
+      }
+    }
+    return super.hasExtension(ext);
+  }
+
   public void copyExtensions(org.hl7.fhir.model.core.BackboneType src, String... urls) {
     super.copyExtensions(src,urls);
     for (Extension e : src.getModifierExtensionList()) {

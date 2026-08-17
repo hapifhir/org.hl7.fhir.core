@@ -108,6 +108,14 @@
     return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
   }
 
+  public boolean repeats() {
+    return !Utilities.existsInList(getMax(), "0", "1");
+  }
+
+  public int getMaxAsInt() {
+    return "*".equals(getMax()) ? Integer.MAX_VALUE : Integer.parseInt(getMax());
+  }
+
   public boolean isMandatory() {
     return getMin() > 0;
   }
@@ -135,4 +143,8 @@
 
   public boolean isRequired() { 
     return getMin() == 1; 
+  }
+
+  public String getIdOrPath() {
+    return hasId() ? getId() : getPath();
   }

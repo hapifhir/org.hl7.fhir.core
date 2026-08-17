@@ -1,9 +1,8 @@
-package org.hl7.fhir.r5.terminologies.utilities;
+package org.hl7.fhir.context.terminology;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.CacheToken;
+import org.hl7.fhir.model.core.Coding;
 
 
 @Getter

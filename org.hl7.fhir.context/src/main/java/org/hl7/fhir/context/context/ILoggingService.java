@@ -1,8 +1,8 @@
-package org.hl7.fhir.context;
+package org.hl7.fhir.context.context;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public interface ILoggingService {
   public enum LogCategory {
     INIT, 
