@@ -14,10 +14,23 @@ import java.util.Map;
  */
 public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccessor> {
 
+  /** Retry count for the underlying client; null leaves {@link ManagedHTTPClient}'s default. */
+  private Integer retries;
+
   public ManagedWebAccessor(Iterable<String> serverTypes, String userAgent, IHTTPAuthenticationProvider httpAuthHeaderProvider) {
     super(serverTypes, userAgent, httpAuthHeaderProvider);
   }
-  
+
+  /**
+   * Overrides how many times the underlying client retries an unsuccessful response. Use 0 for a
+   * request that must not be repeated - e.g. one carrying credentials, where a retry re-sends them
+   * and an error response is usually permanent rather than transient.
+   */
+  public ManagedWebAccessor withRetries(int retries) {
+    this.retries = retries;
+    return this;
+  }
+
   private Map<String, String> newHeaders(String urlString) throws IOException {
     URL url = URI.create(urlString).toURL();
     Map<String, String> headers = new HashMap<>(this.getHeaders());
@@ -39,6 +52,10 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
     builder.authProvider(getHttpAuthHeaderProvider())
       .ssrfProtectionEnabled(isSSRFProtectionEnabled());
 
+    if (retries != null) {
+      builder.retries(retries);
+    }
+
     List<HTTPHeader> headers = new ArrayList<>();
 
     for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
@@ -58,11 +75,8 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
 
   public HTTPResult get(String url, String accept) throws IOException {
     return switch (ManagedWebAccess.getAccessPolicy()) {
-      case DIRECT -> {
-        ManagedHTTPClient client = setupManagedHTTPClient(url);
-        yield client.get(url, accept);
-      }
-      case MANAGED ->  ManagedWebAccess.getAccessor().get(getServerTypes(), url, accept, newHeaders(url));
+      case DIRECT -> setupManagedHTTPClient(url).get(url, accept);
+      case MANAGED -> ManagedWebAccess.getAccessor().get(getServerTypes(), url, accept, newHeaders(url));
       case PROHIBITED -> throw new IOException("Access to the internet is not allowed by local security policy");
       default -> throw new IOException("Internal Error");
     };
@@ -73,17 +87,12 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   }
 
   public HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
-    switch (ManagedWebAccess.getAccessPolicy()) {
-    case DIRECT:
-      ManagedHTTPClient client = setupManagedHTTPClient(url);
-      return client.post(url, contentType, content, accept);
-    case MANAGED:
-      return ManagedWebAccess.getAccessor().post(getServerTypes(), url, content, contentType, accept, newHeaders(url));
-    case PROHIBITED:
-      throw new IOException("Access to the internet is not allowed by local security policy");
-    default:
-      throw new IOException("Internal Error");
-    }
+    return switch (ManagedWebAccess.getAccessPolicy()) {
+      case DIRECT -> setupManagedHTTPClient(url).post(url, contentType, content, accept);
+      case MANAGED -> ManagedWebAccess.getAccessor().post(getServerTypes(), url, content, contentType, accept, newHeaders(url));
+      case PROHIBITED -> throw new IOException("Access to the internet is not allowed by local security policy");
+      default -> throw new IOException("Internal Error");
+    };
   }
 
   public HTTPResult put(String url, byte[] content, String contentType) throws IOException {
@@ -92,12 +101,8 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
 
   public HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
     return switch (ManagedWebAccess.getAccessPolicy()) {
-      case DIRECT -> {
-        ManagedHTTPClient client = setupManagedHTTPClient(url);
-        yield client.put(url, contentType, content, accept);
-      }
-      case MANAGED ->
-        ManagedWebAccess.getAccessor().put(getServerTypes(), url, content, contentType, accept, newHeaders(url));
+      case DIRECT -> setupManagedHTTPClient(url).put(url, contentType, content, accept);
+      case MANAGED -> ManagedWebAccess.getAccessor().put(getServerTypes(), url, content, contentType, accept, newHeaders(url));
       case PROHIBITED -> throw new IOException("Access to the internet is not allowed by local security policy");
       default -> throw new IOException("Internal Error");
     };
