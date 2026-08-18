@@ -22,10 +22,15 @@ public class Id40_N {
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     return tgt;
   }
-  
+
 
   public static org.hl7.fhir.r4.model.IdType convertId(org.hl7.fhir.model.core.StringType src) throws FHIRException {
     org.hl7.fhir.r4.model.IdType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.IdType(src.getValueAsString()) : new org.hl7.fhir.r4.model.IdType();
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+    return tgt;
+  }
+  public static org.hl7.fhir.model.core.IdType convertId(org.hl7.fhir.r4.model.StringType src) throws FHIRException {
+    org.hl7.fhir.model.core.IdType tgt = src.hasValue() ? new org.hl7.fhir.model.core.IdType(src.getValueAsString()) : new org.hl7.fhir.model.core.IdType();
     ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
     return tgt;
   }

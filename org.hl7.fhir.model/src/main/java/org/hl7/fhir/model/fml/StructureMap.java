@@ -64,310 +64,389 @@ import ca.uhn.fhir.model.api.annotation.Block;
 @javax.annotation.processing.Generated(value = "org.hl7.fhir.validation.codegen.LogicalModelCodeGenerator", comments = "generated from hl7.fhir.uv.fml#current")
 public class StructureMap extends CanonicalResource {
 
-    public enum StructureMapGroupTypeMode {
-        /**
-         * This group is a default mapping group for the specified types and for the primary source type.
-         */
-        TYPES, 
-        /**
-         * This group is a default mapping group for the specified types.
-         */
-        TYPEANDTYPES, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static StructureMapGroupTypeMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("types".equals(codeString))
-          return TYPES;
-        if ("type-and-types".equals(codeString))
-          return TYPEANDTYPES;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown StructureMapGroupTypeMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case TYPES: return "types";
-            case TYPEANDTYPES: return "type-and-types";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case TYPES: return "http://hl7.org/fhir/map-group-type-mode";
-            case TYPEANDTYPES: return "http://hl7.org/fhir/map-group-type-mode";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case TYPES: return "This group is a default mapping group for the specified types and for the primary source type.";
-            case TYPEANDTYPES: return "This group is a default mapping group for the specified types.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case TYPES: return "Default for Type Combination";
-            case TYPEANDTYPES: return "Default for type + combination";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
+  public enum StructureMapGroupTypeMode {
+    /**
+     * This group is a default mapping group for the specified types and for the primary source type.
+     */
+    TYPES,
+    /**
+     * This group is a default mapping group for the specified types.
+     */
+    TYPEANDTYPES,
+    /**
+     * added to help the parsers with the generic types
+     */
+    NULL;
+
+    public static StructureMapGroupTypeMode fromCode(String codeString) throws FHIRException {
+      if (codeString == null || "".equals(codeString))
+        return null;
+      if ("types".equals(codeString))
+        return TYPES;
+      if ("type-and-types".equals(codeString))
+        return TYPEANDTYPES;
+      if (Configuration.isAcceptInvalidEnums())
+        return null;
+      else
+        throw new FHIRException("Unknown StructureMapGroupTypeMode code '" + codeString + "'");
     }
+
+    public String toCode() {
+      switch (this) {
+        case TYPES:
+          return "types";
+        case TYPEANDTYPES:
+          return "type-and-types";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+
+    public String getSystem() {
+      switch (this) {
+        case TYPES:
+          return "http://hl7.org/fhir/map-group-type-mode";
+        case TYPEANDTYPES:
+          return "http://hl7.org/fhir/map-group-type-mode";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+
+    public String getDefinition() {
+      switch (this) {
+        case TYPES:
+          return "This group is a default mapping group for the specified types and for the primary source type.";
+        case TYPEANDTYPES:
+          return "This group is a default mapping group for the specified types.";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+
+    public String getDisplay() {
+      switch (this) {
+        case TYPES:
+          return "Default for Type Combination";
+        case TYPEANDTYPES:
+          return "Default for type + combination";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+  }
 
   public static class StructureMapGroupTypeModeEnumFactory implements EnumFactory<StructureMapGroupTypeMode> {
     public StructureMapGroupTypeMode fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("types".equals(codeString))
-          return StructureMapGroupTypeMode.TYPES;
-        if ("type-and-types".equals(codeString))
-          return StructureMapGroupTypeMode.TYPEANDTYPES;
-        throw new IllegalArgumentException("Unknown StructureMapGroupTypeMode code '"+codeString+"'");
-        }
-        public Enumeration<StructureMapGroupTypeMode> fromType(PrimitiveType<?> code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.NULL, code);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.NULL, code);
-        if ("types".equals(codeString))
-          return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.TYPES, code);
-        if ("type-and-types".equals(codeString))
-          return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.TYPEANDTYPES, code);
-        throw new FHIRException("Unknown StructureMapGroupTypeMode code '"+codeString+"'");
-        }
+        if (codeString == null || "".equals(codeString))
+          return null;
+      if ("types".equals(codeString))
+        return StructureMapGroupTypeMode.TYPES;
+      if ("type-and-types".equals(codeString))
+        return StructureMapGroupTypeMode.TYPEANDTYPES;
+      throw new IllegalArgumentException("Unknown StructureMapGroupTypeMode code '" + codeString + "'");
+    }
+
+    public Enumeration<StructureMapGroupTypeMode> fromType(PrimitiveType<?> code) throws FHIRException {
+      if (code == null)
+        return null;
+      if (code.isEmpty())
+        return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.NULL, code);
+      String codeString = ((PrimitiveType) code).asStringValue();
+      if (codeString == null || "".equals(codeString))
+        return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.NULL, code);
+      if ("types".equals(codeString))
+        return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.TYPES, code);
+      if ("type-and-types".equals(codeString))
+        return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.TYPEANDTYPES, code);
+      throw new FHIRException("Unknown StructureMapGroupTypeMode code '" + codeString + "'");
+    }
+
     public String toCode(StructureMapGroupTypeMode code) {
       if (code == StructureMapGroupTypeMode.TYPES)
         return "types";
       if (code == StructureMapGroupTypeMode.TYPEANDTYPES)
         return "type-and-types";
       return "?";
-      }
+    }
+
     public String toSystem(StructureMapGroupTypeMode code) {
       return code.getSystem();
+    }
+  }
+
+  public enum StructureMapInputMode {
+    /**
+     * Names an input instance used a source for mapping.
+     */
+    SOURCE,
+    /**
+     * Names an instance that is being populated.
+     */
+    TARGET,
+    /**
+     * added to help the parsers with the generic types
+     */
+    NULL;
+
+    public static StructureMapInputMode fromCode(String codeString) throws FHIRException {
+      if (codeString == null || "".equals(codeString))
+        return null;
+      if ("source".equals(codeString))
+        return SOURCE;
+      if ("target".equals(codeString))
+        return TARGET;
+      if (Configuration.isAcceptInvalidEnums())
+        return null;
+      else
+        throw new FHIRException("Unknown StructureMapInputMode code '" + codeString + "'");
+    }
+
+    public String toCode() {
+      switch (this) {
+        case SOURCE:
+          return "source";
+        case TARGET:
+          return "target";
+        case NULL:
+          return null;
+        default:
+          return "?";
       }
     }
 
-    public enum StructureMapInputMode {
-        /**
-         * Names an input instance used a source for mapping.
-         */
-        SOURCE, 
-        /**
-         * Names an instance that is being populated.
-         */
-        TARGET, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static StructureMapInputMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("source".equals(codeString))
-          return SOURCE;
-        if ("target".equals(codeString))
-          return TARGET;
-        if (Configuration.isAcceptInvalidEnums())
+    public String getSystem() {
+      switch (this) {
+        case SOURCE:
+          return "http://hl7.org/fhir/map-input-mode";
+        case TARGET:
+          return "http://hl7.org/fhir/map-input-mode";
+        case NULL:
           return null;
-        else
-          throw new FHIRException("Unknown StructureMapInputMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SOURCE: return "source";
-            case TARGET: return "target";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case SOURCE: return "http://hl7.org/fhir/map-input-mode";
-            case TARGET: return "http://hl7.org/fhir/map-input-mode";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SOURCE: return "Names an input instance used a source for mapping.";
-            case TARGET: return "Names an instance that is being populated.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SOURCE: return "Source Instance";
-            case TARGET: return "Target Instance";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
+        default:
+          return "?";
+      }
     }
+
+    public String getDefinition() {
+      switch (this) {
+        case SOURCE:
+          return "Names an input instance used a source for mapping.";
+        case TARGET:
+          return "Names an instance that is being populated.";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+
+    public String getDisplay() {
+      switch (this) {
+        case SOURCE:
+          return "Source Instance";
+        case TARGET:
+          return "Target Instance";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+  }
 
   public static class StructureMapInputModeEnumFactory implements EnumFactory<StructureMapInputMode> {
     public StructureMapInputMode fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("source".equals(codeString))
-          return StructureMapInputMode.SOURCE;
-        if ("target".equals(codeString))
-          return StructureMapInputMode.TARGET;
-        throw new IllegalArgumentException("Unknown StructureMapInputMode code '"+codeString+"'");
-        }
-        public Enumeration<StructureMapInputMode> fromType(PrimitiveType<?> code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.NULL, code);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.NULL, code);
-        if ("source".equals(codeString))
-          return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.SOURCE, code);
-        if ("target".equals(codeString))
-          return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.TARGET, code);
-        throw new FHIRException("Unknown StructureMapInputMode code '"+codeString+"'");
-        }
+        if (codeString == null || "".equals(codeString))
+          return null;
+      if ("source".equals(codeString))
+        return StructureMapInputMode.SOURCE;
+      if ("target".equals(codeString))
+        return StructureMapInputMode.TARGET;
+      throw new IllegalArgumentException("Unknown StructureMapInputMode code '" + codeString + "'");
+    }
+
+    public Enumeration<StructureMapInputMode> fromType(PrimitiveType<?> code) throws FHIRException {
+      if (code == null)
+        return null;
+      if (code.isEmpty())
+        return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.NULL, code);
+      String codeString = ((PrimitiveType) code).asStringValue();
+      if (codeString == null || "".equals(codeString))
+        return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.NULL, code);
+      if ("source".equals(codeString))
+        return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.SOURCE, code);
+      if ("target".equals(codeString))
+        return new Enumeration<StructureMapInputMode>(this, StructureMapInputMode.TARGET, code);
+      throw new FHIRException("Unknown StructureMapInputMode code '" + codeString + "'");
+    }
+
     public String toCode(StructureMapInputMode code) {
       if (code == StructureMapInputMode.SOURCE)
         return "source";
       if (code == StructureMapInputMode.TARGET)
         return "target";
       return "?";
-      }
+    }
+
     public String toSystem(StructureMapInputMode code) {
       return code.getSystem();
+    }
+  }
+
+  public enum StructureMapModelMode {
+    /**
+     * This structure describes an instance passed to the mapping engine that is used a source of data.
+     */
+    SOURCE,
+    /**
+     * This structure describes an instance that the mapping engine may ask for that is used a source of data.
+     */
+    QUERIED,
+    /**
+     * This structure describes an instance passed to the mapping engine that is used a target of data.
+     */
+    TARGET,
+    /**
+     * This structure describes an instance that the mapping engine may ask to create that is used a target of data.
+     */
+    PRODUCED,
+    /**
+     * added to help the parsers with the generic types
+     */
+    NULL;
+
+    public static StructureMapModelMode fromCode(String codeString) throws FHIRException {
+      if (codeString == null || "".equals(codeString))
+        return null;
+      if ("source".equals(codeString))
+        return SOURCE;
+      if ("queried".equals(codeString))
+        return QUERIED;
+      if ("target".equals(codeString))
+        return TARGET;
+      if ("produced".equals(codeString))
+        return PRODUCED;
+      if (Configuration.isAcceptInvalidEnums())
+        return null;
+      else
+        throw new FHIRException("Unknown StructureMapModelMode code '" + codeString + "'");
+    }
+
+    public String toCode() {
+      switch (this) {
+        case SOURCE:
+          return "source";
+        case QUERIED:
+          return "queried";
+        case TARGET:
+          return "target";
+        case PRODUCED:
+          return "produced";
+        case NULL:
+          return null;
+        default:
+          return "?";
       }
     }
 
-    public enum StructureMapModelMode {
-        /**
-         * This structure describes an instance passed to the mapping engine that is used a source of data.
-         */
-        SOURCE, 
-        /**
-         * This structure describes an instance that the mapping engine may ask for that is used a source of data.
-         */
-        QUERIED, 
-        /**
-         * This structure describes an instance passed to the mapping engine that is used a target of data.
-         */
-        TARGET, 
-        /**
-         * This structure describes an instance that the mapping engine may ask to create that is used a target of data.
-         */
-        PRODUCED, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static StructureMapModelMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("source".equals(codeString))
-          return SOURCE;
-        if ("queried".equals(codeString))
-          return QUERIED;
-        if ("target".equals(codeString))
-          return TARGET;
-        if ("produced".equals(codeString))
-          return PRODUCED;
-        if (Configuration.isAcceptInvalidEnums())
+    public String getSystem() {
+      switch (this) {
+        case SOURCE:
+          return "http://hl7.org/fhir/map-model-mode";
+        case QUERIED:
+          return "http://hl7.org/fhir/map-model-mode";
+        case TARGET:
+          return "http://hl7.org/fhir/map-model-mode";
+        case PRODUCED:
+          return "http://hl7.org/fhir/map-model-mode";
+        case NULL:
           return null;
-        else
-          throw new FHIRException("Unknown StructureMapModelMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case SOURCE: return "source";
-            case QUERIED: return "queried";
-            case TARGET: return "target";
-            case PRODUCED: return "produced";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case SOURCE: return "http://hl7.org/fhir/map-model-mode";
-            case QUERIED: return "http://hl7.org/fhir/map-model-mode";
-            case TARGET: return "http://hl7.org/fhir/map-model-mode";
-            case PRODUCED: return "http://hl7.org/fhir/map-model-mode";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case SOURCE: return "This structure describes an instance passed to the mapping engine that is used a source of data.";
-            case QUERIED: return "This structure describes an instance that the mapping engine may ask for that is used a source of data.";
-            case TARGET: return "This structure describes an instance passed to the mapping engine that is used a target of data.";
-            case PRODUCED: return "This structure describes an instance that the mapping engine may ask to create that is used a target of data.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case SOURCE: return "Source Structure Definition";
-            case QUERIED: return "Queried Structure Definition";
-            case TARGET: return "Target Structure Definition";
-            case PRODUCED: return "Produced Structure Definition";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
+        default:
+          return "?";
+      }
     }
+
+    public String getDefinition() {
+      switch (this) {
+        case SOURCE:
+          return "This structure describes an instance passed to the mapping engine that is used a source of data.";
+        case QUERIED:
+          return "This structure describes an instance that the mapping engine may ask for that is used a source of data.";
+        case TARGET:
+          return "This structure describes an instance passed to the mapping engine that is used a target of data.";
+        case PRODUCED:
+          return "This structure describes an instance that the mapping engine may ask to create that is used a target of data.";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+
+    public String getDisplay() {
+      switch (this) {
+        case SOURCE:
+          return "Source Structure Definition";
+        case QUERIED:
+          return "Queried Structure Definition";
+        case TARGET:
+          return "Target Structure Definition";
+        case PRODUCED:
+          return "Produced Structure Definition";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+  }
 
   public static class StructureMapModelModeEnumFactory implements EnumFactory<StructureMapModelMode> {
     public StructureMapModelMode fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("source".equals(codeString))
-          return StructureMapModelMode.SOURCE;
-        if ("queried".equals(codeString))
-          return StructureMapModelMode.QUERIED;
-        if ("target".equals(codeString))
-          return StructureMapModelMode.TARGET;
-        if ("produced".equals(codeString))
-          return StructureMapModelMode.PRODUCED;
-        throw new IllegalArgumentException("Unknown StructureMapModelMode code '"+codeString+"'");
-        }
-        public Enumeration<StructureMapModelMode> fromType(PrimitiveType<?> code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.NULL, code);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.NULL, code);
-        if ("source".equals(codeString))
-          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.SOURCE, code);
-        if ("queried".equals(codeString))
-          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.QUERIED, code);
-        if ("target".equals(codeString))
-          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.TARGET, code);
-        if ("produced".equals(codeString))
-          return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.PRODUCED, code);
-        throw new FHIRException("Unknown StructureMapModelMode code '"+codeString+"'");
-        }
+        if (codeString == null || "".equals(codeString))
+          return null;
+      if ("source".equals(codeString))
+        return StructureMapModelMode.SOURCE;
+      if ("queried".equals(codeString))
+        return StructureMapModelMode.QUERIED;
+      if ("target".equals(codeString))
+        return StructureMapModelMode.TARGET;
+      if ("produced".equals(codeString))
+        return StructureMapModelMode.PRODUCED;
+      throw new IllegalArgumentException("Unknown StructureMapModelMode code '" + codeString + "'");
+    }
+
+    public Enumeration<StructureMapModelMode> fromType(PrimitiveType<?> code) throws FHIRException {
+      if (code == null)
+        return null;
+      if (code.isEmpty())
+        return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.NULL, code);
+      String codeString = ((PrimitiveType) code).asStringValue();
+      if (codeString == null || "".equals(codeString))
+        return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.NULL, code);
+      if ("source".equals(codeString))
+        return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.SOURCE, code);
+      if ("queried".equals(codeString))
+        return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.QUERIED, code);
+      if ("target".equals(codeString))
+        return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.TARGET, code);
+      if ("produced".equals(codeString))
+        return new Enumeration<StructureMapModelMode>(this, StructureMapModelMode.PRODUCED, code);
+      throw new FHIRException("Unknown StructureMapModelMode code '" + codeString + "'");
+    }
+
     public String toCode(StructureMapModelMode code) {
       if (code == StructureMapModelMode.SOURCE)
         return "source";
@@ -378,138 +457,174 @@ public class StructureMap extends CanonicalResource {
       if (code == StructureMapModelMode.PRODUCED)
         return "produced";
       return "?";
-      }
+    }
+
     public String toSystem(StructureMapModelMode code) {
       return code.getSystem();
+    }
+  }
+
+  public enum StructureMapSourceListMode {
+    /**
+     * Only process this rule for the first in the list.
+     */
+    FIRST,
+    /**
+     * Process this rule for all but the first.
+     */
+    NOTFIRST,
+    /**
+     * Only process this rule for the last in the list.
+     */
+    LAST,
+    /**
+     * Process this rule for all but the last.
+     */
+    NOTLAST,
+    /**
+     * Only process this rule is there is only item.
+     */
+    ONLYONE,
+    /**
+     * added to help the parsers with the generic types
+     */
+    NULL;
+
+    public static StructureMapSourceListMode fromCode(String codeString) throws FHIRException {
+      if (codeString == null || "".equals(codeString))
+        return null;
+      if ("first".equals(codeString))
+        return FIRST;
+      if ("not_first".equals(codeString))
+        return NOTFIRST;
+      if ("last".equals(codeString))
+        return LAST;
+      if ("not_last".equals(codeString))
+        return NOTLAST;
+      if ("only_one".equals(codeString))
+        return ONLYONE;
+      if (Configuration.isAcceptInvalidEnums())
+        return null;
+      else
+        throw new FHIRException("Unknown StructureMapSourceListMode code '" + codeString + "'");
+    }
+
+    public String toCode() {
+      switch (this) {
+        case FIRST:
+          return "first";
+        case NOTFIRST:
+          return "not_first";
+        case LAST:
+          return "last";
+        case NOTLAST:
+          return "not_last";
+        case ONLYONE:
+          return "only_one";
+        case NULL:
+          return null;
+        default:
+          return "?";
       }
     }
 
-    public enum StructureMapSourceListMode {
-        /**
-         * Only process this rule for the first in the list.
-         */
-        FIRST, 
-        /**
-         * Process this rule for all but the first.
-         */
-        NOTFIRST, 
-        /**
-         * Only process this rule for the last in the list.
-         */
-        LAST, 
-        /**
-         * Process this rule for all but the last.
-         */
-        NOTLAST, 
-        /**
-         * Only process this rule is there is only item.
-         */
-        ONLYONE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static StructureMapSourceListMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("first".equals(codeString))
-          return FIRST;
-        if ("not_first".equals(codeString))
-          return NOTFIRST;
-        if ("last".equals(codeString))
-          return LAST;
-        if ("not_last".equals(codeString))
-          return NOTLAST;
-        if ("only_one".equals(codeString))
-          return ONLYONE;
-        if (Configuration.isAcceptInvalidEnums())
+    public String getSystem() {
+      switch (this) {
+        case FIRST:
+          return "http://hl7.org/fhir/map-source-list-mode";
+        case NOTFIRST:
+          return "http://hl7.org/fhir/map-source-list-mode";
+        case LAST:
+          return "http://hl7.org/fhir/map-source-list-mode";
+        case NOTLAST:
+          return "http://hl7.org/fhir/map-source-list-mode";
+        case ONLYONE:
+          return "http://hl7.org/fhir/map-source-list-mode";
+        case NULL:
           return null;
-        else
-          throw new FHIRException("Unknown StructureMapSourceListMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case FIRST: return "first";
-            case NOTFIRST: return "not_first";
-            case LAST: return "last";
-            case NOTLAST: return "not_last";
-            case ONLYONE: return "only_one";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case FIRST: return "http://hl7.org/fhir/map-source-list-mode";
-            case NOTFIRST: return "http://hl7.org/fhir/map-source-list-mode";
-            case LAST: return "http://hl7.org/fhir/map-source-list-mode";
-            case NOTLAST: return "http://hl7.org/fhir/map-source-list-mode";
-            case ONLYONE: return "http://hl7.org/fhir/map-source-list-mode";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case FIRST: return "Only process this rule for the first in the list.";
-            case NOTFIRST: return "Process this rule for all but the first.";
-            case LAST: return "Only process this rule for the last in the list.";
-            case NOTLAST: return "Process this rule for all but the last.";
-            case ONLYONE: return "Only process this rule is there is only item.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case FIRST: return "First";
-            case NOTFIRST: return "All but the first";
-            case LAST: return "Last";
-            case NOTLAST: return "All but the last";
-            case ONLYONE: return "Enforce only one";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
+        default:
+          return "?";
+      }
     }
+
+    public String getDefinition() {
+      switch (this) {
+        case FIRST:
+          return "Only process this rule for the first in the list.";
+        case NOTFIRST:
+          return "Process this rule for all but the first.";
+        case LAST:
+          return "Only process this rule for the last in the list.";
+        case NOTLAST:
+          return "Process this rule for all but the last.";
+        case ONLYONE:
+          return "Only process this rule is there is only item.";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+
+    public String getDisplay() {
+      switch (this) {
+        case FIRST:
+          return "First";
+        case NOTFIRST:
+          return "All but the first";
+        case LAST:
+          return "Last";
+        case NOTLAST:
+          return "All but the last";
+        case ONLYONE:
+          return "Enforce only one";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+  }
 
   public static class StructureMapSourceListModeEnumFactory implements EnumFactory<StructureMapSourceListMode> {
     public StructureMapSourceListMode fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("first".equals(codeString))
-          return StructureMapSourceListMode.FIRST;
-        if ("not_first".equals(codeString))
-          return StructureMapSourceListMode.NOTFIRST;
-        if ("last".equals(codeString))
-          return StructureMapSourceListMode.LAST;
-        if ("not_last".equals(codeString))
-          return StructureMapSourceListMode.NOTLAST;
-        if ("only_one".equals(codeString))
-          return StructureMapSourceListMode.ONLYONE;
-        throw new IllegalArgumentException("Unknown StructureMapSourceListMode code '"+codeString+"'");
-        }
-        public Enumeration<StructureMapSourceListMode> fromType(PrimitiveType<?> code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NULL, code);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NULL, code);
-        if ("first".equals(codeString))
-          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.FIRST, code);
-        if ("not_first".equals(codeString))
-          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NOTFIRST, code);
-        if ("last".equals(codeString))
-          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.LAST, code);
-        if ("not_last".equals(codeString))
-          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NOTLAST, code);
-        if ("only_one".equals(codeString))
-          return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.ONLYONE, code);
-        throw new FHIRException("Unknown StructureMapSourceListMode code '"+codeString+"'");
-        }
+        if (codeString == null || "".equals(codeString))
+          return null;
+      if ("first".equals(codeString))
+        return StructureMapSourceListMode.FIRST;
+      if ("not_first".equals(codeString))
+        return StructureMapSourceListMode.NOTFIRST;
+      if ("last".equals(codeString))
+        return StructureMapSourceListMode.LAST;
+      if ("not_last".equals(codeString))
+        return StructureMapSourceListMode.NOTLAST;
+      if ("only_one".equals(codeString))
+        return StructureMapSourceListMode.ONLYONE;
+      throw new IllegalArgumentException("Unknown StructureMapSourceListMode code '" + codeString + "'");
+    }
+
+    public Enumeration<StructureMapSourceListMode> fromType(PrimitiveType<?> code) throws FHIRException {
+      if (code == null)
+        return null;
+      if (code.isEmpty())
+        return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NULL, code);
+      String codeString = ((PrimitiveType) code).asStringValue();
+      if (codeString == null || "".equals(codeString))
+        return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NULL, code);
+      if ("first".equals(codeString))
+        return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.FIRST, code);
+      if ("not_first".equals(codeString))
+        return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NOTFIRST, code);
+      if ("last".equals(codeString))
+        return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.LAST, code);
+      if ("not_last".equals(codeString))
+        return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.NOTLAST, code);
+      if ("only_one".equals(codeString))
+        return new Enumeration<StructureMapSourceListMode>(this, StructureMapSourceListMode.ONLYONE, code);
+      throw new FHIRException("Unknown StructureMapSourceListMode code '" + codeString + "'");
+    }
+
     public String toCode(StructureMapSourceListMode code) {
       if (code == StructureMapSourceListMode.FIRST)
         return "first";
@@ -522,124 +637,156 @@ public class StructureMap extends CanonicalResource {
       if (code == StructureMapSourceListMode.ONLYONE)
         return "only_one";
       return "?";
-      }
+    }
+
     public String toSystem(StructureMapSourceListMode code) {
       return code.getSystem();
+    }
+  }
+
+  public enum StructureMapTargetListMode {
+    /**
+     * when the target list is being assembled, the items for this rule go first. If more than one rule defines a first item (for a given instance of mapping) then this is an error.
+     */
+    FIRST,
+    /**
+     * the target instance is shared with the target instances generated by another rule (up to the first common n items, then create new ones).
+     */
+    SHARE,
+    /**
+     * when the target list is being assembled, the items for this rule go last. If more than one rule defines a last item (for a given instance of mapping) then this is an error.
+     */
+    LAST,
+    /**
+     * the target instance is shared with a number of target instances generated by another rule (up to the first common n items, then create new ones).
+     */
+    SINGLE,
+    /**
+     * added to help the parsers with the generic types
+     */
+    NULL;
+
+    public static StructureMapTargetListMode fromCode(String codeString) throws FHIRException {
+      if (codeString == null || "".equals(codeString))
+        return null;
+      if ("first".equals(codeString))
+        return FIRST;
+      if ("share".equals(codeString))
+        return SHARE;
+      if ("last".equals(codeString))
+        return LAST;
+      if ("single".equals(codeString))
+        return SINGLE;
+      if (Configuration.isAcceptInvalidEnums())
+        return null;
+      else
+        throw new FHIRException("Unknown StructureMapTargetListMode code '" + codeString + "'");
+    }
+
+    public String toCode() {
+      switch (this) {
+        case FIRST:
+          return "first";
+        case SHARE:
+          return "share";
+        case LAST:
+          return "last";
+        case SINGLE:
+          return "single";
+        case NULL:
+          return null;
+        default:
+          return "?";
       }
     }
 
-    public enum StructureMapTargetListMode {
-        /**
-         * when the target list is being assembled, the items for this rule go first. If more than one rule defines a first item (for a given instance of mapping) then this is an error.
-         */
-        FIRST, 
-        /**
-         * the target instance is shared with the target instances generated by another rule (up to the first common n items, then create new ones).
-         */
-        SHARE, 
-        /**
-         * when the target list is being assembled, the items for this rule go last. If more than one rule defines a last item (for a given instance of mapping) then this is an error.
-         */
-        LAST, 
-        /**
-         * the target instance is shared with a number of target instances generated by another rule (up to the first common n items, then create new ones).
-         */
-        SINGLE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static StructureMapTargetListMode fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("first".equals(codeString))
-          return FIRST;
-        if ("share".equals(codeString))
-          return SHARE;
-        if ("last".equals(codeString))
-          return LAST;
-        if ("single".equals(codeString))
-          return SINGLE;
-        if (Configuration.isAcceptInvalidEnums())
+    public String getSystem() {
+      switch (this) {
+        case FIRST:
+          return "http://hl7.org/fhir/map-target-list-mode";
+        case SHARE:
+          return "http://hl7.org/fhir/map-target-list-mode";
+        case LAST:
+          return "http://hl7.org/fhir/map-target-list-mode";
+        case SINGLE:
+          return "http://hl7.org/fhir/map-target-list-mode";
+        case NULL:
           return null;
-        else
-          throw new FHIRException("Unknown StructureMapTargetListMode code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case FIRST: return "first";
-            case SHARE: return "share";
-            case LAST: return "last";
-            case SINGLE: return "single";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case FIRST: return "http://hl7.org/fhir/map-target-list-mode";
-            case SHARE: return "http://hl7.org/fhir/map-target-list-mode";
-            case LAST: return "http://hl7.org/fhir/map-target-list-mode";
-            case SINGLE: return "http://hl7.org/fhir/map-target-list-mode";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case FIRST: return "when the target list is being assembled, the items for this rule go first. If more than one rule defines a first item (for a given instance of mapping) then this is an error.";
-            case SHARE: return "the target instance is shared with the target instances generated by another rule (up to the first common n items, then create new ones).";
-            case LAST: return "when the target list is being assembled, the items for this rule go last. If more than one rule defines a last item (for a given instance of mapping) then this is an error.";
-            case SINGLE: return "the target instance is shared with a number of target instances generated by another rule (up to the first common n items, then create new ones).";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case FIRST: return "First";
-            case SHARE: return "Share";
-            case LAST: return "Last";
-            case SINGLE: return "single";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
+        default:
+          return "?";
+      }
     }
+
+    public String getDefinition() {
+      switch (this) {
+        case FIRST:
+          return "when the target list is being assembled, the items for this rule go first. If more than one rule defines a first item (for a given instance of mapping) then this is an error.";
+        case SHARE:
+          return "the target instance is shared with the target instances generated by another rule (up to the first common n items, then create new ones).";
+        case LAST:
+          return "when the target list is being assembled, the items for this rule go last. If more than one rule defines a last item (for a given instance of mapping) then this is an error.";
+        case SINGLE:
+          return "the target instance is shared with a number of target instances generated by another rule (up to the first common n items, then create new ones).";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+
+    public String getDisplay() {
+      switch (this) {
+        case FIRST:
+          return "First";
+        case SHARE:
+          return "Share";
+        case LAST:
+          return "Last";
+        case SINGLE:
+          return "single";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+  }
 
   public static class StructureMapTargetListModeEnumFactory implements EnumFactory<StructureMapTargetListMode> {
     public StructureMapTargetListMode fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("first".equals(codeString))
-          return StructureMapTargetListMode.FIRST;
-        if ("share".equals(codeString))
-          return StructureMapTargetListMode.SHARE;
-        if ("last".equals(codeString))
-          return StructureMapTargetListMode.LAST;
-        if ("single".equals(codeString))
-          return StructureMapTargetListMode.SINGLE;
-        throw new IllegalArgumentException("Unknown StructureMapTargetListMode code '"+codeString+"'");
-        }
-        public Enumeration<StructureMapTargetListMode> fromType(PrimitiveType<?> code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.NULL, code);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.NULL, code);
-        if ("first".equals(codeString))
-          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.FIRST, code);
-        if ("share".equals(codeString))
-          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.SHARE, code);
-        if ("last".equals(codeString))
-          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.LAST, code);
-        if ("single".equals(codeString))
-          return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.SINGLE, code);
-        throw new FHIRException("Unknown StructureMapTargetListMode code '"+codeString+"'");
-        }
+        if (codeString == null || "".equals(codeString))
+          return null;
+      if ("first".equals(codeString))
+        return StructureMapTargetListMode.FIRST;
+      if ("share".equals(codeString))
+        return StructureMapTargetListMode.SHARE;
+      if ("last".equals(codeString))
+        return StructureMapTargetListMode.LAST;
+      if ("single".equals(codeString))
+        return StructureMapTargetListMode.SINGLE;
+      throw new IllegalArgumentException("Unknown StructureMapTargetListMode code '" + codeString + "'");
+    }
+
+    public Enumeration<StructureMapTargetListMode> fromType(PrimitiveType<?> code) throws FHIRException {
+      if (code == null)
+        return null;
+      if (code.isEmpty())
+        return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.NULL, code);
+      String codeString = ((PrimitiveType) code).asStringValue();
+      if (codeString == null || "".equals(codeString))
+        return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.NULL, code);
+      if ("first".equals(codeString))
+        return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.FIRST, code);
+      if ("share".equals(codeString))
+        return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.SHARE, code);
+      if ("last".equals(codeString))
+        return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.LAST, code);
+      if ("single".equals(codeString))
+        return new Enumeration<StructureMapTargetListMode>(this, StructureMapTargetListMode.SINGLE, code);
+      throw new FHIRException("Unknown StructureMapTargetListMode code '" + codeString + "'");
+    }
+
     public String toCode(StructureMapTargetListMode code) {
       if (code == StructureMapTargetListMode.FIRST)
         return "first";
@@ -650,306 +797,390 @@ public class StructureMap extends CanonicalResource {
       if (code == StructureMapTargetListMode.SINGLE)
         return "single";
       return "?";
-      }
+    }
+
     public String toSystem(StructureMapTargetListMode code) {
       return code.getSystem();
+    }
+  }
+
+  public enum StructureMapTransform {
+    /**
+     * create(type : string) - type is passed through to the application on the standard API, and must be known by it.
+     */
+    CREATE,
+    /**
+     * copy(source).
+     */
+    COPY,
+    /**
+     * truncate(source, length) - source must be stringy type.
+     */
+    TRUNCATE,
+    /**
+     * escape(source, fmt1, fmt2) - change source from one kind of escaping to another (plain, java, xml, json). note that this is for when the string itself is escaped.
+     */
+    ESCAPE,
+    /**
+     * cast(source, type?) - cast (convert) source from one type to another. Target type can be left as implicit if there is one and only one target type known. The default namespace for the type is 'FHIR' (see [FHIRPath type specifiers](http://hl7.org/fhirpath/N1/#is-type-specifier))
+     */
+    CAST,
+    /**
+     * append(source...) - source is element or string.
+     */
+    APPEND,
+    /**
+     * translate(source, uri_of_map) - use the translate operation.
+     */
+    TRANSLATE,
+    /**
+     * reference(source : object) - return a string that references the provided tree properly.
+     */
+    REFERENCE,
+    /**
+     * Perform a date operation. *Parameters to be documented*.
+     */
+    DATEOP,
+    /**
+     * Generate a random UUID (in lowercase). No Parameters.
+     */
+    UUID,
+    /**
+     * Return the appropriate string to put in a reference that refers to the resource provided as a parameter.
+     */
+    POINTER,
+    /**
+     * Execute the supplied FHIRPath expression and use the value returned by that.
+     */
+    EVALUATE,
+    /**
+     * Create a CodeableConcept. Parameters = (text) or (system. Code[, display]).
+     */
+    CC,
+    /**
+     * Create a Coding. Parameters = (system. Code[, display]).
+     */
+    C,
+    /**
+     * Create a quantity. Parameters = (text) or (value, unit, [system, code]) where text is the natural representation e.g. [comparator]value[space]unit.
+     */
+    QTY,
+    /**
+     * Create an identifier. Parameters = (system, value[, type]) where type is a code from the identifier type value set.
+     */
+    ID,
+    /**
+     * Create a contact details. Parameters = (value) or (system, value). If no system is provided, the system should be inferred from the content of the value.
+     */
+    CP,
+    /**
+     * added to help the parsers with the generic types
+     */
+    NULL;
+
+    public static StructureMapTransform fromCode(String codeString) throws FHIRException {
+      if (codeString == null || "".equals(codeString))
+        return null;
+      if ("create".equals(codeString))
+        return CREATE;
+      if ("copy".equals(codeString))
+        return COPY;
+      if ("truncate".equals(codeString))
+        return TRUNCATE;
+      if ("escape".equals(codeString))
+        return ESCAPE;
+      if ("cast".equals(codeString))
+        return CAST;
+      if ("append".equals(codeString))
+        return APPEND;
+      if ("translate".equals(codeString))
+        return TRANSLATE;
+      if ("reference".equals(codeString))
+        return REFERENCE;
+      if ("dateOp".equals(codeString))
+        return DATEOP;
+      if ("uuid".equals(codeString))
+        return UUID;
+      if ("pointer".equals(codeString))
+        return POINTER;
+      if ("evaluate".equals(codeString))
+        return EVALUATE;
+      if ("cc".equals(codeString))
+        return CC;
+      if ("c".equals(codeString))
+        return C;
+      if ("qty".equals(codeString))
+        return QTY;
+      if ("id".equals(codeString))
+        return ID;
+      if ("cp".equals(codeString))
+        return CP;
+      if (Configuration.isAcceptInvalidEnums())
+        return null;
+      else
+        throw new FHIRException("Unknown StructureMapTransform code '" + codeString + "'");
+    }
+
+    public String toCode() {
+      switch (this) {
+        case CREATE:
+          return "create";
+        case COPY:
+          return "copy";
+        case TRUNCATE:
+          return "truncate";
+        case ESCAPE:
+          return "escape";
+        case CAST:
+          return "cast";
+        case APPEND:
+          return "append";
+        case TRANSLATE:
+          return "translate";
+        case REFERENCE:
+          return "reference";
+        case DATEOP:
+          return "dateOp";
+        case UUID:
+          return "uuid";
+        case POINTER:
+          return "pointer";
+        case EVALUATE:
+          return "evaluate";
+        case CC:
+          return "cc";
+        case C:
+          return "c";
+        case QTY:
+          return "qty";
+        case ID:
+          return "id";
+        case CP:
+          return "cp";
+        case NULL:
+          return null;
+        default:
+          return "?";
       }
     }
 
-    public enum StructureMapTransform {
-        /**
-         * create(type : string) - type is passed through to the application on the standard API, and must be known by it.
-         */
-        CREATE, 
-        /**
-         * copy(source).
-         */
-        COPY, 
-        /**
-         * truncate(source, length) - source must be stringy type.
-         */
-        TRUNCATE, 
-        /**
-         * escape(source, fmt1, fmt2) - change source from one kind of escaping to another (plain, java, xml, json). note that this is for when the string itself is escaped.
-         */
-        ESCAPE, 
-        /**
-         * cast(source, type?) - cast (convert) source from one type to another. Target type can be left as implicit if there is one and only one target type known. The default namespace for the type is 'FHIR' (see [FHIRPath type specifiers](http://hl7.org/fhirpath/N1/#is-type-specifier))
-         */
-        CAST, 
-        /**
-         * append(source...) - source is element or string.
-         */
-        APPEND, 
-        /**
-         * translate(source, uri_of_map) - use the translate operation.
-         */
-        TRANSLATE, 
-        /**
-         * reference(source : object) - return a string that references the provided tree properly.
-         */
-        REFERENCE, 
-        /**
-         * Perform a date operation. *Parameters to be documented*.
-         */
-        DATEOP, 
-        /**
-         * Generate a random UUID (in lowercase). No Parameters.
-         */
-        UUID, 
-        /**
-         * Return the appropriate string to put in a reference that refers to the resource provided as a parameter.
-         */
-        POINTER, 
-        /**
-         * Execute the supplied FHIRPath expression and use the value returned by that.
-         */
-        EVALUATE, 
-        /**
-         * Create a CodeableConcept. Parameters = (text) or (system. Code[, display]).
-         */
-        CC, 
-        /**
-         * Create a Coding. Parameters = (system. Code[, display]).
-         */
-        C, 
-        /**
-         * Create a quantity. Parameters = (text) or (value, unit, [system, code]) where text is the natural representation e.g. [comparator]value[space]unit.
-         */
-        QTY, 
-        /**
-         * Create an identifier. Parameters = (system, value[, type]) where type is a code from the identifier type value set.
-         */
-        ID, 
-        /**
-         * Create a contact details. Parameters = (value) or (system, value). If no system is provided, the system should be inferred from the content of the value.
-         */
-        CP, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static StructureMapTransform fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("create".equals(codeString))
-          return CREATE;
-        if ("copy".equals(codeString))
-          return COPY;
-        if ("truncate".equals(codeString))
-          return TRUNCATE;
-        if ("escape".equals(codeString))
-          return ESCAPE;
-        if ("cast".equals(codeString))
-          return CAST;
-        if ("append".equals(codeString))
-          return APPEND;
-        if ("translate".equals(codeString))
-          return TRANSLATE;
-        if ("reference".equals(codeString))
-          return REFERENCE;
-        if ("dateOp".equals(codeString))
-          return DATEOP;
-        if ("uuid".equals(codeString))
-          return UUID;
-        if ("pointer".equals(codeString))
-          return POINTER;
-        if ("evaluate".equals(codeString))
-          return EVALUATE;
-        if ("cc".equals(codeString))
-          return CC;
-        if ("c".equals(codeString))
-          return C;
-        if ("qty".equals(codeString))
-          return QTY;
-        if ("id".equals(codeString))
-          return ID;
-        if ("cp".equals(codeString))
-          return CP;
-        if (Configuration.isAcceptInvalidEnums())
+    public String getSystem() {
+      switch (this) {
+        case CREATE:
+          return "http://hl7.org/fhir/map-transform";
+        case COPY:
+          return "http://hl7.org/fhir/map-transform";
+        case TRUNCATE:
+          return "http://hl7.org/fhir/map-transform";
+        case ESCAPE:
+          return "http://hl7.org/fhir/map-transform";
+        case CAST:
+          return "http://hl7.org/fhir/map-transform";
+        case APPEND:
+          return "http://hl7.org/fhir/map-transform";
+        case TRANSLATE:
+          return "http://hl7.org/fhir/map-transform";
+        case REFERENCE:
+          return "http://hl7.org/fhir/map-transform";
+        case DATEOP:
+          return "http://hl7.org/fhir/map-transform";
+        case UUID:
+          return "http://hl7.org/fhir/map-transform";
+        case POINTER:
+          return "http://hl7.org/fhir/map-transform";
+        case EVALUATE:
+          return "http://hl7.org/fhir/map-transform";
+        case CC:
+          return "http://hl7.org/fhir/map-transform";
+        case C:
+          return "http://hl7.org/fhir/map-transform";
+        case QTY:
+          return "http://hl7.org/fhir/map-transform";
+        case ID:
+          return "http://hl7.org/fhir/map-transform";
+        case CP:
+          return "http://hl7.org/fhir/map-transform";
+        case NULL:
           return null;
-        else
-          throw new FHIRException("Unknown StructureMapTransform code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CREATE: return "create";
-            case COPY: return "copy";
-            case TRUNCATE: return "truncate";
-            case ESCAPE: return "escape";
-            case CAST: return "cast";
-            case APPEND: return "append";
-            case TRANSLATE: return "translate";
-            case REFERENCE: return "reference";
-            case DATEOP: return "dateOp";
-            case UUID: return "uuid";
-            case POINTER: return "pointer";
-            case EVALUATE: return "evaluate";
-            case CC: return "cc";
-            case C: return "c";
-            case QTY: return "qty";
-            case ID: return "id";
-            case CP: return "cp";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case CREATE: return "http://hl7.org/fhir/map-transform";
-            case COPY: return "http://hl7.org/fhir/map-transform";
-            case TRUNCATE: return "http://hl7.org/fhir/map-transform";
-            case ESCAPE: return "http://hl7.org/fhir/map-transform";
-            case CAST: return "http://hl7.org/fhir/map-transform";
-            case APPEND: return "http://hl7.org/fhir/map-transform";
-            case TRANSLATE: return "http://hl7.org/fhir/map-transform";
-            case REFERENCE: return "http://hl7.org/fhir/map-transform";
-            case DATEOP: return "http://hl7.org/fhir/map-transform";
-            case UUID: return "http://hl7.org/fhir/map-transform";
-            case POINTER: return "http://hl7.org/fhir/map-transform";
-            case EVALUATE: return "http://hl7.org/fhir/map-transform";
-            case CC: return "http://hl7.org/fhir/map-transform";
-            case C: return "http://hl7.org/fhir/map-transform";
-            case QTY: return "http://hl7.org/fhir/map-transform";
-            case ID: return "http://hl7.org/fhir/map-transform";
-            case CP: return "http://hl7.org/fhir/map-transform";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CREATE: return "create(type : string) - type is passed through to the application on the standard API, and must be known by it.";
-            case COPY: return "copy(source).";
-            case TRUNCATE: return "truncate(source, length) - source must be stringy type.";
-            case ESCAPE: return "escape(source, fmt1, fmt2) - change source from one kind of escaping to another (plain, java, xml, json). note that this is for when the string itself is escaped.";
-            case CAST: return "cast(source, type?) - cast (convert) source from one type to another. Target type can be left as implicit if there is one and only one target type known. The default namespace for the type is 'FHIR' (see [FHIRPath type specifiers](http://hl7.org/fhirpath/N1/#is-type-specifier))";
-            case APPEND: return "append(source...) - source is element or string.";
-            case TRANSLATE: return "translate(source, uri_of_map) - use the translate operation.";
-            case REFERENCE: return "reference(source : object) - return a string that references the provided tree properly.";
-            case DATEOP: return "Perform a date operation. *Parameters to be documented*.";
-            case UUID: return "Generate a random UUID (in lowercase). No Parameters.";
-            case POINTER: return "Return the appropriate string to put in a reference that refers to the resource provided as a parameter.";
-            case EVALUATE: return "Execute the supplied FHIRPath expression and use the value returned by that.";
-            case CC: return "Create a CodeableConcept. Parameters = (text) or (system. Code[, display]).";
-            case C: return "Create a Coding. Parameters = (system. Code[, display]).";
-            case QTY: return "Create a quantity. Parameters = (text) or (value, unit, [system, code]) where text is the natural representation e.g. [comparator]value[space]unit.";
-            case ID: return "Create an identifier. Parameters = (system, value[, type]) where type is a code from the identifier type value set.";
-            case CP: return "Create a contact details. Parameters = (value) or (system, value). If no system is provided, the system should be inferred from the content of the value.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CREATE: return "create";
-            case COPY: return "copy";
-            case TRUNCATE: return "truncate";
-            case ESCAPE: return "escape";
-            case CAST: return "cast";
-            case APPEND: return "append";
-            case TRANSLATE: return "translate";
-            case REFERENCE: return "reference";
-            case DATEOP: return "dateOp";
-            case UUID: return "uuid";
-            case POINTER: return "pointer";
-            case EVALUATE: return "evaluate";
-            case CC: return "cc";
-            case C: return "c";
-            case QTY: return "qty";
-            case ID: return "id";
-            case CP: return "cp";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
+        default:
+          return "?";
+      }
     }
+
+    public String getDefinition() {
+      switch (this) {
+        case CREATE:
+          return "create(type : string) - type is passed through to the application on the standard API, and must be known by it.";
+        case COPY:
+          return "copy(source).";
+        case TRUNCATE:
+          return "truncate(source, length) - source must be stringy type.";
+        case ESCAPE:
+          return "escape(source, fmt1, fmt2) - change source from one kind of escaping to another (plain, java, xml, json). note that this is for when the string itself is escaped.";
+        case CAST:
+          return "cast(source, type?) - cast (convert) source from one type to another. Target type can be left as implicit if there is one and only one target type known. The default namespace for the type is 'FHIR' (see [FHIRPath type specifiers](http://hl7.org/fhirpath/N1/#is-type-specifier))";
+        case APPEND:
+          return "append(source...) - source is element or string.";
+        case TRANSLATE:
+          return "translate(source, uri_of_map) - use the translate operation.";
+        case REFERENCE:
+          return "reference(source : object) - return a string that references the provided tree properly.";
+        case DATEOP:
+          return "Perform a date operation. *Parameters to be documented*.";
+        case UUID:
+          return "Generate a random UUID (in lowercase). No Parameters.";
+        case POINTER:
+          return "Return the appropriate string to put in a reference that refers to the resource provided as a parameter.";
+        case EVALUATE:
+          return "Execute the supplied FHIRPath expression and use the value returned by that.";
+        case CC:
+          return "Create a CodeableConcept. Parameters = (text) or (system. Code[, display]).";
+        case C:
+          return "Create a Coding. Parameters = (system. Code[, display]).";
+        case QTY:
+          return "Create a quantity. Parameters = (text) or (value, unit, [system, code]) where text is the natural representation e.g. [comparator]value[space]unit.";
+        case ID:
+          return "Create an identifier. Parameters = (system, value[, type]) where type is a code from the identifier type value set.";
+        case CP:
+          return "Create a contact details. Parameters = (value) or (system, value). If no system is provided, the system should be inferred from the content of the value.";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+
+    public String getDisplay() {
+      switch (this) {
+        case CREATE:
+          return "create";
+        case COPY:
+          return "copy";
+        case TRUNCATE:
+          return "truncate";
+        case ESCAPE:
+          return "escape";
+        case CAST:
+          return "cast";
+        case APPEND:
+          return "append";
+        case TRANSLATE:
+          return "translate";
+        case REFERENCE:
+          return "reference";
+        case DATEOP:
+          return "dateOp";
+        case UUID:
+          return "uuid";
+        case POINTER:
+          return "pointer";
+        case EVALUATE:
+          return "evaluate";
+        case CC:
+          return "cc";
+        case C:
+          return "c";
+        case QTY:
+          return "qty";
+        case ID:
+          return "id";
+        case CP:
+          return "cp";
+        case NULL:
+          return null;
+        default:
+          return "?";
+      }
+    }
+  }
 
   public static class StructureMapTransformEnumFactory implements EnumFactory<StructureMapTransform> {
     public StructureMapTransform fromCode(String codeString) throws IllegalArgumentException {
       if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("create".equals(codeString))
-          return StructureMapTransform.CREATE;
-        if ("copy".equals(codeString))
-          return StructureMapTransform.COPY;
-        if ("truncate".equals(codeString))
-          return StructureMapTransform.TRUNCATE;
-        if ("escape".equals(codeString))
-          return StructureMapTransform.ESCAPE;
-        if ("cast".equals(codeString))
-          return StructureMapTransform.CAST;
-        if ("append".equals(codeString))
-          return StructureMapTransform.APPEND;
-        if ("translate".equals(codeString))
-          return StructureMapTransform.TRANSLATE;
-        if ("reference".equals(codeString))
-          return StructureMapTransform.REFERENCE;
-        if ("dateOp".equals(codeString))
-          return StructureMapTransform.DATEOP;
-        if ("uuid".equals(codeString))
-          return StructureMapTransform.UUID;
-        if ("pointer".equals(codeString))
-          return StructureMapTransform.POINTER;
-        if ("evaluate".equals(codeString))
-          return StructureMapTransform.EVALUATE;
-        if ("cc".equals(codeString))
-          return StructureMapTransform.CC;
-        if ("c".equals(codeString))
-          return StructureMapTransform.C;
-        if ("qty".equals(codeString))
-          return StructureMapTransform.QTY;
-        if ("id".equals(codeString))
-          return StructureMapTransform.ID;
-        if ("cp".equals(codeString))
-          return StructureMapTransform.CP;
-        throw new IllegalArgumentException("Unknown StructureMapTransform code '"+codeString+"'");
-        }
-        public Enumeration<StructureMapTransform> fromType(PrimitiveType<?> code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<StructureMapTransform>(this, StructureMapTransform.NULL, code);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return new Enumeration<StructureMapTransform>(this, StructureMapTransform.NULL, code);
-        if ("create".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CREATE, code);
-        if ("copy".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.COPY, code);
-        if ("truncate".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.TRUNCATE, code);
-        if ("escape".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.ESCAPE, code);
-        if ("cast".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CAST, code);
-        if ("append".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.APPEND, code);
-        if ("translate".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.TRANSLATE, code);
-        if ("reference".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.REFERENCE, code);
-        if ("dateOp".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.DATEOP, code);
-        if ("uuid".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.UUID, code);
-        if ("pointer".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.POINTER, code);
-        if ("evaluate".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.EVALUATE, code);
-        if ("cc".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CC, code);
-        if ("c".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.C, code);
-        if ("qty".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.QTY, code);
-        if ("id".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.ID, code);
-        if ("cp".equals(codeString))
-          return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CP, code);
-        throw new FHIRException("Unknown StructureMapTransform code '"+codeString+"'");
-        }
+        if (codeString == null || "".equals(codeString))
+          return null;
+      if ("create".equals(codeString))
+        return StructureMapTransform.CREATE;
+      if ("copy".equals(codeString))
+        return StructureMapTransform.COPY;
+      if ("truncate".equals(codeString))
+        return StructureMapTransform.TRUNCATE;
+      if ("escape".equals(codeString))
+        return StructureMapTransform.ESCAPE;
+      if ("cast".equals(codeString))
+        return StructureMapTransform.CAST;
+      if ("append".equals(codeString))
+        return StructureMapTransform.APPEND;
+      if ("translate".equals(codeString))
+        return StructureMapTransform.TRANSLATE;
+      if ("reference".equals(codeString))
+        return StructureMapTransform.REFERENCE;
+      if ("dateOp".equals(codeString))
+        return StructureMapTransform.DATEOP;
+      if ("uuid".equals(codeString))
+        return StructureMapTransform.UUID;
+      if ("pointer".equals(codeString))
+        return StructureMapTransform.POINTER;
+      if ("evaluate".equals(codeString))
+        return StructureMapTransform.EVALUATE;
+      if ("cc".equals(codeString))
+        return StructureMapTransform.CC;
+      if ("c".equals(codeString))
+        return StructureMapTransform.C;
+      if ("qty".equals(codeString))
+        return StructureMapTransform.QTY;
+      if ("id".equals(codeString))
+        return StructureMapTransform.ID;
+      if ("cp".equals(codeString))
+        return StructureMapTransform.CP;
+      throw new IllegalArgumentException("Unknown StructureMapTransform code '" + codeString + "'");
+    }
+
+    public Enumeration<StructureMapTransform> fromType(PrimitiveType<?> code) throws FHIRException {
+      if (code == null)
+        return null;
+      if (code.isEmpty())
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.NULL, code);
+      String codeString = ((PrimitiveType) code).asStringValue();
+      if (codeString == null || "".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.NULL, code);
+      if ("create".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CREATE, code);
+      if ("copy".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.COPY, code);
+      if ("truncate".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.TRUNCATE, code);
+      if ("escape".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.ESCAPE, code);
+      if ("cast".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CAST, code);
+      if ("append".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.APPEND, code);
+      if ("translate".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.TRANSLATE, code);
+      if ("reference".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.REFERENCE, code);
+      if ("dateOp".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.DATEOP, code);
+      if ("uuid".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.UUID, code);
+      if ("pointer".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.POINTER, code);
+      if ("evaluate".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.EVALUATE, code);
+      if ("cc".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CC, code);
+      if ("c".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.C, code);
+      if ("qty".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.QTY, code);
+      if ("id".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.ID, code);
+      if ("cp".equals(codeString))
+        return new Enumeration<StructureMapTransform>(this, StructureMapTransform.CP, code);
+      throw new FHIRException("Unknown StructureMapTransform code '" + codeString + "'");
+    }
+
     public String toCode(StructureMapTransform code) {
       if (code == StructureMapTransform.CREATE)
         return "create";
@@ -986,311 +1217,322 @@ public class StructureMap extends CanonicalResource {
       if (code == StructureMapTransform.CP)
         return "cp";
       return "?";
-      }
-    public String toSystem(StructureMapTransform code) {
-      return code.getSystem();
-      }
     }
 
-    @Block()
-    public static class StructureMapStructureComponent extends BackboneElement {
-        /**
-         * The canonical reference to the structure.
-         */
-        @Child(name = "url", type = {CanonicalType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Canonical reference to structure definition")
-        protected CanonicalType url;
+    public String toSystem(StructureMapTransform code) {
+      return code.getSystem();
+    }
+  }
 
-        /**
-         * How the referenced structure is used in this mapping.
-         */
-        @Child(name = "mode", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="source | queried | target | produced")
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/map-model-mode")
-        protected Enumeration<StructureMapModelMode> mode;
+  @Block()
+  public static class StructureMapStructureComponent extends BackboneElement {
+    /**
+     * The canonical reference to the structure.
+     */
+    @Child(name = "url", type = {CanonicalType.class}, order = 1, min = 1, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Canonical reference to structure definition")
+    protected CanonicalType url;
 
-        /**
-         * The name used for this type in the map.
-         */
-        @Child(name = "alias", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Name for type in this map")
-        protected StringType alias;
+    /**
+     * How the referenced structure is used in this mapping.
+     */
+    @Child(name = "mode", type = {CodeType.class}, order = 2, min = 1, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "source | queried | target | produced")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/map-model-mode")
+    protected Enumeration<StructureMapModelMode> mode;
 
-        /**
-         * Documentation that describes how the structure is used in the mapping.
-         */
-        @Child(name = "documentation", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Documentation on use of structure")
-        protected StringType documentation;
+    /**
+     * The name used for this type in the map.
+     */
+    @Child(name = "alias", type = {StringType.class}, order = 3, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Name for type in this map")
+    protected StringType alias;
 
-        private static final long serialVersionUID = 364750586L;
+    /**
+     * Documentation that describes how the structure is used in the mapping.
+     */
+    @Child(name = "documentation", type = {StringType.class}, order = 4, min = 0, max = 1, modifier = false, summary = false)
+    @Description(shortDefinition = "Documentation on use of structure")
+    protected StringType documentation;
+
+    private static final long serialVersionUID = 364750586L;
 
     /**
      * Constructor
      */
-      public StructureMapStructureComponent() {
-        super();
-      }
+    public StructureMapStructureComponent() {
+      super();
+    }
 
     /**
      * Constructor
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StructureMapStructureComponent(IModelContext modelContext) {
-        super();
-        this.modelContext = modelContext;
-      }
+    public StructureMapStructureComponent(IModelContext modelContext) {
+      super();
+      this.modelContext = modelContext;
+    }
 
     /**
      * Constructor
      */
-      public StructureMapStructureComponent(IModelContext modelContext, String url, StructureMapModelMode mode) {
-        super();
-        this.modelContext = modelContext;
-        this.setUrl(url);
-        this.setMode(mode);
+    public StructureMapStructureComponent(IModelContext modelContext, String url, StructureMapModelMode mode) {
+      super();
+      this.modelContext = modelContext;
+      this.setUrl(url);
+      this.setMode(mode);
+    }
+
+    /**
+     * @return {@link #url} (The canonical reference to the structure.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     */
+    public CanonicalType getUrlElement() {
+      if (this.url == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapStructureComponent.url");
+        else if (Configuration.doAutoCreate())
+          this.url = new CanonicalType(); // bb
+      return this.url;
+    }
+
+    public boolean hasUrlElement() {
+      return this.url != null && !this.url.isEmpty();
+    }
+
+    public boolean hasUrl() {
+      return this.url != null && !this.url.isEmpty();
+    }
+
+    /**
+     * @param value {@link #url} (The canonical reference to the structure.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
+     */
+    public StructureMapStructureComponent setUrlElement(CanonicalType value) {
+      this.url = value;
+      return this;
+    }
+
+    /**
+     * @return The canonical reference to the structure.
+     */
+    public String getUrl() {
+      return this.url == null ? null : this.url.getValue();
+    }
+
+    /**
+     * @param value The canonical reference to the structure.
+     */
+    public StructureMapStructureComponent setUrl(String value) {
+      if (this.url == null)
+        this.url = new CanonicalType();
+      this.url.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #mode} (How the referenced structure is used in this mapping.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
+     */
+    public Enumeration<StructureMapModelMode> getModeElement() {
+      if (this.mode == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapStructureComponent.mode");
+        else if (Configuration.doAutoCreate())
+          this.mode = new Enumeration<StructureMapModelMode>(new StructureMapModelModeEnumFactory()); // bb
+      return this.mode;
+    }
+
+    public boolean hasModeElement() {
+      return this.mode != null && !this.mode.isEmpty();
+    }
+
+    public boolean hasMode() {
+      return this.mode != null && !this.mode.isEmpty();
+    }
+
+    /**
+     * @param value {@link #mode} (How the referenced structure is used in this mapping.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
+     */
+    public StructureMapStructureComponent setModeElement(Enumeration<StructureMapModelMode> value) {
+      this.mode = value;
+      return this;
+    }
+
+    /**
+     * @return How the referenced structure is used in this mapping.
+     */
+    public StructureMapModelMode getMode() {
+      return this.mode == null ? null : this.mode.getValue();
+    }
+
+    /**
+     * @param value How the referenced structure is used in this mapping.
+     */
+    public StructureMapStructureComponent setMode(StructureMapModelMode value) {
+      if (this.mode == null)
+        this.mode = new Enumeration<StructureMapModelMode>(new StructureMapModelModeEnumFactory());
+      this.mode.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #alias} (The name used for this type in the map.). This is the underlying object with id, value and extensions. The accessor "getAlias" gives direct access to the value
+     */
+    public StringType getAliasElement() {
+      if (this.alias == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapStructureComponent.alias");
+        else if (Configuration.doAutoCreate())
+          this.alias = new StringType(); // bb
+      return this.alias;
+    }
+
+    public boolean hasAliasElement() {
+      return this.alias != null && !this.alias.isEmpty();
+    }
+
+    public boolean hasAlias() {
+      return this.alias != null && !this.alias.isEmpty();
+    }
+
+    /**
+     * @param value {@link #alias} (The name used for this type in the map.). This is the underlying object with id, value and extensions. The accessor "getAlias" gives direct access to the value
+     */
+    public StructureMapStructureComponent setAliasElement(StringType value) {
+      this.alias = value;
+      return this;
+    }
+
+    /**
+     * @return The name used for this type in the map.
+     */
+    public String getAlias() {
+      return this.alias == null ? null : this.alias.getValue();
+    }
+
+    /**
+     * @param value The name used for this type in the map.
+     */
+    public StructureMapStructureComponent setAlias(String value) {
+      if (Utilities.noString(value))
+        this.alias = null;
+      else {
+        if (this.alias == null)
+          this.alias = new StringType();
+        this.alias.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #documentation} (Documentation that describes how the structure is used in the mapping.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
+     */
+    public StringType getDocumentationElement() {
+      if (this.documentation == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapStructureComponent.documentation");
+        else if (Configuration.doAutoCreate())
+          this.documentation = new StringType(); // bb
+      return this.documentation;
+    }
+
+    public boolean hasDocumentationElement() {
+      return this.documentation != null && !this.documentation.isEmpty();
+    }
+
+    public boolean hasDocumentation() {
+      return this.documentation != null && !this.documentation.isEmpty();
+    }
+
+    /**
+     * @param value {@link #documentation} (Documentation that describes how the structure is used in the mapping.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
+     */
+    public StructureMapStructureComponent setDocumentationElement(StringType value) {
+      this.documentation = value;
+      return this;
+    }
+
+    /**
+     * @return Documentation that describes how the structure is used in the mapping.
+     */
+    public String getDocumentation() {
+      return this.documentation == null ? null : this.documentation.getValue();
+    }
+
+    /**
+     * @param value Documentation that describes how the structure is used in the mapping.
+     */
+    public StructureMapStructureComponent setDocumentation(String value) {
+      if (Utilities.noString(value))
+        this.documentation = null;
+      else {
+        if (this.documentation == null)
+          this.documentation = new StringType();
+        this.documentation.setValue(value);
+      }
+      return this;
+    }
+
+    protected void listChildren(List<Property> children) {
+      super.listChildren(children);
+      children.add(new Property("url", "canonical(StructureDefinition)", "The canonical reference to the structure.", 0, 1, url));
+      children.add(new Property("mode", "code", "How the referenced structure is used in this mapping.", 0, 1, mode));
+      children.add(new Property("alias", "string", "The name used for this type in the map.", 0, 1, alias));
+      children.add(new Property("documentation", "string", "Documentation that describes how the structure is used in the mapping.", 0, 1, documentation));
+    }
+
+    @Override
+    public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
+      switch (_name) {
+        case "url":
+          return new Property("url", "canonical(StructureDefinition)", "The canonical reference to the structure.", 0, 1, url);
+        case "mode":
+          return new Property("mode", "code", "How the referenced structure is used in this mapping.", 0, 1, mode);
+        case "alias":
+          return new Property("alias", "string", "The name used for this type in the map.", 0, 1, alias);
+        case "documentation":
+          return new Property("documentation", "string", "Documentation that describes how the structure is used in the mapping.", 0, 1, documentation);
+        default:
+          return super.getNamedProperty(_name, _checkValid);
       }
 
-        /**
-         * @return {@link #url} (The canonical reference to the structure.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
-         */
-        public CanonicalType getUrlElement() { 
-          if (this.url == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapStructureComponent.url");
-            else if (Configuration.doAutoCreate())
-              this.url = new CanonicalType(); // bb
-          return this.url;
-        }
+    }
 
-        public boolean hasUrlElement() { 
-          return this.url != null && !this.url.isEmpty();
-        }
-
-        public boolean hasUrl() { 
-          return this.url != null && !this.url.isEmpty();
-        }
-
-        /**
-         * @param value {@link #url} (The canonical reference to the structure.). This is the underlying object with id, value and extensions. The accessor "getUrl" gives direct access to the value
-         */
-        public StructureMapStructureComponent setUrlElement(CanonicalType value) { 
-          this.url = value;
-          return this;
-        }
-
-        /**
-         * @return The canonical reference to the structure.
-         */
-        public String getUrl() { 
-          return this.url == null ? null : this.url.getValue();
-        }
-
-        /**
-         * @param value The canonical reference to the structure.
-         */
-        public StructureMapStructureComponent setUrl(String value) { 
-            if (this.url == null)
-              this.url = new CanonicalType();
-            this.url.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #mode} (How the referenced structure is used in this mapping.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
-         */
-        public Enumeration<StructureMapModelMode> getModeElement() { 
-          if (this.mode == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapStructureComponent.mode");
-            else if (Configuration.doAutoCreate())
-              this.mode = new Enumeration<StructureMapModelMode>(new StructureMapModelModeEnumFactory()); // bb
-          return this.mode;
-        }
-
-        public boolean hasModeElement() { 
-          return this.mode != null && !this.mode.isEmpty();
-        }
-
-        public boolean hasMode() { 
-          return this.mode != null && !this.mode.isEmpty();
-        }
-
-        /**
-         * @param value {@link #mode} (How the referenced structure is used in this mapping.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
-         */
-        public StructureMapStructureComponent setModeElement(Enumeration<StructureMapModelMode> value) { 
-          this.mode = value;
-          return this;
-        }
-
-        /**
-         * @return How the referenced structure is used in this mapping.
-         */
-        public StructureMapModelMode getMode() { 
-          return this.mode == null ? null : this.mode.getValue();
-        }
-
-        /**
-         * @param value How the referenced structure is used in this mapping.
-         */
-        public StructureMapStructureComponent setMode(StructureMapModelMode value) { 
-            if (this.mode == null)
-              this.mode = new Enumeration<StructureMapModelMode>(new StructureMapModelModeEnumFactory());
-            this.mode.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #alias} (The name used for this type in the map.). This is the underlying object with id, value and extensions. The accessor "getAlias" gives direct access to the value
-         */
-        public StringType getAliasElement() { 
-          if (this.alias == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapStructureComponent.alias");
-            else if (Configuration.doAutoCreate())
-              this.alias = new StringType(); // bb
-          return this.alias;
-        }
-
-        public boolean hasAliasElement() { 
-          return this.alias != null && !this.alias.isEmpty();
-        }
-
-        public boolean hasAlias() { 
-          return this.alias != null && !this.alias.isEmpty();
-        }
-
-        /**
-         * @param value {@link #alias} (The name used for this type in the map.). This is the underlying object with id, value and extensions. The accessor "getAlias" gives direct access to the value
-         */
-        public StructureMapStructureComponent setAliasElement(StringType value) { 
-          this.alias = value;
-          return this;
-        }
-
-        /**
-         * @return The name used for this type in the map.
-         */
-        public String getAlias() { 
-          return this.alias == null ? null : this.alias.getValue();
-        }
-
-        /**
-         * @param value The name used for this type in the map.
-         */
-        public StructureMapStructureComponent setAlias(String value) { 
-          if (Utilities.noString(value))
-            this.alias = null;
-          else {
-            if (this.alias == null)
-              this.alias = new StringType();
-            this.alias.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #documentation} (Documentation that describes how the structure is used in the mapping.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-         */
-        public StringType getDocumentationElement() { 
-          if (this.documentation == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapStructureComponent.documentation");
-            else if (Configuration.doAutoCreate())
-              this.documentation = new StringType(); // bb
-          return this.documentation;
-        }
-
-        public boolean hasDocumentationElement() { 
-          return this.documentation != null && !this.documentation.isEmpty();
-        }
-
-        public boolean hasDocumentation() { 
-          return this.documentation != null && !this.documentation.isEmpty();
-        }
-
-        /**
-         * @param value {@link #documentation} (Documentation that describes how the structure is used in the mapping.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-         */
-        public StructureMapStructureComponent setDocumentationElement(StringType value) { 
-          this.documentation = value;
-          return this;
-        }
-
-        /**
-         * @return Documentation that describes how the structure is used in the mapping.
-         */
-        public String getDocumentation() { 
-          return this.documentation == null ? null : this.documentation.getValue();
-        }
-
-        /**
-         * @param value Documentation that describes how the structure is used in the mapping.
-         */
-        public StructureMapStructureComponent setDocumentation(String value) { 
-          if (Utilities.noString(value))
-            this.documentation = null;
-          else {
-            if (this.documentation == null)
-              this.documentation = new StringType();
-            this.documentation.setValue(value);
-          }
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("url", "canonical(StructureDefinition)", "The canonical reference to the structure.", 0, 1, url));
-          children.add(new Property("mode", "code", "How the referenced structure is used in this mapping.", 0, 1, mode));
-          children.add(new Property("alias", "string", "The name used for this type in the map.", 0, 1, alias));
-          children.add(new Property("documentation", "string", "Documentation that describes how the structure is used in the mapping.", 0, 1, documentation));
-        }
-
-        @Override
-        public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
-          switch (_name) {
-          case "url":  return new Property("url", "canonical(StructureDefinition)", "The canonical reference to the structure.", 0, 1, url);
-          case "mode":  return new Property("mode", "code", "How the referenced structure is used in this mapping.", 0, 1, mode);
-          case "alias":  return new Property("alias", "string", "The name used for this type in the map.", 0, 1, alias);
-          case "documentation":  return new Property("documentation", "string", "Documentation that describes how the structure is used in the mapping.", 0, 1, documentation);
-          default: return super.getNamedProperty(_name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
-        switch (name) {
-        case "url": return this.url == null ? new Base[0] : new Base[] {this.url}; // CanonicalType
-        case "mode": return this.mode == null ? new Base[0] : new Base[] {this.mode}; // Enumeration<StructureMapModelMode>
-        case "alias": return this.alias == null ? new Base[0] : new Base[] {this.alias}; // StringType
-        case "documentation": return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // StringType
-        default: return super.getNamedValue(name, checkValid);
-        }
-
+    @Override
+    public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
+      switch (name) {
+        case "url":
+          return this.url == null ? new Base[0] : new Base[]{this.url}; // CanonicalType
+        case "mode":
+          return this.mode == null ? new Base[0] : new Base[]{this.mode}; // Enumeration<StructureMapModelMode>
+        case "alias":
+          return this.alias == null ? new Base[0] : new Base[]{this.alias}; // StringType
+        case "documentation":
+          return this.documentation == null ? new Base[0] : new Base[]{this.documentation}; // StringType
+        default:
+          return super.getNamedValue(name, checkValid);
       }
 
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("url")) {
-          this.url = TypeConvertor.castToCanonical(value); // CanonicalType
-        } else if (name.equals("mode")) {
-          value = new StructureMapModelModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.mode = (Enumeration) value; // Enumeration<StructureMapModelMode>
-        } else if (name.equals("alias")) {
-          this.alias = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("documentation")) {
-          this.documentation = TypeConvertor.castToString(value); // StringType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
+    }
 
-      @Override
-      public void removeChild(String name, Base value) throws FHIRException {
-        switch (name) {
+    @Override
+    public Base setProperty(String name, Base value) throws FHIRException {
+      if (name.equals("url")) {
+        this.url = TypeConvertor.castToCanonical(value); // CanonicalType
+      } else if (name.equals("mode")) {
+        value = new StructureMapModelModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+        this.mode = (Enumeration) value; // Enumeration<StructureMapModelMode>
+      } else if (name.equals("alias")) {
+        this.alias = TypeConvertor.castToString(value); // StringType
+      } else if (name.equals("documentation")) {
+        this.documentation = TypeConvertor.castToString(value); // StringType
+      } else
+        return super.setProperty(name, value);
+      return value;
+    }
+
+    @Override
+    public void removeChild(String name, Base value) throws FHIRException {
+      switch (name) {
         case "url":
           if (value == null || value == this.url) {
             this.url = null;
@@ -1313,260 +1555,267 @@ public class StructureMap extends CanonicalResource {
           return;
         default:
           super.removeChild(name, value);
-        }
+      }
+    }
+
+    @Override
+    public Base makeProperty(String name) throws FHIRException {
+      switch (name) {
+        case "url":
+          return getUrlElement();
+        case "mode":
+          return getModeElement();
+        case "alias":
+          return getAliasElement();
+        case "documentation":
+          return getDocumentationElement();
+        default:
+          return super.makeProperty(name);
       }
 
-      @Override
-      public Base makeProperty(String name) throws FHIRException {
-        switch (name) {
-        case "url":  return getUrlElement();
-        case "mode":  return getModeElement();
-        case "alias":  return getAliasElement();
-        case "documentation":  return getDocumentationElement();
-        default: return super.makeProperty(name);
-        }
+    }
 
-      }
+    @Override
+    public Base addChild(String name) throws FHIRException {
+      if (name.equals("url")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.structure.url");
+      } else if (name.equals("mode")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.structure.mode");
+      } else if (name.equals("alias")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.structure.alias");
+      } else if (name.equals("documentation")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.structure.documentation");
+      } else
+        return super.addChild(name);
+    }
 
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("url")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.structure.url");
-        }
-        else if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.structure.mode");
-        }
-        else if (name.equals("alias")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.structure.alias");
-        }
-        else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.structure.documentation");
-        }
-        else
-          return super.addChild(name);
-      }
+    public StructureMapStructureComponent copy(EnumSet<CopyObjectOptions> options) {
+      StructureMapStructureComponent dst = new StructureMapStructureComponent(this.modelContext);
+      copyValues(dst, options);
+      return dst;
+    }
 
-      public StructureMapStructureComponent copy(EnumSet<CopyObjectOptions> options) {
-        StructureMapStructureComponent dst = new StructureMapStructureComponent(this.modelContext);
-        copyValues(dst, options);
-        return dst;
-      }
+    public void copyValues(StructureMapStructureComponent dst, EnumSet<CopyObjectOptions> options) {
+      super.copyValues(dst, options);
+      dst.url = url == null ? null : url.copy(options);
+      dst.mode = mode == null ? null : mode.copy(options);
+      dst.alias = alias == null ? null : alias.copy(options);
+      dst.documentation = documentation == null ? null : documentation.copy(options);
+    }
 
-      public void copyValues(StructureMapStructureComponent dst, EnumSet<CopyObjectOptions> options) {
-        super.copyValues(dst, options);
-        dst.url = url == null ? null : url.copy(options);
-        dst.mode = mode == null ? null : mode.copy(options);
-        dst.alias = alias == null ? null : alias.copy(options);
-        dst.documentation = documentation == null ? null : documentation.copy(options);
-      }
+    @Override
+    public boolean equalsDeep(Base other_) {
+      if (!super.equalsDeep(other_))
+        return false;
+      if (!(other_ instanceof StructureMapStructureComponent))
+        return false;
+      StructureMapStructureComponent o = (StructureMapStructureComponent) other_;
+      return compareDeep(url, o.url, true) && compareDeep(mode, o.mode, true) && compareDeep(alias, o.alias, true)
+        && compareDeep(documentation, o.documentation, true);
+    }
 
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof StructureMapStructureComponent))
-          return false;
-        StructureMapStructureComponent o = (StructureMapStructureComponent) other_;
-        return compareDeep(url, o.url, true) && compareDeep(mode, o.mode, true) && compareDeep(alias, o.alias, true)
-           && compareDeep(documentation, o.documentation, true);
-      }
+    @Override
+    public boolean equalsShallow(Base other_) {
+      if (!super.equalsShallow(other_))
+        return false;
+      if (!(other_ instanceof StructureMapStructureComponent))
+        return false;
+      StructureMapStructureComponent o = (StructureMapStructureComponent) other_;
+      return compareValues(url, o.url, true) && compareValues(mode, o.mode, true) && compareValues(alias, o.alias, true)
+        && compareValues(documentation, o.documentation, true);
+    }
 
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof StructureMapStructureComponent))
-          return false;
-        StructureMapStructureComponent o = (StructureMapStructureComponent) other_;
-        return compareValues(url, o.url, true) && compareValues(mode, o.mode, true) && compareValues(alias, o.alias, true)
-           && compareValues(documentation, o.documentation, true);
-      }
+    public boolean isEmpty() {
+      return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, mode, alias, documentation
+      );
+    }
 
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, mode, alias, documentation
-          );
-      }
+    public String fhirType() {
+      return "StructureMap.structure";
 
-  public String fhirType() {
-    return "StructureMap.structure";
+    }
 
   }
 
-  }
+  @Block()
+  public static class StructureMapConstComponent extends BackboneElement {
+    /**
+     * The name used to refer to the constant.
+     */
+    @Child(name = "name", type = {IdType.class}, order = 1, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Constant name")
+    protected IdType name;
 
-    @Block()
-    public static class StructureMapConstComponent extends BackboneElement {
-        /**
-         * The name used to refer to the constant.
-         */
-        @Child(name = "name", type = {IdType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Constant name")
-        protected IdType name;
+    /**
+     * A FHIRPath expression that is the value of this variable.
+     */
+    @Child(name = "value", type = {StringType.class}, order = 2, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "FHIRPath expression - value of the constant")
+    protected StringType value;
 
-        /**
-         * A FHIRPath expression that is the value of this variable.
-         */
-        @Child(name = "value", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="FHIRPath expression - value of the constant")
-        protected StringType value;
-
-        private static final long serialVersionUID = 19170614L;
+    private static final long serialVersionUID = 19170614L;
 
     /**
      * Constructor
      */
-      public StructureMapConstComponent() {
-        super();
-      }
+    public StructureMapConstComponent() {
+      super();
+    }
 
     /**
      * Constructor
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StructureMapConstComponent(IModelContext modelContext) {
-        super();
-        this.modelContext = modelContext;
+    public StructureMapConstComponent(IModelContext modelContext) {
+      super();
+      this.modelContext = modelContext;
+    }
+
+    /**
+     * @return {@link #name} (The name used to refer to the constant.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public IdType getNameElement() {
+      if (this.name == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapConstComponent.name");
+        else if (Configuration.doAutoCreate())
+          this.name = new IdType(); // bb
+      return this.name;
+    }
+
+    public boolean hasNameElement() {
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    public boolean hasName() {
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    /**
+     * @param value {@link #name} (The name used to refer to the constant.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public StructureMapConstComponent setNameElement(IdType value) {
+      this.name = value;
+      return this;
+    }
+
+    /**
+     * @return The name used to refer to the constant.
+     */
+    public String getName() {
+      return this.name == null ? null : this.name.getValue();
+    }
+
+    /**
+     * @param value The name used to refer to the constant.
+     */
+    public StructureMapConstComponent setName(String value) {
+      if (Utilities.noString(value))
+        this.name = null;
+      else {
+        if (this.name == null)
+          this.name = new IdType();
+        this.name.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #value} (A FHIRPath expression that is the value of this variable.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+     */
+    public StringType getValueElement() {
+      if (this.value == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapConstComponent.value");
+        else if (Configuration.doAutoCreate())
+          this.value = new StringType(); // bb
+      return this.value;
+    }
+
+    public boolean hasValueElement() {
+      return this.value != null && !this.value.isEmpty();
+    }
+
+    public boolean hasValue() {
+      return this.value != null && !this.value.isEmpty();
+    }
+
+    /**
+     * @param value {@link #value} (A FHIRPath expression that is the value of this variable.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+     */
+    public StructureMapConstComponent setValueElement(StringType value) {
+      this.value = value;
+      return this;
+    }
+
+    /**
+     * @return A FHIRPath expression that is the value of this variable.
+     */
+    public String getValue() {
+      return this.value == null ? null : this.value.getValue();
+    }
+
+    /**
+     * @param value A FHIRPath expression that is the value of this variable.
+     */
+    public StructureMapConstComponent setValue(String value) {
+      if (Utilities.noString(value))
+        this.value = null;
+      else {
+        if (this.value == null)
+          this.value = new StringType();
+        this.value.setValue(value);
+      }
+      return this;
+    }
+
+    protected void listChildren(List<Property> children) {
+      super.listChildren(children);
+      children.add(new Property("name", "id", "The name used to refer to the constant.", 0, 1, name));
+      children.add(new Property("value", "string", "A FHIRPath expression that is the value of this variable.", 0, 1, value));
+    }
+
+    @Override
+    public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
+      switch (_name) {
+        case "name":
+          return new Property("name", "id", "The name used to refer to the constant.", 0, 1, name);
+        case "value":
+          return new Property("value", "string", "A FHIRPath expression that is the value of this variable.", 0, 1, value);
+        default:
+          return super.getNamedProperty(_name, _checkValid);
       }
 
-        /**
-         * @return {@link #name} (The name used to refer to the constant.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-         */
-        public IdType getNameElement() { 
-          if (this.name == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapConstComponent.name");
-            else if (Configuration.doAutoCreate())
-              this.name = new IdType(); // bb
-          return this.name;
-        }
+    }
 
-        public boolean hasNameElement() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        public boolean hasName() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        /**
-         * @param value {@link #name} (The name used to refer to the constant.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-         */
-        public StructureMapConstComponent setNameElement(IdType value) { 
-          this.name = value;
-          return this;
-        }
-
-        /**
-         * @return The name used to refer to the constant.
-         */
-        public String getName() { 
-          return this.name == null ? null : this.name.getValue();
-        }
-
-        /**
-         * @param value The name used to refer to the constant.
-         */
-        public StructureMapConstComponent setName(String value) { 
-          if (Utilities.noString(value))
-            this.name = null;
-          else {
-            if (this.name == null)
-              this.name = new IdType();
-            this.name.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #value} (A FHIRPath expression that is the value of this variable.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
-         */
-        public StringType getValueElement() { 
-          if (this.value == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapConstComponent.value");
-            else if (Configuration.doAutoCreate())
-              this.value = new StringType(); // bb
-          return this.value;
-        }
-
-        public boolean hasValueElement() { 
-          return this.value != null && !this.value.isEmpty();
-        }
-
-        public boolean hasValue() { 
-          return this.value != null && !this.value.isEmpty();
-        }
-
-        /**
-         * @param value {@link #value} (A FHIRPath expression that is the value of this variable.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
-         */
-        public StructureMapConstComponent setValueElement(StringType value) { 
-          this.value = value;
-          return this;
-        }
-
-        /**
-         * @return A FHIRPath expression that is the value of this variable.
-         */
-        public String getValue() { 
-          return this.value == null ? null : this.value.getValue();
-        }
-
-        /**
-         * @param value A FHIRPath expression that is the value of this variable.
-         */
-        public StructureMapConstComponent setValue(String value) { 
-          if (Utilities.noString(value))
-            this.value = null;
-          else {
-            if (this.value == null)
-              this.value = new StringType();
-            this.value.setValue(value);
-          }
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("name", "id", "The name used to refer to the constant.", 0, 1, name));
-          children.add(new Property("value", "string", "A FHIRPath expression that is the value of this variable.", 0, 1, value));
-        }
-
-        @Override
-        public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
-          switch (_name) {
-          case "name":  return new Property("name", "id", "The name used to refer to the constant.", 0, 1, name);
-          case "value":  return new Property("value", "string", "A FHIRPath expression that is the value of this variable.", 0, 1, value);
-          default: return super.getNamedProperty(_name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
-        switch (name) {
-        case "name": return this.name == null ? new Base[0] : new Base[] {this.name}; // IdType
-        case "value": return this.value == null ? new Base[0] : new Base[] {this.value}; // StringType
-        default: return super.getNamedValue(name, checkValid);
-        }
-
+    @Override
+    public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
+      switch (name) {
+        case "name":
+          return this.name == null ? new Base[0] : new Base[]{this.name}; // IdType
+        case "value":
+          return this.value == null ? new Base[0] : new Base[]{this.value}; // StringType
+        default:
+          return super.getNamedValue(name, checkValid);
       }
 
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("name")) {
-          this.name = TypeConvertor.castToId(value); // IdType
-        } else if (name.equals("value")) {
-          this.value = TypeConvertor.castToString(value); // StringType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
+    }
 
-      @Override
-      public void removeChild(String name, Base value) throws FHIRException {
-        switch (name) {
+    @Override
+    public Base setProperty(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = TypeConvertor.castToId(value); // IdType
+      } else if (name.equals("value")) {
+        this.value = TypeConvertor.castToString(value); // StringType
+      } else
+        return super.setProperty(name, value);
+      return value;
+    }
+
+    @Override
+    public void removeChild(String name, Base value) throws FHIRException {
+      switch (name) {
         case "name":
           if (value == null || value == this.name) {
             this.name = null;
@@ -1579,507 +1828,522 @@ public class StructureMap extends CanonicalResource {
           return;
         default:
           super.removeChild(name, value);
-        }
+      }
+    }
+
+    @Override
+    public Base makeProperty(String name) throws FHIRException {
+      switch (name) {
+        case "name":
+          return getNameElement();
+        case "value":
+          return getValueElement();
+        default:
+          return super.makeProperty(name);
       }
 
-      @Override
-      public Base makeProperty(String name) throws FHIRException {
-        switch (name) {
-        case "name":  return getNameElement();
-        case "value":  return getValueElement();
-        default: return super.makeProperty(name);
-        }
+    }
 
-      }
+    @Override
+    public Base addChild(String name) throws FHIRException {
+      if (name.equals("name")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.const.name");
+      } else if (name.equals("value")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.const.value");
+      } else
+        return super.addChild(name);
+    }
 
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.const.name");
-        }
-        else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.const.value");
-        }
-        else
-          return super.addChild(name);
-      }
+    public StructureMapConstComponent copy(EnumSet<CopyObjectOptions> options) {
+      StructureMapConstComponent dst = new StructureMapConstComponent(this.modelContext);
+      copyValues(dst, options);
+      return dst;
+    }
 
-      public StructureMapConstComponent copy(EnumSet<CopyObjectOptions> options) {
-        StructureMapConstComponent dst = new StructureMapConstComponent(this.modelContext);
-        copyValues(dst, options);
-        return dst;
-      }
+    public void copyValues(StructureMapConstComponent dst, EnumSet<CopyObjectOptions> options) {
+      super.copyValues(dst, options);
+      dst.name = name == null ? null : name.copy(options);
+      dst.value = value == null ? null : value.copy(options);
+    }
 
-      public void copyValues(StructureMapConstComponent dst, EnumSet<CopyObjectOptions> options) {
-        super.copyValues(dst, options);
-        dst.name = name == null ? null : name.copy(options);
-        dst.value = value == null ? null : value.copy(options);
-      }
+    @Override
+    public boolean equalsDeep(Base other_) {
+      if (!super.equalsDeep(other_))
+        return false;
+      if (!(other_ instanceof StructureMapConstComponent))
+        return false;
+      StructureMapConstComponent o = (StructureMapConstComponent) other_;
+      return compareDeep(name, o.name, true) && compareDeep(value, o.value, true);
+    }
 
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof StructureMapConstComponent))
-          return false;
-        StructureMapConstComponent o = (StructureMapConstComponent) other_;
-        return compareDeep(name, o.name, true) && compareDeep(value, o.value, true);
-      }
+    @Override
+    public boolean equalsShallow(Base other_) {
+      if (!super.equalsShallow(other_))
+        return false;
+      if (!(other_ instanceof StructureMapConstComponent))
+        return false;
+      StructureMapConstComponent o = (StructureMapConstComponent) other_;
+      return compareValues(name, o.name, true) && compareValues(value, o.value, true);
+    }
 
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof StructureMapConstComponent))
-          return false;
-        StructureMapConstComponent o = (StructureMapConstComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(value, o.value, true);
-      }
+    public boolean isEmpty() {
+      return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, value);
+    }
 
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, value);
-      }
+    public String fhirType() {
+      return "StructureMap.const";
 
-  public String fhirType() {
-    return "StructureMap.const";
+    }
 
   }
 
-  }
+  @Block()
+  public static class StructureMapGroupComponent extends BackboneElement {
+    /**
+     * A unique name for the group for the convenience of human readers.
+     */
+    @Child(name = "name", type = {StringType.class}, order = 1, min = 1, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Human-readable label")
+    protected StringType name;
 
-    @Block()
-    public static class StructureMapGroupComponent extends BackboneElement {
-        /**
-         * A unique name for the group for the convenience of human readers.
-         */
-        @Child(name = "name", type = {StringType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Human-readable label")
-        protected StringType name;
+    /**
+     * Another group that this group adds rules to.
+     */
+    @Child(name = "extends", type = {IdType.class}, order = 2, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Another group that this group adds rules to")
+    protected IdType extends_;
 
-        /**
-         * Another group that this group adds rules to.
-         */
-        @Child(name = "extends", type = {IdType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Another group that this group adds rules to")
-        protected IdType extends_;
+    /**
+     * If this is the default rule set to apply for the source type or this combination of types.
+     */
+    @Child(name = "typeMode", type = {CodeType.class}, order = 3, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "types | type-and-types")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/map-group-type-mode")
+    protected Enumeration<StructureMapGroupTypeMode> typeMode;
 
-        /**
-         * If this is the default rule set to apply for the source type or this combination of types.
-         */
-        @Child(name = "typeMode", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="types | type-and-types")
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/map-group-type-mode")
-        protected Enumeration<StructureMapGroupTypeMode> typeMode;
+    /**
+     * Additional supporting documentation that explains the purpose of the group and the types of mappings within it.
+     */
+    @Child(name = "documentation", type = {StringType.class}, order = 4, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Additional description/explanation for group")
+    protected StringType documentation;
 
-        /**
-         * Additional supporting documentation that explains the purpose of the group and the types of mappings within it.
-         */
-        @Child(name = "documentation", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Additional description/explanation for group")
-        protected StringType documentation;
+    /**
+     * A name assigned to an instance of data. The instance must be provided when the mapping is invoked.
+     */
+    @Child(name = "input", type = {}, order = 5, min = 1, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
+    @Description(shortDefinition = "Named instance provided when invoking the map")
+    protected List<StructureMapGroupInputComponent> inputList;
 
-        /**
-         * A name assigned to an instance of data. The instance must be provided when the mapping is invoked.
-         */
-        @Child(name = "input", type = {}, order=5, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Named instance provided when invoking the map")
-        protected List<StructureMapGroupInputComponent> inputList;
+    /**
+     * Transform Rule from source to target.
+     */
+    @Child(name = "rule", type = {}, order = 6, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
+    @Description(shortDefinition = "Transform Rule from source to target")
+    protected List<StructureMapGroupRuleComponent> ruleList;
 
-        /**
-         * Transform Rule from source to target.
-         */
-        @Child(name = "rule", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Transform Rule from source to target")
-        protected List<StructureMapGroupRuleComponent> ruleList;
-
-        private static final long serialVersionUID = 2129169221L;
+    private static final long serialVersionUID = 2129169221L;
 
     /**
      * Constructor
      */
-      public StructureMapGroupComponent() {
-        super();
-      }
+    public StructureMapGroupComponent() {
+      super();
+    }
 
     /**
      * Constructor
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StructureMapGroupComponent(IModelContext modelContext) {
-        super();
-        this.modelContext = modelContext;
-      }
+    public StructureMapGroupComponent(IModelContext modelContext) {
+      super();
+      this.modelContext = modelContext;
+    }
 
     /**
      * Constructor
      */
-      public StructureMapGroupComponent(IModelContext modelContext, String name, StructureMapGroupInputComponent input) {
-        super();
-        this.modelContext = modelContext;
-        this.setName(name);
-        this.addInput(input);
+    public StructureMapGroupComponent(IModelContext modelContext, String name, StructureMapGroupInputComponent input) {
+      super();
+      this.modelContext = modelContext;
+      this.setName(name);
+      this.addInput(input);
+    }
+
+    /**
+     * @return {@link #name} (A unique name for the group for the convenience of human readers.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public StringType getNameElement() {
+      if (this.name == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupComponent.name");
+        else if (Configuration.doAutoCreate())
+          this.name = new StringType(); // bb
+      return this.name;
+    }
+
+    public boolean hasNameElement() {
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    public boolean hasName() {
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    /**
+     * @param value {@link #name} (A unique name for the group for the convenience of human readers.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public StructureMapGroupComponent setNameElement(StringType value) {
+      this.name = value;
+      return this;
+    }
+
+    /**
+     * @return A unique name for the group for the convenience of human readers.
+     */
+    public String getName() {
+      return this.name == null ? null : this.name.getValue();
+    }
+
+    /**
+     * @param value A unique name for the group for the convenience of human readers.
+     */
+    public StructureMapGroupComponent setName(String value) {
+      if (this.name == null)
+        this.name = new StringType();
+      this.name.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #extends_} (Another group that this group adds rules to.). This is the underlying object with id, value and extensions. The accessor "getExtends" gives direct access to the value
+     */
+    public IdType getExtendsElement() {
+      if (this.extends_ == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupComponent.extends_");
+        else if (Configuration.doAutoCreate())
+          this.extends_ = new IdType(); // bb
+      return this.extends_;
+    }
+
+    public boolean hasExtendsElement() {
+      return this.extends_ != null && !this.extends_.isEmpty();
+    }
+
+    public boolean hasExtends() {
+      return this.extends_ != null && !this.extends_.isEmpty();
+    }
+
+    /**
+     * @param value {@link #extends_} (Another group that this group adds rules to.). This is the underlying object with id, value and extensions. The accessor "getExtends" gives direct access to the value
+     */
+    public StructureMapGroupComponent setExtendsElement(IdType value) {
+      this.extends_ = value;
+      return this;
+    }
+
+    /**
+     * @return Another group that this group adds rules to.
+     */
+    public String getExtends() {
+      return this.extends_ == null ? null : this.extends_.getValue();
+    }
+
+    /**
+     * @param value Another group that this group adds rules to.
+     */
+    public StructureMapGroupComponent setExtends(String value) {
+      if (Utilities.noString(value))
+        this.extends_ = null;
+      else {
+        if (this.extends_ == null)
+          this.extends_ = new IdType();
+        this.extends_.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #typeMode} (If this is the default rule set to apply for the source type or this combination of types.). This is the underlying object with id, value and extensions. The accessor "getTypeMode" gives direct access to the value
+     */
+    public Enumeration<StructureMapGroupTypeMode> getTypeModeElement() {
+      if (this.typeMode == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupComponent.typeMode");
+        else if (Configuration.doAutoCreate())
+          this.typeMode = new Enumeration<StructureMapGroupTypeMode>(new StructureMapGroupTypeModeEnumFactory()); // bb
+      return this.typeMode;
+    }
+
+    public boolean hasTypeModeElement() {
+      return this.typeMode != null && !this.typeMode.isEmpty();
+    }
+
+    public boolean hasTypeMode() {
+      return this.typeMode != null && !this.typeMode.isEmpty();
+    }
+
+    /**
+     * @param value {@link #typeMode} (If this is the default rule set to apply for the source type or this combination of types.). This is the underlying object with id, value and extensions. The accessor "getTypeMode" gives direct access to the value
+     */
+    public StructureMapGroupComponent setTypeModeElement(Enumeration<StructureMapGroupTypeMode> value) {
+      this.typeMode = value;
+      return this;
+    }
+
+    /**
+     * @return If this is the default rule set to apply for the source type or this combination of types.
+     */
+    public StructureMapGroupTypeMode getTypeMode() {
+      return this.typeMode == null ? null : this.typeMode.getValue();
+    }
+
+    /**
+     * @param value If this is the default rule set to apply for the source type or this combination of types.
+     */
+    public StructureMapGroupComponent setTypeMode(StructureMapGroupTypeMode value) {
+      if (value == null)
+        this.typeMode = null;
+      else {
+        if (this.typeMode == null)
+          this.typeMode = new Enumeration<StructureMapGroupTypeMode>(new StructureMapGroupTypeModeEnumFactory());
+        this.typeMode.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #documentation} (Additional supporting documentation that explains the purpose of the group and the types of mappings within it.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
+     */
+    public StringType getDocumentationElement() {
+      if (this.documentation == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupComponent.documentation");
+        else if (Configuration.doAutoCreate())
+          this.documentation = new StringType(); // bb
+      return this.documentation;
+    }
+
+    public boolean hasDocumentationElement() {
+      return this.documentation != null && !this.documentation.isEmpty();
+    }
+
+    public boolean hasDocumentation() {
+      return this.documentation != null && !this.documentation.isEmpty();
+    }
+
+    /**
+     * @param value {@link #documentation} (Additional supporting documentation that explains the purpose of the group and the types of mappings within it.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
+     */
+    public StructureMapGroupComponent setDocumentationElement(StringType value) {
+      this.documentation = value;
+      return this;
+    }
+
+    /**
+     * @return Additional supporting documentation that explains the purpose of the group and the types of mappings within it.
+     */
+    public String getDocumentation() {
+      return this.documentation == null ? null : this.documentation.getValue();
+    }
+
+    /**
+     * @param value Additional supporting documentation that explains the purpose of the group and the types of mappings within it.
+     */
+    public StructureMapGroupComponent setDocumentation(String value) {
+      if (Utilities.noString(value))
+        this.documentation = null;
+      else {
+        if (this.documentation == null)
+          this.documentation = new StringType();
+        this.documentation.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #input} (A name assigned to an instance of data. The instance must be provided when the mapping is invoked.)
+     */
+    public List<StructureMapGroupInputComponent> getInputList() {
+      if (this.inputList == null)
+        this.inputList = new ArrayList<StructureMapGroupInputComponent>();
+      return this.inputList;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public StructureMapGroupComponent setInputList(List<StructureMapGroupInputComponent> theInput) {
+      this.inputList = theInput;
+      return this;
+    }
+
+    public boolean hasInput() {
+      if (this.inputList == null)
+        return false;
+      for (StructureMapGroupInputComponent item : this.inputList)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public StructureMapGroupInputComponent addInput() { //3a
+      StructureMapGroupInputComponent t = new StructureMapGroupInputComponent();
+      if (this.inputList == null)
+        this.inputList = new ArrayList<StructureMapGroupInputComponent>();
+      this.inputList.add(t);
+      return t;
+    }
+
+    public StructureMapGroupComponent addInput(StructureMapGroupInputComponent t) { //3b
+      if (t == null)
+        return this;
+      if (this.inputList == null)
+        this.inputList = new ArrayList<StructureMapGroupInputComponent>();
+      this.inputList.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #input}, creating it if it does not already exist {3}
+     */
+    public StructureMapGroupInputComponent getInputFirstRep() {
+      if (getInputList().isEmpty()) {
+        addInput();
+      }
+      return getInputList().get(0);
+    }
+
+    /**
+     * @return {@link #rule} (Transform Rule from source to target.)
+     */
+    public List<StructureMapGroupRuleComponent> getRuleList() {
+      if (this.ruleList == null)
+        this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
+      return this.ruleList;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public StructureMapGroupComponent setRuleList(List<StructureMapGroupRuleComponent> theRule) {
+      this.ruleList = theRule;
+      return this;
+    }
+
+    public boolean hasRule() {
+      if (this.ruleList == null)
+        return false;
+      for (StructureMapGroupRuleComponent item : this.ruleList)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public StructureMapGroupRuleComponent addRule() { //3a
+      StructureMapGroupRuleComponent t = new StructureMapGroupRuleComponent();
+      if (this.ruleList == null)
+        this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
+      this.ruleList.add(t);
+      return t;
+    }
+
+    public StructureMapGroupComponent addRule(StructureMapGroupRuleComponent t) { //3b
+      if (t == null)
+        return this;
+      if (this.ruleList == null)
+        this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
+      this.ruleList.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #rule}, creating it if it does not already exist {3}
+     */
+    public StructureMapGroupRuleComponent getRuleFirstRep() {
+      if (getRuleList().isEmpty()) {
+        addRule();
+      }
+      return getRuleList().get(0);
+    }
+
+    protected void listChildren(List<Property> children) {
+      super.listChildren(children);
+      children.add(new Property("name", "string", "A unique name for the group for the convenience of human readers.", 0, 1, name));
+      children.add(new Property("extends", "id", "Another group that this group adds rules to.", 0, 1, extends_));
+      children.add(new Property("typeMode", "code", "If this is the default rule set to apply for the source type or this combination of types.", 0, 1, typeMode));
+      children.add(new Property("documentation", "string", "Additional supporting documentation that explains the purpose of the group and the types of mappings within it.", 0, 1, documentation));
+      children.add(new Property("input", "", "A name assigned to an instance of data. The instance must be provided when the mapping is invoked.", 0, java.lang.Integer.MAX_VALUE, inputList));
+      children.add(new Property("rule", "", "Transform Rule from source to target.", 0, java.lang.Integer.MAX_VALUE, ruleList));
+    }
+
+    @Override
+    public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
+      switch (_name) {
+        case "name":
+          return new Property("name", "string", "A unique name for the group for the convenience of human readers.", 0, 1, name);
+        case "extends":
+          return new Property("extends", "id", "Another group that this group adds rules to.", 0, 1, extends_);
+        case "typeMode":
+          return new Property("typeMode", "code", "If this is the default rule set to apply for the source type or this combination of types.", 0, 1, typeMode);
+        case "documentation":
+          return new Property("documentation", "string", "Additional supporting documentation that explains the purpose of the group and the types of mappings within it.", 0, 1, documentation);
+        case "input":
+          return new Property("input", "", "A name assigned to an instance of data. The instance must be provided when the mapping is invoked.", 0, java.lang.Integer.MAX_VALUE, inputList);
+        case "rule":
+          return new Property("rule", "", "Transform Rule from source to target.", 0, java.lang.Integer.MAX_VALUE, ruleList);
+        default:
+          return super.getNamedProperty(_name, _checkValid);
       }
 
-        /**
-         * @return {@link #name} (A unique name for the group for the convenience of human readers.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-         */
-        public StringType getNameElement() { 
-          if (this.name == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupComponent.name");
-            else if (Configuration.doAutoCreate())
-              this.name = new StringType(); // bb
-          return this.name;
-        }
+    }
 
-        public boolean hasNameElement() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        public boolean hasName() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        /**
-         * @param value {@link #name} (A unique name for the group for the convenience of human readers.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-         */
-        public StructureMapGroupComponent setNameElement(StringType value) { 
-          this.name = value;
-          return this;
-        }
-
-        /**
-         * @return A unique name for the group for the convenience of human readers.
-         */
-        public String getName() { 
-          return this.name == null ? null : this.name.getValue();
-        }
-
-        /**
-         * @param value A unique name for the group for the convenience of human readers.
-         */
-        public StructureMapGroupComponent setName(String value) { 
-            if (this.name == null)
-              this.name = new StringType();
-            this.name.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #extends_} (Another group that this group adds rules to.). This is the underlying object with id, value and extensions. The accessor "getExtends" gives direct access to the value
-         */
-        public IdType getExtendsElement() { 
-          if (this.extends_ == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupComponent.extends_");
-            else if (Configuration.doAutoCreate())
-              this.extends_ = new IdType(); // bb
-          return this.extends_;
-        }
-
-        public boolean hasExtendsElement() { 
-          return this.extends_ != null && !this.extends_.isEmpty();
-        }
-
-        public boolean hasExtends() { 
-          return this.extends_ != null && !this.extends_.isEmpty();
-        }
-
-        /**
-         * @param value {@link #extends_} (Another group that this group adds rules to.). This is the underlying object with id, value and extensions. The accessor "getExtends" gives direct access to the value
-         */
-        public StructureMapGroupComponent setExtendsElement(IdType value) { 
-          this.extends_ = value;
-          return this;
-        }
-
-        /**
-         * @return Another group that this group adds rules to.
-         */
-        public String getExtends() { 
-          return this.extends_ == null ? null : this.extends_.getValue();
-        }
-
-        /**
-         * @param value Another group that this group adds rules to.
-         */
-        public StructureMapGroupComponent setExtends(String value) { 
-          if (Utilities.noString(value))
-            this.extends_ = null;
-          else {
-            if (this.extends_ == null)
-              this.extends_ = new IdType();
-            this.extends_.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #typeMode} (If this is the default rule set to apply for the source type or this combination of types.). This is the underlying object with id, value and extensions. The accessor "getTypeMode" gives direct access to the value
-         */
-        public Enumeration<StructureMapGroupTypeMode> getTypeModeElement() { 
-          if (this.typeMode == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupComponent.typeMode");
-            else if (Configuration.doAutoCreate())
-              this.typeMode = new Enumeration<StructureMapGroupTypeMode>(new StructureMapGroupTypeModeEnumFactory()); // bb
-          return this.typeMode;
-        }
-
-        public boolean hasTypeModeElement() { 
-          return this.typeMode != null && !this.typeMode.isEmpty();
-        }
-
-        public boolean hasTypeMode() { 
-          return this.typeMode != null && !this.typeMode.isEmpty();
-        }
-
-        /**
-         * @param value {@link #typeMode} (If this is the default rule set to apply for the source type or this combination of types.). This is the underlying object with id, value and extensions. The accessor "getTypeMode" gives direct access to the value
-         */
-        public StructureMapGroupComponent setTypeModeElement(Enumeration<StructureMapGroupTypeMode> value) { 
-          this.typeMode = value;
-          return this;
-        }
-
-        /**
-         * @return If this is the default rule set to apply for the source type or this combination of types.
-         */
-        public StructureMapGroupTypeMode getTypeMode() { 
-          return this.typeMode == null ? null : this.typeMode.getValue();
-        }
-
-        /**
-         * @param value If this is the default rule set to apply for the source type or this combination of types.
-         */
-        public StructureMapGroupComponent setTypeMode(StructureMapGroupTypeMode value) { 
-          if (value == null)
-            this.typeMode = null;
-          else {
-            if (this.typeMode == null)
-              this.typeMode = new Enumeration<StructureMapGroupTypeMode>(new StructureMapGroupTypeModeEnumFactory());
-            this.typeMode.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #documentation} (Additional supporting documentation that explains the purpose of the group and the types of mappings within it.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-         */
-        public StringType getDocumentationElement() { 
-          if (this.documentation == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupComponent.documentation");
-            else if (Configuration.doAutoCreate())
-              this.documentation = new StringType(); // bb
-          return this.documentation;
-        }
-
-        public boolean hasDocumentationElement() { 
-          return this.documentation != null && !this.documentation.isEmpty();
-        }
-
-        public boolean hasDocumentation() { 
-          return this.documentation != null && !this.documentation.isEmpty();
-        }
-
-        /**
-         * @param value {@link #documentation} (Additional supporting documentation that explains the purpose of the group and the types of mappings within it.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-         */
-        public StructureMapGroupComponent setDocumentationElement(StringType value) { 
-          this.documentation = value;
-          return this;
-        }
-
-        /**
-         * @return Additional supporting documentation that explains the purpose of the group and the types of mappings within it.
-         */
-        public String getDocumentation() { 
-          return this.documentation == null ? null : this.documentation.getValue();
-        }
-
-        /**
-         * @param value Additional supporting documentation that explains the purpose of the group and the types of mappings within it.
-         */
-        public StructureMapGroupComponent setDocumentation(String value) { 
-          if (Utilities.noString(value))
-            this.documentation = null;
-          else {
-            if (this.documentation == null)
-              this.documentation = new StringType();
-            this.documentation.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #input} (A name assigned to an instance of data. The instance must be provided when the mapping is invoked.)
-         */
-        public List<StructureMapGroupInputComponent> getInputList() { 
-          if (this.inputList == null)
-            this.inputList = new ArrayList<StructureMapGroupInputComponent>();
-          return this.inputList;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public StructureMapGroupComponent setInputList(List<StructureMapGroupInputComponent> theInput) { 
-          this.inputList = theInput;
-          return this;
-        }
-
-        public boolean hasInput() { 
-          if (this.inputList == null)
-            return false;
-          for (StructureMapGroupInputComponent item : this.inputList)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public StructureMapGroupInputComponent addInput() { //3a
-          StructureMapGroupInputComponent t = new StructureMapGroupInputComponent();
-          if (this.inputList == null)
-            this.inputList = new ArrayList<StructureMapGroupInputComponent>();
-          this.inputList.add(t);
-          return t;
-        }
-
-        public StructureMapGroupComponent addInput(StructureMapGroupInputComponent t) { //3b
-          if (t == null)
-            return this;
-          if (this.inputList == null)
-            this.inputList = new ArrayList<StructureMapGroupInputComponent>();
-          this.inputList.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #input}, creating it if it does not already exist {3}
-         */
-        public StructureMapGroupInputComponent getInputFirstRep() { 
-          if (getInputList().isEmpty()) {
-            addInput();
-          }
-          return getInputList().get(0);
-        }
-
-        /**
-         * @return {@link #rule} (Transform Rule from source to target.)
-         */
-        public List<StructureMapGroupRuleComponent> getRuleList() { 
-          if (this.ruleList == null)
-            this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
-          return this.ruleList;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public StructureMapGroupComponent setRuleList(List<StructureMapGroupRuleComponent> theRule) { 
-          this.ruleList = theRule;
-          return this;
-        }
-
-        public boolean hasRule() { 
-          if (this.ruleList == null)
-            return false;
-          for (StructureMapGroupRuleComponent item : this.ruleList)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public StructureMapGroupRuleComponent addRule() { //3a
-          StructureMapGroupRuleComponent t = new StructureMapGroupRuleComponent();
-          if (this.ruleList == null)
-            this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
-          this.ruleList.add(t);
-          return t;
-        }
-
-        public StructureMapGroupComponent addRule(StructureMapGroupRuleComponent t) { //3b
-          if (t == null)
-            return this;
-          if (this.ruleList == null)
-            this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
-          this.ruleList.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #rule}, creating it if it does not already exist {3}
-         */
-        public StructureMapGroupRuleComponent getRuleFirstRep() { 
-          if (getRuleList().isEmpty()) {
-            addRule();
-          }
-          return getRuleList().get(0);
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("name", "string", "A unique name for the group for the convenience of human readers.", 0, 1, name));
-          children.add(new Property("extends", "id", "Another group that this group adds rules to.", 0, 1, extends_));
-          children.add(new Property("typeMode", "code", "If this is the default rule set to apply for the source type or this combination of types.", 0, 1, typeMode));
-          children.add(new Property("documentation", "string", "Additional supporting documentation that explains the purpose of the group and the types of mappings within it.", 0, 1, documentation));
-          children.add(new Property("input", "", "A name assigned to an instance of data. The instance must be provided when the mapping is invoked.", 0, java.lang.Integer.MAX_VALUE, inputList));
-          children.add(new Property("rule", "", "Transform Rule from source to target.", 0, java.lang.Integer.MAX_VALUE, ruleList));
-        }
-
-        @Override
-        public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
-          switch (_name) {
-          case "name":  return new Property("name", "string", "A unique name for the group for the convenience of human readers.", 0, 1, name);
-          case "extends":  return new Property("extends", "id", "Another group that this group adds rules to.", 0, 1, extends_);
-          case "typeMode":  return new Property("typeMode", "code", "If this is the default rule set to apply for the source type or this combination of types.", 0, 1, typeMode);
-          case "documentation":  return new Property("documentation", "string", "Additional supporting documentation that explains the purpose of the group and the types of mappings within it.", 0, 1, documentation);
-          case "input":  return new Property("input", "", "A name assigned to an instance of data. The instance must be provided when the mapping is invoked.", 0, java.lang.Integer.MAX_VALUE, inputList);
-          case "rule":  return new Property("rule", "", "Transform Rule from source to target.", 0, java.lang.Integer.MAX_VALUE, ruleList);
-          default: return super.getNamedProperty(_name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
-        switch (name) {
-        case "name": return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
-        case "extends": return this.extends_ == null ? new Base[0] : new Base[] {this.extends_}; // IdType
-        case "typeMode": return this.typeMode == null ? new Base[0] : new Base[] {this.typeMode}; // Enumeration<StructureMapGroupTypeMode>
-        case "documentation": return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // StringType
-        case "input": return this.inputList == null ? new Base[0] : this.inputList.toArray(new Base[this.inputList.size()]); // StructureMapGroupInputComponent
-        case "rule": return this.ruleList == null ? new Base[0] : this.ruleList.toArray(new Base[this.ruleList.size()]); // StructureMapGroupRuleComponent
-        default: return super.getNamedValue(name, checkValid);
-        }
-
+    @Override
+    public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
+      switch (name) {
+        case "name":
+          return this.name == null ? new Base[0] : new Base[]{this.name}; // StringType
+        case "extends":
+          return this.extends_ == null ? new Base[0] : new Base[]{this.extends_}; // IdType
+        case "typeMode":
+          return this.typeMode == null ? new Base[0] : new Base[]{this.typeMode}; // Enumeration<StructureMapGroupTypeMode>
+        case "documentation":
+          return this.documentation == null ? new Base[0] : new Base[]{this.documentation}; // StringType
+        case "input":
+          return this.inputList == null ? new Base[0] : this.inputList.toArray(new Base[this.inputList.size()]); // StructureMapGroupInputComponent
+        case "rule":
+          return this.ruleList == null ? new Base[0] : this.ruleList.toArray(new Base[this.ruleList.size()]); // StructureMapGroupRuleComponent
+        default:
+          return super.getNamedValue(name, checkValid);
       }
 
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("name")) {
-          this.name = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("extends")) {
-          this.extends_ = TypeConvertor.castToId(value); // IdType
-        } else if (name.equals("typeMode")) {
-          value = new StructureMapGroupTypeModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.typeMode = (Enumeration) value; // Enumeration<StructureMapGroupTypeMode>
-        } else if (name.equals("documentation")) {
-          this.documentation = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("input")) {
-          this.getInputList().add((StructureMapGroupInputComponent) value); // StructureMapGroupInputComponent
-        } else if (name.equals("rule")) {
-          this.getRuleList().add((StructureMapGroupRuleComponent) value); // StructureMapGroupRuleComponent
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
+    }
 
-      @Override
-      public void removeChild(String name, Base value) throws FHIRException {
-        switch (name) {
+    @Override
+    public Base setProperty(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = TypeConvertor.castToString(value); // StringType
+      } else if (name.equals("extends")) {
+        this.extends_ = TypeConvertor.castToId(value); // IdType
+      } else if (name.equals("typeMode")) {
+        value = new StructureMapGroupTypeModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+        this.typeMode = (Enumeration) value; // Enumeration<StructureMapGroupTypeMode>
+      } else if (name.equals("documentation")) {
+        this.documentation = TypeConvertor.castToString(value); // StringType
+      } else if (name.equals("input")) {
+        this.getInputList().add((StructureMapGroupInputComponent) value); // StructureMapGroupInputComponent
+      } else if (name.equals("rule")) {
+        this.getRuleList().add((StructureMapGroupRuleComponent) value); // StructureMapGroupRuleComponent
+      } else
+        return super.setProperty(name, value);
+      return value;
+    }
+
+    @Override
+    public void removeChild(String name, Base value) throws FHIRException {
+      switch (name) {
         case "name":
           if (value == null || value == this.name) {
             this.name = null;
@@ -2108,405 +2372,418 @@ public class StructureMap extends CanonicalResource {
           return;
         default:
           super.removeChild(name, value);
-        }
+      }
+    }
+
+    @Override
+    public Base makeProperty(String name) throws FHIRException {
+      switch (name) {
+        case "name":
+          return getNameElement();
+        case "extends":
+          return getExtendsElement();
+        case "typeMode":
+          return getTypeModeElement();
+        case "documentation":
+          return getDocumentationElement();
+        case "input":
+          return addInput();
+        case "rule":
+          return addRule();
+        default:
+          return super.makeProperty(name);
       }
 
-      @Override
-      public Base makeProperty(String name) throws FHIRException {
-        switch (name) {
-        case "name":  return getNameElement();
-        case "extends":  return getExtendsElement();
-        case "typeMode":  return getTypeModeElement();
-        case "documentation":  return getDocumentationElement();
-        case "input":  return addInput(); 
-        case "rule":  return addRule(); 
-        default: return super.makeProperty(name);
-        }
+    }
 
+    @Override
+    public Base addChild(String name) throws FHIRException {
+      if (name.equals("name")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.name");
+      } else if (name.equals("extends")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.extends");
+      } else if (name.equals("typeMode")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.typeMode");
+      } else if (name.equals("documentation")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.documentation");
+      } else if (name.equals("input")) {
+        throw new FHIRException("Cannot call addChild on an abstract type StructureMap.group.input");
+      } else if (name.equals("rule")) {
+        throw new FHIRException("Cannot call addChild on an abstract type StructureMap.group.rule");
+      } else
+        return super.addChild(name);
+    }
+
+    public StructureMapGroupComponent copy(EnumSet<CopyObjectOptions> options) {
+      StructureMapGroupComponent dst = new StructureMapGroupComponent(this.modelContext);
+      copyValues(dst, options);
+      return dst;
+    }
+
+    public void copyValues(StructureMapGroupComponent dst, EnumSet<CopyObjectOptions> options) {
+      super.copyValues(dst, options);
+      dst.name = name == null ? null : name.copy(options);
+      dst.extends_ = extends_ == null ? null : extends_.copy(options);
+      dst.typeMode = typeMode == null ? null : typeMode.copy(options);
+      dst.documentation = documentation == null ? null : documentation.copy(options);
+      if (inputList != null) {
+        dst.inputList = new ArrayList<StructureMapGroupInputComponent>();
+        for (StructureMapGroupInputComponent i : inputList)
+          dst.inputList.add(i.copy(options));
       }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.name");
-        }
-        else if (name.equals("extends")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.extends");
-        }
-        else if (name.equals("typeMode")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.typeMode");
-        }
-        else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.documentation");
-        }
-        else if (name.equals("input")) {
-          throw new FHIRException("Cannot call addChild on an abstract type StructureMap.group.input");
-        }
-        else if (name.equals("rule")) {
-          throw new FHIRException("Cannot call addChild on an abstract type StructureMap.group.rule");
-        }
-        else
-          return super.addChild(name);
+      ;
+      if (ruleList != null) {
+        dst.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
+        for (StructureMapGroupRuleComponent i : ruleList)
+          dst.ruleList.add(i.copy(options));
       }
+      ;
+    }
 
-      public StructureMapGroupComponent copy(EnumSet<CopyObjectOptions> options) {
-        StructureMapGroupComponent dst = new StructureMapGroupComponent(this.modelContext);
-        copyValues(dst, options);
-        return dst;
-      }
+    @Override
+    public boolean equalsDeep(Base other_) {
+      if (!super.equalsDeep(other_))
+        return false;
+      if (!(other_ instanceof StructureMapGroupComponent))
+        return false;
+      StructureMapGroupComponent o = (StructureMapGroupComponent) other_;
+      return compareDeep(name, o.name, true) && compareDeep(extends_, o.extends_, true) && compareDeep(typeMode, o.typeMode, true)
+        && compareDeep(documentation, o.documentation, true) && compareDeep(inputList, o.inputList, true)
+        && compareDeep(ruleList, o.ruleList, true);
+    }
 
-      public void copyValues(StructureMapGroupComponent dst, EnumSet<CopyObjectOptions> options) {
-        super.copyValues(dst, options);
-        dst.name = name == null ? null : name.copy(options);
-        dst.extends_ = extends_ == null ? null : extends_.copy(options);
-        dst.typeMode = typeMode == null ? null : typeMode.copy(options);
-        dst.documentation = documentation == null ? null : documentation.copy(options);
-        if (inputList != null) {
-          dst.inputList = new ArrayList<StructureMapGroupInputComponent>();
-          for (StructureMapGroupInputComponent i : inputList)
-            dst.inputList.add(i.copy(options));
-        };
-        if (ruleList != null) {
-          dst.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
-          for (StructureMapGroupRuleComponent i : ruleList)
-            dst.ruleList.add(i.copy(options));
-        };
-      }
+    @Override
+    public boolean equalsShallow(Base other_) {
+      if (!super.equalsShallow(other_))
+        return false;
+      if (!(other_ instanceof StructureMapGroupComponent))
+        return false;
+      StructureMapGroupComponent o = (StructureMapGroupComponent) other_;
+      return compareValues(name, o.name, true) && compareValues(extends_, o.extends_, true) && compareValues(typeMode, o.typeMode, true)
+        && compareValues(documentation, o.documentation, true);
+    }
 
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof StructureMapGroupComponent))
-          return false;
-        StructureMapGroupComponent o = (StructureMapGroupComponent) other_;
-        return compareDeep(name, o.name, true) && compareDeep(extends_, o.extends_, true) && compareDeep(typeMode, o.typeMode, true)
-           && compareDeep(documentation, o.documentation, true) && compareDeep(inputList, o.inputList, true)
-           && compareDeep(ruleList, o.ruleList, true);
-      }
+    public boolean isEmpty() {
+      return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, extends_, typeMode
+        , documentation, inputList, ruleList);
+    }
 
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof StructureMapGroupComponent))
-          return false;
-        StructureMapGroupComponent o = (StructureMapGroupComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(extends_, o.extends_, true) && compareValues(typeMode, o.typeMode, true)
-           && compareValues(documentation, o.documentation, true);
-      }
+    public String fhirType() {
+      return "StructureMap.group";
 
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, extends_, typeMode
-          , documentation, inputList, ruleList);
-      }
-
-  public String fhirType() {
-    return "StructureMap.group";
+    }
 
   }
 
-  }
+  @Block()
+  public static class StructureMapGroupInputComponent extends BackboneElement {
+    /**
+     * Name for this instance of data.
+     */
+    @Child(name = "name", type = {IdType.class}, order = 1, min = 1, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Name for this instance of data")
+    protected IdType name;
 
-    @Block()
-    public static class StructureMapGroupInputComponent extends BackboneElement {
-        /**
-         * Name for this instance of data.
-         */
-        @Child(name = "name", type = {IdType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Name for this instance of data")
-        protected IdType name;
+    /**
+     * Type for this instance of data.
+     */
+    @Child(name = "type", type = {StringType.class}, order = 2, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Type for this instance of data")
+    protected StringType type;
 
-        /**
-         * Type for this instance of data.
-         */
-        @Child(name = "type", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Type for this instance of data")
-        protected StringType type;
+    /**
+     * Mode for this instance of data.
+     */
+    @Child(name = "mode", type = {CodeType.class}, order = 3, min = 1, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "source | target")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/map-input-mode")
+    protected Enumeration<StructureMapInputMode> mode;
 
-        /**
-         * Mode for this instance of data.
-         */
-        @Child(name = "mode", type = {CodeType.class}, order=3, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="source | target")
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/map-input-mode")
-        protected Enumeration<StructureMapInputMode> mode;
+    /**
+     * Documentation for this instance of data.
+     */
+    @Child(name = "documentation", type = {StringType.class}, order = 4, min = 0, max = 1, modifier = false, summary = false)
+    @Description(shortDefinition = "Documentation for this instance of data")
+    protected StringType documentation;
 
-        /**
-         * Documentation for this instance of data.
-         */
-        @Child(name = "documentation", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Documentation for this instance of data")
-        protected StringType documentation;
-
-        private static final long serialVersionUID = -25050724L;
+    private static final long serialVersionUID = -25050724L;
 
     /**
      * Constructor
      */
-      public StructureMapGroupInputComponent() {
-        super();
-      }
+    public StructureMapGroupInputComponent() {
+      super();
+    }
 
     /**
      * Constructor
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StructureMapGroupInputComponent(IModelContext modelContext) {
-        super();
-        this.modelContext = modelContext;
-      }
+    public StructureMapGroupInputComponent(IModelContext modelContext) {
+      super();
+      this.modelContext = modelContext;
+    }
 
     /**
      * Constructor
      */
-      public StructureMapGroupInputComponent(IModelContext modelContext, String name, StructureMapInputMode mode) {
-        super();
-        this.modelContext = modelContext;
-        this.setName(name);
-        this.setMode(mode);
+    public StructureMapGroupInputComponent(IModelContext modelContext, String name, StructureMapInputMode mode) {
+      super();
+      this.modelContext = modelContext;
+      this.setName(name);
+      this.setMode(mode);
+    }
+
+    /**
+     * @return {@link #name} (Name for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public IdType getNameElement() {
+      if (this.name == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupInputComponent.name");
+        else if (Configuration.doAutoCreate())
+          this.name = new IdType(); // bb
+      return this.name;
+    }
+
+    public boolean hasNameElement() {
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    public boolean hasName() {
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    /**
+     * @param value {@link #name} (Name for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public StructureMapGroupInputComponent setNameElement(IdType value) {
+      this.name = value;
+      return this;
+    }
+
+    /**
+     * @return Name for this instance of data.
+     */
+    public String getName() {
+      return this.name == null ? null : this.name.getValue();
+    }
+
+    /**
+     * @param value Name for this instance of data.
+     */
+    public StructureMapGroupInputComponent setName(String value) {
+      if (this.name == null)
+        this.name = new IdType();
+      this.name.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #type} (Type for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+     */
+    public StringType getTypeElement() {
+      if (this.type == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupInputComponent.type");
+        else if (Configuration.doAutoCreate())
+          this.type = new StringType(); // bb
+      return this.type;
+    }
+
+    public boolean hasTypeElement() {
+      return this.type != null && !this.type.isEmpty();
+    }
+
+    public boolean hasType() {
+      return this.type != null && !this.type.isEmpty();
+    }
+
+    /**
+     * @param value {@link #type} (Type for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+     */
+    public StructureMapGroupInputComponent setTypeElement(StringType value) {
+      this.type = value;
+      return this;
+    }
+
+    /**
+     * @return Type for this instance of data.
+     */
+    public String getType() {
+      return this.type == null ? null : this.type.getValue();
+    }
+
+    /**
+     * @param value Type for this instance of data.
+     */
+    public StructureMapGroupInputComponent setType(String value) {
+      if (Utilities.noString(value))
+        this.type = null;
+      else {
+        if (this.type == null)
+          this.type = new StringType();
+        this.type.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #mode} (Mode for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
+     */
+    public Enumeration<StructureMapInputMode> getModeElement() {
+      if (this.mode == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupInputComponent.mode");
+        else if (Configuration.doAutoCreate())
+          this.mode = new Enumeration<StructureMapInputMode>(new StructureMapInputModeEnumFactory()); // bb
+      return this.mode;
+    }
+
+    public boolean hasModeElement() {
+      return this.mode != null && !this.mode.isEmpty();
+    }
+
+    public boolean hasMode() {
+      return this.mode != null && !this.mode.isEmpty();
+    }
+
+    /**
+     * @param value {@link #mode} (Mode for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
+     */
+    public StructureMapGroupInputComponent setModeElement(Enumeration<StructureMapInputMode> value) {
+      this.mode = value;
+      return this;
+    }
+
+    /**
+     * @return Mode for this instance of data.
+     */
+    public StructureMapInputMode getMode() {
+      return this.mode == null ? null : this.mode.getValue();
+    }
+
+    /**
+     * @param value Mode for this instance of data.
+     */
+    public StructureMapGroupInputComponent setMode(StructureMapInputMode value) {
+      if (this.mode == null)
+        this.mode = new Enumeration<StructureMapInputMode>(new StructureMapInputModeEnumFactory());
+      this.mode.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #documentation} (Documentation for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
+     */
+    public StringType getDocumentationElement() {
+      if (this.documentation == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupInputComponent.documentation");
+        else if (Configuration.doAutoCreate())
+          this.documentation = new StringType(); // bb
+      return this.documentation;
+    }
+
+    public boolean hasDocumentationElement() {
+      return this.documentation != null && !this.documentation.isEmpty();
+    }
+
+    public boolean hasDocumentation() {
+      return this.documentation != null && !this.documentation.isEmpty();
+    }
+
+    /**
+     * @param value {@link #documentation} (Documentation for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
+     */
+    public StructureMapGroupInputComponent setDocumentationElement(StringType value) {
+      this.documentation = value;
+      return this;
+    }
+
+    /**
+     * @return Documentation for this instance of data.
+     */
+    public String getDocumentation() {
+      return this.documentation == null ? null : this.documentation.getValue();
+    }
+
+    /**
+     * @param value Documentation for this instance of data.
+     */
+    public StructureMapGroupInputComponent setDocumentation(String value) {
+      if (Utilities.noString(value))
+        this.documentation = null;
+      else {
+        if (this.documentation == null)
+          this.documentation = new StringType();
+        this.documentation.setValue(value);
+      }
+      return this;
+    }
+
+    protected void listChildren(List<Property> children) {
+      super.listChildren(children);
+      children.add(new Property("name", "id", "Name for this instance of data.", 0, 1, name));
+      children.add(new Property("type", "string", "Type for this instance of data.", 0, 1, type));
+      children.add(new Property("mode", "code", "Mode for this instance of data.", 0, 1, mode));
+      children.add(new Property("documentation", "string", "Documentation for this instance of data.", 0, 1, documentation));
+    }
+
+    @Override
+    public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
+      switch (_name) {
+        case "name":
+          return new Property("name", "id", "Name for this instance of data.", 0, 1, name);
+        case "type":
+          return new Property("type", "string", "Type for this instance of data.", 0, 1, type);
+        case "mode":
+          return new Property("mode", "code", "Mode for this instance of data.", 0, 1, mode);
+        case "documentation":
+          return new Property("documentation", "string", "Documentation for this instance of data.", 0, 1, documentation);
+        default:
+          return super.getNamedProperty(_name, _checkValid);
       }
 
-        /**
-         * @return {@link #name} (Name for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-         */
-        public IdType getNameElement() { 
-          if (this.name == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupInputComponent.name");
-            else if (Configuration.doAutoCreate())
-              this.name = new IdType(); // bb
-          return this.name;
-        }
+    }
 
-        public boolean hasNameElement() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        public boolean hasName() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        /**
-         * @param value {@link #name} (Name for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-         */
-        public StructureMapGroupInputComponent setNameElement(IdType value) { 
-          this.name = value;
-          return this;
-        }
-
-        /**
-         * @return Name for this instance of data.
-         */
-        public String getName() { 
-          return this.name == null ? null : this.name.getValue();
-        }
-
-        /**
-         * @param value Name for this instance of data.
-         */
-        public StructureMapGroupInputComponent setName(String value) { 
-            if (this.name == null)
-              this.name = new IdType();
-            this.name.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #type} (Type for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
-         */
-        public StringType getTypeElement() { 
-          if (this.type == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupInputComponent.type");
-            else if (Configuration.doAutoCreate())
-              this.type = new StringType(); // bb
-          return this.type;
-        }
-
-        public boolean hasTypeElement() { 
-          return this.type != null && !this.type.isEmpty();
-        }
-
-        public boolean hasType() { 
-          return this.type != null && !this.type.isEmpty();
-        }
-
-        /**
-         * @param value {@link #type} (Type for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
-         */
-        public StructureMapGroupInputComponent setTypeElement(StringType value) { 
-          this.type = value;
-          return this;
-        }
-
-        /**
-         * @return Type for this instance of data.
-         */
-        public String getType() { 
-          return this.type == null ? null : this.type.getValue();
-        }
-
-        /**
-         * @param value Type for this instance of data.
-         */
-        public StructureMapGroupInputComponent setType(String value) { 
-          if (Utilities.noString(value))
-            this.type = null;
-          else {
-            if (this.type == null)
-              this.type = new StringType();
-            this.type.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #mode} (Mode for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
-         */
-        public Enumeration<StructureMapInputMode> getModeElement() { 
-          if (this.mode == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupInputComponent.mode");
-            else if (Configuration.doAutoCreate())
-              this.mode = new Enumeration<StructureMapInputMode>(new StructureMapInputModeEnumFactory()); // bb
-          return this.mode;
-        }
-
-        public boolean hasModeElement() { 
-          return this.mode != null && !this.mode.isEmpty();
-        }
-
-        public boolean hasMode() { 
-          return this.mode != null && !this.mode.isEmpty();
-        }
-
-        /**
-         * @param value {@link #mode} (Mode for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getMode" gives direct access to the value
-         */
-        public StructureMapGroupInputComponent setModeElement(Enumeration<StructureMapInputMode> value) { 
-          this.mode = value;
-          return this;
-        }
-
-        /**
-         * @return Mode for this instance of data.
-         */
-        public StructureMapInputMode getMode() { 
-          return this.mode == null ? null : this.mode.getValue();
-        }
-
-        /**
-         * @param value Mode for this instance of data.
-         */
-        public StructureMapGroupInputComponent setMode(StructureMapInputMode value) { 
-            if (this.mode == null)
-              this.mode = new Enumeration<StructureMapInputMode>(new StructureMapInputModeEnumFactory());
-            this.mode.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #documentation} (Documentation for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-         */
-        public StringType getDocumentationElement() { 
-          if (this.documentation == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupInputComponent.documentation");
-            else if (Configuration.doAutoCreate())
-              this.documentation = new StringType(); // bb
-          return this.documentation;
-        }
-
-        public boolean hasDocumentationElement() { 
-          return this.documentation != null && !this.documentation.isEmpty();
-        }
-
-        public boolean hasDocumentation() { 
-          return this.documentation != null && !this.documentation.isEmpty();
-        }
-
-        /**
-         * @param value {@link #documentation} (Documentation for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-         */
-        public StructureMapGroupInputComponent setDocumentationElement(StringType value) { 
-          this.documentation = value;
-          return this;
-        }
-
-        /**
-         * @return Documentation for this instance of data.
-         */
-        public String getDocumentation() { 
-          return this.documentation == null ? null : this.documentation.getValue();
-        }
-
-        /**
-         * @param value Documentation for this instance of data.
-         */
-        public StructureMapGroupInputComponent setDocumentation(String value) { 
-          if (Utilities.noString(value))
-            this.documentation = null;
-          else {
-            if (this.documentation == null)
-              this.documentation = new StringType();
-            this.documentation.setValue(value);
-          }
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("name", "id", "Name for this instance of data.", 0, 1, name));
-          children.add(new Property("type", "string", "Type for this instance of data.", 0, 1, type));
-          children.add(new Property("mode", "code", "Mode for this instance of data.", 0, 1, mode));
-          children.add(new Property("documentation", "string", "Documentation for this instance of data.", 0, 1, documentation));
-        }
-
-        @Override
-        public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
-          switch (_name) {
-          case "name":  return new Property("name", "id", "Name for this instance of data.", 0, 1, name);
-          case "type":  return new Property("type", "string", "Type for this instance of data.", 0, 1, type);
-          case "mode":  return new Property("mode", "code", "Mode for this instance of data.", 0, 1, mode);
-          case "documentation":  return new Property("documentation", "string", "Documentation for this instance of data.", 0, 1, documentation);
-          default: return super.getNamedProperty(_name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
-        switch (name) {
-        case "name": return this.name == null ? new Base[0] : new Base[] {this.name}; // IdType
-        case "type": return this.type == null ? new Base[0] : new Base[] {this.type}; // StringType
-        case "mode": return this.mode == null ? new Base[0] : new Base[] {this.mode}; // Enumeration<StructureMapInputMode>
-        case "documentation": return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // StringType
-        default: return super.getNamedValue(name, checkValid);
-        }
-
+    @Override
+    public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
+      switch (name) {
+        case "name":
+          return this.name == null ? new Base[0] : new Base[]{this.name}; // IdType
+        case "type":
+          return this.type == null ? new Base[0] : new Base[]{this.type}; // StringType
+        case "mode":
+          return this.mode == null ? new Base[0] : new Base[]{this.mode}; // Enumeration<StructureMapInputMode>
+        case "documentation":
+          return this.documentation == null ? new Base[0] : new Base[]{this.documentation}; // StringType
+        default:
+          return super.getNamedValue(name, checkValid);
       }
 
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("name")) {
-          this.name = TypeConvertor.castToId(value); // IdType
-        } else if (name.equals("type")) {
-          this.type = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("mode")) {
-          value = new StructureMapInputModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.mode = (Enumeration) value; // Enumeration<StructureMapInputMode>
-        } else if (name.equals("documentation")) {
-          this.documentation = TypeConvertor.castToString(value); // StringType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
+    }
 
-      @Override
-      public void removeChild(String name, Base value) throws FHIRException {
-        switch (name) {
+    @Override
+    public Base setProperty(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = TypeConvertor.castToId(value); // IdType
+      } else if (name.equals("type")) {
+        this.type = TypeConvertor.castToString(value); // StringType
+      } else if (name.equals("mode")) {
+        value = new StructureMapInputModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+        this.mode = (Enumeration) value; // Enumeration<StructureMapInputMode>
+      } else if (name.equals("documentation")) {
+        this.documentation = TypeConvertor.castToString(value); // StringType
+      } else
+        return super.setProperty(name, value);
+      return value;
+    }
+
+    @Override
+    public void removeChild(String name, Base value) throws FHIRException {
+      switch (name) {
         case "name":
           if (value == null || value == this.name) {
             this.name = null;
@@ -2529,529 +2806,544 @@ public class StructureMap extends CanonicalResource {
           return;
         default:
           super.removeChild(name, value);
-        }
+      }
+    }
+
+    @Override
+    public Base makeProperty(String name) throws FHIRException {
+      switch (name) {
+        case "name":
+          return getNameElement();
+        case "type":
+          return getTypeElement();
+        case "mode":
+          return getModeElement();
+        case "documentation":
+          return getDocumentationElement();
+        default:
+          return super.makeProperty(name);
       }
 
-      @Override
-      public Base makeProperty(String name) throws FHIRException {
-        switch (name) {
-        case "name":  return getNameElement();
-        case "type":  return getTypeElement();
-        case "mode":  return getModeElement();
-        case "documentation":  return getDocumentationElement();
-        default: return super.makeProperty(name);
-        }
+    }
 
-      }
+    @Override
+    public Base addChild(String name) throws FHIRException {
+      if (name.equals("name")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.input.name");
+      } else if (name.equals("type")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.input.type");
+      } else if (name.equals("mode")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.input.mode");
+      } else if (name.equals("documentation")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.input.documentation");
+      } else
+        return super.addChild(name);
+    }
 
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.input.name");
-        }
-        else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.input.type");
-        }
-        else if (name.equals("mode")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.input.mode");
-        }
-        else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.input.documentation");
-        }
-        else
-          return super.addChild(name);
-      }
+    public StructureMapGroupInputComponent copy(EnumSet<CopyObjectOptions> options) {
+      StructureMapGroupInputComponent dst = new StructureMapGroupInputComponent(this.modelContext);
+      copyValues(dst, options);
+      return dst;
+    }
 
-      public StructureMapGroupInputComponent copy(EnumSet<CopyObjectOptions> options) {
-        StructureMapGroupInputComponent dst = new StructureMapGroupInputComponent(this.modelContext);
-        copyValues(dst, options);
-        return dst;
-      }
+    public void copyValues(StructureMapGroupInputComponent dst, EnumSet<CopyObjectOptions> options) {
+      super.copyValues(dst, options);
+      dst.name = name == null ? null : name.copy(options);
+      dst.type = type == null ? null : type.copy(options);
+      dst.mode = mode == null ? null : mode.copy(options);
+      dst.documentation = documentation == null ? null : documentation.copy(options);
+    }
 
-      public void copyValues(StructureMapGroupInputComponent dst, EnumSet<CopyObjectOptions> options) {
-        super.copyValues(dst, options);
-        dst.name = name == null ? null : name.copy(options);
-        dst.type = type == null ? null : type.copy(options);
-        dst.mode = mode == null ? null : mode.copy(options);
-        dst.documentation = documentation == null ? null : documentation.copy(options);
-      }
+    @Override
+    public boolean equalsDeep(Base other_) {
+      if (!super.equalsDeep(other_))
+        return false;
+      if (!(other_ instanceof StructureMapGroupInputComponent))
+        return false;
+      StructureMapGroupInputComponent o = (StructureMapGroupInputComponent) other_;
+      return compareDeep(name, o.name, true) && compareDeep(type, o.type, true) && compareDeep(mode, o.mode, true)
+        && compareDeep(documentation, o.documentation, true);
+    }
 
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof StructureMapGroupInputComponent))
-          return false;
-        StructureMapGroupInputComponent o = (StructureMapGroupInputComponent) other_;
-        return compareDeep(name, o.name, true) && compareDeep(type, o.type, true) && compareDeep(mode, o.mode, true)
-           && compareDeep(documentation, o.documentation, true);
-      }
+    @Override
+    public boolean equalsShallow(Base other_) {
+      if (!super.equalsShallow(other_))
+        return false;
+      if (!(other_ instanceof StructureMapGroupInputComponent))
+        return false;
+      StructureMapGroupInputComponent o = (StructureMapGroupInputComponent) other_;
+      return compareValues(name, o.name, true) && compareValues(type, o.type, true) && compareValues(mode, o.mode, true)
+        && compareValues(documentation, o.documentation, true);
+    }
 
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof StructureMapGroupInputComponent))
-          return false;
-        StructureMapGroupInputComponent o = (StructureMapGroupInputComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(type, o.type, true) && compareValues(mode, o.mode, true)
-           && compareValues(documentation, o.documentation, true);
-      }
+    public boolean isEmpty() {
+      return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, type, mode, documentation
+      );
+    }
 
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, type, mode, documentation
-          );
-      }
+    public String fhirType() {
+      return "StructureMap.group.input";
 
-  public String fhirType() {
-    return "StructureMap.group.input";
+    }
 
   }
 
-  }
+  @Block()
+  public static class StructureMapGroupRuleComponent extends BackboneElement {
+    /**
+     * Name of the rule for internal references.
+     */
+    @Child(name = "name", type = {IdType.class}, order = 1, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Name of the rule for internal references")
+    protected IdType name;
 
-    @Block()
-    public static class StructureMapGroupRuleComponent extends BackboneElement {
-        /**
-         * Name of the rule for internal references.
-         */
-        @Child(name = "name", type = {IdType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Name of the rule for internal references")
-        protected IdType name;
+    /**
+     * Source inputs to the mapping.
+     */
+    @Child(name = "source", type = {}, order = 2, min = 1, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
+    @Description(shortDefinition = "Source inputs to the mapping")
+    protected List<StructureMapGroupRuleSourceComponent> sourceList;
 
-        /**
-         * Source inputs to the mapping.
-         */
-        @Child(name = "source", type = {}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Source inputs to the mapping")
-        protected List<StructureMapGroupRuleSourceComponent> sourceList;
+    /**
+     * Content to create because of this mapping rule.
+     */
+    @Child(name = "target", type = {}, order = 3, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
+    @Description(shortDefinition = "Content to create because of this mapping rule")
+    protected List<StructureMapGroupRuleTargetComponent> targetList;
 
-        /**
-         * Content to create because of this mapping rule.
-         */
-        @Child(name = "target", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Content to create because of this mapping rule")
-        protected List<StructureMapGroupRuleTargetComponent> targetList;
+    /**
+     * Rules contained in this rule.
+     */
+    @Child(name = "rule", type = {StructureMapGroupRuleComponent.class}, order = 4, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
+    @Description(shortDefinition = "Rules contained in this rule")
+    protected List<StructureMapGroupRuleComponent> ruleList;
 
-        /**
-         * Rules contained in this rule.
-         */
-        @Child(name = "rule", type = {StructureMapGroupRuleComponent.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Rules contained in this rule")
-        protected List<StructureMapGroupRuleComponent> ruleList;
+    /**
+     * Which other rules to apply in the context of this rule.
+     */
+    @Child(name = "dependent", type = {}, order = 5, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
+    @Description(shortDefinition = "Which other rules to apply in the context of this rule")
+    protected List<StructureMapGroupRuleDependentComponent> dependentList;
 
-        /**
-         * Which other rules to apply in the context of this rule.
-         */
-        @Child(name = "dependent", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Which other rules to apply in the context of this rule")
-        protected List<StructureMapGroupRuleDependentComponent> dependentList;
+    /**
+     * Documentation for this instance of data.
+     */
+    @Child(name = "documentation", type = {StringType.class}, order = 6, min = 0, max = 1, modifier = false, summary = false)
+    @Description(shortDefinition = "Documentation for this instance of data")
+    protected StringType documentation;
 
-        /**
-         * Documentation for this instance of data.
-         */
-        @Child(name = "documentation", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Documentation for this instance of data")
-        protected StringType documentation;
-
-        private static final long serialVersionUID = -1080992763L;
+    private static final long serialVersionUID = -1080992763L;
 
     /**
      * Constructor
      */
-      public StructureMapGroupRuleComponent() {
-        super();
-      }
+    public StructureMapGroupRuleComponent() {
+      super();
+    }
 
     /**
      * Constructor
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StructureMapGroupRuleComponent(IModelContext modelContext) {
-        super();
-        this.modelContext = modelContext;
-      }
+    public StructureMapGroupRuleComponent(IModelContext modelContext) {
+      super();
+      this.modelContext = modelContext;
+    }
 
     /**
      * Constructor
      */
-      public StructureMapGroupRuleComponent(IModelContext modelContext, StructureMapGroupRuleSourceComponent source) {
-        super();
-        this.modelContext = modelContext;
-        this.addSource(source);
+    public StructureMapGroupRuleComponent(IModelContext modelContext, StructureMapGroupRuleSourceComponent source) {
+      super();
+      this.modelContext = modelContext;
+      this.addSource(source);
+    }
+
+    /**
+     * @return {@link #name} (Name of the rule for internal references.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public IdType getNameElement() {
+      if (this.name == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleComponent.name");
+        else if (Configuration.doAutoCreate())
+          this.name = new IdType(); // bb
+      return this.name;
+    }
+
+    public boolean hasNameElement() {
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    public boolean hasName() {
+      return this.name != null && !this.name.isEmpty();
+    }
+
+    /**
+     * @param value {@link #name} (Name of the rule for internal references.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+     */
+    public StructureMapGroupRuleComponent setNameElement(IdType value) {
+      this.name = value;
+      return this;
+    }
+
+    /**
+     * @return Name of the rule for internal references.
+     */
+    public String getName() {
+      return this.name == null ? null : this.name.getValue();
+    }
+
+    /**
+     * @param value Name of the rule for internal references.
+     */
+    public StructureMapGroupRuleComponent setName(String value) {
+      if (Utilities.noString(value))
+        this.name = null;
+      else {
+        if (this.name == null)
+          this.name = new IdType();
+        this.name.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #source} (Source inputs to the mapping.)
+     */
+    public List<StructureMapGroupRuleSourceComponent> getSourceList() {
+      if (this.sourceList == null)
+        this.sourceList = new ArrayList<StructureMapGroupRuleSourceComponent>();
+      return this.sourceList;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public StructureMapGroupRuleComponent setSourceList(List<StructureMapGroupRuleSourceComponent> theSource) {
+      this.sourceList = theSource;
+      return this;
+    }
+
+    public boolean hasSource() {
+      if (this.sourceList == null)
+        return false;
+      for (StructureMapGroupRuleSourceComponent item : this.sourceList)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public StructureMapGroupRuleSourceComponent addSource() { //3a
+      StructureMapGroupRuleSourceComponent t = new StructureMapGroupRuleSourceComponent();
+      if (this.sourceList == null)
+        this.sourceList = new ArrayList<StructureMapGroupRuleSourceComponent>();
+      this.sourceList.add(t);
+      return t;
+    }
+
+    public StructureMapGroupRuleComponent addSource(StructureMapGroupRuleSourceComponent t) { //3b
+      if (t == null)
+        return this;
+      if (this.sourceList == null)
+        this.sourceList = new ArrayList<StructureMapGroupRuleSourceComponent>();
+      this.sourceList.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #source}, creating it if it does not already exist {3}
+     */
+    public StructureMapGroupRuleSourceComponent getSourceFirstRep() {
+      if (getSourceList().isEmpty()) {
+        addSource();
+      }
+      return getSourceList().get(0);
+    }
+
+    /**
+     * @return {@link #target} (Content to create because of this mapping rule.)
+     */
+    public List<StructureMapGroupRuleTargetComponent> getTargetList() {
+      if (this.targetList == null)
+        this.targetList = new ArrayList<StructureMapGroupRuleTargetComponent>();
+      return this.targetList;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public StructureMapGroupRuleComponent setTargetList(List<StructureMapGroupRuleTargetComponent> theTarget) {
+      this.targetList = theTarget;
+      return this;
+    }
+
+    public boolean hasTarget() {
+      if (this.targetList == null)
+        return false;
+      for (StructureMapGroupRuleTargetComponent item : this.targetList)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public StructureMapGroupRuleTargetComponent addTarget() { //3a
+      StructureMapGroupRuleTargetComponent t = new StructureMapGroupRuleTargetComponent();
+      if (this.targetList == null)
+        this.targetList = new ArrayList<StructureMapGroupRuleTargetComponent>();
+      this.targetList.add(t);
+      return t;
+    }
+
+    public StructureMapGroupRuleComponent addTarget(StructureMapGroupRuleTargetComponent t) { //3b
+      if (t == null)
+        return this;
+      if (this.targetList == null)
+        this.targetList = new ArrayList<StructureMapGroupRuleTargetComponent>();
+      this.targetList.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #target}, creating it if it does not already exist {3}
+     */
+    public StructureMapGroupRuleTargetComponent getTargetFirstRep() {
+      if (getTargetList().isEmpty()) {
+        addTarget();
+      }
+      return getTargetList().get(0);
+    }
+
+    /**
+     * @return {@link #rule} (Rules contained in this rule.)
+     */
+    public List<StructureMapGroupRuleComponent> getRuleList() {
+      if (this.ruleList == null)
+        this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
+      return this.ruleList;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public StructureMapGroupRuleComponent setRuleList(List<StructureMapGroupRuleComponent> theRule) {
+      this.ruleList = theRule;
+      return this;
+    }
+
+    public boolean hasRule() {
+      if (this.ruleList == null)
+        return false;
+      for (StructureMapGroupRuleComponent item : this.ruleList)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public StructureMapGroupRuleComponent addRule() { //3a
+      StructureMapGroupRuleComponent t = new StructureMapGroupRuleComponent();
+      if (this.ruleList == null)
+        this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
+      this.ruleList.add(t);
+      return t;
+    }
+
+    public StructureMapGroupRuleComponent addRule(StructureMapGroupRuleComponent t) { //3b
+      if (t == null)
+        return this;
+      if (this.ruleList == null)
+        this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
+      this.ruleList.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #rule}, creating it if it does not already exist {3}
+     */
+    public StructureMapGroupRuleComponent getRuleFirstRep() {
+      if (getRuleList().isEmpty()) {
+        addRule();
+      }
+      return getRuleList().get(0);
+    }
+
+    /**
+     * @return {@link #dependent} (Which other rules to apply in the context of this rule.)
+     */
+    public List<StructureMapGroupRuleDependentComponent> getDependentList() {
+      if (this.dependentList == null)
+        this.dependentList = new ArrayList<StructureMapGroupRuleDependentComponent>();
+      return this.dependentList;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public StructureMapGroupRuleComponent setDependentList(List<StructureMapGroupRuleDependentComponent> theDependent) {
+      this.dependentList = theDependent;
+      return this;
+    }
+
+    public boolean hasDependent() {
+      if (this.dependentList == null)
+        return false;
+      for (StructureMapGroupRuleDependentComponent item : this.dependentList)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public StructureMapGroupRuleDependentComponent addDependent() { //3a
+      StructureMapGroupRuleDependentComponent t = new StructureMapGroupRuleDependentComponent();
+      if (this.dependentList == null)
+        this.dependentList = new ArrayList<StructureMapGroupRuleDependentComponent>();
+      this.dependentList.add(t);
+      return t;
+    }
+
+    public StructureMapGroupRuleComponent addDependent(StructureMapGroupRuleDependentComponent t) { //3b
+      if (t == null)
+        return this;
+      if (this.dependentList == null)
+        this.dependentList = new ArrayList<StructureMapGroupRuleDependentComponent>();
+      this.dependentList.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #dependent}, creating it if it does not already exist {3}
+     */
+    public StructureMapGroupRuleDependentComponent getDependentFirstRep() {
+      if (getDependentList().isEmpty()) {
+        addDependent();
+      }
+      return getDependentList().get(0);
+    }
+
+    /**
+     * @return {@link #documentation} (Documentation for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
+     */
+    public StringType getDocumentationElement() {
+      if (this.documentation == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleComponent.documentation");
+        else if (Configuration.doAutoCreate())
+          this.documentation = new StringType(); // bb
+      return this.documentation;
+    }
+
+    public boolean hasDocumentationElement() {
+      return this.documentation != null && !this.documentation.isEmpty();
+    }
+
+    public boolean hasDocumentation() {
+      return this.documentation != null && !this.documentation.isEmpty();
+    }
+
+    /**
+     * @param value {@link #documentation} (Documentation for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
+     */
+    public StructureMapGroupRuleComponent setDocumentationElement(StringType value) {
+      this.documentation = value;
+      return this;
+    }
+
+    /**
+     * @return Documentation for this instance of data.
+     */
+    public String getDocumentation() {
+      return this.documentation == null ? null : this.documentation.getValue();
+    }
+
+    /**
+     * @param value Documentation for this instance of data.
+     */
+    public StructureMapGroupRuleComponent setDocumentation(String value) {
+      if (Utilities.noString(value))
+        this.documentation = null;
+      else {
+        if (this.documentation == null)
+          this.documentation = new StringType();
+        this.documentation.setValue(value);
+      }
+      return this;
+    }
+
+    protected void listChildren(List<Property> children) {
+      super.listChildren(children);
+      children.add(new Property("name", "id", "Name of the rule for internal references.", 0, 1, name));
+      children.add(new Property("source", "", "Source inputs to the mapping.", 0, java.lang.Integer.MAX_VALUE, sourceList));
+      children.add(new Property("target", "", "Content to create because of this mapping rule.", 0, java.lang.Integer.MAX_VALUE, targetList));
+      children.add(new Property("rule", "@StructureMap.group.rule", "Rules contained in this rule.", 0, java.lang.Integer.MAX_VALUE, ruleList));
+      children.add(new Property("dependent", "", "Which other rules to apply in the context of this rule.", 0, java.lang.Integer.MAX_VALUE, dependentList));
+      children.add(new Property("documentation", "string", "Documentation for this instance of data.", 0, 1, documentation));
+    }
+
+    @Override
+    public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
+      switch (_name) {
+        case "name":
+          return new Property("name", "id", "Name of the rule for internal references.", 0, 1, name);
+        case "source":
+          return new Property("source", "", "Source inputs to the mapping.", 0, java.lang.Integer.MAX_VALUE, sourceList);
+        case "target":
+          return new Property("target", "", "Content to create because of this mapping rule.", 0, java.lang.Integer.MAX_VALUE, targetList);
+        case "rule":
+          return new Property("rule", "@StructureMap.group.rule", "Rules contained in this rule.", 0, java.lang.Integer.MAX_VALUE, ruleList);
+        case "dependent":
+          return new Property("dependent", "", "Which other rules to apply in the context of this rule.", 0, java.lang.Integer.MAX_VALUE, dependentList);
+        case "documentation":
+          return new Property("documentation", "string", "Documentation for this instance of data.", 0, 1, documentation);
+        default:
+          return super.getNamedProperty(_name, _checkValid);
       }
 
-        /**
-         * @return {@link #name} (Name of the rule for internal references.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-         */
-        public IdType getNameElement() { 
-          if (this.name == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleComponent.name");
-            else if (Configuration.doAutoCreate())
-              this.name = new IdType(); // bb
-          return this.name;
-        }
+    }
 
-        public boolean hasNameElement() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        public boolean hasName() { 
-          return this.name != null && !this.name.isEmpty();
-        }
-
-        /**
-         * @param value {@link #name} (Name of the rule for internal references.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
-         */
-        public StructureMapGroupRuleComponent setNameElement(IdType value) { 
-          this.name = value;
-          return this;
-        }
-
-        /**
-         * @return Name of the rule for internal references.
-         */
-        public String getName() { 
-          return this.name == null ? null : this.name.getValue();
-        }
-
-        /**
-         * @param value Name of the rule for internal references.
-         */
-        public StructureMapGroupRuleComponent setName(String value) { 
-          if (Utilities.noString(value))
-            this.name = null;
-          else {
-            if (this.name == null)
-              this.name = new IdType();
-            this.name.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #source} (Source inputs to the mapping.)
-         */
-        public List<StructureMapGroupRuleSourceComponent> getSourceList() { 
-          if (this.sourceList == null)
-            this.sourceList = new ArrayList<StructureMapGroupRuleSourceComponent>();
-          return this.sourceList;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public StructureMapGroupRuleComponent setSourceList(List<StructureMapGroupRuleSourceComponent> theSource) { 
-          this.sourceList = theSource;
-          return this;
-        }
-
-        public boolean hasSource() { 
-          if (this.sourceList == null)
-            return false;
-          for (StructureMapGroupRuleSourceComponent item : this.sourceList)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public StructureMapGroupRuleSourceComponent addSource() { //3a
-          StructureMapGroupRuleSourceComponent t = new StructureMapGroupRuleSourceComponent();
-          if (this.sourceList == null)
-            this.sourceList = new ArrayList<StructureMapGroupRuleSourceComponent>();
-          this.sourceList.add(t);
-          return t;
-        }
-
-        public StructureMapGroupRuleComponent addSource(StructureMapGroupRuleSourceComponent t) { //3b
-          if (t == null)
-            return this;
-          if (this.sourceList == null)
-            this.sourceList = new ArrayList<StructureMapGroupRuleSourceComponent>();
-          this.sourceList.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #source}, creating it if it does not already exist {3}
-         */
-        public StructureMapGroupRuleSourceComponent getSourceFirstRep() { 
-          if (getSourceList().isEmpty()) {
-            addSource();
-          }
-          return getSourceList().get(0);
-        }
-
-        /**
-         * @return {@link #target} (Content to create because of this mapping rule.)
-         */
-        public List<StructureMapGroupRuleTargetComponent> getTargetList() { 
-          if (this.targetList == null)
-            this.targetList = new ArrayList<StructureMapGroupRuleTargetComponent>();
-          return this.targetList;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public StructureMapGroupRuleComponent setTargetList(List<StructureMapGroupRuleTargetComponent> theTarget) { 
-          this.targetList = theTarget;
-          return this;
-        }
-
-        public boolean hasTarget() { 
-          if (this.targetList == null)
-            return false;
-          for (StructureMapGroupRuleTargetComponent item : this.targetList)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public StructureMapGroupRuleTargetComponent addTarget() { //3a
-          StructureMapGroupRuleTargetComponent t = new StructureMapGroupRuleTargetComponent();
-          if (this.targetList == null)
-            this.targetList = new ArrayList<StructureMapGroupRuleTargetComponent>();
-          this.targetList.add(t);
-          return t;
-        }
-
-        public StructureMapGroupRuleComponent addTarget(StructureMapGroupRuleTargetComponent t) { //3b
-          if (t == null)
-            return this;
-          if (this.targetList == null)
-            this.targetList = new ArrayList<StructureMapGroupRuleTargetComponent>();
-          this.targetList.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #target}, creating it if it does not already exist {3}
-         */
-        public StructureMapGroupRuleTargetComponent getTargetFirstRep() { 
-          if (getTargetList().isEmpty()) {
-            addTarget();
-          }
-          return getTargetList().get(0);
-        }
-
-        /**
-         * @return {@link #rule} (Rules contained in this rule.)
-         */
-        public List<StructureMapGroupRuleComponent> getRuleList() { 
-          if (this.ruleList == null)
-            this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
-          return this.ruleList;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public StructureMapGroupRuleComponent setRuleList(List<StructureMapGroupRuleComponent> theRule) { 
-          this.ruleList = theRule;
-          return this;
-        }
-
-        public boolean hasRule() { 
-          if (this.ruleList == null)
-            return false;
-          for (StructureMapGroupRuleComponent item : this.ruleList)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public StructureMapGroupRuleComponent addRule() { //3a
-          StructureMapGroupRuleComponent t = new StructureMapGroupRuleComponent();
-          if (this.ruleList == null)
-            this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
-          this.ruleList.add(t);
-          return t;
-        }
-
-        public StructureMapGroupRuleComponent addRule(StructureMapGroupRuleComponent t) { //3b
-          if (t == null)
-            return this;
-          if (this.ruleList == null)
-            this.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
-          this.ruleList.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #rule}, creating it if it does not already exist {3}
-         */
-        public StructureMapGroupRuleComponent getRuleFirstRep() { 
-          if (getRuleList().isEmpty()) {
-            addRule();
-          }
-          return getRuleList().get(0);
-        }
-
-        /**
-         * @return {@link #dependent} (Which other rules to apply in the context of this rule.)
-         */
-        public List<StructureMapGroupRuleDependentComponent> getDependentList() { 
-          if (this.dependentList == null)
-            this.dependentList = new ArrayList<StructureMapGroupRuleDependentComponent>();
-          return this.dependentList;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public StructureMapGroupRuleComponent setDependentList(List<StructureMapGroupRuleDependentComponent> theDependent) { 
-          this.dependentList = theDependent;
-          return this;
-        }
-
-        public boolean hasDependent() { 
-          if (this.dependentList == null)
-            return false;
-          for (StructureMapGroupRuleDependentComponent item : this.dependentList)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public StructureMapGroupRuleDependentComponent addDependent() { //3a
-          StructureMapGroupRuleDependentComponent t = new StructureMapGroupRuleDependentComponent();
-          if (this.dependentList == null)
-            this.dependentList = new ArrayList<StructureMapGroupRuleDependentComponent>();
-          this.dependentList.add(t);
-          return t;
-        }
-
-        public StructureMapGroupRuleComponent addDependent(StructureMapGroupRuleDependentComponent t) { //3b
-          if (t == null)
-            return this;
-          if (this.dependentList == null)
-            this.dependentList = new ArrayList<StructureMapGroupRuleDependentComponent>();
-          this.dependentList.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #dependent}, creating it if it does not already exist {3}
-         */
-        public StructureMapGroupRuleDependentComponent getDependentFirstRep() { 
-          if (getDependentList().isEmpty()) {
-            addDependent();
-          }
-          return getDependentList().get(0);
-        }
-
-        /**
-         * @return {@link #documentation} (Documentation for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-         */
-        public StringType getDocumentationElement() { 
-          if (this.documentation == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleComponent.documentation");
-            else if (Configuration.doAutoCreate())
-              this.documentation = new StringType(); // bb
-          return this.documentation;
-        }
-
-        public boolean hasDocumentationElement() { 
-          return this.documentation != null && !this.documentation.isEmpty();
-        }
-
-        public boolean hasDocumentation() { 
-          return this.documentation != null && !this.documentation.isEmpty();
-        }
-
-        /**
-         * @param value {@link #documentation} (Documentation for this instance of data.). This is the underlying object with id, value and extensions. The accessor "getDocumentation" gives direct access to the value
-         */
-        public StructureMapGroupRuleComponent setDocumentationElement(StringType value) { 
-          this.documentation = value;
-          return this;
-        }
-
-        /**
-         * @return Documentation for this instance of data.
-         */
-        public String getDocumentation() { 
-          return this.documentation == null ? null : this.documentation.getValue();
-        }
-
-        /**
-         * @param value Documentation for this instance of data.
-         */
-        public StructureMapGroupRuleComponent setDocumentation(String value) { 
-          if (Utilities.noString(value))
-            this.documentation = null;
-          else {
-            if (this.documentation == null)
-              this.documentation = new StringType();
-            this.documentation.setValue(value);
-          }
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("name", "id", "Name of the rule for internal references.", 0, 1, name));
-          children.add(new Property("source", "", "Source inputs to the mapping.", 0, java.lang.Integer.MAX_VALUE, sourceList));
-          children.add(new Property("target", "", "Content to create because of this mapping rule.", 0, java.lang.Integer.MAX_VALUE, targetList));
-          children.add(new Property("rule", "@StructureMap.group.rule", "Rules contained in this rule.", 0, java.lang.Integer.MAX_VALUE, ruleList));
-          children.add(new Property("dependent", "", "Which other rules to apply in the context of this rule.", 0, java.lang.Integer.MAX_VALUE, dependentList));
-          children.add(new Property("documentation", "string", "Documentation for this instance of data.", 0, 1, documentation));
-        }
-
-        @Override
-        public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
-          switch (_name) {
-          case "name":  return new Property("name", "id", "Name of the rule for internal references.", 0, 1, name);
-          case "source":  return new Property("source", "", "Source inputs to the mapping.", 0, java.lang.Integer.MAX_VALUE, sourceList);
-          case "target":  return new Property("target", "", "Content to create because of this mapping rule.", 0, java.lang.Integer.MAX_VALUE, targetList);
-          case "rule":  return new Property("rule", "@StructureMap.group.rule", "Rules contained in this rule.", 0, java.lang.Integer.MAX_VALUE, ruleList);
-          case "dependent":  return new Property("dependent", "", "Which other rules to apply in the context of this rule.", 0, java.lang.Integer.MAX_VALUE, dependentList);
-          case "documentation":  return new Property("documentation", "string", "Documentation for this instance of data.", 0, 1, documentation);
-          default: return super.getNamedProperty(_name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
-        switch (name) {
-        case "name": return this.name == null ? new Base[0] : new Base[] {this.name}; // IdType
-        case "source": return this.sourceList == null ? new Base[0] : this.sourceList.toArray(new Base[this.sourceList.size()]); // StructureMapGroupRuleSourceComponent
-        case "target": return this.targetList == null ? new Base[0] : this.targetList.toArray(new Base[this.targetList.size()]); // StructureMapGroupRuleTargetComponent
-        case "rule": return this.ruleList == null ? new Base[0] : this.ruleList.toArray(new Base[this.ruleList.size()]); // StructureMapGroupRuleComponent
-        case "dependent": return this.dependentList == null ? new Base[0] : this.dependentList.toArray(new Base[this.dependentList.size()]); // StructureMapGroupRuleDependentComponent
-        case "documentation": return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // StringType
-        default: return super.getNamedValue(name, checkValid);
-        }
-
+    @Override
+    public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
+      switch (name) {
+        case "name":
+          return this.name == null ? new Base[0] : new Base[]{this.name}; // IdType
+        case "source":
+          return this.sourceList == null ? new Base[0] : this.sourceList.toArray(new Base[this.sourceList.size()]); // StructureMapGroupRuleSourceComponent
+        case "target":
+          return this.targetList == null ? new Base[0] : this.targetList.toArray(new Base[this.targetList.size()]); // StructureMapGroupRuleTargetComponent
+        case "rule":
+          return this.ruleList == null ? new Base[0] : this.ruleList.toArray(new Base[this.ruleList.size()]); // StructureMapGroupRuleComponent
+        case "dependent":
+          return this.dependentList == null ? new Base[0] : this.dependentList.toArray(new Base[this.dependentList.size()]); // StructureMapGroupRuleDependentComponent
+        case "documentation":
+          return this.documentation == null ? new Base[0] : new Base[]{this.documentation}; // StringType
+        default:
+          return super.getNamedValue(name, checkValid);
       }
 
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("name")) {
-          this.name = TypeConvertor.castToId(value); // IdType
-        } else if (name.equals("source")) {
-          this.getSourceList().add((StructureMapGroupRuleSourceComponent) value); // StructureMapGroupRuleSourceComponent
-        } else if (name.equals("target")) {
-          this.getTargetList().add((StructureMapGroupRuleTargetComponent) value); // StructureMapGroupRuleTargetComponent
-        } else if (name.equals("rule")) {
-          this.getRuleList().add((StructureMapGroupRuleComponent) value); // StructureMapGroupRuleComponent
-        } else if (name.equals("dependent")) {
-          this.getDependentList().add((StructureMapGroupRuleDependentComponent) value); // StructureMapGroupRuleDependentComponent
-        } else if (name.equals("documentation")) {
-          this.documentation = TypeConvertor.castToString(value); // StringType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
+    }
 
-      @Override
-      public void removeChild(String name, Base value) throws FHIRException {
-        switch (name) {
+    @Override
+    public Base setProperty(String name, Base value) throws FHIRException {
+      if (name.equals("name")) {
+        this.name = TypeConvertor.castToId(value); // IdType
+      } else if (name.equals("source")) {
+        this.getSourceList().add((StructureMapGroupRuleSourceComponent) value); // StructureMapGroupRuleSourceComponent
+      } else if (name.equals("target")) {
+        this.getTargetList().add((StructureMapGroupRuleTargetComponent) value); // StructureMapGroupRuleTargetComponent
+      } else if (name.equals("rule")) {
+        this.getRuleList().add((StructureMapGroupRuleComponent) value); // StructureMapGroupRuleComponent
+      } else if (name.equals("dependent")) {
+        this.getDependentList().add((StructureMapGroupRuleDependentComponent) value); // StructureMapGroupRuleDependentComponent
+      } else if (name.equals("documentation")) {
+        this.documentation = TypeConvertor.castToString(value); // StringType
+      } else
+        return super.setProperty(name, value);
+      return value;
+    }
+
+    @Override
+    public void removeChild(String name, Base value) throws FHIRException {
+      switch (name) {
         case "name":
           if (value == null || value == this.name) {
             this.name = null;
@@ -3076,850 +3368,879 @@ public class StructureMap extends CanonicalResource {
           return;
         default:
           super.removeChild(name, value);
-        }
       }
+    }
 
-      @Override
-      public Base makeProperty(String name) throws FHIRException {
-        switch (name) {
-        case "name":  return getNameElement();
-        case "source":  return addSource(); 
-        case "target":  return addTarget(); 
-        case "rule":  return addRule(); 
-        case "dependent":  return addDependent(); 
-        case "documentation":  return getDocumentationElement();
-        default: return super.makeProperty(name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("name")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.name");
-        }
-        else if (name.equals("source")) {
-          throw new FHIRException("Cannot call addChild on an abstract type StructureMap.group.rule.source");
-        }
-        else if (name.equals("target")) {
-          throw new FHIRException("Cannot call addChild on an abstract type StructureMap.group.rule.target");
-        }
-        else if (name.equals("rule")) {
+    @Override
+    public Base makeProperty(String name) throws FHIRException {
+      switch (name) {
+        case "name":
+          return getNameElement();
+        case "source":
+          return addSource();
+        case "target":
+          return addTarget();
+        case "rule":
           return addRule();
-        }
-        else if (name.equals("dependent")) {
-          throw new FHIRException("Cannot call addChild on an abstract type StructureMap.group.rule.dependent");
-        }
-        else if (name.equals("documentation")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.documentation");
-        }
-        else
-          return super.addChild(name);
+        case "dependent":
+          return addDependent();
+        case "documentation":
+          return getDocumentationElement();
+        default:
+          return super.makeProperty(name);
       }
 
-      public StructureMapGroupRuleComponent copy(EnumSet<CopyObjectOptions> options) {
-        StructureMapGroupRuleComponent dst = new StructureMapGroupRuleComponent(this.modelContext);
-        copyValues(dst, options);
-        return dst;
-      }
+    }
 
-      public void copyValues(StructureMapGroupRuleComponent dst, EnumSet<CopyObjectOptions> options) {
-        super.copyValues(dst, options);
-        dst.name = name == null ? null : name.copy(options);
-        if (sourceList != null) {
-          dst.sourceList = new ArrayList<StructureMapGroupRuleSourceComponent>();
-          for (StructureMapGroupRuleSourceComponent i : sourceList)
-            dst.sourceList.add(i.copy(options));
-        };
-        if (targetList != null) {
-          dst.targetList = new ArrayList<StructureMapGroupRuleTargetComponent>();
-          for (StructureMapGroupRuleTargetComponent i : targetList)
-            dst.targetList.add(i.copy(options));
-        };
-        if (ruleList != null) {
-          dst.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
-          for (StructureMapGroupRuleComponent i : ruleList)
-            dst.ruleList.add(i.copy(options));
-        };
-        if (dependentList != null) {
-          dst.dependentList = new ArrayList<StructureMapGroupRuleDependentComponent>();
-          for (StructureMapGroupRuleDependentComponent i : dependentList)
-            dst.dependentList.add(i.copy(options));
-        };
-        dst.documentation = documentation == null ? null : documentation.copy(options);
-      }
+    @Override
+    public Base addChild(String name) throws FHIRException {
+      if (name.equals("name")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.name");
+      } else if (name.equals("source")) {
+        throw new FHIRException("Cannot call addChild on an abstract type StructureMap.group.rule.source");
+      } else if (name.equals("target")) {
+        throw new FHIRException("Cannot call addChild on an abstract type StructureMap.group.rule.target");
+      } else if (name.equals("rule")) {
+        return addRule();
+      } else if (name.equals("dependent")) {
+        throw new FHIRException("Cannot call addChild on an abstract type StructureMap.group.rule.dependent");
+      } else if (name.equals("documentation")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.documentation");
+      } else
+        return super.addChild(name);
+    }
 
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof StructureMapGroupRuleComponent))
-          return false;
-        StructureMapGroupRuleComponent o = (StructureMapGroupRuleComponent) other_;
-        return compareDeep(name, o.name, true) && compareDeep(sourceList, o.sourceList, true) && compareDeep(targetList, o.targetList, true)
-           && compareDeep(ruleList, o.ruleList, true) && compareDeep(dependentList, o.dependentList, true)
-           && compareDeep(documentation, o.documentation, true);
-      }
+    public StructureMapGroupRuleComponent copy(EnumSet<CopyObjectOptions> options) {
+      StructureMapGroupRuleComponent dst = new StructureMapGroupRuleComponent(this.modelContext);
+      copyValues(dst, options);
+      return dst;
+    }
 
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof StructureMapGroupRuleComponent))
-          return false;
-        StructureMapGroupRuleComponent o = (StructureMapGroupRuleComponent) other_;
-        return compareValues(name, o.name, true) && compareValues(documentation, o.documentation, true);
+    public void copyValues(StructureMapGroupRuleComponent dst, EnumSet<CopyObjectOptions> options) {
+      super.copyValues(dst, options);
+      dst.name = name == null ? null : name.copy(options);
+      if (sourceList != null) {
+        dst.sourceList = new ArrayList<StructureMapGroupRuleSourceComponent>();
+        for (StructureMapGroupRuleSourceComponent i : sourceList)
+          dst.sourceList.add(i.copy(options));
       }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, sourceList, targetList
-          , ruleList, dependentList, documentation);
+      ;
+      if (targetList != null) {
+        dst.targetList = new ArrayList<StructureMapGroupRuleTargetComponent>();
+        for (StructureMapGroupRuleTargetComponent i : targetList)
+          dst.targetList.add(i.copy(options));
       }
+      ;
+      if (ruleList != null) {
+        dst.ruleList = new ArrayList<StructureMapGroupRuleComponent>();
+        for (StructureMapGroupRuleComponent i : ruleList)
+          dst.ruleList.add(i.copy(options));
+      }
+      ;
+      if (dependentList != null) {
+        dst.dependentList = new ArrayList<StructureMapGroupRuleDependentComponent>();
+        for (StructureMapGroupRuleDependentComponent i : dependentList)
+          dst.dependentList.add(i.copy(options));
+      }
+      ;
+      dst.documentation = documentation == null ? null : documentation.copy(options);
+    }
 
-  public String fhirType() {
-    return "StructureMap.group.rule";
+    @Override
+    public boolean equalsDeep(Base other_) {
+      if (!super.equalsDeep(other_))
+        return false;
+      if (!(other_ instanceof StructureMapGroupRuleComponent))
+        return false;
+      StructureMapGroupRuleComponent o = (StructureMapGroupRuleComponent) other_;
+      return compareDeep(name, o.name, true) && compareDeep(sourceList, o.sourceList, true) && compareDeep(targetList, o.targetList, true)
+        && compareDeep(ruleList, o.ruleList, true) && compareDeep(dependentList, o.dependentList, true)
+        && compareDeep(documentation, o.documentation, true);
+    }
+
+    @Override
+    public boolean equalsShallow(Base other_) {
+      if (!super.equalsShallow(other_))
+        return false;
+      if (!(other_ instanceof StructureMapGroupRuleComponent))
+        return false;
+      StructureMapGroupRuleComponent o = (StructureMapGroupRuleComponent) other_;
+      return compareValues(name, o.name, true) && compareValues(documentation, o.documentation, true);
+    }
+
+    public boolean isEmpty() {
+      return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, sourceList, targetList
+        , ruleList, dependentList, documentation);
+    }
+
+    public String fhirType() {
+      return "StructureMap.group.rule";
+
+    }
 
   }
 
-  }
+  @Block()
+  public static class StructureMapGroupRuleSourceComponent extends BackboneElement {
+    /**
+     * Type or variable this rule applies to.
+     */
+    @Child(name = "context", type = {IdType.class}, order = 1, min = 1, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Type or variable this rule applies to")
+    protected IdType context;
 
-    @Block()
-    public static class StructureMapGroupRuleSourceComponent extends BackboneElement {
-        /**
-         * Type or variable this rule applies to.
-         */
-        @Child(name = "context", type = {IdType.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Type or variable this rule applies to")
-        protected IdType context;
+    /**
+     * Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.
+     */
+    @Child(name = "min", type = {UnsignedIntType.class}, order = 2, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Specified minimum cardinality")
+    protected UnsignedIntType min;
 
-        /**
-         * Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.
-         */
-        @Child(name = "min", type = {UnsignedIntType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Specified minimum cardinality")
-        protected UnsignedIntType min;
+    /**
+     * Specified maximum cardinality for the element - a number or a "*". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).
+     */
+    @Child(name = "max", type = {StringType.class}, order = 3, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Specified maximum cardinality (number or *)")
+    protected StringType max;
 
-        /**
-         * Specified maximum cardinality for the element - a number or a "*". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).
-         */
-        @Child(name = "max", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Specified maximum cardinality (number or *)")
-        protected StringType max;
+    /**
+     * Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.
+     */
+    @Child(name = "type", type = {StringType.class}, order = 4, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Rule only applies if source has this type")
+    protected StringType type;
 
-        /**
-         * Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.
-         */
-        @Child(name = "type", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Rule only applies if source has this type")
-        protected StringType type;
+    /**
+     * A FHIRPath expression that returns value(s) to use if the source object has no value.
+     */
+    @Child(name = "defaultValue", type = {StringType.class}, order = 5, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Default value FHIRPath expression")
+    protected StringType defaultValue;
 
-        /**
-         * A FHIRPath expression that returns value(s) to use if the source object has no value.
-         */
-        @Child(name = "defaultValue", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Default value FHIRPath expression")
-        protected StringType defaultValue;
+    /**
+     * Optional field for this source.
+     */
+    @Child(name = "element", type = {StringType.class}, order = 6, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
+    @Description(shortDefinition = "Optional field for this source")
+    protected List<StringType> elementList;
 
-        /**
-         * Optional field for this source.
-         */
-        @Child(name = "element", type = {StringType.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Optional field for this source")
-        protected List<StringType> elementList;
+    /**
+     * How to handle the list mode for this element.
+     */
+    @Child(name = "listMode", type = {CodeType.class}, order = 7, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "first | not_first | last | not_last | only_one")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/map-source-list-mode")
+    protected Enumeration<StructureMapSourceListMode> listMode;
 
-        /**
-         * How to handle the list mode for this element.
-         */
-        @Child(name = "listMode", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="first | not_first | last | not_last | only_one")
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/map-source-list-mode")
-        protected Enumeration<StructureMapSourceListMode> listMode;
+    /**
+     * Named context for field, if a field is specified.
+     */
+    @Child(name = "variable", type = {IdType.class}, order = 8, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Named context for field, if a field is specified")
+    protected IdType variable;
 
-        /**
-         * Named context for field, if a field is specified.
-         */
-        @Child(name = "variable", type = {IdType.class}, order=8, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Named context for field, if a field is specified")
-        protected IdType variable;
+    /**
+     * FHIRPath expression  - must be true or the rule does not apply.
+     */
+    @Child(name = "condition", type = {StringType.class}, order = 9, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "FHIRPath expression  - must be true or the rule does not apply")
+    protected StringType condition;
 
-        /**
-         * FHIRPath expression  - must be true or the rule does not apply.
-         */
-        @Child(name = "condition", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="FHIRPath expression  - must be true or the rule does not apply")
-        protected StringType condition;
+    /**
+     * FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.
+     */
+    @Child(name = "check", type = {StringType.class}, order = 10, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "FHIRPath expression  - must be true or the mapping engine throws an error instead of completing")
+    protected StringType check;
 
-        /**
-         * FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.
-         */
-        @Child(name = "check", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="FHIRPath expression  - must be true or the mapping engine throws an error instead of completing")
-        protected StringType check;
+    /**
+     * A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.
+     */
+    @Child(name = "logMessage", type = {StringType.class}, order = 11, min = 0, max = 1, modifier = false, summary = true)
+    @Description(shortDefinition = "Message to put in log if source exists (FHIRPath)")
+    protected StringType logMessage;
 
-        /**
-         * A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.
-         */
-        @Child(name = "logMessage", type = {StringType.class}, order=11, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Message to put in log if source exists (FHIRPath)")
-        protected StringType logMessage;
-
-        private static final long serialVersionUID = 2049960395L;
+    private static final long serialVersionUID = 2049960395L;
 
     /**
      * Constructor
      */
-      public StructureMapGroupRuleSourceComponent() {
-        super();
-      }
+    public StructureMapGroupRuleSourceComponent() {
+      super();
+    }
 
     /**
      * Constructor
      *
      * @param context the model context this object belongs to - all objects in a tree must share the same context (see Base.modelContext)
      */
-      public StructureMapGroupRuleSourceComponent(IModelContext modelContext) {
-        super();
-        this.modelContext = modelContext;
-      }
+    public StructureMapGroupRuleSourceComponent(IModelContext modelContext) {
+      super();
+      this.modelContext = modelContext;
+    }
 
     /**
      * Constructor
      */
-      public StructureMapGroupRuleSourceComponent(IModelContext modelContext, String context) {
-        super();
-        this.modelContext = modelContext;
-        this.setContext(context);
+    public StructureMapGroupRuleSourceComponent(IModelContext modelContext, String context) {
+      super();
+      this.modelContext = modelContext;
+      this.setContext(context);
+    }
+
+    /**
+     * @return {@link #context} (Type or variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
+     */
+    public IdType getContextElement() {
+      if (this.context == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.context");
+        else if (Configuration.doAutoCreate())
+          this.context = new IdType(); // bb
+      return this.context;
+    }
+
+    public boolean hasContextElement() {
+      return this.context != null && !this.context.isEmpty();
+    }
+
+    public boolean hasContext() {
+      return this.context != null && !this.context.isEmpty();
+    }
+
+    /**
+     * @param value {@link #context} (Type or variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
+     */
+    public StructureMapGroupRuleSourceComponent setContextElement(IdType value) {
+      this.context = value;
+      return this;
+    }
+
+    /**
+     * @return Type or variable this rule applies to.
+     */
+    public String getContext() {
+      return this.context == null ? null : this.context.getValue();
+    }
+
+    /**
+     * @param value Type or variable this rule applies to.
+     */
+    public StructureMapGroupRuleSourceComponent setContext(String value) {
+      if (this.context == null)
+        this.context = new IdType();
+      this.context.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #min} (Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.). This is the underlying object with id, value and extensions. The accessor "getMin" gives direct access to the value
+     */
+    public UnsignedIntType getMinElement() {
+      if (this.min == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.min");
+        else if (Configuration.doAutoCreate())
+          this.min = new UnsignedIntType(); // bb
+      return this.min;
+    }
+
+    public boolean hasMinElement() {
+      return this.min != null && !this.min.isEmpty();
+    }
+
+    public boolean hasMin() {
+      return this.min != null && !this.min.isEmpty();
+    }
+
+    /**
+     * @param value {@link #min} (Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.). This is the underlying object with id, value and extensions. The accessor "getMin" gives direct access to the value
+     */
+    public StructureMapGroupRuleSourceComponent setMinElement(UnsignedIntType value) {
+      this.min = value;
+      return this;
+    }
+
+    /**
+     * @return Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.
+     */
+    public int getMin() {
+      return this.min == null || this.min.isEmpty() ? 0 : this.min.getValue();
+    }
+
+    /**
+     * @param value Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.
+     */
+    public StructureMapGroupRuleSourceComponent setMin(int value) {
+      if (this.min == null)
+        this.min = new UnsignedIntType();
+      this.min.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #max} (Specified maximum cardinality for the element - a number or a "*". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).). This is the underlying object with id, value and extensions. The accessor "getMax" gives direct access to the value
+     */
+    public StringType getMaxElement() {
+      if (this.max == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.max");
+        else if (Configuration.doAutoCreate())
+          this.max = new StringType(); // bb
+      return this.max;
+    }
+
+    public boolean hasMaxElement() {
+      return this.max != null && !this.max.isEmpty();
+    }
+
+    public boolean hasMax() {
+      return this.max != null && !this.max.isEmpty();
+    }
+
+    /**
+     * @param value {@link #max} (Specified maximum cardinality for the element - a number or a "*". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).). This is the underlying object with id, value and extensions. The accessor "getMax" gives direct access to the value
+     */
+    public StructureMapGroupRuleSourceComponent setMaxElement(StringType value) {
+      this.max = value;
+      return this;
+    }
+
+    /**
+     * @return Specified maximum cardinality for the element - a number or a "*". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).
+     */
+    public String getMax() {
+      return this.max == null ? null : this.max.getValue();
+    }
+
+    /**
+     * @param value Specified maximum cardinality for the element - a number or a "*". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).
+     */
+    public StructureMapGroupRuleSourceComponent setMax(String value) {
+      if (Utilities.noString(value))
+        this.max = null;
+      else {
+        if (this.max == null)
+          this.max = new StringType();
+        this.max.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #type} (Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+     */
+    public StringType getTypeElement() {
+      if (this.type == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.type");
+        else if (Configuration.doAutoCreate())
+          this.type = new StringType(); // bb
+      return this.type;
+    }
+
+    public boolean hasTypeElement() {
+      return this.type != null && !this.type.isEmpty();
+    }
+
+    public boolean hasType() {
+      return this.type != null && !this.type.isEmpty();
+    }
+
+    /**
+     * @param value {@link #type} (Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+     */
+    public StructureMapGroupRuleSourceComponent setTypeElement(StringType value) {
+      this.type = value;
+      return this;
+    }
+
+    /**
+     * @return Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.
+     */
+    public String getType() {
+      return this.type == null ? null : this.type.getValue();
+    }
+
+    /**
+     * @param value Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.
+     */
+    public StructureMapGroupRuleSourceComponent setType(String value) {
+      if (Utilities.noString(value))
+        this.type = null;
+      else {
+        if (this.type == null)
+          this.type = new StringType();
+        this.type.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #defaultValue} (A FHIRPath expression that returns value(s) to use if the source object has no value.). This is the underlying object with id, value and extensions. The accessor "getDefaultValue" gives direct access to the value
+     */
+    public StringType getDefaultValueElement() {
+      if (this.defaultValue == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.defaultValue");
+        else if (Configuration.doAutoCreate())
+          this.defaultValue = new StringType(); // bb
+      return this.defaultValue;
+    }
+
+    public boolean hasDefaultValueElement() {
+      return this.defaultValue != null && !this.defaultValue.isEmpty();
+    }
+
+    public boolean hasDefaultValue() {
+      return this.defaultValue != null && !this.defaultValue.isEmpty();
+    }
+
+    /**
+     * @param value {@link #defaultValue} (A FHIRPath expression that returns value(s) to use if the source object has no value.). This is the underlying object with id, value and extensions. The accessor "getDefaultValue" gives direct access to the value
+     */
+    public StructureMapGroupRuleSourceComponent setDefaultValueElement(StringType value) {
+      this.defaultValue = value;
+      return this;
+    }
+
+    /**
+     * @return A FHIRPath expression that returns value(s) to use if the source object has no value.
+     */
+    public String getDefaultValue() {
+      return this.defaultValue == null ? null : this.defaultValue.getValue();
+    }
+
+    /**
+     * @param value A FHIRPath expression that returns value(s) to use if the source object has no value.
+     */
+    public StructureMapGroupRuleSourceComponent setDefaultValue(String value) {
+      if (Utilities.noString(value))
+        this.defaultValue = null;
+      else {
+        if (this.defaultValue == null)
+          this.defaultValue = new StringType();
+        this.defaultValue.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #element} (Optional field for this source.)
+     */
+    public List<StringType> getElementList() {
+      if (this.elementList == null)
+        this.elementList = new ArrayList<StringType>();
+      return this.elementList;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public StructureMapGroupRuleSourceComponent setElementList(List<StringType> theElement) {
+      this.elementList = theElement;
+      return this;
+    }
+
+    public boolean hasElement() {
+      if (this.elementList == null)
+        return false;
+      for (StringType item : this.elementList)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    /**
+     * @return {@link #element} (Optional field for this source.)
+     */
+    public StringType addElementElement() {//2
+      StringType t = new StringType();
+      if (this.elementList == null)
+        this.elementList = new ArrayList<StringType>();
+      this.elementList.add(t);
+      return t;
+    }
+
+    /**
+     * @param value {@link #element} (Optional field for this source.)
+     */
+    public StructureMapGroupRuleSourceComponent addElement(String value) { //1
+      StringType t = new StringType();
+      t.setValue(value);
+      if (this.elementList == null)
+        this.elementList = new ArrayList<StringType>();
+      this.elementList.add(t);
+      return this;
+    }
+
+    /**
+     * @param value {@link #element} (Optional field for this source.)
+     */
+    public boolean hasElement(String value) {
+      if (this.elementList == null)
+        return false;
+      for (StringType v : this.elementList)
+        if (v.getValue().equals(value)) // string
+          return true;
+      return false;
+    }
+
+    /**
+     * @return {@link #listMode} (How to handle the list mode for this element.). This is the underlying object with id, value and extensions. The accessor "getListMode" gives direct access to the value
+     */
+    public Enumeration<StructureMapSourceListMode> getListModeElement() {
+      if (this.listMode == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.listMode");
+        else if (Configuration.doAutoCreate())
+          this.listMode = new Enumeration<StructureMapSourceListMode>(new StructureMapSourceListModeEnumFactory()); // bb
+      return this.listMode;
+    }
+
+    public boolean hasListModeElement() {
+      return this.listMode != null && !this.listMode.isEmpty();
+    }
+
+    public boolean hasListMode() {
+      return this.listMode != null && !this.listMode.isEmpty();
+    }
+
+    /**
+     * @param value {@link #listMode} (How to handle the list mode for this element.). This is the underlying object with id, value and extensions. The accessor "getListMode" gives direct access to the value
+     */
+    public StructureMapGroupRuleSourceComponent setListModeElement(Enumeration<StructureMapSourceListMode> value) {
+      this.listMode = value;
+      return this;
+    }
+
+    /**
+     * @return How to handle the list mode for this element.
+     */
+    public StructureMapSourceListMode getListMode() {
+      return this.listMode == null ? null : this.listMode.getValue();
+    }
+
+    /**
+     * @param value How to handle the list mode for this element.
+     */
+    public StructureMapGroupRuleSourceComponent setListMode(StructureMapSourceListMode value) {
+      if (value == null)
+        this.listMode = null;
+      else {
+        if (this.listMode == null)
+          this.listMode = new Enumeration<StructureMapSourceListMode>(new StructureMapSourceListModeEnumFactory());
+        this.listMode.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #variable} (Named context for field, if a field is specified.). This is the underlying object with id, value and extensions. The accessor "getVariable" gives direct access to the value
+     */
+    public IdType getVariableElement() {
+      if (this.variable == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.variable");
+        else if (Configuration.doAutoCreate())
+          this.variable = new IdType(); // bb
+      return this.variable;
+    }
+
+    public boolean hasVariableElement() {
+      return this.variable != null && !this.variable.isEmpty();
+    }
+
+    public boolean hasVariable() {
+      return this.variable != null && !this.variable.isEmpty();
+    }
+
+    /**
+     * @param value {@link #variable} (Named context for field, if a field is specified.). This is the underlying object with id, value and extensions. The accessor "getVariable" gives direct access to the value
+     */
+    public StructureMapGroupRuleSourceComponent setVariableElement(IdType value) {
+      this.variable = value;
+      return this;
+    }
+
+    /**
+     * @return Named context for field, if a field is specified.
+     */
+    public String getVariable() {
+      return this.variable == null ? null : this.variable.getValue();
+    }
+
+    /**
+     * @param value Named context for field, if a field is specified.
+     */
+    public StructureMapGroupRuleSourceComponent setVariable(String value) {
+      if (Utilities.noString(value))
+        this.variable = null;
+      else {
+        if (this.variable == null)
+          this.variable = new IdType();
+        this.variable.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #condition} (FHIRPath expression  - must be true or the rule does not apply.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
+     */
+    public StringType getConditionElement() {
+      if (this.condition == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.condition");
+        else if (Configuration.doAutoCreate())
+          this.condition = new StringType(); // bb
+      return this.condition;
+    }
+
+    public boolean hasConditionElement() {
+      return this.condition != null && !this.condition.isEmpty();
+    }
+
+    public boolean hasCondition() {
+      return this.condition != null && !this.condition.isEmpty();
+    }
+
+    /**
+     * @param value {@link #condition} (FHIRPath expression  - must be true or the rule does not apply.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
+     */
+    public StructureMapGroupRuleSourceComponent setConditionElement(StringType value) {
+      this.condition = value;
+      return this;
+    }
+
+    /**
+     * @return FHIRPath expression  - must be true or the rule does not apply.
+     */
+    public String getCondition() {
+      return this.condition == null ? null : this.condition.getValue();
+    }
+
+    /**
+     * @param value FHIRPath expression  - must be true or the rule does not apply.
+     */
+    public StructureMapGroupRuleSourceComponent setCondition(String value) {
+      if (Utilities.noString(value))
+        this.condition = null;
+      else {
+        if (this.condition == null)
+          this.condition = new StringType();
+        this.condition.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #check} (FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.). This is the underlying object with id, value and extensions. The accessor "getCheck" gives direct access to the value
+     */
+    public StringType getCheckElement() {
+      if (this.check == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.check");
+        else if (Configuration.doAutoCreate())
+          this.check = new StringType(); // bb
+      return this.check;
+    }
+
+    public boolean hasCheckElement() {
+      return this.check != null && !this.check.isEmpty();
+    }
+
+    public boolean hasCheck() {
+      return this.check != null && !this.check.isEmpty();
+    }
+
+    /**
+     * @param value {@link #check} (FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.). This is the underlying object with id, value and extensions. The accessor "getCheck" gives direct access to the value
+     */
+    public StructureMapGroupRuleSourceComponent setCheckElement(StringType value) {
+      this.check = value;
+      return this;
+    }
+
+    /**
+     * @return FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.
+     */
+    public String getCheck() {
+      return this.check == null ? null : this.check.getValue();
+    }
+
+    /**
+     * @param value FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.
+     */
+    public StructureMapGroupRuleSourceComponent setCheck(String value) {
+      if (Utilities.noString(value))
+        this.check = null;
+      else {
+        if (this.check == null)
+          this.check = new StringType();
+        this.check.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #logMessage} (A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.). This is the underlying object with id, value and extensions. The accessor "getLogMessage" gives direct access to the value
+     */
+    public StringType getLogMessageElement() {
+      if (this.logMessage == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.logMessage");
+        else if (Configuration.doAutoCreate())
+          this.logMessage = new StringType(); // bb
+      return this.logMessage;
+    }
+
+    public boolean hasLogMessageElement() {
+      return this.logMessage != null && !this.logMessage.isEmpty();
+    }
+
+    public boolean hasLogMessage() {
+      return this.logMessage != null && !this.logMessage.isEmpty();
+    }
+
+    /**
+     * @param value {@link #logMessage} (A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.). This is the underlying object with id, value and extensions. The accessor "getLogMessage" gives direct access to the value
+     */
+    public StructureMapGroupRuleSourceComponent setLogMessageElement(StringType value) {
+      this.logMessage = value;
+      return this;
+    }
+
+    /**
+     * @return A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.
+     */
+    public String getLogMessage() {
+      return this.logMessage == null ? null : this.logMessage.getValue();
+    }
+
+    /**
+     * @param value A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.
+     */
+    public StructureMapGroupRuleSourceComponent setLogMessage(String value) {
+      if (Utilities.noString(value))
+        this.logMessage = null;
+      else {
+        if (this.logMessage == null)
+          this.logMessage = new StringType();
+        this.logMessage.setValue(value);
+      }
+      return this;
+    }
+
+    protected void listChildren(List<Property> children) {
+      super.listChildren(children);
+      children.add(new Property("context", "id", "Type or variable this rule applies to.", 0, 1, context));
+      children.add(new Property("min", "unsignedInt", "Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.", 0, 1, min));
+      children.add(new Property("max", "string", "Specified maximum cardinality for the element - a number or a \"*\". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).", 0, 1, max));
+      children.add(new Property("type", "string", "Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.", 0, 1, type));
+      children.add(new Property("defaultValue", "string", "A FHIRPath expression that returns value(s) to use if the source object has no value.", 0, 1, defaultValue));
+      children.add(new Property("element", "string", "Optional field for this source.", 0, java.lang.Integer.MAX_VALUE, elementList));
+      children.add(new Property("listMode", "code", "How to handle the list mode for this element.", 0, 1, listMode));
+      children.add(new Property("variable", "id", "Named context for field, if a field is specified.", 0, 1, variable));
+      children.add(new Property("condition", "string", "FHIRPath expression  - must be true or the rule does not apply.", 0, 1, condition));
+      children.add(new Property("check", "string", "FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.", 0, 1, check));
+      children.add(new Property("logMessage", "string", "A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.", 0, 1, logMessage));
+    }
+
+    @Override
+    public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
+      switch (_name) {
+        case "context":
+          return new Property("context", "id", "Type or variable this rule applies to.", 0, 1, context);
+        case "min":
+          return new Property("min", "unsignedInt", "Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.", 0, 1, min);
+        case "max":
+          return new Property("max", "string", "Specified maximum cardinality for the element - a number or a \"*\". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).", 0, 1, max);
+        case "type":
+          return new Property("type", "string", "Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.", 0, 1, type);
+        case "defaultValue":
+          return new Property("defaultValue", "string", "A FHIRPath expression that returns value(s) to use if the source object has no value.", 0, 1, defaultValue);
+        case "element":
+          return new Property("element", "string", "Optional field for this source.", 0, java.lang.Integer.MAX_VALUE, elementList);
+        case "listMode":
+          return new Property("listMode", "code", "How to handle the list mode for this element.", 0, 1, listMode);
+        case "variable":
+          return new Property("variable", "id", "Named context for field, if a field is specified.", 0, 1, variable);
+        case "condition":
+          return new Property("condition", "string", "FHIRPath expression  - must be true or the rule does not apply.", 0, 1, condition);
+        case "check":
+          return new Property("check", "string", "FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.", 0, 1, check);
+        case "logMessage":
+          return new Property("logMessage", "string", "A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.", 0, 1, logMessage);
+        default:
+          return super.getNamedProperty(_name, _checkValid);
       }
 
-        /**
-         * @return {@link #context} (Type or variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
-         */
-        public IdType getContextElement() { 
-          if (this.context == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.context");
-            else if (Configuration.doAutoCreate())
-              this.context = new IdType(); // bb
-          return this.context;
-        }
-
-        public boolean hasContextElement() { 
-          return this.context != null && !this.context.isEmpty();
-        }
-
-        public boolean hasContext() { 
-          return this.context != null && !this.context.isEmpty();
-        }
-
-        /**
-         * @param value {@link #context} (Type or variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
-         */
-        public StructureMapGroupRuleSourceComponent setContextElement(IdType value) { 
-          this.context = value;
-          return this;
-        }
-
-        /**
-         * @return Type or variable this rule applies to.
-         */
-        public String getContext() { 
-          return this.context == null ? null : this.context.getValue();
-        }
-
-        /**
-         * @param value Type or variable this rule applies to.
-         */
-        public StructureMapGroupRuleSourceComponent setContext(String value) { 
-            if (this.context == null)
-              this.context = new IdType();
-            this.context.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #min} (Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.). This is the underlying object with id, value and extensions. The accessor "getMin" gives direct access to the value
-         */
-        public UnsignedIntType getMinElement() { 
-          if (this.min == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.min");
-            else if (Configuration.doAutoCreate())
-              this.min = new UnsignedIntType(); // bb
-          return this.min;
-        }
-
-        public boolean hasMinElement() { 
-          return this.min != null && !this.min.isEmpty();
-        }
-
-        public boolean hasMin() { 
-          return this.min != null && !this.min.isEmpty();
-        }
-
-        /**
-         * @param value {@link #min} (Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.). This is the underlying object with id, value and extensions. The accessor "getMin" gives direct access to the value
-         */
-        public StructureMapGroupRuleSourceComponent setMinElement(UnsignedIntType value) { 
-          this.min = value;
-          return this;
-        }
-
-        /**
-         * @return Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.
-         */
-        public int getMin() { 
-          return this.min == null || this.min.isEmpty() ? 0 : this.min.getValue();
-        }
-
-        /**
-         * @param value Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.
-         */
-        public StructureMapGroupRuleSourceComponent setMin(int value) { 
-            if (this.min == null)
-              this.min = new UnsignedIntType();
-            this.min.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #max} (Specified maximum cardinality for the element - a number or a "*". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).). This is the underlying object with id, value and extensions. The accessor "getMax" gives direct access to the value
-         */
-        public StringType getMaxElement() { 
-          if (this.max == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.max");
-            else if (Configuration.doAutoCreate())
-              this.max = new StringType(); // bb
-          return this.max;
-        }
-
-        public boolean hasMaxElement() { 
-          return this.max != null && !this.max.isEmpty();
-        }
-
-        public boolean hasMax() { 
-          return this.max != null && !this.max.isEmpty();
-        }
-
-        /**
-         * @param value {@link #max} (Specified maximum cardinality for the element - a number or a "*". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).). This is the underlying object with id, value and extensions. The accessor "getMax" gives direct access to the value
-         */
-        public StructureMapGroupRuleSourceComponent setMaxElement(StringType value) { 
-          this.max = value;
-          return this;
-        }
-
-        /**
-         * @return Specified maximum cardinality for the element - a number or a "*". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).
-         */
-        public String getMax() { 
-          return this.max == null ? null : this.max.getValue();
-        }
-
-        /**
-         * @param value Specified maximum cardinality for the element - a number or a "*". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).
-         */
-        public StructureMapGroupRuleSourceComponent setMax(String value) { 
-          if (Utilities.noString(value))
-            this.max = null;
-          else {
-            if (this.max == null)
-              this.max = new StringType();
-            this.max.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #type} (Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
-         */
-        public StringType getTypeElement() { 
-          if (this.type == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.type");
-            else if (Configuration.doAutoCreate())
-              this.type = new StringType(); // bb
-          return this.type;
-        }
-
-        public boolean hasTypeElement() { 
-          return this.type != null && !this.type.isEmpty();
-        }
-
-        public boolean hasType() { 
-          return this.type != null && !this.type.isEmpty();
-        }
-
-        /**
-         * @param value {@link #type} (Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
-         */
-        public StructureMapGroupRuleSourceComponent setTypeElement(StringType value) { 
-          this.type = value;
-          return this;
-        }
-
-        /**
-         * @return Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.
-         */
-        public String getType() { 
-          return this.type == null ? null : this.type.getValue();
-        }
-
-        /**
-         * @param value Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.
-         */
-        public StructureMapGroupRuleSourceComponent setType(String value) { 
-          if (Utilities.noString(value))
-            this.type = null;
-          else {
-            if (this.type == null)
-              this.type = new StringType();
-            this.type.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #defaultValue} (A FHIRPath expression that returns value(s) to use if the source object has no value.). This is the underlying object with id, value and extensions. The accessor "getDefaultValue" gives direct access to the value
-         */
-        public StringType getDefaultValueElement() { 
-          if (this.defaultValue == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.defaultValue");
-            else if (Configuration.doAutoCreate())
-              this.defaultValue = new StringType(); // bb
-          return this.defaultValue;
-        }
-
-        public boolean hasDefaultValueElement() { 
-          return this.defaultValue != null && !this.defaultValue.isEmpty();
-        }
-
-        public boolean hasDefaultValue() { 
-          return this.defaultValue != null && !this.defaultValue.isEmpty();
-        }
-
-        /**
-         * @param value {@link #defaultValue} (A FHIRPath expression that returns value(s) to use if the source object has no value.). This is the underlying object with id, value and extensions. The accessor "getDefaultValue" gives direct access to the value
-         */
-        public StructureMapGroupRuleSourceComponent setDefaultValueElement(StringType value) { 
-          this.defaultValue = value;
-          return this;
-        }
-
-        /**
-         * @return A FHIRPath expression that returns value(s) to use if the source object has no value.
-         */
-        public String getDefaultValue() { 
-          return this.defaultValue == null ? null : this.defaultValue.getValue();
-        }
-
-        /**
-         * @param value A FHIRPath expression that returns value(s) to use if the source object has no value.
-         */
-        public StructureMapGroupRuleSourceComponent setDefaultValue(String value) { 
-          if (Utilities.noString(value))
-            this.defaultValue = null;
-          else {
-            if (this.defaultValue == null)
-              this.defaultValue = new StringType();
-            this.defaultValue.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #element} (Optional field for this source.)
-         */
-        public List<StringType> getElementList() { 
-          if (this.elementList == null)
-            this.elementList = new ArrayList<StringType>();
-          return this.elementList;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public StructureMapGroupRuleSourceComponent setElementList(List<StringType> theElement) { 
-          this.elementList = theElement;
-          return this;
-        }
-
-        public boolean hasElement() { 
-          if (this.elementList == null)
-            return false;
-          for (StringType item : this.elementList)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        /**
-         * @return {@link #element} (Optional field for this source.)
-         */
-        public StringType addElementElement() {//2 
-          StringType t = new StringType();
-          if (this.elementList == null)
-            this.elementList = new ArrayList<StringType>();
-          this.elementList.add(t);
-          return t;
-        }
-
-        /**
-         * @param value {@link #element} (Optional field for this source.)
-         */
-        public StructureMapGroupRuleSourceComponent addElement(String value) { //1
-          StringType t = new StringType();
-          t.setValue(value);
-          if (this.elementList == null)
-            this.elementList = new ArrayList<StringType>();
-          this.elementList.add(t);
-          return this;
-        }
-
-        /**
-         * @param value {@link #element} (Optional field for this source.)
-         */
-        public boolean hasElement(String value) { 
-          if (this.elementList == null)
-            return false;
-          for (StringType v : this.elementList)
-            if (v.getValue().equals(value)) // string
-              return true;
-          return false;
-        }
-
-        /**
-         * @return {@link #listMode} (How to handle the list mode for this element.). This is the underlying object with id, value and extensions. The accessor "getListMode" gives direct access to the value
-         */
-        public Enumeration<StructureMapSourceListMode> getListModeElement() { 
-          if (this.listMode == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.listMode");
-            else if (Configuration.doAutoCreate())
-              this.listMode = new Enumeration<StructureMapSourceListMode>(new StructureMapSourceListModeEnumFactory()); // bb
-          return this.listMode;
-        }
-
-        public boolean hasListModeElement() { 
-          return this.listMode != null && !this.listMode.isEmpty();
-        }
-
-        public boolean hasListMode() { 
-          return this.listMode != null && !this.listMode.isEmpty();
-        }
-
-        /**
-         * @param value {@link #listMode} (How to handle the list mode for this element.). This is the underlying object with id, value and extensions. The accessor "getListMode" gives direct access to the value
-         */
-        public StructureMapGroupRuleSourceComponent setListModeElement(Enumeration<StructureMapSourceListMode> value) { 
-          this.listMode = value;
-          return this;
-        }
-
-        /**
-         * @return How to handle the list mode for this element.
-         */
-        public StructureMapSourceListMode getListMode() { 
-          return this.listMode == null ? null : this.listMode.getValue();
-        }
-
-        /**
-         * @param value How to handle the list mode for this element.
-         */
-        public StructureMapGroupRuleSourceComponent setListMode(StructureMapSourceListMode value) { 
-          if (value == null)
-            this.listMode = null;
-          else {
-            if (this.listMode == null)
-              this.listMode = new Enumeration<StructureMapSourceListMode>(new StructureMapSourceListModeEnumFactory());
-            this.listMode.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #variable} (Named context for field, if a field is specified.). This is the underlying object with id, value and extensions. The accessor "getVariable" gives direct access to the value
-         */
-        public IdType getVariableElement() { 
-          if (this.variable == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.variable");
-            else if (Configuration.doAutoCreate())
-              this.variable = new IdType(); // bb
-          return this.variable;
-        }
-
-        public boolean hasVariableElement() { 
-          return this.variable != null && !this.variable.isEmpty();
-        }
-
-        public boolean hasVariable() { 
-          return this.variable != null && !this.variable.isEmpty();
-        }
-
-        /**
-         * @param value {@link #variable} (Named context for field, if a field is specified.). This is the underlying object with id, value and extensions. The accessor "getVariable" gives direct access to the value
-         */
-        public StructureMapGroupRuleSourceComponent setVariableElement(IdType value) { 
-          this.variable = value;
-          return this;
-        }
-
-        /**
-         * @return Named context for field, if a field is specified.
-         */
-        public String getVariable() { 
-          return this.variable == null ? null : this.variable.getValue();
-        }
-
-        /**
-         * @param value Named context for field, if a field is specified.
-         */
-        public StructureMapGroupRuleSourceComponent setVariable(String value) { 
-          if (Utilities.noString(value))
-            this.variable = null;
-          else {
-            if (this.variable == null)
-              this.variable = new IdType();
-            this.variable.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #condition} (FHIRPath expression  - must be true or the rule does not apply.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
-         */
-        public StringType getConditionElement() { 
-          if (this.condition == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.condition");
-            else if (Configuration.doAutoCreate())
-              this.condition = new StringType(); // bb
-          return this.condition;
-        }
-
-        public boolean hasConditionElement() { 
-          return this.condition != null && !this.condition.isEmpty();
-        }
-
-        public boolean hasCondition() { 
-          return this.condition != null && !this.condition.isEmpty();
-        }
-
-        /**
-         * @param value {@link #condition} (FHIRPath expression  - must be true or the rule does not apply.). This is the underlying object with id, value and extensions. The accessor "getCondition" gives direct access to the value
-         */
-        public StructureMapGroupRuleSourceComponent setConditionElement(StringType value) { 
-          this.condition = value;
-          return this;
-        }
-
-        /**
-         * @return FHIRPath expression  - must be true or the rule does not apply.
-         */
-        public String getCondition() { 
-          return this.condition == null ? null : this.condition.getValue();
-        }
-
-        /**
-         * @param value FHIRPath expression  - must be true or the rule does not apply.
-         */
-        public StructureMapGroupRuleSourceComponent setCondition(String value) { 
-          if (Utilities.noString(value))
-            this.condition = null;
-          else {
-            if (this.condition == null)
-              this.condition = new StringType();
-            this.condition.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #check} (FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.). This is the underlying object with id, value and extensions. The accessor "getCheck" gives direct access to the value
-         */
-        public StringType getCheckElement() { 
-          if (this.check == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.check");
-            else if (Configuration.doAutoCreate())
-              this.check = new StringType(); // bb
-          return this.check;
-        }
-
-        public boolean hasCheckElement() { 
-          return this.check != null && !this.check.isEmpty();
-        }
-
-        public boolean hasCheck() { 
-          return this.check != null && !this.check.isEmpty();
-        }
-
-        /**
-         * @param value {@link #check} (FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.). This is the underlying object with id, value and extensions. The accessor "getCheck" gives direct access to the value
-         */
-        public StructureMapGroupRuleSourceComponent setCheckElement(StringType value) { 
-          this.check = value;
-          return this;
-        }
-
-        /**
-         * @return FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.
-         */
-        public String getCheck() { 
-          return this.check == null ? null : this.check.getValue();
-        }
-
-        /**
-         * @param value FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.
-         */
-        public StructureMapGroupRuleSourceComponent setCheck(String value) { 
-          if (Utilities.noString(value))
-            this.check = null;
-          else {
-            if (this.check == null)
-              this.check = new StringType();
-            this.check.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #logMessage} (A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.). This is the underlying object with id, value and extensions. The accessor "getLogMessage" gives direct access to the value
-         */
-        public StringType getLogMessageElement() { 
-          if (this.logMessage == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleSourceComponent.logMessage");
-            else if (Configuration.doAutoCreate())
-              this.logMessage = new StringType(); // bb
-          return this.logMessage;
-        }
-
-        public boolean hasLogMessageElement() { 
-          return this.logMessage != null && !this.logMessage.isEmpty();
-        }
-
-        public boolean hasLogMessage() { 
-          return this.logMessage != null && !this.logMessage.isEmpty();
-        }
-
-        /**
-         * @param value {@link #logMessage} (A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.). This is the underlying object with id, value and extensions. The accessor "getLogMessage" gives direct access to the value
-         */
-        public StructureMapGroupRuleSourceComponent setLogMessageElement(StringType value) { 
-          this.logMessage = value;
-          return this;
-        }
-
-        /**
-         * @return A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.
-         */
-        public String getLogMessage() { 
-          return this.logMessage == null ? null : this.logMessage.getValue();
-        }
-
-        /**
-         * @param value A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.
-         */
-        public StructureMapGroupRuleSourceComponent setLogMessage(String value) { 
-          if (Utilities.noString(value))
-            this.logMessage = null;
-          else {
-            if (this.logMessage == null)
-              this.logMessage = new StringType();
-            this.logMessage.setValue(value);
-          }
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("context", "id", "Type or variable this rule applies to.", 0, 1, context));
-          children.add(new Property("min", "unsignedInt", "Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.", 0, 1, min));
-          children.add(new Property("max", "string", "Specified maximum cardinality for the element - a number or a \"*\". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).", 0, 1, max));
-          children.add(new Property("type", "string", "Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.", 0, 1, type));
-          children.add(new Property("defaultValue", "string", "A FHIRPath expression that returns value(s) to use if the source object has no value.", 0, 1, defaultValue));
-          children.add(new Property("element", "string", "Optional field for this source.", 0, java.lang.Integer.MAX_VALUE, elementList));
-          children.add(new Property("listMode", "code", "How to handle the list mode for this element.", 0, 1, listMode));
-          children.add(new Property("variable", "id", "Named context for field, if a field is specified.", 0, 1, variable));
-          children.add(new Property("condition", "string", "FHIRPath expression  - must be true or the rule does not apply.", 0, 1, condition));
-          children.add(new Property("check", "string", "FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.", 0, 1, check));
-          children.add(new Property("logMessage", "string", "A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.", 0, 1, logMessage));
-        }
-
-        @Override
-        public Property getNamedProperty(String _name, boolean _checkValid) throws FHIRException {
-          switch (_name) {
-          case "context":  return new Property("context", "id", "Type or variable this rule applies to.", 0, 1, context);
-          case "min":  return new Property("min", "unsignedInt", "Specified minimum cardinality for the element. This is optional; if present, it acts an implicit check on the input content.", 0, 1, min);
-          case "max":  return new Property("max", "string", "Specified maximum cardinality for the element - a number or a \"*\". This is optional; if present, it acts an implicit check on the input content (* just serves as documentation; it's the default value).", 0, 1, max);
-          case "type":  return new Property("type", "string", "Specified type for the element. This works as a condition on the mapping - use for polymorphic elements.", 0, 1, type);
-          case "defaultValue":  return new Property("defaultValue", "string", "A FHIRPath expression that returns value(s) to use if the source object has no value.", 0, 1, defaultValue);
-          case "element":  return new Property("element", "string", "Optional field for this source.", 0, java.lang.Integer.MAX_VALUE, elementList);
-          case "listMode":  return new Property("listMode", "code", "How to handle the list mode for this element.", 0, 1, listMode);
-          case "variable":  return new Property("variable", "id", "Named context for field, if a field is specified.", 0, 1, variable);
-          case "condition":  return new Property("condition", "string", "FHIRPath expression  - must be true or the rule does not apply.", 0, 1, condition);
-          case "check":  return new Property("check", "string", "FHIRPath expression  - must be true or the mapping engine throws an error instead of completing.", 0, 1, check);
-          case "logMessage":  return new Property("logMessage", "string", "A FHIRPath expression which specifies a message to put in the transform log when content matching the source rule is found.", 0, 1, logMessage);
-          default: return super.getNamedProperty(_name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
-        switch (name) {
-        case "context": return this.context == null ? new Base[0] : new Base[] {this.context}; // IdType
-        case "min": return this.min == null ? new Base[0] : new Base[] {this.min}; // UnsignedIntType
-        case "max": return this.max == null ? new Base[0] : new Base[] {this.max}; // StringType
-        case "type": return this.type == null ? new Base[0] : new Base[] {this.type}; // StringType
-        case "defaultValue": return this.defaultValue == null ? new Base[0] : new Base[] {this.defaultValue}; // StringType
-        case "element": return this.elementList == null ? new Base[0] : this.elementList.toArray(new Base[this.elementList.size()]); // StringType
-        case "listMode": return this.listMode == null ? new Base[0] : new Base[] {this.listMode}; // Enumeration<StructureMapSourceListMode>
-        case "variable": return this.variable == null ? new Base[0] : new Base[] {this.variable}; // IdType
-        case "condition": return this.condition == null ? new Base[0] : new Base[] {this.condition}; // StringType
-        case "check": return this.check == null ? new Base[0] : new Base[] {this.check}; // StringType
-        case "logMessage": return this.logMessage == null ? new Base[0] : new Base[] {this.logMessage}; // StringType
-        default: return super.getNamedValue(name, checkValid);
-        }
-
+    }
+
+    @Override
+    public Base[] getNamedValue(String name, boolean checkValid) throws FHIRException {
+      switch (name) {
+        case "context":
+          return this.context == null ? new Base[0] : new Base[]{this.context}; // IdType
+        case "min":
+          return this.min == null ? new Base[0] : new Base[]{this.min}; // UnsignedIntType
+        case "max":
+          return this.max == null ? new Base[0] : new Base[]{this.max}; // StringType
+        case "type":
+          return this.type == null ? new Base[0] : new Base[]{this.type}; // StringType
+        case "defaultValue":
+          return this.defaultValue == null ? new Base[0] : new Base[]{this.defaultValue}; // StringType
+        case "element":
+          return this.elementList == null ? new Base[0] : this.elementList.toArray(new Base[this.elementList.size()]); // StringType
+        case "listMode":
+          return this.listMode == null ? new Base[0] : new Base[]{this.listMode}; // Enumeration<StructureMapSourceListMode>
+        case "variable":
+          return this.variable == null ? new Base[0] : new Base[]{this.variable}; // IdType
+        case "condition":
+          return this.condition == null ? new Base[0] : new Base[]{this.condition}; // StringType
+        case "check":
+          return this.check == null ? new Base[0] : new Base[]{this.check}; // StringType
+        case "logMessage":
+          return this.logMessage == null ? new Base[0] : new Base[]{this.logMessage}; // StringType
+        default:
+          return super.getNamedValue(name, checkValid);
       }
 
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("context")) {
-          this.context = TypeConvertor.castToId(value); // IdType
-        } else if (name.equals("min")) {
-          this.min = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
-        } else if (name.equals("max")) {
-          this.max = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("type")) {
-          this.type = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("defaultValue")) {
-          this.defaultValue = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("element")) {
-          this.getElementList().add(TypeConvertor.castToString(value)); // StringType
-        } else if (name.equals("listMode")) {
-          value = new StructureMapSourceListModeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.listMode = (Enumeration) value; // Enumeration<StructureMapSourceListMode>
-        } else if (name.equals("variable")) {
-          this.variable = TypeConvertor.castToId(value); // IdType
-        } else if (name.equals("condition")) {
-          this.condition = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("check")) {
-          this.check = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("logMessage")) {
-          this.logMessage = TypeConvertor.castToString(value); // StringType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
+    }
 
-      @Override
-      public void removeChild(String name, Base value) throws FHIRException {
-        switch (name) {
+    @Override
+    public Base setProperty(String name, Base value) throws FHIRException {
+      if (name.equals("context")) {
+        this.context = TypeConvertor.castToId(value); // IdType
+      } else if (name.equals("min")) {
+        this.min = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+      } else if (name.equals("max")) {
+        this.max = TypeConvertor.castToString(value); // StringType
+      } else if (name.equals("type")) {
+        this.type = TypeConvertor.castToString(value); // StringType
+      } else if (name.equals("defaultValue")) {
+        this.defaultValue = TypeConvertor.castToString(value); // StringType
+      } else if (name.equals("element")) {
+        this.getElementList().add(TypeConvertor.castToString(value)); // StringType
+      } else if (name.equals("listMode")) {
+        value = new StructureMapSourceListModeEnumFactory().fromType(TypeConvertor.castToCode(value));
+        this.listMode = (Enumeration) value; // Enumeration<StructureMapSourceListMode>
+      } else if (name.equals("variable")) {
+        this.variable = TypeConvertor.castToId(value); // IdType
+      } else if (name.equals("condition")) {
+        this.condition = TypeConvertor.castToString(value); // StringType
+      } else if (name.equals("check")) {
+        this.check = TypeConvertor.castToString(value); // StringType
+      } else if (name.equals("logMessage")) {
+        this.logMessage = TypeConvertor.castToString(value); // StringType
+      } else
+        return super.setProperty(name, value);
+      return value;
+    }
+
+    @Override
+    public void removeChild(String name, Base value) throws FHIRException {
+      switch (name) {
         case "context":
           if (value == null || value == this.context) {
             this.context = null;
@@ -3975,141 +4296,154 @@ public class StructureMap extends CanonicalResource {
           return;
         default:
           super.removeChild(name, value);
-        }
-      }
-
-      @Override
-      public Base makeProperty(String name) throws FHIRException {
-        switch (name) {
-        case "context":  return getContextElement();
-        case "min":  return getMinElement();
-        case "max":  return getMaxElement();
-        case "type":  return getTypeElement();
-        case "defaultValue":  return getDefaultValueElement();
-        case "element":  return addElementElement();
-        case "listMode":  return getListModeElement();
-        case "variable":  return getVariableElement();
-        case "condition":  return getConditionElement();
-        case "check":  return getCheckElement();
-        case "logMessage":  return getLogMessageElement();
-        default: return super.makeProperty(name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("context")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.context");
-        }
-        else if (name.equals("min")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.min");
-        }
-        else if (name.equals("max")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.max");
-        }
-        else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.type");
-        }
-        else if (name.equals("defaultValue")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.defaultValue");
-        }
-        else if (name.equals("element")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.element");
-        }
-        else if (name.equals("listMode")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.listMode");
-        }
-        else if (name.equals("variable")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.variable");
-        }
-        else if (name.equals("condition")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.condition");
-        }
-        else if (name.equals("check")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.check");
-        }
-        else if (name.equals("logMessage")) {
-          throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.logMessage");
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public StructureMapGroupRuleSourceComponent copy(EnumSet<CopyObjectOptions> options) {
-        StructureMapGroupRuleSourceComponent dst = new StructureMapGroupRuleSourceComponent(this.modelContext);
-        copyValues(dst, options);
-        return dst;
-      }
-
-      public void copyValues(StructureMapGroupRuleSourceComponent dst, EnumSet<CopyObjectOptions> options) {
-        super.copyValues(dst, options);
-        dst.context = context == null ? null : context.copy(options);
-        dst.min = min == null ? null : min.copy(options);
-        dst.max = max == null ? null : max.copy(options);
-        dst.type = type == null ? null : type.copy(options);
-        dst.defaultValue = defaultValue == null ? null : defaultValue.copy(options);
-        if (elementList != null) {
-          dst.elementList = new ArrayList<StringType>();
-          for (StringType i : elementList)
-            dst.elementList.add(i.copy(options));
-        };
-        dst.listMode = listMode == null ? null : listMode.copy(options);
-        dst.variable = variable == null ? null : variable.copy(options);
-        dst.condition = condition == null ? null : condition.copy(options);
-        dst.check = check == null ? null : check.copy(options);
-        dst.logMessage = logMessage == null ? null : logMessage.copy(options);
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof StructureMapGroupRuleSourceComponent))
-          return false;
-        StructureMapGroupRuleSourceComponent o = (StructureMapGroupRuleSourceComponent) other_;
-        return compareDeep(context, o.context, true) && compareDeep(min, o.min, true) && compareDeep(max, o.max, true)
-           && compareDeep(type, o.type, true) && compareDeep(defaultValue, o.defaultValue, true) && compareDeep(elementList, o.elementList, true)
-           && compareDeep(listMode, o.listMode, true) && compareDeep(variable, o.variable, true) && compareDeep(condition, o.condition, true)
-           && compareDeep(check, o.check, true) && compareDeep(logMessage, o.logMessage, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof StructureMapGroupRuleSourceComponent))
-          return false;
-        StructureMapGroupRuleSourceComponent o = (StructureMapGroupRuleSourceComponent) other_;
-        return compareValues(context, o.context, true) && compareValues(min, o.min, true) && compareValues(max, o.max, true)
-           && compareValues(type, o.type, true) && compareValues(defaultValue, o.defaultValue, true) && compareValues(elementList, o.elementList, true)
-           && compareValues(listMode, o.listMode, true) && compareValues(variable, o.variable, true) && compareValues(condition, o.condition, true)
-           && compareValues(check, o.check, true) && compareValues(logMessage, o.logMessage, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(context, min, max, type
-          , defaultValue, elementList, listMode, variable, condition, check, logMessage
-          );
-      }
-
-  public String fhirType() {
-    return "StructureMap.group.rule.source";
-
-  }
-
-      public String getElementName() {
-          if (this.elementList == null || this.elementList.isEmpty()) {
-              return null;
-          } else if (this.elementList.size() == 1) {
-              return this.elementList.get(0).getValue();
-          } else {
-            throw new FHIRException("Cannot call getElementName() when multiple elements exist");
-          }
       }
     }
 
-    @Block()
+    @Override
+    public Base makeProperty(String name) throws FHIRException {
+      switch (name) {
+        case "context":
+          return getContextElement();
+        case "min":
+          return getMinElement();
+        case "max":
+          return getMaxElement();
+        case "type":
+          return getTypeElement();
+        case "defaultValue":
+          return getDefaultValueElement();
+        case "element":
+          return addElementElement();
+        case "listMode":
+          return getListModeElement();
+        case "variable":
+          return getVariableElement();
+        case "condition":
+          return getConditionElement();
+        case "check":
+          return getCheckElement();
+        case "logMessage":
+          return getLogMessageElement();
+        default:
+          return super.makeProperty(name);
+      }
+
+    }
+
+    @Override
+    public Base addChild(String name) throws FHIRException {
+      if (name.equals("context")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.context");
+      } else if (name.equals("min")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.min");
+      } else if (name.equals("max")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.max");
+      } else if (name.equals("type")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.type");
+      } else if (name.equals("defaultValue")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.defaultValue");
+      } else if (name.equals("element")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.element");
+      } else if (name.equals("listMode")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.listMode");
+      } else if (name.equals("variable")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.variable");
+      } else if (name.equals("condition")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.condition");
+      } else if (name.equals("check")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.check");
+      } else if (name.equals("logMessage")) {
+        throw new FHIRException("Cannot call addChild on a singleton property StructureMap.group.rule.source.logMessage");
+      } else
+        return super.addChild(name);
+    }
+
+    public StructureMapGroupRuleSourceComponent copy(EnumSet<CopyObjectOptions> options) {
+      StructureMapGroupRuleSourceComponent dst = new StructureMapGroupRuleSourceComponent(this.modelContext);
+      copyValues(dst, options);
+      return dst;
+    }
+
+    public void copyValues(StructureMapGroupRuleSourceComponent dst, EnumSet<CopyObjectOptions> options) {
+      super.copyValues(dst, options);
+      dst.context = context == null ? null : context.copy(options);
+      dst.min = min == null ? null : min.copy(options);
+      dst.max = max == null ? null : max.copy(options);
+      dst.type = type == null ? null : type.copy(options);
+      dst.defaultValue = defaultValue == null ? null : defaultValue.copy(options);
+      if (elementList != null) {
+        dst.elementList = new ArrayList<StringType>();
+        for (StringType i : elementList)
+          dst.elementList.add(i.copy(options));
+      }
+      ;
+      dst.listMode = listMode == null ? null : listMode.copy(options);
+      dst.variable = variable == null ? null : variable.copy(options);
+      dst.condition = condition == null ? null : condition.copy(options);
+      dst.check = check == null ? null : check.copy(options);
+      dst.logMessage = logMessage == null ? null : logMessage.copy(options);
+    }
+
+    @Override
+    public boolean equalsDeep(Base other_) {
+      if (!super.equalsDeep(other_))
+        return false;
+      if (!(other_ instanceof StructureMapGroupRuleSourceComponent))
+        return false;
+      StructureMapGroupRuleSourceComponent o = (StructureMapGroupRuleSourceComponent) other_;
+      return compareDeep(context, o.context, true) && compareDeep(min, o.min, true) && compareDeep(max, o.max, true)
+        && compareDeep(type, o.type, true) && compareDeep(defaultValue, o.defaultValue, true) && compareDeep(elementList, o.elementList, true)
+        && compareDeep(listMode, o.listMode, true) && compareDeep(variable, o.variable, true) && compareDeep(condition, o.condition, true)
+        && compareDeep(check, o.check, true) && compareDeep(logMessage, o.logMessage, true);
+    }
+
+    @Override
+    public boolean equalsShallow(Base other_) {
+      if (!super.equalsShallow(other_))
+        return false;
+      if (!(other_ instanceof StructureMapGroupRuleSourceComponent))
+        return false;
+      StructureMapGroupRuleSourceComponent o = (StructureMapGroupRuleSourceComponent) other_;
+      return compareValues(context, o.context, true) && compareValues(min, o.min, true) && compareValues(max, o.max, true)
+        && compareValues(type, o.type, true) && compareValues(defaultValue, o.defaultValue, true) && compareValues(elementList, o.elementList, true)
+        && compareValues(listMode, o.listMode, true) && compareValues(variable, o.variable, true) && compareValues(condition, o.condition, true)
+        && compareValues(check, o.check, true) && compareValues(logMessage, o.logMessage, true);
+    }
+
+    public boolean isEmpty() {
+      return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(context, min, max, type
+        , defaultValue, elementList, listMode, variable, condition, check, logMessage
+      );
+    }
+
+    public String fhirType() {
+      return "StructureMap.group.rule.source";
+
+    }
+
+    public String getElementName() {
+      if (this.elementList == null || this.elementList.isEmpty()) {
+        return null;
+      } else if (this.elementList.size() == 1) {
+        return this.elementList.get(0).getValue();
+      } else {
+        throw new FHIRException("Cannot call getElementName() when multiple elements exist");
+      }
+    }
+
+    public StringType getElementElement() {
+      if (this.elementList == null || this.elementList.isEmpty()) {
+        return null;
+      } else if (this.elementList.size() == 1) {
+        return this.elementList.get(0);
+      } else {
+        throw new FHIRException("Cannot call getElementElement() when multiple elements exist");
+      }
+    }
+  }
+
+
+  @Block()
     public static class StructureMapGroupRuleTargetComponent extends BackboneElement {
         /**
          * Variable this rule applies to.
@@ -4759,15 +5093,24 @@ public class StructureMap extends CanonicalResource {
 
   }
 
-      public String getElementName() {
-        if (this.elementList == null || this.elementList.isEmpty()) {
-          return null;
-        } else if (this.elementList.size() == 1) {
-          return this.elementList.get(0).getValue();
-        } else {
-          throw new FHIRException("Cannot call getElementName() when multiple elements exist");
-        }
+    public String getElementName() {
+      if (this.elementList == null || this.elementList.isEmpty()) {
+        return null;
+      } else if (this.elementList.size() == 1) {
+        return this.elementList.get(0).getValue();
+      } else {
+        throw new FHIRException("Cannot call getElementName() when multiple elements exist");
       }
+    }
+    public StringType getElementElement() {
+      if (this.elementList == null || this.elementList.isEmpty()) {
+        return null;
+      } else if (this.elementList.size() == 1) {
+        return this.elementList.get(0);
+      } else {
+        throw new FHIRException("Cannot call getElementName() when multiple elements exist");
+      }
+    }
   }
 
     @Block()

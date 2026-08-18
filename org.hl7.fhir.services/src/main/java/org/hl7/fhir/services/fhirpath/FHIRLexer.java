@@ -1,6 +1,7 @@
 package org.hl7.fhir.services.fhirpath;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.utilities.FHIRPathConstant;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;

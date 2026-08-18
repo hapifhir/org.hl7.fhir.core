@@ -59,6 +59,8 @@ public class Resource40_N {
         return Requirements40_N.convertRequirements((org.hl7.fhir.r4.model.Basic) src);
       } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "SubscriptionTopic")) {
         return SubscriptionTopic40_N.convertSubscriptionTopic((org.hl7.fhir.r4.model.Basic) src);
+      } else if (basic.getCode().hasCoding("http://hl7.org/fhir/fhir-types", "TestPlan")) {
+        return TestPlan40_N.convertTestPlan((org.hl7.fhir.r4.model.Basic) src);
       } else {
         return Basic40_N.convertBasic((org.hl7.fhir.r4.model.Basic) src);
       }
@@ -230,6 +232,16 @@ public class Resource40_N {
       return VisionPrescription40_N.convertVisionPrescription((org.hl7.fhir.r4.model.VisionPrescription) src);
     if (src instanceof org.hl7.fhir.r4.model.Subscription)
       return Subscription40_N.convertSubscription((org.hl7.fhir.r4.model.Subscription) src);
+
+    if (src instanceof org.hl7.fhir.r4.model.GraphDefinition)
+      return GraphDefinition40_N.convertGraphDefinition((org.hl7.fhir.r4.model.GraphDefinition) src);
+    if (src instanceof org.hl7.fhir.r4.model.StructureMap)
+      return StructureMap40_N.convertStructureMap((org.hl7.fhir.r4.model.StructureMap) src);
+    if (src instanceof org.hl7.fhir.r4.model.TestReport)
+      return TestReport40_N.convertTestReport((org.hl7.fhir.r4.model.TestReport) src);
+    if (src instanceof org.hl7.fhir.r4.model.TestScript)
+      return TestScript40_N.convertTestScript((org.hl7.fhir.r4.model.TestScript) src);
+
     if (advisor.failFastOnNullOrUnknownEntry()) {
       throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R4 to R5");
     } else {
@@ -428,6 +440,18 @@ public class Resource40_N {
       return VisionPrescription40_N.convertVisionPrescription((org.hl7.fhir.model.core.VisionPrescription) src);
     if (src instanceof org.hl7.fhir.model.core.Subscription)
       return Subscription40_N.convertSubscription((org.hl7.fhir.model.core.Subscription) src);
+
+    if (src instanceof org.hl7.fhir.model.api.GraphDefinition)
+      return GraphDefinition40_N.convertGraphDefinition((org.hl7.fhir.model.api.GraphDefinition) src);
+    if (src instanceof org.hl7.fhir.model.fml.StructureMap)
+      return StructureMap40_N.convertStructureMap((org.hl7.fhir.model.fml.StructureMap) src);
+    if (src instanceof org.hl7.fhir.model.testing.TestPlan)
+      return TestPlan40_N.convertTestPlan((org.hl7.fhir.model.testing.TestPlan) src);
+    if (src instanceof org.hl7.fhir.model.testing.TestReport)
+      return TestReport40_N.convertTestReport((org.hl7.fhir.model.testing.TestReport) src);
+    if (src instanceof org.hl7.fhir.model.testing.TestScript)
+      return TestScript40_N.convertTestScript((org.hl7.fhir.model.testing.TestScript) src);
+
     if (advisor.failFastOnNullOrUnknownEntry()) {
       throw new FHIRException("The resource " + src.fhirType()+" cannot be converted from R5 to R4");
     } else {

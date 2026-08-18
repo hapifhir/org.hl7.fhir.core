@@ -68,4 +68,14 @@ public class Reference40_N {
 
   }
 
+  public static org.hl7.fhir.model.core.Reference convertReferenceFromString(org.hl7.fhir.r4.model.StringType src) throws FHIRException {
+    if (src == null) return null;
+    org.hl7.fhir.model.core.Reference tgt = new org.hl7.fhir.model.core.Reference();
+    ConversionContext40_N.INSTANCE.getVersionConvertor_40_N().copyElement(src, tgt);
+    if (src.hasValue()) tgt.setReference(src.primitiveValue());
+    return tgt;
+  }
+
+
+
 }
