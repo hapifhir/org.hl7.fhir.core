@@ -18,7 +18,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
     super(serverTypes, userAgent, httpAuthHeaderProvider);
   }
   
-  private Map<String, String> newHeaders(String urlString) throws MalformedURLException {
+  private Map<String, String> newHeaders(String urlString) throws IOException {
     URL url = URI.create(urlString).toURL();
     Map<String, String> headers = new HashMap<>(this.getHeaders());
     if (this.getHttpAuthHeaderProvider().canProvideHeaders(url)) {
