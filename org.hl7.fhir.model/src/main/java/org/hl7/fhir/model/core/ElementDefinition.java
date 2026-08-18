@@ -64,7 +64,7 @@ import  org.hl7.fhir.model.extensions.ExtensionDefinitions;
 @javax.annotation.processing.Generated(value = "org.hl7.fhir.core.generator.engine.JavaCoreGenerator", comments = "generated from hl7.fhir.r6.core#6.0.0-ballot5")
 public class ElementDefinition extends BackboneType implements ICompositeType {
 
-    public enum AdditionalBindingPurposeVS {
+  public enum AdditionalBindingPurposeVS {
         /**
          * A required binding, for use when the binding strength is 'extensible' or 'preferred'. This is deprecated - it is equivalent to `required`
          */
@@ -13288,7 +13288,18 @@ public boolean hasTarget() {
     return hasId() ? getId() : getPath();
   }
 
+  public boolean hasObligations() {
+    boolean res = hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE);
+    for (TypeRefComponent tr : getTypeList()) {
+      res = res || tr.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE);
+    }
+    return res;
+  }
 
+  public boolean isProfiledExtension() {
+    return getTypeList().size() == 1 && "Extension".equals(getTypeFirstRep().getCode()) &&
+      getTypeFirstRep().getProfileList().size() == 1;
+  }
 // end addition
 
 }

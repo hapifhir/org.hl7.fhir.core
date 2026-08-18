@@ -37,6 +37,9 @@ package org.hl7.fhir.model.core;
   */
 
 import java.util.*;
+
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.model.core.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
@@ -636,6 +639,28 @@ public abstract class CanonicalResource extends DomainResource {
       }
     }
     return null;
+  }
+
+
+  public String present(String lang) {
+    if (hasUserData(UserDataNames.render_presentation)) {
+      return getUserString(UserDataNames.render_presentation);
+    }
+    if (hasTitleElement()) {
+      for (Map.Entry<String, String> t : ExtensionUtilities.getLanguageTranslations(getTitleElement()).entrySet()) {
+        if (t.getKey().equals(lang)) {
+          return t.getValue();
+        }
+      }
+    }
+    if (hasNameElement()) {
+      for (Map.Entry<String, String> t : ExtensionUtilities.getLanguageTranslations(getNameElement()).entrySet()) {
+        if (t.getKey().equals(lang)) {
+          return t.getValue();
+        }
+      }
+    }
+    return present();
   }
 
 // end addition

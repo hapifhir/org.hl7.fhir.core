@@ -846,6 +846,22 @@ public class ExtensionDefinitions {
   public static final String EXT_MAPPING_PREFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-prefix";
   public static final String EXT_MAPPING_SUFFIX = "http://hl7.org/fhir/tools/StructureDefinition/logical-mapping-suffix";
   public static final String EXT_ADDITIONAL_BASE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-additionalBase";
+  public static final String EXT_OBLIGATION_PROFILE_FLAG_NEW = "http://hl7.org/fhir/StructureDefinition/obligation-profile";
+
+  // web pages referenced from rendered content (not extension urls)
+  public static final String WEB_EXTENSION_STYLE = "http://build.fhir.org/ig/FHIR/fhir-tools-ig/format-extensions.html#extension-related-extensions";
+  public static final String WEB_BINDING_STYLE = "http://build.fhir.org/ig/FHIR/fhir-tools-ig/StructureDefinition-binding-style.html";
+
+  // SDC questionnaire extensions (defined in the sdc IG, not the tools IG)
+  public static final String EXT_Q_IS_SUBJ = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-isSubject";
+  public static final String EXT_Q_OTP_DISP = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-optionalDisplay";
+  public static final String EXT_O_LINK_PERIOD = "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod";
+
+  // cross-version extension for the R4 value of Questionnaire.item.type
+  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = "http://hl7.org/fhir/4.0/StructureDefinition/extension-questionnaire.item.type";
+  // cross-version extensions for values from prior ConceptMap versions
+  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
+  public static final String EXT_CM_NOMAP_COMMENT = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ConceptMap.group.element.target.comment";
     public static boolean isModifier(String url) {
     return Utilities.existsInList(url, "http://hl7.org/fhir/StructureDefinition/artifact-status", "http://hl7.org/fhir/StructureDefinition/capabilitystatement-prohibited", "http://hl7.org/fhir/StructureDefinition/contactpoint-multiple-use", "http://hl7.org/fhir/StructureDefinition/perform-condition", "http://hl7.org/fhir/StructureDefinition/request-doNotPerform");
   }

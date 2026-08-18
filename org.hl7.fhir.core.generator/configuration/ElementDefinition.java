@@ -148,3 +148,16 @@
   public String getIdOrPath() {
     return hasId() ? getId() : getPath();
   }
+
+  public boolean hasObligations() {
+    boolean res = hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE);
+    for (TypeRefComponent tr : getTypeList()) {
+      res = res || tr.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE);
+    }
+    return res;
+  }
+
+  public boolean isProfiledExtension() {
+    return getTypeList().size() == 1 && "Extension".equals(getTypeFirstRep().getCode()) &&
+      getTypeFirstRep().getProfileList().size() == 1;
+  }

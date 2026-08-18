@@ -225,3 +225,14 @@
   public List<Extension> getExtension() {
     return getExtensionList();
   }
+
+   public List<Extension> getExtensionsByUrl(String... theUrls) {
+     ArrayList<Extension> retVal = new ArrayList<>();
+
+     for (Extension next : getExtension()) {
+       if (Utilities.existsInList(next.getUrl(), theUrls)) {
+         retVal.add(next);
+       }
+     }
+     return java.util.Collections.unmodifiableList(retVal);
+   }

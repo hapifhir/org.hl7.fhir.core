@@ -41,3 +41,24 @@
     }
     return null;
   }
+
+  public String present(String lang) {
+    if (hasUserData(UserDataNames.render_presentation)) {
+      return getUserString(UserDataNames.render_presentation);
+    }
+    if (hasTitleElement()) {
+      for (Entry<String, String> t : ExtensionUtilities.getLanguageTranslations(getTitleElement()).entrySet()) {
+        if (t.getKey().equals(lang)) {
+          return t.getValue();
+        }
+      }
+    }
+    if (hasNameElement()) {
+      for (Entry<String, String> t : ExtensionUtilities.getLanguageTranslations(getNameElement()).entrySet()) {
+        if (t.getKey().equals(lang)) {
+          return t.getValue();
+        }
+      }
+    }
+    return present();
+  }

@@ -78,7 +78,7 @@
         <!-- The report project exists only to aggregate the test results from the other projects into a central report. -->
         <module>org.hl7.fhir.report</module>
         <module>org.hl7.fhir.model</module>
-        <module>org.hl7.fhir.context</module>
+        <module>org.hl7.fhir.services</module>
         <module>org.hl7.fhir.support</module>
     </modules>
 

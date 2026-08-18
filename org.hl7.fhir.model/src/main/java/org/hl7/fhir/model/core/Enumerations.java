@@ -9590,6 +9590,9 @@ public class Enumerations {
             default: return "?";
           }
         }
+      public boolean testable() {
+        return this == REQUIRED || this == EXTENSIBLE;
+      }
     }
 
   public static class BindingStrengthEnumFactory implements EnumFactory<BindingStrength> {
@@ -10408,6 +10411,24 @@ public class Enumerations {
             default: return "?";
           }
         }
+      public String getSymbol() {
+        switch (this) {
+          case RELATEDTO:
+            return "-";
+          case EQUIVALENT:
+            return "=";
+          case SOURCEISNARROWERTHANTARGET:
+            return "<";
+          case SOURCEISBROADERTHANTARGET:
+            return ">";
+          case NOTRELATEDTO:
+            return "!=";
+          case NULL:
+            return null;
+          default:
+            return "?";
+        }
+      }
     }
 
   public static class ConceptMapRelationshipEnumFactory implements EnumFactory<ConceptMapRelationship> {
