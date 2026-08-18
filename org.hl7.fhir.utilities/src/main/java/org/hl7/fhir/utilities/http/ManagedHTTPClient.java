@@ -18,6 +18,7 @@ import org.hl7.fhir.utilities.http.okhttpimpl.RetryInterceptor;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
 import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 import lombok.Getter;
 import okhttp3.Dns;
 import okhttp3.Headers;
@@ -54,6 +55,7 @@ import okhttp3.Response;
  * exact address OkHttp connects to, so there is no separate resolution step for an attacker to exploit via DNS
  * rebinding.
  */
+@Slf4j
 public class ManagedHTTPClient {
 
   private static final int MAX_REDIRECTS = 5;
@@ -228,6 +230,7 @@ public class ManagedHTTPClient {
     }
     URI uri = originalUri;
     int redirects = 0;
+    boolean credentialsRefreshed = false;
 
     while (true) {
       if (++redirects > MAX_REDIRECTS) {
@@ -275,13 +278,30 @@ public class ManagedHTTPClient {
             location = URLDecoder.decode(location, StandardCharsets.UTF_8);
             uri = uri.resolve(location); // Deal with relative URLs, resolved against the current hop
           }
+          case 401, 403 -> {
+            // The credentials may simply have gone stale. Give the auth provider one chance to
+            // discard them, then repeat this hop - buildRequest() will ask it for fresh headers.
+            // Done here rather than around the whole call so that it applies per redirect hop,
+            // exactly like the auth headers themselves, and sees the response the server sent.
+            if (credentialsRefreshed || !authCanHandle || !authProvider.invalidateCachedCredentials(url)) {
+              return toResult(uri, response);
+            }
+            log.warn("Received HTTP {} for {}; refreshed credentials and retrying once", response.code(), url);
+            credentialsRefreshed = true;
+            redirects--; // a credential refresh is not a redirect hop
+          }
           default -> {
-            byte[] body = response.body().bytes();
-            return new HTTPResult(uri.toString(), response.code(), response.message(), response.header("Content-Type"), body, toHTTPHeaders(response.headers()));
+            return toResult(uri, response);
           }
         }
       }
     }
+  }
+
+  private HTTPResult toResult(URI uri, Response response) throws IOException {
+    byte[] body = response.body().bytes();
+    return new HTTPResult(uri.toString(), response.code(), response.message(),
+      response.header("Content-Type"), body, toHTTPHeaders(response.headers()));
   }
 
   private Request buildRequest(String requestMethod, HttpUrl httpUrl, String contentType, byte[] content, String acceptHeader, Iterable<HTTPHeader> extraHeaders, URL authUrl) throws IOException {
