@@ -53,7 +53,7 @@ class CDANarrativeFormatTest {
 		# case insensitivity
 		<div><UL><LI>Plain text</LI></UL></div>,<?xml version="1.0" encoding="UTF-8"?><text><list listType="unordered"><item>Plain text</item></list></text>
 		""")
-	void testConvert(String theInputXhtml, String theExpectedNarrative) throws Exception {
+	void testConvert_lenient(String theInputXhtml, String theExpectedNarrative) throws Exception {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		XMLWriter xmlWriter = new XMLWriter(out, "UTF-8");
 		xmlWriter.start();
@@ -62,7 +62,7 @@ class CDANarrativeFormatTest {
 		node.setValueAsString(theInputXhtml);
 
 		CDANarrativeFormat converter = new CDANarrativeFormat();
-		converter.convert(xmlWriter, node);
+		converter.convert(xmlWriter, node, false);
 
 		xmlWriter.close();
 		String actualNarrative = out.toString(StandardCharsets.UTF_8);
