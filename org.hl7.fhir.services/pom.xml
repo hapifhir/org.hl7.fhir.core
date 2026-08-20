@@ -9,7 +9,7 @@
         <version>6.10.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>services</artifactId>
+    <artifactId>org.hl7.fhir.services</artifactId>
     <packaging>bundle</packaging>
 
     <name>HL7 Core Artifact - R6+ Context</name>
