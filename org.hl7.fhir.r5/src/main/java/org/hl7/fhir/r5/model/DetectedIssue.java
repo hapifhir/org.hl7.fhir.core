@@ -84,6 +84,17 @@ public class DetectedIssue extends DomainResource {
         else
           throw new FHIRException("Unknown DetectedIssueSeverity code '"+codeString+"'");
         }
+      public static boolean isValidCode(String codeString) {
+        if (codeString == null || "".equals(codeString))
+          return false;
+        if ("high".equals(codeString))
+          return true;
+        if ("moderate".equals(codeString))
+          return true;
+        if ("low".equals(codeString))
+          return true;
+        return false;
+      }
         public String toCode() {
           switch (this) {
             case HIGH: return "high";
