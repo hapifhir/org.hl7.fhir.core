@@ -17,6 +17,7 @@ import org.hl7.fhir.core.generator.analysis.AnalysisElementInfo;
 import org.hl7.fhir.core.generator.codegen.Configuration;
 import org.hl7.fhir.core.generator.codegen.JavaConstantsGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaCoreRegistrationGenerator;
+import org.hl7.fhir.core.generator.codegen.JavaConverterGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaEnumerationsGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaFactoryGenerator;
 import org.hl7.fhir.core.generator.codegen.JavaParserJsonGenerator;
@@ -43,25 +44,37 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 
 public class JavaCoreGenerator {
 
+  private JavaConverterGenerator cvgen;
+
   // C:\work\org.hl7.fhir\org.hl7.fhir.core\org.hl7.fhir.r5
   // C:\work\org.hl7.fhir\org.hl7.fhir.core\org.hl7.fhir.r5.new
   
   public static void main(String[] args) throws Exception {
     System.out.println("HAPI CORE Code Generator");
-    if (args.length != 3) {
-      System.out.println("Usage: invoke with 3 command line parameters to generate HAPI R5 code");
+    if (args.length < 3 || args.length > 4) {
+      System.out.println("Usage: invoke with 3 or 4 command line parameters to generate the model code");
       System.out.println("1: fhir version to generate from (e.g. 4.2.0 or 'current'");
       System.out.println("2: project directory to read java-adorment from - e.g. /Users/grahame/work/core/org.hl7.fhir.core.generator/configuration");
       System.out.println("3: project directory to generate code into - e.g. C:\\work\\org.hl7.fhir\\org.hl7.fhir.core\\org.hl7.fhir.r5.new");
+      System.out.println("4: (optional) conv50_N folder in the convertors project to generate R5 <-> R6 conversion code into - e.g. .../org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv50_N");
     } else {
       String version = args[0];
       String src = args[1];
       String dest = args[2];
-      new JavaCoreGenerator().generate(version, src, dest);
+      String convDest = args.length > 3 ? args[3] : null;
+      new JavaCoreGenerator().generate(version, src, dest, convDest);
     }
   }
 
   private void generate(String version, String src, String dest) throws Exception {
+    generate(version, src, dest, null);
+  }
+
+  /**
+   * @param convDest if not null, the conv50_N folder in the convertors project - the R5 <-> R6 
+   *   conversion code is generated there (see JavaConverterGenerator)
+   */
+  private void generate(String version, String src, String dest, String convDest) throws Exception {
     long start = System.currentTimeMillis();
     Map<String, AnalysisElementInfo> elementInfo = new HashMap<>();
     Set<String> genClassList = new HashSet<>();
@@ -107,6 +120,7 @@ public class JavaCoreGenerator {
     JavaParserJsonGenerator jgen = new JavaParserJsonGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", "model", "core", "formats", "JsonParser.java")), master, config, date, npm.version(), jid);
     JavaParserXmlGenerator xgen = new JavaParserXmlGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", "model", "core", "formats", "XmlParser.java")), master, config, date, npm.version(), jid);
     JavaParserRdfGenerator rgen = new JavaParserRdfGenerator(ManagedFileAccess.outStream(Utilities.path(dest, "src", "main", "java", "org", "hl7", "fhir", "model", "core", "formats", "RdfParser.java")), master, config, date, npm.version(), jid);
+    cvgen = convDest == null ? null : new JavaConverterGenerator(convDest, master, config, date, npm.version());
     
     if (VersionUtilities.isR4BVer(version)) {
       StructureDefinition sd = master.getStructures().get("http://hl7.org/fhir/StructureDefinition/Element");
@@ -162,6 +176,29 @@ public class JavaCoreGenerator {
     System.out.println(" .. RdfParser");
     rgen.generate();
     rgen.close();
+    if (cvgen != null) {
+      // resources that have moved out of R6 core (to the fml / testing / api logical model 
+      // packages) still get 50_N converters - generated from the R5 definitions, targeting 
+      // the logical model classes (see N_HOME_OVERRIDES in JavaConverterGenerator)
+      System.out.println(" .. Converters (50_N): resources moved out of core");
+      NpmPackage npm5 = pcm.loadPackage("hl7.fhir.r5.core");
+      Definitions r5defs = DefinitionsLoaderR5.load(npm5);
+      r5defs.fix();
+      updateExpansions(r5defs, DefinitionsLoaderR5.load(pcm.loadPackage("hl7.fhir.r5.expansions", npm5.version())));
+      markValueSets(r5defs, config);
+      Map<String, AnalysisElementInfo> ei5 = new HashMap<>();
+      for (String n : new String[] {"GraphDefinition", "StructureMap", "TestReport", "TestScript"}) {
+        StructureDefinition msd = r5defs.getStructures().get("http://hl7.org/fhir/StructureDefinition/"+n);
+        if (msd == null) {
+          System.out.println(" .. conv "+n+" - not found in R5!");
+        } else {
+          System.out.println(" .. conv "+n);
+          cvgen.seeClass(new Analyser(r5defs, config, npm5.fhirVersion()).analyse(msd, ei5));
+        }
+      }
+      System.out.println(" .. Converters (50_N)");
+      cvgen.finish();
+    }
     Map<String, StructureDefinition> extensions = new HashMap<>();
     for (StructureDefinition sd : master.getStructures().getList()) {
       if (ProfileUtilities.isExtensionDefinition(sd)) {
@@ -217,6 +254,9 @@ public class JavaCoreGenerator {
     jgen.seeClass(analysis);
     xgen.seeClass(analysis);
     rgen.seeClass(analysis);
+    if (cvgen != null) {
+      cvgen.seeClass(analysis);
+    }
     return name;
   }
 

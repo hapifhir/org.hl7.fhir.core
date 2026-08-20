@@ -505,7 +505,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
     }
   }
 
-  protected String makeConst(String cc) {
+  protected static String makeConst(String cc) {
     if (cc.equals("*"))
       cc = "ASTERISK";
     if (cc.equals("~"))
@@ -544,7 +544,7 @@ public class JavaBaseGenerator extends OutputStreamWriter {
     return cc;
   }
 
-  private boolean allPlusMinus(String cc) {
+  private static boolean allPlusMinus(String cc) {
     for (char c : cc.toCharArray())
       if (!(c == '-' || c == '+'))
         return false;
