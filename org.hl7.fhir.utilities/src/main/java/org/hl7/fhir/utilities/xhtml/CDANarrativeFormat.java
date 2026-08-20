@@ -335,11 +335,11 @@ public class CDANarrativeFormat {
   }
 
   /**
-   * For XHTML return the matching CDA narrative. This is a strict conversion that will fail if invalid XHTML is encountered.
+   * For XHTML return the matching CDA narrative. This is only guaranteed to work for XML produced from CDA, but will try whatever
    * @param xml      the writer to which the CDA narrative will be written
    * @param div      the root node of the FHIR narrative
    * @throws IOException   if a write operation on the XML writer fails
-   * @throws FHIRException if invalid XHTML is encountered in strict mode
+   * @throws FHIRException if unexpected elements are encountered in strict mode
    */
   public void convert(IXMLWriter xml, XhtmlNode div) throws IOException, FHIRException {
     convert(xml, div, true);
@@ -377,31 +377,48 @@ public class CDANarrativeFormat {
       xml.text(n.getContent());
       return;
     case Element:
-      String elementName = n.getName().toLowerCase();
-      switch (elementName) {
-        case "br" -> processBreak(xml, n);
-        case "h1", "h2", "h3", "h4", "h5", "h6", "caption" -> processCaption(xml, n, isStrict);
-        case "col" -> processCol(xml, n, isStrict);
-        case "colgroup" -> processColGroup(xml, n, isStrict);
-        case "span", "div" -> processContent(xml, n, isStrict);
-        case "li" -> processItem(xml, n, isStrict);
-        case "linkhtml" -> processlinkHtml(xml, n, isStrict);
-        case "ul", "ol" -> processList(xml, n, isStrict);
-        case "p" -> processParagraph(xml, n, isStrict);
-        case "img" -> processRenderMultiMedia(xml, n, isStrict);
-        case "sub" -> processSub(xml, n, isStrict);
-        case "sup" -> processSup(xml, n, isStrict);
-        case "table" -> processTable(xml, n, isStrict);
-        case "tbody" -> processTBody(xml, n, isStrict);
-        case "td" -> processTd(xml, n, isStrict);
-        case "tfoot" -> processTFoot(xml, n, isStrict);
-        case "th" -> processTh(xml, n, isStrict);
-        case "thead" -> processTHead(xml, n, isStrict);
-        case "a" -> processA(xml, n, isStrict);
-        case "tr" -> processTr(xml, n, isStrict);
-        case "list", "item", "paragraph", "rendermultimedia", "content", "footnote", "footnoteref" ->
-          processPassThrough(xml, n, isStrict);
-        default -> stripTag(xml, n, isStrict);
+      processElement(xml, n, isStrict);
+    }
+  }
+
+  private void processElement(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException {
+    String elementName = n.getName().toLowerCase();
+    switch (elementName) {
+      case "br" -> processBreak(xml, n);
+      case "h1", "h2", "h3", "h4", "h5", "h6", "caption" -> processCaption(xml, n, isStrict);
+      case "col" -> processCol(xml, n, isStrict);
+      case "colgroup" -> processColGroup(xml, n, isStrict);
+      case "span", "div" -> processContent(xml, n, isStrict);
+      case "footnote" -> processFootNote(xml, n, isStrict);
+      case "footnoteref" -> processFootNodeRef(xml, n, isStrict);
+      case "li" -> processItem(xml, n, isStrict);
+      case "linkhtml" -> processlinkHtml(xml, n, isStrict);
+      case "ul", "ol" -> processList(xml, n, isStrict);
+      case "p" -> processParagraph(xml, n, isStrict);
+      case "img" -> processRenderMultiMedia(xml, n, isStrict);
+      case "sub" -> processSub(xml, n, isStrict);
+      case "sup" -> processSup(xml, n, isStrict);
+      case "table" -> processTable(xml, n, isStrict);
+      case "tbody" -> processTBody(xml, n, isStrict);
+      case "td" -> processTd(xml, n, isStrict);
+      case "tfoot" -> processTFoot(xml, n, isStrict);
+      case "th" -> processTh(xml, n, isStrict);
+      case "thead" -> processTHead(xml, n, isStrict);
+      case "a" -> processA(xml, n, isStrict);
+      case "tr" -> processTr(xml, n, isStrict);
+      case "list", "item", "paragraph", "rendermultimedia", "content" -> {
+        if (isStrict) {
+          throw new FHIRException("Unknown element " + elementName);
+        } else {
+          processPassThrough(xml, n, false);
+        }
+      }
+      default -> {
+        if (isStrict) {
+          throw new FHIRException("Unknown element " + elementName);
+        } else {
+          stripTag(xml, n, false);
+        }
       }
     }
   }
@@ -437,6 +454,22 @@ public class CDANarrativeFormat {
     // todo: do something with revised..., "revised"
     processChildren(xml, n, isStrict);
     xml.exit("content");
+  }
+
+  private void processFootNote(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
+    if (isStrict) {
+      throw new Error("element " + n.getName() + " not handled yet");
+    } else {
+      processPassThrough(xml, n, isStrict);
+    }
+  }
+
+  private void processFootNodeRef(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
+    if (isStrict) {
+      throw new Error("element " + n.getName() + " not handled yet");
+    } else {
+      processPassThrough(xml, n, isStrict);
+    }
   }
 
   private void processItem(IXMLWriter xml, XhtmlNode n, boolean isStrict) throws IOException, FHIRException {
