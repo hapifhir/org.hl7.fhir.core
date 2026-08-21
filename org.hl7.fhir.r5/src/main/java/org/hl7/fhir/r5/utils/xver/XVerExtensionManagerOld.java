@@ -74,6 +74,17 @@ public class XVerExtensionManagerOld extends XVerExtensionManager {
     String verTarget = VersionUtilities.getMajMin(context.getVersion());
     String e = url.substring(54);
     String r = e.contains(".") ? e.substring(0, e.indexOf(".")) : e;
+    if (!lists.containsKey(verSource)) {
+      if (context.hasBinaryKey("xver-paths-"+verSource+".json")) {
+        try {
+          lists.put(verSource, JsonParser.parseObject(context.getBinaryForKey("xver-paths-"+verSource+".json")));
+        } catch (IOException e1) {
+          throw new FHIRException(e);
+        }
+      } else {
+        return null;
+      }
+    }
     JsonObject root = lists.get(verSource);
     JsonObject path = root.getJsonObject(e);
     if (path == null) {

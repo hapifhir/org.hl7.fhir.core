@@ -970,5 +970,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     xverManager = value;
   }
 
+
+  @Override
+  public boolean canLoadPackages() {
+    return packageCacheManager != null;
+  }
 }
 
