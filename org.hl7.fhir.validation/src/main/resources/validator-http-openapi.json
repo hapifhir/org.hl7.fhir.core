@@ -1,0 +1,1444 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "FHIR Validator HTTP Service",
+    "description": "HTTP API exposed by the HL7 FHIR Validator when it is run in server mode:\n\n    java -jar validator_cli.jar server <port> [options]\n\nThe service is a thin HTTP wrapper (`com.sun.net.httpserver.HttpServer`) around a single\nin-process `ValidationEngine`. The engine is configured once at start up (FHIR version,\nterminology server, loaded IGs, default instance-validator settings) and is then shared by\nevery request; per-request query parameters override the instance-validator settings for\nthat request only.\n\nNotes that apply to the whole API:\n\n* There is no authentication, no authorization and no rate limiting. By default the server\n  binds to the loopback address only; `-allowNetworkAccess` binds to all interfaces and is\n  the caller's responsibility to secure.\n* The server is created with the default executor, so requests are handled one at a time on\n  the dispatcher thread. The engine is stateful and mutable (`/loadIG` changes it for every\n  subsequent request), so it is not safe to treat this as a shared multi-tenant service.\n* Request format is taken from `Content-Type`: a media type containing `xml` means XML,\n  anything else (including a missing header) means JSON.\n* Response format is taken from `Accept`: a media type containing `xml` means XML, anything\n  else means JSON. `/convert` and `/transform` use this to pick their *output* format;\n  `/snapshot`, `/narrative`, `/version` and `/testdata` echo the *input* (or requested)\n  format instead.\n* Errors are returned as a FHIR `OperationOutcome` (`application/fhir+json` or\n  `application/fhir+xml`), except for a wrong HTTP method, which returns `text/plain`.\n* Paths are registered as `HttpServer` contexts, so any longer path with the same prefix\n  also matches (e.g. `POST /validateResource/anything` is handled by `/validateResource`).\n",
+    "version": "1.1.0",
+    "contact": {
+      "name": "HL7 FHIR Core Team",
+      "url": "https://github.com/hapifhir/org.hl7.fhir.core"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Locally running validator in server mode"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Validation",
+      "description": "Resource validation"
+    },
+    {
+      "name": "FHIRPath",
+      "description": "FHIRPath expression evaluation"
+    },
+    {
+      "name": "Conversion",
+      "description": "Format and FHIR version conversion"
+    },
+    {
+      "name": "Profile Operations",
+      "description": "StructureDefinition operations"
+    },
+    {
+      "name": "Resource Operations",
+      "description": "Operations that rewrite a resource"
+    },
+    {
+      "name": "StructureMap",
+      "description": "StructureMap fetch and execution"
+    },
+    {
+      "name": "Testing",
+      "description": "Matchetype comparison, test data generation, terminology tests"
+    },
+    {
+      "name": "Configuration",
+      "description": "Runtime configuration and lifecycle"
+    },
+    {
+      "name": "Documentation",
+      "description": "Machine and human readable API documentation"
+    }
+  ],
+  "paths": {
+    "/validateResource": {
+      "post": {
+        "tags": [
+          "Validation"
+        ],
+        "summary": "Validate a FHIR resource",
+        "description": "Validates the posted resource against the base specification for the FHIR version the\nserver was started with, plus any profiles supplied in `Resource.meta.profile` or in the\n`profile` query parameter.\n\nEvery query parameter is optional, but an **unrecognised** parameter name is an error:\nthe request fails with `400` and an `OperationOutcome` reading\n`Unable to process param <name>=<value>`. The same `400` is returned when a value cannot\nbe parsed (`bestPractice`, `checkDisplay`, `resourceIdRule`, and the three numeric\nparameters).\n\nEnum values are case sensitive where the underlying enum is matched by name\n(`bestPractice`, `checkDisplay`) and case insensitive where it is matched by code\n(`resourceIdRule`, `level`, `questionnaire`, `htmlInMarkdown`,\n`r5BundleRelativeReferencePolicy`).\n",
+        "parameters": [
+          {
+            "name": "profile",
+            "in": "query",
+            "description": "Canonical URL of a profile to validate against, as if it were listed in `Resource.meta.profile`. Repeat the parameter for multiple profiles. The profile and its dependencies must already be loaded (server start up `-ig`, or `/loadIG`).",
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+          },
+          {
+            "name": "extension",
+            "in": "query",
+            "description": "URL domain from which extensions are allowed, or `any` for all. Repeat for multiple domains.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "any"
+          },
+          {
+            "name": "bundleValidationRule",
+            "in": "query",
+            "description": "Selects entries within a Bundle to validate against a profile: a resource name, an integer index, or both. Must be paired positionally with `bundleValidationProfile` - the *n*th rule is matched with the *n*th profile, and unmatched extras are ignored.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Patient"
+          },
+          {
+            "name": "bundleValidationProfile",
+            "in": "query",
+            "description": "Canonical URL of the profile applied to the matching `bundleValidationRule`.",
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          {
+            "name": "jurisdiction",
+            "in": "query",
+            "description": "Jurisdiction to validate in. Use `uv` or `global` for no specific jurisdiction.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "US"
+          },
+          {
+            "name": "expansionParameters",
+            "in": "query",
+            "description": "Reference to expansion parameters to use - supplies fixed versions for code systems and value sets.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "description": "Minimum severity of message to report.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "hints",
+                "warnings",
+                "errors"
+              ],
+              "default": "hints"
+            }
+          },
+          {
+            "name": "bestPractice",
+            "in": "query",
+            "description": "How best practice constraints are reported. Case sensitive - the value must match the enum constant exactly.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Ignore",
+                "Hint",
+                "Warning",
+                "Error"
+              ]
+            }
+          },
+          {
+            "name": "checkDisplay",
+            "in": "query",
+            "description": "How the display text on `Coding`/`CodeableConcept` is checked. Case sensitive - the value must match the enum constant exactly.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Ignore",
+                "Check",
+                "CheckCaseAndSpace",
+                "CheckCase",
+                "CheckSpace"
+              ]
+            }
+          },
+          {
+            "name": "resourceIdRule",
+            "in": "query",
+            "description": "Whether the outermost resource must carry `Resource.id`. Contained resources (always required) and Bundle entries (always optional) are unaffected.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "optional",
+                "required",
+                "prohibited"
+              ],
+              "default": "optional"
+            }
+          },
+          {
+            "name": "questionnaire",
+            "in": "query",
+            "description": "What to do when validating `QuestionnaireResponse`: `none` ignores the questionnaire reference, `check` validates against it when present, `required` demands one.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "none",
+                "check",
+                "required"
+              ],
+              "default": "none"
+            }
+          },
+          {
+            "name": "htmlInMarkdown",
+            "in": "query",
+            "description": "Issue level reported for embedded HTML found in markdown elements.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ignore",
+                "warning",
+                "error"
+              ]
+            }
+          },
+          {
+            "name": "r5BundleRelativeReferencePolicy",
+            "in": "query",
+            "description": "Whether relative references in a Bundle follow the R5 resolution rule. An unrecognised value raises an unhandled exception rather than a `400`.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "default",
+                "never",
+                "always"
+              ],
+              "default": "default"
+            }
+          },
+          {
+            "name": "assumeValidRestReferences",
+            "in": "query",
+            "description": "Assume references that look like RESTful URLs are valid, and infer the resource type from the URL.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "hintAboutNonMustSupport",
+            "in": "query",
+            "description": "Raise a hint for data elements not marked `mustSupport`.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "wantInvariantsInMessages",
+            "in": "query",
+            "description": "Include the FHIRPath of a failed invariant in the message.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "noInvariants",
+            "in": "query",
+            "description": "Do not check invariants at all.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "unknownCodeSystemsCauseErrors",
+            "in": "query",
+            "description": "Treat an unknown code system behind a required binding as an error instead of a warning.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "forPublication",
+            "in": "query",
+            "description": "Also check conformance with the `Shareable*` profiles.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "noUnicodeBidiControlChars",
+            "in": "query",
+            "description": "Report any Unicode BiDi control character as an error.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "verbose",
+            "in": "query",
+            "description": "Shorthand: sets crumb trails (hints explaining which profiles were applied) and `showMessageIds` together.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "showMessageIds",
+            "in": "query",
+            "description": "Include message ids in the validation messages.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "allowExampleUrls",
+            "in": "query",
+            "description": "Treat references to `example.org` URLs as valid.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "showReferenceMessages",
+            "in": "query",
+            "description": "Include the detailed messages produced while validating referenced resources against the profiles declared on the reference.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "securityChecks",
+            "in": "query",
+            "description": "Check that string content contains no HTML-like tags.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "noExperimentalContent",
+            "in": "query",
+            "description": "Reject experimental content.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "txRouting",
+            "in": "query",
+            "description": "Add output summarising which terminology server was used for each terminology operation.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "implicitFhirpathStringConversions",
+            "in": "query",
+            "description": "Restore pre-5.6.48 FHIRPath automatic string conversion behaviour.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "allowDoubleQuotesInFhirpath",
+            "in": "query",
+            "description": "Accept legacy FHIRPath statements that use double quotes.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "checkIpsCodes",
+            "in": "query",
+            "description": "Report SNOMED CT codes that are not part of the IPS free set.",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "maxValidationMessages",
+            "in": "query",
+            "description": "Stop validating once this many messages have been produced, and return what has been found so far. Values of `0` or less are ignored.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "validationTimeout",
+            "in": "query",
+            "description": "Stop validating after this many milliseconds and return what has been found so far.",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "codeSystemValidationSizeLimit",
+            "in": "query",
+            "description": "Maximum number of codes checked against a code system for a single ValueSet include, ConceptMap group or CodeSystem supplement. Where a resource carries more codes than this, none are checked and a hint is issued instead. `0` means no limit.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 1000
+            }
+          },
+          {
+            "name": "htmlOutput",
+            "in": "query",
+            "description": "Accepted for parity with the CLI, but has no effect in server mode - the HTML summary is only written by the command line `validate` command.",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": true
+          },
+          {
+            "name": "outputStyle",
+            "in": "query",
+            "description": "Accepted for parity with the CLI, but has no effect in server mode - the response is always an `OperationOutcome`.",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "The FHIR resource to validate.",
+          "content": {
+            "application/fhir+json": {
+              "schema": {
+                "type": "object"
+              }
+            },
+            "application/fhir+xml": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validation completed. The `OperationOutcome` carries one issue per validation message; an outcome with no error-severity issues means the resource is valid.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/fhirpath": {
+      "post": {
+        "tags": [
+          "FHIRPath"
+        ],
+        "summary": "Evaluate a FHIRPath expression",
+        "description": "Evaluates a FHIRPath expression against the posted resource. The result is returned as a `Parameters` resource with an `expression` parameter echoing the input and a `result` parameter holding the string form of the evaluation result.",
+        "parameters": [
+          {
+            "name": "expression",
+            "in": "query",
+            "required": true,
+            "description": "The FHIRPath expression to evaluate.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Patient.name.family"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "The FHIR resource to evaluate the expression against.",
+          "content": {
+            "application/fhir+json": {
+              "schema": {
+                "type": "object"
+              }
+            },
+            "application/fhir+xml": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Evaluation result as a `Parameters` resource.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing `expression` parameter.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/matchetype": {
+      "post": {
+        "tags": [
+          "Testing"
+        ],
+        "summary": "Compare a resource against a matchetype pattern",
+        "description": "Compares an actual resource against an expected \"matchetype\" - a resource-shaped pattern whose values may be wildcards such as `$string$`, `$date$` or `$uuid$`. Both documents are supplied as JSON objects inside a single JSON wrapper; XML is not supported here.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "resource",
+                  "matchetype"
+                ],
+                "properties": {
+                  "resource": {
+                    "type": "object",
+                    "description": "The actual FHIR resource."
+                  },
+                  "matchetype": {
+                    "type": "object",
+                    "description": "The expected pattern, optionally using wildcards."
+                  }
+                }
+              },
+              "example": {
+                "resource": {
+                  "resourceType": "Patient",
+                  "name": [
+                    {
+                      "family": "Doe"
+                    }
+                  ]
+                },
+                "matchetype": {
+                  "resourceType": "Patient",
+                  "name": [
+                    {
+                      "family": "$string$"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Comparison result. An `OperationOutcome` with no error issues means the resource matches the pattern.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The body did not contain both `resource` and `matchetype`.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/testdata": {
+      "post": {
+        "tags": [
+          "Testing"
+        ],
+        "summary": "Generate test data for a profile",
+        "description": "Generates conformant example data for a profile. One resource is produced per row in `data`; with no `data` a single row of defaults is used. `mappings` bind row columns to element paths.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "profile"
+                ],
+                "properties": {
+                  "profile": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Canonical URL of the StructureDefinition to generate against."
+                  },
+                  "data": {
+                    "type": "array",
+                    "description": "Rows of column name / value pairs. Defaults to one empty row.",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "mappings": {
+                    "type": "array",
+                    "description": "Mappings from element path to a value expression.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string"
+                        },
+                        "expression": {
+                          "type": "string"
+                        },
+                        "parts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "bundle": {
+                    "type": "string",
+                    "description": "The string `true` wraps all generated rows in a Bundle. Any other value, and absence, means one resource per row. Note this is compared as a string, so a JSON boolean `true` does not switch it on.",
+                    "enum": [
+                      "true",
+                      "false"
+                    ],
+                    "default": "false"
+                  },
+                  "format": {
+                    "type": "string",
+                    "description": "Output format for the generated resources.",
+                    "enum": [
+                      "json",
+                      "xml"
+                    ],
+                    "default": "json"
+                  }
+                }
+              },
+              "example": {
+                "profile": "http://hl7.org/fhir/StructureDefinition/Patient",
+                "data": [
+                  {
+                    "familyName": "Doe",
+                    "givenName": "John"
+                  }
+                ],
+                "mappings": [
+                  {
+                    "path": "Patient.name.family",
+                    "expression": "column('familyName')"
+                  },
+                  {
+                    "path": "Patient.name.given",
+                    "expression": "column('givenName')"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The generated resource, or Bundle of resources.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing `profile` field.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/loadIG": {
+      "post": {
+        "tags": [
+          "Configuration"
+        ],
+        "summary": "Load an implementation guide into the running engine",
+        "description": "Loads an IG into the shared validation engine, making its profiles, value sets and maps available to every subsequent request. The value may be a package reference (`id#version`), a URL, or a path on the server's file system. The load is permanent for the lifetime of the process - there is no unload.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "ig"
+                ],
+                "properties": {
+                  "ig": {
+                    "type": "string",
+                    "description": "Package reference, URL, or local path."
+                  }
+                }
+              },
+              "example": {
+                "ig": "hl7.fhir.us.core#5.0.1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "IG loaded.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing `ig` field.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/convert": {
+      "post": {
+        "tags": [
+          "Conversion"
+        ],
+        "summary": "Convert a resource between JSON and XML",
+        "description": "Re-serialises the posted resource. The input format comes from `Content-Type` and the output format from `Accept`; the FHIR version is unchanged.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/fhir+json": {
+              "schema": {
+                "type": "object"
+              }
+            },
+            "application/fhir+xml": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The converted resource.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/version": {
+      "post": {
+        "tags": [
+          "Conversion"
+        ],
+        "summary": "Convert a resource between FHIR versions",
+        "description": "Converts the posted resource from the server's FHIR version to `targetVersion` using the native version convertors. Only resources that carry a `url` element can be converted - StructureMap-based conversion is not available in server mode, and anything else fails with a 500. The response uses the same format as the request.",
+        "parameters": [
+          {
+            "name": "targetVersion",
+            "in": "query",
+            "required": true,
+            "description": "Target FHIR version.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1.0",
+                "1.4",
+                "3.0",
+                "4.0",
+                "4.3",
+                "5.0"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/fhir+json": {
+              "schema": {
+                "type": "object"
+              }
+            },
+            "application/fhir+xml": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The resource in the target version.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing `targetVersion` parameter.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/snapshot": {
+      "post": {
+        "tags": [
+          "Profile Operations"
+        ],
+        "summary": "Generate the snapshot for a StructureDefinition",
+        "description": "Takes a StructureDefinition carrying a differential and returns it with the snapshot generated. The base definition must be known to the engine. The response uses the same format as the request.",
+        "requestBody": {
+          "required": true,
+          "description": "A StructureDefinition with a differential.",
+          "content": {
+            "application/fhir+json": {
+              "schema": {
+                "type": "object"
+              }
+            },
+            "application/fhir+xml": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The StructureDefinition with its snapshot populated.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/narrative": {
+      "post": {
+        "tags": [
+          "Resource Operations"
+        ],
+        "summary": "Generate the narrative for a resource",
+        "description": "Returns the posted resource with a generated human-readable narrative in `text.div`. The response uses the same format as the request.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/fhir+json": {
+              "schema": {
+                "type": "object"
+              }
+            },
+            "application/fhir+xml": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The resource with its narrative populated.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/transform": {
+      "post": {
+        "tags": [
+          "StructureMap"
+        ],
+        "summary": "Apply a StructureMap to a resource",
+        "description": "Runs the named StructureMap over the posted resource. The map, and any maps it depends on, must already be loaded (server start up `-ig`, or `/loadIG`). Input format comes from `Content-Type`, output format from `Accept`.",
+        "parameters": [
+          {
+            "name": "map",
+            "in": "query",
+            "required": true,
+            "description": "Canonical URL of the StructureMap to run.",
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/fhir+json": {
+              "schema": {
+                "type": "object"
+              }
+            },
+            "application/fhir+xml": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The transform output.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing `map` parameter.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/compile": {
+      "get": {
+        "tags": [
+          "StructureMap"
+        ],
+        "summary": "Fetch a StructureMap by canonical URL",
+        "description": "Returns the StructureMap the engine holds for the given canonical URL, serialised in the format asked for by `Accept`. This handler does not check the HTTP method, so POST (and any other method) behave identically to GET.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Canonical URL of the StructureMap.",
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The StructureMap resource.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing `url` parameter.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The map is not loaded, or could not be serialised.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/txTest": {
+      "get": {
+        "tags": [
+          "Testing"
+        ],
+        "summary": "Run one terminology ecosystem test case against a terminology server",
+        "description": "Runs a single test from the terminology ecosystem test suite (`hl7.fhir.uv.tx-ecosystem#dev`, downloaded on first use) against the nominated terminology server. A tester is created per `server` value and cached for the life of the process, so `version` and `externals` only take effect on the first call for a given server. A disabled suite or test reports success without running.",
+        "parameters": [
+          {
+            "name": "suite",
+            "in": "query",
+            "required": true,
+            "description": "Name of the test suite.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "test",
+            "in": "query",
+            "required": true,
+            "description": "Name of the test within the suite.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "server",
+            "in": "query",
+            "required": true,
+            "description": "Base URL of the terminology server under test.",
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "example": "https://tx.fhir.org/r4"
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "description": "FHIR version the test data is loaded for.",
+            "schema": {
+              "type": "string",
+              "default": "5.0"
+            }
+          },
+          {
+            "name": "externals",
+            "in": "query",
+            "description": "Name of the externals file in the test package. `.json` is appended when missing.",
+            "schema": {
+              "type": "string",
+              "default": "messages-tx.fhir.org.json"
+            }
+          },
+          {
+            "name": "modes",
+            "in": "query",
+            "description": "Comma separated list of test modes. Defaults to `tx.fhir.org,omop,general,snomed`.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "general,snomed"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The test ran. An information-severity `OperationOutcome` means it passed (or was disabled); an error-severity outcome carries the failure message.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "description": "A required parameter was missing, the suite or test was not found, or the test harness failed.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stop": {
+      "post": {
+        "tags": [
+          "Configuration"
+        ],
+        "summary": "Shut the server down",
+        "description": "Responds, then stops the HTTP server and exits the JVM about 100ms later. POST only - a GET returns 405.",
+        "responses": {
+          "200": {
+            "description": "Shutdown accepted; the process exits shortly afterwards.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                }
+              },
+              "application/fhir+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          }
+        }
+      }
+    },
+    "/openapi.json": {
+      "get": {
+        "tags": [
+          "Documentation"
+        ],
+        "summary": "This OpenAPI document",
+        "description": "Serves this specification as JSON, with `Access-Control-Allow-Origin: *` so that the documentation pages can load it.",
+        "responses": {
+          "200": {
+            "description": "The OpenAPI 3.0 document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/docs": {
+      "get": {
+        "tags": [
+          "Documentation"
+        ],
+        "summary": "Swagger UI",
+        "description": "HTML page that renders `/openapi.json` with Swagger UI. The Swagger assets are loaded from unpkg.com, so this page needs internet access in the browser.",
+        "responses": {
+          "200": {
+            "description": "HTML documentation page.",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/redoc": {
+      "get": {
+        "tags": [
+          "Documentation"
+        ],
+        "summary": "Redoc UI",
+        "description": "HTML page that renders `/openapi.json` with Redoc. The Redoc bundle is loaded from cdn.redoc.ly, so this page needs internet access in the browser.",
+        "responses": {
+          "200": {
+            "description": "HTML documentation page.",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "BadRequest": {
+        "description": "A parameter was not recognised, or its value could not be parsed.",
+        "content": {
+          "application/fhir+json": {
+            "schema": {
+              "$ref": "#/components/schemas/OperationOutcome"
+            }
+          },
+          "application/fhir+xml": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "MethodNotAllowed": {
+        "description": "The HTTP method is not supported by this endpoint.",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "example": "Method not allowed"
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "The operation failed. The outcome carries the failure message.",
+        "content": {
+          "application/fhir+json": {
+            "schema": {
+              "$ref": "#/components/schemas/OperationOutcome"
+            }
+          },
+          "application/fhir+xml": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "OperationOutcome": {
+        "type": "object",
+        "description": "FHIR OperationOutcome resource carrying validation messages or error details. Only the elements the service populates are described here.",
+        "properties": {
+          "resourceType": {
+            "type": "string",
+            "enum": [
+              "OperationOutcome"
+            ]
+          },
+          "issue": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "fatal",
+                    "error",
+                    "warning",
+                    "information",
+                    "success"
+                  ]
+                },
+                "code": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "diagnostics": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "expression": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
