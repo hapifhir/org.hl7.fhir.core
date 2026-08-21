@@ -1290,7 +1290,7 @@ public class ProfilePathProcessor {
             .withBaseLimit(newBaseLimit)
             .withDiffLimit(newDiffLimit)
             .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, 0))
-            .withRedirector(null).withSlicing(new PathSlicingParams())
+            .withSlicing(new PathSlicingParams())
             .processPaths(nc, mapHelper, null);
       }
 //            throw new Error("Not done yet");
