@@ -42,6 +42,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.services.conformance.ElementRedirection;
 import org.hl7.fhir.services.conformance.profile.MappingAssistant.MappingMergeModeOption;
+import org.hl7.fhir.services.context.ContextUtilities;
 import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.ObjectConverter;
 import org.hl7.fhir.services.elementmodel.Property;
@@ -3494,6 +3495,20 @@ public class ProfileUtilities {
 
 
 
+  public ElementDefinitionResolution findElementForPath(String typeName, String elementName) {
+    StructureDefinition sd = context.fetchTypeDefinition(typeName);
+    if (sd == null) {
+      return null;
+    }
+    List<ElementDefinition> list = sd.getSnapshot().getElementList();
+    ElementDefinition ed = sd.getSnapshot().getElementByPath(elementName);
+    if (ed == null) {
+      return null;
+    } else {
+      return new ElementDefinitionResolution(sd, ed);
+    }
+  }
+
   protected ElementDefinitionResolution getElementById(StructureDefinition source, List<ElementDefinition> elements, UriType contentRefElement) {
     String contentReference = contentRefElement.getValue();
     if (!contentReference.startsWith("#") && contentReference.contains("#")) {
@@ -4114,7 +4129,19 @@ public class ProfileUtilities {
     if (source != null && source.getSourcePackage() != null && source.getSourcePackage().isCore()) {
       source = null;
     }
-    return context.fetchResource(StructureDefinition.class, u, ExtensionUtilities.getVersionResolutionRules(ref), v, source);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, u, ExtensionUtilities.getVersionResolutionRules(ref), v, source);
+    if (sd == null) {
+      if (xver == null) {
+        xver = XVerExtensionManagerFactory.createExtensionManager(context);
+      }
+      if (xver.status(u) == XVerExtensionManager.XVerExtensionStatus.Valid) {
+        sd = xver.getDefinition(u);
+        if (sd != null && !sd.hasSnapshot()) {
+          new ContextUtilities(getContext()).generateSnapshot(sd);
+        }
+      }
+    }
+    return sd;
   }
 
   // generate a CSV representation of the structure definition

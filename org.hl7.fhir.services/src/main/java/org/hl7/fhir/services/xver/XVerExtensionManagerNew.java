@@ -4,6 +4,7 @@ import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.model.core.StructureDefinition;
 import org.hl7.fhir.model.core.VersionResolutionRules;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
@@ -28,6 +29,9 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
       return XVerExtensionStatus.Invalid;
     }
     String v = url.substring(20, 23);
+    if (!Utilities.isDecimal(v, false)) {
+      return XVerExtensionStatus.Invalid;
+    }
     String targetVersion = VersionUtilities.getNameForVersion(v).toLowerCase();
     if (targetVersion.contains("?")) {
       return XVerExtensionStatus.BadVersion;
@@ -36,6 +40,9 @@ public class XVerExtensionManagerNew extends XVerExtensionManager {
     String sourceVersion = VersionUtilities.getNameForVersion(context.getVersion()).toLowerCase();
     String pid = "hl7.fhir.uv.xver-"+targetVersion+"."+sourceVersion;
     if (!context.hasPackage(pid, XVER_VERSION_RELEASE)) {
+      if (!context.getManager().canLoadPackages()) {
+        return XVerExtensionStatus.NotAllowed;
+      }
       try {
         context.getManager().loadPackage(pid+"#0.1.0");
       } catch (IOException e) {

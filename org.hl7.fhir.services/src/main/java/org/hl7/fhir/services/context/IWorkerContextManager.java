@@ -61,6 +61,17 @@ public interface IWorkerContextManager {
 
 
   /**
+   * Determines whether the implementation can load packages into the context.
+   *
+   * This method is typically used to check if the context supports loading resources
+   * from FHIR packages, which may involve managing dependencies, resource types, and
+   * lazy loading mechanisms.
+   *
+   * @return true if the implementation supports package loading; false otherwise.
+   */
+  public boolean canLoadPackages();
+
+  /**
    * cache a resource for later retrieval using fetchResource.
    *
    * The package information is used to help manage the cache internally, and to
