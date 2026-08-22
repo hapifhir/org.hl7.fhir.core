@@ -298,7 +298,7 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.ogce</groupId>
+            <groupId>org.codelibs</groupId>
             <artifactId>xpp3</artifactId>
         </dependency>
 
