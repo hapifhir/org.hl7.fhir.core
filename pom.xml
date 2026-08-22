@@ -72,7 +72,10 @@
         <module>org.hl7.fhir.r4b</module>
         <module>org.hl7.fhir.r5</module>
         <module>org.hl7.fhir.convertors</module>
-        <module>org.hl7.fhir.core.generator</module>
+        <!-- org.hl7.fhir.core.generator is deliberately NOT a module: it is an internal R6 code
+             generation tool that is never published and is only ever run by hand. Import it in an
+             IDE by opening org.hl7.fhir.core.generator/pom.xml as its own maven project - see that
+             module's readme.md. -->
         <module>org.hl7.fhir.validation</module>
         <module>org.hl7.fhir.validation.cli</module>
         <!-- The report project exists only to aggregate the test results from the other projects into a central report. -->

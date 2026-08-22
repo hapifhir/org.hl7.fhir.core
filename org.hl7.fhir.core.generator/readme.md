@@ -24,3 +24,18 @@ The most common reason to alter the generation is to add additional utility rout
 To do this, edit on the one of the templates in the configuration directory - xx.java, where xx is the class name (may include
 containing class). You may also need to add to the imports in the configuration.ini file. 
 
+
+Building and Running
+
+This module is deliberately not listed in the parent pom's <modules>. It is an internal tool, it
+is never published, and it is only ever run by hand, so a plain `mvn install` at the root does not
+compile it and CI does not check it - if the R5/utilities API moves under it, you find out here.
+
+To work on it in IntelliJ: Maven tool window -> + -> select org.hl7.fhir.core.generator/pom.xml.
+IntelliJ then treats it as its own maven project in the same window and marks src as the source
+root (the pom sets <sourceDirectory>src</sourceDirectory> so the configuration/ and
+add-ons-config/ template .java fragments are never compiled). Run JavaCoreGenerator with the
+arguments described above.
+
+From the command line: mvn -f org.hl7.fhir.core.generator/pom.xml compile. The sibling modules it
+depends on have to be in the local repository first, so run mvn install at the root beforehand.
