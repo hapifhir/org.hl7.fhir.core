@@ -5,7 +5,7 @@ import org.hl7.fhir.r5.renderers.RendererFactory;
 /**
  * Registration companion for the hand-written renderers of the FHIR Testing IG
  * (hl7.fhir.uv.testing). This is the rendering-layer counterpart to the generated
- * {@code org.hl7.fhir.r5.igs.testing.TestingParser} facade: where that registers the
+ * {@code org.hl7.fhir.r5.igs.testing.TestingRegistration} facade: where that registers the
  * parsers/composers, this registers the renderers.
  * <p/>
  * The two are deliberately kept separate. Parser registration is global by default (with an

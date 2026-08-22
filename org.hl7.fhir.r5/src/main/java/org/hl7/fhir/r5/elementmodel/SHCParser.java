@@ -22,7 +22,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -59,7 +59,7 @@ import com.nimbusds.jose.util.JSONObjectUtils;
  * @author grahame
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 public class SHCParser extends ParserBase {
 
   private static final String JWT_NAME = "jwt";

@@ -94,7 +94,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
-@MarkedToMoveToAdjunctPackage
+
 public class XmlParser extends ParserBase {
   private boolean allowXsiLocation;
   private String version;

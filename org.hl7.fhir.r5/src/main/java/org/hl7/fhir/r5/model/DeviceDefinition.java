@@ -198,7 +198,20 @@ public class DeviceDefinition extends DomainResource {
         else
           throw new FHIRException("Unknown DeviceDefinitionRegulatoryIdentifierType code '"+codeString+"'");
         }
-        public String toCode() {
+
+      public static boolean isValidCode(String codeString) {
+          if (codeString == null || "".equals(codeString))
+        return false;
+        if ("basic".equals(codeString))
+          return true;
+        if ("master".equals(codeString))
+          return true;
+        if ("license".equals(codeString))
+          return true;
+        return false;
+      }
+
+      public String toCode() {
           switch (this) {
             case BASIC: return "basic";
             case MASTER: return "master";
@@ -330,6 +343,23 @@ public class DeviceDefinition extends DomainResource {
         else
           throw new FHIRException("Unknown DeviceProductionIdentifierInUDI code '"+codeString+"'");
         }
+      public static boolean isValidCode(String codeString) throws FHIRException {
+        if (codeString == null || "".equals(codeString))
+          return false;
+        if ("lot-number".equals(codeString))
+          return true;
+        if ("manufactured-date".equals(codeString))
+          return true;
+        if ("serial-number".equals(codeString))
+          return true;
+        if ("expiration-date".equals(codeString))
+          return true;
+        if ("biological-source".equals(codeString))
+          return true;
+        if ("software-version".equals(codeString))
+          return true;
+        return false;
+      }
         public String toCode() {
           switch (this) {
             case LOTNUMBER: return "lot-number";

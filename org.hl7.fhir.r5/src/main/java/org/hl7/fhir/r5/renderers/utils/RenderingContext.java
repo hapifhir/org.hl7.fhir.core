@@ -69,7 +69,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * Timezones: by default, date/times are rendered in their source timezone 
  * 
  */
-@MarkedToMoveToAdjunctPackage
+
 public class RenderingContext extends RenderingI18nContext {
 
 

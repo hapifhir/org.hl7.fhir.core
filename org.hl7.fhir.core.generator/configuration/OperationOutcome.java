@@ -4,7 +4,7 @@
 
 
   public boolean isSuccess() {
-    for (OperationOutcomeIssueComponent iss : getIssue()) {
+    for (OperationOutcomeIssueComponent iss : getIssueList()) {
       if (iss.isWarningOrMore() || iss.getCode() != IssueType.INFORMATIONAL) {
         return false;
       }

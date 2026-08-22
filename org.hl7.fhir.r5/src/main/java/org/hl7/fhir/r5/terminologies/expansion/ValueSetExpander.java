@@ -116,7 +116,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 import javax.annotation.Nonnull;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ValueSetExpander extends ValueSetProcessBase {
 
   private static final int REGEX_TIMEOUT_LIMIT = 5; // regex filters only get given 5 seconds. Is that enough? to be decided

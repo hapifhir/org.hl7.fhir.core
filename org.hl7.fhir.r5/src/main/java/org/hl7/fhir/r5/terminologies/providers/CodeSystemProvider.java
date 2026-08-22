@@ -8,7 +8,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 
 /**
  * For special code systems where the code system resource isn't enough, but we can support them internall
@@ -17,7 +17,7 @@ import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
  * @author grahamegrieve
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 public abstract class CodeSystemProvider {
 
   public static CodeSystemProvider factory(String system) {

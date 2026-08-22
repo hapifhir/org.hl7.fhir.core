@@ -35,7 +35,7 @@ import lombok.Getter;
 import lombok.With;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ProfilePathProcessor {
 
@@ -1290,7 +1290,7 @@ public class ProfilePathProcessor {
             .withBaseLimit(newBaseLimit)
             .withDiffLimit(newDiffLimit)
             .withProfileName(getProfileName() + profileUtilities.pathTail(diffMatches, 0))
-            .withRedirector(null).withSlicing(new PathSlicingParams())
+            .withSlicing(new PathSlicingParams())
             .processPaths(nc, mapHelper, null);
       }
 //            throw new Error("Not done yet");
