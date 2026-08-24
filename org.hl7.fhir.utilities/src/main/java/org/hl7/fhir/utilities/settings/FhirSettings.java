@@ -38,9 +38,13 @@ public class FhirSettings {
     return instance.filePath;
   }
 
+  public static FhirSettingsPOJO getFhirSettingsPOJO() {
+    getInstance();
+    return instance.fhirSettingsPOJO.copy();
+  }
+
   final String filePath;
   private FhirSettings(FhirSettingsPOJO fhirSettingsPOJO, String filePath) {
-
     this.fhirSettingsPOJO = fhirSettingsPOJO;
     this.filePath = filePath;
   }
@@ -234,6 +238,14 @@ public class FhirSettings {
 
   protected static String getDefaultSettingsPath() throws IOException {
     return Utilities.path(System.getProperty("user.home"), ".fhir", "fhir-settings.json");
+  }
+
+  public static boolean isSSRFProtectionEnabled() {
+    getInstance();
+    if (instance.fhirSettingsPOJO.getSsrfProtectionEnabled() != null) {
+      return instance.fhirSettingsPOJO.getSsrfProtectionEnabled();
+    }
+    return true;
   }
 
   public static boolean isIgnoreDefaultPackageServers() {

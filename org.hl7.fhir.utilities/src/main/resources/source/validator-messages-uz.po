@@ -726,6 +726,11 @@ msgstr ""
 msgid "Expected {0} but found {1} event elements"
 msgstr ""
 
+# CACHE_ID_UNKNOWN
+#: CACHE_ID_UNKNOWN
+msgid "The cache ''{0}'' is not known to this server. Caches are created with $cache-control?mode=start; this one was never created, or has expired or been released"
+msgstr ""
+
 # CANONICAL_MULTIPLE_VERSIONS_KNOWN
 #: CANONICAL_MULTIPLE_VERSIONS_KNOWN
 msgid "The version {2} for the {0} {1} is not known. These versions are known: {3}"
@@ -1036,6 +1041,11 @@ msgstr ""
 msgid "The code ''{0}'' differs from the correct code ''{1}'' by case. Although the code system ''{2}'' is case insensitive, implementers are strongly encouraged to use the correct case anyway"
 msgstr ""
 
+# CONCEPTMAP_GROUP_SOURCE_CODE_CANT_CHECK
+#: CONCEPTMAP_GROUP_SOURCE_CODE_CANT_CHECK
+msgid "The source code ''{0}'' in the code system {1} cannot be checked due to special rules around the code system"
+msgstr ""
+
 # CONCEPTMAP_GROUP_SOURCE_CODE_INVALID
 #: CONCEPTMAP_GROUP_SOURCE_CODE_INVALID
 msgid "The source code ''{0}'' is not valid in the code system {1}"
@@ -1069,6 +1079,11 @@ msgstr ""
 # CONCEPTMAP_GROUP_SOURCE_UNKNOWN
 #: CONCEPTMAP_GROUP_SOURCE_UNKNOWN
 msgid "The Source Code System {0} is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed"
+msgstr ""
+
+# CONCEPTMAP_GROUP_TARGET_CODE_CANT_CHECK
+#: CONCEPTMAP_GROUP_TARGET_CODE_CANT_CHECK
+msgid "The target code ''{0}'' in the code system {1} cannot be checked due to special rules around the code system"
 msgstr ""
 
 # CONCEPTMAP_GROUP_TARGET_CODE_INVALID
@@ -1362,6 +1377,13 @@ msgstr ""
 #: Discriminator__is_based_on_type_but_slice__in__has_no_types
 msgid "Discriminator ({0}) is based on type, but slice {1} in {2} has no types"
 msgstr ""
+
+# Display_Name_Not_Fixed_use_Supplement
+#: Display_Name_Not_Fixed_use_Supplement
+msgid "The display name ''{4}'' is not a known display name for {1}#{2}. Known display is {3} (for the language(s) ''{5}''). Use a supplement to define displays for user assigned codes"
+msgid_plural "The display name ''{4}'' is not a known display name for {1}#{2}. Known displays are {3} (for the language(s) ''{5}''). Use a supplement to define displays for user assigned codes"
+msgstr[0] ""
+msgstr[1] ""
 
 # Display_Name_WS_for__should_be_one_of__instead_of
 #: Display_Name_WS_for__should_be_one_of__instead_of
@@ -2093,9 +2115,14 @@ msgstr ""
 msgid "Error evaluating FHIRPath expression: The parameter type {2} is not legal for {0} parameter {1}. expecting {3}"
 msgstr ""
 
+# FHIR_RESOURCE_ID_CANT_BE_EXTENDED
+#: FHIR_RESOURCE_ID_CANT_BE_EXTENDED
+msgid "Extensions are not allowed on Resource.id (''{0}'')"
+msgstr ""
+
 # FILTER_NOT_UNDERSTOOD
 #: FILTER_NOT_UNDERSTOOD
-msgid "The filter \"{0} {1} {2}\" from the value set {3} was not understood in the context of {4}"
+msgid "The filter \"{0} {1} {2}\" is not understood or supported"
 msgstr ""
 
 # Fixed_Type_Checks_DT_Address_Line
@@ -2263,6 +2290,11 @@ msgstr ""
 msgid "The concept ''{1}'' has a status of {0} and its use should be reviewed"
 msgstr ""
 
+# INACTIVE_CONCEPT_FOUND_ADD
+#: INACTIVE_CONCEPT_FOUND_ADD
+msgid "The concept ''{1}'' has a status of {0} and {2} and its use should be reviewed"
+msgstr ""
+
 # INACTIVE_DISPLAY_FOUND
 #: INACTIVE_DISPLAY_FOUND
 msgid "''{1}'' is no longer considered a correct display for code ''{2}'' (status = {4}). The correct display is ''{3}''"
@@ -2273,6 +2305,16 @@ msgstr[1] ""
 # INVALID_DISPLAY_NAME
 #: INVALID_DISPLAY_NAME
 msgid "Invalid displayLanguage: ''{0}''"
+msgstr ""
+
+# INVALID_ECL
+#: INVALID_ECL
+msgid "Invalid ECL expression: ''{0}'': ({1})"
+msgstr ""
+
+# INVALID_REGEX
+#: INVALID_REGEX
+msgid "The regex ''{0}'' is not valid: {1}"
 msgstr ""
 
 # INV_FAILED
@@ -2345,6 +2387,11 @@ msgstr ""
 msgid "Comments are not allowed in JSON"
 msgstr ""
 
+# JSON_PROPERTY_INVALID_ARRAY
+#: JSON_PROPERTY_INVALID_ARRAY
+msgid "The JSON array for ''{0}'' is invalid at index {1} - must have at least one valid value"
+msgstr ""
+
 # JSON_PROPERTY_NO_QUOTES
 #: JSON_PROPERTY_NO_QUOTES
 msgid "The JSON property ''{0}'' has no quotes around the name of the property"
@@ -2353,6 +2400,36 @@ msgstr ""
 # JSON_PROPERTY_VALUE_NO_QUOTES
 #: JSON_PROPERTY_VALUE_NO_QUOTES
 msgid "The JSON property ''{0}'' has no quotes around the value of the property ''{1}''"
+msgstr ""
+
+# LIQUID_BAD_DATE_FORMAT
+#: LIQUID_BAD_DATE_FORMAT
+msgid "The date format ''{0}'' is not a valid format for the ''date'' Liquid filter"
+msgstr ""
+
+# LIQUID_FILTER_NOT_SUPPORTED
+#: LIQUID_FILTER_NOT_SUPPORTED
+msgid "The specified liquid filter ''{0}'' is not supported in FHIR Liquid"
+msgstr ""
+
+# LIQUID_INCLUDE_NOT_RESOLVED
+#: LIQUID_INCLUDE_NOT_RESOLVED
+msgid "The Liquid include ''{0}'' could not be resolved"
+msgstr ""
+
+# LIQUID_INCLUDE_NOT_SUPPORTED
+#: LIQUID_INCLUDE_NOT_SUPPORTED
+msgid "Liquid include statements are not supported in this context (no include resolver provided)"
+msgstr ""
+
+# LIQUID_NO_SOURCE_TO_PARSE
+#: LIQUID_NO_SOURCE_TO_PARSE
+msgid "No source provided to the Liquid parser"
+msgstr ""
+
+# LIQUID_STATEMENT_ERROR
+#: LIQUID_STATEMENT_ERROR
+msgid "Error processing statement ''{0}'' - {1}"
 msgstr ""
 
 # LIQUID_SYNTAX_COLON
@@ -2395,6 +2472,11 @@ msgstr ""
 msgid "Script {0}: Found unterminated string parsing cycle"
 msgstr ""
 
+# LIQUID_UNABLE_TO_PARSE_DATETIME
+#: LIQUID_UNABLE_TO_PARSE_DATETIME
+msgid "The input to the 'date' Liquid filter must be a valid date - found ''{0}''"
+msgstr ""
+
 # LIQUID_UNKNOWN_FILTER
 #: LIQUID_UNKNOWN_FILTER
 msgid "Unknown Liquid filter ''{0}''"
@@ -2413,11 +2495,6 @@ msgstr ""
 # LIQUID_UNKNOWN_SYNTAX
 #: LIQUID_UNKNOWN_SYNTAX
 msgid "Unexpected syntax parsing liquid statement"
-msgstr ""
-
-# LIQUID_VARIABLE_ALREADY_ASSIGNED
-#: LIQUID_VARIABLE_ALREADY_ASSIGNED
-msgid "Liquid Exception: The variable ''{0}'' already has an assigned value"
 msgstr ""
 
 # LIQUID_VARIABLE_ILLEGAL
@@ -2946,7 +3023,7 @@ msgstr ""
 
 # NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
 #: NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK
-msgid "There are no valid display names found for the code {1}#{2} for language(s) ''{3}''. The display is ''{4}'' which is the default language display"
+msgid "There are no valid display names found for the code {1}#{2} for language(s) ''{3}''. The display is ''{4}'' which is a valid display for the default language"
 msgstr ""
 
 # Named_items_are_out_of_order_in_the_slice
@@ -3140,6 +3217,37 @@ msgstr ""
 #: PACKAGE_VERSION_MISMATCH
 msgid "FHIR Version mismatch in package {0}: version is {2} but must be {1} (path: {3})"
 msgstr ""
+
+# PARAMETERS_STD_NO_RESOURCE
+#: PARAMETERS_STD_NO_RESOURCE
+msgid "The parameter ''{0}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter must have a resource, but this parameter instead has a value of type {1}. Check that this is correct"
+msgstr ""
+
+# PARAMETERS_STD_NO_VALUE
+#: PARAMETERS_STD_NO_VALUE
+msgid "The parameter ''{0}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter must have a value, but this parameter does not. Check that this is correct"
+msgstr ""
+
+# PARAMETERS_STD_RES_WRONG_TYPE
+#: PARAMETERS_STD_RES_WRONG_TYPE
+msgid "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter has the resource type or {3}, but this parameter instead has a resource of type {2}. Check that this is correct"
+msgid_plural "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter has the resource types {3}, but this parameter instead has a resource of type {2}. Check that this is correct"
+msgstr[0] ""
+msgstr[1] ""
+
+# PARAMETERS_STD_RES_WRONG_TYPE_MIXED
+#: PARAMETERS_STD_RES_WRONG_TYPE_MIXED
+msgid "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, then the type or resource type should be {3}, but found {2}. Check that this is correct"
+msgid_plural "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, then the type or resource type should be one of {3}, but found {2}. Check that this is correct"
+msgstr[0] ""
+msgstr[1] ""
+
+# PARAMETERS_STD_WRONG_TYPE
+#: PARAMETERS_STD_WRONG_TYPE
+msgid "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter has a type of {3}, but this parameter instead has a value of type {2}. Check that this is correct"
+msgid_plural "The parameter ''{1}'' has the same name as a parameter for at least one operation in the core specification. In the base specification, the parameter has the types {3}, but this parameter instead has a value of type {2}. Check that this is correct"
+msgstr[0] ""
+msgstr[1] ""
 
 # PATTERN_CHECK_STRING
 #: PATTERN_CHECK_STRING
@@ -3868,6 +3976,11 @@ msgstr ""
 msgid "Fetching ''{0}'' failed. System details: {1}: {2}"
 msgstr ""
 
+# REGEX_MATCH_TIMED_OUT
+#: REGEX_MATCH_TIMED_OUT
+msgid "The regex ''{0}'' could not be executed"
+msgstr ""
+
 # REQUEST_TOO_COSTLY_TIME
 #: REQUEST_TOO_COSTLY_TIME
 msgid "Request took too long to process (>{0}sec)"
@@ -4237,7 +4350,7 @@ msgstr ""
 
 # SD_EXTENSION_COMPLIES_WITH_ERROR
 #: SD_EXTENSION_COMPLIES_WITH_ERROR
-msgid "This profile does not comply with claimed profile ''{0}''"
+msgid "This profile does not comply with claimed profile ''{0}'' because: {1}"
 msgstr ""
 
 # SD_EXTENSION_COMPLIES_WITH_UNKNOWN
@@ -4247,7 +4360,7 @@ msgstr ""
 
 # SD_EXTENSION_COMPLIES_WITH_WARNING
 #: SD_EXTENSION_COMPLIES_WITH_WARNING
-msgid "The validator cannot confirm that this profile complies with the claimed profile ''{0}''"
+msgid "The validator cannot confirm that this profile complies with the claimed profile ''{0}'' because: {1}"
 msgstr ""
 
 # SD_EXTENSION_URL_MISMATCH
@@ -4917,12 +5030,17 @@ msgstr ""
 
 # TERMINOLOGY_TX_SYSTEM_NOT_USABLE
 #: TERMINOLOGY_TX_SYSTEM_NOT_USABLE
-msgid "The definition for the Code System with URI ''{0}'' doesn''t provide any codes so the code cannot be validated"
+msgid "The definition for the Code System with URI ''{0}'' from ''{1}'' doesn''t provide any codes so the code cannot be validated"
 msgstr ""
 
 # TERMINOLOGY_TX_SYSTEM_NO_CODE
 #: TERMINOLOGY_TX_SYSTEM_NO_CODE
 msgid "A code with no system has no defined meaning, and it cannot be validated. A system should be provided"
+msgstr ""
+
+# TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE
+#: TERMINOLOGY_TX_SYSTEM_OTHER_RESOURCE
+msgid "The Coding references a {1}, not a code system (''{0}'')"
 msgstr ""
 
 # TERMINOLOGY_TX_SYSTEM_UNSUPPORTED
@@ -4980,24 +5098,9 @@ msgstr ""
 msgid "No valid coding was found for the value set ''{0}''"
 msgstr ""
 
-# TX_SERVER_NOT_READY
-#: TX_SERVER_NOT_READY
-msgid "The full data set is only {0}% loaded ({1} of {2}) for searching - repeat this query in a few minutes (max ~15min);"
-msgstr ""
-
 # TX_SERVER_NO_BATCH_RESPONSE
 #: TX_SERVER_NO_BATCH_RESPONSE
 msgid "The server return null from a batch validation request"
-msgstr ""
-
-# TYPE_CHECKS_FIXED_CC
-#: TYPE_CHECKS_FIXED_CC
-msgid "The fixed value [system {0}, code {1}, and display ''{2}''] defined in the profile {3} not found. Issues: {4}"
-msgstr ""
-
-# TYPE_CHECKS_FIXED_CC_US
-#: TYPE_CHECKS_FIXED_CC_US
-msgid "The fixed value [system {0}, code {1}, display ''{2}'' and userSelected {5}] defined in the profile {3} not found. Issues: {4}"
 msgstr ""
 
 # TYPE_CHECKS_PATTERN_CC
@@ -5105,6 +5208,16 @@ msgstr ""
 msgid "Found {0} decimal places which exceeds the stated limit of {1} digits"
 msgstr ""
 
+# TYPE_SPECIFIC_CHECKS_DT_DT_GT
+#: TYPE_SPECIFIC_CHECKS_DT_DT_GT
+msgid "date/time value is greater than permitted maximum value of {0}"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_DT_LT
+#: TYPE_SPECIFIC_CHECKS_DT_DT_LT
+msgid "date/time value is less than permitted minimum value of {0}"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE
 #: TYPE_SPECIFIC_CHECKS_DT_IDENTIFIER_IETF_SYSTEM_VALUE
 msgid "if identifier.system is ''urn:ietf:rfc:3986'', then the identifier.value must be a full URI (e.g. start with a scheme), not ''{0}''"
@@ -5138,6 +5251,21 @@ msgstr ""
 # TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT
 #: TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX_TYPE_ALT
 msgid "Neither the element value ''{0}'' or the formatted value ''{1}'' meet {2} regex ''{3}''"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_QTY_COMP
+#: TYPE_SPECIFIC_CHECKS_DT_QTY_COMP
+msgid "Comparators are not supported for min/maxValue when restricting date/time values with a Duration (''{0}'')"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX
+#: TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MAX
+msgid "The date/time value ''{0}'' is not legal: maxValue is {1} after now (which is {2})"
+msgstr ""
+
+# TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN
+#: TYPE_SPECIFIC_CHECKS_DT_QTY_GT_MIN
+msgid "The date/time value ''{0}'' is not legal: minValue is {1} before now (which is {2})"
 msgstr ""
 
 # TYPE_SPECIFIC_CHECKS_DT_QTY_MAX_CODE_MISMATCH
@@ -5280,6 +5408,11 @@ msgstr ""
 msgid "UCUM Codes that contain human readable annotations like {0} can be misleading (e.g. they are ignored when comparing units). Best Practice is not to depend on annotations in the UCUM code, so this usage should be checked, and the Quantity.unit SHOULD contain the annotation"
 msgstr ""
 
+# TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE
+#: TYPE_SPECIFIC_CHECKS_DT_QTY_VALUE
+msgid "The quantity value ''{0}'' is not supported for min/maxValue when restricting date/time values with a Duration"
+msgstr ""
+
 # TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT
 #: TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT
 msgid "The URL {0} is not a correct URL to use (in spite of being in the standard, and/or accepted in the past)"
@@ -5398,6 +5531,11 @@ msgstr ""
 # Terminology_TX_Code_ValueSet_MISSING
 #: Terminology_TX_Code_ValueSet_MISSING
 msgid "No code provided, and a code is required from the value set"
+msgstr ""
+
+# Terminology_TX_Code_ValueSet_XVER_SOURCE
+#: Terminology_TX_Code_ValueSet_XVER_SOURCE
+msgid "Though a code is required, no code has been provided; instead, an alternative code ''{0}'' is provided in the cross-version extension ''{1}''. Many systems will not support this extension, or may not understand or support the alternative code"
 msgstr ""
 
 # Terminology_TX_Coding_Count
@@ -5952,6 +6090,11 @@ msgstr ""
 msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated. No versions of this code system are known"
 msgstr ""
 
+# UNKNOWN_CODESYSTEM_VERSION_UNK
+#: UNKNOWN_CODESYSTEM_VERSION_UNK
+msgid "A definition for CodeSystem ''{0}'' version ''{1}'' could not be found, so the code cannot be validated"
+msgstr ""
+
 # UNKNOWN_CODE_IN_FRAGMENT
 #: UNKNOWN_CODE_IN_FRAGMENT
 msgid "Unknown Code ''{0}'' in the CodeSystem ''{1}'' version ''{2}'' - note that the code system is labeled as a fragment, so the code may be valid in some other fragment"
@@ -5970,6 +6113,11 @@ msgstr ""
 # UNRECOGNISED_PROPERTY_TYPE_WRONG
 #: UNRECOGNISED_PROPERTY_TYPE_WRONG
 msgid "Invalid type {2} for the element {1}; valid types = {3}, JSON type = {0}"
+msgstr ""
+
+# UNSUPPORTED_ECL
+#: UNSUPPORTED_ECL
+msgid "The ECL expression is not supported: ''{0}'': ({1})"
 msgstr ""
 
 # UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE
@@ -6352,9 +6500,19 @@ msgstr ""
 msgid "The nominated WG ''{0}'' means that the contact url should be ''{1}'' but it was not found"
 msgstr ""
 
+# VALIDATION_MAX_MESSAGES_EXCEEDED
+#: VALIDATION_MAX_MESSAGES_EXCEEDED
+msgid "Validation process produced more than maximum of {0} messages, set by {1}. Returned validation messages may be incomplete or inaccurate."
+msgstr ""
+
 # VALIDATION_NO_EXPERIMENTAL_CONTENT
 #: VALIDATION_NO_EXPERIMENTAL_CONTENT
 msgid "Experimental content is not allowed in this context"
+msgstr ""
+
+# VALIDATION_TIMEOUT_EXCEEDED
+#: VALIDATION_TIMEOUT_EXCEEDED
+msgid "Validation process exceeded maximum allowed time of {0}ms, set by {1}. Returned validation messages may be incomplete or inaccurate."
 msgstr ""
 
 # VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN
@@ -6624,6 +6782,50 @@ msgstr ""
 msgid "Example System ''{0}'' specified, so Concepts and Filters can''t be checked"
 msgstr ""
 
+# VALUESET_EXPANSION_EXTRA
+#: VALUESET_EXPANSION_EXTRA
+msgid "The expansion provided has an extra code {1} that is not in the expansion using default expansion parameters"
+msgid_plural "The expansion provided is has {0} extra codes ({1}) that are not in the expansion using default expansion parameters"
+msgstr[0] ""
+msgstr[1] ""
+
+# VALUESET_EXPANSION_MISSING
+#: VALUESET_EXPANSION_MISSING
+msgid "The expansion provided is missing the code {1} that is in the expansion using default expansion parameters"
+msgid_plural "The expansion provided is missing {0} codes ({1}) that are in the expansion using default expansion parameters"
+msgstr[0] ""
+msgstr[1] ""
+
+# VALUESET_EXPANSION_NO_IDENTIFIER
+#: VALUESET_EXPANSION_NO_IDENTIFIER
+msgid "This expansion has no identifier. Identifiers are recommended to help with audit and traceability"
+msgstr ""
+
+# VALUESET_EXPANSION_PARAMETER_COUNT_WRONG
+#: VALUESET_EXPANSION_PARAMETER_COUNT_WRONG
+msgid "The expansion offset ({2}) + the count of items ({1}) is greater than the stated total ({0})"
+msgstr ""
+
+# VALUESET_EXPANSION_PARAMETER_NOT_FOUND
+#: VALUESET_EXPANSION_PARAMETER_NOT_FOUND
+msgid "This expansion has no parameters; in the absence of the parameters that controlled the expansion, systems may not be able to determine whether it is safe to use this expansion"
+msgstr ""
+
+# VALUESET_EXPANSION_PARAMETER_SYSTEM_MULTIPLE
+#: VALUESET_EXPANSION_PARAMETER_SYSTEM_MULTIPLE
+msgid "The expansion uses system ''{0}'' without a version, but then provides multiple ''used-codesystem'' parameters so the version cannot be determined"
+msgstr ""
+
+# VALUESET_EXPANSION_PARAMETER_SYSTEM_NEEDED
+#: VALUESET_EXPANSION_PARAMETER_SYSTEM_NEEDED
+msgid "Because the expansion uses system ''{0}'' without a version, it should list the system using the expansion parameter ''used-codesystem''"
+msgstr ""
+
+# VALUESET_EXPANSION_PROPERTY_NO_DEFN
+#: VALUESET_EXPANSION_PROPERTY_NO_DEFN
+msgid "Found a (sub)property ''{0}'' but it has no definition in ValueSet.expansion.property"
+msgstr ""
+
 # VALUESET_IMPORT_UNION_INTERSECTION
 #: VALUESET_IMPORT_UNION_INTERSECTION
 msgid "This value set has a single include with multiple imported value sets. Per issue https://jira.hl7.org/browse/FHIR-25179, there has been confusion in the past whether these value sets are unioned or intersectioned. If this value set is contained in a package published prior to March 31 2022, it will be treated as a union, otherwise it will be treated as an intersection. If want a union, split the value set imports across multiple includes"
@@ -6721,7 +6923,7 @@ msgstr ""
 
 # VALUESET_INC_CS_NO_SUPPORT
 #: VALUESET_INC_CS_NO_SUPPORT
-msgid "The concepts in the value set include have not been validated because the code system is not known, and no terminology service supports it"
+msgid "The concepts in the value set include have not been validated because the code system ''{1}'' is not known, and no terminology service supports it"
 msgstr ""
 
 # VALUESET_INC_NOT_VALIDATING
@@ -6835,12 +7037,12 @@ msgstr[1] ""
 
 # VALUESET_TOO_COSTLY
 #: VALUESET_TOO_COSTLY
-msgid "The value set ''{0}'' expansion has too many codes to display ({1})"
+msgid "The value set ''{0}'' expansion has too many codes to produce ({1})"
 msgstr ""
 
 # VALUESET_TOO_COSTLY_COUNT
 #: VALUESET_TOO_COSTLY_COUNT
-msgid "The value set ''{0}'' expansion has {2} codes, which is too many to display ({1})"
+msgid "The value set ''{0}'' expansion has {2} codes, which is too many to produce ({1})"
 msgstr ""
 
 # VALUESET_TOO_COSTLY_TIME
@@ -7190,6 +7392,11 @@ msgstr ""
 # Wrong_type_for_resource
 #: Wrong_type_for_resource
 msgid "Wrong type for resource"
+msgstr ""
+
+# Wrong_type_for_resource_expected
+#: Wrong_type_for_resource_expected
+msgid "Wrong type for resource. Expected {0} but found {1}"
 msgstr ""
 
 # XHTML_CONTROL_LANGS_NONE

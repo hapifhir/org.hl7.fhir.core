@@ -33,7 +33,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionDifferential
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
 
 import org.hl7.fhir.r5.utils.TypesUtilities;
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;

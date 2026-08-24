@@ -21,6 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.renderers.DataRenderer;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 import com.microsoft.schemas.office.visio.x2012.main.ShapeSheetType;
@@ -69,11 +70,11 @@ public class SpreadsheetGenerator {
   protected DataRenderer dr;
   private Map<String, Sheet> sheetNames = new HashMap<>();
   
-  public SpreadsheetGenerator(IWorkerContext context) {
+  public SpreadsheetGenerator(IWorkerContext context, RendererFactory rendererFactory) {
     super();
     this.context = context;
     styles = createStyles(wb);
-    dr = new DataRenderer(context);
+    dr = new DataRenderer(context, rendererFactory);
   }
 
   public void finish(OutputStream outStream) throws IOException {

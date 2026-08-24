@@ -3,7 +3,7 @@ package org.hl7.fhir.convertors.txClient;
 import java.net.URISyntaxException;
 
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory;
 import org.hl7.fhir.r5.terminologies.client.TerminologyClientR5;
 import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.ToolingClientLogger;

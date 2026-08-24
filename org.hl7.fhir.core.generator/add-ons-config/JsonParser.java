@@ -1,10 +1,8 @@
+{{startMark}}
 package {{pid}};
-
-// generated
 
 {{license}}
 
-{{startMark}}
 
 import java.io.IOException;
 
@@ -19,6 +17,7 @@ import org.hl7.fhir.utilities.Utilities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+{{generated}}
 public class {{jname}}JsonParser extends org.hl7.fhir.r5.formats.JsonParser {
  
   public {{jname}}JsonParser(JsonCreator json) {

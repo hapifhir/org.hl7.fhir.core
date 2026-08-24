@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli;
 
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.SystemExitManager;
 import org.hl7.fhir.utilities.FileUtilities;
@@ -21,7 +22,7 @@ class CDAValidationTest {
       String fn = TestingUtilities.tempFile("cda", "cda.xml");
       FileUtilities.stringToFile(TestingUtilities.loadTestResource("cda/cda-original.xml"), fn);
 
-      CLI cli = new CLI(new ValidationService());
+      CLI cli = new CLI(new ValidationService(new RendererFactory()));
       cli.parseArgsAndExecuteCommand(new String[]{fn, "-ig", "hl7.cda.uv.core#current", "-tx", FhirSettings.getTxFhirDevelopment()});
     });
   }

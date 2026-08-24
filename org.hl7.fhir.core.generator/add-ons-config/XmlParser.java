@@ -1,10 +1,8 @@
+{{startMark}}
 package {{pid}};
-
-// generated
 
 {{license}}
 
-{{startMark}}
 
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.formats.*;
@@ -16,6 +14,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import java.io.IOException;
 import java.util.Enumeration;
 
+{{generated}}
 public class {{jname}}XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
 
   public {{jname}}XmlParser(boolean allowUnknownContent) {
@@ -87,7 +86,7 @@ public class {{jname}}XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       return parseDecimal(xpp);
 {{parse-type-prefix}}
     } else {
-      throw new FHIRFormatError("Unknown type "+xpp.getName());
+      return super.parseType(prefix, xpp);
     }
   }
 
@@ -138,7 +137,7 @@ public class {{jname}}XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
       return parseDecimal(xpp);
 {{parse-type}}
     } else {
-      throw new FHIRFormatError("Unknown type "+type);
+      return super.parseType(xpp, type);
     }
   }
 
@@ -189,7 +188,7 @@ public class {{jname}}XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     } else if (type.equals("decimal")) {
       return parseDecimal(xpp);
     } else {
-      throw new FHIRFormatError("Unknown type "+type);
+      return super.parseFragment(xpp, type);
     }
   }
 
@@ -322,7 +321,7 @@ public class {{jname}}XmlParser extends org.hl7.fhir.r5.formats.XmlParser {
     } else if (type instanceof DecimalType) {
        composeDecimal(prefix+"Decimal", (DecimalType) type);
     } else {
-      throw new Error("Unhandled type "+type.fhirType());
+      super.composeType(prefix, type);
     }
   }
 

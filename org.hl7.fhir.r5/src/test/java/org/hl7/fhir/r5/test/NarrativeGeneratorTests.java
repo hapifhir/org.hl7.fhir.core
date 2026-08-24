@@ -43,7 +43,7 @@ class NarrativeGeneratorTests {
 
   @BeforeAll
   public static void setUp() throws FHIRException, IOException {
-    rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     rc.setDestDir(Utilities.path("[tmp]"));
   }
 
@@ -62,7 +62,7 @@ class NarrativeGeneratorTests {
   private void process(InputStream stream) throws FileNotFoundException, IOException, XmlPullParserException, EOperationOutcome, FHIRException {
     XmlParser p = new XmlParser();
     DomainResource r = (DomainResource) p.parse(stream);
-    RendererFactory.factory(r, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), r));
+    new RendererFactory().factory(r, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), r));
     FileOutputStream s = ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "gen.xml"));
     new XmlParser().compose(s, r, true);
     s.close();

@@ -137,14 +137,15 @@ public class Enumeration<T extends Enum<?>> extends PrimitiveType<T> implements 
     if (theEnumFactory == null)
       throw new IllegalArgumentException("An enumeration factory must be provided");
     myEnumFactory = theEnumFactory;
-    setValue(myEnumFactory.fromCode(source.getCode()));
+    setValueAsString(source.getCode()); // string based, not value based, so a CUSTOM value keeps the real code
     setId(source.getId());
     getExtension().addAll(source.getExtension());
   }
 
   @Override
   public Enumeration<T> copy() {
-    Enumeration dst= new Enumeration(this.myEnumFactory, (Enum)this.getValue());
+    Enumeration dst= new Enumeration(this.myEnumFactory);
+    dst.setValueAsString(asStringValue()); // string based, not value based, so a CUSTOM value (where the real code lives in the string) survives the copy
     //Copy the Extension
     if (extension != null) {
       dst.extension = new ArrayList<>();

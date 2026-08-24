@@ -20,7 +20,6 @@ v: {
   "error" : "The Coding references a value set, not a code system ('http://hl7.org/fhir/ValueSet/participant-role')",
   "class" : "UNKNOWN",
   "server" : "https://tx-dev.fhir.org/r4",
-  "unknown-systems" : "",
   "issues" : {
   "resourceType" : "OperationOutcome",
   "issue" : [{

@@ -4,6 +4,7 @@ import org.hl7.fhir.utilities.http.IHTTPAuthenticationProvider;
 import org.hl7.fhir.utilities.http.ManagedWebAccessUtils;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,12 +15,29 @@ public class PackageServerHTTPAuthProvider implements IHTTPAuthenticationProvide
 
   public PackageServerHTTPAuthProvider(PackageServer server) throws MalformedURLException {
     this.server = server;
-    this.url = new URL(server.getUrl());
+    this.url = URI.create(server.getUrl()).toURL();
+  }
+
+  @Override
+  public boolean isProtocolAllowed(URL url) {
+    if (!ManagedWebAccessUtils.urlMatchesOrigin(url, this.url)) {
+      return false;
+    }
+    if (url.getProtocol().equals("http")) {
+      return server.isAllowHttp();
+    } else {
+      return url.getProtocol().equals("https");
+    }
+  }
+
+  @Override
+  public boolean isPrivateNetworkAllowed(URL url) {
+    return ManagedWebAccessUtils.urlMatchesOrigin(url, this.url) && server.isAllowPrivateNetwork();
   }
 
   @Override
   public boolean canProvideHeaders(URL url) {
-    return ManagedWebAccessUtils.urlMatchesOrigin( url, this.url);
+    return ManagedWebAccessUtils.urlMatchesOrigin(url, this.url);
   }
 
   @Override

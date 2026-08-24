@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonElementType;
@@ -329,7 +331,7 @@ public class SHCParser extends ParserBase {
         jwks = signatureServices != null ? signatureServices.fetchJWKS(url) : org.hl7.fhir.utilities.json.parser.JsonParser.parseObjectFromUrl(url);
       } catch (Exception e) {
         logError(errors, "2023-09-08", 1, 1, JWT_NAME, IssueType.NOTFOUND, "Unable to verify the signature, because unable to retrieve JWKS from " + url + ": " +
-          normalizeOSSpecificConnectionMessage(e.getMessage()), IssueSeverity.ERROR);
+          normalizeOSSpecificConnectionMessage(e), IssueSeverity.ERROR);
       }
       if (jwks != null) {
         verifySignature(jwt, errors, org.hl7.fhir.utilities.json.parser.JsonParser.compose(jwks));
@@ -341,7 +343,14 @@ public class SHCParser extends ParserBase {
    * Different JVMs return different error messages. This normalizes a few known ones that break fhir-test-cases, but
    * is not intended to be exhaustive
    */
-  private String normalizeOSSpecificConnectionMessage(String originalMessage) {
+  private String normalizeOSSpecificConnectionMessage(Throwable e) {
+    String originalMessage = e.getMessage();
+    if (e instanceof ConnectException && e.getCause() instanceof ConnectException cause) {
+      // OkHttp wraps the platform's raw connect failure (e.g. "Connection refused") in its own
+      // ConnectException with a "Failed to connect to <host>/<ip>:<port>" message. Prefer the
+      // original, platform-specific message so it's still subject to the normalization below.
+      originalMessage = cause.getMessage();
+    }
     return switch (originalMessage) {
       case "Connection refused (Connection refused)",
            "Connection refused: getsockopt" -> "Connection refused";

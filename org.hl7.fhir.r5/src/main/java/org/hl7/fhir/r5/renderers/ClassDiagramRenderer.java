@@ -1,9 +1,7 @@
 package org.hl7.fhir.r5.renderers;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.hl7.fhir.exceptions.FHIRException;
@@ -20,7 +16,6 @@ import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.SnapshotGenerationPreProcessor;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.elementmodel.LanguageUtils;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -31,7 +26,6 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.MarkdownType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
@@ -39,10 +33,9 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
-import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;

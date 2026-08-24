@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * An {@link IHTTPAuthenticationProvider} implementation that provides authentication information for specific URLs by performing a
- * URL prefix match against an iterable collection of {@link ServerDetailsPOJO} objects. The information for the first
- * matching entry will be used.
+ * An {@link IHTTPAuthenticationProvider} implementation that provides authentication information for specific URLs by
+ * performing a URL prefix match against an iterable collection of {@link ServerDetailsPOJO} objects. The information
+ * for the first matching entry will be used.
  */
 public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationProvider {
 
@@ -18,6 +18,25 @@ public class ServerDetailsPOJOHTTPAuthProvider implements IHTTPAuthenticationPro
 
   public ServerDetailsPOJOHTTPAuthProvider(final Iterable<ServerDetailsPOJO> servers) {
     this.servers = servers;
+  }
+
+  @Override
+  public boolean isProtocolAllowed(URL url) {
+    ServerDetailsPOJO serverDetails = getServerDetails(url);
+    if (serverDetails == null) {
+      return false;
+    }
+    if (url.getProtocol().equals("http")) {
+      return Boolean.TRUE.equals(serverDetails.getAllowHttp());
+    } else {
+      return url.getProtocol().equals("https");
+    }
+  }
+
+  @Override
+  public boolean isPrivateNetworkAllowed(URL url) {
+    ServerDetailsPOJO serverDetails = getServerDetails(url);
+    return serverDetails != null && Boolean.TRUE.equals(serverDetails.getAllowPrivateNetwork());
   }
 
   @Override

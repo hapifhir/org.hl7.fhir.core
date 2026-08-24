@@ -43,6 +43,7 @@ import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueType;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -99,7 +100,7 @@ public class OperationOutcomeUtilities {
 
   public static OperationOutcomeIssueComponent convertToIssue(ValidationMessage message, OperationOutcome op) {
     OperationOutcomeIssueComponent issue = new OperationOutcome.OperationOutcomeIssueComponent();
-    issue.setUserData(UserDataNames.validator_source_vm, message);   
+    issue.setUserData(UserDataNames.validator_source_vm, message);
     issue.setCode(convert(message.getType()));
     
     if (message.getLocation() != null) {

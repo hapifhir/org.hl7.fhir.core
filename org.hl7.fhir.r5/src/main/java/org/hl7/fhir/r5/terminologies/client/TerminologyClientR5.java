@@ -38,7 +38,6 @@ import java.io.IOException;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;

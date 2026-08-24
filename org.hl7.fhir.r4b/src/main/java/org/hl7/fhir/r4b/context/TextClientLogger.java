@@ -61,7 +61,7 @@ public class TextClientLogger extends BaseLogger implements ToolingClientLogger 
       return;
     String id = nextId();
     file.println("\r\n--- " + id + " -----------------\r\nRequest: \r\n");
-    file.println(method + " " + url + " HTTP/1.0");
+    file.println(method + " " + url + " HTTP/1.1");
     for (String s : headers)
       file.println(s);
     if (body != null) {

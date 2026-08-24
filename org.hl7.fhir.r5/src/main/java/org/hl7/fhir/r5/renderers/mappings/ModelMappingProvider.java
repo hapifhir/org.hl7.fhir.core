@@ -30,4 +30,10 @@ public abstract class ModelMappingProvider {
   protected String ref() {
     return dest.getWebPath(); // context.getPkp().getDefinitionsName(dest);
   }
+
+  /** return the number of rows that value values
+   *
+   * @return
+   */
+    public abstract int valueCount();
 }

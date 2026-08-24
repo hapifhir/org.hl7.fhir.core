@@ -31,27 +31,15 @@ package org.hl7.fhir.r5.model;
 
 // Generated on Thu, Mar 23, 2023 19:59+1100 for FHIR v5.0.0
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map.Entry;
 
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * Common Interface declaration for conformance and knowledge artifact resources.

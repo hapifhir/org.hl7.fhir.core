@@ -48,6 +48,7 @@ public class JavaTypeGenerator extends JavaBaseGenerator {
     template = template.replace("{{pid}}", packageName);
 	  template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
     template = template.replace("{{types-enum}}", genEnums());
     template = template.replace("{{types-getPath}}", genTypePaths());
     template = template.replace("{{types-fromCode}}", genFromCode());
@@ -57,12 +58,21 @@ public class JavaTypeGenerator extends JavaBaseGenerator {
 	}
 	
 
+  /**
+   * The type is package-supplied and becomes an enum constant, a case label, and a bare identifier
+   * in a return statement in the generated ResourceType, so it is checked before it is used
+   */
+  private String resourceTypeName(StructureDefinition sd) {
+    checkJavaIdentifier(sd.getType(), "the type of "+sd.getVersionedUrl());
+    return sd.getType();
+  }
+
   private String genEnums() {
     StringBuilder b = new StringBuilder();
     boolean first = true;
     for (StructureDefinition sd : definitions.getStructures().getSortedList()) {
       if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
-        String tn = sd.getType();
+        String tn = resourceTypeName(sd);
         if (first) { first = false; } else {  b.append(",\r\n    "); }
         b.append(tn);
       }
@@ -75,8 +85,8 @@ public class JavaTypeGenerator extends JavaBaseGenerator {
     StringBuilder b = new StringBuilder();
     for (StructureDefinition sd : definitions.getStructures().getSortedList()) {
       if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
-        b.append("    case "+sd.getType()+":\r\n");
-        b.append("      return \""+sd.getType().toLowerCase()+"\";\r\n");
+        b.append("    case "+resourceTypeName(sd)+":\r\n");
+        b.append("      return \""+escapeJavaString(sd.getType().toLowerCase())+"\";\r\n");
       }
     }
     
@@ -87,8 +97,8 @@ public class JavaTypeGenerator extends JavaBaseGenerator {
     StringBuilder b = new StringBuilder();
     for (StructureDefinition sd : definitions.getStructures().getSortedList()) {
       if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
-        b.append("    if (\""+sd.getType()+"\".equals(code))\r\n");
-        b.append("      return "+sd.getType()+";\r\n");
+        b.append("    if (\""+escapeJavaString(sd.getType())+"\".equals(code))\r\n");
+        b.append("      return "+resourceTypeName(sd)+";\r\n");
       }
     }
     return b.toString();

@@ -1,11 +1,9 @@
 {
-  "http://example.org" : null,
   "urn:oid:2.16.840.1.113883.3.464.1003.111.12.1006" : null,
-  "urn:ietf:bcp:47" : null,
   "http://hl7.org/fhir/Library/library-quick-model-definition" : null,
-  "http://cancer.questionnaire.org/system/code/yesno" : null,
-  "http://loinc.org" : null,
-  "http://unitsofmeasure.org" : null,
-  "http://snomed.info/sct" : null,
-  "http://acme.org/messagetypes" : null
+  "http://loinc.org" : {
+    "server" : "http://tx-dev.fhir.org/r5",
+    "filename" : "cs-9cce02b8-4f23-4938-918b-29892858ae55.json"
+  },
+  "http://snomed.info/sct" : null
 }

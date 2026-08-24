@@ -36,12 +36,8 @@ package org.hl7.fhir.r5.tools;
 
 public class Constants {
 
-  public final static String LOCAL_REF_REGEX = "()\\\\/[A-Za-z0-9\\\\-\\\\.]{1,64}";
-  public final static String NS_SYSTEM_TYPE = "http://hl7.org/fhirpath/System.";
-
   public final static String VERSION = "current";
   public final static String VERSION_BASE = "current";
   public final static String VERSION_MM = "current";
   public final static String DATE = "Sat, May 10, 2025 04:46+0200";
-  public final static String URI_REGEX = "((http|https):\\/\\/([A-Za-z0-9\\\\\\.\\:\\%\\$\\-]*\\/)*?)?()\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
 }

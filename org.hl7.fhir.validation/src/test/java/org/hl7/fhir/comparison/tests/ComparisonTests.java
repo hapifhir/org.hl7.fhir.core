@@ -44,6 +44,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.renderers.CodeSystemRenderer;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
 import org.hl7.fhir.r5.renderers.ValueSetRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -155,7 +156,7 @@ public class ComparisonTests {
     if (content.has("version")) {
       session.setAnnotate(true);
     }
-    RenderingContext lrc = new RenderingContext(context, new MarkDownProcessor(Dialect.COMMON_MARK), null, "http://hl7.org/fhir", "", new Locale("en"), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER);
+    RenderingContext lrc = new RenderingContext(context, new RendererFactory(), new MarkDownProcessor(Dialect.COMMON_MARK), null, "http://hl7.org/fhir", "", new Locale("en"), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER);
     lrc.setDestDir(Utilities.path("[tmp]", "comparison"));
     lrc.setPkp(new TestProfileKnowledgeProvider(context));
     if (content.has("version")) {

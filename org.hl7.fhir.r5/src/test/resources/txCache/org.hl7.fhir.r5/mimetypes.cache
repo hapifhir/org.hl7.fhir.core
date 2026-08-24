@@ -10,7 +10,7 @@
 }}####
 e: {
   "from-server" : true,
-  "class" : "TOO_COSTLY",
-  "error" : "Error from https://tx-dev.fhir.org/r5: Error: The code System \"urn:ietf:bcp:13\" has a grammar, and cannot be enumerated directly\r\n"
+  "class" : "UNKNOWN",
+  "error" : "Error from https://tx-dev.fhir.org/r5: Error: The code system 'urn:ietf:bcp:13' cannot be expanded because its codes cannot be iterated or enumerated in any meaningful sense\r\n"
 }
 -------------------------------------------------------------------------------------

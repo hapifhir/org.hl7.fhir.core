@@ -65,7 +65,7 @@ public class HTMLClientLogger implements ToolingClientLogger {
     lastId = Integer.toString(id);
     file.println("<hr/><a name=\"l" + lastId + "\"> </a>");
     file.println("<pre>");
-    file.println(method + " " + url + " HTTP/1.0");
+    file.println(method + " " + url + " HTTP/1.1");
     for (String s : headers)
       file.println(Utilities.escapeXml(s));
     if (body != null) {

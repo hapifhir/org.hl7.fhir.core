@@ -1699,7 +1699,7 @@ public class FHIRPathEngine {
         result.update(executeContextType(context, exp.getName(), exp, FHIRPathConstantEvaluationMode.NOVALUE));
       } else {
         for (String s : focus.getTypes()) {
-          result.update(executeType(s, exp, atEntry, focus, elementDependencies));
+          result.update(executeType(s, exp, atEntry, focus, elementDependencies, inContext));
         }
         if (result.hasNoTypes()) {
           if (!canBeNone) { 
@@ -3437,12 +3437,28 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     return hostServices.resolveConstantType(this, context.appInfo, name, mode);
   }
 
-  private TypeDetails executeType(String type, ExpressionNode exp, boolean atEntry, TypeDetails focus, Set<ElementDefinition> elementDependencies) throws PathEngineException, DefinitionException {
+  private TypeDetails executeType(String type, ExpressionNode exp, boolean atEntry, TypeDetails focus, Set<ElementDefinition> elementDependencies, ExecutionTypeContext inContext) throws PathEngineException, DefinitionException {
+    if (atEntry && inContext.appInfo != null && hostServices != null && checkWithHostServicesBeforeHand) {
+      // we'll see if the name matches a constant known by the context.
+      TypeDetails td = hostServices.resolveConstantType(this, inContext.appInfo, exp.getName(), FHIRPathConstantEvaluationMode.IMPLICIT_BEFORE);
+      if (td != null && !td.hasNoTypes()) {
+        return td;
+      }
+    }
     if (atEntry && Character.isUpperCase(exp.getName().charAt(0)) && (hashTail(type).equals(exp.getName()) || isAncestor(type, exp.getName()) )) { // special case for start up
       return new TypeDetails(CollectionStatus.SINGLETON, type);
     }
+
     TypeDetails result = new TypeDetails(focus.getCollectionStatus());
     getChildTypesByName(type, exp.getName(), result, exp, focus, elementDependencies);
+    if (atEntry && inContext.appInfo != null && hostServices != null && result.hasNoTypes()) {
+      // well, we didn't get a match on the name - we'll see if the name matches a constant known by the context.
+      // (if the name does match, and the user wants to get the constant value, they'll have to try harder...
+      TypeDetails td = hostServices.resolveConstantType(this, inContext.appInfo, exp.getName(), FHIRPathConstantEvaluationMode.IMPLICIT_AFTER);
+      if (td != null && !td.hasNoTypes()) {
+        return td;
+      }
+    }
     return result;
   }
 
@@ -4868,7 +4884,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
     XhtmlNode x;
     if (n.getXhtml() != null)
       x = n.getXhtml();
-    else if (n instanceof StringType) {
+    else if (n instanceof StringType || (n.isPrimitive() && "string".equals(n.fhirType()))) {
       try {
         x = new XhtmlParser().parseFragment("<div xmlns=\"http://www.w3.org/1999/xhtml\">"+n.primitiveValue()+"</div>");
       } catch (Exception e) {

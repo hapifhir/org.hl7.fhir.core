@@ -35,7 +35,7 @@ import static org.hl7.fhir.utilities.i18n.POUtilities.tagAsOutdated;
  * It takes 3 parameters:
  *   * path to the local copy of the core repo
  *   * path to the local copy of the ig-publisher repo
- *   * path to the local copy of the fhirserver repo
+ *   * path to the local copy of the FHIRsmith repo (javascript)
  */
 @SuppressWarnings("checkstyle:systemout")
 public class POGenerator {
@@ -92,9 +92,9 @@ public class POGenerator {
 
   private int noTrans = 0;
 
-  public void execute(String core, String igpub, String pascal) throws IOException {
+  public void execute(String core, String igpub, String javascript) throws IOException {
     String source = Utilities.path(core, "/org.hl7.fhir.utilities/src/main/resources");
-    if (checkState(source, core, igpub, pascal)) {
+    if (checkState(source, core, igpub, javascript)) {
       IniFile ini = new IniFile(Utilities.path(source, "translations-control.ini"));
       generate(source, "rendering-phrases.properties",  "rendering-phrases-en.po",       null, 2);
       generate(source, "Messages.properties", "validator-messages-en.po",    null, 2);
@@ -107,7 +107,7 @@ public class POGenerator {
     } 
   }
 
-  private boolean checkState(String source, String core, String igpub, String pascal) throws IOException {
+  private boolean checkState(String source, String core, String igpub, String javascript) throws IOException {
     System.out.println("Checking...");
     List<PropertyValue> props = loadProperties(Utilities.path(source, "rendering-phrases.properties"), true);
     List<ConstantDefinition> consts = loadConstants(Utilities.path(core, "/org.hl7.fhir.utilities/src/main/java/org/hl7/fhir/utilities/i18n/RenderingI18nContext.java"));
@@ -125,13 +125,12 @@ public class POGenerator {
     }
     scanJavaSource(core, consts, "RenderingI18nContext", "RenderingContext");
     scanJavaSource(igpub, consts, "RenderingI18nContext", "RenderingContext");
-    scanPascalSource(pascal, props);
+    scanJavascriptSource(javascript, props);
     
     Set<String> pns = new HashSet<>();
     for (PropertyValue p : props) {
       if (!p.used) {
-        ok = false;
-        System.out.println("Error: PV "+p.getName()+ " provided but not used");   
+        System.out.println("Warning: PV "+p.getName()+ " provided but not used");
       }
       if (!pns.contains(p.getName())) {
         pns.add(p.getName());
@@ -172,13 +171,12 @@ public class POGenerator {
 
     scanJavaSource(core, consts, "I18nConstants");
     scanJavaSource(igpub, consts, "I18nConstants");
-    scanPascalSource(pascal, props);
+    scanJavascriptSource(javascript, props);
 
     pns = new HashSet<>();
     for (PropertyValue p : props) {
       if (!p.used) {
-        ok = false;
-        System.out.println("Error: PV "+p.getName()+ " provided but not used");   
+        System.out.println("Warning: PV "+p.getName()+ " provided but not used");
       }
       if (!pns.contains(p.getName())) {
         pns.add(p.getName());
@@ -226,27 +224,35 @@ public class POGenerator {
       String source = FileUtilities.fileToString(file);
       for (ConstantDefinition cd : consts) {
         if (!cd.used) {
-          boolean found = false;
           for (String n : names) {
-            if (source.contains(n+"."+cd.name+",")) {
-              found = true;
-            } 
-            if (source.contains(n+"."+cd.name+")")) {
-              found = true;
-            } 
-            if (source.contains(n+"."+cd.name+" :")) {
-              found = true;
-            } 
-            if (source.contains(n+"."+cd.name+";")) {
-              found = true;
-            } 
-          } 
-          if (found) {
-            cd.used = true;
+            if (containsToken(source, n+"."+cd.name)) {
+              cd.used = true;
+              break;
+            }
           }
-        }  
+        }
       }
       return true;
+    }
+
+    /**
+     * True if token appears in source followed by a non-identifier character
+     * (so e.g. CONST matches "CONST ," and "CONST)" but not "CONST_OTHER").
+     */
+    private boolean containsToken(String source, String token) {
+      int i = source.indexOf(token);
+      while (i > -1) {
+        int e = i + token.length();
+        if (e == source.length() || !isIdentifierChar(source.charAt(e))) {
+          return true;
+        }
+        i = source.indexOf(token, e);
+      }
+      return false;
+    }
+
+    private boolean isIdentifierChar(char c) {
+      return Character.isLetterOrDigit(c) || c == '_';
     }
   }
   
@@ -260,12 +266,12 @@ public class POGenerator {
     DirectoryVisitor.visitDirectory(scanner, path, "java");
   }
 
-  private class PascalScanner implements IDirectoryVisitorImplementation {
+  private class JavascriptScanner implements IDirectoryVisitorImplementation {
     private List<PropertyValue> defs;
-    
+
     @Override
     public boolean enterDirectory(File directory) throws IOException {
-      return true;
+      return !Utilities.existsInList(directory.getName(), "node_modules", ".git");
     }
 
     @Override
@@ -275,9 +281,9 @@ public class POGenerator {
         if (!pv.used) {
           boolean found = false;
           String pn = pv.getBaseName();
-          if (source.contains("'"+pn+"'")) {
+          if (source.contains("'"+pn+"'") || source.contains("\""+pn+"\"") || source.contains("`"+pn+"`")) {
             found = true;
-          } 
+          }
           if (found) {
             pv.used = true;
           }
@@ -286,11 +292,11 @@ public class POGenerator {
       return true;
     }
   }
-  
-  private void scanPascalSource(String path, List<PropertyValue> defs) throws FileNotFoundException, IOException {
-    PascalScanner scanner = new PascalScanner();
+
+  private void scanJavascriptSource(String path, List<PropertyValue> defs) throws FileNotFoundException, IOException {
+    JavascriptScanner scanner = new JavascriptScanner();
     scanner.defs = defs;
-    DirectoryVisitor.visitDirectory(scanner, path, "pas");
+    DirectoryVisitor.visitDirectory(scanner, path, "js", "mjs", "cjs");
   }
 
   

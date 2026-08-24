@@ -14,7 +14,6 @@ import lombok.Getter;
 
 public class PackageServer {
 
-
   public enum PackageServerType {
     FHIR,
     NPM
@@ -27,7 +26,7 @@ public class PackageServer {
   }
 
   @Getter
-  final private String url;
+  private final String url;
 
   @Getter
   private HTTPAuthenticationMode authenticationMode;
@@ -47,7 +46,11 @@ public class PackageServer {
   @Getter
   private String apiKey;
 
+  @Getter
+  private boolean allowHttp;
 
+  @Getter
+  private boolean allowPrivateNetwork;
 
   public static final String SECONDARY_SERVER = "https://packages.fhir.org";
   public static final String PRIMARY_SERVER = "https://packages2.fhir.org/packages";
@@ -76,8 +79,9 @@ public class PackageServer {
       .withUsername(pojo.getUsername())
       .withPassword(pojo.getPassword())
       .withToken(pojo.getToken())
-      .withApiKey(pojo.getApikey());
-
+      .withApiKey(pojo.getApikey())
+      .withAllowHttp(Boolean.TRUE.equals(pojo.getAllowHttp()))
+      .withAllowPrivateNetwork(Boolean.TRUE.equals(pojo.getAllowPrivateNetwork()));
   }
 
   private static boolean isPackageServer(String serverType) {
@@ -134,6 +138,8 @@ public class PackageServer {
     packageServer.password = this.password;
     packageServer.token = this.token;
     packageServer.apiKey = this.apiKey;
+    packageServer.allowHttp = this.allowHttp;
+    packageServer.allowPrivateNetwork = this.allowPrivateNetwork;
     return packageServer;
   }
 
@@ -170,6 +176,18 @@ public class PackageServer {
   public PackageServer withApiKey(String apiKey) {
     PackageServer packageServer = this.copy();
     packageServer.apiKey = apiKey;
+    return packageServer;
+  }
+
+  public PackageServer withAllowHttp(boolean allowHttp) {
+    PackageServer packageServer = this.copy();
+    packageServer.allowHttp = allowHttp;
+    return packageServer;
+  }
+
+  public PackageServer withAllowPrivateNetwork(boolean allowPrivateNetwork) {
+    PackageServer packageServer = this.copy();
+    packageServer.allowPrivateNetwork = allowPrivateNetwork;
     return packageServer;
   }
 }

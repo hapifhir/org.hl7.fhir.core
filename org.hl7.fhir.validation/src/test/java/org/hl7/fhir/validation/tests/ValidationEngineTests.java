@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.validation.constants.ReferenceValidationPolicy;
@@ -21,16 +23,19 @@ import org.hl7.fhir.utilities.FhirPublication;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.service.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.service.model.InstanceValidatorParameters;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.*;
+
 
 public class ValidationEngineTests {
 
@@ -38,6 +43,35 @@ public class ValidationEngineTests {
   //private static final String DEF_TX = FhirSettings.getTxFhirLocal();
 
   public static boolean inbuild;
+
+  @BeforeAll
+  public static void beforeClass() {
+    ManagedWebAccess.loadFromFHIRSettings(
+      FhirSettingsPOJO.builder()
+        .servers(
+          List.of(ServerDetailsPOJO.builder()
+            .url("http://hl7x.org")
+            .authenticationType("none")
+            .type("web")
+            .allowHttp(true)
+            .headers(Collections.emptyMap())
+            .build()))
+        .build()
+    );
+    // Exercise the server-side terminology caching protocol across the validation
+    // suite. Against a server that doesn't advertise $cache-control this degrades
+    // to inlining (no-op); against one that does, the whole suite runs through the
+    // cache, which is a good real-world test of the protocol.
+    TerminologyClientContext.setCanUseCacheId(true);
+  }
+
+  @AfterAll
+  public static void cleanup() {
+
+    TerminologyClientContext.setCanUseCacheId(false); // don't leak the static into other suites
+    ManagedWebAccess.loadFromFHIRSettings();
+    System.gc();
+  }
 
   @Test
   @DisplayName("A ValidationEngine copied from another validation engine shouldn't interfere with the original during validations")
@@ -349,7 +383,7 @@ public class ValidationEngineTests {
   }
 
   @Test
-  public void testResolveRelativeFileError() throws Exception {
+  void testResolveRelativeFileError() throws Exception {
     String folder = setupFolder();
     try {
       ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
@@ -414,7 +448,7 @@ public class ValidationEngineTests {
   }
 
   @Test
-  public void testResolveAbsoluteError() throws Exception {
+  void testResolveAbsoluteError() throws Exception {
       ValidationEngine ve = TestUtilities.getValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, FhirPublication.R4, "4.0.1");
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(ve.getPcm(), ve.getContext(), ve);
       ve.setFetcher(fetcher);
@@ -425,8 +459,8 @@ public class ValidationEngineTests {
       ve.seeResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("validator", "resolution", "StructureDefinition-Patient.json")));
       OperationOutcome op = ve.validate(FhirFormat.JSON, TestingUtilities.loadTestResourceStream("validator", "resolution", "absolute-url-error.json"), null);
       Assertions.assertTrue(checkOutcomes("testResolveAbsoluteError", op, 
-          "information/informational @ Observation.subject: Fetching 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn' failed. System details: java.net.UnknownHostException: hl7x.org (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
-            "error/structure @ Observation.subject: Unable to resolve resource with reference 'http://hl7x.org/fhir/R4/Patient/Patient/example-newborn' (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+          "information/informational @ Observation.subject: Fetching 'https://hl7x.org/fhir/R4/Patient/Patient/example-newborn' failed. System details: java.net.UnknownHostException: hl7x.org (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
+            "error/structure @ Observation.subject: Unable to resolve resource with reference 'https://hl7x.org/fhir/R4/Patient/Patient/example-newborn' (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
             "warning/invariant @ Observation: Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation) (context: http://hl7.org/fhir/StructureDefinition/Observation|4.0.1)\n" +
             "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have a performer\n" +
             "warning/invalid @ Observation: Best Practice Recommendation: In general, all observations should have an effective[x] ()"));

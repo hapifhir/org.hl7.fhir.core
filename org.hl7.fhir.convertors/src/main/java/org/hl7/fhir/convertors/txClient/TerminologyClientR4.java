@@ -4,18 +4,15 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
 
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.utils.client.EFhirClientException;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.terminologies.client.ITerminologyClient;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory;
 import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -204,7 +201,7 @@ public class TerminologyClientR4 implements ITerminologyClient {
   @Override
   public Parameters cacheControl(CacheControlMode mode, Parameters body) throws FHIRException, IOException {
     org.hl7.fhir.r4.model.Parameters p2 = (org.hl7.fhir.r4.model.Parameters) convertResource("cacheControl.request", body == null ? new Parameters() : body);
-    org.hl7.fhir.r4.model.Parameters r = client.operateSystem("cache-control", "mode=" + mode, p2);
+    org.hl7.fhir.r4.model.Parameters r = client.operateSystem("cache-control", "mode=" + mode.toCode(), p2);
     return (Parameters) convertResource("cacheControl.response", r);
   }
 

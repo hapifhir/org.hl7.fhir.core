@@ -18,6 +18,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
 import org.hl7.fhir.r5.renderers.CodeSystemRenderer;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
@@ -653,12 +654,12 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
   }
 
   public XhtmlNode renderUnion(CodeSystemComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
-    CodeSystemRenderer csr = new CodeSystemRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    CodeSystemRenderer csr = new CodeSystemRenderer(new RenderingContext(session.getContextLeft(), new RendererFactory(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
     return csr.buildNarrative(ResourceWrapper.forResource(csr.getContext(), comp.union));
   }
 
   public XhtmlNode renderIntersection(CodeSystemComparison comp, String id, String prefix, String corePath) throws FHIRFormatError, DefinitionException, FHIRException, IOException, EOperationOutcome {
-    CodeSystemRenderer csr = new CodeSystemRenderer(new RenderingContext(session.getContextLeft(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
+    CodeSystemRenderer csr = new CodeSystemRenderer(new RenderingContext(session.getContextLeft(), new RendererFactory(), null, new ValidationOptions(), corePath, prefix, session.getContextLeft().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER));
     return csr.buildNarrative(ResourceWrapper.forResource(csr.getContext(), comp.intersection));
   }
 

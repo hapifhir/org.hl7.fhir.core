@@ -42,9 +42,28 @@ import org.hl7.fhir.utilities.xml.IXMLWriter;
 
 public class ToolsParser {
 
-  public static void register() {    
-    org.hl7.fhir.r5.formats.JsonParser.getCustomResourceHandlers().put("TestCases", new ToolsJsonParserFactory());
+  /**
+   * Register the parsers for the resources in this package with the core parsers. 
+   * 
+   * If overridesBase is true, these resources take precedence over any resources with the 
+   * same names defined in the base specification; if it is false, they are only used for 
+   * resource names that the base specification doesn't define (which is the appropriate 
+   * choice for this package - nothing in it overrides the base specification). The parameter 
+   * is always present for consistency across the generated packages
+   */
+  public static void register(boolean overridesBase) {    
+    register(org.hl7.fhir.r5.formats.CustomResourceRegistry.GLOBAL, overridesBase);
 
+  }
+
+  /**
+   * Register the parsers for the resources in this package into the given custom resource 
+   * registry, rather than the global one - so the registration only affects parsers that are 
+   * given this registry, not the whole process. See register(boolean) for the meaning of 
+   * overridesBase
+   */
+  public static void register(org.hl7.fhir.r5.formats.CustomResourceRegistry registry, boolean overridesBase) {
+    registry.registerCustomResource("TestCases", new ToolsJsonParserFactory(), overridesBase);
   }
 
   public static class ToolsJsonParserFactory implements IParserFactory {

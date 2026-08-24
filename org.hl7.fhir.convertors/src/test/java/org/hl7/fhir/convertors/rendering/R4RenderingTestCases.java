@@ -43,7 +43,7 @@ class R4RenderingTestCases {
 
       RenderingContext rc = makeContext("5.0.0", FhirPublication.R5);
       XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-      ResourceRenderer pr = RendererFactory.factory(r5p.fhirType(), rc);
+      ResourceRenderer pr = new RendererFactory().factory(r5p.fhirType(), rc);
       pr.buildNarrative(new Renderer.RenderingStatus(), x, ResourceWrapper.forResource(rc, r5p));
       String html = new XhtmlComposer(false, true).compose(x);
       System.out.println(html);
@@ -57,7 +57,7 @@ class R4RenderingTestCases {
       RenderingContext rc = makeContext("4.0.1", FhirPublication.R4);
 
       XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-      ResourceRenderer pr = RendererFactory.factory(patient.fhirType(), rc);
+      ResourceRenderer pr = new RendererFactory().factory(patient.fhirType(), rc);
       pr.buildNarrative(new Renderer.RenderingStatus(), x, ResourceWrapperR4.forResource(rc, patient));
       String html = new XhtmlComposer(false, true).compose(x);
       System.out.println(html);
@@ -93,8 +93,8 @@ class R4RenderingTestCases {
     IContextResourceLoader loader = ContextResourceLoaderFactory.makeLoader(npm.fhirVersion(), new NullLoaderKnowledgeProviderR5());
     SimpleWorkerContext context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(npm, loader, true);
 
-    RenderingContext rc = new RenderingContext(context, new MarkDownProcessor(MarkDownProcessor.Dialect.COMMON_MARK),
-            new org.hl7.fhir.utilities.validation.ValidationOptions(pub), "http://hl7.org/fhir",
+    RenderingContext rc = new RenderingContext(context, new RendererFactory(), new MarkDownProcessor(MarkDownProcessor.Dialect.COMMON_MARK),
+      new org.hl7.fhir.utilities.validation.ValidationOptions(pub), "http://hl7.org/fhir",
             "", new Locale("en"), RenderingContext.ResourceRendererMode.END_USER, RenderingContext.GenerationRules.VALID_RESOURCE);
     return rc;
   }

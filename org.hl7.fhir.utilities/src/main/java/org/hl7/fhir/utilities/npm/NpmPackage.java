@@ -75,10 +75,7 @@ import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.apache.commons.lang3.Validate;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.ByteProvider;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -103,6 +100,7 @@ import org.hl7.fhir.utilities.regex.RegexUtils;
  */
 @Slf4j
 public class NpmPackage {
+
 
   public interface ITransformingLoader {
 
@@ -412,6 +410,8 @@ public class NpmPackage {
   private int size;
   private boolean warned = false;
   private static boolean loadCustomResources;
+  private static long defaultMaxLoadSize = 0; // 0 = no limit
+  private long maxLoadSize = defaultMaxLoadSize;
 
   /**
    * Constructor
@@ -574,7 +574,18 @@ public class NpmPackage {
     res.readStream(tgz, desc, progress);
     return res;
   }
-  
+
+  /**
+   * Load a package, enforcing the given limit on the total decompressed size of the package
+   * (in bytes, 0 = no limit) instead of the default limit (see {@link #setDefaultMaxLoadSize(long)})
+   */
+  public static NpmPackage fromPackage(InputStream tgz, String desc, boolean progress, long maxLoadSize) throws IOException {
+    NpmPackage res = new NpmPackage();
+    res.maxLoadSize = maxLoadSize;
+    res.readStream(tgz, desc, progress);
+    return res;
+  }
+
   public static NpmPackage extractFromTgz(InputStream tgz, String desc, String tempDir, boolean minimal) throws IOException {
     FileUtilities.createDirectory(tempDir);
 
@@ -610,6 +621,7 @@ public class NpmPackage {
             while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
               dst.write(data, 0, count);
               size = size + count;
+              checkLoadedSize(size, defaultMaxLoadSize, desc); // no instance yet, so only the default limit applies here
             }
           }
           fos.close();
@@ -676,6 +688,7 @@ public class NpmPackage {
     }
 
     boolean haveLoggedDotSlashPrefixWarning = false;
+    long loadedSize = 0;
 
     try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
@@ -707,6 +720,8 @@ public class NpmPackage {
           try (BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE)) {
             while ((count = tarIn.read(data, 0, BUFFER_SIZE)) != -1) {
               dest.write(data, 0, count);
+              loadedSize = loadedSize + count;
+              checkLoadedSize(loadedSize, maxLoadSize, desc);
             }
           }
           fos.close();
@@ -725,6 +740,12 @@ public class NpmPackage {
       throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/package.json: "+e.getMessage(), e);
     }
     checkIndexed(desc);
+  }
+
+  private static void checkLoadedSize(long loadedSize, long maxLoadSize, String desc) throws IOException {
+    if (maxLoadSize > 0 && loadedSize > maxLoadSize) {
+      throw new IOException("Refusing to load the package "+(desc == null ? "" : desc+" ")+"- the decompressed size exceeds the limit of "+maxLoadSize+" bytes");
+    }
   }
 
   public void loadFile(String n, byte[] data) throws IOException {
@@ -812,6 +833,7 @@ public class NpmPackage {
 
   public static NpmPackage fromZip(InputStream stream, boolean dropRootFolder, String desc) throws IOException {
     NpmPackage res = new NpmPackage();
+    long loadedSize = 0;
     ZipInputStream zip = new ZipInputStream(stream);
     ZipEntry ze;
     while ((ze = zip.getNextEntry()) != null) {
@@ -823,6 +845,8 @@ public class NpmPackage {
 
       while ((size = zip.read(buffer, 0, buffer.length)) != -1) {
         bos.write(buffer, 0, size);
+        loadedSize = loadedSize + size;
+        checkLoadedSize(loadedSize, res.maxLoadSize, desc);
       }
       bos.flush();
       bos.close();
@@ -1168,8 +1192,7 @@ public class NpmPackage {
       return npm.asString("version");
     else if (
         Utilities.existsInList(npm.asString("type"), "fhir.core", "fhir.examples") &&
-        Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r2.", "hl7.fhir.r2b.", "hl7.fhir.r3.", 
-             "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.")) {
+        Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r3.", "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.", "hl7.fhir.r6.")) {
       return npm.asString("version");
     } else {
       JsonObject dep = null;
@@ -1177,7 +1200,8 @@ public class NpmPackage {
         dep = npm.getJsonObject("dependencies");
         if (dep != null) {
           for (JsonProperty e : dep.getProperties()) {
-            if (Utilities.existsInList(e.getName(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core"))
+            if (Utilities.existsInList(e.getName(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core",
+              "hl7.fhir.r4.core", "hl7.fhir.r4b.core", "hl7.fhir.r5.core",  "hl7.fhir.r6.core"))
               return e.getValue().asString();
             if (Utilities.existsInList(e.getName(), "hl7.fhir.core")) // while all packages are updated
               return e.getValue().asString();
@@ -1674,6 +1698,34 @@ public class NpmPackage {
 
   public String vid() {
     return id()+"#"+version();
+  }
+
+  /**
+   * The default limit on the total decompressed size of a package being loaded, in bytes
+   * (0 = no limit, which is the default). Servers that load packages from untrusted sources
+   * should set this to guard against zip bombs. Applies to packages
+   * loaded after it is set; can be overridden per package instance (see
+   * {@link #fromPackage(InputStream, String, boolean, long)})
+   */
+  public static long getDefaultMaxLoadSize() {
+    return defaultMaxLoadSize;
+  }
+
+  public static void setDefaultMaxLoadSize(long value) {
+    defaultMaxLoadSize = value;
+  }
+
+  /**
+   * The limit on the total decompressed size of this package when it is loaded, in bytes
+   * (0 = no limit). Initialised from {@link #getDefaultMaxLoadSize()}; only relevant if
+   * set before the package content is read
+   */
+  public long getMaxLoadSize() {
+    return maxLoadSize;
+  }
+
+  public void setMaxLoadSize(long maxLoadSize) {
+    this.maxLoadSize = maxLoadSize;
   }
 
   public static boolean isLoadCustomResources() {

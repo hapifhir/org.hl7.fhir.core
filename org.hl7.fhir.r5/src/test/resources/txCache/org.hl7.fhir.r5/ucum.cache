@@ -11,202 +11,11 @@ v: {
   "system" : "http://unitsofmeasure.org",
   "version" : "2.2",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n0ms http://unitsofmeasure.org/vs|2.2: Validate \"[http://unitsofmeasure.org#a (\"undefined\")]\"\n0ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org#a\"\n0ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n1ms http://unitsofmeasure.org/vs|2.2: check code in (http://unitsofmeasure.org) at Coding\n1ms http://unitsofmeasure.org/vs|2.2: Code \"a\" found in http://unitsofmeasure.org|2.2",
+  "diagnostics" : "0ms tx-op\n1ms http://unitsofmeasure.org/vs|2.2: Validate \"[http://unitsofmeasure.org#a (\"undefined\")]\"\n1ms http://unitsofmeasure.org/vs|2.2: Check \"http://unitsofmeasure.org#a\"\n2ms http://unitsofmeasure.org/vs|2.2: CodeSystem found: http://unitsofmeasure.org|2.2 for http://unitsofmeasure.org|2.2\n2ms http://unitsofmeasure.org/vs|2.2: check code in (http://unitsofmeasure.org) at Coding\n2ms http://unitsofmeasure.org/vs|2.2: Code \"a\" found in http://unitsofmeasure.org|2.2",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }
 
-}
--------------------------------------------------------------------------------------
-{"hierarchical" : false, "valueSet" :{
-  "resourceType" : "ValueSet",
-  "compose" : {
-    "inactive" : true,
-    "include" : [{
-      "system" : "http://unitsofmeasure.org",
-      "concept" : [{
-        "extension" : [{
-          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-          "valueString" : "second"
-        }],
-        "code" : "s",
-        "display" : "second",
-        "designation" : [{
-          "language" : "zh",
-          "value" : "秒"
-        }]
-      },
-      {
-        "extension" : [{
-          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-          "valueString" : "minute"
-        }],
-        "code" : "min",
-        "display" : "minute",
-        "designation" : [{
-          "language" : "zh",
-          "value" : "分钟"
-        }]
-      },
-      {
-        "extension" : [{
-          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-          "valueString" : "hour"
-        }],
-        "code" : "h",
-        "display" : "hour",
-        "designation" : [{
-          "language" : "zh",
-          "value" : "小时"
-        }]
-      },
-      {
-        "extension" : [{
-          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-          "valueString" : "day"
-        }],
-        "code" : "d",
-        "display" : "day",
-        "designation" : [{
-          "language" : "zh",
-          "value" : "天"
-        }]
-      },
-      {
-        "extension" : [{
-          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-          "valueString" : "week"
-        }],
-        "code" : "wk",
-        "display" : "week",
-        "designation" : [{
-          "language" : "zh",
-          "value" : "星期"
-        }]
-      },
-      {
-        "extension" : [{
-          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-          "valueString" : "month - Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence."
-        }],
-        "code" : "mo",
-        "display" : "month",
-        "designation" : [{
-          "language" : "zh",
-          "value" : "月"
-        }]
-      },
-      {
-        "extension" : [{
-          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-          "valueString" : "year"
-        }],
-        "code" : "a",
-        "display" : "year",
-        "designation" : [{
-          "language" : "zh",
-          "value" : "年"
-        }]
-      }]
-    }]
-  }
-}}####
-e: {
-  "source" : tx-dev.fhir.org,
-  "valueSet" : {
-  "resourceType" : "ValueSet",
-  "status" : "active",
-  "expansion" : {
-    "identifier" : "urn:uuid:4c1d375d-5d96-4cc2-9e95-d0b678b671da",
-    "timestamp" : "2026-04-08T18:44:01.548Z",
-    "total" : 7,
-    "offset" : 0,
-    "parameter" : [{
-      "name" : "excludeNested",
-      "valueBoolean" : true
-    },
-    {
-      "name" : "includeDefinition",
-      "valueBoolean" : false
-    },
-    {
-      "name" : "offset",
-      "valueInteger" : 0
-    },
-    {
-      "name" : "count",
-      "valueInteger" : 1000
-    },
-    {
-      "name" : "used-codesystem",
-      "valueUri" : "http://unitsofmeasure.org|2.2"
-    }],
-    "contains" : [{
-      "extension" : [{
-        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-        "valueString" : "second"
-      }],
-      "system" : "http://unitsofmeasure.org",
-      "code" : "s",
-      "display" : "s"
-    },
-    {
-      "extension" : [{
-        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-        "valueString" : "minute"
-      }],
-      "system" : "http://unitsofmeasure.org",
-      "code" : "min",
-      "display" : "min"
-    },
-    {
-      "extension" : [{
-        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-        "valueString" : "hour"
-      }],
-      "system" : "http://unitsofmeasure.org",
-      "code" : "h",
-      "display" : "h"
-    },
-    {
-      "extension" : [{
-        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-        "valueString" : "day"
-      }],
-      "system" : "http://unitsofmeasure.org",
-      "code" : "d",
-      "display" : "d"
-    },
-    {
-      "extension" : [{
-        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-        "valueString" : "week"
-      }],
-      "system" : "http://unitsofmeasure.org",
-      "code" : "wk",
-      "display" : "wk"
-    },
-    {
-      "extension" : [{
-        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-        "valueString" : "month - Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence."
-      }],
-      "system" : "http://unitsofmeasure.org",
-      "code" : "mo",
-      "display" : "mo"
-    },
-    {
-      "extension" : [{
-        "url" : "http://hl7.org/fhir/StructureDefinition/valueset-concept-definition",
-        "valueString" : "year"
-      }],
-      "system" : "http://unitsofmeasure.org",
-      "code" : "a",
-      "display" : "a"
-    }]
-  }
-},
-  "error" : ""
 }
 -------------------------------------------------------------------------------------
 {"hierarchical" : false, "valueSet" :{
@@ -230,10 +39,10 @@ e: {
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason",
-      "valueString" : "The code System \"http://unitsofmeasure.org has a grammar and so has infinite members. This extension is based on http://hl7.org/fhir/ValueSet/ucum-common"
+      "valueString" : "The code System 'http://unitsofmeasure.org' has a grammar and so has infinite members. This extension is based on http://hl7.org/fhir/ValueSet/ucum-common"
     }],
-    "identifier" : "urn:uuid:847d5129-29e3-4761-8ee6-48369f56ebea",
-    "timestamp" : "2026-04-08T18:44:02.200Z",
+    "identifier" : "urn:uuid:7b17fe57-8eca-408a-ae93-a755945eee4f",
+    "timestamp" : "2026-08-13T00:05:08.987Z",
     "offset" : 0,
     "parameter" : [{
       "name" : "excludeNested",

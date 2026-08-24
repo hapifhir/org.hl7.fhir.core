@@ -5,7 +5,7 @@ import java.util.*;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;

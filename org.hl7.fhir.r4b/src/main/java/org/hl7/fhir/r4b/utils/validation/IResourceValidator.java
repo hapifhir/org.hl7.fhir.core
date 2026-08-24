@@ -169,10 +169,6 @@ public interface IResourceValidator {
 
   void setCrumbTrails(boolean crumbTrails);
 
-  boolean isValidateValueSetCodesOnTxServer();
-
-  void setValidateValueSetCodesOnTxServer(boolean value);
-
   /**
    * Bundle validation rules allow for requesting particular entries in a bundle
    * get validated against particular profiles Typically this is used from the

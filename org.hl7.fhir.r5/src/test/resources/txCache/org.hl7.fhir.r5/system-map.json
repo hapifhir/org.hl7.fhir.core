@@ -1,39 +1,27 @@
 {
   "systems" : [{
-    "system" : "http://acme.org/messagetypes",
-    "url" : "http://acme.org/messagetypes",
-    "authoritative" : [],
-    "candidates" : []
-  },
-  {
-    "system" : "http://cancer.questionnaire.org/system/code/yesno",
-    "url" : "http://cancer.questionnaire.org/system/code/yesno",
-    "authoritative" : [],
-    "candidates" : []
-  },
-  {
-    "system" : "http://example.org",
-    "url" : "http://example.org",
-    "authoritative" : [],
-    "candidates" : []
-  },
-  {
     "system" : "http://loinc.org",
     "url" : "http://loinc.org",
     "authoritative" : [],
-    "candidates" : ["http://tx-dev.fhir.org/r5", "http://tx.hl7europe.eu/r5"]
+    "candidates" : ["http://tx-dev.fhir.org/r5",
+    "http://tx.hl7europe.eu/r5",
+    "https://tx.hl7.cz/r5"]
   },
   {
     "system" : "http://unitsofmeasure.org",
     "url" : "http://unitsofmeasure.org",
     "authoritative" : [],
-    "candidates" : ["http://tx-dev.fhir.org/r5", "http://tx.hl7europe.eu/r5"]
+    "candidates" : ["http://tx-dev.fhir.org/r5",
+    "http://tx.hl7europe.eu/r5",
+    "https://tx.hl7.cz/r5"]
   },
   {
     "system" : "urn:ietf:bcp:13",
     "url" : "urn:ietf:bcp:13",
     "authoritative" : [],
-    "candidates" : ["http://tx-dev.fhir.org/r5", "http://tx.hl7europe.eu/r5"]
+    "candidates" : ["http://tx-dev.fhir.org/r5",
+    "http://tx.hl7europe.eu/r5",
+    "https://tx.hl7.cz/r5"]
   },
   {
     "system" : "urn:ietf:bcp:47",
@@ -41,12 +29,15 @@
     "authoritative" : [],
     "candidates" : ["http://tx-dev.fhir.org/r5",
     "http://tx.hl7europe.eu/r5",
-    "https://term.tehik.ee/fhir"]
+    "https://term.tehik.ee/fhir",
+    "https://tx.hl7.cz/r5"]
   },
   {
     "system" : "urn:iso:std:iso:4217",
     "url" : "urn:iso:std:iso:4217",
     "authoritative" : [],
-    "candidates" : ["http://tx-dev.fhir.org/r5", "http://tx.hl7europe.eu/r5"]
+    "candidates" : ["http://tx-dev.fhir.org/r5",
+    "http://tx.hl7europe.eu/r5",
+    "https://tx.hl7.cz/r5"]
   }]
 }

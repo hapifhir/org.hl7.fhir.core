@@ -40,9 +40,10 @@ import org.hl7.fhir.validation.special.TxTestData;
 import org.hl7.fhir.validation.special.TxTesterScrubbers;
 import org.hl7.fhir.validation.special.TxTesterSorters;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
-import org.junit.AfterClass;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
@@ -336,15 +337,7 @@ private static TxTestData testData;
       }
     }
   }
-
-  @AfterClass
-  public static void saveWhenDone() throws IOException {
-    // Release the per-class base engine (a full r5 context) so it doesn't stay resident for
-    // the rest of the module's single reused test JVM.
-    baseEngine = null;
-    System.gc();
-  }
-
+  
   private Map<String, String> vars() {
     Map<String, String> vars = new HashMap<String, String>();
     vars.put("version", "5.0.0");

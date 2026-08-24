@@ -8,7 +8,7 @@ import java.util.Map;
 import org.hl7.fhir.r5.comparison.CanonicalResourceComparer.CanonicalResourceComparison;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
 @MarkedToMoveToAdjunctPackage

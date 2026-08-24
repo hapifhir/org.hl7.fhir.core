@@ -44,6 +44,6 @@ public class ExpansionOptions {
   }
 
   public static ExpansionOptions cacheNoHeirarchy() {
-    return new ExpansionOptions().withCacheOk(true).withHierarchical(true);
+    return new ExpansionOptions().withCacheOk(true).withHierarchical(false);
   }
 }

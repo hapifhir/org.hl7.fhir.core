@@ -2,8 +2,11 @@ package org.hl7.fhir.utilities.http;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +19,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   }
   
   private Map<String, String> newHeaders(String urlString) throws MalformedURLException {
-    URL url = new URL(urlString);
+    URL url = URI.create(urlString).toURL();
     Map<String, String> headers = new HashMap<>(this.getHeaders());
     if (this.getHttpAuthHeaderProvider().canProvideHeaders(url)) {
       headers.putAll(this.getHttpAuthHeaderProvider().getHeaders(url));
@@ -27,20 +30,26 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
     return headers;
   }
 
-  private SimpleHTTPClient setupSimpleHTTPClient(String url) throws IOException {
+  private ManagedHTTPClient setupManagedHTTPClient(String url) throws IOException {
     if (!ManagedWebAccess.inAllowedPaths(url)) {
       throw new IOException("The pathname '"+url+"' cannot be accessed by policy");
     }
-    SimpleHTTPClient client = new SimpleHTTPClient(getHttpAuthHeaderProvider());
+    ManagedHTTPClient.ManagedHTTPClientBuilder builder = ManagedHTTPClient.builder();
+
+    builder.authProvider(getHttpAuthHeaderProvider())
+      .ssrfProtectionEnabled(isSSRFProtectionEnabled());
+
+    List<HTTPHeader> headers = new ArrayList<>();
 
     for (Map.Entry<String, String> entry : this.getHeaders().entrySet()) {
-      client.addHeader(entry.getKey(), entry.getValue());
+      headers.add(new HTTPHeader(entry.getKey(), entry.getValue()));
     }
 
     if (getUserAgent() != null) {
-      client.addHeader("User-Agent", getUserAgent());
+      headers.add(new HTTPHeader("User-Agent", getUserAgent()));
     }
-    return client;
+    builder.headers(headers);
+    return builder.build();
   }
 
   public HTTPResult get(String url) throws IOException {
@@ -50,7 +59,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   public HTTPResult get(String url, String accept) throws IOException {
     return switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT -> {
-        SimpleHTTPClient client = setupSimpleHTTPClient(url);
+        ManagedHTTPClient client = setupManagedHTTPClient(url);
         yield client.get(url, accept);
       }
       case MANAGED ->  ManagedWebAccess.getAccessor().get(getServerTypes(), url, accept, newHeaders(url));
@@ -66,7 +75,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   public HTTPResult post(String url, byte[] content, String contentType, String accept) throws IOException {
     switch (ManagedWebAccess.getAccessPolicy()) {
     case DIRECT:
-      SimpleHTTPClient client = setupSimpleHTTPClient(url);
+      ManagedHTTPClient client = setupManagedHTTPClient(url);
       return client.post(url, contentType, content, accept);
     case MANAGED:
       return ManagedWebAccess.getAccessor().post(getServerTypes(), url, content, contentType, accept, newHeaders(url));
@@ -84,7 +93,7 @@ public class ManagedWebAccessor extends ManagedWebAccessorBase<ManagedWebAccesso
   public HTTPResult put(String url, byte[] content, String contentType, String accept) throws IOException {
     return switch (ManagedWebAccess.getAccessPolicy()) {
       case DIRECT -> {
-        SimpleHTTPClient client = setupSimpleHTTPClient(url);
+        ManagedHTTPClient client = setupManagedHTTPClient(url);
         yield client.put(url, contentType, content, accept);
       }
       case MANAGED ->

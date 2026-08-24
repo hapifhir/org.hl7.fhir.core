@@ -7,10 +7,6 @@ import java.util.Comparator;
 
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
-import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguageSorter;
-
-import net.sf.saxon.functions.Lang;
 
 public class AcceptLanguageHeader {
 

@@ -162,9 +162,6 @@ public interface IResourceValidator {
   boolean isCrumbTrails();
   void setCrumbTrails(boolean crumbTrails);
 
-  boolean isValidateValueSetCodesOnTxServer();
-  void setValidateValueSetCodesOnTxServer(boolean value);
-
   public Coding getJurisdiction();
   public IResourceValidator setJurisdiction(Coding jurisdiction);
 

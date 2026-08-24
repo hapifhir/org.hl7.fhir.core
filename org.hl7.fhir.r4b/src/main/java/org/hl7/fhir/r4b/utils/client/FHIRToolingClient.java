@@ -325,7 +325,7 @@ public class FHIRToolingClient extends FHIRBaseToolingClient{
       }
     } catch (Exception e) {
       handleException(
-          "Error performing tx5 operation '" + name + ": " + e.getMessage() + "' (parameters = \"" + ps + "\")", e);
+          "Error performing tx4b operation '" + name + ": " + e.getMessage() + "' (parameters = \"" + ps + "\")", e);
     }
     return null;
   }

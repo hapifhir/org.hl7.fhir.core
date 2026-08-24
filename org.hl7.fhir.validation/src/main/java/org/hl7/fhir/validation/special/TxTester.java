@@ -43,6 +43,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.http.URLUtil;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -411,9 +412,9 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return JsonParser.parseObject(loader.loadContent(loader.testFileName()));
   }
 
-  private byte[] fetch(String source) throws IOException {
-    String murl = source.contains("?") ? source+"&nocache=" + System.currentTimeMillis() : source+"?nocache=" + System.currentTimeMillis();
-    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), murl, "application/json, application/fhir+json");
+  private byte[] fetch(String url) throws IOException {
+    String urlWithNoCacheParam = URLUtil.getUrlWithNoCacheParam(url);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), urlWithNoCacheParam, "application/json, application/fhir+json");
     return res.getContent();
   }
 

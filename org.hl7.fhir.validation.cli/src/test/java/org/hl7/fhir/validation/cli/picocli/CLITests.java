@@ -5,21 +5,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.picocli.commands.*;
-import org.hl7.fhir.validation.cli.picocli.options.FHIRSettingsOptions;
 import org.hl7.fhir.validation.service.ValidationService;
 import org.hl7.fhir.validation.special.PackageReGenerator;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.junit.jupiter.MockitoExtension;
 import picocli.CommandLine;
 
-import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -286,6 +286,25 @@ class CLITests {
       String[] args = {"codegen", "-package-name", "test.pkg", "-output", "/tmp/output"};
 
       try (MockedConstruction<CodeGenCommand> construction = mockConstruction(CodeGenCommand.class,
+        (mock, context) -> {
+          when(mock.call()).thenReturn(0);
+          doNothing().when(mock).setValidationService(any());
+        })) {
+
+        new CLI(validationService).parseArgsAndExecuteCommand(args);
+
+        assertThat(construction.constructed()).hasSizeGreaterThanOrEqualTo(1);
+        verify(construction.constructed().get(0), atLeastOnce()).call();
+      }
+    }
+
+    @Test
+    @DisplayName("IgCodeGen command is selected with ig-codegen syntax")
+    void igCodeGenCommandSelection() {
+
+      String[] args = {"ig-codegen", "-package-name", "test.pkg", "-output", "/tmp/output", "-config", "/tmp/config", "hl7.fhir.uv.testing#current"};
+
+      try (MockedConstruction<IgCodeGenCommand> construction = mockConstruction(IgCodeGenCommand.class,
         (mock, context) -> {
           when(mock.call()).thenReturn(0);
           doNothing().when(mock).setValidationService(any());
@@ -581,8 +600,6 @@ class CLITests {
         assertThat(rePackageConstruction.constructed()).hasSizeGreaterThanOrEqualTo(1);
         verify(rePackageConstruction.constructed().get(0), atLeastOnce()).call();
 
-        // Verify CodeGenCommand was NOT constructed or called
-        //assertThat(codeGenConstruction.constructed()).isEmpty();
       }
     }
   }
@@ -591,31 +608,24 @@ class CLITests {
   @DisplayName("Global Parameter Tests")
   class GlobalParameterTests {
 
-    @Mock
-    ValidationService validationService;
-
-    @Mock
-    ValidationEngine validationEngine;
-
     @Test
     @DisplayName("Test -fhir-settings is checked by the CLI")
-    void fhirSettingsFileExistsTest() {
+    void fhirSettingsFileExistsTest(@TempDir Path tempDir) throws IOException {
 
-      String[] args = {"-fhir-settings", "dummySettingsFile.json", "dummyFile.json"};
+      Path settingsFile = Files.createFile(tempDir.resolve("dummySettingsFile.json"));
+      String[] args = {"-fhir-settings", settingsFile.toString(), "dummyFile.json"};
+
+      ValidationService validationService = mock(ValidationService.class);
 
       try (MockedConstruction<ValidateCommand> construction = mockConstruction(ValidateCommand.class,
         (mock, context) -> {
           when(mock.call()).thenReturn(0);
           doNothing().when(mock).setValidationService(any());
-        });
-           MockedConstruction<FHIRSettingsOptions> fhirSettingsConstruction = mockConstruction(FHIRSettingsOptions.class,
-             (mock, context) -> {
-              doNothing().when(mock).setFhirSettingsFile("dummySettingsFile.json");
-             })
+        })
       ) {
-          int result =   new CLI(validationService).parseArgsAndExecuteCommand(args);
-          assertThat(result).isZero();
-        verify(fhirSettingsConstruction.constructed().get(0), atLeastOnce()).setFhirSettingsFile("dummySettingsFile.json");
+        int result = new CLI(validationService).parseArgsAndExecuteCommand(args);
+        assertThat(result).isZero(); // No exceptions thrown because
+        verify(construction.constructed().get(0), atLeastOnce()).coordinateFhirSettings();
       }
     }
 
@@ -769,7 +779,7 @@ class CLITests {
 
       List<String> expectedCommands = List.of(
         "help", "compare", "compile", "convert", "to-version", "fhirpath",
-        "transform", "lang-transform", "lang-regen", "narrative", "codegen",
+        "transform", "lang-transform", "lang-regen", "narrative", "codegen", "ig-codegen",
         "preloadCache", "scan", "snapshot", "special", "spreadsheet", "tests",
         "txTests", "aiTests", "install", "factory", "server", "client", "re-package"
       );

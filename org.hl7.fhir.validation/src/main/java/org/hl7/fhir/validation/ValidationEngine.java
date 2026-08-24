@@ -856,7 +856,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = igLoader.loadContent(source, "validate", false, true);
     Resource res = igLoader.loadResourceByVersion(version, cnt.getFocus().getBytes(), source);
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     genResource(res, rc);
     return (Resource) res;
   }
@@ -870,7 +870,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
         }
       }
     } else {
-      RendererFactory.factory(res, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), res));
+      new RendererFactory().factory(res, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), res));
     }
   }
 
@@ -1020,7 +1020,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
   public byte[] generateNarrative(byte[] resource, FhirFormat format) throws FHIRException, IOException, EOperationOutcome {
     Element e = Manager.parseSingle(context, new ByteArrayInputStream(resource), format);
     Resource res = new ObjectConverter(context).convert(e);
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+    RenderingContext rc = new RenderingContext(context, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
     genResource(res, rc);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     if (format == FhirFormat.XML) {
@@ -1550,24 +1550,71 @@ public class ValidationEngine implements IValidatorResourceFetcher, IValidationP
     return policyAdvisor.getCheckReferencesTo();
   }
 
+  /**
+   * Loads expansion parameters from a file on the local filesystem.
+   *
+   * @param expansionParameters the path to a Parameters resource, in either xml or json
+   */
   public void loadExpansionParameters(String expansionParameters) {
     log.info("Load Expansion Parameters: "+expansionParameters);
-    Parameters p = null;
+    final byte[] content;
     try {
-      p = (Parameters) new XmlParser().parse(new FileInputStream(expansionParameters));
-    } catch (Exception e) {
+      content = FileUtilities.fileToBytes(expansionParameters);
+    } catch (IOException e) {
+      log.error("Unable to read expansion parameters '"+expansionParameters+"': "+e.getMessage());
+      throw new FHIRException("Unable to read expansion parameters '"+expansionParameters+"': "+e.getMessage(), e);
     }
-    if (p == null) {
+    loadExpansionParameters(content, expansionParameters, null);
+  }
+
+  /**
+   * Loads expansion parameters from content held in memory, for callers that have no access to the validator's
+   * filesystem - see org.hl7.fhir.validation.service.ValidationService#validateSources.
+   *
+   * @param content the serialized Parameters resource
+   * @param name the name of the source, used only for logging and error messages
+   * @param fileType the format of the content, as a {@link FhirFormat} extension. When null, the format is inferred.
+   */
+  public void loadExpansionParameters(byte[] content, String name, String fileType) {
+    context.setExpansionParameters(parseExpansionParameters(content, name, fileType));
+  }
+
+  /**
+   * Parses a Parameters resource from serialized content. When fileType identifies the format, only that parser is
+   * used. Otherwise, xml parsing is attempted first, then json, and the first successful parse is used.
+   */
+  public static Parameters parseExpansionParameters(byte[] content, String name, String fileType) {
+    final FhirFormat format = fileType == null ? null : FhirFormat.getFhirFormat(fileType);
+
+    if (format == FhirFormat.XML || format == FhirFormat.JSON) {
       try {
-        p = (Parameters) new JsonParser().parse(new FileInputStream(expansionParameters));
+        return (Parameters) newParser(format).parse(new ByteArrayInputStream(content));
       } catch (Exception e) {
-        log.error("Unable to load expansion parameters '"+expansionParameters+"' as either xml or json: "+e.getMessage());
-        throw new FHIRException("Unable to load expansion parameters '"+expansionParameters+"' as either xml or json: "+e.getMessage());
+        throw expansionParametersError(name, "as "+format.getExtension()+": "+e.getMessage(), e);
       }
     }
-    context.setExpansionParameters(p);
 
+    final String xmlError;
+    try {
+      return (Parameters) new XmlParser().parse(new ByteArrayInputStream(content));
+    } catch (Exception e) {
+      xmlError = e.getMessage();
+    }
+    try {
+      return (Parameters) new JsonParser().parse(new ByteArrayInputStream(content));
+    } catch (Exception e) {
+      throw expansionParametersError(name, "as either xml ("+xmlError+") or json ("+e.getMessage()+")", e);
+    }
+  }
 
+  private static org.hl7.fhir.r5.formats.IParser newParser(FhirFormat format) {
+    return format == FhirFormat.XML ? new XmlParser() : new JsonParser();
+  }
+
+  private static FHIRException expansionParametersError(String name, String detail, Exception cause) {
+    final String message = "Unable to load expansion parameters '"+name+"' "+detail;
+    log.error(message);
+    return new FHIRException(message, cause);
   }
 
   @Override

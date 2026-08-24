@@ -9,11 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.http.URLUtil;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
@@ -732,11 +734,13 @@ public class JsonParser {
   }
 
   private static byte[] fetch(String source) throws IOException {
-    String murl = source.contains("?") ? source+"&nocache=" + System.currentTimeMillis() : source+"?nocache=" + System.currentTimeMillis();
-    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), murl, "application/json, application/fhir+json");
+    String urlWithNoCacheParam = URLUtil.getUrlWithNoCacheParam(source);
+    HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), urlWithNoCacheParam, "application/json, application/fhir+json");
     res.checkThrowException();
     return res.getContent();
   }
+
+
 
   public String getSourceName() {
     return sourceName;

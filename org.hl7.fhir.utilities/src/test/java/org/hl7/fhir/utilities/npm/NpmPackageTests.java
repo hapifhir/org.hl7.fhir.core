@@ -54,11 +54,43 @@ class NpmPackageTests implements ResourceLoaderTests {
     assertTrue(files.contains("Patient - Ludger Kýnigstein.json"));
   }
 
+  @Test
+  void testMaxLoadSize() throws IOException {
+    // a package with ~200kB of decompressed content
+    byte[] content = ("{\"resourceType\":\"Basic\",\"id\":\"big\",\"language\":\""+"x".repeat(200000)+"\"}").getBytes(StandardCharsets.UTF_8);
+    byte[] tgz = buildTgz("UTF-8", "package/big.json", content);
+
+    // no limit (the default) - loads fine
+    assertNotNull(NpmPackage.fromPackage(new ByteArrayInputStream(tgz)));
+
+    // generous per-instance limit - loads fine
+    assertNotNull(NpmPackage.fromPackage(new ByteArrayInputStream(tgz), "test", false, 1000000));
+
+    // tight per-instance limit - refused before the content is buffered
+    IOException thrown = Assertions.assertThrows(IOException.class, () ->
+      NpmPackage.fromPackage(new ByteArrayInputStream(tgz), "test", false, 10000));
+    assertTrue(thrown.getMessage().contains("exceeds the limit"));
+
+    // the static property sets the default for instances that don't specify a limit
+    NpmPackage.setDefaultMaxLoadSize(10000);
+    try {
+      Assertions.assertThrows(IOException.class, () -> NpmPackage.fromPackage(new ByteArrayInputStream(tgz)));
+      // but an explicit per-instance limit still wins
+      assertNotNull(NpmPackage.fromPackage(new ByteArrayInputStream(tgz), "test", false, 1000000));
+    } finally {
+      NpmPackage.setDefaultMaxLoadSize(0);
+    }
+  }
+
   // Created by claude-sonnet-4-6
   private static byte[] buildTgz(String encoding, String entryName) throws IOException {
+    byte[] fileContent = "{\"resourceType\":\"Patient\",\"id\":\"example\"}".getBytes(StandardCharsets.UTF_8);
+    return buildTgz(encoding, entryName, fileContent);
+  }
+
+  private static byte[] buildTgz(String encoding, String entryName, byte[] fileContent) throws IOException {
     byte[] packageJson = "{\"name\":\"test\",\"version\":\"0.0.1\",\"fhirVersions\":[\"4.0.1\"],\"dependencies\":{}}"
       .getBytes(StandardCharsets.UTF_8);
-    byte[] fileContent = "{\"resourceType\":\"Patient\",\"id\":\"example\"}".getBytes(StandardCharsets.UTF_8);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     try (GzipCompressorOutputStream gzipOut = new GzipCompressorOutputStream(baos);
          TarArchiveOutputStream tarOut = new TarArchiveOutputStream(gzipOut, encoding)) {

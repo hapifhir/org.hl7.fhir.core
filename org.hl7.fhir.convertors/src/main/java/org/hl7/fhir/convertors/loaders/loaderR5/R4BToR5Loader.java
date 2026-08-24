@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_43_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_43_50;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -27,7 +26,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory;
 import org.hl7.fhir.utilities.Utilities;
 
 public class R4BToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {

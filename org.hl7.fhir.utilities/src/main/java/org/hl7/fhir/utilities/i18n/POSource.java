@@ -100,6 +100,13 @@ public class POSource {
           i++;
           s += POUtilities.trimQuotes(lines[i]);
         }
+        if (poObject.getMsgid() != null) {
+          // a second msgid for the same entry: what we read so far was a standard
+          // gettext header entry (msgid "" / msgstr "Project-Id-Version: ...") that a
+          // translation tool inserted after the entry's comments - discard its msgstr
+          // so the header text doesn't become the entry's translation
+          poObject.getMsgstr().clear();
+        }
         poObject.setMsgid(s);
       } else if (line.startsWith("msgid_plural ")) {
         String s = POUtilities.trimQuotes(line.substring(12).trim());

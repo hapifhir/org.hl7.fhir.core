@@ -53,6 +53,15 @@ public class XmlParser extends XmlParserBase {
     setAllowUnknownContent(allowUnknownContent);
   }
 
+  public XmlParser(CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+  }
+
+  public XmlParser(boolean allowUnknownContent, CustomResourceRegistry customResourceRegistry) {
+    super(customResourceRegistry);
+    setAllowUnknownContent(allowUnknownContent);
+  }
+
   protected boolean parseBaseContent(int eventType, XmlPullParser xpp, Base res) throws XmlPullParserException, IOException, FHIRFormatError {
     return false;
   }
@@ -61,7 +70,7 @@ public class XmlParser extends XmlParserBase {
   protected <E extends Enum<E>> Enumeration<E> parseEnumeration(XmlPullParser xpp, E item, EnumFactory e) throws XmlPullParserException, IOException, FHIRFormatError {
     Enumeration<E> res = new Enumeration<E>(e);
     parseElementAttributes(xpp, res);
-    res.setValue((E) e.fromCode(xpp.getAttributeValue(null, "value")));
+    res.setValueAsString(xpp.getAttributeValue(null, "value")); // string based, so that (when Configuration.isAllowCustomResourceTypes() is set) a code mapped to a CUSTOM value keeps the actual code
     next(xpp);
     int eventType = nextNoWhitespace(xpp);
     while (eventType != XmlPullParser.END_TAG) {
@@ -30606,7 +30615,12 @@ public class XmlParser extends XmlParserBase {
   protected Resource parseResource(XmlPullParser xpp) throws XmlPullParserException, IOException, FHIRFormatError {
     if (xpp == null) {
       throw new IOException("xpp == null!");
-    } else if (xpp.getName().equals("Account")) {
+    }
+    Resource custom = parseOverridingCustomResource(xpp);
+    if (custom != null) {
+      return custom;
+    }
+    if (xpp.getName().equals("Account")) {
       return parseAccount(xpp);
     } else if (xpp.getName().equals("ActivityDefinition")) {
       return parseActivityDefinition(xpp);
@@ -32117,7 +32131,7 @@ public class XmlParser extends XmlParserBase {
     if (value != null && (!Utilities.noString(value.getId()) || ExtensionHelper.hasExtensions(value) || value.getValue() != null)) {
       composeElementAttributes(value);
       if (value.getValue() != null) 
-        xml.attribute("value", e.toCode(value.getValue()));
+        xml.attribute("value", value.asStringValue()); // string based, so that a CUSTOM value round-trips the actual code
         
       xml.enter(FHIR_NS, name);
       composeElementElements(value);

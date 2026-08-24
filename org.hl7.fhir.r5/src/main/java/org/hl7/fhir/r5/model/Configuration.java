@@ -118,5 +118,21 @@ public class Configuration {
 		acceptInvalidEnums = value;
 	}
 
+	private static boolean allowCustomResourceTypes;
+
+	/**
+	 * If this is set, the parsers will accept resource type codes that are not defined in any
+	 * version of FHIR in elements bound to VersionIndependentResourceTypesAll (e.g. SearchParameter.base),
+	 * returning VersionIndependentResourceTypesAll.CUSTOM. The actual type name is carried in the
+	 * string value of the Enumeration wrapper (see Enumeration.asStringValue() / getCode())
+	 */
+	public static boolean isAllowCustomResourceTypes() {
+		return allowCustomResourceTypes;
+	}
+
+	public static void setAllowCustomResourceTypes(boolean value) {
+		allowCustomResourceTypes = value;
+	}
+
 	
 }

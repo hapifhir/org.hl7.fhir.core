@@ -43,6 +43,7 @@ import java.util.*;
     LangRegenerateCommand.class,
     NarrativeCommand.class,
     CodeGenCommand.class,
+    IgCodeGenCommand.class,
     PreloadCacheCommand.class,
     ScanCommand.class,
     SnapshotCommand.class,
@@ -95,10 +96,13 @@ public class ValidateCommand extends ValidationEngineCommand {
   @CommandLine.ArgGroup(validate = false, heading = "Locale Options%n")
   LocaleOptions localeOptions = new LocaleOptions();
 
-  @CommandLine.ArgGroup(validate = false, heading = "Debug Options%n")
+  @CommandLine.ArgGroup(validate = false, heading = "FHIR Settings Options%n")
   FHIRSettingsOptions fhirSettingsOptions = new FHIRSettingsOptions();
 
-  @CommandLine.ArgGroup(validate = false, heading = "FHIR Settings Options%n")
+  @CommandLine.ArgGroup(validate = false, heading = "Managed Web Access Options%n")
+  ManagedWebAccessOptions managedWebAccessOptions = new ManagedWebAccessOptions();
+
+  @CommandLine.ArgGroup(validate = false, heading = "Debug Options%n")
   DebugOptions debugOptions = new DebugOptions();
 
   @CommandLine.ArgGroup(validate = false, heading = "Proxy Options%n")
@@ -117,6 +121,7 @@ public class ValidateCommand extends ValidationEngineCommand {
 
   @Override
   protected Integer call(@Nonnull ValidationService validationService, @Nonnull ValidationEngine validationEngine) {
+
     InstanceValidatorParameters instanceValidatorParameters = getInstanceValidatorParameters();
     if (instanceValidatorParameters.getExpansionParameters() != null) {
       validationEngine.loadExpansionParameters(instanceValidatorParameters.getExpansionParameters());
@@ -140,7 +145,6 @@ public class ValidateCommand extends ValidationEngineCommand {
     WatchParameters watchParameters = getWatchParameters();
 
     log.info("Sources to validate: " + String.join("", getSources()));
-
     log.info("Validating");
     try {
       validationService.validateSources(validationEngine, new ValidateSourceParameters(instanceValidatorParameters, getSources(), output, watchParameters));
@@ -156,6 +160,16 @@ public class ValidateCommand extends ValidationEngineCommand {
       return 1;
     }
     return 0;
+  }
+
+  /**
+   * A few of these options collide, so the order in which they are applied is important.
+   * Settings from fhir-settings.json are always loaded first, followed by any settings from the command-line that
+   * should override them.
+   */
+  public void coordinateFhirSettings() {
+    fhirSettingsOptions.applyOptions();
+    managedWebAccessOptions.applyOptions();
   }
 
   private WatchParameters getWatchParameters() {

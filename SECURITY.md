@@ -42,20 +42,42 @@ restricting path access to particular directories.
 ## Network access
 
 The library will access the web to download needed collateral, or to access terminology resources or servers.
-All access is by http(s) using the okhttp library or java.net.HttpURLConnection, and is controlled by the class
-ManagedWebAccess. Authentication is for individual servers can be configured through the fhir-settings.json file.
-You can set the static features of this class to completely cut the library off from the web, provide your own web
-accessor, provide your own provider of authentication, or limit the web resources accessed to particular domains or
-sub-domains. See the ManagedWebAccess JavaDoc for details.
+Access is currently implemented using the okhttp library, and is controlled by the class ManagedWebAccess.
+Authentication for individual servers can be configured through the fhir-settings.json file.
 
-Note that for legacy reasons, network access can also be prohibited using
-FhirSettings.setProhibitNetworkAccess(), but this is deprecated.
+By default all web access is restricted in the following ways:
+* https is the required protocol for all requests
+* Private or non-public network access is not permitted
+These restrictions can be removed on a per-server basis in the fhir-settings.json file. Documentations on
+fhir-sessions.json is available at: https://confluence.hl7.org/spaces/FHIR/pages/161072808/Using+fhir-settings.json
 
-Note that libraries that this library depends on may still access the network directly. Review of the use of these
+###  Network Access
+
+By default, ManagedWebAccess loads access policies from the fhir-settings.json file. Some of these settings can be
+altered directly via static methods.
+
+**Web Access**
+```java
+ManagedWebAccess.setAccessPolicy(WebAccessPolicy.DIRECT); // (Default) uses the access policies from fhir-settings.json
+ManagedWebAccess.setAccessPolicy(WebAccessPolicy.PROHIBITED); // no access at all to the web
+```
+**SSRF Protection**
+```java
+ManagedWebAccess.setSsrfProtectionEnabled(true); // (Default) prevents non-https requests and blocks access to non-public servers
+ManagedWebAccess.setSsrfProtectionEnabled(false); // turns off ssrf protection globally. Only run in this mode if no untrusted party can influence any of the content being processed, or the validator runs where internal network access poses no risk.
+```
+
+### Additional Notes:
+* WebAccessPolicy.MANAGED is intended to allow third party implementations of network access, but is not presently implemented or in use
+* Libraries that this project depends on may still access the network directly. Review of the use of these
 libraries is ongoing.
 
-Validator: The validator CLI accesses the web to download packages and make use of the
-terminology server, which defaults to https://tx.fhir.org.
+## Default Servers
+
+The validator CLI accesses the web to download packages and make use of terminology servers including the following:
+* https://packages.fhir.org
+* https://packages2.fhir.org
+* https://tx.fhir.org.
 
 ## Logging
 

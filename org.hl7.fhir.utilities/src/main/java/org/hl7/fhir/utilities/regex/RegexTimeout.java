@@ -1,11 +1,17 @@
 package org.hl7.fhir.utilities.regex;
 
-import java.util.concurrent.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
  * <p>This utility class executes common regular expression methods and times out if processing takes longer than expected.</p>
  * <p>500ms is the default timeout.</p>
+ * <p>The timeout is enforced on the calling thread: the input is wrapped in a {@link DeadlineCharSequence}
+ * that throws once a deadline has passed. Because the regex engine reads the input character-by-character
+ * (via {@link CharSequence#charAt(int)}) as it matches - including while backtracking - a runaway (ReDoS)
+ * evaluation is aborted promptly without spawning a worker thread.</p>
  */
 @SuppressWarnings({"checkstyle:patternUsage", "checkstyle:stringImplicitPatternUsage"})
 //Regex sourced from regex parameter; user-supplied at runtime, with timeout enforcement
@@ -17,19 +23,12 @@ public final class RegexTimeout {
 
   static final long DEFAULT_TIMEOUT = 500;
 
-  private static <T> T executeWithTimeout(Callable<T> callable, long timeoutMillis) throws TimeoutException {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    Future<T> future = executor.submit(callable);
+  private static <T> T runWithDeadline(Function<CharSequence, T> regexOp, CharSequence input, long timeoutMillis) throws TimeoutException {
+    long deadlineNanos = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(timeoutMillis);
     try {
-      return future.get(timeoutMillis, TimeUnit.MILLISECONDS);
-    } catch (TimeoutException e ) {
-      future.cancel(true);
-      throw new TimeoutException("Regex evaluation timed out after ");
-    } catch (ExecutionException | InterruptedException e) {
-      future.cancel(true);
-      throw new RuntimeException(e);
-    } finally {
-      executor.shutdownNow();
+      return regexOp.apply(new DeadlineCharSequence(input, deadlineNanos));
+    } catch (RegexTimeoutException e) {
+      throw new TimeoutException("Regex evaluation timed out after " + timeoutMillis + "ms");
     }
   }
 
@@ -53,7 +52,7 @@ public final class RegexTimeout {
    * @throws TimeoutException if processing runs longer than timeoutMillis milliseconds
    */
   public static boolean matches(CharSequence charSequence, String regex, long timeoutMillis) throws TimeoutException {
-    return executeWithTimeout(()->Pattern.matches(regex, new InterruptibleCharSequence(charSequence)), timeoutMillis);
+    return runWithDeadline(seq -> Pattern.matches(regex, seq), charSequence, timeoutMillis);
   }
 
   /**
@@ -76,7 +75,7 @@ public final class RegexTimeout {
    * @throws TimeoutException if processing runs longer than timeoutMillis milliseconds
    */
   public static boolean find(CharSequence charSequence, String regex, long timeoutMillis) throws TimeoutException {
-    return executeWithTimeout(() -> Pattern.compile(regex).matcher(new InterruptibleCharSequence(charSequence)).find(), timeoutMillis);
+    return runWithDeadline(seq -> Pattern.compile(regex).matcher(seq).find(), charSequence, timeoutMillis);
   }
 
   /**
@@ -101,7 +100,7 @@ public final class RegexTimeout {
    * @throws TimeoutException if processing runs longer than timeoutMillis milliseconds
    */
   public static String replaceAll(CharSequence charSequence, String regex, String replacement, long timeoutMillis) throws TimeoutException {
-    return executeWithTimeout(() -> Pattern.compile(regex).matcher(new InterruptibleCharSequence(charSequence)).replaceAll(replacement), timeoutMillis);
+    return runWithDeadline(seq -> Pattern.compile(regex).matcher(seq).replaceAll(replacement), charSequence, timeoutMillis);
   }
 
   /**
@@ -126,7 +125,7 @@ public final class RegexTimeout {
    * @throws TimeoutException if processing runs longer than timeoutMillis milliseconds
    */
   public static String replaceFirst(CharSequence charSequence, String regex, String replacement, long timeoutMillis) throws TimeoutException {
-    return executeWithTimeout(() -> Pattern.compile(regex).matcher(new InterruptibleCharSequence(charSequence)).replaceFirst(replacement), timeoutMillis);
+    return runWithDeadline(seq -> Pattern.compile(regex).matcher(seq).replaceFirst(replacement), charSequence, timeoutMillis);
   }
 
   /**
@@ -149,7 +148,7 @@ public final class RegexTimeout {
    * @throws TimeoutException if processing runs longer than timeoutMillis milliseconds
    */
   public static String[] split(CharSequence charSequence, String regex, long timeoutMillis) throws TimeoutException {
-    return executeWithTimeout(() -> Pattern.compile(regex).split(new InterruptibleCharSequence(charSequence)), timeoutMillis);
+    return runWithDeadline(seq -> Pattern.compile(regex).split(seq), charSequence, timeoutMillis);
   }
 
   /**
@@ -174,31 +173,46 @@ public final class RegexTimeout {
    * @throws TimeoutException if processing runs longer than timeoutMillis milliseconds
    */
   public static String[] split(CharSequence charSequence, String regex, int limit, long timeoutMillis) throws TimeoutException {
-    return executeWithTimeout(() -> Pattern.compile(regex).split(new InterruptibleCharSequence(charSequence), limit), timeoutMillis);
+    return runWithDeadline(seq -> Pattern.compile(regex).split(seq, limit), charSequence, timeoutMillis);
+  }
+
+  /**
+   * Thrown by {@link DeadlineCharSequence} when the evaluation deadline is exceeded. It propagates out of the
+   * regex engine and is translated into a {@link TimeoutException} by {@link #runWithDeadline}. The stack trace
+   * is suppressed as it carries no useful information.
+   */
+  private static final class RegexTimeoutException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+    RegexTimeoutException() {
+      super(null, null, false, false);
+    }
   }
 
   /**
    * <p>
-   * CharSequence that noticed thread interrupts -- as might be necessary
-   * to recover from a loose regex on unexpected challenging input.
+   * CharSequence that aborts once a deadline has passed -- as might be necessary to recover from a loose regex
+   * on unexpected challenging input. The regex engine reads the input via {@link #charAt(int)} as it matches
+   * (including while backtracking), so checking the deadline there aborts a runaway evaluation on the calling
+   * thread, with no separate worker thread required.
    * </p>
    * <p>
-   * This solution is sourced from <a href="https://stackoverflow.com/a/910798">this StackOverflow answer</a>
+   * Adapted from <a href="https://stackoverflow.com/a/910798">this StackOverflow answer</a> (originally
+   * interrupt-based; changed here to a deadline check).
    * </p>
-   * @author gojomo
-   *
    */
-  static class InterruptibleCharSequence implements CharSequence {
-      CharSequence inner;
+  static final class DeadlineCharSequence implements CharSequence {
+      private final CharSequence inner;
+      private final long deadlineNanos;
 
-      public InterruptibleCharSequence(CharSequence inner) {
+      public DeadlineCharSequence(CharSequence inner, long deadlineNanos) {
           super();
           this.inner = inner;
+          this.deadlineNanos = deadlineNanos;
       }
 
       public char charAt(int index) {
-          if (Thread.interrupted()) { // clears flag if set
-              throw new RuntimeException(new InterruptedException());
+          if (System.nanoTime() > deadlineNanos) {
+              throw new RegexTimeoutException();
           }
           return inner.charAt(index);
       }
@@ -207,9 +221,8 @@ public final class RegexTimeout {
           return inner.length();
       }
 
-
       public CharSequence subSequence(int start, int end) {
-          return new InterruptibleCharSequence(inner.subSequence(start, end));
+          return new DeadlineCharSequence(inner.subSequence(start, end), deadlineNanos);
       }
 
       @Override
