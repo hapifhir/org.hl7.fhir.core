@@ -23,6 +23,8 @@ public class BaseAdvisor_43_50 extends BaseAdvisor50<org.hl7.fhir.r4b.model.Exte
   @Override
   public boolean ignoreExtension(@Nonnull String path,
                                  @Nonnull String url) throws FHIRException {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     final List<String> paths = Arrays.asList(path.split(","));
     final String lastPath = paths.get(paths.size() - 1);
     if ((lastPath.equals("TestScript")) && (TestScriptIgnoredUrls.contains(url))) {

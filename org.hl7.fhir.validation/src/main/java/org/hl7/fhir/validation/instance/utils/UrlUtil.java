@@ -19,6 +19,8 @@ public class UrlUtil {
     }
 
     if (value.startsWith("data:")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = value.substring(5).split("\\,");
       if (p.length < 2) {
         return context.formatMessage(I18nConstants.XHTML_URL_DATA_NO_DATA, value);        

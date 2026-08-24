@@ -93,7 +93,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Text"),
         translate("sd.hint", "Text for the item"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Cardinality"),
-        translate("sd.hint", "Minimum and Maximum # of times the the itemcan appear in the instance"), null, 0));
+        translate("sd.hint", "Minimum and Maximum # of times the item can appear in the instance"), null, 0));
     model.getTitles().add(gen.new Title(null, model.getDocoRef(), translate("sd.head", "Type"),
         translate("sd.hint", "The type of the item"), null, 0));
     if (hasFlags) {

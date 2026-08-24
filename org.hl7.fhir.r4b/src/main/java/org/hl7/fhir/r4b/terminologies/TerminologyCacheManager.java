@@ -143,24 +143,4 @@ public class TerminologyCacheManager {
       });
     }
   }
-
-  public void commit(String token) throws IOException {
-    // create a zip of all the files
-    ByteArrayOutputStream bs = new ByteArrayOutputStream();
-    zipDirectory(bs);
-
-    // post it to
-    String url = "https://tx.fhir.org/post/tx-cache/" + ghOrg + "/" + ghRepo + "/" + ghBranch + ".zip";
-    log.info("Sending tx-cache to " + url + " (" + Utilities.describeSize(bs.toByteArray().length) + ")");
-
-    HTTPResult res = ManagedWebAccess.accessor(Arrays.asList("web"))
-     .withBasicAuth(token.substring(0, token.indexOf(':')), token.substring(token.indexOf(':') + 1))
-     .put(url, bs.toByteArray(), null, "application/zip");
-    if (res.getCode() >= 300) {
-      log.error("sending cache failed: " + res.getCode());
-    } else {
-      log.info("Sent cache");
-    }
-  }
-
 }

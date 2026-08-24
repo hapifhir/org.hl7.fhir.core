@@ -12,6 +12,7 @@ import java.util.TimeZone;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
@@ -211,7 +212,8 @@ public class PECodeGenerator {
       if (field.definition().hasBinding() && !field.hasFixedValue()) {
         ElementDefinitionBindingComponent binding = field.definition().getBinding();
         if (binding.getStrength() == org.hl7.fhir.r5.model.Enumerations.BindingStrength.REQUIRED && binding.hasValueSet()) {
-          org.hl7.fhir.r5.model.ValueSet vs = workerContext.fetchResource(org.hl7.fhir.r5.model.ValueSet.class, binding.getValueSet(), null, field.getProfile());
+          org.hl7.fhir.r5.model.ValueSet vs = workerContext.fetchResource(org.hl7.fhir.r5.model.ValueSet.class, binding.getValueSet(),
+            ExtensionUtilities.getVersionResolutionRules(binding.getValueSetElement()), null, field.getProfile());
           if (vs != null) {
             ValueSetExpansionOutcome vse = workerContext.expandVS(vs, false, false);
             Set<String> codes = new HashSet<>();
@@ -830,7 +832,10 @@ public class PECodeGenerator {
     if (!Utilities.noString(doco)) {
       String pfx = Utilities.padLeft("", ' ', indent);
       w(b, pfx+"/*"+(jdoc ? "*" : ""));
-      for (String line : doco.split("\\R")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //simple character class split; safe
+      String[] docoLines = doco.split("\\R");
+      for (String line : docoLines) {
         for (String nl : naturalLines(line))
           w(b, pfx+" * "+nl);
         w(b, pfx+" *");

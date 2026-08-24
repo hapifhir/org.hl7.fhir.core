@@ -2,7 +2,6 @@ package org.hl7.fhir.generation.tests;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -31,17 +30,16 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-public class TestInstanceGenerationTester {
+class TestInstanceGenerationTester {
 
   @Test
-  public void testDataFactory() throws IOException, FHIRException, SQLException {
+  void testDataFactory() throws IOException, FHIRException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
     SimpleWorkerContext context = new SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).withDefaultParams().fromPackage(pcm.loadPackage("hl7.fhir.r4.core"));
-    context.connectToTSServer(new TerminologyClientR4.TerminologyClientR4Factory(), "http://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
+    context.connectToTSServer(new TerminologyClientR4.TerminologyClientR4Factory(), "https://tx-dev.fhir.org", "Instance-Generator", Utilities.path("[tmp]", "tx-log.html"), true);
     context.loadFromPackage(pcm.loadPackage("us.nlm.vsac#0.21.0"), new R4ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
         new NullLoaderKnowledgeProviderR5(), context.getVersion()));
     context.loadFromPackage(pcm.loadPackage("hl7.fhir.us.core#6.0.0"), new R4ToR5Loader(Utilities.stringSet("CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"),
@@ -49,7 +47,7 @@ public class TestInstanceGenerationTester {
             
     FHIRPathEngine fpe = new FHIRPathEngine(context);
     TestDataHostServices hs = new TestDataHostServices(context, new DateTimeType("2024-12-24T09:01:00+11:00"),
-      new DateType("2024-12-24"), new StringType("http://hl7.org/fhir"));
+      new DateType("2024-12-24"), new StringType("https://www.hl7.org/fhir"));
     hs.registerFunction(new GlobalObjectRandomFunction());
     hs.registerFunction(new BaseTableWrapper.TableColumnFunction());
     hs.registerFunction(new BaseTableWrapper.TableDateColumnFunction());

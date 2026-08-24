@@ -30,6 +30,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 
 import org.hl7.fhir.r5.terminologies.expansion.OperationIsTooCostly;
+import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
@@ -79,10 +80,11 @@ public class ValueSetProcessBase {
   }
   
   public enum OpIssueCode {
-    NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData, CodeComment, VersionError;
-    
+    NotInVS, ThisNotInVS, InvalidCode, Display, DisplayComment, NotFound, CodeRule, VSProcessing, InferFailed, StatusCheck, InvalidData, CodeComment, VersionError, CacheIdUnknown;
+
     public String toCode() {
       switch (this) {
+      case CacheIdUnknown: return "cache-id-unknown";
       case CodeRule: return "code-rule";
       case Display: return "invalid-display";
       case DisplayComment: return "display-comment";
@@ -311,7 +313,7 @@ public class ValueSetProcessBase {
     if (system == null || candidate == null || criteria == null) {
       return false;
     }
-    CodeSystem cs = context.fetchCodeSystem(system);
+    CodeSystem cs = context.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule());
     VersionAlgorithm va = cs == null ? VersionAlgorithm.Unknown : VersionAlgorithm.fromType(cs.getVersionAlgorithm());
     if (va == VersionAlgorithm.Unknown) {
       va = VersionAlgorithm.guessFormat(candidate);
@@ -351,9 +353,14 @@ public class ValueSetProcessBase {
     return new OperationIsTooCostly(msg);
   }
 
-  protected TerminologyServiceException failTSE(String msg) {
+  protected TerminologyServiceException createTerminologyServiceException(String msg) {
     allErrors.add(msg);
     return new TerminologyServiceException(msg);
+  }
+
+  protected TerminologyServiceException createTerminologyServiceException(String msg, ValueSetExpansionOutcome outcome) {
+    allErrors.add(msg);
+    return new TerminologyServiceException(msg).setOutcome(outcome);
   }
 
   public Collection<? extends String> getAllErrors() {

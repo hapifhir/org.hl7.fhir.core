@@ -3,6 +3,7 @@ package org.hl7.fhir.validation;
 import java.util.*;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.UsageContext;
 import org.hl7.fhir.r5.utils.validation.constants.BestPracticeWarningLevel;
@@ -12,6 +13,11 @@ import org.hl7.fhir.validation.instance.utils.DigitalSignatureSupport;
 import org.hl7.fhir.validation.service.utils.ValidationLevel;
 
 public class ValidatorSettings extends ValidationOptions {
+
+  /**
+   * Default value for codeSystemValidationSizeLimit.
+   */
+  public static final int DEFAULT_CODESYSTEM_VALIDATION_SIZE_LIMIT = 1000;
 
   private Source source; // @configuration
   private ValidationLevel level = ValidationLevel.HINTS; // @configuration
@@ -28,6 +34,17 @@ public class ValidatorSettings extends ValidationOptions {
   private String minVersion;
   private String maxVersion;
   private boolean useNewXVersionPackages;
+  @Getter @Setter private Boolean enforceAggregationOutsideBundles;
+
+  /**
+   * The maximum number of codes that will be checked against a code system for a single ValueSet
+   * include, ConceptMap group, or CodeSystem supplement. Where a resource carries more codes than
+   * this, none of them are checked and a hint is issued instead - checking them costs a server
+   * round trip each, which is too expensive to do without the author asking for it.
+   * <p>
+   * 0 means no limit.
+   */
+  @Getter @Setter private int codeSystemValidationSizeLimit = DEFAULT_CODESYSTEM_VALIDATION_SIZE_LIMIT; // @configuration
 
   @Getter private Set<String> jwtHeaderList = buildJadesHeaders();
 

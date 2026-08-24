@@ -8,6 +8,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
@@ -15,6 +16,7 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 @MarkedToMoveToAdjunctPackage
@@ -43,25 +45,25 @@ public class LibraryRenderer extends ResourceRenderer {
       boolean email = hasCT(authors, "email") || hasCT(editors, "email") || hasCT(reviewers, "email") || hasCT(endorsers, "email"); 
       boolean phone = hasCT(authors, "phone") || hasCT(editors, "phone") || hasCT(reviewers, "phone") || hasCT(endorsers, "phone"); 
       boolean url = hasCT(authors, "url") || hasCT(editors, "url") || hasCT(reviewers, "url") || hasCT(endorsers, "url"); 
-      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_PAR));
+      x.h2().tx(context.formatPhrase(RenderingI18nContext.LIB_REND_PAR));
       XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       for (ResourceWrapper cd : authors) {
-        participantRow(status, t, (context.formatPhrase(RenderingContext.LIB_REND_AUT)), cd, email, phone, url);
+        participantRow(status, t, (context.formatPhrase(RenderingI18nContext.LIB_REND_AUT)), cd, email, phone, url);
       }
 
       for (ResourceWrapper cd : editors) {
-        participantRow(status, t, (context.formatPhrase(RenderingContext.LIB_REND_ED)), cd, email, phone, url);
+        participantRow(status, t, (context.formatPhrase(RenderingI18nContext.LIB_REND_ED)), cd, email, phone, url);
       }
       for (ResourceWrapper cd : reviewers) {
-        participantRow(status, t, (context.formatPhrase(RenderingContext.LIB_REND_REV)), cd, email, phone, url);
+        participantRow(status, t, (context.formatPhrase(RenderingI18nContext.LIB_REND_REV)), cd, email, phone, url);
       }
       for (ResourceWrapper cd : endorsers) {
-        participantRow(status, t, (context.formatPhrase(RenderingContext.LIB_REND_END)), cd, email, phone, url);
+        participantRow(status, t, (context.formatPhrase(RenderingI18nContext.LIB_REND_END)), cd, email, phone, url);
       }
     }
     List<ResourceWrapper> artifacts = lib.children("relatedArtifact");
     if (!artifacts.isEmpty()) {
-      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_ART));
+      x.h2().tx(context.formatPhrase(RenderingI18nContext.LIB_REND_ART));
       XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       boolean label = false;
       boolean display = false;
@@ -77,7 +79,7 @@ public class LibraryRenderer extends ResourceRenderer {
     }
     List<ResourceWrapper> parameters = lib.children("parameter");
     if (!parameters.isEmpty()) {
-      x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
+      x.h2().tx(context.formatPhrase(RenderingI18nContext.GENERAL_PARS));
       XhtmlNode t = x.table("grid", false).markGenerated(!context.forValidResource());
       boolean doco = false;
       for (ResourceWrapper p : parameters) {
@@ -89,14 +91,14 @@ public class LibraryRenderer extends ResourceRenderer {
     }
     List<ResourceWrapper> dataRequirements = lib.children("dataRequirement");
     if (!dataRequirements.isEmpty()) {
-      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_REQ));
+      x.h2().tx(context.formatPhrase(RenderingI18nContext.LIB_REND_REQ));
       for (ResourceWrapper p : dataRequirements) {
         renderDataRequirement(status, x, p);
       }      
     }
     List<ResourceWrapper> contents = lib.children("content");
     if (!contents.isEmpty()) {
-      x.h2().tx(context.formatPhrase(RenderingContext.LIB_REND_CONT));          
+      x.h2().tx(context.formatPhrase(RenderingI18nContext.LIB_REND_CONT));          
       boolean isCql = false;
       int counter = 0;
       for (ResourceWrapper p : contents) {
@@ -200,7 +202,7 @@ public class LibraryRenderer extends ResourceRenderer {
         p.tx(title);
         p.tx(": ");
       }
-      Resource res = context.getContext().fetchResource(Resource.class, url);
+      Resource res = context.getContext().fetchResource(Resource.class, url, ExtensionUtilities.getVersionResolutionRulesBase(att.getBaseForChild("url")));
       if (res == null || !res.hasWebPath()) {
         p.code().ah(context.prefixLocalHref(url)).tx(url);        
       } else if (res instanceof CanonicalResource) {
@@ -218,7 +220,7 @@ public class LibraryRenderer extends ResourceRenderer {
         p.tx(title);
         p.tx(": ");
       }
-      p.code().tx(context.formatPhrase(RenderingContext.LIB_REND_NOCONT));
+      p.code().tx(context.formatPhrase(RenderingI18nContext.LIB_REND_NOCONT));
       p.tx(" (");
       p.code().tx(ct);
       p.tx(lang(att));
@@ -268,10 +270,10 @@ public class LibraryRenderer extends ResourceRenderer {
           p.tx(title);
           p.tx(": ");
         }
-        p.code().tx(context.formatPhrase(RenderingContext.LIB_REND_SHOW));
+        p.code().tx(context.formatPhrase(RenderingI18nContext.LIB_REND_SHOW));
         p.code().tx(ct);
         p.tx(lang(att));
-        p.tx((context.formatPhrase(RenderingContext.LIB_REND_SIZE, Utilities.describeSize(cnt.length))+" ")+")");
+        p.tx((context.formatPhrase(RenderingI18nContext.LIB_REND_SIZE, Utilities.describeSize(cnt.length))+" ")+")");
       }
     }    
   }

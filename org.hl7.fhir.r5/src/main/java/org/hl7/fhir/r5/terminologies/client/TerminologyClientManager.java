@@ -3,14 +3,10 @@ package org.hl7.fhir.r5.terminologies.client;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
@@ -29,7 +25,6 @@ import org.hl7.fhir.r5.utils.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
-import org.hl7.fhir.utilities.http.ManagedWebAccessUtils;
 import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.settings.FhirSettings;
@@ -43,6 +38,7 @@ public class TerminologyClientManager {
     private String url;
     private List<String> authoritative = new ArrayList<String>();
     private List<String> candidates = new ArrayList<String>();
+    private String language; // the language this resolution was made for (null = no language; see Language Specific Claims in the tx ecosystem IG)
     
     public ServerOptionList(String url, String address) {
       this.url = url;
@@ -74,7 +70,7 @@ public class TerminologyClientManager {
 
     @Override
     public String toString() {
-      return "auth = " + CommaSeparatedStringBuilder.join("|", authoritative)+ ", candidates=" + CommaSeparatedStringBuilder.join("|", candidates);
+      return "["+url+(language == null ? "" : " in "+language)+ "]: authoritative = " + CommaSeparatedStringBuilder.join("|", authoritative)+ ", candidates=" + CommaSeparatedStringBuilder.join("|", candidates);
     }    
     
   }
@@ -143,7 +139,6 @@ public class TerminologyClientManager {
   private static final boolean IGNORE_TX_REGISTRY = false;
   
   private ITerminologyClientFactory factory;
-  private String cacheId;
   private List<TerminologyClientContext> serverList = new ArrayList<>(); // clients by server address
   private Map<String, TerminologyClientContext> serverMap = new HashMap<>(); // clients by server address
   private Map<String, Boolean> serverSupportMap = new HashMap<>(); // clients by server address
@@ -164,20 +159,14 @@ public class TerminologyClientManager {
 
   private int ecosystemfailCount;
 
-  public TerminologyClientManager(ITerminologyClientFactory factory, String cacheId, ILoggingService logger) {
+  public TerminologyClientManager(ITerminologyClientFactory factory, ILoggingService logger) {
     super();
     this.factory = factory;
-    this.cacheId = cacheId;
     this.logger = logger;
     implicitValueSets = new ImplicitValueSets(null);
   }
-  
-  public String getCacheId() {
-    return cacheId; 
-  }
-  
+
   public void copy(TerminologyClientManager other) {
-    cacheId = other.cacheId;  
     serverList.addAll(other.serverList);
     serverMap.putAll(other.serverMap);
     resMap.putAll(other.resMap);
@@ -190,16 +179,31 @@ public class TerminologyClientManager {
 
 
   public TerminologyClientContext chooseServer(ValueSet vs, Set<String> systems, boolean expand) throws TerminologyServiceException {
+    return chooseServer(vs, systems, expand, null);
+  }
+
+  /**
+   * Choose a server for a set of code systems.
+   * 
+   * language is the language(s) of the request being routed, in Accept-Language syntax, or null.
+   * Language specific authoritative claims in the ecosystem registration are only considered when
+   * a language is passed, so it should only be provided when the operation being routed is language
+   * sensitive (an expansion where the display language matters, a validation that checks a display,
+   * a lookup that returns designations). The routing language and the language on the subsequent
+   * operation must agree, or the routing is meaningless.
+   */
+  public TerminologyClientContext chooseServer(ValueSet vs, Set<String> systems, boolean expand, String language) throws TerminologyServiceException {
     if (serverList.isEmpty()) {
       return null;
     }
-    if (systems.contains(UNRESOLVED_VALUESET) || systems.isEmpty()) {
-      return serverList.get(0);
+    if (systems.contains(UNRESOLVED_VALUESET) || systems.isEmpty() || !useEcosystem) {
+      return getMaster();
     }
+    language = effectiveLanguage(language, expand);
     
     List<ServerOptionList> choices = new ArrayList<>();
     for (String s : systems) {
-      choices.add(findServerForSystem(s, expand));
+      choices.add(findServerForSystem(s, language));
     }    
     
     // first we look for a server that's authoritative for all of them
@@ -213,7 +217,7 @@ public class TerminologyClientManager {
         }
         if (ok) {
           log(vs, s, systems, choices, "Found authoritative server "+s);
-          return findClient(s, systems, expand);
+          return findClientContext(s, systems, expand);
         }
       }
     }
@@ -229,7 +233,7 @@ public class TerminologyClientManager {
         }
         if (ok) {
           log(vs, s, systems, choices, "Found partially authoritative server "+s);
-          return findClient(s, systems, expand);
+          return findClientContext(s, systems, expand);
         }
       }
     }
@@ -238,6 +242,11 @@ public class TerminologyClientManager {
       String uri = sys.contains("|") ? sys.substring(0, sys.indexOf("|")) : sys;
       // this list is the list of code systems that have special handling on tx.fhir.org, and might not be resolved above.
       // we don't want them to go to secondary servers (e.g. VSAC) by accident (they might go deliberately above)
+      if (Utilities.existsInList(uri, "http://snomed.info/sct") && systems.size() > 1) {
+        Set<String> sct = new HashSet<>();
+        sct.add("http://snomed.info/sct");
+        return chooseServer(vs, sct, expand, language);
+      }
       if (Utilities.existsInList(uri, "http://unitsofmeasure.org", "http://loinc.org", "http://snomed.info/sct",
         "http://www.nlm.nih.gov/research/umls/rxnorm", "http://hl7.org/fhir/sid/cvx", "urn:ietf:bcp:13", "urn:ietf:bcp:47",
         "urn:ietf:rfc:3986", "http://www.ama-assn.org/go/cpt", "urn:oid:1.2.36.1.2001.1005.17", "urn:iso:std:iso:3166",
@@ -249,7 +258,21 @@ public class TerminologyClientManager {
       }
     }
 
-    choices.forEach(choice -> checkActuallySupports(choice));
+    // check the candidates actually support the code system - but filter a copy: the
+    // ServerOptionList objects are cached in resMap (and persisted to system-map.json),
+    // and must keep recording what the registry actually said, not the outcome of a
+    // possibly-transient support check
+    List<ServerOptionList> filteredChoices = new ArrayList<>();
+    for (ServerOptionList choice : choices) {
+      ServerOptionList filtered = checkActuallySupports(choice);
+      if (filtered.candidates.size() < choice.candidates.size()) {
+        List<String> removed = new ArrayList<>(choice.candidates);
+        removed.removeAll(filtered.candidates);
+        log(vs, null, systems, choices, "Candidate server(s) "+CommaSeparatedStringBuilder.join("|", removed)+" dropped for "+choice.url+": no usable copy of the code system found there");
+      }
+      filteredChoices.add(filtered);
+    }
+    choices = filteredChoices;
 
     // now we look for a server that's a candidate for all of them
     for (ServerOptionList ol : choices) {
@@ -262,7 +285,7 @@ public class TerminologyClientManager {
         }
         if (ok) {
           log(vs, s, systems, choices, "Found candidate server " + s);
-          return findClient(s, systems, expand);
+          return findClientContext(s, systems, expand);
         }
       }
     }
@@ -282,7 +305,7 @@ public class TerminologyClientManager {
         .orElse(null);
     if (max != null) {
       log(vs, max, systems, choices, "Found most authoritative server "+max);
-      return findClient(max, systems, expand);
+      return findClientContext(max, systems, expand);
     }
 
     // no agreement? Then what we do depends     
@@ -297,14 +320,14 @@ public class TerminologyClientManager {
         } else {
           log(vs, el, systems, choices, "Handled by multiple servers. Using source @ '"+el+"'");
         }        
-        return findClient(el, systems, expand);
+        return findClientContext(el, systems, expand);
       } else {
         if (systems.size() == 1) {
           log(vs, serverList.get(0).getAddress(), systems, choices, "System not handled by any servers. Using primary server");
         } else {
           log(vs, serverList.get(0).getAddress(), systems, choices, "Systems handled by multiple servers. Using primary server");
         }
-        return findClient(serverList.get(0).getAddress(), systems, expand);
+        return findClientContext(serverList.get(0).getAddress(), systems, expand);
       }      
     } else {
       if (systems.size() == 1) {
@@ -313,17 +336,20 @@ public class TerminologyClientManager {
         log(vs, serverList.get(0).getAddress(), systems, choices, "Systems handled by multiple servers. Using primary server");
       }
       log(vs, serverList.get(0).getAddress(), systems, choices, "Fallback: primary server");
-      return findClient(serverList.get(0).getAddress(), systems, expand);
+      return findClientContext(serverList.get(0).getAddress(), systems, expand);
     }
   }
 
-  private void checkActuallySupports(ServerOptionList choice) {
+  private ServerOptionList checkActuallySupports(ServerOptionList choice) {
     for (String s : choice.candidates) {
       if (isTxFhirOrg(s)) {
-        return;
+        return choice;
       }
     }
-    choice.candidates.removeIf(server -> !isSupportedServer(server, choice.url));
+    ServerOptionList res = new ServerOptionList(choice.url, choice.authoritative, choice.candidates);
+    res.language = choice.language;
+    res.candidates.removeIf(server -> !isSupportedServer(server, choice.url));
+    return res;
   }
 
   private boolean isSupportedServer(String server, String url) {
@@ -334,8 +360,8 @@ public class TerminologyClientManager {
   }
 
   private boolean isTxFhirOrg(String s) {
-    String server = s.replace("https://", "http://");
-    return Utilities.startsWithInList(server, "http://tx.fhir.org/", "http://tx-dev.fhir.org/");
+    String server = s.replace("http://", "https://");
+    return Utilities.startsWithInList(server, "https://tx.fhir.org/", "https://tx-dev.fhir.org/");
   }
 
   private TerminologyClientContext findPrimaryServer(List<TerminologyClientContext> serverList) {
@@ -348,23 +374,31 @@ public class TerminologyClientManager {
   }
 
   public TerminologyClientContext chooseServer(String vs, boolean expand) throws TerminologyServiceException {
+    return chooseServer(vs, expand, null);
+  }
+
+  public TerminologyClientContext chooseServer(String vs, boolean expand, String language) throws TerminologyServiceException {
     if (serverList.isEmpty()) {
       return null;
     }
     if (IGNORE_TX_REGISTRY || !useEcosystem) {
-      return findClient(getMasterClient().getAddress(), null, expand);
+      return findClientContext(getMasterClient().getAddress(), null, expand);
     }
+    language = effectiveLanguage(language, expand);
     String request = Utilities.pathURL(monitorServiceURL, "resolve?fhirVersion="+factory.getVersion()+"&valueSet="+Utilities.URLEncode(vs));
     if (usage != null) {
       request = request + "&usage="+usage;
     } 
+    if (language != null) {
+      request = request + "&language="+Utilities.URLEncode(language);
+    }
     try {
-      JsonObject json = JsonParser.parseObjectFromUrl(request);
+      JsonObject json = fetchRegistryJson(request);
       for (JsonObject item : json.getJsonObjects("authoritative")) {
-        return findClient(item.asString("url"), null, expand);
+        return findClientContext(item.asString("url"), null, expand);
       }
       for (JsonObject item : json.getJsonObjects("candidates")) {
-        return findClient(item.asString("url"), null, expand);
+        return findClientContext(item.asString("url"), null, expand);
       }
     } catch (Exception e) {
       String msg = "Error resolving valueSet "+vs+": "+e.getMessage();
@@ -383,12 +417,12 @@ public class TerminologyClientManager {
     internalLog.add(new InternalLogEvent(message, server, svs, sys, sch));
   }
 
-  private TerminologyClientContext findClient(String server, Set<String> systems, boolean expand) {
+  private TerminologyClientContext findClientContext(String server, Set<String> systems, boolean expand) {
     server = ManagedWebAccess.makeSecureRef(server);
     TerminologyClientContext client = serverMap.get(server);
     if (client == null) {
       try {
-        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
+        client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), server, getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
       } catch (Exception e) {
         throw new TerminologyServiceException("Error accessing "+server+" for "+CommaSeparatedStringBuilder.join(",", systems)+": "+e.getMessage(), e);
       }
@@ -400,23 +434,36 @@ public class TerminologyClientManager {
     return client;
   }
 
-  private ServerOptionList findServerForSystem(String s, boolean expand) throws TerminologyServiceException {
-    ServerOptionList serverList = resMap.get(s);
+  /**
+   * All access to the ecosystem coordination server (tx-reg) goes through here, so that
+   * tests can supply their own registry responses without any network access
+   * (see TerminologyClientManagerLanguageTest)
+   */
+  protected JsonObject fetchRegistryJson(String request) throws IOException, org.hl7.fhir.utilities.json.JsonException {
+    return JsonParser.parseObjectFromUrl(request);
+  }
+
+  private ServerOptionList findServerForSystem(String s, String language) throws TerminologyServiceException {
+    // resolutions are language specific - the server chosen for German requests is not the
+    // right resolution for the same code system in English - so resolutions are remembered
+    // (and persisted) against both the code system and the language they were made for
+    String key = language == null ? s : s+" in "+language;
+    ServerOptionList serverList = resMap.get(key);
     if (serverList == null) {
-      serverList = decideWhichServer(s);
+      serverList = decideWhichServer(s, language);
       // testing support
       try {
         serverList.replace("tx.fhir.org", host());
       } catch (MalformedURLException e) {
       }
-      resMap.put(s, serverList);
+      resMap.put(key, serverList);
       save();
     }
     return serverList;
   }
 
   private String host() throws MalformedURLException {
-    URL url = new URL(getMasterClient().getAddress());
+    URL url = URI.create(getMasterClient().getAddress()).toURL();
     if (url.getPort() > 0) {
       return url.getHost()+":"+url.getPort();
     } else {
@@ -424,7 +471,29 @@ public class TerminologyClientManager {
     }
   }
 
-  private ServerOptionList decideWhichServer(String url) {
+  /**
+   * The language to use for routing: whatever the caller passed, if anything, else (for
+   * expansions) whatever displayLanguage is fixed in the expansion parameters - the same
+   * approach as the version handling in decideWhichServer()
+   */
+  private String effectiveLanguage(String language, boolean expand) {
+    if (language != null) {
+      language = language.trim();
+      if (language.isEmpty()) {
+        language = null;
+      }
+    }
+    if (language == null && expand && expParameters != null) {
+      for (ParametersParameterComponent p : expParameters.getParameter()) {
+        if ("displayLanguage".equals(p.getName()) && p.hasValuePrimitive()) {
+          language = p.getValue().primitiveValue();
+        }
+      }
+    }
+    return language;
+  }
+
+  private ServerOptionList decideWhichServer(String url, String language) {
     if (IGNORE_TX_REGISTRY || !useEcosystem) {
       return new ServerOptionList(url, getMasterClient().getAddress());
     }
@@ -449,9 +518,13 @@ public class TerminologyClientManager {
     if (usage != null) {
       request = request + "&usage="+usage;
     } 
+    if (language != null) {
+      request = request + "&language="+Utilities.URLEncode(language);
+    }
     try {
       ServerOptionList ret = new ServerOptionList(url);
-      JsonObject json = JsonParser.parseObjectFromUrl(request);
+      ret.language = language;
+      JsonObject json = fetchRegistryJson(request);
       for (JsonObject item : json.getJsonObjects("authoritative")) {
           ret.authoritative.add(item.asString("url"));
       }
@@ -478,23 +551,21 @@ public class TerminologyClientManager {
       return serverSupportMap.get(key);
     }
     try {
-      var client = findClient(server, null, false);
+      var client = findClientContext(server, null, false);
       Bundle bnd = client.getClient().search("CodeSystem",
         canonical.contains("|")
           ? "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|")))+"&version="+Utilities.escapeUrl(canonical.substring(canonical.indexOf("|")+1))
           : "?url=" + Utilities.escapeUrl(canonical));
-      if (bnd.getEntry().size() == 1 && bnd.getEntry().get(0).hasResource() && bnd.getEntry().get(0).getResource() instanceof CodeSystem) {
-        CodeSystem cs = (CodeSystem) bnd.getEntry().get(0).getResource();
-        boolean ok = cs.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cs.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT;
+      if (bnd.getEntry().size() > 0) {
+        boolean ok = anyUsableCodeSystem(bnd);
         serverSupportMap.put(key, ok);
         return ok;
       }
       if (canonical.contains("|")) {
         bnd = client.getClient().search("CodeSystem",
           "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|"))));
-        if (bnd.getEntry().size() == 1 && bnd.getEntry().get(0).hasResource() && bnd.getEntry().get(0).getResource() instanceof CodeSystem) {
-          CodeSystem cs = (CodeSystem) bnd.getEntry().get(0).getResource();
-          boolean ok = cs.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cs.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT;
+        if (bnd.getEntry().size() > 0) {
+          boolean ok = anyUsableCodeSystem(bnd);
           serverSupportMap.put(key, ok);
           return ok;
         }
@@ -503,6 +574,24 @@ public class TerminologyClientManager {
       // nothing
     }
     serverSupportMap.put(key, false);
+    return false;
+  }
+
+  /**
+   * A server supports a code system if any version it hosts has usable content.
+   * Servers commonly host multiple versions of the same code system (e.g. ANZSCO
+   * on the AU servers) - this used to require exactly one search match, which
+   * wrongly disqualified any server holding more than one version.
+   */
+  private boolean anyUsableCodeSystem(Bundle bnd) {
+    for (Bundle.BundleEntryComponent be : bnd.getEntry()) {
+      if (be.hasResource() && be.getResource() instanceof CodeSystem) {
+        CodeSystem cs = (CodeSystem) be.getResource();
+        if (cs.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cs.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT) {
+          return true;
+        }
+      }
+    }
     return false;
   }
 
@@ -517,6 +606,17 @@ public class TerminologyClientManager {
 
   public List<TerminologyClientContext> serverList() {
     return serverList;
+  }
+
+  /**
+   * Shut down every server context, releasing owned server caches (best-effort),
+   * e.g. on worker context unload. Idempotent; the contexts must not be used for
+   * further requests afterwards.
+   */
+  public void shutdown() {
+    for (TerminologyClientContext server : serverList) {
+      server.shutdown();
+    }
   }
   
   public boolean hasClient() {
@@ -547,7 +647,7 @@ public class TerminologyClientManager {
 
   public TerminologyClientContext setMasterClient(ITerminologyClient client, boolean useEcosystem) throws IOException {
     this.useEcosystem = useEcosystem;
-    TerminologyClientContext terminologyClientContext = new TerminologyClientContext(client, cache, cacheId,true);
+    TerminologyClientContext terminologyClientContext = new TerminologyClientContext(client, cache, true, logger);
     serverList.clear();
     serverList.add(terminologyClientContext);
     serverMap.put(client.getAddress(), terminologyClientContext);
@@ -591,7 +691,12 @@ public class TerminologyClientManager {
               if (pair.has("server")) {
                 resMap.put(pair.asString("system"), new ServerOptionList(url, pair.asString("server")));
               } else {
-                resMap.put(pair.asString("system"), new ServerOptionList(url, pair.getStrings("authoritative"), pair.getStrings("candidates")));
+                ServerOptionList sol = new ServerOptionList(url, pair.getStrings("authoritative"), pair.getStrings("candidates"));
+                if (sol.authoritative.isEmpty() && sol.candidates.isEmpty()) {
+                  continue; // don't reload a persisted empty resolution (written by older versions) - re-ask the registry
+                }
+                sol.language = pair.asString("language");
+                resMap.put(pair.asString("system"), sol);
               }
             }
           }
@@ -606,11 +711,17 @@ public class TerminologyClientManager {
     if (cacheFile != null && cache.getFolder() != null) {
       JsonObject json = new JsonObject();
       for (String s : Utilities.sorted(resMap.keySet())) {
+        ServerOptionList sol = resMap.get(s);
+        if (sol.authoritative.isEmpty() && sol.candidates.isEmpty()) {
+          continue; // an empty resolution isn't worth remembering across runs - it may have been transient (registry outage etc), so re-ask next time
+        }
         JsonObject si = new JsonObject();
         json.forceArray("systems").add(si);
         si.add("system", s);
-        ServerOptionList sol = resMap.get(s);
         si.add("url", sol.url);
+        if (sol.language != null) {
+          si.add("language", sol.language);
+        }
         si.add("authoritative", sol.authoritative);
         si.add("candidates", sol.candidates);
       }
@@ -686,7 +797,7 @@ public class TerminologyClientManager {
           if (usage != null) {
             request = request + "&usage="+usage;
           }
-          JsonObject json = JsonParser.parseObjectFromUrl(request);
+          JsonObject json = fetchRegistryJson(request);
           for (JsonObject item : json.getJsonObjects("authoritative")) {
             if (server == null) {
               server = item.asString("url");
@@ -723,7 +834,7 @@ public class TerminologyClientManager {
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
+          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
         } catch (URISyntaxException | IOException e) {
           throw new TerminologyServiceException(e);
         }
@@ -794,7 +905,7 @@ public class TerminologyClientManager {
     }
     String server = null;
     try {
-      JsonObject json = JsonParser.parseObjectFromUrl(request);
+      JsonObject json = fetchRegistryJson(request);
       for (JsonObject item : json.getJsonObjects("authoritative")) {
         if (server == null) {
           server = item.asString("url");
@@ -817,7 +928,7 @@ public class TerminologyClientManager {
       TerminologyClientContext client = serverMap.get(server);
       if (client == null) {
         try {
-          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, cacheId, false);
+          client = new TerminologyClientContext(factory.makeClient("id"+(serverList.size()+1), ManagedWebAccess.makeSecureRef(server), getMasterClient().getUserAgent(), getMasterClient().getLogger()), cache, false, logger);
         } catch (URISyntaxException | IOException e) {
           throw new TerminologyServiceException("Error accessing "+server+" for "+canonical+": "+e.getMessage(), e);
         }

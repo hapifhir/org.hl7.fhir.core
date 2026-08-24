@@ -11,6 +11,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.comparison.StructureDefinitionComparer.ProfileComparison;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -222,7 +223,10 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     for (Coding lc : l.getCoding()) {
       boolean m = false;
       for (Coding rc : r.getCoding()) {
-        if (lc.matches(rc)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean codingMatches = lc.matches(rc);
+        if (codingMatches) {
           matches.add(rc);
           m = true;
         }
@@ -240,7 +244,10 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
 
   private CodeableConcept findInList(List<CodeableConcept> list, CodeableConcept item) {
     for (CodeableConcept t : list) {
-      if (t.matches(item)) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: not using String.matches
+      boolean conceptMatches = t.matches(item);
+      if (conceptMatches) {
         return t;
       }
     }
@@ -343,7 +350,10 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     for (CodeableConcept cd : src) {
       boolean add = true;
       for (CodeableConcept t : tgt) {
-        if (t.matches(cd)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean conceptMatches = t.matches(cd);
+        if (conceptMatches) {
           add = false;
         }
       }
@@ -377,7 +387,10 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     for (CodeableConcept cd : src) {
       boolean remove = false;
       for (CodeableConcept t : tgt) {
-        if (t.matches(cd)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean conceptMatches = t.matches(cd);
+        if (conceptMatches) {
           remove = true;
         }
       }
@@ -447,8 +460,8 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
       combined.getChildren().add(new StructuralMatch<Element>(left, vmI(IssueSeverity.WARNING, "Removed this profile", path)).setName("profile"));        
     } else {
       // profiles on both sides...
-      StructureDefinition sdLeft = session.getContextLeft().fetchResource(StructureDefinition.class, left.getValue());
-      StructureDefinition sdRight = session.getContextRight().fetchResource(StructureDefinition.class, right.getValue());
+      StructureDefinition sdLeft = session.getContextLeft().fetchResource(StructureDefinition.class, left.getValue(), ExtensionUtilities.getVersionResolutionRules(left));
+      StructureDefinition sdRight = session.getContextRight().fetchResource(StructureDefinition.class, right.getValue(), ExtensionUtilities.getVersionResolutionRules(right));
       if (sdLeft == null && sdRight == null) {
         combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.ERROR, "Cannot compare profiles because neither is known", path)).setName("profile"));        
       } else if (sdLeft == null) {
@@ -482,7 +495,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
       if (sdFocus.getUrl().equals(sdOther.getUrl()) && sdFocus.getVersion().equals(sdOther.getVersion())) {
         return true;
       }
-      sdFocus = ctxt.fetchResource(StructureDefinition.class, sdFocus.getBaseDefinition(), null,  sdFocus);
+      sdFocus = ctxt.fetchResource(StructureDefinition.class, sdFocus.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sdFocus.getBaseDefinitionElement()), null,  sdFocus);
     }
     return false;
   }
@@ -908,8 +921,8 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     r.getCells().add(gen.new Cell(null, null, t.getName(), null, null));
     PrimitiveType left = t.hasLeft() ? (PrimitiveType) t.getLeft() : null;
     PrimitiveType right = t.hasRight() ? (PrimitiveType) t.getRight() : null;
-    CanonicalResource crL = left == null ? null : (CanonicalResource) session.getContextLeft().fetchResource(Resource.class, left.primitiveValue());
-    CanonicalResource crR = right == null ? null : (CanonicalResource) session.getContextRight().fetchResource(Resource.class, right.primitiveValue());
+    CanonicalResource crL = left == null ? null : (CanonicalResource) session.getContextLeft().fetchResource(Resource.class, left.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(left));
+    CanonicalResource crR = right == null ? null : (CanonicalResource) session.getContextRight().fetchResource(Resource.class, right.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(right));
     String refL = crL != null && crL.hasWebPath() ? crL.getWebPath() : null;
     String dispL = crL != null && refL != null ? crL.present() : left == null ? "" : left.primitiveValue(); 
     String refR = crR != null && crR.hasWebPath() ? crR.getWebPath() : null;

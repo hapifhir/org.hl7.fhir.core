@@ -44,6 +44,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
@@ -61,14 +62,9 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 
 import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.utilities.ElementDecoration;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
-import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.NamedItemList;
 import org.hl7.fhir.utilities.NamedItemList.NamedItem;
-import org.hl7.fhir.utilities.SourceLocation;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -742,7 +738,9 @@ public class Element extends Base implements NamedItem {
 	  }
 	  decorations.add(new ElementDecoration(DecorationType.TYPE, profile.getWebPath(), definition.getPath()));
 	  if (definition.getId() != null && tail(definition.getId()).contains(":")) {
-	    String[] details = tail(definition.getId()).split(":");
+	    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] details = tail(definition.getId()).split(":");
 	    decorations.add(new ElementDecoration(DecorationType.SLICE, null, details[1]));
 	  }
 	}
@@ -1053,7 +1051,7 @@ public class Element extends Base implements NamedItem {
     private List<ElementDefinition> children;
     public ElementSortComparator(Element e, Property property) {
       String tn = e.getType();
-      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, null));
+      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(tn, null), IWorkerContext.VersionResolutionRules.defaultRule());
       if (sd != null && !sd.getAbstract())
         children = sd.getSnapshot().getElement();
       else
@@ -1651,7 +1649,7 @@ public class Element extends Base implements NamedItem {
 
   public String getBasePath() {
     if (property.getStructure().hasExtension(ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS)) {
-      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ExtensionUtilities.readStringExtension(property.getStructure(), ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS));
+      StructureDefinition sd = property.getContext().fetchResource(StructureDefinition.class, ExtensionUtilities.readStringExtension(property.getStructure(), ExtensionDefinitions.EXT_RESOURCE_IMPLEMENTS), IWorkerContext.VersionResolutionRules.defaultRule());
       if (sd != null) {
         ElementDefinition ed = sd.getSnapshot().getElementByPath(property.getDefinition().getPath().replace(property.getStructure().getType(), sd.getType()));
         if (ed != null) {

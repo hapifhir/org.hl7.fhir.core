@@ -39,6 +39,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -173,7 +174,7 @@ public class PEBuilder {
    * 
    */
   public PEDefinition buildPEDefinition(String url) {
-    StructureDefinition profile = getProfile(url);
+    StructureDefinition profile = getProfile(url, IWorkerContext.VersionResolutionRules.defaultRule());
     if (profile == null) {
       throw new DefinitionException("Unable to find profile for URL '"+url+"'");
     }
@@ -198,7 +199,7 @@ public class PEBuilder {
    * 
    */
   public PEDefinition buildPEDefinition(String url, String version) {
-    StructureDefinition profile = getProfile(url, version);
+    StructureDefinition profile = getProfile(url, IWorkerContext.VersionResolutionRules.defaultRule(), version);
     if (profile == null) {
       throw new DefinitionException("Unable to find profile for URL '"+url+"'");
     }
@@ -326,13 +327,13 @@ public class PEBuilder {
 
   // -- methods below here are only used internally to the package
 
-  private StructureDefinition getProfile(String url) {
-    return context.fetchResource(StructureDefinition.class, url);
+  private StructureDefinition getProfile(String url, IWorkerContext.VersionResolutionRules rules) {
+    return context.fetchResource(StructureDefinition.class, url, rules);
   }
 
 
-  private StructureDefinition getProfile(String url, String version) {
-    return context.fetchResource(StructureDefinition.class, url, version, null);
+  private StructureDefinition getProfile(String url, IWorkerContext.VersionResolutionRules rules, String version) {
+    return context.fetchResource(StructureDefinition.class, url, rules, version, null);
   }
 //
 //  protected List<PEDefinition> listChildren(boolean allFixed, StructureDefinition profileStructure, ElementDefinition definition, TypeRefComponent t, CanonicalType u) {
@@ -348,7 +349,7 @@ public class PEBuilder {
       assert url == null || checkType(definition, url);
       List<PEDefinition> res = new ArrayList<>();
       if (list.size() == 0) {
-        profile = context.fetchResource(StructureDefinition.class, url);
+        profile = context.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
         if (profile == null) {
           throw new FHIRException("Unable to resolve profile "+url);
         }
@@ -492,7 +493,7 @@ public class PEBuilder {
 
   private StructureDefinition getExtensionDefinition(ElementDefinition ed) {
     if ("Extension".equals(ed.getTypeFirstRep().getWorkingCode()) && ed.getTypeFirstRep().getProfile().size() == 1) {
-      return context.fetchResource(StructureDefinition.class, ed.getTypeFirstRep().getProfile().get(0).asStringValue());
+      return context.fetchResource(StructureDefinition.class, ed.getTypeFirstRep().getProfile().get(0).asStringValue(), ExtensionUtilities.getVersionResolutionRules(ed.getTypeFirstRep().getProfile().get(0)));
     } else {
       return null;
     }
@@ -511,7 +512,7 @@ public class PEBuilder {
 
   protected PEType makeType(TypeRefComponent t) {
     if (t.hasProfile()) {
-      StructureDefinition sd = context.fetchResource(StructureDefinition.class, t.getProfile().get(0).getValue());
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, t.getProfile().get(0).getValue(), ExtensionUtilities.getVersionResolutionRules(t.getProfile().get(0)));
       if (sd == null) {
         return new PEType(tail(t.getProfile().get(0).getValue()), t.getWorkingCode(), t.getProfile().get(0).getValue());
       } else {
@@ -523,7 +524,7 @@ public class PEBuilder {
   }
 
   protected PEType makeType(TypeRefComponent t, CanonicalType u) {
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, u.getValue());
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, u.getValue(), ExtensionUtilities.getVersionResolutionRules(u));
     if (sd == null) {
       return new PEType(tail(u.getValue()), t.getWorkingCode(), u.getValue());
     } else {
@@ -619,7 +620,7 @@ public class PEBuilder {
           if (ed.getBinding().getStrength() != BindingStrength.REQUIRED) {
             throw new DefinitionException("The discriminator path '"+path+"' has a binding on the element '"+ed.getId()+"' but the strength is not required - this is not supported by the PEBuilder");
           } else {
-            ValueSet vs = context.findTxResource(ValueSet.class, ed.getBinding().getValueSet());
+            ValueSet vs = context.findTxResource(ValueSet.class, ed.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(ed.getBinding().getValueSetElement()));
             if (vs == null) {
               throw new DefinitionException("The discriminator path '"+path+"' has a binding on the element '"+ed.getId()+"' but the valueSet '"+ed.getBinding().getValueSet()+"' is not known - this is not supported by the PEBuilder");              
             }
@@ -656,7 +657,8 @@ public class PEBuilder {
     do {
       List<ElementDefinition> elements = pu.getChildList(profile, focus);
       if (elements.size() == 0) {
-        profile = focus.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, focus.getTypeFirstRep().getProfile().get(0).asStringValue()) :
+        profile = focus.getTypeFirstRep().hasProfile() ? context.fetchResource(StructureDefinition.class, focus.getTypeFirstRep().getProfile().get(0).asStringValue(),
+          ExtensionUtilities.getVersionResolutionRules(focus.getTypeFirstRep().getProfile().get(0))) :
           context.fetchTypeDefinition(focus.getTypeFirstRep().getWorkingCode());
         elements = pu.getChildList(profile, profile.getSnapshot().getElementFirstRep());
       }

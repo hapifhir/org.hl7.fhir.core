@@ -9,7 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
@@ -67,6 +70,7 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import ca.uhn.fhir.util.ElementUtil;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 
 /**
  *
@@ -79,6 +83,8 @@ public class FHIRPathEngine {
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
 
   /**
@@ -2135,7 +2141,14 @@ public class FHIRPathEngine {
     String repl = convertToString(execute(context, focus, exp.getParameters().get(1), true));
 
     if (focus.size() == 1 && !Utilities.noString(regex)) {
-      result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)));
+      try {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.replaceAll is safe for user-supplied regular expressions
+        String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl, regexTimeoutMillis);
+        result.add(new StringType(replaced));
+      } catch (TimeoutException e) {
+        throw new FHIRException("Timeout evaluating regex: " + regex, e);
+      }
     } else {
       result.add(new StringType(convertToString(focus.get(0))));
     }
@@ -2432,8 +2445,16 @@ public class FHIRPathEngine {
       String st = convertToString(focus.get(0));
       if (Utilities.noString(st))
         result.add(new BooleanType(false));
-      else
-        result.add(new BooleanType(st.matches(sw)));
+      else {
+        try {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //False positive: RegexTimeout.matches is safe for user-supplied regular expressions
+          boolean matched = RegexTimeout.matches(st, sw, regexTimeoutMillis);
+          result.add(new BooleanType(matched));
+        } catch (TimeoutException e) {
+          throw new FHIRException("Timeout evaluating regex: " + sw, e);
+        }
+      }
     } else
       result.add(new BooleanType(false));
     return result;

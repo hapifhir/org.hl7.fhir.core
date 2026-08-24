@@ -61,6 +61,8 @@ public class ExcelDataProvider extends TableDataProvider {
       }
     }
     if (range != null ) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] parts = range.split(":");
       CellReference startCell = new CellReference(parts[0]);
       startRow = startCell.getRow();

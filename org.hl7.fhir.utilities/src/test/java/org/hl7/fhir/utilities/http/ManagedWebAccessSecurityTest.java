@@ -23,7 +23,7 @@ public class ManagedWebAccessSecurityTest {
    * since serverAuthDetails is private and only settable via loadFromFHIRSettings()
    */
   private void setServerAuthDetails(List<ServerDetailsPOJO> servers) throws Exception {
-    Field field = ManagedWebAccess.class.getDeclaredField("serverAuthDetails");
+    Field field = ManagedWebAccess.class.getDeclaredField("serverDetailsList");
     field.setAccessible(true);
     field.set(null, servers);
   }

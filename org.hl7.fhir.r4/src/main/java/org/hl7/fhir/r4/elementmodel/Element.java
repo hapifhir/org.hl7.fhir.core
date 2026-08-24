@@ -562,6 +562,8 @@ public class Element extends Base {
     }
     decorations.add(new ElementDecoration(DecorationType.TYPE, profile.getUserString("path"), definition.getPath()));
     if (definition.getId() != null && tail(definition.getId()).contains(":")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] details = tail(definition.getId()).split(":");
       decorations.add(new ElementDecoration(DecorationType.SLICE, null, details[1]));
     }

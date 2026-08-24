@@ -59,6 +59,8 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r5.renderers.RendererFactory;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext;
 import org.hl7.fhir.validation.cli.picocli.CLI;
 import org.hl7.fhir.validation.service.ValidationService;
 
@@ -86,7 +88,12 @@ public class ValidatorCli {
 
   public static void main(String[] args) {
     System.setProperty("slf4j.internal.verbosity", "WARN");
-    CLI cli = new CLI(new ValidationService());
+    // Use server-side terminology caching ($cache-control) when the tx server
+    // advertises it. This is the master switch for the whole CLI; the client
+    // gates on capability detection (TerminologyClientContext.initialize), so
+    // servers that don't support $cache-control are unaffected.
+    TerminologyClientContext.setCanUseCacheId(true);
+    CLI cli = new CLI(new ValidationService(new RendererFactory()));
     try {
       int exitCode = cli.parseArgsAndExecuteCommand(args);
       System.exit(exitCode);

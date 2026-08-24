@@ -27,6 +27,8 @@ public class JavaSystemProxyParamSetter {
     }
     if (proxyAuth != null) {
       assert proxy != null || httpsProxy != null: "Cannot set PROXY_AUTH without setting PROXY...";
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p = proxyAuth.split(":");
       String authUser = p[0];
       String authPass = p[1];
@@ -60,6 +62,8 @@ public class JavaSystemProxyParamSetter {
 
   public static void setProxyHostSystemProperties(String proxy, String httpProxyHostProperty, String httpProxyPortProperty) {
     if (proxy != null) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] p2 = proxy.split(":");
       System.setProperty(httpProxyHostProperty, p2[0]);
       System.setProperty(httpProxyPortProperty, p2[1]);

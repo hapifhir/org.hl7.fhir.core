@@ -61,6 +61,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.eclipse.jgit.ignore.IgnoreNode;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
@@ -267,10 +268,12 @@ public class NPMPackageGenerator {
         }
       }
       for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
-        if (d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)) {
-          dep.add(d.getId()+"@npm:"+d.getPackageId(), d.getVersion());          
-        } else {
-          dep.add(d.getPackageId(), d.getVersion());
+        if (!d.hasExtension(ExtensionDefinitions.EXT_IGDEP_NO_SAVE)) {
+          if (d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)) {
+            dep.add(d.getId() + "@npm:" + d.getPackageId(), d.getVersion());
+          } else {
+            dep.add(d.getPackageId(), d.getVersion());
+          }
         }
       }
     }
@@ -281,7 +284,7 @@ public class NPMPackageGenerator {
     for (ContactDetail t : ig.getContact()) {
       String email = email(t.getTelecom());
       String url = url(t.getTelecom());
-      if (t.hasName() & (email != null || url != null)) {
+      if (t.hasName() && (email != null || url != null)) {
         JsonObject md = new JsonObject();
         m.add(md);
         md.add("name", t.getName());

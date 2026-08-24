@@ -20,8 +20,7 @@ v: {
   "system" : "http://dicom.nema.org/resources/ontology/DCM",
   "version" : "2025.3.20250714",
   "server" : "https://tx-dev.fhir.org/r5",
-  "diagnostics" : "0ms tx-op\n0ms http://dicom.nema.org/resources/ValueSet/all|2025.3.20250714: Validate \"[http://dicom.nema.org/resources/ontology/DCM#110122 (\"Login\")]\"\n0ms http://dicom.nema.org/resources/ValueSet/all|2025.3.20250714: Check \"http://dicom.nema.org/resources/ontology/DCM#110122\"\n0ms http://dicom.nema.org/resources/ValueSet/all|2025.3.20250714: CodeSystem found: http://dicom.nema.org/resources/ontology/DCM|2025.3.20250714 for http://dicom.nema.org/resources/ontology/DCM|2025.3.20250714\n0ms http://dicom.nema.org/resources/ValueSet/all|2025.3.20250714: check code in (http://dicom.nema.org/resources/ontology/DCM) at Coding\n1ms http://dicom.nema.org/resources/ValueSet/all|2025.3.20250714: Code \"110122\" found in http://dicom.nema.org/resources/ontology/DCM|2025.3.20250714",
-  "unknown-systems" : "",
+  "diagnostics" : "0ms tx-op\n1ms http://dicom.nema.org/resources/ValueSet/all|2025.3.20250714: Validate \"[http://dicom.nema.org/resources/ontology/DCM#110122 (\"Login\")]\"\n1ms http://dicom.nema.org/resources/ValueSet/all|2025.3.20250714: Check \"http://dicom.nema.org/resources/ontology/DCM#110122\"\n2ms http://dicom.nema.org/resources/ValueSet/all|2025.3.20250714: CodeSystem found: http://dicom.nema.org/resources/ontology/DCM|2025.3.20250714 for http://dicom.nema.org/resources/ontology/DCM|2025.3.20250714\n2ms http://dicom.nema.org/resources/ValueSet/all|2025.3.20250714: check code in (http://dicom.nema.org/resources/ontology/DCM) at Coding\n2ms http://dicom.nema.org/resources/ValueSet/all|2025.3.20250714: Code \"110122\" found in http://dicom.nema.org/resources/ontology/DCM|2025.3.20250714",
   "issues" : {
   "resourceType" : "OperationOutcome"
 }

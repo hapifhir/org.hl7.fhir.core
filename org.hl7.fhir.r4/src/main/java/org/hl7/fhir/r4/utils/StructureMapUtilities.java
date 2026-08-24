@@ -156,6 +156,22 @@ public class StructureMapUtilities {
     public Base resolveReference(Object appContext, String url) throws FHIRException;
 
     public List<Base> performSearch(Object appContext, String url) throws FHIRException;
+
+    // FHIRPath custom-function hooks (see IHostApplicationServices). Default implementations
+    // preserve the previous hardcoded FHIRPathHostServices behavior for callers that don't
+    // override them, so adding these methods is backward-compatible.
+    default FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
+      return null;
+    }
+
+    default TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
+        throws PathEngineException {
+      throw new PathEngineException("Unknown function '" + functionName + "'");
+    }
+
+    default List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+      throw new Error("Not Implemented Yet");
+    }
   }
 
   private class FHIRPathHostServices implements IHostApplicationServices {
@@ -191,19 +207,25 @@ public class StructureMapUtilities {
 
     @Override
     public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
-      return null; // throw new Error("Not Implemented Yet");
+      return services == null ? null : services.resolveFunction(engine, functionName);
     }
 
     @Override
     public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
         throws PathEngineException {
-      throw new Error("Not Implemented Yet");
+      if (services == null) {
+        throw new PathEngineException("Unknown function '" + functionName + "'");
+      }
+      return services.checkFunction(engine, appContext, functionName, focus, parameters);
     }
 
     @Override
     public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName,
         List<List<Base>> parameters) {
-      throw new Error("Not Implemented Yet");
+      if (services == null) {
+        throw new Error("Not Implemented Yet");
+      }
+      return services.executeFunction(engine, appContext, focus, functionName, parameters);
     }
 
     @Override
@@ -1943,7 +1965,8 @@ public class StructureMapUtilities {
           res.setUserData("profile", tgt.getUserData("profile"));
         return res;
       case COPY:
-        return getParam(vars, tgt.getParameter().get(0));
+        Base val = getParam(vars, tgt.getParameter().get(0));
+        return val != null ? val.copy() : val;
       case EVALUATE:
         ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
         if (expr == null) {
@@ -2165,6 +2188,8 @@ public class StructureMapUtilities {
           throw new FHIRException("Unable to translate - cannot find map " + conceptMapUrl);
       } else {
         if (conceptMapUrl.contains("#")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] p = conceptMapUrl.split("\\#");
           StructureMap mapU = worker.fetchResource(StructureMap.class, p[0]);
           for (Resource r : mapU.getContained()) {

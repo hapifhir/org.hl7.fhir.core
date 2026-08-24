@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.AllowUnknownProfile;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
@@ -56,6 +57,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -279,7 +281,7 @@ public class SnapShotGenerationTests {
     }
 
     @Override
-    public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+    public BindingResolution resolveBinding(StructureDefinition def, String url, String path, org.hl7.fhir.r5.model.Element ctxt) throws FHIRException {
       BindingResolution br = new BindingResolution();
       br.url = path + "/something.html";
       br.display = "something";
@@ -288,7 +290,7 @@ public class SnapShotGenerationTests {
 
     @Override
     public String getLinkForProfile(StructureDefinition profile, String url) {
-      StructureDefinition sd = testContext.fetchResource(StructureDefinition.class, url);
+      StructureDefinition sd = testContext.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
       if (sd == null)
         return url + "|" + url;
       else
@@ -334,15 +336,15 @@ public class SnapShotGenerationTests {
     public Resource fetchFixture(String id) {
       TestFetchMode mode = TestFetchMode.INPUT;
       if (id.equals("patient"))
-        return testContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient");
+        return testContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient", IWorkerContext.VersionResolutionRules.defaultRule());
       if (id.equals("valueset"))
-        return testContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet");
+        return testContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet", IWorkerContext.VersionResolutionRules.defaultRule());
       if (id.equals("organization"))
-        return testContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Organization");
+        return testContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Organization", IWorkerContext.VersionResolutionRules.defaultRule());
       if (id.equals("operationoutcome"))
-        return testContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/OperationOutcome");
+        return testContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/OperationOutcome", IWorkerContext.VersionResolutionRules.defaultRule());
       if (id.equals("parameters"))
-        return testContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Parameters");
+        return testContext.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Parameters", IWorkerContext.VersionResolutionRules.defaultRule());
 
       if (id.contains("-")) {
         String[] p = id.split("\\-");
@@ -471,8 +473,14 @@ public class SnapShotGenerationTests {
   private List<ValidationMessage> messages;
   private static IWorkerContext testContext;
 
+  @AfterAll
+  public static void tearDown()  {
+    fp = null;
+    testContext = null;
+  }
+
   @BeforeAll
-  public static void setUp() throws FHIRException, IOException {
+  static void setUp() throws FHIRException, IOException {
     testContext = new SimpleWorkerContext(TestingUtilities.getSharedWorkerContext());
     fp = new FHIRPathEngine(testContext);
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().build();
@@ -480,7 +488,7 @@ public class SnapShotGenerationTests {
     System.out.println("loading SDC "+npm.version());
     testContext.getManager().loadFromPackage(npm, null);
   }
-
+  
   public static Stream<Arguments> data() throws ParserConfigurationException, IOException, FHIRFormatError, SAXException {
     SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext(testContext);
     Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "snapshot-generation", "manifest.xml"));
@@ -565,7 +573,8 @@ public class SnapShotGenerationTests {
           testContext.getManager().cacheResource(sd);
         }
       }
-      StructureDefinition base = testContext.fetchResource(StructureDefinition.class, test.included.get(0).getBaseDefinition());
+      StructureDefinition base = testContext.fetchResource(StructureDefinition.class, test.included.get(0).getBaseDefinition(),
+        ExtensionUtilities.getVersionResolutionRules(test.included.get(0).getBaseDefinitionElement()));
       if (base != null) {
         pu.generateSnapshot(base, test.included.get(0), test.included.get(0).getUrl(), "http://test.org/profile", test.included.get(0).getName());
       }
@@ -626,10 +635,10 @@ public class SnapShotGenerationTests {
       throw e;
     }
     if (output.getDifferential().hasElement()) {
-      RenderingContext rc = new RenderingContext(testContext, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+      RenderingContext rc = new RenderingContext(testContext, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
       rc.setDestDir(Utilities.path("[tmp]", "snapshot"));
       rc.setProfileUtilities(new ProfileUtilities(testContext, null, new TestPKP()));
-      RendererFactory.factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
+      new RendererFactory().factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
     }
     // we just generated it - but we don't care what it is here, just that there's no exceptions (though we need it for the rules)
     Narrative txt = output.getText();
@@ -674,7 +683,7 @@ public class SnapShotGenerationTests {
   private StructureDefinition getSD(String url, SnapShotGenerationTestsContext context) throws DefinitionException, FHIRException, IOException {
     StructureDefinition sd = context.getByUrl(url);
     if (sd == null) {
-      sd = testContext.fetchResource(StructureDefinition.class, url);
+      sd = testContext.fetchResource(StructureDefinition.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
     } 
     if (sd == null) {
       if (url.contains("|")) {

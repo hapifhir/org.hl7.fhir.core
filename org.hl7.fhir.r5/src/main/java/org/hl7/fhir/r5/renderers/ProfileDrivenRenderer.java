@@ -15,6 +15,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities.SourcedChildDefinitions;
 import org.hl7.fhir.r5.context.ContextUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
@@ -30,6 +31,7 @@ import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -49,15 +51,15 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     try {
       StructureDefinition sd = context.getContext().fetchTypeDefinition(r.fhirType());
       if (sd == null) {
-        throw new FHIRException(context.formatPhrase(RenderingContext.PROF_DRIV_FEXCP, r.fhirType())+" ");
+        throw new FHIRException(context.formatPhrase(RenderingI18nContext.PROF_DRIV_FEXCP, r.fhirType())+" ");
       } else {
         ElementDefinition ed = sd.getSnapshot().getElement().get(0);
         containedIds.clear();
         generateByProfile(status, r, sd, r, ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), context.isTechnicalMode(), 0);
       }
     } catch (Exception e) {
-      log.debug(context.formatPhrase(RenderingContext.PROF_DRIV_ERR_GEN_NARR) +r.fhirType()+"/"+r.getId()+": "+e.getMessage(), e);
-      x.para().b().style("color: maroon").tx(context.formatPhrase(RenderingContext.PROF_DRIV_EXCP, e.getMessage())+" ");
+      log.debug(context.formatPhrase(RenderingI18nContext.PROF_DRIV_ERR_GEN_NARR) +r.fhirType()+"/"+r.getId()+": "+e.getMessage(), e);
+      x.para().b().style("color: maroon").tx(context.formatPhrase(RenderingI18nContext.PROF_DRIV_EXCP, e.getMessage())+" ");
     }
   }
 
@@ -327,9 +329,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       if (round2) {
         for (ResourceWrapper v : p.getValues()) {
           RenderingContext ctxt = context.forContained();
-          if (v.getResourceWrapper() != null && !RendererFactory.hasSpecificRenderer(v.fhirType())) {
+          if (v.getResourceWrapper() != null && !context.getRendererFactory().hasSpecificRenderer(v.fhirType())) {
             x.hr();
-            ResourceRenderer rnd = RendererFactory.factory(v.fhirType(), ctxt);
+            ResourceRenderer rnd = context.getRendererFactory().factory(v.fhirType(), ctxt);
             rnd.buildNarrative(status, x.blockquote(), v);
           }
         }
@@ -387,7 +389,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             x.add(tbl);
           }
         } else if (isExtension(p)) {
-          StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, p.getUrl());          
+          StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, p.getUrl(), IWorkerContext.VersionResolutionRules.defaultRule());
           for (ResourceWrapper v : p.getValues()) {
             if (v != null) {
               ResourceWrapper vp = v.child("value");
@@ -437,30 +439,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       }
     }
   }
-
-//
-//  private String getGrandChildBase(List<ElementDefinition> grandChildren) {
-//    if (grandChildren == null || grandChildren.isEmpty()) {
-//      return null;
-//    }
-//    String[] path = grandChildren.get(0).getPath().split("\\.");
-//    for (int i = 1; i < grandChildren.size(); i++) {
-//      path = getSharedString(path, grandChildren.get(1).getPath().split("\\."));
-//    }
-//    return CommaSeparatedStringBuilder.join(".", path);
-//  }
-//
-//  private String[] getSharedString(String[] path, String[] path2) {
-//    int m = -1;
-//    for (int i = 0; i < Integer.min(path.length, path2.length); i++) {
-//      if (path[i].equals(path2[i])) {
-//        m = i;
-//      } else {
-//        break;
-//      }
-//    }
-//    return m == -1 ? new String[0] : Arrays.copyOfRange(path, 0, m+1);
-//  }
 
   private String labelForSubExtension(String url, StructureDefinition sd) {  
     return url;
@@ -599,7 +577,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           String url = v.primitiveValue("url");
           if (url != null) {
             // 1. check extension is valid
-            StructureDefinition ed = getContext().getWorker().fetchResource(StructureDefinition.class, url);
+            StructureDefinition ed = getContext().getWorker().fetchResource(StructureDefinition.class, url, ExtensionUtilities.getVersionResolutionRulesBase(v.getBase()));
             if (ed == null) {
               if (xverManager == null) {
                 xverManager = XVerExtensionManagerFactory.createExtensionManager(context.getWorker());
@@ -643,8 +621,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (defn != null) {
       String displayHint = ExtensionUtilities.getDisplayHint(defn);
       if (!Utilities.noString(displayHint)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] list = displayHint.split(";");
         for (String item : list) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] parts = item.split(":");
           if (parts.length == 1) {
             hints.put("value", parts[0].trim());            

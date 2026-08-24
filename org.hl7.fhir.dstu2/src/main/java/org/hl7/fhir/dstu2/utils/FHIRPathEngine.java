@@ -38,7 +38,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.fhir.ucum.Decimal;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.dstu2.model.Base;
@@ -68,6 +71,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
 
 /**
  * 
@@ -80,6 +84,8 @@ public class FHIRPathEngine {
   private StringBuilder log = new StringBuilder();
   private Set<String> primitiveTypes = new HashSet<String>();
   private Map<String, StructureDefinition> allTypes = new HashMap<String, StructureDefinition>();
+  @Getter @Setter
+  private long regexTimeoutMillis = 500;
 
   /**
    * @param worker - used when validating paths (@check), and used doing value set
@@ -2216,7 +2222,14 @@ public class FHIRPathEngine {
     String repl = convertToString(execute(context, focus, exp.getParameters().get(1), true));
 
     if (focus.size() == 1 && !Utilities.noString(regex)) {
-      result.add(new StringType(convertToString(focus.get(0)).replaceAll(regex, repl)));
+      try {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.replaceAll is safe for user-supplied regular expressions
+        String replaced = RegexTimeout.replaceAll(convertToString(focus.get(0)), regex, repl, regexTimeoutMillis);
+        result.add(new StringType(replaced));
+      } catch (TimeoutException e) {
+        throw new PathEngineException("Timeout evaluating regex: " + regex, e);
+      }
     } else {
       result.add(new StringType(convertToString(focus.get(0))));
     }
@@ -2444,13 +2457,20 @@ public class FHIRPathEngine {
   }
 
   private List<Base> funcMatches(ExecutionContext context, List<Base> focus, ExpressionNode exp)
-      throws PathEngineException {
-    List<Base> result = new ArrayList<Base>();
-    String sw = convertToString(execute(context, focus, exp.getParameters().get(0), true));
+    throws PathEngineException {
+    List<Base> result = new ArrayList<>();
+    String regex = convertToString(execute(context, focus, exp.getParameters().get(0), true));
 
-    if (focus.size() == 1 && !Utilities.noString(sw))
-      result.add(new BooleanType(convertToString(focus.get(0)).matches(sw)));
-    else
+    if (focus.size() == 1 && !Utilities.noString(regex)) {
+      try {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.replaceAll is safe for user-supplied regular expressions
+        final boolean matchResult = RegexTimeout.matches(convertToString(focus.get(0)), regex);
+        result.add(new BooleanType(matchResult));
+      } catch (TimeoutException e) {
+          throw new PathEngineException("Timeout evaluating regex: " + regex, e);
+      }
+    } else
       result.add(new BooleanType(false));
     return result;
   }

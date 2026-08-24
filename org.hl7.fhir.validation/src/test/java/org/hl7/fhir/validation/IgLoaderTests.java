@@ -1,9 +1,8 @@
 package org.hl7.fhir.validation;
 
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 
@@ -18,8 +17,10 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.junit.jupiter.api.Assertions;
@@ -142,5 +143,32 @@ public class IgLoaderTests {
     assertTrue(map.containsKey(testPath));
     String testFileContent = new String(map.get(testPath).getBytes(), StandardCharsets.UTF_8);
     Assertions.assertEquals("dummy file content", testFileContent);
+  }
+
+
+  @Test
+  public void testCrossVersionPrecedence() throws IOException {
+    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager.Builder().withTestingCacheFolder().build();
+    SimpleWorkerContext simpleWorkerContext = new SimpleWorkerContext.SimpleWorkerContextBuilder().withAllowLoadingDuplicates(true).fromPackage(pcm.loadPackage("hl7.fhir.r4.core"));
+    simpleWorkerContext.setPackageManager(pcm);
+    simpleWorkerContext.setLoaderFactory(new IgLoader(simpleWorkerContext.packageManager(), simpleWorkerContext, simpleWorkerContext.getVersion(), true));
+
+    ValueSet es = simpleWorkerContext.fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/encounter-status", IWorkerContext.VersionResolutionRules.LATEST, null);
+    ValueSet es4 = simpleWorkerContext.fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/encounter-status", IWorkerContext.VersionResolutionRules.LATEST, "4.0.1");
+    ValueSet es5 = simpleWorkerContext.fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/encounter-status", IWorkerContext.VersionResolutionRules.LATEST, "5.0.0");
+    assertNotNull(es);
+    assertEquals("4.0.1", es.getVersion());
+    assertNotNull(es4);
+    assertNull(es5);
+
+    simpleWorkerContext.loadPackage("hl7.fhir.r5.core");
+    es = simpleWorkerContext.fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/encounter-status", IWorkerContext.VersionResolutionRules.LATEST, null);
+    es4 = simpleWorkerContext.fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/encounter-status", IWorkerContext.VersionResolutionRules.LATEST, "4.0.1");
+    es5 = simpleWorkerContext.fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/encounter-status", IWorkerContext.VersionResolutionRules.LATEST, "5.0.0");
+    assertNotNull(es);
+    assertEquals("4.0.1", es.getVersion());
+    assertNotNull(es4);
+    assertNotNull(es5);
+
   }
 }

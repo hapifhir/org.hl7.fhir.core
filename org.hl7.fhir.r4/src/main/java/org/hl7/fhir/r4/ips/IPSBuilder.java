@@ -314,6 +314,8 @@ public class IPSBuilder {
     if (url.startsWith(baseUrl+"/")) {
       url = url.substring(baseUrl.length()+1);
     }
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
     String[] p = url.split("\\/");
     if (p.length > 1) {
       if ("_history".equals(p[p.length-2]) && p.length > 3) {

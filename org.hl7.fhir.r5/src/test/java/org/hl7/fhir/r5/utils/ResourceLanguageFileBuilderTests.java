@@ -24,7 +24,7 @@ class ResourceLanguageFileBuilderTests {
       IWorkerContext ctxt = TestingUtilities.getSharedWorkerContext();
       ctxt.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "languages", "StructureDefinition-ed-translatable.json")));
       ctxt.getManager().cacheResource(new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "languages", "StructureDefinition-sd-translatable.json")));
-      lang.setProfile(ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/tests/fhir/StructureDefinition/sd-translatable"));
+      lang.setProfile(ctxt.fetchResource(StructureDefinition.class, "http://hl7.org/tests/fhir/StructureDefinition/sd-translatable", IWorkerContext.VersionResolutionRules.defaultRule()));
       lang.prepare(new XLIFFProducer("[tmp]", "language", false), ctxt, "en", "fr");
       lang.build(res);
     });

@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.8.3-SNAPSHOT</version>
+        <version>6.10.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -145,7 +145,7 @@
         <!-- OkHttpDependency -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
+            <artifactId>okhttp-jvm</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -216,6 +216,12 @@
             <artifactId>poi-ooxml-full</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <scope>test</scope>
+        </dependency>
         <!-- JUnit Jupiter -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -266,6 +272,11 @@
             <version>4.0.4</version>
         </dependency>
         <!-- End to end -->
+
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -290,13 +301,17 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <configuration>
-                    <stagingProgressTimeoutMinutes>15</stagingProgressTimeoutMinutes>
-                </configuration>
-            </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <configuration>
+                        <stagingProgressTimeoutMinutes>15</stagingProgressTimeoutMinutes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

@@ -48,7 +48,7 @@ public class CompartmentDefinitionRenderer extends ResourceRenderer {
       CommaSeparatedStringBuilder rules = new CommaSeparatedStringBuilder();
       if (!cc.hasParam()) {
         out.append(" <li><a href=\"").append(cc.getCode().toLowerCase()).append(".html\">").append(cc.getCode()).append("</a></li>\r\n");
-      } else if (!rules.equals("{def}")) {
+      } else if (!rules.toString().equals("{def}")) {
         for (StringType p : cc.getParam())
           rules.append(p.asStringValue());
         in.append(" <tr><td><a href=\"").append(cc.getCode().toLowerCase()).append(".html\">").append(cc.getCode()).append("</a></td><td>").append(rules.toString()).append("</td></tr>\r\n");

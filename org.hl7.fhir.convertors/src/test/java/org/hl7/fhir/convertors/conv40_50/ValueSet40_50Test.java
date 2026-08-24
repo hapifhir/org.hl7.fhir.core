@@ -14,7 +14,7 @@ public class ValueSet40_50Test {
 
   @Test
   @DisplayName("Test ValueSet R4 <-> R5 with property extensions")
-  public void testValueExpressionConversion40_10() throws IOException {
+  public void testValueExpressionConversion40_50() throws IOException {
     InputStream r4_stream = this.getClass().getResourceAsStream("/value_set_r4.json");
     org.hl7.fhir.r4.model.ValueSet r4_input = (org.hl7.fhir.r4.model.ValueSet) new org.hl7.fhir.r4.formats.JsonParser().parse(r4_stream);
 

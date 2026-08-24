@@ -324,7 +324,10 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   public void addTextWithLineBreaks(String content) {
     if (content != null) {
       boolean first = true;
-      for (String line : content.split("\\r?\\n")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //simple character class split; safe
+      String[] contentLines = content.split("\\r?\\n");
+      for (String line : contentLines) {
         if (first) {
           first = false;
         } else {
@@ -983,6 +986,8 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
   }
 
   private boolean passesTest(String test) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
     String[] p = test.split("\\s+");
     if (p.length != 3) {
       return false;
@@ -1067,7 +1072,11 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (!hasAttribute("class"))
       return false;
     String classValue = getAttribute("class");
-    return Arrays.asList(classValue.split(" ")).contains(name);
+
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] classNames = classValue.split(" ");
+    return Arrays.asList(classNames).contains(name);
   }
 
   public XhtmlNode clss(String name) {
@@ -1134,7 +1143,10 @@ public class XhtmlNode extends XhtmlFluent implements IBaseXhtml {
     if (code) {
       XhtmlNode c = code();
       boolean first = true;
-      for (String line : cnt.split("\\r?\\n")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //simple character class split; safe
+      String[] cntLines = cnt.split("\\r?\\n");
+      for (String line : cntLines) {
         if (first) first = false; else c.br();
         c.tx(line.replace(" ", Character.toString(0xA0)));
       }

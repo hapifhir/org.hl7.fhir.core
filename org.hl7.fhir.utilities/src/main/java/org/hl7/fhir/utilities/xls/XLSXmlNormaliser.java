@@ -127,7 +127,7 @@ public class XLSXmlNormaliser {
         fs.close();
       }
       String s = FileUtilities.fileToString(dest);
-      s = s.replaceAll("\r\n","\n");
+      s = s.replace("\r\n","\n");
       s = replaceSignificantEoln(s);
       FileUtilities.stringToFile(s, dest);
       ManagedFileAccess.file(dest).setLastModified(time);

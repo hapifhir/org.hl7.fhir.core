@@ -37,6 +37,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
@@ -124,7 +125,7 @@ public class ToolsHelper {
       System.out.println("tools.jar snapshot-maker [source] -defn [definitions]");
       System.out.println("");
       System.out.println(
-          "Generates a snapshot from a differential. The nominated profile must have a single struture that has a differential");
+          "Generates a snapshot from a differential. The nominated profile must have a single structure that has a differential");
       System.out.println("");
       System.out.println(
           "source - the profile to generate the snapshot for. Maybe a file name, or a URL reference to a server running FHIR RESTful API");
@@ -135,23 +136,7 @@ public class ToolsHelper {
 
     SimpleWorkerContext context = SimpleWorkerContext.fromDefinitions(getDefinitions(definitions));
 
-    // if (address.startsWith("http:") || address.startsWith("http:")) {
-    // // this is on a restful interface
-    // String[] parts = address.split("\\/Profile\\/");
-    // if (parts.length != 2)
-    // throw new FHIRException("Unable to understand address of profile");
-    // StructureDefinition profile =
-    // context.fetchResource(StructureDefinition.class, parts[1]);
-    // ProfileUtilities utils = new ProfileUtilities(context);
-    // StructureDefinition base = utils.getProfile(profile, profile.getBase());
-    // if (base == null)
-    // throw new FHIRException("Unable to resolve profile "+profile.getBase());
-    // utils.generateSnapshot(base, profile, address, profile.getName(), null,
-    // null);
-    // // client.update(StructureDefinition.class, profile, parts[1]);
-    // } else {
     throw new NotImplementedException("generating snapshots not done yet (address = " + address + ")");
-    // }
   }
 
   private Map<String, byte[]> getDefinitions(String definitions) throws IOException, FHIRException {
@@ -195,7 +180,7 @@ public class ToolsHelper {
   }
 
   private byte[] loadFromUrl(String src) throws IOException {
-    URL url = new URL(src);
+    URL url = URI.create(src).toURL();
     byte[] str = IOUtils.toByteArray(url.openStream());
     return str;
   }

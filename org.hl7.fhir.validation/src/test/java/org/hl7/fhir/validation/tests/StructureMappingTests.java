@@ -32,6 +32,7 @@ import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.instance.InstanceValidatorFactory;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -83,6 +84,15 @@ public class StructureMappingTests {
     if (context.getValidatorFactory() == null) {
       context.setValidatorFactory(new InstanceValidatorFactory());
     }
+  }
+
+  @AfterAll
+  static void tearDownClass() {
+    // Release the per-class r4 engine/context so it doesn't stay resident for the rest of
+    // the module's single reused test JVM.
+    validationEngine = null;
+    context = null;
+    System.gc();
   }
   private StructureMap loadStructureMap(String map) throws Exception {
     String stringMap = TestingUtilities.loadTestResource("r5", "structure-mapping", map);

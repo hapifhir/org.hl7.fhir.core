@@ -10,6 +10,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.profilemodel.PEBuilder;
 import org.hl7.fhir.r5.profilemodel.PEBuilder.PEElementPropertiesPolicy;
+import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -77,25 +78,25 @@ public interface IWorkerContext {
    * The context increments this anytime any definitions change. (that is, any
    * resources are made available through the fetch*() methods, or removed
    * from being available)
-   *
+   * <p/>
    * Consumers can track this and reload any cached analysis if the value changes
    * Consumers of the IWorkerContext in the core library do this, and it makes a
    * significant difference to performance
-   *
+   * <p/>
    * Contexts that aren't in a good position to track the content can just return a
    * serially incrementing number, but then the performance benefits of caching will
    * be lost
    *
    * @return a number that changes each time the content that the context represents changes
    */
-  public int getDefinitionsVersion();
+  public long getDefinitionsVersion();
 
   /**
    * as an alternative to tracking, the context can store analysis for consumers of the context,
    * and return them if the loaded set hasn't changed
    *
    * @param className - the class name asking for analysis to be stored
-   * @return the object previously stored, if there's been no change
+   * @param analysis the object to store if there's been a change
    */
   public void storeAnalysis(Class className, Object analysis);
 
@@ -343,9 +344,13 @@ public interface IWorkerContext {
    *
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use            
    * @return the resource if known (or null)
    */
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
+    return fetchResource(class_, uri, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -364,33 +369,15 @@ public interface IWorkerContext {
    *
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
-   * @param version the version. Don't provide both a version and a |version suffix
-   * @return if the resource is known
-   */
- // public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version);
-
-  /**
-   * Fetch (load if necessary) an identified resource. The most common use of this is to access the
-   * standard conformance resources that are part of the standard - structure
-   * definitions, value sets, concept maps, etc.
-   **
-   * The URI can have one of 3 formats:
-   *  - a full URL e.g. http://acme.org/fhir/ValueSet/[id]
-   *  - a relative URL e.g. ValueSet/[id]
-   *  - a logical id e.g. [id]
-   *
-   * It's an error if the second form doesn't agree with class_. It's an
-   * error if class_ is null for the last form
-   *
-   * class can be Resource, DomainResource or CanonicalResource, which means resource of all kinds
-   *
-   * @param class_ the type of resource
-   * @param uri the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    * @param version the version. Don't provide both a version and a |version suffix
    * @param sourceOfReference where the reference was found (if the reference is in a resource)
    * @return if the resource is known
    */
-  public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource sourceOfReference);
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResource(Class<T> class_, String uri, String version, Resource sourceOfReference) {
+    return fetchResource(class_, uri, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  };
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -409,9 +396,13 @@ public interface IWorkerContext {
    *
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    * @return the resource if known (or an exception will be thrown)
    */
-  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, VersionResolutionRules rules) throws FHIRException;
+  @Deprecated(since="2026-03-10")  default public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
+    return fetchResourceWithException(class_, uri, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -430,11 +421,15 @@ public interface IWorkerContext {
    *
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    * @param version the version. Don't provide both a version and a |version suffix
    * @param sourceOfReference where the reference was found (if the reference is in a resource)
    * @return if the resource is known. Will throw an exception if the resource is not known
    */
-  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, Resource sourceOfReference) throws FHIRException;
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, VersionResolutionRules rules, String version, Resource sourceOfReference) throws FHIRException;
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, String version, Resource sourceOfReference) throws FHIRException {
+    return fetchResourceWithException(class_, uri, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  }
 
   /**
    * Find an identified resource, but do not do any processing on it.
@@ -455,9 +450,13 @@ public interface IWorkerContext {
    *
    * @param class_ the type of resource
    * @param uri the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    * @return the resource if known (or an exception will be thrown)
    */
-  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri);
+  public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri, VersionResolutionRules rules);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T fetchResourceRaw(Class<T> class_, String uri) {
+    return fetchResourceRaw(class_, uri, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Fetch (load if necessary) an identified resource. The most common use of this is to access the
@@ -507,15 +506,56 @@ public interface IWorkerContext {
   //region Terminology services
 
   /**
-   * this first does a fetch resource, and if nothing is found, looks in the
+   this first does a fetch resource, and if nothing is found, looks in the
    * terminology eco-system for a matching definition for the resource
+   * <p>
+   * Limitations of use: a resource acquired this way is a <b>definition</b>, fetched from
+   * whichever server the ecosystem resolved - it is not a substitute for the server that
+   * hosts it. For CodeSystems in particular, the copy does not carry the supplements
+   * (language packs etc.) loaded on the servers, and it is not kept current. For that
+   * reason the terminology processing layer (validation / expansion) must not use this
+   * method to acquire CodeSystem content to compute answers from - it uses
+   * {@link org.hl7.fhir.r5.context.IWorkerContext#fetchResource(Class, String, IWorkerContext.VersionResolutionRules)}
+   * (local content only) and routes operations to the appropriate server instead, so that
+   * supplements, languages and authority are honoured (see 'Language Specific Claims' in
+   * the tx ecosystem IG). Retrieving ValueSet definitions this way is fine and necessary
+   * (they carry no supplement dimension, and are needed client-side for the tx-resource
+   * flow), as is retrieving definitions for rendering and metadata purposes.
+   * @param class_ the type of resource
+   * @param canonical the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    */
-  public <T extends Resource> T findTxResource(Class<T> class_, String canonical);
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, VersionResolutionRules rules);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T findTxResource(Class<T> class_, String canonical) {
+    return findTxResource(class_, canonical, VersionResolutionRules.defaultRule());
+  }
+
   /**
    * this first does a fetch resource, and if nothing is found, looks in the
    * terminology eco-system for a matching definition for the resource
+   * <p>
+   * Limitations of use: a resource acquired this way is a <b>definition</b>, fetched from
+   * whichever server the ecosystem resolved - it is not a substitute for the server that
+   * hosts it. For CodeSystems in particular, the copy does not carry the supplements
+   * (language packs etc.) loaded on the servers, and it is not kept current. For that
+   * reason the terminology processing layer (validation / expansion) must not use this
+   * method to acquire CodeSystem content to compute answers from - it uses
+   * {@link org.hl7.fhir.r5.context.IWorkerContext#fetchResource(Class, String, IWorkerContext.VersionResolutionRules, String, Resource)}
+   * (local content only) and routes operations to the appropriate server instead, so that
+   * supplements, languages and authority are honoured (see 'Language Specific Claims' in
+   * the tx ecosystem IG). Retrieving ValueSet definitions this way is fine and necessary
+   * (they carry no supplement dimension, and are needed client-side for the tx-resource
+   * flow), as is retrieving definitions for rendering and metadata purposes.
+   * @param class_ the type of resource
+   * @param canonical the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
+   * @param version the version. Don't provide both a version and a |version suffix
+   * @param sourceOfReference where the reference was found (if the reference is in a resource)
    */
-  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version, Resource sourceOfReference);
+  public <T extends Resource> T findTxResource(Class<T> class_, String canonical, VersionResolutionRules rules, String version, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public <T extends Resource> T findTxResource(Class<T> class_, String canonical, String version, Resource sourceOfReference) {
+    return findTxResource(class_, canonical, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  }
 
   /**
    * Get a copy of the expansion parameters to be passed through the terminology server when txServer calls are made
@@ -532,11 +572,15 @@ public interface IWorkerContext {
    * supportsSystem)
    * 
    * This is a short cut for fetchResource(CodeSystem.class, system)
-   * 
-   * @param system
+   *
+   * @param system the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    * @return
    */
-  public CodeSystem fetchCodeSystem(String system);
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchCodeSystem(String system) {
+    return fetchCodeSystem(system, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Find the code system definition for the nominated system uri.
@@ -544,14 +588,31 @@ public interface IWorkerContext {
    * supportsSystem)
    *
    * This is a short cut for fetchResource(CodeSystem.class, system, version, sourceOfReference)
+   * @param system the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
+   * @param version the version. Don't provide both a version and a |version suffix
+   * @param sourceOfReference where the reference was found (if the reference is in a resource)
+   * @param checkForImplicits whether to look for resources that define implicit code systems (see R6 CodeSystem documentation).
+   *
+   * In general, checkForImplicits should be true, but there's cases where you definitely don't want implicits for various reasons.
+   *
    */
-  public CodeSystem fetchCodeSystem(String system, String version, Resource sourceOfReference);
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference, boolean checkForImplicits);
+  public CodeSystem fetchCodeSystem(String system, VersionResolutionRules rules, String version, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchCodeSystem(String system, String version, Resource sourceOfReference) {
+    return fetchCodeSystem(system, VersionResolutionRules.defaultRule(), version, sourceOfReference);
+  }
 
   /**
    * Like fetchCodeSystem, except that the context will find any CodeSysetm supplements and merge them into the
    * definition that's returned
+   * @param system the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
    */
-  public CodeSystem fetchSupplementedCodeSystem(String system);
+  public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchSupplementedCodeSystem(String system) {
+    return fetchSupplementedCodeSystem(system, VersionResolutionRules.defaultRule());
+  }
 
   /**
    * Like fetchCodeSystem, except that the context will find any appropriate CodeSystem supplements and merge them into the
@@ -560,8 +621,15 @@ public interface IWorkerContext {
    * appropriate means:
    *  - found in specified supplements, which should be built from parameters and value set extensions
    *  - marked as a langpack in the supplement
+   * @param system the URL of the resource, optionally with a |version suffix
+   * @param rules - additional rules that apply when resolving the version to use
+   * @param version the version. Don't provide both a version and a |version suffix
+   * @param sourceOfReference where the reference was found (if the reference is in a resource)
    */
-  public CodeSystem fetchSupplementedCodeSystem(String system, String version, List<String> specifiedSupplements, Resource sourceOfReference);
+  public CodeSystem fetchSupplementedCodeSystem(String system, VersionResolutionRules rules, String version, List<String> specifiedSupplements, Resource sourceOfReference);
+  @Deprecated(since="2026-03-10") default public CodeSystem fetchSupplementedCodeSystem(String system, String version, List<String> specifiedSupplements, Resource sourceOfReference) {
+    return fetchSupplementedCodeSystem(system, VersionResolutionRules.defaultRule(), version, specifiedSupplements, sourceOfReference);
+  }
 
   /**
    * ValueSet Expansion - see $expand
@@ -712,14 +780,92 @@ public interface IWorkerContext {
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs, ValidationContextCarrier ctxt);
 
   /**
-   * Batch validate code - reduce latency and do a bunch of codes in a single server call.
-   * Each is the same as a validateCode
+   * Validate a batch of codes in a single round trip to the terminology server, instead of one round
+   * trip per code.
+   * <p>
+   * Nothing is returned. Each result is set on the request it belongs to, and the caller reads it back
+   * with {@link CodingValidationRequest#getResult()} once this returns. Callers that need to tie a
+   * result back to something in their own world - a location in a resource, say - subclass
+   * {@link CodingValidationRequest} and carry that context on the subclass.
+   * <p>
+   * Each code is resolved in three passes: from the terminology cache, then locally where this context
+   * knows the code system, and finally on the terminology server for whatever is left. Only the third
+   * pass costs a round trip, so a warm cache or a locally known code system can mean no server call at
+   * all. Results from the server are cached permanently; results derived locally are cached for this
+   * session only.
+   * <p>
+   * Requests that already carry a result when this is called are left alone, so the same list can be
+   * passed in more than once - anything already answered is not asked about again.
+   * <p>
+   * Neither the size of the batch nor duplicates within it are managed here. A code that appears twice
+   * is asked about twice, and breaking a long list into batches of a size the server will accept is the
+   * caller's job.
    *
-   * @param options
-   * @param codes
-   * @param vs
+   * @param options controls how the codes are validated, and whether the client and the server may be
+   *          used at all - see {@link ValidationOptions#isUseClient()} and
+   *          {@link ValidationOptions#isUseServer()}. May be null, in which case
+   *          {@link ValidationOptions#defaults()} applies. The options are part of the cache key, so
+   *          results are not shared between calls that pass different options.
+   * @param codes the codes to validate. Each request carries its own result, so every code keeps its own
+   *          diagnostics. Every request is given a result unless this method throws.
+   * @param vs the value set to validate the codes against - "is this code in this value set". May be
+   *          null to ask only "is this code valid in its own code system", which is the batch equivalent
+   *          of {@link #validateCode(ValidationOptions, Coding, ValueSet)} with a null value set.
+   *          <p>
+   *          Note that where the single code path uses CodeSystem/$validate-code when there is no value
+   *          set, this method always uses ValueSet/$batch-validate-code, and simply omits the url
+   *          parameter when vs is null.
+   * @param notUsed not used - pass null. This was once a flag doing something, but no caller ever set it, and it did not make sense.
+   *          The parameter is retained only so that the signature of this interface does not change.
+   *
+   * @throws FHIRException if no terminology server is available, or the server returns no response to
+   *           the batch
    */
-  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean passVS);
+  @Deprecated(since="2026-03-10") public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean notUsed);
+
+  /**
+   * Validate a batch of codes in a single round trip to the terminology server, instead of one round
+   * trip per code.
+   * <p>
+   * Nothing is returned. Each result is set on the request it belongs to, and the caller reads it back
+   * with {@link CodingValidationRequest#getResult()} once this returns. Callers that need to tie a
+   * result back to something in their own world - a location in a resource, say - subclass
+   * {@link CodingValidationRequest} and carry that context on the subclass.
+   * <p>
+   * Each code is resolved in three passes: from the terminology cache, then locally where this context
+   * knows the code system, and finally on the terminology server for whatever is left. Only the third
+   * pass costs a round trip, so a warm cache or a locally known code system can mean no server call at
+   * all. Results from the server are cached permanently; results derived locally are cached for this
+   * session only.
+   * <p>
+   * Requests that already carry a result when this is called are left alone, so the same list can be
+   * passed in more than once - anything already answered is not asked about again.
+   * <p>
+   * Neither the size of the batch nor duplicates within it are managed here. A code that appears twice
+   * is asked about twice, and breaking a long list into batches of a size the server will accept is the
+   * caller's job.
+   *
+   * @param options controls how the codes are validated, and whether the client and the server may be
+   *          used at all - see {@link ValidationOptions#isUseClient()} and
+   *          {@link ValidationOptions#isUseServer()}. May be null, in which case
+   *          {@link ValidationOptions#defaults()} applies. The options are part of the cache key, so
+   *          results are not shared between calls that pass different options.
+   * @param codes the codes to validate. Each request carries its own result, so every code keeps its own
+   *          diagnostics. Every request is given a result unless this method throws.
+   * @param vs the value set to validate the codes against - "is this code in this value set". May be
+   *          null to ask only "is this code valid in its own code system", which is the batch equivalent
+   *          of {@link #validateCode(ValidationOptions, Coding, ValueSet)} with a null value set.
+   *          <p>
+   *          Note that where the single code path uses CodeSystem/$validate-code when there is no value
+   *          set, this method always uses ValueSet/$batch-validate-code, and simply omits the url
+   *          parameter when vs is null.
+   *
+   * @throws FHIRException if no terminology server is available, or the server returns no response to
+   *           the batch
+   */
+  default public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs) {
+    validateCodeBatch(options, codes, vs, false);
+  }
 
   /**
    * Validate the actual terminology resource itself on the appropriate terminology server
@@ -738,6 +884,27 @@ public interface IWorkerContext {
    * @return true if it does, false if it doesn't, and null if it's not know whether it does
    */
   public Boolean subsumes(ValidationOptions options, Coding parent, Coding child);
+
+  public enum VersionResolutionRules { PACKAGE, LATEST, MANIFEST;
+
+    public static VersionResolutionRules defaultRule() {
+      return null;
+    }
+
+    public static VersionResolutionRules fromCode(String rule) {
+      if (rule == null) {
+        return null;
+      } else {
+        switch (rule) {
+          case "package": return PACKAGE;
+          case "latest": return LATEST;
+          case "manifest": return MANIFEST;
+          default:
+            throw new IllegalArgumentException("Unknown VersionResolutionRules code: "+rule);
+        }
+      }
+    }
+  }
 
   class SystemSupportInformation {
     // whether the system(/version) is supported
@@ -817,10 +984,11 @@ public interface IWorkerContext {
 
   //endregion
 
-
-  // todo: figure these out
-  @Deprecated
-  public Map<String, NamingSystem> getNSUrlMap();
+  /**
+  * Note: This currently returns an implementation, not an interface, and will likely be changed at a later time.
+  * @return null if you do not want to use TerminologyClientManager (recommended)
+  */
+  TerminologyClientManager getTerminologyClientManager();
 
   @Deprecated
   public IWorkerContextManager.IPackageLoadingTracker getPackageTracker();

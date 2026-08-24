@@ -53,6 +53,14 @@ public class TxTestsCommandTest {
   }
 
   @Test
+  public void testCommandHasSuiteOption() {
+    CommandLine commandLine = new CommandLine(new TxTestsCommand());
+    boolean hasOption = commandLine.getCommandSpec()
+      .optionsMap().containsKey("-suite");
+    assertThat(hasOption).isTrue();
+  }
+
+  @Test
   public void testCommandHasExternalsOption() {
     CommandLine commandLine = new CommandLine(new TxTestsCommand());
     boolean hasOption = commandLine.getCommandSpec()
@@ -74,6 +82,16 @@ public class TxTestsCommandTest {
     boolean hasOption = commandLine.getCommandSpec()
       .optionsMap().containsKey("-mode");
     assertThat(hasOption).isTrue();
+  }
+
+  @Test
+  public void testModeOptionSplitsOnCommas() {
+    // testcases.md in the tx-ecosystem IG says multiple modes are passed
+    // separated by commas
+    CommandLine commandLine = new CommandLine(new TxTestsCommand());
+    CommandLine.Model.OptionSpec option = commandLine.getCommandSpec()
+      .optionsMap().get("-mode");
+    assertThat(option.splitRegex()).isEqualTo(",");
   }
 
   @Test

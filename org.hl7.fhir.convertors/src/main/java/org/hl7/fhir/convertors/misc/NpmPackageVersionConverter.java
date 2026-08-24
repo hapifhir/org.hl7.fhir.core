@@ -42,6 +42,7 @@ import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IContextResourceLoader;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -206,11 +207,11 @@ public class NpmPackageVersionConverter {
     }
     Map<String, byte[]> content = new HashMap<>();
 
-    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
+    try (TarArchiveInputStream tarIn = NpmPackage.getTarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
 
       while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
-        String n = entry.getName();
+        String n = NpmPackage.getEntryName(entry);
         if (n.contains("..")) {
           throw new RuntimeException("Entry with an illegal name: " + n);
         }
@@ -385,7 +386,7 @@ public class NpmPackageVersionConverter {
   private void checkForCoreDependenciesSD(StructureDefinition sd) throws IOException {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ed.hasBinding() && ed.getBinding().hasValueSet()) {
-        ValueSet vs = context.fetchResource(ValueSet.class, ed.getBinding().getValueSet());
+        ValueSet vs = context.fetchResource(ValueSet.class, ed.getBinding().getValueSet(), ExtensionUtilities.getVersionResolutionRules(ed.getBinding().getValueSetElement()));
         if (vs != null) {
           checkForCoreDependenciesVS(vs);
         }
@@ -401,13 +402,13 @@ public class NpmPackageVersionConverter {
     }
     for (ConceptSetComponent inc : valueSet.getCompose().getInclude()) {
       for (CanonicalType c : inc.getValueSet()) {
-        ValueSet vs = context.fetchResource(ValueSet.class, c.getValue());
+        ValueSet vs = context.fetchResource(ValueSet.class, c.getValue(), ExtensionUtilities.getVersionResolutionRules(c));
         if (vs != null) {
           checkForCoreDependenciesVS(vs);
         }
       }
       if (inc.hasSystem()) {
-        CodeSystem cs = context.fetchResource(CodeSystem.class, inc.getSystem(), inc.getVersion(), valueSet);
+        CodeSystem cs = context.fetchResource(CodeSystem.class, inc.getSystem(), ExtensionUtilities.getVersionResolutionRules(inc), inc.getVersion(), valueSet);
         if (cs != null) {
           checkForCoreDependenciesCS(cs);
         }

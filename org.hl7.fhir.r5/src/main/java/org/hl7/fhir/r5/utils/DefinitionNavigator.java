@@ -39,6 +39,7 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
@@ -54,6 +55,8 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 @MarkedToMoveToAdjunctPackage
 public class DefinitionNavigator {
 
+  private static final int LEVEL_LIMIT = 20; // this is arbitrary, but we get 20 levels deep, we decide that we've run into a infinite loop somehow, and go bang
+  
   private IWorkerContext context;
   private StructureDefinition structure;
   private int index;
@@ -68,8 +71,10 @@ public class DefinitionNavigator {
   private boolean diff;
   private boolean followTypes;
   private boolean inlineChildren;
+  private boolean childrenFromReference = false;
   private ElementDefinitionSlicingComponent manualSlice;
   private TypeRefComponent manualType;
+  private int level = 0;
   
   public DefinitionNavigator(IWorkerContext context, StructureDefinition structure, boolean diff, boolean followTypes) throws DefinitionException {
     if (!diff && !structure.hasSnapshot())
@@ -173,6 +178,9 @@ public class DefinitionNavigator {
   }
 
   private void loadChildren() throws DefinitionException {
+    if (level > LEVEL_LIMIT) {
+      throw new Error("Level limit reached @ "+level+": "+globalPath);
+    }
     children = new ArrayList<DefinitionNavigator>();
     String prefix = localPath+".";
     Map<String, DefinitionNavigator> nameMap = new HashMap<String, DefinitionNavigator>();
@@ -185,6 +193,7 @@ public class DefinitionNavigator {
         if (ref.contains("#")) {
           ref = ref.substring(ref.indexOf("#")+1);
         }
+        childrenFromReference = true;
         prefix = ref;
         workingIndex = getById(list(), ref);
       }
@@ -289,7 +298,7 @@ public class DefinitionNavigator {
       if (tr.getProfile().size() > 1) {
         return;
       } else if (tr.getProfile().size() == 1) {
-        sdt = context.fetchResource(StructureDefinition.class, tr.getProfile().get(0).asStringValue());        
+        sdt = context.fetchResource(StructureDefinition.class, tr.getProfile().get(0).asStringValue(), ExtensionUtilities.getVersionResolutionRules(tr.getProfile().get(0)));
       } else {
         sdt = context.fetchTypeDefinition(ed.getTypeFirstRep().getWorkingCode());
       }
@@ -304,6 +313,9 @@ public class DefinitionNavigator {
           children.add(dn);
         }
       }
+    }
+    for (DefinitionNavigator dn : children) {
+      dn.level = level + 1;
     }
   }
 
@@ -365,7 +377,7 @@ public class DefinitionNavigator {
 
   private void loadTypedChildren(TypeRefComponent type, Resource src) throws DefinitionException {
     typeOfChildren = null;
-    StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode(), null, src);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, /* GF#13465 : this somehow needs to be revisited type.hasProfile() ? type.getProfile() : */ type.getWorkingCode(), IWorkerContext.VersionResolutionRules.defaultRule(), null, src);
     if (sd != null) {
       DefinitionNavigator dn = new DefinitionNavigator(context, sd, diff, followTypes, 0, globalPath, localPath, names, sd.getType());
       typeChildren = dn.children();
@@ -467,6 +479,12 @@ public class DefinitionNavigator {
   public TypeRefComponent getManualType() {
     return manualType;
   }
-  
 
+
+  public boolean isChildrenFromReference() {
+    if (children == null) {
+      loadChildren();
+    }
+    return childrenFromReference;
+  }
 }

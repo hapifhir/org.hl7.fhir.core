@@ -1,26 +1,17 @@
 package org.hl7.fhir.r5.elementmodel;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.UnknownHostException;
-import java.text.ParseException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.zip.DataFormatException;
-import java.util.Date;
-import java.util.zip.Inflater;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -28,25 +19,19 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
-import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
-import org.hl7.fhir.utilities.json.model.JsonElementType;
 import org.hl7.fhir.utilities.json.model.JsonObject;
-import org.hl7.fhir.utilities.json.model.JsonPrimitive;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
 import com.nimbusds.jose.JWEObject;
-import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.DirectDecrypter;
 
 /**
@@ -298,7 +283,6 @@ public class SHLParser extends ParserBase {
     if (testMode) {
       return new HTTPResult(url, 200, "OK", "application/json", FileUtilities.streamToBytes(TestingUtilities.loadTestResourceStream("validator", "shlink.manifest.json")));
     }
-
     JsonObject j = new JsonObject();
     j.add("recipient", "FHIR Validator");
     HTTPResult res = ManagedWebAccess.post(Arrays.asList("web"), url, org.hl7.fhir.utilities.json.parser.JsonParser.composeBytes(j), "application/json", "application/json");

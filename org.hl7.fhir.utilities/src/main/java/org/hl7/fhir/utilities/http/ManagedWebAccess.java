@@ -35,12 +35,16 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.function.BinaryOperator;
 
 import lombok.Getter;
 
-import org.hl7.fhir.utilities.Utilities;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
 import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
+
+import static org.hl7.fhir.utilities.Utilities.existsInList;
 
 /**
  * see security.md - manages web access by the FHIR HAPI Core library
@@ -48,11 +52,19 @@ import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
  * By using accessPolicy, allowedDomains and accessor, a host java application can control 
  * whether this library has direct access to the web (and which domains it is allowed to access),
  * or whether the host application provides controlled access, or whether no access is allowed at all
- * (in which case other information providers need to be provided)
- *  
+ * (in which case other information providers need to be provided).
+ * <p/>
+ * Web access with these managed features is provided through the following four methods:
+ * <ul>
+ *   <li>{@link #accessor(Iterable)}</li>
+ *   <li>{@link #accessor(Iterable, IHTTPAuthenticationProvider)}</li>
+ *   <li>{@link #fhirAccessor()}</li>
+ *   <li>{@link #fhirAccessor(IHTTPAuthenticationProvider)}</li>
+ * </ul>
  * @author Grahame
  *
  */
+@Slf4j
 public class ManagedWebAccess {
 
   public interface IWebAccessor {
@@ -66,12 +78,17 @@ public class ManagedWebAccess {
   }
 
   public enum WebAccessPolicy {
-    DIRECT, // open access to the web, though access can be restricted only to domains in AllowedDomains
+    DIRECT, // access to the web with using policies set via FhirSettings
     MANAGED, // no access except by the IWebAccessor
     PROHIBITED, // no access at all to the web
   }
 
+  @Getter
   private static WebAccessPolicy accessPolicy = WebAccessPolicy.DIRECT; // for legacy reasons
+
+  @Getter
+  private static boolean ssrfProtectionEnabled = true;
+
   //TODO get this from fhir settings
   private static List<String> allowedDomains = new ArrayList<>();
   @Getter
@@ -82,14 +99,29 @@ public class ManagedWebAccess {
 
   @Getter
   private static String userAgent;
-  private static List<ServerDetailsPOJO> serverAuthDetails;
 
-  public static WebAccessPolicy getAccessPolicy() {
-    return accessPolicy;
-  }
+  private static List<ServerDetailsPOJO> serverDetailsList;
+  private static IHTTPAuthenticationProvider defaultAuthenticationProvider;
 
+  /**
+   * @param accessPolicy the global policy for accessing web resources.
+   */
   public static void setAccessPolicy(WebAccessPolicy accessPolicy) {
     ManagedWebAccess.accessPolicy = accessPolicy;
+  }
+
+  /**
+   * This globally turns off the following:
+   *  * requiring all web access to be via https protocol
+   *  * preventing access to private and non-public servers
+   * WARNING: By default this is TRUE. Only set to FALSE if no untrusted party can influence any of the content being processed, or the validator runs where internal network access poses no risk.
+   * @param ssrfProtectionEnabled whether to enable ssrf protection
+   */
+  public static void setSsrfProtectionEnabled(boolean ssrfProtectionEnabled) {
+    if (!ssrfProtectionEnabled) {
+      log.warn("SSRF protection is disabled. Content being validated (including packages and other dependencies) can direct the validator to fetch URLs of the content's choosing, including internal network addresses. Only run in this mode if no untrusted party can influence any of the content being processed, or the validator runs where internal network access poses no risk.");
+    }
+    ManagedWebAccess.ssrfProtectionEnabled = ssrfProtectionEnabled;
   }
 
   static boolean inAllowedPaths(String pathname) {
@@ -108,12 +140,52 @@ public class ManagedWebAccess {
     ManagedWebAccess.userAgent = userAgent;
   }
 
+  /**
+   * Get an accessor for non-FHIR web servers. This web accessor will use the server settings in fhir-settings.json to
+   * manage authentication.
+   *
+   * @param serverTypes server types to be considered by a client
+   * @return a web accessor
+   */
   public static ManagedWebAccessor accessor(Iterable<String> serverTypes) {
-    return new ManagedWebAccessor(serverTypes, userAgent, serverAuthDetails);
+    return new ManagedWebAccessor(serverTypes, userAgent, defaultAuthenticationProvider);
   }
 
+  /**
+   * Get an accessor for non-FHIR web servers. This web accessor will only use the provided authenticationProvider to
+   * manage authentication. If you need to combine your own authentication provider with the server settings in
+   * fhir-settings.json, consider using {@link HTTPAuthenticationProviderChain} to chain your
+   * implementation with {@link ServerDetailsPOJOHTTPAuthProvider}
+   *
+   * @param serverTypes server types to be considered by a client
+   * @param authenticationProvider provides necessary headers for authenticating http requests
+   * @return a web accessor
+   */
+  public static ManagedWebAccessor accessor(Iterable<String> serverTypes, IHTTPAuthenticationProvider authenticationProvider) {
+    return new ManagedWebAccessor(serverTypes, userAgent, authenticationProvider);
+  }
+
+  /**
+   * Get an accessor for FHIR servers. This accessor will use the server settings in fhir-settings.json to manage
+   * authentication.
+   *
+   * @return a FHIR accessor
+   */
   public static ManagedFhirWebAccessor fhirAccessor() {
-    return new ManagedFhirWebAccessor(userAgent, serverAuthDetails);
+    return new ManagedFhirWebAccessor(userAgent, defaultAuthenticationProvider);
+  }
+
+  /**
+   * Get an accessor for FHIR servers. This web accessor will only use the provided authenticationProvider to
+   * manage authentication. If you need to combine your own authentication provider with the server settings in
+   * fhir-settings.json, consider using {@link HTTPAuthenticationProviderChain} to chain your
+   * implementation with {@link ServerDetailsPOJOHTTPAuthProvider}
+   *
+   * @param authenticationProvider provides necessary headers for authenticating http requests
+   * @return a FHIR accessor
+   */
+  public static ManagedFhirWebAccessor fhirAccessor(IHTTPAuthenticationProvider authenticationProvider) {
+    return new ManagedFhirWebAccessor(userAgent, authenticationProvider);
   }
 
   public static HTTPResult get(Iterable<String> serverTypes, String url) throws IOException {
@@ -136,40 +208,81 @@ public class ManagedWebAccess {
     return fhirAccessor().httpCall(httpRequest);
   }
 
+  /**
+   * Loads settings from {@link FhirSettings} alone.
+   */
   public static void loadFromFHIRSettings() {
-    setAccessPolicy(FhirSettings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
-    setUserAgent("hapi-fhir-tooling-client");
-    serverAuthDetails = new ArrayList<>();
-    serverAuthDetails.addAll(FhirSettings.getServers());
+    applySettings(FhirSettings.getFhirSettingsPOJO());
   }
 
-  public static void loadFromFHIRSettings(FhirSettings settings) {
-    setAccessPolicy(settings.isProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
-    setUserAgent("hapi-fhir-tooling-client");
-    serverAuthDetails = new ArrayList<>();
-    serverAuthDetails.addAll(settings.getServers());
+  /**
+   * Loads settings from {@link FhirSettings}, combined with the given {@code overrides} using
+   * {@link FhirSettingsPOJO#DEFAULT_COMBINATION_LOGIC} (i.e. {@code overrides} takes precedence over
+   * {@link FhirSettings} for any non-null scalar field, and its {@code servers} and {@code certificateSources}
+   * are appended to those from {@link FhirSettings}).
+   *
+   * @param overrides a {@link FhirSettingsPOJO} to combine with the settings from {@link FhirSettings}
+   */
+  public static void loadFromFHIRSettings(FhirSettingsPOJO overrides) {
+    loadFromFHIRSettings(FhirSettingsPOJO.DEFAULT_COMBINATION_LOGIC, overrides);
   }
 
+  /**
+   * Loads settings from {@link FhirSettings}, combined with the given {@code overrides} using the given
+   * {@code combinationLogic}.
+   *
+   * @param combinationLogic a function that takes the settings from {@link FhirSettings} and {@code overrides}
+   *                          and returns the combined result
+   * @param overrides        a {@link FhirSettingsPOJO} to combine with the settings from {@link FhirSettings}
+   */
+  public static void loadFromFHIRSettings(BinaryOperator<FhirSettingsPOJO> combinationLogic, FhirSettingsPOJO overrides) {
+    applySettings(FhirSettings.getFhirSettingsPOJO().combineWith(combinationLogic, overrides));
+  }
+
+  /**
+   * Loads settings from the given {@link FhirSettingsPOJO} alone, ignoring {@link FhirSettings}.
+   *
+   * @param settings the {@link FhirSettingsPOJO} to load settings from
+   */
+  public static void loadFromSettings(FhirSettingsPOJO settings) {
+    applySettings(settings);
+  }
+
+  private static void applySettings(FhirSettingsPOJO settings) {
+    setAccessPolicy(settings.getProhibitNetworkAccess() != null && settings.getProhibitNetworkAccess() ? WebAccessPolicy.PROHIBITED : WebAccessPolicy.DIRECT);
+    setSsrfProtectionEnabled(settings.getSsrfProtectionEnabled() == null || settings.getSsrfProtectionEnabled());
+    setUserAgent("hapi-fhir-tooling-client");
+    serverDetailsList = new ArrayList<>(settings.getServers() == null ? Collections.emptyList() : settings.getServers());
+    defaultAuthenticationProvider = new ServerDetailsPOJOHTTPAuthProvider(serverDetailsList);
+  }
+
+  /**
+   * Returns a secure https url for the provided url unless a matching URL is included in fhir-settings.json
+   *
+   * @param url an http or https url
+   * @return an https url
+   */
   public static String makeSecureRef(String url) {
-    if (url == null || !url.startsWith("http://") || isLocal(url)) {
+    if (url == null || !url.startsWith("http://") || isDefinedInSettings(url)) {
       return url;
     } else {
       return url.replace("http://", "https://");
     }
   }
 
-  private static boolean isLocal(String url) {
+  private static boolean isDefinedInSettings(String url) {
     URI uri;
     try {
       uri = new URI(url);
       
       // Check if this URL matches a configured server with allowHttp: true
       // This allows HTTP for trusted internal servers (e.g., Docker service names)
-      if (serverAuthDetails != null) {
-        for (ServerDetailsPOJO server : serverAuthDetails) {
+      if (serverDetailsList != null) {
+        for (ServerDetailsPOJO server : serverDetailsList) {
           if (server.getAllowHttp() != null && server.getAllowHttp() && server.getUrl() != null && !server.getUrl().isEmpty()) {
             // Match if the URL starts with the configured server URL
-            if (url.startsWith(server.getUrl())) {
+
+            if (ManagedWebAccessUtils.urlMatchesOrigin(url, server.getUrl())) {
               return true;
             }
           }
@@ -177,7 +290,7 @@ public class ManagedWebAccess {
       }
       
       // Fall back to hardcoded local addresses
-      return Utilities.existsInList(uri.getHost(), "localhost", "local.fhir.org", "127.0.0.1", "[::1]") || (uri.getHost() != null && uri.getHost().endsWith(".localhost"));
+      return existsInList(uri.getHost(), "localhost", "local.fhir.org", "127.0.0.1", "[::1]") || (uri.getHost() != null && uri.getHost().endsWith(".localhost"));
     } catch (URISyntaxException e) {
       return false;
     }

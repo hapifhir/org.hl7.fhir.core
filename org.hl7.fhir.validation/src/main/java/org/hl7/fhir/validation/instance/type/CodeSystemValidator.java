@@ -8,13 +8,18 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.utilities.CodingValidationRequest;
+import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.IValidationPolicyAdvisor.SpecialValidationAction;
@@ -107,6 +112,27 @@ public class CodeSystemValidator extends BaseValidator {
   }
 
   private static final String VS_PROP_STATUS = null;
+  private static final int VALIDATION_BATCH_SIZE = 300;
+
+  /**
+   * A code from a supplement, paired with the location of the concept it came from, so that a batched
+   * result can still be reported against the concept that produced it.
+   */
+  public class CSCodingValidationRequest extends CodingValidationRequest {
+
+    private final NodeStack stack;
+
+    public CSCodingValidationRequest(NodeStack stack, Coding code) {
+      super(code);
+      this.stack = stack;
+    }
+
+    public NodeStack getStack() {
+      return stack;
+    }
+
+  }
+
   private Set<String> propertyCodes = new HashSet<String>();
   private boolean noDisplayWarningDone;
   private boolean noDefinitionWarningDone;
@@ -131,10 +157,10 @@ public class CodeSystemValidator extends BaseValidator {
       String vsu = cs.getNamedChildValue("valueSet", false);
       if (!Utilities.noString(vsu)) {
         if ("supplement".equals(content)) {
-          csB = context.fetchCodeSystem(supp);
+          csB = context.fetchCodeSystem(supp, ExtensionUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
           if (csB != null) {
             if (csB.hasValueSet()) {
-              warning(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), vsu.equals(vsu), I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT2, csB.getValueSet());            
+              warning(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), vsu.equals(csB.getValueSet()), I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT2, csB.getValueSet());            
             } else {
               warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_NO_VS_SUPPLEMENT1);
             }
@@ -146,7 +172,7 @@ public class CodeSystemValidator extends BaseValidator {
         }
         ValueSet vs;
         try {
-          vs = context.fetchResourceWithException(ValueSet.class, vsu);
+          vs = context.fetchResourceWithException(ValueSet.class, vsu, ExtensionUtilities.getVersionResolutionRules(cs.getNamedChild("valueSet")));
         } catch (FHIRException e) {
           vs = null;
         }
@@ -178,25 +204,61 @@ public class CodeSystemValidator extends BaseValidator {
       if ("supplement".equals(content) || supp != null) {      
         if (rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), !Utilities.noString(supp), I18nConstants.CODESYSTEM_CS_SUPP_NO_SUPP)) {
           if (context.getTxSupportInfo(supp, null).isSupported()) {
-            csSupp = context.fetchCodeSystem(supp);
+            csSupp = context.fetchCodeSystem(supp, ExtensionUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
             if (csSupp != null) {
               if (csSupp.hasHierarchyMeaningElement() && cs.hasChild("hierarchyMeaning")) {
                 String hm = cs.getNamedChildValue("hierarchyMeaning");
-                ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), hm.equals(csSupp.getHierarchyMeaning().toCode()), I18nConstants.CODESYSTEM_CS_SUPP_HIERARCHY_MEANING, hm, csSupp.getHierarchyMeaning().toCode()) & ok;
+                ok = rule(errors, "2024-03-06", IssueType.BUSINESSRULE, stack.getLiteralPath(), hm.equals(csSupp.getHierarchyMeaning().toCode()), I18nConstants.CODESYSTEM_CS_SUPP_HIERARCHY_MEANING, hm, csSupp.getHierarchyMeaning().toCode()) && ok;
               }
 
 
             }
             List<Element> concepts = cs.getChildrenByName("concept");
+            int codeLimit = settings.getCodeSystemValidationSizeLimit();
+            boolean checkSupplementConcepts = codeLimit == 0 || concepts.size() <= codeLimit;
+            if (!checkSupplementConcepts) {
+              hint(errors, "2026-08-11", IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_TOO_MANY_CODES, concepts.size(), codeLimit);
+            }
+            CanonicalPair suppCanonical = new CanonicalPair(supp);
+            List<CSCodingValidationRequest> batch = new ArrayList<>();
+            boolean systemOk = true;
+            boolean first = true;
             int ce = 0;
-            for (Element concept : concepts) {
-              NodeStack nstack = stack.push(concept, ce, null, null);
-              if (ce == 0) {
-                rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);            
+            try {
+              for (Element concept : concepts) {
+                NodeStack nstack = stack.push(concept, ce, null, null);
+                if (ce == 0) {
+                  rule(errors, "2023-08-15", IssueType.INVALID, nstack,  !"not-present".equals(content), I18nConstants.CODESYSTEM_CS_COUNT_NO_CONTENT_ALLOWED);
+                }
+                if (checkSupplementConcepts) {
+                  // the first concept is validated on its own, to find out whether the base code system can be
+                  // validated at all. If it can, the rest go to the server in batches
+                  if (first) {
+                    ValidationResult res = validateSupplementConcept(errors, concept, nstack, supp, options);
+                    if (res != null) {
+                      first = false;
+                      systemOk = res.getErrorClass() != TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
+                      ok = (!systemOk || res.isOk()) && ok;
+                    }
+                  } else if (systemOk) {
+                    String code = concept.getChildValue("code");
+                    if (!Utilities.noString(code) && !noTerminologyChecks) {
+                      batch.add(new CSCodingValidationRequest(nstack, new Coding(suppCanonical.getUrl(), suppCanonical.getVersion(), code, null)));
+                      if (batch.size() > VALIDATION_BATCH_SIZE) {
+                        ok = executeSupplementBatch(errors, batch, supp, options) && ok;
+                        batch.clear();
+                      }
+                    }
+                  }
+                }
+                ce++;
               }
-              ok = validateSupplementConcept(errors, concept, nstack, supp, options) && ok;
-              ce++;
-            }    
+              ok = executeSupplementBatch(errors, batch, supp, options) && ok;
+            } catch (Exception e) {
+              ok = false;
+              NodeStack es = batch.isEmpty() ? stack : batch.get(0).getStack();
+              rule(errors, NO_RULE_DATE, IssueType.EXCEPTION, es.getLiteralPath(), false, e.getMessage());
+            }
           } else {
             if (cs.hasChildren("concept")) {
               warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_CANT_CHECK, supp);
@@ -249,7 +311,7 @@ public class CodeSystemValidator extends BaseValidator {
   }
 
 
-  private boolean  checkPropertyDefinition(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean equals, String hierarchyMeaning, CodeSystem csB, Element property, Map<String, PropertyDef> properties) {
+  private boolean checkPropertyDefinition(List<ValidationMessage> errors, Element cs, NodeStack stack, boolean equals, String hierarchyMeaning, CodeSystem csB, Element property, Map<String, PropertyDef> properties) {
     boolean ok = true;
     String uri = property.getNamedChildValue("uri");
     String code = property.getNamedChildValue("code");
@@ -269,7 +331,7 @@ public class CodeSystemValidator extends BaseValidator {
           if (uri.contains("#")) {
             String base = uri.substring(0, uri.indexOf("#"));
             String pcode = uri.substring(uri.indexOf("#")+1);
-            CodeSystem pcs = context.findTxResource(CodeSystem.class, base);
+            CodeSystem pcs = context.findTxResource(CodeSystem.class, base, IWorkerContext.VersionResolutionRules.defaultRule());
             if (pcs == null) {
               warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_PROPERTY_URI_UNKNOWN_BASE, base, code);
             } else {
@@ -498,7 +560,7 @@ public class CodeSystemValidator extends BaseValidator {
     if (url == null) {
       return null;
     } else {
-      ValueSet vs = context.findTxResource(ValueSet.class, url);
+      ValueSet vs = context.findTxResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
       if (vs == null) {
         warning(errors, "2025-01-09", IssueType.NOTFOUND, cs.line(), cs.col(), stack.getLiteralPath(), false, message, url);
       }
@@ -816,7 +878,7 @@ public class CodeSystemValidator extends BaseValidator {
           }
           break;
         case "supplement": 
-          CodeSystem css = context.fetchCodeSystem(supp);
+          CodeSystem css = context.fetchCodeSystem(supp, ExtensionUtilities.getVersionResolutionRules(cs.getNamedChild("supplements")));
           if (css != null) {
             rule(errors, "2023-08-15", IssueType.INVALID, nstack, count == css.getCount(), I18nConstants.CODESYSTEM_CS_COUNT_SUPPLEMENT_WRONG, css.getCount(), statedCount);
           }
@@ -845,16 +907,38 @@ public class CodeSystemValidator extends BaseValidator {
     return false;
   }
 
-  private boolean validateSupplementConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String supp, ValidationOptions options) {
+  /**
+   * Validate one supplement concept against the code system being supplemented, on its own.
+   * <p>
+   * Returns the result rather than a pass/fail so the caller can tell "this code is not in the base code
+   * system" (a real error in the supplement) from "the base code system could not be resolved at all"
+   * (nothing in the supplement can be checked). Returns null if there was nothing to check.
+   */
+  private ValidationResult validateSupplementConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String supp, ValidationOptions options) {
     String code = concept.getChildValue("code");
-    if (!Utilities.noString(code) && !noTerminologyChecks) {
-      var canonical = new CanonicalPair(supp);
-      org.hl7.fhir.r5.terminologies.utilities.ValidationResult res = context.validateCode(options, canonical.getUrl(), canonical.getVersion(), code, null);
-      return rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), res.isOk(), I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, code);
-    } else {
-      return true;
+    if (Utilities.noString(code) || noTerminologyChecks) {
+      return null;
     }
+    var canonical = new CanonicalPair(supp);
+    ValidationResult res = context.validateCode(options, canonical.getUrl(), canonical.getVersion(), code, null);
+    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+      warning(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), false, I18nConstants.CODESYSTEM_CS_SUPP_CANT_CHECK, supp);
+    } else {
+      rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, stack.getLiteralPath(), res.isOk(), I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, code);
+    }
+    return res;
+  }
 
+  private boolean executeSupplementBatch(List<ValidationMessage> errors, List<CSCodingValidationRequest> batch, String supp, ValidationOptions options) {
+    boolean ok = true;
+    if (!batch.isEmpty()) {
+      context.validateCodeBatch(options, batch, null);
+      for (CSCodingValidationRequest cv : batch) {
+        ok = rule(errors, NO_RULE_DATE, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(),
+            I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, cv.getCoding().getCode()) && ok;
+      }
+    }
+    return ok;
   }
 
   private int countConcepts(Element cs) {

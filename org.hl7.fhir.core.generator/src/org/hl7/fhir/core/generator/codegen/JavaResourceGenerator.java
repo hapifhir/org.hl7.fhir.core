@@ -279,7 +279,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		// Write resource fields which can be used as constants in client code
 		// to refer to standard search params
 		Set<String> spcodes = new HashSet<>();
-		for (SearchParameter sp : analysis.getSearchParams()) {
+		// generate search parameter constants in a stable (alphabetical by code)
+		// order so the generated source does not churn between runs
+		List<SearchParameter> sortedSearchParams = new ArrayList<>(analysis.getSearchParams());
+		Collections.sort(sortedSearchParams, (a, b) -> a.getCode().compareTo(b.getCode()));
+		for (SearchParameter sp : sortedSearchParams) {
 		  String code = sp.getCode();
 		  if (!spcodes.contains(code)) {
 		    spcodes.add(code);
@@ -304,7 +308,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		         * static binding to the individual possibilities. AFAIK this is only
 		         * used right now in Observation (e.g. for code-value-[x]) 
 		         */
-		        for (SearchParameter nextCandidate : analysis.getSearchParams()) {
+		        for (SearchParameter nextCandidate : sortedSearchParams) {
 		          if (nextCandidate.getCode().startsWith(partialCode)) {
 		            String nextCompositeCode = rootCode + "-" + nextCandidate.getCode();
 		            String[] compositeOf = new String[] { rootCode, nextCandidate.getCode() };
@@ -489,6 +493,17 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 ////
 //  }
 
+  /**
+   * SearchParameters are loaded from external FHIR packages, so their text fields are untrusted.
+   * Neutralise comment delimiters so a value cannot break out of a Javadoc comment into class-level code.
+   */
+  private static String sanitizeJavadoc(String text) {
+    if (text == null) {
+      return "";
+    }
+    return text.replace("*/", "* /").replace("/*", "/ *");
+  }
+
   private void writeSearchParameterField(String name, JavaGenClass clss, boolean isAbstract, SearchParameter sp, String code, String[] theCompositeOf, List<SearchParameter> searchParams, String rn) throws IOException {
     String constName = cleanSpName(code).toUpperCase();
     
@@ -498,12 +513,12 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write(" /**\r\n"); 
     write("   * Search parameter: <b>" + code + "</b>\r\n"); 
     write("   * <p>\r\n");
-    write("   * Description: <b>" + sp.getDescription() + "</b><br>\r\n"); 
+    write("   * Description: <b>" + sanitizeJavadoc(sp.getDescription()) + "</b><br>\r\n");
     write("   * Type: <b>"+ sp.getType().toCode() + "</b><br>\r\n");
-    write("   * Path: <b>" + sp.getExpression() + "</b><br>\r\n"); 
+    write("   * Path: <b>" + sanitizeJavadoc(sp.getExpression()) + "</b><br>\r\n");
     write("   * </p>\r\n");
     write("   */\r\n");
-    write("  @SearchParamDefinition(name=\"" + code + "\", path=\"" + defaultString(sp.getExpression()) + "\", description=\""+Utilities.escapeJava(sp.getDescription())+"\", type=\""+sp.getType().toCode() + "\"");
+    write("  @SearchParamDefinition(name=\"" + code + "\", path=\"" + Utilities.escapeJava(defaultString(sp.getExpression())) + "\", description=\""+Utilities.escapeJava(sp.getDescription())+"\", type=\""+sp.getType().toCode() + "\"");
     if (theCompositeOf != null && theCompositeOf.length > 0) {
       write(", compositeOf={");
       for (int i = 0; i < theCompositeOf.length; i++) {
@@ -575,11 +590,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
      * Client parameter ([name])
      */
     write(" /**\r\n"); 
-    write("   * <b>Fluent Client</b> search parameter constant for <b>" + code + "</b>\r\n"); 
+    write("   * <b>Fluent Client</b> search parameter constant for <b>" + code + "</b>\r\n");
     write("   * <p>\r\n");
-    write("   * Description: <b>" + sp.getDescription() + "</b><br>\r\n"); 
+    write("   * Description: <b>" + sanitizeJavadoc(sp.getDescription()) + "</b><br>\r\n");
     write("   * Type: <b>"+ sp.getType().toCode() + "</b><br>\r\n");
-    write("   * Path: <b>" + sp.getExpression() + "</b><br>\r\n"); 
+    write("   * Path: <b>" + sanitizeJavadoc(sp.getExpression()) + "</b><br>\r\n");
     write("   * </p>\r\n");
     write("   */\r\n");
     write("  public static final ca.uhn.fhir.rest.gclient." + upFirst(sp.getType().toCode()) + "ClientParam" + genericTypes + " " + constName + " = new ca.uhn.fhir.rest.gclient." + upFirst(sp.getType().toCode()) + "ClientParam" + genericTypes + "(SP_" + constName + ");\r\n\r\n"); 

@@ -19,6 +19,7 @@ import org.hl7.fhir.utilities.json.parser.JsonParser;
 
 public class PackageList {
 
+
   public static class PackageListEntry {
     private JsonObject json;
 
@@ -26,7 +27,7 @@ public class PackageList {
       super();
       this.json = json;
     }
-    
+
     public String version() {
       return json.asString("version");
     }
@@ -45,7 +46,15 @@ public class PackageList {
 
     public String sequence() {
       return json.asString("sequence");
-   }
+    }
+
+    public String getSequenceNote() {
+      return json.asString("sequenceNote");
+    }
+
+    public void setSequenceNote(String note) {
+      json.set("sequenceNote", note);
+    }
 
     public String fhirVersion() {
       if (json.has("fhir-version")) // legacy
@@ -56,6 +65,7 @@ public class PackageList {
     public String status() {
       return json.asString("status");
     }
+
     public void setStatus(String status) {
       json.set("status", status);
     }
@@ -69,13 +79,13 @@ public class PackageList {
     }
 
     public void setDate(String date) {
-      json.set("date", date);      
+      json.set("date", date);
     }
 
     public String milestoneName() {
       return json.asString("milestoneName");
     }
-    
+
     public List<String> subPackages() {
       List<String> list = new ArrayList<>();
       if (json.has("sub-packages")) {
@@ -83,35 +93,36 @@ public class PackageList {
       }
       return list;
     }
-    
+
     public void clearSubPackages() {
       json.remove("sub-packages");
     }
+
     public void addSubPackage(String s) {
-      json.forceArray("sub-packages").add(s);  
+      json.forceArray("sub-packages").add(s);
     }
-    
+
     private boolean isPartofMainSpec() {
       return Utilities.startsWithInList(path(), "http://hl7.org/fhir/DSTU2", "http://hl7.org/fhir/2015Sep", "http://hl7.org/fhir/2015May");
     }
-    
+
     /**
      * For a variety of reasons in the past, the path is not always under the canonical
      * this method determines the path *if it exists*
-     * 
+     *
      * @param root
      * @param v
-     * @throws IOException 
+     * @throws IOException
      */
     public String determineLocalPath(String url, String root) throws IOException {
-      if (!isPartofMainSpec() && path().startsWith(url+"/")) {
-        String tail = path().substring(url.length()+1);
+      if (!isPartofMainSpec() && path().startsWith(url + "/")) {
+        String tail = path().substring(url.length() + 1);
         return Utilities.path(root, tail);
       } else {
         return null;
       }
     }
-    
+
     public void setCurrent(boolean b) {
       if (b) {
         json.set("current", true);
@@ -123,7 +134,7 @@ public class PackageList {
     }
 
     public void init(String version, String path, String status, String sequence, FhirPublication fhirVersion) {
-      json.set("version", version);      
+      json.set("version", version);
       json.set("path", path);
       json.set("status", status);
       json.set("sequence", sequence);
@@ -131,7 +142,7 @@ public class PackageList {
         json.set("fhirversion", fhirVersion.toCode());
       }
     }
-    
+
     public void describe(String desc, String descMD, String changes) {
       if (!Utilities.noString(desc)) {
         json.set("desc", desc);
@@ -154,7 +165,7 @@ public class PackageList {
 
     /**
      * only used for a technical correction. tcPath is the name of archive file (web reference) containing the content before correction
-     * 
+     *
      * @param asString
      * @param webpath
      * @param asString2
@@ -174,25 +185,25 @@ public class PackageList {
     public List<String> languages() {
       return json.forceArray("languages").asStrings();
     }
-    
+
     public PackageListEntry addLang(String langCode) {
       json.forceArray("languages").add(langCode);
       return this;
     }
 
-    public void takeCorrections(PackageListEntry src) {      
+    public void takeCorrections(PackageListEntry src) {
       json.forceArray("corrections").addAll(src.json.forceArray("corrections"));
       src.json.remove("corrections");
-      
+
     }
   }
-  
+
   private String source;
   private JsonObject json;
   private List<PackageListEntry> list = new ArrayList<>();
   private List<PackageListEntry> versions = new ArrayList<>();
   private PackageListEntry cibuild;
-  
+
   public PackageList() {
     super();
     json = new JsonObject();
@@ -215,24 +226,24 @@ public class PackageList {
   public static PackageList fromFile(File f) throws JsonException, IOException {
     return new PackageList(JsonParser.parseObject(f)).setSource(f.getAbsolutePath());
   }
-  
+
   public PackageList setSource(String src) {
     this.source = src;
     return this;
   }
 
   public static PackageList fromFile(String f) throws JsonException, IOException {
-    return new PackageList(JsonParser.parseObjectFromFile(f)).setSource(f);    
+    return new PackageList(JsonParser.parseObjectFromFile(f)).setSource(f);
   }
-  
+
   public static PackageList fromContent(byte[] cnt) throws JsonException, IOException {
     return new PackageList(JsonParser.parseObject(cnt)).setSource("unknown");
   }
-  
+
   public static PackageList fromUrl(String url) throws JsonException, IOException {
     return new PackageList(JsonParser.parseObjectFromUrl(url)).setSource(url);
   }
-  
+
   public String source() {
     return source;
   }
@@ -241,10 +252,18 @@ public class PackageList {
     return json.asString("canonical");
   }
 
+  public void setCanonical(String value) {
+    json.set("canonical", value);
+  }
+
   public String pid() {
     return json.asString("package-id");
   }
-  
+
+  public void setPid(String value) {
+    json.set("package-id", value);
+  }
+
   public boolean hasPid() {
     return json.has("package-id");
   }
@@ -252,11 +271,11 @@ public class PackageList {
   public String category() {
     return json.asString("category");
   }
-  
+
   public List<PackageListEntry> list() {
     return list;
   }
-  
+
   public List<PackageListEntry> versions() {
     return versions;
   }
@@ -277,7 +296,7 @@ public class PackageList {
       json.getJsonArray("list").add(1, o);
       list.add(1, e);
     } else {
-      json.getJsonArray("list").add(0, o);     
+      json.getJsonArray("list").add(0, o);
       list.add(0, e);
     }
     e.init(version, path, status, sequence, fhirVersion);
@@ -300,7 +319,7 @@ public class PackageList {
     cibuild = new PackageListEntry(new JsonObject());
     cibuild.init(version, path, status, status, null);
     cibuild.describe(desc, null, null);
-    json.getJsonArray("list").add(0, cibuild.json);    
+    json.getJsonArray("list").add(0, cibuild.json);
   }
 
   public PackageListEntry findByVersion(String version) {
@@ -318,8 +337,8 @@ public class PackageList {
 
   public String determineLocalPath(String url, String root) throws IOException {
     String c = canonical();
-    if (c.startsWith(url+"/")) {
-      String tail = c.substring(url.length()+1);
+    if (c.startsWith(url + "/")) {
+      String tail = c.substring(url.length() + 1);
       return Utilities.path(root, tail);
     } else {
       return null;
@@ -347,7 +366,7 @@ public class PackageList {
     }
     return null;
   }
-  
+
   public String intro() {
     return json.asString("introduction");
   }
@@ -377,6 +396,26 @@ public class PackageList {
 
   public void setCurrentOnly(boolean b) {
     json.set("publish-pattern", b ? "current-only" : "normal");
+  }
+
+  public String getNowPublishedAs() {
+    return json.asString("now-published-as");
+  }
+
+  public void setNowPublishedAs(String url) {
+    json.set("now-published-as", url);
+  }
+
+  public String getWasPublishedAs() {
+    return json.asString("was-published-as");
+  }
+
+  public void setWasPublishedAs(String url) {
+    json.set("was-published-as", url);
+  }
+
+  public String introduction() {
+    return json.asString("introduction");
   }
 
 

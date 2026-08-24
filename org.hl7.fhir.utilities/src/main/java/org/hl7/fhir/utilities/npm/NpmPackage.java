@@ -40,6 +40,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -70,11 +73,9 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.apache.commons.lang3.Validate;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.ByteProvider;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -85,6 +86,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.model.JsonProperty;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
+import org.hl7.fhir.utilities.regex.RegexUtils;
 
 /**
  * info and loader for a package 
@@ -98,6 +100,7 @@ import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
  */
 @Slf4j
 public class NpmPackage {
+
 
   public interface ITransformingLoader {
 
@@ -208,10 +211,14 @@ public class NpmPackage {
     }
   }
   
+  @SuppressWarnings("checkstyle:regexUtilsUsage")
+  //anchored start char, character class suffix, safe
   public static boolean isValidName(String pid) {
-    return pid.matches("^[a-z][a-zA-Z0-9]*(\\.[a-z][a-zA-Z0-9\\-]*)+$");
+    return RegexUtils.splitRegexMatch(pid, "\\.", "[a-z][a-zA-Z0-9\\-]*", 2, -1);
   }
 
+  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+  //anchored segments, safe
   public static boolean isValidVersion(String ver) {
     return ver.matches("^[0-9]+\\.[0-9]+\\.[0-9]+$");
   }
@@ -577,11 +584,11 @@ public class NpmPackage {
     } catch (Exception e) {
       throw new IOException("Error reading "+(desc == null ? "package" : desc)+": "+e.getMessage(), e);      
     }
-    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
+    try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
 
       while ((entry = tarIn.getNextEntry()) != null) {
-        String n = entry.getName();
+        String n = getEntryName(entry);
         if (n.contains("/..") || n.contains("../")) {
           throw new RuntimeException("Entry with an illegal name: " + n);
         }
@@ -618,7 +625,46 @@ public class NpmPackage {
       throw new IOException("Error parsing "+(desc == null ? "" : desc+"#")+"package/package.json: "+e.getMessage(), e);
     } 
   }
-  
+
+  /**
+   * Creates a TarArchiveInputStream using ISO_8859_1 encoding. ISO_8859_1 has a 1:1 byte-to-character mapping, so
+   * all raw bytes from entry names are preserved — avoiding the NioZipEncoding UTF-8 mode behavior (Apache Commons
+   * Compress 1.27.1+) of silently replacing invalid UTF-8 sequences with '?'. Use
+   * {@link #getEntryName(TarArchiveEntry)} to retrieve entry names, which will attempt UTF-8 decoding on the raw
+   * bytes and fall back to the ISO_8859_1 result only when the bytes are not valid UTF-8.
+   *
+   * @param gzipIn a gzip input stream
+   * @return a tar input stream
+   */
+  // Created by claude-sonnet-4-6
+  public static @NonNull TarArchiveInputStream getTarArchiveInputStream(GzipCompressorInputStream gzipIn) {
+    return new TarArchiveInputStream(gzipIn, StandardCharsets.ISO_8859_1.name());
+  }
+
+  /**
+   * Returns the name of a tar entry decoded as UTF-8 when possible, falling back to ISO_8859_1. Because
+   * {@link #getTarArchiveInputStream} reads with ISO_8859_1, the name bytes are preserved 1:1 as character values.
+   * This method re-encodes those characters as ISO_8859_1 bytes and attempts strict UTF-8 decoding; if the bytes
+   * form a valid UTF-8 sequence the UTF-8 string is returned, otherwise the original ISO_8859_1 string is returned.
+   *
+   * @param entry a tar archive entry
+   * @return the entry name decoded as UTF-8 if valid, otherwise as ISO_8859_1
+   */
+  // Created by claude-sonnet-4-6
+  public static String getEntryName(TarArchiveEntry entry) {
+    String name = entry.getName();
+    byte[] bytes = name.getBytes(StandardCharsets.ISO_8859_1);
+    try {
+      return StandardCharsets.UTF_8.newDecoder()
+          .onMalformedInput(CodingErrorAction.REPORT)
+          .onUnmappableCharacter(CodingErrorAction.REPORT)
+          .decode(ByteBuffer.wrap(bytes))
+          .toString();
+    } catch (CharacterCodingException e) {
+      return name;
+    }
+  }
+
   public void readStream(InputStream tgz, String desc, boolean progress) throws IOException {
     GzipCompressorInputStream gzipIn;
     try {
@@ -629,12 +675,11 @@ public class NpmPackage {
 
     boolean haveLoggedDotSlashPrefixWarning = false;
 
-    try (TarArchiveInputStream tarIn = new TarArchiveInputStream(gzipIn)) {
+    try (TarArchiveInputStream tarIn = getTarArchiveInputStream(gzipIn)) {
       TarArchiveEntry entry;
-
       NpmPackageReadLogger readLogger = new NpmPackageReadLogger(progress);
       while ((entry = tarIn.getNextEntry()) != null) {
-        String entryName = entry.getName();
+        String entryName = getEntryName(entry);
         if (entryName.contains("..")) {
           throw new RuntimeException("Entry with an illegal name: " + entryName);
         }
@@ -1121,8 +1166,7 @@ public class NpmPackage {
       return npm.asString("version");
     else if (
         Utilities.existsInList(npm.asString("type"), "fhir.core", "fhir.examples") &&
-        Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r2.", "hl7.fhir.r2b.", "hl7.fhir.r3.", 
-             "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.")) {
+        Utilities.startsWithInList( npm.asString("name"), "hl7.fhir.r3.", "hl7.fhir.r4.", "hl7.fhir.r4b.", "hl7.fhir.r5.", "hl7.fhir.r6.")) {
       return npm.asString("version");
     } else {
       JsonObject dep = null;
@@ -1130,7 +1174,8 @@ public class NpmPackage {
         dep = npm.getJsonObject("dependencies");
         if (dep != null) {
           for (JsonProperty e : dep.getProperties()) {
-            if (Utilities.existsInList(e.getName(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core"))
+            if (Utilities.existsInList(e.getName(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core",
+              "hl7.fhir.r4.core", "hl7.fhir.r4b.core", "hl7.fhir.r5.core",  "hl7.fhir.r6.core"))
               return e.getValue().asString();
             if (Utilities.existsInList(e.getName(), "hl7.fhir.core")) // while all packages are updated
               return e.getValue().asString();
@@ -1559,6 +1604,8 @@ public class NpmPackage {
 
   public InputStream load(PackageResourceInformation p) throws IOException {
     if (p.filename.startsWith("@")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] pl = p.filename.substring(1).split("\\/");
       return new ByteArrayInputStream(folders.get(pl[0]).content.get(pl[1]));
     } else {

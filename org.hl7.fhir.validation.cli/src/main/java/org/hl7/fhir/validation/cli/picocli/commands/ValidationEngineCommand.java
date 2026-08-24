@@ -20,10 +20,11 @@ import java.util.Locale;
 @Slf4j
 public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
-
-
   @CommandLine.ArgGroup(validate = false, heading = "Validation Engine Options%n")
   ValidationEngineOptions validationEngineOptions = new ValidationEngineOptions();
+
+  @CommandLine.ArgGroup(validate = false, heading = "Translation Override Options%n")
+  TranslationOverrideOptions translationOverrideOptions = new TranslationOverrideOptions();
 
   protected ValidationEngineParameters getValidationEngineParameters() {
 
@@ -40,6 +41,10 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
   @Override
   public Integer call() {
+
+    // Install any editor-supplied PO overlays before anything else loads — the
+    // validation engine and message bundles latch on first access.
+    translationOverrideOptions.applyIfRequested();
 
     TimeTracker timeTracker = new TimeTracker();
     TimeTracker.Session timeTrackerSession = timeTracker.start("Loading");
@@ -94,7 +99,6 @@ public abstract class ValidationEngineCommand extends ValidationServiceCommand {
 
     log.info("Loading");
     final String definitions = "dev".equals(validationEngineOptions.fhirVersion) ? "hl7.fhir.r5.core#current" : VersionUtilities.packageForVersion(validationEngineOptions.fhirVersion) + "#" + VersionUtilities.getCurrentVersion(validationEngineOptions.fhirVersion);
-
     return getValidationService().initializeValidator(validationEngineParameters, instanceValidatorParameters, definitions, timeTracker, sources);
   }
 }

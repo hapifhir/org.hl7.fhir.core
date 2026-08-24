@@ -33,8 +33,8 @@ public class DisabledValidationPolicyAdvisor implements IValidationPolicyAdvisor
   }
 
   @Override
-  public boolean isSuppressMessageId(String path, String messageId) {
-    return policyAdvisor.isSuppressMessageId(path, messageId);
+  public boolean isSuppressMessageId(String path, String messageId, Object... theMessageArguments) {
+    return policyAdvisor.isSuppressMessageId(path, messageId, theMessageArguments);
   }
 
   @Override
@@ -68,6 +68,11 @@ public class DisabledValidationPolicyAdvisor implements IValidationPolicyAdvisor
       String stackPath, ElementDefinition definition, StructureDefinition structure, Element resource, boolean valid,
       IMessagingServices msgServices, List<ValidationMessage> messages) {
     return policyAdvisor.getImpliedProfilesForResource(validator, appContext, stackPath, definition, structure, resource, valid, msgServices, messages);
+  }
+
+  @Override
+  public String relativeDatePlaceHolder() {
+    return null;
   }
 
   public IValidationPolicyAdvisor getPolicyAdvisor() {

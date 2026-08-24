@@ -85,6 +85,8 @@ public class CVXImporter {
         def.forceProperty("notes").setValue(new StringType(notes.trim()));
       }
       def.forceProperty("vaccine-status").setValue(new CodeType(status.trim()));
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
       String[] d = date.split("\\/");
       String vdate = d[2]+"-"+Utilities.padLeft(d[0], '0', 2)+"-"+Utilities.padLeft(d[1], '0', 2);
       def.forceProperty("last-updated").setValue(new DateTimeType(vdate));

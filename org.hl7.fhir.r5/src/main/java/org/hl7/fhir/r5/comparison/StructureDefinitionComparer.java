@@ -15,27 +15,19 @@ import org.hl7.fhir.r5.conformance.profile.BindingResolution;
 import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.model.Base;
-import org.hl7.fhir.r5.model.Coding;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.ElementDefinition.AggregationMode;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r5.model.IntegerType;
-import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StringType;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
@@ -358,17 +350,21 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
 
   private boolean compareChildren(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, DefinitionNavigator left, DefinitionNavigator right) throws DefinitionException, IOException, FHIRFormatError {
     boolean def = false;
-    
+
+    if (left.isChildrenFromReference() && right.isChildrenFromReference()) {
+      return true;
+    }
+
     List<DefinitionNavigator> lc = left.children();
     List<DefinitionNavigator> rc = right.children();
     // it's possible that one of these profiles walks into a data type and the other doesn't
-    // if it does, we have to load the children for that data into the profile that doesn't 
+    // if it does, we have to load the children for that data into the profile that doesn't
     // walk into it
     if (lc.isEmpty() && !rc.isEmpty() && right.current().getType().size() == 1 && left.hasTypeChildren(right.current().getType().get(0), left.getStructure()))
       lc = left.childrenFromType(right.current().getType().get(0), right.getStructure());
     if (rc.isEmpty() && !lc.isEmpty() && left.current().getType().size() == 1 && right.hasTypeChildren(left.current().getType().get(0), right.getStructure()))
       rc = right.childrenFromType(left.current().getType().get(0), left.getStructure());
-    
+
     List<DefinitionNavigator> matchR = new ArrayList<>();
     for (DefinitionNavigator l : lc) {
       DefinitionNavigator r = findInList(rc, l);
@@ -385,9 +381,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     for (DefinitionNavigator r : rc) {
       if (!matchR.contains(r)) {
         comp.getUnion().getSnapshot().getElement().add(r.current().copy());
-        res.getChildren().add(new StructuralMatch<ElementDefinitionNode>(vmI(IssueSeverity.INFORMATION, "Added this element", path), new ElementDefinitionNode(r.getStructure(), r.current())));        
+        res.getChildren().add(new StructuralMatch<ElementDefinitionNode>(vmI(IssueSeverity.INFORMATION, "Added this element", path), new ElementDefinitionNode(r.getStructure(), r.current())));
       }
     }
+
     return def;
   }
 
@@ -924,8 +921,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           ex.setProfile(null);
         } else {
           // both have profiles. Is one derived from the other? 
-          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getProfile().get(0).getValue(), null, nwSource);
-          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getProfile().get(0).getValue(), null, nwSource);
+          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getProfile().get(0).getValue(),
+            ExtensionUtilities.getVersionResolutionRules(ex.getProfile().get(0)), null, nwSource);
+          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getProfile().get(0).getValue(),
+            ExtensionUtilities.getVersionResolutionRules(nw.getProfile().get(0)), null, nwSource);
           if (sdex != null && sdnw != null) {
             if (sdex.getUrl().equals(sdnw.getUrl())) {
               pfound = true;
@@ -952,8 +951,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           ex.setTargetProfile(null);
         } else {
           // both have profiles. Is one derived from the other? 
-          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class, ex.getTargetProfile().get(0).getValue(), null, nwSource);
-          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getTargetProfile().get(0).getValue(), null, nwSource);
+          StructureDefinition sdex = ((IWorkerContext) ex.getUserData(UserDataNames.COMP_CONTEXT)).fetchResource(StructureDefinition.class,
+            ex.getTargetProfile().get(0).getValue(), ExtensionUtilities.getVersionResolutionRules(ex.getTargetProfile().get(0)), null, nwSource);
+          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class,
+            nw.getTargetProfile().get(0).getValue(), ExtensionUtilities.getVersionResolutionRules(nw.getTargetProfile().get(0)), null, nwSource);
           if (sdex != null && sdnw != null) {
             if (matches(sdex, sdnw)) {
               tfound = true;
@@ -1004,7 +1005,7 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       if (right.getUrl().equals(sd.getBaseDefinitionNoVersion())) {
         return true;
       }
-      sd = sd.hasBaseDefinition() ? ctxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), null, sd) : null;
+      sd = sd.hasBaseDefinition() ? ctxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition(), ExtensionUtilities.getVersionResolutionRules(sd.getBaseDefinitionElement()), null, sd) : null;
     }
     return false;
   }
@@ -1024,8 +1025,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           pfound = true;
           c.setProfile(r.getProfile());
         } else {
-          StructureDefinition sdl = resolveProfile(comp, res, path, l.getProfile().get(0).getValue(), comp.getLeft().getName(), session.getContextLeft(), comp.getLeft());
-          StructureDefinition sdr = resolveProfile(comp, res, path, r.getProfile().get(0).getValue(), comp.getRight().getName(), session.getContextRight(), comp.getRight());
+          StructureDefinition sdl = resolveProfile(comp, res, path, l.getProfile().get(0), comp.getLeft().getName(), session.getContextLeft(), comp.getLeft());
+          StructureDefinition sdr = resolveProfile(comp, res, path, r.getProfile().get(0), comp.getRight().getName(), session.getContextRight(), comp.getRight());
           if (sdl != null && sdr != null) {
             if (sdl == sdr) {
               pfound = true;
@@ -1056,8 +1057,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
           tfound = true;
           c.setTargetProfile(r.getTargetProfile());
         } else {
-          StructureDefinition sdl = resolveProfile(comp, res, path, l.getTargetProfile().get(0).getValue(), comp.getLeft().getName(), session.getContextLeft(), comp.getLeft());
-          StructureDefinition sdr = resolveProfile(comp, res, path, r.getTargetProfile().get(0).getValue(), comp.getRight().getName(), session.getContextRight(), comp.getRight());
+          StructureDefinition sdl = resolveProfile(comp, res, path, l.getTargetProfile().get(0), comp.getLeft().getName(), session.getContextLeft(), comp.getLeft());
+          StructureDefinition sdr = resolveProfile(comp, res, path, r.getTargetProfile().get(0), comp.getRight().getName(), session.getContextRight(), comp.getRight());
           if (sdl != null && sdr != null) {
             if (matches(sdl, sdr)) {
               tfound = true;
@@ -1179,8 +1180,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       return true;      
     } else {
       // ok, now we compare the value sets. This may be unresolvable. 
-      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSet(), leftSrc, session.getContextLeft());
-      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSet(), rightSrc, session.getContextRight());
+      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSetElement(), leftSrc, session.getContextLeft());
+      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSetElement(), rightSrc, session.getContextRight());
       if (lvs == null) {
         vm(IssueSeverity.ERROR, "Unable to resolve left value set "+left.getValueSet().toString()+" at "+path, path, comp.getMessages(), res.getMessages());
         return true;
@@ -1264,10 +1265,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     return result;
   }
 
-  private StructureDefinition resolveProfile(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, String url, String name, IWorkerContext ctxt, Resource urlSource) {
-    StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url, null, urlSource);
+  private StructureDefinition resolveProfile(ProfileComparison comp, StructuralMatch<ElementDefinitionNode> res, String path, Element urlElement, String name, IWorkerContext ctxt, Resource urlSource) {
+    StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, urlElement.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(urlElement), null, urlSource);
     if (sd == null) {
-      ValidationMessage vm = vmI(IssueSeverity.WARNING, "Unable to resolve profile "+url+" in profile "+name, path);
+      ValidationMessage vm = vmI(IssueSeverity.WARNING, "Unable to resolve profile "+urlElement.primitiveValue()+" in profile "+name, path);
     }
     return sd;
   }
@@ -1286,8 +1287,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     if (Base.compareDeep(left.getValueSet(), right.getValueSet(), false))
       union.setValueSet(left.getValueSet());
     else {
-      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSet(), leftSrc, session.getContextLeft());
-      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSet(), rightSrc, session.getContextRight());
+      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSetElement(), leftSrc, session.getContextLeft());
+      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSetElement(), rightSrc, session.getContextRight());
       if (lvs != null && rvs != null) {
         ValueSetComparison compP = (ValueSetComparison) session.compare(lvs, rvs);
         if (compP != null) {
@@ -1302,10 +1303,10 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
     return union;
   }
 
-  private ValueSet resolveVS(StructureDefinition ctxtLeft, String vsRef, Resource src, IWorkerContext ctxt) {
-    if (vsRef == null)
+  private ValueSet resolveVS(StructureDefinition ctxtLeft, Element vsRef, Resource src, IWorkerContext ctxt) {
+    if (vsRef == null || vsRef.primitiveValue() == null)
       return null;
-    return ctxt.fetchResource(ValueSet.class, vsRef, null, src);
+    return ctxt.fetchResource(ValueSet.class, vsRef.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(vsRef), null, src);
   }
 
   public XhtmlNode renderStructure(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
@@ -1316,13 +1317,13 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   }
 
   public XhtmlNode renderUnion(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {    
-    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), new RendererFactory(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
     return sdr.generateTable(new RenderingStatus(), corePath, comp.union, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext().withUniqueLocalPrefix("u"), "u", null, "C1");
   }
       
 
   public XhtmlNode renderIntersection(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
-    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), new RendererFactory(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
     return sdr.generateTable(new RenderingStatus(), corePath, comp.intersection, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext().withUniqueLocalPrefix("i"), "i", null, "C2");
   }
 
@@ -1378,8 +1379,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       if (sn != null)
         sName = sName +":"+sn;
       StructureDefinitionRenderer.UnusedTracker used = new StructureDefinitionRenderer.UnusedTracker();
-      StructureDefinitionRenderer sdrLeft = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
-      StructureDefinitionRenderer sdrRight= new StructureDefinitionRenderer(new RenderingContext(utilsRight.getContext(), null, utilsRight.getTerminologyServiceOptions(), corePath, prefix, utilsRight.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+      StructureDefinitionRenderer sdrLeft = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), new RendererFactory(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+      StructureDefinitionRenderer sdrRight= new StructureDefinitionRenderer(new RenderingContext(utilsRight.getContext(), new RendererFactory(), null, utilsRight.getTerminologyServiceOptions(), corePath, prefix, utilsRight.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
 
 
         
@@ -1518,7 +1519,7 @@ public BindingResolution resolveBinding(StructureDefinition def, ElementDefiniti
 }
 
 @Override
-public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+public BindingResolution resolveBinding(StructureDefinition def, String url, String path, Element ctxt) throws FHIRException {
   return new BindingResolution("??", "??");
 }
 

@@ -44,7 +44,11 @@ public class MimeType {
 
   public MimeType(String s) {
     source = s;
-    for (String ss : s.split("\\;")) {
+
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] split = s.split("\\;");
+    for (String ss : split) {
       String p = ss.trim();
       if (base == null)
         base = p;
@@ -93,10 +97,14 @@ public class MimeType {
     return (Utilities.existsInList(main(), "application", "audio", "font", "example", "image", "message", "model", "multipart", "text", "video") || main().startsWith("x-")) && !Utilities.noString(sub());
   }
 
-  public static List<MimeType> parseList(String s) {
+  public static List<MimeType> parseList(String listString) {
     List<MimeType> result = new ArrayList<MimeType>();
-    for (String e : s.split("\\,"))
-        result.add(new MimeType(e));
+
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] mimeTypes = listString.split("\\,");
+    for (String mimeType : mimeTypes)
+        result.add(new MimeType(mimeType));
     return result;
   }
 

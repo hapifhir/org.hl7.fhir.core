@@ -22,7 +22,6 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedMode;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTransform;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
@@ -34,7 +33,6 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 @MarkedToMoveToAdjunctPackage
 public class FmlParser extends ParserBase {
@@ -84,10 +82,47 @@ public class FmlParser extends ParserBase {
       }
       while (lexer.hasToken("///")) {
         lexer.next();
+        SourceLocation fidLoc = lexer.getCurrentLocation();
         String fid = lexer.takeDottedToken();
-        Element e = result.makeElement(fid).markLocation(lexer.getCurrentLocation());
         lexer.token("=");
-        e.setValue(lexer.readConstant("meta value"));
+        // Per-field metadata handling, mirroring StructureMapUtilities.parse:
+        //  - `description` uses readMarkdown so the triple-quoted (`"""...
+        //    ..."""`) form is accepted as well as the single-line quoted form.
+        //  - `experimental` accepts a quoted "true"/"false" string OR a bare
+        //    true/false token (FML grammar permits both forms).
+        //  - Unknown fields are tolerated and silently dropped (a constant is
+        //    still consumed so the lexer stays in sync).
+        switch (fid) {
+          case "url":
+            result.makeElement("url").markLocation(fidLoc).setValue(lexer.readConstant("url"));
+            break;
+          case "name":
+            result.makeElement("name").markLocation(fidLoc).setValue(lexer.readConstant("name"));
+            break;
+          case "title":
+            result.makeElement("title").markLocation(fidLoc).setValue(lexer.readConstant("title"));
+            break;
+          case "description":
+            result.makeElement("description").markLocation(fidLoc).setValue(lexer.readMarkdown("description"));
+            break;
+          case "status":
+            result.makeElement("status").markLocation(fidLoc).setValue(lexer.readConstant("status"));
+            break;
+          case "experimental":
+            if (lexer.isStringConstant()) {
+              result.makeElement("experimental").markLocation(fidLoc).setValue(Boolean.toString("true".equals(lexer.readConstant("experimental"))));
+            } else if (lexer.hasToken("true")) {
+              lexer.token("true");
+              result.makeElement("experimental").markLocation(fidLoc).setValue("true");
+            } else {
+              lexer.token("false");
+              result.makeElement("experimental").markLocation(fidLoc).setValue("false");
+            }
+            break;
+          default:
+            lexer.readConstant("nothing");
+            break;
+        }
       }
       lexer.setMetadataFormat(false);
       if (!result.hasChild("status")) {
@@ -100,7 +135,7 @@ public class FmlParser extends ParserBase {
         }
       }
       if (!result.hasChild("description") && result.hasChild("title")) {
-        result.makeElement("description").setValue(Utilities.makeId(result.getChildValue("title")));
+        result.makeElement("description").setValue(result.getChildValue("title"));
       }
       
       while (lexer.hasToken("conceptmap"))
@@ -113,6 +148,9 @@ public class FmlParser extends ParserBase {
 
       while (lexer.hasToken("conceptmap"))
         parseConceptMap(result, lexer);
+
+      while (lexer.hasToken("let"))
+        parseConst(result, lexer);
 
       while (!lexer.done()) {
         parseGroup(result, lexer);
@@ -184,7 +222,10 @@ public class FmlParser extends ParserBase {
       Element g = getGroupE(map, srcs, tgts);
       Element e = g.addElement("element");
       if (comments != null) {
-        for (String s : comments.split("\\r\\n")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //simple character class split; safe
+        String[] commentLines = comments.split("\\r\\n");
+        for (String s : commentLines) {
           e.getComments().add(s);
         }
       }
@@ -243,18 +284,27 @@ public class FmlParser extends ParserBase {
   }
 
   private void parseUses(Element result, FHIRLexer lexer) throws FHIRException {
+    // Capture any comments that appeared on the lines IMMEDIATELY before this
+    // `uses` keyword as the structure's documentation (idiomatic FML style;
+    // matches the pre-comment handling for groups and StructureMapUtilities).
+    String preComment = lexer.getAllComments();
     lexer.token("uses");
     Element st = result.addElement("structure");
     st.makeElement("url").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("url"));
+    if (!Utilities.noString(preComment)) {
+      st.makeElement("documentation").setValue(preComment);
+    }
     if (lexer.hasToken("alias")) {
       lexer.token("alias");
       st.makeElement("alias").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
     }
     lexer.token("as");
-    st.makeElement("mode").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
-    lexer.skipToken(";");
-    if (lexer.hasComments()) {
-      st.makeElement("documentation").markLocation(lexer.getCommentLocation()).setValue(lexer.getFirstComment());
+    SourceLocation modeLoc = lexer.getCurrentLocation();
+    String modeValue = lexer.getCurrent();
+    String doco = lexer.tokenWithTrailingComment(modeValue);
+    st.makeElement("mode").markLocation(modeLoc).setValue(modeValue);
+    if (doco != null) {
+      st.getFormatCommentsPost().add(doco);
     }
   }
   
@@ -262,6 +312,23 @@ public class FmlParser extends ParserBase {
   private void parseImports(Element result, FHIRLexer lexer) throws FHIRException {
     lexer.token("imports");
     result.addElement("import").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("url"));
+    lexer.skipToken(";");
+  }
+
+  /**
+   * Parse a top-level {@code let name = fp-expression;} declaration. The {@code
+   * let} clause does not require parens in the FML grammar, so the FHIRPath
+   * expression is parsed directly and canonicalised (any redundant outer Group
+   * is stripped). Mirrors {@code StructureMapUtilities.parseConst}.
+   */
+  private void parseConst(Element result, FHIRLexer lexer) throws FHIRException {
+    lexer.token("let");
+    Element cnst = result.addElement("const").markLocation(lexer.getCurrentLocation());
+    cnst.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+    lexer.token("=");
+    SourceLocation loc = lexer.getCurrentLocation();
+    ExpressionNode node = parseCanonicalFhirPath(lexer);
+    cnst.makeElement("value").markLocation(loc).setValue(node.toString());
     lexer.skipToken(";");
   }
 
@@ -348,7 +415,7 @@ public class FmlParser extends ParserBase {
       lexer.token("for");
     } else {
       if (lexer.hasComments()) {
-        rule.makeElement("documentation").markLocation(lexer.getCommentLocation()).setValue(lexer.getFirstComment());
+        rule.makeElement("documentation").markLocation(lexer.getCommentLocation()).setValue(lexer.getAllComments());
       }
     }
 
@@ -369,56 +436,128 @@ public class FmlParser extends ParserBase {
           lexer.next();
       }
     }
-    if (lexer.hasToken("then")) {
-      lexer.token("then");
-      if (lexer.hasToken("{")) {
-        lexer.token("{");
-        while (!lexer.hasToken("}")) {
-          if (lexer.done())
-            throw lexer.error("premature termination expecting '}' in nested group");
-          parseRule(map, rule, lexer, newFmt);
-        }
-        lexer.token("}");
-      } else {
-        done = false;
-        while (!done) {
-          parseRuleReference(rule, lexer);
-          done = !lexer.hasToken(",");
-          if (!done)
-            lexer.next();
-        }
-      }
-    }
-    if (!rule.hasChild("documentation") && lexer.hasComments()) {
-      rule.makeElement("documentation").markLocation(lexer.getCommentLocation()).setValue(lexer.getFirstComment());
-    }
-
-    if (isSimpleSyntax(rule)) {
-      rule.forceElement("source").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
-      rule.forceElement("target").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
-      rule.forceElement("target").makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
-      Element dep = rule.forceElement("dependent").markLocation(rule);
-      dep.makeElement("name").markLocation(rule).setValue(StructureMapUtilities.DEF_GROUP_NAME);
-      dep.addElement("parameter").markLocation(dep).makeElement("valueId").markLocation(dep).setValue(StructureMapUtilities.AUTO_VAR_NAME);
-      dep.addElement("parameter").markLocation(dep).makeElement("valueId").markLocation(dep).setValue(StructureMapUtilities.AUTO_VAR_NAME);
-      // no dependencies - imply what is to be done based on types
-    }
-    if (newFmt) {
-      if (lexer.isConstant()) {
-        if (lexer.isStringConstant()) {
-          rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(fixName(lexer.readConstant("ruleName")));
+    if (newFmt && lexer.hasToken(":")) {
+      // Batch identity-transform form: `src -> tgt: e1, e2, e3 [ruleName];`
+      // (https://hl7.org/fhir/R5/mapping-language.html#simple). The first
+      // element name is attached to the rule that was just parsed; each
+      // subsequent element produces a sibling rule with the same source/target
+      // context. Mirrors StructureMapUtilities.parseRule's batch branch.
+      parseIdentityTransformSet(context, rule, lexer);
+    } else {
+      if (lexer.hasToken("then")) {
+        lexer.token("then");
+        if (lexer.hasToken("{")) {
+          lexer.token("{");
+          while (!lexer.hasToken("}")) {
+            if (lexer.done())
+              throw lexer.error("premature termination expecting '}' in nested group");
+            parseRule(map, rule, lexer, newFmt);
+          }
+          lexer.token("}");
         } else {
-          rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+          done = false;
+          while (!done) {
+            parseRuleReference(rule, lexer);
+            done = !lexer.hasToken(",");
+            if (!done)
+              lexer.next();
+          }
         }
-      } else {
-        if (rule.getChildrenByName("source").size() != 1 || !rule.getChildrenByName("source").get(0).hasChild("element"))
-          throw lexer.error("Complex rules must have an explicit name");
-        if (rule.getChildrenByName("source").get(0).hasChild("type"))
-          rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element") + Utilities.capitalize(rule.getChildrenByName("source").get(0).getNamedChildValue("type")));
-        else
-          rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element"));
       }
-      lexer.token(";");
+
+      if (isSimpleSyntax(rule)) {
+        rule.forceElement("source").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+        rule.forceElement("target").makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+        rule.forceElement("target").makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
+        // no dependencies - imply what is to be done based on types
+      }
+      if (newFmt) {
+        if (lexer.isConstant()) {
+          if (lexer.isStringConstant()) {
+            rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(fixName(lexer.readConstant("ruleName")));
+          } else {
+            rule.makeElement("name").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+          }
+        } else {
+          if (rule.getChildrenByName("source").size() != 1 || !rule.getChildrenByName("source").get(0).hasChild("element"))
+            throw lexer.error("Complex rules must have an explicit name");
+          if (rule.getChildrenByName("source").get(0).hasChild("type"))
+            rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element") + Utilities.capitalize(rule.getChildrenByName("source").get(0).getNamedChildValue("type")));
+          else
+            rule.makeElement("name").setValue(rule.getChildrenByName("source").get(0).getNamedChildValue("element"));
+        }
+        // Consume the `;` plus any same-line trailing `// foo` comment.
+        String trailingComment = lexer.tokenWithTrailingComment(";");
+        if (trailingComment != null) {
+          rule.getFormatCommentsPost().add(trailingComment);
+        }
+      }
+    }
+  }
+
+  /**
+   * Implements the "Simple Form: Identity Transform" batch syntax
+   * (https://hl7.org/fhir/R5/mapping-language.html#simple). On entry the lexer
+   * is positioned at the leading {@code :}; {@code rule} already has the
+   * parsed source and target with their context set but no element. The first
+   * element name is attached to the existing rule; each subsequent element
+   * name produces a freshly minted sibling rule in {@code context} that shares
+   * the same source/target context. Mirrors
+   * {@code StructureMapUtilities.parseRule}'s batch branch: every produced
+   * rule (including the first) is named {@code makeId(ruleName + element)}
+   * (ruleName defaulting to the empty string) so that the renderer can
+   * recover the compact form purely from the rule name pattern, without any
+   * out-of-band user data. Each generated rule is filled with the executable
+   * simple-form shape ({@code AUTO_VAR_NAME} variable on both sides plus a
+   * {@code CREATE} transform on target) so the transformer's "simple inferred,
+   * map by type" branch can execute them; the renderer's batch detector
+   * accepts that shape too, so the compact form round-trips.
+   */
+  private void parseIdentityTransformSet(Element context, Element rule, FHIRLexer lexer) throws FHIRException {
+    lexer.take(); // consume ':'
+    List<String> elements = new ArrayList<>();
+    String elementName = lexer.take();
+    Element firstSource = rule.getChildren("source").get(0);
+    Element firstTarget = rule.getChildren("target").get(0);
+    firstSource.makeElement("element").setValue(elementName);
+    firstSource.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+    firstTarget.makeElement("element").setValue(elementName);
+    firstTarget.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+    firstTarget.makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
+    while (lexer.hasToken(",")) {
+      lexer.token(",");
+      elements.add(lexer.take());
+    }
+    // Optional explicit rule name after the elements.
+    String ruleName = null;
+    if (lexer.isConstant()) {
+      if (lexer.isStringConstant()) {
+        ruleName = fixName(lexer.readConstant("ruleName"));
+      } else {
+        ruleName = lexer.take();
+      }
+    }
+    String namePrefix = ruleName != null ? ruleName : StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME;
+    rule.makeElement("name").setValue(Utilities.makeId(namePrefix + elementName));
+    // Consume the `;` plus any same-line trailing `// foo` comment.
+    // StructureMapUtilities stores that trailing comment in
+    // rule.formatCommentsPost; the element model has no equivalent slot, so
+    // the trailing comment is intentionally discarded here.
+    lexer.tokenWithTrailingComment(";");
+    String sourceContext = firstSource.getChildValue("context");
+    String targetContext = firstTarget.getChildValue("context");
+    for (String element : elements) {
+      Element newRule = context.addElement("rule");
+      newRule.makeElement("name").setValue(Utilities.makeId(namePrefix + element));
+      Element newSource = newRule.addElement("source");
+      newSource.makeElement("context").setValue(sourceContext);
+      newSource.makeElement("element").setValue(element);
+      newSource.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+      Element newTarget = newRule.addElement("target");
+      newTarget.makeElement("context").setValue(targetContext);
+      newTarget.makeElement("element").setValue(element);
+      newTarget.makeElement("variable").setValue(StructureMapUtilities.AUTO_VAR_NAME);
+      newTarget.makeElement("transform").setValue(StructureMapTransform.CREATE.toCode());
     }
   }
 
@@ -442,7 +581,7 @@ public class FmlParser extends ParserBase {
 
   private void parseSource(Element rule, FHIRLexer lexer) throws FHIRException {
     Element source = rule.addElement("source").markLocation(lexer.getCurrentLocation());
-    source.makeElement("context").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+    source.makeElement("context").markLocation(lexer.getCurrentLocation()).setValue(readAsStringOrProcessedConstant(lexer.take(), lexer));
     if (source.getChildValue("context").equals("search") && lexer.hasToken("(")) {
       source.makeElement("context").markLocation(lexer.getCurrentLocation()).setValue("@search");
       lexer.take();
@@ -453,7 +592,7 @@ public class FmlParser extends ParserBase {
       lexer.token(")");
     } else if (lexer.hasToken(".")) {
       lexer.token(".");
-      source.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+      source.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(readAsStringOrProcessedConstant(lexer.take(), lexer));
     }
     if (lexer.hasToken(":")) {
       // type and cardinality
@@ -467,7 +606,22 @@ public class FmlParser extends ParserBase {
     }
     if (lexer.hasToken("default")) {
       lexer.token("default");
-     source.makeElement("defaultValue").markLocation(lexer.getCurrentLocation()).setValue(lexer.readConstant("default value"));
+      SourceLocation defLoc = lexer.getCurrentLocation();
+      if (lexer.hasToken("(")) {
+        // New form: `default ( fp-expression )`. The outer parens belong to the
+        // FML clause syntax, not to the FHIRPath itself, so canonicalise the AST
+        // after parsing (mirrors StructureMapUtilities).
+        lexer.token("(");
+        ExpressionNode node = parseCanonicalFhirPath(lexer);
+        source.makeElement("defaultValue").markLocation(defLoc).setValue(node.toString());
+        lexer.token(")");
+      } else {
+        // Legacy form: `default "string"`. Convert to a single-quoted FHIRPath
+        // string literal so the stored defaultValue is a valid FHIRPath
+        // expression (mirrors StructureMapUtilities).
+        String s = lexer.readConstant("default value");
+        source.makeElement("defaultValue").markLocation(defLoc).setValue("'" + Utilities.escapeFhirPathString(s) + "'");
+      }
     }
     if (Utilities.existsInList(lexer.getCurrent(), "first", "last", "not_first", "not_last", "only_one")) {
       source.makeElement("listMode").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
@@ -480,35 +634,38 @@ public class FmlParser extends ParserBase {
     if (lexer.hasToken("where")) {
       lexer.take();
       SourceLocation loc = lexer.getCurrentLocation();
-      ExpressionNode node = fpe.parse(lexer);
+      ExpressionNode node = parseCanonicalFhirPath(lexer);
       source.setUserData(StructureMapUtilities.MAP_WHERE_EXPRESSION, node);
       source.makeElement("condition").markLocation(loc).setValue(node.toString());
     }
     if (lexer.hasToken("check")) {
       lexer.take();
       SourceLocation loc = lexer.getCurrentLocation();
-      ExpressionNode node = fpe.parse(lexer);
+      ExpressionNode node = parseCanonicalFhirPath(lexer);
       source.setUserData(StructureMapUtilities.MAP_WHERE_CHECK, node);
       source.makeElement("check").markLocation(loc).setValue(node.toString());
     }
     if (lexer.hasToken("log")) {
       lexer.take();
       SourceLocation loc = lexer.getCurrentLocation();
-      ExpressionNode node = fpe.parse(lexer);
-      source.setUserData(StructureMapUtilities.MAP_WHERE_CHECK, node);
-      source.makeElement("logMessage").markLocation(loc).setValue(lexer.take());
+      ExpressionNode node = parseCanonicalFhirPath(lexer);
+      source.setUserData(StructureMapUtilities.MAP_WHERE_LOG, node);
+      source.makeElement("logMessage").markLocation(loc).setValue(node.toString());
     }
   }
   
   private void parseTarget(Element rule, FHIRLexer lexer) throws FHIRException {
     Element target = rule.addElement("target").markLocation(lexer.getCurrentLocation());
     SourceLocation loc = lexer.getCurrentLocation();
-    String start = lexer.take();
+    // Strip backticks (and process escapes) once here so both target.context
+    // assignments below see the canonical value. Plain identifiers and the
+    // sentinel '(' pass through unchanged.
+    String start = readAsStringOrProcessedConstant(lexer.take(), lexer);
     if (lexer.hasToken(".")) {
       target.makeElement("context").markLocation(loc).setValue(start);
       start = null;
       lexer.token(".");
-      target.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(lexer.take());
+      target.makeElement("element").markLocation(lexer.getCurrentLocation()).setValue(readAsStringOrProcessedConstant(lexer.take(), lexer));
     }
     String name;
     boolean isConstant = false;
@@ -552,16 +709,31 @@ public class FmlParser extends ParserBase {
       }
       lexer.token(")");
     } else if (name != null) {
-      target.makeElement("transform").markLocation(loc).setValue(StructureMapTransform.COPY.toCode());
-      if (!isConstant) {
-        loc = lexer.getCurrentLocation();
-        String id = name;
-        while (lexer.hasToken(".")) {
-          id = id + lexer.take() + lexer.take();
+      // Mirror StructureMapUtilities.parseTarget: a bare identifier with no `=`
+      // and no `(` is either the target.context (when one hasn't been set) or a
+      // COPY transform parameter (when it has). Without this branch a bare
+      // target like `tgt` in `src -> tgt: id, active;` would be mis-parsed as a
+      // COPY transform and the batch identity-transform form would have no
+      // target.context to anchor on.
+      if (target.hasChild("context")) {
+        target.makeElement("transform").markLocation(loc).setValue(StructureMapTransform.COPY.toCode());
+        if (!isConstant) {
+          loc = lexer.getCurrentLocation();
+          String id = name;
+          while (lexer.hasToken(".")) {
+            id = id + lexer.take() + lexer.take();
+          }
+          target.addElement("parameter").markLocation(loc).makeElement("valueId").setValue(id);
+        } else {
+          // Bare constants on the right of `=` need typed dispatch so integers,
+          // decimals and booleans land in valueInteger/valueDecimal/valueBoolean
+          // instead of being stringified into valueString. Mirrors
+          // StructureMapUtilities.readConstant's DataType return path.
+          Element param = target.addElement("parameter").markLocation(lexer.getCurrentLocation());
+          setParameterConstantValue(param, name, lexer);
         }
-        target.addElement("parameter").markLocation(loc).makeElement("valueId").setValue(id);
       } else {
-        target.addElement("parameter").markLocation(lexer.getCurrentLocation()).makeElement("valueString").setValue(readConstant(name, lexer));
+        target.makeElement("context").markLocation(loc).setValue(name);
       }
     }
     if (lexer.hasToken("as")) {
@@ -585,10 +757,18 @@ public class FmlParser extends ParserBase {
       throw lexer.error("variable on target is not a list, so can't add an element");
     } else if (!lexer.isConstant()) {
       ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueId" : "value").setValue(lexer.take());
-    } else if (lexer.isStringConstant())
+    } else if (lexer.isStringConstant()) {
       ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueString" : "value").setValue(lexer.readConstant("??"));
-    else {
-      ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement(r5 ? "valueString" : "value").setValue(readConstant(lexer.take(), lexer));
+    } else if (r5) {
+      // Typed dispatch for bare constants on the r5+ path; mirrors
+      // StructureMapUtilities.readConstant so integers/decimals/booleans pick
+      // the correct value[x] element instead of being stringified.
+      Element param = ref.addElement(name).markLocation(lexer.getCurrentLocation());
+      setParameterConstantValue(param, lexer.take(), lexer);
+    } else {
+      // Pre-r5: there is no value[x] discrimination; everything goes into
+      // `value` as a string after escape processing.
+      ref.addElement(name).markLocation(lexer.getCurrentLocation()).makeElement("value").setValue(readConstant(lexer.take(), lexer));
     }
   }
  
@@ -632,5 +812,61 @@ public class FmlParser extends ParserBase {
       return lexer.processConstant(s);
   }
 
-  
+  /**
+   * Set the appropriate {@code value[x]} child on a parameter element based on
+   * the shape of the constant token: bare integers become {@code valueInteger},
+   * decimals become {@code valueDecimal}, {@code true}/{@code false} become
+   * {@code valueBoolean}, and anything else becomes {@code valueString} (with
+   * lexer escape sequences processed). Mirrors the typed {@code DataType}
+   * dispatch in {@code StructureMapUtilities.readConstant}, which is needed to
+   * keep the element-model JSON output aligned with the typed-model JSON
+   * output (otherwise everything ended up in {@code valueString}).
+   */
+  private void setParameterConstantValue(Element parameter, String s, FHIRLexer lexer) throws FHIRLexerException {
+    if (Utilities.isInteger(s)) {
+      parameter.makeElement("valueInteger").setValue(s);
+    } else if (Utilities.isDecimal(s, false)) {
+      parameter.makeElement("valueDecimal").setValue(s);
+    } else if (Utilities.existsInList(s, "true", "false")) {
+      parameter.makeElement("valueBoolean").setValue(s);
+    } else {
+      parameter.makeElement("valueString").setValue(lexer.processConstant(s));
+    }
+  }
+
+  /**
+   * If {@code s} is a backtick- or double-quoted token (used in FML to escape
+   * names that contain special characters or that collide with grammar
+   * keywords) strip the delimiters and process any escape sequences; otherwise
+   * return {@code s} unchanged. Mirrors
+   * {@code StructureMapUtilities.readAsStringOrProcessedConstant}.
+   */
+  private String readAsStringOrProcessedConstant(String s, FHIRLexer lexer) throws FHIRLexerException {
+    if (s.startsWith("\"") || s.startsWith("`"))
+      return lexer.processConstant(s);
+    else
+      return s;
+  }
+
+  /**
+   * Parse an FML-embedded FHIRPath expression and strip any redundant outer Group
+   * node from the AST. The FML grammar wraps {@code where}, {@code check} and
+   * {@code log} expressions in {@code ( ... )} as part of the clause syntax; those
+   * parens belong to the clause, not the FHIRPath, so the parsed AST root often
+   * appears as a Group with no inner chain and no operation. Storing the
+   * stringified form of such a Group and then re-wrapping with parens on render
+   * would cause parens to accumulate on each round-trip. Mirrors
+   * {@code StructureMapUtilities.parseFhirPathToCanonicalNode}.
+   */
+  private ExpressionNode parseCanonicalFhirPath(FHIRLexer lexer) throws FHIRLexerException {
+    ExpressionNode n = fpe.parse(lexer);
+    while (n != null
+        && n.getKind() == ExpressionNode.Kind.Group
+        && n.getInner() == null
+        && n.getOperation() == null) {
+      n = n.getGroup();
+    }
+    return n;
+  }
+ 
 }

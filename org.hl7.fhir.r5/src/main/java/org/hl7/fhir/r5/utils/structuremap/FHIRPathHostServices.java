@@ -3,7 +3,9 @@ package org.hl7.fhir.r5.utils.structuremap;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.fhirpath.IHostApplicationServices;
 import org.hl7.fhir.r5.fhirpath.TypeDetails;
@@ -58,17 +60,23 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
-    return null; // throw new Error("Not Implemented Yet");
+    return structureMapUtilities.getServices() == null ? null : structureMapUtilities.getServices().resolveFunction(engine, functionName);
   }
 
   @Override
   public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
-    throw new Error("Not Implemented Yet");
+    if (structureMapUtilities.getServices() == null) {
+      throw new PathEngineException("Unknown function '" + functionName + "'");
+    }
+    return structureMapUtilities.getServices().checkFunction(engine, appContext, functionName, focus, parameters);
   }
 
   @Override
   public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
-    throw new Error("Not Implemented Yet");
+    if (structureMapUtilities.getServices() == null) {
+      throw new Error("Not Implemented Yet");
+    }
+    return structureMapUtilities.getServices().executeFunction(engine, appContext, focus, functionName, parameters);
   }
 
   @Override
@@ -102,7 +110,7 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public ValueSet resolveValueSet(FHIRPathEngine engine, Object appContext, String url) {
-	return structureMapUtilities.getWorker().findTxResource(ValueSet.class, url);
+	  return structureMapUtilities.getWorker().findTxResource(ValueSet.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
   }
 
   @Override

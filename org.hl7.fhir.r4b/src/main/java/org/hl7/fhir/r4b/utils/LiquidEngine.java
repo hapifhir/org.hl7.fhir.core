@@ -386,7 +386,7 @@ public class LiquidEngine implements IHostApplicationServices {
             break;
           }          
           if (lctxt.globalVars.containsKey(varName)) {
-            throw new FHIRException(engine.getWorker().formatMessage(I18nConstants.LIQUID_VARIABLE_ALREADY_ASSIGNED, varName));
+            lctxt.globalVars.remove(varName);
           }
           lctxt.loopVars.put(varName, o);
           boolean wantBreak = false;

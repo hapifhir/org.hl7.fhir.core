@@ -92,7 +92,10 @@ public class InstanceValidatorOptionsConvertor {
 
     if (options.compactProfiles != null && !options.compactProfiles.isEmpty()) {
       for (String compactProfile : options.compactProfiles) {
-        for (String profile : compactProfile.split("\\,")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
+        String[] profileParts = compactProfile.split("\\,");
+        for (String profile : profileParts) {
           instanceValidatorParameters.addProfile(profile);
         }
       }
@@ -120,6 +123,9 @@ public class InstanceValidatorOptionsConvertor {
     }
     if (options.validationTimeout != 0) {
       instanceValidatorParameters.setTimeout(new ValidationTimeout(options.validationTimeout, "CLI option " + OptionUtilities.getFirstNameForField(InstanceValidatorOptions.class, "validationTimeout")));
+    }
+    if (options.codeSystemValidationSizeLimit != null) {
+      instanceValidatorParameters.setCodeSystemValidationSizeLimit(options.codeSystemValidationSizeLimit);
     }
 
     if (options.checkDisplay != null) {

@@ -87,6 +87,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		} else {
 		  clss = JavaGenClass.Type;
 		}    
+    write(startVMarkValue());
+    write("\r\n");
 		write("package "+packageName+";\r\n");
     startMark(version, genDate);
 		
@@ -137,7 +139,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     
     write("\r\n");
     if (config.getIni().hasProperty("imports", analysis.getName())) {
-      for (String imp : config.getIni().getStringProperty("imports", analysis.getName()).split("\\,")) {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //single literal character split
+      String[] imports = config.getIni().getStringProperty("imports", analysis.getName()).split("\\,");
+      for (String imp : imports) {
         write("import "+imp.replace("{{pid}}", packageName)+";\r\n");
       }
     }
@@ -151,10 +156,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		
     if (clss == JavaGenClass.Resource) {
       if (!analysis.isAbstract()) {
-        write("@ResourceDef(name=\""+upFirst(analysis.getName()).replace("ListResource", "List")+"\", profile=\"http://hl7.org/fhir/StructureDefinition/"+upFirst(analysis.getName())+"\")\r\n");
+        write("@ResourceDef(name=\""+escapeJavaString(upFirst(analysis.getName()).replace("ListResource", "List"))+"\", profile=\"http://hl7.org/fhir/StructureDefinition/"+escapeJavaString(upFirst(analysis.getName()))+"\")\r\n");
       }
     } else {
-      write("@DatatypeDef(name=\""+upFirst(analysis.getName())+"\")\r\n");
+      write("@DatatypeDef(name=\""+escapeJavaString(upFirst(analysis.getName()))+"\")\r\n");
       hierarchy = hierarchy + " implements ICompositeType";
     }
     
@@ -166,6 +171,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       hierarchy = h;
     }
 				
+    write(generatedAnnotationValue()+"\r\n");
     write("public "+(analysis.isAbstract()? "abstract " : "")+"class "+analysis.getClassName()+" "+hierarchy.trim()+" {\r\n");
 		write("\r\n");
 
@@ -245,7 +251,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		  write("   }\r\n");
 		  write("\r\n"); 
       write("  public String getCustomResourceName() {\r\n");
-      write("    return \""+analysis.getName()+"\";\r\n");
+      write("    return \""+escapeJavaString(analysis.getName())+"\";\r\n");
       write("   }\r\n");
       write("\r\n"); 
 		} else if (analysis.isAbstract() && analysis.getAncestor() != null && Utilities.noString(superName)) {
@@ -275,7 +281,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		// Write resource fields which can be used as constants in client code
 		// to refer to standard search params
 		Set<String> spcodes = new HashSet<>();
-		for (SearchParameter sp : analysis.getSearchParams()) {
+		// generate search parameter constants in a stable (alphabetical by code)
+		// order so the generated source does not churn between runs
+		List<SearchParameter> sortedSearchParams = new ArrayList<>(analysis.getSearchParams());
+		Collections.sort(sortedSearchParams, (a, b) -> a.getCode().compareTo(b.getCode()));
+		for (SearchParameter sp : sortedSearchParams) {
 		  String code = sp.getCode();
 		  if (!spcodes.contains(code)) {
 		    spcodes.add(code);
@@ -300,7 +310,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		         * static binding to the individual possibilities. AFAIK this is only
 		         * used right now in Observation (e.g. for code-value-[x]) 
 		         */
-		        for (SearchParameter nextCandidate : analysis.getSearchParams()) {
+		        for (SearchParameter nextCandidate : sortedSearchParams) {
 		          if (nextCandidate.getCode().startsWith(partialCode)) {
 		            String nextCompositeCode = rootCode + "-" + nextCandidate.getCode();
 		            String[] compositeOf = new String[] { rootCode, nextCandidate.getCode() };
@@ -330,7 +340,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		if (VersionUtilities.isR4BVer(version)) {
 		  String extras = config.getIni().getStringProperty("R4B.NullImplementation", analysis.getName());
 		  if (!Utilities.noString(extras)) {
-		    for (String n : extras.split("\\,")) {
+		    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+		    //single literal character split
+		    String[] extraItems = extras.split("\\,");
+		    for (String n : extraItems) {
 		      String t = n.substring(n.indexOf(":")+1);
 		      n = n.substring(0, n.indexOf(":"));
 		      if (n.endsWith("[]")) {
@@ -485,6 +498,17 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 ////
 //  }
 
+  /**
+   * SearchParameters are loaded from external FHIR packages, so their text fields are untrusted.
+   * Neutralise comment delimiters so a value cannot break out of a Javadoc comment into class-level code.
+   */
+  private static String sanitizeJavadoc(String text) {
+    if (text == null) {
+      return "";
+    }
+    return sanitizeComment(text);
+  }
+
   private void writeSearchParameterField(String name, JavaGenClass clss, boolean isAbstract, SearchParameter sp, String code, String[] theCompositeOf, List<SearchParameter> searchParams, String rn) throws IOException {
     String constName = cleanSpName(code).toUpperCase();
     
@@ -492,21 +516,21 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
      * SearchParamDefinition (SP_[name])
      */
     write(" /**\r\n"); 
-    write("   * Search parameter: <b>" + code + "</b>\r\n"); 
+    write("   * Search parameter: <b>" + sanitizeJavadoc(code) + "</b>\r\n");
     write("   * <p>\r\n");
-    write("   * Description: <b>" + sp.getDescription() + "</b><br>\r\n"); 
-    write("   * Type: <b>"+ sp.getType().toCode() + "</b><br>\r\n");
-    write("   * Path: <b>" + sp.getExpression() + "</b><br>\r\n"); 
+    write("   * Description: <b>" + sanitizeJavadoc(sp.getDescription()) + "</b><br>\r\n");
+    write("   * Type: <b>"+ sanitizeJavadoc(sp.getType().toCode()) + "</b><br>\r\n");
+    write("   * Path: <b>" + sanitizeJavadoc(sp.getExpression()) + "</b><br>\r\n");
     write("   * </p>\r\n");
     write("   */\r\n");
-    write("  @SearchParamDefinition(name=\"" + code + "\", path=\"" + defaultString(sp.getExpression()) + "\", description=\""+Utilities.escapeJava(sp.getDescription())+"\", type=\""+sp.getType().toCode() + "\"");
+    write("  @SearchParamDefinition(name=\"" + escapeJavaString(code) + "\", path=\"" + escapeJavaString(defaultString(sp.getExpression())) + "\", description=\""+escapeJavaString(sp.getDescription())+"\", type=\""+escapeJavaString(sp.getType().toCode()) + "\"");
     if (theCompositeOf != null && theCompositeOf.length > 0) {
       write(", compositeOf={");
       for (int i = 0; i < theCompositeOf.length; i++) {
         if (i > 0) {
           write(", ");
         }
-        write("\"" + theCompositeOf[i] + "\"");
+        write("\"" + escapeJavaString(theCompositeOf[i]) + "\"");
       }
       write("}");
     }
@@ -533,7 +557,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         } else {
           write(", ");
         }
-        write("@ca.uhn.fhir.model.api.annotation.Compartment(name=\"" + upFirst(next) + "\")");
+        write("@ca.uhn.fhir.model.api.annotation.Compartment(name=\"" + escapeJavaString(upFirst(next)) + "\")");
       }
       write(" }");
     }
@@ -558,7 +582,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     }
     
     write(" )\r\n");
-    write("  public static final String SP_"+constName+" = \""+code+"\";\r\n");
+    write("  public static final String SP_"+constName+" = \""+escapeJavaString(code)+"\";\r\n");
 
     String genericTypes = "";
     if (theCompositeOf != null && theCompositeOf.length > 0) {
@@ -571,11 +595,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
      * Client parameter ([name])
      */
     write(" /**\r\n"); 
-    write("   * <b>Fluent Client</b> search parameter constant for <b>" + code + "</b>\r\n"); 
+    write("   * <b>Fluent Client</b> search parameter constant for <b>" + sanitizeJavadoc(code) + "</b>\r\n");
     write("   * <p>\r\n");
-    write("   * Description: <b>" + sp.getDescription() + "</b><br>\r\n"); 
-    write("   * Type: <b>"+ sp.getType().toCode() + "</b><br>\r\n");
-    write("   * Path: <b>" + sp.getExpression() + "</b><br>\r\n"); 
+    write("   * Description: <b>" + sanitizeJavadoc(sp.getDescription()) + "</b><br>\r\n");
+    write("   * Type: <b>"+ sanitizeJavadoc(sp.getType().toCode()) + "</b><br>\r\n");
+    write("   * Path: <b>" + sanitizeJavadoc(sp.getExpression()) + "</b><br>\r\n");
     write("   * </p>\r\n");
     write("   */\r\n");
     write("  public static final ca.uhn.fhir.rest.gclient." + upFirst(sp.getType().toCode()) + "ClientParam" + genericTypes + " " + constName + " = new ca.uhn.fhir.rest.gclient." + upFirst(sp.getType().toCode()) + "ClientParam" + genericTypes + "(SP_" + constName + ");\r\n\r\n"); 
@@ -584,9 +608,9 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       String incName = upFirst(name) + ":" + code;
       write("/**\r\n"); 
       write("   * Constant for fluent queries to be used to add include statements. Specifies\r\n"); 
-      write("   * the path value of \"<b>" + incName + "</b>\".\r\n" );
+      write("   * the path value of \"<b>" + sanitizeJavadoc(incName) + "</b>\".\r\n" );
       write("   */\r\n" );
-      write("  public static final ca.uhn.fhir.model.api.Include INCLUDE_" + cleanSpName(code).toUpperCase() + " = new ca.uhn.fhir.model.api.Include(\"" + incName + "\").toLocked();\r\n\r\n");
+      write("  public static final ca.uhn.fhir.model.api.Include INCLUDE_" + cleanSpName(code).toUpperCase() + " = new ca.uhn.fhir.model.api.Include(\"" + escapeJavaString(incName) + "\").toLocked();\r\n\r\n");
     }
   }
 
@@ -713,7 +737,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 
   private void generateFhirType(String path) throws IOException {
     write("  public String fhirType() {\r\n");
-    write("    return \""+path+"\";\r\n\r\n");
+    write("    return \""+escapeJavaString(path)+"\";\r\n\r\n");
     write("  }\r\n\r\n");
   }
 
@@ -743,7 +767,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 
   private void jdoc(String indent, String text) throws IOException {
     write(indent+"/**\r\n");
-		write(indent+" * "+text.replace("*/", "* /")+"\r\n");
+		write(indent+" * "+sanitizeComment(text)+"\r\n");
 		write(indent+" */\r\n");
   }
 
@@ -755,7 +779,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write(indent+"    super.listChildren(children);\r\n");
 	  for (ElementDefinition e : children) {
       if (!isInterface && !e.typeSummary().equals("xhtml")) {
-	      write(indent+"    children.add(new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+"));\r\n");
+	      write(indent+"    children.add(new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+"));\r\n");
       }
 	  }
 	  write(indent+"  }\r\n\r\n");  
@@ -765,11 +789,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ElementDefinition e : children) {
       if (!isInterface && !e.typeSummary().equals("xhtml")) {
         write(indent+"    case "+propId(e.getName())+": /*"+e.getName()+"*/ ");
-        write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+");\r\n");
+        write(" return new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+(e.unbounded() ? "List" : "")+");\r\n");
         if (e.getName().endsWith("[x]")) {
           String n = e.getName().substring(0, e.getName().length()-3);
           write(indent+"    case "+propId(n)+": /*"+n+"*/ ");
-          write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
+          write(" return new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
           if (e.typeSummary().equals("*")) {
             // master list in datatypes.html
             for (String t : new String[] {
@@ -780,12 +804,12 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
                 }) {
               String tn = n + Utilities.capitalize(t);
               write(indent+"    case "+propId(tn)+": /*"+tn+"*/ ");
-              write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e, t)+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
+              write(" return new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e, t))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
             }
           } else for (TypeRefComponent tr : e.getType()) {
             String tn = n + Utilities.capitalize(checkConstraint(tr.getCode()));
             write(indent+"    case "+propId(tn)+": /*"+tn+"*/ ");
-            write(" return new Property(\""+e.getName()+"\", \""+resolvedTypeCode(e, tr.getCode())+"\", \""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
+            write(" return new Property(\""+escapeJavaString(e.getName())+"\", \""+escapeJavaString(resolvedTypeCode(e, tr.getCode()))+"\", \""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\", 0, "+(e.unbounded() ? "java.lang.Integer.MAX_VALUE" : e.getMax())+", "+getElementName(e.getName(), true)+");\r\n");
           }
         }
       }
@@ -795,13 +819,27 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     write(indent+"  }\r\n\r\n");  
   }
 	
+  private boolean isContentReference(ElementDefinition e) {
+    // in the past, content references were represented as a type with the code @{path}, but
+    // now they come as {url}#{path} in ElementDefinition.contentReference (and we don't care
+    // about the url - it's always a reference to the structure definition being processed)
+    if (e.hasContentReference()) {
+      return true;
+    }
+    if (e.getType().size() > 0) {
+      String s = e.getType().get(0).getCode();
+      return s != null && s.contains("#");
+    }
+    return false;
+  }
+
   private String resolvedTypeCode(ElementDefinition e) {
     return resolvedTypeCode(e, null);
   }
   
   private String resolvedTypeCode(ElementDefinition e, String tf) {
     if (e.hasContentReference()) {
-      return e.getContentReference().replace("#",  "@");
+      return "@"+e.getContentReference().substring(e.getContentReference().indexOf("#")+1);
     }
     StringBuilder tn = new StringBuilder();
     boolean first = true;
@@ -826,7 +864,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
             if (!f)
               tn.append("|");
             f = false;
-            String stn = s.asStringValue().substring(40);
+            String stn = s.getValue().substring(40);
+            if (stn.contains("|")) { // remove any version specifier from the canonical
+              stn = stn.substring(0, stn.indexOf("|"));
+            }
             tn.append("Resource".equals(stn) ? "Any" : stn);
             //          }
           }
@@ -857,7 +898,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       if (!isInterface) {
         if (abstractTarget) {
           write(indent+"    case "+propId(e.getName())+": /*div*/\r\n");
-          write("          throw new Error(\"Unable to make an instance of the abstract property '"+e.getName()+"'\");\r\n");
+          write("          throw new Error(\"Unable to make an instance of the abstract property '"+escapeJavaString(e.getName())+"'\");\r\n");
         } else {
           ElementDefinition inh = inheritedChildren == null ? null : matchingInheritedElement(inheritedChildren, e, analysis.getName());
           if (!e.typeSummary().equals("xhtml")) {
@@ -890,7 +931,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       else
         write(" return get"+upFirst(getElementName(name, false))+"Element();\r\n");
     } else if (e.typeSummary().equals("Resource") || e.typeSummary().equals("DomainResource")) {
-      write("throw new FHIRException(\"Cannot make property "+e.getName()+" as it is not a complex type\"); // "+tn+"\r\n");
+      write("throw new FHIRException(\"Cannot make property "+escapeJavaString(e.getName())+" as it is not a complex type\"); // "+tn+"\r\n");
     } else if (e.unbounded()) {
       write(" return add"+upFirst(getElementName(name, false))+"(); \r\n");
     } else if (inh != null && inh.unbounded()) {
@@ -914,7 +955,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         else
           write(indent+"    } else ");
         first = false;
-        write(           "if (name.equals(\""+e.getName()+"\")) {\r\n");
+        write("if (name.equals(\""+escapeJavaString(e.getName())+"\")) {\r\n");
         String name = e.getName().replace("[x]", "");
         String cn = "("+tn+") value";
         if (!Utilities.existsInList(e.typeSummary(), "Element", "BackboneElement")) {
@@ -923,7 +964,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           } else if (tn.contains("Enumeration<")) { // enumeration
             write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory().fromType(TypeConvertor.castToCode(value));\r\n");
             cn = "(Enumeration) value";
-          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !e.getType().get(0).getCode().startsWith("@")) {
+          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !isContentReference(e)) {
             StructureDefinition sd = definitions.getContext().fetchTypeDefinition(e.getTypeFirstRep().getCode());
             String tnn = checkConstraint(getTypeName(e));
             if (!isCoreType(sd) || sd.getKind() == StructureDefinitionKind.LOGICAL) {
@@ -938,7 +979,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
                 cn = cn.replace("Type(", "(");
               }
             }
-          } else if (e.getType().size() > 0 && !e.getType().get(0).getCode().startsWith("@")) { 
+          } else if (e.getType().size() > 0 && !isContentReference(e)) { 
             cn = "TypeConvertor.castToType(value)";
           }
         }
@@ -976,7 +1017,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           } if (tn.contains("Enumeration<")) { // enumeration
             write(indent+"      value = new "+tn.substring(tn.indexOf("<")+1, tn.length()-1)+"EnumFactory().fromType(TypeConvertor.castToCode(value));\r\n");
             cn = "(Enumeration) value";
-          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !e.getType().get(0).getName().startsWith("@")) { 
+          } else if (e.getType().size() == 1 && !e.typeSummary().equals("*") && !isContentReference(e)) { 
             StructureDefinition sd = definitions.getContext().fetchTypeDefinition(e.getTypeFirstRep().getCode());
             String tnn = checkConstraint(getTypeName(e));
             if (!isCoreType(sd) || sd.getKind() == StructureDefinitionKind.LOGICAL) {
@@ -991,7 +1032,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
               }
               cn = "TypeConvertor.castTo"+upFirst(tnn)+"(value)";
             }
-          } else if (e.getType().size() > 0 && !e.getType().get(0).getCode().startsWith("@")) { 
+          } else if (e.getType().size() > 0 && !isContentReference(e)) { 
             cn = "TypeConvertor.castToType(value)";
           }
         }
@@ -1044,7 +1085,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         String name = e.getName().replace("[x]", "");
         write(indent+"    case "+propId(name)+": /*"+name+"*/ ");
         if (e.hasContentReference()) {
-          write("return new String[] {\""+e.getContentReference().replace("#", "@")+"\"};\r\n");
+          write("return new String[] {\"@"+escapeJavaString(e.getContentReference().substring(e.getContentReference().indexOf("#")+1))+"\"};\r\n");
         } else {
           write("return new String[] {"+asCommaText(e.getType())+"};\r\n");
         }
@@ -1060,7 +1101,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     Set<String> tset = new HashSet<String>();
     for (TypeRefComponent t : types) {
       if (!Utilities.existsInList(t.getWorkingCode(),  "Element", "BackboneElement") && !tset.contains(t.getName())) {
-        b.append("\""+t.getName()+"\"");
+        b.append("\""+escapeJavaString(t.getName())+"\"");
         tset.add(t.getName());
       }
     }
@@ -1119,11 +1160,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     else
       write(indent+"    else ");
     first = false;
-    write(           "if (name.equals(\""+namet+"\")) {\r\n");
+    write("if (name.equals(\""+escapeJavaString(namet)+"\")) {\r\n");
     if (isPrimitive(e.typeSummary()) || e.typeSummary().startsWith("canonical("))
-      write(indent+"      throw new FHIRException(\"Cannot call addChild on a singleton property "+parent+"."+e.getName()+"\");\r\n"); 
+      write(indent+"      throw new FHIRException(\"Cannot call addChild on a singleton property "+escapeJavaString(parent)+"."+escapeJavaString(e.getName())+"\");\r\n"); 
     else if (isAbstract(e.typeSummary()))
-      write(indent+"      throw new FHIRException(\"Cannot call addChild on an abstract type "+parent+"."+e.getName()+"\");\r\n"); 
+      write(indent+"      throw new FHIRException(\"Cannot call addChild on an abstract type "+escapeJavaString(parent)+"."+escapeJavaString(e.getName())+"\");\r\n"); 
     else if (e.unbounded()) {
       write(indent+"      return add"+upFirst(getElementName(name, false))+"();\r\n");
     } else {
@@ -1301,7 +1342,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       el.append(cc);
       String definition = definitions.getCodeDefinition(c.getSystem(), c.getCode());
       write("        /**\r\n");
-      write("         * "+Utilities.escapeJava(definition)+"\r\n");
+      write("         * "+sanitizeComment(definition)+"\r\n");
       write("         */\r\n");      
 			write("        "+cc.toUpperCase()+", \r\n");
 		}
@@ -1318,13 +1359,13 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
 			String cc = Utilities.camelCase(c.getCode());
 			cc = makeConst(cc);
-			write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
+			write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
 			write("          return "+cc+";\r\n");
 		}		
     write("        if (Configuration.isAcceptInvalidEnums())\r\n");
     write("          return null;\r\n");
     write("        else\r\n");
-    write("          throw new FHIRException(\"Unknown "+tns+" code '\"+codeString+\"'\");\r\n");
+    write("          throw new FHIRException(\"Unknown "+escapeJavaString(tns)+" code '\"+codeString+\"'\");\r\n");
 		write("        }\r\n");	
 
 		write("        public String toCode() {\r\n");
@@ -1332,7 +1373,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
 			String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-			write("            case "+cc+": return \""+c.getCode()+"\";\r\n");
+			write("            case "+cc+": return \""+escapeJavaString(c.getCode())+"\";\r\n");
 		}   
     write("            case NULL: return null;\r\n");
 		write("            default: return \"?\";\r\n");
@@ -1344,7 +1385,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-      write("            case "+cc+": return \""+c.getSystem()+"\";\r\n");
+      write("            case "+cc+": return \""+escapeJavaString(c.getSystem())+"\";\r\n");
     }   
     write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
@@ -1357,7 +1398,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
       String definition = definitions.getCodeDefinition(c.getSystem(), c.getCode());
-      write("            case "+cc+": return \""+Utilities.escapeJava(definition)+"\";\r\n");
+      write("            case "+cc+": return \""+escapeJavaString(definition)+"\";\r\n");
     }   
     write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
@@ -1369,7 +1410,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-      write("            case "+cc+": return \""+Utilities.escapeJava(Utilities.noString(c.getDisplay()) ? c.getCode() : c.getDisplay())+"\";\r\n");
+      write("            case "+cc+": return \""+escapeJavaString(Utilities.noString(c.getDisplay()) ? c.getCode() : c.getDisplay())+"\";\r\n");
     }   
     write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
@@ -1389,10 +1430,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-      write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
+      write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
       write("          return "+tns+"."+cc+";\r\n");
     }   
-    write("        throw new IllegalArgumentException(\"Unknown "+tns+" code '\"+codeString+\"'\");\r\n");
+    write("        throw new IllegalArgumentException(\"Unknown "+escapeJavaString(tns)+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
     write("        public Enumeration<"+tns+"> fromType(PrimitiveType<?> code) throws FHIRException {\r\n");
     write("          if (code == null)\r\n");
@@ -1405,17 +1446,17 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-      write("        if (\""+c.getCode()+"\".equals(codeString))\r\n");
+      write("        if (\""+escapeJavaString(c.getCode())+"\".equals(codeString))\r\n");
       write("          return new Enumeration<"+tns+">(this, "+tns+"."+cc+", code);\r\n");
     }   
-    write("        throw new FHIRException(\"Unknown "+tns+" code '\"+codeString+\"'\");\r\n");
+    write("        throw new FHIRException(\"Unknown "+escapeJavaString(tns)+" code '\"+codeString+\"'\");\r\n");
     write("        }\r\n"); 
 
     write("    public String toCode("+tns+" code) {\r\n");
     for (ValueSetExpansionContainsComponent c : codes) {
       String cc = Utilities.camelCase(c.getCode());
       cc = makeConst(cc);
-      write("      if (code == "+tns+"."+cc+")\r\n        return \""+c.getCode()+"\";\r\n");
+      write("      if (code == "+tns+"."+cc+")\r\n        return \""+escapeJavaString(c.getCode())+"\";\r\n");
     }
     write("      return \"?\";\r\n"); 
     write("      }\r\n"); 
@@ -1470,7 +1511,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     generateIsEmpty(analysis, ti, true);
     generateFhirType(e.getPath());
     if (config.getAdornments().containsKey(tn)) {
-      write("// Additional Code from "+tn+".java:\r\n");
+      write("// Additional Code from "+sanitizeComment(tn)+".java:\r\n");
       write(config.getAdornments().get(tn)+"\r\n");
       write("// end addition\r\n");
     }
@@ -1652,6 +1693,8 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 
 
 	private ElementDefinition getElementForPath(StructureDefinition structure, String pathname) throws Exception {
+	  @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+	  //single literal character split
 	  String[] path = pathname.split("\\.");
 	  if (!path[0].equals(structure.getName()))
 	    throw new Exception("Element Path '"+pathname+"' is not legal in this context");
@@ -1729,11 +1772,11 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
     childB.append(")\r\n");
     write(childB.toString());
     
-    write(indent+"@Description(shortDefinition=\""+Utilities.escapeJava(replaceTitle(rn, e.getShort()))+"\", formalDefinition=\""+Utilities.escapeJava(replaceTitle(rn, e.getDefinition()))+"\" )\r\n");
+    write(indent+"@Description(shortDefinition=\""+escapeJavaString(replaceTitle(rn, e.getShort()))+"\", formalDefinition=\""+escapeJavaString(replaceTitle(rn, e.getDefinition()))+"\" )\r\n");
     
     if (e.getBinding() != null) {
       if (e.getBinding().getValueSet() != null && !Utilities.noString(e.getBinding().getValueSet())) {
-        write(indent+"@ca.uhn.fhir.model.api.annotation.Binding(valueSet=\"" + noVer(e.getBinding().getValueSet()) + "\")\r\n");
+        write(indent+"@ca.uhn.fhir.model.api.annotation.Binding(valueSet=\""+escapeJavaString(noVer(e.getBinding().getValueSet()))+"\")\r\n");
       }
     }    
   }
@@ -1767,6 +1810,9 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         if (tr.isResourceReference()) {
           for (CanonicalType p : tr.getTargetProfile()) {
             String s = p.getValue().substring(40);
+            if (s.contains("|")) { // remove any version specifier from the canonical
+              s = s.substring(0, s.indexOf("|"));
+            }
             if (s.equalsIgnoreCase("Resource")) {
               b.append("Reference.class");
             } else {
@@ -1910,13 +1956,28 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         write(indent+"  } else if (the" + getTitle(getElementName(e.getName(), false)) + ".size() == 1) {\r\n");
         write(indent+"    this."+getElementName(e.getName(), true)+" = the" + getTitle(getElementName(e.getName(), false)) + ".get(0);\r\n");
         write(indent+"  } else {\r\n");
-        write(indent+"    throw new Error(\"Cannot have more than one "+e.getPath()+"\");\r\n");
+        write(indent+"    throw new Error(\"Cannot have more than one "+escapeJavaString(e.getPath())+"\");\r\n");
         write(indent+"  }\r\n");
 		  } else {
 		    write(indent+"  this."+getElementName(e.getName(), true)+"List = the" + getTitle(getElementName(e.getName(), false)) + ";\r\n");
 		  }
       write(indent+"  return this;\r\n");
 		  write(indent+"}\r\n\r\n");
+
+		  if (inh != null) {
+		    // the class we inherit from declares abstract accessors for this element using the classical 
+		    // naming style (no "List" suffix) - implement them, delegating to the List-style accessors
+		    jdoc(indent, "@return {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
+		    write(indent+"@Override\r\n");
+		    write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
+		    write(indent+"  return get"+getTitle(getElementName(e.getName(), false))+"List();\r\n");
+		    write(indent+"}\r\n\r\n");
+		    jdoc(indent, "@return Returns a reference to <code>this</code> for easy method chaining");
+		    write(indent+"@Override\r\n");
+		    write(indent+"public " + className + " set"+getTitle(getElementName(e.getName(), false))+"(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + ") { \r\n");
+		    write(indent+"  return set"+getTitle(getElementName(e.getName(), false))+"List(the" + getTitle(getElementName(e.getName(), false)) + ");\r\n");
+		    write(indent+"}\r\n\r\n");
+		  }
 
 		  /*
 		   * hasXXX() for repeatable type
@@ -1945,7 +2006,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write(indent+"  if (this."+getElementName(e.getName(), true)+" == null) {\r\n");
           write(indent+"    this."+getElementName(e.getName(), true)+" = new "+tn+"();\r\n");
           write(indent+"  } else {\r\n");
-          write(indent+"    throw new Error(\"Cannot have more than one "+e.getPath()+"\");\r\n");
+          write(indent+"    throw new Error(\"Cannot have more than one "+escapeJavaString(e.getPath())+"\");\r\n");
           write(indent+"  }\r\n");
           write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
 		    } else {
@@ -2001,7 +2062,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		          write(indent+"  if (this."+getElementName(e.getName(), true)+" == null) {\r\n");
 		          write(indent+"    this."+getElementName(e.getName(), true)+" = new "+tn+"();\r\n");
 		          write(indent+"  } else {\r\n");
-		          write(indent+"    throw new Error(\"Cannot have more than one "+e.getPath()+"\");\r\n");
+		          write(indent+"    throw new Error(\"Cannot have more than one "+escapeJavaString(e.getPath())+"\");\r\n");
 		          write(indent+"  }\r\n");
 		          write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");		        
 		        } else {
@@ -2022,7 +2083,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
             write(indent+"  if (this."+getElementName(e.getName(), true)+" == null) {\r\n");
             write(indent+"    this."+getElementName(e.getName(), true)+" = t;\r\n");
             write(indent+"  } else {\r\n");
-            write(indent+"    throw new Error(\"Cannot have more than one "+e.getPath()+"\");\r\n");
+            write(indent+"    throw new Error(\"Cannot have more than one "+escapeJavaString(e.getPath())+"\");\r\n");
             write(indent+"  }\r\n");
 		      } else {
 		        write(indent+"  if (t == null)\r\n");
@@ -2085,7 +2146,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"Element_() { \r\n");
           write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
           write(indent+"    if (Configuration.errorOnAutoCreate())\r\n");
-          write(indent+"      throw new Error(\"Attempt to auto-create "+className+"."+getElementName(e.getName(), true)+"\");\r\n");
+          write(indent+"      throw new Error(\"Attempt to auto-create "+escapeJavaString(className)+"."+escapeJavaString(getElementName(e.getName(), true))+"\");\r\n");
           write(indent+"    else if (Configuration.doAutoCreate())\r\n");
           write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+"); // bb\r\n");
           write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
@@ -2094,7 +2155,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
           write(indent+"public "+tn+" get"+getTitle(getElementName(e.getName(), false))+"Element() { \r\n");
           write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
           write(indent+"    if (Configuration.errorOnAutoCreate())\r\n");
-          write(indent+"      throw new Error(\"Attempt to auto-create "+className+"."+getElementName(e.getName(), true)+"\");\r\n");
+          write(indent+"      throw new Error(\"Attempt to auto-create "+escapeJavaString(className)+"."+escapeJavaString(getElementName(e.getName(), true))+"\");\r\n");
           write(indent+"    else if (Configuration.doAutoCreate())\r\n");
           write(indent+"      this."+getElementName(e.getName(), true)+" = new "+tn+"("+( tn.startsWith("Enum") ? "new "+tn.substring(12, tn.length()-1)+"EnumFactory()" : "")+"); // bb\r\n");
           write(indent+"  return this."+getElementName(e.getName(), true)+";\r\n");
@@ -2164,7 +2225,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
         if (!tn.equals("Resource") && !tn.equals("DataType") && !tn.endsWith(".DataType") && !isAbstract(e.getTypeFirstRep().getCode())) {
           write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
           write(indent+"    if (Configuration.errorOnAutoCreate())\r\n");
-          write(indent+"      throw new Error(\"Attempt to auto-create "+className+"."+getElementName(e.getName(), true)+"\");\r\n");
+          write(indent+"      throw new Error(\"Attempt to auto-create "+escapeJavaString(className)+"."+escapeJavaString(getElementName(e.getName(), true))+"\");\r\n");
           write(indent+"    else if (Configuration.doAutoCreate())\r\n");
           if ("XhtmlNode".equals(tn))
             write(indent+"      this."+getElementName(e.getName(), true)+" = new XhtmlNode(NodeType.Element, \"div\"); // cc.1\r\n");
@@ -2182,7 +2243,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
             write(indent+"  if (this."+getElementName(e.getName(), true)+" == null)\r\n");
             write(indent+"    this."+getElementName(e.getName(), true)+" = new "+ttn+"();\r\n");
             write(indent+"  if (!(this."+getElementName(e.getName(), true)+" instanceof "+ttn+"))\r\n");
-            write(indent+"    throw new FHIRException(\"Type mismatch: the type "+ttn+" was expected, but \"+this."+getElementName(e.getName(), true)+".getClass().getName()+\" was encountered\");\r\n");
+            write(indent+"    throw new FHIRException(\"Type mismatch: the type "+escapeJavaString(ttn)+" was expected, but \"+this."+getElementName(e.getName(), true)+".getClass().getName()+\" was encountered\");\r\n");
             write(indent+"  return ("+ttn+") this."+getElementName(e.getName(), true)+";\r\n");
             write(indent+"}\r\n");
             write("\r\n");
@@ -2207,7 +2268,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
             write(getTypename(t));            
           }
           write("))\r\n");
-          write(indent+"    throw new FHIRException(\"Not the right type for "+e.getPath()+": \"+value.fhirType());\r\n");         
+          write(indent+"    throw new FHIRException(\"Not the right type for "+escapeJavaString(e.getPath())+": \"+value.fhirType());\r\n");         
         }
         write(indent+"  this."+getElementName(e.getName(), true)+" = value;\r\n");
         write(indent+"  return this;\r\n");
@@ -2446,6 +2507,17 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
       write(indent+"  throw new Error(\"The resource type \\\""+analysis.getName()+"\\\" does not implement the property \\\""+e.getName()+"\\\"\"); \r\n");
       write(indent+"}\r\n");
 
+      // the class we inherit from declares abstract accessors for this element using the classical
+      // naming style (no "List" suffix) - implement them, delegating to the List-style accessors
+      write(indent+"@Override\r\n");
+      write(indent+"public List<"+listGenericType+"> get"+getTitle(getElementName(e.getName(), false))+"() { \r\n");
+      write(indent+"  return get"+getTitle(getElementName(e.getName(), false))+"List();\r\n");
+      write(indent+"}\r\n");
+      write(indent+"@Override\r\n");
+      write(indent+"public " + className + " set"+getTitle(getElementName(e.getName(), false))+"(" + "List<"+listGenericType+"> the" + getTitle(getElementName(e.getName(), false)) + ") { \r\n");
+      write(indent+"  return set"+getTitle(getElementName(e.getName(), false))+"List(the" + getTitle(getElementName(e.getName(), false)) + ");\r\n");
+      write(indent+"}\r\n");
+
       /*
        * hasXXX() for repeatable type
        */
@@ -2474,7 +2546,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
          * hasXXX(foo) for repeatable primitive
          */
         jdoc(indent, "@param value {@link #"+getElementName(e.getName(), true)+"} ("+replaceTitle(analysis.getName(), e.getDefinition())+")");
-        write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value); \r\n");
+        write(indent+"public boolean has"+getTitle(getElementName(e.getName(), false))+"("+simpleType+" value) { \r\n");
         write(indent+"  return false;\r\n");
         write(indent+"}\r\n");
       } else {

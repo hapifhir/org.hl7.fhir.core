@@ -5,6 +5,8 @@ import java.io.InputStream;
 
 import org.hl7.fhir.exceptions.FHIRException;
 
+import javax.annotation.Nullable;
+
 public interface IPackageCacheManager {
 
   String getPackageId(String canonicalUrl) throws IOException;
@@ -38,4 +40,11 @@ public interface IPackageCacheManager {
    * @throws IOException
    */
   NpmPackage loadPackage(String idAndVer) throws FHIRException, IOException;
-}
+
+  String getLatestVersion(String statedId, boolean milestonesOnly) throws IOException;
+  String getLatestVersion(String statedId, String versionFilter) throws IOException;
+  NpmPackage loadPackageFromCacheOnly(String id) throws IOException;
+  NpmPackage loadPackageFromCacheOnly(String statedId, @Nullable String version) throws IOException;
+
+
+  }

@@ -167,6 +167,8 @@ public class JsonResourceTemplateFixer {
         break;
       default:
         if (value.startsWith("$choice:")) {
+          @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+          //single literal character split
           String[] list = value.substring(8).replace("$", "").split("\\|");
           for (String n : list) {
             addNamedExtension(parent, name, "value-choice", "string", n);

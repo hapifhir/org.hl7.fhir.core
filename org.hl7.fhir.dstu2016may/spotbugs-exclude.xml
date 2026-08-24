@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!--
+        Generated DSTU2016May model classes contain EC_UNRELATED_TYPES in has*() methods
+        that accept List<StringType> but compare with String via contains(). These are
+        generated code and should not be edited directly.
+    -->
+    <Match>
+        <Bug pattern="EC_UNRELATED_TYPES"/>
+        <Class name="~org\.hl7\.fhir\.dstu2016may\.model\..*"/>
+    </Match>
+</FindBugsFilter>

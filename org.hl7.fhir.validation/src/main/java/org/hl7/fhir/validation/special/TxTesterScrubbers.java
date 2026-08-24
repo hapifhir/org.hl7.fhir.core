@@ -63,7 +63,9 @@ public class TxTesterScrubbers {
           "http://hl7.org/fhir/StructureDefinition/alternate-code-use",
           "http://hl7.org/fhir/StructureDefinition/alternate-code-status",
           "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
-          "http://hl7.org/fhir/test/ValueSet/simple-filter-isa");
+          "http://hl7.org/fhir/test/ValueSet/simple-filter-isa",
+          "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
+          "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason");
     }
     
     @Override
@@ -119,7 +121,7 @@ public class TxTesterScrubbers {
   public static void scrubOperationOutcome(OperationOutcome po, boolean tight) {
     if (po != null) {
       scrubDomainResource(po, tight);
-      po.getIssue().removeIf(i -> i.hasDiagnostics() & !i.hasDetails());
+      po.getIssue().removeIf(i -> i.hasDiagnostics() && !i.hasDetails());
       for (OperationOutcomeIssueComponent iss : po.getIssue()) {
         if (iss.hasDiagnostics() && !iss.getDiagnostics().toLowerCase().contains("x-request-id")) {
           iss.setDiagnostics(null);

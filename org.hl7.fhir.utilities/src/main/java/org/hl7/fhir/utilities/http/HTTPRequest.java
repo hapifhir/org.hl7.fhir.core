@@ -7,6 +7,7 @@ import lombok.With;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 
@@ -34,7 +35,7 @@ public class HTTPRequest {
 
   public HTTPRequest withUrl(String url)  {
     try {
-      return withUrl(new URL(url));
+      return withUrl(URI.create(url).toURL());
     } catch (MalformedURLException e) {
       throw new IllegalArgumentException("Invalid URL: " + url, e);
     }

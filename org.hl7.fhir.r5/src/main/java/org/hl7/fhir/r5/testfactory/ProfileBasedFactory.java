@@ -17,6 +17,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -323,7 +324,7 @@ public class ProfileBasedFactory {
               }
               List<String> choices = new ArrayList<>();
               for (CanonicalType ct : targets) {
-                StructureDefinition sd = fpe.getWorker().fetchResource(StructureDefinition.class, ct.primitiveValue());
+                StructureDefinition sd = fpe.getWorker().fetchResource(StructureDefinition.class, ct.primitiveValue(), ExtensionUtilities.getVersionResolutionRules(ct));
                 if (!Utilities.existsInList(sd.getType(), "Resource", "DomainResource")) {
                   choices.add(sd.getType());
                 }
@@ -452,15 +453,33 @@ public class ProfileBasedFactory {
   }
 
   public Map<String, String> getBaseComplexValue(LogSet ls, PEDefinition pe, String path, Element b) throws SQLException {
-    Map<String, String> result = baseData.getComplexValue(path != null ? path : pe.definition().getId(), b.fhirType());
+    String system = getFixedSystem(pe);
+    Map<String, String> result = baseData.getComplexValue(path != null ? path : pe.definition().getId(), b.fhirType(), system);
     if (result == null) {
-      ls.others.add("No base data for "+path+":"+b.fhirType());
+      ls.others.add("No base data for "+path+":"+b.fhirType()+(system == null ? "" : " (system "+system+")"));
     } else {
-      ls.others.add("Base data for "+path+":"+b.fhirType()+" = "+result.toString());
+      ls.others.add("Base data for "+path+":"+b.fhirType()+(system == null ? "" : " (system "+system+")")+" = "+result.toString());
     }
     return result;
   }
 
+  /**
+   * If the profile fixes the system child of this element (fixed or pattern - e.g. Coding.system,
+   * Quantity.system, Identifier.system, ContactPoint.system), return that system so that random
+   * base data draws can be constrained to rows that are coherent with it.
+   */
+  private String getFixedSystem(PEDefinition pe) {
+    for (PEDefinition child : pe.directChildren(true)) {
+      if ("system".equals(child.schemaName()) && child.hasFixedValue()) {
+        Base fv = child.definition().hasPattern() ? child.definition().getPattern() : child.definition().getFixed();
+        if (fv != null && fv.isPrimitive()) {
+          return fv.primitiveValue();
+        }
+      }
+    }
+    return null;
+  }
+  
   public String getBasePrimitiveValue(LogSet ls, PEDefinition pe, String path, Element b) throws SQLException {
     String result = baseData.getPrimitiveValue(path != null ? path : pe.definition().getId(), b.fhirType());
     if (result == null) {

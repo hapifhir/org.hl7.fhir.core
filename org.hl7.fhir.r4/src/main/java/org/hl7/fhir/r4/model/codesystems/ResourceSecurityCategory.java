@@ -165,7 +165,7 @@ public enum ResourceSecurityCategory {
     case PATIENT:
       return "Patient Sensitive";
     case NOTCLASSIFIED:
-      return "Not classified";
+      return "No Dominant Category";
     case NULL:
       return null;
     default:

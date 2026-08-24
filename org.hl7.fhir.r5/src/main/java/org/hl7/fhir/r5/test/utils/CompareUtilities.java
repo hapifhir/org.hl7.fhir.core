@@ -3,12 +3,9 @@ package org.hl7.fhir.r5.test.utils;
 import lombok.Getter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.utilities.*;
-import org.hl7.fhir.utilities.filesystem.CSFile;
+import org.hl7.fhir.utilities.regex.RegexConstants;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
-import org.hl7.fhir.utilities.json.JsonUtilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonNull;
@@ -107,6 +104,8 @@ public class CompareUtilities extends BaseTestingUtilities {
         List<String> fragments = readChoices(expected.substring(11, expected.length()-1));
         return "Contains all of "+fragments.toString();
       } else if (expected.startsWith("$external:")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] cmd = expected.substring(1, expected.length() - 1).split(":");
         if (externals != null) {
           String s = externals.asString(cmd[1]);
@@ -363,7 +362,7 @@ public class CompareUtilities extends BaseTestingUtilities {
           String s = compareNodes(id, path + '.' + n, expectedJsonObject.get(n), en.getValue(), countOnlys.contains(n), n, actualJsonObject);
           if (!Utilities.noString(s))
             return s;
-        } else if (!patternMode) {
+        } else if (!patternMode && !optionals.contains(n)) {
           return "properties differ at " + path + ": unexpected property " + n;
         }
       }
@@ -570,6 +569,10 @@ public class CompareUtilities extends BaseTestingUtilities {
       return modes == null || !modes.contains(token.substring(1));
     } else if (token.startsWith("warning:")) {
       return true;
+    } else if (token.startsWith("version:")) {
+      String v = variables.get("version");
+      String t = token.substring(8);
+      return v != null && v.startsWith(t);
     } else {
       return modes != null && modes.contains(token);
     }
@@ -599,6 +602,8 @@ public class CompareUtilities extends BaseTestingUtilities {
         }
         return true;
       } else if (expectedJsonString.startsWith("$external:")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //single literal character split
         String[] cmd = expectedJsonString.substring(1, expectedJsonString.length() - 1).split("\\:");
         if (externals != null) {
           String s = externals.asString(cmd[1]);
@@ -617,14 +622,20 @@ public class CompareUtilities extends BaseTestingUtilities {
       } else {
         switch (expectedJsonString) {
         case "$$" : return true;
-        case "$instant$": return actualJsonString.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]{1,9})?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))");
-        case "$date$": return actualJsonString.matches("([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]{1,9})?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?");
-        case "$uuid$": return actualJsonString.matches("urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+        case "$instant$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.INSTANT_REGEX); return r; }
+        case "$date$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.DATE_REGEX); return r; }
+        case "$uuid$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.URN_UUID_REGEX); return r; }
         case "$string$": return actualJsonString.equals(actualJsonString.trim());
-        case "$id$": return actualJsonString.matches("[A-Za-z0-9\\-\\.]{1,64}");
-        case "$url$": return actualJsonString.matches("(https?://|www\\.)[-a-zA-Z0-9+&@#/%?=~_|!:.;]*[-a-zA-Z0-9+&@#/%=~_|]");
-        case "$token$": return actualJsonString.matches("[0-9a-zA-Z_][0-9a-zA-Z_\\.\\-]*");
-        case "$semver$": return actualJsonString.matches("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$");
+        case "$id$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.ID_REGEX); return r; }
+        case "$url$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.URL_REGEX); return r; }
+        case "$token$": { @SuppressWarnings("checkstyle:stringImplicitPatternUsage") //Regex sourced from known RegexConstants; reviewed in RegexConstants
+          boolean r = actualJsonString.matches(RegexConstants.TOKEN_REGEX); return r; }
+        case "$semver$": return VersionUtilities.isSemVer(actualJsonString, false);
         case "$version$": return matchesVariable(actualJsonString, "version");
         default: 
           throw new Error("Unhandled template: "+expectedJsonString);
@@ -648,7 +659,10 @@ public class CompareUtilities extends BaseTestingUtilities {
 
   private List<String> readChoices(String s) {
     List<String> list = new ArrayList<>();
-    for (String p : s.split("\\|")) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //single literal character split
+    String[] sParts = s.split("\\|");
+    for (String p : sParts) {
       list.add(p);
     }
     return list;

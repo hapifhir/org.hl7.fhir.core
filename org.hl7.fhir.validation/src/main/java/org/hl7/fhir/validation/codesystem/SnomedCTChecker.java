@@ -65,7 +65,7 @@ public class SnomedCTChecker extends CodeSystemChecker {
 
   @Override
   public void listPropertyNames(List<String> knownNames) { 
-    // list from http://tx.fhir.org/r4/ValueSet/$expand?url=http://snomed.info/sct?fhir_vs=isa/410662002
+    // list from https://tx.fhir.org/r4/ValueSet/$expand?url=http://snomed.info/sct?fhir_vs=isa/410662002
     addName(knownNames, "concept");
     addName(knownNames, "constraint");
     addName(knownNames, "expressions");

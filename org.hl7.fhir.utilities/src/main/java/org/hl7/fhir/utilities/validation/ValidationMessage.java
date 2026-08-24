@@ -558,6 +558,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   private String comment;
   private List<ValidationMessage> sliceInfo;
   private int count;
+  private String validationContext;
 
   @Getter private String diagnostics;
 
@@ -1132,6 +1133,15 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
 
     return true;
+  }
+
+  public String getValidationContext() {
+    return validationContext;
+  }
+
+  public ValidationMessage setValidationContext(String validationContext) {
+    this.validationContext = validationContext;
+    return this;
   }
 
   public ValidationMessage setDiagnostics(String diagnostics) {

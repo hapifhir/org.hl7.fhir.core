@@ -564,7 +564,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     return false;
   }
 
-  public static void markStatus(@Nonnull CodeSystem cs, String wg, StandardsStatus status, String fmm, String normativeVersion) throws FHIRException {
+  public static void markStatus(@Nonnull CodeSystem cs, String wg, StandardsStatus status, String fmm, String normativeVersion, String thisVersion) throws FHIRException {
     if (wg != null) {
       if (!ExtensionUtilities.hasExtension(cs, ExtensionDefinitions.EXT_WORKGROUP) || 
           (Utilities.existsInList(ExtensionUtilities.readStringExtension(cs, ExtensionDefinitions.EXT_WORKGROUP), "fhir", "vocab") && !Utilities.existsInList(wg, "fhir", "vocab"))) {
@@ -574,7 +574,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     if (status != null) {
       StandardsStatus ss = ExtensionUtilities.getStandardsStatus(cs);
       if (ss == null || ss.isLowerThan(status)) 
-        ExtensionUtilities.setStandardsStatus(cs, status, normativeVersion);
+        ExtensionUtilities.setStandardsStatus(cs, status, normativeVersion, thisVersion);
       if (status == StandardsStatus.NORMATIVE) {
         cs.setStatus(PublicationStatus.ACTIVE);
       }
@@ -790,7 +790,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
     } else if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm")) {
       return new SystemReference("RxNorm", "http://www.nlm.nih.gov/research/umls/rxnorm");
     } else if (ctxt != null) {
-      CodeSystem cs = ctxt.fetchCodeSystem(system);
+      CodeSystem cs = ctxt.fetchCodeSystem(system, IWorkerContext.VersionResolutionRules.defaultRule());
       if (cs != null && cs.hasWebPath()) {
         return new SystemReference(cs.present(), cs.getWebPath(), Utilities.isAbsoluteUrl(cs.getWebPath()));
       } else if (cs != null) {
@@ -841,6 +841,7 @@ public class CodeSystemUtilities extends TerminologyUtilities {
 
   public static CodeSystem mergeSupplements(@Nonnull CodeSystem cs, @Nonnull List<CodeSystem> supplements) {
     CodeSystem ret = cs.copy();
+    ret.setUserData(UserDataNames.CS_SUPPLEMENT_LIST, supplements);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (CodeSystem sup : supplements) {
       b.append(sup.getVersionedUrl());      

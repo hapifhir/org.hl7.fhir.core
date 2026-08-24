@@ -35,6 +35,7 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
+import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
@@ -230,7 +231,7 @@ public class SnapShotGenerationXTests {
     }
 
     @Override
-    public BindingResolution resolveBinding(StructureDefinition def, String url, String path) throws FHIRException {
+    public BindingResolution resolveBinding(StructureDefinition def, String url, String path, org.hl7.fhir.r5.model.Element ctxt) throws FHIRException {
       BindingResolution br = new BindingResolution();
       br.url = path + "/something.html";
       br.display = "something";
@@ -432,6 +433,7 @@ public class SnapShotGenerationXTests {
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String id, TestDetails test, SnapShotGenerationTestsContext context) throws Exception {
+    XVerExtensionManagerFactory.setNewLoader(true);
     version = test.version;
     this.context = context;
     if (fp == null)
@@ -568,10 +570,10 @@ public class SnapShotGenerationXTests {
       throw e;
     }
     if (output.getDifferential().hasElement()) {
-      RenderingContext rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+      RenderingContext rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
       rc.setDestDir(makeTempDir());
       rc.setProfileUtilities(new ProfileUtilities(TestingUtilities.getSharedWorkerContext(), null, new TestPKP()));
-      RendererFactory.factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
+      new RendererFactory().factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
     }
     if (!fail) {
       String folder = Utilities.path("[tmp]", "snapshotX");

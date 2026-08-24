@@ -37,6 +37,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
@@ -157,7 +158,7 @@ public class ProfileValidator extends BaseValidator {
   private boolean checkExtensions(StructureDefinition profile, List<ValidationMessage> errors, String kind, ElementDefinition ec) {
     if (!ec.getType().isEmpty() && "Extension".equals(ec.getType().get(0).getWorkingCode()) && ec.getType().get(0).hasProfile()) {
       String url = ec.getType().get(0).getProfile().get(0).getValue();
-      StructureDefinition defn = context.fetchResource(StructureDefinition.class, url);
+      StructureDefinition defn = context.fetchResource(StructureDefinition.class, url, ExtensionUtilities.getVersionResolutionRules(ec.getType().get(0).getProfile().get(0)));
       if (defn == null) {
         defn = getXverExt(profile, errors, url);
       }

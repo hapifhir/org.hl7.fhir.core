@@ -67,7 +67,10 @@ public interface IOIDServices {
 
     public void addOID(OIDDefinition d) {
       for (OIDDefinition t : definitions) {
-        if (d.matches(t)) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: not using String.matches
+        boolean isMatch = d.matches(t);
+        if (isMatch) {
           return;
         }
       }

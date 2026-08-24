@@ -9,9 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
@@ -25,6 +28,7 @@ import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper.ElementKind;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
+import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
@@ -50,8 +54,7 @@ public abstract class ResourceRenderer extends DataRenderer {
   protected XVerExtensionManager xverManager;
   protected boolean multiLangMode;
   protected boolean inner;
-  
-  
+
   public ResourceRenderer(RenderingContext context) {
     super(context);
   }
@@ -197,13 +200,13 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   public String canonicalTitle(ResourceWrapper r) {
-    if (r.has("title")) {
+    if (r.hasPrimitiveValue("title")) {
       return r.primitiveValue("title");
     }
-    if (r.has("name")) {
+    if (r.hasPrimitiveValue("name")) {
       return r.primitiveValue("name");
     }
-    if (r.has("id")) {
+    if (r.hasPrimitiveValue("id")) {
       return r.primitiveValue("id");
     }
     return "?title?";
@@ -232,10 +235,14 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   public <T extends Resource> void renderCanonical(RenderingStatus status, XhtmlNode x, Class<T> class_, ResourceWrapper canonical) throws UnsupportedEncodingException, IOException {
     if (!renderPrimitiveWithNoValue(status, x, canonical)) {
-      CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), null, canonical.getResourceNative());
+      CanonicalResource target = (CanonicalResource) context.getWorker().fetchResource(class_, canonical.primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(canonical.getBase()), null, canonical.getResourceNative());
+      if (target == null) {
+        target = (CanonicalResource) context.getWorker().findTxResource(class_, canonical.primitiveValue(), ExtensionUtilities.getVersionResolutionRulesBase(canonical.getBase()), null, canonical.getResourceNative());
+      }
       if (target != null && target.hasWebPath()) {
         if (canonical.primitiveValue().contains("|")) {
-          x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present()+ context.formatPhrase(RenderingContext.RES_REND_VER) +target.getVersion()+")");
+          x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present());
+          x.tx(" "+context.formatPhrase(RenderingI18nContext.RES_REND_VER, target.getVersion()));
         } else {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present());
         }
@@ -248,7 +255,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (rr.getResource() == null) {
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(canonical.primitiveValue());        
       } else {
-        x.ah(context.prefixLocalHref(rr.getWebPath())).tx(RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));        
+        x.ah(context.prefixLocalHref(rr.getWebPath())).tx(context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
       }
     }
   }
@@ -259,7 +266,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       return "";
     }
     String url = canonical.primitiveValue();
-    Resource target = context.getWorker().fetchResource(Resource.class, url, null, canonical.getResourceNative());
+    Resource target = context.getWorker().fetchResource(Resource.class, url, ExtensionUtilities.getVersionResolutionRulesBase(canonical.getBase()), null, canonical.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
       return url;       
     } else {
@@ -300,7 +307,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         } else {
           String disp;
           try {
-            disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
+            disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
           } catch (IOException e) {
             disp = e.getMessage();
           }
@@ -337,9 +344,9 @@ public abstract class ResourceRenderer extends DataRenderer {
       return;
     }
     String url = canonical.asStringValue();
-    Resource target = context.getWorker().fetchResource(Resource.class, url, null, res.getResourceNative());
+    Resource target = context.getWorker().fetchResource(Resource.class, url, ExtensionUtilities.getVersionResolutionRules(canonical), null, res.getResourceNative());
     if (target == null || !(target instanceof CanonicalResource)) {
-      NamingSystem ns = context.getContextUtilities().fetchNamingSystem(url);
+      NamingSystem ns = NamingSystemUtilities.getNamingSystem(context.getContext(), url);
       if (ns != null) {
         x.code().tx(url);
         if (lang!=null)
@@ -354,7 +361,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (!target.hasWebPath()) {
         if (url.contains("|")) {
           x.code().tx(cr.getUrl());
-          x.tx(context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion()));
+          x.tx(context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion()));
           if (lang!=null)
             x.tx(" ("+cr.present(lang)+")");
           else
@@ -369,9 +376,9 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else {
         if (url.contains("|")) {
           if (lang!=null)
-            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang)+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang)+ context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion())+")");
           else
-            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion())+")");
         } else {
           if (lang!=null)
             x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang));
@@ -420,7 +427,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : rr.getUrlReference();
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
       } else if (rr.getResource() != null) {
-        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
+        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
       } else {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : "?rref2?";
@@ -451,7 +458,10 @@ public abstract class ResourceRenderer extends DataRenderer {
       url = url.substring(0, url.indexOf("/_hist"));
     }
     
-    if (url.matches(Constants.LOCAL_REF_REGEX)) {
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //Regex sourced from known Constants.LOCAL_REF_REGEX; anchored segments, safe
+    boolean urlMatchesLocal = url.matches(Constants.LOCAL_REF_REGEX);
+    if (urlMatchesLocal) {
       return true;
     } else {
       return false;
@@ -473,14 +483,14 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (tr != null && tr.getWebPath() != null) {
           link = tr.getWebPath();
         } else if (r.getReference().contains("?")) {
-          text.append(context.formatPhrase(RenderingContext.RES_REND_COND_REF)+" ");
+          text.append(context.formatPhrase(RenderingI18nContext.RES_REND_COND_REF)+" ");
         } else {
           link = r.getReference();
         }
       } 
     }
     if (tr != null && tr.getWebPath() != null && tr.getWebPath().startsWith("#")) {
-      text.append(context.formatPhrase(RenderingContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
+      text.append(context.formatPhrase(RenderingI18nContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
     }
     // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
     String display = r.hasDisplayElement() ? r.getDisplay() : null;
@@ -524,7 +534,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (name != null) {
         text.append(name);
       } else {
-        text.append(context.formatPhrase(RenderingContext.RES_REND_DESC));
+        text.append(context.formatPhrase(RenderingI18nContext.RES_REND_DESC));
       }
     }
     if (tr != null && tr.getWebPath() != null && tr.getWebPath().startsWith("#")) {
@@ -548,14 +558,14 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (trt != null && trt.getWebPath() != null) {
           link = trt.getWebPath();
         } else if (r.primitiveValue("reference").contains("?")) {
-          text.append(context.formatPhrase(RenderingContext.RES_REND_COND_REF)+" ");
+          text.append(context.formatPhrase(RenderingI18nContext.RES_REND_COND_REF)+" ");
         } else {
           link = r.primitiveValue("reference");
         }
       } 
     }
     if (trt != null && trt.getWebPath() != null && trt.getWebPath().startsWith("#")) {
-      text.append(context.formatPhrase(RenderingContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
+      text.append(context.formatPhrase(RenderingI18nContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
     }
     // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
     String display = r.has("display") ? r.primitiveValue("display") : null;
@@ -599,7 +609,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (name != null) {
         text.append(name);
       } else {
-        text.append(context.formatPhrase(RenderingContext.RES_REND_DESC));
+        text.append(context.formatPhrase(RenderingI18nContext.RES_REND_DESC));
       }
     }
     if (trt != null && trt.getWebPath() != null && trt.getWebPath().startsWith("#")) {
@@ -641,11 +651,11 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else { 
         ResourceWithReference rr = resolveReference(resource, uri.primitiveValue(), false);
         if (rr != null) {
-          x.ah(rr.getWebPath()).addText(RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));           
+          x.ah(rr.getWebPath()).addText(context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
         } else {
-          Resource r = context.getContext().fetchResource(Resource.class, v); 
+          Resource r = context.getContext().fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRules(uri));
           if (r != null && r.getWebPath() != null) { 
-              x.ah(context.prefixLocalHref(r.getWebPath())).addText(RendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));           
+              x.ah(context.prefixLocalHref(r.getWebPath())).addText(context.getRendererFactory().factory(r, context.forContained()).buildSummary(wrap(r)));
           } else { 
             String url = context.getResolver() != null ? context.getResolver().resolveUri(context, v) : null; 
             if (url != null) {           
@@ -683,14 +693,14 @@ public abstract class ResourceRenderer extends DataRenderer {
           if (rr.getResource() == null) {
             x.ah(context.prefixLocalHref(rr.getWebPath())).addText(rr.getUrlReference());
           } else {
-            x.ah(context.prefixLocalHref(rr.getWebPath())).addText(RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
+            x.ah(context.prefixLocalHref(rr.getWebPath())).addText(context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
           }
         } else {
-          Resource r = context.getContext().fetchResource(Resource.class, v); 
+          Resource r = context.getContext().fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRulesBase(uri.getBase()));
           if (r != null && r.getWebPath() != null) { 
-              x.ah(context.prefixLocalHref(r.getWebPath())).addText(RendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));           
+              x.ah(context.prefixLocalHref(r.getWebPath())).addText(context.getRendererFactory().factory(r, context.forContained()).buildSummary(wrap(r)));
           } else if (r != null) { 
-            x.ah(context.prefixLocalHref(v)).addText(RendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));           
+            x.ah(context.prefixLocalHref(v)).addText(context.getRendererFactory().factory(r, context.forContained()).buildSummary(wrap(r)));
           } else { 
             String url = context.getResolver() != null ? context.getResolver().resolveUri(context, v) : null; 
             if (url != null) {           
@@ -713,11 +723,11 @@ public abstract class ResourceRenderer extends DataRenderer {
    * @param <T>
    */
   protected <T extends Resource> T findCanonical(Class<T> class_, UriType canonical, ResourceWrapper sourceOfReference) {
-    return context.getContext().fetchResource(class_, canonical.asStringValue(), null, sourceOfReference.getResourceNative());
+    return context.getContext().fetchResource(class_, canonical.asStringValue(), ExtensionUtilities.getVersionResolutionRules(canonical), null, sourceOfReference.getResourceNative());
   }
 
   protected <T extends Resource> T findCanonical(Class<T> class_, String canonical, ResourceWrapper sourceOfReference) {
-    return context.getContext().fetchResource(class_, canonical, null, sourceOfReference.getResourceNative());
+    return context.getContext().fetchResource(class_, canonical, IWorkerContext.VersionResolutionRules.defaultRule(), null, sourceOfReference.getResourceNative());
   }
 
 
@@ -770,7 +780,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           return rr;
         }
       }
-      Resource r = context.getWorker().fetchResource(Resource.class, url, version, resource == null ? null : resource.getResourceNative());
+      Resource r = context.getWorker().fetchResource(Resource.class, url, IWorkerContext.VersionResolutionRules.defaultRule(), version, resource == null ? null : resource.getResourceNative());
       if (r != null) {
         return new ResourceWithReference(ResourceReferenceKind.EXTERNAL, url, r.getWebPath(), wrap(r));
       }
@@ -870,7 +880,7 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   public String displayReference(Resource res, Reference r) throws UnsupportedEncodingException, IOException {
-    return (context.formatPhrase(RenderingContext.GENERAL_TODO)); 
+    return (context.formatPhrase(RenderingI18nContext.GENERAL_TODO)); 
    }
 
    public Base parseType(String string, String type) {
@@ -879,16 +889,16 @@ public abstract class ResourceRenderer extends DataRenderer {
 
    protected String describeStatus(PublicationStatus status, boolean experimental) {
      switch (status) {
-     case ACTIVE: return experimental ? (context.formatPhrase(RenderingContext.GENERAL_EXPER)) : (context.formatPhrase(RenderingContext.RES_REND_ACT)); 
-     case DRAFT: return (context.formatPhrase(RenderingContext.RES_REND_DRAFT));
-     case RETIRED: return (context.formatPhrase(RenderingContext.RES_REND_RET));
-     default: return (context.formatPhrase(RenderingContext.RES_REND_UNKNOWN));
+     case ACTIVE: return experimental ? (context.formatPhrase(RenderingI18nContext.GENERAL_EXPER)) : (context.formatPhrase(RenderingI18nContext.RES_REND_ACT)); 
+     case DRAFT: return (context.formatPhrase(RenderingI18nContext.RES_REND_DRAFT));
+     case RETIRED: return (context.formatPhrase(RenderingI18nContext.RES_REND_RET));
+     default: return (context.formatPhrase(RenderingI18nContext.RES_REND_UNKNOWN));
      }
    }
 
    protected void renderCommitteeLink(XhtmlNode x, CanonicalResource cr) {
      String code = ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_WORKGROUP);
-     CodeSystem cs = context.getWorker().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group");
+     CodeSystem cs = context.getWorker().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group", IWorkerContext.VersionResolutionRules.defaultRule());
      if (cs == null || !cs.hasWebPath())
        x.tx(code);
      else {
@@ -972,21 +982,21 @@ public abstract class ResourceRenderer extends DataRenderer {
         boolean sfirst = true;
         p = plateStyle(div.para());
         if (versionId != null) {
-          p.tx(context.formatPhrase(RenderingContext.RES_REND_VER, versionId.primitiveValue()));
+          p.tx(context.formatPhrase(RenderingI18nContext.RES_REND_VER, versionId.primitiveValue()));
           sfirst = false;
         }
         if (lastUpdated != null) {
           if (!sfirst) {
             p.tx("; ");
           }
-          p.tx(context.formatPhrase(RenderingContext.RES_REND_UPDATED, displayDataType(lastUpdated)));
+          p.tx(context.formatPhrase(RenderingI18nContext.RES_REND_UPDATED, displayDataType(lastUpdated)));
           sfirst = false;
         }
         if (lang != null) {
           if (!sfirst) {
             p.tx("; ");
           }
-          p.tx(context.formatPhrase(RenderingContext.RES_REND_LANGUAGE, lang));
+          p.tx(context.formatPhrase(RenderingI18nContext.RES_REND_LANGUAGE, lang));
           sfirst = false;
         }
         if (source != null) {
@@ -996,7 +1006,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           XhtmlNode pp = plateStyle(div.para());
           pp.startScript("source");
           renderDataType(status, pp.param("source"), source);
-          pp.execScript(context.formatPhrase(RenderingContext.RES_REND_INFO_SOURCE));
+          pp.execScript(context.formatPhrase(RenderingI18nContext.RES_REND_INFO_SOURCE));
           pp.closeScript();
           sfirst = false;
         }
@@ -1004,14 +1014,14 @@ public abstract class ResourceRenderer extends DataRenderer {
           if (!sfirst) {
             p.tx("; ");
           }
-          plateStyle(div.para()).b().tx(context.formatPhrase(RenderingContext.RES_REND_SPEC_RULES, ir));     
+          plateStyle(div.para()).b().tx(context.formatPhrase(RenderingI18nContext.RES_REND_SPEC_RULES, ir));     
           sfirst = false;
         }
         if (meta != null) {
           List<ResourceWrapper> items = meta.children("profile");
           if (!items.isEmpty()) {
             p = plateStyle(div.para());
-            p.tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_PROF), items.size())+": ");
+            p.tx(Utilities.pluralize(context.formatPhrase(RenderingI18nContext.GENERAL_PROF), items.size())+": ");
             boolean first = true;
             for (ResourceWrapper bw : items) {
               if (first) first = false; else p.tx(", ");
@@ -1021,7 +1031,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           items = meta.children("tag");
           if (!items.isEmpty()) {
             p = plateStyle(div.para());
-            p.tx(Utilities.pluralize(context.formatPhrase(RenderingContext.RES_REND_TAG), items.size())+": ");
+            p.tx(Utilities.pluralize(context.formatPhrase(RenderingI18nContext.RES_REND_TAG), items.size())+": ");
             boolean first = true;
             for (ResourceWrapper bw : items) {
               if (first) first = false; else p.tx(", ");
@@ -1031,7 +1041,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           items = meta.children("security");
           if (!items.isEmpty()) {
             p = plateStyle(div.para());
-            p.tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_SECURITY_LABEL), items.size())+": ");
+            p.tx(Utilities.pluralize(context.formatPhrase(RenderingI18nContext.GENERAL_SECURITY_LABEL), items.size())+": ");
             boolean first = true;
             for (ResourceWrapper bw : items) {
               if (first) first = false; else p.tx(", ");
@@ -1058,7 +1068,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 //      render(dr);
 //    } catch (Exception e) {
 //      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-//      x.para().tx(context.formatPhrase(RenderingContext.RES_REND_ERROR, e.getMessage())+" ");
+//      x.para().tx(context.formatPhrase(RenderingI18nContext.RES_REND_ERROR, e.getMessage())+" ");
 //      dr.setText(null);
 //      inject(dr, x, NarrativeStatus.GENERATED);   
 //    }
@@ -1186,26 +1196,26 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode tr;
     if (cr.has("url")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL)+":");
       xlinkNarrative(tr.td(), cr.child("url")).code().tx(cr.primitiveValue("url"));
     } else if (cr.hasExtension(EXT_NS_URL)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL)+":");
       xlinkNarrative(tr.td(), cr.extension(EXT_NS_URL)).code().tx(cr.extensionString(EXT_NS_URL));
     } else if (!context.isContained()) {                                          
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL));
       tr.td();      
     }
     if (cr.has("version")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_VER)+":");
       renderDataType(status, tr.td(), cr.child("version"));
     } else if (cr.hasExtension("http://terminology.hl7.org/StructureDefinition/ext-namingsystem-version")) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_VER)+":");
       renderDataType(status, tr.td(), cr.extensionValue("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
@@ -1223,44 +1233,44 @@ public abstract class ResourceRenderer extends DataRenderer {
     
     if (name != null) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_NAME)+":");
       xlinkNarrative(tr.td(), cr.child("name")).tx(name);
     }
     
     if (title != null && !title.equalsIgnoreCase(name)) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_TITLE)+":");
       xlinkNarrative(tr.td(), cr.child("title")).tx(title);
     }
 
     if (cr.has("status") && !context.isContained()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_STATUS)+":");
       xlinkNarrative(tr.td(), cr.child("status")).tx(describeStatus(status, cr));
     }
 
     if (cr.has("description")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINITION)+":");
       xlinkNarrative(tr.td(), cr.child("description")).markdown(context.getTranslated(cr.child("description")), "description");
     }
 
     if (cr.has("publisher")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CANON_REND_PUBLISHER)+":");
       buildPublisherLinks( tr.td(), cr);
     }
     
     if (cr.hasExtension(ExtensionDefinitions.EXT_WORKGROUP)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CANON_REND_COMMITTEE)+":");
       renderCommitteeLink(tr.td(), cr);
     }
 
     if (cr.has("copyright")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_COPYRIGHT)+":");
       xlinkNarrative(tr.td(), cr.child("copyright")).markdown(context.getTranslated(cr.child("copyright")), "copyright");
     }
     
@@ -1268,7 +1278,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       status.setExtensions(true);
       // Use hard-coded spec link to point to current spec because DSTU2 had maturity listed on a different page
       tr = tbl.tr();
-      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingI18nContext.CANON_REND_COMMITTEE)+":");
       renderDataType(status, tr.td(), cr.extensionValue(ExtensionDefinitions.EXT_FMM_LEVEL));
     }    
   }
@@ -1287,26 +1297,26 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode tr;
     if (cr.hasUrl()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL)+":");
       tr.td().code().tx(cr.getUrl());
     } else if (cr.hasExtension(EXT_NS_URL)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL));
       tr.td().code().tx(ExtensionUtilities.readStringExtension(cr, EXT_NS_URL)+":");
     } else if (!context.isContained()) {                                          
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL));
       tr.td();      
     }
     if (cr.hasVersion()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_VER)+":");
       tr.td().tx(cr.getVersion());
     } else if (cr.hasExtension("http://terminology.hl7.org/StructureDefinition/ext-namingsystem-version")) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_VER)+":");
       tr.td().tx(ExtensionUtilities.readStringExtension(cr, "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
@@ -1315,44 +1325,44 @@ public abstract class ResourceRenderer extends DataRenderer {
     
     if (name != null) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_NAME)+":");
       tr.td().tx(name);
     }
     
     if (title != null && !title.equalsIgnoreCase(name)) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_TITLE)+":");
       tr.td().tx(title);
     }
 
     if (cr.hasStatus() && !context.isContained()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_STATUS)+":");
       tr.td().tx(describeStatus(status, cr));
     }
 
     if (cr.hasDescription()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINITION)+":");
       tr.td().markdown(cr.getDescription(), "description");
     }
 
     if (cr.hasPublisher()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CANON_REND_PUBLISHER)+":");
       buildPublisherLinks(tr.td(), cr);
     }
     
     if (cr.hasExtension(ExtensionDefinitions.EXT_WORKGROUP)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CANON_REND_COMMITTEE)+":");
       renderCommitteeLink(tr.td(), cr);
     }
 
     if (cr.hasCopyright()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_COPYRIGHT)+":");
       tr.td().markdown(cr.getDescription(), "copyright");      
     }
     
@@ -1360,7 +1370,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       status.setExtensions(true);
       // Use hard-coded spec link to point to current spec because DSTU2 had maturity listed on a different page
       tr = tbl.tr();
-      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingI18nContext.CANON_REND_COMMITTEE)+":");
       tr.td().tx(ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_FMM_LEVEL));
     }    
   }
@@ -1368,7 +1378,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 
   protected void renderCommitteeLink(XhtmlNode x, ResourceWrapper cr) {
     String code = cr.extensionString(ExtensionDefinitions.EXT_WORKGROUP);
-    CodeSystem cs = context.getContext().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group");
+    CodeSystem cs = context.getContext().fetchCodeSystem("http://terminology.hl7.org/CodeSystem/hl7-work-group", IWorkerContext.VersionResolutionRules.defaultRule());
     if (cs == null || !cs.hasWebPath())
       x.tx(code);
     else {
@@ -1564,7 +1574,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         context.addAnchor(id);
         x.an(context.prefixAnchor(id));
       }
-      RendererFactory.factory(c, context.forContained()).setInner(true).buildNarrative(status, x, c);
+      context.getRendererFactory().factory(c, context.forContained()).setInner(true).buildNarrative(status, x, c);
     }
   }
 
@@ -1585,8 +1595,15 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
 
-  public static void renderVersionReference(RenderingContext context, Resource tgt, String statedVersion, String actualVersion, boolean fromPackages, XhtmlNode x, boolean fromThisPackage, String type, String none_phrase) {
-    if (statedVersion != null && actualVersion != null && !statedVersion.equals(actualVersion) && fromPackages) {
+  public static void renderVersionReference(RenderingContext context, Resource tgt, String statedVersion, IWorkerContext.VersionResolutionRules resolutionMethod, String actualVersion, boolean fromPackages, XhtmlNode x, boolean fromThisPackage, String type, String none_phrase) {
+    if (resolutionMethod == IWorkerContext.VersionResolutionRules.LATEST) {
+      x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_LATEST, actualVersion));
+      x.tx("\uD83D\uDE80");
+      x.tx(" Latest");
+      XhtmlNode span = x.span();
+      span.style(context.getOpacity());
+      span.tx(" ("+actualVersion+")");
+    } else if (statedVersion != null && actualVersion != null && !statedVersion.equals(actualVersion) && fromPackages) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_WILDCARD_BY_PACKAGE, statedVersion, actualVersion));
       x.tx("\uD83D\uDCCD");
       x.tx(actualVersion);
@@ -1597,7 +1614,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx("\uD83D\uDCCD");
       x.tx(actualVersion);
       XhtmlNode span = x.span();
-      span.style("opacity: 0.5");
+      span.style(context.getOpacity());
       span.tx(" → ");
       span.tx(statedVersion);
     } else if (statedVersion != null) {
@@ -1614,7 +1631,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.tx(actualVersion);
     } else if (actualVersion != null) {
       x.attribute("title", context.formatPhrase(RenderingI18nContext.VS_VERSION_FOUND, actualVersion));
-      x.style("opacity: 0.5");
+      x.style(context.getOpacity());
       x.tx("\u23FF");
       x.tx(actualVersion);
     } else if (tgt != null) {

@@ -4,6 +4,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Enumeration;
 
@@ -51,7 +52,7 @@ public class CapabilityStatementUtilities {
 
     CapabilityStatement resolvedCS = targetCS.copy();
     for (CanonicalType canonical: resolvedCS.getImports()) {
-      CapabilityStatement importedCS = context.fetchResource(CapabilityStatement.class, canonical.getValue());
+      CapabilityStatement importedCS = context.fetchResource(CapabilityStatement.class, canonical.getValue(), ExtensionUtilities.getVersionResolutionRules(canonical));
       if (importedCS == null)
         throw new FHIRException("Unable to resolve CapabilityStatement " + canonical.getValue() + " imported by " + targetCS.getUrl());
       String importConformance = effectiveConformance(canonical.getExtensionString(ExtensionDefinitions.EXT_CAP_STMT_EXPECT), conformance);

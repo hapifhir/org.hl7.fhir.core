@@ -6,23 +6,25 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.utilities.IniFile;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.HTTPResult;
+import org.hl7.fhir.utilities.http.IHTTPAuthenticationProvider;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 
 @MarkedToMoveToAdjunctPackage
@@ -40,27 +42,43 @@ public class TerminologyCacheManager {
   private String ghRepo;
   private String ghBranch;
 
-  public TerminologyCacheManager(String serverVersion, String rootDir, String ghOrg, String ghRepo, String ghBranch) throws IOException {
+  /**
+   * kindling only
+   * @param serverVersion
+   * @param rootDir
+   * @param ghOrg
+   * @param ghRepo
+   * @param ghBranch
+   * @throws IOException
+   */
+  public TerminologyCacheManager(String serverVersion, String rootDir, String ghOrg, String ghRepo, String ghBranch, boolean clear) throws IOException {
     super();
     //    this.rootDir = rootDir;
     this.ghOrg = ghOrg;
     this.ghRepo = ghRepo;
     this.ghBranch = ghBranch;
-
     version = CACHE_VERSION+"/"+VersionUtilities.getMajMin(serverVersion);
-
     if (Utilities.noString(ghOrg) || Utilities.noString(ghRepo) || Utilities.noString(ghBranch)) {
       cacheFolder = Utilities.path(rootDir, "temp", "tx-cache");
     } else {
       cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "tx-cache", ghOrg, ghRepo, ghBranch);
     }
+    if (clear) {
+      FileUtilities.clearDirectory(cacheFolder);
+    }
   }
 
-  public void initialize() throws IOException {
+  /**
+   * only for use with Kindling
+   *
+   * @throws IOException
+   */
+  public void initializeForKindling() throws IOException {
     File f = ManagedFileAccess.file(cacheFolder);
     if (!f.exists()) {
       FileUtilities.createDirectory(cacheFolder);      
     }
+
     if (!version.equals(getCacheVersion())) {
       clearCache();
       fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip");
@@ -144,24 +162,56 @@ public class TerminologyCacheManager {
     }
   }
 
-  
   public void commit(String token) throws IOException {
     // create a zip of all the files 
     ByteArrayOutputStream bs = new ByteArrayOutputStream();
     zipDirectory(bs);
 
     // post it to
-    String url = "https://tx.fhir.org/post/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip";
+    String url = "https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip";
     log.info("Sending tx-cache to "+url+" ("+Utilities.describeSize(bs.toByteArray().length)+")");
-    HTTPResult res = ManagedWebAccess.accessor(Arrays.asList("web"))
-        .withBasicAuth(token.substring(0, token.indexOf(':')), token.substring(token.indexOf(':') + 1))
+    HTTPResult res = ManagedWebAccess.accessor(Arrays.asList("web"), new TerminologyCacheManagerAuthenticationProvider(token))
         .put(url, bs.toByteArray(), null, "application/zip");
     
     if (res.getCode() >= 300) {
-      log.error("sending cache failed: "+res.getCode());
+      log.error("sending cache failed: "+res.getCode()+" "+res.getMessage()+" ("+res.getContentAsString()+")");
     } else {
       log.info("Sent cache");
     }
   }
 
+  private class TerminologyCacheManagerAuthenticationProvider implements IHTTPAuthenticationProvider {
+    private String basicAuth;
+
+    public TerminologyCacheManagerAuthenticationProvider(String token) {
+      super();
+      basicAuth = token;
+    }
+
+    @Override
+    public boolean isProtocolAllowed(URL url) {
+      return url.getProtocol().equals("https");
+    }
+
+    @Override
+    public boolean canProvideHeaders(URL url) {
+      return url.getHost().equals("tx.fhir.org");
+    }
+
+    @Override
+    public boolean isPrivateNetworkAllowed(URL url) {
+      return false;
+    }
+
+    @Override
+    public Map<String, String> getHeaders(URL url) {
+      Map<String, String> map = new HashMap<>();
+      if (canProvideHeaders(url)) {
+        // encodeToString, not encode: encode() returns byte[], and concatenating
+        // that yields "Basic [B@1a2b3c" - a header the server can never parse
+        map.put("Authorization", "Basic " + Base64.getEncoder().encodeToString(basicAuth.getBytes(StandardCharsets.UTF_8)));
+      }
+      return map;
+    }
+  }
 }
