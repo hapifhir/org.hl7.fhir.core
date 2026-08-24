@@ -1004,6 +1004,68 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>LICENSE_CHECK</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <configuration>
+                            <includedScopes>compile,runtime</includedScopes>
+                            <failOnBlacklist>true</failOnBlacklist>
+                            <failOnMissing>true</failOnMissing>
+                            <!-- overrideFile/overrideUrl deliberately unset: the plugin defaults to
+                                 src/license/override-THIRD-PARTY.properties resolved against ${basedir},
+                                 which is exactly where this project's override file lives. -->
+                            <includedLicenses>
+                                <includedLicense>The Apache Software License, Version 2.0</includedLicense>
+                                <includedLicense>Apache Software License, version 1.1</includedLicense>
+                                <includedLicense>Apache Software License 2.0</includedLicense>
+                                <includedLicense>The Apache License, Version 2.0</includedLicense>
+                                <includedLicense>The Apache Software License, version 2.0</includedLicense>
+                                <includedLicense>Apache License, Version 2.0</includedLicense>
+                                <includedLicense>MIT License</includedLicense>
+                                <includedLicense>The MIT License</includedLicense>
+                                <includedLicense>MIT</includedLicense>
+                                <includedLicense>Apache-2.0</includedLicense>
+                                <includedLicense>Apache 2</includedLicense>
+                                <includedLicense>Apache 2.0</includedLicense>
+                                <includedLicense>Apache License 2.0</includedLicense>
+                                <includedLicense>Apache License version 2.0</includedLicense>
+                                <includedLicense>Eclipse Public License v2.0</includedLicense>
+                                <includedLicense>BSD licence</includedLicense>
+                                <includedLicense>BSD License</includedLicense>
+                                <includedLicense>The BSD License</includedLicense>
+                                <includedLicense>BSD-Style License</includedLicense>
+                                <includedLicense>BSD License 3</includedLicense>
+                                <includedLicense>New BSD License</includedLicense>
+                                <includedLicense>BSD 3 Clause</includedLicense>
+                                <includedLicense>BSD-3-Clause</includedLicense>
+                                <includedLicense>The JSON License</includedLicense>
+                                <includedLicense>Eclipse Public License 1.0</includedLicense>
+                                <includedLicense>Eclipse Public License - v 1.0</includedLicense>
+                                <includedLicense>Eclipse Public License v. 2.0</includedLicense>
+                                <includedLicense>Eclipse Distribution License v. 1.0</includedLicense>
+                                <includedLicense>Eclipse Distribution License - v 1.0</includedLicense>
+                                <includedLicense>EDL 1.0</includedLicense>
+                                <includedLicense>Unicode/ICU License</includedLicense>
+                                <includedLicense>BSD 2-Clause License</includedLicense>
+                                <includedLicense>GNU Lesser General Public License</includedLicense>
+                                <includedLicense>MPL 1.1</includedLicense>
+                                <includedLicense>Mozilla Public License Version 2.0</includedLicense>
+                                <includedLicense>Unicode-3.0</includedLicense>
+                                <!-- SPDX-style spellings not present in the long-form list above,
+                                     needed for exact-string matching against dependencies that
+                                     declare their license this way (e.g. logback, jakarta.annotation-api). -->
+                                <includedLicense>EPL-2.0</includedLicense>
+                                <includedLicense>EPL 2.0</includedLicense>
+                            </includedLicenses>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
     <reporting>
         <plugins>
