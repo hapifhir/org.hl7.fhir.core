@@ -875,10 +875,11 @@ public class StructureMapValidator extends BaseValidator {
                 }
                 break;
               case "evaluate":
-                // This is not true, it can have 1 or 2 parameters depending on how it was called. 
-                // The expanded form as parameter 1 being the context, and parameter 2 being the fhirpath expression.
                 // The concise form has no context parameter, and is from the abbreviated form in the FML text parsed
-                if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_SINGLE, "evaluate", "1", params.size())) {
+                //     src.property as a -> tgt.dest = (a.value.toString()); // concise/shorthand version has no context, therefore only 1 parameter in the structuremap
+                // The expanded form has 2 parameters, First is the context, and second is the fhirpath expression.
+                //     src.property as a -> tgt.dest = evaluate(a, value.toString()); // explicit expression with context
+                if (rule(errors, "2023-03-01", IssueType.INVALID, target.line(), target.col(), stack.getLiteralPath(), params.size() == 1 || params.size() == 2, I18nConstants.SM_TARGET_TRANSFORM_PARAM_COUNT_RANGE, "evaluate", "1", "2", params.size())) {
                   String exp = params.get(0).getChildValue("value");
                   if (rule(errors, "2023-03-01", IssueType.INVALID, params.get(0).line(), params.get(0).col(), stack.getLiteralPath(), exp != null, I18nConstants.SM_TARGET_TRANSFORM_PARAM_UNPROCESSIBLE, "0", params.size())) {
                     try {
