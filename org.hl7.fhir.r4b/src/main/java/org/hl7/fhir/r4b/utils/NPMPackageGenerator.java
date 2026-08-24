@@ -61,7 +61,7 @@ import org.hl7.fhir.r4b.model.ImplementationGuide.ImplementationGuideDependsOnCo
 import org.hl7.fhir.r4b.utils.NPMPackageGenerator.Category;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
@@ -74,7 +74,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class NPMPackageGenerator {
 

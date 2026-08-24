@@ -47,7 +47,7 @@ import org.hl7.fhir.r4b.model.Coding;
 import org.hl7.fhir.r4b.model.DateTimeType;
 import org.hl7.fhir.r4b.model.InstantType;
 import org.hl7.fhir.r4b.model.Meta;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.xml.XMLUtil;
@@ -63,7 +63,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * @author Grahame
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 @SuppressWarnings("checkstyle:systemout")
 public class LoincToDEConvertor {
 

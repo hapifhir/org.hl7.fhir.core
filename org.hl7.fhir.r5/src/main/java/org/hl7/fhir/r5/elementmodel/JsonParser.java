@@ -69,7 +69,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -87,7 +87,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
 
-@MarkedToMoveToAdjunctPackage
+
 public class JsonParser extends ParserBase {
 
   public interface ILogicalModelResolver {

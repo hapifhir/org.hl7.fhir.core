@@ -1,11 +1,11 @@
 package org.hl7.fhir.r5.utils.validation.constants;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 
 /**
  * whether to validate a reference, if the reference is resolvable (for external links, that there is some way to try resolving it)
  */
-@MarkedToMoveToAdjunctPackage
+
 public enum ReferenceValidationPolicy {
   IGNORE,  // don't validate anything about the reference 
   CHECK_TYPE_IF_EXISTS, // if the reference can be resolved, check that the type of the target is correct

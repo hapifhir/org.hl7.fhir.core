@@ -29,7 +29,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
-@MarkedToMoveToAdjunctPackage
+
 public class TerminologyClientManager {
 
   private ImplicitValueSets implicitValueSets;

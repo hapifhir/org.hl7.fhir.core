@@ -1,23 +1,11 @@
   
   
-  public boolean isSuccess() {
-    for (OperationOutcomeIssueComponent iss : getIssue()) {
-      if (iss.isWarningOrMore() || iss.getCode() != IssueType.INFORMATIONAL) {
-        return false;
-      }
-      if (iss.isInformationorLess() || iss.getCode() != IssueType.INFORMATIONAL) {
-        return true;
-      }
-    }
-    return false;
-  }
-  
   @Override 
   public String toString() { 
-    if (getExpression().size() == 1) { 
-      return getExpression().get(0)+" "+getDiagnostics()+" "+getSeverity().toCode()+"/"+getCode().toCode()+": "+getDetails().getText(); 
+    if (getExpressionList().size() == 1) { 
+      return getExpressionList().get(0)+" "+getDiagnostics()+" "+getSeverity().toCode()+"/"+getCode().toCode()+": "+getDetails().getText(); 
     } else { 
-      return getExpression()+" "+getDiagnostics()+" "+getSeverity().toCode()+"/"+getCode().toCode()+": "+getDetails().getText(); 
+      return getExpressionList()+" "+getDiagnostics()+" "+getSeverity().toCode()+"/"+getCode().toCode()+": "+getDetails().getText(); 
     } 
   } 
   

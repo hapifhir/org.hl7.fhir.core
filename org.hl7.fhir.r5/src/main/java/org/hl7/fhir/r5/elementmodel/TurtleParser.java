@@ -39,14 +39,14 @@ import java.util.List;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.turtle.Turtle;
 import org.hl7.fhir.utilities.turtle.Turtle.Complex;
 import org.hl7.fhir.utilities.turtle.Turtle.Section;
 
 
-@MarkedToMoveToAdjunctPackage
+
 public class TurtleParser extends TurtleParserBase {
 
   private boolean deriveConceptIriFromNamingSystem;

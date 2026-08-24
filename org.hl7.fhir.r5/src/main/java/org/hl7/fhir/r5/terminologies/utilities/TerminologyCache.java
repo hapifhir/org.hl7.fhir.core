@@ -79,7 +79,7 @@ import com.google.gson.JsonPrimitive;
  * @author graha
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class TerminologyCache {
 

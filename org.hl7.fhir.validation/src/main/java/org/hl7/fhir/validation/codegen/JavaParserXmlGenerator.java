@@ -269,7 +269,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         boolean enShared = vs.hasUserData("shared") || vs.hasUserData("java.core.enum");
         String en;
         if (vs.hasUserData("java.core.enum")) {
-          en = "org.hl7.fhir.r5.model.Enumerations."+ei.getName();
+          en = (isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations."+ei.getName();
         } else if (vs.hasUserData("shared")) {
           en = "Enumerations."+ei.getName();
         } else {
@@ -281,7 +281,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         prsr = "parseNativePrimitive(xpp)";
       } else {   
         String tn = ed.getUserString("java.type");
-        if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) {
+        if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC) && !isAbstractGeneratedType(ed)) {
           typeSpecifiers.add(new TypeSpecifier("parse"+upFirst(tn), tn, ed));
         }
         if (tn.contains("Reference("))
@@ -452,7 +452,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         ValueSet vs = ei.getValueSet();
         boolean enShared = vs.hasUserData("shared") || vs.hasUserData("java.core.enum");
         if (vs.hasUserData("java.core.enum")) {
-          en = "org.hl7.fhir.r5.model.Enumerations."+ei.getName();
+          en = (isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations."+ei.getName();
         } else if (vs.hasUserData("shared")) {
           en = "Enumerations."+ei.getName();
         } else {
@@ -482,7 +482,7 @@ public class JavaParserXmlGenerator extends JavaBaseGenerator {
         }
       }
       
-      if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC)) {
+      if (ed.hasExtension(ExtensionDefinitions.EXT_TYPE_SPEC) && !isAbstractGeneratedType(ed)) {
         typeSpecifiers.add(new TypeSpecifier(comp, tn, ed));
       }
       if (ed.unbounded()) {

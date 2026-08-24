@@ -43,7 +43,7 @@ import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
@@ -59,7 +59,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@MarkedToMoveToAdjunctPackage
+
 public abstract class ParserBase {
 
   public enum IdRenderingPolicy {

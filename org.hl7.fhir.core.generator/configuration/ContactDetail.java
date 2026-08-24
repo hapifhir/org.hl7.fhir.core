@@ -1,5 +1,5 @@
       public ContactPoint getEmail() {
-        for (ContactPoint cp : getTelecom()) {
+        for (ContactPoint cp : getTelecomList()) {
           if (cp.getSystem() == ContactPointSystem.EMAIL) {
             return cp;
           }
@@ -8,7 +8,7 @@
       }
 
       public ContactPoint getPhone() {
-        for (ContactPoint cp : getTelecom()) {
+        for (ContactPoint cp : getTelecomList()) {
           if (cp.getSystem() == ContactPointSystem.PHONE) {
             return cp;
           }
@@ -17,7 +17,7 @@
       }
 
       public ContactPoint getUrl() {
-        for (ContactPoint cp : getTelecom()) {
+        for (ContactPoint cp : getTelecomList()) {
           if (cp.getSystem() == ContactPointSystem.URL) {
             return cp;
           }

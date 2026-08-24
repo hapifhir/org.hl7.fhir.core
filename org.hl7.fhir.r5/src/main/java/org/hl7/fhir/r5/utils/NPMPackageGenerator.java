@@ -82,7 +82,7 @@ import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class NPMPackageGenerator {
 
