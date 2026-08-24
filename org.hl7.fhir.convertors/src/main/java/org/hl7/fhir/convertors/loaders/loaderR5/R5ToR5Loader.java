@@ -51,7 +51,7 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.terminologies.client.TerminologyClientManager.ITerminologyClientFactory;
+import org.hl7.fhir.r5.terminologies.client.ITerminologyClientFactory;
 
 public class R5ToR5Loader extends BaseLoaderR5 {
 

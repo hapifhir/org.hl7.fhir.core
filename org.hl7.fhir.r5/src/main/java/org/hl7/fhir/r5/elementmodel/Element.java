@@ -61,7 +61,7 @@ import org.hl7.fhir.r5.model.TypeConvertor;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
 import org.hl7.fhir.utilities.NamedItemList.NamedItem;
