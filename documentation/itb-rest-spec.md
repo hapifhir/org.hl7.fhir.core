@@ -2,7 +2,7 @@
 
 **Status**: Draft, revised post-review (2026-04-28).
 **Target contract**: [gitb-types](https://github.com/ISAITB/gitb-types) — `gitb_vs.xsd` (Validation Service) and `gitb_ps.xsd` (Processing Service).
-**Scope**: GITB-faithful REST handlers in `org.hl7.fhir.validation/src/main/java/org/hl7/fhir/validation/http/`, exposed under `/itb/...`. The existing flat native handlers (`/fhirpath`, `/validate`, …) remain available alongside.
+**Scope**: GITB-faithful REST handlers in `org.hl7.fhir.validation/src/main/java/org/hl7/fhir/validation/http/`, exposed under `/itb/...`. The existing flat native handlers (`/fhirpath`, `/validateResource`, …) remain available alongside.
 **Companion**: [gitb-openapi.json](org.hl7.fhir.validation/src/main/resources/org/hl7/fhir/validation/http/gitb-openapi.json) is the authoritative machine-readable spec. When this document and the OpenAPI disagree, the OpenAPI is the implementation contract.
 
 ---

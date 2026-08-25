@@ -44,11 +44,11 @@ public class FhirValidatorHttpService {
     }
     server = HttpServer.create(inetSocketAddress, 0);
 
-    server.createContext("/validate", new ValidateResourceHTTPHandler(this));
+    server.createContext("/validateResource", new ValidateResourceHTTPHandler(this));
     server.createContext("/fhirpath", new FhirPathHTTPHandler(this));
     server.createContext("/matchetype", new MatchetypeHTTPHandler(this));
     server.createContext("/testdata", new TestDataHTTPHandler(this));
-    server.createContext("/loadIg", new LoadIGHTTPHandler(this));
+    server.createContext("/loadIG", new LoadIGHTTPHandler(this));
     server.createContext("/loadResource", new LoadResourceHTTPHandler(this));
     server.createContext("/convert", new ConvertHTTPHandler(this));
     server.createContext("/snapshot", new SnapshotHTTPHandler(this));
