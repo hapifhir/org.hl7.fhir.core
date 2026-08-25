@@ -359,6 +359,9 @@ public class CompareUtilities extends BaseTestingUtilities {
       String n = en.getName();
       if (!n.equals("fhir_comments")) {
         if (expectedJsonObject.has(n)) {
+          if (isProhibited(expectedJsonObject.get(n))) {
+            return "properties differ at " + path + ": prohibited property " + n + " (only allowed when '" + expectedJsonObject.get(n).asJsonObject().asString("$only$") + "')";
+          }
           String s = compareNodes(id, path + '.' + n, expectedJsonObject.get(n), en.getValue(), countOnlys.contains(n), n, actualJsonObject);
           if (!Utilities.noString(s))
             return s;
@@ -369,7 +372,7 @@ public class CompareUtilities extends BaseTestingUtilities {
     }
     for (JsonProperty en : expectedJsonObject.getProperties()) {
       String n = en.getName();
-      if (!n.equals("fhir_comments") && !isOptional(n, optionals)) {
+      if (!n.equals("fhir_comments") && !isOptional(n, optionals) && !isProhibited(en.getValue())) {
         if (!actualJsonObject.has(n) && !allOptional(en.getValue()))
           return "properties differ at " + path + ": missing property " + n;
       }
@@ -378,7 +381,24 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private boolean isOptional(String n, List<String> optionals) {
-    return n.equals("$optional$") || optionals.contains("*")  || optionals.contains(n);
+    return n.equals("$optional$") || n.equals("$only$") || optionals.contains("*")  || optionals.contains(n);
+  }
+
+  /**
+   * $only$ marks an item that belongs to exactly one version or mode: it is required when its 
+   * filter passes, and must not be present at all when it doesn't. (Contrast $optional$, which 
+   * only ever relaxes a requirement, and so can't say that something is wrong to send.)
+   * The filter grammar is the same as $optional$'s - see passesOptionalFilter.
+   * 
+   * This returns true for the second case: the filter doesn't pass, so the item is prohibited.
+   */
+  private boolean isProhibited(JsonElement e) {
+    if (e != null && e.isJsonObject()) {
+      JsonObject j = e.asJsonObject();
+      return j.isJsonString("$only$") && !passesOptionalFilter(j.asString("$only$"));
+    } else {
+      return false;
+    }
   }
 
   private boolean allOptional(JsonElement value) {
@@ -387,7 +407,7 @@ public class CompareUtilities extends BaseTestingUtilities {
       for (JsonElement e : a) {
         if (e.isJsonObject()) {
           JsonObject o = e.asJsonObject();
-          if (!o.has("$optional$")) {
+          if (!o.has("$optional$") && !isProhibited(o)) {
             return false;
           }
         } else {
@@ -457,6 +477,14 @@ public class CompareUtilities extends BaseTestingUtilities {
       JsonArray actualArray = (JsonArray) actualJsonElement;
       JsonArray expectedArray = (JsonArray) expectedJsonElement;
 
+      String prohibited = checkProhibited(id, path, expectedArray, actualArray);
+      if (prohibited != null) {
+        return prohibited;
+      }
+      // items that are prohibited in this version/mode aren't expected at all, so the ordinary 
+      // count and leftover checks below do the enforcing from here on
+      expectedArray = removeProhibited(expectedArray);
+
       int as = actualArray.size();
       int es = expectedArray.size();
       if (countOnly) {
@@ -520,15 +548,71 @@ public class CompareUtilities extends BaseTestingUtilities {
     return null;
   }
 
+  /**
+   * Look for an item the server should not have sent at all in this version or mode. Removing the 
+   * prohibited items from the expected array (see removeProhibited) already makes such a response 
+   * fail, on the array count or on a leftover node - this only runs first so that it fails with a 
+   * message that says what actually went wrong.
+   */
+  private String checkProhibited(String id, String path, JsonArray expectedArray, JsonArray actualArray) {
+    for (JsonElement e : expectedArray) {
+      if (isProhibited(e)) {
+        for (int i = 0; i < actualArray.size(); i++) {
+          int wc = warnings.size();
+          String s = compareNodes(id, path + "[" + Integer.toString(i) + "]", e, actualArray.get(i), false, null, null);
+          while (warnings.size() > wc) {
+            warnings.remove(warnings.size() - 1); // this was only a probe; don't leave its warnings behind
+          }
+          if (Utilities.noString(s)) {
+            return "prohibited item found at " + path + "[" + Integer.toString(i) + "]" + describeItem(e) + ": this is only allowed when '" + e.asJsonObject().asString("$only$") + "'";
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * A hint at which expected item this is, for error messages - the array index alone says
+   * where it was found in the response, not which expectation it collided with.
+   */
+  private String describeItem(JsonElement e) {
+    if (e.isJsonObject() && e.asJsonObject().isJsonString("name")) {
+      return " (name = " + e.asJsonObject().asString("name") + ")";
+    } else if (e.isJsonObject() && e.asJsonObject().isJsonString("code")) {
+      return " (code = " + e.asJsonObject().asString("code") + ")";
+    } else {
+      return "";
+    }
+  }
+
+  private JsonArray removeProhibited(JsonArray expectedArray) {
+    boolean any = false;
+    for (JsonElement e : expectedArray) {
+      any = any || isProhibited(e);
+    }
+    if (!any) {
+      return expectedArray;
+    }
+    JsonArray res = new JsonArray();
+    for (JsonElement e : expectedArray) {
+      if (!isProhibited(e)) {
+        res.add(e);
+      }
+    }
+    return res;
+  }
+
   private int optionalCount(JsonArray arr, String name, JsonObject parent) {
     int c = 0;
     for (JsonElement e : arr) {
       if (e.isJsonObject()) {
         JsonObject j = e.asJsonObject();
-        if (j.isJsonString("$optional$") && passesOptionalFilter(j.asString("$optional$"))) {
+        if (isProhibited(j)) {
           c++;
-        }
-        if (j.isJsonBoolean("$optional$") && j.asBoolean("$optional$")) {
+        } else if (j.isJsonString("$optional$") && passesOptionalFilter(j.asString("$optional$"))) {
+          c++;
+        } else if (j.isJsonBoolean("$optional$") && j.asBoolean("$optional$")) {
           c++;
         }
       }
@@ -539,7 +623,9 @@ public class CompareUtilities extends BaseTestingUtilities {
   private boolean isOptional(JsonElement e, String name, JsonObject parent) {
     if (e.isJsonObject()) {
       JsonObject j = e.asJsonObject();
-      if (j.isJsonString("$optional$") && passesOptionalFilter(j.asString("$optional$"))) {
+      if (isProhibited(j)) {
+        return true;
+      } else if (j.isJsonString("$optional$") && passesOptionalFilter(j.asString("$optional$"))) {
         return true;
       } else if (j.isJsonBoolean("$optional$") && j.asBoolean("$optional$")) {
         return true;
