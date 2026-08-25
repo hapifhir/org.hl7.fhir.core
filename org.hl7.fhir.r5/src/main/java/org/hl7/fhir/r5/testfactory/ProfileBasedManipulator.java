@@ -6,7 +6,6 @@ import java.util.List;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonElement;
 import org.hl7.fhir.utilities.json.model.JsonObject;
@@ -49,7 +48,6 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
  * Profile-aware constraint enforcement (slicing, value sets, cardinality) is the
  * responsibility of the caller; this class only mutates the element tree.
  */
-@MarkedToMoveToAdjunctPackage
 public class ProfileBasedManipulator {
 
   @SuppressWarnings("unused")
