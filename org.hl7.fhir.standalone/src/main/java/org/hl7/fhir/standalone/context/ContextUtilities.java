@@ -1,6 +1,4 @@
-package org.hl7.fhir.r5.context;
-
-import java.util.*;
+package org.hl7.fhir.standalone.context;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,29 +6,35 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.conformance.profile.BindingResolution;
-import org.hl7.fhir.r5.conformance.profile.ProfileKnowledgeProvider;
-import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
-import org.hl7.fhir.r5.extensions.ExtensionUtilities;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
-import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
-import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
-import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.fml.*;
+import org.hl7.fhir.services.conformance.profile.BindingResolution;
+import org.hl7.fhir.services.conformance.profile.ProfileKnowledgeProvider;
+import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.model.core.CodeSystem.ConceptPropertyComponent;
+import org.hl7.fhir.model.core.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.model.core.NamingSystem.NamingSystemIdentifierType;
+import org.hl7.fhir.model.core.NamingSystem.NamingSystemUniqueIdComponent;
+import org.hl7.fhir.model.core.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.model.core.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.model.core.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.services.context.ILoggingService;
+import org.hl7.fhir.services.context.IWorkerContext;
+import org.hl7.fhir.services.xver.XVerExtensionManager;
+import org.hl7.fhir.services.xver.XVerExtensionManagerFactory;
+import org.hl7.fhir.utilities.OIDUtilities;
 import org.hl7.fhir.utilities.UserDataNames;
-import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
-import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
-import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+
+import java.util.*;
 
 
 @Slf4j
@@ -87,12 +91,12 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
       oidCache.put(oid, uri);
       return uri;
     }
-    CodeSystem cs = context.fetchCodeSystem("http://terminology.hl7.org/CodeSystem/v2-tables", IWorkerContext.VersionResolutionRules.defaultRule());
+    CodeSystem cs = context.fetchCodeSystem("http://terminology.hl7.org/CodeSystem/v2-tables", VersionResolutionRules.defaultRule());
     if (cs != null) {
-      for (ConceptDefinitionComponent cc : cs.getConcept()) {
-        for (ConceptPropertyComponent cp : cc.getProperty()) {
+      for (ConceptDefinitionComponent cc : cs.getConceptList()) {
+        for (ConceptPropertyComponent cp : cc.getPropertyList()) {
           if (Utilities.existsInList(cp.getCode(), "v2-table-oid", "v2-cs-oid") && oid.equals(cp.getValue().primitiveValue())) {
-            for (ConceptPropertyComponent cp2 : cc.getProperty()) {
+            for (ConceptPropertyComponent cp2 : cc.getPropertyList()) {
               if ("v2-cs-uri".equals(cp2.getCode())) {
                 oidCache.put(oid, cp2.getValue().primitiveValue());
                 return cp2.getValue().primitiveValue();
@@ -107,7 +111,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
         oidCache.put(oid, css.getUrl());
         return css.getUrl();
       }
-      for (Identifier id : css.getIdentifier()) {
+      for (Identifier id : css.getIdentifierList()) {
         if ("urn:ietf:rfc:3986".equals(id.getSystem()) && ("urn:oid:" + oid).equals(id.getValue())) {
           oidCache.put(oid, css.getUrl());
           return css.getUrl();
@@ -128,7 +132,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   }
 
   private String getUri(NamingSystem ns) {
-    for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
+    for (NamingSystemUniqueIdComponent id : ns.getUniqueIdList()) {
       if (id.getType() == NamingSystemIdentifierType.URI)
         return id.getValue();
     }
@@ -136,7 +140,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   }
 
   private boolean hasOid(NamingSystem ns, String oid) {
-    for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {
+    for (NamingSystemUniqueIdComponent id : ns.getUniqueIdList()) {
       if (id.getType() == NamingSystemIdentifierType.OID && id.getValue().equals(oid))
         return true;
     }
@@ -176,7 +180,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     }
 
     if (context.hasResource(CanonicalResource.class, url)) {
-      CanonicalResource cr = context.fetchResource(CanonicalResource.class, url, IWorkerContext.VersionResolutionRules.defaultRule());
+      CanonicalResource cr = context.fetchResource(CanonicalResource.class, url, VersionResolutionRules.defaultRule());
       return cr.getWebPath();
     }
     return null;
@@ -194,7 +198,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
   }
 
   private boolean hasUrlProperty(StructureDefinition sd) {
-    for (ElementDefinition ed : sd.getSnapshot().getElement()) {
+    for (ElementDefinition ed : sd.getSnapshot().getElementList()) {
       if (ed.getPath().equals(sd.getType() + ".url")) {
         return true;
       }
@@ -335,7 +339,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     }
     StructureDefinition sd;
     try {
-      sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + t, IWorkerContext.VersionResolutionRules.defaultRule());
+      sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/" + t, VersionResolutionRules.defaultRule());
     } catch (Exception e) {
       return false;
     }
@@ -453,7 +457,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
 
   public StructureDefinition fetchProfileByIdentifier(String tid) {
     for (StructureDefinition sd : context.fetchResourcesByType(StructureDefinition.class)) {
-      for (Identifier ii : sd.getIdentifier()) {
+      for (Identifier ii : sd.getIdentifierList()) {
         if (tid.equals(ii.getValue())) {
           return sd;
         }
@@ -499,7 +503,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     if (value.contains("|")) {
       return value;
     }
-    for (ParametersParameterComponent p : expParams.getParameter()) {
+    for (ParametersParameterComponent p : expParams.getParameterList()) {
       if ("default-valueset-version".equals(p.getName())) {
         String s = p.getValue().primitiveValue();
         if (s.startsWith(value + "|")) {
@@ -525,7 +529,7 @@ public class ContextUtilities implements ProfileKnowledgeProvider {
     for (T t : context.fetchResourcesByType(class_)) {
       if (t instanceof CanonicalResource) {
         CanonicalResource cr = (CanonicalResource) t;
-        for (Identifier id : cr.getIdentifier()) {
+        for (Identifier id : cr.getIdentifierList()) {
           if (system.equals(id.getValue())) {
             list.add(t);
           }

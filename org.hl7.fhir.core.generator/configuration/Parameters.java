@@ -60,6 +60,14 @@ public boolean hasParameterValue(String name) {
   return false;
 }
 
+public boolean hasParameterValue(String name, String value) {
+  for (ParametersParameterComponent p : getParameterList()) {
+    if (p.getName().equals(name) && p.hasValue() && value.equals(p.getValue().primitiveValue()))
+      return true;
+  }
+  return false;
+}
+
 public boolean hasParameter(String name) {
   for (ParametersParameterComponent p : getParameterList()) {
     if (p.getName().equals(name))
@@ -112,4 +120,44 @@ public boolean getParameterBool(String name) {
     }
   }
   return false;
+}
+
+public boolean hasValuePrimitive() {
+  return hasValue() && getValue() instanceof PrimitiveType<?>;
+}
+
+public Parameters addParameter(String name, int i) {
+  addParameter().setName(name).setValue(new IntegerType(i));
+  return this;
+}
+
+
+public void addParameters(Parameters expParameters) {
+  addParameters(expParameters.getParameter());
+}
+
+private void addParameters(List<ParametersParameterComponent> parameters) {
+  for (ParametersParameterComponent p : parameters) {
+    if (!hasParameter(p.getName())) {
+      addParameter(p);
+    }
+  }
+}
+
+
+public Parameters setParameter(ParametersParameterComponent t) { //3
+  if (t == null)
+    return this;
+  if (this.parameterList == null)
+    this.parameterList = new ArrayList<ParametersParameterComponent>();
+  ParametersParameterComponent p = getParameter(t.getName());
+  if (p == null) {
+    this.parameterList.add(t);
+  } else {
+    p.setValue(t.getValue());
+    p.setResource(t.getResource());
+    p.getPartList().clear();
+    p.getPartList().addAll(t.getPartList());
+  }
+  return this;
 }

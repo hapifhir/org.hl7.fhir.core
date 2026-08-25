@@ -1,4 +1,4 @@
-package org.hl7.fhir.terminology.utilities;
+package org.hl7.fhir.standalone.terminology.utilities;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -42,10 +42,7 @@ import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.formats.*;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
 import org.hl7.fhir.services.context.IWorkerContext;
-import org.hl7.fhir.services.terminology.ExpansionOptions;
-import org.hl7.fhir.services.terminology.TerminologyServiceErrorClass;
-import org.hl7.fhir.services.terminology.ValidationResult;
-import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
+import org.hl7.fhir.services.terminology.*;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.json.model.JsonNull;
@@ -194,25 +191,6 @@ public class TerminologyCache {
 
 
   private SystemNameKeyGenerator systemNameKeyGenerator = new SystemNameKeyGenerator();
-
-  public class CacheToken {
-    @Getter
-    private String name;
-    private String key;
-    @Getter
-    private String request;
-    @Accessors(fluent = true)
-    @Getter
-    private boolean hasVersion;
-
-    public void setName(String n) {
-      String systemName = getSystemNameKeyGenerator().getNameForSystem(n);
-      if (name == null)
-        name = systemName;
-      else if (!systemName.equals(name))
-        name = NAME_FOR_NO_SYSTEM;
-    }
-  }
 
   public static class SubsumesResult {
     
@@ -396,8 +374,8 @@ public class TerminologyCache {
   }
 
   // use lock from the context
-  public TerminologyCache(Object lock, String folder) throws IOException, FHIRException {
-    this(lock, folder, CAPABILITY_CACHE_EXPIRATION_MILLISECONDS);
+  public TerminologyCache(Object lock, String folder, IWorkerContext context) throws IOException, FHIRException {
+    this(lock, folder, CAPABILITY_CACHE_EXPIRATION_MILLISECONDS, context);
   }
 
   private void checkVersion() throws IOException {
@@ -507,28 +485,28 @@ public class TerminologyCache {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
         ct.setName(code.getSystem());
-        ct.hasVersion = code.hasVersion();
+        ct.setHasVersion(code.hasVersion());
       }
       else
-        ct.name = NAME_FOR_NO_SYSTEM;
+        ct.setName(NAME_FOR_NO_SYSTEM);
       nameCacheToken(vs, ct);
-      JsonParser json = new JsonParser();
+      JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
 
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
-        ct.request = "{\"code\" : " + json.composeString(code, "codeableConcept") + ", \"url\": \"" + Utilities.escapeJson(vs.getUrl())
-          + "\", \"version\": \"" + Utilities.escapeJson(vs.getVersion()) + "\"" + (options == null ? "" : ", " + options.toJson()) + ", \"profile\": " + expJS + "}\r\n";
+        ct.setRequest("{\"code\" : " + json.composeString(code, "codeableConcept") + ", \"url\": \"" + Utilities.escapeJson(vs.getUrl())
+          + "\", \"version\": \"" + Utilities.escapeJson(vs.getVersion()) + "\"" + (options == null ? "" : ", " + options.toJson()) + ", \"profile\": " + expJS + "}\r\n");
       } else  if (vs != null && vs.hasUrl()) {
-          ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
-            +"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";
+          ct.setRequest("{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())
+            +"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n");
       } else if (options.getVsAsUrl()) {
-        ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+extracted(json, vs)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
+        ct.setRequest("{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+extracted(json, vs)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");
       } else {
         ValueSet vsc = getVSEssense(vs);
-        ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
+        ct.setRequest("{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");
       }
-      ct.key = String.valueOf(hashJson(ct.request));
+      ct.setKey(String.valueOf(hashJson(ct.getRequest())));
       return ct;
     } catch (IOException e) {
       throw new Error(e);
@@ -540,17 +518,17 @@ public class TerminologyCache {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
         ct.setName(code.getSystem());
-        ct.hasVersion = code.hasVersion();
+        ct.setHasVersion(code.hasVersion());
       } else {
-        ct.name = NAME_FOR_NO_SYSTEM;
+        ct.setName(NAME_FOR_NO_SYSTEM);
       }
       ct.setName(vsUrl);
-      JsonParser json = new JsonParser();
+      JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
 
-      ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsUrl == null ? "null" : vsUrl)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
-      ct.key = String.valueOf(hashJson(ct.request));
+      ct.setRequest("{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsUrl == null ? "null" : vsUrl)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");
+      ct.setKey(String.valueOf(hashJson(ct.getRequest())));
       return ct;
     } catch (IOException e) {
       throw new Error(e);
@@ -578,7 +556,7 @@ public class TerminologyCache {
 
   public String extracted(JsonParser json, ValueSet vsc) throws IOException {
     String s = null;
-    if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {      
+    if (vsc.getExpansion().getContainsList().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConceptList().size() > 1000) {
       s =  vsc.getUrl();
     } else {
       s = json.composeString(vsc);
@@ -589,26 +567,26 @@ public class TerminologyCache {
   public CacheToken generateValidationToken(ValidationOptions options, CodeableConcept code, ValueSet vs, Parameters expParameters) {
     try {
       CacheToken ct = new CacheToken();
-      for (Coding c : code.getCoding()) {
+      for (Coding c : code.getCodingList()) {
         if (c.hasSystem()) {
           ct.setName(c.getSystem());
-          ct.hasVersion = c.hasVersion();
+          ct.setHasVersion(c.hasVersion());
         }
       }
       nameCacheToken(vs, ct);
-      JsonParser json = new JsonParser();
+      JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
       if (vs != null && vs.hasUrl() && vs.hasVersion()) {
-        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+
-            "\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n";      
+        ct.setRequest("{\"code\" : "+json.composeString(code, "codeableConcept")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+
+            "\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\""+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}\r\n");
       } else if (vs == null) { 
-        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";        
+        ct.setRequest("{\"code\" : "+json.composeString(code, "codeableConcept")+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");
       } else {
         ValueSet vsc = getVSEssense(vs);
-        ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
+        ct.setRequest("{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");
       }
-      ct.key = String.valueOf(hashJson(ct.request));
+      ct.setKey(String.valueOf(hashJson(ct.getRequest())));
       return ct;
     } catch (IOException e) {
       throw new Error(e);
@@ -631,46 +609,46 @@ public class TerminologyCache {
     CacheToken ct = new CacheToken();
     nameCacheToken(vs, ct);
     if (vs.hasUrl() && vs.hasVersion()) {
-      ct.request = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n";
+      ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(vs.getUrl())+"\", \"version\": \""+Utilities.escapeJson(vs.getVersion())+"\"}\r\n");
     } else {
       ValueSet vsc = getVSEssense(vs);
-      JsonParser json = new JsonParser();
+      JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
       try {
-        ct.request = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
+        ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n");
       } catch (IOException e) {
         throw new Error(e);
       }
     }
-    ct.key = String.valueOf(hashJson(ct.request));
+    ct.setKey(String.valueOf(hashJson(ct.getRequest())));
     return ct;
   }
   
   public CacheToken generateExpandToken(String url, ExpansionOptions options) {
     CacheToken ct = new CacheToken();
-    ct.request = "{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(url)+"\"}\r\n";
-    ct.key = String.valueOf(hashJson(ct.request));
+    ct.setRequest("{\"hierarchical\" : "+(options.isHierarchical() ? "true" : "false")+(options.hasLanguage() ?  ", \"language\": \""+options.getLanguage()+"\"" : "")+", \"url\": \""+Utilities.escapeJson(url)+"\"}\r\n");
+    ct.setKey(String.valueOf(hashJson(ct.getRequest())));
     return ct;
   }
 
   public void nameCacheToken(ValueSet vs, CacheToken ct) {
     if (vs != null) {
-      for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+      for (ValueSet.ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
         if (inc.hasSystem()) {
           ct.setName(inc.getSystem());
-          ct.hasVersion = inc.hasVersion();
+          ct.setHasVersion(inc.hasVersion());
         }
       }
-      for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
+      for (ValueSet.ConceptSetComponent inc : vs.getCompose().getExcludeList()) {
         if (inc.hasSystem()) {
           ct.setName(inc.getSystem());
-          ct.hasVersion = inc.hasVersion();
+          ct.setHasVersion(inc.hasVersion());
         }
       }
-      for (ValueSetExpansionContainsComponent inc : vs.getExpansion().getContains()) {
+      for (ValueSet.ValueSetExpansionContainsComponent inc : vs.getExpansion().getContainsList()) {
         if (inc.hasSystem()) {
           ct.setName(inc.getSystem());
-          ct.hasVersion = inc.hasVersion();
+          ct.setHasVersion(inc.hasVersion());
         }
       }
     }
@@ -695,7 +673,7 @@ public class TerminologyCache {
   public NamedCache getNamedCache(CacheToken cacheToken) {
     checkUsable();
 
-    final String cacheName = cacheToken.name == null ? "null" : cacheToken.name;
+    final String cacheName = cacheToken.getName() == null ? "null" : cacheToken.getName();
 
     NamedCache nc = caches.get(cacheName);
 
@@ -710,7 +688,7 @@ public class TerminologyCache {
   public ValueSetExpansionOutcome getExpansion(CacheToken cacheToken) {
     synchronized (lock) {
       NamedCache nc = getNamedCache(cacheToken);
-      CacheEntry e = nc.map.get(cacheToken.key);
+      CacheEntry e = nc.map.get(cacheToken.getKey());
       if (e == null)
         return null;
       else
@@ -722,7 +700,7 @@ public class TerminologyCache {
     synchronized (lock) {      
       NamedCache nc = getNamedCache(cacheToken);
       CacheEntry e = new CacheEntry();
-      e.request = cacheToken.request;
+      e.request = cacheToken.getRequest();
       e.persistent = persistent;
       e.e = res;
       store(cacheToken, persistent, nc, e);
@@ -737,7 +715,7 @@ public class TerminologyCache {
     if ( !cacheErrors &&
         ( e.v!= null
         && e.v.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED
-        && !cacheToken.hasVersion)) {
+        && !cacheToken.isHasVersion())) {
       return;
     }
 
@@ -745,7 +723,7 @@ public class TerminologyCache {
     // object from the ordered set is O(1), replacing the old O(n) backward scan that
     // compared full request strings on every persistent write. (remove() is a harmless
     // no-op when the previous entry was transient and so was never in the list.)
-    CacheEntry previous = nc.map.put(cacheToken.key, e);
+    CacheEntry previous = nc.map.put(cacheToken.getKey(), e);
     if (persistent) {
       if (previous != null) {
         nc.list.remove(previous);
@@ -784,13 +762,13 @@ public class TerminologyCache {
   }
 
   public ValidationResult getValidation(CacheToken cacheToken) {
-    if (cacheToken.key == null) {
+    if (cacheToken.getKey() == null) {
       return null;
     }
     synchronized (lock) {
       requestCount++;
       NamedCache nc = getNamedCache(cacheToken);
-      CacheEntry e = nc.map.get(cacheToken.key);
+      CacheEntry e = nc.map.get(cacheToken.getKey());
       if (e == null) {
         networkCount++;
         return null;
@@ -802,11 +780,11 @@ public class TerminologyCache {
   }
 
   public void cacheValidation(CacheToken cacheToken, ValidationResult res, boolean persistent) {
-    if (cacheToken.key != null) {
+    if (cacheToken.getKey() != null) {
       synchronized (lock) {      
         NamedCache nc = getNamedCache(cacheToken);
         CacheEntry e = new CacheEntry();
-        e.request = cacheToken.request;
+        e.request = cacheToken.getRequest();
         e.persistent = persistent;
         e.v = new ValidationResult(res);
         store(cacheToken, persistent, nc, e);
@@ -843,7 +821,7 @@ public class TerminologyCache {
     try {
       OutputStreamWriter sw = new OutputStreamWriter(ManagedFileAccess.outStream(Utilities.path(folder, title + CACHE_FILE_EXTENSION)), "UTF-8");
 
-      JsonParser json = new JsonParser();
+      JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
 
       sw.write(json.composeString(resource).trim());
@@ -860,7 +838,7 @@ public class TerminologyCache {
     try {
       BufferedWriter sw = new BufferedWriter(new OutputStreamWriter(ManagedFileAccess.outStream(Utilities.path(folder, nc.name+CACHE_FILE_EXTENSION)), "UTF-8"));
       sw.write(ENTRY_MARKER+"\r\n");
-      JsonParser json = new JsonParser();
+      JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
       for (CacheEntry ce : nc.list) {
         sw.write(ce.request.trim());
@@ -945,7 +923,7 @@ public class TerminologyCache {
           if (ce.v.getIssues() != null) {
             if (first) first = false; else sw.write(",\r\n");
             OperationOutcome oo = new OperationOutcome();
-            oo.setIssue(ce.v.getIssues());
+            oo.setIssueList(ce.v.getIssues());
             sw.write("  \"issues\" : "+json.composeString(oo).trim()+"\r\n");
           }
           sw.write("\r\n}\r\n");
@@ -979,7 +957,7 @@ public class TerminologyCache {
       String address = getServerForId(serverId);
       if (address != null) {
         JsonObject o = (JsonObject) new com.google.gson.JsonParser().parse(src);
-        Resource resource = new JsonParser().parse(o);
+        Resource resource = new JsonParser(context).parse(o);
 
         if (fn.startsWith(CAPABILITY_STATEMENT_TITLE)) {
           this.capabilityStatementCache.put(address, (CapabilityStatement) resource);
@@ -1013,7 +991,7 @@ public class TerminologyCache {
     if (e == 'e') {
       TerminologyServiceErrorClass errorClass = o.has("class") ? TerminologyServiceErrorClass.valueOf(o.get("class").getAsString()) : TerminologyServiceErrorClass.UNKNOWN;
       if (o.has("valueSet")) {
-        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser().parse(o.getAsJsonObject("valueSet")), error, errorClass, o.has("from-server"));
+        ce.e = new ValueSetExpansionOutcome((ValueSet) new JsonParser(context).parse(o.getAsJsonObject("valueSet")), error, errorClass, o.has("from-server"));
         if (o.has("source")) {
           ce.e.getValueset().setUserData(UserDataNames.VS_EXPANSION_SOURCE, o.get("source").getAsString());
         }
@@ -1034,17 +1012,17 @@ public class TerminologyCache {
       String status = loadJS(o.get("status"));
       boolean inactive = "true".equals(loadJS(o.get("inactive")));
       String unknownSystems = loadJS(o.get("unknown-systems"));
-      OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser().parse(o.getAsJsonObject("issues")) : null;
-      Parameters p = o.has("parameters") ? (Parameters) new JsonParser().parse(o.getAsJsonObject("parameters")) : null;
+      OperationOutcome oo = o.has("issues") ? (OperationOutcome) new JsonParser(context).parse(o.getAsJsonObject("issues")) : null;
+      Parameters p = o.has("parameters") ? (Parameters) new JsonParser(context).parse(o.getAsJsonObject("parameters")) : null;
       t = loadJS(o.get("class")); 
       TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
-      ce.v = new ValidationResult(severity, error, system, version, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
+      ce.v = new ValidationResult(severity, error, system, version, new CodeSystem.ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code), display, null).setErrorClass(errorClass);
       ce.v.setUnknownSystems(CommaSeparatedStringBuilder.toSet(unknownSystems));
       ce.v.setServer(server);
       ce.v.setStatus(inactive, status);
       ce.v.setDiagnostics(loadJS(o.get("diagnostics")));
       if (oo != null) {
-        ce.v.setIssues(oo.getIssue());
+        ce.v.setIssues(oo.getIssueList());
       }
       if (p != null) {
         ce.v.setParameters(p);
@@ -1317,7 +1295,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedValueSet(sp.getServer(), sp.getFilename() == null ? null : (ValueSet) new JsonParser(context).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
       } catch (Exception e) {
         return null;
       }
@@ -1330,7 +1308,7 @@ public class TerminologyCache {
       return null;
     } else {
       try {
-        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser().parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
+        return new SourcedCodeSystem(sp.getServer(), sp.getFilename() == null ? null : (CodeSystem) new JsonParser(context).parse(ManagedFileAccess.inStream(Utilities.path(folder, sp.getFilename()))));
       } catch (Exception e) {
         return null;
       }
@@ -1348,7 +1326,7 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "vs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
+          new JsonParser(context).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), svs.getVs());
         }
         vsCache.put(canonical, new SourcedValueSetEntry(svs.getServer(), fn));
       }    
@@ -1385,7 +1363,7 @@ public class TerminologyCache {
         String uuid = UUIDUtilities.makeUuidLC();
         String fn = "cs-"+uuid+".json";
         if (folder != null) {
-          new JsonParser().compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
+          new JsonParser(context).compose(ManagedFileAccess.outStream(Utilities.path(folder, fn)), scs.getCs());
         }
         csCache.put(canonical, new SourcedCodeSystemEntry(scs.getServer(), fn));
       }    
@@ -1420,12 +1398,12 @@ public class TerminologyCache {
       if (child.hasSystem()) {
         ct.setName(child.getSystem());
       }
-      ct.hasVersion = parent.hasVersion() || child.hasVersion();
-      JsonParser json = new JsonParser();
+      ct.setHasVersion(parent.hasVersion() || child.hasVersion());
+      JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
-      ct.request = "{\"op\": \"subsumes\", \"parent\" : "+json.composeString(parent, "code")+", \"child\" :"+json.composeString(child, "code")+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}";
-      ct.key = String.valueOf(hashJson(ct.request));
+      ct.setRequest( "{\"op\": \"subsumes\", \"parent\" : "+json.composeString(parent, "code")+", \"child\" :"+json.composeString(child, "code")+(options == null ? "" : ", "+options.toJson())+", \"profile\": "+expJS+"}");
+      ct.setKey(String.valueOf(hashJson(ct.getRequest())));
       return ct;
     } catch (IOException e) {
       throw new Error(e);
@@ -1433,13 +1411,13 @@ public class TerminologyCache {
   }
 
   public Boolean getSubsumes(CacheToken cacheToken) {
-   if (cacheToken.key == null) {
+   if (cacheToken.getKey() == null) {
      return null;
    }
    synchronized (lock) {
      requestCount++;
      NamedCache nc = getNamedCache(cacheToken);
-     CacheEntry e = nc.map.get(cacheToken.key);
+     CacheEntry e = nc.map.get(cacheToken.getKey());
      if (e == null) {
        networkCount++;
        return null;
@@ -1452,11 +1430,11 @@ public class TerminologyCache {
   }
 
   public void cacheSubsumes(CacheToken cacheToken, Boolean b, boolean persistent) {
-    if (cacheToken.key != null) {
+    if (cacheToken.getKey() != null) {
       synchronized (lock) {      
         NamedCache nc = getNamedCache(cacheToken);
         CacheEntry e = new CacheEntry();
-        e.request = cacheToken.request;
+        e.request = cacheToken.getRequest();
         e.persistent = persistent;
         e.s = new SubsumesResult(b);
         store(cacheToken, persistent, nc, e);

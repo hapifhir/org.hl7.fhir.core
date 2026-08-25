@@ -1,16 +1,19 @@
 package org.hl7.fhir.services.terminology;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 public class CacheToken {
-  @Getter
+  @Getter @Setter
   private String name;
+
+  @Getter @Setter
   private String key;
-  @Getter
+  @Getter @Setter
   private String request;
-  @Accessors(fluent = true)
-  @Getter
+
+  @Getter @Setter
   private boolean hasVersion;
 
 //  public void setName(String n) {
