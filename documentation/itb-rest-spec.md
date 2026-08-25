@@ -109,6 +109,7 @@ The GITB schema allows `Configuration` entries in addition to `input` items. In 
 |---|---|---|
 | Malformed JSON request | 400 | `{ "error": "Malformed JSON: …" }` |
 | Missing required input | 400 | `{ "error": "Missing required input: <name>" }` |
+| Required input present but empty | 400 | `{ "error": "Required input '<name>' is present but empty" }` |
 | Unknown `operation` (Processing services) | 400 | `{ "error": "Unknown operation: <op>. Supported: <list>" }` |
 | Unsupported / invalid AnyContent encoding | 400 | `{ "error": "…" }` |
 | Domain failure (IG not found, parse error) | 200 | TAR with `result: FAILURE` (or `UNDEFINED` when the engine threw) — **not** a 5xx |
