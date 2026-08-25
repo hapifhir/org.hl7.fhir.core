@@ -1,0 +1,108 @@
+package org.hl7.fhir.model.utilities;
+
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
+ */
+
+
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.core.Coding;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
+
+import java.util.concurrent.TimeoutException;
+
+public class CodingUtilities {
+
+  public static boolean matches(Coding coding, String system, String code) {
+    if (coding == null)
+      return false;
+    return code.equals(coding.getCode()) && system.equals(coding.getSystem());
+  }
+
+  public static String present(Coding coding) {
+    if (coding == null)
+      return "";
+    return coding.getSystem()+"::"+coding.getCode();
+  }
+
+  /**
+   * @param c the coding to compare
+   * @param fmt the format is [system](|[version])#[code], no display
+   * @return whether the code conforms to the filter
+   */
+  public static boolean filterEquals(Coding c, String fmt) {
+    if (fmt == null) {
+      return false;
+    }
+    if (fmt.contains("|")) {
+      return fmt.equals(""+c.getSystem()+"|"+c.getVersion()+"#"+c.getCode());
+    } else {
+      return fmt.equals(""+c.getSystem()+"#"+c.getCode());
+    }
+  }
+
+  /**
+   * @param c the coding to compare
+   * @param fmt the format is [system](|[version])#[code], no display
+   * @return whether the code conforms to the filter using regex
+   */
+  public static boolean filterMatches(Coding c, String fmt) {
+    try {
+      if (fmt.contains("|")) {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.matches is the approved timeout wrapper. The regex comes from a ValueSet filter value - user-supplied at runtime
+
+        boolean matches = RegexTimeout.matches("" + c.getSystem() + "|" + c.getVersion() + "#" + c.getCode(), fmt);
+        return matches;
+      } else {
+        @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+        //False positive: RegexTimeout.matches is the approved timeout wrapper. The regex comes from a ValueSet filter value - user-supplied at runtime
+
+        boolean matches = RegexTimeout.matches("" + c.getSystem() + "#" + c.getCode(), fmt);
+        return matches;
+      }
+    } catch (TimeoutException e) {
+      throw new FHIRException("The regex filter '"+fmt+"' took too long to evaluate");
+    }
+  }
+
+  /**
+   * @param c the coding to compare
+   * @param values a list of values, the format is [system](|[version])#[code], no display
+   * @return whether the code conforms to the filter using regex
+   */
+  public static boolean filterInList(Coding c, String[] values) {
+    for (String v : values) {
+      if (filterEquals(c, v)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+}

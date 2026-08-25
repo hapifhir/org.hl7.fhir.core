@@ -17,7 +17,7 @@ import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -59,7 +59,7 @@ import java.util.Set;
  * @author Grahame
  */
 
-@MarkedToMoveToAdjunctPackage
+
 public interface IWorkerContext {
 
   //region General Properties

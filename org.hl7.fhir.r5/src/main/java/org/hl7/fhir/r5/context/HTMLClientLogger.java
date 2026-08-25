@@ -39,12 +39,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger {
   

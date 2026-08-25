@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.utilities.UserDataNames;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -89,7 +89,13 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     write("\r\n");
     for (String n : names) {
       ValueSet vs = enums.get(n);
-      generateEnum(n, (ValueSet) vs.getUserData(UserDataNames.EXPANSION));
+      ValueSet vse = expandValueSet(vs);
+      if (vse == null) {
+        // the generated code already refers to the enum (the analyser stamped the java types 
+        // from the value set), so failing to generate it cannot be recovered from
+        throw new FHIRException("Unable to expand the value set "+vs.getVersionedUrl()+" to generate the shared enum "+n);
+      }
+      generateEnum(n, vse);
 		}
 		write("\r\n");
 		write("}\r\n");
@@ -100,7 +106,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 	private Map<String, ValueSet> scanForEnums() {
 	  Map<String, ValueSet> res = new HashMap<>();
     for (ValueSet vs : definitions.getValuesets().getSortedList()) {
-      if (vs.hasUserData("shared") && vs.hasUserData(UserDataNames.EXPANSION)) {
+      if (vs.hasUserData("shared")) {
         res.put(getCodeListType(vs.getName()), vs);
       }
     }

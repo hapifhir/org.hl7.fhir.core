@@ -36,7 +36,7 @@ import org.hl7.fhir.r5.model.UuidType;
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.fhirpath.ExpressionNode.CollectionStatus;
 import org.hl7.fhir.r5.fhirpath.FHIRPathEngine.IssueMessage;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.model.JsonArray;
 import org.hl7.fhir.utilities.json.model.JsonBoolean;
@@ -52,7 +52,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 // see also org.hl7.fhir.validation.instance.type.ViewDefinitionValidator
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class Validator {
 

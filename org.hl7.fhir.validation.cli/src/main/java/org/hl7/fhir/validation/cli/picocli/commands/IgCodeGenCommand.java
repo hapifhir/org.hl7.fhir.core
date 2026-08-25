@@ -38,14 +38,22 @@ import java.util.concurrent.Callable;
 
     Requires -package-name for the Java package, -output for the output directory,
     and -config for a configuration folder (license.txt + configuration.ini +
-    adornments). List the IG packages to generate from as parameters
-    (e.g. hl7.fhir.uv.testing#current).
+    adornments). -fhir-version selects the model generated against: r5 (default)
+    or r6 (the versionless org.hl7.fhir.model classes). List the IG packages to
+    generate from as parameters (e.g. hl7.fhir.uv.testing#current).
 
     Hidden internal tool for code generation.
     """,
   hidden = true
 )
 public class IgCodeGenCommand extends ValidationServiceCommand implements Callable<Integer> {
+
+  @CommandLine.Option(
+    names = {"-fhir-version"},
+    description = "The FHIR version to generate code for: r5 (the default) or r6. r6 generates against the versionless org.hl7.fhir.model classes; r5 generates against org.hl7.fhir.r5",
+    defaultValue = "r5"
+  )
+  private String fhirVersion;
 
   @CommandLine.Option(
     names = {"-package-name"},
@@ -92,8 +100,12 @@ public class IgCodeGenCommand extends ValidationServiceCommand implements Callab
       log.error("-test-package-name and -test-output must be provided together");
       return 1;
     }
+    if (!"r5".equalsIgnoreCase(fhirVersion) && !"r6".equalsIgnoreCase(fhirVersion)) {
+      log.error("-fhir-version must be r5 or r6 (found \""+fhirVersion+"\")");
+      return 1;
+    }
     try {
-      new LogicalModelCodeGenerator().generate(packageName, output, config, packages, testPackageName, testOutput);
+      new LogicalModelCodeGenerator().generate(fhirVersion.toLowerCase(), packageName, output, config, packages, testPackageName, testOutput);
       log.info("Code generation completed successfully");
       return 0;
     } catch (Exception e) {

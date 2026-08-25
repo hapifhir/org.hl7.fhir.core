@@ -1,12 +1,10 @@
-package org.hl7.fhir.{{jid}}.formats;
-
-// generated
+{{startMark}}
+package org.hl7.fhir.{{jid}}.core.formats;
 
 {{license}}
 
-{{startMark}}
-
-import org.hl7.fhir.{{jid}}.model.*;
+import org.hl7.fhir.model.*;
+import org.hl7.fhir.{{jid}}.core.*;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -17,19 +15,20 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import java.io.IOException;
 
+{{generated}}
 public class JsonParser extends JsonParserBase {
 
-  public JsonParser() {
-    super();
+  public JsonParser(IModelContext modelContext) {
+    super(modelContext);
   }
 
-  public JsonParser(boolean allowUnknownContent) {
-    super();
+  public JsonParser(IModelContext modelContext, boolean allowUnknownContent) {
+    super(modelContext);
     setAllowUnknownContent(allowUnknownContent);
   }
 
-  public JsonParser(boolean allowUnknownContent, boolean allowComments) {
-    super();
+  public JsonParser(IModelContext modelContext, boolean allowUnknownContent, boolean allowComments) {
+    super(modelContext);
     setAllowUnknownContent(allowUnknownContent);
     setAllowComments(allowComments);
   }
@@ -40,109 +39,109 @@ public class JsonParser extends JsonParserBase {
 
   @SuppressWarnings("unchecked")
   protected <E extends Enum<E>> Enumeration<E> parseEnumeration(String s, E item, EnumFactory e) throws IOException, FHIRFormatError {
-    Enumeration<E> res = new Enumeration<E>(e);
+    Enumeration<E> res = new Enumeration<E>(modelContext, e);
     if (s != null)
       res.setValue((E) e.fromCode(s));
     return res;
   }
 
   protected DateType parseDate(String v) throws IOException, FHIRFormatError {
-    DateType res = new DateType(v);
+    DateType res = new DateType(modelContext, v);
     return res;
   }
 
   protected DateTimeType parseDateTime(String v) throws IOException, FHIRFormatError {
-    DateTimeType res = new DateTimeType(v);
+    DateTimeType res = new DateTimeType(modelContext, v);
     return res;
   }
 
   protected CodeType parseCode(String v) throws IOException, FHIRFormatError {
-    CodeType res = new CodeType(v);
+    CodeType res = new CodeType(modelContext, v);
     return res;
   }
 
   protected StringType parseString(String v) throws IOException, FHIRFormatError {
-    StringType res = new StringType(v);
+    StringType res = new StringType(modelContext, v);
     return res;
   }
 
   protected IntegerType parseInteger(java.lang.Long v) throws IOException, FHIRFormatError {
-    IntegerType res = new IntegerType(v);
+    IntegerType res = new IntegerType(modelContext, v);
     return res;
   }
 
   protected Integer64Type parseInteger64(java.lang.Long v) throws IOException, FHIRFormatError {
-    Integer64Type res = new Integer64Type(v);
+    Integer64Type res = new Integer64Type(modelContext, v);
     return res;
   }
 
   protected OidType parseOid(String v) throws IOException, FHIRFormatError {
-    OidType res = new OidType(v);
+    OidType res = new OidType(modelContext, v);
     return res;
   }
 
   protected CanonicalType parseCanonical(String v) throws IOException, FHIRFormatError {
-    CanonicalType res = new CanonicalType(v);
+    CanonicalType res = new CanonicalType(modelContext, v);
     return res;
   }
 
   protected UriType parseUri(String v) throws IOException, FHIRFormatError {
-    UriType res = new UriType(v);
+    UriType res = new UriType(modelContext, v);
     return res;
   }
 
   protected UuidType parseUuid(String v) throws IOException, FHIRFormatError {
-    UuidType res = new UuidType(v);
+    UuidType res = new UuidType(modelContext, v);
     return res;
   }
 
   protected UrlType parseUrl(String v) throws IOException, FHIRFormatError {
-    UrlType res = new UrlType(v);
+    UrlType res = new UrlType(modelContext, v);
     return res;
   }
 
   protected InstantType parseInstant(String v) throws IOException, FHIRFormatError {
-    InstantType res = new InstantType(v);
+    InstantType res = new InstantType(modelContext, v);
     return res;
   }
 
   protected BooleanType parseBoolean(java.lang.Boolean v) throws IOException, FHIRFormatError {
-    BooleanType res = new BooleanType(v);
+    BooleanType res = new BooleanType(modelContext, v);
     return res;
   }
 
   protected Base64BinaryType parseBase64Binary(String v) throws IOException, FHIRFormatError {
-    Base64BinaryType res = new Base64BinaryType(v);
+    Base64BinaryType res = new Base64BinaryType(modelContext, v);
     return res;
   }
 
   protected UnsignedIntType parseUnsignedInt(String v) throws IOException, FHIRFormatError {
-    UnsignedIntType res = new UnsignedIntType(v);
+    UnsignedIntType res = new UnsignedIntType(modelContext, v);
     return res;
   }
 
   protected MarkdownType parseMarkdown(String v) throws IOException, FHIRFormatError {
-    MarkdownType res = new MarkdownType(v);
+    MarkdownType res = new MarkdownType(modelContext, v);
     return res;
   }
 
   protected TimeType parseTime(String v) throws IOException, FHIRFormatError {
-    TimeType res = new TimeType(v);
+    TimeType res = new TimeType(modelContext, v);
     return res;
   }
 
   protected IdType parseId(String v) throws IOException, FHIRFormatError {
-    IdType res = new IdType(v);
+    IdType res = new IdType(modelContext, v);
     return res;
   }
 
   protected PositiveIntType parsePositiveInt(String v) throws IOException, FHIRFormatError {
-    PositiveIntType res = new PositiveIntType(v);
+    PositiveIntType res = new PositiveIntType(modelContext, v);
     return res;
   }
 
   protected DecimalType parseDecimal(java.math.BigDecimal v) throws IOException, FHIRFormatError {
-    DecimalType res = new DecimalType(v);
+    DecimalType res = new DecimalType(modelContext, v);
     if (v instanceof PresentedBigDecimal)
       res.setRepresentation(((PresentedBigDecimal) v).getPresentation());
     return res;

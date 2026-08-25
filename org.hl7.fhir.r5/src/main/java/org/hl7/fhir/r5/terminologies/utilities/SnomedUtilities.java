@@ -2,11 +2,11 @@ package org.hl7.fhir.r5.terminologies.utilities;
 
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 
 
-@MarkedToMoveToAdjunctPackage
+
 public class SnomedUtilities {
 
   public static String getVersionFromParameters(Parameters p, String version) {

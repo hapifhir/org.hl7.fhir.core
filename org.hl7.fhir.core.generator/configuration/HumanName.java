@@ -1,29 +1,29 @@
 /** 
   /** 
-   * Returns all repetitions of {@link #getGiven() given name} as a space separated string 
+   * Returns all repetitions of {@link #getGivenList() given name} as a space separated string 
    *  
    * @see DatatypeUtil#joinStringsSpaceSeparated(List) 
    */ 
   public String getGivenAsSingleString() { 
-    return joinStringsSpaceSeparated(getGiven()); 
+    return joinStringsSpaceSeparated(getGivenList()); 
   } 
 
   /** 
-   * Returns all repetitions of {@link #getPrefix() prefix name} as a space separated string 
+   * Returns all repetitions of {@link #getPrefixList() prefix name} as a space separated string 
    *  
    * @see DatatypeUtil#joinStringsSpaceSeparated(List) 
    */ 
   public String getPrefixAsSingleString() { 
-    return joinStringsSpaceSeparated(getPrefix()); 
+    return joinStringsSpaceSeparated(getPrefixList()); 
   } 
 
   /** 
-   * Returns all repetitions of {@link #getSuffix() suffix} as a space separated string 
+   * Returns all repetitions of {@link #getSuffixList() suffix} as a space separated string 
    *  
    * @see DatatypeUtil#joinStringsSpaceSeparated(List) 
    */ 
   public String getSuffixAsSingleString() { 
-    return joinStringsSpaceSeparated(getSuffix()); 
+    return joinStringsSpaceSeparated(getSuffixList()); 
   } 
 
   /** 
@@ -35,10 +35,10 @@
    */ 
   public String getNameAsSingleString() { 
     List<StringType> nameParts = new ArrayList<StringType>(); 
-    nameParts.addAll(getPrefix()); 
-    nameParts.addAll(getGiven()); 
+    nameParts.addAll(getPrefixList()); 
+    nameParts.addAll(getGivenList()); 
     nameParts.add(getFamilyElement()); 
-    nameParts.addAll(getSuffix()); 
+    nameParts.addAll(getSuffixList()); 
     if (nameParts.size() > 0) { 
       return joinStringsSpaceSeparated(nameParts); 
     } else { 

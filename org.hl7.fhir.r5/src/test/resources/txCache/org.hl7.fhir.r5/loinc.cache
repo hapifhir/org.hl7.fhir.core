@@ -921,6 +921,7 @@ e: {
   }
 }}####
 e: {
+  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
@@ -969,6 +970,473 @@ e: {
       "system" : "http://loinc.org",
       "code" : "LA6556-0",
       "display" : "Eyes open spontaneously"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "A."
+        }],
+        "code" : "LA20752-4",
+        "display" : "Within 24 hours"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "B."
+        }],
+        "code" : "LA20753-2",
+        "display" : "After 24 hours but before 3 days"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "C."
+        }],
+        "code" : "LA20754-0",
+        "display" : "Three days or later"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "D."
+        }],
+        "code" : "LA4489-6",
+        "display" : "Unknown"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:203e31b1-dd1c-45f0-911b-45c5bcb248f2",
+    "timestamp" : "2026-08-13T20:11:18.562Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.82"
+    }],
+    "property" : [{
+      "code" : "label",
+      "uri" : "http://hl7.org/fhir/concept-properties#label"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA20752-4",
+      "display" : "Within 24 hours",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "A."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20753-2",
+      "display" : "After 24 hours but before 3 days",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "B."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20754-0",
+      "display" : "Three days or later",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "C."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA4489-6",
+      "display" : "Unknown",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "D."
+      }]
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "filter" : [{
+        "property" : "LIST",
+        "op" : "=",
+        "value" : "LL715-4"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:4be7358c-0d7e-4c65-8668-901ceec8e83c",
+    "timestamp" : "2026-08-14T19:42:21.297Z",
+    "total" : 8,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.82"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA11165-0",
+      "display" : "Platelet anisocytosis"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11168-4",
+      "display" : "Platelet clump"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11167-6",
+      "display" : "Platelet large fragments"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11166-8",
+      "display" : "Platelet satellitism"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11169-2",
+      "display" : "Platelets.agranular"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11170-0",
+      "display" : "Platelets.giant"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11172-6",
+      "display" : "Platelets.large"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA11171-8",
+      "display" : "Platelets.small"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "A."
+        }],
+        "code" : "LA20752-4",
+        "display" : "Within 24 hours"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "B."
+        }],
+        "code" : "LA20753-2",
+        "display" : "After 24 hours but before 3 days"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "C."
+        }],
+        "code" : "LA20754-0",
+        "display" : "Three days or later"
+      },
+      {
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/valueset-label",
+          "valueString" : "D."
+        }],
+        "code" : "LA4489-6",
+        "display" : "Unknown"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:dccfd990-3e0a-4fff-bab2-e146e8b40846",
+    "timestamp" : "2026-08-20T05:47:45.282Z",
+    "total" : 4,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.82"
+    }],
+    "property" : [{
+      "code" : "label",
+      "uri" : "http://hl7.org/fhir/concept-properties#label"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA20752-4",
+      "display" : "Within 24 hours",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "A."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20753-2",
+      "display" : "After 24 hours but before 3 days",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "B."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA20754-0",
+      "display" : "Three days or later",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "C."
+      }]
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA4489-6",
+      "display" : "Unknown",
+      "property" : [{
+        "code" : "label",
+        "valueString" : "D."
+      }]
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "5932-9",
+        "display" : "Cholesterol [Presence] in Blood by Test strip"
+      }]
+    }]
+  }
+}}####
+e: {
+  "class" : "UNKNOWN",
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:f7ac360d-79ba-4311-8ad3-b4f40daeb8a0",
+    "timestamp" : "2026-08-21T05:02:08.772Z",
+    "total" : 1,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.82"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "5932-9",
+      "display" : "Cholesterol [Presence] in Blood by Test strip"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : true,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6557-8",
+        "display" : "No verbal response (>2yrs); no vocal response (<=2yrs)"
+      },
+      {
+        "code" : "LA6558-6",
+        "display" : "Incomprehensible sounds"
+      },
+      {
+        "code" : "LA6559-4",
+        "display" : "Inappropriate words"
+      },
+      {
+        "code" : "LA6560-2",
+        "display" : "Confused"
+      },
+      {
+        "code" : "LA6561-0",
+        "display" : "Oriented"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:6512d2e9-dc82-4161-9915-c06016758158",
+    "timestamp" : "2026-08-21T05:41:22.394Z",
+    "total" : 5,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.82"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6557-8",
+      "display" : "No verbal response (>2 yrs); no vocal response (<=2 yrs)"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6558-6",
+      "display" : "Incomprehensible sounds"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6559-4",
+      "display" : "Inappropriate words"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6560-2",
+      "display" : "Confused"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6561-0",
+      "display" : "Oriented"
     }]
   }
 },

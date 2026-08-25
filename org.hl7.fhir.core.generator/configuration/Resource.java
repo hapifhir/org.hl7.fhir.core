@@ -15,13 +15,16 @@
 
 
   private String webPath;
+  public boolean hasWebPath() {
+    return webPath != null;
+  }
   public String getWebPath() {
     return webPath;
   }
   public void setWebPath(String webPath) {
     this.webPath = webPath;
   }
-  
+
   // when possible, the source package is considered when performing reference resolution. 
   
   private PackageInformation sourcePackage;

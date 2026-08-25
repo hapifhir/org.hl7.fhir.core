@@ -18,8 +18,23 @@ public class Configuration {
     return new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US"));
   }
   private String license;
+  private String targetVersion = "r5"; // the model generated against: "r5" (org.hl7.fhir.r5) or "r6" (org.hl7.fhir.model)
   private IniFile ini;
+
+
   private Map<String, String> adornments = new HashMap<>();
+
+  public String getTargetVersion() {
+    return targetVersion;
+  }
+
+  public void setTargetVersion(String targetVersion) {
+    this.targetVersion = targetVersion;
+  }
+
+  public boolean isR6() {
+    return "r6".equals(targetVersion);
+  }
   
   public Configuration(String path) throws FileNotFoundException, IOException {
     license = FileUtilities.fileToString(Utilities.path(path, "license.txt"));

@@ -52,13 +52,13 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 
 import org.hl7.fhir.r5.utils.TypesUtilities;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.StringPair;
 import org.hl7.fhir.utilities.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class Property {
 

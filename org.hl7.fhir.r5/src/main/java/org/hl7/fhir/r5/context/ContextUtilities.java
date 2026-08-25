@@ -32,7 +32,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ContextUtilities implements ProfileKnowledgeProvider {
 

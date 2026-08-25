@@ -56,7 +56,7 @@ public class JavaParserGenerator extends JavaBaseGenerator {
   
   public void generate() throws Exception {
     
-    String template = config.getAdornments().get("Parser");
+    String template = config.getAdornments().get("Registration");
     template = template.replace("{{pid}}", packageName);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
@@ -83,7 +83,11 @@ public class JavaParserGenerator extends JavaBaseGenerator {
     if (analysis.getStructure().getKind() == StructureDefinitionKind.RESOURCE && !analysis.isAbstract()) {
       // whether the registration overrides resources with the same names in the base specification
       // is the choice of the application performing the registration
-      register.append("    registry.registerCustomResource(\""+escapeJavaString(analysis.getName())+"\", new "+jname+"JsonParserFactory(), overridesBase);\r\n");
+      if (isR6()) {
+        register.append("    modelContext.getContextInformation().registerResource(\""+escapeJavaString(analysis.getName())+"\", packageName, overridesBase, new ParserBase.CustomResourceHandler(new "+jname+"JsonParserFactory(), overridesBase));\r\n");
+      } else {
+        register.append("    registry.registerCustomResource(\""+escapeJavaString(analysis.getName())+"\", new "+jname+"JsonParserFactory(), overridesBase);\r\n");
+      }
     }
   }
 

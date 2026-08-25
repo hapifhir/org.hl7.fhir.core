@@ -81,7 +81,7 @@ import org.hl7.fhir.r5.utils.xver.XVerExtensionManagerFactory;
 import org.hl7.fhir.utilities.ByteProvider;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.MagicResources;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -104,7 +104,7 @@ import org.hl7.fhir.utilities.npm.PackageLoadController;
  */
 
 @Slf4j
-@MarkedToMoveToAdjunctPackage
+
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext {
 
   public interface ILoaderFactory {
@@ -970,5 +970,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     xverManager = value;
   }
 
+
+  @Override
+  public boolean canLoadPackages() {
+    return packageCacheManager != null;
+  }
 }
 
