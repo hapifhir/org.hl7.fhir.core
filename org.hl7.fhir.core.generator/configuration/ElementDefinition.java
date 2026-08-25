@@ -25,7 +25,7 @@
   
   public String typeSummary() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    for (TypeRefComponent tr : getType()) {
+    for (TypeRefComponent tr : getTypeList()) {
       if (tr.hasCode())
         b.append(tr.getWorkingCode());
     }
@@ -34,7 +34,7 @@
   
   public String typeSummaryVB() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|");
-    for (TypeRefComponent tr : getType()) {
+    for (TypeRefComponent tr : getTypeList()) {
       if (tr.hasCode())
         b.append(tr.getWorkingCode());
     }
@@ -42,12 +42,12 @@
   }
   
   public TypeRefComponent getType(String code) {
-    for (TypeRefComponent tr : getType()) 
+    for (TypeRefComponent tr : getTypeList()) 
       if (tr.getCode().equals(code))
         return tr;
     TypeRefComponent tr = new TypeRefComponent();
     tr.setCode(code);
-    type.add(tr);
+    getTypeList().add(tr);
     return tr;
   }
 
@@ -55,8 +55,9 @@
   public static final boolean NOT_IN_SUMMARY = false;
   public static final boolean IS_MODIFIER = true;
   public static final boolean IS_IN_SUMMARY = true;
-  public ElementDefinition(boolean defaults, boolean modifier, boolean inSummary) {
+  public ElementDefinition(IModelContext modelContext, boolean defaults, boolean modifier, boolean inSummary) {
     super();
+    this.modelContext = modelContext;
     if (defaults) {
       setIsModifier(modifier);
       setIsSummary(inSummary);
@@ -68,7 +69,7 @@
   }
 
   public boolean hasCondition(IdType id) {
-    for (IdType c : getCondition()) {
+    for (IdType c : getConditionList()) {
       if (c.primitiveValue().equals(id.primitiveValue()))
         return true;
     }
@@ -76,7 +77,7 @@
   }
 
   public boolean hasConstraint(String key) {
-    for (ElementDefinitionConstraintComponent c : getConstraint()) {
+    for (ElementDefinitionConstraintComponent c : getConstraintList()) {
       if (c.getKey().equals(key))
         return true;
     }
@@ -84,7 +85,7 @@
   }
 
   public boolean hasCode(Coding c) {
-    for (Coding t : getCode()) {
+    for (Coding t : getCodeList()) {
       if (t.getSystem().equals(c.getSystem()) && t.getCode().equals(c.getCode()))
         return true;
     }
@@ -107,12 +108,20 @@
     return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
   }
 
+  public boolean repeats() {
+    return !Utilities.existsInList(getMax(), "0", "1");
+  }
+
+  public int getMaxAsInt() {
+    return "*".equals(getMax()) ? Integer.MAX_VALUE : Integer.parseInt(getMax());
+  }
+
   public boolean isMandatory() {
     return getMin() > 0;
   }
 
   public boolean isInlineType() {
-    return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
+    return getTypeList().size() == 1 && Utilities.existsInList(getTypeList().get(0).getCode(), "Element", "BackboneElement");
   }  
 
 
@@ -134,4 +143,21 @@
 
   public boolean isRequired() { 
     return getMin() == 1; 
+  }
+
+  public String getIdOrPath() {
+    return hasId() ? getId() : getPath();
+  }
+
+  public boolean hasObligations() {
+    boolean res = hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE);
+    for (TypeRefComponent tr : getTypeList()) {
+      res = res || tr.hasExtension(ExtensionDefinitions.EXT_OBLIGATION_CORE);
+    }
+    return res;
+  }
+
+  public boolean isProfiledExtension() {
+    return getTypeList().size() == 1 && "Extension".equals(getTypeFirstRep().getCode()) &&
+      getTypeFirstRep().getProfileList().size() == 1;
   }

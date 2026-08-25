@@ -76,7 +76,7 @@ import org.hl7.fhir.r4b.terminologies.TerminologyClient;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.r4b.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -100,7 +100,7 @@ import org.slf4j.event.Level;
  * very light client to connect to an open unauthenticated terminology service
  */
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 

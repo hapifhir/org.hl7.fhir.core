@@ -95,7 +95,7 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class StructureDefinitionRenderer extends ResourceRenderer {
 

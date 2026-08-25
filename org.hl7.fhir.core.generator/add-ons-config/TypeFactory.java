@@ -12,7 +12,7 @@ import org.hl7.fhir.r5.model.Base;
 public class TypeFactory extends Factory {
 
     public static Base createType(String name) throws FHIRException {
-      switch (name.hashCode()) {
+      switch (name) {
 {{case-factory}}
       default:
         throw new FHIRException("Unknown Resource or Type Name '"+name+"'");

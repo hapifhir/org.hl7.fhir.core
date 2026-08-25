@@ -27,7 +27,7 @@ import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.IHTTPAuthenticationProvider;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class TerminologyCacheManager {
 

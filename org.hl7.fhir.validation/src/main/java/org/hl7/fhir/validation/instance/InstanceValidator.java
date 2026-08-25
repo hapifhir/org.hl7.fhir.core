@@ -609,7 +609,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     super(theContext, settings, xverManager, session);
     start = System.currentTimeMillis();
     this.externalHostServices = hostServices;
-    this.profileUtilities = new ProfileUtilities(theContext, null, null);
+    this.profileUtilities = profileUtilities == null ? new ProfileUtilities(theContext, null, null) : profileUtilities;
+    this.profileUtilities.setXver(xverManager);
     fpe = new FHIRPathEngine(context, this.profileUtilities);
     validatorServices = new ValidatorHostServices();
     fpe.setHostServices(validatorServices);
@@ -2916,27 +2917,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
 
-  private boolean hasElementName(List<String> plist, String en) {
+  private boolean hasElementName(List<String> pathList, String elementName) {
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //single literal character split
-    String[] ep = en.split("\\.");
-    for (String s : plist) {
-      if (s.equals(en)) {
+    String[] elementNameParts = elementName.split("\\.");
+    for (String path : pathList) {
+      if (path.equals(elementName)) {
         return true;
       }
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //single literal character split
-      String[] sp = s.split("\\.");
-      int si = 0;
-      int ei = 0;
+      String[] pathParts = path.split("\\.");
+      int pathPartsIndex = 0;
+      int elementNamePartsIndex = 0;
       boolean mismatch = false;
-      while (si < sp.length && ei < ep.length) {
-        var ps = sp[si];
-        var pe = ep[ei]; 
-        if (!ps.equals(pe)) {
-          if (pe.endsWith("[x]")) {
-            if (ps.equals(pe.substring(0, pe.length()-3)) && si < sp.length - 1 && sp[si+1].startsWith("ofType(")) {
-              si++; 
+      while (pathPartsIndex < pathParts.length && elementNamePartsIndex < elementNameParts.length) {
+        var pathPart = pathParts[pathPartsIndex];
+        var elementNamePart = elementNameParts[elementNamePartsIndex];
+        if (!pathPart.equals(elementNamePart)) {
+          if (elementNamePart.endsWith("[x]")) {
+            if (pathPart.equals(elementNamePart.substring(0, elementNamePart.length()-3)) && pathPartsIndex < pathParts.length - 1 && pathParts[pathPartsIndex+1].startsWith("ofType(")) {
+              pathPartsIndex++;
             } else {
               mismatch = true;
             }
@@ -2944,11 +2945,28 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             mismatch = true;
           }
         }
-        si++;
-        ei++;
+        pathPartsIndex++;
+        elementNamePartsIndex++;
       }
-      if (!mismatch && si == sp.length && ei == ep.length) {
+      if (!mismatch && pathPartsIndex == pathParts.length && elementNamePartsIndex == elementNameParts.length) {
         return true;
+      }
+      // special case: recursive elements. If elementName refers to an element and that element is the tail of a recursion, and all the following names are the same as the name of the recursion, then this is valid
+      // e.g.
+      if (!mismatch) {
+        ProfileUtilities.ElementDefinitionResolution defn = profileUtilities.findElementForPath(elementNameParts[0], elementName);
+        if (defn != null && defn.getElement().hasContentReference()) {
+          boolean isRecursing = true;
+          for (int i = elementNameParts.length; i < pathParts.length; i++) {
+            if (!defn.getElement().getName().equals(pathParts[i])) {
+              isRecursing = false;
+              break;
+            }
+          }
+          if (isRecursing) {
+            return true;
+          }
+        }
       }
     }
     return false;

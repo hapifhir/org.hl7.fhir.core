@@ -197,7 +197,7 @@ import org.hl7.fhir.dstu3.utils.CodeSystemUtilities;
 import org.hl7.fhir.dstu3.utils.ResourceUtilities;
 
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class NarrativeGenerator {
 

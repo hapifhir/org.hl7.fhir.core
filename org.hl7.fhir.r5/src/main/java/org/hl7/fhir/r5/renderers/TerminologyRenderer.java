@@ -24,12 +24,12 @@ import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 
 import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CanonicalPair;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public abstract class TerminologyRenderer extends ResourceRenderer {
   

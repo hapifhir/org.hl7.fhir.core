@@ -7,7 +7,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.PackageInformation;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-@MarkedToMoveToAdjunctPackage
+
 public interface IValidatorResourceFetcher {
 
   Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRException, IOException;
