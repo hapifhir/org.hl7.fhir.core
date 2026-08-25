@@ -144,6 +144,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
   private final List<String> warnings = new CopyOnWriteArrayList<>();
   private CapabilityStatement capabilityStatement;
   private TerminologyCapabilities terminologyCapabilities;
+  // FHIR version the server reported during connect ($versions, falling back to
+  // /metadata); used to evaluate test-level "version" gates when no explicit
+  // version was passed to the constructor.
+  private volatile String serverVersion;
   // Server-side caching state, per thread (clients are per-thread). Maps a suite
   // name to the server-issued cache-id this thread holds for it. The first test a
   // thread runs from a suite starts a cache and front-loads that suite's setup
@@ -464,6 +468,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
     }
 
+    serverVersion = fhirVersion;
+
     ITerminologyClient client = null;
 
     if (VersionUtilities.isR5Plus(fhirVersion)) {
@@ -585,11 +591,26 @@ public class TxTester implements ITerminologyRequestIdProvider {
   }
 
   private boolean passesVersion(JsonObject item) {
-    if (item.has("version") && version != null) {
-      return VersionUtilities.versionMatches(version, item.asString("version"));
-    } else {
+    if (!item.has("version")) {
       return true;
     }
+    // the gate names the FHIR version(s) the item applies to ("4.0", or "!4.0" for
+    // everything else); evaluate it against the version passed to the constructor,
+    // falling back to what the server reported when connecting
+    String v = version != null ? version : serverVersion;
+    if (v == null) {
+      return true;
+    }
+    String criteria = item.asString("version");
+    boolean negated = criteria.startsWith("!");
+    if (negated) {
+      criteria = criteria.substring(1);
+    }
+    if (!criteria.endsWith("?")) {
+      criteria = criteria + "?";
+    }
+    boolean matches = VersionUtilities.versionMatches(criteria, v);
+    return negated ? !matches : matches;
   }
 
   private ResultInformation runTest(ITxTesterLoader loader, JsonObject suite, JsonObject test, List<Resource> setup, Set<String> modes, String filter,
