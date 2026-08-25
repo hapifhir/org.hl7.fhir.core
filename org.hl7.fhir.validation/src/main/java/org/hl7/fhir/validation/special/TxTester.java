@@ -635,6 +635,11 @@ public class TxTester implements ITerminologyRequestIdProvider {
         conversionLogger.testName.set(testName);
         String reqFile = chooseParam(test, "request", modes);
         Resource req = reqFile == null ? null : loader.loadResource(reqFile);
+        if (test.has("lenient-display") && req instanceof Parameters) {
+          // the lenient/strict display validation pairs share one request file; the
+          // test attribute determines the lenient-display-validation parameter sent
+          ((Parameters) req).addParameter("lenient-display-validation", test.asBoolean("lenient-display"));
+        }
 
         String fn = chooseParam(test, "response", modes);
         String resp = FileUtilities.bytesToString(loader.loadContent(fn));
