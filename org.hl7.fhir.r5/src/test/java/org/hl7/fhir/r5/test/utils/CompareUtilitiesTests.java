@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.test.utils;
 import org.apache.commons.io.IOUtils;
 
 import org.hl7.fhir.utilities.tests.ResourceLoaderTests;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CompareUtilitiesTests implements ResourceLoaderTests {
@@ -99,5 +101,43 @@ public class CompareUtilitiesTests implements ResourceLoaderTests {
      String expectedOutput = normalizeNewlines(getResourceAsString(expectedOutputPath));
      assertEquals(expectedOutput, normalizeNewlines(actualOutput));
    }
+ }
+
+ // $only$ gates an expected array item to a comparison context (tx-ecosystem uses it to
+ // version-gate response parts): the item is required when the gate matches the "version"
+ // variable and ignored entirely when it doesn't.
+ private static final String ONLY_EXPECTED_JSON = "{\"item\" : [" +
+     "{\"name\" : \"concept\"}," +
+     "{\"$only$\" : \"version:4\", \"name\" : \"equivalence\"}," +
+     "{\"name\" : \"originMap\"}," +
+     "{\"$only$\" : \"version:5\", \"name\" : \"relationship\"}]}";
+
+ private String compareWithVersion(String version, String expected, String actual) throws IOException {
+   return new CompareUtilities(null, null, java.util.Map.of("version", version)).checkJsonSrcIsSame("$only$", expected, actual, false);
+ }
+
+ @Test
+ public void testCompareJSONOnlyMatchingGateIsRequired() throws IOException {
+   final String r5Actual = "{\"item\" : [{\"name\" : \"concept\"}, {\"name\" : \"originMap\"}, {\"name\" : \"relationship\"}]}";
+   final String r4Actual = "{\"item\" : [{\"name\" : \"concept\"}, {\"name\" : \"equivalence\"}, {\"name\" : \"originMap\"}]}";
+   assertNull(compareWithVersion("5.0.0", ONLY_EXPECTED_JSON, r5Actual));
+   assertNull(compareWithVersion("4.0.1", ONLY_EXPECTED_JSON, r4Actual));
+   // an item gated to the matching version stays required
+   final String r5MissingRelationship = "{\"item\" : [{\"name\" : \"concept\"}, {\"name\" : \"originMap\"}]}";
+   assertNotNull(compareWithVersion("5.0.0", ONLY_EXPECTED_JSON, r5MissingRelationship));
+   // an item gated to the other version may not appear
+   final String r5WithEquivalence = "{\"item\" : [{\"name\" : \"concept\"}, {\"name\" : \"equivalence\"}, {\"name\" : \"originMap\"}, {\"name\" : \"relationship\"}]}";
+   assertNotNull(compareWithVersion("5.0.0", ONLY_EXPECTED_JSON, r5WithEquivalence));
+ }
+
+ @Test
+ public void testCompareJSONOnlyFilteredPropertyMayBeAbsent() throws IOException {
+   // a property whose expected array is entirely gated away may be missing from the actual
+   final String expected = "{\"item\" : [{\"name\" : \"concept\"}], \"gated\" : [{\"$only$\" : \"version:4\", \"name\" : \"equivalence\"}]}";
+   final String actualWithout = "{\"item\" : [{\"name\" : \"concept\"}]}";
+   assertNull(compareWithVersion("5.0.0", expected, actualWithout));
+   assertNotNull(compareWithVersion("4.0.1", expected, actualWithout));
+   final String actualWith = "{\"item\" : [{\"name\" : \"concept\"}], \"gated\" : [{\"name\" : \"equivalence\"}]}";
+   assertNull(compareWithVersion("4.0.1", expected, actualWith));
  }
 }

@@ -1,6 +1,6 @@
 ## Validator Changes
 
-* no changes
+* txTests: support the `$only$` version-gate marker in expected responses (used by the tx-ecosystem test cases)
 
 ## Other code changes
 

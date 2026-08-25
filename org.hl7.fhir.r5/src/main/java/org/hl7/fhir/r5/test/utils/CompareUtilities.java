@@ -378,7 +378,7 @@ public class CompareUtilities extends BaseTestingUtilities {
   }
 
   private boolean isOptional(String n, List<String> optionals) {
-    return n.equals("$optional$") || optionals.contains("*")  || optionals.contains(n);
+    return n.equals("$optional$") || n.equals("$only$") || optionals.contains("*")  || optionals.contains(n);
   }
 
   private boolean allOptional(JsonElement value) {
@@ -387,7 +387,8 @@ public class CompareUtilities extends BaseTestingUtilities {
       for (JsonElement e : a) {
         if (e.isJsonObject()) {
           JsonObject o = e.asJsonObject();
-          if (!o.has("$optional$")) {
+          boolean filteredOnly = o.isJsonString("$only$") && !passesOptionalFilter(o.asString("$only$"));
+          if (!o.has("$optional$") && !filteredOnly) {
             return false;
           }
         } else {
@@ -455,7 +456,7 @@ public class CompareUtilities extends BaseTestingUtilities {
         return s;
     } else if (actualJsonElement instanceof JsonArray) {
       JsonArray actualArray = (JsonArray) actualJsonElement;
-      JsonArray expectedArray = (JsonArray) expectedJsonElement;
+      JsonArray expectedArray = filterOnlys((JsonArray) expectedJsonElement);
 
       int as = actualArray.size();
       int es = expectedArray.size();
@@ -518,6 +519,32 @@ public class CompareUtilities extends BaseTestingUtilities {
     } else
       return "unhandled property " + actualJsonElement.getClass().getName();
     return null;
+  }
+
+  /**
+   * Remove expected array items whose $only$ gate does not pass in the current comparison
+   * context - e.g. an item marked "$only$" : "version:4" is dropped when comparing the
+   * response of a version 5 server. Items whose gate passes remain in place as required
+   * items (unlike $optional$, which merely tolerates absence in either context).
+   */
+  private JsonArray filterOnlys(JsonArray arr) {
+    boolean found = false;
+    for (JsonElement e : arr) {
+      if (e.isJsonObject() && e.asJsonObject().isJsonString("$only$")) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      return arr;
+    }
+    JsonArray res = new JsonArray();
+    for (JsonElement e : arr) {
+      if (!(e.isJsonObject() && e.asJsonObject().isJsonString("$only$")) || passesOptionalFilter(e.asJsonObject().asString("$only$"))) {
+        res.add(e);
+      }
+    }
+    return res;
   }
 
   private int optionalCount(JsonArray arr, String name, JsonObject parent) {
