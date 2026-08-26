@@ -61,7 +61,7 @@ public class StructureMapRenderer extends TerminologyRenderer {
   public void renderMap(RenderingStatus status, XhtmlNode x, StructureMap map) {
     
     x.tx("\r\n");
-    if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
+    if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
       renderMetadata(x, "url", map.getUrlElement());
       renderMetadata(x, "name", map.getNameElement());
       if (map.hasTitle()) {

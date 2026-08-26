@@ -391,8 +391,17 @@ public class TerminologyClientR4 implements ITerminologyClient {
 
   @Override
   public Parameters translate(Parameters params) throws FHIRException {
-    org.hl7.fhir.r4.model.Parameters p4 = (org.hl7.fhir.r4.model.Parameters) convertResource("translate.request", params);
-    return (Parameters) convertResource("translate.response", client.translate(p4));
+    try {
+      org.hl7.fhir.r4.model.Parameters p4 = (org.hl7.fhir.r4.model.Parameters) convertResource("translate.request", params);
+      return (Parameters) convertResource("translate.response", client.translate(p4));
+    } catch (EFhirClientException e) {
+      if (e.getServerErrors().size() == 1) {
+        OperationOutcome op =  (OperationOutcome) convertResource("validateVS.error", e.getServerErrors().get(0));
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), op, e);
+      } else {
+        throw new org.hl7.fhir.r5.utils.client.EFhirClientException(e.getCode(), e.getMessage(), e);
+      }
+    }
   }
 
   @Override

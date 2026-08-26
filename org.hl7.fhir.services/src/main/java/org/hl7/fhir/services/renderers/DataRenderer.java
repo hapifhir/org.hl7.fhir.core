@@ -368,7 +368,7 @@ public class DataRenderer extends Renderer implements CodeResolver {
     StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(t); 
     if (sd == null) 
       return false; 
-    if (VersionUtilities.getCanonicalResourceNames(getContext().getWorker().getVersion()).contains(t)) { 
+    if (VersionUtilities.getCanonicalResourceNames(getContext().getWorker().getFHIRVersion()).contains(t)) {
       return true; 
     } 
     if (Utilities.existsInList(t,  
@@ -2352,11 +2352,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
   public String displayDosage(ResourceWrapper dosage) {
     String txt = dosage.primitiveValue("text");
     String details = null;
-    if (VersionUtilities.isR6Plus(context.getContext().getVersion())) {
+    if (VersionUtilities.isR6Plus(context.getContext().getFHIRVersion())) {
       details = displayDosageR6(dosage);
-    } else if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
+    } else if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
       details = displayDosageR5(dosage);
-    } else if (VersionUtilities.isR4Plus(context.getContext().getVersion())) {
+    } else if (VersionUtilities.isR4Plus(context.getContext().getFHIRVersion())) {
       details = displayDosageR4(dosage);
     } else {
       details = displayDosageR3(dosage);
@@ -2373,11 +2373,11 @@ public class DataRenderer extends Renderer implements CodeResolver {
   }
 
   public void renderDosage(ResourceWrapper dosage, XhtmlNode x) {
-    if (VersionUtilities.isR6Plus(context.getContext().getVersion())) {
+    if (VersionUtilities.isR6Plus(context.getContext().getFHIRVersion())) {
       renderDosageR6(dosage, x);
-    } else if (VersionUtilities.isR5Plus(context.getContext().getVersion())) {
+    } else if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
       renderDosageR6(dosage, x);
-    } else if (VersionUtilities.isR4Plus(context.getContext().getVersion())) {
+    } else if (VersionUtilities.isR4Plus(context.getContext().getFHIRVersion())) {
       renderDosageR6(dosage, x);
     } else {
       renderDosageR6(dosage, x);

@@ -200,7 +200,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     if (inactive) {
       n.setInactive(true);
-      ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status", vstatus);
+      // A server that knows a concept is inactive says why. If the code system is more
+      // specific (retired, deprecated, ...) that status is used; otherwise the concept is
+      // simply inactive, and saying so is not optional - previously a concept marked only
+      // with the 'inactive' property got contains.inactive but no status property at all.
+      ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status",
+          Utilities.noString(vstatus) ? "inactive" : vstatus);
     } else if (!Utilities.noString(vstatus) && !Utilities.existsInList(vstatus.toLowerCase(), "active")) {
       ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status", vstatus);
     } else if (deprecated) {

@@ -101,6 +101,13 @@ private static TxTestData testData;
     }
     String reqFile = setup.getTest().asString("request");
     Resource req = reqFile == null ? null : loadResource(reqFile);
+    // The test case's lenient-display property is carried to the server as the
+    // lenient-display-validation parameter (see TxTester.runTest, which does the same for
+    // the HTTP path). It only means anything for the two $validate-code operations.
+    if (setup.getTest().has("lenient-display") && req instanceof org.hl7.fhir.r5.model.Parameters
+        && Utilities.existsInList(setup.getTest().asString("operation"), "validate-code", "cs-validate-code")) {
+      ((org.hl7.fhir.r5.model.Parameters) req).addParameter("lenient-display-validation", setup.getTest().asBoolean("lenient-display"));
+    }
     String fn = setup.getTest().has("response:tx.fhir.org") ? setup.getTest().asString("response:tx.fhir.org") : setup.getTest().asString("response");
     String fn2 = setup.getTest().has("response2") ? setup.getTest().asString("response2") : null; // alternative allowed response for servers unable to implement a feature
     String resp = testData.load(fn);
