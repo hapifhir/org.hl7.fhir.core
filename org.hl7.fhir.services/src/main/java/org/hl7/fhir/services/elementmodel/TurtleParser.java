@@ -124,7 +124,7 @@ public class TurtleParser extends TurtleParserBase {
   @Override
   public List<ValidatedFragment> parse(InputStream inStream) throws IOException, FHIRException {
     // Redirect cross-version parsing
-    String fhirVersion = context.getVersion();
+    String fhirVersion = context.getFHIRVersion();
     if ( VersionUtilities.isR6Ver(fhirVersion) ) {
       return r6Parser().parse(inStream); 
     }
@@ -162,7 +162,7 @@ public class TurtleParser extends TurtleParserBase {
 
   /** Returns the cross-version delegate to use for compose(), or {@code null} for native R5 (default). */
   private TurtleParserBase composeDelegate() {
-    String fhirVersion = context.getVersion();
+    String fhirVersion = context.getFHIRVersion();
     if (VersionUtilities.isR4Ver(fhirVersion)) {
       return r4Parser();
     }

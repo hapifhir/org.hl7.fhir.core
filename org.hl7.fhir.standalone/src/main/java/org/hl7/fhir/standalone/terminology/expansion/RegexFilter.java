@@ -1,0 +1,35 @@
+package org.hl7.fhir.standalone.terminology.expansion;
+
+import org.hl7.fhir.model.core.CodeSystem;
+import org.hl7.fhir.model.core.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.standalone.terminology.expansion.ConceptFilter;
+import org.hl7.fhir.utilities.regex.RegexTimeout;
+
+import java.util.List;
+import java.util.concurrent.TimeoutException;
+
+
+public class RegexFilter extends ConceptFilter {
+
+  private String regex;
+  
+  protected RegexFilter(List<String> allErrors, String regex) {
+    super(allErrors);
+    this.regex = regex;
+  }
+
+  @Override
+  public boolean includeConcept(CodeSystem cs, ConceptDefinitionComponent def) {
+    try {
+      @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+      //False positive: RegexTimeout.matches is the approved timeout wrapper. The regex comes from the ValueSet filter value - user-supplied at runtime
+      boolean matches = RegexTimeout.matches(def.getCode(), regex);
+     return matches;
+    } catch (TimeoutException e) {
+      throw fail("The regex filter '"+regex+"' took too long to evaluate against code '"+def.getCode()+"'");
+    } catch (RuntimeException e) {
+      // RegexTimeout wraps evaluation failures (e.g. an invalid pattern) in a RuntimeException
+      throw fail("Error evaluating the regex filter '"+regex+"' against code '"+def.getCode()+"': "+e.getMessage());
+    }
+  }
+}

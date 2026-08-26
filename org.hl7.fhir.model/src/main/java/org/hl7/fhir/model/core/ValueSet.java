@@ -3261,6 +3261,18 @@ public class ValueSet extends MetadataResource {
 
   }
 
+      public void addParameter(String name, DataType value) {
+        getParameterList().add(new ValueSetExpansionParameterComponent(null, name).setValue(value));
+      }
+
+      public boolean hasParameterValue(String name, String value) {
+        for (ValueSetExpansionParameterComponent p : getParameterList()) {
+          if (name.equals(p.getName()) && p.hasValue() && value.equals(p.getValue().primitiveValue())) {
+            return true;
+          }
+        }
+        return false;
+      }
   }
 
     @Block()

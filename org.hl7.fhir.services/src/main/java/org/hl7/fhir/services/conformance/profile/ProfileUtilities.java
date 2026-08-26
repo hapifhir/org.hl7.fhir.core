@@ -809,7 +809,7 @@ public class ProfileUtilities {
         //        debug = true;
         //      }
 
-        MappingAssistant mappingDetails = new MappingAssistant(mappingMergeMode, base, derived, context.getVersion(), suppressedMappings);
+        MappingAssistant mappingDetails = new MappingAssistant(mappingMergeMode, base, derived, context.getFHIRVersion(), suppressedMappings);
         
         ProfilePathProcessor.processPaths(this, base, derived, url, webUrl, diff, baseSnapshot, mappingDetails);
 
@@ -3012,7 +3012,7 @@ public class ProfileUtilities {
 
       if (derived.hasIsSummaryElement()) {
         if (!Base.compareDeep(derived.getIsSummaryElement(), base.getIsSummaryElement(), false)) {
-          if (base.hasIsSummary() && !context.getVersion().equals("1.4.0")) // work around a known issue with some 1.4.0 cosntraints
+          if (base.hasIsSummary() && !context.getFHIRVersion().equals("1.4.0")) // work around a known issue with some 1.4.0 cosntraints
             throw new Error(context.formatMessage(I18nConstants.ERROR_IN_PROFILE__AT__BASE_ISSUMMARY___DERIVED_ISSUMMARY__, purl, derived.getPath(), base.getIsSummaryElement().asStringValue(), derived.getIsSummaryElement().asStringValue()));
           base.setIsSummaryElement(derived.getIsSummaryElement().copy(Base.COPY_DATA));
         } else if (trimDifferential)

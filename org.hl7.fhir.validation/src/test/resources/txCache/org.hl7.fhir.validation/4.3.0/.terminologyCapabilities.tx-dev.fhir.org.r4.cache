@@ -15080,7 +15080,7 @@
     }],
     "uri" : "https://fevir.net/sevco",
     "version" : [{
-      "code" : "2.0"
+      "code" : "3.0"
     }]
   },
   {
@@ -15100,7 +15100,7 @@
     }],
     "uri" : "https://terminology.dhp.uz/fhir/CodeSystem/loinc-supplement-uz",
     "version" : [{
-      "code" : "2.80"
+      "code" : "2.82"
     }]
   },
   {

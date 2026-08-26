@@ -83,6 +83,7 @@
         <module>org.hl7.fhir.model</module>
         <module>org.hl7.fhir.services</module>
         <module>org.hl7.fhir.support</module>
+        <module>org.hl7.fhir.standalone</module>
     </modules>
 
     <repositories>

@@ -278,7 +278,7 @@ public class JsonParser extends ParserBase {
           if (sd != null) {
             Property property = new Property(context, sd.getSnapshot().getElementFirstRep(), sd, element.getProperty().getUtils(), element.getProperty().getContextUtils());
             parseChildItem(errors, path, children, element, property);
-          } else if ("fhir_comments".equals(e.getName()) && (VersionUtilities.isR2BVer(context.getVersion()) || VersionUtilities.isR2Ver(context.getVersion()))) {
+          } else if ("fhir_comments".equals(e.getName()) && (VersionUtilities.isR2BVer(context.getFHIRVersion()) || VersionUtilities.isR2Ver(context.getFHIRVersion()))) {
             if (!e.getValue().isJsonArray()) {
               logError(errors, "2022-12-17", line(e.getValue()), col(e.getValue()), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.ILLEGAL_COMMENT_TYPE, e.getValue().type().toName()), IssueSeverity.ERROR);
             } else {

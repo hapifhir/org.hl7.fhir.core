@@ -71,7 +71,7 @@ public class ShExGenerator extends ShExGeneratorBase {
 
   @Override
   public String generate(HTMLLinkPolicy links, StructureDefinition structure) {
-    if (VersionUtilities.isR6Ver(context.getVersion())) {
+    if (VersionUtilities.isR6Ver(context.getFHIRVersion())) {
       return getR6Generator().generate(links, structure);
     }
     return super.generate(links, structure);
@@ -79,7 +79,7 @@ public class ShExGenerator extends ShExGeneratorBase {
 
   @Override
   public List<String> getExcludedStructureDefinitionUrls() {
-    if (VersionUtilities.isR6Ver(context.getVersion())) {
+    if (VersionUtilities.isR6Ver(context.getFHIRVersion())) {
       return getR6Generator().getExcludedStructureDefinitionUrls();
     }
     return super.getExcludedStructureDefinitionUrls();
@@ -87,7 +87,7 @@ public class ShExGenerator extends ShExGeneratorBase {
 
   @Override
   public void setExcludedStructureDefinitionUrls(List<String> excludedSDs) {
-    if (VersionUtilities.isR6Ver(context.getVersion())) {
+    if (VersionUtilities.isR6Ver(context.getFHIRVersion())) {
       getR6Generator().setExcludedStructureDefinitionUrls(excludedSDs);
       return;
     }
@@ -96,7 +96,7 @@ public class ShExGenerator extends ShExGeneratorBase {
 
   @Override
   public List<StructureDefinition> getSelectedExtensions() {
-    if (VersionUtilities.isR6Ver(context.getVersion())) {
+    if (VersionUtilities.isR6Ver(context.getFHIRVersion())) {
       return getR6Generator().getSelectedExtensions();
     }
     return super.getSelectedExtensions();
@@ -104,7 +104,7 @@ public class ShExGenerator extends ShExGeneratorBase {
 
   @Override
   public void setSelectedExtension(List<StructureDefinition> selectedExtensions) {
-    if (VersionUtilities.isR6Ver(context.getVersion())) {
+    if (VersionUtilities.isR6Ver(context.getFHIRVersion())) {
       getR6Generator().setSelectedExtension(selectedExtensions);
       return;
     }
@@ -113,7 +113,7 @@ public class ShExGenerator extends ShExGeneratorBase {
 
   @Override
   public String generate(HTMLLinkPolicy links, List<StructureDefinition> structures, List<String> excludedSDUrls) {
-    if (VersionUtilities.isR6Ver(context.getVersion())) {
+    if (VersionUtilities.isR6Ver(context.getFHIRVersion())) {
       return getR6Generator().generate(links, structures, excludedSDUrls);
     }
     return super.generate(links, structures, excludedSDUrls);
@@ -121,7 +121,7 @@ public class ShExGenerator extends ShExGeneratorBase {
 
   @Override
   public String generate(HTMLLinkPolicy links, List<StructureDefinition> structures) {
-    if (VersionUtilities.isR6Ver(context.getVersion())) {
+    if (VersionUtilities.isR6Ver(context.getFHIRVersion())) {
       return getR6Generator().generate(links, structures);
     }
     return super.generate(links, structures);
