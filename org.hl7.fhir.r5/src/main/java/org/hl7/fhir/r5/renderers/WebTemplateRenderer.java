@@ -5,16 +5,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
@@ -22,23 +17,16 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.r5.utils.sql.Column;
-import org.hl7.fhir.r5.utils.sql.ColumnKind;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
-import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Row;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
-import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Title;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class WebTemplateRenderer extends ResourceRenderer {
   
@@ -68,11 +56,11 @@ public class WebTemplateRenderer extends ResourceRenderer {
     } else { 
       model.setDocoImg(Utilities.pathURL(context.getLink(KnownLinkType.SPEC, true), "help16.png")); 
     }  
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Name"), (context.formatPhrase(RenderingContext.QUEST_LINK)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Card."), (context.formatPhrase(RenderingContext.QUEST_TEXTFOR)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Definition"), (context.formatPhrase(RenderingContext.QUEST_TIMES)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Type"), (context.formatPhrase(RenderingContext.QUEST_TIMES)), null, 0)); 
-    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Inputs"), (context.formatPhrase(RenderingContext.QUEST_TYPE_ITEM)), null, 0)); 
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Name"), (context.formatPhrase(RenderingI18nContext.QUEST_LINK)), null, 0)); 
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Card."), (context.formatPhrase(RenderingI18nContext.QUEST_TEXTFOR)), null, 0)); 
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Definition"), (context.formatPhrase(RenderingI18nContext.QUEST_TIMES)), null, 0)); 
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Type"), (context.formatPhrase(RenderingI18nContext.QUEST_TIMES)), null, 0)); 
+    model.getTitles().add(gen.new Title(null, model.getDocoRef(), ("Inputs"), (context.formatPhrase(RenderingI18nContext.QUEST_TYPE_ITEM)), null, 0)); 
  
     // first we add a root for the WebTemplate itself 
     Row row = addItem(gen, model.getRows(), wt.child("tree")); 
@@ -89,7 +77,7 @@ public class WebTemplateRenderer extends ResourceRenderer {
     Row r = gen.new Row(); 
     rows.add(r); 
 
-    r.setIcon("icon_vd_view.png", context.formatPhrase(RenderingContext.QUEST_ROOT)); 
+    r.setIcon("icon_vd_view.png", context.formatPhrase(RenderingI18nContext.QUEST_ROOT)); 
     r.getCells().add(gen.new Cell(null, null, item.primitiveValue("name"), null, null)); 
     
     r.getCells().add(gen.new Cell(null, null, item.primitiveValue("min")+".."+("-1".equals(item.primitiveValue("max")) ? "*" : item.primitiveValue("max")), null, null));
@@ -279,18 +267,18 @@ public class WebTemplateRenderer extends ResourceRenderer {
         boolean sfirst = true;
         p = plateStyle(div.para());
         if (tid != null) {
-          p.tx(context.formatPhrase(RenderingContext.RES_REND_TEMPLATE_ID, tid));
+          p.tx(context.formatPhrase(RenderingI18nContext.RES_REND_TEMPLATE_ID, tid));
           sfirst = false;
         }
         if (versionId != null) {
-          p.tx(context.formatPhrase(RenderingContext.RES_REND_VER, versionId.primitiveValue()));
+          p.tx(context.formatPhrase(RenderingI18nContext.RES_REND_VER, versionId.primitiveValue()));
           sfirst = false;
         }
         if (lang != null) {
           if (!sfirst) {
             p.tx("; ");
           }
-          p.tx(context.formatPhrase(RenderingContext.RES_REND_LANGUAGE, lang));
+          p.tx(context.formatPhrase(RenderingI18nContext.RES_REND_LANGUAGE, lang));
           sfirst = false;
         }
       }

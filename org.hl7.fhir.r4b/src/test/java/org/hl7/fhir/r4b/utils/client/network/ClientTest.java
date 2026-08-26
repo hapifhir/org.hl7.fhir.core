@@ -7,6 +7,8 @@ import okhttp3.mockwebserver.RecordedRequest;
 import org.hl7.fhir.r4b.context.HTMLClientLogger;
 import org.hl7.fhir.r4b.formats.JsonParser;
 import org.hl7.fhir.r4b.model.*;
+import org.hl7.fhir.utilities.http.ManagedWebAccess;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
@@ -29,6 +31,17 @@ class ClientTest {
   private final HumanName humanName = new HumanName().addGiven("Mark").setFamily("Iantorno");
   private final Patient patient = new Patient().addName(humanName).addAddress(address)
       .setGender(Enumerations.AdministrativeGender.MALE);
+
+  @BeforeAll
+  static void beforeAll() {
+    ManagedWebAccess.loadFromFHIRSettings(
+      FhirSettingsPOJO.builder().ssrfProtectionEnabled(false).build());
+  }
+
+  @AfterAll
+  static void afterAll() {
+    ManagedWebAccess.loadFromFHIRSettings();
+  }
 
   @BeforeEach
   void setup() {

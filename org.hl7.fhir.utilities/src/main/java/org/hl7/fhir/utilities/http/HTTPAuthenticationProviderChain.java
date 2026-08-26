@@ -12,6 +12,26 @@ public class HTTPAuthenticationProviderChain implements IHTTPAuthenticationProvi
   }
 
   @Override
+  public boolean isProtocolAllowed(URL url) {
+    for (IHTTPAuthenticationProvider p : providers) {
+      if (p.isProtocolAllowed(url)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public boolean isPrivateNetworkAllowed(URL url) {
+    for (IHTTPAuthenticationProvider p : providers) {
+      if (p.isPrivateNetworkAllowed(url)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
   public boolean canProvideHeaders(URL url) {
     for (IHTTPAuthenticationProvider p : providers) {
       if (p.canProvideHeaders(url)) {

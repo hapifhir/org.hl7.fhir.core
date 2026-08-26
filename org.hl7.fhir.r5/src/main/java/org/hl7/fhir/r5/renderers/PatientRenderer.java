@@ -16,12 +16,13 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.FileUtilities;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class PatientRenderer extends ResourceRenderer {
 
 
@@ -53,19 +54,19 @@ public class PatientRenderer extends ResourceRenderer {
     if (n != null) {
       b.append(displayHumanName(n));
     } else {
-      b.append(context.formatPhrase(RenderingContext.PAT_NO_NAME));      
+      b.append(context.formatPhrase(RenderingI18nContext.PAT_NO_NAME));      
     }
     b.append(" ");
     if (item == null) {
-      b.append(context.formatPhrase(RenderingContext.PAT_NO_GENDER));
+      b.append(context.formatPhrase(RenderingI18nContext.PAT_NO_GENDER));
     } else {
       b.append(gender);
     }
     b.append(", ");
     if (dt == null) {
-      b.append(context.formatPhrase(RenderingContext.PAT_NO_DOB));
+      b.append(context.formatPhrase(RenderingI18nContext.PAT_NO_DOB));
     } else {
-      b.append(context.formatPhrase(RenderingContext.PAT_DOB, displayDateTime(dt)));      
+      b.append(context.formatPhrase(RenderingI18nContext.PAT_DOB, displayDateTime(dt)));      
     }
     if (id != null) {
       b.append(" ( ");      
@@ -117,21 +118,21 @@ public class PatientRenderer extends ResourceRenderer {
       ResourceWrapper dt = pat.child("birthDate");
 
       if (n == null) {
-        x.b().tx(context.formatPhrase(RenderingContext.PAT_NO_NAME)); // todo: is this appropriate?  
+        x.b().tx(context.formatPhrase(RenderingI18nContext.PAT_NO_NAME)); // todo: is this appropriate?  
       } else {
         renderDataType(status, xlinkNarrative(x.b(), n), n);
       }
       x.tx(" ");
       if (gender == null) {
-        x.tx(context.formatPhrase(RenderingContext.PAT_NO_GENDER));
+        x.tx(context.formatPhrase(RenderingI18nContext.PAT_NO_GENDER));
       } else {
         spanIfTracking(x, pat.child("gender")).tx(gender);
       }
       x.tx(", ");
       if (dt == null) {
-        x.tx(context.formatPhrase(RenderingContext.PAT_NO_DOB));
+        x.tx(context.formatPhrase(RenderingI18nContext.PAT_NO_DOB));
       } else {
-        spanIfTracking(x, dt).tx(context.formatPhrase(RenderingContext.PAT_DOB, displayDateTime(dt)));
+        spanIfTracking(x, dt).tx(context.formatPhrase(RenderingI18nContext.PAT_DOB, displayDateTime(dt)));
       }
       if (id != null) {
         x.tx(" ( ");      
@@ -345,7 +346,7 @@ public class PatientRenderer extends ResourceRenderer {
       if (langs.size() == 1) {
         renderDataType(status, xlinkNarrative(td, langs.get(0)), langs.get(0));
         if (prefLang != null) {
-          td.tx(" "+context.formatPhrase(RenderingContext.PAT_LANG_PREFERRED));
+          td.tx(" "+context.formatPhrase(RenderingI18nContext.PAT_LANG_PREFERRED));
         }
       } else if (langs.size() > 1) {
         XhtmlNode ul = td.ul();
@@ -353,7 +354,7 @@ public class PatientRenderer extends ResourceRenderer {
           XhtmlNode li = ul.li();
           renderDataType(status, xlinkNarrative(li, i), i);
           if (i == prefLang) {
-            li.tx(" "+context.formatPhrase(RenderingContext.PAT_LANG_PREFERRED));;
+            li.tx(" "+context.formatPhrase(RenderingI18nContext.PAT_LANG_PREFERRED));;
           }
         }
       }
@@ -393,11 +394,11 @@ public class PatientRenderer extends ResourceRenderer {
     List<NamedReferance> refs = new ArrayList<>();
     List<ResourceWrapper> pw = r.children("generalPractitioner");
     for (ResourceWrapper t : pw) {
-      refs.add(new NamedReferance(context.formatPhrase(RenderingContext.PAT_GP), null, t));
+      refs.add(new NamedReferance(context.formatPhrase(RenderingI18nContext.PAT_GP), null, t));
     }
     pw = r.children("managingOrganization");
     for (ResourceWrapper t : pw) {
-      refs.add(new NamedReferance(context.formatPhrase(RenderingContext.PAT_MO), null, t));
+      refs.add(new NamedReferance(context.formatPhrase(RenderingI18nContext.PAT_MO), null, t));
     }
     pw = r.children("link");
     for (ResourceWrapper t : pw) {
@@ -410,7 +411,7 @@ public class PatientRenderer extends ResourceRenderer {
 
     if (refs.size() > 0) {      
       XhtmlNode tr = tbl.tr();
-      nameCell(tr, context.formatPhrase(RenderingContext.PAT_LINKS), context.formatPhrase(RenderingContext.PAT_LINKS_HINT));
+      nameCell(tr, context.formatPhrase(RenderingI18nContext.PAT_LINKS), context.formatPhrase(RenderingI18nContext.PAT_LINKS_HINT));
       XhtmlNode td = tr.td();
       td.colspan("3");
       XhtmlNode ul = td.ul();
@@ -429,10 +430,10 @@ public class PatientRenderer extends ResourceRenderer {
 
   private String describeLinkedRecord(String type) {
     switch (type) {
-    case "replaced-by" : return context.formatPhrase(RenderingContext.PAT_LINK_REPLBY);
-    case "replaces": return context.formatPhrase(RenderingContext.PAT_LINK_REPL);
-    case "refer": return context.formatPhrase(RenderingContext.PAT_LINK_REFER);
-    case "seealso": return context.formatPhrase(RenderingContext.PAT_LINK_SEE);
+    case "replaced-by" : return context.formatPhrase(RenderingI18nContext.PAT_LINK_REPLBY);
+    case "replaces": return context.formatPhrase(RenderingI18nContext.PAT_LINK_REPL);
+    case "refer": return context.formatPhrase(RenderingI18nContext.PAT_LINK_REFER);
+    case "seealso": return context.formatPhrase(RenderingI18nContext.PAT_LINK_SEE);
     }
     return "Unknown";
   }
@@ -457,9 +458,9 @@ public class PatientRenderer extends ResourceRenderer {
     }
     XhtmlNode tr = tbl.tr();
     if (rels.size() == 1) {
-      nameCell(tr, displayDataType(rels.get(0))+":",  context.formatPhrase(RenderingContext.PAT_NOM_CONTACT)+" "+displayDataType(rels.get(0)));
+      nameCell(tr, displayDataType(rels.get(0))+":",  context.formatPhrase(RenderingI18nContext.PAT_NOM_CONTACT)+" "+displayDataType(rels.get(0)));
     } else {
-      nameCell(tr, context.formatPhrase(RenderingContext.GENERAL_CONTACT), context.formatPhrase(RenderingContext.PAT_NOK_CONTACT_HINT));
+      nameCell(tr, context.formatPhrase(RenderingI18nContext.GENERAL_CONTACT), context.formatPhrase(RenderingI18nContext.PAT_NOK_CONTACT_HINT));
     }
     XhtmlNode td = tr.td();
     td.colspan("3");
@@ -473,11 +474,11 @@ public class PatientRenderer extends ResourceRenderer {
       }
     } else if (gender != null) {
       li = ul.li();
-      li.tx(context.formatPhrase(RenderingContext.PAT_GENDER, gender));      
+      li.tx(context.formatPhrase(RenderingI18nContext.PAT_GENDER, gender));      
     }
     if (rels.size() > 1) {
       li = ul.li();
-      li.tx(context.formatPhrase(RenderingContext.PAT_RELN));
+      li.tx(context.formatPhrase(RenderingI18nContext.PAT_RELN));
       boolean first = true;
       for (ResourceWrapper rel : rels) {
         if (first) first = false; else li.tx(", ");
@@ -492,12 +493,12 @@ public class PatientRenderer extends ResourceRenderer {
     }
     if (organization != null) {
       li = ul.li();
-      li.tx(context.formatPhrase(RenderingContext.PAT_ORG));
+      li.tx(context.formatPhrase(RenderingI18nContext.PAT_ORG));
       renderDataType(status, xlinkNarrative(li, organization), organization);
     }
     if (period != null) {
       li = ul.li();
-      li.tx(context.formatPhrase(RenderingContext.PAT_PERIOD));
+      li.tx(context.formatPhrase(RenderingI18nContext.PAT_PERIOD));
       renderDataType(status, xlinkNarrative(li, period), period);
     }
   }
@@ -513,7 +514,7 @@ public class PatientRenderer extends ResourceRenderer {
     };
     if (names.size() == 1) {
       XhtmlNode tr = tbl.tr();
-      nameCell(tr, context.formatPhrase(RenderingContext.PAT_ALT_NAME), context.formatPhrase(RenderingContext.PAT_ALT_NAME_HINT));
+      nameCell(tr, context.formatPhrase(RenderingI18nContext.PAT_ALT_NAME), context.formatPhrase(RenderingI18nContext.PAT_ALT_NAME_HINT));
       XhtmlNode td = tr.td();
       td.colspan("3");
       if (names.size() == 1) {
@@ -532,7 +533,7 @@ public class PatientRenderer extends ResourceRenderer {
     List<ResourceWrapper> adds = r.children("address");
     if (tels.size() + adds.size() > 0) {
       XhtmlNode tr = tbl.tr();
-      nameCell(tr, context.formatPhrase(RenderingContext.PAT_CONTACT), context.formatPhrase(RenderingContext.PAT_CONTACT_HINT));
+      nameCell(tr, context.formatPhrase(RenderingI18nContext.PAT_CONTACT), context.formatPhrase(RenderingI18nContext.PAT_CONTACT_HINT));
       XhtmlNode td = tr.td();
       td.colspan("3");
       if (tels.size() + adds.size() == 1) {
@@ -575,7 +576,7 @@ public class PatientRenderer extends ResourceRenderer {
         List<ResourceWrapper> a = r.children("active");
         if (!a.isEmpty()) {
           pos++;
-          nameCell(tr, context.formatPhrase(RenderingContext.PAT_ACTIVE), context.formatPhrase(RenderingContext.PAT_ACTIVE_HINT));
+          nameCell(tr, context.formatPhrase(RenderingI18nContext.PAT_ACTIVE), context.formatPhrase(RenderingI18nContext.PAT_ACTIVE_HINT));
           XhtmlNode td = tr.td();
           if (pos == count) {
             td.colspan("3");
@@ -587,7 +588,7 @@ public class PatientRenderer extends ResourceRenderer {
         List<ResourceWrapper> a = r.children("deceased[x]");
         if (!a.isEmpty()) {
           pos++;
-          nameCell(tr, context.formatPhrase(RenderingContext.PAT_DECEASED), context.formatPhrase(RenderingContext.PAT_DECEASED_HINT));
+          nameCell(tr, context.formatPhrase(RenderingI18nContext.PAT_DECEASED), context.formatPhrase(RenderingI18nContext.PAT_DECEASED_HINT));
           XhtmlNode td = tr.td();
           if (pos == count) {
             td.colspan("3");
@@ -602,7 +603,7 @@ public class PatientRenderer extends ResourceRenderer {
           if (pos == 3) {
             tr = tbl.tr();          
           }
-          nameCell(tr, context.formatPhrase(RenderingContext.PAT_MARITAL), context.formatPhrase(RenderingContext.PAT_MARITAL_HINT));
+          nameCell(tr, context.formatPhrase(RenderingI18nContext.PAT_MARITAL), context.formatPhrase(RenderingI18nContext.PAT_MARITAL_HINT));
           XhtmlNode td = tr.td();
           if (pos == count) {
             td.colspan("3");
@@ -617,7 +618,7 @@ public class PatientRenderer extends ResourceRenderer {
           if (pos == 3) {
             tr = tbl.tr();          
           }
-          nameCell(tr, context.formatPhrase(RenderingContext.PAT_MUL_BIRTH), context.formatPhrase(RenderingContext.PAT_MUL_BIRTH_HINT));
+          nameCell(tr, context.formatPhrase(RenderingI18nContext.PAT_MUL_BIRTH), context.formatPhrase(RenderingI18nContext.PAT_MUL_BIRTH_HINT));
           XhtmlNode td = tr.td();
           if (pos == count) {
             td.colspan("3");
@@ -663,7 +664,7 @@ public class PatientRenderer extends ResourceRenderer {
             String n = context.getRandomName(r.getId())+ext;
             FileUtilities.bytesToFile(cnt, ManagedFileAccess.file(Utilities.path(context.getDestDir(), n)));
             context.registerFile(n);
-            td.img(n, context.formatPhrase(RenderingContext.PAT_PHOTO));            
+            td.img(n, context.formatPhrase(RenderingI18nContext.PAT_PHOTO));            
           }
           return;
         } 

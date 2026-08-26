@@ -44,7 +44,7 @@ import org.hl7.fhir.r4b.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r4b.model.CanonicalResource;
 import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.utils.IResourceValidator.BundleValidationRule;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
@@ -57,7 +57,7 @@ import com.google.gson.JsonObject;
  * @author Grahame Grieve
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 public interface IResourceValidator {
 
   public class BundleValidationRule {
@@ -271,10 +271,6 @@ public interface IResourceValidator {
   public boolean isCrumbTrails();
 
   public void setCrumbTrails(boolean crumbTrails);
-
-  public boolean isValidateValueSetCodesOnTxServer();
-
-  public void setValidateValueSetCodesOnTxServer(boolean value);
 
   /**
    * Bundle validation rules allow for requesting particular entries in a bundle

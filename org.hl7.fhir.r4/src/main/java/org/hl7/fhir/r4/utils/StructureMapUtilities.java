@@ -96,7 +96,7 @@ import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
@@ -118,7 +118,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  * @author Grahame Grieve
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class StructureMapUtilities {
 
@@ -156,6 +156,22 @@ public class StructureMapUtilities {
     public Base resolveReference(Object appContext, String url) throws FHIRException;
 
     public List<Base> performSearch(Object appContext, String url) throws FHIRException;
+
+    // FHIRPath custom-function hooks (see IHostApplicationServices). Default implementations
+    // preserve the previous hardcoded FHIRPathHostServices behavior for callers that don't
+    // override them, so adding these methods is backward-compatible.
+    default FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
+      return null;
+    }
+
+    default TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
+        throws PathEngineException {
+      throw new PathEngineException("Unknown function '" + functionName + "'");
+    }
+
+    default List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
+      throw new Error("Not Implemented Yet");
+    }
   }
 
   private class FHIRPathHostServices implements IHostApplicationServices {
@@ -191,19 +207,25 @@ public class StructureMapUtilities {
 
     @Override
     public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
-      return null; // throw new Error("Not Implemented Yet");
+      return services == null ? null : services.resolveFunction(engine, functionName);
     }
 
     @Override
     public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters)
         throws PathEngineException {
-      throw new Error("Not Implemented Yet");
+      if (services == null) {
+        throw new PathEngineException("Unknown function '" + functionName + "'");
+      }
+      return services.checkFunction(engine, appContext, functionName, focus, parameters);
     }
 
     @Override
     public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName,
         List<List<Base>> parameters) {
-      throw new Error("Not Implemented Yet");
+      if (services == null) {
+        throw new Error("Not Implemented Yet");
+      }
+      return services.executeFunction(engine, appContext, focus, functionName, parameters);
     }
 
     @Override
@@ -1943,7 +1965,8 @@ public class StructureMapUtilities {
           res.setUserData("profile", tgt.getUserData("profile"));
         return res;
       case COPY:
-        return getParam(vars, tgt.getParameter().get(0));
+        Base val = getParam(vars, tgt.getParameter().get(0));
+        return val != null ? val.copy() : val;
       case EVALUATE:
         ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
         if (expr == null) {

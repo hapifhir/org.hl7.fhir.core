@@ -39,28 +39,22 @@ import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.Enumerations.FilterOperator;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
-import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionPropertyComponent;
-import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptDefinitionComponentSorter;
-import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.ConceptStatus;
-import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
 import org.hl7.fhir.r5.utils.CanonicalResourceUtilities;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.NaturalOrderComparator;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
@@ -169,6 +163,21 @@ public class ValueSetUtilities extends TerminologyUtilities {
     throw new Error("ValueSet "+vs.getUrl()+" is not shareable");    
   }
 
+  /**
+   * Check that the expansion contains no nested codes - e.g. that it is suitable for generating 
+   * a flat list of codes (enums in code generation, the expansions pack). Expansions come out 
+   * nested when they are produced with hierarchical = true (excludeNested = false)
+   */
+  public static void checkExpansionIsFlat(ValueSet vs) throws FHIRException {
+    if (vs != null && vs.hasExpansion()) {
+      for (ValueSetExpansionContainsComponent cc : vs.getExpansion().getContains()) {
+        if (cc.hasContains()) {
+          throw new FHIRException("The expansion of the value set "+vs.getVersionedUrl()+" is not flat: the code '"+cc.getCode()+"' contains nested codes (starting with '"+cc.getContains().get(0).getCode()+"')");
+        }
+      }
+    }
+  }
+
   public static boolean hasOID(ValueSet vs) {
     return getOID(vs) != null;
   }
@@ -193,7 +202,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     vs.addIdentifier().setSystem("urn:ietf:rfc:3986").setValue(oid);
   }
 
-  public static void markStatus(ValueSet vs, String wg, StandardsStatus status, String fmm, IWorkerContext context, String normativeVersion) throws FHIRException {
+  public static void markStatus(ValueSet vs, String wg, StandardsStatus status, String fmm, IWorkerContext context, String normativeVersion, String thisVersion) throws FHIRException {
     if (vs.hasUserData(UserDataNames.render_external_link))
       return;
     
@@ -206,7 +215,7 @@ public class ValueSetUtilities extends TerminologyUtilities {
     if (status != null) {
       StandardsStatus ss = ExtensionUtilities.getStandardsStatus(vs);
       if (ss == null || ss.isLowerThan(status)) 
-        ExtensionUtilities.setStandardsStatus(vs, status, normativeVersion);
+        ExtensionUtilities.setStandardsStatus(vs, status, normativeVersion, context.getVersion());
       if (status == StandardsStatus.NORMATIVE) {
         vs.setStatus(PublicationStatus.ACTIVE);
       }
@@ -218,13 +227,13 @@ public class ValueSetUtilities extends TerminologyUtilities {
       }
     }
     if (vs.hasUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM))
-      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM), wg, status, fmm, normativeVersion);
+      CodeSystemUtilities.markStatus((CodeSystem) vs.getUserData(UserDataNames.TX_ASSOCIATED_CODESYSTEM), wg, status, fmm, normativeVersion, thisVersion);
     else if (status == StandardsStatus.NORMATIVE && context != null) {
       for (ConceptSetComponent csc : vs.getCompose().getInclude()) {
         if (csc.hasSystem()) {
           CodeSystem cs = context.fetchCodeSystem(csc.getSystem(), ExtensionUtilities.getVersionResolutionRules(csc.getSystemElement()));
           if (cs != null) {
-            CodeSystemUtilities.markStatus(cs, wg, status, fmm, normativeVersion);
+            CodeSystemUtilities.markStatus(cs, wg, status, fmm, normativeVersion, context.getVersion());
           }
         }
       }
@@ -343,6 +352,28 @@ public class ValueSetUtilities extends TerminologyUtilities {
       p = ctxt.addProperty().setCode(code).setValue(value);
     }
     return p;
+  }
+
+  /**
+   * Add another value for a property that may legitimately repeat, instead of replacing the value
+   * already carried.
+   *
+   * <p>{@link #addProperty} is a set: callers such as the label / order / weight handling
+   * deliberately write the code system's value and then let the value set's value replace it. That
+   * is the wrong behaviour when the values are siblings rather than overrides —
+   * {@code CodeSystem.concept.property} is 0..*, and every value belongs in the expansion.
+   *
+   * <p>An identical value already present is not added twice; a repeated identical value in the
+   * source says nothing the expansion does not already carry.
+   */
+  public static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent addPropertyValue(ValueSet vs, ValueSetExpansionContainsComponent ctxt, String url, String code, DataType value) {
+    code = defineProperty(vs, url, code);
+    for (org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent t : ctxt.getProperty()) {
+      if (code.equals(t.getCode()) && t.hasValue() && value != null && t.getValue().equalsDeep(value)) {
+        return t;
+      }
+    }
+    return ctxt.addProperty().setCode(code).setValue(value);
   }
 
   private static org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent getProperty(List<org.hl7.fhir.r5.model.ValueSet.ConceptPropertyComponent> list, String code) {

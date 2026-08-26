@@ -39,21 +39,27 @@ import java.util.List;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.turtle.Turtle;
+import org.hl7.fhir.utilities.turtle.Turtle.Complex;
+import org.hl7.fhir.utilities.turtle.Turtle.Section;
 
 
-@MarkedToMoveToAdjunctPackage
+
 public class TurtleParser extends TurtleParserBase {
 
-  // `volatile` so the one-shot lazy publish of the R6 delegate is visible across threads.
+  private boolean deriveConceptIriFromNamingSystem;
+
+  // `volatile` so the one-shot lazy publish of the cross-version delegates is visible across threads.
   // Per-call setting sync below is intentionally NOT synchronized: the inherited ParserBase
   // setters/fields aren't thread-safe to begin with, and parse()/compose() mutate other
   // instance state that isn't guarded either, so adding a lock here would imply a guarantee
   // we can't actually deliver. Concurrent mutation of a single parser instance is unsupported.
   private volatile TurtleParserR6 r6Parser;
+  private volatile TurtleParserR4 r4Parser;
 
-  /** R5 Turtle Parser with optional redirect to TurtleParserR6 */
+  /** R5 Turtle Parser with optional redirect to TurtleParserR4 / TurtleParserR6 */
   public TurtleParser(IWorkerContext context) {
     super(context);
   }
@@ -71,23 +77,51 @@ public class TurtleParser extends TurtleParserBase {
         }
       }
     }
-    syncR6ParserState();
+    syncDelegateState(parser);
+    return parser;
+  }
+
+  TurtleParserR4 r4Parser() {
+    TurtleParserR4 parser = r4Parser;
+    if (parser == null) {
+      synchronized (this) {
+        parser = r4Parser;
+        if (parser == null) {
+          parser = new TurtleParserR4(context);
+          r4Parser = parser;
+        }
+      }
+    }
+    syncDelegateState(parser);
     return parser;
   }
 
   /**
-   * Copy outer parser settings into the R6 delegate so it sees the same configuration.
+   * Copy outer parser settings into the given delegate so it sees the same configuration.
    * Not synchronized by design — see the note on {@link #r6Parser}.
    */
-  private void syncR6ParserState() {
-    r6Parser.setupValidation(policy);
-    r6Parser.setLinkResolver(linkResolver);
-    r6Parser.setShowDecorations(showDecorations);
-    r6Parser.setIdPolicy(idPolicy);
-    r6Parser.setLogical(logical);
-    r6Parser.setSignatureServices(signatureServices);
-    r6Parser.canonicalFilter = canonicalFilter;
-    r6Parser.setStyle(getStyle());
+  private void syncDelegateState(TurtleParserBase delegate) {
+    delegate.setupValidation(policy);
+    delegate.setLinkResolver(linkResolver);
+    delegate.setShowDecorations(showDecorations);
+    delegate.setIdPolicy(idPolicy);
+    delegate.setLogical(logical);
+    delegate.setSignatureServices(signatureServices);
+    delegate.canonicalFilter = canonicalFilter;
+    delegate.setStyle(getStyle());
+    delegate.base = base;
+    if (delegate instanceof TurtleParserR6) {
+      ((TurtleParserR6) delegate).setDeriveConceptIriFromNamingSystem(deriveConceptIriFromNamingSystem);
+    }
+  }
+
+  public boolean isDeriveConceptIriFromNamingSystem() {
+    return deriveConceptIriFromNamingSystem;
+  }
+
+  public TurtleParser setDeriveConceptIriFromNamingSystem(boolean deriveConceptIriFromNamingSystem) {
+    this.deriveConceptIriFromNamingSystem = deriveConceptIriFromNamingSystem;
+    return this;
   }
 
   @Override
@@ -97,23 +131,49 @@ public class TurtleParser extends TurtleParserBase {
     if ( VersionUtilities.isR6Ver(fhirVersion) ) {
       return r6Parser().parse(inStream); 
     }
+    if ( VersionUtilities.isR4Ver(fhirVersion) ) {
+      return r4Parser().parse(inStream);
+    }
 
     if (VersionUtilities.isR5Ver(fhirVersion)) {
       return super.parse(inStream);
     }
 
-    throw new FHIRException("Turtle parsing for versions under R5 is not supported in this module. Use the appropriate module. (R4, DSTU3, etc)");
+    throw new FHIRException("Turtle parsing for versions under R4 is not supported in this module. Use the appropriate module. (DSTU3, etc)");
   }
 
   @Override
   public void compose(Element e, OutputStream stream, OutputStyle style, String base) throws IOException, FHIRException {
-    // Redirect cross-version serialization
-    String fhirVersion = context.getVersion();
-    if ( VersionUtilities.isR6Ver(fhirVersion) ) {
-      r6Parser().compose(e, stream, style, base);
+    TurtleParserBase delegate = composeDelegate();
+    if (delegate != null) {
+      delegate.compose(e, stream, style, base);
     } else {
       super.compose(e, stream, style, base);
     }
+  }
+
+  @Override
+  public void compose(Element e, Turtle ttl, String base) throws FHIRException {
+    this.base = base == null || base.isEmpty() ? FHIR_URI_BASE : base;
+    TurtleParserBase delegate = composeDelegate();
+    if (delegate != null) {
+      delegate.compose(e, ttl, base);
+    } else {
+      super.compose(e, ttl, base);
+    }
+  }
+
+  /** Returns the cross-version delegate to use for compose(), or {@code null} for native R5 (default). */
+  private TurtleParserBase composeDelegate() {
+    String fhirVersion = context.getVersion();
+    if (VersionUtilities.isR4Ver(fhirVersion)) {
+      return r4Parser();
+    }
+    if (VersionUtilities.isR6Ver(fhirVersion)) {
+      return r6Parser();
+    }
+    // Default to R5
+    return null;
   }
 
   @Override
@@ -123,5 +183,33 @@ public class TurtleParser extends TurtleParserBase {
 
   public static String getClassName(String name) {
     return name; // R5 ShEx type names are not transformed
+  }
+
+  @Override
+  protected void decorateCoding(Complex t, Element coding, Section section) throws FHIRException {
+    String system = coding.getChildValue("system");
+    String code = coding.getChildValue("code");
+
+    if (system == null || code == null)
+      return;
+    if ("http://snomed.info/sct".equals(system)) {
+      t.prefix("sct", "http://snomed.info/id/");
+      if (code.contains(":") || code.contains("=")) {
+        // Post-coordinated expressions aren't supported
+      } else {
+        t.linkedPredicate("a", "sct:" + urlescape(code), null, null);
+      }
+    } else if ("http://loinc.org".equals(system)) {
+      t.prefix("loinc", "https://loinc.org/rdf/");
+      t.linkedPredicate("a", "loinc:"+urlescape(code).toUpperCase(), null, null);
+    } else if ("https://www.nlm.nih.gov/mesh".equals(system)) {
+      t.prefix("mesh", "http://id.nlm.nih.gov/mesh/");
+      t.linkedPredicate("a", "mesh:"+urlescape(code), null, null);
+    }
+  }
+
+  @Override
+  protected void decorateCodeableConcept(Complex t, Element codeableConcept, Section section) throws FHIRException {
+    // Do nothing in R5
   }
 }

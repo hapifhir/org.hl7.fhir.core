@@ -31,8 +31,8 @@ import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingComponent;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
-import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.UserDataNames;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
@@ -60,7 +60,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  *  generateTranslations = -langTransform export -src {src} -tgt {tgt} -dest {dest}
  *  importFromTranslations =  -langTransform import -src {src} -tgt {tgt} -dest {dest}
  */
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class LanguageUtils {
   

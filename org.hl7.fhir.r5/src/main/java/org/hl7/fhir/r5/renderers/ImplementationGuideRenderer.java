@@ -10,10 +10,11 @@ import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ImplementationGuideRenderer extends ResourceRenderer {
 
   public ImplementationGuideRenderer(RenderingContext context) { 
@@ -41,7 +42,7 @@ public class ImplementationGuideRenderer extends ResourceRenderer {
   public void render(RenderingStatus status, XhtmlNode x, ImplementationGuide ig) throws FHIRFormatError, DefinitionException, IOException {
 
     x.h2().addText(ig.getName());
-    x.para().tx(context.formatPhrase(RenderingContext.IMP_GUIDE_URL)+" ");
+    x.para().tx(context.formatPhrase(RenderingI18nContext.IMP_GUIDE_URL)+" ");
     x.pre().tx(ig.getUrl());
     addMarkdown(x, ig.getDescription());
   }

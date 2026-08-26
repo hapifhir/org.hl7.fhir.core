@@ -25,12 +25,11 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.UserDataNames;
+
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ComparisonSession {
 
   

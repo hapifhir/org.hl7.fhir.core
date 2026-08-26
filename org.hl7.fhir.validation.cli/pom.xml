@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>6.9.11-SNAPSHOT</version>
+        <version>6.10.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -277,9 +277,9 @@
             <artifactId>logback-classic</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.fusesource.jansi</groupId>
+            <groupId>org.jline</groupId>
             <artifactId>jansi</artifactId>
-            <version>2.4.3</version>
+            <version>4.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

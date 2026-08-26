@@ -1,16 +1,50 @@
 package org.hl7.fhir.r5.renderers;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 
-@MarkedToMoveToAdjunctPackage
+
 public class RendererFactory {
 
-  public static ResourceRenderer factory(String resourceName, RenderingContext context) {
+  /**
+   * Renderers registered for resource types that are not handled by the built-in renderers - 
+   * typically resources defined by an incubator IG (see additional-resources-r5.md). A registered 
+   * renderer takes precedence over the built-in renderer (and the profile-driven fallback) for the 
+   * same resource name.
+   * <p/>
+   * The registered class must have a public constructor that takes a single RenderingContext
+   * argument, as all the built-in renderers do. Registration is per RendererFactory instance (not
+   * global): the application constructs the factory it hands to the RenderingContext and registers
+   * the renderers it wants on that factory, so the registration is naturally scoped to that
+   * rendering context and does not affect any other.
+   */
+  private final Map<String, Class<? extends ResourceRenderer>> registeredRenderers = new HashMap<>();
+
+  public void registerRenderer(String name, Class<? extends ResourceRenderer> renderer) {
+    registeredRenderers.put(name, renderer);
+  }
+
+  private ResourceRenderer makeRegisteredRenderer(String name, RenderingContext context) {
+    Class<? extends ResourceRenderer> clss = registeredRenderers.get(name);
+    if (clss == null) {
+      return null;
+    }
+    try {
+      return clss.getConstructor(RenderingContext.class).newInstance(context);
+    } catch (Exception e) {
+      throw new FHIRException("Unable to instantiate the registered renderer "+clss.getName()+" for '"+name+"' (it must have a public constructor that takes a RenderingContext): "+e.getMessage(), e);
+    }
+  }
+
+  public ResourceRenderer factory(String resourceName, RenderingContext context) {
 
     if (context.getTemplateProvider() != null) {
       String liquidTemplate = context.getTemplateProvider().findTemplate(context, resourceName);
@@ -21,6 +55,10 @@ public class RendererFactory {
     if (Utilities.isAbsoluteUrl(resourceName)) {
       resourceName = Utilities.tail(resourceName);
 
+    }
+    ResourceRenderer registered = makeRegisteredRenderer(resourceName, context);
+    if (registered != null) {
+      return registered;
     }
     switch (resourceName) {
     case "ActorDefinition": return new ActorDefinitionRenderer(context);
@@ -54,10 +92,10 @@ public class RendererFactory {
       case "FeatureDefinition" : return new FeatureDefinitionRenderer(context);
     case "WebTemplate": return new WebTemplateRenderer(context);
     }
-    return new ProfileDrivenRenderer(context);    
+    return new ProfileDrivenRenderer(context);
   }
 
-  public static ResourceRenderer factory(Resource resource, RenderingContext context) {
+  public ResourceRenderer factory(Resource resource, RenderingContext context) {
 
     if (context.getTemplateProvider() != null && resource instanceof DomainResource) {
       String liquidTemplate = context.getTemplateProvider().findTemplate(context, (DomainResource) resource);
@@ -70,12 +108,16 @@ public class RendererFactory {
   }
 
 
-  public static ResourceRenderer factory(ResourceWrapper resource, RenderingContext context) {
+  public ResourceRenderer factory(ResourceWrapper resource, RenderingContext context) {
     if (context.getTemplateProvider() != null) {
       String liquidTemplate = context.getTemplateProvider().findTemplate(context, resource.fhirType());
       if (liquidTemplate != null) {
         return new LiquidRenderer(context, liquidTemplate);
       }
+    }
+    ResourceRenderer registered = makeRegisteredRenderer(resource.fhirType(), context);
+    if (registered != null) {
+      return registered;
     }
     switch (resource.fhirType()) {
     case "DiagnosticReport": return new DiagnosticReportRenderer(context);
@@ -115,12 +157,12 @@ public class RendererFactory {
       }
     }
 
-    return new ProfileDrivenRenderer(context);    
+    return new ProfileDrivenRenderer(context);
   }
 
-  public static boolean hasSpecificRenderer(String rt) {
+  public boolean hasSpecificRenderer(String rt) {
 
-    return Utilities.existsInList(rt, 
+    return registeredRenderers.containsKey(rt) || Utilities.existsInList(rt, 
         "CodeSystem", "ValueSet", "ConceptMap", 
         "CapabilityStatement", "CompartmentDefinition", "ImplementationGuide", "Library", "NamingSystem", "OperationDefinition", 
         "Questionnaire", "SearchParameter", "StructureDefinition", "ActorDefinition", "Requirements", "TestPlan", "ExampleScenario", "Consent");
@@ -132,7 +174,7 @@ public class RendererFactory {
    * @param rt
    * @return
    */
-  public static boolean hasIGSpecificRenderer(String rt) {
+  public boolean hasIGSpecificRenderer(String rt) {
 
     return Utilities.existsInList(rt, "ValueSet", "CapabilityStatement", "Questionnaire");
   }

@@ -1,0 +1,512 @@
+package org.hl7.fhir.standalone.terminology.client;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.services.context.ILoggingService;
+import org.hl7.fhir.model.extensions.ExtensionDefinitions;
+import org.hl7.fhir.model.core.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
+import org.hl7.fhir.services.terminology.ITerminologyClient;
+import org.hl7.fhir.standalone.terminology.utilities.TerminologyCache;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.http.HTTPHeader;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+
+public class TerminologyClientContext {
+  public static final String MIN_TEST_VERSION = "1.6.0";
+  public static final String TX_BATCH_VERSION = "1.7.8"; // actually, it's 17.7., but there was an error in the tx.fhir.org code around this
+  public static final String LATEST_VERSION = "1.9.0";
+
+  public enum TerminologyClientContextUseType {
+    expand, validate, readVS, readCS
+  }
+  public class TerminologyClientContextUseCount {
+    private int expands;
+    private int validates;
+    private int readVS;
+    private int readCS;
+
+    public int getReadVS() {
+      return readVS;
+    }
+    public void setReadVS(int readVS) {
+      this.readVS = readVS;
+    }
+    public int getReadCS() {
+      return readCS;
+    }
+    public void setReadCS(int readCS) {
+      this.readCS = readCS;
+    }
+    public int getExpands() {
+      return expands;
+    }
+    public void setExpands(int expands) {
+      this.expands = expands;
+    }
+    public int getValidates() {
+      return validates;
+    }
+    public void setValidates(int validates) {
+      this.validates = validates;
+    }
+  }
+
+  @Getter
+  private static boolean allowNonConformantServers = false;
+  @Getter
+  @Setter
+  private static boolean canAllowNonConformantServers = false;
+
+  @Getter
+  private static boolean canUseCacheId;
+
+  private ITerminologyClient client;
+
+  private CapabilityStatement capabilitiesStatement;
+  private TerminologyCapabilities txcaps;
+  @Getter
+  private final TerminologyCache txCache;
+  private String testVersion;
+  
+  // The HTTP header that carries the server-issued cache-id on subsequent requests.
+  public static final String CACHE_ID_HEADER = "X-Cache-Id";
+
+  private Map<String, TerminologyClientContextUseCount> useCounts = new HashMap<>();
+  private boolean isTxCaching;
+  private final Set<String> cached = new HashSet<>();
+  private boolean master;
+  // The cache-id for this server: server-issued via $cache-control during
+  // construction, or adopted from a shared client (see the constructor). null
+  // means this server isn't caching (didn't advertise $cache-control, caching
+  // was disabled, or starting a cache failed). Fixed for the life of the
+  // context; shutdown() ends its *use*, it doesn't change the identity.
+  private final String cacheId;
+  // Whether this context started the cache itself (and so is responsible for
+  // releasing it at shutdown), as opposed to adopting one already carried by a
+  // shared client.
+  private final boolean cacheOwned;
+  // Lifecycle: set once by shutdown(), never cleared. After shutdown the context
+  // must not be used for further requests (see shutdown()).
+  private boolean isShutdown;
+  // How many TerminologyClientManagers currently hold this context. One context
+  // object can be in several managers at once, because TerminologyClientManager.copy
+  // shares the server list by reference rather than rebuilding it - so a worker
+  // context built by copying another shares its servers, and its caches, with the
+  // original. The server-side cache belongs to all of them jointly, so it is only
+  // released when the LAST holder lets go (see shutdown()); whichever manager is
+  // torn down first must not pull the cache out from under the others.
+  private int holders = 1;
+  private final ILoggingService logger;
+
+  protected TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
+    super();
+    this.client = client;
+    this.txCache = txCache;
+    this.master = master;
+    this.logger = logger;
+    initialize();
+
+    // Engage server-side caching. If this client instance already carries a
+    // cache-id header, another TerminologyClientContext has already started a
+    // cache on it (e.g. the IG publisher's version comparators wrap the master
+    // client in their own per-version contexts). Adopt that cache rather than
+    // starting a second one: addClientHeader appends, so starting again would
+    // leave two X-Cache-Id headers on every request, which the server reads as
+    // a single unknown id "id1, id2" and rejects. The adopting context re-sends
+    // resources it hasn't seen the server cache (its own bookkeeping starts
+    // empty), which is harmless because the cache is unsealed.
+    String adopted = (TerminologyClientContext.canUseCacheId && serverSupportsCacheControl()) ? existingCacheIdHeader() : null;
+    if (adopted != null) {
+      this.cacheId = adopted;
+      this.cacheOwned = false;
+    } else {
+      this.cacheId = startCache();
+      this.cacheOwned = this.cacheId != null;
+    }
+    if (this.cacheId != null) {
+      setTxCaching(true);
+    }
+  }
+
+  public Map<String, TerminologyClientContextUseCount> getUseCounts() {
+    return useCounts;
+  }
+
+  public boolean isMaster() {
+    return master;
+  }
+
+  public ITerminologyClient getClient() {
+    return client;
+  }
+
+  public void seeUse(Set<String> systems, TerminologyClientContextUseType useType) {
+    if (systems != null) {
+      for (String s : systems) {
+        seeUse(s, useType);
+      }
+    }
+  }
+  
+  public void seeUse(String s, TerminologyClientContextUseType useType) {
+    TerminologyClientContextUseCount uc = useCounts.get(s);
+    if (uc == null) {
+      uc = new TerminologyClientContextUseCount();
+      useCounts.put(s,uc);
+    }
+    switch (useType) {
+    case expand:
+      uc.expands++;
+      break;
+    case readVS:
+      uc.readVS++;
+      break;
+    case readCS:
+      uc.readCS++;
+      break;
+    case validate:
+      uc.validates++;
+      break;
+    default:
+      break;
+    }
+  }
+
+  public TerminologyCapabilities getTxCapabilities() {
+    return txcaps;
+  }
+
+  public void setTxCapabilities(TerminologyCapabilities txcaps) {
+    this.txcaps = txcaps;
+  }
+
+  public Set<String> getCached() {
+    return cached;
+  }
+
+  public boolean alreadyCached(CanonicalResource cr) {
+    return cached.contains(cr.getVUrl());
+  }
+
+  public void addToCache(CanonicalResource cr) {
+    cached.add(cr.getVUrl());
+  }
+
+  public String getAddress() {
+    return client.getAddress();
+  }
+
+  public int getUseCount() {
+    return getClient().getUseCount();
+  }
+
+  public boolean isTxCaching() {
+    return isTxCaching;
+  }
+  
+  public void setTxCaching(boolean isTxCaching) {
+    this.isTxCaching = isTxCaching;
+  }
+
+  public boolean usingCache() {
+    return !isShutdown && isTxCaching && cacheId != null;
+  }
+
+  public String getCacheId() {
+    // after shutdown the cache no longer exists (or is no longer ours to use),
+    // so don't report it
+    return isShutdown ? null : cacheId;
+  }
+
+  private void initialize() throws IOException {
+
+      // we don't cache the quick CS - we want to know that the server is with us. 
+      capabilitiesStatement = client.getCapabilitiesStatement();
+      checkFeature();
+      if (txCache != null && txCache.hasTerminologyCapabilities(getAddress())) {
+        txcaps = txCache.getTerminologyCapabilities(getAddress());
+        if (txcaps.getSoftware().hasVersion() && !txcaps.getSoftware().getVersion().equals(capabilitiesStatement.getSoftware().getVersion())) {
+          txcaps = null;
+        }
+      }
+      if (txcaps == null) {
+        txcaps = client.getTerminologyCapabilities();
+
+        // we don't use these, and they pollute the cache
+        if (txcaps != null) {
+          txcaps.setDate(null);
+          txcaps.setVersion(null);
+          txcaps.setImplementation(null);
+        }
+
+        if (txCache != null) {
+          try {
+            txCache.cacheTerminologyCapabilities(getAddress(), txcaps);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+  }
+
+  /**
+   * Start a server-side cache via the explicit $cache-control protocol: if the
+   * server advertises the operation (and caching is enabled), ask it to start a
+   * cache and use the server-issued id thereafter, carried as an HTTP header.
+   * The server owns the id, so it can authoritatively reject an unknown cache
+   * later. Called once, from the constructor.
+   *
+   * @return the server-issued cache-id, or null if the server doesn't support
+   * caching, caching is disabled, or the start failed.
+   */
+  private String startCache() {
+    if (!TerminologyClientContext.canUseCacheId || !serverSupportsCacheControl()) {
+      return null;
+    }
+    try {
+      // Ask for an *unsealed* cache: this client populates the cache
+      // incrementally (it sends each resource the first time it is needed, then
+      // refers to it by reference thereafter), so the cache must be allowed to
+      // grow after it is created. The protocol default is sealed=true, so we
+      // must request sealed=false explicitly. The body is r5 Parameters; the
+      // R3/R4 clients convert it down before sending.
+      Parameters body = new Parameters();
+      body.addParameter("sealed", false);
+      Parameters res = client.cacheControl(ITerminologyClient.CacheControlMode.START_CACHE, body);
+      String id = (res != null && res.hasParameter("cache-id")) ? res.getParameterValue("cache-id").primitiveValue() : null;
+      if (id != null && !id.isEmpty()) {
+        applyCacheIdHeader(id);
+        return id;
+      } else if (logger != null) {
+        logger.logMessage("Terminology server " + getAddress() + " advertised $cache-control but $cache-control?mode=start returned no cache-id; caching disabled for this server");
+      }
+    } catch (Exception e) {
+      if (logger != null) {
+        logger.logMessage("Unable to start a terminology cache on " + getAddress() + " via $cache-control (" + e.getMessage() + "); caching disabled for this server");
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Take an additional hold on this context, because another manager is about to
+   * start using it (see TerminologyClientManager.copy). Balanced by one shutdown().
+   *
+   * Called by TerminologyClientManager only; a caller that retains without ever
+   * shutting down simply leaves the cache to the server's idle timeout, which is
+   * the safe direction to fail in.
+   */
+  synchronized void retain() {
+    if (isShutdown) {
+      return; // already released - there is nothing left to hold
+    }
+    holders++;
+  }
+
+  /**
+   * Release one hold on this context. The last holder ends the server-side cache;
+   * earlier ones just let go.
+   *
+   * The distinction matters because TerminologyClientManager.copy shares context
+   * objects by reference: a worker context created by copying another has the same
+   * TerminologyClientContext in its manager, and unloading either worker context
+   * calls through to here. Ending the cache on the first call would release a cache
+   * the surviving worker context is still sending the cache-id for, and every
+   * subsequent request would be rejected as referencing an unknown cache - an error
+   * that reads like an expiry but isn't one.
+   *
+   * When this IS the last holder: if this context started the cache, it is released
+   * via $cache-control?mode=end (best-effort: failures are ignored, the server times
+   * caches out anyway); an adopted cache (see the constructor) is left alone, because
+   * the context that owns it may still be using it.
+   *
+   * Idempotent once fully shut down, because this is reached from best-effort
+   * teardown paths (e.g. BaseWorkerContext.unload()) that must be safe to run more
+   * than once - though each MANAGER must call it exactly once, or the count is wrong;
+   * TerminologyClientManager.shutdown() guards that. After the final shutdown the
+   * context must not be used for further requests: the underlying client still
+   * carries the (now released) cache-id header, so a server would reject them as
+   * referencing an unknown cache.
+   */
+  public synchronized void shutdown() {
+    if (isShutdown) {
+      return;
+    }
+    if (holders > 0) {
+      holders--;
+    }
+    if (holders > 0) {
+      // Somebody else is still working with this server. Not ours to close.
+      return;
+    }
+    isShutdown = true;
+    if (cacheId != null && cacheOwned) {
+      try {
+        client.cacheControl(ITerminologyClient.CacheControlMode.END_CACHE, null);
+      } catch (Exception e) {
+        // best-effort release; ignore
+      }
+    }
+    setTxCaching(false);
+  }
+
+  /**
+   * @return how many managers currently hold this context (test/diagnostic use).
+   */
+  public synchronized int getHolderCount() {
+    return holders;
+  }
+
+  /**
+   * @return the value of an existing cache-id header already present on this
+   * context's client (set by another context sharing the same client), or null.
+   */
+  private String existingCacheIdHeader() {
+    if (client.getClientHeaders() == null) {
+      return null;
+    }
+    for (HTTPHeader h : client.getClientHeaders()) {
+      if (CACHE_ID_HEADER.equalsIgnoreCase(h.getName())) {
+        return h.getValue();
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @return true if the server's CapabilityStatement advertises the system-level
+   * $cache-control operation.
+   */
+  private boolean serverSupportsCacheControl() {
+    if (capabilitiesStatement == null) {
+      return false;
+    }
+    for (CapabilityStatement.CapabilityStatementRestComponent rest : capabilitiesStatement.getRestList()) {
+      for (CapabilityStatement.CapabilityStatementRestResourceOperationComponent op : rest.getOperationList()) {
+        if ("cache-control".equals(op.getName())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Add the server-issued cache-id as a persistent request header on this context's
+   * client, so every subsequent request carries it.
+   */
+  private void applyCacheIdHeader(String id) {
+    client.addClientHeader(new HTTPHeader(CACHE_ID_HEADER, id));
+  }
+
+  private void checkFeature() {
+    if (!allowNonConformantServers && capabilitiesStatement != null) {
+      boolean csParams = false;
+
+      for (Extension t : capabilitiesStatement.getExtension()) {
+        if (ExtensionDefinitions.EXT_FEATURE.equals(t.getUrl())) {
+          String defn = t.getExtensionString("definition");
+          if (ExtensionDefinitions.FEATURE_TX_TEST_VERSION.equals(defn)) {
+            testVersion = t.getExtensionString("value");
+          } else if (ExtensionDefinitions.FEATURE_TX_CS_PARAMS.equals(defn)) {
+            csParams = "true".equals(t.getExtensionString("value"));
+          } 
+        }
+      }
+
+      if (testVersion == null) {
+        if (canAllowNonConformantServers) {
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use with this software (it does not pass the required tests).\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
+        } else {
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use with this software (it does not pass the required tests)");
+        }
+      } else if (!VersionUtilities.isThisOrLater(MIN_TEST_VERSION, testVersion, VersionUtilities.VersionPrecision.MINOR)) {
+        if (canAllowNonConformantServers) {
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use with this software as it is too old (test version = "+testVersion+").\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
+        } else {
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use with this software as it is too old (test version = "+testVersion+")");
+        }
+      } else if (!csParams) {
+        if (canAllowNonConformantServers) {
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use as it does not accept code systems in the tx-resource parameter.\r\nIf you wish to use this server, add the parameter -authorise-non-conformant-tx-servers to the command line parameters");
+        } else {
+          throw new TerminologyServiceException("The terminology server "+client.getAddress()+" is not approved for use as it does not accept code systems in the tx-resource parameter");
+        }
+      } else {
+        // all good
+      }
+    }
+  }
+
+  public boolean supportsSystem(String system) throws IOException {
+
+    for (TerminologyCapabilitiesCodeSystemComponent tccs : txcaps.getCodeSystemList()) {
+      if (system.equals(tccs.getUri()) || (tccs.hasVersion() && system.equals(CanonicalType.urlWithVersion(tccs.getUri(), tccs.getVersionFirstRep().getValue())))) {
+        return true;
+      }
+      if (system.startsWith(tccs.getUri()+"|")) {
+        if (tccs.hasVersion()) {
+          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersionList()) {
+            if (system.equals(CanonicalType.urlWithVersion(tccs.getUri(), v.getValue()))) {
+              return true;
+            }
+          }
+          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersionList()) {
+            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getValue()).startsWith(system) && v.getIsDefault()) {
+              return true;
+            }
+          }
+          for (TerminologyCapabilities.TerminologyCapabilitiesCodeSystemVersionComponent v : tccs.getVersionList()) {
+            if (system.startsWith("http://snomed.info/sct") && CanonicalType.urlWithVersion(tccs.getUri(), v.getValue()).startsWith(system)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  public String getTxTestVersion() {
+    try {
+      return testVersion;
+    } catch (Exception e) {
+      // debug?
+      return null;
+    }
+  }
+
+  @Override
+  public String toString() {
+    return client.getAddress();
+  }
+
+  public static void setCanUseCacheId(boolean canUseCacheId) {
+    TerminologyClientContext.canUseCacheId = canUseCacheId;
+  }
+
+  public String getHost() {
+    try {
+      URL uri = URI.create(getAddress()).toURL();
+      return uri.getHost();
+    } catch (MalformedURLException e) {
+      return getAddress();
+    }
+  }
+
+  public static void setAllowNonConformantServers(boolean allowNonConformantServers) {
+    TerminologyClientContext.allowNonConformantServers = allowNonConformantServers;
+  }
+
+}

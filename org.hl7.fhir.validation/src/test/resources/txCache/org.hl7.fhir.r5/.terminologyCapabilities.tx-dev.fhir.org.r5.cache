@@ -1,12 +1,10 @@
 {
   "resourceType" : "TerminologyCapabilities",
   "id" : "FhirServer",
-  "url" : "https://tx-dev.fhir.org/r5/TerminologyCapabilities/tx",
-  "version" : "0.9.6",
+  "url" : "http://tx-dev.fhir.org/r5/TerminologyCapabilities/tx",
   "name" : "FHIRTerminologyServer",
   "title" : "FHIR Terminology Server",
   "status" : "active",
-  "date" : "2026-06-17T01:32:11.814Z",
   "contact" : [{
     "telecom" : [{
       "system" : "other",
@@ -3387,7 +3385,7 @@
       "code" : "http://snomed.info/sct/731000124108/version/20240301"
     },
     {
-      "code" : "http://snomed.info/xsct/900000000000207008/version/20250814"
+      "code" : "http://snomed.info/xsct/31000003106/version/20250909"
     }],
     "content" : "complete"
   },
@@ -3464,7 +3462,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/adverse-event-category",
     "version" : [{
-      "code" : "2.0.0"
+      "code" : "3.0.0"
     }],
     "content" : "complete"
   },
@@ -3798,6 +3796,13 @@
     "content" : "complete"
   },
   {
+    "uri" : "http://terminology.hl7.org/CodeSystem/claim-adjudication-basis-categories",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
     "uri" : "http://terminology.hl7.org/CodeSystem/claim-exception",
     "version" : [{
       "code" : "1.0.1"
@@ -3838,6 +3843,13 @@
       "code" : "20260630"
     }],
     "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/color-rgb",
+    "version" : [{
+      "code" : "20260630"
+    }],
+    "content" : "not-present"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/common-tags",
@@ -4122,7 +4134,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/data-absent-reason",
     "version" : [{
-      "code" : "1.0.0"
+      "code" : "2.0.0"
     }],
     "content" : "complete"
   },
@@ -4157,7 +4169,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/device-availability-status",
     "version" : [{
-      "code" : "1.0.0"
+      "code" : "2.0.0"
     }],
     "content" : "complete"
   },
@@ -4192,7 +4204,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/device-status-reason",
     "version" : [{
-      "code" : "2.0.0"
+      "code" : "3.0.0"
     }],
     "content" : "complete"
   },
@@ -4247,6 +4259,13 @@
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-relationship",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/deviceassociation-relationship-status",
     "version" : [{
       "code" : "1.0.0"
     }],
@@ -5428,7 +5447,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/special-values",
     "version" : [{
-      "code" : "2.0.0"
+      "code" : "3.0.0"
     }],
     "content" : "complete"
   },
@@ -5592,6 +5611,13 @@
       "code" : "4.0.0"
     }],
     "content" : "fragment"
+  },
+  {
+    "uri" : "http://terminology.hl7.org/CodeSystem/us-claim-information-category",
+    "version" : [{
+      "code" : "1.0.0"
+    }],
+    "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/us-military-service-period",
@@ -8550,7 +8576,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AcknowledgementDetailCode",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8578,14 +8604,14 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
     "version" : [{
-      "code" : "10.0.0"
+      "code" : "11.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActExposureLevelCode",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8599,14 +8625,14 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActMood",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActPriority",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8641,7 +8667,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActRelationshipSubset",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8655,14 +8681,14 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActSite",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActStatus",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8676,21 +8702,21 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ActUSPrivacyLaw",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AddressPartType",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AddressUse",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8704,7 +8730,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-AmericanIndianAlaskaNativeLanguages",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8802,14 +8828,14 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ContainerCap",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8851,7 +8877,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
     "version" : [{
-      "code" : "6.0.0"
+      "code" : "7.0.0"
     }],
     "content" : "complete"
   },
@@ -8865,7 +8891,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-Dentition",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8886,7 +8912,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-DocumentStorage",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8949,7 +8975,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityClass",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8963,7 +8989,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityDeterminer",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -8984,7 +9010,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNamePartQualifierR2",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9005,28 +9031,28 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNameUse",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityNameUseR2",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityRisk",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-EntityStatus",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9040,14 +9066,14 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-Ethnicity",
     "version" : [{
-      "code" : "5.0.0"
+      "code" : "6.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ExposureMode",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9061,7 +9087,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-GTSAbbreviation",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9173,7 +9199,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-HL7UpdateMode",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9187,7 +9213,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-hl7VoteResolution",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9264,7 +9290,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-LivingArrangement",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9285,7 +9311,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ManagedParticipationStatus",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9306,7 +9332,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9411,14 +9437,14 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ObservationMethod",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
     "version" : [{
-      "code" : "5.0.0"
+      "code" : "6.0.0"
     }],
     "content" : "complete"
   },
@@ -9446,14 +9472,14 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationFunction",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationMode",
     "version" : [{
-      "code" : "5.0.0"
+      "code" : "6.0.0"
     }],
     "content" : "complete"
   },
@@ -9467,7 +9493,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
     "version" : [{
-      "code" : "6.0.0"
+      "code" : "7.0.0"
     }],
     "content" : "complete"
   },
@@ -9488,7 +9514,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-PersonDisabilityType",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9523,7 +9549,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryParameterValue",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9544,7 +9570,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-QueryRequestLimit",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9565,7 +9591,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-Race",
     "version" : [{
-      "code" : "5.0.0"
+      "code" : "6.0.0"
     }],
     "content" : "complete"
   },
@@ -9614,7 +9640,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleClass",
     "version" : [{
-      "code" : "5.0.0"
+      "code" : "6.0.0"
     }],
     "content" : "complete"
   },
@@ -9628,21 +9654,21 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleLinkStatus",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleLinkType",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-RoleStatus",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9663,7 +9689,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-SetOperator",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9677,28 +9703,28 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-SpecimenType",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-styleType",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-substanceAdminSubstitution",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-SubstitutionCondition",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9761,7 +9787,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent",
     "version" : [{
-      "code" : "4.0.0"
+      "code" : "5.0.0"
     }],
     "content" : "complete"
   },
@@ -9775,7 +9801,7 @@
   {
     "uri" : "http://terminology.hl7.org/CodeSystem/v3-TribalEntityUS",
     "version" : [{
-      "code" : "5.0.0"
+      "code" : "6.0.0"
     }],
     "content" : "complete"
   },
@@ -9940,7 +9966,7 @@
   {
     "uri" : "https://fevir.net/sevco",
     "version" : [{
-      "code" : "2.0"
+      "code" : "3.0"
     }],
     "content" : "complete"
   },
@@ -9954,7 +9980,7 @@
   {
     "uri" : "https://terminology.dhp.uz/fhir/CodeSystem/loinc-supplement-uz",
     "version" : [{
-      "code" : "2.80"
+      "code" : "2.82"
     }],
     "content" : "supplement"
   },

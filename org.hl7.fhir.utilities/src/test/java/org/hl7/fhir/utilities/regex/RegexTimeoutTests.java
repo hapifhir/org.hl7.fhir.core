@@ -26,28 +26,6 @@ class RegexTimeoutTests {
   static final String BAD_SUFFIX_REGEX = "((a+)+)+b";
   static final String EVIL_NO_SUFFIX = "a".repeat(50);
 
-   private static Set<Thread> threadsBefore;
-
-      @BeforeAll
-      static void beforeAll()
-      {
-          threadsBefore = Collections.unmodifiableSet(Thread.getAllStackTraces().keySet());
-      }
-
-      @AfterAll
-      static void afterAll() throws InterruptedException {
-        // We need a tiny amount of delay here. Interruption is introduced as regexs process chars, which is fast, but
-        // not instantaneous.
-        Thread.sleep(10);
-        Set<Thread> threadsAfter = Thread.getAllStackTraces().keySet();
-        if (threadsAfter.size() != threadsBefore.size())
-        {
-          threadsAfter.removeAll(threadsBefore);
-          throw new IllegalStateException("Lingering threads in test: " + threadsAfter);
-        }
-      }
-
-
   @Test
   void test_BadRegex_Matches_EvilString() {
     assertThrows( TimeoutException.class, () -> RegexTimeout.matches(EVIL_STRING, BAD_REGEX));

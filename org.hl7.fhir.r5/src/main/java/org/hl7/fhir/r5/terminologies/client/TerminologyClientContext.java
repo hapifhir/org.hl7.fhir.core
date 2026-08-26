@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.terminologies.client;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,11 +18,11 @@ import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.http.HTTPHeader;
 
-@MarkedToMoveToAdjunctPackage
+
 public class TerminologyClientContext {
   public static final String MIN_TEST_VERSION = "1.6.0";
   public static final String TX_BATCH_VERSION = "1.7.8"; // actually, it's 17.7., but there was an error in the tx.fhir.org code around this
@@ -86,10 +87,27 @@ public class TerminologyClientContext {
   private boolean isTxCaching;
   private final Set<String> cached = new HashSet<>();
   private boolean master;
-  // The cache-id for this server: server-issued via $cache-control on initialize().
-  // null means this server isn't caching (didn't advertise $cache-control, caching
-  // was disabled, or starting a cache failed).
-  private String cacheId;
+  // The cache-id for this server: server-issued via $cache-control during
+  // construction, or adopted from a shared client (see the constructor). null
+  // means this server isn't caching (didn't advertise $cache-control, caching
+  // was disabled, or starting a cache failed). Fixed for the life of the
+  // context; shutdown() ends its *use*, it doesn't change the identity.
+  private final String cacheId;
+  // Whether this context started the cache itself (and so is responsible for
+  // releasing it at shutdown), as opposed to adopting one already carried by a
+  // shared client.
+  private final boolean cacheOwned;
+  // Lifecycle: set once by shutdown(), never cleared. After shutdown the context
+  // must not be used for further requests (see shutdown()).
+  private boolean isShutdown;
+  // How many TerminologyClientManagers currently hold this context. One context
+  // object can be in several managers at once, because TerminologyClientManager.copy
+  // shares the server list by reference rather than rebuilding it - so a worker
+  // context built by copying another shares its servers, and its caches, with the
+  // original. The server-side cache belongs to all of them jointly, so it is only
+  // released when the LAST holder lets go (see shutdown()); whichever manager is
+  // torn down first must not pull the cache out from under the others.
+  private int holders = 1;
   private final ILoggingService logger;
 
   protected TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
@@ -98,8 +116,28 @@ public class TerminologyClientContext {
     this.txCache = txCache;
     this.master = master;
     this.logger = logger;
-    // cacheId is server-issued during initialize() (or stays null if not caching)
     initialize();
+
+    // Engage server-side caching. If this client instance already carries a
+    // cache-id header, another TerminologyClientContext has already started a
+    // cache on it (e.g. the IG publisher's version comparators wrap the master
+    // client in their own per-version contexts). Adopt that cache rather than
+    // starting a second one: addClientHeader appends, so starting again would
+    // leave two X-Cache-Id headers on every request, which the server reads as
+    // a single unknown id "id1, id2" and rejects. The adopting context re-sends
+    // resources it hasn't seen the server cache (its own bookkeeping starts
+    // empty), which is harmless because the cache is unsealed.
+    String adopted = (TerminologyClientContext.canUseCacheId && serverSupportsCacheControl()) ? existingCacheIdHeader() : null;
+    if (adopted != null) {
+      this.cacheId = adopted;
+      this.cacheOwned = false;
+    } else {
+      this.cacheId = startCache();
+      this.cacheOwned = this.cacheId != null;
+    }
+    if (this.cacheId != null) {
+      setTxCaching(true);
+    }
   }
 
   public Map<String, TerminologyClientContextUseCount> getUseCounts() {
@@ -183,11 +221,13 @@ public class TerminologyClientContext {
   }
 
   public boolean usingCache() {
-    return isTxCaching && cacheId != null;
+    return !isShutdown && isTxCaching && cacheId != null;
   }
 
   public String getCacheId() {
-    return cacheId;
+    // after shutdown the cache no longer exists (or is no longer ours to use),
+    // so don't report it
+    return isShutdown ? null : cacheId;
   }
 
   private void initialize() throws IOException {
@@ -203,6 +243,14 @@ public class TerminologyClientContext {
       }
       if (txcaps == null) {
         txcaps = client.getTerminologyCapabilities();
+
+        // we don't use these, and they pollute the cache
+        if (txcaps != null) {
+          txcaps.setDate(null);
+          txcaps.setVersion(null);
+          txcaps.setImplementation(null);
+        }
+
         if (txCache != null) {
           try {
             txCache.cacheTerminologyCapabilities(getAddress(), txcaps);
@@ -211,50 +259,130 @@ public class TerminologyClientContext {
           }
         }
       }
-    startCache();
-  }
-
-  private void startCache() {
-    // Caching is engaged by the explicit $cache-control protocol: if the server
-    // advertises the operation (and caching is enabled), ask it to start a cache
-    // and use the server-issued id thereafter, carried as an HTTP header. The
-    // server owns the id, so it can authoritatively reject an unknown cache later.
-    this.cacheId = null;
-    if (TerminologyClientContext.canUseCacheId && serverSupportsCacheControl()) {
-      try {
-        Parameters res = client.cacheControl(ITerminologyClient.CacheControlMode.START_CACHE, null);
-        String id = (res != null && res.hasParameter("cache-id")) ? res.getParameterValue("cache-id").primitiveValue() : null;
-        if (id != null && !id.isEmpty()) {
-          this.cacheId = id;
-          setTxCaching(true);
-          applyCacheIdHeader(id);
-        } else if (logger != null) {
-          logger.logMessage("Terminology server " + getAddress() + " advertised $cache-control but $cache-control?mode=start returned no cache-id; caching disabled for this server");
-        }
-      } catch (Exception e) {
-        if (logger != null) {
-          logger.logMessage("Unable to start a terminology cache on " + getAddress() + " via $cache-control (" + e.getMessage() + "); caching disabled for this server");
-        }
-      }
-    }
   }
 
   /**
-   * Release this server's cache via $cache-control?mode=end. Best-effort: failures
-   * are ignored (the server will time the cache out anyway). No-op if no cache is
-   * active for this server.
+   * Start a server-side cache via the explicit $cache-control protocol: if the
+   * server advertises the operation (and caching is enabled), ask it to start a
+   * cache and use the server-issued id thereafter, carried as an HTTP header.
+   * The server owns the id, so it can authoritatively reject an unknown cache
+   * later. Called once, from the constructor.
+   *
+   * @return the server-issued cache-id, or null if the server doesn't support
+   * caching, caching is disabled, or the start failed.
    */
-  public void endCache() {
-    if (cacheId == null) {
-      return;
+  private String startCache() {
+    if (!TerminologyClientContext.canUseCacheId || !serverSupportsCacheControl()) {
+      return null;
     }
     try {
-      client.cacheControl(ITerminologyClient.CacheControlMode.END_CACHE, null);
+      // Ask for an *unsealed* cache: this client populates the cache
+      // incrementally (it sends each resource the first time it is needed, then
+      // refers to it by reference thereafter), so the cache must be allowed to
+      // grow after it is created. The protocol default is sealed=true, so we
+      // must request sealed=false explicitly. The body is r5 Parameters; the
+      // R3/R4 clients convert it down before sending.
+      Parameters body = new Parameters();
+      body.addParameter("sealed", false);
+      Parameters res = client.cacheControl(ITerminologyClient.CacheControlMode.START_CACHE, body);
+      String id = (res != null && res.hasParameter("cache-id")) ? res.getParameterValue("cache-id").primitiveValue() : null;
+      if (id != null && !id.isEmpty()) {
+        applyCacheIdHeader(id);
+        return id;
+      } else if (logger != null) {
+        logger.logMessage("Terminology server " + getAddress() + " advertised $cache-control but $cache-control?mode=start returned no cache-id; caching disabled for this server");
+      }
     } catch (Exception e) {
-      // best-effort release; ignore
+      if (logger != null) {
+        logger.logMessage("Unable to start a terminology cache on " + getAddress() + " via $cache-control (" + e.getMessage() + "); caching disabled for this server");
+      }
     }
-    cacheId = null;
+    return null;
+  }
+
+  /**
+   * Take an additional hold on this context, because another manager is about to
+   * start using it (see TerminologyClientManager.copy). Balanced by one shutdown().
+   *
+   * Called by TerminologyClientManager only; a caller that retains without ever
+   * shutting down simply leaves the cache to the server's idle timeout, which is
+   * the safe direction to fail in.
+   */
+  synchronized void retain() {
+    if (isShutdown) {
+      return; // already released - there is nothing left to hold
+    }
+    holders++;
+  }
+
+  /**
+   * Release one hold on this context. The last holder ends the server-side cache;
+   * earlier ones just let go.
+   *
+   * The distinction matters because TerminologyClientManager.copy shares context
+   * objects by reference: a worker context created by copying another has the same
+   * TerminologyClientContext in its manager, and unloading either worker context
+   * calls through to here. Ending the cache on the first call would release a cache
+   * the surviving worker context is still sending the cache-id for, and every
+   * subsequent request would be rejected as referencing an unknown cache - an error
+   * that reads like an expiry but isn't one.
+   *
+   * When this IS the last holder: if this context started the cache, it is released
+   * via $cache-control?mode=end (best-effort: failures are ignored, the server times
+   * caches out anyway); an adopted cache (see the constructor) is left alone, because
+   * the context that owns it may still be using it.
+   *
+   * Idempotent once fully shut down, because this is reached from best-effort
+   * teardown paths (e.g. BaseWorkerContext.unload()) that must be safe to run more
+   * than once - though each MANAGER must call it exactly once, or the count is wrong;
+   * TerminologyClientManager.shutdown() guards that. After the final shutdown the
+   * context must not be used for further requests: the underlying client still
+   * carries the (now released) cache-id header, so a server would reject them as
+   * referencing an unknown cache.
+   */
+  public synchronized void shutdown() {
+    if (isShutdown) {
+      return;
+    }
+    if (holders > 0) {
+      holders--;
+    }
+    if (holders > 0) {
+      // Somebody else is still working with this server. Not ours to close.
+      return;
+    }
+    isShutdown = true;
+    if (cacheId != null && cacheOwned) {
+      try {
+        client.cacheControl(ITerminologyClient.CacheControlMode.END_CACHE, null);
+      } catch (Exception e) {
+        // best-effort release; ignore
+      }
+    }
     setTxCaching(false);
+  }
+
+  /**
+   * @return how many managers currently hold this context (test/diagnostic use).
+   */
+  public synchronized int getHolderCount() {
+    return holders;
+  }
+
+  /**
+   * @return the value of an existing cache-id header already present on this
+   * context's client (set by another context sharing the same client), or null.
+   */
+  private String existingCacheIdHeader() {
+    if (client.getClientHeaders() == null) {
+      return null;
+    }
+    for (HTTPHeader h : client.getClientHeaders()) {
+      if (CACHE_ID_HEADER.equalsIgnoreCase(h.getName())) {
+        return h.getValue();
+      }
+    }
+    return null;
   }
 
   /**
@@ -371,7 +499,7 @@ public class TerminologyClientContext {
 
   public String getHost() {
     try {
-      URL uri = new URL(getAddress());
+      URL uri = URI.create(getAddress()).toURL();
       return uri.getHost();
     } catch (MalformedURLException e) {
       return getAddress();

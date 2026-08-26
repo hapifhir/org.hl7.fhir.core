@@ -15,14 +15,14 @@ import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@MarkedToMoveToAdjunctPackage
+
 public class FHIRPathHostServices implements IHostApplicationServices {
 
   private final StructureMapUtilities structureMapUtilities;
@@ -60,17 +60,23 @@ public class FHIRPathHostServices implements IHostApplicationServices {
 
   @Override
   public FunctionDetails resolveFunction(FHIRPathEngine engine, String functionName) {
-    return null; // throw new Error("Not Implemented Yet");
+    return structureMapUtilities.getServices() == null ? null : structureMapUtilities.getServices().resolveFunction(engine, functionName);
   }
 
   @Override
   public TypeDetails checkFunction(FHIRPathEngine engine, Object appContext, String functionName, TypeDetails focus, List<TypeDetails> parameters) throws PathEngineException {
-    throw new Error("Not Implemented Yet");
+    if (structureMapUtilities.getServices() == null) {
+      throw new PathEngineException("Unknown function '" + functionName + "'");
+    }
+    return structureMapUtilities.getServices().checkFunction(engine, appContext, functionName, focus, parameters);
   }
 
   @Override
   public List<Base> executeFunction(FHIRPathEngine engine, Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
-    throw new Error("Not Implemented Yet");
+    if (structureMapUtilities.getServices() == null) {
+      throw new Error("Not Implemented Yet");
+    }
+    return structureMapUtilities.getServices().executeFunction(engine, appContext, focus, functionName, parameters);
   }
 
   @Override

@@ -27,7 +27,7 @@ import org.hl7.fhir.utilities.http.HTTPResult;
 import org.hl7.fhir.utilities.http.IHTTPAuthenticationProvider;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class TerminologyCacheManager {
 
@@ -42,27 +42,43 @@ public class TerminologyCacheManager {
   private String ghRepo;
   private String ghBranch;
 
-  public TerminologyCacheManager(String serverVersion, String rootDir, String ghOrg, String ghRepo, String ghBranch) throws IOException {
+  /**
+   * kindling only
+   * @param serverVersion
+   * @param rootDir
+   * @param ghOrg
+   * @param ghRepo
+   * @param ghBranch
+   * @throws IOException
+   */
+  public TerminologyCacheManager(String serverVersion, String rootDir, String ghOrg, String ghRepo, String ghBranch, boolean clear) throws IOException {
     super();
     //    this.rootDir = rootDir;
     this.ghOrg = ghOrg;
     this.ghRepo = ghRepo;
     this.ghBranch = ghBranch;
-
     version = CACHE_VERSION+"/"+VersionUtilities.getMajMin(serverVersion);
-
     if (Utilities.noString(ghOrg) || Utilities.noString(ghRepo) || Utilities.noString(ghBranch)) {
       cacheFolder = Utilities.path(rootDir, "temp", "tx-cache");
     } else {
       cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "tx-cache", ghOrg, ghRepo, ghBranch);
     }
+    if (clear) {
+      FileUtilities.clearDirectory(cacheFolder);
+    }
   }
 
-  public void initialize() throws IOException {
+  /**
+   * only for use with Kindling
+   *
+   * @throws IOException
+   */
+  public void initializeForKindling() throws IOException {
     File f = ManagedFileAccess.file(cacheFolder);
     if (!f.exists()) {
       FileUtilities.createDirectory(cacheFolder);      
     }
+
     if (!version.equals(getCacheVersion())) {
       clearCache();
       fillCache("https://tx.fhir.org/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip");
@@ -173,15 +189,27 @@ public class TerminologyCacheManager {
     }
 
     @Override
+    public boolean isProtocolAllowed(URL url) {
+      return url.getProtocol().equals("https");
+    }
+
+    @Override
     public boolean canProvideHeaders(URL url) {
       return url.getHost().equals("tx.fhir.org");
+    }
+
+    @Override
+    public boolean isPrivateNetworkAllowed(URL url) {
+      return false;
     }
 
     @Override
     public Map<String, String> getHeaders(URL url) {
       Map<String, String> map = new HashMap<>();
       if (canProvideHeaders(url)) {
-        map.put("Authorization", "Basic " + Base64.getEncoder().encode(basicAuth.getBytes(StandardCharsets.UTF_8)));
+        // encodeToString, not encode: encode() returns byte[], and concatenating
+        // that yields "Basic [B@1a2b3c" - a header the server can never parse
+        map.put("Authorization", "Basic " + Base64.getEncoder().encodeToString(basicAuth.getBytes(StandardCharsets.UTF_8)));
       }
       return map;
     }

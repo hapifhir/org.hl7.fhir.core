@@ -18,7 +18,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 
 import org.hl7.fhir.utilities.Utilities;
 
@@ -50,11 +50,17 @@ public class Analyser {
     res.setAbstract(sd.getAbstract());
     // not a good idea?
     // res.setInterface(sd.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-interface"));
+    // the name is package-supplied, and becomes the name of the generated class - and, in
+    // LogicalModelCodeGenerator, the name of the file it is written to - so it is checked before
+    // anything is derived from it
+    JavaBaseGenerator.checkJavaIdentifier(sd.getName(), "the name of "+sd.getVersionedUrl());
     res.setClassName(sd.getName().equals("List") ? "ListResource" : sd.getName());
     
     TypeInfo type = new TypeInfo();
     type.setName(res.getClassName());
     if (res.getAncestor() != null) {
+      // becomes the extends clause of the generated class
+      JavaBaseGenerator.checkJavaIdentifier(res.getAncestor().getName(), "the name of the base definition of "+sd.getVersionedUrl());
       type.setAncestorName(res.getAncestor().getName());
     }
     res.getTypes().put(type.getName(), type);
@@ -104,14 +110,53 @@ public class Analyser {
   protected List<ElementDefinition> filterChildren(List<ElementDefinition> childList) {
     List<ElementDefinition> res = new ArrayList<>();
     res.addAll(childList);
+    for (ElementDefinition t : childList) {
+      // every child becomes a field, and the name of its accessors. This is the one place they are
+      // all seen, so the name is checked here rather than at the (many) points it is written out.
+      // The 'alone' form is checked because that is the one used bare as a field name, and because
+      // it is the form that suffixes a java reserved word - which is legal input, not an error
+      JavaBaseGenerator.checkJavaIdentifier(JavaBaseGenerator.getElementName(t.getName(), true), "the name of "+t.getPath());
+    }
     List<ElementDefinition> r = new ArrayList<>();
     for (ElementDefinition t : childList) {
-      if (!t.getPath().equals(t.getBase().getPath())) {
+      if (!t.getPath().equals(t.getBase().getPath()) && !hasInterfaceBase(t)) {
         r.add(t);
       }
     }
     res.removeAll(r);
     return res;
+  }
+
+  /**
+   * true if the element is inherited from an ancestor that is marked as an interface 
+   * (e.g. CanonicalResource). Such elements are retained in the child list so that they are 
+   * generated concretely on the resource (implementing the interface's abstract accessors), 
+   * while elements inherited from the concrete base hierarchy (Resource, DomainResource etc) 
+   * are filtered out because they are inherited from the java base class
+   */
+  private boolean hasInterfaceBase(ElementDefinition t) {
+    if (!t.hasBase() || !t.getBase().hasPath() || !t.getBase().getPath().contains(".")) {
+      return false;
+    }
+    String tn = t.getBase().getPath().substring(0, t.getBase().getPath().indexOf("."));
+    StructureDefinition sd = definitions.getStructures().get("http://hl7.org/fhir/StructureDefinition/"+tn);
+    if (sd == null) {
+      sd = definitions.getContext().fetchTypeDefinition(tn);
+    }
+    return sd != null && sd.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-interface");
+  }
+
+  private boolean hasCoreEnum(String name) {
+    if (!JavaBaseGenerator.isSafeJavaIdentifier(name)) {
+      // the name is package-supplied and is about to be used to look up a class by reflection
+      return false;
+    }
+    try {
+      Class.forName((config.isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations$"+name);
+      return true;
+    } catch (ClassNotFoundException e) {
+      return false;
+    }
   }
 
   private List<ElementDefinition> getAbstractChildren(StructureDefinition structure) {
@@ -134,8 +179,26 @@ public class Analyser {
       ElementDefinitionBindingComponent cd = e.getBinding();
       if (isEnum(cd)) {
         ValueSet vs = definitions.getValuesets().get(cd.getValueSet());   
-        if (vs != null) {
+        if (vs == null) {
+          // the value set is not defined in the packages being generated - possibly it's a binding to a 
+          // value set defined in the base model (e.g. on an element inherited from an interface like 
+          // CanonicalResource). If the base model Enumerations class defines the matching enum, use it 
+          // rather than generating a local one, so that the generated accessors match the signatures of 
+          // any abstract methods on the base classes (and round-trip with the base model generally)
+          ValueSet cvs = definitions.getContext().fetchResource(ValueSet.class, cd.getValueSet());
+          if (cvs != null && hasCoreEnum(getCodeListType(cvs.getName()))) {
+            String en = getCodeListType(cvs.getName());
+            EnumInfo ei = new EnumInfo(en); // note: not registered in analysis.getEnums() - no local enum is generated
+            ei.setValueSet(cvs);
+            cvs.setUserData("java.core.enum", true);
+            tn = (config.isR6() ? "org.hl7.fhir.model.core" : "org.hl7.fhir.r5.model")+".Enumerations."+en;
+            e.setUserData("java.type", "Enumeration<"+tn+">");
+            e.setUserData("java.enum", ei);
+          }
+        } else if (vs != null) {
           tn = getCodeListType(vs.getName());
+          // becomes the name of the generated enum, and of its EnumFactory class
+          JavaBaseGenerator.checkJavaIdentifier(tn, "the enum name derived from the name of "+vs.getVersionedUrl());
           EnumInfo ei = analysis.getEnums().get(tn);
           if (ei == null) {
             ei = new EnumInfo(tn);
@@ -169,6 +232,8 @@ public class Analyser {
         if (tn.contains("-")) {
           tn = tn.replace("-", "_");
         }
+        // becomes the declared java type of the generated field and its accessors
+        JavaBaseGenerator.checkJavaIdentifier(tn, "the type name derived for "+e.getPath());
         e.setUserData("java.type", tn);
       } else {
         if (e.hasContentReference()) {
@@ -200,6 +265,8 @@ public class Analyser {
             }
             tn = tn + i;
           }
+          // becomes the name of a generated nested (component) class
+          JavaBaseGenerator.checkJavaIdentifier(tn, "the type name derived for "+e.getPath());
           e.setUserData("java.type", tn);
 
           tn = upFirst(tn);
@@ -234,6 +301,10 @@ public class Analyser {
     if (ok) {
       if (cd.getValueSet() != null) {
         ValueSet vs = definitions.getValuesets().get(cd.getValueSet()); 
+        if (vs == null) {
+          // not defined in the packages being generated - maybe it's defined in the base model (e.g. the binding on an interface element)
+          vs = definitions.getContext().fetchResource(ValueSet.class, cd.getValueSet());
+        }
         if (vs != null && vs.hasName() && vs.getName().contains("ColorCodesOrRGB")) {
           return false;
         }

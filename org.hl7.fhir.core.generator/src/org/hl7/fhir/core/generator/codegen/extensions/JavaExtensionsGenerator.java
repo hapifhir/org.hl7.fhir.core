@@ -1,13 +1,12 @@
 package org.hl7.fhir.core.generator.codegen.extensions;
 
 import java.io.FileOutputStream;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import com.google.gson.JsonArray;
 import org.hl7.fhir.core.generator.analysis.AnalysisElementInfo;
 import org.hl7.fhir.core.generator.codegen.Configuration;
+import org.hl7.fhir.core.generator.codegen.JavaBaseGenerator;
 import org.hl7.fhir.core.generator.engine.Definitions;
 import org.hl7.fhir.r5.conformance.profile.ProfileUtilities;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -24,6 +23,7 @@ public class JavaExtensionsGenerator {
   private String jid;
   private Map<String, AnalysisElementInfo> elementInfo;
   private Set<String> genClassList;
+  private Map<String, Integer> indexes = new HashMap<>();
 
   public JavaExtensionsGenerator(String path, Definitions master, Configuration config, String date, String version,
       String jid, Map<String, AnalysisElementInfo> elementInfo, Set<String> genClassList) {
@@ -45,6 +45,7 @@ public class JavaExtensionsGenerator {
     for (StructureDefinition sd : extensions.values()) {
       if (names.contains(sd.getName())) {
         dups.add(sd.getName());
+        System.out.println("Duplicate name: " + sd.getName() + " " + sd.getVersionedUrl());
       } else {
         names.add(sd.getName());
       }
@@ -53,20 +54,33 @@ public class JavaExtensionsGenerator {
       if (config.getIni().hasProperty("ExtensionNames", sd.getUrl())) {
         sd.setUserData("name", config.getIni().getStringProperty("ExtensionNames", sd.getUrl()));        
       } else if (dups.contains(sd.getName())) {
-        sd.setUserData("name", sanitiseName(sd.getName())+Utilities.capitalize(sd.getUserString("source")));
+        String sfx = Utilities.capitalize(sd.getUserString("source"));
+        if (Utilities.noString(sfx)) {
+          int index = indexes.containsKey(sd.getName()) ? indexes.get(sd.getName())+1 : 1;
+          sfx = Integer.toString(index);
+          indexes.put(sd.getName(), index);
+        }
+        sd.setUserData("name", sanitiseName(sd.getName())+sfx);
       } else {
         sd.setUserData("name", sanitiseName(sd.getName()));
       }
     }    
 
-    JavaExtensionsFactoryGenerator gen = new JavaExtensionsFactoryGenerator(ManagedFileAccess.outStream(Utilities.path(path, "Extensions.java")), master, config, version, date, jid, elementInfo, genClassList);
+    JavaExtensionsFactoryGenerator gen = new JavaExtensionsFactoryGenerator(ManagedFileAccess.outStream(Utilities.path(path, "ExtensionUtilities.java")), master, config, version, date, jid, elementInfo, genClassList);
     gen.start();
-    JavaConstantsGenerator cgen = new JavaConstantsGenerator(ManagedFileAccess.outStream(Utilities.path(path, "ExtensionConstants.java")), master, config, version, date, jid);
+    JavaConstantsGenerator cgen = new JavaConstantsGenerator(ManagedFileAccess.outStream(Utilities.path(path, "ExtensionDefinitions.java")), master, config, version, date, jid);
     cgen.start();
     for (String url : urls) {
       StructureDefinition sd = extensions.get(url);
       String name = sd.getUserString("name");
-      String nConst = genConstantName(name);
+      String nConst;
+      if (config.getIni().hasProperty("ExtensionConstants", sd.getUrl())) {
+        nConst = config.getIni().getStringProperty("ExtensionConstants", sd.getUrl());
+      } else {
+        nConst = genConstantName(name);
+      }
+      // becomes part of the EXT_ constant identifier in ExtensionDefinitions
+      JavaBaseGenerator.checkJavaIdentifier("EXT_"+nConst, "the constant name derived for "+sd.getVersionedUrl());
       cgen.generate(sd, name, nConst);        
       if (ProfileUtilities.isModifierExtension(sd)) {
         cgen.seeModifier(sd);

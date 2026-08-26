@@ -73,7 +73,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.Termi
 import org.hl7.fhir.r5.utils.CodingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.*;
@@ -82,13 +82,12 @@ import org.hl7.fhir.utilities.i18n.subtag.LanguageSubtagRegistry;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.i18n.LanguageTag;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
-import org.hl7.fhir.utilities.regex.RegexUtils;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import javax.annotation.Nonnull;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ValueSetValidator extends ValueSetProcessBase {
 
@@ -361,8 +360,14 @@ public class ValueSetValidator extends ValueSetProcessBase {
           result = null;
         } else if (ok != null && ok) {
           result = true;
-          foundCoding = c.copy();
-          foundCoding.setVersion(info.getFoundVersion());
+          // Report the FIRST matching coding, not the last: when a CodeableConcept
+          // has several valid codings, the code/system/version/display echoed back
+          // are those of the earliest coding that validated. vcc still accumulates
+          // every valid coding below; only foundCoding is locked to the first.
+          if (foundCoding == null) {
+            foundCoding = c.copy();
+            foundCoding.setVersion(info.getFoundVersion());
+          }
           if (!options.isMembershipOnly()) {
             vcc.addCoding().setSystem(c.getSystem()).setVersion(info.getFoundVersion()).setCode(c.getCode());
           }
@@ -580,7 +585,9 @@ public class ValueSetValidator extends ValueSetProcessBase {
       cs = findSpecialCodeSystem(system, version);
     }
     if (cs == null) {
-      cs = context.findTxResource(CodeSystem.class, system, rules, version, source);
+      // fetchResource, not findTxResource: CodeSystem content is never pulled from servers
+      // to compute answers locally - see the limitations of use on IWorkerContext.findTxResource
+      cs = context.fetchResource(CodeSystem.class, system, rules, version, source);
     }
     if (cs != null) {
       if (cs.hasUserData("supplements.installed")) {
@@ -596,7 +603,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
     if (!requiredSupplements.isEmpty()) {
       List<CodeSystem> additionalSupplements = new ArrayList<>();
       for (String s : requiredSupplements) {
-        CodeSystem scs = context.findTxResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
+        CodeSystem scs = context.fetchResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
         if (scs != null && cs.getUrl().equals(scs.getSupplements())) {
           additionalSupplements.add(scs);
         }
@@ -1185,13 +1192,16 @@ public class ValueSetValidator extends ValueSetProcessBase {
     }
     String statusMessage = null;
     if (inactive) {
-      statusMessage = context.formatMessage(I18nConstants.INACTIVE_CONCEPT_FOUND, "inactive", cc.getCode());
-      info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, statusMessage, OpIssueCode.CodeComment, null, I18nConstants.INACTIVE_CONCEPT_FOUND));
+      String messageId = I18nConstants.INACTIVE_CONCEPT_FOUND;
+      String statusId1 = "inactive";
+      String statusId2 = "";
       if ("retired".equals(status)) {
-        String sMsg2 = context.formatMessage(I18nConstants.INACTIVE_CONCEPT_FOUND, status, cc.getCode());
-        info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, sMsg2, OpIssueCode.CodeComment, null, I18nConstants.INACTIVE_CONCEPT_FOUND));
-        statusMessage = sMsg2+"; "+statusMessage;
+        messageId = I18nConstants.INACTIVE_CONCEPT_FOUND_ADD;
+        statusId1 = status;
+        statusId2 = "inactive";
       }
+      statusMessage = context.formatMessage(messageId, statusId1, cc.getCode(), statusId2);
+      info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, statusMessage, OpIssueCode.CodeComment, null, I18nConstants.INACTIVE_CONCEPT_FOUND));
     } else if (status != null && "deprecated".equals(status.toLowerCase())) {
       statusMessage = context.formatMessage(I18nConstants.DEPRECATED_CONCEPT_FOUND, status == null ? "inactive" : status, cc.getCode());
       info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.BUSINESSRULE, path, statusMessage, OpIssueCode.CodeComment, null, I18nConstants.DEPRECATED_CONCEPT_FOUND));
@@ -1240,7 +1250,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
             }
             Collections.sort(ok);
             String msg = context.formatMessagePlural(ok.size(), I18nConstants.INACTIVE_DISPLAY_FOUND, code.getDisplay(), cc.getCode(), CommaSeparatedStringBuilder.join(", ", ok), dstatus);
-            info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg, OpIssueCode.DisplayComment, null, I18nConstants.INACTIVE_DISPLAY_FOUND));
+            // The display is a real designation, but no longer a current one. Whether that is an
+            // error or merely a warning is the same question as for a display that is not found at
+            // all, so it follows lenient-display-validation in the same way - see dispWarning() /
+            // dispWarningStatus(). Hardcoding WARNING here ignored the caller's choice, and the
+            // plain success result below meant the code validated even in strict mode.
+            return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs),
+                makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg, OpIssueCode.DisplayComment, null, I18nConstants.INACTIVE_DISPLAY_FOUND)).setStatus(inactive, status);
           }
           return new ValidationResult(code.getSystem(),cs.getVersion(),  cc, getPreferredDisplay(cc, cs)).setStatus(inactive, status);
         }
@@ -1765,8 +1781,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
         }
         if (cs != null && !(versionCoding.equals(cs.getVersion()) || versionIsMoreDetailed(va, versionCoding, cs.getVersion()))) {
           if (result == null) {
-            issues.addAll(makeIssue(cs.getVersionNeeded() ? IssueSeverity.ERROR : IssueSeverity.WARNING, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
-              context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT, system, cs.getVersion(), notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT));
+            if (cs.getVersion() != null || cs.getVersionNeeded()) { // if thre's no version in the codesystem. we don't make an issue about this
+              issues.addAll(makeIssue(cs.getVersionNeeded() ? IssueSeverity.ERROR : IssueSeverity.WARNING, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
+                context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT, system, cs.getVersion(), notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH_DEFAULT));
+            }
           } else if (!result.equals(versionVS)) {
             issues.addAll(makeIssue(IssueSeverity.ERROR, IssueType.INVALID, Utilities.noString(path) ? "version" : path + "." + "version",
               context.formatMessage(I18nConstants.VALUESET_VALUE_MISMATCH_CHANGED, system, result, notNull(versionVS), notNull(versionCoding)), OpIssueCode.VSProcessing, null, I18nConstants.VALUESET_VALUE_MISMATCH_CHANGED));
@@ -1808,6 +1826,12 @@ public class ValueSetValidator extends ValueSetProcessBase {
   }
 
   private boolean versionIsMoreDetailed(VersionAlgorithm va, String criteria, String candidate) {
+    if (candidate == null) {
+      return false;
+    }
+    if (criteria == null) {
+      return false; // cannot be more detailed than nothing.
+    }
     if (va == VersionAlgorithm.Unknown) {
       va = VersionAlgorithm.guessFormat(candidate);
     }

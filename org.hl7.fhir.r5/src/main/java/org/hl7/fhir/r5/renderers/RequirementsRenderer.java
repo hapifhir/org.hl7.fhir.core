@@ -20,11 +20,12 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceWithReference;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class RequirementsRenderer extends ResourceRenderer {
 
   public RequirementsRenderer(RenderingContext context) { 
@@ -45,10 +46,10 @@ public class RequirementsRenderer extends ResourceRenderer {
       List<ResourceWrapper> actors = req.children("actor");
       if (actors.size() == 1) {
         XhtmlNode p = x.para();
-        p.tx(context.formatPhrase(RenderingContext.REQ_ACTOR)+" ");
+        p.tx(context.formatPhrase(RenderingI18nContext.REQ_ACTOR)+" ");
         renderCanonical(status, p, ActorDefinition.class, actors.get(0));
       } else {
-        x.para().tx(context.formatPhrase(RenderingContext.REQ_FOLLOWING_ACTOR)+" ");
+        x.para().tx(context.formatPhrase(RenderingI18nContext.REQ_FOLLOWING_ACTOR)+" ");
         XhtmlNode ul = x.ul();
         for (ResourceWrapper a : actors) {
           renderCanonical(status, ul.li(), ActorDefinition.class, a);
@@ -59,10 +60,10 @@ public class RequirementsRenderer extends ResourceRenderer {
       List<ResourceWrapper> list = req.children("derivedFrom");
       if (list.size() == 1) {
         XhtmlNode p = x.para();
-        p.tx(context.formatPhrase(RenderingContext.REQ_DERIVE)+" ");
+        p.tx(context.formatPhrase(RenderingI18nContext.REQ_DERIVE)+" ");
         renderCanonical(status, p, Requirements.class, list.get(0));
       } else {
-        x.para().tx(context.formatPhrase(RenderingContext.REQ_FOLLOWING_REQ)+" ");
+        x.para().tx(context.formatPhrase(RenderingI18nContext.REQ_FOLLOWING_REQ)+" ");
         XhtmlNode ul = x.ul();
         for (ResourceWrapper a : list) {
           renderCanonical(status, ul.li(), Requirements.class, a);
@@ -71,7 +72,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     }
     if (req.has("reference")) {
       XhtmlNode p = x.para();
-      p.tx(context.formatPhrase(RenderingContext.GENERAL_REFS)+" ");
+      p.tx(context.formatPhrase(RenderingI18nContext.GENERAL_REFS)+" ");
       int i = 0;
       for (ResourceWrapper c : req.children("reference")) {
         i++;
@@ -98,7 +99,7 @@ public class RequirementsRenderer extends ResourceRenderer {
       if (confs.isEmpty()) {
         boolean shallNot = stmt.extensionValue("http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot").primitiveValue().equals("true");
         if (shallNot)
-          td.tx(context.formatPhrase(RenderingContext.CONF_SHALLNOT));
+          td.tx(context.formatPhrase(RenderingI18nContext.CONF_SHALLNOT));
       } else {
         for (ResourceWrapper t : stmt.children("conformance")) {
           if (first) first = false; else td.tx(", ");
@@ -112,11 +113,11 @@ public class RequirementsRenderer extends ResourceRenderer {
       td = tr.td();
       addMarkdown(td, stmt.primitiveValue("requirement"));
       if (stmt.has("derivedFrom") || stmt.has("satisfiedBy") || stmt.has("reference") || stmt.has("source")) {
-        td.para().tx(context.formatPhrase(RenderingContext.REQ_LINKS)+" ");
+        td.para().tx(context.formatPhrase(RenderingI18nContext.REQ_LINKS)+" ");
         XhtmlNode ul = td.ul();
         if (stmt.has("derivedFrom")) {
           XhtmlNode li = ul.li();
-          li.tx(context.formatPhrase(RenderingContext.REQ_DERIVED)+" ");
+          li.tx(context.formatPhrase(RenderingI18nContext.REQ_DERIVED)+" ");
           String url = stmt.primitiveValue("derivedFrom");
           String key = url.contains("#") ? url.substring(url.indexOf("#")+1) : "";
           if (url.contains("#")) { url = url.substring(0, url.indexOf("#")); };
@@ -135,7 +136,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
         if (stmt.has("satisfiedBy")) {
           XhtmlNode li = ul.li();
-          li.tx(context.formatPhrase(RenderingContext.REQ_SATISFIED)+" ");
+          li.tx(context.formatPhrase(RenderingI18nContext.REQ_SATISFIED)+" ");
           first = true;
           for (ResourceWrapper c : stmt.children("satisfiedBy")) {
             if (first) first = false; else li.tx(", ");
@@ -155,7 +156,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
         if (stmt.has("reference")) {
           XhtmlNode li = ul.li();
-          li.tx(context.formatPhrase(RenderingContext.GENERAL_REFS)+" ");
+          li.tx(context.formatPhrase(RenderingI18nContext.GENERAL_REFS)+" ");
           int i = 0;
           for (ResourceWrapper c : stmt.children("reference")) {
             i++;
@@ -169,7 +170,7 @@ public class RequirementsRenderer extends ResourceRenderer {
         }
         if (stmt.has("source")) {
           XhtmlNode li = ul.li();
-          li.tx(context.formatPhrase(RenderingContext.GENERAL_SRC)+" ");
+          li.tx(context.formatPhrase(RenderingI18nContext.GENERAL_SRC)+" ");
           first = true;
           for (ResourceWrapper c : stmt.children("source")) {
             if (first) first = false; else li.tx(", ");
@@ -208,7 +209,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     if (!Utilities.noString(display)) {
       return display;
     }
-    return RendererFactory.factory(res.getResource(), context.forContained()).buildSummary(res.getResource());
+    return context.getRendererFactory().factory(res.getResource(), context.forContained()).buildSummary(res.getResource());
   }
 
   private String getResourceDescription(Resource res, String display) throws UnsupportedEncodingException, IOException {
@@ -218,7 +219,7 @@ public class RequirementsRenderer extends ResourceRenderer {
     if (res instanceof CanonicalResource) {
       return ((CanonicalResource) res).present();
     }
-    return RendererFactory.factory(res, context.forContained()).buildSummary(wrap(res));
+    return context.getRendererFactory().factory(res, context.forContained()).buildSummary(wrap(res));
   }
 
   public void describe(XhtmlNode x, Library lib) {

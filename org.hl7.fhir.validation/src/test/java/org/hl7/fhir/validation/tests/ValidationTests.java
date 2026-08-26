@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.Map.Entry;
@@ -63,10 +64,11 @@ import org.hl7.fhir.utilities.http.ManagedWebAccess;
 import org.hl7.fhir.utilities.json.JsonException;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.json.JsonUtilities;
-import org.hl7.fhir.utilities.json.model.JsonString;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.settings.FhirSettings;
+import org.hl7.fhir.utilities.settings.FhirSettingsPOJO;
+import org.hl7.fhir.utilities.settings.ServerDetailsPOJO;
 import org.hl7.fhir.utilities.tests.CacheVerificationLogger;
 import org.hl7.fhir.utilities.validation.IDigitalSignatureServices;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -77,6 +79,7 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidatorUtils;
 import org.hl7.fhir.validation.instance.ValidatorMaxMessages;
 import org.hl7.fhir.validation.instance.scoring.*;
+import org.hl7.fhir.validation.instance.utils.CanonicalResourceClient;
 import org.hl7.fhir.validation.service.model.HtmlInMarkdownCheck;
 import org.hl7.fhir.validation.service.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -90,7 +93,6 @@ import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -105,7 +107,7 @@ import org.junit.BeforeClass;
 @RunWith(Parameterized.class)
 public class ValidationTests implements IHostApplicationServices, IValidatorResourceFetcher, IValidationPolicyAdvisor, IDigitalSignatureServices, IDirectPackageProvider {
 
-  public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
+  public static final boolean PRINT_OUTPUT_TO_CONSOLE = true;
   private static final boolean CLONE = true;
   private static final boolean BUILD_NEW = false;
   private static final boolean REVISING_TEST_CASES = false;
@@ -125,7 +127,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       if (version == null) {
         version = "5.0.0";
       }
-      examples.put(VersionUtilities.getNameForVersion(version) + "." + name, o);
+      String id = VersionUtilities.getNameForVersion(version) + "." + name;
+      if (examples.containsKey(id)) {
+        throw new FHIRException("Duplicate test case name in the validator manifest: " + id);
+      }
+      examples.put(id, o);
     }
 
     List<String> names = new ArrayList<String>(examples.size());
@@ -142,9 +148,9 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
       JsonArray jsonTags = example.getAsJsonArray("tags");
       List<String> tags = jsonTags == null ? List.of() : jsonTags.asList().stream().map(JsonElement::getAsString).toList();
       if (testFilter.shouldRunBasedOnTags(tags)) {
-        objects.add(new Object[]{id, examples.get(id)});
+          objects.add(new Object[]{id, examples.get(id)});
+        }
       }
-    }
     return objects;
   }
 
@@ -153,6 +159,7 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   private String version;
   private String name;
   private Map<String, String> packageMap = new HashMap<String, String>();
+  private boolean fetchesCanonicals;
 
 
   private static ValidationEngine currentEngine;
@@ -172,7 +179,20 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
 
   @BeforeClass
   public static void beforeClass() {
-    ManagedWebAccess.loadFromFHIRSettings();
+    ManagedWebAccess.loadFromFHIRSettings(
+      FhirSettingsPOJO.builder()
+        .servers(
+          List.of(
+            ServerDetailsPOJO.builder()
+              .url("http://local.fhir.org:960")
+              .authenticationType("none")
+              .type("web")
+              .allowHttp(true)
+              .allowPrivateNetwork(true)
+              .headers(Collections.emptyMap())
+              .build()
+          )).build()
+    );
     // Exercise the server-side terminology caching protocol across the validation
     // suite. Against a server that doesn't advertise $cache-control this degrades
     // to inlining (no-op); against one that does, the whole suite runs through the
@@ -180,13 +200,16 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     TerminologyClientContext.setCanUseCacheId(true);
   }
 
-  @AfterAll
-  public void cleanup() {
+  @AfterClass
+  public static void cleanup() throws IOException {
+    String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
+    FileUtilities.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
+
     currentEngine = null;
-    vCurr = null;
     igLoader = null;
     manifest = null;
     TerminologyClientContext.setCanUseCacheId(false); // don't leak the static into other suites
+    ManagedWebAccess.loadFromFHIRSettings();
     System.gc();
   }
 
@@ -291,6 +314,8 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         val.setPolicyAdvisor(new TextDrivenPolicyAdvisor(this, fn, cnt));
       }
     }
+
+    this.fetchesCanonicals = content.has("fetch-canonicals") && content.get("fetch-canonicals").getAsBoolean();
 
     if (content.has("wrong-displays"))
       val.getSettings().setDisplayWarningMode("warning".equals(content.get("wrong-displays").getAsString()));
@@ -707,8 +732,11 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String mode, String profile, String name, List<String> suppress) throws IOException {
     errors.removeIf(vm -> vm.containsText(suppress));
 
+    String expectedFileName = name.replace("/", "-") + "-" + mode + ".json";
+    String expectedJavaRef = "java/" + expectedFileName;
+
     if (REVISING_TEST_CASES) {
-      String fnSrc = Utilities.path("/Users/grahamegrieve/work/test-cases/validator/outcomes/java", name.replace("/", "-") + "-" + mode + ".json");
+      String fnSrc = Utilities.path("/Users/grahamegrieve/work/test-cases/validator/outcomes/java", expectedFileName);
       if (!new File(fnSrc).exists()) {
         JsonObject java = focus.getAsJsonObject("java");
         OperationOutcome goal = java.has("outcome") ? (OperationOutcome) new JsonParser().parse(java.getAsJsonObject("outcome")) : new OperationOutcome();
@@ -716,19 +744,25 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
         FileUtilities.stringToFile(jsonGoal, fnSrc);
       }
       focus.remove("java");
-      focus.addProperty("java", "java/" + name.replace("/", "-") + "-" + mode + ".json");
+      focus.addProperty("java", expectedJavaRef);
     }
 
-    byte[] testResourceBytes = TestingUtilities.findTestResource("validator", "outcomes", "java", name.replace("/", "-") + "-" + mode + ".json") ?
-      TestingUtilities.loadTestResourceBytes("validator", "outcomes", "java", name.replace("/", "-") + "-" + mode + ".json") :
-      " { \"resourceType\" : \"OperationOutcome\" }".getBytes();
+    JsonElement javaRef = focus.get("java");
+    if (javaRef == null || !javaRef.isJsonPrimitive() || !expectedJavaRef.equals(javaRef.getAsString())) {
+      Assertions.fail("Manifest problem for test " + name + " (mode '" + mode + "'): the 'java' property is " +
+          (javaRef == null ? "missing" : javaRef.toString()) + " but should be \"" + expectedJavaRef + "\"");
+    }
+    if (!TestingUtilities.findTestResource("validator", "outcomes", "java", expectedFileName)) {
+      Assertions.fail("Manifest problem for test " + name + " (mode '" + mode + "'): the expected outcome file " + expectedJavaRef + " does not exist in the test cases");
+    }
+    byte[] testResourceBytes = TestingUtilities.loadTestResourceBytes("validator", "outcomes", "java", expectedFileName);
     OperationOutcome expected = (OperationOutcome) new JsonParser().parse(testResourceBytes);
     OperationOutcome actual = content.has("ids-in-errors") ? OperationOutcomeUtilities.createOutcomeSimpleWithIds(errors) : OperationOutcomeUtilities.createOutcomeSimple(errors);
     actual.setText(null);
     actual.getIssue().forEach(iss -> iss.removeExtension(ExtensionDefinitions.EXT_ISSUE_SLICE_INFO));
 
     String json = new JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(actual);
-    FileUtilities.stringToFile(json, Utilities.path(outputFolder, name.replace("/", "-") + "-" + mode + ".json"));
+    FileUtilities.stringToFile(json, Utilities.path(outputFolder, expectedFileName));
 
     List<String> fails = new ArrayList<>();
 
@@ -999,13 +1033,6 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
     return vCurr.getContext().fetchResource(ValueSet.class, url);
   }
 
-  @AfterClass
-  public static void saveWhenDone() throws IOException {
-    String content = new GsonBuilder().setPrettyPrinting().create().toJson(manifest);
-    FileUtilities.stringToFile(content, Utilities.path("[tmp]", "validator-produced-manifest.json"));
-
-  }
-
   @Override
   public byte[] fetchRaw(IResourceValidator validator, String source) throws MalformedURLException, IOException {
     HTTPResult res = ManagedWebAccess.get(Arrays.asList("web"), source);
@@ -1014,13 +1041,18 @@ public class ValidationTests implements IHostApplicationServices, IValidatorReso
   }
 
   @Override
-  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) {
-    return null;
+  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, Object appContext, String url) throws URISyntaxException {
+    if (!this.fetchesCanonicals) {
+      return null;
+    } else {
+      return new CanonicalResourceClient(this.vCurr.getContext()).fetch(url);
+    }
   }
+
 
   @Override
   public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
-    return false;
+    return this.fetchesCanonicals;
   }
 
   @Override

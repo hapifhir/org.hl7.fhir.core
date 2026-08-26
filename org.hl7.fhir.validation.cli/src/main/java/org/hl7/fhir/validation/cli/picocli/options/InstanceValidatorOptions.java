@@ -221,13 +221,13 @@ public class InstanceValidatorOptions {
   public List<String> bundleValidationRules = null;
 
   @CommandLine.Option(names = {"-max-validation-messages"},
-    description = "The maximum amount of validation messages allowed before validation will be stopped. Any issues encountered at this point will be returned. See notes regarding accuracy for these results at " + OptionConstants.CONFLUENCE_WEB_ADDRESS,
+    description = "The maximum amount of validation messages allowed before validation will be stopped. Any issues encountered at this point will be returned. See notes regarding accuracy for these results at " + OptionConstants.VALIDATOR_DOCS_WEB_ADDRESS,
     arity = "1")
   @With
   public Integer maxValidationMessages = 0;
                       
   @CommandLine.Option(names = {"-validation-timeout"},
-    description = "A value in milliseconds after which validation will be stopped. Any issues encountered at this point will be returned. See notes regarding accuracy for these results at " + OptionConstants.CONFLUENCE_WEB_ADDRESS,
+    description = "A value in milliseconds after which validation will be stopped. Any issues encountered at this point will be returned. See notes regarding accuracy for these results at " + OptionConstants.VALIDATOR_DOCS_WEB_ADDRESS,
     arity = "1")
   @With
   public Long validationTimeout = 0L;
@@ -260,4 +260,14 @@ public class InstanceValidatorOptions {
     arity = "1")
   @With
   public String resourceIdRule = null;
+
+  @CommandLine.Option(names = {"-codesystem-validation-size-limit"},
+    description = """
+      The maximum number of codes that will be checked against a code system for a single ValueSet include, ConceptMap group, or CodeSystem supplement (default 1000).
+      Checking a code costs a terminology server round trip, so where a resource carries more codes than this, none of them are checked and a hint is issued instead.
+      Use 0 for no limit.
+      """,
+    arity = "1")
+  @With
+  public Integer codeSystemValidationSizeLimit = null;
 }

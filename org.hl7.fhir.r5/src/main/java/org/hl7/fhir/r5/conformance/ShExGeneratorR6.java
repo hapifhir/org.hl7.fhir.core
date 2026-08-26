@@ -30,9 +30,9 @@ package org.hl7.fhir.r5.conformance;
  */
 import org.hl7.fhir.r5.elementmodel.TurtleParserR6;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class ShExGeneratorR6 extends ShExGeneratorBase {
 
   public static class ShExComparator extends BaseShExComparator {

@@ -46,12 +46,16 @@ public class VersionConvertorConstants {
   public static final String EXT_TESTSCRIPT_SCOPE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-TestScript.scope";
   public static final String EXT_ACTUAL_RESOURCE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/original-resource-name";
   public static final String EXT_ADDITIONAL_BINDING = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.binding.additional";
+  public static final String EXT_CONSTRAINT_SUPPRESS = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.constraint.suppress"; // introduced in R5
+  public static final String EXT_DISCRIMINATOR_TYPE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ElementDefinition.slicing.discriminator.type"; // for discriminator types introduced in R5 (position)
   public static final String EXT_CS_PROFILE = "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.profile";
   public static final String EXT_IG_DEFINITION_PAGE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/ig-page-name";
   public static final String EXT_IG_DEFINITION_PARAMETER = "http://hl7.org/fhir/tools/StructureDefinition/ig-parameter";
   public static final String EXT_IG_DEFINITION_PARAM_URL_BASE = "http://hl7.org/fhir/guide-parameter-code";
   public static final String EXT_IG_DEFINITION_PARAM_URL_EXT = "http://hl7.org/fhir/tools/CodeSystem/ig-parameters";
   public static final String EXT_IG_DEFINITION_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.resource.profile";
+  public static final String EXT_IG_MANIFEST_RESOURCE_PROFILE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.manifest.resource.profile"; // isExample/profile split was introduced in R5
+  public static final String EXT_IG_PAGE_SOURCE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.definition.page.source"; // source[x] was introduced in R5; carries string/markdown sources that R4 name[x] cannot
   public static final String EXT_IG_DEPENDSON_REASON = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ImplementationGuide.dependsOn.reason";
   public static final String EXT_MED_ISBRAND = "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.isBrand";
   public static final String EXT_MED_OTC = "http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationOTC";
@@ -81,7 +85,30 @@ public class VersionConvertorConstants {
   public static final String EXT_DOC_REF_CREATED = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DocumentReference.created";
   public static final String EXT_DIA_REP_PERFORMER = "http://hl7.org/fhir/3.0/StructureDefinition/extension-DiagnosticReport.performer.role";
   public static final String EXT_VERSION_ALGORITHM = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CanonicalResource.versionAlgorithm";
-  public static final String EXT_VALUESET_FILTER_OP = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.filter.op";
+  public static final String EXT_CS_FILTER_OPERATOR = "http://hl7.org/fhir/6.0/StructureDefinition/extension-CodeSystem.filter.operator"; // for operators introduced in R6 (property-value-of)
+  public static final String EXT_CS_FILTER_OPERATOR_R5 = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CodeSystem.filter.operator"; // for operators introduced in R5 (child-of, descendent-leaf)
+  public static final String EXT_CS_DESIGNATION_ADDITIONAL_USE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-CodeSystem.concept.designation.additionalUse"; // additionalUse was introduced in R5
+  public static final String EXT_VS_DESIGNATION_ADDITIONAL_USE = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.concept.designation.additionalUse"; // additionalUse was introduced in R5
+
+  /**
+   * Marks a down-converted resource where a mandatory coded element carried a code that does not
+   * exist in the target version, so the value was moved to an inter-version extension and omitted
+   * from the element itself. Readers that do not understand this cannot safely process the resource
+   */
+  public static final String IMPLICIT_RULES_OMITTED_MANDATORY_CODE = "https://hl7.org/fhir/implicit-rules/omitted-mandatory-interversion-code";
+  public static final String EXT_VALUESET_FILTER_OP = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.filter.op"; // for operators introduced in R5 (child-of, descendent-leaf)
+  public static final String EXT_VALUESET_FILTER_OP_R6 = "http://hl7.org/fhir/6.0/StructureDefinition/extension-ValueSet.compose.include.filter.op"; // for operators introduced in R6 (property-value-of)
+  public static final String EXT_VALUESET_FILTER_FILTER = "http://hl7.org/fhir/6.0/StructureDefinition/extension-ValueSet.compose.include.filter.filter"; // nested filters were introduced in R6
+  public static final String EXT_VS_COMPOSE_PROPERTY = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.property"; // introduced in R5
+  public static final String EXT_VS_INCLUDE_COPYRIGHT = "http://hl7.org/fhir/5.0/StructureDefinition/extension-ValueSet.compose.include.copyright"; // introduced in R5 (as a string; markdown in R6)
+  public static final String EXT_EXPRESSION_LANGUAGE = "http://hl7.org/fhir/4.0/StructureDefinition/extension-Expression.language";
+  /**
+   * doseNumber[x] and seriesDoses[x] are positiveInt|string choices in R4 and R4B, but plain strings in R5.
+   * Where the source was a positiveInt, this extension records that on the R5 string, so that the original
+   * type can be restored converting back - including where the element has no value at all because it only
+   * carries extensions (e.g. a data absent reason)
+   */
+  public static final String EXT_ORIGINAL_DATATYPE = "http://hl7.org/fhir/tools/StructureDefinition/original-datatype";
 
   public static String refToVS(String url) {
     if (url == null)

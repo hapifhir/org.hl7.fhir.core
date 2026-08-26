@@ -80,9 +80,9 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
   }
 
   public void generateSimple(StructureDefinition sd, String name, String constName) throws Exception {
-    src.append("// -- "+name+" -------------------------------------\r\n");
-    src.append("// "+sd.getVersionedUrl()+"\r\n");
-    src.append("// "+sd.getTitle()+"\r\n");
+    src.append("// -- "+sanitizeComment(name)+" -------------------------------------\r\n");
+    src.append("// "+sanitizeComment(sd.getVersionedUrl())+"\r\n");
+    src.append("// "+sanitizeComment(sd.getTitle())+"\r\n");
     src.append("\r\n");
     
     Set<String> contexts = new HashSet<>();
@@ -95,66 +95,82 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
     ElementDefinition edValue = sd.getSnapshot().getElementByPath("Extension.value[x]");
     List<TypeTuple> types = analyseTypes(edValue);
     if (types.size() > 5) {
-      src.append("  public static Extension make"+name+"(DataType value) {\r\n");
-      src.append("    return new Extension(ExtensionConstants.EXT_"+constName+").setValue(value);\r\n");
-      src.append("  }\r\n");
-      src.append("\r\n");
-      for (String ctxt : Utilities.sorted(contexts)) {
-        src.append("  public static "+ctxt+" "+verb+name+"("+ctxt+" context, DataType value) {\r\n");
-        src.append("    ExtensionsUtils."+verb+"Extension(context, ExtensionConstants.EXT_"+constName+", value);\r\n");
-        src.append("    return context;\r\n");
+      if (wantGen(sd, "make"+name, "DataType")) {
+        src.append("  public static Extension make"+name+"(DataType value) {\r\n");
+        src.append("    return new Extension(ExtensionDefinitions.EXT_"+constName+").setValue(value);\r\n");
         src.append("  }\r\n");
         src.append("\r\n");
+      }
+      for (String ctxt : Utilities.sorted(contexts)) {
+        if (wantGen(sd, verb+name, ctxt, "DataType")) {
+          src.append("  public static "+ctxt+" "+verb+name+"("+ctxt+" context, DataType value) {\r\n");
+          src.append("    ExtensionUtilities."+verb+"Extension(context, ExtensionDefinitions.EXT_"+constName+", value);\r\n");
+          src.append("    return context;\r\n");
+          src.append("  }\r\n");
+          src.append("\r\n");
+        }
         if (repeats) {
-          src.append("  public static List<DataType> get"+name+"List("+ctxt+" context) {\r\n");
-          src.append("    return ExtensionsUtils.getExtensionList(DataType.class, context, ExtensionConstants.EXT_"+constName+");\r\n");
-          src.append("  }\r\n");
-          src.append("\r\n");
+          if (wantGen(sd, "get"+name+"List", ctxt)) {
+            src.append("  public static List<DataType> get"+name+"List("+ctxt+" context) {\r\n");
+            src.append("    return ExtensionUtilities.getExtensionList(DataType.class, context, ExtensionDefinitions.EXT_"+constName+");\r\n");
+            src.append("  }\r\n");
+            src.append("\r\n");
+          }
         } else {
-          src.append("  public static DataType get"+name+"("+ctxt+" context) {\r\n");
-          src.append("    return ExtensionsUtils.getExtension(DataType.class, context, ExtensionConstants.EXT_"+constName+");\r\n");
-          src.append("  }\r\n");
-          src.append("\r\n");
+          if (wantGen(sd, "get"+name, ctxt)) {
+            src.append("  public static DataType get"+name+"("+ctxt+" context) {\r\n");
+            src.append("    return ExtensionUtilities.getExtension(DataType.class, context, ExtensionDefinitions.EXT_"+constName+");\r\n");
+            src.append("  }\r\n");
+            src.append("\r\n");
+          }
         }
       }
     } else {      
       for (TypeTuple t : types) {
         String sfx = typeCount(t.getJavaType(), types) > 1 ? Utilities.capitalize(t.getFhirType()) : "";
-        src.append("  public static Extension make"+name+sfx+"("+t.getJavaType()+" value) {\r\n");
-        src.append("    return new Extension(ExtensionConstants.EXT_"+constName+").setValue("+(t.adapt("value"))+");\r\n");
-        src.append("  }\r\n");
-        src.append("\r\n");
+        if (wantGen(sd, "make"+name+sfx, t.getJavaType())) {
+          src.append("  public static Extension make"+name+sfx+"("+t.getJavaType()+" value) {\r\n");
+          src.append("    return new Extension(ExtensionDefinitions.EXT_"+constName+").setValue("+(t.adapt("value"))+");\r\n");
+          src.append("  }\r\n");
+          src.append("\r\n");
+        }
       }
       for (String ctxt : Utilities.sorted(contexts)) {
         Set<String> td = new HashSet<>();
         for (TypeTuple t : types) {
           String sfx = typeCount(t.getJavaType(), types) > 1 ? Utilities.capitalize(t.getFhirType()) : "";
-          src.append("  public static "+ctxt+" "+verb+name+sfx+"("+ctxt+" context, "+t.getJavaType()+" value) {\r\n");
-          src.append("    ExtensionsUtils."+verb+"Extension(context, ExtensionConstants.EXT_"+constName+", "+(t.adapt("value"))+");\r\n");
-          src.append("    return context;\r\n");
-          src.append("  }\r\n");
-          src.append("\r\n");
+          if (wantGen(sd, verb+name+sfx, ctxt, t.getJavaType())) {
+            src.append("  public static "+ctxt+" "+verb+name+sfx+"("+ctxt+" context, "+t.getJavaType()+" value) {\r\n");
+            src.append("    ExtensionUtilities."+verb+"Extension(context, ExtensionDefinitions.EXT_"+constName+", "+(t.adapt("value"))+");\r\n");
+            src.append("    return context;\r\n");
+            src.append("  }\r\n");
+            src.append("\r\n");
+          }
           sfx = types.size() > 1 ? Utilities.capitalize(t.getJavaType()) : "";
           if (!td.contains(sfx)) {
             td.add(sfx);
             if (repeats) {
-              src.append("  public static List<"+t.getJavaRType()+"> get"+name+sfx+"List("+ctxt+" context) {\r\n");
-              if (t.getFhirType() == null) {
-                src.append("    return ExtensionsUtils.getExtensionList("+t.getJavaType()+".class, context, ExtensionConstants.EXT_"+constName+");\r\n");                
-              } else {
-                src.append("    return ExtensionsUtils.getExtension"+t.suffix()+"List(context, ExtensionConstants.EXT_"+constName+");\r\n");
+              if (wantGen(sd, "get"+name+sfx+"List", ctxt)) {
+                src.append("  public static List<"+t.getJavaRType()+"> get"+name+sfx+"List("+ctxt+" context) {\r\n");
+                if (t.getFhirType() == null) {
+                  src.append("    return ExtensionUtilities.getExtensionList("+t.getJavaType()+".class, context, ExtensionDefinitions.EXT_"+constName+");\r\n");
+                } else {
+                  src.append("    return ExtensionUtilities.getExtension"+t.suffix()+"List(context, ExtensionDefinitions.EXT_"+constName+");\r\n");
+                }
+                src.append("  }\r\n");
+                src.append("\r\n");
               }
-              src.append("  }\r\n");
-              src.append("\r\n");
             } else {
-              src.append("  public static "+t.getJavaRType()+" get"+name+sfx+"("+ctxt+" context) {\r\n");
-              if (t.getFhirType() == null) {
-                src.append("    return ExtensionsUtils.getExtension("+t.getJavaType()+".class, context, ExtensionConstants.EXT_"+constName+");\r\n");
-              } else {
-                src.append("    return ExtensionsUtils.getExtension"+t.suffix()+"(context, ExtensionConstants.EXT_"+constName+");\r\n");
+              if (wantGen(sd, "get"+name+sfx, ctxt)) {
+                src.append("  public static "+t.getJavaRType()+" get"+name+sfx+"("+ctxt+" context) {\r\n");
+                if (t.getFhirType() == null) {
+                  src.append("    return ExtensionUtilities.getExtension("+t.getJavaType()+".class, context, ExtensionDefinitions.EXT_"+constName+");\r\n");
+                } else {
+                  src.append("    return ExtensionUtilities.getExtension"+t.suffix()+"(context, ExtensionDefinitions.EXT_"+constName+");\r\n");
+                }
+                src.append("  }\r\n");
+                src.append("\r\n");
               }
-              src.append("  }\r\n");
-              src.append("\r\n");
             }
           }
         }
@@ -167,19 +183,21 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
     case ELEMENT:
       if (c.getExpression().contains(".")) {
         AnalysisElementInfo info = elementInfo.get(c.getExpression());
-        if (info != null) {
+        if (info != null && !info.getJavaType().contains("<")) {
           if (genClassList.contains(info.getJavaType()) ) {
             contexts.add(info.getJavaType());
-          } else {
-            contexts.add("org.hl7.fhir.r5.model."+info.getClassFile()+"."+info.getJavaType());
+          } else if (genClassList.contains(info.getClassFile())) {
+            contexts.add("org.hl7.fhir."+jid+".core."+info.getClassFile()+"."+info.getJavaType());
           }
         }
-        // contexts.add(c.getExpression());
       } else if (Character.isLowerCase(c.getExpression().charAt(0))) {
-        contexts.add(Utilities.capitalize(c.getExpression())+"Type");
+        String tn = Utilities.capitalize(c.getExpression())+"Type";
+        if (genClassList.contains(tn)) {
+          contexts.add(tn);
+        }
       } else if ("List".equals(c.getExpression())) {
         contexts.add("ListResource");
-      } else {
+      } else if (genClassList.contains(c.getExpression())) {
         contexts.add(c.getExpression());
       }
       break;
@@ -194,6 +212,18 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
       break;
     }
     
+  }
+
+  private Set<String> genMethods = new HashSet<>();
+
+  private boolean wantGen(StructureDefinition sd, String method, String... paramTypes) {
+    String sig = method+"("+String.join(",", paramTypes)+")";
+    if (genMethods.add(sig)) {
+      return true;
+    } else {
+      System.out.println("Duplicate method "+sig+" from "+sd.getVersionedUrl()+" - not generated");
+      return false;
+    }
   }
 
   private int typeCount(String n, List<TypeTuple> types) {
@@ -250,10 +280,11 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
 
   public void finish() throws Exception {   
 
-    String template = config.getAdornments().get("Extensions");
+    String template = config.getAdornments().get("ExtensionUtilities");
     template = template.replace("{{jid}}", jid);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
 
     template = template.replace("{{code}}", src.toString());
 

@@ -111,6 +111,7 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_SUPP_HIERARCHY_MEANING = "CODESYSTEM_CS_SUPP_HIERARCHY_MEANING";
   public static final String CODESYSTEM_CS_SUPP_INVALID_CODE = "CODESYSTEM_CS_SUPP_INVALID_CODE";
   public static final String CODESYSTEM_CS_SUPP_NO_SUPP = "CODESYSTEM_CS_SUPP_NO_SUPP";
+  public static final String CODESYSTEM_CS_SUPP_TOO_MANY_CODES = "CODESYSTEM_CS_SUPP_TOO_MANY_CODES";
   public static final String CODESYSTEM_CS_UNK_EXPANSION = "CODESYSTEM_CS_UNK_EXPANSION";
   public static final String CODESYSTEM_CS_VS_EXP_MISMATCH = "CODESYSTEM_CS_VS_EXP_MISMATCH";
   public static final String CODESYSTEM_CS_VS_INCLUDEDETAILS = "CodeSystem_CS_VS_IncludeDetails";
@@ -413,7 +414,6 @@ public class I18nConstants {
   public static final String LIQUID_UNKNOWN_NOEND = "LIQUID_UNKNOWN_NOEND";
   public static final String LIQUID_UNKNOWN_SYNTAX = "LIQUID_UNKNOWN_SYNTAX";
   public static final String LIQUID_VARIABLE_ILLEGAL = "LIQUID_VARIABLE_ILLEGAL";
-  public static final String LIQUID_VARIABLE_ALREADY_ASSIGNED = "LIQUID_VARIABLE_ALREADY_ASSIGNED";
   public static final String LOGICAL_MODEL_NAME_MISMATCH = "LOGICAL_MODEL_NAME_MISMATCH";
   public static final String LOGICAL_MODEL_QNAME_MISMATCH = "LOGICAL_MODEL_QNAME_MISMATCH";
   public static final String MEASURE_MR_GRP_CODE_MISMATCH = "MEASURE_MR_GRP_CODE_MISMATCH";
@@ -460,6 +460,7 @@ public class I18nConstants {
   public static final String MEASURE_MR_SCORE_UNIT_PROHIBITED = "MEASURE_MR_SCORE_UNIT_PROHIBITED";
   public static final String MEASURE_MR_SCORE_UNIT_REQUIRED = "MEASURE_MR_SCORE_UNIT_REQUIRED";
   public static final String MEASURE_MR_SCORE_VALUE_INVALID_01 = "MEASURE_MR_SCORE_VALUE_INVALID_01";
+  public static final String MEASURE_MR_SCORE_VALUE_INVALID_02 = "MEASURE_MR_SCORE_VALUE_INVALID_02";
   public static final String MEASURE_MR_SCORE_VALUE_REQUIRED = "MEASURE_MR_SCORE_VALUE_REQUIRED";
   public static final String MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID = "MEASURE_M_CRITERIA_CQL_ELM_NOT_VALID"; 
   public static final String MEASURE_M_CRITERIA_CQL_ERROR = "MEASURE_M_CRITERIA_CQL_ERROR";
@@ -532,8 +533,6 @@ public class I18nConstants {
   public static final String NO_URL_IN_EXPAND_VALUE_SET_2 = "no_url_in_expand_value_set_2";
   public static final String NO_VALIDATOR_CONFIGURED = "No_validator_configured";
   public static final String NO_VALID_DISPLAY_FOUND = "NO_VALID_DISPLAY_FOUND";
-  public static final String NO_VALID_DISPLAY_FOUND_LANG_NONE = "NO_VALID_DISPLAY_FOUND_LANG_NONE";
-  public static final String NO_VALID_DISPLAY_FOUND_LANG_SOME = "NO_VALID_DISPLAY_FOUND_LANG_SOME";
   public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_OK";
   public static final String NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR = "NO_VALID_DISPLAY_FOUND_NONE_FOR_LANG_ERR";
   public static final String NO_VALUE_SET_IN_URL = "no_value_set";
@@ -750,6 +749,7 @@ public class I18nConstants {
   public static final String SD_SPECIALIZED_TYPE_MATCHES = "SD_SPECIALIZED_TYPE_MATCHES";
   public static final String SD_TABLE_PROHIBITED = "SD_TABLE_PROHIBITED";
   public static final String SD_TABLE_REQUIRED = "SD_TABLE_REQUIRED";
+  public static final String SD_TYPE_ADDITIONAL_UNCHECKABLE = "SD_TYPE_ADDITIONAL_UNCHECKABLE";
   public static final String SD_TYPE_MISSING = "SD_TYPE_MISSING";
   public static final String SD_TYPE_NOT_DERIVED = "SD_TYPE_NOT_DERIVED";
   public static final String SD_TYPE_NOT_LOCAL = "SD_TYPE_NOT_LOCAL";
@@ -914,8 +914,8 @@ public class I18nConstants {
   public static final String THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE = "This__cannot_be_parsed_as_a_FHIR_object_no_namespace";
   public static final String TX_GENERAL_CC_ERROR_MESSAGE = "TX_GENERAL_CC_ERROR_MESSAGE";
   public static final String TX_SERVER_NO_BATCH_RESPONSE = "TX_SERVER_NO_BATCH_RESPONSE";
-  public static final String TYPE_CHECKS_FIXED_CC = "TYPE_CHECKS_FIXED_CC";
-  public static final String TYPE_CHECKS_FIXED_CC_US = "TYPE_CHECKS_FIXED_CC_US";
+  public static final String TX_SERVER_BATCH_RESPONSE_SIZE = "TX_SERVER_BATCH_RESPONSE_SIZE";
+  public static final String TX_SERVER_BATCH_RESPONSE_MISMATCH = "TX_SERVER_BATCH_RESPONSE_MISMATCH";
   public static final String TYPE_CHECKS_PATTERN_CC = "TYPE_CHECKS_PATTERN_CC";
   public static final String TYPE_CHECKS_PATTERN_CC_US = "TYPE_CHECKS_PATTERN_CC_US"; 
   public static final String TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT = "type_on_first_differential_element";
@@ -1087,7 +1087,6 @@ public class I18nConstants {
   public static final String UNKNOWN_CODE_IN = "Unknown_Code_in";
   public static final String UNKNOWN_CODE_IN_FRAGMENT = "UNKNOWN_CODE_IN_FRAGMENT";
   public static final String UNKNOWN_CODE_IN_VERSION = "Unknown_Code_in_Version";
-  public static final String UNKNOWN_CODE_IN_VERSION_SCT = "Unknown_Code_in_Version_SCT";
   public static final String UNKNOWN_DATA_FORMAT_ = "Unknown_Data_format_";
   public static final String UNKNOWN_DATE_FORMAT_ = "Unknown_Date_format_";
   public static final String UNKNOWN_PROPERTY = "UNKNOWN_PROPERTY";
@@ -1213,7 +1212,6 @@ public class I18nConstants {
   public static final String VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2 = "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_2";
   public static final String VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_3 = "VALUESET_REFERENCE_INVALID_TYPE_NO_VERSION_3";
   public static final String VALUESET_INC_TOO_MANY_CODES = "VALUESET_INC_TOO_MANY_CODES";
-  public static final String VALUESET_INC_NOT_VALIDATING = "VALUESET_INC_NOT_VALIDATING";
   public static final String VALUESET_INC_NO_SERVER = "VALUESET_INC_NO_SERVER";
   public static final String VALUESET_INC_NO_BATCH_ON_SERVER = "VALUESET_INC_NO_BATCH_ON_SERVER";
   public static final String VALUESET_INC_CS_NO_SUPPORT = "VALUESET_INC_CS_NO_SUPPORT";
@@ -1231,7 +1229,6 @@ public class I18nConstants {
   public static final String VALUESET_SHAREABLE_MISSING_HL7 = "VALUESET_SHAREABLE_MISSING_HL7";
   public static final String VALUESET_SUPPLEMENT_MISSING = "VALUESET_SUPPLEMENT_MISSING";
   public static final String VALUESET_TOO_COSTLY = "VALUESET_TOO_COSTLY";
-  public static final String VALUESET_TOO_COSTLY_COUNT = "VALUESET_TOO_COSTLY_COUNT";
   public static final String VALUESET_TOO_COSTLY_TIME = "VALUESET_TOO_COSTLY_TIME";
   public static final String VALUESET_UNC_SYSTEM_WARNING = "VALUESET_UNC_SYSTEM_WARNING";
   public static final String VALUESET_UNC_SYSTEM_WARNING_VER = "VALUESET_UNC_SYSTEM_WARNING_VER";
@@ -1452,6 +1449,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT = "TYPE_SPECIFIC_CHECKS_DT_SID_INCORRECT";
   public static final String INACTIVE_DISPLAY_FOUND = "INACTIVE_DISPLAY_FOUND";
   public static final String INACTIVE_CONCEPT_FOUND = "INACTIVE_CONCEPT_FOUND";
+  public static final String INACTIVE_CONCEPT_FOUND_ADD = "INACTIVE_CONCEPT_FOUND_ADD";
   public static final String DEPRECATED_CONCEPT_FOUND = "DEPRECATED_CONCEPT_FOUND";
   public static final String CONCEPT_DEPRECATED_IN_VALUESET = "CONCEPT_DEPRECATED_IN_VALUESET";
   public static final String EXTENSION_EXT_VERSION_NOTALLOWED = "EXTENSION_EXT_VERSION_NOTALLOWED";

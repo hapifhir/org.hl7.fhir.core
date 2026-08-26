@@ -15,8 +15,9 @@ import org.hl7.fhir.r5.renderers.CodeResolver.CodeResolution;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.UserDataNames;
+
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
@@ -25,7 +26,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlNodeList;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ObligationsRenderer extends Renderer {
   public static class ObligationDetail {
     private List<String> codes = new ArrayList<>();
@@ -364,7 +365,7 @@ public class ObligationsRenderer extends Renderer {
       children.tx(" ");
       StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, ob.source, IWorkerContext.VersionResolutionRules.defaultRule());
       String link = sd != null ? sd.getWebPath() : ob.source;
-      String title = context.formatPhrase(RenderingContext.OBLIGATION_SOURCE, sd == null ? ob.source : sd.present()); 
+      String title = context.formatPhrase(RenderingI18nContext.OBLIGATION_SOURCE, sd == null ? ob.source : sd.present()); 
       children.ah(link, title).attribute("data-no-external", "true").img("external.png", "source-link");
     }
     // usage
@@ -396,24 +397,24 @@ public class ObligationsRenderer extends Renderer {
 
     XhtmlNode tr = new XhtmlNode(NodeType.Element, "tr");
     children.add(tr);
-    tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_OBLIG));
+    tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_OBLIG));
     if (hasActor) {
-      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.OBLIG_ACT));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.OBLIG_ACT));
     }
     if (hasElementId) {
-      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.OBLIG_ELE));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.OBLIG_ELE));
     }
     if (hasUsage) {
-      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_USAGE));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_USAGE));
     }
     if (hasDoco) {
-      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_DOCUMENTATION));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_DOCUMENTATION));
     }
     if (hasFilter) {
-      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_FILTER));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_FILTER));
     }
     if (hasSource) {
-      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingContext.GENERAL_SOURCE));
+      tr.td().style("font-size: 11px").b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_SOURCE));
     }
     for (ObligationDetail ob : obligations) {
       tr =  new XhtmlNode(NodeType.Element, "tr");

@@ -3,7 +3,7 @@
     if (path == null) {
       return null;
     }
-    for (ElementDefinition ed : getElement()) {
+    for (ElementDefinition ed : getElementList()) {
       if (path.equals(ed.getPath()) || (path+"[x]").equals(ed.getPath())) {
         return ed;
       }
@@ -16,7 +16,7 @@
     if (id == null) {
       return null;
     }
-    for (ElementDefinition ed : getElement()) {
+    for (ElementDefinition ed : getElementList()) {
       if (id.equals(ed.getId())) {
         return ed;
       }

@@ -36,12 +36,12 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 
-@MarkedToMoveToAdjunctPackage
+
 public class HTMLClientLogger implements ToolingClientLogger {
 
   private PrintStream file;
@@ -65,7 +65,7 @@ public class HTMLClientLogger implements ToolingClientLogger {
     lastId = Integer.toString(id);
     file.println("<hr/><a name=\"l" + lastId + "\"> </a>");
     file.println("<pre>");
-    file.println(method + " " + url + " HTTP/1.0");
+    file.println(method + " " + url + " HTTP/1.1");
     for (String s : headers)
       file.println(Utilities.escapeXml(s));
     if (body != null) {

@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,7 +25,6 @@ import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ResourceParser;
 import org.hl7.fhir.r5.elementmodel.TurtleParser;
-import org.hl7.fhir.r5.elementmodel.ValidatedFragment;
 import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Resource;
@@ -65,6 +62,14 @@ public final class TurtleGeneratorTestUtils {
       return workerContext;
     }
 
+    public void setDeriveConceptIriFromNamingSystem(boolean deriveConceptIriFromNamingSystem) {
+      turtleParser.setDeriveConceptIriFromNamingSystem(deriveConceptIriFromNamingSystem);
+    }
+    
+    public String getFhirVersion() {
+      return workerContext.getVersion();
+    }
+
     
     // ---------------------------------------------------------------------------
     // TTL parsers
@@ -92,16 +97,39 @@ public final class TurtleGeneratorTestUtils {
         InputStream inputXmlStream = ManagedFileAccess.inStream(xmlResourcePath.toString());
         OutputStream outputTurtleStream = ManagedFileAccess.outStream(turtleFilePath)
       ) {
-        System.out.println("Generating " + turtleFilePath);
         generateTurtleFromXmlStream(inputXmlStream, outputTurtleStream);
         return turtleFilePath;
       }
     }
 
     public void generateTurtleFromXmlStream(InputStream xmlStream, OutputStream turtleStream) throws IOException, UcumException {
+      Element resourceElement;
+      try {
+        resourceElement = parseXmlResource(xmlStream);
+      } catch (Exception ex) {
+        System.out.println("Unable to parse XML -- not relevant for Turtle generation");
+        return;
+      }
+      turtleParser.compose(resourceElement, turtleStream, OutputStyle.PRETTY, null);
+    }
+
+    public Turtle composeTurtleFromXmlResourcePath(Path xmlResourcePath) throws IOException, UcumException {
+      try (InputStream inputXmlStream = ManagedFileAccess.inStream(xmlResourcePath.toString())) {
+        Element resourceElement = parseXmlResource(inputXmlStream);
+        Turtle ttl = new Turtle();
+        turtleParser.compose(resourceElement, ttl, "");
+        return ttl;
+      }
+    }
+
+    private Element parseXmlResource(InputStream xmlStream) throws IOException, FHIRException {
       var errorList = new ArrayList<ValidationMessage>();
       Element resourceElement = xmlParser.parseSingle(xmlStream, errorList);
-      turtleParser.compose(resourceElement, turtleStream, OutputStyle.PRETTY, null);
+      printValidationMessages(errorList);
+      return resourceElement;
+    }
+
+    private void printValidationMessages(List<ValidationMessage> errorList) {
       for (ValidationMessage message : errorList) {
         System.out.println(message.getDisplay());
       }
@@ -113,6 +141,7 @@ public final class TurtleGeneratorTestUtils {
         InputStream inputJsonStream = ManagedFileAccess.inStream(jsonResourcePath.toString());
         OutputStream outputTurtleStream = ManagedFileAccess.outStream(turtleFilePath)
       ) {
+        System.out.println("Generating " + turtleFilePath);
         generateTurtleFromJsonStream(inputJsonStream, outputTurtleStream);
         return turtleFilePath;
       }

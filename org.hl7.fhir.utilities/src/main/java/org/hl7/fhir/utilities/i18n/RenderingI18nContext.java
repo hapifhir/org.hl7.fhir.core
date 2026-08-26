@@ -302,6 +302,7 @@ public class RenderingI18nContext extends I18nBase {
   public static final String DIAG_REP_REND_ERR = "DIAG_REP_REND_ERR";
   public static final String GENERAL_FLAGS = "GENERAL_FLAGS";
   public static final String DIAG_REP_REND_FOR = "DIAG_REP_REND_FOR";
+  public static final String DIAG_REP_REND_FORM = "DIAG_REP_REND_FORM";
   public static final String DIAG_REP_REND_IDENTIFIER = "DIAG_REP_REND_IDENTIFIER";
   public static final String GENERAL_TODO = "GENERAL_TODO";
   public static final String GENERAL_NOTE = "GENERAL_NOTE";
@@ -865,6 +866,21 @@ public class RenderingI18nContext extends I18nBase {
   public static final String TEST_PLAN_SOURCE = "TEST_PLAN_SOURCE";
   public static final String TEST_PLAN_TEST_DATA = "TEST_PLAN_TEST_DATA";
   public static final String TEST_PLAN_TEST_RUN = "TEST_PLAN_TEST_RUN";
+  public static final String TEST_PLAN_IG_SCOPES = "TEST_PLAN_IG_SCOPES";
+  public static final String TEST_PLAN_IG_DEPENDENCIES = "TEST_PLAN_IG_DEPENDENCIES";
+  public static final String TEST_PLAN_IG_MODES = "TEST_PLAN_IG_MODES";
+  public static final String TEST_PLAN_IG_PARAMETERS = "TEST_PLAN_IG_PARAMETERS";
+  public static final String TEST_PLAN_IG_INPUTS = "TEST_PLAN_IG_INPUTS";
+  public static final String TEST_PLAN_IG_TESTS = "TEST_PLAN_IG_TESTS";
+  public static final String TEST_PLAN_IG_REFERENCE = "TEST_PLAN_IG_REFERENCE";
+  public static final String TEST_PLAN_IG_DESCRIPTION = "TEST_PLAN_IG_DESCRIPTION";
+  public static final String TEST_PLAN_IG_MODE = "TEST_PLAN_IG_MODE";
+  public static final String TEST_PLAN_IG_FILE = "TEST_PLAN_IG_FILE";
+  public static final String TEST_PLAN_IG_OPERATION = "TEST_PLAN_IG_OPERATION";
+  public static final String TEST_PLAN_IG_INPUT = "TEST_PLAN_IG_INPUT";
+  public static final String TEST_PLAN_IG_EXPECTED = "TEST_PLAN_IG_EXPECTED";
+  public static final String TEST_PLAN_IG_MODE_LABEL = "TEST_PLAN_IG_MODE_LABEL";
+  public static final String TEST_PLAN_IG_SUITE_LABEL = "TEST_PLAN_IG_SUITE_LABEL";
   public static final String TEXT_ICON_CHOICE = "TEXT_ICON_CHOICE";
   public static final String TEXT_ICON_DATATYPE = "TEXT_ICON_DATATYPE";
   public static final String TEXT_ICON_ELEMENT = "TEXT_ICON_ELEMENT";
@@ -978,7 +994,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String PROF_DRIV_SUMM_NONE = "PROF_DRIV_SUMM_NONE";
   public static final String PROF_DRIV_SUMM = "PROF_DRIV_SUMM";
   public static final String DOCUMENT_SUMMARY = "DOCUMENT_SUMMARY";
-  public static final String DATA_REND_ATT_URL = "DATA_REND_ATT_URL";
   public static final String DATA_REND_ATT_DATA = "DATA_REND_ATT_DATA";
   public static final String GENERAL_DATA_DISPLAY_PROPERTY = "GENERAL_DATA_DISPLAY_PROPERTY";
   public static final String DATA_REND_CURRENCY = "DATA_REND_CURRENCY";
@@ -1062,8 +1077,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String SDR_VER_ON = "SDR_VER_ON";
   public static final String SDR_VER_BEF = "SDR_VER_BEF";
   public static final String SDR_VER_UNK = "SDR_VER_UNK";
-  public static final String SDR_FIXED_VALUE = "SDR_FIXED_VALUE";
-  public static final String SDR_PATTERN_VALUE = "SDR_PATTERN_VALUE";
   public static final String SDR_CLICK_COPY = "SDR_CLICK_COPY";
   public static final String SDR_FROM = "SDR_FROM";
   public static final String SDR_SRC_FHIR = "SDR_SRC_FHIR";
@@ -1179,7 +1192,6 @@ public class RenderingI18nContext extends I18nBase {
   public static final String CONSENT_BASIS_REGULATION_NONE = "CONSENT_BASIS_REGULATION_NONE";
   public static final String CONSENT_BASIS_POLICY_PREFIX = "CONSENT_BASIS_POLICY_PREFIX";
   public static final String CONSENT_BASIS_POLICY_SUFFIX = "CONSENT_BASIS_POLICY_SUFFIX";
-  public static final String CONSENT_BASIS_POLICY_SUFFIX_MORE = "CONSENT_BASIS_POLICY_SUFFIX_MORE";
   public static final String CONSENT_HTABLE_RULE = "CONSENT_HTABLE_RULE";
   public static final String CONSENT_HTABLE_RULE_DESC = "CONSENT_HTABLE_RULE_DESC";
   public static final String CONSENT_HTABLE_WHEN = "CONSENT_HTABLE_WHEN";

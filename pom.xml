@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>hapi-deployable-pom</artifactId>
-        <version>8.4.0</version>
+        <version>8.10.0</version>
     </parent>
 
     <!--
@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>6.9.11-SNAPSHOT</version>
+    <version>6.10.3</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -24,10 +24,10 @@
         <commons_text_version>1.15.0</commons_text_version>
         <guava_version>32.0.1-jre</guava_version>
         <gson_version>2.13.1</gson_version>
-        <hapi_fhir_version>8.4.0</hapi_fhir_version>
-        <validator_test_case_version>1.7.64-SNAPSHOT</validator_test_case_version>
-        <jackson_version>2.21.3</jackson_version>
-        <jackson_annotations_version>2.21</jackson_annotations_version>
+        <hapi_fhir_version>8.10.0</hapi_fhir_version>
+        <validator_test_case_version>1.7.68</validator_test_case_version>
+        <jackson_version>2.22.1</jackson_version>
+        <jackson_annotations_version>2.22</jackson_annotations_version>
         <junit_jupiter_version>5.14.0</junit_jupiter_version>
         <junit_platform_launcher_version>1.14.0</junit_platform_launcher_version>
         <maven_surefire_version>3.5.3</maven_surefire_version>
@@ -38,7 +38,7 @@
         <mockito_version>5.23.0</mockito_version>
         <byte_buddy_version>1.18.8</byte_buddy_version>
         <apache_poi_version>5.4.1</apache_poi_version>
-        <saxon_he_version>11.6</saxon_he_version>
+        <saxon_he_version>13.0</saxon_he_version>
         <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -47,9 +47,10 @@
         <maven.compiler.testTarget>17</maven.compiler.testTarget>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven-checkstyle-version>3.6.0</maven-checkstyle-version>
         <checkstyle_config_location>${project.basedir}</checkstyle_config_location>
-        <logback.version>1.5.25</logback.version>
-        <log4jVersion>2.26.0</log4jVersion>
+        <logback.version>1.5.37</logback.version>
+        <log4jVersion>2.26.1</log4jVersion>
         <okio.version>3.16.4</okio.version>
         <surefire.native.access.arg/>
     </properties>
@@ -71,12 +72,18 @@
         <module>org.hl7.fhir.r4b</module>
         <module>org.hl7.fhir.r5</module>
         <module>org.hl7.fhir.convertors</module>
+        <!-- org.hl7.fhir.core.generator is deliberately NOT a module: it is an internal R6 code
+             generation tool that is never published and is only ever run by hand. Import it in an
+             IDE by opening org.hl7.fhir.core.generator/pom.xml as its own maven project - see that
+             module's readme.md. -->
         <module>org.hl7.fhir.validation</module>
         <module>org.hl7.fhir.validation.cli</module>
         <!-- The report project exists only to aggregate the test results from the other projects into a central report. -->
         <module>org.hl7.fhir.report</module>
         <module>org.hl7.fhir.model</module>
+        <module>org.hl7.fhir.services</module>
         <module>org.hl7.fhir.support</module>
+        <module>org.hl7.fhir.standalone</module>
     </modules>
 
     <repositories>
@@ -320,7 +327,7 @@
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib</artifactId>
-                <version>2.2.21</version>
+                <version>2.4.0</version>
             </dependency>
 
             <dependency>
@@ -375,7 +382,7 @@
             <dependency>
                 <groupId>org.xerial</groupId>
                 <artifactId>sqlite-jdbc</artifactId>
-                <version>3.53.0.0</version>
+                <version>3.53.2.0</version>
             </dependency>
 
             <dependency>
@@ -510,7 +517,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>${maven-checkstyle-version}</version>
                     <configuration>
                         <skip>true</skip>
                     </configuration>
@@ -962,6 +969,22 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
+                        <dependencies>
+                            <!-- Override the version inherited from hapi-fhir's CHECKSTYLE profile, which
+                                 uses ${project.version} for hapi-fhir-checkstyle. In this project's context
+                                 that resolves to 6.9.12-SNAPSHOT (our version, not the HAPI version),
+                                 which doesn't exist. Declaring with ${hapi_fhir_version} here wins. -->
+                            <dependency>
+                                <groupId>com.puppycrawl.tools</groupId>
+                                <artifactId>checkstyle</artifactId>
+                                <version>${checkstyle_version}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>ca.uhn.hapi.fhir</groupId>
+                                <artifactId>hapi-fhir-checkstyle</artifactId>
+                                <version>${hapi_fhir_version}</version>
+                            </dependency>
+                        </dependencies>
                          <configuration>
                              <skip>false</skip>
                         </configuration>

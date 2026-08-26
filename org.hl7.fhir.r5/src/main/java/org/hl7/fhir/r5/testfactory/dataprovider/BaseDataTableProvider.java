@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class BaseDataTableProvider {
   private Connection connection;
   Map<String, String> elements = new HashMap<>();
@@ -51,24 +51,45 @@ public class BaseDataTableProvider {
   }
 
   public Map<String, String> getComplexValue(String elementId, String typeName) throws SQLException {
+    return getComplexValue(elementId, typeName, null);
+  }
+
+  /**
+   * Fetch a (random) complex value from the base data. If system is not null, only rows whose
+   * encoded value carries that system (e.g. system:http://loinc.org|:|...) are candidates - this
+   * keeps randomly drawn values (unit, version, value etc) coherent with a system that the profile
+   * has already fixed. If no row matches the system, returns null rather than an incoherent row.
+   */
+  public Map<String, String> getComplexValue(String elementId, String typeName, String system) throws SQLException {
     String ek = elements.get(elementId);
     String tk = types.get(typeName);
     if (tk == null) {
       return null;
     }
+    String optionalSystemPredicate = systemFilter(system);
     if (ek != null) {
-      String sql = "select ValueData from TestValues where ElementKey = "+ek+" and TypeKey = "+tk+(testing ? " ORDER BY ValueKey" : " ORDER BY RANDOM() LIMIT 1" );
+      String sql = "select ValueData from TestValues where ElementKey = "+ek+" and TypeKey = "+tk+optionalSystemPredicate+(testing ? " ORDER BY ValueKey" : " ORDER BY RANDOM() LIMIT 1" );
       ResultSet rs = connection.createStatement().executeQuery(sql);
       if (rs.next()) {
         return parse(rs.getString(1));
       }
     }
-    String sql = "select ValueData from TestValues where TypeKey = "+tk+(testing ? " ORDER BY ValueKey" : " ORDER BY RANDOM() LIMIT 1" );
+    String sql = "select ValueData from TestValues where TypeKey = "+tk+optionalSystemPredicate+(testing ? " ORDER BY ValueKey" : " ORDER BY RANDOM() LIMIT 1" );
     ResultSet rs = connection.createStatement().executeQuery(sql);
     if (rs.next()) {
       return parse(rs.getString(1));
     }
     return null;
+  }
+
+  private String systemFilter(String system) {
+    if (system == null) {
+      return "";
+    }
+    String s = system.replace("'", "''");
+    // values are encoded name:value|:|name:value - the system field is either followed by the
+    // |:| separator or is the last field in the row
+    return " and (ValueData like '%system:"+s+"|%' or ValueData like '%system:"+s+"')";
   }
 
   private Map<String, String> parse(String value) {

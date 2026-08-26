@@ -524,8 +524,8 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     return ExtensionUtilities.getStandardsStatus(this);
   }
   
-  public void setStandardsStatus(StandardsStatus status) {
-    ExtensionUtilities.setStandardsStatus(this, status, null);
+  public void setStandardsStatus(StandardsStatus status, String thisVersion) {
+    ExtensionUtilities.setStandardsStatus(this, status, null, thisVersion);
   }
 
   public boolean hasExtension(Extension ext) {

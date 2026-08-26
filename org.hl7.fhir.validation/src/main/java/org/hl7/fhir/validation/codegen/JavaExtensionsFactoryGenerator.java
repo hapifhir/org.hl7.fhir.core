@@ -76,9 +76,9 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
   }
 
   public void generateSimple(StructureDefinition sd, String name, String constName) throws Exception {
-    src.append("// -- "+name+" -------------------------------------\r\n");
-    src.append("// "+sd.getVersionedUrl()+"\r\n");
-    src.append("// "+sd.getTitle()+"\r\n");
+    src.append("// -- "+sanitizeComment(name)+" -------------------------------------\r\n");
+    src.append("// "+sanitizeComment(sd.getVersionedUrl())+"\r\n");
+    src.append("// "+sanitizeComment(sd.getTitle())+"\r\n");
     src.append("\r\n");
     
     Set<String> contexts = new HashSet<>();
@@ -97,18 +97,18 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
       src.append("\r\n");
       for (String ctxt : Utilities.sorted(contexts)) {
         src.append("  public static "+ctxt+" "+verb+name+"("+ctxt+" context, DataType value) {\r\n");
-        src.append("    ExtensionsUtils."+verb+"Extension(context, ExtensionConstants.EXT_"+constName+", value);\r\n");
+        src.append("    ExtensionUtilities."+verb+"Extension(context, ExtensionConstants.EXT_"+constName+", value);\r\n");
         src.append("    return context;\r\n");
         src.append("  }\r\n");
         src.append("\r\n");
         if (repeats) {
           src.append("  public static List<DataType> get"+name+"List("+ctxt+" context) {\r\n");
-          src.append("    return ExtensionsUtils.getExtensionList(DataType.class, context, ExtensionConstants.EXT_"+constName+");\r\n");
+          src.append("    return ExtensionUtilities.getExtensionList(DataType.class, context, ExtensionConstants.EXT_"+constName+");\r\n");
           src.append("  }\r\n");
           src.append("\r\n");
         } else {
           src.append("  public static DataType get"+name+"("+ctxt+" context) {\r\n");
-          src.append("    return ExtensionsUtils.getExtension(DataType.class, context, ExtensionConstants.EXT_"+constName+");\r\n");
+          src.append("    return ExtensionUtilities.getExtension(DataType.class, context, ExtensionConstants.EXT_"+constName+");\r\n");
           src.append("  }\r\n");
           src.append("\r\n");
         }
@@ -126,7 +126,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
         for (TypeTuple t : types) {
           String sfx = typeCount(t.getJavaType(), types) > 1 ? Utilities.capitalize(t.getFhirType()) : "";
           src.append("  public static "+ctxt+" "+verb+name+sfx+"("+ctxt+" context, "+t.getJavaType()+" value) {\r\n");
-          src.append("    ExtensionsUtils."+verb+"Extension(context, ExtensionConstants.EXT_"+constName+", "+(t.adapt("value"))+");\r\n");
+          src.append("    ExtensionUtilities."+verb+"Extension(context, ExtensionConstants.EXT_"+constName+", "+(t.adapt("value"))+");\r\n");
           src.append("    return context;\r\n");
           src.append("  }\r\n");
           src.append("\r\n");
@@ -136,18 +136,18 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
             if (repeats) {
               src.append("  public static List<"+t.getJavaRType()+"> get"+name+sfx+"List("+ctxt+" context) {\r\n");
               if (t.getFhirType() == null) {
-                src.append("    return ExtensionsUtils.getExtensionList("+t.getJavaType()+".class, context, ExtensionConstants.EXT_"+constName+");\r\n");                
+                src.append("    return ExtensionUtilities.getExtensionList("+t.getJavaType()+".class, context, ExtensionConstants.EXT_"+constName+");\r\n");                
               } else {
-                src.append("    return ExtensionsUtils.getExtension"+t.suffix()+"List(context, ExtensionConstants.EXT_"+constName+");\r\n");
+                src.append("    return ExtensionUtilities.getExtension"+t.suffix()+"List(context, ExtensionConstants.EXT_"+constName+");\r\n");
               }
               src.append("  }\r\n");
               src.append("\r\n");
             } else {
               src.append("  public static "+t.getJavaRType()+" get"+name+sfx+"("+ctxt+" context) {\r\n");
               if (t.getFhirType() == null) {
-                src.append("    return ExtensionsUtils.getExtension("+t.getJavaType()+".class, context, ExtensionConstants.EXT_"+constName+");\r\n");
+                src.append("    return ExtensionUtilities.getExtension("+t.getJavaType()+".class, context, ExtensionConstants.EXT_"+constName+");\r\n");
               } else {
-                src.append("    return ExtensionsUtils.getExtension"+t.suffix()+"(context, ExtensionConstants.EXT_"+constName+");\r\n");
+                src.append("    return ExtensionUtilities.getExtension"+t.suffix()+"(context, ExtensionConstants.EXT_"+constName+");\r\n");
               }
               src.append("  }\r\n");
               src.append("\r\n");
@@ -167,7 +167,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
           if (genClassList.contains(info.getJavaType()) ) {
             contexts.add(info.getJavaType());
           } else {
-            contexts.add("org.hl7.fhir.r5.model."+info.getClassFile()+"."+info.getJavaType());
+            contexts.add((isR6() ? "org.hl7.fhir.model.core." : "org.hl7.fhir.r5.model.")+info.getClassFile()+"."+info.getJavaType());
           }
         }
         // contexts.add(c.getExpression());
@@ -250,6 +250,7 @@ public class JavaExtensionsFactoryGenerator extends JavaBaseGenerator {
     template = template.replace("{{pid}}", packageName);
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
+    template = template.replace("{{generated}}", generatedAnnotationValue());
 
     template = template.replace("{{code}}", src.toString());
 

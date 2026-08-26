@@ -2,16 +2,20 @@ package org.hl7.fhir.r5.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,15 +23,29 @@ import java.util.stream.Collectors;
 
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.ParserBase;
 import org.hl7.fhir.r5.elementmodel.ParserBase.IdRenderingPolicy;
 import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.elementmodel.TurtleParser;
 import org.hl7.fhir.r5.elementmodel.TurtleParserR6;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.NamingSystem;
+import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
+import org.hl7.fhir.r5.model.NamingSystem.NamingSystemType;
+import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
+import org.hl7.fhir.r5.test.TurtleGeneratorTestUtils.ParserContext;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.utilities.turtle.Turtle;
 import org.hl7.fhir.utilities.FileUtilities;
 import org.hl7.fhir.utilities.Utilities;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 
 /**
  * TurtleGeneratorTests
@@ -39,57 +57,167 @@ import org.junit.jupiter.api.*;
  */
 public class TurtleGeneratorTests {
   private static TurtleGeneratorTestUtils.ParserContext parsers;
+  private static TurtleGeneratorTestUtils.ParserContext r5Parsers;
+  private static TurtleGeneratorTestUtils.ParserContext r4Parsers;
+  private static TurtleGeneratorTestUtils.ParserContext r6Parsers;
+  private static final String R4_VERSION = "4.0.1";
+  private static final String R6_VERSION = "6.0.0";
+  private static final String TEST_CODE_SYSTEM = "http://example.org/fhir/CodeSystem/test";
+  private static final String TEST_IRI_STEM = "http://example.org/rdf/";
+  private static final String TEST_CODE = "test-code";
+  private static final String TEST_CONCEPT_IRI = "a <http://example.org/rdf/test-code>";
 
   private static final Path ROOT_TEST_PATH = Paths.get("testUtilities");
   private static final Path DEFAULT_EXPECTED_XML_DIR = ROOT_TEST_PATH.resolve("xml/examples/expected");
+  private static final Path DEFAULT_EXPECTED_JSON_DIR = ROOT_TEST_PATH.resolve("json/examples/expected");
   private static final Path DEFAULT_EXPECTED_TTL_DIR = ROOT_TEST_PATH.resolve("ttl/examples/expected");
     // These can be overwritten with a local.properties file (org.hl7.fhir.r5/src/test/resources/local.properties)
   private static Path inputXmlDirectory;
+  private static Path inputJsonDirectory;
   private static Path outputTurtleDirectory;
   private static Path expectedTurtleDirectory;
 
+  private static Path DEFAULT_OUTPUT_TURTLE_DIR;
+
   @BeforeAll
   public static void setup() throws IOException {
+    DEFAULT_OUTPUT_TURTLE_DIR = Path.of(Utilities.path("[tmp]", "ttl"));
+
     // Override configured directories in org.hl7.fhir.r5/src/test/resources/local.properties
     var props = TurtleGeneratorTestUtils.loadLocalProperties();
     inputXmlDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputXmlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_XML_DIR));
-    outputTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "outputTtlDirectory", Path.of(Utilities.path("[tmp]", "ttl")));
+    inputJsonDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "inputJsonDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_JSON_DIR));
+    outputTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "outputTtlDirectory", DEFAULT_OUTPUT_TURTLE_DIR);
     Files.createDirectories(outputTurtleDirectory);
     expectedTurtleDirectory = TurtleGeneratorTestUtils.getConfiguredDirectory(props, "expectedTtlDirectory", TurtleGeneratorTestUtils.getResourcePath(DEFAULT_EXPECTED_TTL_DIR));
 
-    initializeParsers(TestingUtilities.getSharedWorkerContext());
+    // Use R5 by default
+    r5Parsers = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(TestingUtilities.getSharedWorkerContext());
+    useR5Parsers();
+  }
+
+  @BeforeEach
+  void resetParsers() {
+    // Reset to R5 by default
+    useR5Parsers();
   }
 
   @AfterAll
   public static void tearDown() {
     parsers = null;
+    r5Parsers = null;
+    r4Parsers = null;
+    r6Parsers = null;
+    inputXmlDirectory = null;
+    inputJsonDirectory = null;
+    outputTurtleDirectory = null;
+    expectedTurtleDirectory = null;
   }
-  private static void initializeParsers(IWorkerContext context) {
-    parsers = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(context);
+
+  private static void useR5Parsers() {
+    parsers = r5Parsers;
+  }
+
+  /**
+   * Get cached versioned contexts
+   */
+  private static void useVersionOverrideParsers(String version) {
+    parsers = getVersionOverrideParsers(version);
+  }
+
+  /**
+   * Efficiently cache each context for when running multiple tests
+   */
+  private static TurtleGeneratorTestUtils.ParserContext getVersionOverrideParsers(String version) {
+    if (R4_VERSION.equals(version)) {
+      if (r4Parsers == null) {
+        r4Parsers = createVersionOverrideParsers(version);
+      }
+      return r4Parsers;
+    } else if (R6_VERSION.equals(version)) {
+      if (r6Parsers == null) {
+        r6Parsers = createVersionOverrideParsers(version);
+      }
+      return r6Parsers;
+    } else {
+      throw new IllegalArgumentException("Unsupported FHIR version for Turtle tests: " + version);
+    }
+  }
+
+  private static TurtleGeneratorTestUtils.ParserContext createVersionOverrideParsers(String version) {
+    IWorkerContext context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(version);
     System.out.println("FHIR version for testing: " + context.getVersion());
+    return TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(context);
   }
 
   // ---------------------------------------------------------------------------
   // Tests
   // ---------------------------------------------------------------------------
+  // XML conversion
   @Test
-  public void testExamples() throws IOException, UcumException {
-    // As used in R5 serialization
-    testExpectedExamples(expectedTurtleDirectory.resolve("R5"), outputTurtleDirectory);
+  public void testXmlExamplesR5() throws IOException, UcumException {
+    testExpectedXmlExamples(expectedTurtleDirectory.resolve("R5"), outputTurtleDirectory);
   }
 
   @Test
-  public void testExamplesR6() throws IOException, UcumException {
-    // Re-initialize context of current FHIR build
-    var r6context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("6.0.0");
-    initializeParsers(r6context);
-    testExpectedExamples(expectedTurtleDirectory.resolve("R6"), outputTurtleDirectory);
+  public void testXmlExamplesR4() throws IOException, UcumException {
+    useVersionOverrideParsers(R4_VERSION);
+    testExpectedXmlExamples(expectedTurtleDirectory.resolve("R4"), outputTurtleDirectory);
   }
+
+  @Test
+  public void testXmlExamplesR6() throws IOException, UcumException {
+    useVersionOverrideParsers(R6_VERSION);
+    testExpectedXmlExamples(expectedTurtleDirectory.resolve("R6"), outputTurtleDirectory);
+  }
+
+  
+  // JSON conversion
+  @Test
+  public void testJsonExampleR5() throws IOException, UcumException {
+    testExpectedJsonExamples(inputJsonDirectory.resolve("R5"), outputTurtleDirectory);
+  }
+  @Test
+  public void testJsonExampleR4() throws IOException, UcumException {
+    useVersionOverrideParsers(R4_VERSION);
+    testExpectedJsonExamples(inputJsonDirectory.resolve("R4"), outputTurtleDirectory);
+  }
+
+  // TODO add R6 JSON example from somewhere
+
 
   @Test
   public void testR6ClassNameHandlesEmptyInput() {
     assertThat(TurtleParserR6.getClassName(null)).isNull();
     assertThat(TurtleParserR6.getClassName("")).isEmpty();
+  }
+
+  // Not all of these are critical and can be consolidated if we want to reduce tests
+  @Test
+  public void testAsHtmlGeneratesProperFormattingR4() throws Exception {
+    testAsHtmlGeneratesProperFormatting("R4", getVersionOverrideParsers(R4_VERSION));
+  }
+
+  @Test
+  public void testAsHtmlGeneratesProperFormattingR5() throws Exception {
+    testAsHtmlGeneratesProperFormatting("R5", r5Parsers);
+  }
+
+  @Test
+  public void testAsHtmlGeneratesProperFormattingR6() throws Exception {
+    testAsHtmlGeneratesProperFormatting("R6", getVersionOverrideParsers(R6_VERSION));
+  }
+
+  @Test
+  public void asHtmlRendersLinkedPredicatesAsAnchors() throws Exception {
+    Turtle ttl = new Turtle();
+    ttl.prefix("fhir", "http://hl7.org/fhir/");
+    Turtle.Section section = ttl.section("test");
+    Turtle.Subject subject = section.subject("fhir:Example");
+    subject.linkedPredicate("fhir:name", "value", "http://example.org/name", null);
+
+    String html = ttl.asHtml(false);
+    assertThat(html).contains("<a href=\"http://example.org/name\">fhir:name</a>");
   }
 
   /** Verifies the sync wiring actually runs; the drift detector below verifies the field set. */
@@ -99,6 +227,7 @@ public class TurtleGeneratorTests {
     parser.setupValidation(ValidationPolicy.EVERYTHING);
     parser.setIdPolicy(IdRenderingPolicy.None);
     parser.setShowDecorations(true);
+    parser.setDeriveConceptIriFromNamingSystem(true);
 
     Method r6ParserMethod = TurtleParser.class.getDeclaredMethod("r6Parser");
     r6ParserMethod.setAccessible(true);
@@ -107,6 +236,7 @@ public class TurtleGeneratorTests {
     assertThat(delegate.getPolicy()).isEqualTo(ValidationPolicy.EVERYTHING);
     assertThat(delegate.getIdPolicy()).isEqualTo(IdRenderingPolicy.None);
     assertThat(delegate.isShowDecorations()).isTrue();
+    assertThat(delegate.isDeriveConceptIriFromNamingSystem()).isTrue();
   }
 
   /**
@@ -137,6 +267,103 @@ public class TurtleGeneratorTests {
         .isEmpty();
   }
 
+  @Test
+  void testR6CodeableConceptUsesBuiltInConceptIriByDefault() throws Exception {
+    ParserContext builtInParserContext = ParserContext.fromWorkerContext(TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R6_VERSION));
+    String builtInTurtle = generateObservationCodeableConcept(builtInParserContext, "http://loinc.org", "8867-4");
+    assertThat(builtInTurtle).contains("@prefix loinc: <https://loinc.org/rdf/> .");
+    assertThat(builtInTurtle).contains("a loinc:8867-4");
+  }
+
+  @Test
+  void testR6StructureDefinitionPatternCodeableConceptIsNotDecorated() throws IOException, UcumException {
+    IWorkerContext r6context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("6.0.0");
+    TurtleGeneratorTestUtils.ParserContext parserContext = TurtleGeneratorTestUtils.ParserContext.fromWorkerContext(r6context);
+    String xml = """
+        <StructureDefinition xmlns="http://hl7.org/fhir">
+          <url value="http://example.org/StructureDefinition/body-weight"/>
+          <name value="BodyWeight"/>
+          <status value="active"/>
+          <kind value="resource"/>
+          <abstract value="false"/>
+          <type value="Observation"/>
+          <derivation value="constraint"/>
+          <differential>
+            <element>
+              <id value="Observation.code"/>
+              <path value="Observation.code"/>
+              <patternCodeableConcept>
+                <coding>
+                  <system value="http://loinc.org"/>
+                  <code value="29463-7"/>
+                </coding>
+              </patternCodeableConcept>
+            </element>
+          </differential>
+        </StructureDefinition>
+        """;
+
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    parserContext.generateTurtleFromXmlStream(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), output);
+    String turtle = output.toString(StandardCharsets.UTF_8);
+
+    assertThat(turtle).doesNotContain("a loinc:");
+    assertThat(turtle).doesNotContain("@prefix loinc:");
+    // Coding itself must still be emitted
+    assertThat(turtle).contains("29463-7");
+  }
+
+  @Disabled("Not critical")
+  @Test
+  void testSharedWorkerContextProvidesLoincNamingSystem() {
+    NamingSystem namingSystem = NamingSystemUtilities.getNamingSystem(TestingUtilities.getSharedWorkerContext(), "http://loinc.org");
+
+    assertThat(namingSystem).isNotNull();
+    assertThat(namingSystem.getUniqueId()).anySatisfy(uniqueId -> {
+      assertThat(uniqueId.getType()).isEqualTo(NamingSystemIdentifierType.IRISTEM);
+      assertThat(uniqueId.getValue()).endsWith("loinc.org/rdf/");
+    });
+  }
+
+  @Disabled("NamingSystem-derived concept IRIs are opt-in and not enabled by default")
+  @Test
+  void testR6CodeableConceptCanDeriveConceptIriFromNamingSystemWhenEnabled() throws Exception {
+    ParserContext parserContext = ParserContext.fromWorkerContext(r6ContextWithTestNamingSystem());
+    String defaultTurtle = generateObservationCodeableConcept(parserContext, TEST_CODE_SYSTEM, TEST_CODE);
+    assertThat(defaultTurtle).doesNotContain(TEST_CONCEPT_IRI);
+
+    parserContext.setDeriveConceptIriFromNamingSystem(true);
+    String optInTurtle = generateObservationCodeableConcept(parserContext, TEST_CODE_SYSTEM, TEST_CODE);
+    assertThat(optInTurtle).contains(TEST_CONCEPT_IRI);
+  }
+
+  private IWorkerContext r6ContextWithTestNamingSystem() throws Exception {
+    IWorkerContext context = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext(R6_VERSION);
+    NamingSystem namingSystem = new NamingSystem("TestCodeSystem", PublicationStatus.ACTIVE, NamingSystemType.CODESYSTEM, new Date(),
+        new NamingSystem.NamingSystemUniqueIdComponent(NamingSystemIdentifierType.URI, TEST_CODE_SYSTEM));
+    namingSystem.setUrl("http://example.org/fhir/NamingSystem/test-code-system");
+    namingSystem.addUniqueId(new NamingSystem.NamingSystemUniqueIdComponent(NamingSystemIdentifierType.IRISTEM, TEST_IRI_STEM));
+    ((SimpleWorkerContext) context).cacheResource(namingSystem);
+    return context;
+  }
+
+  private String generateObservationCodeableConcept(ParserContext parserContext, String system, String code) throws IOException, UcumException {
+    String xml = """
+        <Observation xmlns="http://hl7.org/fhir">
+          <status value="final"/>
+          <code>
+            <coding>
+              <system value="%s"/>
+              <code value="%s"/>
+            </coding>
+          </code>
+        </Observation>
+        """.formatted(system, code);
+
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    parserContext.generateTurtleFromXmlStream(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)), output);
+    return output.toString(StandardCharsets.UTF_8);
+  }
 
   @Disabled("TODO this doesn't pass due to some FHIR URLs containing vertical bars |, which are allowed in XSD 1.1 but not XSD 1.0")
   @Test
@@ -144,19 +371,36 @@ public class TurtleGeneratorTests {
     testStructureDefinitionGeneration("Encounter");
   }
 
+  @Disabled("Run manually for testing with XML resources generated from FHIR specification publishing library")
+  @Test
+  public void testPublishedXmlExamplesR5() throws IOException, UcumException {
+    testPublishedXmlExamples(r5Parsers);
+  }
 
   @Disabled("Run manually for testing with XML resources generated from FHIR specification publishing library")
   @Test
-  public void testPublishedXmlExamples() throws IOException, UcumException {
+  public void testPublishedXmlExamplesR4() throws IOException, UcumException {
+    testPublishedXmlExamples(getVersionOverrideParsers(R4_VERSION));
+  }
+
+  @Disabled("Run manually for testing with XML resources generated from FHIR specification publishing library")
+  @Test
+  public void testPublishedXmlExamplesR6() throws IOException, UcumException {
+    testPublishedXmlExamples(getVersionOverrideParsers(R6_VERSION));
+  }
+
+  private void testPublishedXmlExamples(TurtleGeneratorTestUtils.ParserContext parserContext) throws IOException, UcumException {
     System.out.println("Using input XML directory: " + inputXmlDirectory);
-    System.out.println("Using output Turtle directory: " + outputTurtleDirectory);
+    var examplesOutputDirectory = outputTurtleDirectory.resolve("all-examples-" + parserContext.getFhirVersion());
+    Files.createDirectories(examplesOutputDirectory);
+    System.out.println("Using output Turtle directory: " + examplesOutputDirectory);
     int success = 0;
     var failures = new ArrayList<String>();
     try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(inputXmlDirectory, "*.xml")) {
       for (Path xml : dirStream) {
-        if (xml == null || Files.isDirectory(xml)) continue;
+        if (xml == null || xml.toString().endsWith("diff.xml") || Files.isDirectory(xml)) continue;
         try {
-          testInstanceGeneration(xml);
+          testInstanceGeneration(parserContext, xml, examplesOutputDirectory);
           success++;
         } catch (Exception e) {
           System.out.println("Failed to generate Turtle for " + xml.getFileName() + ": " + e.getMessage());
@@ -190,7 +434,7 @@ public class TurtleGeneratorTests {
   /**
    * Examples should (1) parse without errors and (2) match the corresponding expected TTL
    */
-  private void testExpectedExamples(Path expectedDirectory, Path outputDirectory) throws IOException, UcumException {
+  private void testExpectedXmlExamples(Path expectedDirectory, Path outputDirectory) throws IOException, UcumException {
     List<Path> expectedTurtlePaths;
     try (var paths = Files.list(expectedDirectory)) {
       expectedTurtlePaths = paths
@@ -207,7 +451,7 @@ public class TurtleGeneratorTests {
       Assertions.assertTrue(Files.exists(xmlResourcePath), "Missing XML example for " + expectedTurtlePath.getFileName() + " at path: " + xmlResourcePath);
       String expected = parsers.parseGeneratedTurtle(expectedTurtlePath.toString());
       String actual = parsers.parseGeneratedTurtle(parsers.generateTurtleFromXmlResourcePath(xmlResourcePath, outputDirectory));
-      FileUtilities.stringToFile(actual, Utilities.path("[tmp]", "ttl", xmlResourcePath.getFileName().toString()));
+      FileUtilities.stringToFile(actual, outputDirectory.resolve(xmlResourcePath.getFileName()).toString());
       Assertions.assertEquals(
         expected,
         actual,
@@ -215,9 +459,27 @@ public class TurtleGeneratorTests {
     }
   }
 
-  private String testInstanceGeneration(Path resourcePath) throws IOException, UcumException {
-    var generatedTurtlePath = parsers.generateTurtleFromXmlResourcePath(resourcePath, outputTurtleDirectory);
-    parsers.parseGeneratedTurtle(generatedTurtlePath);
+  private void testExpectedJsonExamples(Path expectedDirectory, Path outputDirectory) throws IOException, UcumException {
+    List<Path> expectedJsonPaths;
+    try (var paths = Files.list(expectedDirectory)) {
+      expectedJsonPaths = paths
+          .filter(Files::isRegularFile)
+          .filter(path -> path.toString().endsWith(".json"))
+          .sorted()
+          .collect(Collectors.toList());
+    }
+
+    Assumptions.assumeFalse(expectedJsonPaths.isEmpty(), "No expected JSON fixtures found in " + expectedDirectory);
+
+    for (Path expectedJsonPath : expectedJsonPaths) {
+      parsers.generateTurtleFromJsonResourcePath(expectedJsonPath, outputDirectory);
+      // TODO finalize example JSON files and match to expected corresponding TTL
+    }
+  }
+
+  private String testInstanceGeneration(ParserContext parserContext, Path resourcePath, Path outputDirectory) throws IOException, UcumException {
+    var generatedTurtlePath = parserContext.generateTurtleFromXmlResourcePath(resourcePath, outputDirectory);
+    parserContext.parseGeneratedTurtle(generatedTurtlePath);
     return generatedTurtlePath;
   }
 
@@ -240,5 +502,30 @@ public class TurtleGeneratorTests {
     }
 
     return inputXmlDirectory.resolve(xmlFileName);
+  }
+
+  private void testAsHtmlGeneratesProperFormatting(String versionDirectory, TurtleGeneratorTestUtils.ParserContext parserContext) throws Exception {
+    Path xmlResourcePath = inputXmlDirectory.resolve(versionDirectory).resolve("patient-example-f201-roel.xml");
+    Assumptions.assumeTrue(Files.exists(xmlResourcePath), "XML example missing: " + xmlResourcePath);
+
+    Turtle rdf = parserContext.composeTurtleFromXmlResourcePath(xmlResourcePath);
+
+    String prismHtml = rdf.asHtml(true);
+    String plainHtml = rdf.asHtml(false);
+    String preOpen = "<pre class=\"rdf\" data-fhir=\"generated\" style=\"white-space: pre; overflow: hidden\">";
+
+    assertThat(prismHtml).startsWith(preOpen + "<code class=\"language-turtle\">\r\n").endsWith("</code></pre>\r\n\r\n");
+    assertThat(plainHtml).startsWith(preOpen + "\r\n").endsWith("</pre>\r\n\r\n");
+
+    // The HTML rendering path emits prefix declarations with XML-escaped angle brackets.
+    assertThat(prismHtml).contains("@prefix fhir: &lt;http://hl7.org/fhir/&gt; .");
+    assertThat(plainHtml).contains("@prefix fhir: &lt;http://hl7.org/fhir/&gt; .");
+
+    // Write out for manual inspection
+    String stem = xmlResourcePath.getFileName().toString().replaceFirst("\\.xml$", "");
+    Path prismOut = outputTurtleDirectory.resolve(stem + "." + versionDirectory + ".prism.html");
+    Path plainOut = outputTurtleDirectory.resolve(stem + "." + versionDirectory + ".plain.html");
+    Files.writeString(prismOut, prismHtml);
+    Files.writeString(plainOut, plainHtml);
   }
 }

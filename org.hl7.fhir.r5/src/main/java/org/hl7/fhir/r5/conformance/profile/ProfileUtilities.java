@@ -52,6 +52,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ElementRedirection;
 import org.hl7.fhir.r5.conformance.profile.MappingAssistant.MappingMergeModeOption;
+import org.hl7.fhir.r5.context.ContextUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.Property;
@@ -87,7 +88,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
@@ -123,7 +124,7 @@ import org.hl7.fhir.utilities.xml.SchematronWriter.Section;
  * @author Grahame
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ProfileUtilities {
 
@@ -153,7 +154,7 @@ public class ProfileUtilities {
   );
   private static boolean suppressIgnorableExceptions;
 
-  
+
   public class ElementDefinitionCounter {
     int countMin = 0;
     int countMax = 0;
@@ -3519,7 +3520,19 @@ public class ProfileUtilities {
     return null;
   }
 
-
+  public ElementDefinitionResolution findElementForPath(String typeName, String elementName) {
+    StructureDefinition sd = context.fetchTypeDefinition(typeName);
+    if (sd == null) {
+      return null;
+    }
+    List<ElementDefinition> list = sd.getSnapshot().getElement();
+    ElementDefinition ed = sd.getSnapshot().getElementByPath(elementName);
+    if (ed == null) {
+      return null;
+    } else {
+      return new ElementDefinitionResolution(sd, ed);
+    }
+  }
 
   protected ElementDefinitionResolution getElementById(StructureDefinition source, List<ElementDefinition> elements, UriType contentRefElement) {
     String contentReference = contentRefElement.getValue();
@@ -4141,7 +4154,19 @@ public class ProfileUtilities {
     if (source != null && source.getSourcePackage() != null && source.getSourcePackage().isCore()) {
       source = null;
     }
-    return context.fetchResource(StructureDefinition.class, u, ExtensionUtilities.getVersionResolutionRules(ref), v, source);
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, u, ExtensionUtilities.getVersionResolutionRules(ref), v, source);
+    if (sd == null) {
+      if (xver == null) {
+        xver = XVerExtensionManagerFactory.createExtensionManager(context);
+      }
+      if (xver.status(u) == XVerExtensionStatus.Valid) {
+        sd = xver.getDefinition(u);
+        if (sd != null && !sd.hasSnapshot()) {
+          new ContextUtilities(getContext()).generateSnapshot(sd);
+        }
+      }
+    }
+    return sd;
   }
 
   // generate a CSV representation of the structure definition

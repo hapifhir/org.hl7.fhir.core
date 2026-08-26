@@ -35,8 +35,9 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext.KnownLinkType;
 import org.hl7.fhir.r5.renderers.utils.Resolver;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlDocument;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -45,7 +46,7 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ExampleScenarioRenderer extends TerminologyRenderer {
 
@@ -92,12 +93,12 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
             renderProcesses(prefixes, status, x, scen);
             break;
           default:
-            throw new FHIRException(context.formatPhrase(RenderingContext.EX_SCEN_UN, context.getScenarioMode()) + " ");
+            throw new FHIRException(context.formatPhrase(RenderingI18nContext.EX_SCEN_UN, context.getScenarioMode()) + " ");
         }
       }
     } catch (Exception e) {
       e.printStackTrace();
-      throw new FHIRException(context.formatPhrase(RenderingContext.EX_SCEN_ERR_REN, scen.getUrl(), e) + " ");
+      throw new FHIRException(context.formatPhrase(RenderingI18nContext.EX_SCEN_ERR_REN, scen.getUrl(), e) + " ");
     }
   }
 
@@ -152,7 +153,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   }
 
   protected String toPlantUml(Map<Element, String> prefixes, RenderingStatus status, ResourceWrapper res, ExampleScenarioProcessComponent process, ExampleScenario scen, Map<String, String> actorKeys) throws IOException {
-    String plantUml = "group " + process.getTitle() + " " + creolLink("details", prefixes.get(process), process.getDescription()) + "\r\n";
+    String plantUml = "group " + process.getTitle() + " " + creolLink("details", "#" + context.prefixAnchor(prefixes.get(process)), process.getDescription()) + "\r\n";
 
     Map<String,Boolean> actorsActive = new HashMap<String, Boolean>();
     for (ExampleScenarioActorComponent actor : scen.getActor()) {
@@ -162,7 +163,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     for (ExampleScenarioProcessStepComponent step: process.getStep()) {
       plantUml += toPlantUml(prefixes, status, res, step, scen, actorsActive, actorKeys);
       if (step.getPause())
-        plantUml += context.formatPhrase(RenderingContext.EX_SCEN_TIME)+"\n";
+        plantUml += context.formatPhrase(RenderingI18nContext.EX_SCEN_TIME)+"\n";
     }
 
     plantUml += "end\r\n\r\n";
@@ -175,7 +176,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       XhtmlNode n = new XhtmlDocument();
       renderCanonical(status, res, n, Resource.class, step.getWorkflowElement());
       XhtmlNode ref = n.getChildNodes().get(0);
-      plantUml += noteOver(scen.getActor(), context.formatPhrase(RenderingContext.EXAMPLE_SCEN_STEP_SCEN, creolLink((ref.getContent()), ref.getAttribute("href"))));
+      plantUml += noteOver(scen.getActor(), context.formatPhrase(RenderingI18nContext.EXAMPLE_SCEN_STEP_SCEN, creolLink((ref.getContent()), ref.getAttribute("href"))));
     } else if (step.hasProcess())
       plantUml += toPlantUml(prefixes, status, res, step.getProcess(), scen, actorKeys);
     else {
@@ -191,14 +192,14 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
     plantUml.append(handleActivation(op.getInitiator(), op.getInitiatorActive(), actorsActive, actorKeys));
     plantUml.append(handleActivation(op.getReceiver(), op.getReceiverActive(), actorsActive, actorKeys));
     plantUml.append(actorKeys.get(op.getInitiator()) + " -> " + actorKeys.get(op.getReceiver()) + ": ");
-    plantUml.append(creolLink(op.getTitle(), prefixes.get(op), op.getDescription()));
+    plantUml.append(creolLink(op.getTitle(), "#" + context.prefixAnchor(prefixes.get(op)), op.getDescription()));
     if (op.hasRequest()) {
       plantUml.append(" (" + creolLink("payload", linkForInstance(op.getRequest())) + ")\r\n");
     }
     if (op.hasResponse()) {
       plantUml.append("activate " + actorKeys.get(op.getReceiver()) + "\r\n");
       plantUml.append(actorKeys.get(op.getReceiver()) + " --> " + actorKeys.get(op.getInitiator()) + ": ");
-      plantUml.append(creolLink("response", prefixes.get(op), op.getDescription()));
+      plantUml.append(creolLink("response", "#" + context.prefixAnchor(prefixes.get(op)), op.getDescription()));
       plantUml.append(" (" + creolLink("payload", linkForInstance(op.getResponse())) + ")\r\n");
       plantUml.append("deactivate " + actorKeys.get(op.getReceiver()) + "\r\n");
     }
@@ -265,9 +266,9 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   public boolean renderActors(RenderingStatus status, ResourceWrapper res, XhtmlNode x, ExampleScenario scen) throws IOException {
     XhtmlNode tbl = x.table("table-striped table-bordered", false).markGenerated(!context.forValidResource());
     XhtmlNode thead = tbl.tr();
-    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
-    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
-    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_DESC));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.GENERAL_NAME));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.GENERAL_TYPE));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.GENERAL_DESC));
     for (ExampleScenarioActorComponent actor : scen.getActor()) {
       XhtmlNode tr = tbl.tr();
       XhtmlNode nameCell = tr.td();
@@ -282,10 +283,10 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   public boolean renderInstances(RenderingStatus status, ResourceWrapper res, XhtmlNode x, ExampleScenario scen) throws IOException {
     XhtmlNode tbl = x.table("table-striped table-bordered", false).markGenerated(!context.forValidResource());
     XhtmlNode thead = tbl.tr();
-    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
-    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_TYPE));
-    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_CONTENT));
-    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_DESC));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.GENERAL_NAME));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.GENERAL_TYPE));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.GENERAL_CONTENT));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.GENERAL_DESC));
 
     Map<String, String> instanceNames = new HashMap<String, String>();
     for (ExampleScenarioInstanceComponent instance : scen.getInstance()) {
@@ -308,7 +309,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
 
       if (!instance.hasStructureVersion() || instance.getStructureType().getSystem().equals("")) {
         if (instance.hasStructureVersion())
-          typeCell.tx((context.formatPhrase(RenderingContext.EX_SCEN_FVER, instance.getStructureVersion()) + " ") + " ");
+          typeCell.tx((context.formatPhrase(RenderingI18nContext.EX_SCEN_FVER, instance.getStructureVersion()) + " ") + " ");
         if (instance.hasStructureProfileCanonicalType()) {
           renderCanonical(status, res, typeCell, StructureDefinition.class, instance.getStructureProfileCanonicalType());
         } else if (instance.hasStructureProfileUriType()) {
@@ -319,7 +320,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
         }
       } else {
         renderDataType(status, typeCell, wrapWC(res, instance.getStructureVersionElement()));
-        typeCell.tx(" "+(context.formatPhrase(RenderingContext.GENERAL_VER_LOW, instance.getStructureVersion())+" "));
+        typeCell.tx(" "+(context.formatPhrase(RenderingI18nContext.GENERAL_VER_LOW, instance.getStructureVersion())+" "));
         if (instance.hasStructureProfile()) {
           typeCell.tx(" ");
           if (instance.hasStructureProfileCanonicalType()) {
@@ -339,7 +340,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       XhtmlNode descCell = row.td();
       addMarkdown(descCell, instance.getDescription());
       if (instance.hasContainedInstance()) {
-        descCell.b().tx(context.formatPhrase(RenderingContext.EX_SCEN_CONTA) + " ");
+        descCell.b().tx(context.formatPhrase(RenderingI18nContext.EX_SCEN_CONTA) + " ");
         boolean first = true;
         for (ExampleScenarioInstanceContainedInstanceComponent contained: instance.getContainedInstance()) {
           if (first) first = false; else descCell.tx(", ");
@@ -419,8 +420,8 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       }
       i = assignAlternativePrefixes(prefixes, step.getAlternative(), i);
       if (step.hasOperation()) {
-        prefixes.put(step.getOperation(), "node"+i);
-        i++;
+        // Operation shares its parent step's anchor so the diagram link and the textual anchor resolve to the same node.
+        prefixes.put(step.getOperation(), prefixes.get(step));
       }
     }
     return i;
@@ -441,26 +442,26 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
   public void renderProcess(Map<Element, String> prefixes, RenderingStatus status, XhtmlNode x, ExampleScenarioProcessComponent process, Map<String, ExampleScenarioActorComponent> actors, Map<String, ExampleScenarioInstanceComponent> instances) throws IOException {
     XhtmlNode div = x.div();
     div.an(context.prefixAnchor(prefixes.get(process)));
-    div.b().tx(context.formatPhrase(RenderingContext.EX_SCEN_PROC, process.getTitle())+" ");
+    div.b().tx(context.formatPhrase(RenderingI18nContext.EX_SCEN_PROC, process.getTitle())+" ");
     if (process.hasDescription())
       addMarkdown(div, process.getDescription());
     if (process.hasPreConditions()) {
-      div.para().b().i().tx(context.formatPhrase(RenderingContext.EX_SCEN_PRECON));
+      div.para().b().i().tx(context.formatPhrase(RenderingI18nContext.EX_SCEN_PRECON));
       addMarkdown(div, process.getPreConditions());
     }
     if (process.hasPostConditions()) {
-      div.para().b().i().tx(context.formatPhrase(RenderingContext.EX_SCEN_POSTCON));
+      div.para().b().i().tx(context.formatPhrase(RenderingI18nContext.EX_SCEN_POSTCON));
       addMarkdown(div, process.getPostConditions());
     }
     XhtmlNode tbl = div.table("table-striped table-bordered", false).style("width:100%").markGenerated(!context.forValidResource());
     XhtmlNode thead = tbl.tr();
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_STEP));
-    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_NAME));
-    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_DESC));
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_IN));
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_REC));
-    thead.th().addText(context.formatPhrase(RenderingContext.GENERAL_REQUEST));
-    thead.th().addText(context.formatPhrase(RenderingContext.EX_SCEN_RES));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.EX_SCEN_STEP));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.GENERAL_NAME));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.GENERAL_DESC));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.EX_SCEN_IN));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.EX_SCEN_REC));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.GENERAL_REQUEST));
+    thead.th().addText(context.formatPhrase(RenderingI18nContext.EX_SCEN_RES));
     int stepCount = 1;
     for (ExampleScenarioProcessStepComponent step: process.getStep()) {
       renderStep(prefixes, status, tbl, step, actors, instances);
@@ -504,14 +505,14 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       prefixCell.tx(step.getNumber());
       if (step.hasProcess()) {
         XhtmlNode n = row.td().colspan(6);
-        n.tx(context.formatPhrase(RenderingContext.EX_SCEN_SEE));
-        n.ah(context.prefixLocalHref("#" + context.prefixAnchor(prefixes.get(step)))).tx(step.getProcess().getTitle());
-        n.tx(" "+ context.formatPhrase(RenderingContext.EX_SCEN_BEL));
+        n.tx(context.formatPhrase(RenderingI18nContext.EX_SCEN_SEE));
+        n.ah(context.prefixLocalHref("#" + context.prefixAnchor(prefixes.get(step.getProcess())))).tx(step.getProcess().getTitle());
+        n.tx(" "+ context.formatPhrase(RenderingI18nContext.EX_SCEN_BEL));
 
       } else if (step.hasWorkflow()) {
         XhtmlNode n = row.td().colspan(6);
         n.an(context.prefixAnchor(prefixes.get(step)));
-        n.tx(context.formatPhrase(RenderingContext.EX_SCEN_OTH));
+        n.tx(context.formatPhrase(RenderingI18nContext.EX_SCEN_OTH));
         String link = new ContextUtilities(context.getWorker()).getLinkForUrl(context.getLink(KnownLinkType.SPEC, true), step.getWorkflow());
         String title = "Unknown title";
         if (step.getWorkflowElement().hasExtension(ExtensionDefinitions.EXT_DISPLAY_NAME)) {
@@ -547,7 +548,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       int altNum = 1;
       for (ExampleScenarioProcessStepAlternativeComponent alt : step.getAlternative()) {
         XhtmlNode altHeading = tbl.tr().colspan(7).td();
-        altHeading.para().i().tx(context.formatPhrase(RenderingContext.EX_SCEN_ALT, alt.getTitle())+" ");
+        altHeading.para().i().tx(context.formatPhrase(RenderingI18nContext.EX_SCEN_ALT, alt.getTitle())+" ");
         if (alt.hasDescription())
           addMarkdown(altHeading, alt.getDescription());
         int stepCount = 1;
@@ -568,7 +569,7 @@ public class ExampleScenarioRenderer extends TerminologyRenderer {
       return;
     ExampleScenarioActorComponent actor = actors.get(actorId);
     if (actor==null)
-      throw new FHIRException(context.formatPhrase(RenderingContext.EX_SCEN_UN_ACT, actorId)+" ");
+      throw new FHIRException(context.formatPhrase(RenderingI18nContext.EX_SCEN_UN_ACT, actorId)+" ");
     actorCell.ah("#a_" + actor.getKey(), actor.getDescription()).tx(actor.getTitle());
   }
 

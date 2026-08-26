@@ -94,22 +94,16 @@ public class HTTPClientCommand implements Callable<Integer> {
       .connectTimeout(Duration.ofSeconds(10))
       .build();
 
-    final String BASE_URL = "localhost";
-
     final URI uri;
 
     if (stop) {
       try {
         uri = host != null ? getStopUri(host) : getStopUri(hostname, port);
-        HttpRequest.newBuilder()
-          .uri(uri)
-          .POST(HttpRequest.BodyPublishers.ofString("{}"))
-          .build();
-        return 0;
-      }  catch (URISyntaxException e) {
+      } catch (URISyntaxException e) {
         logExceptionOnURIGet(e);
         return 1;
       }
+      return sendStopRequest(httpClient, uri);
     }
 
     try {
@@ -145,6 +139,34 @@ public class HTTPClientCommand implements Callable<Integer> {
     }
 
     return 0;
+  }
+
+  /**
+   * Ask the server to stop. The server responds before shutting itself down, so a 200 here means
+   * the shutdown was accepted, not that the process has already exited.
+   */
+  private Integer sendStopRequest(HttpClient httpClient, URI uri) {
+    HttpRequest request = HttpRequest.newBuilder()
+      .uri(uri)
+      .header("Content-Type", "application/fhir+json")
+      .POST(HttpRequest.BodyPublishers.ofString("{}"))
+      .build();
+    try {
+      HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+      if (response.statusCode() != 200) {
+        log.error("The server at {} refused the stop request (HTTP {})", uri, response.statusCode());
+        return 1;
+      }
+      log.info("The server at {} has been asked to stop", uri);
+      return 0;
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      log.error("Interrupted while sending the stop request to {}", uri, e);
+      return 1;
+    } catch (IOException e) {
+      log.error("Unable to send the stop request to {}: {}", uri, e.getMessage(), e);
+      return 1;
+    }
   }
 
   private void logExceptionOnURIGet(URISyntaxException e) {
@@ -279,6 +301,9 @@ public class HTTPClientCommand implements Callable<Integer> {
     }
     if (instanceValidatorOptions.validationTimeout != null && instanceValidatorOptions.validationTimeout > 0) {
       uriBuilder.addParameter(ParamNames.VALIDATION_TIMEOUT, String.valueOf(instanceValidatorOptions.validationTimeout));
+    }
+    if (instanceValidatorOptions.codeSystemValidationSizeLimit != null) {
+      uriBuilder.addParameter(ParamNames.CODESYSTEM_VALIDATION_SIZE_LIMIT, String.valueOf(instanceValidatorOptions.codeSystemValidationSizeLimit));
     }
 
     // extensions - list, values may be URIs; addParameter handles percent-encoding

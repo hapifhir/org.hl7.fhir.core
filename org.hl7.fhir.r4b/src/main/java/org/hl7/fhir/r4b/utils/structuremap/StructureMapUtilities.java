@@ -76,7 +76,7 @@ import org.hl7.fhir.r4b.utils.ToolingExtensions;
 import org.hl7.fhir.r4b.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.fhirpath.FHIRPathConstantEvaluationMode;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -100,7 +100,7 @@ import java.util.*;
  *
  * @author Grahame Grieve
  */
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class StructureMapUtilities {
 
@@ -1834,7 +1834,8 @@ public class StructureMapUtilities {
           res.setUserData("profile", tgt.getUserData("profile"));
         return res;
       case COPY:
-        return getParam(vars, tgt.getParameter().get(0));
+        Base val = getParam(vars, tgt.getParameter().get(0));
+        return val != null ? val.copy() : val;
       case EVALUATE:
         ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
         if (expr == null) {

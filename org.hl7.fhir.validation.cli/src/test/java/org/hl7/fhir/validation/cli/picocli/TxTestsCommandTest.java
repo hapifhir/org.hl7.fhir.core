@@ -85,6 +85,16 @@ public class TxTestsCommandTest {
   }
 
   @Test
+  public void testModeOptionSplitsOnCommas() {
+    // testcases.md in the tx-ecosystem IG says multiple modes are passed
+    // separated by commas
+    CommandLine commandLine = new CommandLine(new TxTestsCommand());
+    CommandLine.Model.OptionSpec option = commandLine.getCommandSpec()
+      .optionsMap().get("-mode");
+    assertThat(option.splitRegex()).isEqualTo(",");
+  }
+
+  @Test
   public void testOutputOptionIsOptional() {
     CommandLine commandLine = new CommandLine(new TxTestsCommand());
     CommandLine.Model.OptionSpec option = commandLine.getCommandSpec()

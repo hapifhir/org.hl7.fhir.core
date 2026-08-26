@@ -56,8 +56,5 @@ public class ParserFactory {
       throw new Error("Not supported at this time");
     }
   }
-  
-  public static void registerCustomResources() {
-    ToolsRegistration.register();
-  }
+
 }

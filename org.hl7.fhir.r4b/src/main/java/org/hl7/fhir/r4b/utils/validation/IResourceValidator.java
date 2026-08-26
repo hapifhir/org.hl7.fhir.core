@@ -36,7 +36,7 @@ import org.hl7.fhir.r4b.model.StructureDefinition;
 import org.hl7.fhir.r4b.utils.validation.constants.BestPracticeWarningLevel;
 import org.hl7.fhir.r4b.utils.validation.constants.CheckDisplayOption;
 import org.hl7.fhir.r4b.utils.validation.constants.IdStatus;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import java.io.IOException;
@@ -50,7 +50,7 @@ import java.util.List;
  * @author Grahame Grieve
  *
  */
-@MarkedToMoveToAdjunctPackage
+
 public interface IResourceValidator {
 
   /**
@@ -168,10 +168,6 @@ public interface IResourceValidator {
   boolean isCrumbTrails();
 
   void setCrumbTrails(boolean crumbTrails);
-
-  boolean isValidateValueSetCodesOnTxServer();
-
-  void setValidateValueSetCodesOnTxServer(boolean value);
 
   /**
    * Bundle validation rules allow for requesting particular entries in a bundle

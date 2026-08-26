@@ -83,7 +83,6 @@ public class TxServiceTestHelper {
       Parameters newParameters = context.getExpansionParameters();
       for (ParametersParameterComponent pp : p.getParameter()) {
         if (Utilities.existsInList(pp.getName(), "default-valueset-version", "system-version", "force-system-version", "default-system-version")) {
-          //FIXME this is changing a reference to a copied object so breaks.
           newParameters.getParameter().add(pp);
         }
       }

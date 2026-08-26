@@ -125,6 +125,7 @@ public class ExtensionDefinitions {
   public static final String EXT_TYPE_SPEC = "http://hl7.org/fhir/tools/StructureDefinition/type-specifier";
   public static final String EXT_TYPE_CHARACTERISTICS = "http://hl7.org/fhir/StructureDefinition/structuredefinition-type-characteristics";
 
+  public static final String EXT_XHTML_RENDERING = "http://hl7.org/fhir/StructureDefinition/rendering-xhtml";
   // in the tooling IG
   public static final String EXT_PRIVATE_BASE = "http://hl7.org/fhir/tools/";
   public static final String EXT_BINDING_ADDITIONAL = "http://hl7.org/fhir/tools/StructureDefinition/additional-binding";
@@ -155,6 +156,7 @@ public class ExtensionDefinitions {
   public static final String WEB_EXTENSION_STYLE = "http://build.fhir.org/ig/FHIR/fhir-tools-ig/format-extensions.html#extension-related-extensions";
   public static final String WEB_BINDING_STYLE = "http://build.fhir.org/ig/FHIR/fhir-tools-ig/StructureDefinition-binding-style.html";
   public static final String EXT_IGDEP_COMMENT = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-comment";
+  public static final String EXT_IGDEP_NO_SAVE = "http://hl7.org/fhir/tools/StructureDefinition/implementationguide-dependency-no-save"; // this is never persisted - it works around a circulatiry problem with THO
   public static final String EXT_XPATH_CONSTRAINT = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.constraint.xpath";
   public static final String EXT_OBLIGATION_TOOLS = "http://hl7.org/fhir/tools/StructureDefinition/obligation";
   public static final String EXT_OBLIGATION_CORE = "http://hl7.org/fhir/StructureDefinition/obligation";

@@ -9,7 +9,7 @@ import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.terminologies.validation.ValueSetValidator;
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.IResourceValidator;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.FhirPublication;
@@ -46,7 +46,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class BaseWorkerContextTests {
 
-  private static final String DUMMY_URL = "dummyUrl";
+  private static final String DUMMY_URL = "http://dummyUrl";
 
   @Spy
   BaseWorkerContext context = new BaseWorkerContext() {
@@ -78,6 +78,11 @@ public class BaseWorkerContextTests {
     @Override
     public PackageLoadController getPackageLoadController() {
       return null;
+    }
+
+    @Override
+    public boolean canLoadPackages() {
+      return false;
     }
 
     @Override
@@ -298,6 +303,11 @@ public class BaseWorkerContextTests {
       @Override
       public PackageLoadController getPackageLoadController() {
         return null;
+      }
+
+      @Override
+      public boolean canLoadPackages() {
+        return false;
       }
 
       @Override
