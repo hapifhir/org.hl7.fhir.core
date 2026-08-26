@@ -49,9 +49,9 @@ There are two additional modules that contain experimental code for support of F
 suitable for production use:
 
 * **org.fhir.fhir.model**: Object models for the R6 candidate (will change regularly as new R6 candidates are released, and we start working with the R6 code)
-* **org.fhir.fhir.services**: Utilities for working with the R6 code 
+* **org.fhir.fhir.services**: Utilities for working with the R6 code
 
-Note: these packages will be it, going forward - future versions post R6 will be folded into the code in these modules. 
+Note: these packages will be it, going forward - future versions post R6 will be folded into the code in these modules.
 
 
 ## Additional Resources
