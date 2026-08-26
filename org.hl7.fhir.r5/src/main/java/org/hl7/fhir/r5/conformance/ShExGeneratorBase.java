@@ -654,7 +654,7 @@ public abstract class ShExGeneratorBase {
       bd = sd.getBaseDefinitionNoVersion();
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //single literal character split
-      String[] els = bd.split("/");
+      String[] els = StringUtils.splitByWholeSeparator(bd, "/");
       bd = els[els.length - 1];
     }
 
@@ -784,7 +784,7 @@ public abstract class ShExGeneratorBase {
             if ((!cstype.isEmpty()) && (cstype.indexOf("/") != -1)) {
               @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
               //single literal character split
-              String[] els = cstype.split("/");
+              String[] els = StringUtils.splitByWholeSeparator(cstype, "/");
               cstype = els[els.length - 1];
             }
 
@@ -842,7 +842,7 @@ public abstract class ShExGeneratorBase {
     }
 
     shape_defn.add("elements", StringUtils.join(elements, "\n"));
-    shape_defn.add("comment", root_comment == null? " " : "# " + root_comment.replaceAll("\n", "\n#")); // TODO: inspect
+    shape_defn.add("comment", root_comment == null? " " : "# " + root_comment.replace("\n", "\n#")); // TODO: inspect
 
     String constraintStr = "";
 
@@ -865,7 +865,7 @@ public abstract class ShExGeneratorBase {
     //       }
     //       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //       //single literal character split
-    //       String[] backRefs = toStore.split("\\.");
+    //       String[] backRefs = StringUtils.splitByWholeSeparator(toStore, ".");
     //       toStore = "a [fhir:" + getClassName(backRefs[0]) + "]";
     //       for (int i = 1; i < backRefs.length; i++)
     //         toStore = "^fhir:" + getClassName(backRefs[i]) + " {" + toStore + "}";
@@ -916,10 +916,9 @@ public abstract class ShExGeneratorBase {
       } catch (Exception e) {
         //String message = "        FAILED to parse the constraint from Structure Definition: " + constItem + " [ " + e.getMessage() + " ]";
         String message = "        FAILED to parse the constraint from Structure Definition: " + constItem;
-        e.printStackTrace();
 
         translated = "";
-        log.debug(message);
+        log.debug(message, e);
       }
     }
     return commentUnmapped(translated);
@@ -1182,7 +1181,7 @@ public abstract class ShExGeneratorBase {
         pre += "\n# Unmapped construct found: " + StringUtils.substringBetween(temp, "SHEX_", "_SHEX");
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //fixed-width literal strings; safe
-        String tempNext = temp.replaceFirst("SHEX_", " ").replaceFirst("_SHEX", " ");
+        String tempNext = replaceOnceLiteral(replaceOnceLiteral(temp, "SHEX_", " "), "_SHEX", " ");
         temp = tempNext;
       }
 
@@ -1221,7 +1220,7 @@ public abstract class ShExGeneratorBase {
       if (depth == 0) {
         @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
         //CALLER is a fixed-width literal string constant; safe
-        String toReturn = funCall.replaceFirst(CALLER, mainTxt + "");
+        String toReturn = replaceOnceLiteral(funCall, CALLER, mainTxt + "");
         toReturn = postProcessing(toReturn, nextText);
         return toReturn.replace(CALLER, "");
       }
@@ -1235,7 +1234,7 @@ public abstract class ShExGeneratorBase {
         if (".".equals(mT))
           replacement = CALLER + " " + dR + mT;
 
-        return  postProcessing(funCall.replaceFirst(CALLER, Matcher.quoteReplacement(replacement)), nextText) ;
+        return  postProcessing(replaceOnceLiteral(funCall, CALLER, replacement), nextText) ;
       }
     }
 
@@ -1281,7 +1280,7 @@ public abstract class ShExGeneratorBase {
     if ((q != null)&&(q.trim().startsWith("XOR"))){
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //fixed-width, safe
-      String[] xorParts = q.split("XOR");
+      String[] xorParts = StringUtils.splitByWholeSeparator(q, "XOR");
       qp = xorParts[1];
 
       // because p xor q = ( p and not q) OR (not p and q)
@@ -1311,6 +1310,19 @@ public abstract class ShExGeneratorBase {
       return "'" + str + "'";
 
     return str;
+  }
+
+  private String replaceOnceLiteral(String text, String searchString, String replacement) {
+    if (text == null || searchString == null || searchString.isEmpty() || replacement == null) {
+      return text;
+    }
+
+    int index = text.indexOf(searchString);
+    if (index < 0) {
+      return text;
+    }
+
+    return text.substring(0, index) + replacement + text.substring(index + searchString.length());
   }
 
   /**
@@ -1383,7 +1395,7 @@ public abstract class ShExGeneratorBase {
     } else {
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //single literal character split
-      String[] words = text.split(" ");
+      String[] words = StringUtils.splitByWholeSeparator(text, " ");
       int word_idx = 0;
       while(word_idx < words.length) {
         StringBuilder accum = new StringBuilder();
@@ -1542,7 +1554,7 @@ public abstract class ShExGeneratorBase {
       defn = defn.replace("<", "<" + ONE_OR_MORE_PREFIX);
 
       if (refChoices.isEmpty()) {
-        String[] alltags = defn.split("<");
+        String[] alltags = StringUtils.splitByWholeSeparator(defn, "<");
         for (String st : alltags) {
           if (!st.startsWith(ONE_OR_MORE_PREFIX))
             continue;
@@ -1565,7 +1577,7 @@ public abstract class ShExGeneratorBase {
     } else {
       if (!refChoices.isEmpty()) {
         defn += " AND {" + getLinkPredicate() + " \n\t\t\t@<" +
-          refChoices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> ?}";
+          refChoices.replace("_OR_", "> OR \n\t\t\t@<") + "> ?}";
       }
     }
 
@@ -1652,7 +1664,7 @@ public abstract class ShExGeneratorBase {
   // TODO: inspect
   private String removeMultipleX(String str) {
     if ((str != null) && (!"".equals(str))) {
-      str = str.replaceAll("\\[x\\]", "");
+      str = str.replace("[x]", "");
     }
 
     return str;
@@ -1686,10 +1698,10 @@ public abstract class ShExGeneratorBase {
     // Remove | version suffix -- not relevant/specified for ShEx
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //single literal character split
-    String[] elements = canonical.split("/");
+    String[] elements = StringUtils.splitByWholeSeparator(canonical, "/");
     @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
     //single literal character split
-    String[] versionParts = elements[elements.length - 1].split("\\|");
+    String[] versionParts = StringUtils.splitByWholeSeparator(elements[elements.length - 1], "|");
     return versionParts[0];
   }
 
@@ -1917,12 +1929,12 @@ public abstract class ShExGeneratorBase {
       oomType = oneOrMoreType.replace(ONE_OR_MORE_CHOICES, "_");
       @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
       //ONE_OR_MORE_CHOICES is a literal string constant; safe
-      String[] choicesParts = oneOrMoreType.split(ONE_OR_MORE_CHOICES);
+      String[] choicesParts = StringUtils.splitByWholeSeparator(oneOrMoreType, ONE_OR_MORE_CHOICES);
       origType = choicesParts[0];
       restriction = "AND {" + getLinkPredicate() + " \n\t\t\t@<";
 
       String choices = choicesParts[1];
-      restriction += choices.replaceAll("_OR_", "> OR \n\t\t\t@<") + "> ?}";
+      restriction += choices.replace("_OR_", "> OR \n\t\t\t@<") + "> ?}";
     }
 
     origType = origType.replace(ONE_OR_MORE_PREFIX, "");
@@ -1977,7 +1989,7 @@ public abstract class ShExGeneratorBase {
         if ((cstype != null) && (cstype.indexOf("/") != -1)) {
           @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
           //single literal character split
-          String[] els = cstype.split("/");
+          String[] els = StringUtils.splitByWholeSeparator(cstype, "/");
           cstype = els[els.length - 1];
         }
 
@@ -2046,11 +2058,11 @@ public abstract class ShExGeneratorBase {
 
   private void debug(String message) {
     if (this.debugMode)
-      System.out.println(message);
+      log.debug(message);
   }
 
   private void printBuildMessage(String message){
-    // System.out.println("ShExGenerator: " + message);
+    // log.debug("ShExGenerator: {}", message);
   }
 
   /**
