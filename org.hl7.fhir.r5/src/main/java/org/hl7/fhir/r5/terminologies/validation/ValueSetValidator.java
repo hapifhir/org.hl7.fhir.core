@@ -1250,7 +1250,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
             }
             Collections.sort(ok);
             String msg = context.formatMessagePlural(ok.size(), I18nConstants.INACTIVE_DISPLAY_FOUND, code.getDisplay(), cc.getCode(), CommaSeparatedStringBuilder.join(", ", ok), dstatus);
-            info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg, OpIssueCode.DisplayComment, null, I18nConstants.INACTIVE_DISPLAY_FOUND));
+            // The display is a real designation, but no longer a current one. Whether that is an
+            // error or merely a warning is the same question as for a display that is not found at
+            // all, so it follows lenient-display-validation in the same way - see dispWarning() /
+            // dispWarningStatus(). Hardcoding WARNING here ignored the caller's choice, and the
+            // plain success result below meant the code validated even in strict mode.
+            return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs),
+                makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg, OpIssueCode.DisplayComment, null, I18nConstants.INACTIVE_DISPLAY_FOUND)).setStatus(inactive, status);
           }
           return new ValidationResult(code.getSystem(),cs.getVersion(),  cc, getPreferredDisplay(cc, cs)).setStatus(inactive, status);
         }
