@@ -223,7 +223,7 @@ public class FHIRPathEngine {
   }
 
   private void initFlags() {
-    if (!VersionUtilities.isR5Plus(worker.getVersion())) {
+    if (!VersionUtilities.isR5Plus(worker.getFHIRVersion())) {
       doNotEnforceAsCaseSensitive = true;
       doNotEnforceAsSingletonRule = true;
     }
@@ -4884,7 +4884,7 @@ private TimeType timeAdd(TimeType d, Quantity q, boolean negate, ExpressionNode 
       return makeBoolean(false);                
     }
     boolean ok = checkHtmlNames(x, true);
-    if (ok && VersionUtilities.isR6Plus(this.worker.getVersion())) {
+    if (ok && VersionUtilities.isR6Plus(this.worker.getFHIRVersion())) {
       ok = checkForContent(x);
     }
     return makeBoolean(ok);    

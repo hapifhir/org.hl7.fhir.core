@@ -34,7 +34,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import java.io.Serializable;
@@ -161,7 +160,7 @@ public abstract class Base implements Serializable, IBase, IElement {
    * elements are actually applicable
    */
   public String getFHIRVersion() {
-    return modelContext == null ? null : modelContext.getVersion();
+    return modelContext == null ? null : modelContext.getFHIRVersion();
   }
   //endregion
 

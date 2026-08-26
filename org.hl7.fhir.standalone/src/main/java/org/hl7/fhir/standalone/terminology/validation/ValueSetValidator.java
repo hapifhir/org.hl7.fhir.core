@@ -14,7 +14,6 @@ import org.hl7.fhir.services.terminology.*;
 import org.hl7.fhir.services.utilities.OperationOutcomeUtilities;
 import org.hl7.fhir.standalone.context.BaseWorkerContext;
 import org.hl7.fhir.standalone.context.ContextUtilities;
-import org.hl7.fhir.services.context.IWorkerContext;
 import org.hl7.fhir.services.elementmodel.LanguageUtils;
 import org.hl7.fhir.model.extensions.ExtensionDefinitions;
 import org.hl7.fhir.model.extensions.ExtensionUtilities;
@@ -35,8 +34,6 @@ import org.hl7.fhir.standalone.terminology.providers.URICodeSystem;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext;
 import org.hl7.fhir.standalone.terminology.utilities.TerminologyOperationContext.TerminologyServiceProtectionException;
 import org.hl7.fhir.standalone.terminology.utilities.ValueSetProcessBase;
-import org.hl7.fhir.standalone.terminology.validation.ConceptReferencePair;
-import org.hl7.fhir.standalone.terminology.validation.VSCheckerException;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader.LanguagePreference;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -696,7 +693,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
         String wv = determineVersion(path, system, null, workingVersion, code.getVersion(), issues, va);
         CodeSystem cs = resolveCodeSystem(system, wv, null, null);
         if (cs == null) {
-          if (!VersionUtilities.isR6Plus(context.getVersion()) && "urn:ietf:bcp:13".equals(system) && Utilities.existsInList(code.getCode(), "xml", "json", "ttl") && "http://hl7.org/fhir/ValueSet/mimetypes".equals(valueset.getUrl())) {
+          if (!VersionUtilities.isR6Plus(context.getFHIRVersion()) && "urn:ietf:bcp:13".equals(system) && Utilities.existsInList(code.getCode(), "xml", "json", "ttl") && "http://hl7.org/fhir/ValueSet/mimetypes".equals(valueset.getUrl())) {
             return new ValidationResult(system, null, new ConceptDefinitionComponent(null, code.getCode()), "application/fhir+"+code.getCode());
           } else {
             OpIssueCode oic = OpIssueCode.NotFound;
@@ -1591,7 +1588,7 @@ public class ValueSetValidator extends ValueSetProcessBase {
               sys.add(new SystemWithVersion(vsi.getSystem(), vsi.getVersion()));
             }
           }
-        } else if (!VersionUtilities.isR6Plus(context.getVersion()) && Utilities.existsInList(code, "xml", "json", "ttl") && "urn:ietf:bcp:13".equals(vsi.getSystem())) {
+        } else if (!VersionUtilities.isR6Plus(context.getFHIRVersion()) && Utilities.existsInList(code, "xml", "json", "ttl") && "urn:ietf:bcp:13".equals(vsi.getSystem())) {
           sys.add(new SystemWithVersion(vsi.getSystem(), vsi.getVersion()));
           return true;
         } else {
