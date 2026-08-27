@@ -265,7 +265,7 @@ public class NPMPackageGenerator {
       npm.add("dependencies", dep);
       for (String v : fhirVersion) { 
         String vp = packageForVersion(v);
-        if (vp != null && !dep.has(vp) && !dependsOnDeclaresPackage(ig, vp)) {
+        if (vp != null && !dep.has(vp) && !coreDependencyIsDeclared(ig, vp)) {
           dep.add(vp, v);
         }
       }
@@ -273,10 +273,10 @@ public class NPMPackageGenerator {
     List<ImplementationGuideDependsOnComponent> dependsOn = ig.getDependsOn();
     for (int i = 0; i < dependsOn.size(); i++) {
       ImplementationGuideDependsOnComponent d = dependsOn.get(i);
-        if (d.hasExtension(ExtensionDefinitions.EXT_IGDEP_NO_SAVE)) {
-          // ignore dependencies that are marked as "no save" - these are used for validation but not for package generation
-          continue;
-        }
+      if (d.hasExtension(ExtensionDefinitions.EXT_IGDEP_NO_SAVE)) {
+        // ignore dependencies that are marked as "no save" - these are used for validation but not for package generation
+        continue;
+      }
       if (!d.hasVersion()) {
         dependencyWarnings.add(missingVersionMessage(ig, i, d));
       }
@@ -511,10 +511,35 @@ public class NPMPackageGenerator {
     }
   }
 
+  /**
+   * True when a persisted -- i.e. non-suppressed -- versioned declaration already covers
+   * {@code packageId}, so a versionless entry must not overwrite it with a JSON null.
+   */
   private boolean dependsOnDeclaresPackage(ImplementationGuide ig, String packageId) {
     for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
       if (!d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)
+          && !d.hasExtension(ExtensionDefinitions.EXT_IGDEP_NO_SAVE)
           && d.hasVersion()
+          && packageId.equals(d.getPackageId())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * True when the author has already spoken about this core package -- either declaring it with a
+   * version, or suppressing it with {@code EXT_IGDEP_NO_SAVE}. Either way, do not auto-add it.
+   * <p>
+   * Deliberately <em>not</em> the same question as {@link #dependsOnDeclaresPackage}: that one
+   * asks whether a persisted entry would collide with a versionless JSON null write, and a
+   * suppressed entry is never persisted, so it must not answer yes there. Aliased entries are
+   * excluded from both, unchanged.
+   */
+  private boolean coreDependencyIsDeclared(ImplementationGuide ig, String packageId) {
+    for (ImplementationGuideDependsOnComponent d : ig.getDependsOn()) {
+      if (!d.getPackageIdElement().hasUserData(UserDataNames.IG_DEP_ALIASED)
+          && (d.hasVersion() || d.hasExtension(ExtensionDefinitions.EXT_IGDEP_NO_SAVE))
           && packageId.equals(d.getPackageId())) {
         return true;
       }

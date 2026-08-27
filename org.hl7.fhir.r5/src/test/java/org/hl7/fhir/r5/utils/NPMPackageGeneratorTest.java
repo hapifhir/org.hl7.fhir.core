@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
+import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnComponent;
 import org.hl7.fhir.utilities.UserDataNames;
@@ -104,6 +106,12 @@ class NPMPackageGeneratorTest {
     ig.addDependsOn().setUri("http://example.org/fhir/b").setPackageId("example.b").setVersion("1.0.0");
     ig.addDependsOn().setUri("http://example.org/fhir/c").setPackageId("example.c");
     return ig;
+  }
+
+  /** Marks a dependsOn entry with upstream's EXT_IGDEP_NO_SAVE suppression extension. */
+  private ImplementationGuideDependsOnComponent noSave(ImplementationGuideDependsOnComponent d) {
+    d.addExtension(ExtensionDefinitions.EXT_IGDEP_NO_SAVE, new BooleanType(true));
+    return d;
   }
 
   @Test
@@ -480,5 +488,100 @@ class NPMPackageGeneratorTest {
     // collide with the auto-added core key, so it must not suppress the auto-add.
     Assertions.assertTrue(dep.has("hl7.fhir.r5.core"), "auto-added core dep must be present");
     Assertions.assertTrue(dep.has("r5alias@npm:hl7.fhir.r5.core"), "aliased dependsOn must be present");
+  }
+
+  @Test
+  void noSaveDependsOnIsNotWrittenToPackageJson() throws IOException {
+    // Regression guard for upstream 1629400511: this must fail if the EXT_IGDEP_NO_SAVE
+    // guard is ever dropped again by a rebase.
+    ImplementationGuide ig = minimalIg();
+    ig.addDependsOn().setUri("http://example.org/fhir/b").setPackageId("example.b").setVersion("2.0.0");
+    noSave(ig.addDependsOn().setUri("http://example.org/fhir/a").setPackageId("example.a").setVersion("1.0.0"));
+    JsonObject dep = dependencies(ig, PackageType.CONFORMANCE, "5.0.0");
+    Assertions.assertFalse(dep.has("example.a"), "a no-save dependsOn must not be packaged");
+    Assertions.assertEquals("2.0.0", dep.asString("example.b"), "an ordinary sibling is unaffected");
+    Assertions.assertEquals("5.0.0", dep.asString("hl7.fhir.r5.core"));
+  }
+
+  @Test
+  void versionlessNoSaveCoreDependsOnSuppressesAutoAddedCoreDep() throws IOException {
+    // The author suppressed the core dependency explicitly, so the auto-add path must not
+    // reinstate it under a different code path. This is what coreDependencyIsDeclared exists for.
+    ImplementationGuide ig = minimalIg();
+    noSave(ig.addDependsOn().setUri("http://hl7.org/fhir/R5").setPackageId("hl7.fhir.r5.core"));
+    JsonObject dep = dependencies(ig, PackageType.CONFORMANCE, "5.0.0");
+    Assertions.assertFalse(dep.has("hl7.fhir.r5.core"),
+        "a no-save core dependsOn must suppress the auto-added core dep");
+    Assertions.assertEquals(0, dep.getProperties().size(), "nothing else may be emitted");
+  }
+
+  @Test
+  void noSaveDoesNotSuppressAnOrdinaryVersionlessDuplicate() throws IOException {
+    // Suppression is narrow: it hides the marked entry, not every entry naming that package.
+    // This fails if the two predicates are collapsed back into one NO_SAVE-aware helper, and
+    // it also fails on the pre-split code, where the no-save entry's version made
+    // dependsOnDeclaresPackage claim the key.
+    ImplementationGuide ig = minimalIg();
+    noSave(ig.addDependsOn().setUri("http://example.org/fhir/a").setPackageId("example.a").setVersion("1.0.0"));
+    ig.addDependsOn().setUri("http://example.org/fhir/a").setPackageId("example.a");
+    NPMPackageGenerator gen = generatorFor(ig, PackageType.CONFORMANCE, "5.0.0");
+    JsonObject dep = gen.getPackageJ().getJsonObject("dependencies");
+    Assertions.assertTrue(dep.hasNull("example.a"),
+        "the ordinary versionless entry must still emit its JSON null");
+    Assertions.assertEquals(1, gen.getDependencyWarnings().size(),
+        "only the ordinary versionless entry is warned about");
+  }
+
+  @Test
+  void noSaveDependsOnProducesNoMissingVersionWarning() throws IOException {
+    // Pins the resolution that placed the no-save continue *before* the version warning:
+    // dependencyWarnings is a packaging-time concern, and a suppressed dependency is not packaged.
+    ImplementationGuide ig = minimalIg();
+    noSave(ig.addDependsOn().setUri("http://example.org/fhir/a").setPackageId("example.a"));
+    NPMPackageGenerator gen = generatorFor(ig, PackageType.CONFORMANCE, "5.0.0");
+    Assertions.assertEquals(0, gen.getDependencyWarnings().size(),
+        "a suppressed dependency is exempt from the missing-version warning");
+    JsonObject dep = gen.getPackageJ().getJsonObject("dependencies");
+    Assertions.assertFalse(dep.has("example.a"));
+  }
+
+  @Test
+  void xverShapedIgEmitsR5CoreDependency() throws IOException {
+    // The shape of hl7.fhir.uv.xver (C:\specs\fhir-xver): single fhirVersion 5.0.0, no
+    // dependsOn. This is the headline defect -- master emitted no core dependency at all.
+    ImplementationGuide ig = new ImplementationGuide();
+    ig.setPackageId("hl7.fhir.uv.xver");
+    ig.setVersion("0.1.1");
+    JsonObject dep = dependencies(ig, PackageType.CONFORMANCE, "5.0.0");
+    Assertions.assertEquals("5.0.0", dep.asString("hl7.fhir.r5.core"));
+    Assertions.assertEquals(1, dep.getProperties().size());
+  }
+
+  @Test
+  void backportShapedIgEmitsBothR4AndR4bCoreDependencies() throws IOException {
+    // The shape of hl7.fhir.uv.subscriptions-backport (C:\specs\fhir-subscription-backport-ig):
+    // two fhirVersions in *different* families plus four versioned dependsOn entries. Exercises
+    // the multi-version loop and the author-wins traversal together.
+    ImplementationGuide ig = new ImplementationGuide();
+    ig.setPackageId("hl7.fhir.uv.subscriptions-backport");
+    ig.setVersion("2.0.0-draft");
+    ig.addDependsOn().setUri("http://hl7.org/fhir/uv/extensions")
+        .setPackageId("hl7.fhir.uv.extensions").setVersion("5.3.0");
+    ig.addDependsOn().setUri("http://hl7.org/fhir/uv/tools")
+        .setPackageId("hl7.fhir.uv.tools").setVersion("1.1.2");
+    ig.addDependsOn().setUri("http://hl7.org/fhir/uv/xver-r5.r4")
+        .setPackageId("hl7.fhir.uv.xver-r5.r4").setVersion("0.1.0");
+    ig.addDependsOn().setUri("http://hl7.org/fhir/uv/xver-r4b.r4")
+        .setPackageId("hl7.fhir.uv.xver-r4b.r4").setVersion("0.1.0");
+    NPMPackageGenerator gen = generatorFor(ig, PackageType.CONFORMANCE, List.of("4.0.1", "4.3.0"));
+    JsonObject dep = gen.getPackageJ().getJsonObject("dependencies");
+    Assertions.assertEquals("4.0.1", dep.asString("hl7.fhir.r4.core"));
+    Assertions.assertEquals("4.3.0", dep.asString("hl7.fhir.r4b.core"));
+    Assertions.assertEquals("5.3.0", dep.asString("hl7.fhir.uv.extensions"));
+    Assertions.assertEquals("1.1.2", dep.asString("hl7.fhir.uv.tools"));
+    Assertions.assertEquals("0.1.0", dep.asString("hl7.fhir.uv.xver-r5.r4"));
+    Assertions.assertEquals("0.1.0", dep.asString("hl7.fhir.uv.xver-r4b.r4"));
+    Assertions.assertEquals(6, dep.getProperties().size());
+    Assertions.assertEquals(0, gen.getDependencyWarnings().size());
   }
 }
