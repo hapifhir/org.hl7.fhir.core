@@ -73,7 +73,7 @@ import org.hl7.fhir.r5.terminologies.utilities.TerminologyOperationContext.Termi
 import org.hl7.fhir.r5.utils.CodingUtilities;
 import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier.ValidationContextResourceProxy;
 import org.hl7.fhir.utilities.*;
@@ -82,13 +82,12 @@ import org.hl7.fhir.utilities.i18n.subtag.LanguageSubtagRegistry;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.i18n.LanguageTag;
 import org.hl7.fhir.utilities.regex.RegexTimeout;
-import org.hl7.fhir.utilities.regex.RegexUtils;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import javax.annotation.Nonnull;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class ValueSetValidator extends ValueSetProcessBase {
 
@@ -1251,7 +1250,13 @@ public class ValueSetValidator extends ValueSetProcessBase {
             }
             Collections.sort(ok);
             String msg = context.formatMessagePlural(ok.size(), I18nConstants.INACTIVE_DISPLAY_FOUND, code.getDisplay(), cc.getCode(), CommaSeparatedStringBuilder.join(", ", ok), dstatus);
-            info.addIssue(makeIssue(IssueSeverity.WARNING, IssueType.INVALID, path+".display", msg, OpIssueCode.DisplayComment, null, I18nConstants.INACTIVE_DISPLAY_FOUND));
+            // The display is a real designation, but no longer a current one. Whether that is an
+            // error or merely a warning is the same question as for a display that is not found at
+            // all, so it follows lenient-display-validation in the same way - see dispWarning() /
+            // dispWarningStatus(). Hardcoding WARNING here ignored the caller's choice, and the
+            // plain success result below meant the code validated even in strict mode.
+            return new ValidationResult(dispWarningStatus(), msg, code.getSystem(), cs.getVersion(), cc, getPreferredDisplay(cc, cs),
+                makeIssue(dispWarning(), IssueType.INVALID, path+".display", msg, OpIssueCode.DisplayComment, null, I18nConstants.INACTIVE_DISPLAY_FOUND)).setStatus(inactive, status);
           }
           return new ValidationResult(code.getSystem(),cs.getVersion(),  cc, getPreferredDisplay(cc, cs)).setStatus(inactive, status);
         }

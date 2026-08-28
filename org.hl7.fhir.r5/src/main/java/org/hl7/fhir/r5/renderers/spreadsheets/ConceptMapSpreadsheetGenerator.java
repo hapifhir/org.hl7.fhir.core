@@ -1,22 +1,20 @@
 package org.hl7.fhir.r5.renderers.spreadsheets;
 
-import java.io.FileOutputStream;
-
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class ConceptMapSpreadsheetGenerator extends CanonicalSpreadsheetGenerator {
 
   
-  public ConceptMapSpreadsheetGenerator(IWorkerContext context) {
-    super(context);
+  public ConceptMapSpreadsheetGenerator(IWorkerContext context, RendererFactory renderer) {
+    super(context, renderer);
   }
 
   public boolean canGenerate(ConceptMap cm) {

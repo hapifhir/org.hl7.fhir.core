@@ -35,7 +35,7 @@ correct implementation of the core FHIR specification that it implements.
 The following is an overview of modules used in this project:
 
 * **org.fhir.fhir.utilities**: Shared code used by all the other projects - including the internationalization code
-* **org.fhir.fhir.r5**: Object models and utilities for R5 candidate (will change regularly as new R5 candidates are released)
+* **org.fhir.fhir.r5**: Object models and utilities for R5
 * **org.fhir.fhir.r4b**: Object models and utilities for R4B
 * **org.fhir.fhir.r4**: Object models and utilities for R4
 * **org.fhir.fhir.dstu3**: Object models and utilities for STU3
@@ -44,6 +44,22 @@ The following is an overview of modules used in this project:
 * **org.fhir.fhir.convertors**: Code to convert between versions, and other version independence code - uses all the above projects
 * **org.fhir.fhir.validation**: The FHIR Java validator (note: based on R5 internally, but validates all the above versions)
 * **org.fhir.fhir.validation.cli**: Holder project for releasing the FHIR validator as a single fat jar
+
+There are two additional modules that contain experimental code for support of FHIR R6 which are not yet
+suitable for production use:
+
+* **org.fhir.fhir.model**: Object models for the R6 candidate (will change regularly as new R6 candidates are released, and we start working with the R6 code)
+* **org.fhir.fhir.services**: Utilities for working with the R6 code
+
+Note: these packages will be it, going forward - future versions post R6 will be folded into the code in these modules.
+
+
+## Additional Resources
+
+The R5 object model can be extended with *additional resources* - resources defined by an incubator IG
+rather than the base specification (for example the resources in the FHIR Testing IG). See
+[Registering Additional Resources in R5](additional-resources-r5.md) for how to generate code for them,
+register them with the parsers, and load their definitions into the worker context.
 
 ## Internationalization
 

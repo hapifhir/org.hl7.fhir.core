@@ -40,8 +40,8 @@ public class ResourceRoundTripTests {
   void test() {
     assertDoesNotThrow(() -> {
       DomainResource res = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"));
-      RenderingContext rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
-      RendererFactory.factory(res, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), res));
+      RenderingContext rc = new RenderingContext(TestingUtilities.getSharedWorkerContext(), new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+      new RendererFactory().factory(res, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), res));
       IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"), ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "unicode.xml")));
       new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(ManagedFileAccess.outStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);
     });

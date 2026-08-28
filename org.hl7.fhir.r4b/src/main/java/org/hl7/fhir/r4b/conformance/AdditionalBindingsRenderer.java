@@ -17,7 +17,7 @@ import org.hl7.fhir.r4b.renderers.IMarkdownProcessor;
 import org.hl7.fhir.r4b.renderers.utils.RenderingContext;
 import org.hl7.fhir.r4b.utils.PublicationHacker;
 import org.hl7.fhir.r4b.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
 import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Cell;
@@ -26,7 +26,7 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class AdditionalBindingsRenderer {
   public class AdditionalBindingDetail {
     private String purpose;

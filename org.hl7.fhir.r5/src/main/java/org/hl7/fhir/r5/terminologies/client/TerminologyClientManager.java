@@ -21,7 +21,7 @@ import org.hl7.fhir.r5.terminologies.client.TerminologyClientContext.Terminology
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedCodeSystem;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyCache.SourcedValueSet;
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.filesystem.ManagedFileAccess;
 import org.hl7.fhir.utilities.http.ManagedWebAccess;
@@ -29,7 +29,7 @@ import org.hl7.fhir.utilities.json.model.JsonObject;
 import org.hl7.fhir.utilities.json.parser.JsonParser;
 import org.hl7.fhir.utilities.settings.FhirSettings;
 
-@MarkedToMoveToAdjunctPackage
+
 public class TerminologyClientManager {
 
   private ImplicitValueSets implicitValueSets;
@@ -79,11 +79,6 @@ public class TerminologyClientManager {
     return factory;
   }
 
-  public interface ITerminologyClientFactory {
-    ITerminologyClient makeClient(String id, String url, String userAgent, ToolingClientLogger logger) throws URISyntaxException;
-    String getVersion();
-  }
-  
   public class InternalLogEvent {
     private boolean error;
     private String message;
@@ -159,6 +154,12 @@ public class TerminologyClientManager {
 
   private int ecosystemfailCount;
 
+  // Set once by shutdown(). A manager must release its hold on each server context
+  // exactly once, or the holder count those contexts keep goes wrong and a shared
+  // cache is closed while another manager is still using it - so repeat shutdowns
+  // (unload() is a best-effort path that may run more than once) do nothing here.
+  private boolean isShutdown;
+
   public TerminologyClientManager(ITerminologyClientFactory factory, ILoggingService logger) {
     super();
     this.factory = factory;
@@ -166,7 +167,17 @@ public class TerminologyClientManager {
     implicitValueSets = new ImplicitValueSets(null);
   }
 
+  /**
+   * Adopt another manager's servers. Note that this shares the server contexts by
+   * reference - it does not build new ones - so afterwards both managers are using
+   * the same connections and the same server-side terminology caches. Each context
+   * is retained here so it knows it now has two holders, and only releases its
+   * cache when the last of them shuts down (see TerminologyClientContext.shutdown).
+   */
   public void copy(TerminologyClientManager other) {
+    for (TerminologyClientContext server : other.serverList) {
+      server.retain();
+    }
     serverList.addAll(other.serverList);
     serverMap.putAll(other.serverMap);
     resMap.putAll(other.resMap);
@@ -258,7 +269,21 @@ public class TerminologyClientManager {
       }
     }
 
-    choices.forEach(choice -> checkActuallySupports(choice));
+    // check the candidates actually support the code system - but filter a copy: the
+    // ServerOptionList objects are cached in resMap (and persisted to system-map.json),
+    // and must keep recording what the registry actually said, not the outcome of a
+    // possibly-transient support check
+    List<ServerOptionList> filteredChoices = new ArrayList<>();
+    for (ServerOptionList choice : choices) {
+      ServerOptionList filtered = checkActuallySupports(choice);
+      if (filtered.candidates.size() < choice.candidates.size()) {
+        List<String> removed = new ArrayList<>(choice.candidates);
+        removed.removeAll(filtered.candidates);
+        log(vs, null, systems, choices, "Candidate server(s) "+CommaSeparatedStringBuilder.join("|", removed)+" dropped for "+choice.url+": no usable copy of the code system found there");
+      }
+      filteredChoices.add(filtered);
+    }
+    choices = filteredChoices;
 
     // now we look for a server that's a candidate for all of them
     for (ServerOptionList ol : choices) {
@@ -326,13 +351,16 @@ public class TerminologyClientManager {
     }
   }
 
-  private void checkActuallySupports(ServerOptionList choice) {
+  private ServerOptionList checkActuallySupports(ServerOptionList choice) {
     for (String s : choice.candidates) {
       if (isTxFhirOrg(s)) {
-        return;
+        return choice;
       }
     }
-    choice.candidates.removeIf(server -> !isSupportedServer(server, choice.url));
+    ServerOptionList res = new ServerOptionList(choice.url, choice.authoritative, choice.candidates);
+    res.language = choice.language;
+    res.candidates.removeIf(server -> !isSupportedServer(server, choice.url));
+    return res;
   }
 
   private boolean isSupportedServer(String server, String url) {
@@ -539,18 +567,16 @@ public class TerminologyClientManager {
         canonical.contains("|")
           ? "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|")))+"&version="+Utilities.escapeUrl(canonical.substring(canonical.indexOf("|")+1))
           : "?url=" + Utilities.escapeUrl(canonical));
-      if (bnd.getEntry().size() == 1 && bnd.getEntry().get(0).hasResource() && bnd.getEntry().get(0).getResource() instanceof CodeSystem) {
-        CodeSystem cs = (CodeSystem) bnd.getEntry().get(0).getResource();
-        boolean ok = cs.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cs.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT;
+      if (bnd.getEntry().size() > 0) {
+        boolean ok = anyUsableCodeSystem(bnd);
         serverSupportMap.put(key, ok);
         return ok;
       }
       if (canonical.contains("|")) {
         bnd = client.getClient().search("CodeSystem",
           "?url=" + Utilities.escapeUrl(canonical.substring(0, canonical.indexOf("|"))));
-        if (bnd.getEntry().size() == 1 && bnd.getEntry().get(0).hasResource() && bnd.getEntry().get(0).getResource() instanceof CodeSystem) {
-          CodeSystem cs = (CodeSystem) bnd.getEntry().get(0).getResource();
-          boolean ok = cs.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cs.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT;
+        if (bnd.getEntry().size() > 0) {
+          boolean ok = anyUsableCodeSystem(bnd);
           serverSupportMap.put(key, ok);
           return ok;
         }
@@ -559,6 +585,24 @@ public class TerminologyClientManager {
       // nothing
     }
     serverSupportMap.put(key, false);
+    return false;
+  }
+
+  /**
+   * A server supports a code system if any version it hosts has usable content.
+   * Servers commonly host multiple versions of the same code system (e.g. ANZSCO
+   * on the AU servers) - this used to require exactly one search match, which
+   * wrongly disqualified any server holding more than one version.
+   */
+  private boolean anyUsableCodeSystem(Bundle bnd) {
+    for (Bundle.BundleEntryComponent be : bnd.getEntry()) {
+      if (be.hasResource() && be.getResource() instanceof CodeSystem) {
+        CodeSystem cs = (CodeSystem) be.getResource();
+        if (cs.getContent() == Enumerations.CodeSystemContentMode.COMPLETE || cs.getContent() == Enumerations.CodeSystemContentMode.FRAGMENT) {
+          return true;
+        }
+      }
+    }
     return false;
   }
 
@@ -576,11 +620,18 @@ public class TerminologyClientManager {
   }
 
   /**
-   * Shut down every server context, releasing owned server caches (best-effort),
-   * e.g. on worker context unload. Idempotent; the contexts must not be used for
-   * further requests afterwards.
+   * Release this manager's hold on every server context, e.g. on worker context
+   * unload. A context shared with another manager (see copy()) keeps working for
+   * that manager; a context nobody else holds releases its owned server cache
+   * (best-effort). Idempotent, and it must be: releasing twice would make a shared
+   * context think it had lost a holder it never had. Once this manager has shut
+   * down, its contexts must not be used for further requests.
    */
   public void shutdown() {
+    if (isShutdown) {
+      return;
+    }
+    isShutdown = true;
     for (TerminologyClientContext server : serverList) {
       server.shutdown();
     }
@@ -615,6 +666,12 @@ public class TerminologyClientManager {
   public TerminologyClientContext setMasterClient(ITerminologyClient client, boolean useEcosystem) throws IOException {
     this.useEcosystem = useEcosystem;
     TerminologyClientContext terminologyClientContext = new TerminologyClientContext(client, cache, true, logger);
+    // Note: the cleared contexts are deliberately NOT released here. Releasing one
+    // that turned out to be the last holder would end its cache - and if it shared
+    // this client, the context just constructed above has already adopted that very
+    // cache-id from the client's header, so we would be closing the cache we are
+    // about to use. Leaving the hold means an abandoned cache lives until the
+    // server's idle timeout instead, which is the harmless direction to be wrong in.
     serverList.clear();
     serverList.add(terminologyClientContext);
     serverMap.put(client.getAddress(), terminologyClientContext);
@@ -659,6 +716,9 @@ public class TerminologyClientManager {
                 resMap.put(pair.asString("system"), new ServerOptionList(url, pair.asString("server")));
               } else {
                 ServerOptionList sol = new ServerOptionList(url, pair.getStrings("authoritative"), pair.getStrings("candidates"));
+                if (sol.authoritative.isEmpty() && sol.candidates.isEmpty()) {
+                  continue; // don't reload a persisted empty resolution (written by older versions) - re-ask the registry
+                }
                 sol.language = pair.asString("language");
                 resMap.put(pair.asString("system"), sol);
               }
@@ -675,10 +735,13 @@ public class TerminologyClientManager {
     if (cacheFile != null && cache.getFolder() != null) {
       JsonObject json = new JsonObject();
       for (String s : Utilities.sorted(resMap.keySet())) {
+        ServerOptionList sol = resMap.get(s);
+        if (sol.authoritative.isEmpty() && sol.candidates.isEmpty()) {
+          continue; // an empty resolution isn't worth remembering across runs - it may have been transient (registry outage etc), so re-ask next time
+        }
         JsonObject si = new JsonObject();
         json.forceArray("systems").add(si);
         si.add("system", s);
-        ServerOptionList sol = resMap.get(s);
         si.add("url", sol.url);
         if (sol.language != null) {
           si.add("language", sol.language);

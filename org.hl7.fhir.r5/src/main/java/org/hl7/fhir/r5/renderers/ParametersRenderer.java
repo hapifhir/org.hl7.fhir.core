@@ -11,10 +11,11 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ParametersRenderer extends ResourceRenderer {
 
   public ParametersRenderer(RenderingContext context) { 
@@ -44,7 +45,7 @@ public class ParametersRenderer extends ResourceRenderer {
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     renderResourceTechDetails(r, x);
-    x.h2().tx(context.formatPhrase(RenderingContext.GENERAL_PARS));
+    x.h2().tx(context.formatPhrase(RenderingI18nContext.GENERAL_PARS));
     XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
     params(status, tbl, r.children("parameter"), 0);
   }
@@ -84,7 +85,7 @@ public class ParametersRenderer extends ResourceRenderer {
         if (x != null) {
           td.addChildren(x);
         } else {
-          ResourceRenderer rr = RendererFactory.factory(rw, context);
+          ResourceRenderer rr = context.getRendererFactory().factory(rw, context);
           rr.buildNarrative(status, td, rw);
         }
       } else if (p.has("part")) {

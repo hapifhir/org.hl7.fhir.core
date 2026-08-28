@@ -106,7 +106,7 @@ import org.hl7.fhir.r5.terminologies.validation.VSCheckerException;
 import org.hl7.fhir.r5.terminologies.utilities.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.utilities.ValueSetProcessBase;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.*;
 import org.hl7.fhir.utilities.i18n.AcceptLanguageHeader;
@@ -116,7 +116,7 @@ import org.hl7.fhir.utilities.i18n.I18nConstants;
 
 import javax.annotation.Nonnull;
 
-@MarkedToMoveToAdjunctPackage
+
 public class ValueSetExpander extends ValueSetProcessBase {
 
   private static final int REGEX_TIMEOUT_LIMIT = 5; // regex filters only get given 5 seconds. Is that enough? to be decided
@@ -200,7 +200,12 @@ public class ValueSetExpander extends ValueSetProcessBase {
     }
     if (inactive) {
       n.setInactive(true);
-      ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status", vstatus);
+      // A server that knows a concept is inactive says why. If the code system is more
+      // specific (retired, deprecated, ...) that status is used; otherwise the concept is
+      // simply inactive, and saying so is not optional - previously a concept marked only
+      // with the 'inactive' property got contains.inactive but no status property at all.
+      ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status",
+          Utilities.noString(vstatus) ? "inactive" : vstatus);
     } else if (!Utilities.noString(vstatus) && !Utilities.existsInList(vstatus.toLowerCase(), "active")) {
       ValueSetUtilities.addCodeProperty(focus, n, "http://hl7.org/fhir/concept-properties#status", "status", vstatus);
     } else if (deprecated) {
@@ -300,7 +305,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
                   // ??
                 }
               }
-              ValueSetUtilities.addProperty(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
+              ValueSetUtilities.addPropertyValue(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
             }
           }
         }
@@ -320,7 +325,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
                   // TODO: try looking it up from the code system
                 }
               }
-              ValueSetUtilities.addProperty(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
+              ValueSetUtilities.addPropertyValue(focus, n, url, cp.getCode(), cp.getValue()).copyExtensions(cp, "http://hl7.org/fhir/StructureDefinition/alternate-code-use", "http://hl7.org/fhir/StructureDefinition/alternate-code-status");
             }
           }
         }        
@@ -861,7 +866,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     try {
       if (source.hasCompose()) {
-        //        ExtensionsUtils.stripExtensions(focus.getCompose()); - disabled 23/05/2023 GDG - why was this ever thought to be a good idea?
+        //        ExtensionUtilities.stripExtensions(focus.getCompose()); - disabled 23/05/2023 GDG - why was this ever thought to be a good idea?
         handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(), focus.getExpansion().getExtension(), source);
       }
     } catch (EFinished e) {
@@ -1028,7 +1033,7 @@ public class ValueSetExpander extends ValueSetProcessBase {
 
     try {
       if (source.hasCompose()) {
-//        ExtensionsUtils.stripExtensions(focus.getCompose()); - disabled 23/05/2023 GDG - why was this ever thought to be a good idea?
+//        ExtensionUtilities.stripExtensions(focus.getCompose()); - disabled 23/05/2023 GDG - why was this ever thought to be a good idea?
         handleCompose(source.getCompose(), focus.getExpansion(), expParams, source.getUrl(), focus.getExpansion().getExtension(), source);
       }
     } catch (EFinished e) {

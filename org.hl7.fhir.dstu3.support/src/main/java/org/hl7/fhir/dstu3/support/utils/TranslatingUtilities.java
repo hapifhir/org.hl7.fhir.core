@@ -34,9 +34,9 @@ package org.hl7.fhir.dstu3.support.utils;
 
 import org.hl7.fhir.dstu3.model.Enumeration;
 import org.hl7.fhir.dstu3.model.PrimitiveType;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
 
-@MarkedToMoveToAdjunctPackage
+
+
 public class TranslatingUtilities extends org.hl7.fhir.utilities.TranslatingUtilities {
 
   public interface TranslationServices extends org.hl7.fhir.utilities.TranslationServices {

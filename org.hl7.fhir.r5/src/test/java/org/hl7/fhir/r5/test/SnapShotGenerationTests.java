@@ -635,10 +635,10 @@ public class SnapShotGenerationTests {
       throw e;
     }
     if (output.getDifferential().hasElement()) {
-      RenderingContext rc = new RenderingContext(testContext, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
+      RenderingContext rc = new RenderingContext(testContext, new RendererFactory(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER, GenerationRules.VALID_RESOURCE);
       rc.setDestDir(Utilities.path("[tmp]", "snapshot"));
       rc.setProfileUtilities(new ProfileUtilities(testContext, null, new TestPKP()));
-      RendererFactory.factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
+      new RendererFactory().factory(output, rc).renderResource(ResourceWrapper.forResource(rc.getContextUtilities(), output));
     }
     // we just generated it - but we don't care what it is here, just that there's no exceptions (though we need it for the rules)
     Narrative txt = output.getText();

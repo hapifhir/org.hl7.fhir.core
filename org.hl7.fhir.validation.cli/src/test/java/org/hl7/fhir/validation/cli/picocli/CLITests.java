@@ -299,6 +299,25 @@ class CLITests {
     }
 
     @Test
+    @DisplayName("IgCodeGen command is selected with ig-codegen syntax")
+    void igCodeGenCommandSelection() {
+
+      String[] args = {"ig-codegen", "-package-name", "test.pkg", "-output", "/tmp/output", "-config", "/tmp/config", "hl7.fhir.uv.testing#current"};
+
+      try (MockedConstruction<IgCodeGenCommand> construction = mockConstruction(IgCodeGenCommand.class,
+        (mock, context) -> {
+          when(mock.call()).thenReturn(0);
+          doNothing().when(mock).setValidationService(any());
+        })) {
+
+        new CLI(validationService).parseArgsAndExecuteCommand(args);
+
+        assertThat(construction.constructed()).hasSizeGreaterThanOrEqualTo(1);
+        verify(construction.constructed().get(0), atLeastOnce()).call();
+      }
+    }
+
+    @Test
     @DisplayName("RePackage command is selected with re-package syntax")
     void rePackageCommandSelection() {
 
@@ -760,7 +779,7 @@ class CLITests {
 
       List<String> expectedCommands = List.of(
         "help", "compare", "compile", "convert", "to-version", "fhirpath",
-        "transform", "lang-transform", "lang-regen", "narrative", "codegen",
+        "transform", "lang-transform", "lang-regen", "narrative", "codegen", "ig-codegen",
         "preloadCache", "scan", "snapshot", "special", "spreadsheet", "tests",
         "txTests", "aiTests", "install", "factory", "server", "client", "re-package"
       );

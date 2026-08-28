@@ -37,13 +37,14 @@ import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities.CodeSystemNavigator;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.LoincLinker;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class CodeSystemRenderer extends TerminologyRenderer {
 
 
@@ -213,17 +214,17 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       boolean designations = CodeSystemUtilities.hasDesignations(cs); 
       String features;
       if (properties && designations) {
-        features = (context.formatPhrase(RenderingContext.CODE_SYS_DISP_PROP));
+        features = (context.formatPhrase(RenderingI18nContext.CODE_SYS_DISP_PROP));
       } else if (properties) {
-        features = (context.formatPhrase(RenderingContext.CODE_SYS_PROP));
+        features = (context.formatPhrase(RenderingI18nContext.CODE_SYS_PROP));
       } else if (designations) {
-        features = (context.formatPhrase(RenderingContext.CODE_SYS_DISP));
+        features = (context.formatPhrase(RenderingI18nContext.CODE_SYS_DISP));
       } else {
-        features = (context.formatPhrase(RenderingContext.CODE_SYS_FEAT)); // ?
+        features = (context.formatPhrase(RenderingI18nContext.CODE_SYS_FEAT)); // ?
       }
       return formatPhrase(RenderingContext.CODESYSTEM_CONTENT_SUPPLEMENT, features);
     default:
-      throw new FHIRException(context.formatPhrase(RenderingContext.CODE_SYS_UNKN_MODE));
+      throw new FHIRException(context.formatPhrase(RenderingI18nContext.CODE_SYS_UNKN_MODE));
     }
   }
   
@@ -298,10 +299,10 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     if (langs.size() >= 2) {
       Collections.sort(langs);
-      x.para().b().tx(context.formatPhrase(RenderingContext.GENERAL_ADD_LANG));
+      x.para().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_ADD_LANG));
       t = x.table("codes", false).markGenerated(!context.forValidResource());
       XhtmlNode tr = t.tr();
-      tr.td().b().tx(context.formatPhrase(RenderingContext.GENERAL_CODE));
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.GENERAL_CODE));
       for (String lang : langs)
         tr.td().b().addText(describeLang(lang));
       for (ConceptDefinitionComponent c : cs.getConcept()) {
@@ -313,11 +314,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   private void makeHierarchyParam(XhtmlNode x, CodeSystem cs, Enumeration<CodeSystemHierarchyMeaning> hm) {
     if (hm.hasValue()) {
       String s = hm.getValue().getDisplay();
-      renderStatus(hm, x).tx(" "+context.formatPhrase(RenderingContext.CODE_SYS_IN_A_HIERARCHY, s));
+      renderStatus(hm, x).tx(" "+context.formatPhrase(RenderingI18nContext.CODE_SYS_IN_A_HIERARCHY, s));
     } else if (VersionComparisonAnnotation.hasDeleted(cs, "hierarchyMeaning")) {
       makeHierarchyParam(x, null, (Enumeration<CodeSystemHierarchyMeaning>) VersionComparisonAnnotation.getDeleted(cs, "hierarchyMeaning").get(0));
     } else if (CodeSystemUtilities.hasHierarchy(cs)) {
-      x.tx(" "+ (context.formatPhrase(RenderingContext.CODE_SYS_UNDEF_HIER)));
+      x.tx(" "+ (context.formatPhrase(RenderingI18nContext.CODE_SYS_UNDEF_HIER)));
     } else {
       x.tx("");
     }
@@ -348,7 +349,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
 
   private void addCopyColumn(XhtmlNode tr) {
     if (context.isCopyButton()) {
-      tr.td().b().tx(context.formatPhrase(RenderingContext.CODE_SYS_COPY));
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.CODE_SYS_COPY));
     }
     
   }
@@ -524,7 +525,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         hasExtensions = true;
         if (ExtensionUtilities.hasExtension(c, ExtensionDefinitions.EXT_REPLACED_BY)) {
           Coding cc = (Coding) ExtensionUtilities.getExtension(c, ExtensionDefinitions.EXT_REPLACED_BY).getValue();
-          td.tx(" "+ context.formatPhrase(RenderingContext.CODE_SYS_REPLACED_BY) + " ");
+          td.tx(" "+ context.formatPhrase(RenderingI18nContext.CODE_SYS_REPLACED_BY) + " ");
           String url = getCodingReference(cc, system);
           if (url != null) {
             td.ah(context.prefixLocalHref(url)).addText(cc.getCode());
@@ -783,7 +784,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     XhtmlNode tr;
     if (cs.hasContent()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_CONTENT)+":");
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.GENERAL_CONTENT)+":");
       XhtmlNode td = tr.td();
       td.tx((cs.getContent().getDisplay())+": "+describeContent(cs.getContent(), cs));
       if (cs.getContent() == CodeSystemContentMode.SUPPLEMENT) {
@@ -799,29 +800,29 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     
     if (CodeSystemUtilities.hasOID(cs)) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_OID)+":");
-      tr.td().tx(context.formatPhrase(RenderingContext.CODE_SYS_FOR_OID, CodeSystemUtilities.getOID(cs)));
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.GENERAL_OID)+":");
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.CODE_SYS_FOR_OID, CodeSystemUtilities.getOID(cs)));
     }
 
     if (cs.hasValueSet()) {
       tr = tbl.tr();
-      tr.td().tx(context.formatPhrase(RenderingContext.GENERAL_VALUESET)+":");
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.GENERAL_VALUESET)+":");
       ValueSet vs = context.getContext().findTxResource(ValueSet.class, cs.getValueSet(), ExtensionUtilities.getVersionResolutionRules(cs.getValueSetElement()));
       if (vs == null) {
-        tr.td().tx(context.formatPhrase(RenderingContext.CODE_SYS_THE_VALUE_SET, cs.getValueSet())+")");
+        tr.td().tx(context.formatPhrase(RenderingI18nContext.CODE_SYS_THE_VALUE_SET, cs.getValueSet())+")");
       } else {
-        tr.td().ah(vs.getWebPath()).tx(context.formatPhrase(RenderingContext.CODE_SYS_THE_VALUE_SET, cs.getValueSet())+")");
+        tr.td().ah(vs.getWebPath()).tx(context.formatPhrase(RenderingI18nContext.CODE_SYS_THE_VALUE_SET, cs.getValueSet())+")");
       }
     }
   }
 
   private String describeContent(CodeSystemContentMode content, CodeSystem cs) {
     switch (content) {
-    case COMPLETE: return (context.formatPhrase(RenderingContext.CODE_SYS_COMPLETE));
-    case NOTPRESENT: return (context.formatPhrase(RenderingContext.CODE_SYS_NOTPRESENT));
-    case EXAMPLE: return (context.formatPhrase(RenderingContext.CODE_SYS_EXAMPLE));
-    case FRAGMENT: return (context.formatPhrase(RenderingContext.CODE_SYS_FRAGMENT));
-    case SUPPLEMENT: return (context.formatPhrase(RenderingContext.CODE_SYS_SUPPLEMENT));
+    case COMPLETE: return (context.formatPhrase(RenderingI18nContext.CODE_SYS_COMPLETE));
+    case NOTPRESENT: return (context.formatPhrase(RenderingI18nContext.CODE_SYS_NOTPRESENT));
+    case EXAMPLE: return (context.formatPhrase(RenderingI18nContext.CODE_SYS_EXAMPLE));
+    case FRAGMENT: return (context.formatPhrase(RenderingI18nContext.CODE_SYS_FRAGMENT));
+    case SUPPLEMENT: return (context.formatPhrase(RenderingI18nContext.CODE_SYS_SUPPLEMENT));
     default:
       return "?? illegal content status value "+(content == null ? "(null)" : content.toCode());
     }

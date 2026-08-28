@@ -48,11 +48,12 @@ import org.hl7.fhir.r5.model.ElementDefinition.SlicingRules;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 
-@MarkedToMoveToAdjunctPackage
+
 public class DefinitionNavigator {
 
   private static final int LEVEL_LIMIT = 20; // this is arbitrary, but we get 20 levels deep, we decide that we've run into a infinite loop somehow, and go bang

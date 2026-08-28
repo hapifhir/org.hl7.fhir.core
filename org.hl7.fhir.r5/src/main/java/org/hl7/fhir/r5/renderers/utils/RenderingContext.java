@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.PackageInformation;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 
@@ -68,7 +69,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * Timezones: by default, date/times are rendered in their source timezone 
  * 
  */
-@MarkedToMoveToAdjunctPackage
+
 public class RenderingContext extends RenderingI18nContext {
 
 
@@ -288,6 +289,8 @@ public class RenderingContext extends RenderingI18nContext {
   private IHostApplicationServices services;
   private ITypeParser parser;
 
+  @Getter private final RendererFactory rendererFactory;
+
   // i18n related fields
   private boolean secondaryLang; // true if this is not the primary language for the resource
   private MultiLanguagePolicy multiLanguagePolicy = MultiLanguagePolicy.NONE;
@@ -371,9 +374,10 @@ public class RenderingContext extends RenderingI18nContext {
    * @param specLink - path to FHIR specification
    * @param locale - i18n for rendering
    */
-  public RenderingContext(IWorkerContext workerContext, PackageInformation pi, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, Locale locale, ResourceRendererMode mode, GenerationRules rules) {
+  public RenderingContext(IWorkerContext workerContext, RendererFactory factory, PackageInformation pi, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, Locale locale, ResourceRendererMode mode, GenerationRules rules) {
     super();
     this.worker = workerContext;
+    this.rendererFactory = factory;
     this.pi = pi;
     this.markdown = markdown;
     this.setLocale(locale);
@@ -388,12 +392,12 @@ public class RenderingContext extends RenderingI18nContext {
     crossLinkKeyGen = new KeyIssuer("xn");
   }
 
-  public RenderingContext(IWorkerContext workerContext, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, Locale locale, ResourceRendererMode mode, GenerationRules rules) {
-    this(workerContext, null, markdown, terminologyServiceOptions, specLink, localPrefix, locale, mode, rules);
+  public RenderingContext(IWorkerContext workerContext, RendererFactory factory, MarkDownProcessor markdown, ValidationOptions terminologyServiceOptions, String specLink, String localPrefix, Locale locale, ResourceRendererMode mode, GenerationRules rules) {
+    this(workerContext, factory,null, markdown, terminologyServiceOptions, specLink, localPrefix, locale, mode, rules);
   }
   
   public RenderingContext copy(boolean copyAnchors) {
-    RenderingContext res = new RenderingContext(worker, pi, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC, false), localPrefix, getLocale(), mode, rules);
+    RenderingContext res = new RenderingContext(worker, rendererFactory, pi, markdown, terminologyServiceOptions, getLink(KnownLinkType.SPEC, false), localPrefix, getLocale(), mode, rules);
 
     res.resolver = resolver;
     res.templateProvider = templateProvider;

@@ -1,0 +1,838 @@
+package org.hl7.fhir.services.renderers;
+
+import org.hl7.fhir.services.fml.StructureMapUtilities;
+import org.hl7.fhir.exceptions.DefinitionException;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.model.extensions.ExtensionUtilities;
+import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.model.core.ConceptMap.ConceptMapGroupComponent;
+import org.hl7.fhir.model.core.ConceptMap.SourceElementComponent;
+import org.hl7.fhir.model.core.Enumeration;
+import org.hl7.fhir.model.core.Enumerations.ConceptMapRelationship;
+import org.hl7.fhir.model.fml.StructureMap;
+import org.hl7.fhir.model.fml.StructureMap.*;
+import org.hl7.fhir.services.renderers.utils.RenderingContext;
+import org.hl7.fhir.services.renderers.utils.ResourceWrapper;
+import org.hl7.fhir.model.utilities.EOperationOutcome;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
+
+
+public class StructureMapRenderer extends TerminologyRenderer {
+
+  public StructureMapRenderer(RenderingContext context) { 
+    super(context); 
+  } 
+ 
+  @Override
+  public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    if (r.isDirect()) {
+      renderResourceTechDetails(r, x);
+      genSummaryTable(status, x, (StructureMap) r.getBase());
+      renderMap(status, x.pre("fml"), (StructureMap) r.getBase());      
+    } else {
+      // the intention is to change this in the future
+      x.para().tx("StructureMapRenderer only renders native resources directly");
+    }
+  }
+  
+  
+  @Override
+  public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return canonicalTitle(r);
+  }
+
+  
+  
+  private static final String COLOR_COMMENT = "green";
+  private static final String COLOR_METADATA = "#cc00cc";
+  private static final String COLOR_CONST = "blue";
+  private static final String COLOR_VARIABLE = "maroon";
+  private static final String COLOR_SYNTAX = "navy";
+  private static final boolean MULTIPLE_TARGETS_ONELINE = true;
+  private static final String COLOR_SPECIAL = "#b36b00";
+
+  public void renderMap(RenderingStatus status, XhtmlNode x, StructureMap map) {
+    
+    x.tx("\r\n");
+    if (VersionUtilities.isR5Plus(context.getContext().getFHIRVersion())) {
+      renderMetadata(x, "url", map.getUrlElement());
+      renderMetadata(x, "name", map.getNameElement());
+      if (map.hasTitle()) {
+        renderMetadata(x, "title", map.getTitleElement());
+      }
+      renderMetadata(x, "status", map.getStatusElement());
+      if (map.hasDescription() && !map.getDescription().equals(map.getTitle())) {
+        renderDescriptionMetadata(x, map.getDescription());
+      }
+      if (map.hasExperimental()) {
+        XhtmlNode c = x.color(COLOR_METADATA);
+        c.tx("/// ");
+        c.b().tx("experimental");
+        c.tx(" = ");
+        x.color(COLOR_CONST).tx(Boolean.toString(map.getExperimental()));
+        x.tx("\r\n");
+      }
+      x.tx("\r\n");
+    } else {
+      x.b().tx("map");
+      x.color(COLOR_SYNTAX).tx(" \"");
+      x.tx(map.getUrl());
+      x.color(COLOR_SYNTAX).tx("\" = \"");
+      x.tx(Utilities.escapeJson(map.getName()));
+      x.color(COLOR_SYNTAX).tx("\"\r\n\r\n");
+      if (map.getDescription() != null) {
+        renderMultilineDoco(x, map.getDescription(), 0, null);
+        x.tx("\r\n");
+      }
+    }
+    renderConceptMaps(x, map);
+    renderUses(x, map);
+    renderImports(x, map);
+    renderConsts(x, map);
+    for (StructureMapGroupComponent g : map.getGroupList())
+      renderGroup(x, g);
+  }
+
+  // Mirrors StructureMapUtilities: use the triple-quoted markdown form when the
+  // description spans multiple lines so the source remains human-readable. Falls
+  // back to the single-line escaped form when: the description has no line breaks;
+  // it contains """ (which cannot be represented inside a verbatim triple-quoted
+  // block); or it ends with a " (which would be greedily merged into the closing
+  // """ by the parser).
+  private void renderDescriptionMetadata(XhtmlNode x, String desc) {
+    XhtmlNode c = x.color(COLOR_METADATA);
+    c.tx("/// ");
+    c.b().tx("description");
+    c.tx(" = ");
+    if ((desc.indexOf('\n') >= 0 || desc.indexOf('\r') >= 0) && !desc.contains("\"\"\"") && !desc.endsWith("\"")) {
+      x.color(COLOR_CONST).tx("\"\"\"" + desc + "\"\"\"");
+    } else {
+      x.color(COLOR_CONST).tx("'" + Utilities.escapeFhirPathString(desc) + "'");
+    }
+    x.tx("\r\n");
+  }
+
+  private void renderConsts(XhtmlNode x, StructureMap map) {
+    for (StructureMap.StructureMapConstComponent c : map.getConstList()) {
+      x.b().tx("let ");
+      x.color(COLOR_VARIABLE).tx(c.getName());
+      x.color(COLOR_SYNTAX).tx(" = ");
+      x.tx(c.getValue());
+      x.color(COLOR_SYNTAX).tx(";\r\n");
+    }
+    if (map.hasConst())
+      x.tx("\r\n");
+  }
+
+  private void renderMetadata(XhtmlNode x, String name, DataType value) {
+    if (!value.isEmpty()) {
+      renderMetadata(x, name, value, null);
+    }
+  }
+  
+  private void renderMetadata(XhtmlNode x, String name, DataType value, String def) {
+    String v = value.primitiveValue();
+    if (def == null || !def.equals(v)) {
+      XhtmlNode c = x.color(COLOR_METADATA);
+      c.tx("/// ");
+      c.b().tx(name);
+      c.tx(" = ");
+      if (Utilities.existsInList(v, "true", "false") || Utilities.isDecimal(v, true)) {
+        x.color(COLOR_CONST).tx(v);
+      } else {
+        x.color(COLOR_CONST).tx("'" + Utilities.escapeFhirPathString(v) + "'");
+      }
+      x.tx("\r\n");
+    }
+  }
+
+  private void renderConceptMaps(XhtmlNode x,StructureMap map) {
+    for (Resource r : map.getContained()) {
+      if (r instanceof ConceptMap) {
+        produceConceptMap(x, (ConceptMap) r);
+      }
+    }
+  }
+
+  private void produceConceptMap(XhtmlNode x,ConceptMap cm) {
+    if (cm.hasFormatCommentPre()) {
+      renderMultilineDoco(x, cm.getFormatCommentsPre(), 0, null);
+    }
+    x.b().tx("conceptmap");
+    x.color(COLOR_SYNTAX).tx(" \"");
+    x.tx(cm.getId());
+    x.color(COLOR_SYNTAX).tx("\" {\r\n");
+    Map<String, String> prefixesSrc = new HashMap<String, String>();
+    Map<String, String> prefixesTgt = new HashMap<String, String>();
+    char prefix = 's';
+    for (ConceptMapGroupComponent cg : cm.getGroupList()) {
+      if (!prefixesSrc.containsKey(cg.getSource())) {
+        prefixesSrc.put(cg.getSource(), String.valueOf(prefix));
+        x.b().tx("  prefix ");
+        x.tx(""+prefix);
+        x.color(COLOR_SYNTAX).tx(" = \"");
+        CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getSource(), ExtensionUtilities.getVersionResolutionRules(cg.getSourceElement()));
+        if (cs != null && cs.hasWebPath()) {
+          x.ah(context.prefixLocalHref(cs.getWebPath()), cs.present()).tx(cg.getSource());
+        } else {
+          x.tx(cg.getSource());
+        }
+        x.color(COLOR_SYNTAX).tx("\"\r\n");
+        prefix++;
+      }
+      if (!prefixesTgt.containsKey(cg.getTarget())) {
+        prefixesTgt.put(cg.getTarget(), String.valueOf(prefix));
+        x.b().tx("  prefix ");
+        x.tx(""+prefix);
+        x.color(COLOR_SYNTAX).tx(" = \"");
+        CodeSystem cs = context.getContext().fetchResource(CodeSystem.class, cg.getTarget(), ExtensionUtilities.getVersionResolutionRules(cg.getTargetElement()));
+        if (cs != null && cs.hasWebPath()) {
+          x.ah(context.prefixLocalHref(cs.getWebPath()), cs.present()).tx(cg.getTarget());
+        } else {
+          x.tx(""+cg.getTarget());
+        }
+        x.color(COLOR_SYNTAX).tx("\"\r\n");
+        prefix++;
+      }
+    }
+    x.tx("\r\n");
+    for (ConceptMapGroupComponent cg : cm.getGroupList()) {
+      if (cg.hasUnmapped()) {
+        x.b().tx("  unmapped for ");
+        x.tx(prefixesSrc.get(cg.getSource()));
+        x.color(COLOR_SYNTAX).tx(" = ");
+        x.tx(cg.getUnmapped().getMode().toCode());
+        x.tx("\r\n");
+      }
+    }
+
+    for (ConceptMapGroupComponent cg : cm.getGroupList()) {
+      if (cg.hasFormatCommentPre()) {
+        renderMultilineDoco(x, cg.getFormatCommentsPre(), 2, prefixesSrc.values());
+      }
+      for (SourceElementComponent ce : cg.getElementList()) {
+        if (ce.hasFormatCommentPre()) {
+          renderMultilineDoco(x, ce.getFormatCommentsPre(), 2, prefixesSrc.values());
+        }
+
+        x.tx("  ");
+        x.tx(prefixesSrc.get(cg.getSource()));
+        x.color(COLOR_SYNTAX).tx(":");
+        if (Utilities.isToken(ce.getCode())) {
+          x.tx(ce.getCode());
+        } else {
+          x.tx("\"");
+          x.tx(ce.getCode());
+          x.tx("\"");
+        }
+        x.tx(" ");
+        x.b().tx(getChar(ce.getTargetFirstRep().getRelationship()));
+        x.tx(" ");
+        x.tx(prefixesTgt.get(cg.getTarget()));
+        x.color(COLOR_SYNTAX).tx(":");
+        if (Utilities.isToken(ce.getTargetFirstRep().getCode())) {
+          x.tx(ce.getTargetFirstRep().getCode());
+        } else {
+          x.color(COLOR_SYNTAX).tx("\"");
+          x.tx(ce.getTargetFirstRep().getCode());
+          x.color(COLOR_SYNTAX).tx("\"");
+        }
+        x.tx("\r\n");
+        if (ce.hasFormatCommentPost()) {
+          renderMultilineDoco(x, ce.getFormatCommentsPost(), 2, prefixesSrc.values());
+        }
+      }
+      if (cg.hasFormatCommentPost()) {
+        renderMultilineDoco(x, cg.getFormatCommentsPost(), 2, prefixesSrc.values());
+      }
+    }
+    if (cm.hasFormatCommentPost()) {
+      renderMultilineDoco(x, cm.getFormatCommentsPost(), 2, prefixesSrc.values());
+    }
+    x.color(COLOR_SYNTAX).tx("}\r\n\r\n");
+  }
+
+  private String getChar(ConceptMapRelationship relationship) {
+    switch (relationship) {
+      case RELATEDTO:
+        return "-";
+      case EQUIVALENT:
+        return "==";
+      case NOTRELATEDTO:
+        return "!=";
+      case SOURCEISNARROWERTHANTARGET:
+        return "<=";
+      case SOURCEISBROADERTHANTARGET:
+        return ">=";
+      default:
+        return "??";
+    }
+  }
+
+  private void renderUses(XhtmlNode x,StructureMap map) {
+    for (StructureMapStructureComponent s : map.getStructureList()) {
+      if (s.hasDocumentation()) {
+        renderMultilineDoco(x, s.getDocumentation(), 0, null);
+      }
+      x.b().tx("uses");
+      x.color(COLOR_SYNTAX).tx(" \"");
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, s.getUrl(), ExtensionUtilities.getVersionResolutionRules(s.getUrlElement()));
+      if (sd != null && sd.hasWebPath()) {
+        x.ah(context.prefixLocalHref(sd.getWebPath()), sd.present()).tx(s.getUrl());
+      } else {
+        x.tx(s.getUrl());
+      }
+      x.color(COLOR_SYNTAX).tx("\" ");
+      if (s.hasAlias()) {
+        x.b().tx("alias ");
+        x.tx(s.getAlias());
+        x.tx(" ");
+      }
+      x.b().tx("as ");
+      x.b().tx(s.getMode().toCode());
+      // Same-line trailing `//` comment captured in formatCommentsPost is
+      // emitted after the mode keyword, mirroring how renderRule handles
+      // trailing-on-`;` comments.
+      if (s.hasFormatCommentPost()) {
+        renderDoco(x, s.getFormatCommentsPost().get(0), false, null);
+      }
+      x.tx("\r\n");
+    }
+    if (map.hasStructure())
+      x.tx("\r\n");
+  }
+
+  private void renderImports(XhtmlNode x,StructureMap map) {
+    for (UriType s : map.getImportList()) {
+      x.b().tx("imports");
+      x.color(COLOR_SYNTAX).tx(" \"");
+      StructureMap m = context.getContext().fetchResource(StructureMap.class, s.getValue(), ExtensionUtilities.getVersionResolutionRules(s));
+      if (m != null) {
+        x.ah(context.prefixLocalHref(m.getWebPath()), m.present()).tx(s.getValue());
+      } else {
+        x.tx(s.getValue());
+      }
+      x.color(COLOR_SYNTAX).tx("\"\r\n");
+    }
+    if (map.hasImport())
+      x.tx("\r\n");
+  }
+
+  private void renderGroup(XhtmlNode x,StructureMapGroupComponent g) {
+    Collection<String> tokens = scanVariables(g, null);
+    if (g.hasFormatCommentPre()) {
+      renderMultilineDoco(x, g.getFormatCommentsPre(), 0, tokens);
+    }
+    if (g.hasDocumentation()) {
+      renderMultilineDoco(x, g.getDocumentation(), 0, tokens);
+    }
+    x.b().tx("group ");
+    x.tx(g.getName());
+    x.color(COLOR_SYNTAX).tx("(");
+    boolean first = true;
+    for (StructureMapGroupInputComponent gi : g.getInputList()) {
+      if (first)
+        first = false;
+      else
+        x.tx(", ");
+      x.b().tx(gi.getMode().toCode());
+      x.tx(" ");
+      x.color(COLOR_VARIABLE).tx(gi.getName());
+      if (gi.hasType()) {
+        x.color(COLOR_SYNTAX).tx(" : ");
+        x.tx(gi.getType());
+      }
+    }
+    x.color(COLOR_SYNTAX).tx(")");
+    if (g.hasExtends()) {
+      x.b().tx(" extends ");
+      String ref = resolveRuleReference(g.getExtendsElement());
+      if (ref != null) {
+        x.ah(context.prefixLocalHref(ref)).tx(g.getExtends()); 
+      } else {
+        x.tx(g.getExtends());
+      }
+    }
+
+    if (g.hasTypeMode()) {
+      switch (g.getTypeMode()) {
+        case TYPES:
+          x.b().tx(" <<types>>");
+          break;
+        case TYPEANDTYPES:
+          x.b().tx(" <<type+>>");
+          break;
+        default: // NONE, NULL
+      }
+    }
+    x.color(COLOR_SYNTAX).tx(" {\r\n");
+    renderRules(x, g, g.getRuleList(), 2);
+    if (g.hasFormatCommentPost()) {
+      renderMultilineDoco(x, g.getFormatCommentsPost(), 0, scanVariables(g, null));
+    }
+    x.color(COLOR_SYNTAX).tx("}\r\n\r\n");
+  }
+
+  private String resolveRuleReference(IdType idType) {
+    return null;
+  }
+
+  // === Simple Form: Identity Transform batch detection ===============================
+  // Mirrors StructureMapUtilities. Runs of consecutive sibling rules that look like
+  // simple identity rules (`s.x -> t.x;`) sharing source/target context and a common
+  // `<prefix> + makeId(element)` name shape are re-emitted as the compact batch form
+  // `s -> t: e1, e2, e3 ["prefix"];`. See StructureMapUtilities for the full rationale.
+
+  private static boolean isSimpleIdentityRule(StructureMapGroupRuleComponent r) {
+    if (r.getSourceList().size() != 1 || r.getTargetList().size() != 1)
+      return false;
+    if (r.hasRule() || r.hasDependent())
+      return false;
+    StructureMapGroupRuleSourceComponent s = r.getSourceFirstRep();
+    StructureMapGroupRuleTargetComponent t = r.getTargetFirstRep();
+    if (!s.hasContext() || !s.hasElement())
+      return false;
+    if (!t.hasContext() || !t.hasElement())
+      return false;
+    if (s.hasType() || s.hasMin() || s.hasListMode() || s.hasDefaultValue()
+        || s.hasCondition() || s.hasCheck() || s.hasLogMessage())
+      return false;
+    if (!t.getParameterList().isEmpty() || !t.getListModeList().isEmpty())
+      return false;
+    // Accept the executable simple-form shape (vvv variable on both sides plus
+    // a CREATE transform on target with no params) as well as the bare shape.
+    // Mirrors StructureMapUtilities.isSimpleIdentityRule.
+    if (s.hasVariable() && !StructureMapUtilities.AUTO_VAR_NAME.equals(s.getVariable()))
+      return false;
+    if (t.hasVariable() && !StructureMapUtilities.AUTO_VAR_NAME.equals(t.getVariable()))
+      return false;
+    if (t.hasTransform() && t.getTransform() != StructureMapTransform.CREATE)
+      return false;
+    return s.getElementList().equals(t.getElementList());
+  }
+
+  private static String identityBatchPrefix(StructureMapGroupRuleComponent r) {
+    if (!isSimpleIdentityRule(r) || !r.hasName())
+      return null;
+    String suffix = Utilities.makeId(r.getSourceFirstRep().getElementName());
+    String name = r.getName();
+    if (suffix.isEmpty() || !name.endsWith(suffix))
+      return null;
+    String prefix = name.substring(0, name.length() - suffix.length());
+    // A bare name (no prefix) is not a batch — it's an unprefixed singly-written
+    // rule that happens to share the simple-identity shape. Mirrors
+    // StructureMapUtilities.identityBatchPrefix.
+    if (prefix.isEmpty())
+      return null;
+    return prefix;
+  }
+
+  private static int detectIdentityBatchEnd(List<StructureMapGroupRuleComponent> rules, int start) {
+    StructureMapGroupRuleComponent first = rules.get(start);
+    String prefix = identityBatchPrefix(first);
+    if (prefix == null)
+      return start;
+    String srcCtx = first.getSourceFirstRep().getContext();
+    String tgtCtx = first.getTargetFirstRep().getContext();
+    int end = start;
+    for (int j = start + 1; j < rules.size(); j++) {
+      StructureMapGroupRuleComponent r = rules.get(j);
+      if (r.hasDocumentation() || r.hasFormatCommentPost() || r.hasFormatCommentPre())
+        break;
+      String p = identityBatchPrefix(r);
+      if (p == null || !prefix.equals(p))
+        break;
+      if (!srcCtx.equals(r.getSourceFirstRep().getContext())
+          || !tgtCtx.equals(r.getTargetFirstRep().getContext()))
+        break;
+      end = j;
+    }
+    return end;
+  }
+
+  private void renderIdentityBatch(XhtmlNode x, StructureMapGroupComponent g,
+      List<StructureMapGroupRuleComponent> rules, int start, int end, int indent) {
+    StructureMapGroupRuleComponent first = rules.get(start);
+    Collection<String> tokens = scanVariables(g, first);
+    if (first.hasFormatCommentPre()) {
+      renderMultilineDoco(x, first.getFormatCommentsPre(), indent, tokens);
+    }
+    if (first.hasDocumentation()) {
+      renderMultilineDoco(x, first.getDocumentation(), indent, tokens);
+    }
+    for (int i = 0; i < indent; i++)
+      x.tx(" ");
+    x.tx(first.getSourceFirstRep().getContext());
+    x.color(COLOR_SYNTAX).b().tx(" -> ");
+    x.tx(first.getTargetFirstRep().getContext());
+    x.color(COLOR_SYNTAX).tx(": ");
+    for (int j = start; j <= end; j++) {
+      if (j > start)
+        x.color(COLOR_SYNTAX).tx(", ");
+      x.tx(rules.get(j).getSourceFirstRep().getElementName());
+    }
+    String prefix = identityBatchPrefix(first);
+    if (prefix != null && !StructureMapUtilities.BATCH_IDENTITY_UNNAMED_NAME.equals(prefix)) {
+      x.tx(" ");
+      x.i().tx("\"" + prefix + "\"");
+    }
+    x.color(COLOR_SYNTAX).tx(";");
+    if (first.hasFormatCommentPost()) {
+      renderDoco(x, first.getFormatCommentsPost().get(0), false, tokens);
+    }
+    x.tx("\r\n");
+  }
+
+  private void renderRules(XhtmlNode x, StructureMapGroupComponent g,
+      List<StructureMapGroupRuleComponent> rules, int indent) {
+    int i = 0;
+    while (i < rules.size()) {
+      int end = detectIdentityBatchEnd(rules, i);
+      if (end > i) {
+        renderIdentityBatch(x, g, rules, i, end, indent);
+        i = end + 1;
+      } else {
+        renderRule(x, g, rules.get(i), indent);
+        i++;
+      }
+    }
+  }
+
+  private void renderRule(XhtmlNode x, StructureMapGroupComponent g, StructureMapGroupRuleComponent r, int indent) {
+    Collection<String> tokens = scanVariables(g, r);
+    if (r.hasFormatCommentPre()) {
+      renderMultilineDoco(x, r.getFormatCommentsPre(), indent, tokens);
+    }
+    if (r.hasDocumentation()) {
+      renderMultilineDoco(x, r.getDocumentation(), indent, tokens);
+    }
+    for (int i = 0; i < indent; i++)
+      x.tx(" ");
+    boolean canBeAbbreviated = checkisSimple(r);
+    {
+      boolean first = true;
+      for (StructureMapGroupRuleSourceComponent rs : r.getSourceList()) {
+        if (first)
+          first = false;
+        else
+          x.color(COLOR_SYNTAX).tx(", ");
+        renderSource(x, rs, canBeAbbreviated);
+      }
+    }
+    if (r.getTargetList().size() > 1) {
+      x.color(COLOR_SYNTAX).b().tx(" -> ");
+      boolean first = true;
+      for (StructureMapGroupRuleTargetComponent rt : r.getTargetList()) {
+        if (first)
+          first = false;
+        else
+          x.color(COLOR_SYNTAX).tx(", ");
+        if (MULTIPLE_TARGETS_ONELINE)
+          x.tx(" ");
+        else {
+          x.tx("\r\n");
+          for (int i = 0; i < indent + 4; i++)
+            x.tx(" ");
+        }
+        renderTarget(x, rt, false);
+      }
+    } else if (r.hasTarget()) {
+      x.color(COLOR_SYNTAX).b().tx(" -> ");
+      renderTarget(x, r.getTargetList().get(0), canBeAbbreviated);
+    }
+    if (r.hasRule()) {
+      x.b().tx(" then");
+      x.color(COLOR_SYNTAX).tx(" {\r\n");
+      renderRules(x, g, r.getRuleList(), indent + 2);
+      for (int i = 0; i < indent; i++)
+        x.tx(" ");
+      x.color(COLOR_SYNTAX).tx("}");
+    } else {
+      if (r.hasDependent() && !canBeAbbreviated) {
+        x.b().tx(" then ");
+        boolean first = true;
+        for (StructureMapGroupRuleDependentComponent rd : r.getDependentList()) {
+          if (first)
+            first = false;
+          else
+            x.color(COLOR_SYNTAX).tx(", ");
+          String ref = resolveRuleReference(rd.getNameElement());
+          if (ref != null) {
+            x.ah(context.prefixLocalHref(ref)).tx(rd.getName());
+          } else {
+            x.tx(rd.getName());
+          }
+          x.color(COLOR_SYNTAX).tx("(");
+          boolean ifirst = true;
+          for (StructureMapGroupRuleTargetParameterComponent rdp : rd.getParameterList()) {
+            if (ifirst)
+              ifirst = false;
+            else
+              x.color(COLOR_SYNTAX).tx(", ");
+            renderTransformParam(x, rdp);
+          }
+          x.color(COLOR_SYNTAX).tx(")");
+        }
+      }
+    }
+    if (r.hasName()) {
+      String n = ntail(r.getName());
+      if (!n.startsWith("\""))
+        n = "\"" + n + "\"";
+      if (!matchesName(n, r.getSourceList())) {
+        x.tx(" ");
+        x.i().tx(n);
+      }
+    }
+    x.color(COLOR_SYNTAX).tx(";");
+    if (r.hasFormatCommentPost()) {
+      renderDoco(x, r.getFormatCommentsPost().get(0), false, tokens);
+    }
+    x.tx("\r\n");
+  }
+
+  private Collection<String> scanVariables(StructureMapGroupComponent g, StructureMapGroupRuleComponent r) {
+    Set<String> res = new HashSet<>();
+    for (StructureMapGroupInputComponent input : g.getInputList()) {
+      res.add(input.getName());
+    }
+    if (r != null) {
+      for (StructureMapGroupRuleSourceComponent src : r.getSourceList()) {
+        if (src.hasVariable()) {
+          res.add(src.getVariable());
+        }
+      }
+    }
+    return res;
+  }
+
+  private boolean matchesName(String n, List<StructureMapGroupRuleSourceComponent> source) {
+    if (source.size() != 1)
+      return false;
+    if (!source.get(0).hasElement())
+      return false;
+    String s = source.get(0).getElementName();
+    if (n.equals(s) || n.equals("\"" + s + "\""))
+      return true;
+    if (source.get(0).hasType()) {
+      s = source.get(0).getElementList() + Utilities.capitalize(source.get(0).getType());
+      return n.equals(s) || n.equals("\"" + s + "\"");
+    }
+    return false;
+  }
+
+  private String ntail(String name) {
+    if (name == null)
+      return null;
+    if (name.startsWith("\"")) {
+      name = name.substring(1);
+      name = name.substring(0, name.length() - 1);
+    }
+    return "\"" + (name.contains(".") ? name.substring(name.lastIndexOf(".") + 1) : name) + "\"";
+  }
+
+  private boolean checkisSimple(StructureMapGroupRuleComponent r) {
+    return
+      (r.getSourceList().size() == 1 && r.getSourceFirstRep().hasElement() && r.getSourceFirstRep().hasVariable()) &&
+        (r.getTargetList().size() == 1 && r.getTargetFirstRep().hasVariable() && (r.getTargetFirstRep().getTransform() == null || r.getTargetFirstRep().getTransform() == StructureMapTransform.CREATE) && r.getTargetFirstRep().getParameterList().size() == 0) &&
+        (r.getDependentList().size() == 0 || (r.getDependentList().size() == 1 && StructureMapUtilities.DEF_GROUP_NAME.equals(r.getDependentFirstRep().getName()))) && (r.getRuleList().size() == 0);
+  }
+  
+  private void renderSource(XhtmlNode x,StructureMapGroupRuleSourceComponent rs, boolean abbreviate) {
+    x.tx(rs.getContext());
+    if (rs.getContext().equals("@search")) {
+      x.color(COLOR_SYNTAX).tx("(");
+      x.tx(rs.getElementName());
+      x.color(COLOR_SYNTAX).tx(")");
+    } else if (rs.hasElement()) {
+      x.tx(".");
+      x.tx(StructureMapUtilities.renderElementName(rs.getElementName()));
+    }
+    if (rs.hasType()) {
+      x.color(COLOR_SYNTAX).tx(" : ");
+      x.tx(rs.getType());
+    }
+    if (rs.hasMin()) {
+      x.tx(" ");
+      x.tx(rs.getMin());
+      x.color(COLOR_SYNTAX).tx("..");
+      x.tx(rs.getMax());
+    }
+
+    if (rs.hasListMode()) {
+      x.tx(" ");
+      x.tx(rs.getListMode().toCode());
+    }
+    if (rs.hasDefaultValue()) {
+      x.b().tx(" default ");
+      x.color(COLOR_SYNTAX).tx("(");
+      x.tx(rs.getDefaultValue());
+      x.color(COLOR_SYNTAX).tx(")");
+    }
+    if (!abbreviate && rs.hasVariable()) {
+      x.b().tx(" as ");
+      x.color(COLOR_VARIABLE).tx(rs.getVariable());
+    }
+    if (rs.hasCondition()) {
+      x.b().tx(" where ");
+      x.color(COLOR_SYNTAX).tx("(");
+      x.tx(rs.getCondition());
+      x.color(COLOR_SYNTAX).tx(")");
+    }
+    if (rs.hasCheck()) {
+      x.b().tx(" check ");
+      x.color(COLOR_SYNTAX).tx("(");
+      x.tx(rs.getCheck());
+      x.color(COLOR_SYNTAX).tx(")");
+    }
+    if (rs.hasLogMessage()) {
+      x.b().tx(" log ");
+      x.color(COLOR_SYNTAX).tx("(");
+      x.tx(rs.getLogMessage());
+      x.color(COLOR_SYNTAX).tx(")");
+    }
+  }
+  
+  private void renderTarget(XhtmlNode x,StructureMapGroupRuleTargetComponent rt, boolean abbreviate) {
+    if (rt.hasContext()) {
+      x.tx(rt.getContext());
+      if (rt.hasElement()) {
+        x.tx(".");
+        x.tx(StructureMapUtilities.renderElementName(rt.getElementName()));
+      }
+    }
+    if (!abbreviate && rt.hasTransform()) {
+      if (rt.hasContext())
+        x.tx(" = ");
+      if (rt.getTransform() == StructureMapTransform.COPY && rt.getParameterList().size() == 1) {
+        renderTransformParam(x, rt.getParameterList().get(0));
+      } else if (rt.getTransform() == StructureMapTransform.EVALUATE && rt.getParameterList().size() == 1) {
+        x.color(COLOR_SYNTAX).tx("(");
+        x.tx(((StringType) rt.getParameterList().get(0).getValue()).asStringValue());
+        x.color(COLOR_SYNTAX).tx(")");
+      } else if (rt.getTransform() == StructureMapTransform.EVALUATE && rt.getParameterList().size() == 2) {
+        x.tx(rt.getTransform().toCode());
+        x.color(COLOR_SYNTAX).tx("(");
+        x.tx(((IdType) rt.getParameterList().get(0).getValue()).asStringValue());
+        x.color(COLOR_SYNTAX).tx(", ");
+        x.tx(((StringType) rt.getParameterList().get(1).getValue()).asStringValue());
+        x.color(COLOR_SYNTAX).tx(")");
+      } else {
+        x.b().tx(rt.getTransform().toCode());
+        x.color(COLOR_SYNTAX).tx("(");
+        boolean first = true;
+        for (StructureMapGroupRuleTargetParameterComponent rtp : rt.getParameterList()) {
+          if (first)
+            first = false;
+          else
+            x.color(COLOR_SYNTAX).tx(", ");
+          renderTransformParam(x, rtp);
+        }
+        x.color(COLOR_SYNTAX).tx(")");
+      }
+    }
+    if (!abbreviate && rt.hasVariable()) {
+      x.b().tx(" as ");
+      x.color(COLOR_VARIABLE).tx(rt.getVariable());
+    }
+    for (Enumeration<StructureMapTargetListMode> lm : rt.getListModeList()) {
+      x.tx(" ");
+      x.b().tx(lm.getValue().toCode());
+      if (lm.getValue() == StructureMapTargetListMode.SHARE) {
+        x.tx(" ");
+        x.b().tx(rt.getListRuleId());
+      }
+    }
+  }
+
+
+  private void renderTransformParam(XhtmlNode x,StructureMapGroupRuleTargetParameterComponent rtp) {
+    try {
+      if (rtp.hasValueBooleanType())
+        x.color(COLOR_CONST).tx(rtp.getValueBooleanType().asStringValue());
+      else if (rtp.hasValueDecimalType())
+        x.color(COLOR_CONST).tx(rtp.getValueDecimalType().asStringValue());
+      else if (rtp.hasValueIdType())
+        x.color(COLOR_VARIABLE).tx(rtp.getValueIdType().asStringValue());
+      else if (rtp.hasValueIntegerType())
+        x.color(COLOR_CONST).tx(rtp.getValueIntegerType().asStringValue());
+      else
+        x.color(COLOR_CONST).tx("'" + Utilities.escapeFhirPathString(rtp.getValueStringType().asStringValue()) + "'");
+    } catch (FHIRException e) {
+      e.printStackTrace();
+      x.tx("error!");
+    }
+  }
+
+  private void renderDoco(XhtmlNode x,String doco, boolean startLine, Collection<String> tokens) {
+    if (Utilities.noString(doco))
+      return;
+    if (!startLine) {
+      x.tx(" ");
+    }
+    boolean isClause = false;
+    String t = doco.trim().replace(" ", "");
+    if (tokens != null) {
+      for (String s : tokens) {
+        if (t.startsWith(s+":") || t.startsWith(s+".") || t.startsWith(s+"->")) {
+          isClause = true;
+          break;
+        }
+      }
+    }
+    if (isClause) {
+      XhtmlNode s= x.color(COLOR_SPECIAL);
+      s.setAttribute("title", formatPhrase(RenderingContext.MAP_DEFAULT_COMMENT));
+      s.tx("// ");
+      s.tx(doco.replace("\r\n", " ").replace("\r", " ").replace("\n", " "));      
+    } else {
+      x.color(COLOR_SYNTAX).tx("// ");
+      x.color(COLOR_COMMENT).tx(doco.replace("\r\n", " ").replace("\r", " ").replace("\n", " "));
+    }
+  }
+
+  private void renderMultilineDoco(XhtmlNode x,String doco, int indent, Collection<String> tokens) {
+    if (Utilities.noString(doco))
+      return;
+    @SuppressWarnings("checkstyle:stringImplicitPatternUsage")
+    //simple character class split; safe
+    String[] lines = doco.split("\\r?\\n");
+    for (String line : lines) {
+      for (int i = 0; i < indent; i++)
+        x.tx(" ");
+      renderDoco(x, line, true, tokens);
+      x.tx("\r\n");
+    }
+  }
+
+  private void renderMultilineDoco(XhtmlNode x, List<String> doco, int indent, Collection<String> tokens) {
+    for (String line : doco) {
+      for (int i = 0; i < indent; i++)
+        x.tx(" ");
+      renderDoco(x, line, true, tokens);
+      x.tx("\r\n");
+    }
+  }
+
+
+  public void describe(XhtmlNode x, OperationDefinition opd) {
+    x.tx(display(opd));
+  }
+
+  public String display(OperationDefinition opd) {
+    return opd.present();
+  }
+
+  @Override
+  public String display(Resource r) throws UnsupportedEncodingException, IOException {
+    return ((StructureMap) r).present();
+  }
+
+}

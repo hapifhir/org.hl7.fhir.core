@@ -16,10 +16,11 @@ import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public class NamingSystemRenderer extends ResourceRenderer {
 
 
@@ -47,33 +48,33 @@ public class NamingSystemRenderer extends ResourceRenderer {
   
 
   public void render(RenderingStatus status, XhtmlNode x, NamingSystem ns) throws FHIRFormatError, DefinitionException, IOException {
-    x.h3().tx(context.formatPhrase(RenderingContext.GENERAL_SUMM));
+    x.h3().tx(context.formatPhrase(RenderingI18nContext.GENERAL_SUMM));
     XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
-    row(tbl, (context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)), ns.getUrl());
+    row(tbl, (context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL)), ns.getUrl());
     if (ns.hasVersion()) {
-      row(tbl, (context.formatPhrase(RenderingContext.GENERAL_VER)), ns.getVersion());
+      row(tbl, (context.formatPhrase(RenderingI18nContext.GENERAL_VER)), ns.getVersion());
     }
     if (ns.hasName()) {
-      row(tbl, (context.formatPhrase(RenderingContext.GENERAL_NAME)), gt(ns.getNameElement()));
+      row(tbl, (context.formatPhrase(RenderingI18nContext.GENERAL_NAME)), gt(ns.getNameElement()));
     }
     if (ns.hasTitle()) {
-      row(tbl, (context.formatPhrase(RenderingContext.GENERAL_TITLE)), gt(ns.getTitleElement()));
+      row(tbl, (context.formatPhrase(RenderingI18nContext.GENERAL_TITLE)), gt(ns.getTitleElement()));
     }
-    row(tbl, (context.formatPhrase(RenderingContext.GENERAL_STATUS)), ns.getStatus().toCode());
+    row(tbl, (context.formatPhrase(RenderingI18nContext.GENERAL_STATUS)), ns.getStatus().toCode());
     if (ns.hasDescription()) {
-      addMarkdown(row(tbl, (context.formatPhrase(RenderingContext.GENERAL_DEFINITION))), ns.getDescription());
+      addMarkdown(row(tbl, (context.formatPhrase(RenderingI18nContext.GENERAL_DEFINITION))), ns.getDescription());
     }
     if (ns.hasPublisher()) {
-      row(tbl, (context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)), gt(ns.getPublisherElement()));
+      row(tbl, (context.formatPhrase(RenderingI18nContext.CANON_REND_PUBLISHER)), gt(ns.getPublisherElement()));
     }
     if (ns.hasExtension(ExtensionDefinitions.EXT_WORKGROUP)) {
       renderCommitteeLink(row(tbl, "Committee"), ns);
     }
     if (CodeSystemUtilities.hasOID(ns)) {
-      row(tbl, context.formatPhrase(RenderingContext.GENERAL_OID)).tx(context.formatPhrase(RenderingContext.CODE_SYS_FOR_OID, CodeSystemUtilities.getOID(ns)));
+      row(tbl, context.formatPhrase(RenderingI18nContext.GENERAL_OID)).tx(context.formatPhrase(RenderingI18nContext.CODE_SYS_FOR_OID, CodeSystemUtilities.getOID(ns)));
     }
     if (ns.hasCopyright()) {
-      addMarkdown(row(tbl, (context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT))), ns.getCopyright());
+      addMarkdown(row(tbl, (context.formatPhrase(RenderingI18nContext.GENERAL_COPYRIGHT))), ns.getCopyright());
     }
     List<NamingSystem> nsl = new ArrayList<>();
     nsl.add(ns);
@@ -92,19 +93,19 @@ public class NamingSystemRenderer extends ResourceRenderer {
         hasComment = hasComment || id.hasComment();
       }
     }
-    x.h3().tx(context.formatPhrase(RenderingContext.NAME_SYS_IDEN));
+    x.h3().tx(context.formatPhrase(RenderingI18nContext.NAME_SYS_IDEN));
     XhtmlNode tbl = x.table("grid", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = tbl.tr();
-    tr.td().b().tx((context.formatPhrase(RenderingContext.GENERAL_TYPE)));
-    tr.td().b().tx((context.formatPhrase(RenderingContext.GENERAL_VALUE)));
+    tr.td().b().tx((context.formatPhrase(RenderingI18nContext.GENERAL_TYPE)));
+    tr.td().b().tx((context.formatPhrase(RenderingI18nContext.GENERAL_VALUE)));
     if (hasPreferred) {
-      tr.td().b().tx((context.formatPhrase(RenderingContext.GENERAL_PREFERRED)));
+      tr.td().b().tx((context.formatPhrase(RenderingI18nContext.GENERAL_PREFERRED)));
     }
     if (hasPeriod) {
-      tr.td().b().tx((context.formatPhrase(RenderingContext.NAME_SYS_PER)));
+      tr.td().b().tx((context.formatPhrase(RenderingI18nContext.NAME_SYS_PER)));
     }
     if (hasComment) {
-      tr.td().b().tx((context.formatPhrase(RenderingContext.GENERAL_COMMENT)));
+      tr.td().b().tx((context.formatPhrase(RenderingI18nContext.GENERAL_COMMENT)));
     }
     for (NamingSystem ns : nsl) {
       for (NamingSystemUniqueIdComponent id : ns.getUniqueId()) {

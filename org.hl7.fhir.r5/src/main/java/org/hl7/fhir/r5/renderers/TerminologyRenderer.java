@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
-import org.hl7.fhir.r5.extensions.ExtensionDefinitions;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -23,14 +22,14 @@ import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CanonicalPair;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public abstract class TerminologyRenderer extends ResourceRenderer {
   
@@ -179,7 +178,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     }
 
     XhtmlNode span = li.span();
-    span.addText(" "+ context.formatPhrase(RenderingContext.GENERAL_VER_LOW) + " ");
+    span.addText(" "+ context.formatPhrase(RenderingI18nContext.GENERAL_VER_LOW) + " ");
 
     if (cs != null && cs.getContent() == Enumerations.CodeSystemContentMode.NOTPRESENT) {
       cs = null;
@@ -189,7 +188,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     String actualVersion = cs == null ? null : cs.getVersion();
     boolean fromPackages = cs == null ? false : cs.hasSourcePackage();
     boolean fromThisPackage = cs == null ? false : !Utilities.isAbsoluteUrlLinkable(cs.getWebPath());
-    renderVersionReference(context, cs, statedVersion, resolutionMethod, actualVersion, fromPackages, span, fromThisPackage, context.formatPhrase(RenderingContext.GENERAL_CODESYSTEM), RenderingI18nContext.CS_VERSION_NOTHING_TEXT);
+    renderVersionReference(context, cs, statedVersion, resolutionMethod, actualVersion, fromPackages, span, fromThisPackage, context.formatPhrase(RenderingI18nContext.GENERAL_CODESYSTEM), RenderingI18nContext.CS_VERSION_NOTHING_TEXT);
   }
 
   private String getSpecialReference(String system) {
@@ -207,7 +206,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
   protected XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay, boolean definitions, boolean comments, boolean version, boolean deprecated, List<PropertyComponent> properties, List<String> langs, Map<String, String> designations, boolean doDesignations) {
     XhtmlNode tr = t.tr();
     if (hasHierarchy) {
-      tr.td().b().tx(context.formatPhrase(RenderingContext.TERMINOLOGY_LVL));
+      tr.td().b().tx(context.formatPhrase(RenderingI18nContext.TERMINOLOGY_LVL));
     }
     tr.td().attribute("style", "white-space:nowrap").b().tx(formatPhrase(RenderingContext.GENERAL_CODE));
     if (hasDisplay) {
@@ -309,7 +308,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
         a.addText(value);
       } else if (value.equals("http://snomed.info/sct") || value.equals("http://snomed.info/id")) {
         XhtmlNode a = li.ah(context.prefixLocalHref(value));
-        a.tx(context.formatPhrase(RenderingContext.STRUC_DEF_SNOMED));
+        a.tx(context.formatPhrase(RenderingI18nContext.STRUC_DEF_SNOMED));
       }
       else {
         if (value.startsWith("http://hl7.org") && !Utilities.existsInList(value, "http://hl7.org/fhir/sid/icd-10-us")) {

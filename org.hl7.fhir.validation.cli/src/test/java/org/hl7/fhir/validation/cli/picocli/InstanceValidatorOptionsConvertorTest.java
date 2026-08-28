@@ -125,6 +125,12 @@ public class InstanceValidatorOptionsConvertorTest {
       ),
 
       Arguments.arguments(
+        "codeSystemValidationSizeLimit",
+        new InstanceValidatorOptions().withCodeSystemValidationSizeLimit(50),
+        new InstanceValidatorParameters().setCodeSystemValidationSizeLimit(50)
+      ),
+
+      Arguments.arguments(
         "forPublication flag",
         new InstanceValidatorOptions().withForPublication(true),
         new InstanceValidatorParameters().setForPublication(true)

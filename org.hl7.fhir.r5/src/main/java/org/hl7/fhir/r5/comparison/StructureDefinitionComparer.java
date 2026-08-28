@@ -27,14 +27,15 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.renderers.Renderer.RenderingStatus;
+import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.StructureDefinitionRenderer;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.GenerationRules;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -46,7 +47,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import kotlin.NotImplementedError;
 
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class StructureDefinitionComparer extends CanonicalResourceComparer implements ProfileKnowledgeProvider {
 
@@ -1316,13 +1317,13 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
   }
 
   public XhtmlNode renderUnion(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {    
-    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), new RendererFactory(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
     return sdr.generateTable(new RenderingStatus(), corePath, comp.union, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext().withUniqueLocalPrefix("u"), "u", null, "C1");
   }
       
 
   public XhtmlNode renderIntersection(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
-    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+    StructureDefinitionRenderer sdr = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), new RendererFactory(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
     return sdr.generateTable(new RenderingStatus(), corePath, comp.intersection, false, prefix, false, id, true, corePath, prefix, false, true, null, false, sdr.getContext().withUniqueLocalPrefix("i"), "i", null, "C2");
   }
 
@@ -1378,8 +1379,8 @@ public class StructureDefinitionComparer extends CanonicalResourceComparer imple
       if (sn != null)
         sName = sName +":"+sn;
       StructureDefinitionRenderer.UnusedTracker used = new StructureDefinitionRenderer.UnusedTracker();
-      StructureDefinitionRenderer sdrLeft = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
-      StructureDefinitionRenderer sdrRight= new StructureDefinitionRenderer(new RenderingContext(utilsRight.getContext(), null, utilsRight.getTerminologyServiceOptions(), corePath, prefix, utilsRight.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+      StructureDefinitionRenderer sdrLeft = new StructureDefinitionRenderer(new RenderingContext(utilsLeft.getContext(), new RendererFactory(), null, utilsLeft.getTerminologyServiceOptions(), corePath, prefix, utilsLeft.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
+      StructureDefinitionRenderer sdrRight= new StructureDefinitionRenderer(new RenderingContext(utilsRight.getContext(), new RendererFactory(), null, utilsRight.getTerminologyServiceOptions(), corePath, prefix, utilsRight.getContext().getLocale(), ResourceRendererMode.TECHNICAL, GenerationRules.IG_PUBLISHER).setPkp(this));
 
 
         

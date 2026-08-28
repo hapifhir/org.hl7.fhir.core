@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -30,7 +32,7 @@ import org.hl7.fhir.r5.terminologies.NamingSystemUtilities;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 import org.hl7.fhir.r5.utils.xver.XVerExtensionManager;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
@@ -39,7 +41,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
-@MarkedToMoveToAdjunctPackage
+
 public abstract class ResourceRenderer extends DataRenderer {
 
   private static final String EXT_NS_URL = "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.url";
@@ -52,8 +54,7 @@ public abstract class ResourceRenderer extends DataRenderer {
   protected XVerExtensionManager xverManager;
   protected boolean multiLangMode;
   protected boolean inner;
-  
-  
+
   public ResourceRenderer(RenderingContext context) {
     super(context);
   }
@@ -241,7 +242,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (target != null && target.hasWebPath()) {
         if (canonical.primitiveValue().contains("|")) {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present());
-          x.tx(" "+context.formatPhrase(RenderingContext.RES_REND_VER, target.getVersion()));
+          x.tx(" "+context.formatPhrase(RenderingI18nContext.RES_REND_VER, target.getVersion()));
         } else {
           x.ah(context.prefixLocalHref(target.getWebPath())).tx(target.present());
         }
@@ -254,7 +255,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (rr.getResource() == null) {
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(canonical.primitiveValue());        
       } else {
-        x.ah(context.prefixLocalHref(rr.getWebPath())).tx(RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));        
+        x.ah(context.prefixLocalHref(rr.getWebPath())).tx(context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
       }
     }
   }
@@ -306,7 +307,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         } else {
           String disp;
           try {
-            disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
+            disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
           } catch (IOException e) {
             disp = e.getMessage();
           }
@@ -360,7 +361,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       if (!target.hasWebPath()) {
         if (url.contains("|")) {
           x.code().tx(cr.getUrl());
-          x.tx(context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion()));
+          x.tx(context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion()));
           if (lang!=null)
             x.tx(" ("+cr.present(lang)+")");
           else
@@ -375,9 +376,9 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else {
         if (url.contains("|")) {
           if (lang!=null)
-            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang)+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang)+ context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion())+")");
           else
-            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingContext.RES_REND_VER, cr.getVersion())+")");
+            x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present()+ context.formatPhrase(RenderingI18nContext.RES_REND_VER, cr.getVersion())+")");
         } else {
           if (lang!=null)
             x.ah(context.prefixLocalHref(target.getWebPath())).tx(cr.present(lang));
@@ -426,7 +427,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : rr.getUrlReference();
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
       } else if (rr.getResource() != null) {
-        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
+        String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource());
         x.ah(context.prefixLocalHref(rr.getWebPath())).tx(disp);
       } else {
         String disp = display != null && display.hasPrimitiveValue() ? displayDataType(display) : "?rref2?";
@@ -482,14 +483,14 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (tr != null && tr.getWebPath() != null) {
           link = tr.getWebPath();
         } else if (r.getReference().contains("?")) {
-          text.append(context.formatPhrase(RenderingContext.RES_REND_COND_REF)+" ");
+          text.append(context.formatPhrase(RenderingI18nContext.RES_REND_COND_REF)+" ");
         } else {
           link = r.getReference();
         }
       } 
     }
     if (tr != null && tr.getWebPath() != null && tr.getWebPath().startsWith("#")) {
-      text.append(context.formatPhrase(RenderingContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
+      text.append(context.formatPhrase(RenderingI18nContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
     }
     // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
     String display = r.hasDisplayElement() ? r.getDisplay() : null;
@@ -533,7 +534,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (name != null) {
         text.append(name);
       } else {
-        text.append(context.formatPhrase(RenderingContext.RES_REND_DESC));
+        text.append(context.formatPhrase(RenderingI18nContext.RES_REND_DESC));
       }
     }
     if (tr != null && tr.getWebPath() != null && tr.getWebPath().startsWith("#")) {
@@ -557,14 +558,14 @@ public abstract class ResourceRenderer extends DataRenderer {
         if (trt != null && trt.getWebPath() != null) {
           link = trt.getWebPath();
         } else if (r.primitiveValue("reference").contains("?")) {
-          text.append(context.formatPhrase(RenderingContext.RES_REND_COND_REF)+" ");
+          text.append(context.formatPhrase(RenderingI18nContext.RES_REND_COND_REF)+" ");
         } else {
           link = r.primitiveValue("reference");
         }
       } 
     }
     if (trt != null && trt.getWebPath() != null && trt.getWebPath().startsWith("#")) {
-      text.append(context.formatPhrase(RenderingContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
+      text.append(context.formatPhrase(RenderingI18nContext.RES_REND_SEE_ON_THIS_PAGE)+" ");
     }
     // what to display: if text is provided, then that. if the reference was resolved, then show the name, or the generated narrative
     String display = r.has("display") ? r.primitiveValue("display") : null;
@@ -608,7 +609,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else if (name != null) {
         text.append(name);
       } else {
-        text.append(context.formatPhrase(RenderingContext.RES_REND_DESC));
+        text.append(context.formatPhrase(RenderingI18nContext.RES_REND_DESC));
       }
     }
     if (trt != null && trt.getWebPath() != null && trt.getWebPath().startsWith("#")) {
@@ -650,11 +651,11 @@ public abstract class ResourceRenderer extends DataRenderer {
       } else { 
         ResourceWithReference rr = resolveReference(resource, uri.primitiveValue(), false);
         if (rr != null) {
-          x.ah(rr.getWebPath()).addText(RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));           
+          x.ah(rr.getWebPath()).addText(context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
         } else {
           Resource r = context.getContext().fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRules(uri));
           if (r != null && r.getWebPath() != null) { 
-              x.ah(context.prefixLocalHref(r.getWebPath())).addText(RendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));           
+              x.ah(context.prefixLocalHref(r.getWebPath())).addText(context.getRendererFactory().factory(r, context.forContained()).buildSummary(wrap(r)));
           } else { 
             String url = context.getResolver() != null ? context.getResolver().resolveUri(context, v) : null; 
             if (url != null) {           
@@ -692,14 +693,14 @@ public abstract class ResourceRenderer extends DataRenderer {
           if (rr.getResource() == null) {
             x.ah(context.prefixLocalHref(rr.getWebPath())).addText(rr.getUrlReference());
           } else {
-            x.ah(context.prefixLocalHref(rr.getWebPath())).addText(RendererFactory.factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
+            x.ah(context.prefixLocalHref(rr.getWebPath())).addText(context.getRendererFactory().factory(rr.getResource(), context.forContained()).buildSummary(rr.getResource()));
           }
         } else {
           Resource r = context.getContext().fetchResource(Resource.class, v, ExtensionUtilities.getVersionResolutionRulesBase(uri.getBase()));
           if (r != null && r.getWebPath() != null) { 
-              x.ah(context.prefixLocalHref(r.getWebPath())).addText(RendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));           
+              x.ah(context.prefixLocalHref(r.getWebPath())).addText(context.getRendererFactory().factory(r, context.forContained()).buildSummary(wrap(r)));
           } else if (r != null) { 
-            x.ah(context.prefixLocalHref(v)).addText(RendererFactory.factory(r, context.forContained()).buildSummary(wrap(r)));           
+            x.ah(context.prefixLocalHref(v)).addText(context.getRendererFactory().factory(r, context.forContained()).buildSummary(wrap(r)));
           } else { 
             String url = context.getResolver() != null ? context.getResolver().resolveUri(context, v) : null; 
             if (url != null) {           
@@ -879,7 +880,7 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   public String displayReference(Resource res, Reference r) throws UnsupportedEncodingException, IOException {
-    return (context.formatPhrase(RenderingContext.GENERAL_TODO)); 
+    return (context.formatPhrase(RenderingI18nContext.GENERAL_TODO)); 
    }
 
    public Base parseType(String string, String type) {
@@ -888,10 +889,10 @@ public abstract class ResourceRenderer extends DataRenderer {
 
    protected String describeStatus(PublicationStatus status, boolean experimental) {
      switch (status) {
-     case ACTIVE: return experimental ? (context.formatPhrase(RenderingContext.GENERAL_EXPER)) : (context.formatPhrase(RenderingContext.RES_REND_ACT)); 
-     case DRAFT: return (context.formatPhrase(RenderingContext.RES_REND_DRAFT));
-     case RETIRED: return (context.formatPhrase(RenderingContext.RES_REND_RET));
-     default: return (context.formatPhrase(RenderingContext.RES_REND_UNKNOWN));
+     case ACTIVE: return experimental ? (context.formatPhrase(RenderingI18nContext.GENERAL_EXPER)) : (context.formatPhrase(RenderingI18nContext.RES_REND_ACT)); 
+     case DRAFT: return (context.formatPhrase(RenderingI18nContext.RES_REND_DRAFT));
+     case RETIRED: return (context.formatPhrase(RenderingI18nContext.RES_REND_RET));
+     default: return (context.formatPhrase(RenderingI18nContext.RES_REND_UNKNOWN));
      }
    }
 
@@ -981,21 +982,21 @@ public abstract class ResourceRenderer extends DataRenderer {
         boolean sfirst = true;
         p = plateStyle(div.para());
         if (versionId != null) {
-          p.tx(context.formatPhrase(RenderingContext.RES_REND_VER, versionId.primitiveValue()));
+          p.tx(context.formatPhrase(RenderingI18nContext.RES_REND_VER, versionId.primitiveValue()));
           sfirst = false;
         }
         if (lastUpdated != null) {
           if (!sfirst) {
             p.tx("; ");
           }
-          p.tx(context.formatPhrase(RenderingContext.RES_REND_UPDATED, displayDataType(lastUpdated)));
+          p.tx(context.formatPhrase(RenderingI18nContext.RES_REND_UPDATED, displayDataType(lastUpdated)));
           sfirst = false;
         }
         if (lang != null) {
           if (!sfirst) {
             p.tx("; ");
           }
-          p.tx(context.formatPhrase(RenderingContext.RES_REND_LANGUAGE, lang));
+          p.tx(context.formatPhrase(RenderingI18nContext.RES_REND_LANGUAGE, lang));
           sfirst = false;
         }
         if (source != null) {
@@ -1005,7 +1006,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           XhtmlNode pp = plateStyle(div.para());
           pp.startScript("source");
           renderDataType(status, pp.param("source"), source);
-          pp.execScript(context.formatPhrase(RenderingContext.RES_REND_INFO_SOURCE));
+          pp.execScript(context.formatPhrase(RenderingI18nContext.RES_REND_INFO_SOURCE));
           pp.closeScript();
           sfirst = false;
         }
@@ -1013,14 +1014,14 @@ public abstract class ResourceRenderer extends DataRenderer {
           if (!sfirst) {
             p.tx("; ");
           }
-          plateStyle(div.para()).b().tx(context.formatPhrase(RenderingContext.RES_REND_SPEC_RULES, ir));     
+          plateStyle(div.para()).b().tx(context.formatPhrase(RenderingI18nContext.RES_REND_SPEC_RULES, ir));     
           sfirst = false;
         }
         if (meta != null) {
           List<ResourceWrapper> items = meta.children("profile");
           if (!items.isEmpty()) {
             p = plateStyle(div.para());
-            p.tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_PROF), items.size())+": ");
+            p.tx(Utilities.pluralize(context.formatPhrase(RenderingI18nContext.GENERAL_PROF), items.size())+": ");
             boolean first = true;
             for (ResourceWrapper bw : items) {
               if (first) first = false; else p.tx(", ");
@@ -1030,7 +1031,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           items = meta.children("tag");
           if (!items.isEmpty()) {
             p = plateStyle(div.para());
-            p.tx(Utilities.pluralize(context.formatPhrase(RenderingContext.RES_REND_TAG), items.size())+": ");
+            p.tx(Utilities.pluralize(context.formatPhrase(RenderingI18nContext.RES_REND_TAG), items.size())+": ");
             boolean first = true;
             for (ResourceWrapper bw : items) {
               if (first) first = false; else p.tx(", ");
@@ -1040,7 +1041,7 @@ public abstract class ResourceRenderer extends DataRenderer {
           items = meta.children("security");
           if (!items.isEmpty()) {
             p = plateStyle(div.para());
-            p.tx(Utilities.pluralize(context.formatPhrase(RenderingContext.GENERAL_SECURITY_LABEL), items.size())+": ");
+            p.tx(Utilities.pluralize(context.formatPhrase(RenderingI18nContext.GENERAL_SECURITY_LABEL), items.size())+": ");
             boolean first = true;
             for (ResourceWrapper bw : items) {
               if (first) first = false; else p.tx(", ");
@@ -1067,7 +1068,7 @@ public abstract class ResourceRenderer extends DataRenderer {
 //      render(dr);
 //    } catch (Exception e) {
 //      XhtmlNode x = new XhtmlNode(NodeType.Element, "div");
-//      x.para().tx(context.formatPhrase(RenderingContext.RES_REND_ERROR, e.getMessage())+" ");
+//      x.para().tx(context.formatPhrase(RenderingI18nContext.RES_REND_ERROR, e.getMessage())+" ");
 //      dr.setText(null);
 //      inject(dr, x, NarrativeStatus.GENERATED);   
 //    }
@@ -1195,26 +1196,26 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode tr;
     if (cr.has("url")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL)+":");
       xlinkNarrative(tr.td(), cr.child("url")).code().tx(cr.primitiveValue("url"));
     } else if (cr.hasExtension(EXT_NS_URL)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL)+":");
       xlinkNarrative(tr.td(), cr.extension(EXT_NS_URL)).code().tx(cr.extensionString(EXT_NS_URL));
     } else if (!context.isContained()) {                                          
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL));
       tr.td();      
     }
     if (cr.has("version")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_VER)+":");
       renderDataType(status, tr.td(), cr.child("version"));
     } else if (cr.hasExtension("http://terminology.hl7.org/StructureDefinition/ext-namingsystem-version")) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_VER)+":");
       renderDataType(status, tr.td(), cr.extensionValue("http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
@@ -1232,44 +1233,44 @@ public abstract class ResourceRenderer extends DataRenderer {
     
     if (name != null) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_NAME)+":");
       xlinkNarrative(tr.td(), cr.child("name")).tx(name);
     }
     
     if (title != null && !title.equalsIgnoreCase(name)) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_TITLE)+":");
       xlinkNarrative(tr.td(), cr.child("title")).tx(title);
     }
 
     if (cr.has("status") && !context.isContained()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_STATUS)+":");
       xlinkNarrative(tr.td(), cr.child("status")).tx(describeStatus(status, cr));
     }
 
     if (cr.has("description")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINITION)+":");
       xlinkNarrative(tr.td(), cr.child("description")).markdown(context.getTranslated(cr.child("description")), "description");
     }
 
     if (cr.has("publisher")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CANON_REND_PUBLISHER)+":");
       buildPublisherLinks( tr.td(), cr);
     }
     
     if (cr.hasExtension(ExtensionDefinitions.EXT_WORKGROUP)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CANON_REND_COMMITTEE)+":");
       renderCommitteeLink(tr.td(), cr);
     }
 
     if (cr.has("copyright")) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_COPYRIGHT)+":");
       xlinkNarrative(tr.td(), cr.child("copyright")).markdown(context.getTranslated(cr.child("copyright")), "copyright");
     }
     
@@ -1277,7 +1278,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       status.setExtensions(true);
       // Use hard-coded spec link to point to current spec because DSTU2 had maturity listed on a different page
       tr = tbl.tr();
-      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingI18nContext.CANON_REND_COMMITTEE)+":");
       renderDataType(status, tr.td(), cr.extensionValue(ExtensionDefinitions.EXT_FMM_LEVEL));
     }    
   }
@@ -1296,26 +1297,26 @@ public abstract class ResourceRenderer extends DataRenderer {
     XhtmlNode tr;
     if (cr.hasUrl()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL)+":");
       tr.td().code().tx(cr.getUrl());
     } else if (cr.hasExtension(EXT_NS_URL)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL));
       tr.td().code().tx(ExtensionUtilities.readStringExtension(cr, EXT_NS_URL)+":");
     } else if (!context.isContained()) {                                          
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINING_URL));
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINING_URL));
       tr.td();      
     }
     if (cr.hasVersion()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_VER)+":");
       tr.td().tx(cr.getVersion());
     } else if (cr.hasExtension("http://terminology.hl7.org/StructureDefinition/ext-namingsystem-version")) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_VER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_VER)+":");
       tr.td().tx(ExtensionUtilities.readStringExtension(cr, "http://hl7.org/fhir/5.0/StructureDefinition/extension-NamingSystem.version"));
     }
 
@@ -1324,44 +1325,44 @@ public abstract class ResourceRenderer extends DataRenderer {
     
     if (name != null) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_NAME)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_NAME)+":");
       tr.td().tx(name);
     }
     
     if (title != null && !title.equalsIgnoreCase(name)) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_TITLE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_TITLE)+":");
       tr.td().tx(title);
     }
 
     if (cr.hasStatus() && !context.isContained()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_STATUS)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_STATUS)+":");
       tr.td().tx(describeStatus(status, cr));
     }
 
     if (cr.hasDescription()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_DEFINITION)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_DEFINITION)+":");
       tr.td().markdown(cr.getDescription(), "description");
     }
 
     if (cr.hasPublisher()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_PUBLISHER)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CANON_REND_PUBLISHER)+":");
       buildPublisherLinks(tr.td(), cr);
     }
     
     if (cr.hasExtension(ExtensionDefinitions.EXT_WORKGROUP)) {
       status.setExtensions(true);
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.CANON_REND_COMMITTEE)+":");
       renderCommitteeLink(tr.td(), cr);
     }
 
     if (cr.hasCopyright()) {
       tr = tbl.tr();
-      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingContext.GENERAL_COPYRIGHT)+":");
+      markBoilerplate(tr.td()).tx(context.formatPhrase(RenderingI18nContext.GENERAL_COPYRIGHT)+":");
       tr.td().markdown(cr.getDescription(), "copyright");      
     }
     
@@ -1369,7 +1370,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       status.setExtensions(true);
       // Use hard-coded spec link to point to current spec because DSTU2 had maturity listed on a different page
       tr = tbl.tr();
-      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingContext.CANON_REND_COMMITTEE)+":");
+      markBoilerplate(tr.td()).ah("http://hl7.org/fhir/versions.html#maturity", "Maturity Level").attribute("class", "fmm").tx(context.formatPhrase(RenderingI18nContext.CANON_REND_COMMITTEE)+":");
       tr.td().tx(ExtensionUtilities.readStringExtension(cr, ExtensionDefinitions.EXT_FMM_LEVEL));
     }    
   }
@@ -1573,7 +1574,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         context.addAnchor(id);
         x.an(context.prefixAnchor(id));
       }
-      RendererFactory.factory(c, context.forContained()).setInner(true).buildNarrative(status, x, c);
+      context.getRendererFactory().factory(c, context.forContained()).setInner(true).buildNarrative(status, x, c);
     }
   }
 

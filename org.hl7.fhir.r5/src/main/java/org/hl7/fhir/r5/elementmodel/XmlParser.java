@@ -52,7 +52,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.sax.SAXSource;
-import javax.xml.xpath.XPathException;
 
 
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -73,7 +72,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.formats.XmlLocationAnnotator;
 import org.hl7.fhir.r5.utils.formats.XmlLocationData;
 import org.hl7.fhir.utilities.*;
@@ -95,7 +94,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
-@MarkedToMoveToAdjunctPackage
+
 public class XmlParser extends ParserBase {
   private boolean allowXsiLocation;
   private String version;
@@ -863,6 +862,9 @@ public class XmlParser extends ParserBase {
 
     if (schemaPath != null) {
       xml.setSchemaLocation(FormatUtilities.FHIR_NS, Utilities.pathURL(schemaPath, e.fhirType()+".xsd"));
+    }
+    if (ExtensionUtilities.readBoolExtension(e.getProperty().getStructure(), ExtensionDefinitions.EXT_ADDITIONAL_RESOURCE)) {
+      xml.attribute("resourceDefinition", e.getProperty().getStructure().getVersionedUrl());
     }
     composeElement(xml, e, e.getType(), true);
     xml.end();

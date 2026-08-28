@@ -10,10 +10,11 @@ import org.hl7.fhir.r5.model.ListResource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
-import org.hl7.fhir.utilities.xhtml.XhtmlNode; 
+
+import org.hl7.fhir.utilities.i18n.RenderingI18nContext;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
  
-@MarkedToMoveToAdjunctPackage
+
 public class ListRenderer extends ResourceRenderer { 
  
   public ListRenderer(RenderingContext context) { 
@@ -23,10 +24,10 @@ public class ListRenderer extends ResourceRenderer {
   @Override
   public String buildSummary(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     ResourceWrapper c = r.child("code");
-    String cd = c == null ? context.formatPhrase(RenderingContext.LIST_UNSPECIFIED_CODE) : displayCodeableConcept(c);
+    String cd = c == null ? context.formatPhrase(RenderingI18nContext.LIST_UNSPECIFIED_CODE) : displayCodeableConcept(c);
     ResourceWrapper s = r.child("subject");
-    String sd = s == null ? context.formatPhrase(RenderingContext.LIST_UNSPECIFIED_SUBJECT) : displayReference(s);
-    return context.formatPhrase(RenderingContext.LIST_SUMMARY, cd, sd);
+    String sd = s == null ? context.formatPhrase(RenderingI18nContext.LIST_UNSPECIFIED_SUBJECT) : displayReference(s);
+    return context.formatPhrase(RenderingI18nContext.LIST_SUMMARY, cd, sd);
   }
 
   @Override
@@ -38,33 +39,33 @@ public class ListRenderer extends ResourceRenderer {
     XhtmlNode t = x.table("clstu", false).markGenerated(!context.forValidResource());
     XhtmlNode tr = t.tr(); 
     if (list.has("date")) { 
-      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DATE, displayDateTime(list.child("date")))+" "); 
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.LIST_REND_DATE, displayDateTime(list.child("date")))+" "); 
     }  
     if (list.has("mode")) { 
-      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_MODE, getTranslatedCode(list.child("mode")))+" "); 
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.LIST_REND_MODE, getTranslatedCode(list.child("mode")))+" "); 
     } 
     if (list.has("status")) { 
-      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_STAT, getTranslatedCode(list.child("status")))+" "); 
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.LIST_REND_STAT, getTranslatedCode(list.child("status")))+" "); 
     } 
     if (list.has("code")) { 
-      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_CODE, displayDataType(list.child("code")))+" "); 
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.LIST_REND_CODE, displayDataType(list.child("code")))+" "); 
     }     
     tr = t.tr(); 
     XhtmlNode td = tr.td(); 
     if (list.has("subject")) { 
-      td.tx(context.formatPhrase(RenderingContext.LIST_REND_SUB)+" "); 
+      td.tx(context.formatPhrase(RenderingI18nContext.LIST_REND_SUB)+" "); 
       renderReference(status, td, list.child("subject")); 
     } 
     if (list.has("encounter")) { 
-      td.tx(context.formatPhrase(RenderingContext.LIST_REND_ENC)+" "); 
+      td.tx(context.formatPhrase(RenderingI18nContext.LIST_REND_ENC)+" "); 
       renderReference(status, td, list.child("encounter")); 
     } 
     if (list.has("source")) { 
-      td.tx(context.formatPhrase(RenderingContext.GENERAL_SRC)+" "); 
+      td.tx(context.formatPhrase(RenderingI18nContext.GENERAL_SRC)+" "); 
       renderReference(status, td, list.child("encounter")); 
     } 
     if (list.has("orderedBy")) { 
-      td.tx(context.formatPhrase(RenderingContext.LIST_REND_ORD, displayDataType(list.child("orderedBy")))+" "); 
+      td.tx(context.formatPhrase(RenderingI18nContext.LIST_REND_ORD, displayDataType(list.child("orderedBy")))+" "); 
     } 
     for (ResourceWrapper a : list.children("note")) { 
       renderAnnotation(status, x, x.para().tx("note"), a); 
@@ -79,15 +80,15 @@ public class ListRenderer extends ResourceRenderer {
     } 
     t = x.table("grid", false).markGenerated(!context.forValidResource());
     tr = t.tr().style("backgound-color: #eeeeee"); 
-    tr.td().b().tx(context.formatPhrase(RenderingContext.LIST_REND_ITEM)); 
+    tr.td().b().tx(context.formatPhrase(RenderingI18nContext.LIST_REND_ITEM)); 
     if (date) { 
-      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DAT));       
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.LIST_REND_DAT));       
     } 
     if (flag) { 
-      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_FLAG));       
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.LIST_REND_FLAG));       
     } 
     if (deleted) { 
-      tr.td().tx(context.formatPhrase(RenderingContext.LIST_REND_DEL));       
+      tr.td().tx(context.formatPhrase(RenderingI18nContext.LIST_REND_DEL));       
     } 
     for (ResourceWrapper e : list.children("entry")) { 
       tr = t.tr(); 

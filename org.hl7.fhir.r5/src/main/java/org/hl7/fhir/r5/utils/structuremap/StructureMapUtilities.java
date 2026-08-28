@@ -69,14 +69,13 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionMappingCompo
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap.*;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
-import org.hl7.fhir.r5.renderers.TerminologyRenderer;
 import org.hl7.fhir.r5.terminologies.expansion.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.FhirPublication;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
@@ -97,7 +96,7 @@ import java.util.*;
  *
  * @author Grahame Grieve
  */
-@MarkedToMoveToAdjunctPackage
+
 @Slf4j
 public class StructureMapUtilities {
 
@@ -2218,7 +2217,8 @@ public class StructureMapUtilities {
             res.setUserData(UserDataNames.map_profile, tgt.getUserData(UserDataNames.map_profile));
           return res;
         case COPY:
-          return getParam(vars, tgt.getParameter().get(0));
+          Base val = getParam(vars, tgt.getParameter().get(0));
+          return val != null ? val.copy() : val;
         case EVALUATE:
           ExpressionNode expr = (ExpressionNode) tgt.getUserData(MAP_EXPRESSION);
           if (expr == null) {

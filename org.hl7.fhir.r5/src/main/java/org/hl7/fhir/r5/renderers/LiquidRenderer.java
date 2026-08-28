@@ -15,13 +15,16 @@ import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.ResourceWrapper;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.MarkedToMoveToAdjunctPackage;
+import org.hl7.fhir.utilities.FileUtilities;
+
+import org.hl7.fhir.utilities.UUIDUtilities;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
-@MarkedToMoveToAdjunctPackage
+
 public class LiquidRenderer extends ResourceRenderer implements ILiquidRenderingSupport {
 
   private String liquidTemplate;
@@ -68,17 +71,26 @@ public class LiquidRenderer extends ResourceRenderer implements ILiquidRendering
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     LiquidEngine engine = new LiquidEngine(context.getWorker(), context.getServices());
     XhtmlNode xn;
+    String html = null;
     try {
       engine.setIncludeResolver(new LiquidRendererIncludeResolver(context));
       engine.setRenderingSupport(this);
       LiquidDocument doc = engine.parse(liquidTemplate, "template");
-      String html = engine.evaluate(doc, r.getBase(), new LiquidRendererContext(status, r));
+      html = engine.evaluate(doc, r.getBase(), new LiquidRendererContext(status, r));
       xn = new XhtmlParser().parseFragment(html);
       if (!x.getName().equals("div"))
         throw new FHIRException("Error in template: Root element is not 'div'");
     } catch (FHIRException | IOException e) {
-      xn = new XhtmlNode(NodeType.Element, "div");
-      xn.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
+      if (html == null) {
+        xn = new XhtmlNode(NodeType.Element, "div");
+        xn.para().b().style("color: maroon").tx("Exception generating Narrative: " + e.getMessage());
+
+      } else {
+        String fn = Utilities.path("[tmp]", "liquid-"+UUIDUtilities.makeUuidLC()+".html");
+        FileUtilities.stringToFile(html, fn);
+        xn = new XhtmlNode(NodeType.Element, "div");
+        xn.para().b().style("color: maroon").tx("Exception parsing generated Narrative (see "+fn+"): " + e.getMessage());
+      }
     }
     x.addChildNodes(xn.getChildNodes());
     status.setExtensions(true);

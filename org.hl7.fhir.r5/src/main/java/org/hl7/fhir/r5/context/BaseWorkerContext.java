@@ -39,6 +39,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -100,7 +101,7 @@ import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.PackageHackerR5;
 import org.hl7.fhir.r5.utils.ResourceUtilities;
 
-import org.hl7.fhir.r5.utils.UserDataNames;
+import org.hl7.fhir.utilities.UserDataNames;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.validation.ValidationContextCarrier;
 import org.hl7.fhir.utilities.*;
@@ -115,7 +116,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 @Slf4j
-@MarkedToMoveToAdjunctPackage
+
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext, IWorkerContextManager, IOIDServices {
   private static boolean allowedToIterateTerminologyResources;
   private long definitionsVersion = 0;
@@ -1210,7 +1211,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
 
   @Override
-  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean passVS) {
+  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs, boolean notUsed) {
     if (options == null) {
       options = ValidationOptions.defaults();
     }
@@ -1263,9 +1264,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Set<String> systems = findRelevantSystems(vs);
     ValueSet lastvs = null;
     if (vs != null) {
-      if (passVS) {
-        batch.addParameter().setName("tx-resource").setResource(vs);
-      }
       batch.addParameter("url", vs.getUrl());
     }
     List<CodingValidationRequest> items = new ArrayList<>();
@@ -1285,18 +1283,47 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       Parameters resp = processBatch(tc, batch, systems, items.size());
       List<ParametersParameterComponent> validations = resp.getParameters("validation");
       for (int i = 0; i < items.size(); i++) {
-        CodingValidationRequest t = items.get(i);
-        ParametersParameterComponent r = validations.get(i);
+        CodingValidationRequest requestAtIndex = items.get(i);
+        ParametersParameterComponent responseAtIndex = validations.get(i);
 
-        if (r.getResource() instanceof Parameters) {
-          t.setResult(processValidationResult((Parameters) r.getResource(), null, tc.getAddress()));
+        if (responseAtIndex.getResource() instanceof Parameters) {
+          checkBatchResultMatches(tc, requestAtIndex, (Parameters) responseAtIndex.getResource(), i);
+          requestAtIndex.setResult(processValidationResult((Parameters) responseAtIndex.getResource(), null, tc.getAddress()));
           if (txCache != null) {
-            txCache.cacheValidation(t.getCacheToken(), t.getResult(), TerminologyCache.PERMANENT);
+            txCache.cacheValidation(requestAtIndex.getCacheToken(), requestAtIndex.getResult(), TerminologyCache.PERMANENT);
           }
         } else {
-          t.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(r.getResource()), null).setTxLink(txLog == null ? null : txLog.getLastId()));
+          requestAtIndex.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(responseAtIndex.getResource()), null).setTxLink(txLog == null ? null : txLog.getLastId()));
         }
       }
+    }
+  }
+
+  /**
+   * Batch results are matched to the requests by position, so a server that returns them in the wrong
+   * order would silently give each code another code's answer - and that answer would then be cached
+   * against the wrong code. Servers that support batch validation are tested to echo the system and code
+   * of each item, so we check them, and refuse the whole batch rather than mis-attribute any of it.
+   */
+  private void checkBatchResultMatches(TerminologyClientContext tc, CodingValidationRequest requestAtIndex, Parameters result, int index) {
+    String system = null;
+    String code = null;
+    for (ParametersParameterComponent parameter : result.getParameter()) {
+      if (parameter.hasValue()) {
+        if ("system".equals(parameter.getName())) {
+          system = parameter.getValue().primitiveValue();
+        } else if ("code".equals(parameter.getName())) {
+          code = parameter.getValue().primitiveValue();
+        }
+      }
+    }
+    Coding requestCoding = requestAtIndex.getCoding();
+    // the system is only checked when we asked with one - with inferSystem, the server picks it
+    boolean mismatch = (code != null && !code.equals(requestCoding.getCode()))
+        || (system != null && requestCoding.hasSystem() && !system.equals(requestCoding.getSystem()));
+    if (mismatch) {
+      throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_BATCH_RESPONSE_MISMATCH, tc.getAddress(), index,
+          (system == null ? "" : system + "#") + code, requestCoding.getSystem() + "#" + requestCoding.getCode()));
     }
   }
 
@@ -1311,6 +1338,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Parameters resp = tc.getClient().batchValidateVS(batch);
     if (resp == null) {
       throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_NO_BATCH_RESPONSE));
+    }
+    int count = resp.getParameters("validation").size();
+    if (count != size) {
+      throw new FHIRException(formatMessage(I18nConstants.TX_SERVER_BATCH_RESPONSE_SIZE, tc.getAddress(), count, size));
     }
     return resp;
   }
@@ -1969,7 +2000,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (ParametersParameterComponent pp : expansionParameters.get().getParameter()) {
       if ("defaultDisplayLanguage".equals(pp.getName())) {
         defLang = pp.getValue().primitiveValue();
-      } else if (!pin.hasParameter(pp.getName())) {
+      } else if (!pin.hasParameter(pp.getName()) || isMultiInstanceParameter(pp.getName())) {
         pin.addParameter(pp);
       } else if ("displayLanguage".equals(pp.getName())) {
         pin.setParameter(pp);
@@ -1983,6 +2014,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       pin.addParameter("mode", "lenient-display-validation");
     }
     pin.addParameter("diagnostics", true);
+  }
+
+  private static final Set<String> MULTI_INSTANCE_PARAMETERS = new HashSet<>(Arrays.asList(
+      "useSupplement", "force-system-version", "property", "filterProperty", "exclude-system", "system-version", 
+      "check-system-version", "default-valueset-version", "check-valueset-version", "force-valueset-version", "tx-resource"));
+
+  private boolean isMultiInstanceParameter(String name) {
+    return MULTI_INSTANCE_PARAMETERS.contains(name);
   }
 
   private void addDependentResources(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tc, Parameters pin, ValueSet vs) {
@@ -2104,7 +2143,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public ValidationResult processValidationResult(Parameters pOut, String vs, String server) {
     boolean ok = false;
-    String message = "No Message returned";
+    String message = null;
     String display = null;
     String system = null;
     String code = null;
@@ -2200,8 +2239,35 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         }
       }
     }
+    if (!ok && message == null) {
+      // the server didn't return a message, but it did fail. Servers are allowed to convey the reason for
+      // failure in the issues alone, so build a message from them: error issues if there are any, otherwise
+      // whatever issues there are (better than reporting an anonymous failure)
+      List<String> msgs = new ArrayList<>();
+      for (OperationOutcomeIssueComponent iss : issues) {
+        if ((iss.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.FATAL ||
+             iss.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR)
+            && iss.getDetails().hasText() && !msgs.contains(iss.getDetails().getText())) {
+          msgs.add(iss.getDetails().getText());
+        }
+      }
+      if (msgs.isEmpty()) {
+        for (OperationOutcomeIssueComponent iss : issues) {
+          if (iss.getDetails().hasText() && !msgs.contains(iss.getDetails().getText())) {
+            msgs.add(iss.getDetails().getText());
+          }
+        }
+      }
+      if (!msgs.isEmpty()) {
+        Collections.sort(msgs);
+        message = String.join("; ", msgs);
+      }
+    }
     ValidationResult res = null;
     if (!ok) {
+      if (message == null) {
+        message = "The server did not return an error message";
+      }
       res = new ValidationResult(IssueSeverity.ERROR, message, err, null).setTxLink(txLog == null ? null : txLog.getLastId());
       if (code != null) {
         res.setDefinition(new ConceptDefinitionComponent().setDisplay(display).setCode(code));
@@ -2213,10 +2279,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (version != null) {
         res.setVersion(version);
       }
-    } else if (message != null && !message.equals("No Message returned")) {
+    } else if (message != null) {
       res = new ValidationResult(IssueSeverity.WARNING, message, system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display, null).setTxLink(txLog == null ? null : txLog.getLastId());
     } else if (display != null) {
-      res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog == null ? null : txLog.getLastId());
+       res = new ValidationResult(system, version, new ConceptDefinitionComponent().setDisplay(display).setCode(code), display).setTxLink(txLog == null ? null : txLog.getLastId());
     } else {
       res = new ValidationResult(system, version, new ConceptDefinitionComponent().setCode(code), null).setTxLink(txLog == null ? null : txLog.getLastId());
     }
