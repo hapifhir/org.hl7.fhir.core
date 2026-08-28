@@ -162,6 +162,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     initModes.add("omop");
     initModes.add("general");
     initModes.add("snomed");
+    initModes.add("mimetypes");
     // Loader only uses the static txtests field, so a throwaway instance is fine.
     tester = new TxTester(new ExternalTerminologyServiceTests("init", null), SERVER, true, externals, "5.0.0");
     tester.initialise(initModes);
@@ -193,6 +194,7 @@ public class ExternalTerminologyServiceTests implements ITxTesterLoader {
     modes.add("omop");
     modes.add("general");
     modes.add("snomed");
+    modes.add("mimetypes");
   }
 
   private void logTestSkip(String reason) {
