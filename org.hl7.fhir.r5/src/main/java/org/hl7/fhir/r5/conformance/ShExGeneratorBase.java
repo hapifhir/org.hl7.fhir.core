@@ -145,7 +145,7 @@ public abstract class ShExGeneratorBase {
   //      the list of element declarations
   //      an optional index element (for appearances inside ordered lists)
   private static final String SHAPE_DEFINITION_TEMPLATE =
-    "$comment$\n<$id$> CLOSED { $fhirType$ " +
+    "$comment$\n$abstract$<$id$> CLOSED { $fhirType$ " +
       "\n    $resourceDecl$" +
       "\n    $elements$" +
 //      "\n    $contextOfUse$" +
@@ -701,7 +701,10 @@ public abstract class ShExGeneratorBase {
   private String genShapeDefinition(StructureDefinition sd, boolean top_level) {
     if("xhtml".equals(sd.getName())) {
       return tmplt(SHAPE_DEFINITION_TEMPLATE)
+        .add("abstract", sd.getAbstract() ? "ABSTRACT " : "")
         .add("id", getClassName(getExtendedType(sd)))
+        .add("fhirType", "")
+        .add("resourceDecl", "")
         .add("elements", "fhir:v " + tmplt(XHTML_TYPE_TEMPLATE).render() + ";\nfhir:extension . {0};")
         .add("comment", "")
         .add("constraints", "")
@@ -712,7 +715,9 @@ public abstract class ShExGeneratorBase {
     // Resources are either incomplete items or consist of everything that is defined as a resource (completeModel)
     var className = getClassName(sd.getName());
 
-    shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE).add("id", getClassName(getExtendedType(sd)));
+    shape_defn = tmplt(SHAPE_DEFINITION_TEMPLATE)
+      .add("abstract", sd.getAbstract() ? "ABSTRACT " : "")
+      .add("id", getClassName(getExtendedType(sd)));
     known_resources.add(className);
 
     if (baseDataTypes.contains(sd.getType())) {
@@ -1964,6 +1969,7 @@ public abstract class ShExGeneratorBase {
   private String genInnerTypeDef(StructureDefinition sd, ElementDefinition ed) {
     String path = ed.hasBase() ? ed.getBase().getPath() : ed.getPath();
     ST element_reference = tmplt(SHAPE_DEFINITION_TEMPLATE);
+    element_reference.add("abstract", "");
     element_reference.add("resourceDecl", "");  // Not a resource
     element_reference.add("id", getClassName(removeMultipleX(path) + getExtendedType(ed)));
     element_reference.add("fhirType", " ");

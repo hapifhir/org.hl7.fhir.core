@@ -157,6 +157,36 @@ public class ShexGeneratorTests {
     });
   }
 
+  @Test
+  public void testCompleteModelR6EmitsAbstractBaseShapes() throws IOException {
+    ShExGeneratorR6 generator = new ShExGeneratorR6(r6WorkerContext,
+      new ShExGeneratorConfig(false, false, true, false, false,
+        ShExGeneratorBase.ConstraintTranslationPolicy.ALL));
+
+    String schema = generator.generate(HTMLLinkPolicy.NONE, getCompleteModelStructures(r6WorkerContext));
+
+    assertAbstractBaseShapes(schema);
+    assertThat(getShape(schema, "ABSTRACT <Resource> EXTENDS @<Base> CLOSED {"))
+      .contains("a [fhir:Resource]?;")
+      .contains("fhir:nodeRole [fhir:treeRoot]?;")
+      .contains("fhir:id @<Id>?;")
+      .contains("fhir:meta @<Meta>?;")
+      .contains("fhir:implicitRules @<Uri>?;")
+        .contains("fhir:language @<Code> AND")
+        .contains("{fhir:v @fhirvs:all-languages}?;");
+  }
+
+  @Test
+  public void testCompleteModelR5EmitsAbstractBaseShapes() throws IOException {
+    assertAbstractBaseShapes(generateCompleteModel(r5WorkerContext));
+  }
+
+  @Test
+  public void testCompleteModelR4EmitsAbstractBaseShapes() throws IOException {
+    IWorkerContext r4WorkerContext = TurtleGeneratorTestUtils.getVersionOverrideWorkerContext("4.0.1");
+    assertAbstractBaseShapes(generateCompleteModel(r4WorkerContext));
+  }
+
   /** Generate complete ShEx schema from directory of StructureDefinition XML files. This is what Kindling does to produce the published spec. */
   @Disabled("Run manually with provided directory of StructureDefinition XML files")
   @Test
@@ -480,12 +510,30 @@ public class ShexGeneratorTests {
   private void generateCompleteModel(IWorkerContext workerContext, Path outPath) throws IOException {
     // Context should already be loaded with StructureDefinitions
 
-    ShExGenerator shgen = new ShExGenerator(workerContext,
-      new ShExGeneratorConfig(false, false, true, false, false, ShExGeneratorBase.ConstraintTranslationPolicy.ALL));
-
-    List<StructureDefinition> list = getCompleteModelStructures(workerContext);
     System.out.println("Generating Complete FHIR ShEx to " + outPath.toString());
-    FileUtilities.stringToFile(shgen.generate(ShExGeneratorBase.HTMLLinkPolicy.NONE, list), outPath.toString());
+    FileUtilities.stringToFile(generateCompleteModel(workerContext), outPath.toString());
+  }
+
+  private String generateCompleteModel(IWorkerContext workerContext) throws IOException {
+    ShExGenerator generator = new ShExGenerator(workerContext,
+      new ShExGeneratorConfig(false, false, true, false, false, ShExGeneratorBase.ConstraintTranslationPolicy.ALL));
+    return generator.generate(HTMLLinkPolicy.NONE, getCompleteModelStructures(workerContext));
+  }
+
+  private void assertAbstractBaseShapes(String schema) {
+    assertThat(schema)
+      .contains("ABSTRACT <Base> CLOSED {")
+      .contains("ABSTRACT <Resource> EXTENDS @<Base> CLOSED {")
+      .contains("ABSTRACT <DomainResource> EXTENDS @<Resource> CLOSED {")
+      .contains("ABSTRACT <Element> EXTENDS @<Base> CLOSED {");
+  }
+
+  private String getShape(String schema, String declaration) {
+    int start = schema.indexOf(declaration);
+    assertThat(start).as("shape declaration %s", declaration).isNotNegative();
+    int end = schema.indexOf("\n}", start);
+    assertThat(end).as("end of shape %s", declaration).isNotNegative();
+    return schema.substring(start, end);
   }
 
   private List<StructureDefinition> getCompleteModelStructures(IWorkerContext workerContext) {
