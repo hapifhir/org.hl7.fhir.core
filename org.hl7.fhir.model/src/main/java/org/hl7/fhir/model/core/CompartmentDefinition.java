@@ -86,6 +86,10 @@ public class CompartmentDefinition extends CanonicalResource {
          */
         EPISODEOFCARE, 
         /**
+         * The compartment definition is for the group compartment.
+         */
+        GROUP, 
+        /**
          * added to help the parsers with the generic types
          */
         NULL;
@@ -104,6 +108,8 @@ public class CompartmentDefinition extends CanonicalResource {
           return DEVICE;
         if ("EpisodeOfCare".equals(codeString))
           return EPISODEOFCARE;
+        if ("Group".equals(codeString))
+          return GROUP;
         if (Configuration.isAcceptInvalidEnums())
           return null;
         else
@@ -117,6 +123,7 @@ public class CompartmentDefinition extends CanonicalResource {
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
             case EPISODEOFCARE: return "EpisodeOfCare";
+            case GROUP: return "Group";
             case NULL: return null;
             default: return "?";
           }
@@ -129,6 +136,7 @@ public class CompartmentDefinition extends CanonicalResource {
             case PRACTITIONER: return "http://hl7.org/fhir/compartment-type";
             case DEVICE: return "http://hl7.org/fhir/compartment-type";
             case EPISODEOFCARE: return "http://hl7.org/fhir/compartment-type";
+            case GROUP: return "http://hl7.org/fhir/compartment-type";
             case NULL: return null;
             default: return "?";
           }
@@ -141,6 +149,7 @@ public class CompartmentDefinition extends CanonicalResource {
             case PRACTITIONER: return "The compartment definition is for the practitioner compartment.";
             case DEVICE: return "The compartment definition is for the device compartment.";
             case EPISODEOFCARE: return "The compartment definition is for the episodeofcare compartment.";
+            case GROUP: return "The compartment definition is for the group compartment.";
             case NULL: return null;
             default: return "?";
           }
@@ -153,6 +162,7 @@ public class CompartmentDefinition extends CanonicalResource {
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
             case EPISODEOFCARE: return "EpisodeOfCare";
+            case GROUP: return "Group";
             case NULL: return null;
             default: return "?";
           }
@@ -183,6 +193,8 @@ public class CompartmentDefinition extends CanonicalResource {
           return CompartmentType.DEVICE;
         if ("EpisodeOfCare".equals(codeString))
           return CompartmentType.EPISODEOFCARE;
+        if ("Group".equals(codeString))
+          return CompartmentType.GROUP;
         throw new IllegalArgumentException("Unknown CompartmentType code '"+codeString+"'");
         }
         public Enumeration<CompartmentType> fromType(PrimitiveType<?> code) throws FHIRException {
@@ -205,6 +217,8 @@ public class CompartmentDefinition extends CanonicalResource {
           return new Enumeration<CompartmentType>(modelContext, this, CompartmentType.DEVICE, code);
         if ("EpisodeOfCare".equals(codeString))
           return new Enumeration<CompartmentType>(modelContext, this, CompartmentType.EPISODEOFCARE, code);
+        if ("Group".equals(codeString))
+          return new Enumeration<CompartmentType>(modelContext, this, CompartmentType.GROUP, code);
         throw new FHIRException("Unknown CompartmentType code '"+codeString+"'");
         }
     public String toCode(CompartmentType code) {
@@ -220,6 +234,8 @@ public class CompartmentDefinition extends CanonicalResource {
         return "Device";
       if (code == CompartmentType.EPISODEOFCARE)
         return "EpisodeOfCare";
+      if (code == CompartmentType.GROUP)
+        return "Group";
       return "?";
       }
     public String toSystem(CompartmentType code) {

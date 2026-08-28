@@ -1,0 +1,7 @@
+<root>
+<blah myAtt="dummyAtt">
+    expected
+</blah>
+<emptyNode>not empty</emptyNode>
+    <foo:nameSpacedNode xmlns:foo="http://www.example.com/FOO" ></foo:nameSpacedNode>
+</root>

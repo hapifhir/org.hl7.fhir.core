@@ -2473,6 +2473,12 @@ public class StructureMap extends CanonicalResource {
 
     }
 
+    // Additional Code from StructureMap.group.java:
+    public String toString() {
+        return org.hl7.fhir.model.utilities.StructureMapUtilities.groupToString(this);
+    }
+    // end addition
+
   }
 
   @Block()
@@ -3478,6 +3484,12 @@ public class StructureMap extends CanonicalResource {
 
     }
 
+    // Additional Code from StructureMap.group.rule.java:
+    public String toString() {
+        return org.hl7.fhir.model.utilities.StructureMapUtilities.ruleToString(this);
+    }
+    // end addition
+
   }
 
   @Block()
@@ -4421,6 +4433,12 @@ public class StructureMap extends CanonicalResource {
 
     }
 
+    // Additional Code from StructureMap.group.rule.source.java:
+    public String toString() {
+        return org.hl7.fhir.model.utilities.StructureMapUtilities.sourceToString(this);
+    }
+    // end addition
+
     public String getElementName() {
       if (this.elementList == null || this.elementList.isEmpty()) {
         return null;
@@ -5093,6 +5111,12 @@ public class StructureMap extends CanonicalResource {
 
   }
 
+    // Additional Code from StructureMap.group.rule.target.java:
+    public String toString() {
+        return org.hl7.fhir.model.utilities.StructureMapUtilities.targetToString(this);
+    }
+    // end addition
+
     public String getElementName() {
       if (this.elementList == null || this.elementList.isEmpty()) {
         return null;
@@ -5432,6 +5456,12 @@ public class StructureMap extends CanonicalResource {
     return "StructureMap.group.rule.target.parameter";
 
   }
+
+    // Additional Code from StructureMap.group.rule.target.parameter.java:
+    public String toString() {
+        return value == null ? "null!" : value.toString();
+    }
+    // end addition
 
   }
 
@@ -7748,6 +7778,10 @@ public class StructureMap extends CanonicalResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
+// Manual code (from Configuration.txt):
+  public String toString() {
+      return org.hl7.fhir.model.utilities.StructureMapUtilities.render(this);
+  }
+// end addition
 
 }
-

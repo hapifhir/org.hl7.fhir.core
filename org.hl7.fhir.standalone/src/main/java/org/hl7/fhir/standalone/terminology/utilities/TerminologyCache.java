@@ -38,6 +38,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.model.Base;
 import org.hl7.fhir.model.core.*;
 import org.hl7.fhir.model.core.formats.*;
 import org.hl7.fhir.model.utilities.formats.OutputStyle;
@@ -342,7 +343,7 @@ public class TerminologyCache {
   @Getter @Setter private static boolean noCaching;
   @Getter @Setter private static boolean cacheErrors;
 
-  protected TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds, IWorkerContext context) throws FileNotFoundException, IOException, FHIRException {
+  public TerminologyCache(Object lock, String folder, Long capabilityCacheExpirationMilliseconds, IWorkerContext context) throws FileNotFoundException, IOException, FHIRException {
     super();
    this.lock = lock;
    this.context = context;
@@ -479,16 +480,24 @@ public class TerminologyCache {
     save(terminologyCapabilities, TERMINOLOGY_CAPABILITIES_TITLE+"."+getServerId(address));
   }
 
+  private String getSystemName(String name, String oldName) {
+    String systemName = getSystemNameKeyGenerator().getNameForSystem(name);
+    if (oldName == null)
+      oldName = systemName;
+    else if (!systemName.equals(oldName))
+      oldName = NAME_FOR_NO_SYSTEM;
+    return oldName;
+  }
 
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs, Parameters expParameters) {
     try {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
-        ct.setName(code.getSystem());
+        ct.setName(getSystemName(code.getSystem(), ct.getName()));
         ct.setHasVersion(code.hasVersion());
+      } else {
+        ct.setName(getSystemName(NAME_FOR_NO_SYSTEM, ct.getName()));
       }
-      else
-        ct.setName(NAME_FOR_NO_SYSTEM);
       nameCacheToken(vs, ct);
       JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
@@ -517,12 +526,12 @@ public class TerminologyCache {
     try {
       CacheToken ct = new CacheToken();
       if (code.hasSystem()) {
-        ct.setName(code.getSystem());
+        ct.setName(getSystemName(code.getSystem(), ct.getName()));
         ct.setHasVersion(code.hasVersion());
       } else {
-        ct.setName(NAME_FOR_NO_SYSTEM);
+        ct.setName(getSystemName(NAME_FOR_NO_SYSTEM, ct.getName()));
       }
-      ct.setName(vsUrl);
+      ct.setName(getSystemName(vsUrl, ct.getName()));
       JsonParser json = new JsonParser(context);
       json.setOutputStyle(OutputStyle.PRETTY);
       String expJS = expParamsJson(json, expParameters);
@@ -569,7 +578,7 @@ public class TerminologyCache {
       CacheToken ct = new CacheToken();
       for (Coding c : code.getCodingList()) {
         if (c.hasSystem()) {
-          ct.setName(c.getSystem());
+          ct.setName(getSystemName(c.getSystem(), ct.getName()));
           ct.setHasVersion(c.hasVersion());
         }
       }
@@ -596,7 +605,7 @@ public class TerminologyCache {
   public ValueSet getVSEssense(ValueSet vs) {
     if (vs == null)
       return null;
-    ValueSet vsc = new ValueSet();
+    ValueSet vsc = new ValueSet(vs.getModelContext());
     vsc.setCompose(vs.getCompose());
     if (vs.hasExpansion()) {
       vsc.getExpansion().getParameterList().addAll(vs.getExpansion().getParameterList());
@@ -635,19 +644,19 @@ public class TerminologyCache {
     if (vs != null) {
       for (ValueSet.ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
         if (inc.hasSystem()) {
-          ct.setName(inc.getSystem());
+          ct.setName(getSystemName(inc.getSystem(), ct.getName()));
           ct.setHasVersion(inc.hasVersion());
         }
       }
       for (ValueSet.ConceptSetComponent inc : vs.getCompose().getExcludeList()) {
         if (inc.hasSystem()) {
-          ct.setName(inc.getSystem());
+          ct.setName(getSystemName(inc.getSystem(), ct.getName()));
           ct.setHasVersion(inc.hasVersion());
         }
       }
       for (ValueSet.ValueSetExpansionContainsComponent inc : vs.getExpansion().getContainsList()) {
         if (inc.hasSystem()) {
-          ct.setName(inc.getSystem());
+          ct.setName(getSystemName(inc.getSystem(), ct.getName()));
           ct.setHasVersion(inc.hasVersion());
         }
       }
@@ -1393,10 +1402,10 @@ public class TerminologyCache {
     try {
       CacheToken ct = new CacheToken();
       if (parent.hasSystem()) {
-        ct.setName(parent.getSystem());
+        ct.setName(getSystemName(parent.getSystem(), ct.getName()));
       }
       if (child.hasSystem()) {
-        ct.setName(child.getSystem());
+        ct.setName(getSystemName(child.getSystem(), ct.getName()));
       }
       ct.setHasVersion(parent.hasVersion() || child.hasVersion());
       JsonParser json = new JsonParser(context);

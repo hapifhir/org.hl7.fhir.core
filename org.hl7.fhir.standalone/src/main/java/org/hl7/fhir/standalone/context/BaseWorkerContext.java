@@ -10,6 +10,8 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.model.Base;
+import org.hl7.fhir.model.IModelContext;
+import org.hl7.fhir.model.ModelContextInformation;
 import org.hl7.fhir.model.fml.StructureMap;
 import org.hl7.fhir.model.utilities.*;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
@@ -107,7 +109,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private long definitionsVersion = 0;
   private Map<String, Object> analyses = new HashMap();
 
-
+  @Getter private ModelContextInformation contextInformation = new ModelContextInformation();
   public interface IByteProvider {
     byte[] bytes() throws IOException;
   }
@@ -328,6 +330,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     cutils = new ContextUtilities(this, suppressedMappings);
   }
 
+  @Override
+  public boolean isCompatibleModelContext(IModelContext modelContext) {
+    return modelContext.getFHIRVersion().equals(this.getFHIRVersion()) && this.getContextInformation().isCompatible(modelContext.getContextInformation());
+  }
   private void initLang() throws IOException {
     registry = new LanguageSubtagRegistry();
     LanguageSubtagRegistryLoader loader = new LanguageSubtagRegistryLoader(registry);
@@ -336,6 +342,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   protected void copy(BaseWorkerContext other) {
     synchronized (other.lock) { // tricky, because you need to lock this as well, but it's really not in use yet 
+      // this has to come first: the resources copied below were created under the other context, and
+      // they can only be used under this one if the two contexts have the same registrations. Without
+      // this, any context copied from one that had custom resources registered (e.g. the shared test
+      // context, which registers StructureMap/TestPlan/TestReport/TestScript) is incompatible with
+      // every resource it just inherited
+      contextInformation = new ModelContextInformation(other.contextInformation);
       allResourcesById.putAll(other.allResourcesById);
       codeSystems.copy(other.codeSystems);
       valueSets.copy(other.valueSets);
@@ -1668,21 +1680,49 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return null;
   }
 
-  protected ValueSetExpander constructValueSetExpanderSimple(ValidationOptions options) {
+  /**
+   * public for testing only
+   *
+   * @param options
+   * @return
+   */
+  public ValueSetExpander constructValueSetExpanderSimple(ValidationOptions options) {
     return new ValueSetExpander(this, new TerminologyOperationContext(this, options, "expansion"));
   }
 
-  protected ValueSetValidator constructValueSetCheckerSimple(ValidationOptions options, ValueSet vs, ValidationContextCarrier ctxt) {
+  /**
+   * testing only
+   *
+   * @param options
+   * @param vs
+   * @param ctxt
+   * @return
+   */
+  public ValueSetValidator constructValueSetCheckerSimple(ValidationOptions options, ValueSet vs, ValidationContextCarrier ctxt) {
     return new ValueSetValidator(this, new TerminologyOperationContext(this, options, "validation"), options, vs, ctxt, getExpansionParameters(), terminologyClientManager, registry);
   }
 
-  protected ValueSetValidator constructValueSetCheckerSimple(ValidationOptions options, ValueSet vs) {
+  /**
+   * public for testing only
+   * @param options
+   * @param vs
+   * @return
+   */
+  public ValueSetValidator constructValueSetCheckerSimple(ValidationOptions options, ValueSet vs) {
     ValueSetValidator vsv = new ValueSetValidator(this, new TerminologyOperationContext(this, options, "validation"), options, vs, getExpansionParameters(), terminologyClientManager, registry);
     vsv.setExternalSource((CanonicalResource) options.getExternalSource());
     return vsv;
   }
 
-  protected Parameters constructParameters(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tcd, ValueSet vs, boolean hierarchical) {
+  /**
+   * public for testing only
+   * @param opCtxt
+   * @param tcd
+   * @param vs
+   * @param hierarchical
+   * @return
+   */
+  public Parameters constructParameters(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext tcd, ValueSet vs, boolean hierarchical) {
     Parameters p = getExpansionParameters();
     p.setParameter("includeDefinition", false);
     p.setParameter("excludeNested", !hierarchical);
@@ -1691,7 +1731,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return p;
   }
 
-  protected Parameters constructParameters(ValidationOptions options, Coding coding) {
+  public Parameters constructParameters(ValidationOptions options, Coding coding) {
     Parameters pIn = new Parameters();
     if (options.isGuessSystem()) {
       pIn.addParameter().setName("inferSystem").setValue(new BooleanType(true));
@@ -1703,7 +1743,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return pIn;
   }
 
-  protected Parameters constructParameters(ValidationOptions options, CodeableConcept codeableConcept) {
+  public Parameters constructParameters(ValidationOptions options, CodeableConcept codeableConcept) {
     Parameters pIn = new Parameters();
     pIn.addParameter().setName("codeableConcept").setValue(codeableConcept);
     setTerminologyOptions(options, pIn);
@@ -1913,7 +1953,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return validateOnServer2(tc, vs, pin, options, null);
   }
 
-  protected ValidationResult validateOnServer2(TerminologyClientContext tc, ValueSet vs, Parameters pin, ValidationOptions options, Set<String> systems) throws FHIRException {
+  /**
+   * public for testing only
+   * @param tc
+   * @param vs
+   * @param pin
+   * @param options
+   * @param systems
+   * @return
+   * @throws FHIRException
+   */
+  public ValidationResult validateOnServer2(TerminologyClientContext tc, ValueSet vs, Parameters pin, ValidationOptions options, Set<String> systems) throws FHIRException {
 
     if (vs != null) {
       for (ConceptSetComponent inc : vs.getCompose().getIncludeList()) {
@@ -1941,10 +1991,28 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return processValidationResult(pOut, vs == null ? null : vs.getUrl(), tc.getClient().getAddress());
   }
 
-  protected void addServerValidationParameters(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext terminologyClientContext, ValueSet vs, Parameters pin, ValidationOptions options) {
+  /**
+   * Public for testing only
+   * @param opCtxt
+   * @param terminologyClientContext
+   * @param vs
+   * @param pin
+   * @param options
+   */
+  public void addServerValidationParameters(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext terminologyClientContext, ValueSet vs, Parameters pin, ValidationOptions options) {
     addServerValidationParameters(opCtxt, terminologyClientContext, vs, pin, options, null);
   }
 
+  /**
+   * Public for testing only
+   *
+   * @param opCtxt
+   * @param terminologyClientContext
+   * @param vs
+   * @param pin
+   * @param options
+   * @param systems
+   */
   protected void addServerValidationParameters(ValueSetProcessBase.TerminologyOperationDetails opCtxt, TerminologyClientContext terminologyClientContext, ValueSet vs, Parameters pin, ValidationOptions options, Set<String> systems) {
     if (vs != null) {
       if (terminologyClientContext != null && terminologyClientContext.isTxCaching() && terminologyClientContext.getCacheId() != null && vs.getUrl() != null && terminologyClientContext.getCached().contains(vs.getUrl() + "|" + vs.getVersion())) {
@@ -2349,6 +2417,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public void setExpansionParameters(Parameters expansionParameters) {
     this.expansionParameters.set(expansionParameters);
     this.terminologyClientManager.setExpansionParameters(expansionParameters);
+  }
+
+  public void setExpansionParameters(AtomicReference<Parameters> expansionParameters) {
+    this.expansionParameters.set(expansionParameters.get());
+    this.terminologyClientManager.setExpansionParameters(expansionParameters.get());
   }
 
   @Override
@@ -3349,6 +3422,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   public void finishLoading(boolean genSnapshots) {
+    if (!VersionUtilities.isR6Ver(getFHIRVersion())) {
+      throw new Error("R6 only");
+    }
     if (!hasResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Base")) {
       cacheResource(ProfileUtilities.makeBaseDefinition(version));
     }
@@ -3929,4 +4005,21 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  /**
+   * testing only
+   *
+   * @param txLog
+   */
+  public void setTxLog(ToolingClientLogger txLog) {
+  }
+
+  @Override
+  public String describeContext() {
+    return "context:"+getFHIRVersion()+"("+ CommaSeparatedStringBuilder.join("|", contextInformation.getPackageList()) +")";
+  }
+
+  @Override
+  public String toString() {
+    return describeContext();
+  }
 }

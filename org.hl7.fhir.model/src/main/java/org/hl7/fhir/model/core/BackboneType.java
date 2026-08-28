@@ -299,6 +299,24 @@ public abstract class BackboneType extends DataType implements IBaseBackboneElem
     return getModifierExtensionList();
   }
 
+  // required to implement the HAPI cross-version interface IBaseHasExtensions (fixed method name)
+  @Override
+  public List<Extension> getExtension() {
+    return getExtensionList();
+  }
+
+  public List<Extension> getExtensionsByUrl(String... theUrls) {
+    ArrayList<Extension> retVal = new ArrayList<>();
+
+    for (Extension next : getModifierExtension()) {
+      if (Utilities.existsInList(next.getUrl(), theUrls)) {
+        retVal.add(next);
+      }
+    }
+    retVal.addAll(super.getExtensionsByUrl(theUrls));
+    return java.util.Collections.unmodifiableList(retVal);
+  }
+
 // end addition
 
 }

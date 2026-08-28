@@ -119,12 +119,12 @@ public class FHIRToolingClient extends FHIRBaseToolingClient {
   public FHIRToolingClient(String baseServiceUrl, String userAgent, IModelContext context) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_JSON;
     this.userAgent = userAgent;
-    initialize(baseServiceUrl);
+    initialize(baseServiceUrl, context);
     this.context = context;
-    client = new Client(context);
   }
 
-  public void initialize(String baseServiceUrl) throws URISyntaxException {
+  public void initialize(String baseServiceUrl, IModelContext context) throws URISyntaxException {
+    client = new Client(context);
     base = baseServiceUrl;
     client.setBase(base);
     resourceAddress = new ResourceAddress(baseServiceUrl);

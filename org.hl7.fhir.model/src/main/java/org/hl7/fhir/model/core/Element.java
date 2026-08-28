@@ -427,8 +427,12 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
     * @return an unmodifiable list containing all extensions on this element which match the given URL
     */
    public List<Extension> getExtensionsByUrl(String theUrl) {
-     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
-     ArrayList<Extension> retVal = new ArrayList<Extension>();
+     if (theUrl == null) {
+       throw new NullPointerException("theUrl must not be null");
+     } else if (theUrl.length() == 0) {
+       throw new IllegalArgumentException("theUrl must not be empty");
+     }
+     ArrayList<Extension> retVal = new ArrayList<>();
      for (Extension next : getExtensionList()) {
        if (theUrl.equals(next.getUrl())) {
          retVal.add(next);

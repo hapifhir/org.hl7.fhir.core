@@ -1,0 +1,3 @@
+array item count differs at .expectedArray
+Expected:"2" for expected.json
+Actual  :"1"

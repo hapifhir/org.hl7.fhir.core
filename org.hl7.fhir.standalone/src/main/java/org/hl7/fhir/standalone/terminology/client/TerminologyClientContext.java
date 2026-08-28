@@ -109,7 +109,7 @@ public class TerminologyClientContext {
   private int holders = 1;
   private final ILoggingService logger;
 
-  protected TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
+  public TerminologyClientContext(ITerminologyClient client, TerminologyCache txCache, boolean master, ILoggingService logger) throws IOException {
     super();
     this.client = client;
     this.txCache = txCache;
@@ -307,7 +307,7 @@ public class TerminologyClientContext {
    * shutting down simply leaves the cache to the server's idle timeout, which is
    * the safe direction to fail in.
    */
-  synchronized void retain() {
+  synchronized public void retain() {
     if (isShutdown) {
       return; // already released - there is nothing left to hold
     }

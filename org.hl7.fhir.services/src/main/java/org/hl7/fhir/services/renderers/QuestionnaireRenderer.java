@@ -937,7 +937,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
             select.option(cc.getCode(), cc.hasDisplay() ? cc.getDisplay() : cc.getCode(), false);     
           } 
           return; 
-        } 
+        } else {
+          System.out.println("No expansion for "+vs.getUrl()+": "+exp);
+        }
       } 
     } else if (i.has("answerOption")) { 
       renderItemOptions(select, i);  

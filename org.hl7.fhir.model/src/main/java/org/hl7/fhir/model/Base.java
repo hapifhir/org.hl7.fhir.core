@@ -33,6 +33,7 @@ import lombok.Getter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.model.core.*;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -85,8 +86,11 @@ public abstract class Base implements Serializable, IBase, IElement {
     if (this.modelContext == modelContext) {
       return;
     }
-    if (this.modelContext != null) {
-      throw new FHIRException("Attempt to change the model context of an instance that already has one");
+    if (modelContext == null) {
+      return; // FIXME: really?
+    }
+    if (this.modelContext != null && !this.modelContext.isCompatibleModelContext(modelContext)) {
+      throw new FHIRException("Attempt to change the model context of an instance that already has one ("+describeContext(this.modelContext)+" -> "+describeContext(modelContext)+")");
     }
     this.modelContext = modelContext;
   }
@@ -131,7 +135,12 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
   private void assertModelContext(String path, IModelContext expected) {
-    if (this.modelContext != expected) {
+    if (expected == null) {
+      return;
+    }
+    if (this.modelContext == null) {
+      this.modelContext = expected;
+    } else if (this.modelContext != expected && !this.modelContext.isCompatibleModelContext(expected)) {
       throw new FHIRException("Model context mismatch at "+path+": expected "+describeContext(expected)+" but found "+describeContext(this.modelContext));
     }
     List<Property> children = new ArrayList<Property>();
@@ -148,7 +157,7 @@ public abstract class Base implements Serializable, IBase, IElement {
   }
 
   private static String describeContext(IModelContext modelContext) {
-    return modelContext == null ? "no context" : modelContext.getClass().getSimpleName()+"@"+Integer.toHexString(System.identityHashCode(modelContext));
+    return modelContext == null ? "no context" : modelContext.describeContext();
   }
 
   /**
@@ -718,7 +727,7 @@ public abstract class Base implements Serializable, IBase, IElement {
    */
   public void copyValues(Base dst, EnumSet<CopyObjectOptions> options) {
     dst.setModelContext(modelContext); // no-op on the normal path (copy() constructs dst with this context); adopts a fresh dst; throws rather than corrupting a dst that belongs to a different context
-    if (options.contains(CopyObjectOptions.USER_DATA)) {
+    if (userData != null && options.contains(CopyObjectOptions.USER_DATA)) {
       dst.userData = new HashMap<>();
       dst.userData.putAll(userData);
     }
