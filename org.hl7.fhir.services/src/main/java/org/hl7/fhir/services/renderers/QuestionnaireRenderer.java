@@ -1,5 +1,6 @@
 package org.hl7.fhir.services.renderers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.services.terminology.ExpansionOptions;
 import org.hl7.fhir.services.terminology.ValueSetExpansionOutcome;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Slf4j
 public class QuestionnaireRenderer extends TerminologyRenderer {
 
   public QuestionnaireRenderer(RenderingContext context) { 
@@ -938,7 +940,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           } 
           return; 
         } else {
-          System.out.println("No expansion for "+vs.getUrl()+": "+exp);
+          log.warn("No expansion for "+vs.getUrl()+": "+exp);
         }
       } 
     } else if (i.has("answerOption")) { 
