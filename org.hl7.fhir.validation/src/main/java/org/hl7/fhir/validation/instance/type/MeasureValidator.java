@@ -187,7 +187,7 @@ public class MeasureValidator extends BaseValidator {
           ok = false;
         }
         if (lib != null) {
-          if (rule(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), lib.hasUserData(MeasureContext.USER_DATA_ELM), I18nConstants.MEASURE_M_CRITERIA_CQL_NO_ELM, lib.getUrl())) {
+          if (warning(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), lib.hasUserData(MeasureContext.USER_DATA_ELM), I18nConstants.MEASURE_M_CRITERIA_CQL_NO_ELM, lib.getUrl())) {
             if (lib.getUserData(MeasureContext.USER_DATA_ELM) instanceof String) {
               ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, crit.line(), crit.col(), nsc.getLiteralPath(), false, I18nConstants.MEASURE_M_CRITERIA_CQL_ERROR, lib.getUrl(), lib.getUserString(MeasureContext.USER_DATA_ELM)) && ok;            
             } else if (lib.getUserData(MeasureContext.USER_DATA_ELM) instanceof Document) {
