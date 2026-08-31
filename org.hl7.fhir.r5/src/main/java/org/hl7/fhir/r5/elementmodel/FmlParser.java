@@ -102,6 +102,9 @@ public class FmlParser extends ParserBase {
           case "title":
             result.makeElement("title").markLocation(fidLoc).setValue(lexer.readConstant("title"));
             break;
+          case "version":
+            result.makeElement("version").markLocation(fidLoc).setValue(lexer.readConstant("version"));
+            break;
           case "description":
             result.makeElement("description").markLocation(fidLoc).setValue(lexer.readMarkdown("description"));
             break;
