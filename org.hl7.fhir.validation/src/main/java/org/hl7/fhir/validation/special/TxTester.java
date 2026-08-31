@@ -148,6 +148,14 @@ public class TxTester implements ITerminologyRequestIdProvider {
   private final List<String> warnings = new CopyOnWriteArrayList<>();
   private CapabilityStatement capabilityStatement;
   private TerminologyCapabilities terminologyCapabilities;
+
+  /**
+   * The FHIR version the server under test reports, discovered in connectToServer(). This is
+   * what the suites' and tests' version gates are evaluated against - see passesVersion(). It
+   * is set once, on the calling thread, before initialise() returns and therefore before any
+   * gate is evaluated or any worker thread starts.
+   */
+  private volatile String serverVersion;
   // Server-side caching state, per thread (clients are per-thread). Maps a suite
   // name to the server-issued cache-id this thread holds for it. The first test a
   // thread runs from a suite starts a cache and front-loads that suite's setup
@@ -468,6 +476,10 @@ public class TxTester implements ITerminologyRequestIdProvider {
       }
     }
 
+    if (serverVersion == null) {
+      serverVersion = fhirVersion;
+    }
+
     ITerminologyClient client = null;
 
     if (VersionUtilities.isR5Plus(fhirVersion)) {
@@ -588,9 +600,15 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return ok;
   }
 
+  /**
+   * The version gate is a FHIR version, so it is evaluated against the FHIR version the server
+   * under test reports - not against anything the caller names. The constructor's version is
+   * only a fallback for a tester that has not connected to a server.
+   */
   private boolean passesVersion(JsonObject item) {
-    if (item.has("version") && version != null) {
-      return versionGateMatches(item.asString("version"), version);
+    String ver = serverVersion != null ? serverVersion : version;
+    if (item.has("version") && ver != null) {
+      return versionGateMatches(item.asString("version"), ver);
     } else {
       return true;
     }
