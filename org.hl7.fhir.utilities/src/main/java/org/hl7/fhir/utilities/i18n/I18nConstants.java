@@ -839,6 +839,15 @@ public class I18nConstants {
   public static final String SNAPSHOT_IS_EMPTY = "SNAPSHOT_IS_EMPTY";
   public static final String STATUS_CODE_WARNING_CODE = "STATUS_CODE_WARNING_CODE";
   public static final String STRUCTUREDEFINITION__AT__ILLEGAL_CONSTRAINED_TYPE__FROM__IN_ = "StructureDefinition__at__illegal_constrained_type__from__in_";
+  public static final String SUBSUMPTION_CS_HIERARCHY_MEANING = "SUBSUMPTION_CS_HIERARCHY_MEANING";
+  public static final String SUBSUMPTION_CS_NOT_COMPLETE = "SUBSUMPTION_CS_NOT_COMPLETE";
+  public static final String SUBSUMPTION_CS_NOT_FOUND = "SUBSUMPTION_CS_NOT_FOUND";
+  public static final String SUBSUMPTION_CS_NOT_FOUND_VERSION = "SUBSUMPTION_CS_NOT_FOUND_VERSION";
+  public static final String SUBSUMPTION_NO_CODE = "SUBSUMPTION_NO_CODE";
+  public static final String SUBSUMPTION_NO_CODING = "SUBSUMPTION_NO_CODING";
+  public static final String SUBSUMPTION_NO_SYSTEM = "SUBSUMPTION_NO_SYSTEM";
+  public static final String SUBSUMPTION_SYSTEM_MISMATCH = "SUBSUMPTION_SYSTEM_MISMATCH";
+  public static final String SUBSUMPTION_VERSION_MISMATCH = "SUBSUMPTION_VERSION_MISMATCH";
   public static final String TERMINOLOGY_PASSTHROUGH_TX_MESSAGE = "Terminology_PassThrough_TX_Message";
   public static final String TERMINOLOGY_TX_BINDING_CANTCHECK = "Terminology_TX_Binding_CantCheck";
   public static final String TERMINOLOGY_TX_BINDING_MISSING = "Terminology_TX_Binding_Missing";
