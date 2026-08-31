@@ -204,8 +204,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public static final String NON_WHITESPACE_REGEX = "\\S+";
 
-  private Map<Element, Map<String, List<String>>> xhtmlElementMap = new HashMap<>();
-
   public enum MatchetypeStatus {
     Disallowed, Allowed, Required
   }
@@ -3512,24 +3510,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("base64Binary")) {
         String encoded = e.primitiveValue();
         if (isNotBlank(encoded)) {
-          boolean bok = Base64Util.isValidBase64(encoded);
-          if (!bok) {
-            String value = encoded.length() < 100 ? encoded : "(snip)";
-            ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value) && ok;
-          } else {
-            boolean wsok = !Base64Util.base64HasWhitespace(encoded);
-            if (VersionUtilities.isR5Plus(this.context.getVersion())) {
-              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR) && ok;            
+          boolean bok = true;
+          if (!session.getSessionId().equals(e.getUserString(UserDataNames.VALIDATION_FLAG_BASE64))) {
+            bok = Base64Util.isValidBase64(encoded);
+            if (!bok) {
+              String value = encoded.length() < 100 ? encoded : "(snip)";
+              ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_VALID, value) && ok;
             } else {
-              warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING);            
+              boolean wsok = !Base64Util.base64HasWhitespace(encoded);
+              if (VersionUtilities.isR5Plus(this.context.getVersion())) {
+                ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_ERROR) && ok;
+              } else {
+                warning(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, wsok, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_NO_WS_WARNING);
+              }
             }
+            e.setUserData(UserDataNames.VALIDATION_FLAG_BASE64, session.getSessionId());
           }
           if (bok && context.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE)) {
             int size = Base64Util.countBase64DecodedBytes(encoded);
             long def = Long.parseLong(ExtensionUtilities.readStringExtension(context, ExtensionDefinitions.EXT_MAX_SIZE));
             ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, e.line(), e.col(), path, size <= def, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_BASE64_TOO_LONG, size, def) && ok;
           }
-
         }
       }
       if (type.equals("integer") || type.equals("unsignedInt") || type.equals("positiveInt")) {
@@ -3653,9 +3654,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (type.equals("xhtml")) {
         XhtmlNode xhtml = e.getXhtml();
         if (xhtml != null) { // if it is null, this is an error already noted in the parsers
-          ok = new XhtmlValidator(this, errors, node).validate(valContext, e, resource, path, xhtml) && ok;
-          ok = checkReferences(valContext, errors, e, path, "div", xhtml, resource) && ok;
-          ok = checkImageSources(valContext, errors, e, path, "div", xhtml, resource) && ok;
+          ok = checkXhtml(valContext, errors, path, e, xhtml, node, resource) && ok;
         }
       }
 
@@ -3927,7 +3926,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           additionalResourcesWarned = true;
           warning(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.SD_TYPE_ADDITIONAL_UNCHECKABLE, ADDITIONAL_RESOURCES_REGISTRY);
         }
-        return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, additionalResourceNames.contains(tok), I18nConstants.SD_TYPE_NOT_LOCAL, v);
+        return rule(errors, "2022-11-02", IssueType.INVALID, e.line(), e.col(), path, additionalResourceNames.contains(v), I18nConstants.SD_TYPE_NOT_LOCAL, v);
       }
     }
   }
@@ -4364,28 +4363,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   protected int countTargetMatches(Element element, String fragment, boolean checkBundle, String path, List<String> refs) {
     int count = 0;
-    if (fragment.equals(element.getIdBase())) {
+    for (FragmentMatch match : findFragmentMatches(element, fragment)) {
       count++;
-      refs.add(path+"/id");
-    }
-    if (element.getXhtml() != null) {
-      Map<String, List<String>> map = xhtmlElementMap.get(element);
-      if (map == null) {
-        map = buildXhtmlIdMap(element.getXhtml());
-        xhtmlElementMap.put(element, map);
-      }
-      List<String> xrefs = map.get(fragment);
-      if (xrefs != null) {
-        count = count + xrefs.size();
-        for (String x : xrefs) {
-          refs.add(path+x);
-        }
-      }
-    }
-    if (element.hasChildren()) {
-      for (Element child : element.getChildren()) {
-        count = count + countTargetMatches(child, fragment, false, path+"/"+child.getName(), refs);
-      }
+      refs.add(path+match.getPath());
     }
     if (count == 0 && checkBundle) {
       Element e = element.getParentForValidator();
@@ -4398,67 +4378,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return count;
   }
-
-  private Map<String, List<String>> buildXhtmlIdMap(XhtmlNode xhtml) {
-    Map<String, List<String>> res = new HashMap<>();
-    addXhtmlToIdMap(res, "/", xhtml);
-    return res;
-  }
-
-  private void addXhtmlToIdMap(Map<String, List<String>> map, String path, XhtmlNode x) {
-    if (x.getNodeType() == NodeType.Element) {
-      String id = x.getAttribute("id");
-      if (id != null) {
-        addToMapList(map, path, id, "@id");
-      }
-      if ("a".equals(x.getName()) && x.getAttribute("name") != null) {
-        addToMapList(map, path, x.getAttribute("name"), "@name");
-      }
-
-      if (x.hasChildren()) {
-        for (int i = 0; i < x.getChildNodes().size(); i++) {
-          XhtmlNode child = x.getChildNodes().get(i);
-          String cn = child.getPathName();
-          int total = x.countByPathName(child);
-          int index = x.indexByPathName(child);
-          addXhtmlToIdMap(map, path + cn + (total > 1 ? "[" + index + "]" : "") + "/", child);
-        }
-      }
-    }
-  }
-
-  private void addToMapList(Map<String, List<String>> map, String path, String id, String name) {
-    List<String> list = map.get(id);
-    if (list == null) {
-      list = new ArrayList<>();
-      map.put(id, list);
-    }
-    list.add(path + name);
-  }
-
-//  private int countTargetMatches(XhtmlNode node, String fragment, String path, List<String> refs) {
-//    int count = 0;
-//    if (fragment.equals(node.getAttribute("id"))) {
-//      count++;
-//      refs.add(path+"/@id");
-//    }
-//    if ("a".equals(node.getName()) && fragment.equals(node.getAttribute("name"))) {
-//      count++;
-//      refs.add(path+"/@name");
-//    }
-//    if (node.hasChildren()) {
-//      for (int i = 0; i < node.getChildNodes().size(); i++) {
-//        XhtmlNode child = node.getChildNodes().get(i);
-//        String cn = child.getPathName();
-//        int total = node.countByPathName(child);
-//        int index = node.indexByPathName(child);
-//        count = count + countTargetMatches(child, fragment, path+"/"+cn+(total > 1 ? "["+index+"]" : ""), refs);
-//      }
-//    }
-//    return count;
-//  }
-//
-
   private boolean checkImageSources(ValidationContext valContext, List<ValidationMessage> errors, Element e, String path, String xpath, XhtmlNode node, Element resource) {
     boolean ok = true;
     if (node.getNodeType() == NodeType.Element && "img".equals(node.getName()) && node.getAttribute("src") != null) {
@@ -4478,10 +4397,76 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (node.hasChildren()) {
       for (XhtmlNode child : node.getChildNodes()) {
-        checkImageSources(valContext, errors, e, path, path+"/"+child.getName(), child, resource);
+        ok = checkImageSources(valContext, errors, e, path, path+"/"+child.getName(), child, resource) && ok;
       }        
     }
     return ok;
+  }
+
+  /**
+   * Check a narrative: that the xhtml is legal FHIR xhtml, and that its internal links and images resolve.
+   * <p>
+   * This walks the whole xhtml tree a dozen times over, and it depends only on the narrative and the resource
+   * around it - nothing here looks at the profile or the element definition - but the validator visits the same
+   * narrative once per profile. So the outcome is calculated once per validation and replayed for every
+   * subsequent profile that reaches the same narrative. The replay puts back both halves of what the check
+   * produces: the messages, and the internal references it contributed to the validation context (which is what
+   * later tells us whether a contained resource is referenced by anything)
+   */
+  private boolean checkXhtml(ValidationContext valContext, List<ValidationMessage> errors, String path, Element e, XhtmlNode xhtml, NodeStack node, Element resource) {
+    XhtmlValidationOutcome outcome = (XhtmlValidationOutcome) e.getUserData(UserDataNames.VALIDATION_XHTML_OUTCOME);
+    if (outcome == null || !outcome.isFor(executionId, path)) {
+      // the same narrative can be checked at more than one path (a resource validated in place and again as the 
+      // target of a reference), and the path is in the messages, so a different path means checking it again
+      List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
+      Set<String> refsBefore = new HashSet<String>(valContext.getInternalRefs());
+      boolean ok = new XhtmlValidator(this, messages, node).validate(valContext, e, resource, path, xhtml);
+      ok = checkReferences(valContext, messages, e, path, "div", xhtml, resource) && ok;
+      ok = checkImageSources(valContext, messages, e, path, "div", xhtml, resource) && ok;
+      Set<String> refs = new HashSet<String>(valContext.getInternalRefs());
+      refs.removeAll(refsBefore);
+      outcome = new XhtmlValidationOutcome(executionId, path, ok, messages, refs);
+      e.setUserData(UserDataNames.VALIDATION_XHTML_OUTCOME, outcome);
+    } else {
+      valContext.getInternalRefs().addAll(outcome.getInternalRefs());
+    }
+    errors.addAll(outcome.getMessages());
+    return outcome.isOk();
+  }
+
+  /**
+   * What checking a narrative produced, so that it can be replayed instead of repeated - see checkXhtml()
+   */
+  private static class XhtmlValidationOutcome {
+    private final String executionId;
+    private final String path;
+    private final boolean ok;
+    private final List<ValidationMessage> messages;
+    private final Set<String> internalRefs;
+
+    protected XhtmlValidationOutcome(String executionId, String path, boolean ok, List<ValidationMessage> messages, Set<String> internalRefs) {
+      this.executionId = executionId;
+      this.path = path;
+      this.ok = ok;
+      this.messages = messages;
+      this.internalRefs = internalRefs;
+    }
+
+    protected boolean isFor(String executionId, String path) {
+      return this.executionId.equals(executionId) && this.path.equals(path);
+    }
+
+    protected boolean isOk() {
+      return ok;
+    }
+
+    protected List<ValidationMessage> getMessages() {
+      return messages;
+    }
+
+    protected Set<String> getInternalRefs() {
+      return internalRefs;
+    }
   }
 
 
@@ -4733,10 +4718,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     boolean ok = true;
     long size = -1;
     long max = -1;
-    byte[] cnt = null;
     byte[] hash = null;
     String hash64 = null;
-    String fetchError = null;
     
     if (element.hasChild("size", false)) {
       String sz = element.getChildValue("size");
@@ -4757,59 +4740,29 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (definition.hasExtension(ExtensionDefinitions.EXT_MAX_SIZE)) {
       max = Long.parseLong(ExtensionUtilities.readStringExtension(definition, ExtensionDefinitions.EXT_MAX_SIZE));
     }
-    
-    if (element.hasChild("data", false)) {
-      String b64 = element.getChildValue("data");
-      // Note: If the value isn't valid, we're not adding an error here, as the test to the
-      // child Base64Binary will catch it and we don't want to log it twice
-      boolean bok = Base64Util.isValidBase64(b64);
-      if (bok) {
-        cnt = readBase64Data(errors, theStack, "data", b64);
-        if (cnt == null) {
-          ok = false;
-        }
-      }
-    } else if (element.hasChild("url", false)) {
-      String url = element.getChildValue("url"); 
-      if (size > -1 || max > -1 || hash != null) {
-        try {
-          if (url.startsWith("http://") || url.startsWith("https://")) {
-            if (fetcher == null) {
-              fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER, url);  
-            } else {
-              cnt = fetcher.fetchRaw(this, url);
-            }
-          } else if (url.startsWith("file:")) {
-            cnt = FileUtilities.streamToBytes(new FileInputStream(ManagedFileAccess.file(url.substring(5))));
-          } else {
-            fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME, url);
-          }
-        } catch (Exception e) {
-          if (STACK_TRACE) e.printStackTrace();
-          fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR, url, e.getMessage());
-        }
-      }
+
+    // getting the content means decoding all of Attachment.data, or fetching Attachment.url; that is done once 
+    // per session (see AttachmentContent) since this element is validated once per profile. The checks below 
+    // still run on every pass, since max comes from the profile
+    AttachmentContent content = getAttachmentContent(element, size > -1 || max > -1 || hash != null);
+    if (content.hasDecodeError()) {
+      rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL, "data", content.getDecodeError());
+      ok = false;
     }
+
     warning(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, (element.hasChild("data", false) || element.hasChild("url", false)) || (element.hasChild("contentType", false) || element.hasChild("language", false)), 
         I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT);
     
-    if (max > -1 && cnt != null) {
-      ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, cnt.length <= max, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG, cnt.length, max) && ok;
+    if (max > -1 && content.hasContent()) {
+      ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, content.getLength() <= max, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_TOO_LONG, content.getLength(), max) && ok;
     }
 
-    if (size > -1 && cnt != null) {
-      ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, cnt.length == size, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT, size, cnt.length) && ok;
+    if (size > -1 && content.hasContent()) {
+      ok = rule(errors, NO_RULE_DATE, IssueType.STRUCTURE, element.line(), element.col(), path, content.getLength() == size, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT, size, content.getLength()) && ok;
     }
 
-    if (hash != null && cnt != null) {
-      try {
-        MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
-        byte[] c = sha1.digest(cnt); 
-        ok = rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, Arrays.equals(c, hash), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH, hash64, Base64.getEncoder().encodeToString(c)) && ok;
-      } catch (NoSuchAlgorithmException e) {
-      }
-    } else {
-      ok = true;
+    if (hash != null && content.getSha1() != null) {
+      ok = rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, Arrays.equals(content.getSha1(), hash), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_HASH_MISMATCH, hash64, Base64.getEncoder().encodeToString(content.getSha1())) && ok;
     }
 
     return ok;
@@ -4822,6 +4775,143 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       rule(errors, "2025-06-25", IssueType.STRUCTURE, theStack, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_B64_DECODE_FAIL, name, e.getMessage());
     }
     return null;
+  }
+
+  /**
+   * The facts about an attachment content that the validator checks: how many bytes there are, and their SHA-1 
+   * (only calculated when the attachment carries a hash to compare against). Getting them means decoding all of 
+   * Attachment.data, or fetching Attachment.url over the network, and the same element is validated once per 
+   * profile, so they are calculated once per session and remembered on the element. The content itself is 
+   * deliberately not retained - attachments can be very large.
+   */
+  private static class AttachmentContent {
+    private final String sessionId;
+    private boolean resolved;
+    private boolean hasContent;
+    private long length;
+    private byte[] sha1;
+    private String decodeError;
+    private String fetchError; // not reported to the user - see getAttachmentContent()
+
+    protected AttachmentContent(String sessionId) {
+      this.sessionId = sessionId;
+    }
+
+    protected boolean hasContent() {
+      return hasContent;
+    }
+
+    protected long getLength() {
+      return length;
+    }
+
+    protected byte[] getSha1() {
+      return sha1;
+    }
+
+    protected boolean hasDecodeError() {
+      return decodeError != null;
+    }
+
+    protected String getDecodeError() {
+      return decodeError;
+    }
+  }
+
+  /**
+   * Read the content of an attachment, once per session - see {@link AttachmentContent}
+   *  
+   * @param needed whether one of the checks actually needs the content. Attachment.data is decoded either way, 
+   *   since decoding is how we find out that it is not valid, but Attachment.url is only fetched if the content 
+   *   is needed - a profile validated later may have a maxSize, and then it is fetched at that point
+   */
+  private AttachmentContent getAttachmentContent(Element element, boolean needed) {
+    AttachmentContent res = (AttachmentContent) element.getUserData(UserDataNames.VALIDATION_ATTACHMENT_CONTENT);
+    if (res == null || !session.getSessionId().equals(res.sessionId)) {
+      res = new AttachmentContent(session.getSessionId());
+      element.setUserData(UserDataNames.VALIDATION_ATTACHMENT_CONTENT, res);
+    }
+    if (res.resolved) {
+      return res;
+    }
+    boolean wantHash = element.hasChild("hash");
+    if (element.hasChild("data", false)) {
+      String b64 = element.getChildValue("data");
+      // Note: If the value isn't valid, we're not recording an error here, as the test to the
+      // child Base64Binary will catch it and we don't want to log it twice
+      if (Base64Util.isValidBase64(b64)) {
+        try {
+          // this is the one place the whole content is held in memory at once. Decoding it in chunks would 
+          // avoid that, but only the whole-array decoder checks that nothing follows the padding, and it 
+          // words the error differently, so the checking is worth more than the memory here
+          summariseContent(res, Base64.getDecoder().decode(b64), wantHash);
+        } catch (Exception e) {
+          res.decodeError = e.getMessage();
+        }
+      }
+      res.resolved = true;
+    } else if (element.hasChild("url", false)) {
+      if (!needed) {
+        return res;
+      }
+      String url = element.getChildValue("url");
+      try {
+        if (url.startsWith("http://") || url.startsWith("https://")) {
+          if (fetcher == null) {
+            res.fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER, url);  
+          } else {
+            byte[] cnt = fetcher.fetchRaw(this, url);
+            if (cnt != null) {
+              summariseContent(res, cnt, wantHash);
+            }
+          }
+        } else if (url.startsWith("file:")) {
+          try (InputStream stream = new FileInputStream(ManagedFileAccess.file(url.substring(5)))) {
+            summariseContent(res, stream, wantHash);
+          }
+        } else {
+          res.fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME, url);
+        }
+      } catch (Exception e) {
+        if (STACK_TRACE) e.printStackTrace();
+        res.fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR, url, e.getMessage());
+      }
+      res.resolved = true;
+    } else {
+      res.resolved = true;
+    }
+    return res;
+  }
+
+  /**
+   * Measure the content, and hash it if there's a hash to check it against, reading it in chunks so that a 
+   * file attachment is never held in memory in one piece
+   */
+  private void summariseContent(AttachmentContent res, InputStream stream, boolean wantHash) throws IOException, NoSuchAlgorithmException {
+    MessageDigest sha1 = wantHash ? MessageDigest.getInstance("SHA-1") : null;
+    byte[] buffer = new byte[8192];
+    long length = 0;
+    int count = stream.read(buffer);
+    while (count > -1) {
+      length = length + count;
+      if (sha1 != null) {
+        sha1.update(buffer, 0, count);
+      }
+      count = stream.read(buffer);
+    }
+    res.hasContent = true;
+    res.length = length;
+    res.sha1 = sha1 == null ? null : sha1.digest();
+  }
+
+  /**
+   * Measure the content, and hash it if there's a hash to check it against. The content is not kept - see 
+   * {@link AttachmentContent}
+   */
+  private void summariseContent(AttachmentContent res, byte[] content, boolean wantHash) throws NoSuchAlgorithmException {
+    res.hasContent = true;
+    res.length = content.length;
+    res.sha1 = wantHash ? MessageDigest.getInstance("SHA-1").digest(content) : null;
   }
 
   // implementation
