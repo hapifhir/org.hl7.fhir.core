@@ -1458,7 +1458,7 @@ public class StructureMapValidator extends BaseValidator {
     if (!Utilities.isAbsoluteUrl(t1)) {
       t1 = "http://hl7.org/fhir/StructureDefinition/"+t1;
     }
-    if (!Utilities.isAbsoluteUrl(t1)) {
+    if (!Utilities.isAbsoluteUrl(t2)) {
       t2 = "http://hl7.org/fhir/StructureDefinition/"+t2;
     }
     return t1.equals(t2);
