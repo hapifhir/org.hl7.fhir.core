@@ -21,7 +21,7 @@ import java.util.Map;
 public class PrimitiveRegexes {
 
   public interface PrimitiveMatcher {
-    boolean matches(CharSequence value);
+    boolean test(CharSequence value);
   }
 
   private static final char VERTICAL_TAB = 0x0B;
@@ -60,10 +60,15 @@ public class PrimitiveRegexes {
 
   /**
    * @return whether the value matches the regex, or null if this regex has no hand written equivalent
+   * <p>
+   * Note: deliberately not called matches(). The checkstyle rule that bans implicitly compiling a regex on
+   * every call is a text scan for a call named matches, replaceAll, replaceFirst or split, whatever the
+   * receiver is - so a method of that name would need a suppression here and at every call site, inside the
+   * one class whose whole point is that it never compiles a regex at all
    */
-  public static Boolean matches(String regex, CharSequence value) {
+  public static Boolean matchesRegex(String regex, CharSequence value) {
     PrimitiveMatcher matcher = MATCHERS.get(regex);
-    return matcher == null ? null : matcher.matches(value);
+    return matcher == null ? null : matcher.test(value);
   }
 
   /**

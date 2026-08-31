@@ -81,7 +81,7 @@ public final class RegexTimeout {
    * @throws TimeoutException if processing runs longer than timeoutMillis milliseconds
    */
   public static boolean matches(CharSequence charSequence, String regex, long timeoutMillis) throws TimeoutException {
-    Boolean known = PrimitiveRegexes.matches(regex, charSequence);
+    Boolean known = PrimitiveRegexes.matchesRegex(regex, charSequence);
     if (known != null) {
       // a hand written equivalent: a single linear pass, so there is nothing for the deadline to protect against
       return known;

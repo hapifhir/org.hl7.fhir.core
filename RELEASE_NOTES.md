@@ -2,6 +2,7 @@
 
 * Don't report an unknown code as being in version 'null' when the code system doesn't state a version
 * Validate codes against value sets that use a `concept child-of` filter, instead of failing with "unable to handle concept filter with op = CHILDOF" (the expansion already supported it)
+* txTests: evaluate the test suites' FHIR version gates against the version the server under test reports, not against -test-version (which names the tx-ecosystem package, not a FHIR version)
 
 ## Other code changes
 

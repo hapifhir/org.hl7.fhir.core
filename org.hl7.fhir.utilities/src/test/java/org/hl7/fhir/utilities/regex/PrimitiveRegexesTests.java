@@ -112,17 +112,17 @@ class PrimitiveRegexesTests {
   @Test
   void doesNotReadTheWholeValueForString() {
     String huge = "x".repeat(2000000);
-    assertThat(PrimitiveRegexes.matches("^[\\s\\S]+$", huge)).isTrue();
-    assertThat(PrimitiveRegexes.matches("^[\\s\\S]+$", "")).isFalse();
+    assertThat(PrimitiveRegexes.matchesRegex("^[\\s\\S]+$", huge)).isTrue();
+    assertThat(PrimitiveRegexes.matchesRegex("^[\\s\\S]+$", "")).isFalse();
   }
 
   @Test
   void returnsNullForARegexItDoesNotKnow() {
-    assertThat(PrimitiveRegexes.matches("[a-z]+", "abc")).isNull();
+    assertThat(PrimitiveRegexes.matchesRegex("[a-z]+", "abc")).isNull();
   }
 
   private void assertAgrees(Pattern pattern, String regex, String value) {
-    Boolean actual = PrimitiveRegexes.matches(regex, value);
+    Boolean actual = PrimitiveRegexes.matchesRegex(regex, value);
     assertThat(actual).as("regex %s against %s", regex, escape(value)).isNotNull();
     assertThat(actual.booleanValue()).as("regex %s against %s", regex, escape(value))
         .isEqualTo(pattern.matcher(value).matches());
