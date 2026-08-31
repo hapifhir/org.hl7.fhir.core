@@ -9,12 +9,12 @@ import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 
 /**
- * Generates CoreRegistration, which registers all the concrete resources in the core 
- * package with a ModelContextInformation
+ * Generates CoreResourceNameList, the list of names of all the concrete resources in the core
+ * package
  */
-public class JavaCoreRegistrationGenerator extends JavaBaseGenerator {
+public class JavaCoreResourceNameListGenerator extends JavaBaseGenerator {
 
-  public JavaCoreRegistrationGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
+  public JavaCoreResourceNameListGenerator(OutputStream out, Definitions definitions, Configuration configuration, String genDate, String version, String jid) throws UnsupportedEncodingException {
     super(out, definitions, configuration, version, genDate, jid);
   }
 
@@ -23,16 +23,16 @@ public class JavaCoreRegistrationGenerator extends JavaBaseGenerator {
     boolean first = true;
     for (StructureDefinition sd : definitions.getStructures().getSortedList()) {
       if (sd.getKind() == StructureDefinitionKind.RESOURCE && sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && !sd.getAbstract()) {
-        if (first) { first = false; } else { b.append("\r\n"); }
-        b.append("    modelContextInformation.registerCoreResource(\""+escapeJavaString(sd.getName())+"\", packageName);");
+        if (first) { first = false; } else { b.append(",\r\n"); }
+        b.append("      \""+escapeJavaString(sd.getName())+"\"");
       }
     }
 
-    String template = config.getAdornments().get("CoreRegistration");
+    String template = config.getAdornments().get("CoreResourceNameList");
     template = template.replace("{{license}}", config.getLicense());
     template = template.replace("{{startMark}}", startVMarkValue());
     template = template.replace("{{generated}}", generatedAnnotationValue());
-    template = template.replace("{{coreregistration}}", b.toString());
+    template = template.replace("{{names}}", b.toString());
     write(template);
     flush();
     close();
