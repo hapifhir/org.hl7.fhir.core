@@ -651,6 +651,7 @@ e: {
   }
 }}####
 e: {
+  "class" : "UNKNOWN",
   "source" : tx-dev.fhir.org,
   "valueSet" : {
   "resourceType" : "ValueSet",
@@ -699,6 +700,104 @@ e: {
       "system" : "http://loinc.org",
       "code" : "LA6556-0",
       "display" : "Eyes open spontaneously"
+    }]
+  }
+},
+  "error" : ""
+}
+-------------------------------------------------------------------------------------
+{"hierarchical" : false, "valueSet" :{
+  "resourceType" : "ValueSet",
+  "compose" : {
+    "inactive" : false,
+    "include" : [{
+      "system" : "http://loinc.org",
+      "concept" : [{
+        "code" : "LA6562-8",
+        "display" : "No motor response"
+      },
+      {
+        "code" : "LA6563-6",
+        "display" : "Extension to pain"
+      },
+      {
+        "code" : "LA6564-4",
+        "display" : "Flexion to pain"
+      },
+      {
+        "code" : "LA6565-1",
+        "display" : "Withdrawl from pain"
+      },
+      {
+        "code" : "LA6566-9",
+        "display" : "Localizing pain"
+      },
+      {
+        "code" : "LA6567-7",
+        "display" : "Obeys commands"
+      }]
+    }]
+  }
+}}####
+e: {
+  "source" : tx-dev.fhir.org,
+  "valueSet" : {
+  "resourceType" : "ValueSet",
+  "status" : "active",
+  "expansion" : {
+    "identifier" : "urn:uuid:734b8828-8a81-481c-990e-9fcf5532a7af",
+    "timestamp" : "2026-09-01T22:16:33.472Z",
+    "total" : 6,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "includeDefinition",
+      "valueBoolean" : false
+    },
+    {
+      "name" : "offset",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "count",
+      "valueInteger" : 1000
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://loinc.org|2.82"
+    }],
+    "contains" : [{
+      "system" : "http://loinc.org",
+      "code" : "LA6562-8",
+      "display" : "No motor response"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6563-6",
+      "display" : "Extension to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6564-4",
+      "display" : "Flexion to pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6565-1",
+      "display" : "Withdrawal from pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6566-9",
+      "display" : "Localizing pain"
+    },
+    {
+      "system" : "http://loinc.org",
+      "code" : "LA6567-7",
+      "display" : "Obeys commands"
     }]
   }
 },
