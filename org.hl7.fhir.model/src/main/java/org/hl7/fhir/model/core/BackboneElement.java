@@ -100,6 +100,14 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
     }
 
     /**
+     * Read-only access to the modifier extensions, for code that only searches them.
+     * See Element.getExtensionsForRead().
+     */
+    public List<Extension> getModifierExtensionsForRead() { 
+      return this.modifierExtensionList == null ? java.util.Collections.<Extension>emptyList() : this.modifierExtensionList;
+    }
+
+    /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
     public BackboneElement setModifierExtensionList(List<Extension> theModifierExtensionList) { 
@@ -283,7 +291,7 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
      if (res != null) {
        retVal.add(res);
      }
-     for (Extension next : getModifierExtensionList()) {
+     for (Extension next : getModifierExtensionsForRead()) {
        if (theUrl.equals(next.getUrl())) {
          retVal.add(next);
        }
@@ -306,6 +314,12 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
    }
    
 
+   @Override
+   protected Extension getSingleExtensionByUrl(String theUrl) throws FHIRException {
+     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+     return soleExtension(getModifierExtensionsForRead(), theUrl, super.getSingleExtensionByUrl(theUrl));
+   }
+
    /**
     * Returns an unmodifiable list containing all extensions on this element which 
     * match the given URL.
@@ -319,7 +333,7 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
      ArrayList<Extension> retVal = new ArrayList<Extension>();
      retVal.addAll(super.getExtensionsByUrl(theUrl));
-     for (Extension next : getModifierExtensionList()) {
+     for (Extension next : getModifierExtensionsForRead()) {
        if (theUrl.equals(next.getUrl())) {
          retVal.add(next);
        }
@@ -328,7 +342,7 @@ public abstract class BackboneElement extends Element implements IBaseBackboneEl
    }
 
   public boolean hasExtension(String... theUrls) {
-    for (Extension next : getModifierExtensionList()) {
+    for (Extension next : getModifierExtensionsForRead()) {
       if (Utilities.existsInList(next.getUrl(), theUrls)) {
         return true;
       }

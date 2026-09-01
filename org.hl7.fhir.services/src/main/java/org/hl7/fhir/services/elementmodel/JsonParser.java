@@ -306,7 +306,9 @@ public class JsonParser extends ParserBase {
   private JsonProperty getFoundJsonPropertyByName(String name, List<JsonProperty> children) {
     int hash = name.hashCode();
     for (JsonProperty p : children) {
-      if (p.getTag() == 1 && hash == p.getNameHash()) {
+      // the hash is only a cheap filter - names still have to be compared, or a hash collision
+      // would silently bind one property to another property's value
+      if (p.getTag() == 1 && hash == p.getNameHash() && name.equals(p.getName())) {
         return p;
       }
     }
@@ -316,7 +318,8 @@ public class JsonParser extends ParserBase {
   private JsonProperty getJsonPropertyByName(String name, List<JsonProperty> children) {
     int hash = name.hashCode();
     for (JsonProperty p : children) {
-      if (p.getTag() == 0 && hash == p.getNameHash()) {
+      // see getFoundJsonPropertyByName: the hash filters, name.equals decides
+      if (p.getTag() == 0 && hash == p.getNameHash() && name.equals(p.getName())) {
         return p;
       }
     }
@@ -355,7 +358,7 @@ public class JsonParser extends ParserBase {
             logError(errors, ValidationMessage.NO_RULE_DATE, line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE, describeType(je), property.getName(), property.typeSummary()), IssueSeverity.ERROR);
           } else if (property.hasType(type)) {
             Property np = new Property(property.getContext(), property.getDefinition(), property.getStructure(), property.getUtils(), property.getContextUtils(), type);
-            parseChildPrimitive(errors, jp, getJsonPropertyByName("_"+property.getJsonName(), children), context, np, path, property.getName(), false);
+            parseChildPrimitive(errors, jp, getJsonPropertyByName(property.getUnderscoreJsonName(), children), context, np, path, property.getName(), false);
           } else {
             logError(errors, ValidationMessage.NO_RULE_DATE, line(je), col(je), path, IssueType.STRUCTURE, this.context.formatMessage(I18nConstants.UNRECOGNISED_PROPERTY_TYPE_WRONG, describeType(je), property.getName(), type, property.typeSummary()), IssueSeverity.ERROR);
           }
@@ -380,7 +383,7 @@ public class JsonParser extends ParserBase {
         }
       }
     } else if (property.isPrimitive(property.getType(null))) {
-      parseChildPrimitive(errors, jp, getJsonPropertyByName("_"+property.getJsonName(), children), context, property, path, property.getJsonName(), property.hasJsonName());
+      parseChildPrimitive(errors, jp, getJsonPropertyByName(property.getUnderscoreJsonName(), children), context, property, path, property.getJsonName(), property.hasJsonName());
     } else if (jp != null) {
       parseChildComplex(errors, path, jp, context, property, property.getJsonName(), property.hasJsonName());
     }
@@ -874,6 +877,9 @@ public class JsonParser extends ParserBase {
     if (canonicalFilter.contains(child.getPath())) {
       return;
     }
+    if (isIgnored(child)) {
+      return;
+    }
     checkComposeComments(child);
     if (wantCompose(path, child)) {
       boolean isList = child.hasElementProperty() ? child.getElementProperty().isList() : child.getProperty().isList();
@@ -884,7 +890,10 @@ public class JsonParser extends ParserBase {
           compose(child.getName(), path, child);
       } else if (!done.contains(child.getName())) {
         done.add(child.getName());
-        List<Element> list = e.getChildrenByName(child.getName());
+        List<Element> list = removeIgnored(e.getChildrenByName(child.getName()));
+        if (list.isEmpty()) {
+          return;
+        }
         boolean skipList = false;
         if (json.canElide() && isElideElements()) {
           boolean foundNonElide = false;
@@ -911,6 +920,10 @@ public class JsonParser extends ParserBase {
 
   
   private void composeKeyList(String path, List<Element> list) throws IOException {
+    list = removeIgnored(list);
+    if (list.isEmpty()) {
+      return;
+    }
     String keyName = list.get(0).getProperty().getDefinition().getExtensionString(ExtensionDefinitions.EXT_JSON_PROP_KEY);
     json.name(list.get(0).getName());
     json.beginObject();
@@ -941,6 +954,10 @@ public class JsonParser extends ParserBase {
   }
 
   private void composeList(String name, String path, List<Element> list) throws IOException {
+    list = removeIgnored(list);
+    if (list.isEmpty()) {
+      return;
+    }
     // there will be at least one element
     boolean complex = true;
     if (list.get(0).isPrimitive()) {
@@ -1062,6 +1079,9 @@ public class JsonParser extends ParserBase {
   private void composeNamedChildren(String path, Element element) throws IOException {
     Map<String, StructureDefinition> names = new HashMap<>();
     for (Element child : element.getChildList()) {
+      if (isIgnored(child)) {
+        continue;
+      }
       String name = child.getJsonName();
       StructureDefinition sd = child.getProperty().getStructure();
       if (!names.containsKey(name)) {
@@ -1076,9 +1096,12 @@ public class JsonParser extends ParserBase {
       boolean list = !"1".equals(ed.getMax());
       List<Element> children = new ArrayList<>();
       for (Element child : element.getChildList()) {
-        if (name.equals(child.getJsonName())) {
+        if (name.equals(child.getJsonName()) && !isIgnored(child)) {
           children.add(child);
         }
+      }
+      if (children.isEmpty()) {
+        continue;
       }
       if (list) {        
         composeList(name, path+"."+name, children);
