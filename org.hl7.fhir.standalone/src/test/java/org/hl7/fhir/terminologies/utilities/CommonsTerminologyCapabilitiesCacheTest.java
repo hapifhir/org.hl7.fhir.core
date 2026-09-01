@@ -10,10 +10,6 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 public class CommonsTerminologyCapabilitiesCacheTest {
 
   public static final String TEST_KEY = "testKey";
@@ -46,8 +42,8 @@ public class CommonsTerminologyCapabilitiesCacheTest {
     CommonsTerminologyCapabilitiesCache<String> cache = new CommonsTerminologyCapabilitiesCache<>(100L, java.util.concurrent.TimeUnit.MILLISECONDS);
 
     cache.put(TEST_KEY, "testValue");
-    assertTrue(cache.containsKey(TEST_KEY));
-    assertTrue(cache.get(TEST_KEY).equals("testValue"));
+    Assertions.assertTrue(cache.containsKey(TEST_KEY));
+    Assertions.assertEquals("testValue", cache.get(TEST_KEY));
   }
 
   @Test
@@ -57,8 +53,8 @@ public class CommonsTerminologyCapabilitiesCacheTest {
 
     Thread.sleep(200L);
 
-    assertFalse(cache.containsKey(TEST_KEY));
-    // assertThat(cache.get(TEST_KEY)).isNull(); FIXME
+    Assertions.assertFalse(cache.containsKey(TEST_KEY));
+    // Assertions.assertNull(cache.get(TEST_KEY)); FIXME
 
   }
 }
