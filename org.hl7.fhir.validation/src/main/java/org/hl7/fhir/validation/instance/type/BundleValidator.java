@@ -12,7 +12,9 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +40,7 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ParserBase;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base.ValidationMode;
+import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.terminologies.utilities.ValidationResult;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -1124,8 +1127,8 @@ public class BundleValidator extends BaseValidator {
       } 
       if (when == null) {
         rule(errors, "2025-06-13", IssueType.NOTFOUND, stack, false, I18nConstants.BUNDLE_SIGNATURE_NO_WHEN);        
-      } else if (sigT != null) { 
-        ok = rule(errors, "2025-06-13", IssueType.BUSINESSRULE, stack, sigT.equals(when.primitiveValue()), I18nConstants.BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH, sigT, when.primitiveValue()) && ok;                            
+      } else if (sigT != null) {
+        ok = rule(errors, "2025-06-13", IssueType.BUSINESSRULE, stack, agreeWithin(sigT, when.primitiveValue(), 2), I18nConstants.BUNDLE_SIGNATURE_HEADER_WHEN_MISMATCH, sigT, when.primitiveValue()) && ok;
       }
 
       // 2. canonicalisation
@@ -1359,7 +1362,11 @@ public class BundleValidator extends BaseValidator {
     }
     return ok;
   }
-
+  static boolean agreeWithin(String a, String b, long toleranceSeconds) {
+    Instant ia = OffsetDateTime.parse(a).toInstant();
+    Instant ib = OffsetDateTime.parse(b).toInstant();
+    return Duration.between(ia, ib).abs().compareTo(Duration.ofSeconds(toleranceSeconds)) <= 0;
+  }
   public String certificateToPEMSingleLine(X509Certificate cert) throws Exception {
     byte[] encoded = cert.getEncoded();
     String base64 = java.util.Base64.getEncoder().encodeToString(encoded);
