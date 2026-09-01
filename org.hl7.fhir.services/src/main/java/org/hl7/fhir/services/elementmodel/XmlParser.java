@@ -881,7 +881,10 @@ public class XmlParser extends ParserBase {
     if (canonicalFilter.contains(element.getPath())) {
       return;
     }
-    if (isIgnored(element)) {
+    if (!root && isIgnored(element)) {
+      // note: only descendants can be ignored. Ignoring the root would leave the writer
+      // with an unclosed level (namespaces are pending before the first enter()), and
+      // there's nothing sensible to serialise anyway (JsonParser doesn't check the root either)
       return;
     }
     if (element.getProperty().getDefinition().hasExtension(ExtensionDefinitions.EXT_XML_NAME)) {
