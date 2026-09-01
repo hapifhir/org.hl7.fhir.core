@@ -12,6 +12,8 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.extensions.ExtensionUtilities;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ConceptMap;
@@ -55,14 +57,12 @@ public class StructureMapRenderer extends TerminologyRenderer {
  
   @Override
   public void buildNarrative(RenderingStatus status, XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    if (r.isDirect()) {
-      renderResourceTechDetails(r, x);
-      genSummaryTable(status, x, (StructureMap) r.getBase());
-      renderMap(status, x.pre("fml"), (StructureMap) r.getBase());      
-    } else {
-      // the intention is to change this in the future
-      x.para().tx("StructureMapRenderer only renders native resources directly");
-    }
+    StructureMap map = r.isDirect()
+        ? (StructureMap) r.getBase()
+        : (StructureMap) new ObjectConverter(context.getContext()).convert((Element) r.getBase());
+    renderResourceTechDetails(r, x);
+    genSummaryTable(status, x, map);
+    renderMap(status, x.pre("fml"), map);
   }
   
   
