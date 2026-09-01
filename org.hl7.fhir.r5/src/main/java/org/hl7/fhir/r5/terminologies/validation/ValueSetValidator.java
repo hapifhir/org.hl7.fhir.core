@@ -600,7 +600,10 @@ public class ValueSetValidator extends ValueSetProcessBase {
       }
     }
 
-    if (!requiredSupplements.isEmpty()) {
+    // cs can be null (none of the three lookups above resolved the system); there is nothing to
+    // merge supplements into in that case. ValueSetExpander's copy of this loop only runs when
+    // cs != null for the same reason.
+    if (cs != null && !requiredSupplements.isEmpty()) {
       List<CodeSystem> additionalSupplements = new ArrayList<>();
       for (String s : requiredSupplements) {
         CodeSystem scs = context.fetchResource(CodeSystem.class, s, IWorkerContext.VersionResolutionRules.defaultRule());
