@@ -479,7 +479,7 @@ public class XmlParser extends ParserBase {
                 }
               }
             }
-            Element n = new Element(property.getName(), property, "xhtml", new XhtmlComposer(XhtmlComposer.XML, false).compose(xhtml)).setXhtml(xhtml).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML).setNativeObject(child);
+            Element n = new Element(property.getName(), property, "xhtml", null).setXhtml(xhtml, null).markLocation(line(child, false), col(child, false)).setFormat(FhirFormat.XML).setNativeObject(child);
             n.setPath(element.getPath()+"."+property.getName());
             element.getChildList().add(n);
           } else {
@@ -922,7 +922,7 @@ public class XmlParser extends ParserBase {
         }
         xml.exit(element.getProperty().getXmlNamespace(),elementName);
       }
-    } else if (!element.hasChildren() && !element.hasValue() && !element.hasXhtml()) {
+    } else if (!element.hasChildren() && !element.hasValue() && !element.isXhtml()) {
       if (isElideElements() && element.isElided() && xml.canElide())
         xml.elide();
       else {
@@ -931,14 +931,10 @@ public class XmlParser extends ParserBase {
         xml.element(elementName);
       }
     } else if (element.isPrimitive() || (element.hasType() && isPrimitive(element.getType()))) {
-      if (element.getType().equals("xhtml")) {
+      if (element.isXhtml()) {
         if (isElideElements() && element.isElided() && xml.canElide())
           xml.elide();
-        else {
-          if ((element.getXhtml()==null) && (element.getValue() != null)) {
-            XhtmlParser xhtml = new XhtmlParser();
-            element.setXhtml(xhtml.setXmlMode(true).parse(element.getValue(), null).getDocumentElement());
-          }
+        else if (element.getXhtml() != null) {
           if (isCdaText(element.getProperty())) {
             new CDANarrativeFormat().convert(xml, element.getXhtml());
           } else {
@@ -949,6 +945,9 @@ public class XmlParser extends ParserBase {
               markedXhtml = true;
             }
           }
+        } else if (element.getXhtmlSource() != null) {
+          // this is rough, but we're keeping something
+          xml.escapedText(element.getXhtmlSource());
         }
       } else if (isText(element.getProperty())) {
         if (isElideElements() && element.isElided() && xml.canElide())

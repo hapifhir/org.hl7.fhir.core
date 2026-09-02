@@ -1,5 +1,7 @@
 package org.hl7.fhir.services.elementmodel;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.services.conformance.profile.ProfileUtilities;
@@ -72,6 +74,8 @@ public class JsonParser extends ParserBase {
   private JsonCreator json;
   private boolean allowComments;
   private boolean elideElements;
+
+  @Getter @Setter private boolean canonicalizeXhtml;
 //  private boolean suppressResourceType;
 
   private Element baseElement;
@@ -695,19 +699,21 @@ public class JsonParser extends ParserBase {
       element.getChildList().add(n);
       if (main != null) {
         JsonPrimitive p = (JsonPrimitive) main;
-        n.setValue(property.hasImpliedPrefix() ? property.getImpliedPrefix()+p.asString() : p.asString());
         if (!n.getProperty().isChoice() && n.getType().equals("xhtml")) {
           try {
             XhtmlParser xhtml = new XhtmlParser();
-            n.setXhtml(xhtml.setXmlMode(true).parse(n.getValue(), null).getDocumentElement());
+            n.setXhtml(xhtml.setXmlMode(true).parse(p.asString(), null).getDocumentElement(), p.asString());
             if (policy == ValidationPolicy.EVERYTHING) {
               for (StringPair s : xhtml.getValidationIssues()) {
                 logError(errors, "2022-11-17", line(main), col(main), npath, IssueType.INVALID, context.formatMessage(s.getName(), s.getValue()), IssueSeverity.ERROR);                
               }
             }
           } catch (Exception e) {
+            n.setXhtmlSource(p.asString());
             logError(errors, ValidationMessage.NO_RULE_DATE, line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_XHTML_, e.getMessage()), IssueSeverity.ERROR);
           }
+        } else {
+          n.setValue(property.hasImpliedPrefix() ? property.getImpliedPrefix()+p.asString() : p.asString());
         }
         if (policy == ValidationPolicy.EVERYTHING) {
           // now we cross-check the primitive format against the stated type
@@ -1025,8 +1031,12 @@ public class JsonParser extends ParserBase {
       json.name(name);
     }
     String type = item.getType();
-    if (item.hasXhtml()) {
-      json.value(new XhtmlComposer(XhtmlComposer.XML, false).setCanonical(json.isCanonical()).compose(item.getXhtml()));
+    if (item.isXhtml()) {
+      if (canonicalizeXhtml) {
+        json.value(item.getXhtml() != null ?  new XhtmlComposer(true, false).setCanonical(true).compose(item.getXhtml()) : item.getXhtmlSource(true));
+      } else {
+        json.value(item.getXhtmlSource(json.isCanonical()));
+      }
     } else if (Utilities.existsInList(type, "boolean")) {
       json.value(item.getValue().trim().equals("true") ? Boolean.valueOf(true) : Boolean.valueOf(false));
     } else if (Utilities.existsInList(type, "integer", "unsignedInt", "positiveInt")) {
@@ -1044,7 +1054,7 @@ public class JsonParser extends ParserBase {
 
   private void compose(String name, String path, Element element) throws IOException {
     if (element.isPrimitive() || isPrimitive(element.getType())) {
-      if (element.hasXhtml() || element.hasValue()) {
+      if (element.isXhtml() || element.hasValue()) {
         primitiveValue(name, element);
       }
       name = "_"+name;

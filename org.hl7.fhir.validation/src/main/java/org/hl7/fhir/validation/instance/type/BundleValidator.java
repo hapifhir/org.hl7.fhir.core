@@ -1099,6 +1099,7 @@ public class BundleValidator extends BaseValidator {
     String canon = null;
     String kid = null;
     boolean xml = false;
+    boolean jsonXml = false;
     if (header == null) {
       ok = false;
     } else {
@@ -1156,7 +1157,7 @@ public class BundleValidator extends BaseValidator {
         if (tcanon != null) {
           warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, canon.equals(tcanon), I18nConstants.BUNDLE_SIGNATURE_CANON_DIFF, canon, tcanon);
         }
-        xml = canon.contains("xml");
+        xml = !canon.contains("json");
       }
       
       // 3. purpose
@@ -1262,7 +1263,7 @@ public class BundleValidator extends BaseValidator {
       
         byte[] toVerify = null;
         try {
-          toVerify = makeSignableBundle(bundle, canon, excludedElements, xml);
+          toVerify = makeSignableBundle(bundle, canon, excludedElements, xml, jsonXml);
         } catch (Exception e) {
           if (settings.isDebug()) {
             e.printStackTrace();
@@ -1395,7 +1396,7 @@ public class BundleValidator extends BaseValidator {
     return null;
   }
 
-  private byte[] makeSignableBundle(Element bundle, String canon, List<Element> excludedElements, boolean xml) throws IOException, InvalidCanonicalizerException, CanonicalizationException, ParserConfigurationException, SAXException {
+  private byte[] makeSignableBundle(Element bundle, String canon, List<Element> excludedElements, boolean xml, boolean jsonXml) throws IOException, InvalidCanonicalizerException, CanonicalizationException, ParserConfigurationException, SAXException {
     byte[] toSign;
     ByteArrayOutputStream ba = new ByteArrayOutputStream();
     // 1. signed with signature data
@@ -1409,6 +1410,9 @@ public class BundleValidator extends BaseValidator {
     if (excludedElements != null) {
       p.getElementsToIgnore().clear();
       p.getElementsToIgnore().addAll(excludedElements);
+    }
+    if (p instanceof org.hl7.fhir.r5.elementmodel.JsonParser) {
+      ((org.hl7.fhir.r5.elementmodel.JsonParser) p).setCanonicalizeXhtml(jsonXml);
     }
     p.compose(bundle, ba, OutputStyle.CANONICAL, null);
     toSign = ba.toByteArray();
@@ -1525,7 +1529,7 @@ public class BundleValidator extends BaseValidator {
         if (tcanon != null) {
           warning(errors, "2025-06-13", IssueType.NOTFOUND, stack, canon.equals(tcanon), I18nConstants.BUNDLE_SIGNATURE_CANON_DIFF, canon, tcanon);
         }
-        xml = canon.contains("xml");
+        xml = !canon.contains("json");
       }
 
       // 3. purpose
@@ -1623,7 +1627,7 @@ public class BundleValidator extends BaseValidator {
       
         byte[] toSign = null;
         try {
-          toSign = makeSignableBundle(bundle, canon, signatureProvenances, xml);
+          toSign = makeSignableBundle(bundle, canon, signatureProvenances, xml, false);
         } catch (Exception e) {
           // nothing - this won't happen
         }
