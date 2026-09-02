@@ -3232,7 +3232,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ok = rule(errors, "2024-02-28", IssueType.INVALID, child.line(), child.col(), path, !"value".equals(child.getName()), I18nConstants.ILLEGAL_PROPERTY, "value") && ok;
     }
 
-    String actualValue = e.primitiveValue();
+    final String actualValue = e.primitiveValue();
     if (isBlank(actualValue)) {
       if (actualValue == null)
         ok = rule(errors, NO_RULE_DATE, IssueType.INVALID, e.line(), e.col(), path, e.hasChildren(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT) && ok;

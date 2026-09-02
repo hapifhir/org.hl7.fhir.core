@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -863,19 +864,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
-    return diff;
+    return getDiff(id, resp, pj, expFn, actFn, tcode, code, modes, ext);
   }
 
   private String subsumes(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
@@ -898,17 +887,22 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
+    return getDiff(id, resp, pj, expFn, actFn, tcode, code, modes, ext);
+  }
+
+  @Nullable
+  private String getDiff(String id, String expected, String actual, String expectedFileName, String actualFileName, String expectedCode, int actualCode, Set<String> modes, JsonObject ext) throws URISyntaxException, IOException {
     CompareUtilities c = new CompareUtilities(modes, ext, vars());
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
+    String diff = c.checkJsonSrcIsSame(id, expected, actual, false);
     warnings.addAll(c.getWarnings());
     if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expectedFileName));
+      FileUtilities.stringToFile(expected, expectedFileName);
+      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actualFileName));
+      FileUtilities.stringToFile(actual, actualFileName);
     }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
+    if (expectedCode != null && !httpCodeOk(expectedCode, actualCode)) {
+      return "Response Code fail: should be '"+expectedCode+"' but is '"+actualCode+"'";
     }
     return diff;
   }
@@ -933,19 +927,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
-    return diff;
+    return getDiff(id, resp, pj, expFn, actFn, tcode, code, modes, ext);
   }
 
   private String expand(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
@@ -977,19 +959,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
-    String diff = c.checkJsonSrcIsSame(id, resp, vsj, false);
-    warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(vsj, actFn);
-    }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
-    return diff;
+    return getDiff(id, resp, vsj, expFn, actFn, tcode, code, modes, ext);
   }
 
   private boolean httpCodeOk(String tcode, int code) {
@@ -1024,19 +994,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
-    return diff;
+    return getDiff(id, resp, pj, expFn, actFn, tcode, code, modes, ext);
   }
 
   private String validate(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
@@ -1115,19 +1073,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       oo.setText(null);
       pj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
-    return diff;
+    return getDiff(id, resp, pj, expFn, actFn, tcode, code, modes, ext);
   }
 
   private String compare(String id, List<Resource> setup, Parameters p, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
@@ -1155,19 +1101,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
         throw e;
       }
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
-    String diff = c.checkJsonSrcIsSame(id, resp, pj, false);
-    warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(pj, actFn);
-    }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
-    return diff;
+    return getDiff(id, resp, pj, expFn, actFn, tcode, code, modes, ext);
   }
 
   private String batch(String id, List<Resource> setup, Bundle bnd, String resp, String expFn, String actFn, String lang, Parameters profile, JsonObject ext, String tcode, Set<String> modes) throws IOException, URISyntaxException {
@@ -1202,19 +1136,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       TxTesterScrubbers.scrubOperationOutcome(oo, tight);
       bj = new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).composeString(oo);
     }
-    CompareUtilities c = new CompareUtilities(modes, ext, vars());
-    String diff = c.checkJsonSrcIsSame(id, resp, bj, false);
-    warnings.addAll(c.getWarnings());
-    if (diff != null) {
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(expFn));
-      FileUtilities.stringToFile(resp, expFn);
-      FileUtilities.createDirectory(FileUtilities.getDirectoryForFile(actFn));
-      FileUtilities.stringToFile(bj, actFn);
-    }
-    if (tcode != null && !httpCodeOk(tcode, code)) {
-      return "Response Code fail: should be '"+tcode+"' but is '"+code+"'";
-    }
-    return diff;
+    return getDiff(id, resp, bj, expFn, actFn, tcode, code, modes, ext);
   }
 
 
