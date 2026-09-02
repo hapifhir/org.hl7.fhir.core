@@ -66,7 +66,7 @@ public class ModelContextInformation {
    */
   private String registerCoreResources() {
     String packageName = Constants.PACKAGE_NAME + "#" + Constants.VERSION;
-    for (String name : CoreResourceNameList.NAMES) {
+    for (String name : CoreResourceNameList.getInstance()) {
       registerCoreResource(name, packageName);
     }
     return packageName;
