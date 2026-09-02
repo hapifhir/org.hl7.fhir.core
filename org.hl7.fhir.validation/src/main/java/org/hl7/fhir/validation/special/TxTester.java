@@ -448,43 +448,7 @@ public class TxTester implements ITerminologyRequestIdProvider {
       log.info("  Log File: "+logFile);
     }
 
-    String fhirVersion = null;
-    try {
-      String actFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "actual", "$versions.json") : Utilities.path(this.outputDir, "actual", "$versions.json");
-      byte[] vr = fetch(Utilities.pathURL(server, "$versions", "?_format=json"));
-      FileUtilities.bytesToFile(vr, actFn);
-      if (vr != null) {
-        JsonObject vl = JsonParser.parseObject(vr);
-        if ("Parameters".equals(vl.asString("resourceType"))) {
-          for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
-            if ("default".equals(v.asString("name"))) {
-              fhirVersion = v.asString("valueString");
-            }
-          }
-        } else if (vl.has("default")) {
-          fhirVersion = vl.asString("default");
-        } else {
-          log.warn("Unable to interpret response from $versions: " + vl.toString());
-        }
-
-        if (fhirVersion != null) {
-          log.info("Server version " + fhirVersion + " from $versions");
-        }
-      }
-    } catch (Exception e) {
-      log.warn("Server does not support $versions: "+e.getMessage(), e);
-    }
-    if (fhirVersion == null) {
-      try {
-        JsonObject cs = JsonParser.parseObjectFromUrl(Utilities.pathURL(server, "metadata", "?_format=json"));
-        fhirVersion = cs.asString("fhirVersion");
-        log.info("Server version "+fhirVersion+" from /metadata");
-      } catch (Exception e) {
-        log.warn("Error checking server version: "+e.getMessage(), e);
-        log.warn("Defaulting to FHIR R4");
-        fhirVersion = "4.0";
-      }
-    }
+    String fhirVersion = determineFhirVersion();
 
     if (serverVersion == null) {
       serverVersion = fhirVersion;
@@ -507,6 +471,98 @@ public class TxTester implements ITerminologyRequestIdProvider {
     return client;
   }
 
+  /**
+   * Work out which FHIR version the server under test speaks.
+   *
+   * This is not optional information: it decides which terminology client is used, and it is what
+   * the suites' and tests' version gates are evaluated against (see passesVersion()). Guessing it
+   * produces a run that looks fine and means nothing - the wrong client, and version gated tests
+   * silently included or excluded - so if we cannot determine it, we stop.
+   *
+   * Two probes, in order:
+   *  - $versions, the terminology ecosystem's own version discovery;
+   *  - /metadata, which per the specification returns a CapabilityStatement, and so carries
+   *    fhirVersion. (TerminologyCapabilities is the response to /metadata?mode=terminology, which
+   *    is fetched separately in checkClient(); a server that returns one from unqualified /metadata
+   *    is not conformant, and the error says so rather than leaving the user to guess.)
+   */
+  private String determineFhirVersion() throws IOException {
+    List<String> issues = new ArrayList<>();
+    String fhirVersion = null;
+
+    try {
+      String actFn = this.outputDir == null ?  Utilities.path("[tmp]", serverId(), "actual", "$versions.json") : Utilities.path(this.outputDir, "actual", "$versions.json");
+      byte[] vr = fetch(Utilities.pathURL(server, "$versions", "?_format=json"));
+      if (vr == null) {
+        issues.add("$versions returned no content");
+      } else {
+        FileUtilities.bytesToFile(vr, actFn);
+        fhirVersion = versionFromVersions(JsonParser.parseObject(vr), issues);
+      }
+    } catch (Exception e) {
+      issues.add("$versions failed: "+e.getMessage());
+      log.warn("Server does not support $versions: "+e.getMessage(), e);
+    }
+    if (fhirVersion != null) {
+      log.info("Server version " + fhirVersion + " from $versions");
+      return fhirVersion;
+    }
+
+    try {
+      fhirVersion = versionFromMetadata(JsonParser.parseObjectFromUrl(Utilities.pathURL(server, "metadata", "?_format=json")), issues);
+    } catch (Exception e) {
+      issues.add("/metadata failed: "+e.getMessage());
+      log.warn("Error checking server version: "+e.getMessage(), e);
+    }
+    if (fhirVersion != null) {
+      log.info("Server version "+fhirVersion+" from /metadata");
+      return fhirVersion;
+    }
+
+    throw new FHIRException("Unable to determine the FHIR version of the terminology server at "+server+", so the tests cannot be run. "+
+        "The server must either support $versions, or return a CapabilityStatement with a fhirVersion from /metadata. Details: "+String.join("; ", issues));
+  }
+
+  /**
+   * The FHIR version from a $versions response: a Parameters with a 'default' parameter, or the
+   * bare JSON object with a 'default' property that the operation's simpler form returns. Returns
+   * null and appends to issues if neither shape yields a version.
+   */
+  static String versionFromVersions(JsonObject vl, List<String> issues) {
+    if ("Parameters".equals(vl.asString("resourceType"))) {
+      for (JsonObject v : vl.forceArray("parameter").asJsonObjects()) {
+        if ("default".equals(v.asString("name")) && v.asString("valueString") != null) {
+          return v.asString("valueString");
+        }
+      }
+      issues.add("$versions returned a Parameters with no usable 'default' parameter");
+      return null;
+    } else if (vl.has("default")) {
+      return vl.asString("default");
+    } else {
+      issues.add("Unable to interpret the response from $versions: " + vl.toString());
+      return null;
+    }
+  }
+
+  /**
+   * The FHIR version from a /metadata response, which is a CapabilityStatement. Returns null and
+   * appends to issues otherwise - naming the resource type that did come back, since the usual
+   * cause is a server answering TerminologyCapabilities where CapabilityStatement is specified.
+   */
+  static String versionFromMetadata(JsonObject cs, List<String> issues) {
+    String fhirVersion = cs.asString("fhirVersion");
+    if (fhirVersion != null) {
+      return fhirVersion;
+    }
+    String rt = cs.asString("resourceType");
+    if (rt != null && !"CapabilityStatement".equals(rt)) {
+      issues.add("/metadata returned a "+rt+", not a CapabilityStatement (TerminologyCapabilities is the response to /metadata?mode=terminology, not to /metadata)");
+    } else {
+      issues.add("/metadata returned a CapabilityStatement with no fhirVersion");
+    }
+    return null;
+  }
 
   /**
    * Eagerly perform the one-shot, not-thread-safe setup: connect to the server
