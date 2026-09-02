@@ -1,6 +1,7 @@
 package org.hl7.fhir.model;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+
+import javax.annotation.Nonnull;
 
 /**
  * This provides a context for R6 objects. It provides the following things:
@@ -12,14 +13,14 @@ public interface IModelContext {
    * This returns the main/core version that is in use - a draft version of R6 or more recent
    * @return
    */
-  @NonNull
+  @Nonnull
   public String getFHIRVersion();
 
   /**
    * Handle to a class that holds information about the support for the FHIR standard in this
    * @return
    */
-  @NonNull
+  @Nonnull
   public ModelContextInformation getContextInformation();
 
   boolean isCompatibleModelContext(IModelContext modelContext);

@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.*;
 
 import org.apache.commons.io.IOUtils;
-import org.checkerframework.checker.nullness.qual.NonNull;
+
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
@@ -52,6 +52,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Charsets;
+
+import javax.annotation.Nonnull;
 
 import static org.junit.Assert.assertNull;
 
@@ -292,7 +294,7 @@ private static TxTestData testData;
     }
   }
 
-  private static @NonNull OperationOutcome makeOperationOutcome(ValueSetExpansionOutcome vse) {
+  private static @Nonnull OperationOutcome makeOperationOutcome(ValueSetExpansionOutcome vse) {
     OperationOutcome oo = new OperationOutcome();
     if (vse.getIssues() != null) {
       oo.getIssue().addAll(vse.getIssues());
