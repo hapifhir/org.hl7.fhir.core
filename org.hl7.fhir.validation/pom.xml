@@ -168,6 +168,18 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- TxTesterLogFile tees the terminology test log into the run's output directory.
+             slf4j is only an API and has no file output of its own, so the appender has to
+             come from the backend. provided: logback is on the classpath wherever these
+             tests are actually run (the CLI ships it, the test scope brings it in), and this
+             does not put it on the runtime classpath of anything that embeds the validator.
+             TxTesterLogFile degrades to console-only if it is not there. -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.hl7.fhir.testcases</groupId>

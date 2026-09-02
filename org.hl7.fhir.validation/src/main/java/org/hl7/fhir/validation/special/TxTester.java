@@ -284,6 +284,8 @@ public class TxTester implements ITerminologyRequestIdProvider {
     } catch (Exception e) {
       log.error("Exception running Terminology Service Tests: "+e.getMessage(), e);
       return false;
+    } finally {
+      TxTesterLogFile.stop();
     }
   }
 
@@ -436,6 +438,14 @@ public class TxTester implements ITerminologyRequestIdProvider {
 
     if (outputDir == null) {
       outputDir = Utilities.path("[tmp]", serverId());
+    }
+    // from here on, everything logged to the console is also written to test.log in the
+    // output directory. This is the one point both entry points pass through - execute()
+    // for a whole run, executeTest() one test at a time from the JUnit runners - and the
+    // first at which the output directory is known.
+    String logFile = TxTesterLogFile.start(outputDir);
+    if (logFile != null) {
+      log.info("  Log File: "+logFile);
     }
 
     String fhirVersion = null;
