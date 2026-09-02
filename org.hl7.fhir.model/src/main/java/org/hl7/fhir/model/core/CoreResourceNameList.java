@@ -1,10 +1,11 @@
 package org.hl7.fhir.model.core;
 
+import java.util.AbstractList;
 import java.util.List;
 
-public class CoreResourceNameList {
+public class CoreResourceNameList extends AbstractList<String> {
 
-  public static final List<String> NAMES = List.of(
+  private static final List<String> DATA = List.of(
       "Account",
       "ActivityDefinition",
       "ActorDefinition",
@@ -126,4 +127,23 @@ public class CoreResourceNameList {
       "ValueSet",
       "VisionPrescription"
   );
+
+  private static final CoreResourceNameList INSTANCE = new CoreResourceNameList();
+
+  private CoreResourceNameList() {
+  }
+
+  public static CoreResourceNameList getInstance() {
+    return INSTANCE;
+  }
+
+  @Override
+  public String get(int index) {
+    return DATA.get(index);
+  }
+
+  @Override
+  public int size() {
+    return DATA.size();
+  }
 }
